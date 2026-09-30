@@ -1,0 +1,2086 @@
+{
+  "schema": "cityscroll.recovered_discovery_journeys.v1",
+  "scenario": "discovery-recovery",
+  "public_alias": "c446cacfd1632",
+  "capture_mode": "headless-playwright-production-served-site",
+  "capture_run_id": "db223c4d-91bf-4545-83ff-0bab7d1105a2",
+  "base": "https://cityscroll.org/",
+  "viewports": [
+    {
+      "name": "phone",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "run_receipt": {
+    "started_at": "2026-09-30T01:42:32Z",
+    "finished_at": "2026-09-30T01:43:29Z"
+  },
+  "identity": {
+    "before": {
+      "pages_revision": "49b0017ec1839a3792d6edb338db14711da49fc4",
+      "pages_artifact_hash": "e702bf55d4fc69fa02646031a398aba50e9ae81569e5c1afce02ef7a3dd2f1b9",
+      "pages_data_receipt_sha256": "960b533d844b29a993808e2a6b6f34e960193a863244004225e24ac83546ac25",
+      "pages_data_generated_at": "2026-09-30T01:26:21.460Z",
+      "worker_revision": "49b0017ec1839a3792d6edb338db14711da49fc4",
+      "worker_environment": "production",
+      "data_generation": "v1-a06d60763c2ad49b"
+    },
+    "after": {
+      "pages_revision": "49b0017ec1839a3792d6edb338db14711da49fc4",
+      "pages_artifact_hash": "e702bf55d4fc69fa02646031a398aba50e9ae81569e5c1afce02ef7a3dd2f1b9",
+      "pages_data_receipt_sha256": "960b533d844b29a993808e2a6b6f34e960193a863244004225e24ac83546ac25",
+      "pages_data_generated_at": "2026-09-30T01:26:21.460Z",
+      "worker_revision": "49b0017ec1839a3792d6edb338db14711da49fc4",
+      "worker_environment": "production",
+      "data_generation": "v1-a06d60763c2ad49b"
+    }
+  },
+  "image_binaries_committed": false,
+  "image_policy": "Render content hashes only; the images stay under the ignored .artifacts directory.",
+  "captures": [
+    {
+      "name": "root-category-record-phone",
+      "journey": "root-category-record",
+      "viewport": {
+        "name": "phone",
+        "width": 390,
+        "height": 844
+      },
+      "capture_run_id": "db223c4d-91bf-4545-83ff-0bab7d1105a2",
+      "page": {
+        "url": "https://cityscroll.org/",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "stylesheets": [
+          "/brand.css",
+          "/civic-documents.css",
+          "/walk-entry.css",
+          "/local_constellation.css",
+          "/traversal.css",
+          "/vendor/maplibre-gl-4.7.1.css"
+        ],
+        "stylesheet_rules": 1352,
+        "overflow_x": 0,
+        "heading": "What's near you?",
+        "surface": "map",
+        "deferred_state": "ready",
+        "results_count": "525",
+        "scroll_y": 0
+      },
+      "render": {
+        "sha256": "e57d9c2cd0ec85f8d386c26ef01348ebb9bf98a7e6bdc6f9b578b953cc9068ca",
+        "bytes": 67875,
+        "local_image": ".artifacts/discovery-recovery-journey/db223c4d-91bf-4545-83ff-0bab7d1105a2/root-category-record-phone.png",
+        "url": "https://cityscroll.org/",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "committed": false
+      },
+      "observations": {
+        "entry_links": [
+          {
+            "text": "Contracts",
+            "href": "https://cityscroll.org/browse/contracts/",
+            "family": "money"
+          },
+          {
+            "text": "People + organizations",
+            "href": "https://cityscroll.org/browse/people/",
+            "family": "people-organizations"
+          },
+          {
+            "text": "Land",
+            "href": "https://cityscroll.org/browse/zoning/",
+            "family": "land-property"
+          },
+          {
+            "text": "Rules",
+            "href": "https://cityscroll.org/browse/rules/",
+            "family": "rules-mandates"
+          },
+          {
+            "text": "Meetings",
+            "href": "https://cityscroll.org/browse/meetings/",
+            "family": "meetings-decisions"
+          },
+          {
+            "text": "Exams",
+            "href": "https://cityscroll.org/browse/exams/",
+            "family": "exams"
+          },
+          {
+            "text": "Browse all NYC records",
+            "href": "https://cityscroll.org/browse/",
+            "family": null
+          },
+          {
+            "text": "Search all records",
+            "href": "https://cityscroll.org/search/",
+            "family": null
+          }
+        ],
+        "family_link": {
+          "tag": "a",
+          "text": "Meetings",
+          "href": "https://cityscroll.org/browse/meetings/",
+          "visible": true,
+          "in_closed_details": false
+        },
+        "collection": {
+          "url": "https://cityscroll.org/browse/meetings/",
+          "status": 200,
+          "marker": "browse",
+          "overflow_x": 0,
+          "record_links": 519
+        },
+        "record_href": "/meetings/meeting%3Aoath_trial_calendar%3A242838%3A2026-09-30%3A09%3A30%3A00%3AScheduled-For-Trial",
+        "record_title": "OATH trial 242838",
+        "destination": {
+          "url": "https://cityscroll.org/meetings/meeting%3Aoath_trial_calendar%3A242838%3A2026-09-30%3A09%3A30%3A00%3AScheduled-For-Trial",
+          "record_id": "meeting:oath_trial_calendar:242838:2026-09-30:09:30:00:Scheduled-For-Trial",
+          "heading": "OATH trial 242838",
+          "near_you_shell": false,
+          "fragment": null,
+          "anchor_present": null,
+          "overflow_x": 0,
+          "status": 200
+        },
+        "returned": {
+          "url": "https://cityscroll.org/browse/meetings/",
+          "record_link_present": true
+        }
+      },
+      "responses": [
+        {
+          "path": "/",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/browse/meetings/",
+          "status": 200,
+          "worker": false,
+          "read_model_version": null
+        },
+        {
+          "path": "/meetings/meeting%3Aoath_trial_calendar%3A242838%3A2026-09-30%3A09%3A30%3A00%3AScheduled-For-Trial",
+          "status": 200,
+          "worker": false,
+          "read_model_version": null
+        },
+        {
+          "path": "/browse/meetings/",
+          "status": 200,
+          "worker": false,
+          "read_model_version": null
+        }
+      ],
+      "assertions": {
+        "viewport_applied": true,
+        "real_stylesheet_applied": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
+        "six_record_families_offered": true,
+        "family_link_is_native": true,
+        "collection_reached": true,
+        "destination_is_listed_record": true,
+        "destination_heading_matches": true,
+        "back_returns_to_collection": true
+      },
+      "outcome": "pass"
+    },
+    {
+      "name": "typed-place-record-phone",
+      "journey": "typed-place-record",
+      "viewport": {
+        "name": "phone",
+        "width": 390,
+        "height": 844
+      },
+      "capture_run_id": "db223c4d-91bf-4545-83ff-0bab7d1105a2",
+      "page": {
+        "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=records",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "stylesheets": [
+          "/brand.css",
+          "/civic-documents.css",
+          "/walk-entry.css",
+          "/local_constellation.css",
+          "/traversal.css",
+          "/vendor/maplibre-gl-4.7.1.css"
+        ],
+        "stylesheet_rules": 1352,
+        "overflow_x": 0,
+        "heading": "Midwood",
+        "surface": "records",
+        "deferred_state": "ready",
+        "results_count": "2",
+        "scroll_y": 1826
+      },
+      "render": {
+        "sha256": "0077eb3cf95947fc3df70abd6e0d85254f438a80aa588b88414a4448574083bd",
+        "bytes": 76309,
+        "local_image": ".artifacts/discovery-recovery-journey/db223c4d-91bf-4545-83ff-0bab7d1105a2/typed-place-record-phone.png",
+        "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=records",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "committed": false
+      },
+      "observations": {
+        "scope": {
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=records",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "stylesheets": [
+            "/brand.css",
+            "/civic-documents.css",
+            "/walk-entry.css",
+            "/local_constellation.css",
+            "/traversal.css",
+            "/vendor/maplibre-gl-4.7.1.css"
+          ],
+          "stylesheet_rules": 1352,
+          "overflow_x": 0,
+          "heading": "Midwood",
+          "surface": "records",
+          "deferred_state": "ready",
+          "results_count": "2",
+          "scroll_y": 1826
+        },
+        "listed_ids": [
+          "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+          "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+        ],
+        "record_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+        "record_title": "Housing and Land Use Committee Meeting",
+        "inspect": {
+          "control_tag": "button",
+          "dialog_open": true,
+          "dialog_text": "Close NEARBY RECORD Housing and Land Use Committee Meeting PLACE ROLE Happening here PLACE CLAIM Held in Midwood VENUE Brooklyn CB14 District Office · 810 East 16th Street, Brooklyn, NY, 11230 TYPE Community board meeting DATE Sep 23, 2026 TIME 18:30 STATUS Past event · Sep 23, 2026 SOURCE Official source Why this place matched View the full record",
+          "focus_record_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+          "focus_class": "near-record-inspect near-record-title"
+        },
+        "full_link": {
+          "tag": "a",
+          "text": "View the full record",
+          "href": "https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",
+          "visible": true,
+          "in_closed_details": false
+        },
+        "departure": {
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=records",
+          "heading": "Midwood",
+          "surface": "records",
+          "scroll_y": 3701,
+          "focus_record_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+          "focus_class": "near-record-inspect near-record-title"
+        },
+        "destination": {
+          "url": "https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",
+          "record_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+          "heading": "Housing and Land Use Committee Meeting",
+          "near_you_shell": false,
+          "fragment": null,
+          "anchor_present": null,
+          "overflow_x": 0,
+          "status": 200
+        },
+        "returned": {
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=records",
+          "heading": "Midwood",
+          "surface": "records",
+          "scroll_y": 3701,
+          "focus_record_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+          "focus_class": "near-record-full-record"
+        },
+        "continued": true
+      },
+      "responses": [
+        {
+          "path": "/",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/?geo=nta2020%3ABK1403&surface=records",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json?geo=nta2020%3ABK1403&surface=records",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",
+          "status": 200,
+          "worker": false,
+          "read_model_version": null
+        },
+        {
+          "path": "/near-you/?geo=nta2020%3ABK1403&surface=records",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json?geo=nta2020%3ABK1403&surface=records",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        }
+      ],
+      "assertions": {
+        "viewport_applied": true,
+        "real_stylesheet_applied": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
+        "typed_place_selected": true,
+        "count_read_from_page_covers_list": true,
+        "record_is_listed": true,
+        "inspect_is_button_and_dismiss_returns_focus": true,
+        "full_record_is_link": true,
+        "destination_is_record": true,
+        "back_restores_scope_focus_scroll": true,
+        "continue_inspects_again": true
+      },
+      "outcome": "pass"
+    },
+    {
+      "name": "unsupported-place-escape-phone",
+      "journey": "unsupported-place-escape",
+      "viewport": {
+        "name": "phone",
+        "width": 390,
+        "height": 844
+      },
+      "capture_run_id": "db223c4d-91bf-4545-83ff-0bab7d1105a2",
+      "page": {
+        "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "stylesheets": [
+          "/brand.css",
+          "/civic-documents.css",
+          "/walk-entry.css",
+          "/local_constellation.css",
+          "/traversal.css"
+        ],
+        "stylesheet_rules": 1240,
+        "overflow_x": 0,
+        "heading": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+        "surface": "records",
+        "deferred_state": "ready",
+        "results_count": null,
+        "scroll_y": 0
+      },
+      "render": {
+        "sha256": "a123dd693aab8711e57d5845119c47c3306e3ca1dfa643ed6b895cfef9a6af2b",
+        "bytes": 54521,
+        "local_image": ".artifacts/discovery-recovery-journey/db223c4d-91bf-4545-83ff-0bab7d1105a2/unsupported-place-escape-phone.png",
+        "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "committed": false
+      },
+      "observations": {
+        "scope": {
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "stylesheets": [
+            "/brand.css",
+            "/civic-documents.css",
+            "/walk-entry.css",
+            "/local_constellation.css",
+            "/traversal.css"
+          ],
+          "stylesheet_rules": 1240,
+          "overflow_x": 0,
+          "heading": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+          "surface": "records",
+          "deferred_state": "ready",
+          "results_count": null,
+          "scroll_y": 0
+        },
+        "results_count": null,
+        "recovery_message": "We can’t filter these meetings to this neighborhood yet.",
+        "retry_href": null,
+        "escape": {
+          "tag": "a",
+          "text": "All NYC meetings",
+          "href": "https://cityscroll.org/browse/meetings/?when=all",
+          "visible": true,
+          "in_closed_details": false
+        },
+        "collection": {
+          "url": "https://cityscroll.org/browse/meetings/?when=all",
+          "status": 200,
+          "marker": "browse",
+          "overflow_x": 0,
+          "record_links": 830
+        },
+        "record_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-03-28%3Ageneral-board-meeting",
+        "record_title": "General Board Meeting",
+        "destination": {
+          "url": "https://cityscroll.org/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-03-28%3Ageneral-board-meeting",
+          "record_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-03-28:general-board-meeting",
+          "heading": "General Board Meeting",
+          "near_you_shell": false,
+          "fragment": null,
+          "anchor_present": null,
+          "overflow_x": 0,
+          "status": 200
+        }
+      },
+      "responses": [
+        {
+          "path": "/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json?geo=nta2020%3ABK1503&surface=records&lens=meetings",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/browse/meetings/?when=all",
+          "status": 200,
+          "worker": false,
+          "read_model_version": null
+        },
+        {
+          "path": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-03-28%3Ageneral-board-meeting",
+          "status": 200,
+          "worker": false,
+          "read_model_version": null
+        }
+      ],
+      "assertions": {
+        "viewport_applied": true,
+        "real_stylesheet_applied": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
+        "unsupported_copy_shown": true,
+        "unsupported_count_is_not_zero": true,
+        "escape_is_visible_native_link": true,
+        "escape_clears_place": true,
+        "escape_reaches_all_nyc_collection": true,
+        "destination_is_listed_record": true
+      },
+      "outcome": "pass"
+    },
+    {
+      "name": "citywide-bucket-record-phone",
+      "journey": "citywide-bucket-record",
+      "viewport": {
+        "name": "phone",
+        "width": 390,
+        "height": 844
+      },
+      "capture_run_id": "db223c4d-91bf-4545-83ff-0bab7d1105a2",
+      "page": {
+        "url": "https://cityscroll.org/near-you?v=0&scope=citywide&surface=records",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "stylesheets": [
+          "/brand.css",
+          "/civic-documents.css",
+          "/walk-entry.css",
+          "/local_constellation.css",
+          "/traversal.css"
+        ],
+        "stylesheet_rules": 1240,
+        "overflow_x": 0,
+        "heading": "Citywide",
+        "surface": "records",
+        "deferred_state": "ready",
+        "results_count": "20",
+        "scroll_y": 0
+      },
+      "render": {
+        "sha256": "6db47229627cece5ad250153308a3838a483038b8ea78a541bbfac27d4e33d6e",
+        "bytes": 42540,
+        "local_image": ".artifacts/discovery-recovery-journey/db223c4d-91bf-4545-83ff-0bab7d1105a2/citywide-bucket-record-phone.png",
+        "url": "https://cityscroll.org/near-you?v=0&scope=citywide&surface=records",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "committed": false
+      },
+      "observations": {
+        "preview_ids": [
+          "20260826001",
+          "meeting:nyc_legistar_events:22568",
+          "20260817025"
+        ],
+        "total_text": "20",
+        "view_all_href": "https://cityscroll.org/near-you?v=0&scope=citywide&surface=records",
+        "bucket": {
+          "url": "https://cityscroll.org/near-you?v=0&scope=citywide&surface=records",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "stylesheets": [
+            "/brand.css",
+            "/civic-documents.css",
+            "/walk-entry.css",
+            "/local_constellation.css",
+            "/traversal.css"
+          ],
+          "stylesheet_rules": 1240,
+          "overflow_x": 0,
+          "heading": "Citywide",
+          "surface": "records",
+          "deferred_state": "ready",
+          "results_count": "20",
+          "scroll_y": 0,
+          "listed_ids": [
+            "meeting:nyc_legistar_events:22568",
+            "20260826001",
+            "20260817025",
+            "20260814012",
+            "20260812019",
+            "20260810007",
+            "20260810005",
+            "20260806002",
+            "20260803026",
+            "20260803009",
+            "20260728026",
+            "20260714029",
+            "20260715041",
+            "20260713006",
+            "20260626036",
+            "20260626034",
+            "20260618036",
+            "20260609003",
+            "20260623048",
+            "20260617003"
+          ]
+        },
+        "record_id": "meeting:nyc_legistar_events:22568",
+        "record_title": "Committee on Environmental Protection and Waterfronts",
+        "inspect": {
+          "control_tag": "button",
+          "dialog_open": true,
+          "dialog_text": "Close NEARBY RECORD Committee on Environmental Protection and Waterfronts PLACE CLAIM Citywide VENUE 250 Broadway - 8th Floor - Hearing Room 1 TYPE Record DATE Oct 20, 2026 TIME 08:00 STATUS Upcoming · Oct 20, 2026 SOURCE Official source Open the full record",
+          "focus_record_id": "meeting:nyc_legistar_events:22568",
+          "focus_class": "near-record-inspect near-record-title"
+        },
+        "full_link": {
+          "tag": "a",
+          "text": "Open the full record",
+          "href": "https://cityscroll.org/meetings/meeting%3Anyc_legistar_events%3A22568",
+          "visible": true,
+          "in_closed_details": false
+        },
+        "departure": {
+          "url": "https://cityscroll.org/near-you?v=0&scope=citywide&surface=records",
+          "heading": "Citywide",
+          "surface": "records",
+          "scroll_y": 517,
+          "focus_record_id": "meeting:nyc_legistar_events:22568",
+          "focus_class": "near-record-inspect near-record-title"
+        },
+        "destination": {
+          "url": "https://cityscroll.org/meetings/meeting%3Anyc_legistar_events%3A22568",
+          "record_id": "meeting:nyc_legistar_events:22568",
+          "heading": "Committee on Environmental Protection and Waterfronts",
+          "near_you_shell": false,
+          "fragment": null,
+          "anchor_present": null,
+          "overflow_x": 0,
+          "status": 200
+        },
+        "returned": {
+          "url": "https://cityscroll.org/near-you?v=0&scope=citywide&surface=records",
+          "heading": "Citywide",
+          "surface": "records",
+          "scroll_y": 517,
+          "focus_record_id": "meeting:nyc_legistar_events:22568",
+          "focus_class": "near-record-full-record"
+        },
+        "continued": true
+      },
+      "responses": [
+        {
+          "path": "/",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you?v=0&scope=citywide&surface=records",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json?v=0&scope=citywide&surface=records",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/meetings/meeting%3Anyc_legistar_events%3A22568",
+          "status": 200,
+          "worker": false,
+          "read_model_version": null
+        },
+        {
+          "path": "/near-you?v=0&scope=citywide&surface=records",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json?v=0&scope=citywide&surface=records",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        }
+      ],
+      "assertions": {
+        "viewport_applied": true,
+        "real_stylesheet_applied": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
+        "preview_bounded": true,
+        "view_all_opens_citywide_records": true,
+        "rendered_total_matches_destination_count": true,
+        "preview_records_in_destination": true,
+        "record_is_listed": true,
+        "inspect_is_button_and_dismiss_returns_focus": true,
+        "destination_is_record": true,
+        "back_restores_scope_focus_scroll": true
+      },
+      "outcome": "pass"
+    },
+    {
+      "name": "suggested-place-record-phone",
+      "journey": "suggested-place-record",
+      "viewport": {
+        "name": "phone",
+        "width": 390,
+        "height": 844
+      },
+      "capture_run_id": "db223c4d-91bf-4545-83ff-0bab7d1105a2",
+      "page": {
+        "url": "https://cityscroll.org/",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "stylesheets": [
+          "/brand.css",
+          "/civic-documents.css",
+          "/walk-entry.css",
+          "/local_constellation.css",
+          "/traversal.css"
+        ],
+        "stylesheet_rules": 1240,
+        "overflow_x": 0,
+        "heading": "What's near you?",
+        "surface": "map",
+        "deferred_state": "ready",
+        "results_count": "525",
+        "scroll_y": 0
+      },
+      "render": {
+        "sha256": "e57d9c2cd0ec85f8d386c26ef01348ebb9bf98a7e6bdc6f9b578b953cc9068ca",
+        "bytes": 67875,
+        "local_image": ".artifacts/discovery-recovery-journey/db223c4d-91bf-4545-83ff-0bab7d1105a2/suggested-place-record-phone.png",
+        "url": "https://cityscroll.org/",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "committed": false
+      },
+      "observations": {
+        "links": [
+          {
+            "id": "MN0102",
+            "href": "https://cityscroll.org/near-you?geo=nta2020%3AMN0102&surface=records&lens=meetings&v=0",
+            "data_count": "26",
+            "text": "Tribeca-Civic Center (26 meetings)"
+          },
+          {
+            "id": "MN0402",
+            "href": "https://cityscroll.org/near-you?geo=nta2020%3AMN0402&surface=records&lens=meetings&v=0",
+            "data_count": "12",
+            "text": "Hell's Kitchen (12 meetings)"
+          },
+          {
+            "id": "MN0101",
+            "href": "https://cityscroll.org/near-you?geo=nta2020%3AMN0101&surface=records&lens=meetings&v=0",
+            "data_count": "9",
+            "text": "Financial District-Battery Park City (9 meetings)"
+          }
+        ],
+        "destinations": [
+          {
+            "url": "https://cityscroll.org/near-you?geo=nta2020%3AMN0102&surface=records&lens=meetings&v=0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "stylesheets": [
+              "/brand.css",
+              "/civic-documents.css",
+              "/walk-entry.css",
+              "/local_constellation.css",
+              "/traversal.css"
+            ],
+            "stylesheet_rules": 1240,
+            "overflow_x": 0,
+            "heading": "Tribeca-Civic Center",
+            "surface": "records",
+            "deferred_state": "ready",
+            "results_count": "26",
+            "scroll_y": 0,
+            "id": "MN0102",
+            "listed_ids": [
+              "20260819025",
+              "20260824048",
+              "20260811003",
+              "20260727031",
+              "20260710032",
+              "20260729004",
+              "20260709028",
+              "20260716022",
+              "20260723030",
+              "20260716025",
+              "20260714001",
+              "20260708015",
+              "20260707004",
+              "20260629003",
+              "20260707022",
+              "20260707021",
+              "20260623060",
+              "20260630005",
+              "20260715002",
+              "20260106033",
+              "20260706036",
+              "20260623006",
+              "20260612028",
+              "20260625040",
+              "20260617039",
+              "20260603039"
+            ],
+            "meeting_record": null
+          },
+          {
+            "url": "https://cityscroll.org/near-you?geo=nta2020%3AMN0402&surface=records&lens=meetings&v=0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "stylesheets": [
+              "/brand.css",
+              "/civic-documents.css",
+              "/walk-entry.css",
+              "/local_constellation.css",
+              "/traversal.css"
+            ],
+            "stylesheet_rules": 1240,
+            "overflow_x": 0,
+            "heading": "Hell's Kitchen",
+            "surface": "records",
+            "deferred_state": "ready",
+            "results_count": "12",
+            "scroll_y": 0,
+            "id": "MN0402",
+            "listed_ids": [
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-52/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-61/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-3/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-25/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-24/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/waterfront-parks-environment-committee-wpe-59/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-58/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-67/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/"
+            ],
+            "meeting_record": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/"
+          },
+          {
+            "url": "https://cityscroll.org/near-you?geo=nta2020%3AMN0101&surface=records&lens=meetings&v=0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "stylesheets": [
+              "/brand.css",
+              "/civic-documents.css",
+              "/walk-entry.css",
+              "/local_constellation.css",
+              "/traversal.css"
+            ],
+            "stylesheet_rules": 1240,
+            "overflow_x": 0,
+            "heading": "Financial District-Battery Park City",
+            "surface": "records",
+            "deferred_state": "ready",
+            "results_count": "9",
+            "scroll_y": 0,
+            "id": "MN0101",
+            "listed_ids": [
+              "20260730025",
+              "20260805038",
+              "20260722029",
+              "20260706044",
+              "20260721023",
+              "20260707029",
+              "20260616058",
+              "20260624002",
+              "20260610067"
+            ],
+            "meeting_record": null
+          }
+        ],
+        "record_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+        "chosen": {
+          "id": "MN0402",
+          "href": "https://cityscroll.org/near-you?geo=nta2020%3AMN0402&surface=records&lens=meetings&v=0",
+          "data_count": "12",
+          "text": "Hell's Kitchen (12 meetings)"
+        },
+        "record_title": "Housing, Health & Human Services Committee (HHHS)",
+        "inspect": {
+          "control_tag": "button",
+          "dialog_open": true,
+          "dialog_text": "Close NEARBY RECORD Housing, Health & Human Services Committee (HHHS) PLACE ROLE Happening here PLACE CLAIM Held in Hell's Kitchen VENUE MCB4 Office – 630 9th Avenue, Suite 208 · 630 9th Avenue, Ste. 208, New York, 10036 TYPE Community board meeting DATE Oct 1, 2026 TIME 18:30 STATUS Upcoming · Oct 1, 2026 SOURCE Official source Why this place matched Open the full record",
+          "focus_record_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+          "focus_class": "near-record-inspect near-record-title"
+        },
+        "full_link": {
+          "tag": "a",
+          "text": "Open the full record",
+          "href": "https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fhousing-health-human-services-committee-hhhs-53%2F",
+          "visible": true,
+          "in_closed_details": false
+        },
+        "departure": {
+          "url": "https://cityscroll.org/near-you?geo=nta2020%3AMN0402&surface=records&lens=meetings&v=0",
+          "heading": "Hell's Kitchen",
+          "surface": "records",
+          "scroll_y": 1029,
+          "focus_record_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+          "focus_class": "near-record-inspect near-record-title"
+        },
+        "destination": {
+          "url": "https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fhousing-health-human-services-committee-hhhs-53%2F",
+          "record_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+          "heading": "Housing, Health & Human Services Committee (HHHS)",
+          "near_you_shell": false,
+          "fragment": null,
+          "anchor_present": null,
+          "overflow_x": 0,
+          "status": 200
+        },
+        "returned": {
+          "url": "https://cityscroll.org/near-you?geo=nta2020%3AMN0402&surface=records&lens=meetings&v=0",
+          "heading": "Hell's Kitchen",
+          "surface": "records",
+          "scroll_y": 1029,
+          "focus_record_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+          "focus_class": "near-record-full-record"
+        },
+        "continued": true
+      },
+      "responses": [
+        {
+          "path": "/",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you?geo=nta2020%3AMN0102&surface=records&lens=meetings&v=0",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json?geo=nta2020%3AMN0102&surface=records&lens=meetings&v=0",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you?geo=nta2020%3AMN0402&surface=records&lens=meetings&v=0",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json?geo=nta2020%3AMN0402&surface=records&lens=meetings&v=0",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fhousing-health-human-services-committee-hhhs-53%2F",
+          "status": 200,
+          "worker": false,
+          "read_model_version": null
+        },
+        {
+          "path": "/near-you?geo=nta2020%3AMN0402&surface=records&lens=meetings&v=0",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json?geo=nta2020%3AMN0402&surface=records&lens=meetings&v=0",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you?geo=nta2020%3AMN0101&surface=records&lens=meetings&v=0",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json?geo=nta2020%3AMN0101&surface=records&lens=meetings&v=0",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        }
+      ],
+      "assertions": {
+        "viewport_applied": true,
+        "real_stylesheet_applied": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
+        "suggestions_bounded": true,
+        "labels_name_their_counts": true,
+        "counts_descend": true,
+        "every_suggestion_opens_its_records": true,
+        "every_named_count_matches_its_destination": true,
+        "record_is_listed": true,
+        "inspect_is_button_and_dismiss_returns_focus": true,
+        "destination_is_record": true,
+        "back_restores_scope_focus_scroll": true
+      },
+      "outcome": "pass"
+    },
+    {
+      "name": "root-category-record-desktop",
+      "journey": "root-category-record",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "capture_run_id": "db223c4d-91bf-4545-83ff-0bab7d1105a2",
+      "page": {
+        "url": "https://cityscroll.org/",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "stylesheets": [
+          "/brand.css",
+          "/civic-documents.css",
+          "/walk-entry.css",
+          "/local_constellation.css",
+          "/traversal.css",
+          "/vendor/maplibre-gl-4.7.1.css"
+        ],
+        "stylesheet_rules": 1352,
+        "overflow_x": 0,
+        "heading": "What's near you?",
+        "surface": "map",
+        "deferred_state": "ready",
+        "results_count": "525",
+        "scroll_y": 0
+      },
+      "render": {
+        "sha256": "5d414979772208c8e19fa195610ccc6fb6b820ffcdde1bf08b5f131b5ad45a3b",
+        "bytes": 91953,
+        "local_image": ".artifacts/discovery-recovery-journey/db223c4d-91bf-4545-83ff-0bab7d1105a2/root-category-record-desktop.png",
+        "url": "https://cityscroll.org/",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "committed": false
+      },
+      "observations": {
+        "entry_links": [
+          {
+            "text": "Contracts",
+            "href": "https://cityscroll.org/browse/contracts/",
+            "family": "money"
+          },
+          {
+            "text": "People + organizations",
+            "href": "https://cityscroll.org/browse/people/",
+            "family": "people-organizations"
+          },
+          {
+            "text": "Land",
+            "href": "https://cityscroll.org/browse/zoning/",
+            "family": "land-property"
+          },
+          {
+            "text": "Rules",
+            "href": "https://cityscroll.org/browse/rules/",
+            "family": "rules-mandates"
+          },
+          {
+            "text": "Meetings",
+            "href": "https://cityscroll.org/browse/meetings/",
+            "family": "meetings-decisions"
+          },
+          {
+            "text": "Exams",
+            "href": "https://cityscroll.org/browse/exams/",
+            "family": "exams"
+          },
+          {
+            "text": "Browse all NYC records",
+            "href": "https://cityscroll.org/browse/",
+            "family": null
+          },
+          {
+            "text": "Search all records",
+            "href": "https://cityscroll.org/search/",
+            "family": null
+          }
+        ],
+        "family_link": {
+          "tag": "a",
+          "text": "Meetings",
+          "href": "https://cityscroll.org/browse/meetings/",
+          "visible": true,
+          "in_closed_details": false
+        },
+        "collection": {
+          "url": "https://cityscroll.org/browse/meetings/",
+          "status": 200,
+          "marker": "browse",
+          "overflow_x": 0,
+          "record_links": 519
+        },
+        "record_href": "/meetings/meeting%3Aoath_trial_calendar%3A242838%3A2026-09-30%3A09%3A30%3A00%3AScheduled-For-Trial",
+        "record_title": "OATH trial 242838",
+        "destination": {
+          "url": "https://cityscroll.org/meetings/meeting%3Aoath_trial_calendar%3A242838%3A2026-09-30%3A09%3A30%3A00%3AScheduled-For-Trial",
+          "record_id": "meeting:oath_trial_calendar:242838:2026-09-30:09:30:00:Scheduled-For-Trial",
+          "heading": "OATH trial 242838",
+          "near_you_shell": false,
+          "fragment": null,
+          "anchor_present": null,
+          "overflow_x": 0,
+          "status": 200
+        },
+        "returned": {
+          "url": "https://cityscroll.org/browse/meetings/",
+          "record_link_present": true
+        }
+      },
+      "responses": [
+        {
+          "path": "/",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/browse/meetings/",
+          "status": 200,
+          "worker": false,
+          "read_model_version": null
+        },
+        {
+          "path": "/meetings/meeting%3Aoath_trial_calendar%3A242838%3A2026-09-30%3A09%3A30%3A00%3AScheduled-For-Trial",
+          "status": 200,
+          "worker": false,
+          "read_model_version": null
+        },
+        {
+          "path": "/browse/meetings/",
+          "status": 200,
+          "worker": false,
+          "read_model_version": null
+        }
+      ],
+      "assertions": {
+        "viewport_applied": true,
+        "real_stylesheet_applied": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
+        "six_record_families_offered": true,
+        "family_link_is_native": true,
+        "collection_reached": true,
+        "destination_is_listed_record": true,
+        "destination_heading_matches": true,
+        "back_returns_to_collection": true
+      },
+      "outcome": "pass"
+    },
+    {
+      "name": "typed-place-record-desktop",
+      "journey": "typed-place-record",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "capture_run_id": "db223c4d-91bf-4545-83ff-0bab7d1105a2",
+      "page": {
+        "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=records",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "stylesheets": [
+          "/brand.css",
+          "/civic-documents.css",
+          "/walk-entry.css",
+          "/local_constellation.css",
+          "/traversal.css",
+          "/vendor/maplibre-gl-4.7.1.css"
+        ],
+        "stylesheet_rules": 1352,
+        "overflow_x": 0,
+        "heading": "Midwood",
+        "surface": "records",
+        "deferred_state": "ready",
+        "results_count": "2",
+        "scroll_y": 1231
+      },
+      "render": {
+        "sha256": "96d86a4611cf03daac67ed728d86e024854fea8497e289df61129a343aaf6c29",
+        "bytes": 105110,
+        "local_image": ".artifacts/discovery-recovery-journey/db223c4d-91bf-4545-83ff-0bab7d1105a2/typed-place-record-desktop.png",
+        "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=records",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "committed": false
+      },
+      "observations": {
+        "scope": {
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=records",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "stylesheets": [
+            "/brand.css",
+            "/civic-documents.css",
+            "/walk-entry.css",
+            "/local_constellation.css",
+            "/traversal.css",
+            "/vendor/maplibre-gl-4.7.1.css"
+          ],
+          "stylesheet_rules": 1352,
+          "overflow_x": 0,
+          "heading": "Midwood",
+          "surface": "records",
+          "deferred_state": "ready",
+          "results_count": "2",
+          "scroll_y": 1231
+        },
+        "listed_ids": [
+          "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+          "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+        ],
+        "record_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+        "record_title": "Housing and Land Use Committee Meeting",
+        "inspect": {
+          "control_tag": "button",
+          "dialog_open": true,
+          "dialog_text": "Close NEARBY RECORD Housing and Land Use Committee Meeting PLACE ROLE Happening here PLACE CLAIM Held in Midwood VENUE Brooklyn CB14 District Office · 810 East 16th Street, Brooklyn, NY, 11230 TYPE Community board meeting DATE Sep 23, 2026 TIME 18:30 STATUS Past event · Sep 23, 2026 SOURCE Official source Why this place matched View the full record",
+          "focus_record_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+          "focus_class": "near-record-inspect near-record-title"
+        },
+        "full_link": {
+          "tag": "a",
+          "text": "View the full record",
+          "href": "https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",
+          "visible": true,
+          "in_closed_details": false
+        },
+        "departure": {
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=records",
+          "heading": "Midwood",
+          "surface": "records",
+          "scroll_y": 2997,
+          "focus_record_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+          "focus_class": "near-record-inspect near-record-title"
+        },
+        "destination": {
+          "url": "https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",
+          "record_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+          "heading": "Housing and Land Use Committee Meeting",
+          "near_you_shell": false,
+          "fragment": null,
+          "anchor_present": null,
+          "overflow_x": 0,
+          "status": 200
+        },
+        "returned": {
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=records",
+          "heading": "Midwood",
+          "surface": "records",
+          "scroll_y": 2997,
+          "focus_record_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+          "focus_class": "near-record-full-record"
+        },
+        "continued": true
+      },
+      "responses": [
+        {
+          "path": "/",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/?geo=nta2020%3ABK1403&surface=records",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json?geo=nta2020%3ABK1403&surface=records",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",
+          "status": 200,
+          "worker": false,
+          "read_model_version": null
+        },
+        {
+          "path": "/near-you/?geo=nta2020%3ABK1403&surface=records",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json?geo=nta2020%3ABK1403&surface=records",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        }
+      ],
+      "assertions": {
+        "viewport_applied": true,
+        "real_stylesheet_applied": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
+        "typed_place_selected": true,
+        "count_read_from_page_covers_list": true,
+        "record_is_listed": true,
+        "inspect_is_button_and_dismiss_returns_focus": true,
+        "full_record_is_link": true,
+        "destination_is_record": true,
+        "back_restores_scope_focus_scroll": true,
+        "continue_inspects_again": true
+      },
+      "outcome": "pass"
+    },
+    {
+      "name": "unsupported-place-escape-desktop",
+      "journey": "unsupported-place-escape",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "capture_run_id": "db223c4d-91bf-4545-83ff-0bab7d1105a2",
+      "page": {
+        "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "stylesheets": [
+          "/brand.css",
+          "/civic-documents.css",
+          "/walk-entry.css",
+          "/local_constellation.css",
+          "/traversal.css"
+        ],
+        "stylesheet_rules": 1240,
+        "overflow_x": 0,
+        "heading": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+        "surface": "records",
+        "deferred_state": "ready",
+        "results_count": null,
+        "scroll_y": 0
+      },
+      "render": {
+        "sha256": "cb9dc502d46f03cf695b8682fe0c580b4773ede082d4169aa915e99116e92b70",
+        "bytes": 82556,
+        "local_image": ".artifacts/discovery-recovery-journey/db223c4d-91bf-4545-83ff-0bab7d1105a2/unsupported-place-escape-desktop.png",
+        "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "committed": false
+      },
+      "observations": {
+        "scope": {
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "stylesheets": [
+            "/brand.css",
+            "/civic-documents.css",
+            "/walk-entry.css",
+            "/local_constellation.css",
+            "/traversal.css"
+          ],
+          "stylesheet_rules": 1240,
+          "overflow_x": 0,
+          "heading": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+          "surface": "records",
+          "deferred_state": "ready",
+          "results_count": null,
+          "scroll_y": 0
+        },
+        "results_count": null,
+        "recovery_message": "We can’t filter these meetings to this neighborhood yet.",
+        "retry_href": null,
+        "escape": {
+          "tag": "a",
+          "text": "All NYC meetings",
+          "href": "https://cityscroll.org/browse/meetings/?when=all",
+          "visible": true,
+          "in_closed_details": false
+        },
+        "collection": {
+          "url": "https://cityscroll.org/browse/meetings/?when=all",
+          "status": 200,
+          "marker": "browse",
+          "overflow_x": 0,
+          "record_links": 830
+        },
+        "record_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-03-28%3Ageneral-board-meeting",
+        "record_title": "General Board Meeting",
+        "destination": {
+          "url": "https://cityscroll.org/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-03-28%3Ageneral-board-meeting",
+          "record_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-03-28:general-board-meeting",
+          "heading": "General Board Meeting",
+          "near_you_shell": false,
+          "fragment": null,
+          "anchor_present": null,
+          "overflow_x": 0,
+          "status": 200
+        }
+      },
+      "responses": [
+        {
+          "path": "/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json?geo=nta2020%3ABK1503&surface=records&lens=meetings",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/browse/meetings/?when=all",
+          "status": 200,
+          "worker": false,
+          "read_model_version": null
+        },
+        {
+          "path": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-03-28%3Ageneral-board-meeting",
+          "status": 200,
+          "worker": false,
+          "read_model_version": null
+        }
+      ],
+      "assertions": {
+        "viewport_applied": true,
+        "real_stylesheet_applied": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
+        "unsupported_copy_shown": true,
+        "unsupported_count_is_not_zero": true,
+        "escape_is_visible_native_link": true,
+        "escape_clears_place": true,
+        "escape_reaches_all_nyc_collection": true,
+        "destination_is_listed_record": true
+      },
+      "outcome": "pass"
+    },
+    {
+      "name": "citywide-bucket-record-desktop",
+      "journey": "citywide-bucket-record",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "capture_run_id": "db223c4d-91bf-4545-83ff-0bab7d1105a2",
+      "page": {
+        "url": "https://cityscroll.org/near-you?v=0&scope=citywide&surface=records",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "stylesheets": [
+          "/brand.css",
+          "/civic-documents.css",
+          "/walk-entry.css",
+          "/local_constellation.css",
+          "/traversal.css"
+        ],
+        "stylesheet_rules": 1240,
+        "overflow_x": 0,
+        "heading": "Citywide",
+        "surface": "records",
+        "deferred_state": "ready",
+        "results_count": "20",
+        "scroll_y": 0
+      },
+      "render": {
+        "sha256": "0320404b4f1c9f355362ad8eb18ad14f788d6dd9370c354bed673f6f28377db8",
+        "bytes": 65124,
+        "local_image": ".artifacts/discovery-recovery-journey/db223c4d-91bf-4545-83ff-0bab7d1105a2/citywide-bucket-record-desktop.png",
+        "url": "https://cityscroll.org/near-you?v=0&scope=citywide&surface=records",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "committed": false
+      },
+      "observations": {
+        "preview_ids": [
+          "20260826001",
+          "meeting:nyc_legistar_events:22568",
+          "20260817025"
+        ],
+        "total_text": "20",
+        "view_all_href": "https://cityscroll.org/near-you?v=0&scope=citywide&surface=records",
+        "bucket": {
+          "url": "https://cityscroll.org/near-you?v=0&scope=citywide&surface=records",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "stylesheets": [
+            "/brand.css",
+            "/civic-documents.css",
+            "/walk-entry.css",
+            "/local_constellation.css",
+            "/traversal.css"
+          ],
+          "stylesheet_rules": 1240,
+          "overflow_x": 0,
+          "heading": "Citywide",
+          "surface": "records",
+          "deferred_state": "ready",
+          "results_count": "20",
+          "scroll_y": 0,
+          "listed_ids": [
+            "meeting:nyc_legistar_events:22568",
+            "20260826001",
+            "20260817025",
+            "20260814012",
+            "20260812019",
+            "20260810007",
+            "20260810005",
+            "20260806002",
+            "20260803026",
+            "20260803009",
+            "20260728026",
+            "20260714029",
+            "20260715041",
+            "20260713006",
+            "20260626036",
+            "20260626034",
+            "20260618036",
+            "20260609003",
+            "20260623048",
+            "20260617003"
+          ]
+        },
+        "record_id": "meeting:nyc_legistar_events:22568",
+        "record_title": "Committee on Environmental Protection and Waterfronts",
+        "inspect": {
+          "control_tag": "button",
+          "dialog_open": true,
+          "dialog_text": "Close NEARBY RECORD Committee on Environmental Protection and Waterfronts PLACE CLAIM Citywide VENUE 250 Broadway - 8th Floor - Hearing Room 1 TYPE Record DATE Oct 20, 2026 TIME 08:00 STATUS Upcoming · Oct 20, 2026 SOURCE Official source Open the full record",
+          "focus_record_id": "meeting:nyc_legistar_events:22568",
+          "focus_class": "near-record-inspect near-record-title"
+        },
+        "full_link": {
+          "tag": "a",
+          "text": "Open the full record",
+          "href": "https://cityscroll.org/meetings/meeting%3Anyc_legistar_events%3A22568",
+          "visible": true,
+          "in_closed_details": false
+        },
+        "departure": {
+          "url": "https://cityscroll.org/near-you?v=0&scope=citywide&surface=records",
+          "heading": "Citywide",
+          "surface": "records",
+          "scroll_y": 571,
+          "focus_record_id": "meeting:nyc_legistar_events:22568",
+          "focus_class": "near-record-inspect near-record-title"
+        },
+        "destination": {
+          "url": "https://cityscroll.org/meetings/meeting%3Anyc_legistar_events%3A22568",
+          "record_id": "meeting:nyc_legistar_events:22568",
+          "heading": "Committee on Environmental Protection and Waterfronts",
+          "near_you_shell": false,
+          "fragment": null,
+          "anchor_present": null,
+          "overflow_x": 0,
+          "status": 200
+        },
+        "returned": {
+          "url": "https://cityscroll.org/near-you?v=0&scope=citywide&surface=records",
+          "heading": "Citywide",
+          "surface": "records",
+          "scroll_y": 571,
+          "focus_record_id": "meeting:nyc_legistar_events:22568",
+          "focus_class": "near-record-full-record"
+        },
+        "continued": true
+      },
+      "responses": [
+        {
+          "path": "/",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you?v=0&scope=citywide&surface=records",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json?v=0&scope=citywide&surface=records",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/meetings/meeting%3Anyc_legistar_events%3A22568",
+          "status": 200,
+          "worker": false,
+          "read_model_version": null
+        },
+        {
+          "path": "/near-you?v=0&scope=citywide&surface=records",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json?v=0&scope=citywide&surface=records",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        }
+      ],
+      "assertions": {
+        "viewport_applied": true,
+        "real_stylesheet_applied": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
+        "preview_bounded": true,
+        "view_all_opens_citywide_records": true,
+        "rendered_total_matches_destination_count": true,
+        "preview_records_in_destination": true,
+        "record_is_listed": true,
+        "inspect_is_button_and_dismiss_returns_focus": true,
+        "destination_is_record": true,
+        "back_restores_scope_focus_scroll": true
+      },
+      "outcome": "pass"
+    },
+    {
+      "name": "suggested-place-record-desktop",
+      "journey": "suggested-place-record",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "capture_run_id": "db223c4d-91bf-4545-83ff-0bab7d1105a2",
+      "page": {
+        "url": "https://cityscroll.org/",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "stylesheets": [
+          "/brand.css",
+          "/civic-documents.css",
+          "/walk-entry.css",
+          "/local_constellation.css",
+          "/traversal.css"
+        ],
+        "stylesheet_rules": 1240,
+        "overflow_x": 0,
+        "heading": "What's near you?",
+        "surface": "map",
+        "deferred_state": "ready",
+        "results_count": "525",
+        "scroll_y": 0
+      },
+      "render": {
+        "sha256": "5d414979772208c8e19fa195610ccc6fb6b820ffcdde1bf08b5f131b5ad45a3b",
+        "bytes": 91953,
+        "local_image": ".artifacts/discovery-recovery-journey/db223c4d-91bf-4545-83ff-0bab7d1105a2/suggested-place-record-desktop.png",
+        "url": "https://cityscroll.org/",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "committed": false
+      },
+      "observations": {
+        "links": [
+          {
+            "id": "MN0102",
+            "href": "https://cityscroll.org/near-you?geo=nta2020%3AMN0102&surface=records&lens=meetings&v=0",
+            "data_count": "26",
+            "text": "Tribeca-Civic Center (26 meetings)"
+          },
+          {
+            "id": "MN0402",
+            "href": "https://cityscroll.org/near-you?geo=nta2020%3AMN0402&surface=records&lens=meetings&v=0",
+            "data_count": "12",
+            "text": "Hell's Kitchen (12 meetings)"
+          },
+          {
+            "id": "MN0101",
+            "href": "https://cityscroll.org/near-you?geo=nta2020%3AMN0101&surface=records&lens=meetings&v=0",
+            "data_count": "9",
+            "text": "Financial District-Battery Park City (9 meetings)"
+          }
+        ],
+        "destinations": [
+          {
+            "url": "https://cityscroll.org/near-you?geo=nta2020%3AMN0102&surface=records&lens=meetings&v=0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "stylesheets": [
+              "/brand.css",
+              "/civic-documents.css",
+              "/walk-entry.css",
+              "/local_constellation.css",
+              "/traversal.css"
+            ],
+            "stylesheet_rules": 1240,
+            "overflow_x": 0,
+            "heading": "Tribeca-Civic Center",
+            "surface": "records",
+            "deferred_state": "ready",
+            "results_count": "26",
+            "scroll_y": 0,
+            "id": "MN0102",
+            "listed_ids": [
+              "20260819025",
+              "20260824048",
+              "20260811003",
+              "20260727031",
+              "20260710032",
+              "20260729004",
+              "20260709028",
+              "20260716022",
+              "20260723030",
+              "20260716025",
+              "20260714001",
+              "20260708015",
+              "20260707004",
+              "20260629003",
+              "20260707022",
+              "20260707021",
+              "20260623060",
+              "20260630005",
+              "20260715002",
+              "20260106033",
+              "20260706036",
+              "20260623006",
+              "20260612028",
+              "20260625040",
+              "20260617039",
+              "20260603039"
+            ],
+            "meeting_record": null
+          },
+          {
+            "url": "https://cityscroll.org/near-you?geo=nta2020%3AMN0402&surface=records&lens=meetings&v=0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "stylesheets": [
+              "/brand.css",
+              "/civic-documents.css",
+              "/walk-entry.css",
+              "/local_constellation.css",
+              "/traversal.css"
+            ],
+            "stylesheet_rules": 1240,
+            "overflow_x": 0,
+            "heading": "Hell's Kitchen",
+            "surface": "records",
+            "deferred_state": "ready",
+            "results_count": "12",
+            "scroll_y": 0,
+            "id": "MN0402",
+            "listed_ids": [
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-52/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-61/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-3/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-25/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-24/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/waterfront-parks-environment-committee-wpe-59/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-58/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-67/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/"
+            ],
+            "meeting_record": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/"
+          },
+          {
+            "url": "https://cityscroll.org/near-you?geo=nta2020%3AMN0101&surface=records&lens=meetings&v=0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "stylesheets": [
+              "/brand.css",
+              "/civic-documents.css",
+              "/walk-entry.css",
+              "/local_constellation.css",
+              "/traversal.css"
+            ],
+            "stylesheet_rules": 1240,
+            "overflow_x": 0,
+            "heading": "Financial District-Battery Park City",
+            "surface": "records",
+            "deferred_state": "ready",
+            "results_count": "9",
+            "scroll_y": 0,
+            "id": "MN0101",
+            "listed_ids": [
+              "20260730025",
+              "20260805038",
+              "20260722029",
+              "20260706044",
+              "20260721023",
+              "20260707029",
+              "20260616058",
+              "20260624002",
+              "20260610067"
+            ],
+            "meeting_record": null
+          }
+        ],
+        "record_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+        "chosen": {
+          "id": "MN0402",
+          "href": "https://cityscroll.org/near-you?geo=nta2020%3AMN0402&surface=records&lens=meetings&v=0",
+          "data_count": "12",
+          "text": "Hell's Kitchen (12 meetings)"
+        },
+        "record_title": "Housing, Health & Human Services Committee (HHHS)",
+        "inspect": {
+          "control_tag": "button",
+          "dialog_open": true,
+          "dialog_text": "Close NEARBY RECORD Housing, Health & Human Services Committee (HHHS) PLACE ROLE Happening here PLACE CLAIM Held in Hell's Kitchen VENUE MCB4 Office – 630 9th Avenue, Suite 208 · 630 9th Avenue, Ste. 208, New York, 10036 TYPE Community board meeting DATE Oct 1, 2026 TIME 18:30 STATUS Upcoming · Oct 1, 2026 SOURCE Official source Why this place matched Open the full record",
+          "focus_record_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+          "focus_class": "near-record-inspect near-record-title"
+        },
+        "full_link": {
+          "tag": "a",
+          "text": "Open the full record",
+          "href": "https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fhousing-health-human-services-committee-hhhs-53%2F",
+          "visible": true,
+          "in_closed_details": false
+        },
+        "departure": {
+          "url": "https://cityscroll.org/near-you?geo=nta2020%3AMN0402&surface=records&lens=meetings&v=0",
+          "heading": "Hell's Kitchen",
+          "surface": "records",
+          "scroll_y": 888,
+          "focus_record_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+          "focus_class": "near-record-inspect near-record-title"
+        },
+        "destination": {
+          "url": "https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fhousing-health-human-services-committee-hhhs-53%2F",
+          "record_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+          "heading": "Housing, Health & Human Services Committee (HHHS)",
+          "near_you_shell": false,
+          "fragment": null,
+          "anchor_present": null,
+          "overflow_x": 0,
+          "status": 200
+        },
+        "returned": {
+          "url": "https://cityscroll.org/near-you?geo=nta2020%3AMN0402&surface=records&lens=meetings&v=0",
+          "heading": "Hell's Kitchen",
+          "surface": "records",
+          "scroll_y": 888,
+          "focus_record_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+          "focus_class": "near-record-full-record"
+        },
+        "continued": true
+      },
+      "responses": [
+        {
+          "path": "/",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you?geo=nta2020%3AMN0102&surface=records&lens=meetings&v=0",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json?geo=nta2020%3AMN0102&surface=records&lens=meetings&v=0",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you?geo=nta2020%3AMN0402&surface=records&lens=meetings&v=0",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json?geo=nta2020%3AMN0402&surface=records&lens=meetings&v=0",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fhousing-health-human-services-committee-hhhs-53%2F",
+          "status": 200,
+          "worker": false,
+          "read_model_version": null
+        },
+        {
+          "path": "/near-you?geo=nta2020%3AMN0402&surface=records&lens=meetings&v=0",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json?geo=nta2020%3AMN0402&surface=records&lens=meetings&v=0",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you?geo=nta2020%3AMN0101&surface=records&lens=meetings&v=0",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        },
+        {
+          "path": "/near-you/deferred.json?geo=nta2020%3AMN0101&surface=records&lens=meetings&v=0",
+          "status": 200,
+          "worker": true,
+          "read_model_version": "v1-a06d60763c2ad49b"
+        }
+      ],
+      "assertions": {
+        "viewport_applied": true,
+        "real_stylesheet_applied": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
+        "suggestions_bounded": true,
+        "labels_name_their_counts": true,
+        "counts_descend": true,
+        "every_suggestion_opens_its_records": true,
+        "every_named_count_matches_its_destination": true,
+        "record_is_listed": true,
+        "inspect_is_button_and_dismiss_returns_focus": true,
+        "destination_is_record": true,
+        "back_restores_scope_focus_scroll": true
+      },
+      "outcome": "pass"
+    }
+  ],
+  "required_ancestor": "24b94b943fd8ca9c5d1ebeb7703328c4cb61344e",
+  "provenance": {
+    "capture_revision": "49b0017ec1839a3792d6edb338db14711da49fc4",
+    "capture_revision_rule": "merge base of the capture checkout with origin/main",
+    "measured_inputs": [
+      {
+        "path": "tools/capture_default_local_home_journey.py",
+        "sha256": "b3ae10cb8edb6cde7e51089dcdbf49558bc847802c7bc352a36d5d485c1d9d1a"
+      },
+      {
+        "path": "tools/discovery_recovery_journey.py",
+        "sha256": "16b74db8d0c1c0cba5d89d6252796d7b67b35e627ad5e195f2935e99f77c2daf"
+      }
+    ],
+    "recapture_command": "python3 tools/capture_default_local_home_journey.py --scenario discovery-recovery",
+    "served_code": "identity.before.pages_revision and identity.before.worker_revision",
+    "served_data": "identity.before.data_generation and identity.before.pages_data_receipt_sha256"
+  },
+  "findings": [],
+  "result": "pass"
+}

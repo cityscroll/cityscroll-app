@@ -974,14 +974,53 @@ test("discovery-recovery [A5] the retained local proof passes --check as an ance
   assert.notEqual(DISCOVERY_SERVED_MANIFEST, MANIFEST_PATH);
 });
 
-test("discovery-recovery [A4/A5] the served --check reports explicit pending while no served capture exists", () => {
-  // Served observation is the successor read-back's; until it is recorded the
-  // check neither passes nor fails silently.
-  assert.equal(existsSync(DISCOVERY_SERVED_MANIFEST), false);
+test("served read-back [A4/A5] the retained served capture and its matrix pass --check offline", () => {
+  // Validation of the retained capture is offline: it reads the manifests, the
+  // recorded delivery and git history, never the network.
   const result = runCapture(["--scenario", "discovery-recovery", "--check"]);
-  assert.equal(result.status, 3, result.stderr || result.stdout);
-  assert.match(result.stderr, /^pending: absent-served-capture: /m);
-  assert.equal(result.stdout, "");
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /^ok: discovery-recovery served evidence pass$/m);
+  const manifest = JSON.parse(readFileSync(DISCOVERY_SERVED_MANIFEST, "utf8"));
+  const delivery = JSON.parse(readFileSync(join(DISCOVERY_DIR, "delivery.json"), "utf8"));
+  assert.equal(manifest.capture_mode, "headless-playwright-production-served-site");
+  assert.equal(manifest.public_alias, "c446cacfd1632");
+  assert.equal(manifest.required_ancestor, delivery.landed_commit);
+  assert.deepEqual(manifest.identity.after, manifest.identity.before);
+  assert.equal(manifest.image_binaries_committed, false);
+  for (const surface of ["pages_revision", "worker_revision"]) {
+    const contains = spawnSync("git", ["merge-base", "--is-ancestor", delivery.landed_commit, manifest.identity.before[surface]], { cwd: ROOT });
+    assert.equal(contains.status, 0, `${surface} contains the landed commit`);
+  }
+  const byName = new Map(manifest.captures.map((row) => [row.name, row]));
+  for (const [viewport, width, height] of [["phone", 390, 844], ["desktop", 1440, 900]]) {
+    for (const journey of DISCOVERY_FAMILIES) {
+      const row = byName.get(`${journey}-${viewport}`);
+      assert.ok(row, `${journey}-${viewport}`);
+      assert.deepEqual(row.page.viewport, { width, height }, row.name);
+      assert.ok(row.page.stylesheet_rules > 0, row.name);
+      assert.equal(row.render.committed, false);
+      assert.equal(row.outcome, "pass", row.name);
+    }
+    // Independent reading of the live relationships from the recorded page text:
+    // counts equal their destinations, never a frozen total.
+    const citywide = byName.get(`citywide-bucket-record-${viewport}`).observations;
+    assert.equal(Number(citywide.total_text), Number(citywide.bucket.results_count));
+    assert.ok(citywide.preview_ids.every((id) => citywide.bucket.listed_ids.includes(id)));
+    assert.equal(citywide.destination.record_id, citywide.record_id);
+    const suggested = byName.get(`suggested-place-record-${viewport}`).observations;
+    assert.deepEqual(
+      suggested.links.map((link) => labelCount(link.text)),
+      suggested.destinations.map((place) => Number(place.results_count)),
+    );
+    assert.equal(suggested.destination.record_id, suggested.record_id);
+    const unsupported = byName.get(`unsupported-place-escape-${viewport}`).observations;
+    assert.equal(unsupported.results_count, null, "an unsupported place never shows a zero");
+    assert.equal(unsupported.destination.record_id, decodeURIComponent(new URL(unsupported.record_href, "https://cityscroll.org").pathname.slice("/meetings/".length).replace(/\/$/, "")));
+  }
+  const matrix = readFileSync(join(DISCOVERY_DIR, "evidence-matrix.md"), "utf8");
+  for (const alias of ["ca99610886948", "c6bbe0ce1d028", "cdd6dee9bc973", "c419deec4d475", "ccfaadd338534", "c69db1aa1163d", "c0cece577f277"]) {
+    assert.match(matrix, new RegExp(`\\(\`${alias}\`\\) \\|.*\\| met \\|$`, "m"), alias);
+  }
 });
 
 test("discovery-recovery [A1/A2] the local proof covers every journey at both widths, counts read from the page", () => {
@@ -1064,7 +1103,6 @@ def rederive(manifest, mode):
 def served():
     manifest = copy.deepcopy(LOCAL)
     manifest["capture_mode"] = d.SERVED_MODE
-    manifest.pop("provenance")
     manifest["required_ancestor"] = PIN
     manifest["captures"] = [row for row in manifest["captures"] if row["journey"] in d.FAMILIES]
     for row in manifest["captures"]:
@@ -1076,6 +1114,11 @@ def served():
         "pages_data_receipt_sha256": "2" * 64, "data_generation": "served-generation",
     }
     manifest["identity"] = {"before": dict(identity), "after": dict(identity)}
+    manifest["public_alias"] = d.READ_BACK_ALIAS
+    manifest["provenance"] = {
+        "capture_revision": "b" * 40,
+        "measured_inputs": [item for item in LOCAL["provenance"]["measured_inputs"] if item["path"] in d.SERVED_MEASURED_INPUTS],
+    }
     return rederive(manifest, d.SERVED_MODE)
 
 DELIVERY = {"landed_commit": PIN}
@@ -1204,6 +1247,102 @@ assert findings == [{
     "row": row["name"], "surface": "collection",
     "path": "/browse/meetings/", "horizontal_overflow_px": 175,
 }], findings
+`);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /checked/);
+});
+
+// --- Served read-back (public alias c446cacfd1632) ---------------------------
+
+test("served read-back [A3] refuses reused renders, foreign revisions and changed harness bytes", () => {
+  const result = runDiscoveryValidator(`
+served_ok = lambda m, oracle=None: d.validate_manifest(m, mode=d.SERVED_MODE, git=oracle or Oracle(), delivery=DELIVERY)
+# Positive control: the well-formed served manifest passes.
+assert served_ok(served()) == "pass"
+# A render copied from another row, another run, or another page state is refused.
+m = served(); m["captures"][1]["render"] = copy.deepcopy(m["captures"][0]["render"])
+refused("reused-render", lambda: served_ok(m))
+m = served(); m["captures"][2]["render"]["local_image"] = m["captures"][2]["render"]["local_image"].replace(m["capture_run_id"], "another-run")
+refused("reused-render", lambda: served_ok(m))
+m = served(); m["captures"][2]["render"]["url"] = "https://cityscroll.org/elsewhere"
+refused("reused-render", lambda: served_ok(m))
+m = served(); m["captures"][2]["render"]["viewport"] = {"width": 800, "height": 600}
+refused("reused-render", lambda: served_ok(m))
+# Served code the checked tree does not contain proves nothing about it.
+refused("wrong-pin", lambda: served_ok(served(), Oracle(deny={("d" * 40, "a" * 40)})))
+refused("wrong-pin", lambda: served_ok(served(), Oracle(deny={("e" * 40, "a" * 40)})))
+# The harness capture revision is an ancestor on the default branch, never a branch-only commit.
+refused("wrong-pin", lambda: served_ok(served(), Oracle(deny={("b" * 40, "a" * 40)})))
+m = served(); m["provenance"]["capture_revision"] = "HEAD"
+refused("wrong-pin", lambda: served_ok(m))
+# Harness bytes changed after the capture, or an undeclared input set.
+error = refused("stale-inputs", lambda: served_ok(served(), Oracle(changed={"tools/discovery_recovery_journey.py"})))
+assert d.SERVED_RECAPTURE_COMMAND in error.message, error.message
+m = served(); m["provenance"]["measured_inputs"] = m["provenance"]["measured_inputs"][:1]
+refused("stale-inputs", lambda: served_ok(m))
+# Product owners are identified by the served revisions, not by bytes in this tree.
+assert served_ok(served(), Oracle(changed={"site/near_you_view.mjs"})) == "pass"
+# Each proof is owned by its own alias.
+m = served(); m["public_alias"] = d.PUBLIC_ALIAS
+refused("wrong-schema", lambda: served_ok(m))
+m = copy.deepcopy(LOCAL); m["public_alias"] = d.READ_BACK_ALIAS
+refused("wrong-schema", lambda: d.validate_manifest(m, mode=d.LOCAL_MODE, git=Oracle()))
+# A failed served journey names its exact route and the outcome that owns its repair.
+m = served(); row = next(r for r in m["captures"] if r["name"] == "citywide-bucket-record-desktop")
+row["observations"]["returned"]["scroll_y"] += 400
+error = refused("assertion-failed", lambda: served_ok(rederive(m, d.SERVED_MODE)))
+assert "back_restores_scope_focus_scroll" in error.message and "ccfaadd338534" in error.message and "c69db1aa1163d" in error.message, error.message
+assert "route " in error.message, error.message
+`);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /checked/);
+});
+
+test("served read-back [A4] the evidence matrix derives every status and refuses drift or dead references", () => {
+  const result = runDiscoveryValidator(`
+import tempfile
+from pathlib import Path
+TESTS = open(${JSON.stringify(join(ROOT, "test/default_local_home_journey.test.mjs"))}, encoding="utf-8").read()
+status = lambda rows, alias: next(row["status"] for row in rows if row["alias"] == alias)
+# Every earlier outcome is present once, and every served family is owned.
+assert len({entry["alias"] for entry in d.EVIDENCE_MATRIX}) == 7
+d.require_matrix_references(LOCAL, TESTS)
+rows = d.derive_matrix(served(), LOCAL)
+assert all(row["status"] == "met" for row in rows), rows
+# A failing served row turns exactly its owners to not met; a pending one to pending.
+m = served(); row = next(r for r in m["captures"] if r["name"] == "suggested-place-record-phone")
+row["observations"]["destinations"][0]["results_count"] = "999"
+rows = d.derive_matrix(rederive(m, d.SERVED_MODE), LOCAL)
+assert status(rows, "c0cece577f277") == "not met" and status(rows, "c419deec4d475") == "not met"
+assert status(rows, "ca99610886948") == "met"
+m = served(); row = next(r for r in m["captures"] if r["name"] == "suggested-place-record-phone")
+row["observations"] = {"links": []}; row["pending_obligation"] = "no-suggested-place"
+rows = d.derive_matrix(rederive(m, d.SERVED_MODE), LOCAL)
+assert status(rows, "c0cece577f277") == "pending", rows
+# A failing offline recovery row is not met as well.
+m = copy.deepcopy(LOCAL); row = next(r for r in m["captures"] if r["name"] == "failed-section-phone")
+row["observations"]["faulted_reads"] = 0
+rows = d.derive_matrix(served(), rederive(m, d.LOCAL_MODE))
+assert status(rows, "ccfaadd338534") == "not met" and status(rows, "cdd6dee9bc973") == "met"
+# The written matrix passes only while it re-derives; the files live in a temporary directory.
+with tempfile.TemporaryDirectory() as scratch:
+    path = Path(scratch) / "evidence-matrix.md"
+    refused("absent-capture-file", lambda: d.check_matrix(served(), LOCAL, test_source=TESTS, path=path))
+    path.write_text(d.render_matrix(served(), LOCAL), encoding="utf-8")
+    d.check_matrix(served(), LOCAL, test_source=TESTS, path=path)
+    text = path.read_text(encoding="utf-8")
+    assert "| met |" in text and "c0cece577f277" in text and "suggestions " in text
+    path.write_text(text.replace("| met |", "| not met |", 1), encoding="utf-8")
+    refused("matrix-mismatch", lambda: d.check_matrix(served(), LOCAL, test_source=TESTS, path=path))
+# Dead references: a missing test, an unknown journey, an unowned family.
+refused("matrix-reference", lambda: d.require_matrix_references(LOCAL, TESTS.replace(d.REFUSAL_TEST, "renamed")))
+original = d.EVIDENCE_MATRIX
+d.EVIDENCE_MATRIX = (*original[:-1], {**original[-1], "served": ("not-a-journey",)})
+refused("matrix-reference", lambda: d.require_matrix_references(LOCAL, TESTS))
+d.EVIDENCE_MATRIX = tuple(entry for entry in original if "root-category-record" not in entry["served"])
+error = refused("matrix-reference", lambda: d.require_matrix_references(LOCAL, TESTS))
+assert "root-category-record" in error.message, error.message
+d.EVIDENCE_MATRIX = original
 `);
   assert.equal(result.status, 0, result.stderr || result.stdout);
   assert.match(result.stdout, /checked/);

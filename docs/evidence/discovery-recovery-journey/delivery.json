@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.capture_delivery.v1",
-  "public_alias": "c94563a6bbaf3",
-  "landed_commit": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+  "public_alias": "c446cacfd1632",
+  "landed_commit": "24b94b943fd8ca9c5d1ebeb7703328c4cb61344e",
   "surfaces": ["pages", "worker"],
-  "note": "A served discovery-recovery capture requires this landed commit, the last of the recovered discovery journeys, on both the served Pages revision and the served Worker revision. A Worker that does not yet name its read-model generation leaves the run pending."
+  "note": "A served discovery-recovery capture requires this landed commit on both the served Pages revision and the served Worker revision, so the observed journeys include every recovered discovery change and the Near You map placement correction. A Worker that does not yet name its read-model generation leaves the run pending."
 }
