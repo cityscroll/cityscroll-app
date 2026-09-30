@@ -765,8 +765,13 @@ test("locality and unit suffixes resolve through production PAD and parcel shard
   );
 
   // A4: frozen physical-venue and virtual role/ID sets from the retained
-  // corpus stay unchanged under the locality/unit parse.
-  const retained = loadJson(path.join(ROOT, "site/data/meeting-geography-backfill/per-id-outcomes.json"));
+  // corpus stay unchanged under the locality/unit parse. Read the admitted
+  // baseline fixture — daily address-index / neighborhood refresh rewrites the
+  // live per-id outcomes (physical_venue 31→82) without changing this contract.
+  const retained = loadJson(path.join(
+    ROOT,
+    "test/fixtures/meeting-geography-backfill/per-id-outcomes.locality-unit-baseline.json",
+  ));
   const physical = retained.outcomes.filter((row) => row.outcome === BACKFILL_OUTCOME.PHYSICAL_VENUE);
   const virtual = retained.outcomes.filter((row) => row.outcome === BACKFILL_OUTCOME.VIRTUAL);
   assert.equal(physical.length, 31);
