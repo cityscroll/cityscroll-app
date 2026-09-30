@@ -37,6 +37,7 @@ test("citywide address query normalization handles borough, ZIP, abbreviations, 
     street: "QUEENS BLVD",
     borough_code: "4",
     zip: "11415",
+    locality: null,
   });
   assert.equal(parseAddressQuery("affordable housing")?.status, "not_full_address");
   assert.equal(addressShardKey("QUEENS BLVD"), addressShardKey("QUEENS BOULEVARD"));

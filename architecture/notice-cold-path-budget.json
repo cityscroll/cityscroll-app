@@ -1,5 +1,5 @@
 {
-  "comment": "Ceiling for the module graph a cold Notice boot must fetch before the application reports itself ready. Measured by tools/notice_cold_path.mjs; enforced by test/notice_cold_path.test.mjs. Reintroducing a lens group the Notice route never shows fails here rather than in a report months later. Measured on the change that added the Contracts/Land/Exams/Staffing/Meetings entries to the loader's route gate: 137 modules, 2059859 bytes, 59 serial request stages, down from 174 modules, 2735938 bytes and 71 stages.",
+  "comment": "Ceiling for the module graph a cold Notice boot must fetch before the application reports itself ready. Measured by tools/notice_cold_path.mjs; enforced by test/notice_cold_path.test.mjs. Reintroducing a lens group the Notice route never shows fails here rather than in a report months later. Measured after comma-aware locality/unit address parsing landed in the precomputed geocoder (shared by Notice address entry): 150 modules, 2259271 bytes, 60 serial request stages.",
   "gatedLensModules": [
     "money",
     "land",
@@ -7,7 +7,7 @@
     "staffing",
     "meetings"
   ],
-  "maxBytes": 2255000,
+  "maxBytes": 2265000,
   "maxModules": 150,
   "maxSerialRequestStages": 62
 }
