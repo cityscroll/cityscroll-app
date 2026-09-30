@@ -48,20 +48,28 @@ function git(cwd, args, env = isolatedGitEnv()) {
  */
 function ambientStandIn() {
   const hub = mkdtempSync(path.join(tmpdir(), "cityscroll-prepush-ambient-"));
-  writeFileSync(path.join(hub, "kept.txt"), "this file must survive the nested git op\n");
-  mkdirSync(path.join(hub, "nested"), { recursive: true });
-  writeFileSync(path.join(hub, "nested", "also-kept.txt"), "and so must this one\n");
-  assert.equal(git(hub, ["init", "-q", "-b", "main"]).status, 0);
-  git(hub, ["config", "user.email", "baseline@example.invalid"]);
-  git(hub, ["config", "user.name", "Baseline"]);
-  git(hub, ["add", "-A"]);
-  assert.equal(git(hub, ["commit", "-qm", "ambient baseline"]).status, 0);
+  let worktreeParent = null;
+  try {
+    writeFileSync(path.join(hub, "kept.txt"), "this file must survive the nested git op\n");
+    mkdirSync(path.join(hub, "nested"), { recursive: true });
+    writeFileSync(path.join(hub, "nested", "also-kept.txt"), "and so must this one\n");
+    assert.equal(git(hub, ["init", "-q", "-b", "main"]).status, 0);
+    git(hub, ["config", "user.email", "baseline@example.invalid"]);
+    git(hub, ["config", "user.name", "Baseline"]);
+    git(hub, ["add", "-A"]);
+    assert.equal(git(hub, ["commit", "-qm", "ambient baseline"]).status, 0);
 
-  const worktree = path.join(mkdtempSync(path.join(tmpdir(), "cityscroll-prepush-wt-")), "wt");
-  assert.equal(git(hub, ["worktree", "add", "--quiet", "--detach", worktree, "main"]).status, 0);
-  const gitDir = git(worktree, ["rev-parse", "--absolute-git-dir"]).stdout.trim();
-  const indexFile = path.join(gitDir, "index");
-  return { root: worktree, hub, gitDir, indexFile };
+    worktreeParent = mkdtempSync(path.join(tmpdir(), "cityscroll-prepush-wt-"));
+    const worktree = path.join(worktreeParent, "wt");
+    assert.equal(git(hub, ["worktree", "add", "--quiet", "--detach", worktree, "main"]).status, 0);
+    const gitDir = git(worktree, ["rev-parse", "--absolute-git-dir"]).stdout.trim();
+    const indexFile = path.join(gitDir, "index");
+    return { root: worktree, hub, gitDir, indexFile };
+  } catch (error) {
+    if (worktreeParent) rmSync(worktreeParent, { recursive: true, force: true });
+    rmSync(hub, { recursive: true, force: true });
+    throw error;
+  }
 }
 
 function removeStandIn(standIn) {

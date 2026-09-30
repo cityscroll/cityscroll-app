@@ -23,40 +23,45 @@ const git = (cwd, ...args) => {
 // it, plus a bare remote standing in for the repository.
 function fixture() {
   const root = mkdtempSync(join(tmpdir(), "first-class-refresh-pr-"));
-  const remote = join(root, "remote.git");
-  const work = join(root, "work");
-  const binDir = join(root, "bin");
-  const ghLog = join(root, "gh-calls.log");
+  try {
+    const remote = join(root, "remote.git");
+    const work = join(root, "work");
+    const binDir = join(root, "bin");
+    const ghLog = join(root, "gh-calls.log");
 
-  run("git", ["init", "--bare", "-b", "main", remote], root);
-  run("git", ["clone", remote, work], root);
-  git(work, "config", "user.email", "refresh-test");
-  git(work, "config", "user.name", "Test");
-  mkdirSync(join(work, "site", "data"), { recursive: true });
-  mkdirSync(join(work, "worker"), { recursive: true });
-  writeFileSync(join(work, "site", "data", "dataset.json"), '{"vintage":"first"}\n');
-  writeFileSync(join(work, "worker", "index.js"), "export default {};\n");
-  git(work, "add", "-A");
-  git(work, "commit", "-m", "Seed dataset");
-  git(work, "push", "origin", "main");
+    run("git", ["init", "--bare", "-b", "main", remote], root);
+    run("git", ["clone", remote, work], root);
+    git(work, "config", "user.email", "refresh-test");
+    git(work, "config", "user.name", "Test");
+    mkdirSync(join(work, "site", "data"), { recursive: true });
+    mkdirSync(join(work, "worker"), { recursive: true });
+    writeFileSync(join(work, "site", "data", "dataset.json"), '{"vintage":"first"}\n');
+    writeFileSync(join(work, "worker", "index.js"), "export default {};\n");
+    git(work, "add", "-A");
+    git(work, "commit", "-m", "Seed dataset");
+    git(work, "push", "origin", "main");
 
-  // The refresh regenerated the dataset.
-  writeFileSync(join(work, "site", "data", "dataset.json"), '{"vintage":"second"}\n');
+    // The refresh regenerated the dataset.
+    writeFileSync(join(work, "site", "data", "dataset.json"), '{"vintage":"second"}\n');
 
-  mkdirSync(binDir);
-  const gh = join(binDir, "gh");
-  writeFileSync(
-    gh,
-    [
-      "#!/usr/bin/env bash",
-      `printf '%s\\n' "$*" >> "${ghLog}"`,
-      'if [ "$1" = "pr" ] && [ "$2" = "list" ]; then printf "%s" "${GH_OPEN_PR:-}"; fi',
-      "exit 0",
-    ].join("\n") + "\n",
-  );
-  chmodSync(gh, 0o755);
+    mkdirSync(binDir);
+    const gh = join(binDir, "gh");
+    writeFileSync(
+      gh,
+      [
+        "#!/usr/bin/env bash",
+        `printf '%s\\n' "$*" >> "${ghLog}"`,
+        'if [ "$1" = "pr" ] && [ "$2" = "list" ]; then printf "%s" "${GH_OPEN_PR:-}"; fi',
+        "exit 0",
+      ].join("\n") + "\n",
+    );
+    chmodSync(gh, 0o755);
 
-  return { root, remote, work, binDir, ghLog };
+    return { root, remote, work, binDir, ghLog };
+  } catch (error) {
+    rmSync(root, { recursive: true, force: true });
+    throw error;
+  }
 }
 
 const invoke = (f, env = {}) =>
