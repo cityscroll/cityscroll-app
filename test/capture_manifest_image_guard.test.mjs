@@ -158,22 +158,37 @@ test("the guard's usage message exits non-zero without --paths-file", () => {
 // (node --test test/*.test.mjs), so those variables must be stripped here — otherwise a nested
 // `git init`/`git commit` in the scratch repo below would silently operate on this repository's
 // real .git despite an explicit `cwd`, rather than the throwaway temp directory.
+// Only strip repository-redirecting bindings (same list as scrub-hook-exported-git-env.sh);
+// keep GIT_CONFIG_* so intentional system-config overrides still reach nested git.
+const REPO_REDIRECTING_GIT_VARS = [
+  "GIT_DIR",
+  "GIT_WORK_TREE",
+  "GIT_INDEX_FILE",
+  "GIT_OBJECT_DIRECTORY",
+  "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+  "GIT_PREFIX",
+  "GIT_COMMON_DIR",
+];
+
 function sanitizedGitEnv() {
   const env = { ...process.env };
-  for (const key of Object.keys(env)) {
-    if (key.startsWith("GIT_")) delete env[key];
-  }
+  for (const key of REPO_REDIRECTING_GIT_VARS) delete env[key];
   return env;
 }
 
 function initTempRepo() {
   const dir = mkdtempSync(join(tmpdir(), "capture-manifest-repo-"));
-  const env = sanitizedGitEnv();
-  const run = (...args) => execFileSync("git", args, { cwd: dir, encoding: "utf8", env });
-  run("init", "--quiet", "-b", "main");
-  run("config", "user.email", "capture-manifest-guard-test");
-  run("config", "user.name", "Test");
-  return { dir, run };
+  try {
+    const env = sanitizedGitEnv();
+    const run = (...args) => execFileSync("git", args, { cwd: dir, encoding: "utf8", env });
+    run("init", "--quiet", "-b", "main");
+    run("config", "user.email", "capture-manifest-guard-test");
+    run("config", "user.name", "Test");
+    return { dir, run };
+  } catch (error) {
+    rmSync(dir, { recursive: true, force: true });
+    throw error;
+  }
 }
 
 test("git diff --diff-filter=A -M does not list a renamed pre-existing image as added", () => {
