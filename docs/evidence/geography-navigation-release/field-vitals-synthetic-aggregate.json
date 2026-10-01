@@ -1,0 +1,122 @@
+{
+  "schema": "cityscroll.geography_navigation_field_vitals_synthetic_aggregate.v1",
+  "measurement_group": "synthetic",
+  "traffic_class": "synthetic",
+  "surface_id": "near-you",
+  "sample_floor": 30,
+  "required_quantile": 0.75,
+  "required_metrics": [
+    "lcp_ms",
+    "inp_ms",
+    "cls_score"
+  ],
+  "required_viewports": [
+    "desktop",
+    "mobile"
+  ],
+  "budgets": {
+    "lcp_ms": 2500,
+    "inp_ms": 200,
+    "cls_score": 0.1
+  },
+  "dataset": "crol_rum_observations_v1",
+  "combined_with_other_groups": false,
+  "delivery": {
+    "kind": "first_probe_slot",
+    "at": null,
+    "slot_id": null,
+    "source": "unset",
+    "trigger": null,
+    "merge_commit": null,
+    "pull_request": null,
+    "note": "First synthetic probe slot that retained an observation."
+  },
+  "cells": [
+    {
+      "surface_id": "near-you",
+      "metric_id": "lcp_ms",
+      "device_class": "desktop",
+      "measurement_group": "synthetic",
+      "traffic_class": "synthetic",
+      "sampled_count": 0,
+      "status": "no_data",
+      "quantile": 0.75,
+      "quantile_value": null,
+      "percentile_withheld": true,
+      "budget": 2500,
+      "pass": null
+    },
+    {
+      "surface_id": "near-you",
+      "metric_id": "lcp_ms",
+      "device_class": "mobile",
+      "measurement_group": "synthetic",
+      "traffic_class": "synthetic",
+      "sampled_count": 0,
+      "status": "no_data",
+      "quantile": 0.75,
+      "quantile_value": null,
+      "percentile_withheld": true,
+      "budget": 2500,
+      "pass": null
+    },
+    {
+      "surface_id": "near-you",
+      "metric_id": "inp_ms",
+      "device_class": "desktop",
+      "measurement_group": "synthetic",
+      "traffic_class": "synthetic",
+      "sampled_count": 0,
+      "status": "no_data",
+      "quantile": 0.75,
+      "quantile_value": null,
+      "percentile_withheld": true,
+      "budget": 200,
+      "pass": null
+    },
+    {
+      "surface_id": "near-you",
+      "metric_id": "inp_ms",
+      "device_class": "mobile",
+      "measurement_group": "synthetic",
+      "traffic_class": "synthetic",
+      "sampled_count": 0,
+      "status": "no_data",
+      "quantile": 0.75,
+      "quantile_value": null,
+      "percentile_withheld": true,
+      "budget": 200,
+      "pass": null
+    },
+    {
+      "surface_id": "near-you",
+      "metric_id": "cls_score",
+      "device_class": "desktop",
+      "measurement_group": "synthetic",
+      "traffic_class": "synthetic",
+      "sampled_count": 0,
+      "status": "no_data",
+      "quantile": 0.75,
+      "quantile_value": null,
+      "percentile_withheld": true,
+      "budget": 0.1,
+      "pass": null
+    },
+    {
+      "surface_id": "near-you",
+      "metric_id": "cls_score",
+      "device_class": "mobile",
+      "measurement_group": "synthetic",
+      "traffic_class": "synthetic",
+      "sampled_count": 0,
+      "status": "no_data",
+      "quantile": 0.75,
+      "quantile_value": null,
+      "percentile_withheld": true,
+      "budget": 0.1,
+      "pass": null
+    }
+  ],
+  "resident_observation_path": "docs/evidence/geography-navigation-release/field-vitals-observation.json",
+  "note": "Synthetic geography-navigation field-vitals aggregate. Resident values live in the sibling field-vitals-observation.json and are never pooled into this file."
+}
