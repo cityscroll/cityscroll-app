@@ -377,10 +377,11 @@ export async function publishBounded({
   for (let index = startIndex; index < batchPlan.batches.length; index += 1) {
     const batch = batchPlan.batches[index];
 
-    // Production executors persist this deterministic batch id in the same D1
-    // transaction as the application mutations. It is therefore authoritative
-    // after a lost response or a new workflow attempt, unlike a runner-local
-    // checkpoint file. Recover the completed batch without executing it again.
+    // Production executors persist a generation+holder scoped checkpoint id in
+    // the same D1 transaction as the application mutations (see
+    // applicationCheckpointId). It is therefore authoritative after a lost
+    // response or a same-generation retry, unlike a runner-local checkpoint
+    // file. Markers from an abandoned prior generation must not match.
     if (appliedBatchStore && await appliedBatchStore.has(batch.batch_id, batch)) {
       const recoveredAt = new Date(now()).toISOString();
       receipt.completed_batches.push({
