@@ -512,10 +512,17 @@ def write_production_journey(*, write: bool, take_images: bool = True) -> dict:
         not_taken.append("production screenshot binaries")
     manifest["not_taken"] = not_taken
     performance = manifest.setdefault("performance", {})
-    performance["production_field_vitals"] = {
-        "status": "not_taken",
-        "reason": "deployment-dependent production measurement",
-    }
+    existing_field_vitals = performance.get("production_field_vitals")
+    if not (
+        isinstance(existing_field_vitals, dict)
+        and existing_field_vitals.get("status") == "not_taken"
+        and isinstance(existing_field_vitals.get("observation"), dict)
+        and existing_field_vitals.get("observation", {}).get("path")
+    ):
+        performance["production_field_vitals"] = {
+            "status": "not_taken",
+            "reason": "deployment-dependent production measurement",
+        }
     validation = manifest.setdefault("validation", {})
     validation["deployed_crol_base"] = {
         "command": (
@@ -1487,7 +1494,7 @@ def capture_unrelated_routes(*, write: bool) -> dict:
 
     performance = manifest.get("performance") if isinstance(manifest.get("performance"), dict) else {}
     route_budget = performance.get("route_budget") if isinstance(performance.get("route_budget"), dict) else {}
-    if route_budget.get("status") == "not_taken":
+    if route_budget.get("status") == "not_taken" and not route_budget.get("simplified_layer_artifacts_in_tree"):
         route_budget["reason"] = (
             "A7 keeper review remains open: the full route baseline needs generated simplified "
             "layer artifacts; the reduced-copy observation is retained without turning it into a ceiling."
@@ -1703,11 +1710,25 @@ def main() -> int:
             "performance": {
                 "production_field_vitals": {
                     "status": "not_taken",
-                    "reason": "deployment-dependent production measurement",
+                    "reason": (
+                        "Production Analytics Engine retains LCP/INP/CLS for geography-navigation "
+                        "routes, but the repository sample floor is not met for the required "
+                        "vital×viewport matrix; see field-vitals-observation.json."
+                    ),
+                    "observation": {
+                        "path": "docs/evidence/geography-navigation-release/field-vitals-observation.json",
+                        "schema": "cityscroll.geography_navigation_field_vitals_observation.v1",
+                    },
                 },
                 "route_budget": {
                     "status": "not_taken",
-                    "reason": "A7/A8 keeper review remains open: the full route baseline needs generated simplified layer artifacts; the reduced-copy observation is retained without turning it into a ceiling.",
+                    "reason": (
+                        "Simplified geography layer artifacts are present in the repository tree, "
+                        "but a retained full cold-load wire baseline that includes those layer bytes "
+                        "has not been captured; the reduced-copy observation is retained without "
+                        "turning it into a ceiling."
+                    ),
+                    "simplified_layer_artifacts_in_tree": True,
                     "reduced_copy_mobile_observation": {
                         "sample_count": 20,
                         "wire_bytes_p95": 484311,
@@ -1720,7 +1741,11 @@ def main() -> int:
                             {"path": "JavaScript modules (aggregate)", "gzip_bytes": 169479},
                             {"path": "other CSS (aggregate)", "gzip_bytes": 30454},
                         ],
-                        "simplified_layer_artifact": "not_observed: generated layer files are absent from the reduced copy",
+                        "simplified_layer_artifact": (
+                            "not_included_in_this_observation: layers were absent from the reduced "
+                            "copy when measured; layers are present in the current tree but this "
+                            "observation was not re-run"
+                        ),
                         "full_fidelity_geometry_artifact": "not_observed",
                     },
                 },

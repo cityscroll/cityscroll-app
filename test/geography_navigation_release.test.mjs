@@ -259,14 +259,63 @@ test("A6: address, URL, storage, analytics, and error payloads exclude raw locat
 
 test("A7: field-vital budgets and retained route samples are explicit, while production measurement stays open", () => {
   const budgets = JSON.parse(readFileSync(BUDGETS_PATH, "utf8"));
+  const fieldVitals = RELEASE_MANIFEST.performance.production_field_vitals;
+  const routeBudget = RELEASE_MANIFEST.performance.route_budget;
+  const observationPath = join(ROOT, "docs/evidence/geography-navigation-release/field-vitals-observation.json");
+  const observation = JSON.parse(readFileSync(observationPath, "utf8"));
+
   assert.equal(budgets.fixtures["near-you.geography-navigation"], undefined);
   assert.equal(budgets.fieldVitals.lcpMs, 2500);
   assert.equal(budgets.fieldVitals.inpMs, 200);
   assert.equal(budgets.fieldVitals.cls, 0.1);
-  assert.equal(RELEASE_MANIFEST.performance.production_field_vitals.status, "not_taken");
-  assert.equal(RELEASE_MANIFEST.performance.route_budget.status, "not_taken");
-  assert.equal(RELEASE_MANIFEST.performance.route_budget.reduced_copy_mobile_observation.sample_count, 20);
-  assert.equal(RELEASE_MANIFEST.performance.route_budget.reduced_copy_mobile_observation.wire_bytes_p95, 484311);
+  assert.equal(budgets.fieldVitals.quantile, 0.75);
+
+  assert.equal(fieldVitals.status, "not_taken");
+  assert.match(fieldVitals.reason, /sample floor \(30\)/i);
+  assert.match(fieldVitals.reason, /near-you/i);
+  assert.equal(
+    fieldVitals.observation?.path,
+    "docs/evidence/geography-navigation-release/field-vitals-observation.json",
+  );
+  assert.equal(fieldVitals.observation?.schema, "cityscroll.geography_navigation_field_vitals_observation.v1");
+  assert.equal(fieldVitals.observation?.sample_floor, 30);
+  assert.equal(fieldVitals.observation?.required_quantile, 0.75);
+  assert.deepEqual(fieldVitals.observation?.required_viewports, ["desktop", "mobile"]);
+  assert.match(fieldVitals.observation?.deployed_revision?.pages_source_commit_sha || "", /^[0-9a-f]{40}$/);
+  assert.ok(Array.isArray(fieldVitals.observation?.near_you_cells));
+  assert.ok(fieldVitals.observation.near_you_cells.length >= 6);
+  for (const cell of fieldVitals.observation.near_you_cells) {
+    assert.ok(["lcp_ms", "inp_ms", "cls_score"].includes(cell.metric_id), cell.metric_id);
+    assert.ok(["desktop", "mobile"].includes(cell.device_class), cell.device_class);
+    assert.ok(Number.isSafeInteger(cell.sampled_count));
+    assert.equal(cell.pass, null);
+    assert.equal(cell.quantile_value, null);
+  }
+
+  assert.equal(observation.schema, "cityscroll.geography_navigation_field_vitals_observation.v1");
+  assert.equal(observation.clause_status?.status, "not_taken");
+  assert.equal(observation.sample_floor, 30);
+  assert.ok(Array.isArray(observation.observations));
+  assert.ok(observation.observations.length >= 12);
+  for (const row of observation.observations) {
+    assert.ok(Number.isSafeInteger(row.sampled_count), row.metric_id);
+    if (row.sampled_count < observation.sample_floor) {
+      assert.equal(row.pass, null);
+      assert.equal(row.quantile_value, null);
+    } else if (row.status === "available" && typeof row.quantile_value === "number") {
+      assert.equal(row.pass, row.quantile_value <= row.budget);
+    }
+  }
+
+  assert.equal(routeBudget.status, "not_taken");
+  assert.match(routeBudget.reason, /layer-inclusive baseline/i);
+  assert.equal(routeBudget.simplified_layer_artifacts_in_tree, true);
+  assert.equal(routeBudget.reduced_copy_mobile_observation.sample_count, 20);
+  assert.equal(routeBudget.reduced_copy_mobile_observation.wire_bytes_p95, 484311);
+  assert.match(
+    routeBudget.reduced_copy_mobile_observation.simplified_layer_artifact,
+    /not_included_in_this_observation/i,
+  );
   for (const sample of RELEASE_MANIFEST.performance.retained_samples) {
     assert.equal(sample.samples.length, 20);
     for (const metric of ["readiness_ms", "wire_bytes"]) {
