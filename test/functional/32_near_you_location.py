@@ -2,8 +2,9 @@
 """Browser regression: address, place and location entry lead to local records.
 
 Serves real Near You documents, record details and Browse through the Near You
-capture server with its clock pinned, and drives the bound entry controls in
-headless Chromium at a narrow touch width and a desktop width.
+capture server with its clock and district-activity blob pinned (same frozen
+activity as discovery-recovery / local-home), and drives the bound entry
+controls in headless Chromium at a narrow touch width and a desktop width.
 
 Successful typed address, place-name and explicit location entry opens the
 selected neighborhood's Records surface. Every failure keeps the page the
@@ -48,6 +49,9 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 from route_response_text import fetch_uncompressed, fulfill_with_text, response_text  # noqa: E402
 CLOCK = "2026-09-28T16:00:00.000Z"
+# Same pinned district-activity blob as discovery-recovery and default-local-home:
+# citywide / virtual / unlocated bags stay stable across daily first-class refresh.
+FROZEN_ACTIVITY_BLOB = "5deaa202fe578e09b58380d43755419dbb85ec60"
 VIEWPORTS = (("narrow_touch", 390, 844), ("desktop", 1440, 900))
 TARGET_SIZE_FLOOR_CSS_PX = 44
 
@@ -184,6 +188,7 @@ def start_server() -> tuple[subprocess.Popen, str]:
             f"--import={ROOT / 'test' / 'helpers' / 'test_clock_preload.mjs'}",
         ])),
         "CITYSCROLL_TEST_TIME_PIN": CLOCK,
+        "NEAR_YOU_CAPTURE_ACTIVITY_BLOB": FROZEN_ACTIVITY_BLOB,
     }
     server = subprocess.Popen(
         ["node", "tools/serve_near_you_capture.mjs"],
