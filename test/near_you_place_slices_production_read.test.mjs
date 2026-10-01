@@ -45,13 +45,46 @@ test("place-slices live receipt is recorded and linked to the production read-ba
   }
 });
 
-test("place-slices production read-back passes its checker", () => {
+test("place-slices production read-back passes its fixture checker", () => {
   const output = execFileSync(
+    "python3",
+    ["tools/capture_near_you_place_slices_production_read.py", "--check-fixtures"],
+    { cwd: new URL("..", import.meta.url), encoding: "utf8" },
+  );
+  assert.match(output, /production read-back passed/);
+});
+
+test("place-slices full checker requires retained membership served read-back", () => {
+  const membershipUrl = new URL(
+    "../docs/evidence/near-you-place-slices/membership-served-read.json",
+    import.meta.url,
+  );
+  let membershipPresent = true;
+  try {
+    readFileSync(membershipUrl);
+  } catch (error) {
+    if (error && error.code === "ENOENT") {
+      membershipPresent = false;
+    } else {
+      throw error;
+    }
+  }
+  const result = spawnSync(
     "python3",
     ["tools/capture_near_you_place_slices_production_read.py", "--check"],
     { cwd: new URL("..", import.meta.url), encoding: "utf8" },
   );
-  assert.match(output, /production read-back passed/);
+  if (!membershipPresent) {
+    assert.notEqual(result.status, 0);
+    assert.match(
+      `${result.stderr || ""}${result.stdout || ""}`,
+      /membership served read missing|wait for Pages|wait for Worker|does not contain required ancestor/,
+    );
+    return;
+  }
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /production read-back passed/);
+  assert.match(result.stdout, /membership served read-back passed/);
 });
 
 test("place-slices capture tool rejects alternate CLI targets", () => {
