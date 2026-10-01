@@ -5,7 +5,7 @@
   "generated_at": "2026-09-09T06:33:01.880Z",
   "source": {
     "path": "site/data/procurement_spine_sources.json#rows.passport_contracts",
-    "census_rows": 12782,
+    "census_rows": 12795,
     "source_population_rows": 61054,
     "compatibility_rows": 2,
     "source_null_policy": "source fields remain null; no row or edge is fabricated"
@@ -18,23 +18,23 @@
   },
   "published_graph": {
     "cap": 20000,
-    "selected_rows": 12783,
+    "selected_rows": 12796,
     "selected_agency_count": 45,
     "selected_vendor_count": 3681,
     "strategy": "agency- and vendor-keyed compact index over the award-corroborated census; Worker single-file lookup stays at the measured core gzip ceiling"
   },
   "excluded": {
     "above_graph_ceiling": 0,
-    "not_in_award_corroborated_census": 48272,
+    "not_in_award_corroborated_census": 48259,
     "unresolved_agency_rows": 0,
     "unresolved_vendor_rows": 0,
     "rfx_rows": 0,
     "note": "The published graph is the award-corroborated PASSPort census under the hard ceiling. Full daily dumps, RFx, and unresolved award joins stay out."
   },
   "coverage": {
-    "census_share": 1.000078235017994,
-    "population_share": 0.20937203131653945,
-    "age_days": 0
+    "census_share": 1.0000781555295037,
+    "population_share": 0.20958495757853704,
+    "age_days": 21
   },
   "by_agency": {
     "department-of-social-services": {
@@ -1125,9 +1125,9 @@
     "dcasdivision-of-municipal-supply-service": {
       "key": "dcasdivision-of-municipal-supply-service",
       "label": "Dcasdivision Of Municipal Supply Service",
-      "selected_rows": 755,
+      "selected_rows": 756,
       "core_rows": 45,
-      "graph_only_rows": 710,
+      "graph_only_rows": 711,
       "preview": [
         {
           "subject_ref": "contract:MA1-857-20278801146",
@@ -1342,9 +1342,9 @@
     "design-and-construction": {
       "key": "design-and-construction",
       "label": "Design and Construction",
-      "selected_rows": 607,
+      "selected_rows": 618,
       "core_rows": 45,
-      "graph_only_rows": 562,
+      "graph_only_rows": 573,
       "preview": [
         {
           "subject_ref": "contract:CT1-850-20268808800",
@@ -3295,10 +3295,36 @@
     "fire-department": {
       "key": "fire-department",
       "label": "Fire Department",
-      "selected_rows": 295,
+      "selected_rows": 296,
       "core_rows": 44,
-      "graph_only_rows": 251,
+      "graph_only_rows": 252,
       "preview": [
+        {
+          "subject_ref": "contract:CT1-057-20278802113",
+          "object_kind": "contract",
+          "label": "AMERICAN HEART ASSOCIATION INC",
+          "vendor_name": "AMERICAN HEART ASSOCIATION INC",
+          "agency_name": "FIRE DEPARTMENT",
+          "contract_id": "CT1-057-20278802113",
+          "epin": "05727U0002001",
+          "when": "2026-09-07",
+          "confidence": "strong",
+          "method": "passport_ei_graph_v1",
+          "link_type": "published_by_agency",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:5778239",
+            "source_fields": [
+              "ctr_id",
+              "contract_id",
+              "epin",
+              "agency",
+              "vendor"
+            ],
+            "basis": "award_corroborated_passport_census",
+            "observed_at": "2026-09-07"
+          }
+        },
         {
           "subject_ref": "contract:CT1-057-20278801790",
           "object_kind": "contract",
@@ -3479,32 +3505,6 @@
             ],
             "basis": "award_corroborated_passport_census",
             "observed_at": "2026-07-06"
-          }
-        },
-        {
-          "subject_ref": "contract:CT1-057-20278800762",
-          "object_kind": "contract",
-          "label": "SKYLINE ELECTRICAL CONTRACTOR CORP",
-          "vendor_name": "SKYLINE ELECTRICAL CONTRACTOR CORP",
-          "agency_name": "FIRE DEPARTMENT",
-          "contract_id": "CT1-057-20278800762",
-          "epin": "05725B0012001",
-          "when": "2026-06-29",
-          "confidence": "strong",
-          "method": "passport_ei_graph_v1",
-          "link_type": "published_by_agency",
-          "provenance": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:5679174",
-            "source_fields": [
-              "ctr_id",
-              "contract_id",
-              "epin",
-              "agency",
-              "vendor"
-            ],
-            "basis": "award_corroborated_passport_census",
-            "observed_at": "2026-06-29"
           }
         }
       ]
@@ -10608,6 +10608,14 @@
       "graph_only_rows": 11,
       "preview": []
     },
+    "TAMEER": {
+      "key": "TAMEER",
+      "label": "TAMEER INC",
+      "selected_rows": 12,
+      "core_rows": 1,
+      "graph_only_rows": 11,
+      "preview": []
+    },
     "THE SALVATION ARMY": {
       "key": "THE SALVATION ARMY",
       "label": "THE SALVATION ARMY",
@@ -12864,6 +12872,14 @@
       "graph_only_rows": 4,
       "preview": []
     },
+    "AMERICAN HEART ASSOCIATION": {
+      "key": "AMERICAN HEART ASSOCIATION",
+      "label": "AMERICAN HEART ASSOCIATION INC",
+      "selected_rows": 5,
+      "core_rows": 2,
+      "graph_only_rows": 3,
+      "preview": []
+    },
     "APEX BUILDING SOLUTIONS": {
       "key": "APEX BUILDING SOLUTIONS",
       "label": "Apex Building Solutions LLC",
@@ -13067,6 +13083,14 @@
     "FEDCAP REHABILITATION SERVICES": {
       "key": "FEDCAP REHABILITATION SERVICES",
       "label": "FEDCAP REHABILITATION SERVICES INC",
+      "selected_rows": 5,
+      "core_rows": 1,
+      "graph_only_rows": 4,
+      "preview": []
+    },
+    "FIREMATIC SUPPLY": {
+      "key": "FIREMATIC SUPPLY",
+      "label": "FIREMATIC SUPPLY CO. INC",
       "selected_rows": 5,
       "core_rows": 1,
       "graph_only_rows": 4,
@@ -13800,14 +13824,6 @@
       "graph_only_rows": 4,
       "preview": []
     },
-    "AMERICAN HEART ASSOCIATION": {
-      "key": "AMERICAN HEART ASSOCIATION",
-      "label": "AMERICAN HEART ASSOCIATION INC",
-      "selected_rows": 4,
-      "core_rows": 2,
-      "graph_only_rows": 2,
-      "preview": []
-    },
     "AMERICAN WATER WORKS ASSOCIATION": {
       "key": "AMERICAN WATER WORKS ASSOCIATION",
       "label": "AMERICAN WATER WORKS ASSOCIATION",
@@ -14214,14 +14230,6 @@
       "selected_rows": 4,
       "core_rows": 0,
       "graph_only_rows": 4,
-      "preview": []
-    },
-    "FIREMATIC SUPPLY": {
-      "key": "FIREMATIC SUPPLY",
-      "label": "FIREMATIC SUPPLY CO. INC",
-      "selected_rows": 4,
-      "core_rows": 1,
-      "graph_only_rows": 3,
       "preview": []
     },
     "FOOTHOLD TECHNOLOGY": {
@@ -36334,14 +36342,6 @@
       "selected_rows": 1,
       "core_rows": 0,
       "graph_only_rows": 1,
-      "preview": []
-    },
-    "TAMEER": {
-      "key": "TAMEER",
-      "label": "TAMEER INC",
-      "selected_rows": 1,
-      "core_rows": 1,
-      "graph_only_rows": 0,
       "preview": []
     },
     "TANGERINE CLEANING SERVICE": {

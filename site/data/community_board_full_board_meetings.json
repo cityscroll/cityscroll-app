@@ -1,13 +1,13 @@
 {
   "schema": "cityscroll.community_board_full_board_meetings.v1",
-  "generated_at": "2026-09-09T06:52:08.255Z",
-  "as_of": "2026-09-23",
-  "observed_through": "2026-09-23T05:09:59.711Z",
+  "generated_at": "2026-09-30T13:14:18.912Z",
+  "as_of": "2026-09-30",
+  "observed_through": "2026-09-30T12:59:02.901Z",
   "source": {
     "read_model": "site/data/shared_meeting_read_model.json",
     "read_model_schema": "cityscroll.shared_meeting_read_model.v1",
     "community_board_source_status": "available",
-    "community_board_observed_at": "2026-09-23T05:09:59.711Z"
+    "community_board_observed_at": "2026-09-30T12:59:02.901Z"
   },
   "policy": {
     "convening_body_basis": "the convening body comes from the publisher's own meeting title and any committee the meeting is joined to",
@@ -24,9 +24,9 @@
   },
   "counts": {
     "boards": 59,
-    "full_board_meeting": 14,
-    "no_full_board_meeting_recorded": 38,
-    "board_source_unreadable": 3,
+    "full_board_meeting": 19,
+    "no_full_board_meeting_recorded": 32,
+    "board_source_unreadable": 4,
     "board_not_covered": 4,
     "board_query_unresolved": 0,
     "lens_unreadable": 0
@@ -35,37 +35,14 @@
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "bronx-cb-01",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "bronx-cb-01",
         "name": "Bronx Community Board 1",
         "borough": "Bronx",
         "community_district": "X01"
       },
-      "meeting": null,
-      "coverage": {
-        "meetings": {
-          "state": "indexed",
-          "source_role_state": "indexed",
-          "reason": null,
-          "source_url": "https://www.nyc.gov/site/bronxcb1/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 2,
-          "retained_snapshot": null
-        },
-        "minutes": {
-          "state": "indexed",
-          "source_role_state": "indexed",
-          "reason": null,
-          "source_url": "https://www.nyc.gov/site/bronxcb1/calendar/board-meeting-minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 91,
-          "retained_snapshot": null
-        }
-      },
-      "status": "no_full_board_meeting_recorded",
-      "reason": "record_holds_only_later_full_board_meetings",
-      "next_scheduled": {
+      "meeting": {
         "meeting_id": "meeting:community_board:pdf-calendar:bronx-cb-01:2026-09-24:board-meeting",
         "title": "Board Meeting",
         "event_date": "2026-09-24T18:00:00-04:00",
@@ -77,7 +54,8 @@
         "venue": {
           "name": null,
           "address": "g Board Meeting",
-          "mode": "in-person"
+          "mode": "in-person",
+          "components": null
         },
         "source": {
           "source_system": "community_board",
@@ -86,7 +64,7 @@
           "publisher_identifier": "pdf-calendar:bronx-cb-01:2026-09-24:board-meeting",
           "observed_at": "2026-09-23T05:09:59.711Z",
           "observation_state": "observed",
-          "observation_age_days": 0,
+          "observation_age_days": 7,
           "retained_snapshot": null
         },
         "minutes": {
@@ -94,17 +72,39 @@
           "document_count": 0,
           "documents": [],
           "source_url": "https://www.nyc.gov/site/bronxcb1/calendar/board-meeting-minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "minutes_source_read_without_minutes_for_this_meeting",
           "statement": "The minutes corpus was read for this board and holds no minutes for this meeting."
         }
       },
-      "statement": "This corpus holds no full board meeting for Bronx Community Board 1 on or before 2026-09-23. The earliest it holds is 2026-09-24, so when the board last met in full session is not recorded here."
+      "coverage": {
+        "meetings": {
+          "state": "indexed",
+          "source_role_state": "indexed",
+          "reason": null,
+          "source_url": "https://www.nyc.gov/site/bronxcb1/calendar/calendar.page",
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 2,
+          "retained_snapshot": null
+        },
+        "minutes": {
+          "state": "indexed",
+          "source_role_state": "indexed",
+          "reason": null,
+          "source_url": "https://www.nyc.gov/site/bronxcb1/calendar/board-meeting-minutes.page",
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 91,
+          "retained_snapshot": null
+        }
+      },
+      "status": "full_board_meeting",
+      "reason": null,
+      "statement": "Bronx Community Board 1 last met in full session on 2026-09-24 according to Bronx Community Board 1, observed 2026-09-23. The minutes corpus was read for this board and holds no minutes for this meeting."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "bronx-cb-02",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "bronx-cb-02",
         "name": "Bronx Community Board 2",
@@ -118,7 +118,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/bronxcb2/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -127,19 +127,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/bronxcb2/meetings/minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 8,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Bronx Community Board 2's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Bronx Community Board 2's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "bronx-cb-03",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "bronx-cb-03",
         "name": "Bronx Community Board 3",
@@ -153,7 +153,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/bronxcb3/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -162,19 +162,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/bronxcb3/minutes/board-meeting-minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 61,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Bronx Community Board 3's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Bronx Community Board 3's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "bronx-cb-04",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "bronx-cb-04",
         "name": "Bronx Community Board 4",
@@ -188,7 +188,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/bronxcb4/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -197,19 +197,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/bronxcb4/meetings/board-meeting-minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 56,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Bronx Community Board 4's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Bronx Community Board 4's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "bronx-cb-05",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "bronx-cb-05",
         "name": "Bronx Community Board 5",
@@ -223,7 +223,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/bronxcb5/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -232,19 +232,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/bronxcb5/minutes/general-board-meeting-minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 38,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Bronx Community Board 5's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Bronx Community Board 5's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "bronx-cb-06",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "bronx-cb-06",
         "name": "Bronx Community Board 6",
@@ -262,8 +262,9 @@
         "convening_body_basis": "publisher_meeting_title",
         "venue": {
           "name": "SBH Wellness Center",
-          "address": "4507 3rd Avenue, Bronx, NY, 10457",
-          "mode": "in-person"
+          "address": "4507 3rd Avenue, Bronx, NY 10457",
+          "mode": "in-person",
+          "components": null
         },
         "source": {
           "source_system": "community_board",
@@ -272,7 +273,7 @@
           "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/general-board-meeting-11-2/",
           "observed_at": "2026-09-23T05:09:59.711Z",
           "observation_state": "observed",
-          "observation_age_days": 0,
+          "observation_age_days": 7,
           "retained_snapshot": null
         },
         "minutes": {
@@ -280,7 +281,7 @@
           "document_count": 0,
           "documents": [],
           "source_url": "https://cbbronx.cityofnewyork.us/cb6/minutes/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "minutes_source_read_without_minutes_for_this_meeting",
           "statement": "The minutes corpus was read for this board and holds no minutes for this meeting."
         }
@@ -291,8 +292,8 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://cbbronx.cityofnewyork.us/cb6/calendar/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 12,
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 13,
           "retained_snapshot": null
         },
         "minutes": {
@@ -300,8 +301,8 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://cbbronx.cityofnewyork.us/cb6/minutes/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 169,
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 75,
           "retained_snapshot": null
         }
       },
@@ -312,7 +313,7 @@
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "bronx-cb-07",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "bronx-cb-07",
         "name": "Bronx Community Board 7",
@@ -326,7 +327,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/bronxcb7/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -335,19 +336,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/bronxcb7/committees/general-board.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 81,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Bronx Community Board 7's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Bronx Community Board 7's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "bronx-cb-08",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "bronx-cb-08",
         "name": "Bronx Community Board 8",
@@ -361,7 +362,7 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://cbbronx.cityofnewyork.us/cb8/events/list/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 8,
           "retained_snapshot": null
         },
@@ -370,7 +371,7 @@
           "source_role_state": "not-yet-checked",
           "reason": "no_explicit_source_observed",
           "source_url": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         }
@@ -392,7 +393,7 @@
           "publisher": "Bronx Community Board 8",
           "source_url": "https://cbbronx.cityofnewyork.us/cb8/event/full-board/2026-10-13/",
           "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb8/event/full-board/2026-10-13/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "observation_state": "observed",
           "observation_age_days": 0,
           "retained_snapshot": null
@@ -402,17 +403,17 @@
           "document_count": 0,
           "documents": [],
           "source_url": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "no_minutes_source_is_published_for_this_board",
           "statement": "This board publishes no minutes source in this corpus, so whether minutes exist is unknown."
         }
       },
-      "statement": "This corpus holds no full board meeting for Bronx Community Board 8 on or before 2026-09-23. The earliest it holds is 2026-10-13, so when the board last met in full session is not recorded here."
+      "statement": "This corpus holds no full board meeting for Bronx Community Board 8 on or before 2026-09-30. The earliest it holds is 2026-10-13, so when the board last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "bronx-cb-09",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "bronx-cb-09",
         "name": "Bronx Community Board 9",
@@ -426,7 +427,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/bronxcb9/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -435,19 +436,19 @@
           "source_role_state": "not-yet-checked",
           "reason": "no_explicit_source_observed",
           "source_url": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Bronx Community Board 9's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Bronx Community Board 9's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "bronx-cb-10",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "bronx-cb-10",
         "name": "Bronx Community Board 10",
@@ -461,7 +462,7 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/bronxcb10/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 4,
           "retained_snapshot": null
         },
@@ -470,7 +471,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/bronxcb10/minutes/minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         }
@@ -489,14 +490,15 @@
         "venue": {
           "name": null,
           "address": "CB#10 Full Board",
-          "mode": "in-person"
+          "mode": "in-person",
+          "components": null
         },
         "source": {
           "source_system": "community_board",
           "publisher": "Bronx Community Board 10",
           "source_url": "https://www.nyc.gov/assets/bronxcb10/downloads/pdf/calendar/october_2026.pdf",
           "publisher_identifier": "pdf-calendar:bronx-cb-10:2026-10-15:full-board",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "observation_state": "observed",
           "observation_age_days": 0,
           "retained_snapshot": null
@@ -506,47 +508,24 @@
           "document_count": 0,
           "documents": [],
           "source_url": "https://www.nyc.gov/site/bronxcb10/minutes/minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "minutes_source_read_and_publishes_no_minutes",
           "statement": "The minutes corpus was read for this board and it publishes no minutes there."
         }
       },
-      "statement": "This corpus holds no full board meeting for Bronx Community Board 10 on or before 2026-09-23. The earliest it holds is 2026-10-15, so when the board last met in full session is not recorded here."
+      "statement": "This corpus holds no full board meeting for Bronx Community Board 10 on or before 2026-09-30. The earliest it holds is 2026-10-15, so when the board last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "bronx-cb-11",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "bronx-cb-11",
         "name": "Bronx Community Board 11",
         "borough": "Bronx",
         "community_district": "X11"
       },
-      "meeting": null,
-      "coverage": {
-        "meetings": {
-          "state": "indexed",
-          "source_role_state": "indexed",
-          "reason": null,
-          "source_url": "https://www.nyc.gov/site/bronxcb11/meetings/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 3,
-          "retained_snapshot": null
-        },
-        "minutes": {
-          "state": "indexed",
-          "source_role_state": "indexed",
-          "reason": null,
-          "source_url": "https://www.nyc.gov/site/bronxcb11/meetings/minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 529,
-          "retained_snapshot": null
-        }
-      },
-      "status": "no_full_board_meeting_recorded",
-      "reason": "record_holds_only_later_full_board_meetings",
-      "next_scheduled": {
+      "meeting": {
         "meeting_id": "meeting:community_board:pdf-calendar:bronx-cb-11:2026-09-24:public-hearing-and-full-board",
         "title": "Public Hearing and Full Board",
         "event_date": "2026-09-24T18:45:00-04:00",
@@ -558,7 +537,8 @@
         "venue": {
           "name": null,
           "address": "6:45 PM Public",
-          "mode": "in-person"
+          "mode": "in-person",
+          "components": null
         },
         "source": {
           "source_system": "community_board",
@@ -567,7 +547,7 @@
           "publisher_identifier": "pdf-calendar:bronx-cb-11:2026-09-24:public-hearing-and-full-board",
           "observed_at": "2026-09-23T05:09:59.711Z",
           "observation_state": "observed",
-          "observation_age_days": 0,
+          "observation_age_days": 7,
           "retained_snapshot": null
         },
         "minutes": {
@@ -575,17 +555,39 @@
           "document_count": 0,
           "documents": [],
           "source_url": "https://www.nyc.gov/site/bronxcb11/meetings/minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "minutes_source_read_without_minutes_for_this_meeting",
           "statement": "The minutes corpus was read for this board and holds no minutes for this meeting."
         }
       },
-      "statement": "This corpus holds no full board meeting for Bronx Community Board 11 on or before 2026-09-23. The earliest it holds is 2026-09-24, so when the board last met in full session is not recorded here."
+      "coverage": {
+        "meetings": {
+          "state": "indexed",
+          "source_role_state": "indexed",
+          "reason": null,
+          "source_url": "https://www.nyc.gov/site/bronxcb11/meetings/calendar.page",
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 3,
+          "retained_snapshot": null
+        },
+        "minutes": {
+          "state": "indexed",
+          "source_role_state": "indexed",
+          "reason": null,
+          "source_url": "https://www.nyc.gov/site/bronxcb11/meetings/minutes.page",
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 541,
+          "retained_snapshot": null
+        }
+      },
+      "status": "full_board_meeting",
+      "reason": null,
+      "statement": "Bronx Community Board 11 last met in full session on 2026-09-24 according to Bronx Community Board 11, observed 2026-09-23. The minutes corpus was read for this board and holds no minutes for this meeting."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "bronx-cb-12",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "bronx-cb-12",
         "name": "Bronx Community Board 12",
@@ -599,7 +601,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/bronxcb12/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -608,19 +610,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/bronxcb12/minutes/minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 61,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Bronx Community Board 12's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Bronx Community Board 12's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "brooklyn-cb-01",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "brooklyn-cb-01",
         "name": "Brooklyn Community Board 1",
@@ -634,7 +636,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/brooklyncb1/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -643,19 +645,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/brooklyncb1/meetings/minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 109,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Brooklyn Community Board 1's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Brooklyn Community Board 1's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "brooklyn-cb-02",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "brooklyn-cb-02",
         "name": "Brooklyn Community Board 2",
@@ -669,7 +671,7 @@
           "source_role_state": "not-yet-checked",
           "reason": "no_explicit_source_observed",
           "source_url": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -678,7 +680,7 @@
           "source_role_state": "not-yet-checked",
           "reason": "no_explicit_source_observed",
           "source_url": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         }
@@ -690,7 +692,7 @@
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "brooklyn-cb-03",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "brooklyn-cb-03",
         "name": "Brooklyn Community Board 3",
@@ -704,7 +706,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/brooklyncb3/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -713,19 +715,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/brooklyncb3/meetings/minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 6,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Brooklyn Community Board 3's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Brooklyn Community Board 3's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "brooklyn-cb-04",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "brooklyn-cb-04",
         "name": "Brooklyn Community Board 4",
@@ -739,7 +741,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/brooklyncb4/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -748,19 +750,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/brooklyncb4/calendar/minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 158,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Brooklyn Community Board 4's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Brooklyn Community Board 4's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "brooklyn-cb-05",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "brooklyn-cb-05",
         "name": "Brooklyn Community Board 5",
@@ -779,14 +781,15 @@
         "venue": {
           "name": null,
           "address": "127 Pennsylvania Ave, Brooklyn, NY 11207, USA",
-          "mode": "in-person"
+          "mode": "in-person",
+          "components": null
         },
         "source": {
           "source_system": "community_board",
           "publisher": "Brooklyn Community Board 5",
           "source_url": "https://calendar.google.com/calendar/ical/bkcb5cc%40gmail.com/public/basic.ics",
           "publisher_identifier": "76reb4fal8q881m5hc6fossrll_R20260923T223000@google.com::2026-09-23",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "observation_state": "observed",
           "observation_age_days": 0,
           "retained_snapshot": null
@@ -796,7 +799,7 @@
           "document_count": 0,
           "documents": [],
           "source_url": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "no_minutes_source_is_published_for_this_board",
           "statement": "This board publishes no minutes source in this corpus, so whether minutes exist is unknown."
         }
@@ -807,7 +810,7 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://calendar.google.com/calendar/ical/bkcb5cc%40gmail.com/public/basic.ics",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 9,
           "retained_snapshot": null
         },
@@ -816,19 +819,19 @@
           "source_role_state": "not-yet-checked",
           "reason": "no_explicit_source_observed",
           "source_url": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         }
       },
       "status": "full_board_meeting",
       "reason": null,
-      "statement": "Brooklyn Community Board 5 last met in full session on 2026-09-23 according to Brooklyn Community Board 5, observed 2026-09-23. This board publishes no minutes source in this corpus, so whether minutes exist is unknown."
+      "statement": "Brooklyn Community Board 5 last met in full session on 2026-09-23 according to Brooklyn Community Board 5, observed 2026-09-30. This board publishes no minutes source in this corpus, so whether minutes exist is unknown."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "brooklyn-cb-06",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "brooklyn-cb-06",
         "name": "Brooklyn Community Board 6",
@@ -842,7 +845,7 @@
           "source_role_state": "not-yet-checked",
           "reason": "no_explicit_source_observed",
           "source_url": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -851,7 +854,7 @@
           "source_role_state": "not-yet-checked",
           "reason": "no_explicit_source_observed",
           "source_url": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         }
@@ -863,7 +866,7 @@
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "brooklyn-cb-07",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "brooklyn-cb-07",
         "name": "Brooklyn Community Board 7",
@@ -877,7 +880,7 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://cbbrooklyn.cityofnewyork.us/cb7/events/list/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 4,
           "retained_snapshot": null
         },
@@ -886,7 +889,7 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://cbbrooklyn.cityofnewyork.us/cb7/meetings/board-meeting-minutes/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 52,
           "retained_snapshot": null
         }
@@ -908,7 +911,7 @@
           "publisher": "Brooklyn Community Board 7",
           "source_url": "https://cbbrooklyn.cityofnewyork.us/cb7/event/cb7-monthly-board-meeting-october-21/",
           "publisher_identifier": "https://cbbrooklyn.cityofnewyork.us/cb7/event/cb7-monthly-board-meeting-october-21/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "observation_state": "observed",
           "observation_age_days": 0,
           "retained_snapshot": null
@@ -918,17 +921,17 @@
           "document_count": 0,
           "documents": [],
           "source_url": "https://cbbrooklyn.cityofnewyork.us/cb7/meetings/board-meeting-minutes/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "minutes_source_read_without_minutes_for_this_meeting",
           "statement": "The minutes corpus was read for this board and holds no minutes for this meeting."
         }
       },
-      "statement": "This corpus holds no full board meeting for Brooklyn Community Board 7 on or before 2026-09-23. The earliest it holds is 2026-10-21, so when the board last met in full session is not recorded here."
+      "statement": "This corpus holds no full board meeting for Brooklyn Community Board 7 on or before 2026-09-30. The earliest it holds is 2026-10-21, so when the board last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "brooklyn-cb-08",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "brooklyn-cb-08",
         "name": "Brooklyn Community Board 8",
@@ -942,7 +945,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.brooklyncb8.org/meetings/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -951,19 +954,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.brooklyncb8.org/downloads/minutes/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 83,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Brooklyn Community Board 8's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Brooklyn Community Board 8's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "brooklyn-cb-09",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "brooklyn-cb-09",
         "name": "Brooklyn Community Board 9",
@@ -977,7 +980,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/brooklyncb9/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -986,19 +989,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/brooklyncb9/about/agendas.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 684,
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 687,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Brooklyn Community Board 9's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Brooklyn Community Board 9's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "brooklyn-cb-10",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "brooklyn-cb-10",
         "name": "Brooklyn Community Board 10",
@@ -1012,8 +1015,8 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://cbbrooklyn.cityofnewyork.us/cb10/events/list/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 9,
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 13,
           "retained_snapshot": null
         },
         "minutes": {
@@ -1021,7 +1024,7 @@
           "source_role_state": "not-yet-checked",
           "reason": "no_explicit_source_observed",
           "source_url": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         }
@@ -1039,7 +1042,7 @@
         "convening_body_basis": "publisher_meeting_title",
         "venue": {
           "name": "In Person at Knights of Columbus, 1305 86th Street and Livestreamed to YouTube",
-          "address": "1305 86th Street, Brooklyn, NY, 11228",
+          "address": "1305 86th Street, Brooklyn, NY 11228",
           "mode": "in-person"
         },
         "source": {
@@ -1047,7 +1050,7 @@
           "publisher": "Brooklyn Community Board 10",
           "source_url": "https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-12/",
           "publisher_identifier": "https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-12/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "observation_state": "observed",
           "observation_age_days": 0,
           "retained_snapshot": null
@@ -1057,17 +1060,17 @@
           "document_count": 0,
           "documents": [],
           "source_url": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "no_minutes_source_is_published_for_this_board",
           "statement": "This board publishes no minutes source in this corpus, so whether minutes exist is unknown."
         }
       },
-      "statement": "This corpus holds no full board meeting for Brooklyn Community Board 10 on or before 2026-09-23. The earliest it holds is 2026-10-19, so when the board last met in full session is not recorded here."
+      "statement": "This corpus holds no full board meeting for Brooklyn Community Board 10 on or before 2026-09-30. The earliest it holds is 2026-10-19, so when the board last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "brooklyn-cb-11",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "brooklyn-cb-11",
         "name": "Brooklyn Community Board 11",
@@ -1077,32 +1080,32 @@
       "meeting": null,
       "coverage": {
         "meetings": {
-          "state": "indexed",
-          "source_role_state": "indexed",
-          "reason": null,
+          "state": "unreadable",
+          "source_role_state": "unavailable",
+          "reason": "http_error",
           "source_url": "https://www.brooklyncb11.org/calendar/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 1,
           "retained_snapshot": null
         },
         "minutes": {
-          "state": "indexed",
-          "source_role_state": "indexed",
-          "reason": null,
+          "state": "unreadable",
+          "source_role_state": "unavailable",
+          "reason": "http_error",
           "source_url": "https://www.brooklyncb11.org/minutes/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 67,
           "retained_snapshot": null
         }
       },
-      "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_has_unclassified_titles",
-      "statement": "Brooklyn Community Board 11's meeting source was read on 2026-09-23 but its published meeting title does not identify a full board session, so when the board last met in full session is not recorded here."
+      "status": "board_source_unreadable",
+      "reason": "http_error",
+      "statement": "Brooklyn Community Board 11 publishes a meeting source that this corpus could not read, so when it last met in full session is unknown here. The board's own meeting calendar carries its full board meetings."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "brooklyn-cb-12",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "brooklyn-cb-12",
         "name": "Brooklyn Community Board 12",
@@ -1116,7 +1119,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/brooklyncb12/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -1125,19 +1128,19 @@
           "source_role_state": "not-yet-checked",
           "reason": "no_explicit_source_observed",
           "source_url": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Brooklyn Community Board 12's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Brooklyn Community Board 12's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "brooklyn-cb-13",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "brooklyn-cb-13",
         "name": "Brooklyn Community Board 13",
@@ -1151,7 +1154,7 @@
           "source_role_state": "not-yet-checked",
           "reason": "no_explicit_source_observed",
           "source_url": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -1160,7 +1163,7 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/brooklyncb13/minutes/minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 10,
           "retained_snapshot": null
         }
@@ -1172,7 +1175,7 @@
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "brooklyn-cb-14",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "brooklyn-cb-14",
         "name": "Brooklyn Community Board 14",
@@ -1190,15 +1193,22 @@
         "convening_body_basis": "publisher_meeting_title",
         "venue": {
           "name": "East Midwood Jewish Center",
-          "address": "1625 Ocean Avenue, Brooklyn, New York, 11230",
-          "mode": "in-person"
+          "address": "1625 Ocean Avenue, Brooklyn, NY 11230",
+          "mode": "in-person",
+          "components": {
+            "street_address": "1625 Ocean Avenue",
+            "address_locality": "Brooklyn",
+            "address_region": "New York",
+            "postal_code": "11230",
+            "address_borough": null
+          }
         },
         "source": {
           "source_system": "community_board",
           "publisher": "Brooklyn Community Board 14",
           "source_url": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
           "publisher_identifier": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "observation_state": "observed",
           "observation_age_days": 0,
           "retained_snapshot": null
@@ -1208,7 +1218,7 @@
           "document_count": 0,
           "documents": [],
           "source_url": "https://cb14brooklyn.com/board-meeting-minutes/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "minutes_source_read_and_publishes_no_minutes",
           "statement": "The minutes corpus was read for this board and it publishes no minutes there."
         }
@@ -1219,8 +1229,8 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://cb14brooklyn.com/meetings/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 1,
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 9,
           "retained_snapshot": null
         },
         "minutes": {
@@ -1228,19 +1238,19 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://cb14brooklyn.com/board-meeting-minutes/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         }
       },
       "status": "full_board_meeting",
       "reason": null,
-      "statement": "Brooklyn Community Board 14 last met in full session on 2026-09-14 according to Brooklyn Community Board 14, observed 2026-09-23. The minutes corpus was read for this board and it publishes no minutes there."
+      "statement": "Brooklyn Community Board 14 last met in full session on 2026-09-14 according to Brooklyn Community Board 14, observed 2026-09-30. The minutes corpus was read for this board and it publishes no minutes there."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "brooklyn-cb-15",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "brooklyn-cb-15",
         "name": "Brooklyn Community Board 15",
@@ -1248,10 +1258,10 @@
         "community_district": "K15"
       },
       "meeting": {
-        "meeting_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2026-06-30:general-board-meeting-in-person",
+        "meeting_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2026-09-29:general-board-meeting-in-person",
         "title": "General Board Meeting (In Person)",
-        "event_date": "2026-06-30T19:00:00-04:00",
-        "meeting_day": "2026-06-30",
+        "event_date": "2026-09-29T19:00:00-04:00",
+        "meeting_day": "2026-09-29",
         "board_id": "brooklyn-cb-15",
         "board_name": "Brooklyn Community Board 15",
         "convening_body": "full_board",
@@ -1259,14 +1269,15 @@
         "venue": {
           "name": null,
           "address": "Kingsborough Community College, 2001 Oriental Boulevard, Room U112 Faculty Dining Room, Brooklyn, NY 11235",
-          "mode": "in-person"
+          "mode": "in-person",
+          "components": null
         },
         "source": {
           "source_system": "community_board",
           "publisher": "Brooklyn Community Board 15",
           "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
           "publisher_identifier": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "observation_state": "observed",
           "observation_age_days": 0,
           "retained_snapshot": null
@@ -1276,7 +1287,7 @@
           "document_count": 0,
           "documents": [],
           "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/board-meeting-minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "minutes_source_read_without_minutes_for_this_meeting",
           "statement": "The minutes corpus was read for this board and holds no minutes for this meeting."
         }
@@ -1287,7 +1298,7 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 35,
           "retained_snapshot": null
         },
@@ -1296,19 +1307,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/board-meeting-minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 67,
           "retained_snapshot": null
         }
       },
       "status": "full_board_meeting",
       "reason": null,
-      "statement": "Brooklyn Community Board 15 last met in full session on 2026-06-30 according to Brooklyn Community Board 15, observed 2026-09-23. The minutes corpus was read for this board and holds no minutes for this meeting."
+      "statement": "Brooklyn Community Board 15 last met in full session on 2026-09-29 according to Brooklyn Community Board 15, observed 2026-09-30. The minutes corpus was read for this board and holds no minutes for this meeting."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "brooklyn-cb-16",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "brooklyn-cb-16",
         "name": "Brooklyn Community Board 16",
@@ -1322,7 +1333,7 @@
           "source_role_state": "not-yet-checked",
           "reason": "no_explicit_source_observed",
           "source_url": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -1331,7 +1342,7 @@
           "source_role_state": "not-yet-checked",
           "reason": "no_explicit_source_observed",
           "source_url": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         }
@@ -1343,7 +1354,7 @@
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "brooklyn-cb-17",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "brooklyn-cb-17",
         "name": "Brooklyn Community Board 17",
@@ -1357,8 +1368,8 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://cbbrooklyn.cityofnewyork.us/cb17/calendar/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 13,
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 14,
           "retained_snapshot": null
         },
         "minutes": {
@@ -1366,19 +1377,19 @@
           "source_role_state": "not-yet-checked",
           "reason": "no_explicit_source_observed",
           "source_url": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_has_unclassified_titles",
-      "statement": "Brooklyn Community Board 17's meeting source was read on 2026-09-23 but its published meeting title does not identify a full board session, so when the board last met in full session is not recorded here."
+      "statement": "Brooklyn Community Board 17's meeting source was read on 2026-09-30 but its published meeting title does not identify a full board session, so when the board last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "brooklyn-cb-18",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "brooklyn-cb-18",
         "name": "Brooklyn Community Board 18",
@@ -1400,7 +1411,7 @@
           "publisher": "Brooklyn Community Board 18",
           "source_url": "https://www.nyc.gov/site/brooklyncb18/meetings/calendar.page",
           "publisher_identifier": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "observation_state": "observed",
           "observation_age_days": 0,
           "retained_snapshot": null
@@ -1410,7 +1421,7 @@
           "document_count": 0,
           "documents": [],
           "source_url": "https://www.nyc.gov/site/brooklyncb18/meetings/minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "minutes_source_read_without_minutes_for_this_meeting",
           "statement": "The minutes corpus was read for this board and holds no minutes for this meeting."
         }
@@ -1421,7 +1432,7 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/brooklyncb18/meetings/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 1,
           "retained_snapshot": null
         },
@@ -1430,19 +1441,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/brooklyncb18/meetings/minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 63,
           "retained_snapshot": null
         }
       },
       "status": "full_board_meeting",
       "reason": null,
-      "statement": "Brooklyn Community Board 18 last met in full session on 2026-09-16 according to Brooklyn Community Board 18, observed 2026-09-23. The minutes corpus was read for this board and holds no minutes for this meeting."
+      "statement": "Brooklyn Community Board 18 last met in full session on 2026-09-16 according to Brooklyn Community Board 18, observed 2026-09-30. The minutes corpus was read for this board and holds no minutes for this meeting."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "manhattan-cb-01",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "manhattan-cb-01",
         "name": "Manhattan Community Board 1",
@@ -1464,7 +1475,7 @@
           "publisher": "Manhattan Community Board 1",
           "source_url": "https://manhattancb1.cityofnewyork.us/event/september-2026-cb-1s-monthly-board-meeting/",
           "publisher_identifier": "https://manhattancb1.cityofnewyork.us/event/september-2026-cb-1s-monthly-board-meeting/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "observation_state": "observed",
           "observation_age_days": 0,
           "retained_snapshot": null
@@ -1474,7 +1485,7 @@
           "document_count": 0,
           "documents": [],
           "source_url": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "no_minutes_source_is_published_for_this_board",
           "statement": "This board publishes no minutes source in this corpus, so whether minutes exist is unknown."
         }
@@ -1485,7 +1496,7 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://manhattancb1.cityofnewyork.us/meetings/calendar/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 13,
           "retained_snapshot": null
         },
@@ -1494,49 +1505,26 @@
           "source_role_state": "not-yet-checked",
           "reason": "no_explicit_source_observed",
           "source_url": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         }
       },
       "status": "full_board_meeting",
       "reason": null,
-      "statement": "Manhattan Community Board 1 last met in full session on 2026-09-22 according to Manhattan Community Board 1, observed 2026-09-23. This board publishes no minutes source in this corpus, so whether minutes exist is unknown."
+      "statement": "Manhattan Community Board 1 last met in full session on 2026-09-22 according to Manhattan Community Board 1, observed 2026-09-30. This board publishes no minutes source in this corpus, so whether minutes exist is unknown."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "manhattan-cb-02",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "manhattan-cb-02",
         "name": "Manhattan Community Board 2",
         "borough": "Manhattan",
         "community_district": "M02"
       },
-      "meeting": null,
-      "coverage": {
-        "meetings": {
-          "state": "indexed",
-          "source_role_state": "indexed",
-          "reason": null,
-          "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/calendar/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 10,
-          "retained_snapshot": null
-        },
-        "minutes": {
-          "state": "indexed",
-          "source_role_state": "indexed",
-          "reason": null,
-          "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/minutes/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 17,
-          "retained_snapshot": null
-        }
-      },
-      "status": "no_full_board_meeting_recorded",
-      "reason": "record_holds_only_later_full_board_meetings",
-      "next_scheduled": {
+      "meeting": {
         "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/full-board-valerie-de-la-rosa-chair-11/",
         "title": "FULL BOARD – Valerie De La Rosa, Chair",
         "event_date": "2026-09-24T18:30:00-04:00",
@@ -1547,7 +1535,7 @@
         "convening_body_basis": "publisher_meeting_title",
         "venue": {
           "name": "Gould Welcome Center, 50 West 4th Street, New York, NY 10012",
-          "address": "50 West 4th Street, New York, NY, 10012",
+          "address": "50 West 4th Street, New York, NY 10012",
           "mode": "hybrid"
         },
         "source": {
@@ -1555,7 +1543,7 @@
           "publisher": "Manhattan Community Board 2",
           "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/full-board-valerie-de-la-rosa-chair-11/",
           "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/full-board-valerie-de-la-rosa-chair-11/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "observation_state": "observed",
           "observation_age_days": 0,
           "retained_snapshot": null
@@ -1565,47 +1553,46 @@
           "document_count": 0,
           "documents": [],
           "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/minutes/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "minutes_source_read_without_minutes_for_this_meeting",
           "statement": "The minutes corpus was read for this board and holds no minutes for this meeting."
         }
       },
-      "statement": "This corpus holds no full board meeting for Manhattan Community Board 2 on or before 2026-09-23. The earliest it holds is 2026-09-24, so when the board last met in full session is not recorded here."
-    },
-    {
-      "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
-      "query": "manhattan-cb-03",
-      "as_of": "2026-09-23",
-      "board": {
-        "id": "manhattan-cb-03",
-        "name": "Manhattan Community Board 3",
-        "borough": "Manhattan",
-        "community_district": "M03"
-      },
-      "meeting": null,
       "coverage": {
         "meetings": {
           "state": "indexed",
           "source_role_state": "indexed",
           "reason": null,
-          "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 9,
+          "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/calendar/",
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 10,
           "retained_snapshot": null
         },
         "minutes": {
           "state": "indexed",
           "source_role_state": "indexed",
           "reason": null,
-          "source_url": "https://www.nyc.gov/site/manhattancb3/minutes/meeting-vote-records.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 272,
+          "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/minutes/",
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 17,
           "retained_snapshot": null
         }
       },
-      "status": "no_full_board_meeting_recorded",
-      "reason": "record_holds_only_later_full_board_meetings",
-      "next_scheduled": {
+      "status": "full_board_meeting",
+      "reason": null,
+      "statement": "Manhattan Community Board 2 last met in full session on 2026-09-24 according to Manhattan Community Board 2, observed 2026-09-30. The minutes corpus was read for this board and holds no minutes for this meeting."
+    },
+    {
+      "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
+      "query": "manhattan-cb-03",
+      "as_of": "2026-09-30",
+      "board": {
+        "id": "manhattan-cb-03",
+        "name": "Manhattan Community Board 3",
+        "borough": "Manhattan",
+        "community_district": "M03"
+      },
+      "meeting": {
         "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-29:community-board-3-full-board-meeting",
         "title": "Community Board 3, Full Board Meeting",
         "event_date": "2026-09-29T18:30:00-04:00",
@@ -1617,14 +1604,15 @@
         "venue": {
           "name": null,
           "address": "PS 20 - 166 Essex Street (E Houston & Stanton Sts)",
-          "mode": "hybrid"
+          "mode": "hybrid",
+          "components": null
         },
         "source": {
           "source_system": "community_board",
           "publisher": "Manhattan Community Board 3",
           "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
           "publisher_identifier": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "observation_state": "observed",
           "observation_age_days": 0,
           "retained_snapshot": null
@@ -1634,17 +1622,39 @@
           "document_count": 0,
           "documents": [],
           "source_url": "https://www.nyc.gov/site/manhattancb3/minutes/meeting-vote-records.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "minutes_source_read_without_minutes_for_this_meeting",
           "statement": "The minutes corpus was read for this board and holds no minutes for this meeting."
         }
       },
-      "statement": "This corpus holds no full board meeting for Manhattan Community Board 3 on or before 2026-09-23. The earliest it holds is 2026-09-29, so when the board last met in full session is not recorded here."
+      "coverage": {
+        "meetings": {
+          "state": "indexed",
+          "source_role_state": "indexed",
+          "reason": null,
+          "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 9,
+          "retained_snapshot": null
+        },
+        "minutes": {
+          "state": "indexed",
+          "source_role_state": "indexed",
+          "reason": null,
+          "source_url": "https://www.nyc.gov/site/manhattancb3/minutes/meeting-vote-records.page",
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 272,
+          "retained_snapshot": null
+        }
+      },
+      "status": "full_board_meeting",
+      "reason": null,
+      "statement": "Manhattan Community Board 3 last met in full session on 2026-09-29 according to Manhattan Community Board 3, observed 2026-09-30. The minutes corpus was read for this board and holds no minutes for this meeting."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "manhattan-cb-04",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "manhattan-cb-04",
         "name": "Manhattan Community Board 4",
@@ -1662,7 +1672,7 @@
         "convening_body_basis": "publisher_meeting_title",
         "venue": {
           "name": "Hotel Trades Council",
-          "address": "305 West 44th Street, New York, NY, 10036",
+          "address": "305 West 44th Street, New York, NY 10036",
           "mode": "hybrid"
         },
         "source": {
@@ -1670,7 +1680,7 @@
           "publisher": "Manhattan Community Board 4",
           "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/",
           "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "observation_state": "observed",
           "observation_age_days": 0,
           "retained_snapshot": null
@@ -1680,7 +1690,7 @@
           "document_count": 0,
           "documents": [],
           "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/archives/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "minutes_source_read_and_publishes_no_minutes",
           "statement": "The minutes corpus was read for this board and it publishes no minutes there."
         }
@@ -1691,7 +1701,7 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/calendar/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 13,
           "retained_snapshot": null
         },
@@ -1700,19 +1710,19 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/archives/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         }
       },
       "status": "full_board_meeting",
       "reason": null,
-      "statement": "Manhattan Community Board 4 last met in full session on 2026-09-02 according to Manhattan Community Board 4, observed 2026-09-23. The minutes corpus was read for this board and it publishes no minutes there."
+      "statement": "Manhattan Community Board 4 last met in full session on 2026-09-02 according to Manhattan Community Board 4, observed 2026-09-30. The minutes corpus was read for this board and it publishes no minutes there."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "manhattan-cb-05",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "manhattan-cb-05",
         "name": "Manhattan Community Board 5",
@@ -1736,7 +1746,7 @@
           "publisher_identifier": "https://cb5.org/event/public-hearing-full-board-meeting-17/",
           "observed_at": "2026-01-17T21:49:15.000Z",
           "observation_state": "outside_retention_window",
-          "observation_age_days": 249,
+          "observation_age_days": 256,
           "retained_snapshot": {
             "service": "public_web_archive",
             "service_name": "Internet Archive Wayback Machine",
@@ -1751,7 +1761,7 @@
           "document_count": 0,
           "documents": [],
           "source_url": "https://cb5.org/board-actions/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "minutes_source_could_not_be_read",
           "statement": "The minutes corpus could not read this board's minutes source, so whether minutes exist is unknown."
         }
@@ -1778,7 +1788,7 @@
           "source_role_state": "unavailable",
           "reason": "source_serves_browsers_only",
           "source_url": "https://cb5.org/board-actions/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         }
@@ -1790,7 +1800,7 @@
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "manhattan-cb-06",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "manhattan-cb-06",
         "name": "Manhattan Community Board 6",
@@ -1812,7 +1822,7 @@
           "publisher": "Manhattan Community Board 6",
           "source_url": "https://calendar.google.com/calendar/ical/cbsix.org_coj3atji6ll3sjsn5cupptc27g%40group.calendar.google.com/public/basic.ics",
           "publisher_identifier": "598h8thfkslekvsh851uussla8_R20210114T000000@google.com::2026-09-09",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "observation_state": "observed",
           "observation_age_days": 0,
           "retained_snapshot": null
@@ -1822,7 +1832,7 @@
           "document_count": 0,
           "documents": [],
           "source_url": "https://airtable.com/appgK5bKw7rWMRJEh/shrBzfHDWat4YMTHL/tblpioBcj0BVp5hBw",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "minutes_source_could_not_be_read",
           "statement": "The minutes corpus could not read this board's minutes source, so whether minutes exist is unknown."
         }
@@ -1833,8 +1843,8 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://cbsix.org/meetings-calendar/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 71,
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 75,
           "retained_snapshot": null
         },
         "minutes": {
@@ -1842,19 +1852,19 @@
           "source_role_state": "unavailable",
           "reason": "source_serves_browsers_only",
           "source_url": "https://airtable.com/appgK5bKw7rWMRJEh/shrBzfHDWat4YMTHL/tblpioBcj0BVp5hBw",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         }
       },
       "status": "full_board_meeting",
       "reason": null,
-      "statement": "Manhattan Community Board 6 last met in full session on 2026-09-09 according to Manhattan Community Board 6, observed 2026-09-23. The minutes corpus could not read this board's minutes source, so whether minutes exist is unknown."
+      "statement": "Manhattan Community Board 6 last met in full session on 2026-09-09 according to Manhattan Community Board 6, observed 2026-09-30. The minutes corpus could not read this board's minutes source, so whether minutes exist is unknown."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "manhattan-cb-07",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "manhattan-cb-07",
         "name": "Manhattan Community Board 7",
@@ -1873,14 +1883,16 @@
         "venue": {
           "name": null,
           "address": "10 Lincoln Center Plaza, New York, NY 10023, USA",
-          "mode": "in-person"
+          "mode": "not-stated",
+          "components": null,
+          "attendance_conflict": true
         },
         "source": {
           "source_system": "community_board",
           "publisher": "Manhattan Community Board 7",
           "source_url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
           "publisher_identifier": "63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000@google.com::2026-09-01",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "observation_state": "observed",
           "observation_age_days": 0,
           "retained_snapshot": null
@@ -1890,7 +1902,7 @@
           "document_count": 0,
           "documents": [],
           "source_url": "https://www.mcb7.org/minutes",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "minutes_source_read_and_publishes_no_minutes",
           "statement": "The minutes corpus was read for this board and it publishes no minutes there."
         }
@@ -1901,8 +1913,8 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 25,
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 27,
           "retained_snapshot": null
         },
         "minutes": {
@@ -1910,19 +1922,19 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.mcb7.org/minutes",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         }
       },
       "status": "full_board_meeting",
       "reason": null,
-      "statement": "Manhattan Community Board 7 last met in full session on 2026-09-01 according to Manhattan Community Board 7, observed 2026-09-23. The minutes corpus was read for this board and it publishes no minutes there."
+      "statement": "Manhattan Community Board 7 last met in full session on 2026-09-01 according to Manhattan Community Board 7, observed 2026-09-30. The minutes corpus was read for this board and it publishes no minutes there."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "manhattan-cb-08",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "manhattan-cb-08",
         "name": "Manhattan Community Board 8",
@@ -1936,7 +1948,7 @@
           "source_role_state": "unavailable",
           "reason": "source_serves_browsers_only",
           "source_url": "https://www.cb8m.com/calendar/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -1945,7 +1957,7 @@
           "source_role_state": "unavailable",
           "reason": "source_serves_browsers_only",
           "source_url": "https://www.cb8m.com/full-board-archive/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         }
@@ -1957,7 +1969,7 @@
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "manhattan-cb-09",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "manhattan-cb-09",
         "name": "Manhattan Community Board 9",
@@ -1971,7 +1983,7 @@
           "source_role_state": "unavailable",
           "reason": "challenge_html",
           "source_url": "https://www.cb9m.org/cal_events",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -1980,7 +1992,7 @@
           "source_role_state": "unavailable",
           "reason": "challenge_html",
           "source_url": "https://www.cb9m.org/archives",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 1,
           "retained_snapshot": null
         }
@@ -1992,56 +2004,40 @@
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "manhattan-cb-10",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "manhattan-cb-10",
         "name": "Manhattan Community Board 10",
         "borough": "Manhattan",
         "community_district": "M10"
       },
-      "meeting": null,
-      "coverage": {
-        "meetings": {
-          "state": "indexed",
-          "source_role_state": "indexed",
-          "reason": null,
-          "source_url": "https://cbmanhattan.cityofnewyork.us/cb10/events/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 10,
-          "retained_snapshot": null
-        },
-        "minutes": {
-          "state": "indexed",
-          "source_role_state": "indexed",
-          "reason": null,
-          "source_url": "https://cbmanhattan.cityofnewyork.us/cb10/meetings/minutes/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 37,
-          "retained_snapshot": null
-        }
-      },
-      "status": "no_full_board_meeting_recorded",
-      "reason": "record_holds_only_later_full_board_meetings",
-      "next_scheduled": {
-        "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-10-07/",
+      "meeting": {
+        "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2-2/",
         "title": "General Board Meeting",
-        "event_date": "2026-10-07T18:00:00-04:00",
-        "meeting_day": "2026-10-07",
+        "event_date": "2026-09-02T18:00:00-04:00",
+        "meeting_day": "2026-09-02",
         "board_id": "manhattan-cb-10",
         "board_name": "Manhattan Community Board 10",
         "convening_body": "full_board",
         "convening_body_basis": "publisher_meeting_title",
         "venue": {
-          "name": "National Urban League",
-          "address": "117 W. 125th St, New York, NY, 10027",
-          "mode": "in-person"
+          "name": "State Office Building",
+          "address": "163 W. 125th Street, 2nd Floor, New York, 10027",
+          "mode": "in-person",
+          "components": {
+            "street_address": "163 W. 125th Street, 2nd Floor",
+            "address_locality": "New York",
+            "address_region": null,
+            "postal_code": "10027",
+            "address_borough": null
+          }
         },
         "source": {
           "source_system": "community_board",
           "publisher": "Manhattan Community Board 10",
-          "source_url": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-10-07/",
-          "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-10-07/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "source_url": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2-2/",
+          "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2-2/",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "observation_state": "observed",
           "observation_age_days": 0,
           "retained_snapshot": null
@@ -2051,17 +2047,39 @@
           "document_count": 0,
           "documents": [],
           "source_url": "https://cbmanhattan.cityofnewyork.us/cb10/meetings/minutes/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "minutes_source_read_without_minutes_for_this_meeting",
           "statement": "The minutes corpus was read for this board and holds no minutes for this meeting."
         }
       },
-      "statement": "This corpus holds no full board meeting for Manhattan Community Board 10 on or before 2026-09-23. The earliest it holds is 2026-10-07, so when the board last met in full session is not recorded here."
+      "coverage": {
+        "meetings": {
+          "state": "indexed",
+          "source_role_state": "indexed",
+          "reason": null,
+          "source_url": "https://cbmanhattan.cityofnewyork.us/cb10/events/",
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 21,
+          "retained_snapshot": null
+        },
+        "minutes": {
+          "state": "indexed",
+          "source_role_state": "indexed",
+          "reason": null,
+          "source_url": "https://cbmanhattan.cityofnewyork.us/cb10/meetings/minutes/",
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 37,
+          "retained_snapshot": null
+        }
+      },
+      "status": "full_board_meeting",
+      "reason": null,
+      "statement": "Manhattan Community Board 10 last met in full session on 2026-09-02 according to Manhattan Community Board 10, observed 2026-09-30. The minutes corpus was read for this board and holds no minutes for this meeting."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "manhattan-cb-11",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "manhattan-cb-11",
         "name": "Manhattan Community Board 11",
@@ -2081,6 +2099,7 @@
           "name": "via Video Conference, 2017 First Avenue, New York, NY 10029",
           "address": "via Video Conference, 2017 First Avenue, New York, NY 10029",
           "mode": "not-stated",
+          "components": null,
           "attendance_conflict": true
         },
         "source": {
@@ -2088,7 +2107,7 @@
           "publisher": "Manhattan Community Board 11",
           "source_url": "https://airtable.com/shrEZxc5vi8McZNFb/rec1uA1X3lFd2SBdO",
           "publisher_identifier": "rec1uA1X3lFd2SBdO",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "observation_state": "observed",
           "observation_age_days": 0,
           "retained_snapshot": null
@@ -2098,7 +2117,7 @@
           "document_count": 0,
           "documents": [],
           "source_url": "https://airtable.com/appedcOCWGdk7kppK/shrJ150rk13A8HfPK/tblNt0o4xr7gTHHoY",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "minutes_source_could_not_be_read",
           "statement": "The minutes corpus could not read this board's minutes source, so whether minutes exist is unknown."
         }
@@ -2109,7 +2128,7 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.cb11m.org/calendar/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 125,
           "retained_snapshot": null
         },
@@ -2118,19 +2137,19 @@
           "source_role_state": "unavailable",
           "reason": "source_serves_browsers_only",
           "source_url": "https://airtable.com/appedcOCWGdk7kppK/shrJ150rk13A8HfPK/tblNt0o4xr7gTHHoY",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         }
       },
       "status": "full_board_meeting",
       "reason": null,
-      "statement": "Manhattan Community Board 11 last met in full session on 2026-09-15 according to Manhattan Community Board 11, observed 2026-09-23. The minutes corpus could not read this board's minutes source, so whether minutes exist is unknown."
+      "statement": "Manhattan Community Board 11 last met in full session on 2026-09-15 according to Manhattan Community Board 11, observed 2026-09-30. The minutes corpus could not read this board's minutes source, so whether minutes exist is unknown."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "manhattan-cb-12",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "manhattan-cb-12",
         "name": "Manhattan Community Board 12",
@@ -2144,8 +2163,8 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://cb12m.org/en/calendar",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 13,
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 30,
           "retained_snapshot": null
         },
         "minutes": {
@@ -2153,19 +2172,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://cbmanhattan.cityofnewyork.us/cb12/meetings/minutes/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 8,
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 18,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_has_unclassified_titles",
-      "statement": "Manhattan Community Board 12's meeting source was read on 2026-09-23 but its published meeting title does not identify a full board session, so when the board last met in full session is not recorded here."
+      "statement": "Manhattan Community Board 12's meeting source was read on 2026-09-30 but its published meeting title does not identify a full board session, so when the board last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "queens-cb-01",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "queens-cb-01",
         "name": "Queens Community Board 1",
@@ -2187,7 +2206,7 @@
           "publisher": "Queens Community Board 1",
           "source_url": "https://www.nyc.gov/site/queenscb1/calendar/calendar.page",
           "publisher_identifier": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "observation_state": "observed",
           "observation_age_days": 0,
           "retained_snapshot": null
@@ -2197,7 +2216,7 @@
           "document_count": 0,
           "documents": [],
           "source_url": "https://www.nyc.gov/site/queenscb1/calendar/board-meeting-agendas-minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "minutes_source_read_without_minutes_for_this_meeting",
           "statement": "The minutes corpus was read for this board and holds no minutes for this meeting."
         }
@@ -2208,7 +2227,7 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/queenscb1/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 1,
           "retained_snapshot": null
         },
@@ -2217,19 +2236,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/queenscb1/calendar/board-meeting-agendas-minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 48,
           "retained_snapshot": null
         }
       },
       "status": "full_board_meeting",
       "reason": null,
-      "statement": "Queens Community Board 1 last met in full session on 2026-09-22 according to Queens Community Board 1, observed 2026-09-23. The minutes corpus was read for this board and holds no minutes for this meeting."
+      "statement": "Queens Community Board 1 last met in full session on 2026-09-22 according to Queens Community Board 1, observed 2026-09-30. The minutes corpus was read for this board and holds no minutes for this meeting."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "queens-cb-02",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "queens-cb-02",
         "name": "Queens Community Board 2",
@@ -2251,7 +2270,7 @@
           "publisher": "Queens Community Board 2",
           "source_url": "https://calendar.google.com/calendar/ical/69eed2bn65b21e0svqfc7t4eog%40group.calendar.google.com/public/basic.ics",
           "publisher_identifier": "2aa6dkse90cddbdvqgi2h5165g@google.com::2026-09-10",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "observation_state": "observed",
           "observation_age_days": 0,
           "retained_snapshot": null
@@ -2261,7 +2280,7 @@
           "document_count": 0,
           "documents": [],
           "source_url": "https://www.nyc.gov/site/queenscb2/meetings/meeting-agendas-minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "minutes_source_read_without_minutes_for_this_meeting",
           "statement": "The minutes corpus was read for this board and holds no minutes for this meeting."
         }
@@ -2272,8 +2291,8 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/queenscb2/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 28,
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 30,
           "retained_snapshot": null
         },
         "minutes": {
@@ -2281,19 +2300,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/queenscb2/meetings/meeting-agendas-minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 170,
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 172,
           "retained_snapshot": null
         }
       },
       "status": "full_board_meeting",
       "reason": null,
-      "statement": "Queens Community Board 2 last met in full session on 2026-09-10 according to Queens Community Board 2, observed 2026-09-23. The minutes corpus was read for this board and holds no minutes for this meeting."
+      "statement": "Queens Community Board 2 last met in full session on 2026-09-10 according to Queens Community Board 2, observed 2026-09-30. The minutes corpus was read for this board and holds no minutes for this meeting."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "queens-cb-03",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "queens-cb-03",
         "name": "Queens Community Board 3",
@@ -2307,7 +2326,7 @@
           "source_role_state": "unavailable",
           "reason": "source_serves_browsers_only",
           "source_url": "https://queenscb3.cityofnewyork.us/calendar/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -2316,7 +2335,7 @@
           "source_role_state": "unavailable",
           "reason": "source_serves_browsers_only",
           "source_url": "https://queenscb3.cityofnewyork.us/board-meeting-minutes/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         }
@@ -2328,7 +2347,7 @@
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "queens-cb-04",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "queens-cb-04",
         "name": "Queens Community Board 4",
@@ -2342,7 +2361,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/queenscb4/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -2351,19 +2370,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/queenscb4/meetings/minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 89,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Queens Community Board 4's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Queens Community Board 4's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "queens-cb-05",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "queens-cb-05",
         "name": "Queens Community Board 5",
@@ -2377,7 +2396,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/queenscb5/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -2386,19 +2405,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/queenscb5/meetings/minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 128,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Queens Community Board 5's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Queens Community Board 5's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "queens-cb-06",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "queens-cb-06",
         "name": "Queens Community Board 6",
@@ -2418,6 +2437,7 @@
           "name": null,
           "address": "Queens Borough Hall, 120-55 Queens Blvd, Kew Gardens, NY 11424, USA",
           "mode": "not-stated",
+          "components": null,
           "attendance_conflict": true
         },
         "source": {
@@ -2425,7 +2445,7 @@
           "publisher": "Queens Community Board 6",
           "source_url": "https://calendar.google.com/calendar/ical/queenscb6secretary%40gmail.com/public/basic.ics",
           "publisher_identifier": "5vakpp5iprk5a4i79a7cqm5mis@google.com::2026-09-17",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "observation_state": "observed",
           "observation_age_days": 0,
           "retained_snapshot": null
@@ -2435,7 +2455,7 @@
           "document_count": 0,
           "documents": [],
           "source_url": "https://www.nyc.gov/site/queenscb6/meetings/meeting-minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "reason": "minutes_source_read_without_minutes_for_this_meeting",
           "statement": "The minutes corpus was read for this board and holds no minutes for this meeting."
         }
@@ -2446,7 +2466,7 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/queenscb6/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 20,
           "retained_snapshot": null
         },
@@ -2455,19 +2475,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/queenscb6/meetings/meeting-minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 75,
           "retained_snapshot": null
         }
       },
       "status": "full_board_meeting",
       "reason": null,
-      "statement": "Queens Community Board 6 last met in full session on 2026-09-17 according to Queens Community Board 6, observed 2026-09-23. The minutes corpus was read for this board and holds no minutes for this meeting."
+      "statement": "Queens Community Board 6 last met in full session on 2026-09-17 according to Queens Community Board 6, observed 2026-09-30. The minutes corpus was read for this board and holds no minutes for this meeting."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "queens-cb-07",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "queens-cb-07",
         "name": "Queens Community Board 7",
@@ -2481,7 +2501,7 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/queenscb7/meetings/meetings.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 1,
           "retained_snapshot": null
         },
@@ -2490,19 +2510,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/queenscb7/meetings/minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 88,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_has_unclassified_titles",
-      "statement": "Queens Community Board 7's meeting source was read on 2026-09-23 but its published meeting title does not identify a full board session, so when the board last met in full session is not recorded here."
+      "statement": "Queens Community Board 7's meeting source was read on 2026-09-30 but its published meeting title does not identify a full board session, so when the board last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "queens-cb-08",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "queens-cb-08",
         "name": "Queens Community Board 8",
@@ -2516,7 +2536,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/queenscb8/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -2525,19 +2545,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/queenscb8/meetings/board-meeting-minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 135,
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 136,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Queens Community Board 8's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Queens Community Board 8's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "queens-cb-09",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "queens-cb-09",
         "name": "Queens Community Board 9",
@@ -2551,7 +2571,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/queenscb9/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -2560,19 +2580,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/queenscb9/meetings/minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 134,
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 135,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Queens Community Board 9's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Queens Community Board 9's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "queens-cb-10",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "queens-cb-10",
         "name": "Queens Community Board 10",
@@ -2586,7 +2606,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/queenscb10/meetings/agendas-minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -2595,19 +2615,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/queenscb10/meetings/agendas-minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 146,
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 147,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Queens Community Board 10's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Queens Community Board 10's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "queens-cb-11",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "queens-cb-11",
         "name": "Queens Community Board 11",
@@ -2621,7 +2641,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/queenscb11/meetings/meetings.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -2630,19 +2650,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/queenscb11/meetings/meeting-minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 72,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Queens Community Board 11's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Queens Community Board 11's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "queens-cb-12",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "queens-cb-12",
         "name": "Queens Community Board 12",
@@ -2656,7 +2676,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/queenscb12/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -2665,19 +2685,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/queenscb12/meetings/minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 54,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Queens Community Board 12's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Queens Community Board 12's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "queens-cb-13",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "queens-cb-13",
         "name": "Queens Community Board 13",
@@ -2691,7 +2711,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/queenscb13/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -2700,19 +2720,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/queenscb13/meetings/minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 38,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Queens Community Board 13's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Queens Community Board 13's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "queens-cb-14",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "queens-cb-14",
         "name": "Queens Community Board 14",
@@ -2726,7 +2746,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/queenscb14/calendar/calendar.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -2735,19 +2755,19 @@
           "source_role_state": "not-yet-checked",
           "reason": "no_explicit_source_observed",
           "source_url": null,
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Queens Community Board 14's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Queens Community Board 14's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "staten-island-cb-01",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "staten-island-cb-01",
         "name": "Staten Island Community Board 1",
@@ -2761,7 +2781,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/statenislandcb1/meetings/meetings.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -2770,19 +2790,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/statenislandcb1/meetings/minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 305,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Staten Island Community Board 1's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Staten Island Community Board 1's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "staten-island-cb-02",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "staten-island-cb-02",
         "name": "Staten Island Community Board 2",
@@ -2796,7 +2816,7 @@
           "source_role_state": "checked-empty",
           "reason": "no_explicit_records",
           "source_url": "https://www.nyc.gov/site/statenislandcb2/meetings/full-board-agendas.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 0,
           "retained_snapshot": null
         },
@@ -2805,19 +2825,19 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/statenislandcb2/meetings/full-board-minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 72,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
       "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Staten Island Community Board 2's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "statement": "Staten Island Community Board 2's meeting source was read on 2026-09-30, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
       "query": "staten-island-cb-03",
-      "as_of": "2026-09-23",
+      "as_of": "2026-09-30",
       "board": {
         "id": "staten-island-cb-03",
         "name": "Staten Island Community Board 3",
@@ -2827,12 +2847,12 @@
       "meeting": null,
       "coverage": {
         "meetings": {
-          "state": "checked-empty",
-          "source_role_state": "checked-empty",
-          "reason": "no_explicit_records",
+          "state": "indexed",
+          "source_role_state": "indexed",
+          "reason": null,
           "source_url": "https://www.nyc.gov/site/statenislandcb3/meetings/meetings.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "record_count": 0,
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "record_count": 1,
           "retained_snapshot": null
         },
         "minutes": {
@@ -2840,14 +2860,14 @@
           "source_role_state": "indexed",
           "reason": null,
           "source_url": "https://www.nyc.gov/site/statenislandcb3/meetings/general-board-minutes.page",
-          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observed_at": "2026-09-30T12:59:02.901Z",
           "record_count": 34,
           "retained_snapshot": null
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_extracted_no_usable_events",
-      "statement": "Staten Island Community Board 3's meeting source was read on 2026-09-23, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_has_unclassified_titles",
+      "statement": "Staten Island Community Board 3's meeting source was read on 2026-09-30 but its published meeting title does not identify a full board session, so when the board last met in full session is not recorded here."
     }
   ]
 }

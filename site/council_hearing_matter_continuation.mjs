@@ -28,7 +28,7 @@ function outcomeFor(record, override) {
   return override || record?.meeting_outcome || record?.council_outcome || null;
 }
 
-function exactMatters(outcome) {
+function exactMatters(outcome, destinationOptions) {
   const seen = new Set();
   const matters = [];
   for (const raw of Array.isArray(outcome?.matters) ? outcome.matters : []) {
@@ -41,7 +41,9 @@ function exactMatters(outcome) {
     // One availability rule for every surface: a published local history, this
     // matter's own official address, or an honest absence. Never a local route
     // the published lookup does not carry, and never a substitute destination.
-    const destination = resolveMatterDestination({ matter_id: matterId, matter_url: matterUrl });
+    const destination = destinationOptions === undefined
+      ? resolveMatterDestination({ matter_id: matterId, matter_url: matterUrl })
+      : resolveMatterDestination({ matter_id: matterId, matter_url: matterUrl }, destinationOptions);
     matters.push(Object.freeze({
       subject_ref: `matter:${matterId}`,
       matter_id: matterId,
@@ -60,8 +62,11 @@ function exactMatters(outcome) {
  * Project only an exact City Record → Council outcome join. This is a
  * source-preserving read projection: it never compares titles, substitutes a
  * committee, or chooses a matter from an ambiguous set.
+ *
+ * `destinationOptions` forwards to resolveMatterDestination so fixture-bound
+ * callers can pin the published generation without reading live site/data.
  */
-export function projectCouncilHearingMatterContinuation(record = {}, override = null) {
+export function projectCouncilHearingMatterContinuation(record = {}, override = null, destinationOptions = undefined) {
   const outcome = outcomeFor(record, override);
   const base = {
     schema: COUNCIL_HEARING_MATTER_CONTINUATION_SCHEMA,
@@ -78,7 +83,7 @@ export function projectCouncilHearingMatterContinuation(record = {}, override = 
       state: outcome.snapshot_state === "absent" ? "unmatched" : "unknown",
     });
   }
-  const matters = exactMatters(outcome);
+  const matters = exactMatters(outcome, destinationOptions);
   return Object.freeze({
     ...base,
     matters,
@@ -123,8 +128,13 @@ function continuationControl(matter, { candidate = false } = {}) {
 }
 
 /** Render the exact matter set for either the static meeting document or a card. */
-export function renderCouncilHearingMatterContinuation(record = {}, override = null, { sectionClass = "node-section civic-object-section meeting-section" } = {}) {
-  const projection = projectCouncilHearingMatterContinuation(record, override);
+export function renderCouncilHearingMatterContinuation(record = {}, override = null, options = {}) {
+  const sectionClass = options.sectionClass
+    || "node-section civic-object-section meeting-section";
+  const destinationOptions = (options.published !== undefined || options.lookup !== undefined)
+    ? { published: options.published, lookup: options.lookup }
+    : undefined;
+  const projection = projectCouncilHearingMatterContinuation(record, override, destinationOptions);
   if (projection.state === "unavailable") return "";
   if (projection.state === "unmatched") {
     return `<section class="${sectionClass} meeting-matter-continuation" data-council-matter-continuation="1" data-continuation-state="unmatched"><h2>What this hearing concerns</h2><p class="node-muted">No exact Council hearing match is available for this notice, so no underlying matter is shown.</p></section>`;

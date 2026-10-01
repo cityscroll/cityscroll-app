@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.bsa_calendar_materialization.v1",
-  "generated_at": "2026-09-16T02:19:42.162Z",
+  "generated_at": "2026-09-30T12:58:57.720Z",
   "source": {
     "system": "bsa_calendar",
     "url": "https://www.nyc.gov/site/bsa/public-hearings/upcoming-hearing-info.page",
@@ -22,6 +22,18 @@
       "title": "Board of Standards and Appeals hearing — 2026-09-14",
       "event_date": "2026-09-14T10:00:00",
       "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-09-14T10:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_document",
+        "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/september_14_15_2026_public_hearing.pdf",
+        "observed_at": null,
+        "raw_date": "2026-09-14",
+        "raw_time": "10:00:00",
+        "status": "resolved"
+      },
       "meeting_family": "bsa_session_v1",
       "activity": "observe",
       "attendance_mode": null,
@@ -42,8 +54,35 @@
       "venue": {
         "name": "Spector Hall",
         "address": "22 Reade Street, New York, NY 10007",
-        "role": "venue"
+        "role": "venue",
+        "mode": "in-person"
       },
+      "location_assertions": [
+        {
+          "schema": "cityscroll.meeting_location_assertion.v1",
+          "assertion_id": "location_assertion:meeting:bsa_calendar:bsa-2026-09-14::venue::venue.address::1",
+          "meeting_id": "meeting:bsa_calendar:bsa-2026-09-14",
+          "record_id": "bsa-2026-09-14",
+          "role": "venue",
+          "validity": "admitted_physical_venue",
+          "attendance_meaning": "in_person",
+          "original_address": "22 Reade Street, New York, NY 10007",
+          "venue_name": "Spector Hall",
+          "components": null,
+          "wrapper": null,
+          "source_field": "venue.address",
+          "source_passage": null,
+          "passage_locator": null,
+          "passage_text_sha256": null,
+          "source_receipt": {
+            "schema": "cityscroll.document_processing_receipt.v1",
+            "status": "ok",
+            "parser": "bsa_agenda_sections_v1",
+            "publication_date": "2026-09-30",
+            "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/september_14_15_2026_public_hearing.pdf"
+          }
+        }
+      ],
       "participation": {
         "links": [
           {
@@ -427,7 +466,7 @@
         "schema": "cityscroll.document_processing_receipt.v1",
         "status": "ok",
         "parser": "bsa_agenda_sections_v1",
-        "publication_date": "2026-09-16",
+        "publication_date": "2026-09-30",
         "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/september_14_15_2026_public_hearing.pdf"
       },
       "join_status": "unknown",
@@ -449,9 +488,18 @@
         "start": 21,
         "end": 822
       },
-      "publication_date": "2026-09-16",
+      "publication_date": "2026-09-30",
       "notice_id": null,
-      "remote_registration_url": "https://www.zoomgov.com/webinar/register/WN_OD06_S6ATSCpisnz4uIkJg"
+      "remote_registration_url": "https://www.zoomgov.com/webinar/register/WN_OD06_S6ATSCpisnz4uIkJg",
+      "source_entry_evidence": {
+        "locator": {
+          "type": "agenda_session_header",
+          "date": "2026-09-14",
+          "time": "10:00 AM"
+        },
+        "excerpt": "September 14, 2026, 10:00 AM",
+        "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/september_14_15_2026_public_hearing.pdf"
+      }
     },
     {
       "object_type": "meeting",
@@ -468,6 +516,18 @@
       "title": "Board of Standards and Appeals hearing — 2026-09-15",
       "event_date": "2026-09-15T10:00:00",
       "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-09-15T10:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_document",
+        "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/september_14_15_2026_public_hearing.pdf",
+        "observed_at": null,
+        "raw_date": "2026-09-15",
+        "raw_time": "10:00:00",
+        "status": "resolved"
+      },
       "meeting_family": "bsa_session_v1",
       "activity": "observe",
       "attendance_mode": null,
@@ -488,8 +548,35 @@
       "venue": {
         "name": "Spector Hall",
         "address": "22 Reade Street, New York, NY 10007",
-        "role": "venue"
+        "role": "venue",
+        "mode": "in-person"
       },
+      "location_assertions": [
+        {
+          "schema": "cityscroll.meeting_location_assertion.v1",
+          "assertion_id": "location_assertion:meeting:bsa_calendar:bsa-2026-09-15::venue::venue.address::1",
+          "meeting_id": "meeting:bsa_calendar:bsa-2026-09-15",
+          "record_id": "bsa-2026-09-15",
+          "role": "venue",
+          "validity": "admitted_physical_venue",
+          "attendance_meaning": "in_person",
+          "original_address": "22 Reade Street, New York, NY 10007",
+          "venue_name": "Spector Hall",
+          "components": null,
+          "wrapper": null,
+          "source_field": "venue.address",
+          "source_passage": null,
+          "passage_locator": null,
+          "passage_text_sha256": null,
+          "source_receipt": {
+            "schema": "cityscroll.document_processing_receipt.v1",
+            "status": "ok",
+            "parser": "bsa_agenda_sections_v1",
+            "publication_date": "2026-09-30",
+            "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/september_14_15_2026_public_hearing.pdf"
+          }
+        }
+      ],
       "participation": {
         "links": [
           {
@@ -613,7 +700,7 @@
         "schema": "cityscroll.document_processing_receipt.v1",
         "status": "ok",
         "parser": "bsa_agenda_sections_v1",
-        "publication_date": "2026-09-16",
+        "publication_date": "2026-09-30",
         "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/september_14_15_2026_public_hearing.pdf"
       },
       "join_status": "unknown",
@@ -635,9 +722,18 @@
         "start": 21,
         "end": 0
       },
-      "publication_date": "2026-09-16",
+      "publication_date": "2026-09-30",
       "notice_id": null,
-      "remote_registration_url": "https://www.zoomgov.com/webinar/register/WN_-_pUZn5pRDKT8tqL7_RI0Q"
+      "remote_registration_url": "https://www.zoomgov.com/webinar/register/WN_-_pUZn5pRDKT8tqL7_RI0Q",
+      "source_entry_evidence": {
+        "locator": {
+          "type": "agenda_session_header",
+          "date": "2026-09-15",
+          "time": "10:00 AM"
+        },
+        "excerpt": "September 15, 2026, 10:00 AM",
+        "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/september_14_15_2026_public_hearing.pdf"
+      }
     }
   ]
 }

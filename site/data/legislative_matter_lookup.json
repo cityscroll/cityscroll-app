@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.legislative_matter_lookup.v1",
-  "generated_at": "2026-09-04T13:09:00.447Z",
+  "generated_at": "2026-09-30T13:12:58.771Z",
   "source": {
     "system": "legistar",
     "input_artifact": "site/data/meeting_outcomes_snapshot.json",
@@ -21,78 +21,6 @@
       "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78409",
       "label_revisions": [],
       "appearances": [
-        {
-          "request_id": "20260304007",
-          "notice_references": [
-            {
-              "request_id": "20260304007",
-              "notice_href": "/notices/20260304007/",
-              "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22300&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
-            }
-          ],
-          "event": {
-            "event_id": "22300",
-            "name": "Subcommittee on Zoning and Franchises",
-            "date": "2026-03-18",
-            "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22300&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-            "body_id": null,
-            "documents": [
-              {
-                "name": "Agenda",
-                "url": "https://nyc.legistar1.com/nyc/meetings/2026/3/22300_A_Subcommittee_on_Zoning_and_Franchises_26-03-18_Committee_Agenda.pdf"
-              },
-              {
-                "name": "Minutes",
-                "url": "https://nyc.legistar1.com/nyc/meetings/2026/3/22300_M_Subcommittee_on_Zoning_and_Franchises_26-03-18_Meeting_Minutes.pdf"
-              }
-            ]
-          },
-          "committee": {
-            "label": "Subcommittee on Zoning and Franchises",
-            "body_id": null,
-            "join_state": "unresolved_no_explicit_body_id"
-          },
-          "matter_id": "78409",
-          "matter_ref": "legistar:nyc:matter:78409",
-          "matter_file": "LU 0045-2026",
-          "actions": [
-            "Hearing Held by Committee",
-            "Laid Over by Subcommittee"
-          ],
-          "outcome": "Laid Over by Subcommittee",
-          "matter_type": null,
-          "matter_status": null,
-          "votes": null,
-          "item_actions": [
-            {
-              "event_item_id": "436109",
-              "action": "Hearing Held by Committee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            },
-            {
-              "event_item_id": "436231",
-              "action": "Laid Over by Subcommittee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            }
-          ],
-          "source_receipt": {
-            "source_system": "legistar",
-            "request_id": "20260304007",
-            "request_ids": [
-              "20260304007"
-            ],
-            "event_id": "22300",
-            "event_item_ids": [
-              "436109",
-              "436231"
-            ],
-            "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22300&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-            "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
-          }
-        },
         {
           "request_id": "20260331028",
           "notice_references": [
@@ -338,7 +266,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22365&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -354,78 +282,6 @@
       "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78411",
       "label_revisions": [],
       "appearances": [
-        {
-          "request_id": "20260304007",
-          "notice_references": [
-            {
-              "request_id": "20260304007",
-              "notice_href": "/notices/20260304007/",
-              "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22300&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
-            }
-          ],
-          "event": {
-            "event_id": "22300",
-            "name": "Subcommittee on Zoning and Franchises",
-            "date": "2026-03-18",
-            "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22300&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-            "body_id": null,
-            "documents": [
-              {
-                "name": "Agenda",
-                "url": "https://nyc.legistar1.com/nyc/meetings/2026/3/22300_A_Subcommittee_on_Zoning_and_Franchises_26-03-18_Committee_Agenda.pdf"
-              },
-              {
-                "name": "Minutes",
-                "url": "https://nyc.legistar1.com/nyc/meetings/2026/3/22300_M_Subcommittee_on_Zoning_and_Franchises_26-03-18_Meeting_Minutes.pdf"
-              }
-            ]
-          },
-          "committee": {
-            "label": "Subcommittee on Zoning and Franchises",
-            "body_id": null,
-            "join_state": "unresolved_no_explicit_body_id"
-          },
-          "matter_id": "78411",
-          "matter_ref": "legistar:nyc:matter:78411",
-          "matter_file": "LU 0046-2026",
-          "actions": [
-            "Hearing Held by Committee",
-            "Laid Over by Subcommittee"
-          ],
-          "outcome": "Laid Over by Subcommittee",
-          "matter_type": null,
-          "matter_status": null,
-          "votes": null,
-          "item_actions": [
-            {
-              "event_item_id": "436110",
-              "action": "Hearing Held by Committee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            },
-            {
-              "event_item_id": "436232",
-              "action": "Laid Over by Subcommittee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            }
-          ],
-          "source_receipt": {
-            "source_system": "legistar",
-            "request_id": "20260304007",
-            "request_ids": [
-              "20260304007"
-            ],
-            "event_id": "22300",
-            "event_item_ids": [
-              "436110",
-              "436232"
-            ],
-            "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22300&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-            "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
-          }
-        },
         {
           "request_id": "20260331028",
           "notice_references": [
@@ -671,177 +527,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22365&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
-          }
-        }
-      ]
-    },
-    "78414": {
-      "matter_id": "78414",
-      "matter_ref": "legistar:nyc:matter:78414",
-      "publisher_tenant": "nyc",
-      "matter_file": "LU 0047-2026",
-      "title": "Zoning, Le Dive, Manhattan (D 2650119000 SWM).",
-      "matter_type": null,
-      "matter_status": null,
-      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78414",
-      "label_revisions": [],
-      "appearances": [
-        {
-          "request_id": "20260304007",
-          "notice_references": [
-            {
-              "request_id": "20260304007",
-              "notice_href": "/notices/20260304007/",
-              "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22300&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
-            }
-          ],
-          "event": {
-            "event_id": "22300",
-            "name": "Subcommittee on Zoning and Franchises",
-            "date": "2026-03-18",
-            "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22300&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-            "body_id": null,
-            "documents": [
-              {
-                "name": "Agenda",
-                "url": "https://nyc.legistar1.com/nyc/meetings/2026/3/22300_A_Subcommittee_on_Zoning_and_Franchises_26-03-18_Committee_Agenda.pdf"
-              },
-              {
-                "name": "Minutes",
-                "url": "https://nyc.legistar1.com/nyc/meetings/2026/3/22300_M_Subcommittee_on_Zoning_and_Franchises_26-03-18_Meeting_Minutes.pdf"
-              }
-            ]
-          },
-          "committee": {
-            "label": "Subcommittee on Zoning and Franchises",
-            "body_id": null,
-            "join_state": "unresolved_no_explicit_body_id"
-          },
-          "matter_id": "78414",
-          "matter_ref": "legistar:nyc:matter:78414",
-          "matter_file": "LU 0047-2026",
-          "actions": [
-            "Hearing Held by Committee",
-            "Laid Over by Subcommittee"
-          ],
-          "outcome": "Laid Over by Subcommittee",
-          "matter_type": null,
-          "matter_status": null,
-          "votes": null,
-          "item_actions": [
-            {
-              "event_item_id": "436111",
-              "action": "Hearing Held by Committee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            },
-            {
-              "event_item_id": "436233",
-              "action": "Laid Over by Subcommittee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            }
-          ],
-          "source_receipt": {
-            "source_system": "legistar",
-            "request_id": "20260304007",
-            "request_ids": [
-              "20260304007"
-            ],
-            "event_id": "22300",
-            "event_item_ids": [
-              "436111",
-              "436233"
-            ],
-            "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22300&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-            "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
-          }
-        }
-      ]
-    },
-    "78475": {
-      "matter_id": "78475",
-      "matter_ref": "legistar:nyc:matter:78475",
-      "publisher_tenant": "nyc",
-      "matter_file": "LU 0048-2026",
-      "title": "Landmarks, Approximately 754-Seat Primary/Intermediate School Facility, Staten Island (G 250094 SCR).",
-      "matter_type": null,
-      "matter_status": null,
-      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78475",
-      "label_revisions": [],
-      "appearances": [
-        {
-          "request_id": "20260304006",
-          "notice_references": [
-            {
-              "request_id": "20260304006",
-              "notice_href": "/notices/20260304006/",
-              "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22299&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
-            }
-          ],
-          "event": {
-            "event_id": "22299",
-            "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
-            "date": "2026-03-18",
-            "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22299&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-            "body_id": null,
-            "documents": [
-              {
-                "name": "Agenda",
-                "url": "https://nyc.legistar1.com/nyc/meetings/2026/3/22299_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-03-18_Committee_Agenda.pdf"
-              },
-              {
-                "name": "Minutes",
-                "url": "https://nyc.legistar1.com/nyc/meetings/2026/3/22299_M_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-03-18_Meeting_Minutes.pdf"
-              }
-            ]
-          },
-          "committee": {
-            "label": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
-            "body_id": null,
-            "join_state": "unresolved_no_explicit_body_id"
-          },
-          "matter_id": "78475",
-          "matter_ref": "legistar:nyc:matter:78475",
-          "matter_file": "LU 0048-2026",
-          "actions": [
-            "Hearing on P-C Item by Comm",
-            "P-C Item Laid Over by Comm"
-          ],
-          "outcome": "P-C Item Laid Over by Comm",
-          "matter_type": null,
-          "matter_status": null,
-          "votes": null,
-          "item_actions": [
-            {
-              "event_item_id": "436108",
-              "action": "Hearing on P-C Item by Comm",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            },
-            {
-              "event_item_id": "436236",
-              "action": "P-C Item Laid Over by Comm",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            }
-          ],
-          "source_receipt": {
-            "source_system": "legistar",
-            "request_id": "20260304006",
-            "request_ids": [
-              "20260304006"
-            ],
-            "event_id": "22299",
-            "event_item_ids": [
-              "436108",
-              "436236"
-            ],
-            "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22299&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-            "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -1102,7 +788,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22365&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -1363,7 +1049,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22365&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -1448,7 +1134,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22365&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -1533,7 +1219,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22365&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -1618,7 +1304,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22365&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -1703,7 +1389,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22365&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -1788,7 +1474,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22365&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -1873,7 +1559,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22342&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         },
         {
@@ -2121,7 +1807,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22375&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -2206,7 +1892,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22342&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         },
         {
@@ -2454,7 +2140,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22375&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -2539,7 +2225,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22342&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         },
         {
@@ -2787,7 +2473,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22375&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -2878,7 +2564,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22396&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -2969,7 +2655,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22396&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -3230,7 +2916,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22375&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -3315,7 +3001,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -3400,7 +3086,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -3485,7 +3171,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -3570,7 +3256,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -3655,7 +3341,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -3740,7 +3426,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -3825,7 +3511,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -3910,7 +3596,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -3995,7 +3681,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -4080,7 +3766,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -4165,7 +3851,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -4250,7 +3936,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22567&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         },
         {
@@ -4470,7 +4156,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22526&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -4555,7 +4241,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22567&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         },
         {
@@ -4775,7 +4461,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22526&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -4860,7 +4546,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22567&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         },
         {
@@ -5080,7 +4766,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22526&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -5165,7 +4851,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22437&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -5250,7 +4936,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22437&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -5335,7 +5021,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22437&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -5420,7 +5106,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22437&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -5505,7 +5191,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22437&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -5590,7 +5276,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22437&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -5675,7 +5361,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -5760,7 +5446,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -5845,7 +5531,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -5930,7 +5616,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -6015,7 +5701,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -6100,7 +5786,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -6185,7 +5871,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -6270,7 +5956,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -6355,7 +6041,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -6440,7 +6126,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -6525,7 +6211,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22567&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         },
         {
@@ -6745,7 +6431,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22526&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -6830,7 +6516,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22567&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         },
         {
@@ -7050,7 +6736,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22526&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -7283,7 +6969,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22526&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -7340,81 +7026,7 @@
           "outcome": "P-C Item Approved by Subcommittee with Companion Resolution",
           "matter_type": null,
           "matter_status": null,
-          "votes": {
-            "result": "Passed",
-            "yes": 6,
-            "no": 0,
-            "abstain": 0,
-            "absent": 1,
-            "recused": 0,
-            "non_voting": 0,
-            "unknown": 0,
-            "published_vote_values": [
-              {
-                "vote_value": "Affirmative",
-                "rows": 6
-              },
-              {
-                "vote_value": "Absent",
-                "rows": 1
-              }
-            ],
-            "event_id": "22526",
-            "event_item_id": "440500",
-            "vote_identity": "roll_call",
-            "person_count": 7,
-            "by_person": [
-              {
-                "person_id": "7801",
-                "person_name": "Christopher Marte",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7825",
-                "person_name": "Alexa Avilés",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7798",
-                "person_name": "Oswald J. Feliz",
-                "vote_bucket": "absent",
-                "vote_value": "Absent",
-                "vote_participation": "absent"
-              },
-              {
-                "person_id": "7832",
-                "person_name": "Kamillah Hanks",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7824",
-                "person_name": "Sandy Nurse",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7823",
-                "person_name": "Chi A. Ossé",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7898",
-                "person_name": "Shanel Thomas-Henry",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              }
-            ]
-          },
+          "votes": null,
           "item_actions": [
             {
               "event_item_id": "440245",
@@ -7425,82 +7037,8 @@
             {
               "event_item_id": "440500",
               "action": "P-C Item Approved by Subcommittee with Companion Resolution",
-              "vote_state": "roll_call_recorded",
-              "votes": {
-                "result": "Passed",
-                "yes": 6,
-                "no": 0,
-                "abstain": 0,
-                "absent": 1,
-                "recused": 0,
-                "non_voting": 0,
-                "unknown": 0,
-                "published_vote_values": [
-                  {
-                    "vote_value": "Affirmative",
-                    "rows": 6
-                  },
-                  {
-                    "vote_value": "Absent",
-                    "rows": 1
-                  }
-                ],
-                "event_id": "22526",
-                "event_item_id": "440500",
-                "vote_identity": "roll_call",
-                "person_count": 7,
-                "by_person": [
-                  {
-                    "person_id": "7801",
-                    "person_name": "Christopher Marte",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7825",
-                    "person_name": "Alexa Avilés",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7798",
-                    "person_name": "Oswald J. Feliz",
-                    "vote_bucket": "absent",
-                    "vote_value": "Absent",
-                    "vote_participation": "absent"
-                  },
-                  {
-                    "person_id": "7832",
-                    "person_name": "Kamillah Hanks",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7824",
-                    "person_name": "Sandy Nurse",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7823",
-                    "person_name": "Chi A. Ossé",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7898",
-                    "person_name": "Shanel Thomas-Henry",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  }
-                ]
-              }
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
             }
           ],
           "source_receipt": {
@@ -7516,7 +7054,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22526&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -7601,7 +7139,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22509&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -7686,7 +7224,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22502&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         },
         {
@@ -7942,7 +7480,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -8027,7 +7565,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22502&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         },
         {
@@ -8283,7 +7821,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -8368,7 +7906,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22502&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         },
         {
@@ -8624,7 +8162,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -8709,7 +8247,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22502&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         },
         {
@@ -8965,7 +8503,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -9050,7 +8588,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22502&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         },
         {
@@ -9306,7 +8844,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -9391,7 +8929,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         },
         {
@@ -9413,6 +8951,10 @@
               {
                 "name": "Agenda",
                 "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_M_Subcommittee_on_Zoning_and_Franchises_26-09-09_Meeting_Minutes.pdf"
               }
             ]
           },
@@ -9425,18 +8967,201 @@
           "matter_ref": "legistar:nyc:matter:79292",
           "matter_file": "LU 0120-2026",
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Approved by Subcommittee"
           ],
-          "outcome": "Committee",
+          "outcome": "Approved by Subcommittee",
           "matter_type": null,
           "matter_status": null,
-          "votes": null,
+          "votes": {
+            "result": "Passed",
+            "yes": 8,
+            "no": 0,
+            "abstain": 0,
+            "absent": 1,
+            "recused": 0,
+            "non_voting": 0,
+            "unknown": 0,
+            "published_vote_values": [
+              {
+                "vote_value": "Affirmative",
+                "rows": 8
+              },
+              {
+                "vote_value": "Medical",
+                "rows": 1
+              }
+            ],
+            "event_id": "22617",
+            "event_item_id": "441772",
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "absent",
+                "vote_value": "Medical",
+                "vote_participation": "absent"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              }
+            ]
+          },
           "item_actions": [
             {
               "event_item_id": "441457",
-              "action": "Committee",
+              "action": "Hearing Held by Committee",
               "vote_state": "no_roll_call_recorded",
               "votes": null
+            },
+            {
+              "event_item_id": "441772",
+              "action": "Approved by Subcommittee",
+              "vote_state": "roll_call_recorded",
+              "votes": {
+                "result": "Passed",
+                "yes": 8,
+                "no": 0,
+                "abstain": 0,
+                "absent": 1,
+                "recused": 0,
+                "non_voting": 0,
+                "unknown": 0,
+                "published_vote_values": [
+                  {
+                    "vote_value": "Affirmative",
+                    "rows": 8
+                  },
+                  {
+                    "vote_value": "Medical",
+                    "rows": 1
+                  }
+                ],
+                "event_id": "22617",
+                "event_item_id": "441772",
+                "vote_identity": "roll_call",
+                "person_count": 9,
+                "by_person": [
+                  {
+                    "person_id": "7785",
+                    "person_name": "Farah N. Louis",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7833",
+                    "person_name": "David M. Carr",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7895",
+                    "person_name": "Elsie Encarnación",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7810",
+                    "person_name": "Amanda C. Farías",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "5289",
+                    "person_name": "Simcha Felder",
+                    "vote_bucket": "absent",
+                    "vote_value": "Medical",
+                    "vote_participation": "absent"
+                  },
+                  {
+                    "person_id": "7866",
+                    "person_name": "Yusef Salaam",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7897",
+                    "person_name": "Justin E. Sanchez",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7818",
+                    "person_name": "Lynn C. Schulman",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7898",
+                    "person_name": "Shanel Thomas-Henry",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  }
+                ]
+              }
             }
           ],
           "source_receipt": {
@@ -9447,11 +9172,12 @@
             ],
             "event_id": "22617",
             "event_item_ids": [
-              "441457"
+              "441457",
+              "441772"
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -9536,7 +9262,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         },
         {
@@ -9558,6 +9284,10 @@
               {
                 "name": "Agenda",
                 "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_M_Subcommittee_on_Zoning_and_Franchises_26-09-09_Meeting_Minutes.pdf"
               }
             ]
           },
@@ -9570,18 +9300,201 @@
           "matter_ref": "legistar:nyc:matter:79293",
           "matter_file": "LU 0121-2026",
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Approved by Subcommittee"
           ],
-          "outcome": "Committee",
+          "outcome": "Approved by Subcommittee",
           "matter_type": null,
           "matter_status": null,
-          "votes": null,
+          "votes": {
+            "result": "Passed",
+            "yes": 8,
+            "no": 0,
+            "abstain": 0,
+            "absent": 1,
+            "recused": 0,
+            "non_voting": 0,
+            "unknown": 0,
+            "published_vote_values": [
+              {
+                "vote_value": "Affirmative",
+                "rows": 8
+              },
+              {
+                "vote_value": "Medical",
+                "rows": 1
+              }
+            ],
+            "event_id": "22617",
+            "event_item_id": "441773",
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "absent",
+                "vote_value": "Medical",
+                "vote_participation": "absent"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              }
+            ]
+          },
           "item_actions": [
             {
               "event_item_id": "441458",
-              "action": "Committee",
+              "action": "Hearing Held by Committee",
               "vote_state": "no_roll_call_recorded",
               "votes": null
+            },
+            {
+              "event_item_id": "441773",
+              "action": "Approved by Subcommittee",
+              "vote_state": "roll_call_recorded",
+              "votes": {
+                "result": "Passed",
+                "yes": 8,
+                "no": 0,
+                "abstain": 0,
+                "absent": 1,
+                "recused": 0,
+                "non_voting": 0,
+                "unknown": 0,
+                "published_vote_values": [
+                  {
+                    "vote_value": "Affirmative",
+                    "rows": 8
+                  },
+                  {
+                    "vote_value": "Medical",
+                    "rows": 1
+                  }
+                ],
+                "event_id": "22617",
+                "event_item_id": "441773",
+                "vote_identity": "roll_call",
+                "person_count": 9,
+                "by_person": [
+                  {
+                    "person_id": "7785",
+                    "person_name": "Farah N. Louis",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7833",
+                    "person_name": "David M. Carr",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7895",
+                    "person_name": "Elsie Encarnación",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7810",
+                    "person_name": "Amanda C. Farías",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "5289",
+                    "person_name": "Simcha Felder",
+                    "vote_bucket": "absent",
+                    "vote_value": "Medical",
+                    "vote_participation": "absent"
+                  },
+                  {
+                    "person_id": "7866",
+                    "person_name": "Yusef Salaam",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7897",
+                    "person_name": "Justin E. Sanchez",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7818",
+                    "person_name": "Lynn C. Schulman",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7898",
+                    "person_name": "Shanel Thomas-Henry",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  }
+                ]
+              }
             }
           ],
           "source_receipt": {
@@ -9592,11 +9505,12 @@
             ],
             "event_id": "22617",
             "event_item_ids": [
-              "441458"
+              "441458",
+              "441773"
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -9681,7 +9595,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         },
         {
@@ -9703,6 +9617,10 @@
               {
                 "name": "Agenda",
                 "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_M_Subcommittee_on_Zoning_and_Franchises_26-09-09_Meeting_Minutes.pdf"
               }
             ]
           },
@@ -9715,18 +9633,201 @@
           "matter_ref": "legistar:nyc:matter:79294",
           "matter_file": "LU 0122-2026",
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Approved by Subcommittee"
           ],
-          "outcome": "Committee",
+          "outcome": "Approved by Subcommittee",
           "matter_type": null,
           "matter_status": null,
-          "votes": null,
+          "votes": {
+            "result": "Passed",
+            "yes": 8,
+            "no": 0,
+            "abstain": 0,
+            "absent": 1,
+            "recused": 0,
+            "non_voting": 0,
+            "unknown": 0,
+            "published_vote_values": [
+              {
+                "vote_value": "Affirmative",
+                "rows": 8
+              },
+              {
+                "vote_value": "Medical",
+                "rows": 1
+              }
+            ],
+            "event_id": "22617",
+            "event_item_id": "441774",
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "absent",
+                "vote_value": "Medical",
+                "vote_participation": "absent"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              }
+            ]
+          },
           "item_actions": [
             {
               "event_item_id": "441459",
-              "action": "Committee",
+              "action": "Hearing Held by Committee",
               "vote_state": "no_roll_call_recorded",
               "votes": null
+            },
+            {
+              "event_item_id": "441774",
+              "action": "Approved by Subcommittee",
+              "vote_state": "roll_call_recorded",
+              "votes": {
+                "result": "Passed",
+                "yes": 8,
+                "no": 0,
+                "abstain": 0,
+                "absent": 1,
+                "recused": 0,
+                "non_voting": 0,
+                "unknown": 0,
+                "published_vote_values": [
+                  {
+                    "vote_value": "Affirmative",
+                    "rows": 8
+                  },
+                  {
+                    "vote_value": "Medical",
+                    "rows": 1
+                  }
+                ],
+                "event_id": "22617",
+                "event_item_id": "441774",
+                "vote_identity": "roll_call",
+                "person_count": 9,
+                "by_person": [
+                  {
+                    "person_id": "7785",
+                    "person_name": "Farah N. Louis",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7833",
+                    "person_name": "David M. Carr",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7895",
+                    "person_name": "Elsie Encarnación",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7810",
+                    "person_name": "Amanda C. Farías",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "5289",
+                    "person_name": "Simcha Felder",
+                    "vote_bucket": "absent",
+                    "vote_value": "Medical",
+                    "vote_participation": "absent"
+                  },
+                  {
+                    "person_id": "7866",
+                    "person_name": "Yusef Salaam",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7897",
+                    "person_name": "Justin E. Sanchez",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7818",
+                    "person_name": "Lynn C. Schulman",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7898",
+                    "person_name": "Shanel Thomas-Henry",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  }
+                ]
+              }
             }
           ],
           "source_receipt": {
@@ -9737,11 +9838,12 @@
             ],
             "event_id": "22617",
             "event_item_ids": [
-              "441459"
+              "441459",
+              "441774"
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -9826,7 +9928,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         },
         {
@@ -9848,6 +9950,10 @@
               {
                 "name": "Agenda",
                 "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_M_Subcommittee_on_Zoning_and_Franchises_26-09-09_Meeting_Minutes.pdf"
               }
             ]
           },
@@ -9860,16 +9966,23 @@
           "matter_ref": "legistar:nyc:matter:79295",
           "matter_file": "LU 0123-2026",
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
           ],
-          "outcome": "Committee",
+          "outcome": "Laid Over by Subcommittee",
           "matter_type": null,
           "matter_status": null,
           "votes": null,
           "item_actions": [
             {
               "event_item_id": "441460",
-              "action": "Committee",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "event_item_id": "441771",
+              "action": "Laid Over by Subcommittee",
               "vote_state": "no_roll_call_recorded",
               "votes": null
             }
@@ -9882,11 +9995,76 @@
             ],
             "event_id": "22617",
             "event_item_ids": [
-              "441460"
+              "441460",
+              "441771"
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
+          }
+        },
+        {
+          "request_id": "20260909019",
+          "notice_references": [
+            {
+              "request_id": "20260909019",
+              "notice_href": "/notices/20260909019/",
+              "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+            }
+          ],
+          "event": {
+            "event_id": "22613",
+            "name": "Subcommittee on Zoning and Franchises",
+            "date": "2026-09-23",
+            "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "body_id": null,
+            "documents": [
+              {
+                "name": "Agenda",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22613_A_Subcommittee_on_Zoning_and_Franchises_26-09-23_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22613_M_Subcommittee_on_Zoning_and_Franchises_26-09-23_Meeting_Minutes.pdf"
+              }
+            ]
+          },
+          "committee": {
+            "label": "Subcommittee on Zoning and Franchises",
+            "body_id": null,
+            "join_state": "unresolved_no_explicit_body_id"
+          },
+          "matter_id": "79295",
+          "matter_ref": "legistar:nyc:matter:79295",
+          "matter_file": "LU 0123-2026",
+          "actions": [
+            "Deferred"
+          ],
+          "outcome": "Deferred",
+          "matter_type": null,
+          "matter_status": null,
+          "votes": null,
+          "item_actions": [
+            {
+              "event_item_id": "442083",
+              "action": "Deferred",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "source_receipt": {
+            "source_system": "legistar",
+            "request_id": "20260909019",
+            "request_ids": [
+              "20260909019"
+            ],
+            "event_id": "22613",
+            "event_item_ids": [
+              "442083"
+            ],
+            "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "input_artifact": "site/data/meeting_outcomes_snapshot.json",
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -9971,7 +10149,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         },
         {
@@ -9993,6 +10171,10 @@
               {
                 "name": "Agenda",
                 "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_M_Subcommittee_on_Zoning_and_Franchises_26-09-09_Meeting_Minutes.pdf"
               }
             ]
           },
@@ -10005,16 +10187,23 @@
           "matter_ref": "legistar:nyc:matter:79296",
           "matter_file": "LU 0124-2026",
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
           ],
-          "outcome": "Committee",
+          "outcome": "Laid Over by Subcommittee",
           "matter_type": null,
           "matter_status": null,
           "votes": null,
           "item_actions": [
             {
               "event_item_id": "441461",
-              "action": "Committee",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "event_item_id": "441770",
+              "action": "Laid Over by Subcommittee",
               "vote_state": "no_roll_call_recorded",
               "votes": null
             }
@@ -10027,11 +10216,76 @@
             ],
             "event_id": "22617",
             "event_item_ids": [
-              "441461"
+              "441461",
+              "441770"
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
+          }
+        },
+        {
+          "request_id": "20260909019",
+          "notice_references": [
+            {
+              "request_id": "20260909019",
+              "notice_href": "/notices/20260909019/",
+              "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+            }
+          ],
+          "event": {
+            "event_id": "22613",
+            "name": "Subcommittee on Zoning and Franchises",
+            "date": "2026-09-23",
+            "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "body_id": null,
+            "documents": [
+              {
+                "name": "Agenda",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22613_A_Subcommittee_on_Zoning_and_Franchises_26-09-23_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22613_M_Subcommittee_on_Zoning_and_Franchises_26-09-23_Meeting_Minutes.pdf"
+              }
+            ]
+          },
+          "committee": {
+            "label": "Subcommittee on Zoning and Franchises",
+            "body_id": null,
+            "join_state": "unresolved_no_explicit_body_id"
+          },
+          "matter_id": "79296",
+          "matter_ref": "legistar:nyc:matter:79296",
+          "matter_file": "LU 0124-2026",
+          "actions": [
+            "Deferred"
+          ],
+          "outcome": "Deferred",
+          "matter_type": null,
+          "matter_status": null,
+          "votes": null,
+          "item_actions": [
+            {
+              "event_item_id": "442084",
+              "action": "Deferred",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "source_receipt": {
+            "source_system": "legistar",
+            "request_id": "20260909019",
+            "request_ids": [
+              "20260909019"
+            ],
+            "event_id": "22613",
+            "event_item_ids": [
+              "442084"
+            ],
+            "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "input_artifact": "site/data/meeting_outcomes_snapshot.json",
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -10116,7 +10370,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         },
         {
@@ -10138,6 +10392,10 @@
               {
                 "name": "Agenda",
                 "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_M_Subcommittee_on_Zoning_and_Franchises_26-09-09_Meeting_Minutes.pdf"
               }
             ]
           },
@@ -10150,18 +10408,201 @@
           "matter_ref": "legistar:nyc:matter:79297",
           "matter_file": "LU 0125-2026",
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Approved by Subcommittee with Modifications and Referred to CPC"
           ],
-          "outcome": "Committee",
+          "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
           "matter_type": null,
           "matter_status": null,
-          "votes": null,
+          "votes": {
+            "result": "Passed",
+            "yes": 8,
+            "no": 0,
+            "abstain": 0,
+            "absent": 1,
+            "recused": 0,
+            "non_voting": 0,
+            "unknown": 0,
+            "published_vote_values": [
+              {
+                "vote_value": "Affirmative",
+                "rows": 8
+              },
+              {
+                "vote_value": "Medical",
+                "rows": 1
+              }
+            ],
+            "event_id": "22617",
+            "event_item_id": "441769",
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "absent",
+                "vote_value": "Medical",
+                "vote_participation": "absent"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              }
+            ]
+          },
           "item_actions": [
             {
               "event_item_id": "441462",
-              "action": "Committee",
+              "action": "Hearing Held by Committee",
               "vote_state": "no_roll_call_recorded",
               "votes": null
+            },
+            {
+              "event_item_id": "441769",
+              "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+              "vote_state": "roll_call_recorded",
+              "votes": {
+                "result": "Passed",
+                "yes": 8,
+                "no": 0,
+                "abstain": 0,
+                "absent": 1,
+                "recused": 0,
+                "non_voting": 0,
+                "unknown": 0,
+                "published_vote_values": [
+                  {
+                    "vote_value": "Affirmative",
+                    "rows": 8
+                  },
+                  {
+                    "vote_value": "Medical",
+                    "rows": 1
+                  }
+                ],
+                "event_id": "22617",
+                "event_item_id": "441769",
+                "vote_identity": "roll_call",
+                "person_count": 9,
+                "by_person": [
+                  {
+                    "person_id": "7785",
+                    "person_name": "Farah N. Louis",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7833",
+                    "person_name": "David M. Carr",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7895",
+                    "person_name": "Elsie Encarnación",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7810",
+                    "person_name": "Amanda C. Farías",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "5289",
+                    "person_name": "Simcha Felder",
+                    "vote_bucket": "absent",
+                    "vote_value": "Medical",
+                    "vote_participation": "absent"
+                  },
+                  {
+                    "person_id": "7866",
+                    "person_name": "Yusef Salaam",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7897",
+                    "person_name": "Justin E. Sanchez",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7818",
+                    "person_name": "Lynn C. Schulman",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7898",
+                    "person_name": "Shanel Thomas-Henry",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  }
+                ]
+              }
             }
           ],
           "source_receipt": {
@@ -10172,11 +10613,12 @@
             ],
             "event_id": "22617",
             "event_item_ids": [
-              "441462"
+              "441462",
+              "441769"
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -10261,7 +10703,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         },
         {
@@ -10283,6 +10725,10 @@
               {
                 "name": "Agenda",
                 "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_M_Subcommittee_on_Zoning_and_Franchises_26-09-09_Meeting_Minutes.pdf"
               }
             ]
           },
@@ -10295,18 +10741,201 @@
           "matter_ref": "legistar:nyc:matter:79298",
           "matter_file": "LU 0126-2026",
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Approved by Subcommittee with Modifications and Referred to CPC"
           ],
-          "outcome": "Committee",
+          "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
           "matter_type": null,
           "matter_status": null,
-          "votes": null,
+          "votes": {
+            "result": "Passed",
+            "yes": 8,
+            "no": 0,
+            "abstain": 0,
+            "absent": 1,
+            "recused": 0,
+            "non_voting": 0,
+            "unknown": 0,
+            "published_vote_values": [
+              {
+                "vote_value": "Affirmative",
+                "rows": 8
+              },
+              {
+                "vote_value": "Medical",
+                "rows": 1
+              }
+            ],
+            "event_id": "22617",
+            "event_item_id": "441768",
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "absent",
+                "vote_value": "Medical",
+                "vote_participation": "absent"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              }
+            ]
+          },
           "item_actions": [
             {
               "event_item_id": "441463",
-              "action": "Committee",
+              "action": "Hearing Held by Committee",
               "vote_state": "no_roll_call_recorded",
               "votes": null
+            },
+            {
+              "event_item_id": "441768",
+              "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+              "vote_state": "roll_call_recorded",
+              "votes": {
+                "result": "Passed",
+                "yes": 8,
+                "no": 0,
+                "abstain": 0,
+                "absent": 1,
+                "recused": 0,
+                "non_voting": 0,
+                "unknown": 0,
+                "published_vote_values": [
+                  {
+                    "vote_value": "Affirmative",
+                    "rows": 8
+                  },
+                  {
+                    "vote_value": "Medical",
+                    "rows": 1
+                  }
+                ],
+                "event_id": "22617",
+                "event_item_id": "441768",
+                "vote_identity": "roll_call",
+                "person_count": 9,
+                "by_person": [
+                  {
+                    "person_id": "7785",
+                    "person_name": "Farah N. Louis",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7833",
+                    "person_name": "David M. Carr",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7895",
+                    "person_name": "Elsie Encarnación",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7810",
+                    "person_name": "Amanda C. Farías",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "5289",
+                    "person_name": "Simcha Felder",
+                    "vote_bucket": "absent",
+                    "vote_value": "Medical",
+                    "vote_participation": "absent"
+                  },
+                  {
+                    "person_id": "7866",
+                    "person_name": "Yusef Salaam",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7897",
+                    "person_name": "Justin E. Sanchez",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7818",
+                    "person_name": "Lynn C. Schulman",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7898",
+                    "person_name": "Shanel Thomas-Henry",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  }
+                ]
+              }
             }
           ],
           "source_receipt": {
@@ -10317,11 +10946,12 @@
             ],
             "event_id": "22617",
             "event_item_ids": [
-              "441463"
+              "441463",
+              "441768"
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -10356,6 +10986,10 @@
               {
                 "name": "Agenda",
                 "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_M_Subcommittee_on_Zoning_and_Franchises_26-09-09_Meeting_Minutes.pdf"
               }
             ]
           },
@@ -10368,16 +11002,23 @@
           "matter_ref": "legistar:nyc:matter:79331",
           "matter_file": "LU 0127-2026",
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
           ],
-          "outcome": "Committee",
+          "outcome": "Laid Over by Subcommittee",
           "matter_type": null,
           "matter_status": null,
           "votes": null,
           "item_actions": [
             {
               "event_item_id": "441454",
-              "action": "Committee",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "event_item_id": "441767",
+              "action": "Laid Over by Subcommittee",
               "vote_state": "no_roll_call_recorded",
               "votes": null
             }
@@ -10390,11 +11031,76 @@
             ],
             "event_id": "22617",
             "event_item_ids": [
-              "441454"
+              "441454",
+              "441767"
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
+          }
+        },
+        {
+          "request_id": "20260909019",
+          "notice_references": [
+            {
+              "request_id": "20260909019",
+              "notice_href": "/notices/20260909019/",
+              "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+            }
+          ],
+          "event": {
+            "event_id": "22613",
+            "name": "Subcommittee on Zoning and Franchises",
+            "date": "2026-09-23",
+            "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "body_id": null,
+            "documents": [
+              {
+                "name": "Agenda",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22613_A_Subcommittee_on_Zoning_and_Franchises_26-09-23_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22613_M_Subcommittee_on_Zoning_and_Franchises_26-09-23_Meeting_Minutes.pdf"
+              }
+            ]
+          },
+          "committee": {
+            "label": "Subcommittee on Zoning and Franchises",
+            "body_id": null,
+            "join_state": "unresolved_no_explicit_body_id"
+          },
+          "matter_id": "79331",
+          "matter_ref": "legistar:nyc:matter:79331",
+          "matter_file": "LU 0127-2026",
+          "actions": [
+            "Deferred"
+          ],
+          "outcome": "Deferred",
+          "matter_type": null,
+          "matter_status": null,
+          "votes": null,
+          "item_actions": [
+            {
+              "event_item_id": "442085",
+              "action": "Deferred",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "source_receipt": {
+            "source_system": "legistar",
+            "request_id": "20260909019",
+            "request_ids": [
+              "20260909019"
+            ],
+            "event_id": "22613",
+            "event_item_ids": [
+              "442085"
+            ],
+            "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "input_artifact": "site/data/meeting_outcomes_snapshot.json",
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -10429,6 +11135,10 @@
               {
                 "name": "Agenda",
                 "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_M_Subcommittee_on_Zoning_and_Franchises_26-09-09_Meeting_Minutes.pdf"
               }
             ]
           },
@@ -10441,16 +11151,23 @@
           "matter_ref": "legistar:nyc:matter:79332",
           "matter_file": "LU 0128-2026",
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
           ],
-          "outcome": "Committee",
+          "outcome": "Laid Over by Subcommittee",
           "matter_type": null,
           "matter_status": null,
           "votes": null,
           "item_actions": [
             {
               "event_item_id": "441455",
-              "action": "Committee",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "event_item_id": "441766",
+              "action": "Laid Over by Subcommittee",
               "vote_state": "no_roll_call_recorded",
               "votes": null
             }
@@ -10463,11 +11180,76 @@
             ],
             "event_id": "22617",
             "event_item_ids": [
-              "441455"
+              "441455",
+              "441766"
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
+          }
+        },
+        {
+          "request_id": "20260909019",
+          "notice_references": [
+            {
+              "request_id": "20260909019",
+              "notice_href": "/notices/20260909019/",
+              "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+            }
+          ],
+          "event": {
+            "event_id": "22613",
+            "name": "Subcommittee on Zoning and Franchises",
+            "date": "2026-09-23",
+            "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "body_id": null,
+            "documents": [
+              {
+                "name": "Agenda",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22613_A_Subcommittee_on_Zoning_and_Franchises_26-09-23_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22613_M_Subcommittee_on_Zoning_and_Franchises_26-09-23_Meeting_Minutes.pdf"
+              }
+            ]
+          },
+          "committee": {
+            "label": "Subcommittee on Zoning and Franchises",
+            "body_id": null,
+            "join_state": "unresolved_no_explicit_body_id"
+          },
+          "matter_id": "79332",
+          "matter_ref": "legistar:nyc:matter:79332",
+          "matter_file": "LU 0128-2026",
+          "actions": [
+            "Deferred"
+          ],
+          "outcome": "Deferred",
+          "matter_type": null,
+          "matter_status": null,
+          "votes": null,
+          "item_actions": [
+            {
+              "event_item_id": "442086",
+              "action": "Deferred",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "source_receipt": {
+            "source_system": "legistar",
+            "request_id": "20260909019",
+            "request_ids": [
+              "20260909019"
+            ],
+            "event_id": "22613",
+            "event_item_ids": [
+              "442086"
+            ],
+            "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "input_artifact": "site/data/meeting_outcomes_snapshot.json",
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -10476,7 +11258,7 @@
       "matter_id": "79450",
       "matter_ref": "legistar:nyc:matter:79450",
       "publisher_tenant": "nyc",
-      "matter_file": "T2026-2497",
+      "matter_file": "LU 0129-2026",
       "title": "Landmarks, 48-50 Convent Avenue (ANCP) - UDAAP, Manhattan (G 260006 NUM).",
       "matter_type": null,
       "matter_status": null,
@@ -10502,6 +11284,10 @@
               {
                 "name": "Agenda",
                 "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22619_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-09-08_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22619_M_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-09-08_Meeting_Minutes.pdf"
               }
             ]
           },
@@ -10512,18 +11298,25 @@
           },
           "matter_id": "79450",
           "matter_ref": "legistar:nyc:matter:79450",
-          "matter_file": "T2026-2497",
+          "matter_file": "LU 0129-2026",
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
-          "outcome": "Introduced",
+          "outcome": "P-C Item Laid Over by Comm",
           "matter_type": null,
           "matter_status": null,
           "votes": null,
           "item_actions": [
             {
               "event_item_id": "441452",
-              "action": "Introduced",
+              "action": "Hearing on P-C Item by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "event_item_id": "441731",
+              "action": "P-C Item Laid Over by Comm",
               "vote_state": "no_roll_call_recorded",
               "votes": null
             }
@@ -10536,11 +11329,12 @@
             ],
             "event_id": "22619",
             "event_item_ids": [
-              "441452"
+              "441452",
+              "441731"
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22619&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -10549,7 +11343,7 @@
       "matter_id": "79451",
       "matter_ref": "legistar:nyc:matter:79451",
       "publisher_tenant": "nyc",
-      "matter_file": "T2026-2498",
+      "matter_file": "LU 0130-2026",
       "title": "Landmarks, 48-50 Convent Avenue (ANCP) - Article XI, Manhattan (G 260007 XAM).",
       "matter_type": null,
       "matter_status": null,
@@ -10575,6 +11369,10 @@
               {
                 "name": "Agenda",
                 "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22619_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-09-08_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22619_M_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-09-08_Meeting_Minutes.pdf"
               }
             ]
           },
@@ -10585,18 +11383,25 @@
           },
           "matter_id": "79451",
           "matter_ref": "legistar:nyc:matter:79451",
-          "matter_file": "T2026-2498",
+          "matter_file": "LU 0130-2026",
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
-          "outcome": "Introduced",
+          "outcome": "P-C Item Laid Over by Comm",
           "matter_type": null,
           "matter_status": null,
           "votes": null,
           "item_actions": [
             {
               "event_item_id": "441453",
-              "action": "Introduced",
+              "action": "Hearing on P-C Item by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "event_item_id": "441732",
+              "action": "P-C Item Laid Over by Comm",
               "vote_state": "no_roll_call_recorded",
               "votes": null
             }
@@ -10609,11 +11414,12 @@
             ],
             "event_id": "22619",
             "event_item_ids": [
-              "441453"
+              "441453",
+              "441732"
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22619&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -10622,7 +11428,7 @@
       "matter_id": "79452",
       "matter_ref": "legistar:nyc:matter:79452",
       "publisher_tenant": "nyc",
-      "matter_file": "T2026-2499",
+      "matter_file": "LU 0131-2026",
       "title": "Zoning, Fort Hamilton Mews Rezoning, Brooklyn (C 260238 ZMK).",
       "matter_type": null,
       "matter_status": null,
@@ -10648,6 +11454,10 @@
               {
                 "name": "Agenda",
                 "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_M_Subcommittee_on_Zoning_and_Franchises_26-09-09_Meeting_Minutes.pdf"
               }
             ]
           },
@@ -10658,18 +11468,25 @@
           },
           "matter_id": "79452",
           "matter_ref": "legistar:nyc:matter:79452",
-          "matter_file": "T2026-2499",
+          "matter_file": "LU 0131-2026",
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
-          "outcome": "Introduced",
+          "outcome": "P-C Item Laid Over by Comm",
           "matter_type": null,
           "matter_status": null,
           "votes": null,
           "item_actions": [
             {
               "event_item_id": "441476",
-              "action": "Introduced",
+              "action": "Hearing on P-C Item by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "event_item_id": "441765",
+              "action": "P-C Item Laid Over by Comm",
               "vote_state": "no_roll_call_recorded",
               "votes": null
             }
@@ -10682,11 +11499,12 @@
             ],
             "event_id": "22617",
             "event_item_ids": [
-              "441476"
+              "441476",
+              "441765"
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -10695,7 +11513,7 @@
       "matter_id": "79453",
       "matter_ref": "legistar:nyc:matter:79453",
       "publisher_tenant": "nyc",
-      "matter_file": "T2026-2500",
+      "matter_file": "LU 0132-2026",
       "title": "Zoning, Fort Hamilton Mews Rezoning, Brooklyn (N 260239 ZRK).",
       "matter_type": null,
       "matter_status": null,
@@ -10721,6 +11539,10 @@
               {
                 "name": "Agenda",
                 "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_M_Subcommittee_on_Zoning_and_Franchises_26-09-09_Meeting_Minutes.pdf"
               }
             ]
           },
@@ -10731,18 +11553,25 @@
           },
           "matter_id": "79453",
           "matter_ref": "legistar:nyc:matter:79453",
-          "matter_file": "T2026-2500",
+          "matter_file": "LU 0132-2026",
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
-          "outcome": "Introduced",
+          "outcome": "P-C Item Laid Over by Comm",
           "matter_type": null,
           "matter_status": null,
           "votes": null,
           "item_actions": [
             {
               "event_item_id": "441477",
-              "action": "Introduced",
+              "action": "Hearing on P-C Item by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "event_item_id": "441764",
+              "action": "P-C Item Laid Over by Comm",
               "vote_state": "no_roll_call_recorded",
               "votes": null
             }
@@ -10755,11 +11584,12 @@
             ],
             "event_id": "22617",
             "event_item_ids": [
-              "441477"
+              "441477",
+              "441764"
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -10768,7 +11598,7 @@
       "matter_id": "79454",
       "matter_ref": "legistar:nyc:matter:79454",
       "publisher_tenant": "nyc",
-      "matter_file": "T2026-2501",
+      "matter_file": "LU 0133-2026",
       "title": "Zoning, Park Avenue Brooklyn Rezoning, Brooklyn (C 240218 ZMK).",
       "matter_type": null,
       "matter_status": null,
@@ -10794,6 +11624,10 @@
               {
                 "name": "Agenda",
                 "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_M_Subcommittee_on_Zoning_and_Franchises_26-09-09_Meeting_Minutes.pdf"
               }
             ]
           },
@@ -10804,18 +11638,25 @@
           },
           "matter_id": "79454",
           "matter_ref": "legistar:nyc:matter:79454",
-          "matter_file": "T2026-2501",
+          "matter_file": "LU 0133-2026",
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
-          "outcome": "Introduced",
+          "outcome": "P-C Item Laid Over by Comm",
           "matter_type": null,
           "matter_status": null,
           "votes": null,
           "item_actions": [
             {
               "event_item_id": "441478",
-              "action": "Introduced",
+              "action": "Hearing on P-C Item by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "event_item_id": "441763",
+              "action": "P-C Item Laid Over by Comm",
               "vote_state": "no_roll_call_recorded",
               "votes": null
             }
@@ -10828,11 +11669,12 @@
             ],
             "event_id": "22617",
             "event_item_ids": [
-              "441478"
+              "441478",
+              "441763"
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -10841,7 +11683,7 @@
       "matter_id": "79455",
       "matter_ref": "legistar:nyc:matter:79455",
       "publisher_tenant": "nyc",
-      "matter_file": "T2026-2502",
+      "matter_file": "LU 0134-2026",
       "title": "Zoning, Park Avenue Brooklyn Rezoning, Brooklyn (N 240219 ZRK).",
       "matter_type": null,
       "matter_status": null,
@@ -10867,6 +11709,10 @@
               {
                 "name": "Agenda",
                 "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_M_Subcommittee_on_Zoning_and_Franchises_26-09-09_Meeting_Minutes.pdf"
               }
             ]
           },
@@ -10877,18 +11723,25 @@
           },
           "matter_id": "79455",
           "matter_ref": "legistar:nyc:matter:79455",
-          "matter_file": "T2026-2502",
+          "matter_file": "LU 0134-2026",
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
-          "outcome": "Introduced",
+          "outcome": "P-C Item Laid Over by Comm",
           "matter_type": null,
           "matter_status": null,
           "votes": null,
           "item_actions": [
             {
               "event_item_id": "441479",
-              "action": "Introduced",
+              "action": "Hearing on P-C Item by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "event_item_id": "441762",
+              "action": "P-C Item Laid Over by Comm",
               "vote_state": "no_roll_call_recorded",
               "votes": null
             }
@@ -10901,11 +11754,12 @@
             ],
             "event_id": "22617",
             "event_item_ids": [
-              "441479"
+              "441479",
+              "441762"
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -10914,7 +11768,7 @@
       "matter_id": "79456",
       "matter_ref": "legistar:nyc:matter:79456",
       "publisher_tenant": "nyc",
-      "matter_file": "T2026-2503",
+      "matter_file": "LU 0135-2026",
       "title": "Zoning, Sojourner Truth – Mapes Rezoning, Bronx (C 240206 ZMX).",
       "matter_type": null,
       "matter_status": null,
@@ -10940,6 +11794,10 @@
               {
                 "name": "Agenda",
                 "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_M_Subcommittee_on_Zoning_and_Franchises_26-09-09_Meeting_Minutes.pdf"
               }
             ]
           },
@@ -10950,18 +11808,25 @@
           },
           "matter_id": "79456",
           "matter_ref": "legistar:nyc:matter:79456",
-          "matter_file": "T2026-2503",
+          "matter_file": "LU 0135-2026",
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
-          "outcome": "Introduced",
+          "outcome": "P-C Item Laid Over by Comm",
           "matter_type": null,
           "matter_status": null,
           "votes": null,
           "item_actions": [
             {
               "event_item_id": "441480",
-              "action": "Introduced",
+              "action": "Hearing on P-C Item by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "event_item_id": "441761",
+              "action": "P-C Item Laid Over by Comm",
               "vote_state": "no_roll_call_recorded",
               "votes": null
             }
@@ -10974,11 +11839,12 @@
             ],
             "event_id": "22617",
             "event_item_ids": [
-              "441480"
+              "441480",
+              "441761"
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -10987,7 +11853,7 @@
       "matter_id": "79457",
       "matter_ref": "legistar:nyc:matter:79457",
       "publisher_tenant": "nyc",
-      "matter_file": "T2026-2504",
+      "matter_file": "LU 0136-2026",
       "title": "Zoning, Sojourner Truth – Mapes Rezoning, Bronx (N 240207 ZRX).",
       "matter_type": null,
       "matter_status": null,
@@ -11013,6 +11879,10 @@
               {
                 "name": "Agenda",
                 "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_M_Subcommittee_on_Zoning_and_Franchises_26-09-09_Meeting_Minutes.pdf"
               }
             ]
           },
@@ -11023,18 +11893,25 @@
           },
           "matter_id": "79457",
           "matter_ref": "legistar:nyc:matter:79457",
-          "matter_file": "T2026-2504",
+          "matter_file": "LU 0136-2026",
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
-          "outcome": "Introduced",
+          "outcome": "P-C Item Laid Over by Comm",
           "matter_type": null,
           "matter_status": null,
           "votes": null,
           "item_actions": [
             {
               "event_item_id": "441481",
-              "action": "Introduced",
+              "action": "Hearing on P-C Item by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "event_item_id": "441760",
+              "action": "P-C Item Laid Over by Comm",
               "vote_state": "no_roll_call_recorded",
               "votes": null
             }
@@ -11047,11 +11924,12 @@
             ],
             "event_id": "22617",
             "event_item_ids": [
-              "441481"
+              "441481",
+              "441760"
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -11060,7 +11938,7 @@
       "matter_id": "79458",
       "matter_ref": "legistar:nyc:matter:79458",
       "publisher_tenant": "nyc",
-      "matter_file": "T2026-2505",
+      "matter_file": "LU 0137-2026",
       "title": "Zoning, 69-67 108th Street Rezoning, Queens (C 260186 ZMQ).",
       "matter_type": null,
       "matter_status": null,
@@ -11086,6 +11964,10 @@
               {
                 "name": "Agenda",
                 "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_M_Subcommittee_on_Zoning_and_Franchises_26-09-09_Meeting_Minutes.pdf"
               }
             ]
           },
@@ -11096,18 +11978,25 @@
           },
           "matter_id": "79458",
           "matter_ref": "legistar:nyc:matter:79458",
-          "matter_file": "T2026-2505",
+          "matter_file": "LU 0137-2026",
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
-          "outcome": "Introduced",
+          "outcome": "P-C Item Laid Over by Comm",
           "matter_type": null,
           "matter_status": null,
           "votes": null,
           "item_actions": [
             {
               "event_item_id": "441482",
-              "action": "Introduced",
+              "action": "Hearing on P-C Item by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "event_item_id": "441759",
+              "action": "P-C Item Laid Over by Comm",
               "vote_state": "no_roll_call_recorded",
               "votes": null
             }
@@ -11120,11 +12009,12 @@
             ],
             "event_id": "22617",
             "event_item_ids": [
-              "441482"
+              "441482",
+              "441759"
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -11133,7 +12023,7 @@
       "matter_id": "79459",
       "matter_ref": "legistar:nyc:matter:79459",
       "publisher_tenant": "nyc",
-      "matter_file": "T2026-2506",
+      "matter_file": "LU 0138-2026",
       "title": "Zoning, 69-67 108th Street Rezoning, Queens (N 260187 ZRQ).",
       "matter_type": null,
       "matter_status": null,
@@ -11159,6 +12049,10 @@
               {
                 "name": "Agenda",
                 "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_M_Subcommittee_on_Zoning_and_Franchises_26-09-09_Meeting_Minutes.pdf"
               }
             ]
           },
@@ -11169,18 +12063,25 @@
           },
           "matter_id": "79459",
           "matter_ref": "legistar:nyc:matter:79459",
-          "matter_file": "T2026-2506",
+          "matter_file": "LU 0138-2026",
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
-          "outcome": "Introduced",
+          "outcome": "P-C Item Laid Over by Comm",
           "matter_type": null,
           "matter_status": null,
           "votes": null,
           "item_actions": [
             {
               "event_item_id": "441483",
-              "action": "Introduced",
+              "action": "Hearing on P-C Item by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "event_item_id": "441758",
+              "action": "P-C Item Laid Over by Comm",
               "vote_state": "no_roll_call_recorded",
               "votes": null
             }
@@ -11193,11 +12094,12 @@
             ],
             "event_id": "22617",
             "event_item_ids": [
-              "441483"
+              "441483",
+              "441758"
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -11206,7 +12108,7 @@
       "matter_id": "79460",
       "matter_ref": "legistar:nyc:matter:79460",
       "publisher_tenant": "nyc",
-      "matter_file": "T2026-2507",
+      "matter_file": "LU 0139-2026",
       "title": "Zoning, 289 Kent Avenue Rezoning, Brooklyn (C 260087 ZMK).",
       "matter_type": null,
       "matter_status": null,
@@ -11232,6 +12134,10 @@
               {
                 "name": "Agenda",
                 "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_M_Subcommittee_on_Zoning_and_Franchises_26-09-09_Meeting_Minutes.pdf"
               }
             ]
           },
@@ -11242,18 +12148,25 @@
           },
           "matter_id": "79460",
           "matter_ref": "legistar:nyc:matter:79460",
-          "matter_file": "T2026-2507",
+          "matter_file": "LU 0139-2026",
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
-          "outcome": "Introduced",
+          "outcome": "P-C Item Laid Over by Comm",
           "matter_type": null,
           "matter_status": null,
           "votes": null,
           "item_actions": [
             {
               "event_item_id": "441484",
-              "action": "Introduced",
+              "action": "Hearing on P-C Item by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "event_item_id": "441756",
+              "action": "P-C Item Laid Over by Comm",
               "vote_state": "no_roll_call_recorded",
               "votes": null
             }
@@ -11266,11 +12179,12 @@
             ],
             "event_id": "22617",
             "event_item_ids": [
-              "441484"
+              "441484",
+              "441756"
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]
@@ -11279,7 +12193,7 @@
       "matter_id": "79461",
       "matter_ref": "legistar:nyc:matter:79461",
       "publisher_tenant": "nyc",
-      "matter_file": "T2026-2508",
+      "matter_file": "LU 0140-2026",
       "title": "Zoning, 289 Kent Avenue Rezoning, Brooklyn (N 260088 ZRK).",
       "matter_type": null,
       "matter_status": null,
@@ -11305,6 +12219,10 @@
               {
                 "name": "Agenda",
                 "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_M_Subcommittee_on_Zoning_and_Franchises_26-09-09_Meeting_Minutes.pdf"
               }
             ]
           },
@@ -11315,18 +12233,25 @@
           },
           "matter_id": "79461",
           "matter_ref": "legistar:nyc:matter:79461",
-          "matter_file": "T2026-2508",
+          "matter_file": "LU 0140-2026",
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
-          "outcome": "Introduced",
+          "outcome": "P-C Item Laid Over by Comm",
           "matter_type": null,
           "matter_status": null,
           "votes": null,
           "item_actions": [
             {
               "event_item_id": "441485",
-              "action": "Introduced",
+              "action": "Hearing on P-C Item by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "event_item_id": "441757",
+              "action": "P-C Item Laid Over by Comm",
               "vote_state": "no_roll_call_recorded",
               "votes": null
             }
@@ -11339,11 +12264,501 @@
             ],
             "event_id": "22617",
             "event_item_ids": [
-              "441485"
+              "441485",
+              "441757"
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-09-04T13:09:00.447Z"
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
+          }
+        }
+      ]
+    },
+    "79500": {
+      "matter_id": "79500",
+      "matter_ref": "legistar:nyc:matter:79500",
+      "publisher_tenant": "nyc",
+      "matter_file": "LU 0141-2026",
+      "title": "Zoning, Cali Tajadas Bakery & Restaurant, Queens (D 2550162086 SWQ).",
+      "matter_type": null,
+      "matter_status": null,
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79500",
+      "label_revisions": [],
+      "appearances": [
+        {
+          "request_id": "20260911033",
+          "notice_references": [
+            {
+              "request_id": "20260911033",
+              "notice_href": "/notices/20260911033/",
+              "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22729&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+            }
+          ],
+          "event": {
+            "event_id": "22729",
+            "name": "Subcommittee on Zoning and Franchises",
+            "date": "2026-09-22",
+            "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22729&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "body_id": null,
+            "documents": [
+              {
+                "name": "Agenda",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22729_A_Subcommittee_on_Zoning_and_Franchises_26-09-22_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22729_M_Subcommittee_on_Zoning_and_Franchises_26-09-22_Meeting_Minutes.pdf"
+              }
+            ]
+          },
+          "committee": {
+            "label": "Subcommittee on Zoning and Franchises",
+            "body_id": null,
+            "join_state": "unresolved_no_explicit_body_id"
+          },
+          "matter_id": "79500",
+          "matter_ref": "legistar:nyc:matter:79500",
+          "matter_file": "LU 0141-2026",
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "outcome": "Laid Over by Subcommittee",
+          "matter_type": null,
+          "matter_status": null,
+          "votes": null,
+          "item_actions": [
+            {
+              "event_item_id": "442068",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "event_item_id": "442290",
+              "action": "Laid Over by Subcommittee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "source_receipt": {
+            "source_system": "legistar",
+            "request_id": "20260911033",
+            "request_ids": [
+              "20260911033"
+            ],
+            "event_id": "22729",
+            "event_item_ids": [
+              "442068",
+              "442290"
+            ],
+            "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22729&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "input_artifact": "site/data/meeting_outcomes_snapshot.json",
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
+          }
+        },
+        {
+          "request_id": "20260909019",
+          "notice_references": [
+            {
+              "request_id": "20260909019",
+              "notice_href": "/notices/20260909019/",
+              "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+            }
+          ],
+          "event": {
+            "event_id": "22613",
+            "name": "Subcommittee on Zoning and Franchises",
+            "date": "2026-09-23",
+            "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "body_id": null,
+            "documents": [
+              {
+                "name": "Agenda",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22613_A_Subcommittee_on_Zoning_and_Franchises_26-09-23_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22613_M_Subcommittee_on_Zoning_and_Franchises_26-09-23_Meeting_Minutes.pdf"
+              }
+            ]
+          },
+          "committee": {
+            "label": "Subcommittee on Zoning and Franchises",
+            "body_id": null,
+            "join_state": "unresolved_no_explicit_body_id"
+          },
+          "matter_id": "79500",
+          "matter_ref": "legistar:nyc:matter:79500",
+          "matter_file": "LU 0141-2026",
+          "actions": [
+            "Deferred"
+          ],
+          "outcome": "Deferred",
+          "matter_type": null,
+          "matter_status": null,
+          "votes": null,
+          "item_actions": [
+            {
+              "event_item_id": "442082",
+              "action": "Deferred",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "source_receipt": {
+            "source_system": "legistar",
+            "request_id": "20260909019",
+            "request_ids": [
+              "20260909019"
+            ],
+            "event_id": "22613",
+            "event_item_ids": [
+              "442082"
+            ],
+            "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "input_artifact": "site/data/meeting_outcomes_snapshot.json",
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
+          }
+        }
+      ]
+    },
+    "79529": {
+      "matter_id": "79529",
+      "matter_ref": "legistar:nyc:matter:79529",
+      "publisher_tenant": "nyc",
+      "matter_file": "LU 0142-2026",
+      "title": "Zoning, 1455 Coney Island Avenue Rezoning, Brooklyn (C 220449 ZMK).",
+      "matter_type": null,
+      "matter_status": null,
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79529",
+      "label_revisions": [],
+      "appearances": [
+        {
+          "request_id": "20260909019",
+          "notice_references": [
+            {
+              "request_id": "20260909019",
+              "notice_href": "/notices/20260909019/",
+              "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+            }
+          ],
+          "event": {
+            "event_id": "22613",
+            "name": "Subcommittee on Zoning and Franchises",
+            "date": "2026-09-23",
+            "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "body_id": null,
+            "documents": [
+              {
+                "name": "Agenda",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22613_A_Subcommittee_on_Zoning_and_Franchises_26-09-23_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22613_M_Subcommittee_on_Zoning_and_Franchises_26-09-23_Meeting_Minutes.pdf"
+              }
+            ]
+          },
+          "committee": {
+            "label": "Subcommittee on Zoning and Franchises",
+            "body_id": null,
+            "join_state": "unresolved_no_explicit_body_id"
+          },
+          "matter_id": "79529",
+          "matter_ref": "legistar:nyc:matter:79529",
+          "matter_file": "LU 0142-2026",
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "outcome": "P-C Item Laid Over by Comm",
+          "matter_type": null,
+          "matter_status": null,
+          "votes": null,
+          "item_actions": [
+            {
+              "event_item_id": "442092",
+              "action": "Hearing on P-C Item by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "event_item_id": "442370",
+              "action": "P-C Item Laid Over by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "source_receipt": {
+            "source_system": "legistar",
+            "request_id": "20260909019",
+            "request_ids": [
+              "20260909019"
+            ],
+            "event_id": "22613",
+            "event_item_ids": [
+              "442092",
+              "442370"
+            ],
+            "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "input_artifact": "site/data/meeting_outcomes_snapshot.json",
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
+          }
+        }
+      ]
+    },
+    "79530": {
+      "matter_id": "79530",
+      "matter_ref": "legistar:nyc:matter:79530",
+      "publisher_tenant": "nyc",
+      "matter_file": "LU 0143-2026",
+      "title": "Zoning, 1455 Coney Island Avenue Rezoning, Brooklyn (N 220450 ZRK).",
+      "matter_type": null,
+      "matter_status": null,
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79530",
+      "label_revisions": [],
+      "appearances": [
+        {
+          "request_id": "20260909019",
+          "notice_references": [
+            {
+              "request_id": "20260909019",
+              "notice_href": "/notices/20260909019/",
+              "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+            }
+          ],
+          "event": {
+            "event_id": "22613",
+            "name": "Subcommittee on Zoning and Franchises",
+            "date": "2026-09-23",
+            "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "body_id": null,
+            "documents": [
+              {
+                "name": "Agenda",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22613_A_Subcommittee_on_Zoning_and_Franchises_26-09-23_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22613_M_Subcommittee_on_Zoning_and_Franchises_26-09-23_Meeting_Minutes.pdf"
+              }
+            ]
+          },
+          "committee": {
+            "label": "Subcommittee on Zoning and Franchises",
+            "body_id": null,
+            "join_state": "unresolved_no_explicit_body_id"
+          },
+          "matter_id": "79530",
+          "matter_ref": "legistar:nyc:matter:79530",
+          "matter_file": "LU 0143-2026",
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "outcome": "P-C Item Laid Over by Comm",
+          "matter_type": null,
+          "matter_status": null,
+          "votes": null,
+          "item_actions": [
+            {
+              "event_item_id": "442093",
+              "action": "Hearing on P-C Item by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "event_item_id": "442369",
+              "action": "P-C Item Laid Over by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "source_receipt": {
+            "source_system": "legistar",
+            "request_id": "20260909019",
+            "request_ids": [
+              "20260909019"
+            ],
+            "event_id": "22613",
+            "event_item_ids": [
+              "442093",
+              "442369"
+            ],
+            "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "input_artifact": "site/data/meeting_outcomes_snapshot.json",
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
+          }
+        }
+      ]
+    },
+    "79531": {
+      "matter_id": "79531",
+      "matter_ref": "legistar:nyc:matter:79531",
+      "publisher_tenant": "nyc",
+      "matter_file": "LU 0144-2026",
+      "title": "Zoning, 135-27 Sapphire Street Rezoning, Queens (C 250329 ZMQ).",
+      "matter_type": null,
+      "matter_status": null,
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79531",
+      "label_revisions": [],
+      "appearances": [
+        {
+          "request_id": "20260909019",
+          "notice_references": [
+            {
+              "request_id": "20260909019",
+              "notice_href": "/notices/20260909019/",
+              "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+            }
+          ],
+          "event": {
+            "event_id": "22613",
+            "name": "Subcommittee on Zoning and Franchises",
+            "date": "2026-09-23",
+            "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "body_id": null,
+            "documents": [
+              {
+                "name": "Agenda",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22613_A_Subcommittee_on_Zoning_and_Franchises_26-09-23_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22613_M_Subcommittee_on_Zoning_and_Franchises_26-09-23_Meeting_Minutes.pdf"
+              }
+            ]
+          },
+          "committee": {
+            "label": "Subcommittee on Zoning and Franchises",
+            "body_id": null,
+            "join_state": "unresolved_no_explicit_body_id"
+          },
+          "matter_id": "79531",
+          "matter_ref": "legistar:nyc:matter:79531",
+          "matter_file": "LU 0144-2026",
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "outcome": "P-C Item Laid Over by Comm",
+          "matter_type": null,
+          "matter_status": null,
+          "votes": null,
+          "item_actions": [
+            {
+              "event_item_id": "442094",
+              "action": "Hearing on P-C Item by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "event_item_id": "442368",
+              "action": "P-C Item Laid Over by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "source_receipt": {
+            "source_system": "legistar",
+            "request_id": "20260909019",
+            "request_ids": [
+              "20260909019"
+            ],
+            "event_id": "22613",
+            "event_item_ids": [
+              "442094",
+              "442368"
+            ],
+            "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "input_artifact": "site/data/meeting_outcomes_snapshot.json",
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
+          }
+        }
+      ]
+    },
+    "79532": {
+      "matter_id": "79532",
+      "matter_ref": "legistar:nyc:matter:79532",
+      "publisher_tenant": "nyc",
+      "matter_file": "LU 0145-2026",
+      "title": "Zoning, 135-27 Sapphire Street Rezoning, Queens (N 250330 ZRQ).",
+      "matter_type": null,
+      "matter_status": null,
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79532",
+      "label_revisions": [],
+      "appearances": [
+        {
+          "request_id": "20260909019",
+          "notice_references": [
+            {
+              "request_id": "20260909019",
+              "notice_href": "/notices/20260909019/",
+              "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+            }
+          ],
+          "event": {
+            "event_id": "22613",
+            "name": "Subcommittee on Zoning and Franchises",
+            "date": "2026-09-23",
+            "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "body_id": null,
+            "documents": [
+              {
+                "name": "Agenda",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22613_A_Subcommittee_on_Zoning_and_Franchises_26-09-23_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22613_M_Subcommittee_on_Zoning_and_Franchises_26-09-23_Meeting_Minutes.pdf"
+              }
+            ]
+          },
+          "committee": {
+            "label": "Subcommittee on Zoning and Franchises",
+            "body_id": null,
+            "join_state": "unresolved_no_explicit_body_id"
+          },
+          "matter_id": "79532",
+          "matter_ref": "legistar:nyc:matter:79532",
+          "matter_file": "LU 0145-2026",
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "outcome": "P-C Item Laid Over by Comm",
+          "matter_type": null,
+          "matter_status": null,
+          "votes": null,
+          "item_actions": [
+            {
+              "event_item_id": "442095",
+              "action": "Hearing on P-C Item by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "event_item_id": "442367",
+              "action": "P-C Item Laid Over by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "source_receipt": {
+            "source_system": "legistar",
+            "request_id": "20260909019",
+            "request_ids": [
+              "20260909019"
+            ],
+            "event_id": "22613",
+            "event_item_ids": [
+              "442095",
+              "442367"
+            ],
+            "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "input_artifact": "site/data/meeting_outcomes_snapshot.json",
+            "snapshot_generated_at": "2026-09-30T13:12:58.771Z"
           }
         }
       ]

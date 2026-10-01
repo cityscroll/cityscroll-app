@@ -2,6 +2,6 @@
   "schema": "cityscroll.checkbook_payment_population_receipt.v1",
   "status": "failed",
   "failure_state": {
-    "message": "fetch failed"
+    "message": "Checkbook HTTP 503 for FY2026 offset 1"
   }
 }

@@ -4,16 +4,16 @@
     "annual-examination-schedule",
     "active-civil-service-list"
   ],
-  "verified_at": "2026-09-09",
+  "verified_at": "2026-09-30",
   "join": {
     "method": "exact_exam_number_zero_pad",
     "schedule_rows": 1271,
     "distinct_schedule_exams": 1271,
-    "distinct_list_aggregate_exams": 859,
-    "matched_pairs": 445,
+    "distinct_list_aggregate_exams": 872,
+    "matched_pairs": 452,
     "misses": {
-      "no_list_aggregate": 769,
-      "missing_application_close": 6,
+      "no_list_aggregate": 761,
+      "missing_application_close": 7,
       "missing_established_date": 51,
       "established_before_application_close": 0
     },
@@ -27,45 +27,45 @@
       "citywide": {
         "key": "citywide",
         "label": "citywide",
-        "n": 445,
+        "n": 452,
         "eligible": true,
-        "p10_days": 92,
+        "p10_days": 99,
         "p50_days": 274,
         "p90_days": 722,
         "median_months": 9,
         "train_from": "2021-05-05",
-        "train_to": "2026-09-02"
+        "train_to": "2026-09-23"
       },
       "open_competitive": {
         "key": "open_competitive",
         "label": "open competitive",
-        "n": 308,
+        "n": 312,
         "eligible": true,
         "p10_days": 92,
         "p50_days": 239,
         "p90_days": 744,
         "median_months": 8,
         "train_from": "2021-05-05",
-        "train_to": "2026-09-02"
+        "train_to": "2026-09-23"
       },
       "promotion": {
         "key": "promotion",
         "label": "promotion",
-        "n": 137,
+        "n": 140,
         "eligible": true,
         "p10_days": 127,
-        "p50_days": 358,
-        "p90_days": 617,
+        "p50_days": 351,
+        "p90_days": 610,
         "median_months": 12,
         "train_from": "2021-05-26",
-        "train_to": "2026-08-26"
+        "train_to": "2026-09-23"
       }
     }
   },
   "backtest": {
     "protocol": "train establishment events through 2024; score lists established in 2025–2026 for exams already open at 2025-01-01",
-    "training_pairs": 278,
-    "scoring_pairs": 86,
+    "training_pairs": 271,
+    "scoring_pairs": 87,
     "scorecard": {
       "metric": "prediction_calibration",
       "version": "prediction_calibration_v1",
@@ -78,22 +78,22 @@
         "from": "2021-05-05",
         "to": "2024-12-18"
       },
-      "prediction_count": 86,
-      "resolved_backtest_predictions": 86,
+      "prediction_count": 87,
+      "resolved_backtest_predictions": 87,
       "resolution_rate": 1,
       "resolution_counts": {
         "resolved_hit": 52,
-        "resolved_miss": 34,
+        "resolved_miss": 35,
         "open": 0
       },
-      "timing_prediction_count": 86,
-      "timing_realized_count": 86,
+      "timing_prediction_count": 87,
+      "timing_realized_count": 87,
       "timing_resolution_hits": 52,
       "interval_nominal": 0.8,
-      "interval_coverage": 0.6047,
+      "interval_coverage": 0.5977,
       "interval_coverage_hits": 52,
-      "interval_coverage_count": 86,
-      "median_absolute_error_p50_days": 230.5,
+      "interval_coverage_count": 87,
+      "median_absolute_error_p50_days": 237,
       "occurrence_prediction_count": 0,
       "occurrence_resolved_count": 0,
       "occurrence_calibration": [

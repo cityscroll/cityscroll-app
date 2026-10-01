@@ -1,11 +1,11 @@
 {
   "bridge": {
-    "eligible_appearances": 102,
+    "eligible_appearances": 108,
     "gate": "GO",
-    "linked_matters": 51,
-    "linked_projects": 25,
-    "matched_appearances": 63,
-    "matched_rate": 0.617647
+    "linked_matters": 55,
+    "linked_projects": 27,
+    "matched_appearances": 71,
+    "matched_rate": 0.657407
   },
   "generated_at": "2026-09-05T00:00:00.000Z",
   "matters": {
@@ -815,13 +815,14 @@
         },
         {
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Approved by Subcommittee"
           ],
           "event_date": "2026-09-09",
           "event_id": "22617",
           "event_name": "Subcommittee on Zoning and Franchises",
-          "named_votes": null,
-          "outcome": "Committee"
+          "named_votes": 9,
+          "outcome": "Approved by Subcommittee"
         }
       ],
       "join_key": "ulurp_number",
@@ -848,13 +849,14 @@
         },
         {
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Approved by Subcommittee"
           ],
           "event_date": "2026-09-09",
           "event_id": "22617",
           "event_name": "Subcommittee on Zoning and Franchises",
-          "named_votes": null,
-          "outcome": "Committee"
+          "named_votes": 9,
+          "outcome": "Approved by Subcommittee"
         }
       ],
       "join_key": "ulurp_number",
@@ -881,13 +883,14 @@
         },
         {
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Approved by Subcommittee"
           ],
           "event_date": "2026-09-09",
           "event_id": "22617",
           "event_name": "Subcommittee on Zoning and Franchises",
-          "named_votes": null,
-          "outcome": "Committee"
+          "named_votes": 9,
+          "outcome": "Approved by Subcommittee"
         }
       ],
       "join_key": "ulurp_number",
@@ -914,13 +917,24 @@
         },
         {
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
           ],
           "event_date": "2026-09-09",
           "event_id": "22617",
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
-          "outcome": "Committee"
+          "outcome": "Laid Over by Subcommittee"
+        },
+        {
+          "actions": [
+            "Deferred"
+          ],
+          "event_date": "2026-09-23",
+          "event_id": "22613",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Deferred"
         }
       ],
       "join_key": "ulurp_number",
@@ -947,13 +961,24 @@
         },
         {
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
           ],
           "event_date": "2026-09-09",
           "event_id": "22617",
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
-          "outcome": "Committee"
+          "outcome": "Laid Over by Subcommittee"
+        },
+        {
+          "actions": [
+            "Deferred"
+          ],
+          "event_date": "2026-09-23",
+          "event_id": "22613",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Deferred"
         }
       ],
       "join_key": "ulurp_number",
@@ -980,13 +1005,14 @@
         },
         {
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Approved by Subcommittee with Modifications and Referred to CPC"
           ],
           "event_date": "2026-09-09",
           "event_id": "22617",
           "event_name": "Subcommittee on Zoning and Franchises",
-          "named_votes": null,
-          "outcome": "Committee"
+          "named_votes": 9,
+          "outcome": "Approved by Subcommittee with Modifications and Referred to CPC"
         }
       ],
       "join_key": "ulurp_number",
@@ -1013,13 +1039,14 @@
         },
         {
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Approved by Subcommittee with Modifications and Referred to CPC"
           ],
           "event_date": "2026-09-09",
           "event_id": "22617",
           "event_name": "Subcommittee on Zoning and Franchises",
-          "named_votes": null,
-          "outcome": "Committee"
+          "named_votes": 9,
+          "outcome": "Approved by Subcommittee with Modifications and Referred to CPC"
         }
       ],
       "join_key": "ulurp_number",
@@ -1035,13 +1062,24 @@
       "appearances": [
         {
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
           ],
           "event_date": "2026-09-09",
           "event_id": "22617",
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
-          "outcome": "Committee"
+          "outcome": "Laid Over by Subcommittee"
+        },
+        {
+          "actions": [
+            "Deferred"
+          ],
+          "event_date": "2026-09-23",
+          "event_id": "22613",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Deferred"
         }
       ],
       "join_key": "ulurp_number",
@@ -1057,13 +1095,24 @@
       "appearances": [
         {
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
           ],
           "event_date": "2026-09-09",
           "event_id": "22617",
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
-          "outcome": "Committee"
+          "outcome": "Laid Over by Subcommittee"
+        },
+        {
+          "actions": [
+            "Deferred"
+          ],
+          "event_date": "2026-09-23",
+          "event_id": "22613",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Deferred"
         }
       ],
       "join_key": "ulurp_number",
@@ -1079,19 +1128,20 @@
       "appearances": [
         {
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
           "event_date": "2026-09-09",
           "event_id": "22617",
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
-          "outcome": "Introduced"
+          "outcome": "P-C Item Laid Over by Comm"
         }
       ],
       "join_key": "ulurp_number",
       "join_method": "exact_ulurp_token",
       "join_value": "260238ZMK",
-      "matter_file": "T2026-2499",
+      "matter_file": "LU 0131-2026",
       "matter_id": "79452",
       "project_id": "2025K0284",
       "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79452",
@@ -1101,19 +1151,20 @@
       "appearances": [
         {
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
           "event_date": "2026-09-09",
           "event_id": "22617",
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
-          "outcome": "Introduced"
+          "outcome": "P-C Item Laid Over by Comm"
         }
       ],
       "join_key": "ulurp_number",
       "join_method": "exact_ulurp_token",
       "join_value": "260239ZRK",
-      "matter_file": "T2026-2500",
+      "matter_file": "LU 0132-2026",
       "matter_id": "79453",
       "project_id": "2025K0284",
       "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79453",
@@ -1123,19 +1174,20 @@
       "appearances": [
         {
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
           "event_date": "2026-09-09",
           "event_id": "22617",
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
-          "outcome": "Introduced"
+          "outcome": "P-C Item Laid Over by Comm"
         }
       ],
       "join_key": "ulurp_number",
       "join_method": "exact_ulurp_token",
       "join_value": "240218ZMK",
-      "matter_file": "T2026-2501",
+      "matter_file": "LU 0133-2026",
       "matter_id": "79454",
       "project_id": "2022K0430",
       "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79454",
@@ -1145,19 +1197,20 @@
       "appearances": [
         {
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
           "event_date": "2026-09-09",
           "event_id": "22617",
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
-          "outcome": "Introduced"
+          "outcome": "P-C Item Laid Over by Comm"
         }
       ],
       "join_key": "ulurp_number",
       "join_method": "exact_ulurp_token",
       "join_value": "240219ZRK",
-      "matter_file": "T2026-2502",
+      "matter_file": "LU 0134-2026",
       "matter_id": "79455",
       "project_id": "2022K0430",
       "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79455",
@@ -1167,19 +1220,20 @@
       "appearances": [
         {
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
           "event_date": "2026-09-09",
           "event_id": "22617",
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
-          "outcome": "Introduced"
+          "outcome": "P-C Item Laid Over by Comm"
         }
       ],
       "join_key": "ulurp_number",
       "join_method": "exact_ulurp_token",
       "join_value": "240206ZMX",
-      "matter_file": "T2026-2503",
+      "matter_file": "LU 0135-2026",
       "matter_id": "79456",
       "project_id": "2023X0149",
       "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79456",
@@ -1189,19 +1243,20 @@
       "appearances": [
         {
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
           "event_date": "2026-09-09",
           "event_id": "22617",
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
-          "outcome": "Introduced"
+          "outcome": "P-C Item Laid Over by Comm"
         }
       ],
       "join_key": "ulurp_number",
       "join_method": "exact_ulurp_token",
       "join_value": "240207ZRX",
-      "matter_file": "T2026-2504",
+      "matter_file": "LU 0136-2026",
       "matter_id": "79457",
       "project_id": "2023X0149",
       "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79457",
@@ -1211,19 +1266,20 @@
       "appearances": [
         {
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
           "event_date": "2026-09-09",
           "event_id": "22617",
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
-          "outcome": "Introduced"
+          "outcome": "P-C Item Laid Over by Comm"
         }
       ],
       "join_key": "ulurp_number",
       "join_method": "exact_ulurp_token",
       "join_value": "260186ZMQ",
-      "matter_file": "T2026-2505",
+      "matter_file": "LU 0137-2026",
       "matter_id": "79458",
       "project_id": "2025Q0247",
       "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79458",
@@ -1233,19 +1289,20 @@
       "appearances": [
         {
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
           "event_date": "2026-09-09",
           "event_id": "22617",
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
-          "outcome": "Introduced"
+          "outcome": "P-C Item Laid Over by Comm"
         }
       ],
       "join_key": "ulurp_number",
       "join_method": "exact_ulurp_token",
       "join_value": "260187ZRQ",
-      "matter_file": "T2026-2506",
+      "matter_file": "LU 0138-2026",
       "matter_id": "79459",
       "project_id": "2025Q0247",
       "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79459",
@@ -1255,19 +1312,20 @@
       "appearances": [
         {
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
           "event_date": "2026-09-09",
           "event_id": "22617",
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
-          "outcome": "Introduced"
+          "outcome": "P-C Item Laid Over by Comm"
         }
       ],
       "join_key": "ulurp_number",
       "join_method": "exact_ulurp_token",
       "join_value": "260087ZMK",
-      "matter_file": "T2026-2507",
+      "matter_file": "LU 0139-2026",
       "matter_id": "79460",
       "project_id": "2024K0240",
       "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79460",
@@ -1277,23 +1335,116 @@
       "appearances": [
         {
           "actions": [
-            "Introduced"
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
           ],
           "event_date": "2026-09-09",
           "event_id": "22617",
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
-          "outcome": "Introduced"
+          "outcome": "P-C Item Laid Over by Comm"
         }
       ],
       "join_key": "ulurp_number",
       "join_method": "exact_ulurp_token",
       "join_value": "260088ZRK",
-      "matter_file": "T2026-2508",
+      "matter_file": "LU 0140-2026",
       "matter_id": "79461",
       "project_id": "2024K0240",
       "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79461",
       "title": "Zoning, 289 Kent Avenue Rezoning, Brooklyn (N 260088 ZRK)."
+    },
+    "79529": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "event_date": "2026-09-23",
+          "event_id": "22613",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "P-C Item Laid Over by Comm"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "220449ZMK",
+      "matter_file": "LU 0142-2026",
+      "matter_id": "79529",
+      "project_id": "2020K0276",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79529",
+      "title": "Zoning, 1455 Coney Island Avenue Rezoning, Brooklyn (C 220449 ZMK)."
+    },
+    "79530": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "event_date": "2026-09-23",
+          "event_id": "22613",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "P-C Item Laid Over by Comm"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "220450ZRK",
+      "matter_file": "LU 0143-2026",
+      "matter_id": "79530",
+      "project_id": "2020K0276",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79530",
+      "title": "Zoning, 1455 Coney Island Avenue Rezoning, Brooklyn (N 220450 ZRK)."
+    },
+    "79531": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "event_date": "2026-09-23",
+          "event_id": "22613",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "P-C Item Laid Over by Comm"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "250329ZMQ",
+      "matter_file": "LU 0144-2026",
+      "matter_id": "79531",
+      "project_id": "2024Q0219",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79531",
+      "title": "Zoning, 135-27 Sapphire Street Rezoning, Queens (C 250329 ZMQ)."
+    },
+    "79532": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "event_date": "2026-09-23",
+          "event_id": "22613",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "P-C Item Laid Over by Comm"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "250330ZRQ",
+      "matter_file": "LU 0145-2026",
+      "matter_id": "79532",
+      "project_id": "2024Q0219",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79532",
+      "title": "Zoning, 135-27 Sapphire Street Rezoning, Queens (N 250330 ZRQ)."
     }
   },
   "projects": {
@@ -1304,6 +1455,14 @@
       ],
       "project_id": "2019K0190",
       "project_name": "862-868 Kent Avenue"
+    },
+    "2020K0276": {
+      "matter_ids": [
+        "79529",
+        "79530"
+      ],
+      "project_id": "2020K0276",
+      "project_name": "1455 Coney Island Avenue Rezoning"
     },
     "2021X0247": {
       "matter_ids": [
@@ -1421,6 +1580,14 @@
       "project_id": "2024Q0164",
       "project_name": "164th Street Rezoning"
     },
+    "2024Q0219": {
+      "matter_ids": [
+        "79531",
+        "79532"
+      ],
+      "project_id": "2024Q0219",
+      "project_name": "135-27 Sapphire Street Rezoning"
+    },
     "2024R0300": {
       "matter_ids": [
         "79069",
@@ -1509,11 +1676,11 @@
   "schema": "cityscroll.council_land_matter_links.v1",
   "source_vintage": {
     "meeting_outcomes_snapshot_counts": {
-      "absent_count": 308,
-      "present_count": 17,
-      "record_count": 325
+      "absent_count": 287,
+      "present_count": 18,
+      "record_count": 305
     },
-    "meeting_outcomes_snapshot_generated_at": "2026-09-04T13:09:00.447Z",
-    "zap_projects_warehouse_lookup_materialized_at": "2026-09-09T06:54:36.054Z"
+    "meeting_outcomes_snapshot_generated_at": "2026-09-30T13:12:58.771Z",
+    "zap_projects_warehouse_lookup_materialized_at": "2026-09-30T13:15:13.798Z"
   }
 }

@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "kind": "land_upcoming_hearings_materialization",
-  "observed_at": "2026-09-09T06:52:06.323Z",
+  "observed_at": "2026-09-30T13:14:16.581Z",
   "method": "zap_published_hearing_sweep_v2",
   "mode": "live",
   "projects_listed": 235,
@@ -10,19 +10,19 @@
   "unavailable_project_ids": [
     "2026X0464"
   ],
-  "hearings_extracted": 401,
-  "disposition_hearings_extracted": 77,
+  "hearings_extracted": 411,
+  "disposition_hearings_extracted": 87,
   "milestone_hearings_extracted": 324,
   "before_upcoming_count": 4,
-  "milestone_upcoming_count": 160,
-  "incremental_milestone_count": 160,
+  "milestone_upcoming_count": 155,
+  "incremental_milestone_count": 155,
   "accepted_milestone_classes": {
-    "cpc_pre_hearing_review_session": 83,
-    "cpc_public_hearing": 77
+    "cpc_pre_hearing_review_session": 81,
+    "cpc_public_hearing": 74
   },
   "published_meeting_dates_evaluated": 890,
   "hearing_shaped_candidates_reviewed": 846,
-  "upcoming_count": 164,
+  "upcoming_count": 159,
   "statuses": [
     "In Public Review",
     "Noticed",
@@ -32,18 +32,18 @@
   "detector_ok": true,
   "detector_findings": [],
   "sample_project_ids": [
-    "2022Q0214",
-    "2024K0369",
-    "2023Q0211",
-    "2022X0393",
-    "2023K0357",
-    "2023Q0351",
-    "2025K0150",
+    "2023K0368",
+    "2024K0233",
     "2020M0383",
     "2023M0117",
     "2023M0200",
+    "2026R0189",
+    "2025K0150",
     "2025M0360",
-    "2020Q0157"
+    "2023K0148",
+    "2020Q0157",
+    "2020Q0353",
+    "2022X0393"
   ],
   "reviewed_false_positive_sample": [
     {

@@ -30,7 +30,7 @@
       "by_reason": {
         "held_out_precision_gate_passed": 3,
         "matter_body_subject": 61,
-        "temporal": 53
+        "temporal": 47
       },
       "by_agency": {
         "administration-for-childrens-services": {
@@ -120,10 +120,10 @@
             "pre_route_pairs": 476
           },
           "public_inferred": 0,
-          "evidence_only": 32,
+          "evidence_only": 28,
           "reason_counts": {
-            "matter_body_subject": 32,
-            "temporal": 32
+            "matter_body_subject": 28,
+            "temporal": 28
           }
         },
         "city-planning": {
@@ -183,11 +183,8 @@
             "pre_route_pairs": 119
           },
           "public_inferred": 0,
-          "evidence_only": 1,
-          "reason_counts": {
-            "matter_body_subject": 1,
-            "temporal": 1
-          }
+          "evidence_only": 0,
+          "reason_counts": {}
         },
         "consumer-and-worker-protection": {
           "denominators": {
@@ -286,10 +283,10 @@
             "pre_route_pairs": 238
           },
           "public_inferred": 0,
-          "evidence_only": 4,
+          "evidence_only": 6,
           "reason_counts": {
-            "matter_body_subject": 4,
-            "temporal": 4
+            "matter_body_subject": 6,
+            "temporal": 6
           }
         },
         "homeless-services": {
@@ -359,10 +356,10 @@
             "pre_route_pairs": 238
           },
           "public_inferred": 0,
-          "evidence_only": 14,
+          "evidence_only": 12,
           "reason_counts": {
-            "matter_body_subject": 14,
-            "temporal": 14
+            "matter_body_subject": 12,
+            "temporal": 12
           }
         },
         "law-department": {
@@ -515,11 +512,8 @@
             "pre_route_pairs": 119
           },
           "public_inferred": 0,
-          "evidence_only": 1,
-          "reason_counts": {
-            "matter_body_subject": 1,
-            "temporal": 1
-          }
+          "evidence_only": 0,
+          "reason_counts": {}
         },
         "transportation": {
           "denominators": {
@@ -528,10 +522,10 @@
             "pre_route_pairs": 119
           },
           "public_inferred": 3,
-          "evidence_only": 8,
+          "evidence_only": 14,
           "reason_counts": {
             "held_out_precision_gate_passed": 3,
-            "matter_body_subject": 8
+            "matter_body_subject": 14
           }
         },
         "youth-and-community-development": {

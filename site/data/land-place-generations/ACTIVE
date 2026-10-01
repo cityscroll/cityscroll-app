@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.land_place_generation_manifest.v1",
-  "active_generation": "6ebf3a8542b1a6cf44d43757266333032bbba4fb598306d0da12b155242027a7",
-  "activated_at": "2026-09-09T06:54:36.054Z",
-  "previous_generation": "6ebf3a8542b1a6cf44d43757266333032bbba4fb598306d0da12b155242027a7"
+  "active_generation": "65c00cb7d6e954c00ee0112b8139cfd3b949135662c6b91bbb7f8d6b80930a26",
+  "activated_at": "2026-09-30T13:15:13.798Z",
+  "previous_generation": "65c00cb7d6e954c00ee0112b8139cfd3b949135662c6b91bbb7f8d6b80930a26"
 }
