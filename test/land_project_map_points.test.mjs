@@ -268,7 +268,7 @@ test("committed receipt keeps 2025M0252 and exact-BBL misses out of the payload"
   assert.equal(Object.keys(payload.unmapped).length, 244 - receipt.counts.mapped);
   assert.ok(receipt.inputs.land_project_catalog, "map points bind to the admitted catalog generation");
   assert.equal(receipt.inputs.land_project_catalog.count, 244);
-  assert.equal(receipt.inputs.land_project_catalog.vintage.warehouse_materialized_at, "2026-09-09T06:54:36.054Z");
+  assert.equal(receipt.inputs.land_project_catalog.vintage.warehouse_materialized_at, "2026-09-30T13:15:13.798Z");
   assert.equal(receipt.inputs.land_project_catalog.vintage.content_id.startsWith("fnv1a32:"), true);
   assert.equal(payload.points["2026R0127"].geometry_shard, "2b");
   assert.equal(Object.prototype.hasOwnProperty.call(payload.points["2026R0127"], "shape"), false);

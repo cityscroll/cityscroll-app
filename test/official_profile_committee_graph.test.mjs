@@ -28,7 +28,7 @@ test("official profiles render exact graph member_of edges when the legacy looku
 
   assert.equal(legacyLookup.by_member_id?.[person.person_id], undefined);
   assert.equal(committeeView.state, "matched");
-  assert.equal(rows.length, 77);
+  assert.equal(rows.length, 78);
   assert.equal(reverseEdges.length, rows.length);
   assert.ok(rows.every((row) => row.edge_type === "member_of" && row.relation_label === "member of"));
   assert.ok(rows.every((row) => /^\d+$/.test(row.committee_id)));

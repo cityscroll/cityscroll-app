@@ -262,7 +262,7 @@
         "convening_body_basis": "publisher_meeting_title",
         "venue": {
           "name": "SBH Wellness Center",
-          "address": "4507 3rd Avenue, Bronx, NY, 10457",
+          "address": "4507 3rd Avenue, Bronx, NY 10457",
           "mode": "in-person",
           "components": null
         },
@@ -1043,14 +1043,7 @@
         "venue": {
           "name": "In Person at Knights of Columbus, 1305 86th Street and Livestreamed to YouTube",
           "address": "1305 86th Street, Brooklyn, NY 11228",
-          "mode": "in-person",
-          "components": {
-            "street_address": "1305 86th Street",
-            "address_locality": "Brooklyn",
-            "address_region": "NY",
-            "postal_code": "11228",
-            "address_borough": null
-          }
+          "mode": "in-person"
         },
         "source": {
           "source_system": "community_board",
@@ -1542,16 +1535,8 @@
         "convening_body_basis": "publisher_meeting_title",
         "venue": {
           "name": "Gould Welcome Center, 50 West 4th Street, New York, NY 10012",
-          "address": "50 West 4th Street, New York, NY, 10012",
-          "mode": "not-stated",
-          "components": {
-            "street_address": "50 West 4th Street",
-            "address_locality": "New York",
-            "address_region": "NY",
-            "postal_code": "10012",
-            "address_borough": null
-          },
-          "attendance_conflict": true
+          "address": "50 West 4th Street, New York, NY 10012",
+          "mode": "hybrid"
         },
         "source": {
           "source_system": "community_board",
@@ -1687,16 +1672,8 @@
         "convening_body_basis": "publisher_meeting_title",
         "venue": {
           "name": "Hotel Trades Council",
-          "address": "305 West 44th Street, New York, NY, 10036",
-          "mode": "not-stated",
-          "components": {
-            "street_address": "305 West 44th Street",
-            "address_locality": "New York",
-            "address_region": "NY",
-            "postal_code": "10036",
-            "address_borough": null
-          },
-          "attendance_conflict": true
+          "address": "305 West 44th Street, New York, NY 10036",
+          "mode": "hybrid"
         },
         "source": {
           "source_system": "community_board",

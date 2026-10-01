@@ -148,7 +148,7 @@
       "vintage_field": "generated_at",
       "vintage_basis": "composite_oldest",
       "state": "measured",
-      "value": 83,
+      "value": 86,
       "reason": null
     },
     {
@@ -1024,7 +1024,7 @@
           {
             "unit_id": "agencies",
             "route": "/browse/people/",
-            "served_records": 83,
+            "served_records": 86,
             "evidence_vintage": "2026-08-06T00:00:00.000Z"
           }
         ]

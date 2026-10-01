@@ -292,7 +292,7 @@
           "source_id": "nyc-agencies",
           "source_name": "NYC Agencies and Governance Organizations",
           "state": "measured",
-          "value": 83,
+          "value": 86,
           "evidence_vintage": "2026-08-06T00:00:00.000Z",
           "vintage_field": "generated_at",
           "vintage_basis": "composite_oldest"
