@@ -505,8 +505,14 @@ test("missing-snapshot recovery honors the incremental kill switch wiring", () =
     workflow.indexOf("- name: Record published D1 fingerprint"),
     workflow.indexOf("- name: Record D1 publication receipt"),
   );
-  assert.match(record, /kv key put "\$snapshot_key"/);
-  assert.ok(record.indexOf("kv key put \"$snapshot_key\"") < record.indexOf("d1_generation_fence.mjs complete"));
+  // Packed snapshot put (gzip/chunked) must land before fence complete; the
+  // hard assert-fits check keeps an oversize value from failing only at KV.
+  assert.match(record, /d1_publication_snapshot_kv\.mjs pack/);
+  assert.match(record, /d1_publication_snapshot_kv\.mjs assert-fits/);
+  assert.match(record, /kv key put "\$put_key"/);
+  assert.ok(record.indexOf("d1_publication_snapshot_kv.mjs pack") < record.indexOf("kv key put \"$put_key\""));
+  assert.ok(record.indexOf("kv key put \"$put_key\"") < record.indexOf("d1_generation_fence.mjs complete"));
+  assert.match(workflow, /d1_publication_snapshot_kv\.mjs unpack/);
 });
 
 test("recovery reason stays bound to the missing-snapshot rebuild contract", () => {
