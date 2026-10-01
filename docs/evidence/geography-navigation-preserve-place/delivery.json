@@ -1,0 +1,7 @@
+{
+  "landed_commit": "a1f1dc687b6e586c999436098dd1a8753062e224",
+  "note": "Squash-merge commit on the default branch that delivered the preserve-place production read-back with observed Greenpoint and Precinct 94 served values.",
+  "public_alias": "cc669bf6bea4a",
+  "schema": "cityscroll.capture_delivery.v1",
+  "surface": "pages"
+}

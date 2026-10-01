@@ -34,6 +34,10 @@ import {
   restoreOverlapInvokerFocus,
   sortOverlapRows,
 } from "../site/geography_navigation_overlap_ui.mjs";
+import {
+  applyGeographyComparisonLoad,
+  isCompareLoadCurrent,
+} from "../site/geography_comparison_load.mjs";
 import { buildNearYouViewModel, renderNearYouDocument } from "../site/near_you_view.mjs";
 import { scopeFromLensState, scopeWithGeographies } from "../site/scope_v0.mjs";
 
@@ -494,7 +498,7 @@ test("A1: Greenpoint police compare keeps Greenpoint, Precinct 94, and the NTA d
   assert.match(unavailableHtml, /data-geography-areas[^>]*data-geography-layer="nta2020"/);
 });
 
-test("A2: map island keeps primary layer independent of compare and ignores stale loads", () => {
+test("A2: map island keeps primary layer independent of compare", () => {
   assert.match(VIEW_SOURCE, /geographyState\?\.type/);
   assert.doesNotMatch(
     VIEW_SOURCE,
@@ -504,10 +508,208 @@ test("A2: map island keeps primary layer independent of compare and ignores stal
   assert.doesNotMatch(MAP_SOURCE, /initialType = selected\?\.compare/);
   assert.match(MAP_SOURCE, /refreshGeographyAreasList\(primaryType, primaryDoc\)/);
   assert.match(MAP_SOURCE, /setActiveLayerButtons\(primaryType\)/);
-  assert.match(
-    MAP_SOURCE,
-    /if \(\(current\.compare \|\| null\) !== requestedCompare\) return/,
+  // Ordering / stale-response evidence lives in the executed handler tests below;
+  // a source-line grep is not evidence that the guard runs.
+});
+
+function createDeferred() {
+  let resolve;
+  let reject;
+  const promise = new Promise((res, rej) => {
+    resolve = res;
+    reject = rej;
+  });
+  return { promise, resolve, reject };
+}
+
+function layerFixture(type, rowId) {
+  return {
+    type,
+    geometry_fidelity: "simplified",
+    vintage: { id: "26B" },
+    features: [
+      {
+        key: `geography:${type}:${rowId}`,
+        id: rowId,
+        type,
+        label: `${type}-${rowId}`,
+        geometry: { type: "Point", coordinates: [-73.95, 40.73] },
+      },
+    ],
+  };
+}
+
+function createComparisonHarness({ compareIsCurrent = isCompareLoadCurrent } = {}) {
+  const published = {
+    compare: null,
+    layerDoc: null,
+    selectedKey: "geography:nta2020:BK0101",
+    activeLayer: "nta2020",
+    rowIds: [],
+    finals: [],
+  };
+  let currentCompare = null;
+  const loaders = new Map();
+
+  function ensureLoader(type) {
+    if (!loaders.has(type)) loaders.set(type, createDeferred());
+    return loaders.get(type);
+  }
+
+  async function run(compareType) {
+    currentCompare = compareType || null;
+    const result = await applyGeographyComparisonLoad({
+      compareType,
+      loadLayer: async (type) => {
+        const deferred = ensureLoader(type);
+        return deferred.promise;
+      },
+      getCurrentCompare: () => currentCompare,
+      getCurrentKey: () => published.selectedKey,
+      setComparisonLayer: (type, layerDoc) => {
+        published.compare = type;
+        published.layerDoc = layerDoc || null;
+        published.rowIds = (layerDoc?.features || []).map((feature) => feature.id);
+        published.activeLayer = "nta2020";
+        published.finals.push({
+          compare: type,
+          rowIds: published.rowIds.slice(),
+          selectedKey: published.selectedKey,
+          activeLayer: published.activeLayer,
+        });
+      },
+      setSelectedKey: (key) => {
+        published.selectedKey = key;
+      },
+      compareIsCurrent,
+    });
+    return result;
+  }
+
+  return {
+    published,
+    run,
+    resolve(type, rowId = "94") {
+      ensureLoader(type).resolve(layerFixture(type, rowId));
+    },
+    setCurrentCompare(type) {
+      currentCompare = type || null;
+    },
+  };
+}
+
+test("A2: out-of-order compare load keeps the later choice", async () => {
+  const harness = createComparisonHarness();
+  const first = harness.run("community_district");
+  const second = harness.run("council_district");
+
+  // Later choice is already current; earlier response arrives last.
+  harness.resolve("council_district", "33");
+  const secondResult = await second;
+  assert.equal(secondResult.applied, true);
+  assert.equal(harness.published.compare, "council_district");
+  assert.deepEqual(harness.published.rowIds, ["33"]);
+  assert.equal(harness.published.selectedKey, "geography:nta2020:BK0101");
+  assert.equal(harness.published.activeLayer, "nta2020");
+
+  harness.resolve("community_district", "1");
+  const firstResult = await first;
+  assert.equal(firstResult.applied, false);
+  assert.equal(firstResult.reason, "stale_compare");
+  assert.equal(harness.published.compare, "council_district");
+  assert.deepEqual(harness.published.rowIds, ["33"]);
+  assert.equal(harness.published.finals.length, 1);
+  assert.equal(harness.published.finals[0].compare, "council_district");
+});
+
+test("A2: in-order resolve still ends on the later choice", async () => {
+  const harness = createComparisonHarness();
+  const first = harness.run("police_precinct");
+  const second = harness.run("community_district");
+
+  harness.resolve("police_precinct", "94");
+  const firstResult = await first;
+  assert.equal(firstResult.applied, false);
+  assert.equal(firstResult.reason, "stale_compare");
+  assert.equal(harness.published.compare, null);
+  assert.equal(harness.published.finals.length, 0);
+
+  harness.resolve("community_district", "1");
+  const secondResult = await second;
+  assert.equal(secondResult.applied, true);
+  assert.equal(harness.published.compare, "community_district");
+  assert.deepEqual(harness.published.rowIds, ["1"]);
+  assert.equal(harness.published.selectedKey, "geography:nta2020:BK0101");
+  assert.equal(harness.published.activeLayer, "nta2020");
+});
+
+test("A2: rapid compare changes publish only the latest choice as final", async () => {
+  const harness = createComparisonHarness();
+  const first = harness.run("police_precinct");
+  const second = harness.run("council_district");
+  const third = harness.run("community_district");
+
+  assert.equal(harness.published.finals.length, 0);
+
+  harness.resolve("police_precinct", "94");
+  harness.resolve("council_district", "33");
+  await Promise.allSettled([first, second]);
+  assert.equal(harness.published.finals.length, 0);
+  assert.equal(harness.published.compare, null);
+
+  harness.resolve("community_district", "1");
+  const thirdResult = await third;
+  assert.equal(thirdResult.applied, true);
+  assert.equal(harness.published.compare, "community_district");
+  assert.deepEqual(harness.published.rowIds, ["1"]);
+  assert.equal(harness.published.finals.length, 1);
+  assert.equal(harness.published.finals[0].compare, "community_district");
+  assert.equal(harness.published.finals[0].selectedKey, "geography:nta2020:BK0101");
+  assert.equal(harness.published.finals[0].activeLayer, "nta2020");
+});
+
+test("A2 mutation control: inverting the ordering guard lets a stale load overwrite", async () => {
+  const inverted = (currentCompare, requestedCompare) => (
+    (currentCompare || null) !== (requestedCompare || null)
   );
+  const broken = createComparisonHarness({ compareIsCurrent: inverted });
+  const first = broken.run("community_district");
+  const second = broken.run("council_district");
+
+  broken.resolve("council_district", "33");
+  const secondResult = await second;
+  // Inverted guard rejects the still-current later choice.
+  assert.equal(secondResult.applied, false);
+  assert.equal(broken.published.compare, null);
+
+  broken.resolve("community_district", "1");
+  const firstResult = await first;
+  // The earlier response then publishes and becomes the final selection —
+  // the opposite of the healthy ordering contract.
+  assert.equal(firstResult.applied, true);
+  assert.equal(broken.published.compare, "community_district");
+  assert.deepEqual(broken.published.rowIds, ["1"]);
+  assert.equal(broken.published.finals.length, 1);
+  assert.equal(broken.published.finals[0].compare, "community_district");
+
+  const healthy = createComparisonHarness();
+  const healthyFirst = healthy.run("community_district");
+  const healthySecond = healthy.run("council_district");
+  healthy.resolve("council_district", "33");
+  await healthySecond;
+  healthy.resolve("community_district", "1");
+  const healthyFirstResult = await healthyFirst;
+  assert.equal(healthyFirstResult.applied, false);
+  assert.equal(healthy.published.compare, "council_district");
+  assert.deepEqual(healthy.published.rowIds, ["33"]);
+  assert.equal(healthy.published.finals[0].compare, "council_district");
+});
+
+test("A2: compare-load current helper matches the map island guard", () => {
+  assert.equal(isCompareLoadCurrent("council_district", "council_district"), true);
+  assert.equal(isCompareLoadCurrent(null, null), true);
+  assert.equal(isCompareLoadCurrent("council_district", "community_district"), false);
+  assert.equal(isCompareLoadCurrent(null, "police_precinct"), false);
 });
 
 test("A1/A2: geography owners keep friendly labels and vintage when records are unavailable", () => {

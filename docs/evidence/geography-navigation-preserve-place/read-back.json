@@ -1,6 +1,21 @@
 {
   "capture": {
     "browser": "chromium",
+    "camera_page_extracted_fields": [
+      "camera.center.lng",
+      "camera.center.lat",
+      "camera.zoom",
+      "heading",
+      "geo",
+      "lens",
+      "compare",
+      "selected_key",
+      "active_layer"
+    ],
+    "camera_tolerance": {
+      "center_degrees": 0.0005,
+      "zoom": 0.15
+    },
     "screenshot_binaries_committed": false,
     "tool": "tools/capture_near_you_map_health_preserve_place_production_read.py",
     "viewports": [
@@ -17,15 +32,350 @@
     ]
   },
   "deployment": {
-    "deployment_at": "2026-09-23T11:17:46.605Z",
-    "generated_at": "2026-09-23T11:17:46.605Z",
-    "manifest_sha256": "84c04dceef200dc377f8805fed11be541cecb9868b02f444d54b6ac4eed8c6eb",
+    "deployment_at": "2026-10-01T03:42:40.407Z",
+    "generated_at": "2026-10-01T03:42:40.406Z",
+    "manifest_sha256": "51b216a02e630b48bfdc3331bd35b99bdefc0a0b294639c752f6ea57579e463d",
     "manifest_url": "https://cityscroll.org/artifact-manifest.json",
-    "revision": "5267f48efce205d7dbc0d0810c4b70a4fcf7f60f"
+    "required_ancestor": "a1f1dc687b6e586c999436098dd1a8753062e224",
+    "required_ancestor_contained": true,
+    "required_ancestor_on_default_branch": true,
+    "revision": "a1a3fc0128ec2f11da77e26713fa3b61ceed4211"
   },
   "evidence_class": "deployed-production-read-back",
   "letters": {
     "A1": {
+      "camera_reads": [
+        {
+          "assertion": "Page-observed map camera for Greenpoint under police_precinct comparison at this viewport.",
+          "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
+          "file": null,
+          "name": "greenpoint-police-camera-desktop",
+          "revision": "a1a3fc0128ec2f11da77e26713fa3b61ceed4211",
+          "route": "/near-you/?geo=nta2020%3ABK0101&compare=police_precinct&surface=map&lens=meetings",
+          "served_values": {
+            "active_layer": "nta2020",
+            "camera": {
+              "center": {
+                "lat": 40.70534703366087,
+                "lng": -73.97999999999999
+              },
+              "zoom": 9.494728589063973
+            },
+            "camera_page_extracted_fields": [
+              "camera.center.lng",
+              "camera.center.lat",
+              "camera.zoom",
+              "heading",
+              "geo",
+              "lens",
+              "compare",
+              "selected_key",
+              "active_layer"
+            ],
+            "camera_tolerance": {
+              "center_degrees": 0.0005,
+              "zoom": 0.15
+            },
+            "compare": "police_precinct",
+            "geo": "nta2020:BK0101",
+            "heading": "Greenpoint",
+            "lens": "meetings",
+            "place_preserved": true,
+            "selected_key": "geography:nta2020:BK0101"
+          },
+          "sha256": "833a36181ff398f256eb5ddaa57176e2d6faff26434cb409d89e879693d89850",
+          "source": "headless-playwright-production-served-site",
+          "viewport": {
+            "height": 900,
+            "width": 1440
+          }
+        },
+        {
+          "assertion": "Page-observed map camera for Greenpoint under community_district comparison at this viewport.",
+          "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
+          "file": null,
+          "name": "greenpoint-community-camera-desktop",
+          "revision": "a1a3fc0128ec2f11da77e26713fa3b61ceed4211",
+          "route": "/near-you/?geo=nta2020%3ABK0101&compare=community_district&surface=map&lens=meetings",
+          "served_values": {
+            "active_layer": "nta2020",
+            "camera": {
+              "center": {
+                "lat": 40.70534703366087,
+                "lng": -73.97999999999999
+              },
+              "zoom": 9.494728589063973
+            },
+            "camera_page_extracted_fields": [
+              "camera.center.lng",
+              "camera.center.lat",
+              "camera.zoom",
+              "heading",
+              "geo",
+              "lens",
+              "compare",
+              "selected_key",
+              "active_layer"
+            ],
+            "camera_tolerance": {
+              "center_degrees": 0.0005,
+              "zoom": 0.15
+            },
+            "compare": "community_district",
+            "geo": "nta2020:BK0101",
+            "heading": "Greenpoint",
+            "lens": "meetings",
+            "place_preserved": true,
+            "selected_key": "geography:nta2020:BK0101"
+          },
+          "sha256": "273daaf216283fe3d73a16579d04a73a23aa96160a511b91953a4bcf8f465388",
+          "source": "headless-playwright-production-served-site",
+          "viewport": {
+            "height": 900,
+            "width": 1440
+          }
+        },
+        {
+          "assertion": "Page-observed map camera for Greenpoint under council_district comparison at this viewport.",
+          "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
+          "file": null,
+          "name": "greenpoint-council-camera-desktop",
+          "revision": "a1a3fc0128ec2f11da77e26713fa3b61ceed4211",
+          "route": "/near-you/?geo=nta2020%3ABK0101&compare=council_district&surface=map&lens=meetings",
+          "served_values": {
+            "active_layer": "nta2020",
+            "camera": {
+              "center": {
+                "lat": 40.70534703366087,
+                "lng": -73.97999999999999
+              },
+              "zoom": 9.494728589063973
+            },
+            "camera_page_extracted_fields": [
+              "camera.center.lng",
+              "camera.center.lat",
+              "camera.zoom",
+              "heading",
+              "geo",
+              "lens",
+              "compare",
+              "selected_key",
+              "active_layer"
+            ],
+            "camera_tolerance": {
+              "center_degrees": 0.0005,
+              "zoom": 0.15
+            },
+            "compare": "council_district",
+            "geo": "nta2020:BK0101",
+            "heading": "Greenpoint",
+            "lens": "meetings",
+            "place_preserved": true,
+            "selected_key": "geography:nta2020:BK0101"
+          },
+          "sha256": "43cf595afc3e516ce6098a95396e959a6a6dac6cc86b8e32129953f6d566390e",
+          "source": "headless-playwright-production-served-site",
+          "viewport": {
+            "height": 900,
+            "width": 1440
+          }
+        },
+        {
+          "assertion": "Page-observed map camera for Greenpoint under police_precinct comparison at this viewport.",
+          "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
+          "file": null,
+          "name": "greenpoint-police-camera-mobile",
+          "revision": "a1a3fc0128ec2f11da77e26713fa3b61ceed4211",
+          "route": "/near-you/?geo=nta2020%3ABK0101&compare=police_precinct&surface=map&lens=meetings",
+          "served_values": {
+            "active_layer": "nta2020",
+            "camera": {
+              "center": {
+                "lat": 40.70534703366087,
+                "lng": -73.98
+              },
+              "zoom": 8.518178922926843
+            },
+            "camera_page_extracted_fields": [
+              "camera.center.lng",
+              "camera.center.lat",
+              "camera.zoom",
+              "heading",
+              "geo",
+              "lens",
+              "compare",
+              "selected_key",
+              "active_layer"
+            ],
+            "camera_tolerance": {
+              "center_degrees": 0.0005,
+              "zoom": 0.15
+            },
+            "compare": "police_precinct",
+            "geo": "nta2020:BK0101",
+            "heading": "Greenpoint",
+            "lens": "meetings",
+            "place_preserved": true,
+            "selected_key": "geography:nta2020:BK0101"
+          },
+          "sha256": "862aa659c64817dc28175612273a55f97b490254b6f0b99716c63af03e0fccc6",
+          "source": "headless-playwright-production-served-site",
+          "viewport": {
+            "height": 844,
+            "width": 390
+          }
+        },
+        {
+          "assertion": "Page-observed map camera for Greenpoint under community_district comparison at this viewport.",
+          "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
+          "file": null,
+          "name": "greenpoint-community-camera-mobile",
+          "revision": "a1a3fc0128ec2f11da77e26713fa3b61ceed4211",
+          "route": "/near-you/?geo=nta2020%3ABK0101&compare=community_district&surface=map&lens=meetings",
+          "served_values": {
+            "active_layer": "nta2020",
+            "camera": {
+              "center": {
+                "lat": 40.70534703366087,
+                "lng": -73.98
+              },
+              "zoom": 8.518178922926843
+            },
+            "camera_page_extracted_fields": [
+              "camera.center.lng",
+              "camera.center.lat",
+              "camera.zoom",
+              "heading",
+              "geo",
+              "lens",
+              "compare",
+              "selected_key",
+              "active_layer"
+            ],
+            "camera_tolerance": {
+              "center_degrees": 0.0005,
+              "zoom": 0.15
+            },
+            "compare": "community_district",
+            "geo": "nta2020:BK0101",
+            "heading": "Greenpoint",
+            "lens": "meetings",
+            "place_preserved": true,
+            "selected_key": "geography:nta2020:BK0101"
+          },
+          "sha256": "67156060fcc04c587217875945c9594a21376c4aa65daff6956e754a4df09751",
+          "source": "headless-playwright-production-served-site",
+          "viewport": {
+            "height": 844,
+            "width": 390
+          }
+        },
+        {
+          "assertion": "Page-observed map camera for Greenpoint under council_district comparison at this viewport.",
+          "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
+          "file": null,
+          "name": "greenpoint-council-camera-mobile",
+          "revision": "a1a3fc0128ec2f11da77e26713fa3b61ceed4211",
+          "route": "/near-you/?geo=nta2020%3ABK0101&compare=council_district&surface=map&lens=meetings",
+          "served_values": {
+            "active_layer": "nta2020",
+            "camera": {
+              "center": {
+                "lat": 40.70534703366087,
+                "lng": -73.98
+              },
+              "zoom": 8.518178922926843
+            },
+            "camera_page_extracted_fields": [
+              "camera.center.lng",
+              "camera.center.lat",
+              "camera.zoom",
+              "heading",
+              "geo",
+              "lens",
+              "compare",
+              "selected_key",
+              "active_layer"
+            ],
+            "camera_tolerance": {
+              "center_degrees": 0.0005,
+              "zoom": 0.15
+            },
+            "compare": "council_district",
+            "geo": "nta2020:BK0101",
+            "heading": "Greenpoint",
+            "lens": "meetings",
+            "place_preserved": true,
+            "selected_key": "geography:nta2020:BK0101"
+          },
+          "sha256": "f06812d3201dae4bc4e800b7e91ddd22b3a342e9beba36c4e14305f52eae4cb8",
+          "source": "headless-playwright-production-served-site",
+          "viewport": {
+            "height": 844,
+            "width": 390
+          }
+        }
+      ],
+      "camera_retention": [
+        {
+          "baseline": {
+            "center": {
+              "lat": 40.70534703366087,
+              "lng": -73.97999999999999
+            },
+            "zoom": 9.494728589063973
+          },
+          "compare_types": [
+            "police_precinct",
+            "community_district",
+            "council_district"
+          ],
+          "equal": true,
+          "revision": "a1a3fc0128ec2f11da77e26713fa3b61ceed4211",
+          "routes": [
+            "/near-you/?geo=nta2020%3ABK0101&compare=police_precinct&surface=map&lens=meetings",
+            "/near-you/?geo=nta2020%3ABK0101&compare=community_district&surface=map&lens=meetings",
+            "/near-you/?geo=nta2020%3ABK0101&compare=council_district&surface=map&lens=meetings"
+          ],
+          "tolerance": {
+            "center_degrees": 0.0005,
+            "zoom": 0.15
+          },
+          "viewport": {
+            "height": 900,
+            "width": 1440
+          }
+        },
+        {
+          "baseline": {
+            "center": {
+              "lat": 40.70534703366087,
+              "lng": -73.98
+            },
+            "zoom": 8.518178922926843
+          },
+          "compare_types": [
+            "police_precinct",
+            "community_district",
+            "council_district"
+          ],
+          "equal": true,
+          "revision": "a1a3fc0128ec2f11da77e26713fa3b61ceed4211",
+          "routes": [
+            "/near-you/?geo=nta2020%3ABK0101&compare=police_precinct&surface=map&lens=meetings",
+            "/near-you/?geo=nta2020%3ABK0101&compare=community_district&surface=map&lens=meetings",
+            "/near-you/?geo=nta2020%3ABK0101&compare=council_district&surface=map&lens=meetings"
+          ],
+          "tolerance": {
+            "center_degrees": 0.0005,
+            "zoom": 0.15
+          },
+          "viewport": {
+            "height": 844,
+            "width": 390
+          }
+        }
+      ],
       "clause": "preserved_place_shown_through_boundary_comparison",
       "reads": [
         {
@@ -33,7 +383,7 @@
           "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
           "file": null,
           "name": "greenpoint-police-desktop",
-          "revision": "5267f48efce205d7dbc0d0810c4b70a4fcf7f60f",
+          "revision": "a1a3fc0128ec2f11da77e26713fa3b61ceed4211",
           "route": "/near-you/?geo=nta2020%3ABK0101&compare=police_precinct&surface=map&lens=meetings",
           "served_values": {
             "active_layer": "nta2020",
@@ -50,7 +400,7 @@
             "precinct_shown": true,
             "selected_key": "geography:nta2020:BK0101"
           },
-          "sha256": "bd549cba987a2f8365d1bdd80a4dbf600fc527fdc19e5dce0bcc6be59aa5bd90",
+          "sha256": "a9b574dff078f1fac4b7756989224efd9097ed683b3d424669621046817680a7",
           "source": "headless-playwright-production-served-site",
           "viewport": {
             "height": 900,
@@ -62,7 +412,7 @@
           "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
           "file": null,
           "name": "greenpoint-police-mobile",
-          "revision": "5267f48efce205d7dbc0d0810c4b70a4fcf7f60f",
+          "revision": "a1a3fc0128ec2f11da77e26713fa3b61ceed4211",
           "route": "/near-you/?geo=nta2020%3ABK0101&compare=police_precinct&surface=map&lens=meetings",
           "served_values": {
             "active_layer": "nta2020",
@@ -79,7 +429,7 @@
             "precinct_shown": true,
             "selected_key": "geography:nta2020:BK0101"
           },
-          "sha256": "19e990a854c401f21a2b8fda8f236aece3f2cc1a9442547dfde0526a3e9ed990",
+          "sha256": "376a0fa9d2c4970cd8addd68ad39c7187101f7d51c0506a82c6dd4d164678cfc",
           "source": "headless-playwright-production-served-site",
           "viewport": {
             "height": 844,
@@ -90,7 +440,7 @@
       "route": "/near-you/?geo=nta2020%3ABK0101&compare=police_precinct&surface=map&lens=meetings"
     }
   },
-  "observed_at": "2026-09-23T12:02:28.094375Z",
+  "observed_at": "2026-10-01T04:29:35.635506Z",
   "origin": "https://cityscroll.org",
   "producer": {
     "letters": [
@@ -106,7 +456,7 @@
       "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
       "file": null,
       "name": "greenpoint-police-desktop",
-      "revision": "5267f48efce205d7dbc0d0810c4b70a4fcf7f60f",
+      "revision": "a1a3fc0128ec2f11da77e26713fa3b61ceed4211",
       "route": "/near-you/?geo=nta2020%3ABK0101&compare=police_precinct&surface=map&lens=meetings",
       "served_values": {
         "active_layer": "nta2020",
@@ -123,7 +473,7 @@
         "precinct_shown": true,
         "selected_key": "geography:nta2020:BK0101"
       },
-      "sha256": "bd549cba987a2f8365d1bdd80a4dbf600fc527fdc19e5dce0bcc6be59aa5bd90",
+      "sha256": "a9b574dff078f1fac4b7756989224efd9097ed683b3d424669621046817680a7",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 900,
@@ -135,7 +485,7 @@
       "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
       "file": null,
       "name": "greenpoint-police-mobile",
-      "revision": "5267f48efce205d7dbc0d0810c4b70a4fcf7f60f",
+      "revision": "a1a3fc0128ec2f11da77e26713fa3b61ceed4211",
       "route": "/near-you/?geo=nta2020%3ABK0101&compare=police_precinct&surface=map&lens=meetings",
       "served_values": {
         "active_layer": "nta2020",
@@ -152,7 +502,7 @@
         "precinct_shown": true,
         "selected_key": "geography:nta2020:BK0101"
       },
-      "sha256": "19e990a854c401f21a2b8fda8f236aece3f2cc1a9442547dfde0526a3e9ed990",
+      "sha256": "376a0fa9d2c4970cd8addd68ad39c7187101f7d51c0506a82c6dd4d164678cfc",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 844,
@@ -162,8 +512,13 @@
   ],
   "schema": "cityscroll.near_you_preserve_place_production_read.v1",
   "summary": {
-    "capture_count": 2,
-    "case_count": 1,
+    "camera_compare_types": [
+      "police_precinct",
+      "community_district",
+      "council_district"
+    ],
+    "capture_count": 8,
+    "case_count": 4,
     "letter": "A1"
   }
 }

@@ -19,6 +19,10 @@
       "path": "site/app/map.mjs"
     },
     {
+      "id": "geography-comparison-load",
+      "path": "site/geography_comparison_load.mjs"
+    },
+    {
       "id": "resident-geography-selection-state-tests",
       "path": "test/geography_navigation_state.test.mjs"
     },
@@ -43,6 +47,10 @@
       "path": "docs/evidence/geography-navigation-preserve-place/read-back.json"
     },
     {
+      "id": "near-you-preserve-place-delivery",
+      "path": "docs/evidence/geography-navigation-preserve-place/delivery.json"
+    },
+    {
       "id": "near-you-preserve-place-capture-tool",
       "path": "tools/capture_geography_preserve_place.py"
     },
@@ -57,5 +65,5 @@
   ],
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "status": "implemented",
-  "updated_at": "2026-09-22T00:00:00.000Z"
+  "updated_at": "2026-10-01T00:00:00.000Z"
 }
