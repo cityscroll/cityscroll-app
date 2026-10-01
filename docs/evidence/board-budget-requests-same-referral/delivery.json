@@ -1,0 +1,7 @@
+{
+  "landed_commit": "893c0c03dc77ede8d059d55633c5d9f6646d47c5",
+  "note": "Squash-merge commit on the default branch that delivered board and agency budget-request browsing with dated within-cycle answers (pull request 1816).",
+  "public_alias": "cc479983fe385",
+  "schema": "cityscroll.capture_delivery.v1",
+  "surface": "pages"
+}
