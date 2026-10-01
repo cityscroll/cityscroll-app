@@ -376,6 +376,7 @@ family_static_standards() {
   run_and_fail python3 test/standards/guide_content.py
   run_and_fail node tools/check_stale_repo_name.mjs
   run_and_fail node tools/agents_router_guard.mjs --check
+  run_and_fail node tools/check_refresh_exact_count_assertions.mjs
   run_and_fail node tools/inverse_control_plane_guard.mjs --check --all
   run_and_fail node tools/governance_cutover_receipt.mjs --check
   run_and_fail python3 test/functional/a11y_gate_test.py

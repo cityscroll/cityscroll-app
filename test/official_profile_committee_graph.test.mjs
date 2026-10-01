@@ -10,8 +10,12 @@ import {
   renderOfficialLocalConstellationHTML,
 } from "../site/committee_memberships.mjs";
 
-const graph = JSON.parse(readFileSync(new URL("../site/data/committee_graph_lookup.json", import.meta.url)));
-const legacyLookup = JSON.parse(readFileSync(new URL("../site/data/official_committee_memberships_lookup.json", import.meta.url)));
+// Frozen committee-graph vintage. Fixture person 5259 still has 77 member_of
+// edges, so the exact count pins that vintage rather than live refresh.
+// Regression caught: sparse legacy lookup still yields exact graph rows with
+// numeric committee ids and matching reverse edges.
+const graph = JSON.parse(readFileSync(new URL("./fixtures/committee-co-service/committee_graph_lookup.json", import.meta.url)));
+const legacyLookup = JSON.parse(readFileSync(new URL("./fixtures/committee-co-service/official_committee_memberships_lookup.json", import.meta.url)));
 
 test("official profiles render exact graph member_of edges when the legacy lookup is sparse", () => {
   const person = { person_id: "5259", person_name: "Gale A. Brewer" };

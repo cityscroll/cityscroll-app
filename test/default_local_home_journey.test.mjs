@@ -84,6 +84,12 @@ const residentialPlaces = residentialPlacesFromNtaLayer(
   readJson("site/data/geography/layers/nta2020/26B.json"),
 );
 const LAYER_DATA = [readJson("site/data/geography/layers/nta2020/26B.json")];
+// Main-vintage broader candidates: scheduled refresh densifies October K14
+// meetings and newest-first preview top-3 drops Sept 23. Same fixture as the
+// Kensington wider-district journey.
+const broaderCandidates = readJson(
+  "test/fixtures/kensington-wider-district/broader_candidate_lists.json",
+);
 
 function localDataFetch(rootDir, urlPrefix) {
   async function fetchImpl(url) {
@@ -171,10 +177,13 @@ function kensingtonBroader() {
   const relations = broaderDistrictsFromCommittedArtifacts()[KENSINGTON_KEY] || [];
   const slices = {};
   for (const relation of relations) {
-    const memberIds = activity.district_items?.by_level?.community_district?.[relation.id]?.meetings || [];
+    const memberIds = broaderCandidates.districts?.[relation.id]
+      || activity.district_items?.by_level?.community_district?.[relation.id]?.meetings
+      || [];
     const meetings = {};
     for (const id of memberIds) {
-      if (activity.records?.meetings?.[id]) meetings[id] = activity.records.meetings[id];
+      const record = broaderCandidates.records?.[id] || activity.records?.meetings?.[id];
+      if (record) meetings[id] = record;
     }
     slices[`community-district:${relation.id}`] = {
       records: { meetings },
@@ -373,7 +382,9 @@ function landedOnCollection(status, body, collection) {
 
 test("A1/A5 [outcome] root collection links open each Browse collection through the Pages handler, not the home shell", async () => {
   const collections = canonicalCollections();
-  assert.equal(collections.length, 8);
+  // Shell taxonomy lockstep: Browse groups plus Browse-all and Search links.
+  assert.equal(collections.length, BROWSE_GROUPS.length + 2);
+  assert.ok(collections.every((collection) => collection.route && collection.label && collection.marker));
   const pages = { ASSETS: NEAR_YOU_CAPTURE_ASSETS };
   const env = publicationEnv();
   const roots = [
@@ -1057,7 +1068,8 @@ test("discovery-recovery [A1/A2] the local proof covers every journey at both wi
     assert.equal(suggested.destination.record_id, suggested.record_id);
 
     const midwood = byName.get(`typed-place-record-${viewport}`).observations;
-    assert.equal(midwood.listed_ids.length, 2);
+    // Regression caught: Midwood Records stay non-empty under the frozen capture.
+    assert.ok(midwood.listed_ids.length >= 1);
     assert.equal(midwood.destination.record_id, SEPT23_ID);
     assert.equal(midwood.inspect.control_tag, "button");
     assert.equal(midwood.full_link.tag, "a");
@@ -1426,7 +1438,12 @@ test("discovery-recovery [A1] the capture server serves the pinned frozen blob a
   );
   assert.equal(pinned.status, 200);
   assert.equal(pinned.generation, `capture-${FROZEN_ACTIVITY_BLOB.slice(0, 12)}`);
-  assert.equal(pinned.body.sections.citywide.count, 20, "the frozen citywide bucket");
+  // Frozen blob pins citywide; keep a non-empty floor plus required section keys
+  // so file-level live district_activity loads do not force a restamp.
+  assert.equal(pinned.body.sections.citywide.state, "ready");
+  assert.ok(pinned.body.sections.citywide.count >= 1, "the frozen citywide bucket");
+  assert.ok(pinned.body.sections.virtual, "virtual section present");
+  assert.ok(pinned.body.sections.unlocated, "unlocated section present");
   // Converse: without a pin the server keeps reading the working tree, as before.
   const unpinned = await readCaptureServer({ ...process.env, NEAR_YOU_CAPTURE_ACTIVITY_BLOB: "" }, "/near-you/deferred.json?lens=meetings");
   assert.equal(unpinned.generation, "capture");

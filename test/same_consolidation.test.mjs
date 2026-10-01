@@ -104,11 +104,13 @@ test("detector fails raw same-except-one rows and accepts their consolidated vie
 });
 
 test("the committed appointment census preserves every person while reducing repeated chrome", () => {
+  // Frozen hire-notice vintage. Refresh rewrites hire notices and can change
+  // the [72] same-except group count; pin the fixture instead of live data.
   const snapshot = JSON.parse(
-    readFileSync(new URL("../site/data/staffing_default_hires.json", import.meta.url), "utf8"),
+    readFileSync(new URL("./fixtures/staffing-appointment-census/staffing_default_hires.json", import.meta.url), "utf8"),
   );
   const crosswalk = JSON.parse(
-    readFileSync(new URL("../site/data/title_crosswalk.json", import.meta.url), "utf8"),
+    readFileSync(new URL("./fixtures/staffing-appointment-census/title_crosswalk.json", import.meta.url), "utf8"),
   );
   const rows = Staffing.hireNotices(snapshot.notices, crosswalk);
   const entries = groupSameExcept(rows, {
@@ -121,8 +123,8 @@ test("the committed appointment census preserves every person while reducing rep
     entry.kind === "same-except-group" ? entry.members : [entry.item],
   );
 
-  // One group of 72 in this generation; what the consolidation claims is that
-  // every group it forms clears the threshold, not how many it happens to find.
+  // One group of 72 in this fixture vintage; what the consolidation claims is
+  // that every group it forms clears the threshold, not how many live refresh finds.
   assert.deepEqual(groups.map((group) => group.count).sort((a, b) => b - a), [72]);
   assert.ok(groups.every((group) => group.count >= 3));
   assert.equal(flattened.length, rows.length, "group count and expanded member count preserve the source census");

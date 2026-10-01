@@ -16,9 +16,9 @@
  * three answers stay distinct and that no surface advertises a route the
  * generation does not carry — not that any particular identity is unpublished.
  *
- * Everything asserted here reads the committed offline corpus
- * (site/data/meeting_outcomes_snapshot.json and its published projection). The
- * counts below describe that retained corpus, not live publisher coverage.
+ * Everything asserted here reads the frozen main-vintage fixtures under
+ * test/fixtures/legislative-matter-population/ (snapshot + published lookup).
+ * The counts below describe that retained corpus, not live publisher coverage.
  *
  *   node --test test/legislative_matter_continuation_availability.test.mjs
  */
@@ -42,11 +42,18 @@ import {
 } from "../site/legislative_matter_availability.mjs";
 import { renderMeetingOutcomesFirstPaint } from "../site/meeting_outcomes_static.mjs";
 
-const snapshot = JSON.parse(readFileSync(new URL("../site/data/meeting_outcomes_snapshot.json", import.meta.url), "utf8"));
-const lookup = JSON.parse(readFileSync(new URL("../site/data/legislative_matter_lookup.json", import.meta.url), "utf8"));
-const manifest = JSON.parse(readFileSync(new URL("../docs/evidence/matter-continuation-availability/manifest.json", import.meta.url), "utf8"));
+const read = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
+
+// Frozen main-vintage legislative-matter corpus. Scheduled refresh rewrites
+// live site/data counts; regression still caught = corpus membership / route
+// publication / complement sums for this frozen vintage.
+const FIXTURE = "./fixtures/legislative-matter-population";
+const snapshot = read(`${FIXTURE}/meeting_outcomes_snapshot.json`);
+const lookup = read(`${FIXTURE}/legislative_matter_lookup.json`);
+const manifest = read("../docs/evidence/matter-continuation-availability/manifest.json");
 
 const PUBLISHED = publishedMatterIds(lookup);
+const destinationOpts = { published: lookup, lookup };
 
 /**
  * An exact identity outside the retained corpus that carries its own official
@@ -103,13 +110,13 @@ const lookupEnv = {
 // ---------------------------------------------------------------------------
 
 test("a published matter opens a local history and an unpublished exact matter opens its official record", async () => {
-  const published = resolveMatterDestination({ matter_id: "78605" });
+  const published = resolveMatterDestination({ matter_id: "78605" }, destinationOpts);
   assert.equal(published.availability, "local_history");
   assert.equal(published.href, "/matters/78605/");
   assert.equal(published.label, MATTER_HISTORY_LABEL);
   assert.equal(published.external, false);
 
-  const official = resolveMatterDestination(OFFICIAL_ONLY_MATTER);
+  const official = resolveMatterDestination(OFFICIAL_ONLY_MATTER, destinationOpts);
   assert.equal(official.availability, "official_record");
   assert.equal(official.href, OFFICIAL_ONLY_MATTER.matter_url);
   assert.equal(official.label, MATTER_OFFICIAL_RECORD_LABEL);
@@ -370,8 +377,8 @@ test("resolution preserves source URLs, native identity, observation times and r
 
 test("resolving a destination creates no saved watch and reads no publisher at request time", () => {
   const before = JSON.stringify(lookup);
-  resolveMatterDestination({ matter_id: "78605" });
-  resolveMatterDestination({ matter_id: "79200", matter_url: "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79200" });
+  resolveMatterDestination({ matter_id: "78605" }, destinationOpts);
+  resolveMatterDestination({ matter_id: "79200", matter_url: "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79200" }, destinationOpts);
   renderCouncilHearingMatterContinuation(meeting("20260707021"));
   assert.equal(JSON.stringify(lookup), before, "resolution is a read projection with no state of its own");
 

@@ -104,7 +104,10 @@ test("A4: participation claims follow to open opportunities and do not treat clo
   assert.match(practiceArticle, /href="\/browse\/exams\/"/);
   assert.match(practiceArticle, /check an open window/);
 
-  const artifact = JSON.parse(read("site/data/staffing_exams.json"));
+  // Frozen exam-openness vintage. Refresh rolls open windows and can flip
+  // 7006/7016 polarity; keep exact open/closed asserts against the fixture.
+  // Regression caught: statusFor polarity across open/closed windows.
+  const artifact = JSON.parse(read("test/fixtures/exam-openness/staffing_exams.json"));
   const today = artifact.open_window_as_of;
   assert.match(String(today || ""), /^\d{4}-\d{2}-\d{2}/);
   const openExam = artifact.exams.find((exam) => exam.exam_number === "7006");

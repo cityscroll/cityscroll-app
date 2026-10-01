@@ -11,7 +11,9 @@ import { filterMoneySnapshot, moneySnapshotRows } from "../site/resident_snapsho
 
 const require = createRequire(import.meta.url);
 const { parseNL } = require("../site/nl_parse.js");
-const moneySnapshot = JSON.parse(readFileSync(new URL("../site/data/money_resident_snapshot.json", import.meta.url), "utf8"));
+// Frozen money-snapshot vintage. Refresh rolls the open window and changes
+// first-three request ids; keep exact asserts against the fixture.
+const moneySnapshot = JSON.parse(readFileSync(new URL("./fixtures/interpret-preview/money_resident_snapshot.json", import.meta.url), "utf8"));
 
 test("interpret preview renders only the first three interpreted result records", () => {
   const rows = [1, 2, 3, 4].map((id) => ({ id, title: `Record ${id}` }));

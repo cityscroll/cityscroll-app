@@ -1,0 +1,480 @@
+{
+  "schema": "cityscroll.legislative_matter_index.v1",
+  "generated_at": "2026-09-04T13:09:00.447Z",
+  "source": {
+    "system": "legistar",
+    "input_artifact": "site/data/meeting_outcomes_snapshot.json",
+    "derived_from": "site/data/legislative_matter_lookup.json",
+    "note": "Published population and official addresses only. Appearances, actions, votes and receipts stay in the lookup."
+  },
+  "matters": {
+    "78409": {
+      "matter_id": "78409",
+      "matter_ref": "legistar:nyc:matter:78409",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78409",
+      "appearance_count": 2
+    },
+    "78411": {
+      "matter_id": "78411",
+      "matter_ref": "legistar:nyc:matter:78411",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78411",
+      "appearance_count": 2
+    },
+    "78414": {
+      "matter_id": "78414",
+      "matter_ref": "legistar:nyc:matter:78414",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78414",
+      "appearance_count": 1
+    },
+    "78475": {
+      "matter_id": "78475",
+      "matter_ref": "legistar:nyc:matter:78475",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78475",
+      "appearance_count": 1
+    },
+    "78537": {
+      "matter_id": "78537",
+      "matter_ref": "legistar:nyc:matter:78537",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78537",
+      "appearance_count": 1
+    },
+    "78538": {
+      "matter_id": "78538",
+      "matter_ref": "legistar:nyc:matter:78538",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78538",
+      "appearance_count": 1
+    },
+    "78600": {
+      "matter_id": "78600",
+      "matter_ref": "legistar:nyc:matter:78600",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78600",
+      "appearance_count": 1
+    },
+    "78601": {
+      "matter_id": "78601",
+      "matter_ref": "legistar:nyc:matter:78601",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78601",
+      "appearance_count": 1
+    },
+    "78602": {
+      "matter_id": "78602",
+      "matter_ref": "legistar:nyc:matter:78602",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78602",
+      "appearance_count": 1
+    },
+    "78603": {
+      "matter_id": "78603",
+      "matter_ref": "legistar:nyc:matter:78603",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78603",
+      "appearance_count": 1
+    },
+    "78604": {
+      "matter_id": "78604",
+      "matter_ref": "legistar:nyc:matter:78604",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78604",
+      "appearance_count": 1
+    },
+    "78605": {
+      "matter_id": "78605",
+      "matter_ref": "legistar:nyc:matter:78605",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78605",
+      "appearance_count": 2
+    },
+    "78606": {
+      "matter_id": "78606",
+      "matter_ref": "legistar:nyc:matter:78606",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78606",
+      "appearance_count": 2
+    },
+    "78682": {
+      "matter_id": "78682",
+      "matter_ref": "legistar:nyc:matter:78682",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78682",
+      "appearance_count": 2
+    },
+    "78758": {
+      "matter_id": "78758",
+      "matter_ref": "legistar:nyc:matter:78758",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78758",
+      "appearance_count": 1
+    },
+    "78759": {
+      "matter_id": "78759",
+      "matter_ref": "legistar:nyc:matter:78759",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78759",
+      "appearance_count": 1
+    },
+    "78760": {
+      "matter_id": "78760",
+      "matter_ref": "legistar:nyc:matter:78760",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78760",
+      "appearance_count": 1
+    },
+    "78872": {
+      "matter_id": "78872",
+      "matter_ref": "legistar:nyc:matter:78872",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78872",
+      "appearance_count": 1
+    },
+    "78873": {
+      "matter_id": "78873",
+      "matter_ref": "legistar:nyc:matter:78873",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78873",
+      "appearance_count": 1
+    },
+    "78874": {
+      "matter_id": "78874",
+      "matter_ref": "legistar:nyc:matter:78874",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78874",
+      "appearance_count": 1
+    },
+    "78875": {
+      "matter_id": "78875",
+      "matter_ref": "legistar:nyc:matter:78875",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78875",
+      "appearance_count": 1
+    },
+    "78876": {
+      "matter_id": "78876",
+      "matter_ref": "legistar:nyc:matter:78876",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78876",
+      "appearance_count": 1
+    },
+    "78877": {
+      "matter_id": "78877",
+      "matter_ref": "legistar:nyc:matter:78877",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78877",
+      "appearance_count": 1
+    },
+    "78878": {
+      "matter_id": "78878",
+      "matter_ref": "legistar:nyc:matter:78878",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78878",
+      "appearance_count": 1
+    },
+    "78879": {
+      "matter_id": "78879",
+      "matter_ref": "legistar:nyc:matter:78879",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78879",
+      "appearance_count": 1
+    },
+    "78880": {
+      "matter_id": "78880",
+      "matter_ref": "legistar:nyc:matter:78880",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78880",
+      "appearance_count": 1
+    },
+    "78881": {
+      "matter_id": "78881",
+      "matter_ref": "legistar:nyc:matter:78881",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78881",
+      "appearance_count": 1
+    },
+    "78882": {
+      "matter_id": "78882",
+      "matter_ref": "legistar:nyc:matter:78882",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78882",
+      "appearance_count": 1
+    },
+    "79062": {
+      "matter_id": "79062",
+      "matter_ref": "legistar:nyc:matter:79062",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79062",
+      "appearance_count": 2
+    },
+    "79063": {
+      "matter_id": "79063",
+      "matter_ref": "legistar:nyc:matter:79063",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79063",
+      "appearance_count": 2
+    },
+    "79064": {
+      "matter_id": "79064",
+      "matter_ref": "legistar:nyc:matter:79064",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79064",
+      "appearance_count": 2
+    },
+    "79065": {
+      "matter_id": "79065",
+      "matter_ref": "legistar:nyc:matter:79065",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79065",
+      "appearance_count": 1
+    },
+    "79066": {
+      "matter_id": "79066",
+      "matter_ref": "legistar:nyc:matter:79066",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79066",
+      "appearance_count": 1
+    },
+    "79067": {
+      "matter_id": "79067",
+      "matter_ref": "legistar:nyc:matter:79067",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79067",
+      "appearance_count": 1
+    },
+    "79068": {
+      "matter_id": "79068",
+      "matter_ref": "legistar:nyc:matter:79068",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79068",
+      "appearance_count": 1
+    },
+    "79069": {
+      "matter_id": "79069",
+      "matter_ref": "legistar:nyc:matter:79069",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79069",
+      "appearance_count": 1
+    },
+    "79070": {
+      "matter_id": "79070",
+      "matter_ref": "legistar:nyc:matter:79070",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79070",
+      "appearance_count": 1
+    },
+    "79109": {
+      "matter_id": "79109",
+      "matter_ref": "legistar:nyc:matter:79109",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79109",
+      "appearance_count": 1
+    },
+    "79110": {
+      "matter_id": "79110",
+      "matter_ref": "legistar:nyc:matter:79110",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79110",
+      "appearance_count": 1
+    },
+    "79111": {
+      "matter_id": "79111",
+      "matter_ref": "legistar:nyc:matter:79111",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79111",
+      "appearance_count": 1
+    },
+    "79112": {
+      "matter_id": "79112",
+      "matter_ref": "legistar:nyc:matter:79112",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79112",
+      "appearance_count": 1
+    },
+    "79113": {
+      "matter_id": "79113",
+      "matter_ref": "legistar:nyc:matter:79113",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79113",
+      "appearance_count": 1
+    },
+    "79114": {
+      "matter_id": "79114",
+      "matter_ref": "legistar:nyc:matter:79114",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79114",
+      "appearance_count": 1
+    },
+    "79115": {
+      "matter_id": "79115",
+      "matter_ref": "legistar:nyc:matter:79115",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79115",
+      "appearance_count": 1
+    },
+    "79116": {
+      "matter_id": "79116",
+      "matter_ref": "legistar:nyc:matter:79116",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79116",
+      "appearance_count": 1
+    },
+    "79117": {
+      "matter_id": "79117",
+      "matter_ref": "legistar:nyc:matter:79117",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79117",
+      "appearance_count": 1
+    },
+    "79118": {
+      "matter_id": "79118",
+      "matter_ref": "legistar:nyc:matter:79118",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79118",
+      "appearance_count": 1
+    },
+    "79163": {
+      "matter_id": "79163",
+      "matter_ref": "legistar:nyc:matter:79163",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79163",
+      "appearance_count": 2
+    },
+    "79164": {
+      "matter_id": "79164",
+      "matter_ref": "legistar:nyc:matter:79164",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79164",
+      "appearance_count": 2
+    },
+    "79193": {
+      "matter_id": "79193",
+      "matter_ref": "legistar:nyc:matter:79193",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79193",
+      "appearance_count": 1
+    },
+    "79194": {
+      "matter_id": "79194",
+      "matter_ref": "legistar:nyc:matter:79194",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79194",
+      "appearance_count": 1
+    },
+    "79200": {
+      "matter_id": "79200",
+      "matter_ref": "legistar:nyc:matter:79200",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79200",
+      "appearance_count": 1
+    },
+    "79201": {
+      "matter_id": "79201",
+      "matter_ref": "legistar:nyc:matter:79201",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79201",
+      "appearance_count": 2
+    },
+    "79202": {
+      "matter_id": "79202",
+      "matter_ref": "legistar:nyc:matter:79202",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79202",
+      "appearance_count": 2
+    },
+    "79203": {
+      "matter_id": "79203",
+      "matter_ref": "legistar:nyc:matter:79203",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79203",
+      "appearance_count": 2
+    },
+    "79204": {
+      "matter_id": "79204",
+      "matter_ref": "legistar:nyc:matter:79204",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79204",
+      "appearance_count": 2
+    },
+    "79205": {
+      "matter_id": "79205",
+      "matter_ref": "legistar:nyc:matter:79205",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79205",
+      "appearance_count": 2
+    },
+    "79292": {
+      "matter_id": "79292",
+      "matter_ref": "legistar:nyc:matter:79292",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79292",
+      "appearance_count": 2
+    },
+    "79293": {
+      "matter_id": "79293",
+      "matter_ref": "legistar:nyc:matter:79293",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79293",
+      "appearance_count": 2
+    },
+    "79294": {
+      "matter_id": "79294",
+      "matter_ref": "legistar:nyc:matter:79294",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79294",
+      "appearance_count": 2
+    },
+    "79295": {
+      "matter_id": "79295",
+      "matter_ref": "legistar:nyc:matter:79295",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79295",
+      "appearance_count": 2
+    },
+    "79296": {
+      "matter_id": "79296",
+      "matter_ref": "legistar:nyc:matter:79296",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79296",
+      "appearance_count": 2
+    },
+    "79297": {
+      "matter_id": "79297",
+      "matter_ref": "legistar:nyc:matter:79297",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79297",
+      "appearance_count": 2
+    },
+    "79298": {
+      "matter_id": "79298",
+      "matter_ref": "legistar:nyc:matter:79298",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79298",
+      "appearance_count": 2
+    },
+    "79331": {
+      "matter_id": "79331",
+      "matter_ref": "legistar:nyc:matter:79331",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79331",
+      "appearance_count": 1
+    },
+    "79332": {
+      "matter_id": "79332",
+      "matter_ref": "legistar:nyc:matter:79332",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79332",
+      "appearance_count": 1
+    },
+    "79450": {
+      "matter_id": "79450",
+      "matter_ref": "legistar:nyc:matter:79450",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79450",
+      "appearance_count": 1
+    },
+    "79451": {
+      "matter_id": "79451",
+      "matter_ref": "legistar:nyc:matter:79451",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79451",
+      "appearance_count": 1
+    },
+    "79452": {
+      "matter_id": "79452",
+      "matter_ref": "legistar:nyc:matter:79452",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79452",
+      "appearance_count": 1
+    },
+    "79453": {
+      "matter_id": "79453",
+      "matter_ref": "legistar:nyc:matter:79453",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79453",
+      "appearance_count": 1
+    },
+    "79454": {
+      "matter_id": "79454",
+      "matter_ref": "legistar:nyc:matter:79454",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79454",
+      "appearance_count": 1
+    },
+    "79455": {
+      "matter_id": "79455",
+      "matter_ref": "legistar:nyc:matter:79455",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79455",
+      "appearance_count": 1
+    },
+    "79456": {
+      "matter_id": "79456",
+      "matter_ref": "legistar:nyc:matter:79456",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79456",
+      "appearance_count": 1
+    },
+    "79457": {
+      "matter_id": "79457",
+      "matter_ref": "legistar:nyc:matter:79457",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79457",
+      "appearance_count": 1
+    },
+    "79458": {
+      "matter_id": "79458",
+      "matter_ref": "legistar:nyc:matter:79458",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79458",
+      "appearance_count": 1
+    },
+    "79459": {
+      "matter_id": "79459",
+      "matter_ref": "legistar:nyc:matter:79459",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79459",
+      "appearance_count": 1
+    },
+    "79460": {
+      "matter_id": "79460",
+      "matter_ref": "legistar:nyc:matter:79460",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79460",
+      "appearance_count": 1
+    },
+    "79461": {
+      "matter_id": "79461",
+      "matter_ref": "legistar:nyc:matter:79461",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79461",
+      "appearance_count": 1
+    }
+  }
+}

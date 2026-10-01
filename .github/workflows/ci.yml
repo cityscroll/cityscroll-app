@@ -285,6 +285,9 @@ jobs:
         env:
           LEGACY_ALLOWLIST_BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || (github.event_name == 'merge_group' && github.event.merge_group.base_sha || '') }}
         run: node tools/check_stale_repo_name.mjs
+      - name: Refresh exact-count assertion guard
+        if: matrix.family == 'static-standards'
+        run: node tools/check_refresh_exact_count_assertions.mjs
       - name: Expiring beta flag contract
         if: matrix.family == 'static-standards'
         run: node tools/validate_beta_flags.mjs

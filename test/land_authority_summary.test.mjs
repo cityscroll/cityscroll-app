@@ -233,7 +233,11 @@ test("A4 materializer is bounded, fetch-free, and settles inside the first-paint
   assert.equal(payload.schema, LAND_AUTHORITY_SUMMARY_SCHEMA);
   assert.equal(receipt.schema, LAND_AUTHORITY_SUMMARY_RECEIPT_SCHEMA);
   assert.equal(receipt.join_version, LAND_AUTHORITY_SUMMARY_JOIN_VERSION);
-  assert.equal(receipt.counts.universe, 40);
+  // Regression caught: land_default/receipt lockstep and resolved+unknown complement.
+  assert.ok(receipt.counts.universe > 0);
+  assert.equal(receipt.counts.universe, receipt.inputs.land_default.count);
+  assert.equal(receipt.counts.resolved + receipt.counts.unknown, receipt.counts.universe);
+  assert.equal(Object.keys(payload.summaries).length, receipt.counts.universe);
   assert.equal(Buffer.byteLength(JSON.stringify(payload)) < LAND_AUTHORITY_SUMMARY_MAX_BYTES, true);
   assert.ok(payload.summaries[LAND_AUTHORITY_SUMMARY_SPECIMENS.council]);
   assert.match(SITE_SOURCE, /authHTML\(|landAuthoritySummaryHTML\(/);

@@ -161,7 +161,8 @@ test("source vintages and generation identity stay on the receipt", () => {
   assert.equal(receipt.inputs.zap_bbl.vintage.phase, "WH-06");
   assert.equal(receipt.inputs.mappluto_centroids.vintage.source, "mappluto");
   assert.deepEqual(receipt.inputs.join_keys, ["project_id", "bbl"]);
-  assert.equal(receipt.counts.universe, 5);
+  // Fixture lockstep: universe tracks the frozen landDefault project list.
+  assert.equal(receipt.counts.universe, fixture.landDefault.projects.length);
   assert.equal(receipt.generation.derivation, "node tools/build_land_project_map_points.mjs");
   assert.equal(receipt.inputs.land_default.sha256.length, 64);
 });
@@ -180,7 +181,9 @@ test("every default project is a payload point or a receipt row", () => {
     "2026R0127",
     "REJECTED1",
   ]);
-  assert.equal(receipt.counts.universe, 5);
+  // Regression caught: every fixture project is represented exactly once.
+  assert.equal(receipt.counts.universe, fixture.landDefault.projects.length);
+  assert.equal(represented.size, fixture.landDefault.projects.length);
   assert.equal(Object.keys(payload.points).length, receipt.counts.mapped);
 });
 
@@ -259,16 +262,21 @@ test("committed receipt keeps 2025M0252 and exact-BBL misses out of the payload"
     assert.equal(row.exact_bbl_count >= 1, true);
     assert.equal(row.bbl_count, 0);
   }
-  assert.equal(receipt.counts.universe, 244);
+  // Regression caught: catalog/receipt lockstep, complement accounting, mapped
+  // point keys, ISO vintage present.
+  assert.ok(receipt.counts.universe > 0);
+  assert.equal(receipt.counts.universe, receipt.inputs.land_project_catalog.count);
   assert.equal(
     receipt.counts.mapped + receipt.counts.source_missing + receipt.counts.unmapped + receipt.counts.rejected,
-    244,
+    receipt.counts.universe,
   );
   assert.equal(Object.keys(payload.points).length, receipt.counts.mapped);
-  assert.equal(Object.keys(payload.unmapped).length, 244 - receipt.counts.mapped);
+  assert.equal(Object.keys(payload.unmapped).length, receipt.counts.universe - receipt.counts.mapped);
   assert.ok(receipt.inputs.land_project_catalog, "map points bind to the admitted catalog generation");
-  assert.equal(receipt.inputs.land_project_catalog.count, 244);
-  assert.equal(receipt.inputs.land_project_catalog.vintage.warehouse_materialized_at, "2026-09-09T06:54:36.054Z");
+  assert.match(
+    receipt.inputs.land_project_catalog.vintage.warehouse_materialized_at,
+    /^\d{4}-\d{2}-\d{2}T/,
+  );
   assert.equal(receipt.inputs.land_project_catalog.vintage.content_id.startsWith("fnv1a32:"), true);
   assert.equal(payload.points["2026R0127"].geometry_shard, "2b");
   assert.equal(Object.prototype.hasOwnProperty.call(payload.points["2026R0127"], "shape"), false);

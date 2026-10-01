@@ -7,11 +7,11 @@
  * single privileged matter getting one while the other sixty five stay
  * invisible.
  *
- * Everything asserted here reads the committed offline corpus
- * (site/data/meeting_outcomes_snapshot.json) and the artifacts built from it.
- * The counts describe that retained corpus at its own data vintage. They are
- * not a claim about live publisher coverage, and the absence of a later action
- * for a matter is not a claim that the matter is finished.
+ * Everything asserted here reads the frozen main-vintage fixtures under
+ * test/fixtures/legislative-matter-population/ (snapshot + published lookup
+ * and index). The counts describe that retained corpus at its own data vintage.
+ * They are not a claim about live publisher coverage, and the absence of a
+ * later action for a matter is not a claim that the matter is finished.
  *
  * Coverage here is derived from the fixture's own membership: the expected
  * population is recomputed from the snapshot by a second, deliberately
@@ -39,9 +39,13 @@ import { publishedMatterIds, resolveMatterDestination } from "../site/legislativ
 
 const read = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
 
-const snapshot = read("../site/data/meeting_outcomes_snapshot.json");
-const lookup = read("../site/data/legislative_matter_lookup.json");
-const index = read("../site/data/legislative_matter_index.json");
+// Frozen main-vintage legislative-matter corpus. Scheduled refresh rewrites
+// live site/data counts; regression still caught = corpus membership / route
+// publication / complement sums for this frozen vintage.
+const FIXTURE = "./fixtures/legislative-matter-population";
+const snapshot = read(`${FIXTURE}/meeting_outcomes_snapshot.json`);
+const lookup = read(`${FIXTURE}/legislative_matter_lookup.json`);
+const index = read(`${FIXTURE}/legislative_matter_index.json`);
 
 /**
  * The expected population, recomputed from the fixture by a traversal that
@@ -477,10 +481,10 @@ test("the builder publishes by membership rather than by a named target", () => 
 });
 
 test("the shared availability rule answers over the published population", () => {
-  const published = publishedMatterIds();
+  const published = publishedMatterIds(lookup);
   assert.deepEqual([...published].sort(), Object.keys(lookup.matters).sort());
   for (const id of Object.keys(lookup.matters)) {
-    const destination = resolveMatterDestination({ matter_id: id });
+    const destination = resolveMatterDestination({ matter_id: id }, { published: lookup, lookup });
     assert.equal(destination.availability, "local_history");
     assert.equal(destination.href, `/matters/${id}/`);
   }
