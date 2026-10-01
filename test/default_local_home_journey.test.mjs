@@ -84,6 +84,12 @@ const residentialPlaces = residentialPlacesFromNtaLayer(
   readJson("site/data/geography/layers/nta2020/26B.json"),
 );
 const LAYER_DATA = [readJson("site/data/geography/layers/nta2020/26B.json")];
+// Main-vintage broader candidates: scheduled refresh densifies October K14
+// meetings and newest-first preview top-3 drops Sept 23. Same fixture as the
+// Kensington wider-district journey.
+const broaderCandidates = readJson(
+  "test/fixtures/kensington-wider-district/broader_candidate_lists.json",
+);
 
 function localDataFetch(rootDir, urlPrefix) {
   async function fetchImpl(url) {
@@ -171,10 +177,13 @@ function kensingtonBroader() {
   const relations = broaderDistrictsFromCommittedArtifacts()[KENSINGTON_KEY] || [];
   const slices = {};
   for (const relation of relations) {
-    const memberIds = activity.district_items?.by_level?.community_district?.[relation.id]?.meetings || [];
+    const memberIds = broaderCandidates.districts?.[relation.id]
+      || activity.district_items?.by_level?.community_district?.[relation.id]?.meetings
+      || [];
     const meetings = {};
     for (const id of memberIds) {
-      if (activity.records?.meetings?.[id]) meetings[id] = activity.records.meetings[id];
+      const record = broaderCandidates.records?.[id] || activity.records?.meetings?.[id];
+      if (record) meetings[id] = record;
     }
     slices[`community-district:${relation.id}`] = {
       records: { meetings },

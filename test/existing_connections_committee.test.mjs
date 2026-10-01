@@ -25,11 +25,13 @@ import {
 } from "../site/committee_coservice.mjs";
 import { buildCommitteeDocumentView, renderCommitteeDocument } from "../site/committee_document.mjs";
 
-const graph = JSON.parse(readFileSync(new URL("../site/data/committee_graph_lookup.json", import.meta.url)));
-const people = JSON.parse(readFileSync(new URL("../site/data/person_hub_lookup.json", import.meta.url)));
+// Frozen committee-graph vintage for shared-membership contract cases. Daily
+// refresh rewrites the live lookup and moves shared-membership counts.
+const graph = JSON.parse(readFileSync(new URL("./fixtures/committee-co-service/committee_graph_lookup.json", import.meta.url)));
+const people = JSON.parse(readFileSync(new URL("./fixtures/committee-co-service/person_hub_lookup.json", import.meta.url)));
 const documentStyles = readFileSync(new URL("../site/civic-documents.css", import.meta.url), "utf8");
 const captureManifest = JSON.parse(readFileSync(
-  new URL("../docs/evidence/committee-shared-membership/capture-manifest.json", import.meta.url),
+  new URL("./fixtures/committee-co-service/capture-manifest.json", import.meta.url),
 ));
 
 // The committee snapshot's own vintage day. A membership snapshot can only

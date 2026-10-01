@@ -467,10 +467,8 @@
       "expected_cadence": "Registration-driven ongoing updates; no fixed daily publication promise (Checkbook API)",
       "mode": "continuous",
       "health": {
-        "status": "UNKNOWN",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
             "at": null,
@@ -478,9 +476,9 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-09T06:33:01.880Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
             "at": "2026-09-09T06:33:01.880Z",

@@ -9,7 +9,7 @@
     "housing-preservation-and-development",
     "economic-development-corporation"
   ],
-  "agency_count": 83,
+  "agency_count": 86,
   "multi_category_count": 59,
   "verified_demo": "agency:id:parks-and-recreation",
   "aliases": {
@@ -4812,6 +4812,553 @@
       ],
       "top_vendors": []
     },
+    "borough-president-brooklyn": {
+      "subject_ref": "agency:id:borough-president-brooklyn",
+      "display_name": "Office of the Borough President of Brooklyn",
+      "path": "/agencies/borough-president-brooklyn/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:borough-president-brooklyn",
+        "status": "matched",
+        "source_observation_count": 3
+      },
+      "matched_categories": 0,
+      "categories": {
+        "contracts": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        "meetings": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "rules": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "obligations": {
+          "status": "empty",
+          "count": 0,
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "staffing": {
+          "status": "empty",
+          "count": 0,
+          "method": "publisher_certification_record_v1"
+        }
+      },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
+      "edge_summary": [
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "borough-president-brooklyn",
+          "edge_type": "published_by_agency",
+          "relation_label": "published by this agency",
+          "label": "Contracts: published by this agency",
+          "target_kind": "contract",
+          "target_id": null,
+          "target_name": "Contracts",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": "open",
+            "mode": "open",
+            "entity_ref": "agency:id:borough-president-brooklyn"
+          },
+          "as_of": "2026-09-30",
+          "source": {
+            "kind": "agency",
+            "id": "borough-president-brooklyn",
+            "name": "Office of the Borough President of Brooklyn",
+            "canonical_href": "/agencies/borough-president-brooklyn/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-09-30",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-09-30",
+              "snapshot_day": "2026-09-30",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "borough-president-brooklyn",
+          "edge_type": "top_vendor_by_award_12mo",
+          "relation_label": "top vendors by award value",
+          "label": "Top vendors by award $ (last 12 mo): top vendors by award value",
+          "target_kind": "vendor",
+          "target_id": null,
+          "target_name": "Top vendors by award $ (last 12 mo)",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:borough-president-brooklyn"
+          },
+          "as_of": "2026-09-05",
+          "source": {
+            "kind": "agency",
+            "id": "borough-president-brooklyn",
+            "name": "Office of the Borough President of Brooklyn",
+            "canonical_href": "/agencies/borough-president-brooklyn/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-09-05",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-09-05",
+              "snapshot_day": "2026-09-05",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "borough-president-brooklyn",
+          "edge_type": "hosts_meeting",
+          "relation_label": "related meetings and hearings",
+          "label": "Meetings and hearings: related meetings and hearings",
+          "target_kind": "meeting",
+          "target_id": null,
+          "target_name": "Meetings and hearings",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": "linked",
+            "mode": null,
+            "entity_ref": "agency:id:borough-president-brooklyn"
+          },
+          "as_of": "2026-09-30",
+          "source": {
+            "kind": "agency",
+            "id": "borough-president-brooklyn",
+            "name": "Office of the Borough President of Brooklyn",
+            "canonical_href": "/agencies/borough-president-brooklyn/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-09-30",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-09-30",
+              "snapshot_day": "2026-09-30",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "borough-president-brooklyn",
+          "edge_type": "issued_rule",
+          "relation_label": "issued rule",
+          "label": "Rules: issued rule",
+          "target_kind": "rule",
+          "target_id": null,
+          "target_name": "Rules",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:borough-president-brooklyn"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "borough-president-brooklyn",
+            "name": "Office of the Borough President of Brooklyn",
+            "canonical_href": "/agencies/borough-president-brooklyn/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "borough-president-brooklyn",
+          "edge_type": "statute_duty",
+          "relation_label": "statutory mandates",
+          "label": "Mandates: statutory mandates",
+          "target_kind": "mandate",
+          "target_id": null,
+          "target_name": "Mandates",
+          "count": 0,
+          "state": "empty",
+          "href": "/agencies/borough-president-brooklyn/#mandates-conformance",
+          "canonical_href": "/agencies/borough-president-brooklyn/#mandates-conformance",
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:borough-president-brooklyn"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "borough-president-brooklyn",
+            "name": "Office of the Borough President of Brooklyn",
+            "canonical_href": "/agencies/borough-president-brooklyn/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "borough-president-brooklyn",
+          "edge_type": "certified_to_agency",
+          "relation_label": "certified to the agency",
+          "label": "Staffing exams: certified to the agency",
+          "target_kind": "exam",
+          "target_id": null,
+          "target_name": "Staffing exams",
+          "count": 0,
+          "state": "empty",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aborough-president-brooklyn%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aborough-president-brooklyn%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:borough-president-brooklyn"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "borough-president-brooklyn",
+            "name": "Office of the Borough President of Brooklyn",
+            "canonical_href": "/agencies/borough-president-brooklyn/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        }
+      ],
+      "top_vendors": []
+    },
     "borough-president-queens": {
       "subject_ref": "agency:id:borough-president-queens",
       "display_name": "Office of the Borough President of Queens",
@@ -7131,6 +7678,559 @@
             "id": "campaign-finance-board",
             "name": "Campaign Finance Board",
             "canonical_href": "/agencies/campaign-finance-board/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        }
+      ],
+      "top_vendors": []
+    },
+    "charter-revision-commission": {
+      "subject_ref": "agency:id:charter-revision-commission",
+      "display_name": "Charter Revision Commission",
+      "path": "/agencies/charter-revision-commission/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:charter-revision-commission",
+        "status": "matched",
+        "source_observation_count": 3
+      },
+      "matched_categories": 1,
+      "categories": {
+        "contracts": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        "meetings": {
+          "status": "matched",
+          "count": 1,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "rules": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "obligations": {
+          "status": "empty",
+          "count": 0,
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "staffing": {
+          "status": "empty",
+          "count": 0,
+          "method": "publisher_certification_record_v1"
+        }
+      },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
+      "edge_summary": [
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "charter-revision-commission",
+          "edge_type": "published_by_agency",
+          "relation_label": "published by this agency",
+          "label": "Contracts: published by this agency",
+          "target_kind": "contract",
+          "target_id": null,
+          "target_name": "Contracts",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": "open",
+            "mode": "open",
+            "entity_ref": "agency:id:charter-revision-commission"
+          },
+          "as_of": "2026-09-30",
+          "source": {
+            "kind": "agency",
+            "id": "charter-revision-commission",
+            "name": "Charter Revision Commission",
+            "canonical_href": "/agencies/charter-revision-commission/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-09-30",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-09-30",
+              "snapshot_day": "2026-09-30",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "charter-revision-commission",
+          "edge_type": "top_vendor_by_award_12mo",
+          "relation_label": "top vendors by award value",
+          "label": "Top vendors by award $ (last 12 mo): top vendors by award value",
+          "target_kind": "vendor",
+          "target_id": null,
+          "target_name": "Top vendors by award $ (last 12 mo)",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:charter-revision-commission"
+          },
+          "as_of": "2026-09-05",
+          "source": {
+            "kind": "agency",
+            "id": "charter-revision-commission",
+            "name": "Charter Revision Commission",
+            "canonical_href": "/agencies/charter-revision-commission/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-09-05",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-09-05",
+              "snapshot_day": "2026-09-05",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "charter-revision-commission",
+          "edge_type": "hosts_meeting",
+          "relation_label": "related meetings and hearings",
+          "label": "Meetings and hearings: related meetings and hearings",
+          "target_kind": "meeting",
+          "target_id": null,
+          "target_name": "Meetings and hearings",
+          "count": 1,
+          "state": "matched",
+          "href": "/browse/meetings/?agency=charter-revision-commission&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acharter-revision-commission%22%5D%2C%22connection_relation%22%3A%22hosts_meeting%22%7D&as_of=2026-09-30",
+          "canonical_href": "/browse/meetings/?agency=charter-revision-commission&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acharter-revision-commission%22%5D%2C%22connection_relation%22%3A%22hosts_meeting%22%7D&as_of=2026-09-30",
+          "scope": {
+            "facet": null,
+            "universe": "linked",
+            "mode": null,
+            "entity_ref": "agency:id:charter-revision-commission"
+          },
+          "as_of": "2026-09-30",
+          "source": {
+            "kind": "agency",
+            "id": "charter-revision-commission",
+            "name": "Charter Revision Commission",
+            "canonical_href": "/agencies/charter-revision-commission/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-09-30",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "1",
+              "materialized": "1",
+              "dated": "1",
+              "undated": "0",
+              "by_state": {
+                "matched": "1"
+              },
+              "by_relation": {
+                "hosts_meeting": "1"
+              }
+            },
+            "spans": {
+              "valid": {
+                "start": "2026-07-20",
+                "end": "2026-07-20"
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": "0",
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "1"
+              },
+              "by_stage": {
+                "unknown": "1"
+              },
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-09-30",
+              "snapshot_day": "2026-09-30",
+              "latest_day": "2026-07-20",
+              "latest_source": "published_record",
+              "age_days": "72",
+              "max_age_days": null,
+              "status": "known"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "charter-revision-commission",
+          "edge_type": "issued_rule",
+          "relation_label": "issued rule",
+          "label": "Rules: issued rule",
+          "target_kind": "rule",
+          "target_id": null,
+          "target_name": "Rules",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:charter-revision-commission"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "charter-revision-commission",
+            "name": "Charter Revision Commission",
+            "canonical_href": "/agencies/charter-revision-commission/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "charter-revision-commission",
+          "edge_type": "statute_duty",
+          "relation_label": "statutory mandates",
+          "label": "Mandates: statutory mandates",
+          "target_kind": "mandate",
+          "target_id": null,
+          "target_name": "Mandates",
+          "count": 0,
+          "state": "empty",
+          "href": "/agencies/charter-revision-commission/#mandates-conformance",
+          "canonical_href": "/agencies/charter-revision-commission/#mandates-conformance",
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:charter-revision-commission"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "charter-revision-commission",
+            "name": "Charter Revision Commission",
+            "canonical_href": "/agencies/charter-revision-commission/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "charter-revision-commission",
+          "edge_type": "certified_to_agency",
+          "relation_label": "certified to the agency",
+          "label": "Staffing exams: certified to the agency",
+          "target_kind": "exam",
+          "target_id": null,
+          "target_name": "Staffing exams",
+          "count": 0,
+          "state": "empty",
+          "href": "/browse/exams/?agency=charter-revision-commission&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acharter-revision-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?agency=charter-revision-commission&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acharter-revision-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:charter-revision-commission"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "charter-revision-commission",
+            "name": "Charter Revision Commission",
+            "canonical_href": "/agencies/charter-revision-commission/"
           },
           "provenance": {
             "source_system": null,
@@ -45291,6 +46391,553 @@
           "method": "agency_vendor_awards_12mo_v1"
         }
       ]
+    },
+    "rent-guidelines-board": {
+      "subject_ref": "agency:id:rent-guidelines-board",
+      "display_name": "Rent Guidelines Board",
+      "path": "/agencies/rent-guidelines-board/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:rent-guidelines-board",
+        "status": "matched",
+        "source_observation_count": 2
+      },
+      "matched_categories": 0,
+      "categories": {
+        "contracts": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        "meetings": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "rules": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "obligations": {
+          "status": "empty",
+          "count": 0,
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "staffing": {
+          "status": "empty",
+          "count": 0,
+          "method": "publisher_certification_record_v1"
+        }
+      },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
+      "edge_summary": [
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "rent-guidelines-board",
+          "edge_type": "published_by_agency",
+          "relation_label": "published by this agency",
+          "label": "Contracts: published by this agency",
+          "target_kind": "contract",
+          "target_id": null,
+          "target_name": "Contracts",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": "open",
+            "mode": "open",
+            "entity_ref": "agency:id:rent-guidelines-board"
+          },
+          "as_of": "2026-09-30",
+          "source": {
+            "kind": "agency",
+            "id": "rent-guidelines-board",
+            "name": "Rent Guidelines Board",
+            "canonical_href": "/agencies/rent-guidelines-board/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-09-30",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-09-30",
+              "snapshot_day": "2026-09-30",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "rent-guidelines-board",
+          "edge_type": "top_vendor_by_award_12mo",
+          "relation_label": "top vendors by award value",
+          "label": "Top vendors by award $ (last 12 mo): top vendors by award value",
+          "target_kind": "vendor",
+          "target_id": null,
+          "target_name": "Top vendors by award $ (last 12 mo)",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:rent-guidelines-board"
+          },
+          "as_of": "2026-09-05",
+          "source": {
+            "kind": "agency",
+            "id": "rent-guidelines-board",
+            "name": "Rent Guidelines Board",
+            "canonical_href": "/agencies/rent-guidelines-board/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-09-05",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-09-05",
+              "snapshot_day": "2026-09-05",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "rent-guidelines-board",
+          "edge_type": "hosts_meeting",
+          "relation_label": "related meetings and hearings",
+          "label": "Meetings and hearings: related meetings and hearings",
+          "target_kind": "meeting",
+          "target_id": null,
+          "target_name": "Meetings and hearings",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": "linked",
+            "mode": null,
+            "entity_ref": "agency:id:rent-guidelines-board"
+          },
+          "as_of": "2026-09-30",
+          "source": {
+            "kind": "agency",
+            "id": "rent-guidelines-board",
+            "name": "Rent Guidelines Board",
+            "canonical_href": "/agencies/rent-guidelines-board/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-09-30",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-09-30",
+              "snapshot_day": "2026-09-30",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "rent-guidelines-board",
+          "edge_type": "issued_rule",
+          "relation_label": "issued rule",
+          "label": "Rules: issued rule",
+          "target_kind": "rule",
+          "target_id": null,
+          "target_name": "Rules",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:rent-guidelines-board"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "rent-guidelines-board",
+            "name": "Rent Guidelines Board",
+            "canonical_href": "/agencies/rent-guidelines-board/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "rent-guidelines-board",
+          "edge_type": "statute_duty",
+          "relation_label": "statutory mandates",
+          "label": "Mandates: statutory mandates",
+          "target_kind": "mandate",
+          "target_id": null,
+          "target_name": "Mandates",
+          "count": 0,
+          "state": "empty",
+          "href": "/agencies/rent-guidelines-board/#mandates-conformance",
+          "canonical_href": "/agencies/rent-guidelines-board/#mandates-conformance",
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:rent-guidelines-board"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "rent-guidelines-board",
+            "name": "Rent Guidelines Board",
+            "canonical_href": "/agencies/rent-guidelines-board/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "rent-guidelines-board",
+          "edge_type": "certified_to_agency",
+          "relation_label": "certified to the agency",
+          "label": "Staffing exams: certified to the agency",
+          "target_kind": "exam",
+          "target_id": null,
+          "target_name": "Staffing exams",
+          "count": 0,
+          "state": "empty",
+          "href": "/browse/exams/?agency=rent-guidelines-board&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Arent-guidelines-board%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?agency=rent-guidelines-board&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Arent-guidelines-board%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:rent-guidelines-board"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "rent-guidelines-board",
+            "name": "Rent Guidelines Board",
+            "canonical_href": "/agencies/rent-guidelines-board/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        }
+      ],
+      "top_vendors": []
     },
     "sanitation": {
       "subject_ref": "agency:id:sanitation",

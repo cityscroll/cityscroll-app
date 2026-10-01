@@ -3,8 +3,8 @@
   "engineering_record": "cityscroll-engineering/legislative-matter-history-population",
   "renderer": "tools/render_legislative_matter_history_fixtures.mjs",
   "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-  "data_vintage": "2026-09-04T13:09:00.447Z",
-  "published_matter_count": 78,
+  "data_vintage": "2026-09-30T13:12:58.771Z",
+  "published_matter_count": 81,
   "captured_at": "2026-09-07T02:22:47Z",
   "image_directory": ".artifacts/legislative-matter-history-population",
   "corpus_note": "Every specimen reads the committed published generation at the data vintage above. The observations describe that retained corpus, not live publisher coverage, and no capture claims a later action, an adoption, an agency reply, or a participant result.",
@@ -19,7 +19,7 @@
         844
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 390px a matter with one located appearance shows that appearance and says no later official step has been located, without claiming the matter is settled",
       "observations": {
@@ -54,7 +54,7 @@
         900
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 1440px a matter with one located appearance shows that appearance and says no later official step has been located, without claiming the matter is settled",
       "observations": {
@@ -89,7 +89,7 @@
         844
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 390px a two-appearance history reads earlier appearance first, stays a list below the shared calendar density rule, and describes neither step as an adoption",
       "observations": {
@@ -118,7 +118,7 @@
         900
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 1440px a two-appearance history reads earlier appearance first, stays a list below the shared calendar density rule, and describes neither step as an adoption",
       "observations": {
@@ -147,7 +147,7 @@
         844
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 390px two notices announcing one meeting render as one appearance with both references separately openable and named",
       "observations": {
@@ -180,7 +180,7 @@
         900
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 1440px two notices announcing one meeting render as one appearance with both references separately openable and named",
       "observations": {
@@ -213,7 +213,7 @@
         844
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 390px an identity the generation does not publish is a stated absence with a way back, not an empty history that looks like a matter with nothing in it",
       "observations": {
@@ -241,7 +241,7 @@
         900
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 1440px an identity the generation does not publish is a stated absence with a way back, not an empty history that looks like a matter with nothing in it",
       "observations": {
@@ -269,7 +269,7 @@
         844
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "disabled",
       "assertion": "at 390px every destination on a matter history is an ordinary anchor that activates with scripting disabled, and browser Back returns to the history",
       "observations": {
@@ -297,7 +297,7 @@
         900
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "disabled",
       "assertion": "at 1440px every destination on a matter history is an ordinary anchor that activates with scripting disabled, and browser Back returns to the history",
       "observations": {
@@ -325,7 +325,7 @@
         844
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 390px an appearance destination takes keyboard focus, activates with Enter, and browser Back restores the whole history",
       "observations": {
@@ -356,7 +356,7 @@
         900
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 1440px an appearance destination takes keyboard focus, activates with Enter, and browser Back restores the whole history",
       "observations": {
@@ -387,7 +387,7 @@
         844
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 390px a modified click opens the source in a second context and the history stays where the reader left it",
       "observations": {
@@ -413,7 +413,7 @@
         900
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 1440px a modified click opens the source in a second context and the history stays where the reader left it",
       "observations": {
@@ -439,7 +439,7 @@
         844
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 390px zoomed to 200% the history reflows without horizontal scrolling and keeps every appearance, every destination, and its located-history disclosure",
       "observations": {
@@ -479,7 +479,7 @@
         900
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 1440px zoomed to 200% the history reflows without horizontal scrolling and keeps every appearance, every destination, and its located-history disclosure",
       "observations": {
