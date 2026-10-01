@@ -81,14 +81,22 @@ export function buildEmptySyntheticCells(surfaceId = "near-you") {
 /**
  * Group-level delivery/anchor for the synthetic measurement group.
  * merge_commit and pull_request are explicitly null (probe slot, not a delivery).
- * @param {{ at?: string | null, slot_id?: string | null, source?: string }} [args]
+ * `trigger` is captured at run time by the scheduled producer (`schedule` or
+ * `workflow_dispatch`), and stays null until the first retaining slot.
+ * @param {{ at?: string | null, slot_id?: string | null, source?: string, trigger?: string | null }} [args]
  */
-export function syntheticGroupDelivery({ at = null, slot_id = null, source = "unset" } = {}) {
+export function syntheticGroupDelivery({
+  at = null,
+  slot_id = null,
+  source = "unset",
+  trigger = null,
+} = {}) {
   return {
     kind: "first_probe_slot",
     at,
     slot_id,
     source,
+    trigger,
     merge_commit: null,
     pull_request: null,
     note: "First synthetic probe slot that retained an observation.",
@@ -225,6 +233,7 @@ export function applyProbeSlot(aggregate, slot) {
         at: slot.observed_at || slot.retained_at || null,
         slot_id: slot.run_key || slot.slot_id || null,
         source: "first_retained_observation",
+        trigger: slot.trigger ?? null,
       });
     }
   }
@@ -283,7 +292,7 @@ export function readSyntheticAggregate(document) {
   if (typeof delivery !== "object" || delivery == null || Array.isArray(delivery)) {
     return { ok: false, reason: "missing_required_field", missing_field: "delivery", state: "invalid" };
   }
-  for (const field of ["kind", "merge_commit", "pull_request"]) {
+  for (const field of ["kind", "merge_commit", "pull_request", "trigger"]) {
     if (!(field in delivery)) {
       return { ok: false, reason: "missing_required_field", missing_field: `delivery.${field}`, state: "invalid" };
     }

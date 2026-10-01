@@ -2407,6 +2407,8 @@
         "probe": {
           "pages": "data/performance/near-you-synthetic-probe.json",
           "runner": "tools/run_near_you_synthetic_probe.py",
+          "workflow": ".github/workflows/near-you-synthetic-probe.yml",
+          "builder": "tools/build_geography_navigation_field_vitals_synthetic.mjs --from-slot",
           "interaction_required": true
         }
       }

@@ -26,6 +26,7 @@
     "at": null,
     "slot_id": null,
     "source": "unset",
+    "trigger": null,
     "merge_commit": null,
     "pull_request": null,
     "note": "First synthetic probe slot that retained an observation."

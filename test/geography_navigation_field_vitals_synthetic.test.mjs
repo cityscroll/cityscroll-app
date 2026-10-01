@@ -27,6 +27,9 @@ const RESIDENT_PATH = join(
 );
 const PAGES_PATH = join(ROOT, "data/performance/near-you-synthetic-probe.json");
 const PROBE = join(ROOT, "tools/run_near_you_synthetic_probe.py");
+const WORKFLOW = join(ROOT, ".github/workflows/near-you-synthetic-probe.yml");
+const BUILD_COMMAND = "tools/build_geography_navigation_field_vitals_synthetic.mjs";
+const PROBE_COMMAND = "tools/run_near_you_synthetic_probe.py";
 
 test("probe plan covers desktop and mobile and requires interaction for INP", () => {
   const pages = JSON.parse(readFileSync(PAGES_PATH, "utf8"));
@@ -52,14 +55,35 @@ test("probe plan covers desktop and mobile and requires interaction for INP", ()
   assert.ok(body.visits.every((visit) => visit.interaction_required === true));
 });
 
-test("delivery records first_probe_slot with null merge_commit and pull_request (present, not absent)", () => {
+test("delivery records first_probe_slot with null merge_commit, pull_request, and trigger (present, not absent)", () => {
   const delivery = syntheticGroupDelivery();
   assert.equal(delivery.kind, "first_probe_slot");
   assert.equal(Object.hasOwn(delivery, "merge_commit"), true);
   assert.equal(Object.hasOwn(delivery, "pull_request"), true);
+  assert.equal(Object.hasOwn(delivery, "trigger"), true);
   assert.equal(delivery.merge_commit, null);
   assert.equal(delivery.pull_request, null);
+  assert.equal(delivery.trigger, null);
   assert.equal(delivery.at, null);
+});
+
+test("the scheduled workflow references the probe and the --from-slot build step", () => {
+  const workflow = readFileSync(WORKFLOW, "utf8");
+  assert.match(workflow, /^on:\s*$/m);
+  assert.match(workflow, /^\s+schedule:\s*$/m);
+  assert.match(workflow, /^\s+workflow_dispatch:\s*$/m);
+  assert.ok(workflow.includes(PROBE_COMMAND), "workflow must invoke the Near You synthetic probe");
+  assert.ok(workflow.includes(BUILD_COMMAND), "workflow must invoke the synthetic aggregate builder");
+  assert.match(workflow, /--from-slot/, "workflow must apply slots through the existing builder");
+  assert.match(workflow, /GITHUB_EVENT_NAME/, "trigger must be captured at run time");
+  assert.match(workflow, /slot\.trigger/, "captured trigger must be written onto the slot");
+  assert.match(workflow, /peter-evans\/create-pull-request/);
+  assert.match(workflow, /automation\/near-you-synthetic-probe/);
+
+  // Positive controls: the Notice probe is a different surface; this job must
+  // not re-init the aggregate and wipe retained slots.
+  assert.equal(workflow.includes("tools/run_notice_synthetic_probe.py"), false);
+  assert.ok(!workflow.includes("--init"), "workflow must not re-init the aggregate");
 });
 
 test("below-floor cell withholds percentile; zero observations are no_data", () => {
@@ -113,6 +137,7 @@ test("mutation control: empty slot does not set delivery; first retaining slot d
   const retainingSlot = {
     run_key: "slot-retain-1",
     observed_at: "2026-10-01T13:00:00.000Z",
+    trigger: "schedule",
     observations_emitted: 6,
     retained_observation_count: 6,
     cells: [
@@ -128,18 +153,21 @@ test("mutation control: empty slot does not set delivery; first retaining slot d
   aggregate = applyProbeSlot(aggregate, retainingSlot);
   assert.equal(aggregate.delivery.at, "2026-10-01T13:00:00.000Z");
   assert.equal(aggregate.delivery.slot_id, "slot-retain-1");
+  assert.equal(aggregate.delivery.trigger, "schedule");
   assert.equal(aggregate.delivery.merge_commit, null);
   assert.equal(aggregate.delivery.pull_request, null);
   assert.equal(aggregate.delivery.kind, "first_probe_slot");
 
-  // A later retaining slot must not move the first-slot anchor.
+  // A later retaining slot must not move the first-slot anchor or its trigger.
   aggregate = applyProbeSlot(aggregate, {
     ...retainingSlot,
     run_key: "slot-retain-2",
     observed_at: "2026-10-01T14:00:00.000Z",
+    trigger: "workflow_dispatch",
   });
   assert.equal(aggregate.delivery.at, "2026-10-01T13:00:00.000Z");
   assert.equal(aggregate.delivery.slot_id, "slot-retain-1");
+  assert.equal(aggregate.delivery.trigger, "schedule");
 });
 
 test("reader refuses missing required per-cell field and names it; absent vs unread", () => {
@@ -162,8 +190,10 @@ test("retained synthetic aggregate validates; delivery nulls are explicit", () =
   assert.equal(read.ok, true, JSON.stringify(read));
   assert.equal(Object.hasOwn(document.delivery, "merge_commit"), true);
   assert.equal(Object.hasOwn(document.delivery, "pull_request"), true);
+  assert.equal(Object.hasOwn(document.delivery, "trigger"), true);
   assert.equal(document.delivery.merge_commit, null);
   assert.equal(document.delivery.pull_request, null);
+  assert.equal(document.delivery.trigger, null);
   assert.equal(document.cells.length, 6);
 });
 

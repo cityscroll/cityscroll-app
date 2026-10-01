@@ -1,0 +1,139 @@
+name: Near You synthetic field-vitals probe
+
+# The synthetic probe and --from-slot builder existed, but nothing ran them on a
+# schedule, so the retained aggregate could not accumulate a first probe slot
+# unattended. This job visits Near You at both binding viewports under
+# traffic_class=synthetic, applies the slot through the existing builder, and
+# opens a pull request when the aggregate changes — the same scheduled-producer
+# shape as the address-index refresh and connected-history cycle.
+on:
+  schedule:
+    # Several slots a day, offset from the Notice synthetic probe's :07 slots.
+    - cron: "17 02 * * *"
+    - cron: "17 08 * * *"
+    - cron: "17 14 * * *"
+    - cron: "17 20 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: near-you-synthetic-probe
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    name: Probe Near You and apply the retained aggregate slot
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install the notice-probe Playwright runtime
+        run: tools/setup_notice_probe_runtime.sh
+
+      - name: Run the Near You synthetic probe
+        id: probe
+        env:
+          CITYSCROLL_PUBLIC_BASE: https://cityscroll.org
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/near-you-synthetic-probe
+          run_key="github-actions:${GITHUB_RUN_ID}:${GITHUB_RUN_ATTEMPT}"
+          ops/notice-probe/.venv/bin/python3 tools/run_near_you_synthetic_probe.py \
+            --base "${CITYSCROLL_PUBLIC_BASE}" \
+            --run-key "${run_key}" \
+            --out .artifacts/near-you-synthetic-probe/slot.json
+          # Capture the trigger at run time so schedule vs workflow_dispatch
+          # remain distinguishable on the applied slot (same contract as the
+          # first-class refresh and connected-history cycle receipts).
+          node <<'NODE'
+          const { readFileSync, writeFileSync } = require("node:fs");
+          const path = ".artifacts/near-you-synthetic-probe/slot.json";
+          const slot = JSON.parse(readFileSync(path, "utf8"));
+          slot.trigger = process.env.GITHUB_EVENT_NAME || "local";
+          slot.github_run_id = process.env.GITHUB_RUN_ID || null;
+          slot.github_run_attempt = process.env.GITHUB_RUN_ATTEMPT || null;
+          writeFileSync(path, `${JSON.stringify(slot, null, 2)}\n`);
+          NODE
+
+      - name: Apply the probe slot to the retained synthetic aggregate
+        run: |
+          set -euo pipefail
+          node tools/build_geography_navigation_field_vitals_synthetic.mjs \
+            --from-slot .artifacts/near-you-synthetic-probe/slot.json
+          node tools/build_geography_navigation_field_vitals_synthetic.mjs --check
+
+      - name: Keep the probe slot with the run
+        if: ${{ !cancelled() && hashFiles('.artifacts/near-you-synthetic-probe/slot.json') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: near-you-synthetic-probe-slot
+          path: .artifacts/near-you-synthetic-probe/slot.json
+          retention-days: 90
+
+      - name: Guard generated changes
+        id: generated
+        if: ${{ !cancelled() }}
+        run: |
+          set -euo pipefail
+          changed="$(git status --porcelain --untracked-files=all | awk '{print $NF}')"
+          if [ -z "$changed" ]; then
+            echo "The synthetic aggregate is unchanged after this slot."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          while IFS= read -r path; do
+            case "$path" in
+              docs/evidence/geography-navigation-release/field-vitals-synthetic-aggregate.json) ;;
+              *) echo "Unexpected generated change: $path" >&2; exit 1 ;;
+            esac
+          done <<< "$changed"
+          git diff --check
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Open or update the synthetic aggregate pull request
+        if: ${{ !cancelled() && steps.generated.outputs.changed == 'true' }}
+        id: probe-pr
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.REFRESH_PR_TOKEN }}
+          branch: automation/near-you-synthetic-probe
+          delete-branch: true
+          commit-message: Record a Near You synthetic field-vitals probe slot
+          title: Record a Near You synthetic field-vitals probe slot
+          body: |
+            Automated Near You synthetic field-vitals probe. The retained aggregate at `docs/evidence/geography-navigation-release/field-vitals-synthetic-aggregate.json` accumulates one scheduled slot through `tools/build_geography_navigation_field_vitals_synthetic.mjs --from-slot`. Observations are stamped `traffic_class=synthetic` and are never pooled with the resident group.
+
+            Validation:
+            - `ops/notice-probe/.venv/bin/python3 tools/run_near_you_synthetic_probe.py --check-runtime`
+            - `node tools/build_geography_navigation_field_vitals_synthetic.mjs --check`
+          add-paths: |
+            docs/evidence/geography-navigation-release/field-vitals-synthetic-aggregate.json
+
+      - name: Run required checks for the synthetic aggregate pull request
+        if: ${{ !cancelled() && steps.probe-pr.outputs.pull-request-number != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.REFRESH_PR_TOKEN }}
+        run: gh workflow run ci.yml --ref automation/near-you-synthetic-probe
+
+      - name: Queue the verified aggregate update for merge
+        if: ${{ !cancelled() && steps.probe-pr.outputs.pull-request-number != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.REFRESH_PR_TOKEN }}
+          PROBE_PR: ${{ steps.probe-pr.outputs.pull-request-number }}
+          PROBE_HEAD: ${{ steps.probe-pr.outputs.pull-request-head-sha }}
+        run: gh pr merge "$PROBE_PR" --auto --match-head-commit "$PROBE_HEAD"
