@@ -194,15 +194,16 @@ jobs:
             ' "$prior_kv")
             index=0
             if [ -n "$chunk_keys" ]; then
+              # Here-string (not an unindented heredoc) so every line stays
+              # inside the run: | block scalar — a column-0 EOF terminator
+              # made GitHub fail to parse this workflow (0 jobs).
               while IFS= read -r chunk_key; do
                 [ -n "$chunk_key" ] || continue
                 npx wrangler@4.126.0 kv key get "$chunk_key" \
                   --binding ALERT_STATE --remote --text --config worker/wrangler.toml \
                   > ".d1-publication-state/prior-snapshot-chunks/chunk-${index}.json"
                 index=$((index + 1))
-              done <<EOF
-$chunk_keys
-EOF
+              done <<< "$chunk_keys"
             fi
             unpack_args=(--in "$prior_kv" --out .d1-publication-state/prior-snapshot.json)
             if [ "$index" -gt 0 ]; then
