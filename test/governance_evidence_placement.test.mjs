@@ -53,26 +53,43 @@ function failure(directory) {
 
 // A hook or CI step can export GIT_DIR, GIT_WORK_TREE, or GIT_INDEX_FILE, and those
 // override -C. Fixture repositories must never inherit them, or a fixture commit lands
-// in the surrounding checkout instead of the temporary tree.
+// in the surrounding checkout instead of the temporary tree. Only strip the
+// repository-redirecting bindings (same list as tools/git-hooks/scrub-hook-exported-git-env.sh);
+// keep GIT_CONFIG_* so an intentional system-config override still reaches nested git.
+const REPO_REDIRECTING_GIT_VARS = [
+  "GIT_DIR",
+  "GIT_WORK_TREE",
+  "GIT_INDEX_FILE",
+  "GIT_OBJECT_DIRECTORY",
+  "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+  "GIT_PREFIX",
+  "GIT_COMMON_DIR",
+];
+
 function fixtureGitEnvironment() {
   const environment = { ...process.env };
-  for (const key of Object.keys(environment)) if (key.startsWith("GIT_")) delete environment[key];
+  for (const key of REPO_REDIRECTING_GIT_VARS) delete environment[key];
   return environment;
 }
 
 function repository() {
   const root = realpathSync(mkdtempSync(join(tmpdir(), "governance-repo-")));
-  assert.ok(!root.startsWith(realpathSync(process.cwd())), "fixture repositories live outside the checkout");
-  const environment = fixtureGitEnvironment();
-  const invoke = (command, args) => command("git", [
-    "-C", root, "--git-dir", join(root, ".git"), "--work-tree", root,
-    "-c", "user.name=Check", "-c", "user.email=check@example.test", ...args,
-  ], { encoding: "utf8", env: environment });
-  execFileSync("git", ["init", "--initial-branch=main", "--quiet", root], { encoding: "utf8", env: environment });
-  const run = (...args) => invoke(execFileSync, args);
-  const attempt = (...args) => invoke(spawnSync, args);
-  assert.equal(run("rev-parse", "--show-toplevel").trim(), root, "fixture git commands must stay in the fixture repository");
-  return { root, run, attempt };
+  try {
+    assert.ok(!root.startsWith(realpathSync(process.cwd())), "fixture repositories live outside the checkout");
+    const environment = fixtureGitEnvironment();
+    const invoke = (command, args) => command("git", [
+      "-C", root, "--git-dir", join(root, ".git"), "--work-tree", root,
+      "-c", "user.name=Check", "-c", "user.email=check@example.test", ...args,
+    ], { encoding: "utf8", env: environment });
+    execFileSync("git", ["init", "--initial-branch=main", "--quiet", root], { encoding: "utf8", env: environment });
+    const run = (...args) => invoke(execFileSync, args);
+    const attempt = (...args) => invoke(spawnSync, args);
+    assert.equal(run("rev-parse", "--show-toplevel").trim(), root, "fixture git commands must stay in the fixture repository");
+    return { root, run, attempt };
+  } catch (error) {
+    rmSync(root, { recursive: true, force: true });
+    throw error;
+  }
 }
 
 test("the whole-repository placement receipt is no longer a tracked file", () => {

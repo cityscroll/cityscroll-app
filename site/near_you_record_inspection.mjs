@@ -127,13 +127,6 @@ export function nearYouAppearanceReason(record = {}) {
   if (VENUE_PLACE_ROLES.has(placeRole) && evidence?.label) {
     return inspectText(evidence.resident_label, 180) || nearYouHeldInLabel(evidence.label);
   }
-  if (record?.place?.location_role === "venue") {
-    const venueGeo = (record.place.geographies || []).find((row) =>
-      row?.visibility === "public" && row.location_role === "venue" && row.label);
-    if (venueGeo?.label) {
-      return nearYouHeldInLabel(venueGeo.label) || venueGeo.label;
-    }
-  }
   if (MATTER_PLACE_ROLES.has(placeRole)) {
     if (evidence?.resident_label && /^About\s/i.test(evidence.resident_label)) {
       return inspectText(evidence.resident_label, 180);
@@ -143,6 +136,15 @@ export function nearYouAppearanceReason(record = {}) {
     }
     const about = nearYouAboutLabel(subjectAddress);
     if (about) return about;
+  }
+  // Only fall back to the stored preferred venue when the selected place did
+  // not already admit the row through a matter/subject membership.
+  if (record?.place?.location_role === "venue") {
+    const venueGeo = (record.place.geographies || []).find((row) =>
+      row?.visibility === "public" && row.location_role === "venue" && row.label);
+    if (venueGeo?.label) {
+      return nearYouHeldInLabel(venueGeo.label) || venueGeo.label;
+    }
   }
   return inspectText(record?.basis, 160) || "Local activity";
 }

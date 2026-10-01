@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import test from "node:test";
 
 import { findOffendingImages, loadAllowlist, readPaths } from "../tools/check_capture_manifest_images.mjs";
+import { withTempDirSync } from "../tools/lib/with_temp_dir.mjs";
 import { manifestPaths, missingShaEntries } from "../tools/lint_capture_manifest_schema.mjs";
 
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
@@ -158,27 +159,38 @@ test("the guard's usage message exits non-zero without --paths-file", () => {
 // (node --test test/*.test.mjs), so those variables must be stripped here — otherwise a nested
 // `git init`/`git commit` in the scratch repo below would silently operate on this repository's
 // real .git despite an explicit `cwd`, rather than the throwaway temp directory.
+// Only strip repository-redirecting bindings (same list as scrub-hook-exported-git-env.sh);
+// keep GIT_CONFIG_* so intentional system-config overrides still reach nested git.
+const REPO_REDIRECTING_GIT_VARS = [
+  "GIT_DIR",
+  "GIT_WORK_TREE",
+  "GIT_INDEX_FILE",
+  "GIT_OBJECT_DIRECTORY",
+  "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+  "GIT_PREFIX",
+  "GIT_COMMON_DIR",
+];
+
 function sanitizedGitEnv() {
   const env = { ...process.env };
-  for (const key of Object.keys(env)) {
-    if (key.startsWith("GIT_")) delete env[key];
-  }
+  for (const key of REPO_REDIRECTING_GIT_VARS) delete env[key];
   return env;
 }
 
-function initTempRepo() {
-  const dir = mkdtempSync(join(tmpdir(), "capture-manifest-repo-"));
-  const env = sanitizedGitEnv();
-  const run = (...args) => execFileSync("git", args, { cwd: dir, encoding: "utf8", env });
-  run("init", "--quiet", "-b", "main");
-  run("config", "user.email", "capture-manifest-guard-test");
-  run("config", "user.name", "Test");
-  return { dir, run };
+function withTempRepo(fn) {
+  // withTempDirSync owns cleanup on success, thrown git-init failure, and SIGTERM.
+  return withTempDirSync("capture-manifest-repo", (dir) => {
+    const env = sanitizedGitEnv();
+    const run = (...args) => execFileSync("git", args, { cwd: dir, encoding: "utf8", env });
+    run("init", "--quiet", "-b", "main");
+    run("config", "user.email", "capture-manifest-guard-test");
+    run("config", "user.name", "Test");
+    return fn({ dir, run });
+  });
 }
 
 test("git diff --diff-filter=A -M does not list a renamed pre-existing image as added", () => {
-  const { dir, run } = initTempRepo();
-  try {
+  withTempRepo(({ dir, run }) => {
     mkdirSync(join(dir, "docs", "screenshots"), { recursive: true });
     writeFileSync(join(dir, "docs", "screenshots", "old-name.png"), "fake-png-bytes-for-rename-test");
     run("add", "-A");
@@ -189,14 +201,11 @@ test("git diff --diff-filter=A -M does not list a renamed pre-existing image as 
     const head = run("rev-parse", "HEAD").trim();
     const added = run("diff", "--diff-filter=A", "-M", "--name-only", `${base}...${head}`).trim();
     assert.equal(added, "");
-  } finally {
-    rmSync(dir, { recursive: true, force: true });
-  }
+  });
 });
 
 test("git diff --diff-filter=A does not list a modified pre-existing image as added", () => {
-  const { dir, run } = initTempRepo();
-  try {
+  withTempRepo(({ dir, run }) => {
     mkdirSync(join(dir, "docs", "screenshots"), { recursive: true });
     writeFileSync(join(dir, "docs", "screenshots", "legacy.png"), "fake-png-bytes-v1");
     run("add", "-A");
@@ -208,14 +217,11 @@ test("git diff --diff-filter=A does not list a modified pre-existing image as ad
     const head = run("rev-parse", "HEAD").trim();
     const added = run("diff", "--diff-filter=A", "-M", "--name-only", `${base}...${head}`).trim();
     assert.equal(added, "");
-  } finally {
-    rmSync(dir, { recursive: true, force: true });
-  }
+  });
 });
 
 test("git diff --diff-filter=A -M still lists a genuinely new image as added", () => {
-  const { dir, run } = initTempRepo();
-  try {
+  withTempRepo(({ dir, run }) => {
     mkdirSync(join(dir, "docs", "screenshots"), { recursive: true });
     writeFileSync(join(dir, "docs", "screenshots", "existing.png"), "fake-png-bytes");
     run("add", "-A");
@@ -227,9 +233,7 @@ test("git diff --diff-filter=A -M still lists a genuinely new image as added", (
     const head = run("rev-parse", "HEAD").trim();
     const added = run("diff", "--diff-filter=A", "-M", "--name-only", `${base}...${head}`).trim();
     assert.equal(added, "docs/screenshots/brand-new.png");
-  } finally {
-    rmSync(dir, { recursive: true, force: true });
-  }
+  });
 });
 
 // --- Advisory manifest-schema lint ---
