@@ -57,7 +57,7 @@ test("?beta=0 clears the persisted opt-in", () => {
 
 test("expired flags fail closed in the browser runtime", () => {
   assert.deepEqual(
-    resolveFlag({ search: "?beta=channel-banner", flags, today: "2026-10-01" }),
+    resolveFlag({ search: "?beta=channel-banner", flags, today: "2026-10-15" }),
     { slug: null, storage: "clear" },
   );
 });
