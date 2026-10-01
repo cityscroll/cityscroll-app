@@ -219,14 +219,25 @@ says so) and of one independent step failing (its siblings still run).
 
 `tools/first_class_refresh_run_receipt.mjs` then combines that receipt with the
 acquisition/builder receipt (`tools/first_class_refresh.mjs --run-due`) and the
-working tree's pending changes into one per-dataset accounting —
-`.artifacts/first-class-refresh-run-receipt.json` — naming, per first-class
-artifact, whether it was due, whether its acquisition and builder succeeded,
-whether the rebuild steps that feed it succeeded, and whether it is about to
-be published. Neither receipt alone can tell an idempotent run that refreshed
-nothing apart from a run that refreshed something it could not publish; this
-one can. Both refresh entry points retain all three receipts and the
-freshness report as a workflow artifact.
+working tree's pending changes into one per-dataset accounting — naming, per
+first-class artifact, whether it was due, whether its acquisition and builder
+succeeded, whether the rebuild steps that feed it succeeded, and whether it is
+about to be published. Neither receipt alone can tell an idempotent run that
+refreshed nothing apart from a run that refreshed something it could not
+publish; this one can.
+
+The same tool writes the retained run history at
+`site/data/first_class_refresh_run_history.json`, which the refresh pull
+request commits. That history names the run identifier, the trigger that
+started the job (`schedule` for the cron, `workflow_dispatch` for a manual
+dispatch), and the run's start and finish times, and keeps prior runs
+append-only so two consecutive scheduled receipts stay readable from the
+repository after merge without consulting workflow history. A later same-day
+force-update of `data/first-class-refresh-YYYYMMDD` still sees any unmerged tip
+receipt (`--pending-receipt`); a publish that would drop a retained run fails
+instead. The workflow also mirrors the history under
+`.artifacts/first-class-refresh-run-receipt.json` and uploads the acquisition,
+rebuild, and run receipts plus the freshness report as a workflow artifact.
 
 ### Warning before the hard maximum, not after
 
