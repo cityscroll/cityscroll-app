@@ -2397,7 +2397,34 @@
           "wire_bytes": 1260
         }
       }
-    ]
+    ],
+    "synthetic_field_vitals": {
+      "status": "instrumented",
+      "reason": "Synthetic Near You probe and retained aggregate land for the A7 measurement-group amendment. Resident observation remains in production_field_vitals.observation; groups are never pooled.",
+      "observation": {
+        "path": "docs/evidence/geography-navigation-release/field-vitals-synthetic-aggregate.json",
+        "schema": "cityscroll.geography_navigation_field_vitals_synthetic_aggregate.v1",
+        "measurement_group": "synthetic",
+        "traffic_class": "synthetic",
+        "sample_floor": 30,
+        "required_viewports": [
+          "desktop",
+          "mobile"
+        ],
+        "required_metrics": [
+          "lcp_ms",
+          "inp_ms",
+          "cls_score"
+        ],
+        "probe": {
+          "pages": "data/performance/near-you-synthetic-probe.json",
+          "runner": "tools/run_near_you_synthetic_probe.py",
+          "workflow": ".github/workflows/near-you-synthetic-probe.yml",
+          "builder": "tools/build_geography_navigation_field_vitals_synthetic.mjs --from-slot",
+          "interaction_required": true
+        }
+      }
+    }
   },
   "validation": {
     "existing_suites": [
