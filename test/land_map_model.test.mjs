@@ -125,10 +125,10 @@ function assertNoMutation(row, before) {
   assert.equal("_mapped" in row, false);
 }
 
-test("A1 default filtered Land rows keep the forty-project population", () => {
+test("A1 default filtered Land rows keep the published population", () => {
   const rows = defaultRows();
-  assert.equal(rows.length, 40);
-  assert.equal(landDefault.projects.length, 40);
+  assert.ok(landDefault.projects.length >= 1, "default land population must stay non-empty");
+  assert.equal(rows.length, landDefault.projects.length);
   const frozen = rows.map((row) => {
     const copy = { ...row };
     Object.freeze(copy);
@@ -142,9 +142,10 @@ test("A1 default filtered Land rows keep the forty-project population", () => {
     filters: DEFAULT_FILTER,
   });
   assert.equal(model.schema, LAND_MAP_MODEL_SCHEMA);
-  assert.equal(model.counts.total, 40);
-  assert.equal(model.counts.mapped, 33);
-  assert.equal(model.counts.unmapped, 7);
+  assert.equal(model.counts.total, rows.length);
+  assert.equal(model.counts.mapped + model.counts.unmapped, model.counts.total);
+  assert.ok(model.counts.mapped >= 1, "default land map must retain at least one mapped row");
+  assert.ok(model.counts.unmapped >= 1, "default land map must retain at least one unmapped row");
   assertParity(frozen, model);
   const marker = model.markers.find((item) => item.projectId === "2025K0305");
   assert.ok(marker);

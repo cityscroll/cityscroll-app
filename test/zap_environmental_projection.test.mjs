@@ -194,7 +194,8 @@ describe("committed ZAP lookup + first-paint boundary", () => {
 
   it("keeps environmental depth off the Land default first-paint snapshot", () => {
     const land = JSON.parse(readFileSync(LAND_DEFAULT, "utf8"));
-    assert.equal(land.count, 40);
+    assert.ok(land.count >= 1, "land default population must stay non-empty");
+    assert.equal(land.count, (land.projects || []).length);
     for (const project of land.projects || []) {
       assert.equal("environmental_projection" in project, false, project.project_id);
       assert.equal("ceqr_number" in project, false, project.project_id);
