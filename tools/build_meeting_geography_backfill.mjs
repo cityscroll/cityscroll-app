@@ -45,6 +45,15 @@ import {
 import {
   createRecordLocationMembershipProjection,
 } from "../site/record_location_memberships.mjs";
+import {
+  assertFrozenNeighborhoodBaseline,
+  buildNeighborhoodPublicationReceipt,
+  FROZEN_NEIGHBORHOOD_PUBLICATION_BASELINE,
+  NEIGHBORHOOD_PUBLICATION_ANCHORS,
+} from "./lib/neighborhood_publication_receipt.mjs";
+import {
+  slimSharedMeetingReadModel,
+} from "./lib/shared_meeting_publish_slim.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHARED_MEETING_PATH = path.join(ROOT, "site/data/shared_meeting_read_model.json");
@@ -55,6 +64,10 @@ const PARCEL_DIR = path.join(ROOT, "site/data/parcel-geography");
 const PUBLIC_DIR = path.join(ROOT, "site/data/meeting-geography-backfill");
 const EVIDENCE_DIR = path.join(ROOT, "docs/evidence/meeting-geography-backfill");
 const CHECKPOINT_PATH = path.join(PUBLIC_DIR, "checkpoint.json");
+const PUBLICATION_RECEIPT_PATH = path.join(
+  EVIDENCE_DIR,
+  "neighborhood-publication-receipt.json",
+);
 
 function loadJson(filePath) {
   return JSON.parse(readFileSync(filePath, "utf8"));
@@ -157,7 +170,7 @@ function summarizeCandidates(rows) {
   };
 }
 
-function writeEvidence(outcomesDocument, manifest) {
+function writeEvidence(outcomesDocument, manifest, publicationReceipt = null) {
   mkdirSync(EVIDENCE_DIR, { recursive: true });
   writeFileSync(
     path.join(EVIDENCE_DIR, "per-id-outcomes.json"),
@@ -167,6 +180,28 @@ function writeEvidence(outcomesDocument, manifest) {
     path.join(EVIDENCE_DIR, "manifest.json"),
     `${JSON.stringify(manifest, null, 2)}\n`,
   );
+  const summary = {
+    schema: "cityscroll.meeting_geography_backfill_evidence.v1",
+    generation: outcomesDocument.generation,
+    built_at: outcomesDocument.built_at,
+    source_generation_hash: outcomesDocument.source_generation_hash,
+    candidate_input: outcomesDocument.candidate_input,
+    counts: outcomesDocument.counts,
+    positive_record: outcomesDocument.positive_record,
+    neighborhood_publication_receipt: publicationReceipt
+      ? "docs/evidence/meeting-geography-backfill/neighborhood-publication-receipt.json"
+      : null,
+  };
+  writeFileSync(
+    path.join(EVIDENCE_DIR, "summary.json"),
+    `${JSON.stringify(summary, null, 2)}\n`,
+  );
+  if (publicationReceipt) {
+    writeFileSync(
+      PUBLICATION_RECEIPT_PATH,
+      `${JSON.stringify(publicationReceipt, null, 2)}\n`,
+    );
+  }
 }
 
 export function runMeetingGeographyBackfill({
@@ -193,6 +228,15 @@ export function runMeetingGeographyBackfill({
   const priorCheckpoint = resume && existsSync(checkpointPath)
     ? loadJson(checkpointPath)
     : null;
+
+  const priorActive = loadActiveMeetingGeographyBackfill(publicDir);
+  const beforeOutcomes = Array.isArray(priorActive?.outcomes?.outcomes)
+    ? priorActive.outcomes.outcomes
+    : [];
+  let frozenBaselineObservation = null;
+  if (beforeOutcomes.length === FROZEN_NEIGHBORHOOD_PUBLICATION_BASELINE.canonical_meeting_count) {
+    frozenBaselineObservation = assertFrozenNeighborhoodBaseline(beforeOutcomes);
+  }
 
   const activeRunner = runner || buildRunner();
   let result;
@@ -249,7 +293,9 @@ export function runMeetingGeographyBackfill({
   };
 
   const stampedRows = stampMeetingRowsWithGeography(rows, result.outcomes);
-  const stampedShared = {
+  // Publish slim is part of the producer write path so scheduled refresh cannot
+  // leave host_jurisdiction / venue-assertion bulk on the committed catalog.
+  const stampedShared = slimSharedMeetingReadModel({
     ...shared,
     rows: stampedRows,
     hearings: Array.isArray(shared.hearings)
@@ -261,7 +307,7 @@ export function runMeetingGeographyBackfill({
       counts: result.counts,
       candidate_input: candidateSummary,
     },
-  };
+  });
 
   const manifest = {
     schema: MEETING_GEOGRAPHY_BACKFILL_MANIFEST_SCHEMA,
@@ -286,10 +332,30 @@ export function runMeetingGeographyBackfill({
     failBeforeActivate,
   });
 
+  const publicationReceipt = buildNeighborhoodPublicationReceipt({
+    beforeOutcomes,
+    afterOutcomes: result.outcomes,
+    frozenBaseline: FROZEN_NEIGHBORHOOD_PUBLICATION_BASELINE,
+    beforeGeneration: priorActive?.pointer?.active_generation || null,
+    afterGeneration: activation.generation,
+    builtAt,
+    beforeAddressCandidateClasses: frozenBaselineObservation?.address_candidate_classes
+      || FROZEN_NEIGHBORHOOD_PUBLICATION_BASELINE.address_candidate_classes,
+    afterAddressCandidateClasses: null,
+    sharedRows: rows,
+  });
+
   writeEvidence(outcomesDocument, {
     ...manifest,
     active_generation: activation.generation,
-  });
+    evidence: {
+      summary: "docs/evidence/meeting-geography-backfill/summary.json",
+      full_outcomes: "site/data/meeting-geography-backfill/per-id-outcomes.json",
+      neighborhood_publication_receipt:
+        "docs/evidence/meeting-geography-backfill/neighborhood-publication-receipt.json",
+      note: "Full per-id outcomes restate publisher calendar UIDs already present in the shared meeting corpus; the summary and neighborhood receipt stay on the open web.",
+    },
+  }, publicationReceipt);
 
   // Clear checkpoint after successful activation so a later resume starts clean
   // only when the source hash changes.
@@ -305,8 +371,11 @@ export function runMeetingGeographyBackfill({
     manifest,
     counts: result.counts,
     candidate_input: candidateSummary,
+    publication_receipt: publicationReceipt,
+    anchors: NEIGHBORHOOD_PUBLICATION_ANCHORS,
     outcomes_path: path.join(publicDir, "per-id-outcomes.json"),
     evidence_path: path.join(EVIDENCE_DIR, "per-id-outcomes.json"),
+    receipt_path: PUBLICATION_RECEIPT_PATH,
   };
 }
 

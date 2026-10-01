@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/notice-post-delivery-readback-aggregate",
+  "status": "implemented",
+  "fingerprint": "notice-post-delivery-readback-aggregate.v2",
+  "updated_at": "2026-09-30T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "notice-readback-aggregate-schema",
+      "path": "tools/lib/notice_readback_aggregate.mjs"
+    },
+    {
+      "id": "notice-readback-aggregate-builder",
+      "path": "tools/build_notice_readback_aggregate.mjs"
+    },
+    {
+      "id": "notice-readback-aggregate-retained",
+      "path": "docs/evidence/performance-drift/notice-readback-aggregate.json"
+    },
+    {
+      "id": "notice-readback-aggregate-readme",
+      "path": "docs/evidence/performance-drift/README.md"
+    },
+    {
+      "id": "notice-readback-aggregate-tests",
+      "path": "test/notice_readback_aggregate.test.mjs"
+    }
+  ]
+}

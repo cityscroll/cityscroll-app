@@ -126,7 +126,8 @@ function untrackedTestDiff() {
     paths = git("ls-files", "--others", "--exclude-standard", "--", "test", "worker/test")
       .split("\n")
       .filter(Boolean)
-      .filter((path) => TEST_PATH.test(path));
+      .filter((path) => TEST_PATH.test(path))
+      .filter((path) => !path.startsWith("test/fixtures/") && !path.startsWith("worker/test/fixtures/"));
   } catch {
     return "";
   }
@@ -138,7 +139,20 @@ function untrackedTestDiff() {
 
 export function auditTestClocks() {
   const base = comparisonBase();
-  const tracked = git("diff", "--unified=0", "--no-color", base, "--", "test", "worker/test");
+  // Exclude fixture payloads: they are not clock-audited (TEST_PATH already
+  // skips fixtures/) and a large newly-added JSON fixture can overflow the
+  // sync git-diff buffer (ENOBUFS) without changing any auditable test line.
+  const tracked = git(
+    "diff",
+    "--unified=0",
+    "--no-color",
+    base,
+    "--",
+    "test",
+    "worker/test",
+    ":(exclude)test/fixtures",
+    ":(exclude)worker/test/fixtures",
+  );
   const untracked = untrackedTestDiff();
   const diff = `${tracked}\n${untracked}`;
   const changed = changedLinesByPath(diff);

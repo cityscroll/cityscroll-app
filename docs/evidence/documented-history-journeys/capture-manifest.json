@@ -894,7 +894,7 @@
       },
       {
         "path": "site/beta-flags.json",
-        "sha256": "7fa6d3cd66dc521acebe52af0e5bc072c6f2b106d38e36bc8e9365f1922c6255"
+        "sha256": "443a2fca16cd2dbf1089ed59341f1e1b38263472315074e23ace138220db4d75"
       },
       {
         "path": "site/beta_flags.js",

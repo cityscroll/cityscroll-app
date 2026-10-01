@@ -1603,6 +1603,141 @@
         "precinct": "26B"
       },
       "artifact": "capture-manifest.json#capture-entry-boundary-360-retry"
+    },
+    {
+      "name": "unrelated-about-desktop",
+      "route": "/about.html",
+      "surface_role": "unrelated",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "assertion": "headless Chromium loaded an outside geography-navigation route, retained the observed network request paths, and derived measured false values for geography-navigation runtime and layer-artifact requests",
+      "failure_mode": "none",
+      "asset_classes": [
+        "server_html",
+        "document_chrome"
+      ],
+      "timing_samples": {
+        "dom_content_loaded_ms": 156
+      },
+      "render_content_sha256": "d7ced4245467c401f985e53123dbf0028905f04003c7d6ce58ca2ae11d44c588",
+      "observed_request_paths": [
+        "/about.html",
+        "/i18n.js?v=__I18N_ASSET_VERSION__",
+        "/beta_flags.js?v=1.0.0",
+        "/analytics.js?v=1.4.0",
+        "/clarity.js?v=1.0.0",
+        "/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
+        "/brand.css",
+        "/beacon.min.js",
+        "/analytics_surface_taxonomy.mjs",
+        "/contextual_ux_feedback_prompt.mjs",
+        "/beta-flags.json",
+        "/s/notosans/v42/o-0bIpQlx3QUlC5A4PNB6Ryti20_6n1iPHjc5a7du3mhPy0.woff2",
+        "/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4C_k3HqU.woff2",
+        "/events",
+        "/tag/xusuca7gsv",
+        "/0.8.70/clarity.js",
+        "/c.gif",
+        "/cdn-cgi/rum",
+        "/c.gif?ctsa=mr&CtsSyncId=4C5621D8FF4B4B29A999953A97935A89&RedC=c.clarity.ms&MXFR=1B07292CC1936B410D2F3EC8C5936583",
+        "/collect",
+        "/c.gif?ctsa=mr&CtsSyncId=4C5621D8FF4B4B29A999953A97935A89&MUID=3DF8047D2288672613A7139923786641"
+      ],
+      "geography_navigation_runtime_requested": false,
+      "geography_navigation_layer_artifact_requested": false,
+      "visual_metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "surface_role": "unrelated"
+      },
+      "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+      "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
+      "deployed_version": {
+        "status": "taken",
+        "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+        "revision_format": "served artifact-manifest source_commit_sha",
+        "base": "https://cityscroll.org/",
+        "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
+      },
+      "data_vintages": {
+        "nta": "26B",
+        "community": "2026-05-26",
+        "council": "2026-05-26",
+        "precinct": "26B"
+      },
+      "artifact": "capture-manifest.json#capture-unrelated-about-desktop"
+    },
+    {
+      "name": "unrelated-standards-desktop",
+      "route": "/standards.html",
+      "surface_role": "unrelated",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "assertion": "headless Chromium loaded an outside geography-navigation route, retained the observed network request paths, and derived measured false values for geography-navigation runtime and layer-artifact requests",
+      "failure_mode": "none",
+      "asset_classes": [
+        "server_html",
+        "document_chrome"
+      ],
+      "timing_samples": {
+        "dom_content_loaded_ms": 85
+      },
+      "render_content_sha256": "d7ced4245467c401f985e53123dbf0028905f04003c7d6ce58ca2ae11d44c588",
+      "observed_request_paths": [
+        "/standards.html",
+        "/brand.css",
+        "/i18n.js?v=__I18N_ASSET_VERSION__",
+        "/beta_flags.js?v=1.0.0",
+        "/analytics.js?v=1.4.0",
+        "/clarity.js?v=1.0.0",
+        "/about.html",
+        "/analytics_surface_taxonomy.mjs",
+        "/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
+        "/beacon.min.js",
+        "/contextual_ux_feedback_prompt.mjs",
+        "/beta-flags.json",
+        "/events",
+        "/tag/xusuca7gsv",
+        "/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4C_k3HqU.woff2",
+        "/s/notosans/v42/o-0bIpQlx3QUlC5A4PNB6Ryti20_6n1iPHjc5a7du3mhPy0.woff2",
+        "/0.8.70/clarity.js",
+        "/c.gif",
+        "/cdn-cgi/rum",
+        "/c.gif?ctsa=mr&CtsSyncId=EF3E12B9F4274BB1A03BBC6373AF96D5&RedC=c.clarity.ms&MXFR=07CCB092FE5A65232B6AA776FA5A6BF7",
+        "/collect",
+        "/c.gif?ctsa=mr&CtsSyncId=EF3E12B9F4274BB1A03BBC6373AF96D5&MUID=008B261C3EBB6ED3138C31F83FF86FB2"
+      ],
+      "geography_navigation_runtime_requested": false,
+      "geography_navigation_layer_artifact_requested": false,
+      "visual_metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "surface_role": "unrelated"
+      },
+      "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+      "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
+      "deployed_version": {
+        "status": "taken",
+        "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+        "revision_format": "served artifact-manifest source_commit_sha",
+        "base": "https://cityscroll.org/",
+        "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
+      },
+      "data_vintages": {
+        "nta": "26B",
+        "community": "2026-05-26",
+        "council": "2026-05-26",
+        "precinct": "26B"
+      },
+      "artifact": "capture-manifest.json#capture-unrelated-standards-desktop"
     }
   ],
   "accessibility_matrix": {
@@ -1741,11 +1876,185 @@
   "performance": {
     "production_field_vitals": {
       "status": "not_taken",
-      "reason": "deployment-dependent production measurement"
+      "reason": "Production Analytics Engine dataset crol_rum_observations_v1 retains LCP/INP/CLS for geography-navigation routes, but the repository sample floor (30) is not met for the required p75 \u00d7 desktop/mobile matrix on surface near-you after the 2026-09-21 delivery merge. near-you LCP desktop n=2, CLS desktop n=2, INP n=0, and mobile near-you has no rows in the 7d window; percentiles are withheld below the floor rather than published. Pathname / after the default-local-home delivery classifies as surface home and is retained in the sibling observation for route-scope review. Earliest near-you floor date cannot be projected for INP or mobile (no positive rate); desktop LCP/CLS alone would need continued sampling beyond the observed stall. Optimistic home+near-you bound for remaining cells is 2026-10-11 if home is admitted and sampling resumes.",
+      "observation": {
+        "path": "docs/evidence/geography-navigation-release/field-vitals-observation.json",
+        "schema": "cityscroll.geography_navigation_field_vitals_observation.v1",
+        "queried_at": "2026-09-30T18:41:06.194Z",
+        "window": "7d",
+        "sample_floor": 30,
+        "required_quantile": 0.75,
+        "required_viewports": [
+          "desktop",
+          "mobile"
+        ],
+        "deployed_revision": {
+          "pages_source_commit_sha": "27d239333a0e225c98aa7b9e7aea009acfdf9bff",
+          "pages_generated_at": "2026-09-30T18:14:18.119Z",
+          "worker_commit": "18d60ca624aab0819bf4c0f5f18b1e7544ea3828"
+        },
+        "dataset": "crol_rum_observations_v1",
+        "traffic_class": "production",
+        "near_you_cells": [
+          {
+            "metric_id": "lcp_ms",
+            "device_class": "desktop",
+            "sampled_count": 2,
+            "status": "insufficient_sample",
+            "quantile": 0.75,
+            "quantile_value": null,
+            "budget": 2500,
+            "pass": null,
+            "earliest_floor_date": "2026-10-03"
+          },
+          {
+            "metric_id": "lcp_ms",
+            "device_class": "mobile",
+            "sampled_count": 0,
+            "status": "no_data",
+            "quantile": 0.75,
+            "quantile_value": null,
+            "budget": 2500,
+            "pass": null,
+            "earliest_floor_date": null
+          },
+          {
+            "metric_id": "inp_ms",
+            "device_class": "desktop",
+            "sampled_count": 0,
+            "status": "no_data",
+            "quantile": 0.75,
+            "quantile_value": null,
+            "budget": 200,
+            "pass": null,
+            "earliest_floor_date": null
+          },
+          {
+            "metric_id": "inp_ms",
+            "device_class": "mobile",
+            "sampled_count": 0,
+            "status": "no_data",
+            "quantile": 0.75,
+            "quantile_value": null,
+            "budget": 200,
+            "pass": null,
+            "earliest_floor_date": null
+          },
+          {
+            "metric_id": "cls_score",
+            "device_class": "desktop",
+            "sampled_count": 2,
+            "status": "insufficient_sample",
+            "quantile": 0.75,
+            "quantile_value": null,
+            "budget": 0.1,
+            "pass": null,
+            "earliest_floor_date": "2026-10-03"
+          },
+          {
+            "metric_id": "cls_score",
+            "device_class": "mobile",
+            "sampled_count": 0,
+            "status": "no_data",
+            "quantile": 0.75,
+            "quantile_value": null,
+            "budget": 0.1,
+            "pass": null,
+            "earliest_floor_date": null
+          }
+        ],
+        "home_cells": [
+          {
+            "metric_id": "lcp_ms",
+            "device_class": "desktop",
+            "sampled_count": 34,
+            "status": "available",
+            "quantile": 0.75,
+            "quantile_value": 600,
+            "budget": 2500,
+            "pass": true,
+            "earliest_floor_date": null
+          },
+          {
+            "metric_id": "lcp_ms",
+            "device_class": "mobile",
+            "sampled_count": 11,
+            "status": "insufficient_sample",
+            "quantile": 0.75,
+            "quantile_value": null,
+            "budget": 2500,
+            "pass": null,
+            "earliest_floor_date": "2026-10-08"
+          },
+          {
+            "metric_id": "inp_ms",
+            "device_class": "desktop",
+            "sampled_count": 11,
+            "status": "insufficient_sample",
+            "quantile": 0.75,
+            "quantile_value": null,
+            "budget": 200,
+            "pass": null,
+            "earliest_floor_date": "2026-10-05"
+          },
+          {
+            "metric_id": "inp_ms",
+            "device_class": "mobile",
+            "sampled_count": 3,
+            "status": "insufficient_sample",
+            "quantile": 0.75,
+            "quantile_value": null,
+            "budget": 200,
+            "pass": null,
+            "earliest_floor_date": "2026-09-30"
+          },
+          {
+            "metric_id": "cls_score",
+            "device_class": "desktop",
+            "sampled_count": 35,
+            "status": "available",
+            "quantile": 0.75,
+            "quantile_value": 0.015667289576903293,
+            "budget": 0.1,
+            "pass": true,
+            "earliest_floor_date": null
+          },
+          {
+            "metric_id": "cls_score",
+            "device_class": "mobile",
+            "sampled_count": 9,
+            "status": "insufficient_sample",
+            "quantile": 0.75,
+            "quantile_value": null,
+            "budget": 0.1,
+            "pass": null,
+            "earliest_floor_date": "2026-10-11"
+          }
+        ],
+        "partial_home_passes": [
+          {
+            "surface_id": "home",
+            "metric_id": "lcp_ms",
+            "device_class": "desktop",
+            "sampled_count": 34,
+            "quantile_value": 600,
+            "pass": true
+          },
+          {
+            "surface_id": "home",
+            "metric_id": "cls_score",
+            "device_class": "desktop",
+            "sampled_count": 35,
+            "quantile_value": 0.015667289576903293,
+            "pass": true
+          }
+        ],
+        "earliest_date_note": "near-you LCP/CLS project to roughly 2026-11-04 at the observed ~0.8 samples/day; INP has no positive rate on near-you so no floor date can be projected for that vital on that surface. If home is admitted as a geography-navigation route surface, mobile LCP/CLS and INP still need more samples (optimistic ~2026-10-08 to 2026-10-11) and INP recently stalled."
+      }
     },
     "route_budget": {
       "status": "not_taken",
-      "reason": "A7/A8 keeper review remains open: the full route baseline needs generated simplified layer artifacts; the reduced-copy observation is retained without turning it into a ceiling.",
+      "reason": "Simplified geography layer artifacts are present in the repository tree, but a retained full cold-load wire baseline that includes those layer bytes has not been captured. The reduced-copy mobile observation (wire_bytes_p95=484311) was taken without simplified layer artifacts and must not be promoted into a committed ceiling. Per-route readiness/wire sample ceilings in retained_samples stay bounded at <=5% over reviewed pre-merge p95 for the harness timings they describe; the performance-budgets fixture near-you.geography-navigation remains absent until a layer-inclusive baseline is retained.",
       "reduced_copy_mobile_observation": {
         "sample_count": 20,
         "wire_bytes_p95": 484311,
@@ -1779,9 +2088,10 @@
             "gzip_bytes": 30454
           }
         ],
-        "simplified_layer_artifact": "not_observed: generated layer files are absent from the reduced copy",
+        "simplified_layer_artifact": "not_included_in_this_observation: layers were absent from the reduced copy when measured; layers are present in the current tree but this observation was not re-run",
         "full_fidelity_geometry_artifact": "not_observed"
-      }
+      },
+      "simplified_layer_artifacts_in_tree": true
     },
     "retained_samples": [
       {
@@ -2183,14 +2493,14 @@
     {
       "letter": "A7",
       "result": "partial",
-      "artifact": "test/geography_navigation_release.test.mjs",
-      "assertion": "Named A7 assertion and retained manifest evidence."
+      "artifact": "docs/evidence/geography-navigation-release/field-vitals-observation.json",
+      "assertion": "Retained production field-vitals observation records per-vital sample counts and withholds pass/fail below the sample floor; route wire ceiling remains not_taken pending a layer-inclusive baseline."
     },
     {
       "letter": "A8",
-      "result": "partial",
+      "result": "accepted",
       "artifact": "test/geography_navigation_release.test.mjs",
-      "assertion": "Named A8 assertion and retained manifest evidence."
+      "assertion": "Named A8 assertion with retained unrelated-route captures recording measured geography-navigation runtime and layer-artifact request negatives."
     },
     {
       "letter": "A9",

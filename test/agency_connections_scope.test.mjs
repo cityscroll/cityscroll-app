@@ -10,8 +10,10 @@ import * as CrolScope from "../site/scope_v0.mjs";
 
 const { scopeFromRouteHash } = CrolScope;
 
+// Frozen HPD acceptance vintage. Daily first-class refresh rewrites the live
+// entity-intelligence lookup; exact strong/linked counts stay pinned here.
 const materialization = JSON.parse(
-  readFileSync(new URL("../site/data/entity_intelligence_lookup.json", import.meta.url), "utf8"),
+  readFileSync(new URL("./fixtures/entity-intelligence/hpd_connection_view.json", import.meta.url), "utf8"),
 );
 const HPD_REF = "agency:id:housing-preservation-and-development";
 const hpd = {

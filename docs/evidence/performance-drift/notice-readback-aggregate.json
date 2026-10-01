@@ -1,0 +1,236 @@
+{
+  "schema": "cityscroll.notice_readback_aggregate.v2",
+  "version": 2,
+  "public_alias": "c7a6b040d3706",
+  "title": "Notice post-delivery read-back aggregate",
+  "queried_at": "2026-09-30T15:03:30.809Z",
+  "production_revision": "d08cce155afb54b39ddf4df55db4baac09e7f6d2",
+  "sample_floor": 30,
+  "producer": {
+    "repository": "cityscroll-app",
+    "source": "tools/read_rum_drift.mjs",
+    "builder": "tools/build_notice_readback_aggregate.mjs",
+    "retained_path": "docs/evidence/performance-drift/notice-readback-aggregate.json",
+    "command": "node tools/build_notice_readback_aggregate.mjs",
+    "dataset": "crol_rum_observations_v1",
+    "notes": [
+      "Each measurement group is read on its own query through the shared RUM grammar.",
+      "Groups are never combined into one distribution.",
+      "The record subrequest cache outcome distribution is keyed to the first_byte window and is always recorded as read or unread."
+    ]
+  },
+  "required_groups": [
+    "cold_module_path",
+    "first_byte",
+    "synthetic"
+  ],
+  "measurement_groups": {
+    "cold_module_path": {
+      "measurement_group": "cold_module_path",
+      "population": "resident",
+      "traffic_class": "production",
+      "rum_measurement_group": "resident",
+      "sample_floor": 30,
+      "clears_sample_floor": true,
+      "delivery": {
+        "kind": "delivery_merge",
+        "at": "2026-09-06T19:15:53.000Z",
+        "merge_commit": "8a2fba61b4192481a8d6b7852f6094b79599dbca",
+        "pull_request": 1769,
+        "note": "Cold module path change that opened the readiness read-back."
+      },
+      "window": {
+        "requested_start": "2026-09-23T15:03:30.000Z",
+        "requested_end": "2026-09-30T15:03:30.000Z",
+        "status": "complete",
+        "complete": true,
+        "begins_at_or_after_delivery": true,
+        "post_dates_delivery": true
+      },
+      "queried_at": "2026-09-30T15:03:30.809Z",
+      "metrics": [
+        {
+          "metric_id": "component_ready_ms",
+          "surface_id": "notice",
+          "component_id": "notice-context",
+          "sample_floor": 30,
+          "sampled_count": 99,
+          "estimated_count": 99,
+          "sufficiency": "sufficient",
+          "p50_ms": 1283.4,
+          "p75_ms": 2302.4,
+          "p95_ms": 7139.2,
+          "p95_tail_support_estimate": 5,
+          "first_observation_at": "2026-09-23T17:30:14.000Z",
+          "latest_observation_at": "2026-09-30T10:29:05.000Z"
+        },
+        {
+          "metric_id": "content_ready_ms",
+          "surface_id": "notice",
+          "component_id": "none",
+          "sample_floor": 30,
+          "sampled_count": 99,
+          "estimated_count": 99,
+          "sufficiency": "sufficient",
+          "p50_ms": 1086,
+          "p75_ms": 1499.9,
+          "p95_ms": 4033.8,
+          "p95_tail_support_estimate": 5,
+          "first_observation_at": "2026-09-23T17:30:14.000Z",
+          "latest_observation_at": "2026-09-30T10:29:05.000Z"
+        }
+      ]
+    },
+    "first_byte": {
+      "measurement_group": "first_byte",
+      "population": "resident",
+      "traffic_class": "production",
+      "rum_measurement_group": "resident",
+      "sample_floor": 30,
+      "clears_sample_floor": true,
+      "delivery": {
+        "kind": "delivery_merge",
+        "at": "2026-09-06T20:18:09.000Z",
+        "merge_commit": "8a43f7e8009818295c7561e04032c0ea17f60892",
+        "pull_request": 1774,
+        "note": "Edge response change that opened the first-byte read-back."
+      },
+      "window": {
+        "requested_start": "2026-09-23T15:03:30.000Z",
+        "requested_end": "2026-09-30T15:03:30.000Z",
+        "status": "complete",
+        "complete": true,
+        "begins_at_or_after_delivery": true,
+        "post_dates_delivery": true
+      },
+      "queried_at": "2026-09-30T15:03:30.809Z",
+      "metrics": [
+        {
+          "metric_id": "ttfb_ms",
+          "surface_id": "notice",
+          "component_id": "none",
+          "sample_floor": 30,
+          "sampled_count": 118,
+          "estimated_count": 118,
+          "sufficiency": "sufficient",
+          "p50_ms": 22,
+          "p75_ms": 546.2,
+          "p95_ms": 3034.4,
+          "p95_tail_support_estimate": 6,
+          "first_observation_at": "2026-09-23T17:30:14.000Z",
+          "latest_observation_at": "2026-09-30T10:29:05.000Z"
+        },
+        {
+          "metric_id": "ttfb_ms",
+          "surface_id": "home",
+          "component_id": "none",
+          "role": "same_window_comparison",
+          "sample_floor": 30,
+          "sampled_count": 94,
+          "estimated_count": 94,
+          "sufficiency": "sufficient",
+          "p50_ms": 82,
+          "p75_ms": 110,
+          "p95_ms": 690.9,
+          "p95_tail_support_estimate": 5,
+          "first_observation_at": "2026-09-23T15:10:26.000Z",
+          "latest_observation_at": "2026-09-30T07:13:49.000Z"
+        }
+      ]
+    },
+    "synthetic": {
+      "measurement_group": "synthetic",
+      "population": "synthetic",
+      "traffic_class": "synthetic",
+      "rum_measurement_group": "synthetic",
+      "sample_floor": 30,
+      "clears_sample_floor": true,
+      "delivery": {
+        "kind": "first_probe_slot",
+        "at": "2026-09-08T08:07:00.000Z",
+        "merge_commit": null,
+        "pull_request": null,
+        "note": "First synthetic probe slot that retained an observation."
+      },
+      "window": {
+        "requested_start": "2026-09-23T15:03:30.000Z",
+        "requested_end": "2026-09-30T15:03:30.000Z",
+        "status": "complete",
+        "complete": true,
+        "begins_at_or_after_delivery": true,
+        "post_dates_delivery": true
+      },
+      "queried_at": "2026-09-30T15:03:30.809Z",
+      "metrics": [
+        {
+          "metric_id": "content_ready_ms",
+          "surface_id": "notice",
+          "component_id": "none",
+          "sample_floor": 30,
+          "sampled_count": 216,
+          "estimated_count": 216,
+          "sufficiency": "sufficient",
+          "p50_ms": 6104.1,
+          "p75_ms": 6517.7,
+          "p95_ms": 7422.1,
+          "p95_tail_support_estimate": 11,
+          "first_observation_at": "2026-09-23T20:07:58.000Z",
+          "latest_observation_at": "2026-09-30T14:08:58.000Z"
+        },
+        {
+          "metric_id": "component_ready_ms",
+          "surface_id": "notice",
+          "component_id": "notice-context",
+          "sample_floor": 30,
+          "sampled_count": 210,
+          "estimated_count": 210,
+          "sufficiency": "sufficient",
+          "p50_ms": 6699.7,
+          "p75_ms": 7100.5,
+          "p95_ms": 7949.5,
+          "p95_tail_support_estimate": 11,
+          "first_observation_at": "2026-09-23T20:07:58.000Z",
+          "latest_observation_at": "2026-09-30T14:08:58.000Z"
+        }
+      ]
+    }
+  },
+  "record_cache_outcome_distribution": {
+    "state": "unread",
+    "reason": "retained_windowed_distribution_unavailable",
+    "detail": "Notice responses carry the record subrequest cache outcome on Server-Timing (cs-record), but the RUM Analytics Engine observation set used for the sibling measurement groups retains no cache-outcome dimension, so no windowed distribution can be read. Live responses observed outcomes: hit.",
+    "window": {
+      "requested_start": "2026-09-23T15:03:30.000Z",
+      "requested_end": "2026-09-30T15:03:30.000Z",
+      "status": "complete",
+      "complete": true,
+      "keyed_to_measurement_group": "first_byte",
+      "begins_at_or_after_delivery": true
+    },
+    "delivery": {
+      "kind": "delivery_merge",
+      "at": "2026-09-06T20:18:09.000Z",
+      "merge_commit": "8a43f7e8009818295c7561e04032c0ea17f60892",
+      "pull_request": 1774,
+      "note": "Edge response change that opened the first-byte read-back."
+    },
+    "queried_at": "2026-09-30T15:03:30.809Z",
+    "source": {
+      "response_header": "Server-Timing",
+      "metric": "cs-record",
+      "closed_outcomes": [
+        "hit",
+        "miss",
+        "stale",
+        "dynamic",
+        "unknown"
+      ],
+      "retained_query_path": null,
+      "analytics_engine_dataset": "crol_rum_observations_v1",
+      "analytics_engine_configured": true,
+      "live_response_outcomes_observed": [
+        "hit"
+      ]
+    }
+  }
+}

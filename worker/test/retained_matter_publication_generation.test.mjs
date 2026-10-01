@@ -48,7 +48,7 @@ import { publishMatterGeneration, readPublishedMatterLookup } from "../src/lib/m
 import { buildSubscription, deriveSubscriberId, deriveWatchId } from "../src/lib/subscriptions.mjs";
 import { LEGISTAR_SOURCE_RECORD_DUAL_WRITE_FLAG } from "../src/lib/legistar_source_records.mjs";
 
-const snapshot = JSON.parse(readFileSync(new URL("../../site/data/meeting_outcomes_snapshot.json", import.meta.url), "utf8"));
+const snapshot = JSON.parse(readFileSync(new URL("./fixtures/matter-coverage-recovery/meeting_outcomes_snapshot.json", import.meta.url), "utf8"));
 const committedLookup = buildLegislativeMatterLookup(snapshot);
 const outboxSql = readFileSync(new URL("../migrations/0018_digest_outbox.sql", import.meta.url), "utf8");
 const sourceSql = readFileSync(new URL("../migrations/0008_source_records.sql", import.meta.url), "utf8");

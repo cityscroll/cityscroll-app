@@ -72,78 +72,83 @@ function run(args, env = {}) {
 // absent, or modified away from what the index records.
 function scaffold({ corpusPaths = ["site/data/one.json", "site/data/two.json"], materialise = null, modify = [], closureOverride = null } = {}) {
   const dir = mkdtempSync(join(tmpdir(), "cityscroll-functional-corpus-"));
-  const git = (...args) =>
-    execFileSync("git", args, { cwd: dir, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], env: isolatedEnv() });
-  git("init", "-q", "-b", "main");
-  // Fail loudly rather than quietly writing to whatever repository git picked.
-  // Without this the previous failure mode was silent: the scaffold "worked",
-  // and the damage only surfaced later as an unrelated test reading an index
-  // that had been replaced.
-  const resolved = git("rev-parse", "--absolute-git-dir").trim();
-  const expected = realpathSync(dir);
-  if (!realpathSync(resolved).startsWith(expected)) {
-    throw new Error(
-      `scaffold escaped its temporary repository: git resolved ${resolved}, expected a path under ${expected}`
-    );
-  }
-  git("config", "user.email", "test@example.invalid");
-  git("config", "user.name", "test");
-
-  for (const path of corpusPaths) {
-    mkdirSync(join(dir, dirname(path)), { recursive: true });
-    writeFileSync(join(dir, path), `${JSON.stringify({ open_as_of: "2026-08-15", path }, null, 2)}\n`);
-  }
-  mkdirSync(join(dir, "tools/card-profile"), { recursive: true });
-  const closure = closureOverride ?? {
-    schema: "cityscroll.card-profile.closure.v1",
-    config_sha256: "0".repeat(64),
-    functional_corpus: {
-      gate_class: "functional-site",
-      builder: "tools/build_primary_documents.mjs",
-      builder_role: "test double",
-      corpus_trees: ["site/data"],
-      vintage_anchor: { path: corpusPaths[0], keys: ["open_as_of"] },
-      measured_functional_tests: ["test/functional/23_mobile_viewport.py"],
-      coverage_note: "test double",
-      paths: corpusPaths
+  try {
+    const git = (...args) =>
+      execFileSync("git", args, { cwd: dir, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], env: isolatedEnv() });
+    git("init", "-q", "-b", "main");
+    // Fail loudly rather than quietly writing to whatever repository git picked.
+    // Without this the previous failure mode was silent: the scaffold "worked",
+    // and the damage only surfaced later as an unrelated test reading an index
+    // that had been replaced.
+    const resolved = git("rev-parse", "--absolute-git-dir").trim();
+    const expected = realpathSync(dir);
+    if (!realpathSync(resolved).startsWith(expected)) {
+      throw new Error(
+        `scaffold escaped its temporary repository: git resolved ${resolved}, expected a path under ${expected}`
+      );
     }
-  };
-  // The closure is a contract manifest plus line-oriented path inventories, so
-  // the scaffold writes it the same way the deriver does: the declaration in the
-  // manifest, the corpus paths in tools/card-profile/closure.d/. A repository
-  // that declares a corpus and holds no inventory is the "empty declaration"
-  // case, which this gate has to refuse rather than read as satisfied.
-  const contract = { ...closure };
-  if (contract.functional_corpus) {
-    const corpusPathList = contract.functional_corpus.paths ?? [];
-    contract.functional_corpus = { ...contract.functional_corpus };
-    delete contract.functional_corpus.paths;
-    mkdirSync(join(dir, "tools/card-profile/closure.d"), { recursive: true });
-    writeFileSync(
-      join(dir, "tools/card-profile/closure.d/functional-corpus-paths.txt"),
-      corpusPathList.length > 0 ? `${[...corpusPathList].sort().join("\n")}\n` : ""
-    );
-  }
-  writeFileSync(join(dir, "tools/card-profile/closure.v1.json"), `${JSON.stringify(contract, null, 2)}\n`);
-  git("add", "-A");
-  git("commit", "-qm", "scaffold");
-  // The production helper resolves the shared revision from origin/main. Give
-  // this synthetic repository the same ref so readiness receipts exercise the
-  // real provenance path instead of receiving a null revision.
-  git("update-ref", "refs/remotes/origin/main", "HEAD");
+    git("config", "user.email", "test@example.invalid");
+    git("config", "user.name", "test");
 
-  // Mark the paths this checkout does not hold exactly the way a sparse
-  // checkout does, so the tool sees the real condition rather than a simulation.
-  if (materialise) {
-    git("config", "core.sparseCheckout", "true");
-    const absent = corpusPaths.filter((path) => !materialise.includes(path));
-    for (const path of absent) {
-      git("update-index", "--skip-worktree", path);
-      rmSync(join(dir, path), { force: true });
+    for (const path of corpusPaths) {
+      mkdirSync(join(dir, dirname(path)), { recursive: true });
+      writeFileSync(join(dir, path), `${JSON.stringify({ open_as_of: "2026-08-15", path }, null, 2)}\n`);
     }
+    mkdirSync(join(dir, "tools/card-profile"), { recursive: true });
+    const closure = closureOverride ?? {
+      schema: "cityscroll.card-profile.closure.v1",
+      config_sha256: "0".repeat(64),
+      functional_corpus: {
+        gate_class: "functional-site",
+        builder: "tools/build_primary_documents.mjs",
+        builder_role: "test double",
+        corpus_trees: ["site/data"],
+        vintage_anchor: { path: corpusPaths[0], keys: ["open_as_of"] },
+        measured_functional_tests: ["test/functional/23_mobile_viewport.py"],
+        coverage_note: "test double",
+        paths: corpusPaths
+      }
+    };
+    // The closure is a contract manifest plus line-oriented path inventories, so
+    // the scaffold writes it the same way the deriver does: the declaration in the
+    // manifest, the corpus paths in tools/card-profile/closure.d/. A repository
+    // that declares a corpus and holds no inventory is the "empty declaration"
+    // case, which this gate has to refuse rather than read as satisfied.
+    const contract = { ...closure };
+    if (contract.functional_corpus) {
+      const corpusPathList = contract.functional_corpus.paths ?? [];
+      contract.functional_corpus = { ...contract.functional_corpus };
+      delete contract.functional_corpus.paths;
+      mkdirSync(join(dir, "tools/card-profile/closure.d"), { recursive: true });
+      writeFileSync(
+        join(dir, "tools/card-profile/closure.d/functional-corpus-paths.txt"),
+        corpusPathList.length > 0 ? `${[...corpusPathList].sort().join("\n")}\n` : ""
+      );
+    }
+    writeFileSync(join(dir, "tools/card-profile/closure.v1.json"), `${JSON.stringify(contract, null, 2)}\n`);
+    git("add", "-A");
+    git("commit", "-qm", "scaffold");
+    // The production helper resolves the shared revision from origin/main. Give
+    // this synthetic repository the same ref so readiness receipts exercise the
+    // real provenance path instead of receiving a null revision.
+    git("update-ref", "refs/remotes/origin/main", "HEAD");
+
+    // Mark the paths this checkout does not hold exactly the way a sparse
+    // checkout does, so the tool sees the real condition rather than a simulation.
+    if (materialise) {
+      git("config", "core.sparseCheckout", "true");
+      const absent = corpusPaths.filter((path) => !materialise.includes(path));
+      for (const path of absent) {
+        git("update-index", "--skip-worktree", path);
+        rmSync(join(dir, path), { force: true });
+      }
+    }
+    for (const path of modify) writeFileSync(join(dir, path), '{"changed": true}\n');
+    return dir;
+  } catch (error) {
+    rmSync(dir, { recursive: true, force: true });
+    throw error;
   }
-  for (const path of modify) writeFileSync(join(dir, path), '{"changed": true}\n');
-  return dir;
 }
 
 const scaffolds = [];

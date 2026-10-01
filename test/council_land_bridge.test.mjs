@@ -203,8 +203,10 @@ describe("measurement receipt", () => {
 });
 
 describe("committed Council land-bridge receipt", () => {
+  // Frozen measurement vintage for exact coverage pins. Daily refresh rewrites
+  // the live receipt when meeting outcomes and ZAP inputs move.
   const committedReceipt = JSON.parse(
-    readFileSync(new URL("../warehouse/receipts/proof/council_land_bridge_latest.json", import.meta.url)),
+    readFileSync(new URL("./fixtures/council-land-bridge/council_land_bridge_latest.json", import.meta.url)),
   );
 
   it("measures the full present-notice Council matter corpus and ships above the usefulness bar", () => {

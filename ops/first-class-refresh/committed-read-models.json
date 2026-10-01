@@ -394,6 +394,20 @@
       ]
     },
     {
+      "id": "land-project-map-points",
+      "command": [
+        "tools/build_land_project_map_points.mjs"
+      ],
+      "covers": [
+        "tools/build_land_project_map_points.mjs"
+      ],
+      "after": [
+        "derived-json-build-boundary",
+        "land-mapability"
+      ],
+      "note": "Re-derives the map-point receipt whenever land catalog / default ULURP inputs move. Shared browser site artifact runs this builder in --check mode, so a refresh that advances land_default without restamping the receipt fails its own pull request."
+    },
+    {
       "id": "land-filter-parity",
       "command": [
         "tools/land_filter_parity_receipt.mjs"
@@ -503,6 +517,20 @@
       "after": [
         "data-health-page"
       ]
+    },
+    {
+      "id": "assistant-setup-capture",
+      "command": [
+        "tools/capture_assistant_setup_evidence.py"
+      ],
+      "covers": [
+        "tools/capture_assistant_setup_evidence.py"
+      ],
+      "after": [
+        "capture-site"
+      ],
+      "runtime": "python3",
+      "note": "Restamp docs/evidence/assistant-setup/capture-manifest.json (and related digests) against the rebuilt site so capability_discovery A6 digest checks verify the refreshed bytes rather than a stale vintage."
     },
     {
       "id": "official-colleagues-capture",
@@ -652,6 +680,7 @@
     "tools/build_following_page.mjs",
     "tools/build_following_procurement_suggestions.mjs",
     "tools/build_land_mapability_census.mjs",
+    "tools/build_land_project_map_points.mjs",
     "tools/build_legislative_matter_documents.mjs",
     "tools/build_money_resident_snapshot.mjs",
     "tools/build_near_you_pages.mjs",
@@ -668,6 +697,7 @@
     "tools/build_source_health_observations.mjs",
     "tools/build_source_health_public_projection.mjs",
     "tools/build_source_vintage_observations.mjs",
+    "tools/capture_assistant_setup_evidence.py",
     "tools/capture_board_land_positions_evidence.py",
     "tools/capture_committee_shared_members_evidence.py",
     "tools/capture_official_colleagues.py",

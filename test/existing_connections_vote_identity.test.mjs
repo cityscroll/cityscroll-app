@@ -50,9 +50,11 @@ import {
 const read = (relative) =>
   JSON.parse(readFileSync(new URL(relative, import.meta.url), "utf8"));
 
-const matterLookup = read("../site/data/legislative_matter_lookup.json");
-const people = read("../site/data/people_domain_observations.json");
-const personVotes = read("../site/data/person_votes_lookup.json");
+// Frozen legislative-matter vintage for named multi-appearance vote cases
+// (Hamilton Avenue March/April). Daily refresh rewrites the live lookup.
+const matterLookup = read("./fixtures/vote-identity/legislative_matter_lookup.json");
+const people = read("./fixtures/vote-identity/people_domain_observations.json");
+const personVotes = read("./fixtures/vote-identity/person_votes_lookup.json");
 const voteTypes = read("../site/data/legistar_sources/vote_types.json");
 
 /** Publisher-shaped agenda items for one meeting. */

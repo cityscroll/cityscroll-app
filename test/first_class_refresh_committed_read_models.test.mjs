@@ -356,3 +356,17 @@ test("accuracy evidence follows the rebuilt census and is covered for publicatio
   assert.ok(registry.rebuild_sequence[accuracy].after.includes("cross-spine-census"));
   assert.ok(coveredByPublishedPaths("docs/evidence/ebcg-er-accuracy/receipt.json", publishedPaths(registry)));
 });
+
+test("refresh restamps land map-point receipts and assistant-setup digests after site rebuild", () => {
+  const registry = readRegistry(REPO_ROOT);
+  const mapPoints = registry.rebuild_sequence.find((step) => step.id === "land-project-map-points");
+  assert.ok(mapPoints, "land-project-map-points must restamp the receipt the Shared browser site artifact checks");
+  assert.deepEqual(mapPoints.command, ["tools/build_land_project_map_points.mjs"]);
+  assert.ok(mapPoints.after.includes("derived-json-build-boundary"));
+
+  const assistant = registry.rebuild_sequence.find((step) => step.id === "assistant-setup-capture");
+  assert.ok(assistant, "assistant-setup-capture must restamp digests capability_discovery verifies");
+  assert.deepEqual(assistant.command, ["tools/capture_assistant_setup_evidence.py"]);
+  assert.equal(assistant.runtime, "python3");
+  assert.ok(assistant.after.includes("capture-site"));
+});

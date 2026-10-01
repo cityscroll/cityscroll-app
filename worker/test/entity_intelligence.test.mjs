@@ -7,6 +7,8 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
+import { readFileSync } from "node:fs";
+
 import { handleEntityIntelligence } from "../src/entity_intelligence.mjs";
 import { lookupEntityIntelligence } from "../../entity_resolution/cross_domain/index.mjs";
 import { resetEntityIntelligenceReadModelCache } from "../src/lib/entity_intelligence_read_model.mjs";
@@ -14,6 +16,10 @@ import { entityIntelligenceD1 } from "./helpers/entity_intelligence_d1.mjs";
 
 const { env } = entityIntelligenceD1();
 resetEntityIntelligenceReadModelCache();
+
+const FROZEN_HPD_DOC = JSON.parse(
+  readFileSync(new URL("../../test/fixtures/entity-intelligence/hpd_connection_view.json", import.meta.url), "utf8"),
+);
 
 function req(path, headers = {}) {
   return new Request(`https://cityscroll.org${path}`, {
@@ -84,9 +90,13 @@ describe("GET /entity-intelligence", () => {
   });
 
   it("serves confidence-safe connection metadata and materialization coverage framing", async () => {
+    // Serve the frozen HPD acceptance vintage so exact linked/strong counts stay
+    // independent of the daily first-class refresh of the live lookup.
+    const { env: frozenEnv } = entityIntelligenceD1(FROZEN_HPD_DOC);
+    resetEntityIntelligenceReadModelCache();
     const res = await handleEntityIntelligence(
       req("/entity-intelligence?kind=agency&name=Housing%20Preservation%20and%20Development"),
-      env,
+      frozenEnv,
     );
     assert.equal(res.status, 200);
     const body = await res.json();
@@ -94,9 +104,9 @@ describe("GET /entity-intelligence", () => {
     assert.equal(body.root.ref, "agency:id:housing-preservation-and-development");
     assert.equal(body.metrics.domains_matched, 5);
     assert.equal(body.coverage.eligible, null);
-    // The linked total moves with the publisher vintage; the contract is that
-    // coverage stays unmeasured (no eligible denominator, so no rate) and that
-    // every connection carries a strong or tentative confidence, never weak.
+    // Exact linked count is pinned to the frozen HPD fixture above. Coverage
+    // stays unmeasured (no eligible denominator, so no rate) and every
+    // connection carries a strong or tentative confidence, never weak.
     assert.equal(body.coverage.linked, 21);
     assert.equal(body.coverage.rate, null);
     assert.match(body.coverage.vintage, /^\d{4}-\d{2}-\d{2}T/);
@@ -110,6 +120,7 @@ describe("GET /entity-intelligence", () => {
     assert.ok(connections.some((connection) => connection.entity_ref.startsWith("vendor:stem:")));
     assert.ok(connections.every((connection) => ["strong", "tentative"].includes(connection.confidence)));
     assert.ok(connections.every((connection) => connection.confidence !== "weak"));
+    resetEntityIntelligenceReadModelCache();
   });
 
   it("lists multi-domain entities", async () => {

@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.meeting_geography_backfill_manifest.v1",
-  "generation": "gen-cfcb6c2fbc90-2026-09-25",
-  "built_at": "2026-09-25T00:41:29.176Z",
+  "generation": "gen-cfcb6c2fbc90-2026-09-30",
+  "built_at": "2026-09-30T05:39:36.433Z",
   "source_generation_hash": "cfcb6c2fbc90e17beaefe2e6041ef8173ccbcd96d8444e35086642278f5477df",
   "shared_meeting_schema": "cityscroll.shared_meeting_read_model.v1",
   "shared_meeting_generated_at": "2026-09-09T06:52:08.255Z",
@@ -18,12 +18,12 @@
     "address_bearing_rows": 329,
     "distinct_address_strings": 137,
     "by_outcome": {
-      "physical_venue": 31,
-      "subject": 1,
-      "broad_jurisdiction": 281,
+      "physical_venue": 82,
+      "subject": 0,
+      "broad_jurisdiction": 234,
       "virtual": 63,
       "no_source_address": 203,
-      "unresolved_evidence": 213
+      "unresolved_evidence": 210
     }
   },
   "positive_record": {
@@ -31,10 +31,11 @@
     "expected_nta2020": "BK1403",
     "expected_role": "venue"
   },
-  "active_generation": "gen-cfcb6c2fbc90-2026-09-25",
+  "active_generation": "gen-cfcb6c2fbc90-2026-09-30",
   "evidence": {
     "summary": "docs/evidence/meeting-geography-backfill/summary.json",
     "full_outcomes": "site/data/meeting-geography-backfill/per-id-outcomes.json",
-    "note": "Full per-id outcomes restate publisher calendar UIDs already present in the shared meeting corpus; the summary carries the Midwood positive record."
+    "neighborhood_publication_receipt": "docs/evidence/meeting-geography-backfill/neighborhood-publication-receipt.json",
+    "note": "Full per-id outcomes restate publisher calendar UIDs already present in the shared meeting corpus; the summary and neighborhood receipt stay on the open web."
   }
 }

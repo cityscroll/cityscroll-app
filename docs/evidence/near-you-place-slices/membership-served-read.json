@@ -1,0 +1,265 @@
+{
+  "schema": "cityscroll.near_you_membership_served_read.v1",
+  "public_alias": "ce08b21f46de9",
+  "observed_at": "2026-10-01T03:51:23.652362Z",
+  "evidence_class": "deployed-production-read-back",
+  "origin": "https://cityscroll.org",
+  "api_origin": "https://api.cityscroll.org",
+  "required_ancestor": "a1a3fc0128ec2f11da77e26713fa3b61ceed4211",
+  "required_ancestor_contained": true,
+  "deployment": {
+    "pages": {
+      "manifest_url": "https://cityscroll.org/artifact-manifest.json",
+      "revision": "a1a3fc0128ec2f11da77e26713fa3b61ceed4211",
+      "generated_at": "2026-10-01T03:42:40.406Z",
+      "deployment_at": "2026-10-01T03:42:40.407Z",
+      "artifact_hash": "bdef0f4bd23d33eae8ccb6f232aec077931cdbf77850b7bc5b9438b5f3db547d",
+      "manifest_sha256": "8f4b7139530a2b024b180eea018cfa5036b207bb45e839180edfee141901b091",
+      "contains_required_ancestor": true
+    },
+    "worker": {
+      "health_url": "https://api.cityscroll.org/health",
+      "commit": "a1a3fc0128ec2f11da77e26713fa3b61ceed4211",
+      "environment": "production",
+      "contains_required_ancestor": true
+    }
+  },
+  "data_generation": {
+    "district_activity_built_at": "2026-10-01T03:41:43.655Z",
+    "pages_artifact_generated_at": "2026-10-01T03:42:40.406Z",
+    "bk1503_deferred_sha256": "f5208fd900c85b20fa81b305c995bda86da746eb2f57b169317691e0972c3175"
+  },
+  "capture": {
+    "tool": "tools/capture_near_you_place_slices_production_read.py",
+    "browser": "chromium 145.0.7632.6",
+    "viewports": [
+      {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "screenshot_binaries_committed": false
+  },
+  "journeys": [
+    {
+      "fixture": "BK1503",
+      "label": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+      "meeting_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2026-09-29:general-board-meeting-in-person",
+      "role": "venue",
+      "broader_district": "K15",
+      "route": "/near-you/deferred.json?geo=nta2020%3ABK1503&lens=meetings&surface=records",
+      "page_route": "/near-you/?geo=nta2020%3ABK1503&lens=meetings&surface=records",
+      "deferred_response_sha256": "a0710a032ee5763d67eff11414adbc1a49799b060afd5f965132c0fc6eb8f89e",
+      "deferred_sections": {
+        "primary": {
+          "state": "ready",
+          "count": 29
+        },
+        "citywide": {
+          "state": "ready",
+          "count": 20
+        },
+        "virtual": {
+          "state": "ready",
+          "count": 1
+        },
+        "unlocated": {
+          "state": "ready",
+          "count": 89
+        }
+      },
+      "exact_count": 29,
+      "broader_count": 1,
+      "viewports": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 900,
+          "http_status": 200,
+          "role": "venue",
+          "exact_meeting_present": true,
+          "held_in_present": true,
+          "venue_text_present": true,
+          "broader_district_labeled": true,
+          "exact_count": 29,
+          "broader_count": 1,
+          "keyboard_focusable_count": 126,
+          "no_horizontal_overflow": true,
+          "full_record": {
+            "opened": true,
+            "http_status": 200,
+            "url": "https://cityscroll.org/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2026-09-29%3Ageneral-board-meeting-in-person",
+            "identity_matches": true,
+            "title_present": true,
+            "location_present": true,
+            "page_html_sha256": "6cbcae4a5af43f3eec3f7f3636adf51d403539bb47310923152ce09c252be19a",
+            "navigation": "clicked-from-list"
+          },
+          "back_retains_exact_row": true,
+          "page_html_sha256": "bfb59cd52b4dde389d9c0398197be2f58f152ebbee2ddb2ff56facf5f8c18171",
+          "screenshot_sha256": "036873b6d974987cb0c6d7505b4e11bc8b0fe977c1276f1dbeba9b44fc7bbe4d",
+          "witness_sha256": "78690ec66cff9e289d22202c0fa53c639a7acd58150f8a22207c5ef3f1cfd62b",
+          "result": "pass"
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "http_status": 200,
+          "role": "venue",
+          "exact_meeting_present": true,
+          "held_in_present": true,
+          "venue_text_present": true,
+          "broader_district_labeled": true,
+          "exact_count": 29,
+          "broader_count": 1,
+          "keyboard_focusable_count": 126,
+          "no_horizontal_overflow": true,
+          "full_record": {
+            "opened": true,
+            "http_status": 200,
+            "url": "https://cityscroll.org/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2026-09-29%3Ageneral-board-meeting-in-person",
+            "identity_matches": true,
+            "title_present": true,
+            "location_present": true,
+            "page_html_sha256": "6cbcae4a5af43f3eec3f7f3636adf51d403539bb47310923152ce09c252be19a",
+            "navigation": "clicked-from-list"
+          },
+          "back_retains_exact_row": true,
+          "page_html_sha256": "76c889acf3edb52e6a1730615441f3c532951993d897d499064556a2e9b79674",
+          "screenshot_sha256": "03e4ec347d8b6a812267560204870cac66984b9550f3bf41ee4466a9229783b8",
+          "witness_sha256": "78690ec66cff9e289d22202c0fa53c639a7acd58150f8a22207c5ef3f1cfd62b",
+          "result": "pass"
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "fixture": "QN0602",
+      "label": "Forest Hills",
+      "meeting_id": "meeting:community_board:0pue8uab456hejvloi8sikfpke@google.com::2026-09-08",
+      "role": "venue",
+      "broader_district": "Q06",
+      "route": "/near-you/deferred.json?geo=nta2020%3AQN0602&lens=meetings&surface=records",
+      "page_route": "/near-you/?geo=nta2020%3AQN0602&lens=meetings&surface=records",
+      "deferred_response_sha256": "917484f41bb73e117042d9614df14a39c927cede7a1c2ce54c8fac43aaf7a5ba",
+      "deferred_sections": {
+        "primary": {
+          "state": "ready",
+          "count": 1
+        },
+        "citywide": {
+          "state": "ready",
+          "count": 20
+        },
+        "virtual": {
+          "state": "ready",
+          "count": 1
+        },
+        "unlocated": {
+          "state": "ready",
+          "count": 89
+        }
+      },
+      "exact_count": 1,
+      "broader_count": 3,
+      "viewports": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 900,
+          "http_status": 200,
+          "role": "venue",
+          "exact_meeting_present": true,
+          "held_in_present": true,
+          "venue_text_present": true,
+          "broader_district_labeled": true,
+          "exact_count": 1,
+          "broader_count": 3,
+          "keyboard_focusable_count": 49,
+          "no_horizontal_overflow": true,
+          "full_record": {
+            "opened": true,
+            "http_status": 200,
+            "url": "https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0pue8uab456hejvloi8sikfpke%40google.com%3A%3A2026-09-08",
+            "identity_matches": true,
+            "title_present": true,
+            "location_present": true,
+            "page_html_sha256": "0afd1bb79ab088227f1bb66ba7e40e6d3dc547a31c4799fae0ef3ba1f1841fe6",
+            "navigation": "clicked-from-list"
+          },
+          "back_retains_exact_row": true,
+          "page_html_sha256": "61c0a0c3ad86810dfed85556f869f5d227609b7ac03cda81b0c705c7d0d93b3b",
+          "screenshot_sha256": "5fb10c44891a123ca4c5920a038936ac98304a2b3cd7e905c4b341d0b4e83291",
+          "witness_sha256": "7fb4e7d0bd82a7599154b4c31da929cc259f80eade4583dee3583fa4cc49ab21",
+          "result": "pass"
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "http_status": 200,
+          "role": "venue",
+          "exact_meeting_present": true,
+          "held_in_present": true,
+          "venue_text_present": true,
+          "broader_district_labeled": true,
+          "exact_count": 1,
+          "broader_count": 3,
+          "keyboard_focusable_count": 50,
+          "no_horizontal_overflow": true,
+          "full_record": {
+            "opened": true,
+            "http_status": 200,
+            "url": "https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0pue8uab456hejvloi8sikfpke%40google.com%3A%3A2026-09-08",
+            "identity_matches": true,
+            "title_present": true,
+            "location_present": true,
+            "page_html_sha256": "0afd1bb79ab088227f1bb66ba7e40e6d3dc547a31c4799fae0ef3ba1f1841fe6",
+            "navigation": "clicked-from-list"
+          },
+          "back_retains_exact_row": true,
+          "page_html_sha256": "40a525e41261b184d55e80eac632f45bdad4adaa09bf8cd50d2b75abfce3770f",
+          "screenshot_sha256": "a3530a4a3b6a3b765438ff5eb970d6a3c84099adaf2d5ed7b88e53f2bdbea65f",
+          "witness_sha256": "86ca6ec794c58540af0a64fa837d524fd0241d6090a44c9e2cc719bd55f744f6",
+          "result": "pass"
+        }
+      ],
+      "result": "pass"
+    }
+  ],
+  "boundaries": {
+    "board_district_only": {
+      "meeting_id": "20260723030",
+      "fixture": "BK1503",
+      "observed_in_exact": false,
+      "observed_in_broader": true,
+      "result": "pass"
+    },
+    "virtual_or_unlocated": {
+      "meeting_id": "meeting:city_record:20260826006",
+      "fixture": "BK1503",
+      "observed_in_exact": false,
+      "result": "pass"
+    },
+    "unsupported_all_nyc_recovery": {
+      "fixture": "BK0101",
+      "recovery": "unsupported",
+      "all_nyc_present": true,
+      "deferred_response_sha256": "8eb7b13d00afc2ff0072e45c0ad67c4d5444e03c50e11cff57edba4d0b3c96b3",
+      "result": "pass"
+    }
+  },
+  "summary": {
+    "result": "pass",
+    "journeys_observed": 2,
+    "viewport_observations": 4,
+    "boundary_controls": 3
+  }
+}

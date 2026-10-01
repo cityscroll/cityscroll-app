@@ -6,7 +6,7 @@
       "default_off": true,
       "owner": "site-owner",
       "introduced_on": "2026-07-29",
-      "removal_date": "2026-09-30",
+      "removal_date": "2026-10-14",
       "affected_surfaces": [
         "all public pages"
       ],

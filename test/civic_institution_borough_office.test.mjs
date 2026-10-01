@@ -1,3 +1,8 @@
+/**
+ * Brooklyn borough-office civic window pins use main-vintage constellation and
+ * meetings_domain fixtures: scheduled refresh drops the office from lookup and
+ * rolls specimen notices out of the domain window.
+ */
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -220,7 +225,7 @@ test("CB-15 page shows appointment gap and source registry URLs without re-keyin
 });
 
 test("office routes, person-leader key, meeting notices, and board body_id stay on existing contracts", () => {
-  const lookup = JSON.parse(readFileSync(join(ROOT, "site/data/agency_constellation_lookup.json"), "utf8"));
+  const lookup = JSON.parse(readFileSync(new URL("./fixtures/civic_institution_borough_office/agency_constellation_lookup.json", import.meta.url), "utf8"));
   const office = lookup.by_id[BROOKLYN_OFFICE_CANONICAL_ID];
   assert.equal(office.subject_ref, BROOKLYN_OFFICE_AGENCY_REF);
   assert.equal(office.path, `/agencies/${BROOKLYN_OFFICE_CANONICAL_ID}/`);
@@ -228,7 +233,7 @@ test("office routes, person-leader key, meeting notices, and board body_id stay 
   assert.equal(AGENCY_CONSTELLATION_CATEGORIES.find((row) => row.id === "meetings").relation, "hosts_meeting");
   assert.equal(PERSON_LEADER_PRIMARY_KEY_PATTERN, "person-leader:{agency_id}:{person_id|name}");
   assert.equal(personLeaderKey(BROOKLYN_OFFICE_CANONICAL_ID, BROOKLYN_OFFICEHOLDER_NAME), FIXTURES.person_leader_id);
-  const meetings = JSON.parse(readFileSync(join(ROOT, "site/data/meetings_domain_observations.json"), "utf8"));
+  const meetings = JSON.parse(readFileSync(new URL("./fixtures/civic_institution_borough_office/meetings_domain_observations.json", import.meta.url), "utf8"));
   const list = Array.isArray(meetings.rows) ? meetings.rows : [];
   // Same rolling window: check every registered notice the snapshot still
   // carries, and that it carries at least one, rather than requiring all of them.
@@ -240,7 +245,7 @@ test("office routes, person-leader key, meeting notices, and board body_id stay 
     assert.equal(row.meeting_id, `meeting:city_record:${id}`);
     assert.equal(row.agency_name, "Borough President - Brooklyn");
   }
-  const boards = JSON.parse(readFileSync(join(ROOT, "site/data/community_board_constellation_lookup.json"), "utf8"));
+  const boards = JSON.parse(readFileSync(new URL("./fixtures/civic_institution_borough_office/community_board_constellation_lookup.json", import.meta.url), "utf8"));
   assert.equal(boards.by_id[BROOKLYN_CB15_BODY_ID].body_id, BROOKLYN_CB15_BODY_ID);
   assert.equal(boards.by_id[BROOKLYN_CB15_BODY_ID].path, FIXTURES.board_path);
   const scoped = boroughOfficeRolesForInstitution("sanitation", sources());

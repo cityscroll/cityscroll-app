@@ -8,10 +8,19 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
 const read = (path) => readFileSync(join(ROOT, path), "utf8");
+// Only strip repository-redirecting bindings (same list as scrub-hook-exported-git-env.sh);
+// keep GIT_CONFIG_* so intentional system-config overrides still reach nested git.
+const REPO_REDIRECTING_GIT_VARS = [
+  "GIT_DIR",
+  "GIT_WORK_TREE",
+  "GIT_INDEX_FILE",
+  "GIT_OBJECT_DIRECTORY",
+  "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+  "GIT_PREFIX",
+  "GIT_COMMON_DIR",
+];
 const ISOLATED_GIT_ENV = { ...process.env };
-for (const name of Object.keys(ISOLATED_GIT_ENV)) {
-  if (name.startsWith("GIT_")) delete ISOLATED_GIT_ENV[name];
-}
+for (const name of REPO_REDIRECTING_GIT_VARS) delete ISOLATED_GIT_ENV[name];
 
 test("shared browser artifact is exact-input cached and every consumer verifies it", () => {
   const workflow = read(".github/workflows/ci.yml");

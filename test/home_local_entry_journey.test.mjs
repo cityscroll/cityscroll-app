@@ -268,7 +268,7 @@ test("A1 [outcome] typed Midwood address and Kensington neighborhood from home r
   const midwoodNearYou = await nearYouForHref(midwoodHref);
   const midwoodRecord = (midwoodNearYou.view.results?.records || []).find((row) => row.id === SEPT23_ID);
   assert.ok(midwoodRecord, "September 23 meeting must appear for Midwood");
-  assert.equal(midwoodRecord.venue_address, "810 East 16th Street, Brooklyn, NY, 11230");
+  assert.equal(midwoodRecord.venue_address, "810 East 16th Street, Brooklyn, NY 11230");
   assert.match(midwoodNearYou.html, /Held in Midwood/);
   assert.match(midwoodNearYou.html, /810 East 16th Street/);
 

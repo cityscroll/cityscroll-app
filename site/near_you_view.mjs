@@ -755,17 +755,30 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     const projectHref = nearYouLandRecordHref(record?.id || record?.project_id, { scope });
     return projectHref ? siteHref(projectHref) : migratedSiteHref(record?.route);
   };
+  const withPlaceScopedBasis = (record, geographyEvidence) => {
+    // Dual venue + subject memberships keep one preferred corpus basis on the
+    // stored record. When a selected place admits the row through a different
+    // membership, surface that membership's basis on the linked result card.
+    if (!geographyEvidence?.basis) return {};
+    if (geographyEvidence.basis === record?.basis) return {};
+    return {
+      basis: geographyEvidence.basis,
+      basis_method: geographyEvidence.method || record?.basis_method || null,
+    };
+  };
   const linkedRecord = (record, { explain = true } = {}) => {
     const whyHere = explain
       ? selectNearYouExplanationPath(record.why_here_candidates, scope)
       : null;
+    const geography_evidence = selectNearYouGeographyEvidence(record, scope);
     return {
       ...record,
       route: lens === "land" ? landRecordRoute(record) : migratedSiteHref(record.route),
       why_here: whyHere
         ? { ...whyHere, notice_href: siteHref(whyHere.notice_href) }
         : null,
-      geography_evidence: selectNearYouGeographyEvidence(record, scope),
+      geography_evidence,
+      ...withPlaceScopedBasis(record, geography_evidence),
       // Every record reaching the results list already passed the recordMatches role gate
       // above, so this is the predicate that caused the match, not a separately-derived guess.
       matched_place_role: requestedPlaceRole,
@@ -781,11 +794,13 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     ));
     return ids.map((id) => activityRoot.records[lensName][id]).filter(Boolean).sort(recordSort).map((record) => {
       const whyHere = selectNearYouExplanationPath(record.why_here_candidates, lensScope);
+      const geography_evidence = selectNearYouGeographyEvidence(record, lensScope);
       return {
         ...record,
         route: lensName === "land" ? landRecordRoute(record) : migratedSiteHref(record.route),
         why_here: whyHere ? { ...whyHere, notice_href: siteHref(whyHere.notice_href) } : null,
-        geography_evidence: selectNearYouGeographyEvidence(record, lensScope),
+        geography_evidence,
+        ...withPlaceScopedBasis(record, geography_evidence),
       };
     });
   };

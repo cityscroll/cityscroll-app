@@ -33,6 +33,7 @@ is written to the repository and no screenshots are taken.
 
 from __future__ import annotations
 
+import gzip
 import json
 import os
 from pathlib import Path
@@ -220,9 +221,17 @@ class Journey:
         # The clock is pinned in the server that renders record timing; the
         # browser keeps its real clock, which navigation timing depends on.
         self.page: Page = self.context.new_page()
-        self.page.on("request", lambda request: self.sent.append(
-            f"{request.url} {request.post_data or ''}"
-        ))
+        # request.post_data UTF-8-decodes the body; a gzip/binary POST raises
+        # UnicodeDecodeError. Decode so journey.sent still feeds the privacy
+        # leak scan (assert_no_leak) instead of dropping the payload.
+        def _log_request(request) -> None:
+            try:
+                body = request.post_data or ""
+            except UnicodeDecodeError:
+                body = decode_request_post_body(request.post_data_buffer)
+            self.sent.append(f"{request.url} {body}")
+
+        self.page.on("request", _log_request)
 
     def close(self) -> None:
         self.context.close()
@@ -281,6 +290,27 @@ class Journey:
         )
 
 
+GZIP_MAGIC = b"\x1f\x8b"
+
+
+def decode_request_post_body(raw: bytes | bytearray | memoryview | None) -> str:
+    """Text for privacy leak scanning when request.post_data cannot UTF-8-decode.
+
+    Gzip bodies (magic 1f 8b) are decompressed then decoded as UTF-8 with
+    replacement. Any other undecodable body is logged via latin-1 so every
+    byte remains visible to leaked() — never a placeholder that would hide a
+    beacon payload from assert_no_leak.
+    """
+    if raw is None:
+        return ""
+    data = bytes(raw)
+    if not data:
+        return ""
+    if data.startswith(GZIP_MAGIC):
+        return gzip.decompress(data).decode("utf-8", errors="replace")
+    return data.decode("latin-1")
+
+
 def leaked(text: str, needles: tuple[str, ...]) -> list[str]:
     return [needle for needle in needles if needle.lower() in text.lower()]
 
@@ -305,6 +335,11 @@ def assert_leak_checker_can_fail() -> None:
     assert leaked("/near-you/?lat=40.7644&lon=-73.9235", COORDINATE_NEEDLES), "coordinate leak checker"
     assert leaked("{'q': '810 East 16th Street'}", ADDRESS_NEEDLES), "address leak checker"
     assert not leaked("/near-you/?geo=nta2020%3AQN0103&surface=records", COORDINATE_NEEDLES)
+    # Compressed analytics/beacon POSTs must still be visible to leaked().
+    gzip_beacon = gzip.compress(b'{"lat":40.7644,"lon":-73.9235,"event":"geo"}')
+    decoded = decode_request_post_body(gzip_beacon)
+    assert leaked(decoded, COORDINATE_NEEDLES), "gzip beacon leak checker"
+    assert decoded.startswith("{"), "gzip beacon should decode to JSON text"
 
 
 def assert_recovery(state: dict, *, label: str, status: str, actions: list[str], touch: bool) -> None:

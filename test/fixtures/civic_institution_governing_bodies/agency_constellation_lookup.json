@@ -1,0 +1,1236 @@
+{
+  "generated_at": "12783|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-05T13:44:00.909Z|2026-09-09T06:54:36.054Z|2026-09-09T11:58:19.933Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-09-05T13:44:00.909Z|2026-09-09|2026-09-09|2026-09-09T06:33:01.880Z|2026-09-09T06:33:01.880Z|2026-09-09T06:52:16.670Z|2026-09-09T11:58:02.083Z|2026-09-09T11:58:19.933Z",
+  "by_id": {
+    "housing-authority": {
+      "subject_ref": "agency:id:housing-authority",
+      "display_name": "New York City Housing Authority",
+      "path": "/agencies/housing-authority/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:housing-authority",
+        "status": "matched",
+        "source_observation_count": 11
+      },
+      "matched_categories": 4,
+      "categories": {
+        "contracts": {
+          "status": "matched",
+          "count": 8,
+          "method": "checkbook_nycha_contracts_adapter_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 1,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        "meetings": {
+          "status": "matched",
+          "count": 2,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "rules": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "obligations": {
+          "status": "empty",
+          "count": 0,
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "staffing": {
+          "status": "matched",
+          "count": 37,
+          "method": "publisher_certification_record_v1"
+        }
+      },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
+      "edge_summary": [
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "housing-authority",
+          "edge_type": "published_by_agency",
+          "relation_label": "published by this agency",
+          "label": "Contracts: published by this agency",
+          "target_kind": "contract",
+          "target_id": null,
+          "target_name": "Contracts",
+          "count": 8,
+          "state": "matched",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open",
+          "scope": {
+            "facet": null,
+            "universe": "open",
+            "mode": "open",
+            "entity_ref": "agency:id:housing-authority"
+          },
+          "as_of": "2026-09-09T06:33:01.880Z",
+          "source": {
+            "kind": "agency",
+            "id": "housing-authority",
+            "name": "New York City Housing Authority",
+            "canonical_href": "/agencies/housing-authority/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-09-09T06:33:01.880Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "8",
+              "materialized": "8",
+              "dated": "8",
+              "undated": "0",
+              "by_state": {
+                "matched": "8"
+              },
+              "by_relation": {
+                "published_by_agency": "8"
+              }
+            },
+            "spans": {
+              "valid": {
+                "start": "2025-01-14",
+                "end": "2026-08-28"
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": "591",
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "8"
+              },
+              "by_stage": {
+                "unknown": "8"
+              },
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-09-09",
+              "snapshot_day": "2026-09-09",
+              "latest_day": "2026-08-28",
+              "latest_source": "published_record",
+              "age_days": "12",
+              "max_age_days": null,
+              "status": "known"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "housing-authority",
+          "edge_type": "top_vendor_by_award_12mo",
+          "relation_label": "top vendors by award value",
+          "label": "Top vendors by award $ (last 12 mo): top vendors by award value",
+          "target_kind": "vendor",
+          "target_id": null,
+          "target_name": "Top vendors by award $ (last 12 mo)",
+          "count": 1,
+          "state": "matched",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:housing-authority"
+          },
+          "as_of": "2026-09-05",
+          "source": {
+            "kind": "agency",
+            "id": "housing-authority",
+            "name": "New York City Housing Authority",
+            "canonical_href": "/agencies/housing-authority/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-09-05",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "1",
+              "materialized": "1",
+              "dated": "0",
+              "undated": "1",
+              "by_state": {
+                "matched": "1"
+              },
+              "by_relation": {
+                "top_vendor_by_award_12mo": "1"
+              }
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "1"
+              },
+              "by_stage": {
+                "unknown": "1"
+              },
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-09-05",
+              "snapshot_day": "2026-09-05",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "housing-authority",
+          "edge_type": "hosts_meeting",
+          "relation_label": "related meetings and hearings",
+          "label": "Meetings and hearings: related meetings and hearings",
+          "target_kind": "meeting",
+          "target_id": null,
+          "target_name": "Meetings and hearings",
+          "count": 2,
+          "state": "matched",
+          "href": "/browse/meetings/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22hosts_meeting%22%7D&as_of=2026-09-09",
+          "canonical_href": "/browse/meetings/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22hosts_meeting%22%7D&as_of=2026-09-09",
+          "scope": {
+            "facet": null,
+            "universe": "linked",
+            "mode": null,
+            "entity_ref": "agency:id:housing-authority"
+          },
+          "as_of": "2026-09-09",
+          "source": {
+            "kind": "agency",
+            "id": "housing-authority",
+            "name": "New York City Housing Authority",
+            "canonical_href": "/agencies/housing-authority/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-09-09",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "2",
+              "materialized": "2",
+              "dated": "2",
+              "undated": "0",
+              "by_state": {
+                "matched": "2"
+              },
+              "by_relation": {
+                "hosts_meeting": "2"
+              }
+            },
+            "spans": {
+              "valid": {
+                "start": "2026-07-15",
+                "end": "2026-07-29"
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": "14",
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "2"
+              },
+              "by_stage": {
+                "unknown": "2"
+              },
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-09-09",
+              "snapshot_day": "2026-09-09",
+              "latest_day": "2026-07-29",
+              "latest_source": "published_record",
+              "age_days": "42",
+              "max_age_days": null,
+              "status": "known"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "housing-authority",
+          "edge_type": "issued_rule",
+          "relation_label": "issued rule",
+          "label": "Rules: issued rule",
+          "target_kind": "rule",
+          "target_id": null,
+          "target_name": "Rules",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:housing-authority"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "housing-authority",
+            "name": "New York City Housing Authority",
+            "canonical_href": "/agencies/housing-authority/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "housing-authority",
+          "edge_type": "statute_duty",
+          "relation_label": "statutory mandates",
+          "label": "Mandates: statutory mandates",
+          "target_kind": "mandate",
+          "target_id": null,
+          "target_name": "Mandates",
+          "count": 0,
+          "state": "empty",
+          "href": "/agencies/housing-authority/#mandates-conformance",
+          "canonical_href": "/agencies/housing-authority/#mandates-conformance",
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:housing-authority"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "housing-authority",
+            "name": "New York City Housing Authority",
+            "canonical_href": "/agencies/housing-authority/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "housing-authority",
+          "edge_type": "certified_to_agency",
+          "relation_label": "certified to the agency",
+          "label": "Staffing exams: certified to the agency",
+          "target_kind": "exam",
+          "target_id": null,
+          "target_name": "Staffing exams",
+          "count": 37,
+          "state": "matched",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:housing-authority"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "housing-authority",
+            "name": "New York City Housing Authority",
+            "canonical_href": "/agencies/housing-authority/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "37",
+              "materialized": "8",
+              "dated": "8",
+              "undated": "0",
+              "by_state": {
+                "matched": "8"
+              },
+              "by_relation": {
+                "certified_to_agency": "8"
+              }
+            },
+            "spans": {
+              "valid": {
+                "start": "2026-03-27",
+                "end": "2026-08-04"
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": "130",
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "8"
+              },
+              "by_stage": {
+                "unknown": "8"
+              },
+              "complete": "false"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": "2026-08-04",
+              "latest_source": "published_record",
+              "age_days": null,
+              "max_age_days": null,
+              "status": "known"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        }
+      ],
+      "top_vendors": [
+        {
+          "id": "vendor:stem:VITAL%20PLUMBING",
+          "subject_ref": "vendor:stem:VITAL%20PLUMBING",
+          "label": "VITAL PLUMBING INC",
+          "href": "/vendors/VITAL%20PLUMBING/",
+          "award_count": 1,
+          "award_total": 4348681.74,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
+    },
+    "employees-retirement-system": {
+      "subject_ref": "agency:id:employees-retirement-system",
+      "display_name": "Employees' Retirement System",
+      "path": "/agencies/employees-retirement-system/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:employees-retirement-system",
+        "status": "unknown",
+        "source_observation_count": 0
+      },
+      "matched_categories": 2,
+      "categories": {
+        "contracts": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        "meetings": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "rules": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "obligations": {
+          "status": "empty",
+          "count": 0,
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "staffing": {
+          "status": "matched",
+          "count": 6,
+          "method": "publisher_certification_record_v1"
+        }
+      },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
+      "edge_summary": [
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "employees-retirement-system",
+          "edge_type": "published_by_agency",
+          "relation_label": "published by this agency",
+          "label": "Contracts: published by this agency",
+          "target_kind": "contract",
+          "target_id": null,
+          "target_name": "Contracts",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": "open",
+            "mode": "open",
+            "entity_ref": "agency:id:employees-retirement-system"
+          },
+          "as_of": "2026-09-09",
+          "source": {
+            "kind": "agency",
+            "id": "employees-retirement-system",
+            "name": "Employees' Retirement System",
+            "canonical_href": "/agencies/employees-retirement-system/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-09-09",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-09-09",
+              "snapshot_day": "2026-09-09",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "employees-retirement-system",
+          "edge_type": "top_vendor_by_award_12mo",
+          "relation_label": "top vendors by award value",
+          "label": "Top vendors by award $ (last 12 mo): top vendors by award value",
+          "target_kind": "vendor",
+          "target_id": null,
+          "target_name": "Top vendors by award $ (last 12 mo)",
+          "count": 8,
+          "state": "matched",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemployees-retirement-system%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemployees-retirement-system%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:employees-retirement-system"
+          },
+          "as_of": "2026-09-05",
+          "source": {
+            "kind": "agency",
+            "id": "employees-retirement-system",
+            "name": "Employees' Retirement System",
+            "canonical_href": "/agencies/employees-retirement-system/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-09-05",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "8",
+              "materialized": "8",
+              "dated": "0",
+              "undated": "8",
+              "by_state": {
+                "matched": "8"
+              },
+              "by_relation": {
+                "top_vendor_by_award_12mo": "8"
+              }
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "8"
+              },
+              "by_stage": {
+                "unknown": "8"
+              },
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-09-05",
+              "snapshot_day": "2026-09-05",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "employees-retirement-system",
+          "edge_type": "hosts_meeting",
+          "relation_label": "related meetings and hearings",
+          "label": "Meetings and hearings: related meetings and hearings",
+          "target_kind": "meeting",
+          "target_id": null,
+          "target_name": "Meetings and hearings",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": "linked",
+            "mode": null,
+            "entity_ref": "agency:id:employees-retirement-system"
+          },
+          "as_of": "2026-09-09",
+          "source": {
+            "kind": "agency",
+            "id": "employees-retirement-system",
+            "name": "Employees' Retirement System",
+            "canonical_href": "/agencies/employees-retirement-system/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-09-09",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-09-09",
+              "snapshot_day": "2026-09-09",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "employees-retirement-system",
+          "edge_type": "issued_rule",
+          "relation_label": "issued rule",
+          "label": "Rules: issued rule",
+          "target_kind": "rule",
+          "target_id": null,
+          "target_name": "Rules",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:employees-retirement-system"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "employees-retirement-system",
+            "name": "Employees' Retirement System",
+            "canonical_href": "/agencies/employees-retirement-system/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "employees-retirement-system",
+          "edge_type": "statute_duty",
+          "relation_label": "statutory mandates",
+          "label": "Mandates: statutory mandates",
+          "target_kind": "mandate",
+          "target_id": null,
+          "target_name": "Mandates",
+          "count": 0,
+          "state": "empty",
+          "href": "/agencies/employees-retirement-system/#mandates-conformance",
+          "canonical_href": "/agencies/employees-retirement-system/#mandates-conformance",
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:employees-retirement-system"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "employees-retirement-system",
+            "name": "Employees' Retirement System",
+            "canonical_href": "/agencies/employees-retirement-system/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "employees-retirement-system",
+          "edge_type": "certified_to_agency",
+          "relation_label": "certified to the agency",
+          "label": "Staffing exams: certified to the agency",
+          "target_kind": "exam",
+          "target_id": null,
+          "target_name": "Staffing exams",
+          "count": 6,
+          "state": "matched",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemployees-retirement-system%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemployees-retirement-system%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:employees-retirement-system"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "employees-retirement-system",
+            "name": "Employees' Retirement System",
+            "canonical_href": "/agencies/employees-retirement-system/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "6",
+              "materialized": "6",
+              "dated": "6",
+              "undated": "0",
+              "by_state": {
+                "matched": "6"
+              },
+              "by_relation": {
+                "certified_to_agency": "6"
+              }
+            },
+            "spans": {
+              "valid": {
+                "start": "2017-10-30",
+                "end": "2023-02-27"
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": "1946",
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "6"
+              },
+              "by_stage": {
+                "unknown": "6"
+              },
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": "2023-02-27",
+              "latest_source": "published_record",
+              "age_days": null,
+              "max_age_days": null,
+              "status": "known"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        }
+      ],
+      "top_vendors": [
+        {
+          "id": "vendor:stem:BLUE%20HILL%20DATA%20SERVICES",
+          "subject_ref": "vendor:stem:BLUE%20HILL%20DATA%20SERVICES",
+          "label": "Blue Hill Data Services",
+          "href": "/vendors/BLUE%20HILL%20DATA%20SERVICES/",
+          "award_count": 1,
+          "award_total": 3289608,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:LEXISNEXIS%20RISK%20SOLUTIONS",
+          "subject_ref": "vendor:stem:LEXISNEXIS%20RISK%20SOLUTIONS",
+          "label": "LexisNexis Risk Solutions Inc",
+          "href": "/vendors/LEXISNEXIS%20RISK%20SOLUTIONS/",
+          "award_count": 1,
+          "award_total": 3272554,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:VPMA%20GLOBAL%20SERVICES",
+          "subject_ref": "vendor:stem:VPMA%20GLOBAL%20SERVICES",
+          "label": "VPMA Global Services LLC.",
+          "href": "/vendors/VPMA%20GLOBAL%20SERVICES/",
+          "award_count": 1,
+          "award_total": 1437169,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:UNIVERSAL%20TECHNOLOGIES",
+          "subject_ref": "vendor:stem:UNIVERSAL%20TECHNOLOGIES",
+          "label": "Universal Technologies, LLC",
+          "href": "/vendors/UNIVERSAL%20TECHNOLOGIES/",
+          "award_count": 2,
+          "award_total": 1233264,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:CNC%20CONSULTING",
+          "subject_ref": "vendor:stem:CNC%20CONSULTING",
+          "label": "CNC Consulting Inc.",
+          "href": "/vendors/CNC%20CONSULTING/",
+          "award_count": 3,
+          "award_total": 1216800,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:INFO%20PEOPLE",
+          "subject_ref": "vendor:stem:INFO%20PEOPLE",
+          "label": "InFo People Corporation",
+          "href": "/vendors/INFO%20PEOPLE/",
+          "award_count": 2,
+          "award_total": 944998.1599999999,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:GARTNER",
+          "subject_ref": "vendor:stem:GARTNER",
+          "label": "Gartner Inc.",
+          "href": "/vendors/GARTNER/",
+          "award_count": 1,
+          "award_total": 658500,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:RANGAM%20CONSULTANTS",
+          "subject_ref": "vendor:stem:RANGAM%20CONSULTANTS",
+          "label": "Rangam Consultants Inc",
+          "href": "/vendors/RANGAM%20CONSULTANTS/",
+          "award_count": 1,
+          "award_total": 489528,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
+    }
+  }
+}

@@ -21,11 +21,13 @@ import {
   renderCommitteeCoServiceHTML,
 } from "../site/committee_coservice.mjs";
 
-const graph = JSON.parse(readFileSync(new URL("../site/data/committee_graph_lookup.json", import.meta.url)));
-const people = JSON.parse(readFileSync(new URL("../site/data/person_hub_lookup.json", import.meta.url)));
+// Frozen committee-graph vintage for co-service contract cases. Daily refresh
+// rewrites the live lookup and moves shared-membership counts.
+const graph = JSON.parse(readFileSync(new URL("./fixtures/committee-co-service/committee_graph_lookup.json", import.meta.url)));
+const people = JSON.parse(readFileSync(new URL("./fixtures/committee-co-service/person_hub_lookup.json", import.meta.url)));
 const entitiesSource = readFileSync(new URL("../site/app/entities.mjs", import.meta.url), "utf8");
 const captureManifest = JSON.parse(readFileSync(
-  new URL("../docs/evidence/official-committee-co-service/capture-manifest.json", import.meta.url),
+  new URL("./fixtures/committee-co-service/capture-manifest.json", import.meta.url),
 ));
 
 // The committee snapshot's own vintage day. A membership snapshot can only

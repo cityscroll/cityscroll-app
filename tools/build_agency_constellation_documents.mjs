@@ -87,6 +87,20 @@ function alwaysMaterialized(id) {
   return DEMO_IDS.includes(id) || CORRECTED_IDENTITY_IDS.includes(id);
 }
 
+// Agencies already published in the committed constellation lookup stay findable
+// when a rolling publisher window empties their only matched category (for
+// example a borough president whose sole hosted hearing rolls out of the
+// meeting materialization). New empty candidates still stay unpublished.
+export function previouslyPublishedAgencyIds(lookupPath = join(SITE, "data/agency_constellation_lookup.json")) {
+  if (!existsSync(lookupPath)) return new Set();
+  try {
+    const previous = readJson(lookupPath);
+    return new Set(Object.keys(previous?.by_id || {}));
+  } catch {
+    return new Set();
+  }
+}
+
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
 }
@@ -521,7 +535,7 @@ export function reconcileAgencyConstellationSources(sources, publisherRows = pub
   };
 }
 
-function candidateAgencyIds(sources) {
+export function candidateAgencyIds(sources, previouslyPublished = new Set()) {
   const ids = new Set(Object.keys(AGENCY_GROUPS).map((name) =>
     reconcileAgencyIdentity(name, sources.publisher_agency_rows).canonical_id));
   for (const ref of Object.keys(sources.intelligence?.by_ref || {})) {
@@ -543,6 +557,11 @@ function candidateAgencyIds(sources) {
   }
   for (const demo of DEMO_IDS) ids.add(reconcileAgencyIdentity(demo, sources.publisher_agency_rows).canonical_id);
   for (const corrected of CORRECTED_IDENTITY_IDS) ids.add(corrected);
+  // Agencies already in the committed lookup stay candidates even when they are
+  // absent from AGENCY_GROUPS and the current EI/certification windows (e.g.
+  // Charter Revision Commission, Rent Guidelines Board). Retention below then
+  // keeps their directory entries when matched categories empty.
+  for (const id of previouslyPublished) ids.add(id);
   return [...ids].sort();
 }
 
@@ -657,10 +676,11 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
   });
   const identityReport = buildAgencyRouteIdentityReport(sources, publisherRows, generatedAt);
   const reconciledSources = reconcileAgencyConstellationSources(sources, publisherRows);
+  const previouslyPublished = previouslyPublishedAgencyIds();
   const byId = {};
   const documents = [];
 
-  for (const id of candidateAgencyIds(reconciledSources)) {
+  for (const id of candidateAgencyIds(reconciledSources, previouslyPublished)) {
     const view = buildAgencyConstellationView(id, {
       ...reconciledSources,
       vendor_rollups: vendorRollups,
@@ -715,9 +735,14 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
       }))
       : [];
     if (capacityIndex.length) view.record_capacity_rows = capacityIndex;
-    // Keep pages for agencies with at least one matched category, plus demos
-    // and the identities a reviewed correction separated.
-    if (view.summary.matched_categories === 0 && !alwaysMaterialized(id)) continue;
+    // Keep pages for agencies with at least one matched category, demos, reviewed
+    // identity corrections, and agencies already published in the committed
+    // lookup whose only rolling-window category emptied on this refresh.
+    if (
+      view.summary.matched_categories === 0
+      && !alwaysMaterialized(id)
+      && !previouslyPublished.has(id)
+    ) continue;
     // A denser PASSPort graph can light up unmatched route spellings. Public
     // pages stay on identities the SearchDocument producer can admit.
     const matched = (view.categories || []).filter((category) => category.status === "matched");

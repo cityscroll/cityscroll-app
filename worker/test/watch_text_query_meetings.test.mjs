@@ -37,8 +37,11 @@ const RAT_ID = "20260803009";
 const TRANSLATION_ID = "20260106034";
 const CART_PHRASE = "communication access realtime translation";
 
+// Frozen acceptance vintage. Daily first-class refresh rewrites the live
+// meeting_notice_materialization.json publisher window; named-notice
+// acceptance cases must keep reading this admitted projection.
 const materialization = JSON.parse(readFileSync(
-  new URL("../../site/data/meeting_notice_materialization.json", import.meta.url),
+  new URL("./fixtures/watch_text_query/meeting_notice_materialization.json", import.meta.url),
   "utf8",
 ));
 const titleSnapshot = JSON.parse(readFileSync(

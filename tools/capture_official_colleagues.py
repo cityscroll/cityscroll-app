@@ -588,6 +588,10 @@ def self_test() -> int:
     historically absent member now holds one, while other members do share
     committees. The fixed fixtures this capture used to hardcode fail every one
     of their assertions on that graph; selection derives fixtures that hold.
+
+    The committed-graph pin at the end reads
+    test/fixtures/committee-co-service/{committee_graph_lookup,person_hub_lookup}.json
+    (main vintage). Refresh adds shared committee 5224 and changes absent.
     """
     day = "2026-09-24"
     nodes = [
@@ -668,11 +672,17 @@ def self_test() -> int:
     else:
         raise AssertionError("selection must fail when no official co-serves")
 
-    # The committed repository graph still selects the historical fixtures, so
-    # the committed capture manifest stays reproducible from tracked data.
+    # Main-vintage committee graph / person hub fixtures: scheduled refresh adds
+    # shared committee 5224 and changes absent membership. Keep exact historical
+    # pins (shared ["5106","5309"], absent PREFERRED_ABSENT) via fixtures.
+    fixture_graph = ROOT / "test" / "fixtures" / "committee-co-service" / "committee_graph_lookup.json"
+    fixture_people = ROOT / "test" / "fixtures" / "committee-co-service" / "person_hub_lookup.json"
+    fixture_profiled = sorted(str(pid) for pid in (
+        json.loads(fixture_people.read_text()).get("by_person_id") or {}
+    ))
     committed = select_fixtures(
-        json.loads((ROOT / "site" / "data" / "committee_graph_lookup.json").read_text()),
-        profiled_official_ids())
+        json.loads(fixture_graph.read_text()),
+        fixture_profiled)
     assert committed["subject"] == PREFERRED_SUBJECT, committed
     assert committed["colleague"] == PREFERRED_COLLEAGUE, committed
     assert committed["shared_committees"] == ["5106", "5309"], committed

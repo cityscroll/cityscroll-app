@@ -242,7 +242,7 @@ test("A1 [outcome] root shell + typed Midwood address reach September 23 in thre
   const midwoodView = await viewForGeo(MIDWOOD_GEO, "2026-09-23T14:00:00.000Z");
   const record = (midwoodView.view.results?.records || []).find((row) => row.id === SEPT23_ID);
   assert.ok(record, "September 23 meeting must appear for Midwood");
-  assert.equal(record.venue_address, "810 East 16th Street, Brooklyn, NY, 11230");
+  assert.equal(record.venue_address, "810 East 16th Street, Brooklyn, NY 11230");
   assert.match(midwoodView.html, /Held in Midwood/);
   assert.match(midwoodView.html, new RegExp(SEPT23_DETAIL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
 
@@ -327,7 +327,7 @@ test("A1 [outcome] typed Midwood and subject addresses open their Records; Septe
     const card = recordCard(deferred.results_html, SEPT23_ID);
     assert.ok(card, "September 23 meeting is in Midwood's Records");
     assert.match(card, /data-record-timing="past"/);
-    assert.match(card, /810 East 16th Street, Brooklyn, NY, 11230/);
+    assert.match(card, /810 East 16th Street, Brooklyn, NY 11230/);
     assert.match(card, new RegExp(`href="[^"]*${escapeRegExp(SEPT23_DETAIL)}"`));
 
     const subject = await resolve("461 Coney Island Avenue", { layerData: LAYER_DATA });
