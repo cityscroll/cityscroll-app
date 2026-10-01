@@ -52,6 +52,7 @@ CLOCK = "2026-09-28T16:00:00.000Z"
 # Same pinned district-activity blob as discovery-recovery and default-local-home:
 # citywide / virtual / unlocated bags stay stable across daily first-class refresh.
 FROZEN_ACTIVITY_BLOB = "5deaa202fe578e09b58380d43755419dbb85ec60"
+FROZEN_ACTIVITY_REVISION = "d886b385d647f4534df985f5922749a9414fab26"
 VIEWPORTS = (("narrow_touch", 390, 844), ("desktop", 1440, 900))
 TARGET_SIZE_FLOOR_CSS_PX = 44
 
@@ -180,7 +181,43 @@ def query(url: str) -> dict[str, list[str]]:
     return parse_qs(urlparse(url).query)
 
 
+def ensure_frozen_activity_blob() -> None:
+    """Shallow CI checkouts omit historical blobs; fetch the pin revision when needed."""
+    probe = subprocess.run(
+        ["git", "cat-file", "-e", FROZEN_ACTIVITY_BLOB],
+        cwd=ROOT,
+        capture_output=True,
+        check=False,
+    )
+    if probe.returncode == 0:
+        return
+    fetched = subprocess.run(
+        ["git", "fetch", "--no-tags", "--depth", "1", "origin", FROZEN_ACTIVITY_REVISION],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if fetched.returncode != 0:
+        raise RuntimeError(
+            "frozen district-activity blob "
+            f"{FROZEN_ACTIVITY_BLOB} is missing and fetch of "
+            f"{FROZEN_ACTIVITY_REVISION} failed: {fetched.stderr.strip()}"
+        )
+    present = subprocess.run(
+        ["git", "cat-file", "-e", FROZEN_ACTIVITY_BLOB],
+        cwd=ROOT,
+        capture_output=True,
+        check=False,
+    )
+    if present.returncode != 0:
+        raise RuntimeError(
+            f"frozen district-activity blob {FROZEN_ACTIVITY_BLOB} still missing after fetch"
+        )
+
+
 def start_server() -> tuple[subprocess.Popen, str]:
+    ensure_frozen_activity_blob()
     env = {
         **os.environ,
         "NODE_OPTIONS": " ".join(filter(None, [
