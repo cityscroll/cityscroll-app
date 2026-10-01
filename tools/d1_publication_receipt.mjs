@@ -37,11 +37,19 @@
  *                                                [--verification-status <s>] [--verification-detail "<text>"]
  *                                                [--rollback-compensates <id>] [--rollback-command "<text>"] [--rollback-reason "<text>"]
  *                                                [--canary-evidence <path>] [--reconcile-report <path>]
+ *                                                [--snapshot-kv-plan <path>] [--snapshot-save-outcome saved|failed|not_attempted]
+ *                                                [--snapshot-save-platform-code <n>] [--snapshot-save-reason "<text>"]
  *                                                [--out <path>]
  *   node tools/d1_publication_receipt.mjs record  (same flags as build, plus)
  *                                                --local <path> [--state-file <path> | --binding <b> --config <path> --remote]
  *   node tools/d1_publication_receipt.mjs summarize --receipts <jsonl>
  *   node tools/d1_publication_receipt.mjs compare --receipts <jsonl> --from <iso> --to <iso>
+ *
+ * Every receipt carries a positive `snapshot_save` observation (saved | failed |
+ * not_attempted). Absence is refused: the register-side reader treats a missing
+ * field as distinct from failure and from not_attempted. When a pack plan is
+ * present under `.artifacts/d1-snapshot-kv-plan.json`, the observation is sourced
+ * from that plan (encoding, chunk_count, packed_bytes, kv_limit_bytes, fingerprint).
  */
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -55,6 +63,10 @@ import {
   D1_BOUNDED_PUBLISH_RECEIPT_SCHEMA,
 } from "./d1_bounded_publisher.mjs";
 import { D1_CANARY_EVIDENCE_SCHEMA, FINDING_CLASSIFICATIONS } from "./d1_canary.mjs";
+import {
+  D1_PUBLICATION_SNAPSHOT_KV_PLAN_SCHEMA,
+  KV_VALUE_LIMIT_BYTES,
+} from "./d1_publication_snapshot_kv.mjs";
 import { D1_RECONCILE_REPORT_SCHEMA } from "./d1_reconcile.mjs";
 import { createWranglerInvoker } from "./lib/wrangler_exec.mjs";
 
@@ -63,6 +75,12 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export const D1_PUBLICATION_RECEIPT_SCHEMA = "cityscroll.d1-publication-receipt.v2";
 export const RECEIPT_KEY_PREFIX = "d1-publication:receipt:v1:";
 export const DEFAULT_LOCAL_RECEIPT_PATH = resolve(ROOT, ".artifacts/d1-publication-receipts.jsonl");
+export const DEFAULT_SNAPSHOT_KV_PLAN_PATH = resolve(ROOT, ".artifacts/d1-snapshot-kv-plan.json");
+
+/** Closed outcomes for the KV snapshot-save stage observation. */
+export const SNAPSHOT_SAVE_OUTCOMES = Object.freeze(["saved", "failed", "not_attempted"]);
+const SNAPSHOT_SAVE_OUTCOME_SET = new Set(SNAPSHOT_SAVE_OUTCOMES);
+export { KV_VALUE_LIMIT_BYTES };
 
 /** Every exit path a D1 publication run can terminate in. Closed: nothing else is valid. */
 export const OUTCOMES = Object.freeze([
@@ -281,6 +299,24 @@ const RECONCILE_KEYS = Object.freeze([
   "content_hash",
 ]);
 const RECONCILE_CLASSIFICATION_KEYS = Object.freeze([...FINDING_CLASSIFICATIONS]);
+const SNAPSHOT_SAVE_KEYS = Object.freeze([
+  "outcome",
+  "encoding",
+  "chunk_count",
+  "packed_bytes",
+  "kv_limit_bytes",
+  "fingerprint",
+  "platform_code",
+  "reason",
+]);
+const SNAPSHOT_SAVE_REQUIRED_KEYS = Object.freeze([
+  "outcome",
+  "encoding",
+  "chunk_count",
+  "packed_bytes",
+  "kv_limit_bytes",
+  "fingerprint",
+]);
 const TOP_LEVEL_KEYS = Object.freeze([
   "schema",
   "receipt_id",
@@ -301,6 +337,7 @@ const TOP_LEVEL_KEYS = Object.freeze([
   "rebuild",
   "canary",
   "reconcile",
+  "snapshot_save",
 ]);
 
 function validateRun(run) {
@@ -427,6 +464,145 @@ function validateReconcileSection(reconcile) {
   if (reconcile.findings_count > 0 && reconcile.consistent) fail("receipt.reconcile.consistent", "must be false while a finding is recorded");
 }
 
+function encodingFromPlan(plan) {
+  if (plan.mode === "chunked") return "gzip-base64-chunked";
+  if (plan.mode === "single") return "gzip-base64";
+  fail("snapshot_kv_plan.mode", `must be "single" or "chunked" (got ${plan.mode})`);
+}
+
+function chunkCountFromPlan(plan) {
+  if (plan.mode === "single") return 1;
+  const puts = Array.isArray(plan.puts) ? plan.puts : [];
+  const chunkPuts = puts.filter((put) => typeof put?.relative_path === "string" && put.relative_path.startsWith("chunk-"));
+  if (chunkPuts.length > 0) return chunkPuts.length;
+  // Manifest + N chunks: fall back to puts minus the primary.
+  return Math.max(0, puts.length - 1);
+}
+
+/**
+ * Build the positive `snapshot_save` observation for a publication receipt.
+ *
+ * Sourced from a `cityscroll.d1-publication-snapshot-kv-plan.v1` plan when one
+ * exists. `not_attempted` covers runs that never reached the Record-published
+ * pack/put step (no plan file). A failed put still records measured
+ * `packed_bytes` against `kv_limit_bytes`, plus `platform_code` when known.
+ */
+export function buildSnapshotSaveFromKvPlan({
+  plan = null,
+  outcome = null,
+  platformCode = null,
+  reason = null,
+  // Explicit overrides for failure paths that measured size without a retained plan.
+  packedBytes = null,
+  kvLimitBytes = null,
+  encoding = null,
+  chunkCount = null,
+  fingerprint = null,
+} = {}) {
+  let resolvedOutcome = outcome;
+  if (resolvedOutcome == null) {
+    resolvedOutcome = plan ? "saved" : "not_attempted";
+  }
+  if (!SNAPSHOT_SAVE_OUTCOME_SET.has(resolvedOutcome)) {
+    fail("snapshot_save.outcome", `must be one of ${SNAPSHOT_SAVE_OUTCOMES.join(", ")}`);
+  }
+
+  if (resolvedOutcome === "not_attempted") {
+    return validateSnapshotSave({
+      outcome: "not_attempted",
+      encoding: null,
+      chunk_count: null,
+      packed_bytes: null,
+      kv_limit_bytes: null,
+      fingerprint: null,
+    });
+  }
+
+  if (plan) {
+    requirePlainObject(plan, "snapshot_kv_plan");
+    if (plan.schema !== D1_PUBLICATION_SNAPSHOT_KV_PLAN_SCHEMA) {
+      fail("snapshot_kv_plan.schema", `must be ${D1_PUBLICATION_SNAPSHOT_KV_PLAN_SCHEMA}`);
+    }
+    encoding = encodingFromPlan(plan);
+    chunkCount = chunkCountFromPlan(plan);
+    packedBytes = plan.packed_primary_bytes;
+    kvLimitBytes = plan.kv_limit_bytes;
+    fingerprint = plan.uncompressed_sha256;
+  }
+
+  const save = {
+    outcome: resolvedOutcome,
+    encoding,
+    chunk_count: chunkCount,
+    packed_bytes: packedBytes,
+    kv_limit_bytes: kvLimitBytes,
+    fingerprint,
+  };
+  if (resolvedOutcome === "failed") {
+    if (platformCode !== null && platformCode !== undefined) save.platform_code = platformCode;
+    if (reason !== null && reason !== undefined) save.reason = reason;
+  }
+  return validateSnapshotSave(save);
+}
+
+/** Validate the closed `snapshot_save` observation (always required on a receipt). */
+export function validateSnapshotSave(save) {
+  requirePlainObject(save, "receipt.snapshot_save");
+  requireKnownKeys(save, SNAPSHOT_SAVE_KEYS, "receipt.snapshot_save");
+  for (const key of SNAPSHOT_SAVE_REQUIRED_KEYS) {
+    if (!(key in save)) fail(`receipt.snapshot_save.${key}`, "is required");
+  }
+  if (!SNAPSHOT_SAVE_OUTCOME_SET.has(save.outcome)) {
+    fail("receipt.snapshot_save.outcome", `must be one of ${SNAPSHOT_SAVE_OUTCOMES.join(", ")}`);
+  }
+
+  if (save.outcome === "saved") {
+    requireNonNegativeInteger(save.packed_bytes, "receipt.snapshot_save.packed_bytes");
+    requireNonNegativeInteger(save.kv_limit_bytes, "receipt.snapshot_save.kv_limit_bytes");
+    requireNonNegativeInteger(save.chunk_count, "receipt.snapshot_save.chunk_count");
+    assertText(save.encoding, "receipt.snapshot_save.encoding", { maxLength: 64 });
+    assertSha256(save.fingerprint, "receipt.snapshot_save.fingerprint");
+    if (save.packed_bytes > save.kv_limit_bytes) {
+      fail(
+        "receipt.snapshot_save.packed_bytes",
+        `claims saved but packed_bytes ${save.packed_bytes} exceeds kv_limit_bytes ${save.kv_limit_bytes}`,
+      );
+    }
+    if ("platform_code" in save && save.platform_code !== null && save.platform_code !== undefined) {
+      fail("receipt.snapshot_save.platform_code", "must be omitted when outcome is saved");
+    }
+    if ("reason" in save && save.reason !== null && save.reason !== undefined) {
+      fail("receipt.snapshot_save.reason", "must be omitted when outcome is saved");
+    }
+  } else if (save.outcome === "failed") {
+    requireNonNegativeInteger(save.packed_bytes, "receipt.snapshot_save.packed_bytes");
+    requireNonNegativeInteger(save.kv_limit_bytes, "receipt.snapshot_save.kv_limit_bytes");
+    if (save.encoding !== null) assertText(save.encoding, "receipt.snapshot_save.encoding", { maxLength: 64 });
+    assertNullableNonNegativeInteger(save.chunk_count, "receipt.snapshot_save.chunk_count");
+    assertNullableSha256(save.fingerprint, "receipt.snapshot_save.fingerprint");
+    if ("platform_code" in save && save.platform_code !== null && save.platform_code !== undefined) {
+      requireNonNegativeInteger(save.platform_code, "receipt.snapshot_save.platform_code");
+    }
+    if ("reason" in save && save.reason !== null && save.reason !== undefined) {
+      assertText(save.reason, "receipt.snapshot_save.reason");
+    }
+  } else {
+    // not_attempted: size fields stay null unless a measured attempt left residue.
+    assertNullableNonNegativeInteger(save.packed_bytes, "receipt.snapshot_save.packed_bytes");
+    assertNullableNonNegativeInteger(save.kv_limit_bytes, "receipt.snapshot_save.kv_limit_bytes");
+    assertNullableNonNegativeInteger(save.chunk_count, "receipt.snapshot_save.chunk_count");
+    if (save.encoding !== null) assertText(save.encoding, "receipt.snapshot_save.encoding", { maxLength: 64 });
+    assertNullableSha256(save.fingerprint, "receipt.snapshot_save.fingerprint");
+    if ("platform_code" in save && save.platform_code !== null && save.platform_code !== undefined) {
+      fail("receipt.snapshot_save.platform_code", "must be omitted when outcome is not_attempted");
+    }
+    if ("reason" in save && save.reason !== null && save.reason !== undefined) {
+      fail("receipt.snapshot_save.reason", "must be omitted when outcome is not_attempted");
+    }
+  }
+  return save;
+}
+
 /**
  * Validate a publication receipt against the closed schema: no unknown field
  * anywhere, every string bounded and non-secret-shaped, exactly one closed
@@ -460,6 +636,10 @@ export function validatePublicationReceipt(receipt) {
   validateRebuildSection(receipt.rebuild ?? null);
   validateCanarySection(receipt.canary);
   validateReconcileSection(receipt.reconcile);
+  if (!("snapshot_save" in receipt)) {
+    fail("receipt.snapshot_save", "is required (absence is distinct from failed and from not_attempted)");
+  }
+  validateSnapshotSave(receipt.snapshot_save);
   return receipt;
 }
 
@@ -680,11 +860,22 @@ export function buildPublicationReceipt({
   rebuild = null,
   canaryEvidence = null,
   reconcileReport = null,
+  snapshotSave = null,
+  snapshotKvPlan = null,
+  snapshotSaveOutcome = null,
+  snapshotSavePlatformCode = null,
+  snapshotSaveReason = null,
   recordedAt = new Date().toISOString(),
   receiptId = null,
 }) {
   const models = summarizeModels({ snapshot, batchPlan, dryRun, publishReceipt });
   const isZeroWriteSkip = outcome === SKIPPED_OUTCOME;
+  const resolvedSnapshotSave = snapshotSave || buildSnapshotSaveFromKvPlan({
+    plan: snapshotKvPlan,
+    outcome: snapshotSaveOutcome,
+    platformCode: snapshotSavePlatformCode,
+    reason: snapshotSaveReason,
+  });
   const receipt = {
     schema: D1_PUBLICATION_RECEIPT_SCHEMA,
     receipt_id: receiptId || `${run.run_id}:${run.attempt}:${generation ?? "none"}`,
@@ -718,6 +909,7 @@ export function buildPublicationReceipt({
       : null,
     canary: summarizeCanaryEvidence(canaryEvidence),
     reconcile: summarizeReconcileReport(reconcileReport),
+    snapshot_save: resolvedSnapshotSave,
   };
   return validatePublicationReceipt(receipt);
 }
@@ -859,6 +1051,40 @@ function readJsonIfGiven(path) {
   return path ? JSON.parse(readFileSync(path, "utf8")) : null;
 }
 
+/**
+ * Resolve the snapshot_save observation for the Deploy-worker record step.
+ *
+ * - No plan file → not_attempted (save step never produced a pack plan).
+ * - Plan present and record-published succeeded → saved from the plan.
+ * - Plan present and record-published failed → failed from the plan (sizes kept;
+ *   platform_code / reason attached when supplied).
+ * - Explicit --snapshot-save-outcome always wins when set.
+ */
+export function resolveSnapshotSaveArgs({
+  planPath = null,
+  explicitOutcome = null,
+  recordPublishedOutcome = null,
+  platformCode = null,
+  reason = null,
+} = {}) {
+  const plan = planPath && existsSync(planPath) ? JSON.parse(readFileSync(planPath, "utf8")) : null;
+  let outcome = explicitOutcome || null;
+  if (!outcome) {
+    if (!plan) outcome = "not_attempted";
+    else if (recordPublishedOutcome === "failure") outcome = "failed";
+    else if (recordPublishedOutcome === "success") outcome = "saved";
+    else outcome = plan ? "saved" : "not_attempted";
+  }
+  return buildSnapshotSaveFromKvPlan({
+    plan,
+    outcome,
+    platformCode: platformCode === null || platformCode === undefined || platformCode === ""
+      ? null
+      : Number(platformCode),
+    reason: reason || null,
+  });
+}
+
 function receiptFromArgs(args) {
   const rollback = args["rollback-compensates"]
     ? {
@@ -867,6 +1093,16 @@ function receiptFromArgs(args) {
         reason: required(args, "rollback-reason"),
       }
     : null;
+  const planPath = args["snapshot-kv-plan"]
+    ? resolve(ROOT, args["snapshot-kv-plan"])
+    : null;
+  const snapshotSave = resolveSnapshotSaveArgs({
+    planPath,
+    explicitOutcome: args["snapshot-save-outcome"] || null,
+    recordPublishedOutcome: args["record-published-outcome"] || null,
+    platformCode: args["snapshot-save-platform-code"] ?? null,
+    reason: args["snapshot-save-reason"] || null,
+  });
   return buildPublicationReceipt({
     run: { workflow: required(args, "workflow"), run_id: required(args, "run-id"), attempt: Number(required(args, "attempt")) },
     outcome: required(args, "outcome"),
@@ -885,6 +1121,7 @@ function receiptFromArgs(args) {
     rollback,
     canaryEvidence: readJsonIfGiven(args["canary-evidence"]),
     reconcileReport: readJsonIfGiven(args["reconcile-report"]),
+    snapshotSave,
   });
 }
 
