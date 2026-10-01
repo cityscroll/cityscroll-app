@@ -32,7 +32,7 @@
         "width": 1440,
         "height": 900
       },
-      "assertion": "headless Chromium verified a visible place choice, \u2265240px initial-viewport map geometry at binding viewports, horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
+      "assertion": "headless Chromium verified a visible place choice, ≥240px initial-viewport map geometry at binding viewports, horizontal overflow ≤ 1px, ≥44px targets, ≥16px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
       "failure_mode": "none",
       "asset_classes": [
         "server_html",
@@ -204,7 +204,7 @@
         "width": 390,
         "height": 844
       },
-      "assertion": "headless Chromium verified a visible place choice, \u2265240px initial-viewport map geometry at binding viewports, horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
+      "assertion": "headless Chromium verified a visible place choice, ≥240px initial-viewport map geometry at binding viewports, horizontal overflow ≤ 1px, ≥44px targets, ≥16px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
       "failure_mode": "none",
       "asset_classes": [
         "server_html",
@@ -401,7 +401,7 @@
         "width": 360,
         "height": 800
       },
-      "assertion": "headless Chromium verified a visible place choice, \u2265240px initial-viewport map geometry at binding viewports, horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
+      "assertion": "headless Chromium verified a visible place choice, ≥240px initial-viewport map geometry at binding viewports, horizontal overflow ≤ 1px, ≥44px targets, ≥16px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
       "failure_mode": "none",
       "asset_classes": [
         "server_html",
@@ -594,7 +594,7 @@
             }
           ],
           "min_width_css_px": 80.765625,
-          "min_height_css_px": 44.0,
+          "min_height_css_px": 44,
           "meets_floor": true
         },
         "keyboard_traversal": {
@@ -652,7 +652,7 @@
         "width": 1440,
         "height": 900
       },
-      "assertion": "headless Chromium verified a visible place choice, \u2265240px initial-viewport map geometry at binding viewports, horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
+      "assertion": "headless Chromium verified a visible place choice, ≥240px initial-viewport map geometry at binding viewports, horizontal overflow ≤ 1px, ≥44px targets, ≥16px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
       "failure_mode": "none",
       "asset_classes": [
         "server_html",
@@ -716,7 +716,7 @@
           "More ways to choose",
           "More boundaries",
           "Follow or share",
-          "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+          "© OpenStreetMap © CARTO | MapLibre",
           "Map",
           "Toggle attribution",
           "MapLibre",
@@ -757,7 +757,7 @@
         "width": 390,
         "height": 844
       },
-      "assertion": "headless Chromium verified a visible place choice, \u2265240px initial-viewport map geometry at binding viewports, horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
+      "assertion": "headless Chromium verified a visible place choice, ≥240px initial-viewport map geometry at binding viewports, horizontal overflow ≤ 1px, ≥44px targets, ≥16px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
       "failure_mode": "none",
       "asset_classes": [
         "server_html",
@@ -822,7 +822,7 @@
           "More boundaries",
           "Follow or share",
           "Map details",
-          "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+          "© OpenStreetMap © CARTO | MapLibre",
           "Map",
           "Toggle attribution",
           "MapLibre",
@@ -862,7 +862,7 @@
         "width": 1440,
         "height": 900
       },
-      "assertion": "headless Chromium verified a visible place choice, \u2265240px initial-viewport map geometry at binding viewports, horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
+      "assertion": "headless Chromium verified a visible place choice, ≥240px initial-viewport map geometry at binding viewports, horizontal overflow ≤ 1px, ≥44px targets, ≥16px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
       "failure_mode": "none",
       "asset_classes": [
         "server_html",
@@ -930,7 +930,7 @@
           "Precincts",
           "Source and exact figures",
           "See records in this neighborhood",
-          "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+          "© OpenStreetMap © CARTO | MapLibre",
           "Map",
           "Toggle attribution",
           "MapLibre",
@@ -967,7 +967,7 @@
         "width": 390,
         "height": 844
       },
-      "assertion": "headless Chromium verified a visible place choice, \u2265240px initial-viewport map geometry at binding viewports, horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
+      "assertion": "headless Chromium verified a visible place choice, ≥240px initial-viewport map geometry at binding viewports, horizontal overflow ≤ 1px, ≥44px targets, ≥16px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
       "failure_mode": "none",
       "asset_classes": [
         "server_html",
@@ -1036,7 +1036,7 @@
           "Precincts",
           "Source and exact figures",
           "See records in this neighborhood",
-          "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+          "© OpenStreetMap © CARTO | MapLibre",
           "Map",
           "Toggle attribution",
           "MapLibre"
@@ -1072,7 +1072,7 @@
         "width": 1440,
         "height": 900
       },
-      "assertion": "headless Chromium verified a visible place choice, \u2265240px initial-viewport map geometry at binding viewports, horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
+      "assertion": "headless Chromium verified a visible place choice, ≥240px initial-viewport map geometry at binding viewports, horizontal overflow ≤ 1px, ≥44px targets, ≥16px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
       "failure_mode": "none",
       "asset_classes": [
         "server_html",
@@ -1141,7 +1141,7 @@
           "Source and exact figures",
           "Meetings: 25 records in this neighborhood",
           "See records in this neighborhood",
-          "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+          "© OpenStreetMap © CARTO | MapLibre",
           "Map",
           "Toggle attribution",
           "MapLibre"
@@ -1177,7 +1177,7 @@
         "width": 390,
         "height": 844
       },
-      "assertion": "headless Chromium verified a visible place choice, \u2265240px initial-viewport map geometry at binding viewports, horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
+      "assertion": "headless Chromium verified a visible place choice, ≥240px initial-viewport map geometry at binding viewports, horizontal overflow ≤ 1px, ≥44px targets, ≥16px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
       "failure_mode": "none",
       "asset_classes": [
         "server_html",
@@ -1247,7 +1247,7 @@
           "Source and exact figures",
           "Meetings: 25 records in this neighborhood",
           "See records in this neighborhood",
-          "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+          "© OpenStreetMap © CARTO | MapLibre",
           "Map",
           "Toggle attribution"
         ],
@@ -1282,7 +1282,7 @@
         "width": 360,
         "height": 800
       },
-      "assertion": "headless Chromium verified a visible place choice, \u2265240px initial-viewport map geometry at binding viewports, horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
+      "assertion": "headless Chromium verified a visible place choice, ≥240px initial-viewport map geometry at binding viewports, horizontal overflow ≤ 1px, ≥44px targets, ≥16px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
       "failure_mode": "webgl_unavailable",
       "asset_classes": [
         "server_html",
@@ -1383,7 +1383,7 @@
             }
           ],
           "min_width_css_px": 80.765625,
-          "min_height_css_px": 44.0,
+          "min_height_css_px": 44,
           "meets_floor": true
         },
         "keyboard_traversal": {
@@ -1443,7 +1443,7 @@
         "width": 360,
         "height": 800
       },
-      "assertion": "headless Chromium induced the live deferred-records failure path, measured visible retry_target boxes at the 44 CSS px floor under the A2 boundary viewport, and verified horizontal overflow \u2264 1px, \u226544px primary and retry targets, \u226516px form text, keyboard focus order, and collapsible drawer behavior without a trap",
+      "assertion": "headless Chromium induced the live deferred-records failure path, measured visible retry_target boxes at the 44 CSS px floor under the A2 boundary viewport, and verified horizontal overflow ≤ 1px, ≥44px primary and retry targets, ≥16px form text, keyboard focus order, and collapsible drawer behavior without a trap",
       "failure_mode": "deferred_records_unavailable+webgl_unavailable",
       "asset_classes": [
         "server_html",
@@ -1551,7 +1551,7 @@
             }
           ],
           "min_width_css_px": 80.765625,
-          "min_height_css_px": 44.0,
+          "min_height_css_px": 44,
           "meets_floor": true
         },
         "keyboard_traversal": {
@@ -1876,7 +1876,7 @@
   "performance": {
     "production_field_vitals": {
       "status": "not_taken",
-      "reason": "Production Analytics Engine dataset crol_rum_observations_v1 retains LCP/INP/CLS for geography-navigation routes, but the repository sample floor (30) is not met for the required p75 \u00d7 desktop/mobile matrix on surface near-you after the 2026-09-21 delivery merge. near-you LCP desktop n=2, CLS desktop n=2, INP n=0, and mobile near-you has no rows in the 7d window; percentiles are withheld below the floor rather than published. Pathname / after the default-local-home delivery classifies as surface home and is retained in the sibling observation for route-scope review. Earliest near-you floor date cannot be projected for INP or mobile (no positive rate); desktop LCP/CLS alone would need continued sampling beyond the observed stall. Optimistic home+near-you bound for remaining cells is 2026-10-11 if home is admitted and sampling resumes.",
+      "reason": "Production Analytics Engine dataset crol_rum_observations_v1 retains LCP/INP/CLS for geography-navigation routes, but the repository sample floor (30) is not met for the required p75 × desktop/mobile matrix on surface near-you after the 2026-09-21 delivery merge. near-you LCP desktop n=2, CLS desktop n=2, INP n=0, and mobile near-you has no rows in the 7d window; percentiles are withheld below the floor rather than published. Pathname / after the default-local-home delivery classifies as surface home and is retained in the sibling observation for route-scope review. Earliest near-you floor dates use the queried-window rate (samples / window_days): desktop LCP/CLS project to 2027-01-06; INP and mobile have no positive rate. Home cells that remain below floor project from the same window basis (not the first-to-latest sample span).",
       "observation": {
         "path": "docs/evidence/geography-navigation-release/field-vitals-observation.json",
         "schema": "cityscroll.geography_navigation_field_vitals_observation.v1",
@@ -1905,7 +1905,7 @@
             "quantile_value": null,
             "budget": 2500,
             "pass": null,
-            "earliest_floor_date": "2026-10-03"
+            "earliest_floor_date": "2027-01-06"
           },
           {
             "metric_id": "lcp_ms",
@@ -1949,7 +1949,7 @@
             "quantile_value": null,
             "budget": 0.1,
             "pass": null,
-            "earliest_floor_date": "2026-10-03"
+            "earliest_floor_date": "2027-01-06"
           },
           {
             "metric_id": "cls_score",
@@ -1984,7 +1984,7 @@
             "quantile_value": null,
             "budget": 2500,
             "pass": null,
-            "earliest_floor_date": "2026-10-08"
+            "earliest_floor_date": "2026-10-12"
           },
           {
             "metric_id": "inp_ms",
@@ -1995,7 +1995,7 @@
             "quantile_value": null,
             "budget": 200,
             "pass": null,
-            "earliest_floor_date": "2026-10-05"
+            "earliest_floor_date": "2026-10-12"
           },
           {
             "metric_id": "inp_ms",
@@ -2006,7 +2006,7 @@
             "quantile_value": null,
             "budget": 200,
             "pass": null,
-            "earliest_floor_date": "2026-09-30"
+            "earliest_floor_date": "2026-12-02"
           },
           {
             "metric_id": "cls_score",
@@ -2028,7 +2028,7 @@
             "quantile_value": null,
             "budget": 0.1,
             "pass": null,
-            "earliest_floor_date": "2026-10-11"
+            "earliest_floor_date": "2026-10-17"
           }
         ],
         "partial_home_passes": [
@@ -2580,7 +2580,7 @@
           "width": 1440,
           "height": 900
         },
-        "assertion": "production CROL_BASE journey verified HTTP 200, \u2265240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow \u2264 1px",
+        "assertion": "production CROL_BASE journey verified HTTP 200, ≥240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow ≤ 1px",
         "failure_mode": "none",
         "asset_classes": [
           "production_html",
@@ -2634,7 +2634,7 @@
             "Map",
             "Browse records",
             "More ways to choose",
-            "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+            "© OpenStreetMap © CARTO | MapLibre",
             "Map",
             "Toggle attribution",
             "MapLibre",
@@ -2664,7 +2664,7 @@
           "width": 390,
           "height": 844
         },
-        "assertion": "production CROL_BASE journey verified HTTP 200, \u2265240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow \u2264 1px",
+        "assertion": "production CROL_BASE journey verified HTTP 200, ≥240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow ≤ 1px",
         "failure_mode": "none",
         "asset_classes": [
           "production_html",
@@ -2719,7 +2719,7 @@
             "Browse records",
             "More ways to choose",
             "Map details",
-            "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+            "© OpenStreetMap © CARTO | MapLibre",
             "Map",
             "Toggle attribution",
             "MapLibre",
@@ -2748,7 +2748,7 @@
           "width": 1440,
           "height": 900
         },
-        "assertion": "production CROL_BASE journey verified HTTP 200, \u2265240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow \u2264 1px",
+        "assertion": "production CROL_BASE journey verified HTTP 200, ≥240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow ≤ 1px",
         "failure_mode": "none",
         "asset_classes": [
           "production_html",
@@ -2805,7 +2805,7 @@
             "Precincts",
             "Source and exact figures",
             "See records in this neighborhood",
-            "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+            "© OpenStreetMap © CARTO | MapLibre",
             "Map",
             "Toggle attribution",
             "MapLibre",
@@ -2832,7 +2832,7 @@
           "width": 390,
           "height": 844
         },
-        "assertion": "production CROL_BASE journey verified HTTP 200, \u2265240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow \u2264 1px",
+        "assertion": "production CROL_BASE journey verified HTTP 200, ≥240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow ≤ 1px",
         "failure_mode": "none",
         "asset_classes": [
           "production_html",
@@ -2891,7 +2891,7 @@
             "Precincts",
             "Source and exact figures",
             "See records in this neighborhood",
-            "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+            "© OpenStreetMap © CARTO | MapLibre",
             "Map",
             "Toggle attribution",
             "MapLibre"
@@ -2916,7 +2916,7 @@
           "width": 1440,
           "height": 900
         },
-        "assertion": "production CROL_BASE journey verified HTTP 200, \u2265240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow \u2264 1px",
+        "assertion": "production CROL_BASE journey verified HTTP 200, ≥240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow ≤ 1px",
         "failure_mode": "none",
         "asset_classes": [
           "production_html",
@@ -2974,7 +2974,7 @@
             "Source and exact figures",
             "Meetings: 26 records in this neighborhood",
             "See records in this neighborhood",
-            "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+            "© OpenStreetMap © CARTO | MapLibre",
             "Map",
             "Toggle attribution",
             "MapLibre",
@@ -3000,7 +3000,7 @@
           "width": 390,
           "height": 844
         },
-        "assertion": "production CROL_BASE journey verified HTTP 200, \u2265240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow \u2264 1px",
+        "assertion": "production CROL_BASE journey verified HTTP 200, ≥240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow ≤ 1px",
         "failure_mode": "none",
         "asset_classes": [
           "production_html",
@@ -3060,7 +3060,7 @@
             "Source and exact figures",
             "Meetings: 26 records in this neighborhood",
             "See records in this neighborhood",
-            "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+            "© OpenStreetMap © CARTO | MapLibre",
             "Map",
             "Toggle attribution"
           ],
@@ -3084,7 +3084,7 @@
           "width": 1440,
           "height": 900
         },
-        "assertion": "production CROL_BASE journey verified HTTP 200, \u2265240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow \u2264 1px; Midwood deferred results populated with observed count recorded as a value",
+        "assertion": "production CROL_BASE journey verified HTTP 200, ≥240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow ≤ 1px; Midwood deferred results populated with observed count recorded as a value",
         "failure_mode": "none",
         "asset_classes": [
           "production_html",
@@ -3145,7 +3145,7 @@
             "Source and exact figures",
             "Meetings: 2 records in this neighborhood",
             "See records in this neighborhood",
-            "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+            "© OpenStreetMap © CARTO | MapLibre",
             "Map"
           ],
           "focusable_count": 35,
@@ -3168,7 +3168,7 @@
           "width": 390,
           "height": 844
         },
-        "assertion": "production CROL_BASE journey verified HTTP 200, \u2265240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow \u2264 1px; Midwood deferred results populated with observed count recorded as a value",
+        "assertion": "production CROL_BASE journey verified HTTP 200, ≥240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow ≤ 1px; Midwood deferred results populated with observed count recorded as a value",
         "failure_mode": "none",
         "asset_classes": [
           "production_html",
@@ -3230,7 +3230,7 @@
             "Source and exact figures",
             "Meetings: 2 records in this neighborhood",
             "See records in this neighborhood",
-            "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre"
+            "© OpenStreetMap © CARTO | MapLibre"
           ],
           "focusable_count": 36,
           "horizontal_overflow_px": 0,
