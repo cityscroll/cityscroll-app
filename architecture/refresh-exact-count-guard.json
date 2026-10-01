@@ -12,7 +12,7 @@
     }
   ],
   "scope": {
-    "note": "Governs exact-count asserts only when a test loads one of the listed refreshed site/data artifacts and the asserted expression references that load binding. The default guard run discovers those test files by content under test/ and worker/test/; it does not limit the scan to a fixed file allowlist. Exact counts against committed fixtures are allowed. Grow this artifact list only when a later scheduled refresh proves another member.",
+    "note": "Governs exact-count asserts only when a test loads one of the listed refreshed site/data artifacts and the asserted expression references that load binding. The default guard run discovers those test files by content under test/ and worker/test/, including helper-based loads (for example loadJsonFile(\"site/data/...\")) and JSON module imports; it does not limit the scan to a fixed file allowlist. Paths that only appear in string arrays or non-load calls stay unscanned. Exact counts against committed fixtures are allowed. Grow this artifact list only when a later scheduled refresh proves another member.",
     "refreshed_site_data_artifacts": [
       "site/data/committee_graph_lookup.json",
       "site/data/district_activity.json",
