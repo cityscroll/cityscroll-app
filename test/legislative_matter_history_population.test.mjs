@@ -132,11 +132,11 @@ test("every retained exact matter is published, with the counts the fixture itse
 
   // The same figures stated absolutely, so a corpus that silently changes shape
   // is visible rather than self-justifying.
-  assert.equal(population.matter_count, 78);
-  assert.equal(population.appearances, 100);
-  assert.equal(population.two_event_histories, 22);
-  assert.equal(population.one_event_histories, 56);
-  assert.equal(population.references, 102);
+  assert.equal(population.matter_count, 81);
+  assert.equal(population.appearances, 106);
+  assert.equal(population.two_event_histories, 21);
+  assert.equal(population.one_event_histories, 58);
+  assert.equal(population.references, 108);
 
   // The committed artifact is what this builder produces from this input.
   assert.deepEqual(built, lookup, "site/data/legislative_matter_lookup.json is current");
@@ -175,9 +175,9 @@ test("the matter that was already published keeps its history unchanged in shape
 // does not know instead of implying that nothing more will happen.
 // ---------------------------------------------------------------------------
 
-test("all 78 published matter routes resolve", async () => {
+test("all 81 published matter routes resolve", async () => {
   const ids = Object.keys(lookup.matters);
-  assert.equal(ids.length, 78);
+  assert.equal(ids.length, 81);
   const statuses = new Map();
   for (const id of ids) {
     assert.equal(edgeRequestKind(`https://cityscroll.org/matters/${id}/`), "matter");
@@ -193,7 +193,7 @@ test("all 78 published matter routes resolve", async () => {
 
 test("a single-appearance history states what has been located without claiming nothing follows", () => {
   const singles = Object.values(lookup.matters).filter((entry) => entry.appearances.length === 1);
-  assert.equal(singles.length, 56);
+  assert.equal(singles.length, 58);
 
   const html = htmlFor("79200");
   assert.equal(documentFor("79200").appearances.length, 1, "79200 is the single-appearance canary");
@@ -409,7 +409,7 @@ test("a matter id claimed by two publisher tenants publishes neither and says so
 
 test("every two-event history shows the earlier laid-over step before the later disposition", () => {
   const sequences = Object.values(lookup.matters).filter((entry) => entry.appearances.length === 2);
-  assert.equal(sequences.length, 22);
+  assert.equal(sequences.length, 21);
   for (const entry of sequences) {
     const [earlier, later] = entry.appearances;
     assert.ok(earlier.event.date < later.event.date, `${entry.matter_id} is ordered by source event date`);

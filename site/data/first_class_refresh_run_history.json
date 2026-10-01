@@ -1,0 +1,370 @@
+{
+  "schema": "cityscroll.first_class_refresh_run_history.v1",
+  "generated_at": "2026-09-30T13:39:28.466Z",
+  "run": {
+    "run_id": "github-actions:36718192869:1",
+    "github_run_id": 36718192869,
+    "run_url": "https://github.com/cityscroll/cityscroll-app/actions/runs/36718192869",
+    "trigger": "schedule",
+    "started_at": "2026-09-30T12:57:20Z",
+    "finished_at": "2026-09-30T13:39:28.466Z",
+    "code_revision": "c9381ab637d8970e8653a0e7616d76f5faa45653"
+  },
+  "total": 39,
+  "due_count": 35,
+  "published_count": 26,
+  "datasets": [
+    {
+      "id": "agency-constellation",
+      "public_artifact_path": "site/data/agency_constellation_lookup.json",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "agency-obligations",
+      "public_artifact_path": "site/data/agency_obligations_lookup.json",
+      "due": true,
+      "acquisition_status": "failed",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": false
+    },
+    {
+      "id": "contracts-payments",
+      "public_artifact_path": "site/data/analytics_payments.json",
+      "due": true,
+      "acquisition_status": "failed",
+      "builder_status": "skipped",
+      "rebuild_status": "succeeded",
+      "published": false
+    },
+    {
+      "id": "contracts-performance-evidence",
+      "public_artifact_path": "site/data/analytics_performance_evidence.json",
+      "due": true,
+      "acquisition_status": "failed",
+      "builder_status": "skipped",
+      "rebuild_status": "succeeded",
+      "published": false
+    },
+    {
+      "id": "contracts-registered",
+      "public_artifact_path": "site/data/analytics_registered_contracts.json",
+      "due": true,
+      "acquisition_status": "failed",
+      "builder_status": "skipped",
+      "rebuild_status": "succeeded",
+      "published": false
+    },
+    {
+      "id": "bsa-calendar",
+      "public_artifact_path": "site/data/bsa_calendar.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "committee-graph",
+      "public_artifact_path": "site/data/committee_graph_lookup.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "community-board-budget-register",
+      "public_artifact_path": "site/data/community_board_budget_register.json",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
+      "rebuild_status": "succeeded",
+      "published": false
+    },
+    {
+      "id": "community-board-geography",
+      "public_artifact_path": "site/data/community_board_geography_lookup.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "succeeded",
+      "rebuild_status": "succeeded",
+      "published": false
+    },
+    {
+      "id": "community-board-meetings",
+      "public_artifact_path": "site/data/community_board_meeting_index.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "community-board-people",
+      "public_artifact_path": "site/data/community_board_people.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": false
+    },
+    {
+      "id": "public-consultations",
+      "public_artifact_path": "site/data/consultations.json",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
+      "rebuild_status": "succeeded",
+      "published": false
+    },
+    {
+      "id": "land-default",
+      "public_artifact_path": "site/data/land_default_ulurp.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "land-upcoming-hearings",
+      "public_artifact_path": "site/data/land_upcoming_hearings.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "meeting-notices",
+      "public_artifact_path": "site/data/meeting_notice_materialization.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "meeting-outcomes",
+      "public_artifact_path": "site/data/meeting_outcomes_snapshot.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "address-geography-refresh",
+      "public_artifact_path": "site/data/meeting-geography-backfill/manifest.json",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
+      "rebuild_status": "succeeded",
+      "published": false
+    },
+    {
+      "id": "meetings-domain",
+      "public_artifact_path": "site/data/meetings_domain_observations.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "contracts-open",
+      "public_artifact_path": "site/data/money_default_open.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "contracts-agency-filter",
+      "public_artifact_path": "site/data/money_procurement_agencies.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "contracts-resident-snapshot",
+      "public_artifact_path": "site/data/money_resident_snapshot.json",
+      "due": true,
+      "acquisition_status": "failed",
+      "builder_status": "skipped",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "community-board-committees",
+      "public_artifact_path": "site/data/non_council_outcome_sources/community_board_committees.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": false
+    },
+    {
+      "id": "oath-trial-calendar",
+      "public_artifact_path": "site/data/oath_trial_calendar.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "succeeded",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "ocp-awards",
+      "public_artifact_path": "site/data/ocp_awards_warehouse_lookup.json",
+      "due": true,
+      "acquisition_status": "failed",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": false
+    },
+    {
+      "id": "official-cfb-influence",
+      "public_artifact_path": "site/data/official_cfb_influence_lookup.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "pdc-calendar",
+      "public_artifact_path": "site/data/pdc_calendar.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "succeeded",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "people-organizations",
+      "public_artifact_path": "site/data/people_organizations_read_model.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "succeeded",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "person-hub",
+      "public_artifact_path": "site/data/person_hub_lookup.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "contracts-procurement-query",
+      "public_artifact_path": "site/data/procurement_browse_query.json",
+      "due": true,
+      "acquisition_status": "failed",
+      "builder_status": "skipped",
+      "rebuild_status": "succeeded",
+      "published": false
+    },
+    {
+      "id": "contracts-procurement-rows",
+      "public_artifact_path": "site/data/procurement_browse_rows.json",
+      "due": true,
+      "acquisition_status": "failed",
+      "builder_status": "skipped",
+      "rebuild_status": "succeeded",
+      "published": false
+    },
+    {
+      "id": "property-domain",
+      "public_artifact_path": "site/data/property_domain_observations.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "property-resident",
+      "public_artifact_path": "site/data/property_resident_snapshot.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "succeeded",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "rules-domain",
+      "public_artifact_path": "site/data/rules_domain_observations.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "rules-semantic-lane",
+      "public_artifact_path": "site/data/rules_semantic_lane.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "succeeded",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "shared-meetings",
+      "public_artifact_path": "site/data/shared_meeting_read_model.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "succeeded",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "staffing-hires",
+      "public_artifact_path": "site/data/staffing_default_hires.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "staffing-exams",
+      "public_artifact_path": "site/data/staffing_exams.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "succeeded",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "upcoming-council-meetings",
+      "public_artifact_path": "site/data/upcoming_council_meetings.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "succeeded",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "zap-projects",
+      "public_artifact_path": "site/data/zap_projects_warehouse_lookup.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": true
+    }
+  ],
+  "prior_runs": []
+}

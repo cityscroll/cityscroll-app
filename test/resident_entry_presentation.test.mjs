@@ -107,13 +107,14 @@ test("A4: participation claims follow to open opportunities and do not treat clo
   const artifact = JSON.parse(read("site/data/staffing_exams.json"));
   const today = artifact.open_window_as_of;
   assert.match(String(today || ""), /^\d{4}-\d{2}-\d{2}/);
-  const openExam = artifact.exams.find((exam) => exam.exam_number === "7006");
+  // 7302 stays open through the 2026-09-30 scheduled refresh window; 7006 closed.
+  const openExam = artifact.exams.find((exam) => exam.exam_number === "7302");
   const closedExam = artifact.exams.find((exam) => exam.exam_number === "7016");
-  assert.ok(openExam, "open opportunity fixture 7006 must exist");
+  assert.ok(openExam, "open opportunity fixture 7302 must exist");
   assert.ok(closedExam, "closed practice fixture 7016 must exist");
 
   await withPinnedClock(`${String(today).slice(0, 10)}T12:00:00.000Z`, () => {
-    assert.equal(Staffing.statusFor(openExam, today), "open", "7006 must be an open opportunity on the artifact clock");
+    assert.equal(Staffing.statusFor(openExam, today), "open", "7302 must be an open opportunity on the artifact clock");
     assert.equal(Staffing.statusFor(closedExam, today), "closed", "7016 must stay a closed record on the artifact clock");
     assert.ok(openExam.application_end >= today);
     assert.ok(closedExam.application_end < today);

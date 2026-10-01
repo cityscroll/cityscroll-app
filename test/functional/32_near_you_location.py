@@ -2,8 +2,9 @@
 """Browser regression: address, place and location entry lead to local records.
 
 Serves real Near You documents, record details and Browse through the Near You
-capture server with its clock pinned, and drives the bound entry controls in
-headless Chromium at a narrow touch width and a desktop width.
+capture server with its clock and district-activity blob pinned (same frozen
+activity as discovery-recovery / local-home), and drives the bound entry
+controls in headless Chromium at a narrow touch width and a desktop width.
 
 Successful typed address, place-name and explicit location entry opens the
 selected neighborhood's Records surface. Every failure keeps the page the
@@ -48,6 +49,10 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 from route_response_text import fetch_uncompressed, fulfill_with_text, response_text  # noqa: E402
 CLOCK = "2026-09-28T16:00:00.000Z"
+# Same pinned district-activity blob as discovery-recovery and default-local-home:
+# citywide / virtual / unlocated bags stay stable across daily first-class refresh.
+FROZEN_ACTIVITY_BLOB = "5deaa202fe578e09b58380d43755419dbb85ec60"
+FROZEN_ACTIVITY_REVISION = "d886b385d647f4534df985f5922749a9414fab26"
 VIEWPORTS = (("narrow_touch", 390, 844), ("desktop", 1440, 900))
 TARGET_SIZE_FLOOR_CSS_PX = 44
 
@@ -176,7 +181,43 @@ def query(url: str) -> dict[str, list[str]]:
     return parse_qs(urlparse(url).query)
 
 
+def ensure_frozen_activity_blob() -> None:
+    """Shallow CI checkouts omit historical blobs; fetch the pin revision when needed."""
+    probe = subprocess.run(
+        ["git", "cat-file", "-e", FROZEN_ACTIVITY_BLOB],
+        cwd=ROOT,
+        capture_output=True,
+        check=False,
+    )
+    if probe.returncode == 0:
+        return
+    fetched = subprocess.run(
+        ["git", "fetch", "--no-tags", "--depth", "1", "origin", FROZEN_ACTIVITY_REVISION],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if fetched.returncode != 0:
+        raise RuntimeError(
+            "frozen district-activity blob "
+            f"{FROZEN_ACTIVITY_BLOB} is missing and fetch of "
+            f"{FROZEN_ACTIVITY_REVISION} failed: {fetched.stderr.strip()}"
+        )
+    present = subprocess.run(
+        ["git", "cat-file", "-e", FROZEN_ACTIVITY_BLOB],
+        cwd=ROOT,
+        capture_output=True,
+        check=False,
+    )
+    if present.returncode != 0:
+        raise RuntimeError(
+            f"frozen district-activity blob {FROZEN_ACTIVITY_BLOB} still missing after fetch"
+        )
+
+
 def start_server() -> tuple[subprocess.Popen, str]:
+    ensure_frozen_activity_blob()
     env = {
         **os.environ,
         "NODE_OPTIONS": " ".join(filter(None, [
@@ -184,6 +225,7 @@ def start_server() -> tuple[subprocess.Popen, str]:
             f"--import={ROOT / 'test' / 'helpers' / 'test_clock_preload.mjs'}",
         ])),
         "CITYSCROLL_TEST_TIME_PIN": CLOCK,
+        "NEAR_YOU_CAPTURE_ACTIVITY_BLOB": FROZEN_ACTIVITY_BLOB,
     }
     server = subprocess.Popen(
         ["node", "tools/serve_near_you_capture.mjs"],

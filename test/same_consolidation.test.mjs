@@ -104,8 +104,10 @@ test("detector fails raw same-except-one rows and accepts their consolidated vie
 });
 
 test("the committed appointment census preserves every person while reducing repeated chrome", () => {
+  // Frozen staffing hires vintage for the consolidation census pin. Daily
+  // refresh rewrites hire notices and splits the same-except groups.
   const snapshot = JSON.parse(
-    readFileSync(new URL("../site/data/staffing_default_hires.json", import.meta.url), "utf8"),
+    readFileSync(new URL("./fixtures/staffing-appointment-census/staffing_default_hires.json", import.meta.url), "utf8"),
   );
   const crosswalk = JSON.parse(
     readFileSync(new URL("../site/data/title_crosswalk.json", import.meta.url), "utf8"),

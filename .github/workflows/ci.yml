@@ -1079,6 +1079,9 @@ jobs:
         if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
         with:
           persist-credentials: false
+          # Near You capture pins a historical district-activity blob; shallow
+          # tips omit it from the object store.
+          fetch-depth: 0
       - name: Restore and verify exact-input site artifact
         if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
         uses: ./.github/actions/use-site-artifact

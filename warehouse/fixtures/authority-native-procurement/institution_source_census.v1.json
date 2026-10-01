@@ -53,7 +53,7 @@
     "rejected"
   ],
   "existing_snapshot": {
-    "generated_at": "2026-09-24T02:19:17.262Z",
+    "generated_at": "2026-09-09T06:33:01.880Z",
     "artifacts": {
       "browse_rows": {
         "path": "site/data/procurement_browse_rows.json",
@@ -73,7 +73,7 @@
     },
     "served_source_counts": {
       "city_record": 12690,
-      "passport_public_contracts": 12770,
+      "passport_public_contracts": 12771,
       "checkbook_contracts": 9060
     },
     "interpretation": "Counts are the committed CityScroll snapshot, not a claim that any source is a complete citywide inventory."

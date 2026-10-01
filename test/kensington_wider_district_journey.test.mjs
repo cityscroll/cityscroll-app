@@ -345,8 +345,29 @@ test("A3 [boundary] CB14 parcels stay out of exact BK1203; K07 does not preview;
 });
 
 test("A4 lean Worker path: Kensington deferred broader preview stays on published slices", async () => {
+  // Pin K12/K14 membership lists to the same main-vintage fixture A1/A2 use so
+  // October densification cannot push Sept 23 out of the broader preview top-3.
+  const pinnedActivity = structuredClone(activity);
+  pinnedActivity.records = pinnedActivity.records || {};
+  pinnedActivity.records.meetings = {
+    ...(pinnedActivity.records.meetings || {}),
+    ...(broaderCandidates.records || {}),
+  };
+  pinnedActivity.district_items = pinnedActivity.district_items || {};
+  pinnedActivity.district_items.by_level = pinnedActivity.district_items.by_level || {};
+  pinnedActivity.district_items.by_level.community_district = {
+    ...(pinnedActivity.district_items.by_level.community_district || {}),
+  };
+  for (const [districtId, memberIds] of Object.entries(broaderCandidates.districts || {})) {
+    const prior = pinnedActivity.district_items.by_level.community_district[districtId] || {};
+    pinnedActivity.district_items.by_level.community_district[districtId] = {
+      ...prior,
+      meetings: memberIds,
+    };
+  }
+
   const publication = buildLocalGeographyPublication({
-    activity,
+    activity: pinnedActivity,
     geography: {},
     meetings: sharedMeetings,
     version: "kensington-wider-lean",

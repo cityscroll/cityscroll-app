@@ -6,7 +6,7 @@
   "renderer": "tools/render_matter_continuation_fixtures.mjs",
   "fixture_digest": "fd127146bced8154249365ea40cdf25c1421b5c390d25d5a4c5335b4685c3e51",
   "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-  "data_vintage": "2026-09-04T13:09:00.447Z",
+  "data_vintage": "2026-09-30T13:12:58.771Z",
   "captured_at": "2026-09-07T02:28:52Z",
   "image_directory": ".artifacts/matter-continuation-availability",
   "corpus_note": "Every specimen reads the committed retained corpus at the data vintage above. The observations describe that corpus, not live publisher coverage, and no capture claims a cause, an adoption, or a participant result.",
@@ -23,7 +23,7 @@
         844
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 390px a hearing whose matter has a published history offers 'View matter history' to that matter and 'View official matter record' to the rest, every control a real anchor at a 44px target",
       "observations": {
@@ -57,7 +57,7 @@
         900
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 1440px a hearing whose matter has a published history offers 'View matter history' to that matter and 'View official matter record' to the rest, every control a real anchor at a 44px target",
       "observations": {
@@ -91,7 +91,7 @@
         844
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 390px an exact matter with no published history opens its own official record and advertises no local route",
       "observations": {
@@ -121,7 +121,7 @@
         900
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 1440px an exact matter with no published history opens its own official record and advertises no local route",
       "observations": {
@@ -151,7 +151,7 @@
         844
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 390px a hearing with five exact matters keeps all five as separate choices, each with its own destination, and promotes none of them",
       "observations": {
@@ -186,7 +186,7 @@
         900
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 1440px a hearing with five exact matters keeps all five as separate choices, each with its own destination, and promotes none of them",
       "observations": {
@@ -221,7 +221,7 @@
         844
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 390px an unmatched notice offers no matter and no substitute destination, and says why instead",
       "observations": {
@@ -250,7 +250,7 @@
         900
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 1440px an unmatched notice offers no matter and no substitute destination, and says why instead",
       "observations": {
@@ -279,7 +279,7 @@
         844
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 390px an exact matter with no reachable record keeps its identity visible and states the absence rather than offering a dead control",
       "observations": {
@@ -308,7 +308,7 @@
         900
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 1440px an exact matter with no reachable record keeps its identity visible and states the absence rather than offering a dead control",
       "observations": {
@@ -337,7 +337,7 @@
         844
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 390px the destination is reached from the keyboard alone, and browser Back returns to the same meeting with its scope and continuation state intact and the control focusable again",
       "observations": {
@@ -369,7 +369,7 @@
         900
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 1440px the destination is reached from the keyboard alone, and browser Back returns to the same meeting with its scope and continuation state intact and the control focusable again",
       "observations": {
@@ -401,7 +401,7 @@
         844
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 390px the destination is an ordinary anchor: a modified click is handed to the browser and leaves the meeting in place, and a plain click still navigates",
       "observations": {
@@ -431,7 +431,7 @@
         900
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 1440px the destination is an ordinary anchor: a modified click is handed to the browser and leaves the meeting in place, and a plain click still navigates",
       "observations": {
@@ -461,7 +461,7 @@
         844
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 390px zoomed to 200% every matter choice is still present, still an anchor at a 44px target, and the page does not scroll sideways",
       "observations": {
@@ -493,7 +493,7 @@
         900
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "enabled",
       "assertion": "at 1440px zoomed to 200% every matter choice is still present, still an anchor at a 44px target, and the page does not scroll sideways",
       "observations": {
@@ -525,7 +525,7 @@
         844
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "disabled",
       "assertion": "at 390px a reader without scripting receives the same labelled destination and activating it navigates, with Back returning to the meeting",
       "observations": {
@@ -556,7 +556,7 @@
         900
       ],
       "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "data_vintage": "2026-09-04T13:09:00.447Z",
+      "data_vintage": "2026-09-30T13:12:58.771Z",
       "scripting": "disabled",
       "assertion": "at 1440px a reader without scripting receives the same labelled destination and activating it navigates, with Back returning to the meeting",
       "observations": {

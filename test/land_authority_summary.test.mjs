@@ -284,9 +284,11 @@ test("architecture-evidence projections reconcile the materializer card", () => 
 });
 
 test("fixture materializer does not copy expected next into next_procedural_body", () => {
+  // Keep asOf inside the published-opportunity freshness window for the
+  // committed hearings vintage (LAND_AUTHORITY_PUBLISHED_OPPORTUNITY_MAX_AGE_DAYS).
   const { payload } = materializeLandAuthoritySummaries({
     landDefault: {
-      generated_at: "2026-08-23T00:00:00.000Z",
+      generated_at: landDefault.generated_at,
       projects: [defaultRow("2025K0305")],
       outcomes: { by_project: { "2025K0305": landDefault.outcomes.by_project["2025K0305"] } },
     },

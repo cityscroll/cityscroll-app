@@ -2,8 +2,8 @@
   "schema": "cityscroll.land_selection_readable_authority_acceptance.v1",
   "record": "cityscroll-engineering/cd4108a7db076",
   "route": "/browse/zoning/?view=map",
-  "revision": "a0c80dbfb99b6e0d6d394e5ac44793fd149836e8",
-  "fixture_vintage": "2026-09-09T06:46:42.537Z",
+  "revision": "211da93c6b0323112efd9457436440d3a1f8ae0f",
+  "fixture_vintage": "2026-09-30T13:04:22.921Z",
   "timezone": "America/New_York",
   "captured_at": "2026-09-17T06:26:00.000Z",
   "viewport": [
@@ -77,7 +77,7 @@
     "route": "/browse/zoning/?view=map",
     "harness": "test/land_selection_readable_authority.test.mjs",
     "assertion": "set map view, inspect 200 Kent, clear selection, open the explicit full record, return with Back, and continue; cover narrow/touch, keyboard, no-JavaScript, and failed-detail variants",
-    "html_sha256": "e6b954de46fbd5afe7abf4de0606f5a117d6469fb3fc1c9ec4d63abf287a9a9d",
+    "html_sha256": "14eba931f325594eaedc6ebfe56c13cb344d15e84fb61b5adac8c76926fd46c0",
     "text_sha256": "fc60a74e48a8f9a5361407f3aa3e0d2473d9222afb23ee9c3e5c635cc430fcf5"
   }
 }
