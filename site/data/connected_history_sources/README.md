@@ -77,12 +77,18 @@ manual dispatch). The declaration is checked by
 Every run writes `site/data/connected_history_cycle.json`, served at
 `/data/connected_history_cycle.json`, and the workflow publishes it through
 the `automation/connected-history-cycle` pull request with auto-merge. The
-receipt records the run's start and finish, the served revision before and
-after, each stage, the acquired sources and digests, each materialization's
-committed and materialized digests and stamps, the publication decision with
-its reason, and a ledger of earlier runs. Because a byte-identical run still
-writes a new receipt, an idempotent cycle can be told apart from no cycle. A
-failed stage writes a receipt naming that stage. Rebuilding from committed
+receipt records the run's start and finish, the trigger (`schedule` or
+`workflow_dispatch`), the served revision before and after, each stage, the
+acquired sources and digests, each materialization's committed and
+materialized digests and stamps, the publication decision with its reason, and
+a ledger of earlier runs. The ledger is append-only inside its retention
+window: before a run force-updates the automation branch it loads any still-
+unmerged receipt from that branch (`--pending-receipt`) and merges it into
+`prior_runs`, and a proposed receipt that would drop a retained run fails
+instead of publishing. Because a byte-identical run still writes a new
+receipt, an idempotent cycle can be told apart from no cycle. A failed stage
+writes a receipt naming that stage. The workflow also uploads the receipt as a
+run artifact so a displaced tip can be recovered. Rebuilding from committed
 inputs (a builder or a deploy) never writes a receipt, so a missing receipt
 means no cycle ran. `verifyConnectedHistoryCycleReceipt` re-derives the status,
 the outcome and the decision from the receipt's own facts.

@@ -215,6 +215,12 @@ export function checkConnectedHistoryCycleDeclaration(text, declaration = CONNEC
       errors.push(`${cron} can leave more than ${declaration.cadence_hours} hours between cycles`);
     }
   }
+  // A later run that force-updates the automation branch must still see any
+  // unmerged receipt already on that branch; otherwise prior_runs records only
+  // whichever run finished last.
+  if (!text.includes("--pending-receipt") || !text.includes(declaration.publication.branch)) {
+    errors.push("the workflow does not carry an unmerged automation-branch receipt into the next run");
+  }
   return { valid: errors.length === 0, errors, triggers };
 }
 
@@ -618,6 +624,8 @@ export async function runConnectedHistoryCycle({
   dryRun = false,
   receiptOut = null,
   heldDir = null,
+  /** Unmerged receipts (automation-branch tip) that must stay in prior_runs. */
+  pendingReceipts = [],
 } = {}) {
   if (!root) throw new Error("runConnectedHistoryCycle requires a repository root");
   const startedAt = now();
@@ -753,6 +761,7 @@ export async function runConnectedHistoryCycle({
     materialization: state.materialization,
     publication: state.publication,
     committedState,
+    pendingReceipts,
     root,
   });
   const verification = verifyConnectedHistoryCycleReceipt(receipt);
@@ -776,6 +785,84 @@ function ledgerEntry(receipt, digest) {
   };
 }
 
+/**
+ * Newest-first ledger of a receipt's own run plus every prior entry it kept.
+ */
+export function ledgerHistoryOf(receipt, digest) {
+  if (!receipt?.run?.run_id) return [];
+  return [ledgerEntry(receipt, digest), ...(Array.isArray(receipt.prior_runs) ? receipt.prior_runs : [])];
+}
+
+/**
+ * Merge newest-first histories by run_id. The first occurrence of each id wins
+ * so callers can put an unmerged automation-branch receipt ahead of main.
+ */
+export function mergePriorRunHistories(...histories) {
+  const byId = new Map();
+  for (const history of histories) {
+    for (const entry of history || []) {
+      if (!entry?.run_id || byId.has(entry.run_id)) continue;
+      byId.set(entry.run_id, entry);
+    }
+  }
+  return [...byId.values()].sort((left, right) => (
+    String(right.started_at || "").localeCompare(String(left.started_at || ""))
+  ));
+}
+
+/** Entries present in `retained` whose run_id is absent from `proposed`. */
+export function priorRunsDropped(retained, proposed) {
+  const proposedIds = new Set((proposed || []).map((entry) => entry?.run_id).filter(Boolean));
+  return (retained || []).filter((entry) => entry?.run_id && !proposedIds.has(entry.run_id));
+}
+
+/**
+ * Positive control for append-only history: within the ledger window, every
+ * retained run_id must appear in the proposed ledger. A drop fails the run
+ * instead of publishing a quieter history.
+ */
+export function assertPriorRunsAppendOnly(retained, proposed, {
+  limit = CONNECTED_HISTORY_CYCLE.ledger_limit,
+} = {}) {
+  const mustKeep = mergePriorRunHistories(retained).slice(0, limit);
+  const dropped = priorRunsDropped(mustKeep, proposed);
+  if (!dropped.length) return;
+  const names = dropped
+    .map((entry) => `${entry.run_id} (${entry.trigger || "unknown"}, ${entry.started_at || "no-time"})`)
+    .join("; ");
+  throw new Error(`connected-history cycle receipt would drop retained run(s): ${names}`);
+}
+
+/**
+ * Build the prior_runs ledger from the committed receipt and any still-unmerged
+ * receipts (typically the automation-branch tip). Append-only within the
+ * ledger window: a proposed history that would drop a retained run fails.
+ */
+export function buildPriorRunsLedger({
+  committedPrevious = null,
+  committedDigest = null,
+  pendingReceipts = [],
+  limit = CONNECTED_HISTORY_CYCLE.ledger_limit,
+} = {}) {
+  const retained = mergePriorRunHistories(
+    ...pendingReceipts.map((entry) => ledgerHistoryOf(entry.receipt, entry.digest)),
+    committedPrevious ? ledgerHistoryOf(committedPrevious, committedDigest) : [],
+  );
+  const priorRuns = retained.slice(0, limit);
+  assertPriorRunsAppendOnly(retained, priorRuns, { limit });
+  return priorRuns;
+}
+
+/** Parse a pending/unmerged cycle receipt file into `{ receipt, digest }`. */
+export function loadPendingCycleReceipt(text) {
+  const receipt = JSON.parse(text);
+  if (receipt?.schema !== CONNECTED_HISTORY_CYCLE_RECEIPT_SCHEMA) {
+    throw new Error("pending cycle receipt is not a connected-history cycle receipt");
+  }
+  if (!receipt.run?.run_id) throw new Error("pending cycle receipt names no run_id");
+  return { receipt, digest: contentHashOf(text) };
+}
+
 export function buildConnectedHistoryCycleReceipt({
   run = {},
   startedAt,
@@ -789,13 +876,15 @@ export function buildConnectedHistoryCycleReceipt({
   materialization,
   publication,
   committedState,
+  pendingReceipts = [],
   root,
 }) {
   const previous = committedState?.previous || null;
-  const priorRuns = previous
-    ? [ledgerEntry(previous, committedState.previousDigest), ...(previous.prior_runs || [])]
-      .slice(0, CONNECTED_HISTORY_CYCLE.ledger_limit)
-    : [];
+  const priorRuns = buildPriorRunsLedger({
+    committedPrevious: previous,
+    committedDigest: committedState?.previousDigest ?? null,
+    pendingReceipts,
+  });
   const cohort = committedState?.committed?.cohort?.value;
   const acquired = acquisition?.acquired || null;
   const failedStage = failure ? failure.stage : null;
