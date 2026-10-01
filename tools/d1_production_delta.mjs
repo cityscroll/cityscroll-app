@@ -1,15 +1,21 @@
 #!/usr/bin/env node
 
 /**
- * The ordinary production D1 delta-publication transaction.
+ * The ordinary production D1 delta-publication transaction, plus the unattended
+ * missing-snapshot recovery path.
  *
- * This composes the existing partition planner, generation fence, bounded
- * publisher, canary, reconciliation, and receipt inputs without introducing a
- * rebuild fallback. A missing or incompatible prior snapshot is a refusal from
- * d1_delta_plan; only the separate explicit-rebuild workflow may establish a
- * new baseline.
+ * Ordinary cycles compose the partition planner, generation fence, bounded
+ * publisher, canary, reconciliation, and receipt inputs for a keyed delta.
+ * When published fence state references a generation-qualified KV snapshot that
+ * is absent, `runMissingSnapshotRecovery` performs an explicit rebuild that
+ * republishes the current baseline and writes a fresh snapshot under the key
+ * the completed fence will reference, so the next cycle can plan a delta.
+ * Operator-directed rebuilds remain available through the separate explicit
+ * rebuild workflow; the `disable_incremental_publication` kill switch still
+ * pauses both ordinary deltas and this recovery path.
  */
 
+import { createHash } from "node:crypto";
 import { execFile } from "node:child_process";
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -34,7 +40,7 @@ import {
 import { PLAN_SCHEMA, SNAPSHOT_SCHEMA, planDelta } from "./d1_delta_plan.mjs";
 import { D1_GENERATION_FENCE_SCHEMA, createFileLedger, createWranglerKvStore } from "./d1_generation_fence.mjs";
 import { loadManifest } from "./d1_manifest.mjs";
-import { buildReconcileReport } from "./d1_reconcile.mjs";
+import { buildReconcileReport, selectReconcileScope } from "./d1_reconcile.mjs";
 
 const execFileAsync = promisify(execFile);
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -42,6 +48,8 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export const D1_PRODUCTION_DELTA_RESULT_SCHEMA = "cityscroll.d1-production-delta-result.v1";
 export const D1_PUBLICATION_SNAPSHOT_KEY_PREFIX = "d1-publication:snapshot:v2:";
 export const D1_PUBLICATION_RECOVERY_SCHEMA = "cityscroll.d1-publication-recovery.v1";
+export const MISSING_SNAPSHOT_REBUILD_REASON =
+  "published D1 state referenced a missing generation-qualified snapshot; explicit rebuild recovery republished the current baseline";
 
 /**
  * Classify only a missing generation-qualified KV object as bootstrap recovery.
@@ -65,6 +73,36 @@ export function buildMissingPriorSnapshotRecovery({ published_state: state, snap
     baseline: { status: "unavailable", source: "missing_kv_snapshot" },
     d1_writes: { commands: null, rows: null },
   };
+}
+
+/**
+ * Bound the post-rebuild verification sample to the canary ceilings and treat
+ * that sample as the complete candidate set so a truncated full-corpus scan
+ * cannot fail a recovery that intentionally verifies a bounded sample.
+ */
+export function selectRecoveryVerifyScope({ manifest, sourceDocuments, policy }) {
+  const scope = selectReconcileScope({
+    manifest,
+    sourceDocuments,
+    policy,
+    maxPartitions: policy.canary.max_partitions,
+    maxRows: policy.canary.max_rows,
+  });
+  return {
+    candidate_count: scope.selected.length,
+    selected: scope.selected,
+    rows: scope.rows,
+    truncated: false,
+  };
+}
+
+export function snapshotKeyForGeneration(generation) {
+  if (!Number.isInteger(generation) || generation < 1) fail("generation must be a positive integer");
+  return `${D1_PUBLICATION_SNAPSHOT_KEY_PREFIX}${generation}`;
+}
+
+function sha256Text(text) {
+  return createHash("sha256").update(text, "utf8").digest("hex");
 }
 
 export function applicationCheckpointId(fingerprint, batch) {
@@ -203,6 +241,128 @@ export async function runProductionDelta({
   });
 }
 
+/**
+ * Unattended recovery when published fence state points at a missing
+ * generation-qualified snapshot. Republishes the current baseline as an
+ * explicit rebuild, verifies a canary-bounded sample, and returns the
+ * artifacts the workflow needs to write the fresh snapshot key before
+ * completing the fence.
+ */
+export async function runMissingSnapshotRecovery({
+  currentSnapshot,
+  recovery,
+  manifest,
+  sourceDocuments,
+  generation,
+  fingerprint,
+  holder,
+  fenceStore,
+  fenceLedger = null,
+  adapter,
+  appliedBatchStore = adapter,
+  policy,
+  maxOpsPerBatch = DEFAULT_MAX_OPS_PER_BATCH,
+  recordedAt = new Date().toISOString(),
+  now = () => Date.now(),
+  reason = MISSING_SNAPSHOT_REBUILD_REASON,
+}) {
+  if (!recovery || recovery.schema !== D1_PUBLICATION_RECOVERY_SCHEMA || recovery.reason !== "published_snapshot_missing") {
+    fail("missing-snapshot recovery requires a published_snapshot_missing recovery record");
+  }
+  if (currentSnapshot?.schema !== SNAPSHOT_SCHEMA) fail("current snapshot has the wrong schema");
+
+  const plan = planDelta({ prior: null, current: currentSnapshot, rebuild: reason });
+  if (plan.operation !== "rebuild") fail("missing-snapshot recovery did not produce a rebuild plan");
+  const batchPlan = planBatches({ plan, manifest, sourceDocuments, generation, maxOpsPerBatch });
+
+  const publishReceipt = await publishBounded({
+    batchPlan, manifest, fenceStore, fenceLedger, holder, fingerprint,
+    executor: adapter, appliedBatchStore, now,
+  });
+  if (publishReceipt.status !== "complete") {
+    return {
+      ...terminalResult({
+        ...publicationOutcome(publishReceipt), plan, batchPlan, publishReceipt,
+        canaryEvidence: null, reconcileReport: null,
+      }),
+      recovery: {
+        ...recovery,
+        status: "bootstrap_failed",
+        rebuilt_generation: null,
+        rebuilt_snapshot_key: null,
+        d1_writes: {
+          commands: publishReceipt.completed_batches?.length ?? null,
+          rows: publishReceipt.totals?.observed_writes ?? null,
+        },
+      },
+      snapshotToPersist: currentSnapshot,
+    };
+  }
+
+  const scope = selectRecoveryVerifyScope({ manifest, sourceDocuments, policy });
+  if (scope.selected.length === 0) {
+    return {
+      ...terminalResult({
+        outcome: "failed_permanent",
+        reason: "missing-snapshot recovery could not select a verification sample",
+        plan, batchPlan, publishReceipt, canaryEvidence: null, reconcileReport: null,
+      }),
+      recovery: { ...recovery, status: "bootstrap_failed", rebuilt_generation: null, rebuilt_snapshot_key: null },
+      snapshotToPersist: currentSnapshot,
+    };
+  }
+  const verification = await verifyPartitionScope({
+    manifest, sourceDocuments, adapter, selection: scope.selected,
+  });
+  const reconcileReport = buildReconcileReport({
+    generation, policy, scope, verification, truncated: scope.truncated, recordedAt,
+  });
+  if (!reconcileReport.consistent) {
+    return {
+      ...terminalResult({
+        outcome: "failed_permanent",
+        reason: "missing-snapshot recovery verification was not consistent",
+        plan, batchPlan, publishReceipt, canaryEvidence: null, reconcileReport,
+      }),
+      recovery: {
+        ...recovery,
+        status: "bootstrap_failed",
+        rebuilt_generation: null,
+        rebuilt_snapshot_key: null,
+        d1_writes: {
+          commands: publishReceipt.completed_batches?.length ?? null,
+          rows: publishReceipt.totals?.observed_writes ?? null,
+        },
+      },
+      snapshotToPersist: currentSnapshot,
+    };
+  }
+
+  const rebuiltSnapshotKey = snapshotKeyForGeneration(generation);
+  const rebuiltRecovery = {
+    ...recovery,
+    status: "rebuilt",
+    action: "explicit_rebuild",
+    rebuilt_generation: generation,
+    rebuilt_snapshot_key: rebuiltSnapshotKey,
+    baseline: { status: "rebuilt", source: "current_snapshot_rebuild" },
+    d1_writes: {
+      commands: publishReceipt.completed_batches?.length ?? null,
+      rows: publishReceipt.totals?.observed_writes ?? null,
+    },
+  };
+  return {
+    ...terminalResult({
+      outcome: "published",
+      reason,
+      plan, batchPlan, publishReceipt, canaryEvidence: null, reconcileReport,
+    }),
+    recovery: rebuiltRecovery,
+    snapshotToPersist: currentSnapshot,
+    sourceSnapshotSha256: sha256Text(`${JSON.stringify(currentSnapshot)}\n`),
+  };
+}
+
 function bindSql(sql, params) {
   let index = 0;
   const bound = sql.replace(/\?/g, () => {
@@ -287,12 +447,25 @@ function sourceDocumentsFor(manifest) {
   return Object.fromEntries(manifest.models.map((entry) => [entry.model_id, readSourceDocument(entry, ROOT)]));
 }
 
+function writePublicationArtifacts(outDir, result, { generation, fingerprint }) {
+  writeJson(join(outDir, "delta-plan.json"), result.plan);
+  writeJson(join(outDir, "batch-plan.json"), result.batchPlan);
+  if (result.publishReceipt) writeJson(join(outDir, "publish-receipt.json"), result.publishReceipt);
+  if (result.canaryEvidence) writeJson(join(outDir, "canary-evidence.json"), result.canaryEvidence);
+  if (result.reconcileReport) writeJson(join(outDir, "reconcile-report.json"), result.reconcileReport);
+  if (result.recovery) writeJson(join(outDir, "recovery.json"), result.recovery);
+  writeJson(join(outDir, "result.json"), {
+    schema: result.schema, outcome: result.outcome, reason: result.reason,
+    generation, fingerprint,
+    recovery_status: result.recovery?.status ?? null,
+    rebuilt_snapshot_key: result.recovery?.rebuilt_snapshot_key ?? null,
+  });
+}
+
 async function main(argv) {
   const args = parseArgs(argv);
   if (args.command === "snapshot-key") {
-    const generation = Number(required(args, "generation"));
-    if (!Number.isInteger(generation) || generation < 1) fail("generation must be a positive integer");
-    process.stdout.write(`${D1_PUBLICATION_SNAPSHOT_KEY_PREFIX}${generation}\n`);
+    process.stdout.write(`${snapshotKeyForGeneration(Number(required(args, "generation")))}\n`);
     return 0;
   }
   if (args.command === "prior-snapshot-key") {
@@ -300,7 +473,7 @@ async function main(argv) {
     if (state.schema !== D1_GENERATION_FENCE_SCHEMA || state.status !== "published" || !Number.isInteger(state.generation)) {
       fail("published generation has no delta snapshot baseline; use the explicit rebuild workflow");
     }
-    process.stdout.write(`${D1_PUBLICATION_SNAPSHOT_KEY_PREFIX}${state.generation}\n`);
+    process.stdout.write(`${snapshotKeyForGeneration(state.generation)}\n`);
     return 0;
   }
   if (args.command === "classify-prior-snapshot-failure") {
@@ -314,8 +487,34 @@ async function main(argv) {
     process.stdout.write(`${JSON.stringify(recovery)}\n`);
     return 0;
   }
+  if (args.command === "recover-missing-snapshot") {
+    const outDir = resolve(required(args, "out-dir"));
+    const currentSnapshot = JSON.parse(readFileSync(required(args, "current"), "utf8"));
+    const recovery = JSON.parse(readFileSync(required(args, "recovery"), "utf8"));
+    if (currentSnapshot.schema !== SNAPSHOT_SCHEMA) fail("current snapshot has the wrong schema");
+    const manifest = loadManifest();
+    const generation = Number(required(args, "generation"));
+    const fingerprint = required(args, "fingerprint");
+    const holder = required(args, "holder");
+    const config = args.config || "worker/wrangler.toml";
+    const adapter = createWranglerD1PublicationAdapter({ database: required(args, "database"), config, generation, fingerprint });
+    const fenceStore = createWranglerKvStore({
+      key: args.key || "d1-publication:state:v1", binding: args.binding || "ALERT_STATE",
+      config, remote: args.remote !== "false", wranglerVersion: args["wrangler-version"] || "4.126.0",
+    });
+    const fenceLedger = args.ledger ? createFileLedger(args.ledger) : null;
+    const result = await runMissingSnapshotRecovery({
+      currentSnapshot, recovery, manifest, sourceDocuments: sourceDocumentsFor(manifest),
+      generation, fingerprint, holder, fenceStore, fenceLedger, adapter, appliedBatchStore: adapter,
+      policy: loadReleasePolicy(args.policy),
+      maxOpsPerBatch: args["max-ops"] ? Number(args["max-ops"]) : DEFAULT_MAX_OPS_PER_BATCH,
+    });
+    writePublicationArtifacts(outDir, result, { generation, fingerprint });
+    if (result.recovery) writeJson(required(args, "recovery"), result.recovery);
+    return result.outcome === "published" ? 0 : 1;
+  }
   if (args.command !== "execute") {
-    console.error("d1_production_delta: usage: execute --prior <snapshot> --current <snapshot> --generation <n> --holder <id> --fingerprint <sha256> --database <name> --out-dir <dir>");
+    console.error("d1_production_delta: usage: execute|recover-missing-snapshot --current <snapshot> [--prior <snapshot>] [--recovery <path>] --generation <n> --holder <id> --fingerprint <sha256> --database <name> --out-dir <dir>");
     return 2;
   }
   const outDir = resolve(required(args, "out-dir"));
@@ -339,15 +538,7 @@ async function main(argv) {
     policy: loadReleasePolicy(args.policy),
     maxOpsPerBatch: args["max-ops"] ? Number(args["max-ops"]) : DEFAULT_MAX_OPS_PER_BATCH,
   });
-  writeJson(join(outDir, "delta-plan.json"), result.plan);
-  writeJson(join(outDir, "batch-plan.json"), result.batchPlan);
-  if (result.publishReceipt) writeJson(join(outDir, "publish-receipt.json"), result.publishReceipt);
-  if (result.canaryEvidence) writeJson(join(outDir, "canary-evidence.json"), result.canaryEvidence);
-  if (result.reconcileReport) writeJson(join(outDir, "reconcile-report.json"), result.reconcileReport);
-  writeJson(join(outDir, "result.json"), {
-    schema: result.schema, outcome: result.outcome, reason: result.reason,
-    generation, fingerprint,
-  });
+  writePublicationArtifacts(outDir, result, { generation, fingerprint });
   return ["published", "skipped"].includes(result.outcome) ? 0 : 1;
 }
 
