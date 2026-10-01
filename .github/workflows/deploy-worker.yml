@@ -99,6 +99,20 @@ jobs:
           node ../tools/worker_startup_budget.mjs --metafile "$bundle_dir/meta.json"
       - name: Validate D1 release policy
         run: node tools/d1_release_policy.mjs --check
+      # Apply pending D1 migrations on every Deploy worker run, before fingerprint
+      # gating, snapshot reads, or generation fencing. CREATE TABLE IF NOT EXISTS
+      # migrations are idempotent. Gating migrations on prior-snapshot availability
+      # previously skipped them for days when the snapshot was missing, leaving
+      # passport_* tables absent and every PASSPort lifecycle lookup as
+      # lookup_status=error. Schema must stay ahead of Worker code independently
+      # of the D1 publication delta path.
+      - name: Apply D1 migrations
+        uses: cloudflare/wrangler-action@v3.14.1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          workingDirectory: worker
+          wranglerVersion: "4.126.0"
+          command: d1 migrations apply crol-notices --remote
       - name: Compute D1 deploy fingerprint
         id: d1-deploy-fingerprint
         run: node tools/d1_deploy_fingerprint.mjs fingerprint --github-output "$GITHUB_OUTPUT"
@@ -147,7 +161,19 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           set -euo pipefail
-          snapshot_key=$(node tools/d1_production_delta.mjs prior-snapshot-key --state .d1-publication-state/published.json)
+          mkdir -p .artifacts
+          baseline_out="$RUNNER_TEMP/d1-prior-baseline.json"
+          snapshot_key=$(node tools/d1_production_delta.mjs prior-snapshot-key \
+            --state .d1-publication-state/published.json \
+            --baseline-out "$baseline_out" \
+            --recovery-out .artifacts/d1-publication-recovery.json)
+          baseline_status=$(node -p "JSON.parse(require('node:fs').readFileSync(process.argv[1], 'utf8')).status" "$baseline_out")
+          if [ "$baseline_status" = "missing" ]; then
+            rm -f .d1-publication-state/prior-snapshot.json
+            echo "status=missing" >> "$GITHUB_OUTPUT"
+            echo "Published D1 fence has no delta snapshot baseline; ordinary delta is withheld and explicit rebuild recovery will run in this deploy."
+            exit 0
+          fi
           snapshot_error="$RUNNER_TEMP/d1-prior-snapshot-error.txt"
           if npx wrangler@4.126.0 kv key get "$snapshot_key" \
               --binding ALERT_STATE --remote --text --config worker/wrangler.toml \
@@ -192,17 +218,6 @@ jobs:
           if grep -q '"claimed": false' .artifacts/d1-generation-claim.json; then
             echo "D1 generation fence is busy; this run will make no D1 writes."
           fi
-      # Apply pending D1 migrations before code deploy. CREATE TABLE IF NOT EXISTS migrations
-      # are idempotent; skipping this left passport_* tables missing in production and turned
-      # every PASSPort lifecycle lookup into lookup_status=error.
-      - name: Apply D1 migrations
-        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && (steps.d1-prior-snapshot.outputs.status == 'available' || steps.d1-prior-snapshot.outputs.status == 'missing') && steps.d1-generation-claim.outputs.claimed == 'true'
-        uses: cloudflare/wrangler-action@v3.14.1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          workingDirectory: worker
-          wranglerVersion: "4.126.0"
-          command: d1 migrations apply crol-notices --remote
       # The compressed family shards are derived from the source projection. A
       # stale or tampered shard set must stop deployment before any D1 writes.
       - name: Verify keyword index source projection and shards
@@ -318,6 +333,27 @@ jobs:
             echo "D1 generation was fenced before publication completion."
             exit 1
           fi
+      # When a generation was claimed but publication never completed (for example a
+      # later step failed before the SQL/recovery traps could abandon), clear the
+      # live claim so the next deploy reclaims deterministically instead of waiting
+      # out the lease as fence-busy.
+      - name: Abandon incomplete D1 generation claim
+        id: d1-generation-abandon-incomplete
+        if: always() && steps.d1-generation-claim.outputs.claimed == 'true' && steps.d1-record-published.outcome != 'success'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          D1_FENCE_HOLDER: ${{ github.workflow }}:${{ github.run_id }}:${{ github.run_attempt }}
+          D1_FENCE_GENERATION: ${{ steps.d1-generation-claim.outputs.generation }}
+        run: |
+          set -euo pipefail
+          node tools/d1_generation_fence.mjs abandon \
+            --generation "$D1_FENCE_GENERATION" \
+            --holder "$D1_FENCE_HOLDER" \
+            --fingerprint "${{ steps.d1-deploy-fingerprint.outputs.fingerprint }}" \
+            --key d1-publication:state:v1 \
+            --binding ALERT_STATE --remote --config worker/wrangler.toml \
+            --ledger .artifacts/d1-generation-ledger.json \
+            --receipt .artifacts/d1-generation-abandon.json || true
       # release-control card d1-07: exactly one durable, machine-readable receipt per
       # D1 publication decision and generation, covering every exit path above (gate
       # skip, fence busy, publish success, publisher failure, and a superseded/abandoned

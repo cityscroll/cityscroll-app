@@ -1,0 +1,34 @@
+{
+  "note": "Exact fence state left in d1-publication:state:v1 after Deploy worker 36858881507 claimed generation 21 then failed at Apply D1 migrations (0032). Run 36862666147 then failed at prior-snapshot-key because status is claimed, not published.",
+  "published_state": {
+    "schema": "cityscroll.d1-publication-generation-fence.v1",
+    "status": "claimed",
+    "generation": 21,
+    "holder": "Deploy worker:36858881507:1",
+    "lease_until": "2026-10-01T12:11:11.432Z",
+    "fingerprint": "92ee51242628971c09fa1bf2eec8ff19a892fde99b5e613a8369063d5e52f9ea",
+    "watermarks": {
+      "entity_intelligence": {
+        "__model__": "2026-09-09T11:58:19.933Z"
+      },
+      "keyword_search": {
+        "agencies": "12783|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-05T13:44:00.909Z|2026-09-09T06:54:36.054Z|2026-09-09T11:58:19.933Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-09-05T13:44:00.909Z|2026-09-09|2026-09-09|2026-09-09T06:33:01.880Z|2026-09-09T06:33:01.880Z|2026-09-09T06:52:16.670Z|2026-09-09T11:58:02.083Z|2026-09-09T11:58:19.933Z",
+        "committees": "2026-09-09T06:30:42Z",
+        "community_boards": "2026-09-07",
+        "consultations": "2026-09-14T00:00:00.000Z",
+        "exams": "2026-09-02",
+        "land": "2026-09-09T06:54:36.054Z",
+        "meetings": "2026-09-09T06:52:08.255Z",
+        "parcels": "2026-09-14T02:18:42.682Z",
+        "people": "2026-09-09T06:52:23.394Z",
+        "people-organizations": "12783|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-05T13:44:00.909Z|2026-09-09T06:54:36.054Z|2026-09-09T11:58:19.933Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-09-05T13:44:00.909Z|2026-09-09|2026-09-09|2026-09-09T06:33:01.880Z|2026-09-09T06:33:01.880Z|2026-09-09T06:52:16.670Z|2026-09-09T11:58:02.083Z|2026-09-09T11:58:19.933Z",
+        "procurements": "2026-09-09T06:33:01.880Z",
+        "vendors": "2026-09-09T11:58:19.933Z"
+      },
+      "ocp_awards": {
+        "__model__": "2026-09-05T13:44:00.909Z"
+      }
+    },
+    "accepted_at": null
+  }
+}

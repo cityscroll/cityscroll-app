@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS passport_contracts (
   contract_type   TEXT,
   award_amount    REAL,
   current_amount  REAL,
+  encumbered_amount REAL,
   paid_amount     REAL,
   start_date      TEXT,
   end_date        TEXT,

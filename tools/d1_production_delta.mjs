@@ -7,17 +7,18 @@
  * Ordinary cycles compose the partition planner, generation fence, bounded
  * publisher, canary, reconciliation, and receipt inputs for a keyed delta.
  * When published fence state references a generation-qualified KV snapshot that
- * is absent, `runMissingSnapshotRecovery` performs an explicit rebuild that
- * republishes the current baseline and writes a fresh snapshot under the key
- * the completed fence will reference, so the next cycle can plan a delta.
- * Operator-directed rebuilds remain available through the separate explicit
- * rebuild workflow; the `disable_incremental_publication` kill switch still
- * pauses both ordinary deltas and this recovery path.
+ * is absent, or when the fence key holds a non-published claim/abandonment with
+ * no delta snapshot baseline, `runMissingSnapshotRecovery` performs an explicit
+ * rebuild that republishes the current baseline and writes a fresh snapshot
+ * under the key the completed fence will reference, so the next cycle can plan
+ * a delta. Operator-directed rebuilds remain available through the separate
+ * explicit rebuild workflow; the `disable_incremental_publication` kill switch
+ * still pauses both ordinary deltas and this recovery path.
  */
 
 import { createHash } from "node:crypto";
 import { execFile } from "node:child_process";
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { promisify } from "node:util";
@@ -50,6 +51,61 @@ export const D1_PUBLICATION_SNAPSHOT_KEY_PREFIX = "d1-publication:snapshot:v2:";
 export const D1_PUBLICATION_RECOVERY_SCHEMA = "cityscroll.d1-publication-recovery.v1";
 export const MISSING_SNAPSHOT_REBUILD_REASON =
   "published D1 state referenced a missing generation-qualified snapshot; explicit rebuild recovery republished the current baseline";
+export const NO_DELTA_SNAPSHOT_BASELINE_REASON = "no_delta_snapshot_baseline";
+export const NO_DELTA_SNAPSHOT_BASELINE_REBUILD_REASON =
+  "published D1 fence has no delta snapshot baseline; explicit rebuild recovery republished the current baseline";
+export const RECOVERY_BOOTSTRAP_REASONS = new Set([
+  "published_snapshot_missing",
+  NO_DELTA_SNAPSHOT_BASELINE_REASON,
+]);
+
+/**
+ * Resolve whether fence state carries a published delta snapshot baseline.
+ * A claimed/accepted/abandoned fence (for example generation 21 left behind
+ * after a migration failure) is not a baseline — callers must route that shape
+ * to missing-snapshot recovery instead of exiting.
+ */
+export function resolvePriorSnapshotBaseline(state) {
+  if (
+    state
+    && state.schema === D1_GENERATION_FENCE_SCHEMA
+    && state.status === "published"
+    && Number.isInteger(state.generation)
+    && state.generation >= 1
+  ) {
+    return {
+      status: "published",
+      snapshot_key: snapshotKeyForGeneration(state.generation),
+      generation: state.generation,
+      recovery: null,
+    };
+  }
+
+  const generation =
+    state
+    && state.schema === D1_GENERATION_FENCE_SCHEMA
+    && Number.isInteger(state.generation)
+    && state.generation >= 1
+      ? state.generation
+      : null;
+
+  return {
+    status: "missing",
+    snapshot_key: generation ? snapshotKeyForGeneration(generation) : null,
+    generation,
+    recovery: {
+      schema: D1_PUBLICATION_RECOVERY_SCHEMA,
+      status: "bootstrap_required",
+      action: "explicit_rebuild",
+      reason: NO_DELTA_SNAPSHOT_BASELINE_REASON,
+      published_generation: generation,
+      snapshot_key: generation ? snapshotKeyForGeneration(generation) : null,
+      baseline: { status: "unavailable", source: "no_published_fence_baseline" },
+      d1_writes: { commands: null, rows: null },
+      observed_fence_status: state?.status ?? null,
+    },
+  };
+}
 
 /**
  * Classify only a missing generation-qualified KV object as bootstrap recovery.
@@ -264,14 +320,18 @@ export async function runMissingSnapshotRecovery({
   maxOpsPerBatch = DEFAULT_MAX_OPS_PER_BATCH,
   recordedAt = new Date().toISOString(),
   now = () => Date.now(),
-  reason = MISSING_SNAPSHOT_REBUILD_REASON,
+  reason = null,
 }) {
-  if (!recovery || recovery.schema !== D1_PUBLICATION_RECOVERY_SCHEMA || recovery.reason !== "published_snapshot_missing") {
-    fail("missing-snapshot recovery requires a published_snapshot_missing recovery record");
+  if (!recovery || recovery.schema !== D1_PUBLICATION_RECOVERY_SCHEMA || !RECOVERY_BOOTSTRAP_REASONS.has(recovery.reason)) {
+    fail("missing-snapshot recovery requires a bootstrap recovery record");
   }
   if (currentSnapshot?.schema !== SNAPSHOT_SCHEMA) fail("current snapshot has the wrong schema");
 
-  const plan = planDelta({ prior: null, current: currentSnapshot, rebuild: reason });
+  const rebuildReason = reason
+    ?? (recovery.reason === NO_DELTA_SNAPSHOT_BASELINE_REASON
+      ? NO_DELTA_SNAPSHOT_BASELINE_REBUILD_REASON
+      : MISSING_SNAPSHOT_REBUILD_REASON);
+  const plan = planDelta({ prior: null, current: currentSnapshot, rebuild: rebuildReason });
   if (plan.operation !== "rebuild") fail("missing-snapshot recovery did not produce a rebuild plan");
   const batchPlan = planBatches({ plan, manifest, sourceDocuments, generation, maxOpsPerBatch });
 
@@ -469,11 +529,28 @@ async function main(argv) {
     return 0;
   }
   if (args.command === "prior-snapshot-key") {
-    const state = JSON.parse(readFileSync(required(args, "state"), "utf8"));
-    if (state.schema !== D1_GENERATION_FENCE_SCHEMA || state.status !== "published" || !Number.isInteger(state.generation)) {
-      fail("published generation has no delta snapshot baseline; use the explicit rebuild workflow");
+    const statePath = required(args, "state");
+    const state = existsSync(statePath) ? JSON.parse(readFileSync(statePath, "utf8")) : null;
+    const resolved = resolvePriorSnapshotBaseline(state);
+    if (args["baseline-out"]) writeJson(args["baseline-out"], {
+      status: resolved.status,
+      snapshot_key: resolved.snapshot_key,
+      generation: resolved.generation,
+      reason: resolved.recovery?.reason ?? null,
+      observed_fence_status: resolved.recovery?.observed_fence_status ?? (state?.status ?? null),
+    });
+    if (resolved.status === "published") {
+      process.stdout.write(`${resolved.snapshot_key}\n`);
+      return 0;
     }
-    process.stdout.write(`${snapshotKeyForGeneration(state.generation)}\n`);
+    // No published delta baseline (claimed/abandoned/missing fence). Route to
+    // missing-snapshot recovery instead of exiting non-zero.
+    if (args["recovery-out"]) writeJson(args["recovery-out"], resolved.recovery);
+    process.stderr.write(
+      `d1 production delta: no delta snapshot baseline`
+      + `${resolved.recovery?.observed_fence_status ? ` (fence status=${resolved.recovery.observed_fence_status})` : ""}`
+      + `; routing to missing-snapshot recovery\n`,
+    );
     return 0;
   }
   if (args.command === "classify-prior-snapshot-failure") {
