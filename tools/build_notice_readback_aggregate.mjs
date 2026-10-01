@@ -25,6 +25,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { NOTICE_EDGE_CACHE_OUTCOMES, parseNoticeEdgeTiming } from "../site/notice_edge_response.mjs";
 import { readMeasurementGroup } from "./read_rum_measurement_group.mjs";
 import {
+  NOTICE_READBACK_CACHE_OUTCOME_DELIVERY,
   NOTICE_READBACK_CACHE_OUTCOME_UNREAD_REASON,
   NOTICE_READBACK_CACHE_OUTCOME_WINDOW_GROUP,
   NOTICE_READBACK_CACHE_OUTCOMES,
@@ -34,12 +35,16 @@ import {
   NOTICE_READBACK_REQUIRED_GROUPS,
   NOTICE_READBACK_SAMPLE_FLOOR,
   buildNoticeReadbackAggregate,
+  buildReadRecordCacheOutcomeDistribution,
   buildUnreadRecordCacheOutcomeDistribution,
   validateNoticeReadbackAggregate,
 } from "./lib/notice_readback_aggregate.mjs";
 import {
   DEFAULT_RUM_ANALYTICS_DATASET,
+  RUM_RECORD_CACHE_OUTCOME_BLOB,
+  RUM_RECORD_CACHE_OUTCOME_DIMENSION,
   performanceReadConfiguration,
+  readRecordCacheOutcomeDistribution,
 } from "../worker/src/lib/performance_query.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -106,13 +111,15 @@ const CACHE_OUTCOME_PROBE_URLS = Object.freeze([
 ]);
 
 /**
- * Ask whether production retains a windowed record-cache-outcome distribution
- * in the same Analytics Engine dataset the sibling groups use. The RUM
- * observation schema has no cache-outcome dimension, so this returns unread
- * with a precise reason rather than fabricating counts from live headers.
+ * Read the windowed record-cache-outcome distribution from the resident RUM
+ * dataset. The collector retains the Server-Timing `cs-record` outcome as
+ * blob14; this query groups that dimension over a same-shape window anchored
+ * at the dimension-collection delivery.
  *
- * Live Server-Timing probes only confirm that responses still carry the
- * vocabulary; they are never tallied into a windowed distribution.
+ * A successful empty read is recorded as read with zeroes. Unread is reserved
+ * for when the Analytics Engine query cannot run. Live Server-Timing probes
+ * remain a positive control that responses still carry the vocabulary; they
+ * are never tallied into the windowed counts.
  */
 export async function resolveRecordCacheOutcomeDistribution({
   window = null,
@@ -120,15 +127,24 @@ export async function resolveRecordCacheOutcomeDistribution({
   queriedAt = null,
   env = process.env,
   fetchImpl = globalThis.fetch,
+  readDistribution = readRecordCacheOutcomeDistribution,
 } = {}) {
   const config = performanceReadConfiguration(env);
   const dataset = String(env.RUM_ANALYTICS_DATASET || DEFAULT_RUM_ANALYTICS_DATASET).trim()
     || DEFAULT_RUM_ANALYTICS_DATASET;
+  const cacheDelivery = delivery || {
+    kind: NOTICE_READBACK_CACHE_OUTCOME_DELIVERY.kind,
+    at: NOTICE_READBACK_CACHE_OUTCOME_DELIVERY.merged_at,
+    merge_commit: NOTICE_READBACK_CACHE_OUTCOME_DELIVERY.merge_commit,
+    pull_request: NOTICE_READBACK_CACHE_OUTCOME_DELIVERY.pull_request,
+    note: NOTICE_READBACK_CACHE_OUTCOME_DELIVERY.note,
+  };
   const source = {
     response_header: "Server-Timing",
     metric: "cs-record",
     closed_outcomes: [...NOTICE_READBACK_CACHE_OUTCOMES],
-    retained_query_path: null,
+    retained_query_path: `${RUM_RECORD_CACHE_OUTCOME_BLOB}/${RUM_RECORD_CACHE_OUTCOME_DIMENSION}`,
+    dimension: RUM_RECORD_CACHE_OUTCOME_DIMENSION,
     analytics_engine_dataset: dataset,
     analytics_engine_configured: config.configured === true,
   };
@@ -154,21 +170,38 @@ export async function resolveRecordCacheOutcomeDistribution({
   liveOutcomesSeen = [...new Set(liveOutcomesSeen)].sort();
   if (liveOutcomesSeen.length) source.live_response_outcomes_observed = liveOutcomesSeen;
 
-  // No retained query path exists for this vocabulary in the RUM dataset. An
-  // empty read would require a query that returned zero rows of a known
-  // cache-outcome series; absence of that series is unread, not empty.
-  return buildUnreadRecordCacheOutcomeDistribution({
-    reason: NOTICE_READBACK_CACHE_OUTCOME_UNREAD_REASON,
-    detail: [
-      "Notice responses carry the record subrequest cache outcome on Server-Timing (cs-record),",
-      "but the RUM Analytics Engine observation set used for the sibling measurement groups",
-      "retains no cache-outcome dimension, so no windowed distribution can be read.",
-      liveOutcomesSeen.length
-        ? `Live responses observed outcomes: ${liveOutcomesSeen.join(", ")}.`
-        : "Live Server-Timing probes did not return a parseable cs-record outcome during this run.",
-    ].join(" "),
-    window,
-    delivery,
+  const read = await readDistribution(env, {
+    now: queriedAt ? new Date(queriedAt) : new Date(),
+    window: "7d",
+    deliveryAt: cacheDelivery.at,
+    fetchImpl,
+  });
+
+  if (read.status !== "available") {
+    return buildUnreadRecordCacheOutcomeDistribution({
+      reason: NOTICE_READBACK_CACHE_OUTCOME_UNREAD_REASON,
+      detail: [
+        "The resident measurement set now declares a record-cache-outcome dimension,",
+        `but the Analytics Engine query could not be read (${read.unavailable_reason || "unavailable"}).`,
+        liveOutcomesSeen.length
+          ? `Live responses observed outcomes: ${liveOutcomesSeen.join(", ")}.`
+          : "Live Server-Timing probes did not return a parseable cs-record outcome during this run.",
+      ].join(" "),
+      window: read.window || window,
+      delivery: cacheDelivery,
+      queriedAt,
+      source: {
+        ...source,
+        retained_query_path: null,
+        query_unavailable_reason: read.unavailable_reason || "unavailable",
+      },
+    });
+  }
+
+  return buildReadRecordCacheOutcomeDistribution({
+    outcomes: read.outcomes,
+    window: read.window || window,
+    delivery: cacheDelivery,
     queriedAt,
     source,
   });
@@ -223,7 +256,8 @@ export async function buildFromProduction({
     });
   }
 
-  // Inherit the first_byte window so the cache-outcome field sits beside that group.
+  // Shape sibling: the cache-outcome field follows the first_byte group's
+  // length and completeness rules. Its own delivery anchors the window.
   const windowSeed = buildNoticeReadbackAggregate({
     reads,
     productionRevision: revision,
@@ -231,9 +265,16 @@ export async function buildFromProduction({
     sampleFloor: NOTICE_READBACK_SAMPLE_FLOOR,
   });
   const firstByte = windowSeed.measurement_groups[NOTICE_READBACK_CACHE_OUTCOME_WINDOW_GROUP];
+  const cacheDelivery = {
+    kind: NOTICE_READBACK_CACHE_OUTCOME_DELIVERY.kind,
+    at: NOTICE_READBACK_CACHE_OUTCOME_DELIVERY.merged_at,
+    merge_commit: NOTICE_READBACK_CACHE_OUTCOME_DELIVERY.merge_commit,
+    pull_request: NOTICE_READBACK_CACHE_OUTCOME_DELIVERY.pull_request,
+    note: NOTICE_READBACK_CACHE_OUTCOME_DELIVERY.note,
+  };
   const recordCacheOutcomeDistribution = await resolveRecordCacheOutcomeDistribution({
     window: firstByte?.window || null,
-    delivery: firstByte?.delivery || null,
+    delivery: cacheDelivery,
     queriedAt: now,
     env,
     fetchImpl,

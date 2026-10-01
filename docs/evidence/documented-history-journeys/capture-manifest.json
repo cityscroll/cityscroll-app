@@ -584,7 +584,7 @@
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "b4b6104fc98ac1046b6d3ad179266f8a546458bdd20467acce766441a1213248",
-      "local_capture_sha256": "ed81193438c8b9e9dca40e051de83f98076217a23659557c06c03d95d59d2935"
+      "local_capture_sha256": "bd8013133a856e2238f3ee8a394673b537f3657bcc88930a0935811dc5262e30"
     },
     {
       "case": "franklin-avenue-desktop-keyboard",
@@ -598,7 +598,7 @@
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "f95a845f29828f840c880ff9dd1276672bcabc3c30363df6398949dcfbaf8c8e",
-      "local_capture_sha256": "a17dbd07a9555fa7da7d9a0f58feb761af6eeb14d3004667a3097b575e54ac96"
+      "local_capture_sha256": "891365bd7508d24c75a66cda7985f937bbcd54afedeb36867e9e5954f96cc5c2"
     },
     {
       "case": "kingsbridge-armory-desktop-keyboard",
@@ -612,7 +612,7 @@
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "6e92e7e4439ff27fc562d130ec29f8f23e7ba50afd949b49aefb51b023d21eee",
-      "local_capture_sha256": "59bb4d47753ee8cb971543fdf72de79a6a8144300ec26d9da65121d329fe8e34"
+      "local_capture_sha256": "8a4e6239305c771eb3d3192fb61ebfd9d27907b71f6608775f2e130459cbff80"
     },
     {
       "case": "sixth-avenue-desktop-keyboard",
@@ -626,7 +626,7 @@
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "a5135465d20eeb8cd045f5c77b6aec15f893d31459fedb8da688cf5ac4ff374b",
-      "local_capture_sha256": "74a02c2a4baf6c7e965ad113cc6ac016be7d85e82c837fa76cc1003176abec70"
+      "local_capture_sha256": "2380fc57cbfff41a1cc03baa97edc95b282af74929ba1be5fb9ce3f07491d359"
     },
     {
       "case": "thirty-first-avenue-desktop-keyboard",
@@ -640,7 +640,7 @@
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "a4408d522f345dd5629bebb7f7ed7678b505f37b0e1371768245056de76a8c6f",
-      "local_capture_sha256": "8cd0fcc9281bd61d467e982b5bbae1c69acbfa377f72a57a2a19c0ea30bd8eed"
+      "local_capture_sha256": "f004884751319487011416006c5635124a647f0ffaa7c739cea1fbd8609dae91"
     },
     {
       "case": "lighthouse-point-desktop-keyboard",
@@ -654,7 +654,7 @@
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "ed4e1f0b13ab69428a75e8cacc7398654c254bd3dd8068509ecf55b36097bf6b",
-      "local_capture_sha256": "d14e50d507532e348f8ab5a04927d8ce00110127ece305edcda67d2047e4cd7c"
+      "local_capture_sha256": "ce329c5d559c6c557c48ef1615299088f0008436b73dc6b2b453cafab66f5df9"
     },
     {
       "case": "coyle-narrow-touch",
@@ -668,7 +668,7 @@
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "b4b6104fc98ac1046b6d3ad179266f8a546458bdd20467acce766441a1213248",
-      "local_capture_sha256": "981461781ee53b2e34da3ec425ebcaadcbf1d895a4e585934bb0111c339929f6"
+      "local_capture_sha256": "ec9b433ba1addbf835035681aaf9f08f911778d3fbbcde46c94c3fa439066fa5"
     },
     {
       "case": "franklin-avenue-narrow-touch",
@@ -682,7 +682,7 @@
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "f95a845f29828f840c880ff9dd1276672bcabc3c30363df6398949dcfbaf8c8e",
-      "local_capture_sha256": "ad1a8054e0967212e4512c7b7a3ba5e1b0af980b40b746902fd5534e1cf1ca8b"
+      "local_capture_sha256": "bfcd519efbd9bec84d09228601d0807acfff20508e5d647cf31e1586be7aa087"
     },
     {
       "case": "kingsbridge-armory-narrow-touch",
@@ -696,7 +696,7 @@
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "6e92e7e4439ff27fc562d130ec29f8f23e7ba50afd949b49aefb51b023d21eee",
-      "local_capture_sha256": "96ddd66f82be8a8f8a15f2a59c2be4a972f5afdd1e36b6c152c2c893eaa621be"
+      "local_capture_sha256": "f0913d8e12e621b8b5ba7104dfab9fa6cb970de093ab6c13c6419e1290c824f2"
     },
     {
       "case": "sixth-avenue-narrow-touch",
@@ -710,7 +710,7 @@
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "a5135465d20eeb8cd045f5c77b6aec15f893d31459fedb8da688cf5ac4ff374b",
-      "local_capture_sha256": "45ea75c0f7f79eac9c896352705fe838e651353168cc6b6a6283bf82ca408f63"
+      "local_capture_sha256": "74f16aee38f7c423cc4b0faf1bdee0251154b19f2b4a19522798b76520b08796"
     },
     {
       "case": "thirty-first-avenue-narrow-touch",
@@ -724,7 +724,7 @@
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "a4408d522f345dd5629bebb7f7ed7678b505f37b0e1371768245056de76a8c6f",
-      "local_capture_sha256": "88ace0641ef5925e1aec2dfda901bb627dbf8243e9d822622e334c49cb40e1c5"
+      "local_capture_sha256": "c2fb17bf044c711bac03a7ed9f00b71fb8aeb672c237a0601adc801f6f4b8181"
     },
     {
       "case": "lighthouse-point-narrow-touch",
@@ -738,7 +738,7 @@
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "ed4e1f0b13ab69428a75e8cacc7398654c254bd3dd8068509ecf55b36097bf6b",
-      "local_capture_sha256": "beef6f057e70de8d0a2564c687968d3a3fc8cc4aa286e22b475feb854db7217f"
+      "local_capture_sha256": "5e08251c16e211896c31df78dd57bc56360183e7300a4304f4b47021f51c6b89"
     },
     {
       "case": "coyle-no-javascript",
@@ -830,7 +830,7 @@
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Injected materialization failure preserves the exact query and exposes retry plus an official source without claiming a successful empty result.",
       "sha256": "4e2a5d2f38b2cf574599bd62d52568ecef19d74bbc4362d0f8c4e46810d359b2",
-      "local_capture_sha256": "c1c89b9a08ff82e8f8c3aaa2b600a0c60ccbdd63c83b062ee48c5f5180459bf6"
+      "local_capture_sha256": "ffbaa02e7e1d8536af9bf3fc153093aee5963e9578ceb343efcf38b1b2ecee89"
     }
   ],
   "measurement_provenance": {
@@ -1030,11 +1030,11 @@
       },
       {
         "path": "site/rum_bootstrap.mjs",
-        "sha256": "f7cbca8594bbbcead5340d121b0d7c474132c20c1f1ffa839016d32ad1ba3a3c"
+        "sha256": "ac8a3abd6fd6c82641bb6738b04c2629a169a266500ba347c6f571c251a0cdd4"
       },
       {
         "path": "site/rum_collector.mjs",
-        "sha256": "995971046496e5ae1873eb0f3dbd85ae7bbf61ae8edf8c8c8386a915a8906661"
+        "sha256": "6b4d180686c1f58ee297b15afc25c88d35a1a35fb2dc8604102bf067d2a1ee36"
       },
       {
         "path": "site/rum_delivery.mjs",
@@ -1042,7 +1042,7 @@
       },
       {
         "path": "site/rum_production.mjs",
-        "sha256": "4ecf943fae66bbf294bc9a9edc4129e1d14fa4950a0867bc4b789a0847e27671"
+        "sha256": "a392b9e788691c8d824cb34a0c37a68f0e382424b99aa9c0f3b9a8244a5e5adc"
       },
       {
         "path": "site/rum_semantic_milestones.mjs",

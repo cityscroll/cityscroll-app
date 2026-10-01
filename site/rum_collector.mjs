@@ -2,6 +2,46 @@ import { classifyPerformancePathname } from "./performance_route_classifier.mjs"
 
 export { classifyPerformancePathname };
 
+/**
+ * Closed Notice record-subrequest cache outcomes, mirrored here so the deferred
+ * RUM collector can stamp the dimension without statically importing the edge
+ * response module onto the Notice cold boot path.
+ */
+const NOTICE_RECORD_CACHE_OUTCOMES = Object.freeze([
+  "hit",
+  "miss",
+  "stale",
+  "dynamic",
+  "unknown",
+]);
+
+/** Non-notice surfaces always stamp this sentinel (distinct from unknown). */
+export const RUM_RECORD_CACHE_OUTCOME_NONE = "none";
+
+/**
+ * Read Server-Timing `cs-record` from the navigation timing entry. Available
+ * when deferred RUM runs; absence of Timing-Allow or of the metric is unknown.
+ */
+export function navigationRecordCacheOutcome(runtime = globalThis) {
+  try {
+    const entry = runtime?.performance?.getEntriesByType?.("navigation")?.[0];
+    const timings = entry?.serverTiming;
+    if (!Array.isArray(timings)) return "unknown";
+    const record = timings.find((item) => item && item.name === "cs-record");
+    if (!record) return "unknown";
+    const description = typeof record.description === "string" ? record.description : "";
+    return NOTICE_RECORD_CACHE_OUTCOMES.includes(description) ? description : "unknown";
+  } catch {
+    return "unknown";
+  }
+}
+
+/** Resolve the cache-outcome dimension for one classified surface. */
+export function resolveRecordCacheOutcomeForSurface(surfaceId, runtime = globalThis) {
+  if (surfaceId === "notice") return navigationRecordCacheOutcome(runtime);
+  return RUM_RECORD_CACHE_OUTCOME_NONE;
+}
+
 const WEB_VITAL_NAMES = Object.freeze({
   CLS: "cls_score",
   FCP: "fcp_ms",
@@ -148,6 +188,14 @@ export async function startBrowserRumCollector({
   const allowedNavigationTypes = new Set(manifest.collector.navigation_types || []);
   const deviceClass = coarseDeviceClass(runtime, manifest.collector.device_classes);
   const reported = new Set();
+  // Notice pages retain the record-subrequest cache outcome from Server-Timing.
+  // Every other surface stamps the explicit none sentinel so the dimension is
+  // always present on the resident measurement set. Read here inside the
+  // deferred RUM module so notice_edge_response.mjs stays off the cold path.
+  const recordCacheOutcome = resolveRecordCacheOutcomeForSurface(
+    classification.surface_id,
+    runtime,
+  );
 
   for (const [webVitalName, metricId] of Object.entries(WEB_VITAL_NAMES)) {
     if (!configuredMetricIds.has(metricId) || !applicableMetricIds.has(metricId)) continue;
@@ -179,6 +227,7 @@ export async function startBrowserRumCollector({
           navigation_type: navType,
           delivery_class: classification.delivery_class,
           traffic_class: production === true ? "production" : "test",
+          record_cache_outcome: recordCacheOutcome,
           collector_version: manifest.collector.collector_version,
           manifest_version: manifest.manifest_version,
         });
@@ -188,5 +237,5 @@ export async function startBrowserRumCollector({
     }
   }
 
-  return { state: "collecting", classification };
+  return { state: "collecting", classification, record_cache_outcome: recordCacheOutcome };
 }

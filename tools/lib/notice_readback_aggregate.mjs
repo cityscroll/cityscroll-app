@@ -13,6 +13,11 @@
  * `read` (counts per closed outcome, zeros allowed) or `unread` (that word and
  * a reason). An absent field is a refusal, never silence that could be read as
  * an empty measurement.
+ *
+ * Window rule (site-owner decision): "the same window" as the first-byte group
+ * means a window of the same shape — same length and completeness rules — once
+ * the cache dimension exists. It does not require re-reading the other groups
+ * over one shared calendar window with the distribution.
  */
 
 import { NOTICE_EDGE_CACHE_OUTCOMES } from "../../site/notice_edge_response.mjs";
@@ -26,13 +31,29 @@ export const NOTICE_READBACK_RETAINED_PATH =
 export const NOTICE_READBACK_CACHE_OUTCOMES = NOTICE_EDGE_CACHE_OUTCOMES;
 
 /**
- * The cache-outcome distribution shares the first-byte group's delivery window:
- * both were opened by the edge-response change.
+ * Shape sibling for the cache-outcome window. The distribution uses the same
+ * length and completeness rules as this group; calendar bounds may differ once
+ * the cache dimension's own delivery opens a later window.
  */
 export const NOTICE_READBACK_CACHE_OUTCOME_WINDOW_GROUP = "first_byte";
 
+/** Declared window rule: same shape as the sibling group, not the same dates. */
+export const NOTICE_READBACK_CACHE_OUTCOME_WINDOW_RULE = "same_shape";
+
 export const NOTICE_READBACK_CACHE_OUTCOME_UNREAD_REASON =
   "retained_windowed_distribution_unavailable";
+
+/**
+ * Delivery that opened collection of the record-cache-outcome RUM dimension.
+ * Calendar windows for the distribution begin at or after this anchor.
+ */
+export const NOTICE_READBACK_CACHE_OUTCOME_DELIVERY = Object.freeze({
+  kind: "dimension_collection",
+  merged_at: "2026-09-30T18:00:00.000Z",
+  merge_commit: null,
+  pull_request: null,
+  note: "Resident measurement collection began retaining the record subrequest cache outcome as a RUM dimension (alias c7a6b040d3706). The prior unread marker established that Server-Timing alone could not produce a windowed distribution.",
+});
 
 /** The three groups the Notice post-delivery letters require, in declaration order. */
 export const NOTICE_READBACK_REQUIRED_GROUPS = Object.freeze([
@@ -174,20 +195,26 @@ function normalizeOutcomeCounts(raw) {
 }
 
 function projectCacheWindow(window, delivery) {
+  const deliveryAt = isoOrNull(delivery?.at) || NOTICE_READBACK_CACHE_OUTCOME_DELIVERY.merged_at;
+  const start = isoOrNull(window?.requested_start);
+  const beginsAfter = window?.begins_at_or_after_delivery === true
+    || window?.begins_at_or_after_anchor === true
+    || window?.post_dates_delivery === true
+    || (start != null && Date.parse(start) >= Date.parse(deliveryAt));
   return {
-    requested_start: isoOrNull(window?.requested_start),
+    requested_start: start,
     requested_end: isoOrNull(window?.requested_end),
     status: window?.complete === true || window?.status === "complete" ? "complete" : "incomplete",
     complete: window?.complete === true || window?.status === "complete",
     keyed_to_measurement_group: NOTICE_READBACK_CACHE_OUTCOME_WINDOW_GROUP,
-    begins_at_or_after_delivery: window?.begins_at_or_after_delivery === true
-      || window?.begins_at_or_after_anchor === true
-      || window?.post_dates_delivery === true,
+    window_rule: NOTICE_READBACK_CACHE_OUTCOME_WINDOW_RULE,
+    begins_at_or_after_delivery: beginsAfter,
+    post_dates_delivery: beginsAfter,
   };
 }
 
 function projectCacheDelivery(delivery) {
-  const fallback = NOTICE_READBACK_DELIVERIES[NOTICE_READBACK_CACHE_OUTCOME_WINDOW_GROUP];
+  const fallback = NOTICE_READBACK_CACHE_OUTCOME_DELIVERY;
   return {
     kind: delivery?.kind || fallback.kind,
     at: isoOrNull(delivery?.at) || fallback.merged_at,
@@ -220,6 +247,8 @@ export function buildReadRecordCacheOutcomeDistribution({
       response_header: "Server-Timing",
       metric: "cs-record",
       closed_outcomes: [...NOTICE_READBACK_CACHE_OUTCOMES],
+      retained_query_path: "blob14/record_cache_outcome",
+      dimension: "record_cache_outcome",
     },
   };
 }
@@ -248,6 +277,7 @@ export function buildUnreadRecordCacheOutcomeDistribution({
       metric: "cs-record",
       closed_outcomes: [...NOTICE_READBACK_CACHE_OUTCOMES],
       retained_query_path: null,
+      dimension: "record_cache_outcome",
     },
   };
 }
@@ -374,13 +404,14 @@ export function buildNoticeReadbackAggregate({
   }
 
   const firstByte = measurementGroups[NOTICE_READBACK_CACHE_OUTCOME_WINDOW_GROUP];
+  const cacheDelivery = projectCacheDelivery(NOTICE_READBACK_CACHE_OUTCOME_DELIVERY);
   const cacheDistribution = isRecord(recordCacheOutcomeDistribution)
     ? recordCacheOutcomeDistribution
     : buildUnreadRecordCacheOutcomeDistribution({
       reason: NOTICE_READBACK_CACHE_OUTCOME_UNREAD_REASON,
       detail: "No record-cache-outcome distribution was supplied to the builder.",
       window: firstByte?.window || null,
-      delivery: firstByte?.delivery || null,
+      delivery: cacheDelivery,
       queriedAt,
     });
 
@@ -402,7 +433,8 @@ export function buildNoticeReadbackAggregate({
       notes: [
         "Each measurement group is read on its own query through the shared RUM grammar.",
         "Groups are never combined into one distribution.",
-        "The record subrequest cache outcome distribution is keyed to the first_byte window and is always recorded as read or unread.",
+        "The record subrequest cache outcome distribution uses a window of the same shape as the first_byte group (same length and completeness rules) once the cache dimension exists, and is always recorded as read or unread.",
+        "Each other measurement group keeps its own calendar window; the distribution opens its own same-shape window after the dimension-collection delivery.",
       ],
     },
     required_groups: [...NOTICE_READBACK_REQUIRED_GROUPS],
@@ -475,24 +507,23 @@ export function validateRecordCacheOutcomeDistribution(field, {
       detail: `window.keyed_to_measurement_group must be ${NOTICE_READBACK_CACHE_OUTCOME_WINDOW_GROUP}`,
     }));
   }
+  if (!isRecord(field.window)
+    || field.window.window_rule !== NOTICE_READBACK_CACHE_OUTCOME_WINDOW_RULE) {
+    refusals.push(refusal("cache_outcome_window_rule_missing", {
+      detail: `window.window_rule must be ${NOTICE_READBACK_CACHE_OUTCOME_WINDOW_RULE}`,
+    }));
+  }
 
-  if (expectedWindow) {
-    const expectedStart = isoOrNull(expectedWindow.requested_start);
-    const expectedEnd = isoOrNull(expectedWindow.requested_end);
-    if (expectedStart && isoOrNull(field.window?.requested_start) !== expectedStart) {
-      refusals.push(refusal("cache_outcome_window_mismatch", {
-        detail: "cache outcome window start must match the first_byte group window",
-        expected_start: expectedStart,
-        actual_start: isoOrNull(field.window?.requested_start),
-      }));
-    }
-    if (expectedEnd && isoOrNull(field.window?.requested_end) !== expectedEnd) {
-      refusals.push(refusal("cache_outcome_window_mismatch", {
-        detail: "cache outcome window end must match the first_byte group window",
-        expected_end: expectedEnd,
-        actual_end: isoOrNull(field.window?.requested_end),
-      }));
-    }
+  // Same-shape rule: length and completeness follow the sibling group. Calendar
+  // bounds may differ once the cache dimension's own delivery opens a later
+  // window, so start/end equality with first_byte is not required.
+  void expectedWindow;
+
+  if (!isRecord(field.delivery) || field.delivery.kind !== NOTICE_READBACK_CACHE_OUTCOME_DELIVERY.kind) {
+    refusals.push(refusal("cache_outcome_delivery_kind_mismatch", {
+      detail: `delivery.kind must be ${NOTICE_READBACK_CACHE_OUTCOME_DELIVERY.kind}`,
+      kind: field.delivery?.kind ?? null,
+    }));
   }
 
   return { ok: refusals.length === 0, refusals };

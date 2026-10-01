@@ -164,3 +164,32 @@ export function parseNoticeEdgeTiming(headerValue) {
   }
   return parsed;
 }
+
+/**
+ * Sentinel for observations that do not carry a Notice record-subrequest cache
+ * outcome (every non-notice surface). Distinct from `unknown`, which means the
+ * Notice response did not report a closed outcome.
+ */
+export const NOTICE_RECORD_CACHE_OUTCOME_NONE = "none";
+
+/**
+ * Read the record-subrequest cache outcome from the navigation timing entry's
+ * `serverTiming` list. Used by the resident measurement collector so the same
+ * vocabulary the response header carries is retained as a RUM dimension.
+ *
+ * Absence of Timing-Allow or of a `cs-record` entry is `unknown`, never a
+ * fabricated hit or miss.
+ */
+export function navigationRecordCacheOutcome(runtime = globalThis) {
+  try {
+    const entry = runtime?.performance?.getEntriesByType?.("navigation")?.[0];
+    const timings = entry?.serverTiming;
+    if (!Array.isArray(timings)) return "unknown";
+    const record = timings.find((item) => item && item.name === "cs-record");
+    if (!record) return "unknown";
+    const description = typeof record.description === "string" ? record.description : "";
+    return NOTICE_EDGE_CACHE_OUTCOMES.includes(description) ? description : "unknown";
+  } catch {
+    return "unknown";
+  }
+}

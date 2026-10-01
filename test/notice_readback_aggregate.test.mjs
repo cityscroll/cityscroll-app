@@ -12,8 +12,10 @@ import { test } from "node:test";
 
 import {
   NOTICE_READBACK_AGGREGATE_SCHEMA,
+  NOTICE_READBACK_CACHE_OUTCOME_DELIVERY,
   NOTICE_READBACK_CACHE_OUTCOME_UNREAD_REASON,
   NOTICE_READBACK_CACHE_OUTCOME_WINDOW_GROUP,
+  NOTICE_READBACK_CACHE_OUTCOME_WINDOW_RULE,
   NOTICE_READBACK_CACHE_OUTCOMES,
   NOTICE_READBACK_DELIVERIES,
   NOTICE_READBACK_RETAINED_PATH,
@@ -28,6 +30,13 @@ import {
   withoutMeasurementGroup,
   withoutRecordCacheOutcomeDistribution,
 } from "../tools/lib/notice_readback_aggregate.mjs";
+import { resolveRecordCacheOutcomeDistribution } from "../tools/build_notice_readback_aggregate.mjs";
+import { projectRecordCacheOutcomeCounts } from "../worker/src/lib/performance_query.mjs";
+import { rumDataPoint } from "../worker/src/performance_events.mjs";
+import {
+  NOTICE_RECORD_CACHE_OUTCOME_NONE,
+  navigationRecordCacheOutcome,
+} from "../site/notice_edge_response.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const RETAINED = join(ROOT, NOTICE_READBACK_RETAINED_PATH);
@@ -130,28 +139,28 @@ function wellFormedReads() {
 }
 
 function wellFormedCacheDistribution({
-  state = "unread",
+  state = "read",
   outcomes = null,
 } = {}) {
   const window = {
-    requested_start: "2026-09-23T12:00:00.000Z",
-    requested_end: "2026-09-30T12:00:00.000Z",
-    complete: true,
+    requested_start: NOTICE_READBACK_CACHE_OUTCOME_DELIVERY.merged_at,
+    requested_end: "2026-09-30T19:00:00.000Z",
+    complete: false,
     begins_at_or_after_delivery: true,
   };
   const delivery = {
-    kind: NOTICE_READBACK_DELIVERIES.first_byte.kind,
-    at: NOTICE_READBACK_DELIVERIES.first_byte.merged_at,
-    merge_commit: NOTICE_READBACK_DELIVERIES.first_byte.merge_commit,
-    pull_request: NOTICE_READBACK_DELIVERIES.first_byte.pull_request,
-    note: NOTICE_READBACK_DELIVERIES.first_byte.note,
+    kind: NOTICE_READBACK_CACHE_OUTCOME_DELIVERY.kind,
+    at: NOTICE_READBACK_CACHE_OUTCOME_DELIVERY.merged_at,
+    merge_commit: NOTICE_READBACK_CACHE_OUTCOME_DELIVERY.merge_commit,
+    pull_request: NOTICE_READBACK_CACHE_OUTCOME_DELIVERY.pull_request,
+    note: NOTICE_READBACK_CACHE_OUTCOME_DELIVERY.note,
   };
   if (state === "read") {
     return buildReadRecordCacheOutcomeDistribution({
       outcomes: outcomes ?? emptyRecordCacheOutcomeCounts(),
       window,
       delivery,
-      queriedAt: "2026-09-30T12:37:18.000Z",
+      queriedAt: "2026-09-30T18:19:40.000Z",
     });
   }
   return buildUnreadRecordCacheOutcomeDistribution({
@@ -159,12 +168,12 @@ function wellFormedCacheDistribution({
     detail: "fixture unread distribution for validator coverage",
     window,
     delivery,
-    queriedAt: "2026-09-30T12:37:18.000Z",
+    queriedAt: "2026-09-30T18:19:40.000Z",
   });
 }
 
 function wellFormedAggregate({
-  recordCacheOutcomeDistribution = wellFormedCacheDistribution({ state: "unread" }),
+  recordCacheOutcomeDistribution = wellFormedCacheDistribution({ state: "read" }),
 } = {}) {
   return buildNoticeReadbackAggregate({
     reads: wellFormedReads(),
@@ -269,11 +278,17 @@ test("the committed retained aggregate validates when present", () => {
   }
   const cache = document.record_cache_outcome_distribution;
   assert.ok(cache, "record_cache_outcome_distribution must be present");
-  assert.ok(cache.state === "read" || cache.state === "unread", cache.state);
+  assert.equal(cache.state, "read", "retained aggregate must record a read distribution once the dimension exists");
   assert.equal(
     cache.window.keyed_to_measurement_group,
     NOTICE_READBACK_CACHE_OUTCOME_WINDOW_GROUP,
   );
+  assert.equal(cache.window.window_rule, NOTICE_READBACK_CACHE_OUTCOME_WINDOW_RULE);
+  assert.equal(cache.delivery.kind, NOTICE_READBACK_CACHE_OUTCOME_DELIVERY.kind);
+  assert.ok(isRecord(cache.outcomes), "read distribution carries outcome counts");
+  for (const name of NOTICE_READBACK_CACHE_OUTCOMES) {
+    assert.ok(Number.isSafeInteger(cache.outcomes[name]) && cache.outcomes[name] >= 0, name);
+  }
 });
 
 test("positive control: read-and-empty cache distribution satisfies the clause", () => {
@@ -286,6 +301,7 @@ test("positive control: read-and-empty cache distribution satisfies the clause",
   const cache = aggregate.record_cache_outcome_distribution;
   assert.equal(cache.state, "read");
   assert.equal(cache.sampled_count, 0);
+  assert.equal(cache.window.window_rule, NOTICE_READBACK_CACHE_OUTCOME_WINDOW_RULE);
   for (const name of NOTICE_READBACK_CACHE_OUTCOMES) {
     assert.equal(cache.outcomes[name], 0, name);
   }
@@ -304,6 +320,131 @@ test("positive control: unread cache distribution with a reason validates", () =
   const validation = validateNoticeReadbackAggregate(aggregate);
   assert.equal(validation.ok, true, JSON.stringify(validation.refusals));
 });
+
+test("same-shape window rule is recorded beside the distribution", () => {
+  const cache = wellFormedCacheDistribution({ state: "read" });
+  assert.equal(cache.window.window_rule, NOTICE_READBACK_CACHE_OUTCOME_WINDOW_RULE);
+  assert.equal(cache.window.keyed_to_measurement_group, NOTICE_READBACK_CACHE_OUTCOME_WINDOW_GROUP);
+  assert.equal(cache.delivery.kind, "dimension_collection");
+  assert.ok(cache.window.requested_start);
+  assert.ok(cache.window.requested_end);
+});
+
+test("positive control: hit and miss appear as different outcomes in one window", () => {
+  const projected = projectRecordCacheOutcomeCounts([
+    { record_cache_outcome: "hit", sampled_count: 4 },
+    { record_cache_outcome: "miss", sampled_count: 2 },
+  ]);
+  assert.equal(projected.outcomes.hit, 4);
+  assert.equal(projected.outcomes.miss, 2);
+  assert.equal(projected.outcomes.stale, 0);
+  assert.equal(projected.sampled_count, 6);
+
+  const hitPoint = rumDataPoint({
+    schema: "cityscroll.performance_observation.v1",
+    metricId: "ttfb_ms",
+    surfaceId: "notice",
+    componentId: "none",
+    unit: "ms",
+    deviceClass: "mobile",
+    navigationType: "navigate",
+    deliveryClass: "pages_edge",
+    resultState: "content",
+    recordCacheOutcome: "hit",
+    collectorVersion: "rum-browser-v1",
+    manifestVersion: "rum-surfaces-v1",
+    releaseId: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    value: 20,
+    samplingIndex: "ttfb_ms|notice|none",
+  });
+  const missPoint = rumDataPoint({
+    schema: "cityscroll.performance_observation.v1",
+    metricId: "ttfb_ms",
+    surfaceId: "notice",
+    componentId: "none",
+    unit: "ms",
+    deviceClass: "mobile",
+    navigationType: "navigate",
+    deliveryClass: "pages_edge",
+    resultState: "content",
+    recordCacheOutcome: "miss",
+    collectorVersion: "rum-browser-v1",
+    manifestVersion: "rum-surfaces-v1",
+    releaseId: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    value: 40,
+    samplingIndex: "ttfb_ms|notice|none",
+  });
+  assert.equal(hitPoint.blobs[13], "hit");
+  assert.equal(missPoint.blobs[13], "miss");
+  assert.notEqual(hitPoint.blobs[13], missPoint.blobs[13]);
+
+  const aggregate = wellFormedAggregate({
+    recordCacheOutcomeDistribution: wellFormedCacheDistribution({
+      state: "read",
+      outcomes: projected.outcomes,
+    }),
+  });
+  assert.equal(aggregate.record_cache_outcome_distribution.state, "read");
+  assert.equal(aggregate.record_cache_outcome_distribution.outcomes.hit, 4);
+  assert.equal(aggregate.record_cache_outcome_distribution.outcomes.miss, 2);
+  assert.equal(validateNoticeReadbackAggregate(aggregate).ok, true);
+});
+
+test("builder records read-with-zeroes when the dimension query returns empty", async () => {
+  const distribution = await resolveRecordCacheOutcomeDistribution({
+    queriedAt: "2026-09-30T19:00:00.000Z",
+    env: {
+      ANALYTICS_ACCOUNT_ID: "8162581cb1d97e20a172031adb8a13af",
+      ANALYTICS_READ_TOKEN: "test-token",
+      RUM_ANALYTICS_DATASET: "crol_rum_observations_v1",
+    },
+    fetchImpl: async () => ({
+      ok: true,
+      headers: { get: () => null },
+      json: async () => ({ data: [] }),
+    }),
+    readDistribution: async () => ({
+      status: "available",
+      outcomes: emptyRecordCacheOutcomeCounts(),
+      sampled_count: 0,
+      window: {
+        requested_start: NOTICE_READBACK_CACHE_OUTCOME_DELIVERY.merged_at,
+        requested_end: "2026-09-30T19:00:00.000Z",
+        status: "incomplete",
+        complete: false,
+      },
+    }),
+  });
+  assert.equal(distribution.state, "read");
+  assert.equal(distribution.sampled_count, 0);
+  assert.equal(distribution.window.window_rule, NOTICE_READBACK_CACHE_OUTCOME_WINDOW_RULE);
+  assert.equal(distribution.source.retained_query_path, "blob14/record_cache_outcome");
+});
+
+test("navigation Server-Timing stamps closed cache outcomes for the collector", () => {
+  const hit = navigationRecordCacheOutcome({
+    performance: {
+      getEntriesByType: () => [{
+        serverTiming: [{ name: "cs-record", description: "hit", duration: 12 }],
+      }],
+    },
+  });
+  const miss = navigationRecordCacheOutcome({
+    performance: {
+      getEntriesByType: () => [{
+        serverTiming: [{ name: "cs-record", description: "miss", duration: 40 }],
+      }],
+    },
+  });
+  assert.equal(hit, "hit");
+  assert.equal(miss, "miss");
+  assert.notEqual(hit, miss);
+  assert.equal(NOTICE_RECORD_CACHE_OUTCOME_NONE, "none");
+});
+
+function isRecord(value) {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
 
 test("refusal: missing_record_cache_outcome_distribution names the absent field", () => {
   const aggregate = withoutRecordCacheOutcomeDistribution(wellFormedAggregate());
