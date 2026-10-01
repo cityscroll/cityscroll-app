@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.neighborhood_publication_receipt.v1",
-  "built_at": "2026-09-30T05:39:36.433Z",
+  "built_at": "2026-10-01T06:30:36.738Z",
   "frozen_baseline": {
     "canonical_meeting_count": 792,
     "broad_jurisdiction": 281,
@@ -78,15 +78,15 @@
     }
   },
   "after": {
-    "generation": "gen-cfcb6c2fbc90-2026-09-30",
-    "canonical_meeting_count": 792,
+    "generation": "gen-3b8a4fd71518-2026-10-01",
+    "canonical_meeting_count": 830,
     "by_outcome": {
-      "physical_venue": 82,
+      "physical_venue": 80,
       "subject": 0,
-      "broad_jurisdiction": 234,
-      "virtual": 63,
-      "no_source_address": 203,
-      "unresolved_evidence": 210
+      "broad_jurisdiction": 242,
+      "virtual": 67,
+      "no_source_address": 205,
+      "unresolved_evidence": 236
     },
     "address_candidate_classes": null,
     "anchors": {
@@ -112,10 +112,10 @@
       },
       "worth_street": {
         "meeting_id": "meeting:city_record:20260106034",
-        "outcome": "physical_venue",
-        "venue_bbl": "1001680032",
-        "venue_nta2020": "MN0102",
-        "venue_community_district": "M01",
+        "outcome": "unresolved_evidence",
+        "venue_bbl": null,
+        "venue_nta2020": null,
+        "venue_community_district": null,
         "host_community_district": null
       },
       "bronx_missing_parcel": {
@@ -129,11 +129,11 @@
     }
   },
   "deltas": {
-    "physical_venue": 51,
-    "broad_jurisdiction": -47,
+    "physical_venue": 49,
+    "broad_jurisdiction": -39,
     "subject": -1,
-    "virtual": 0,
-    "no_source_address": 0,
-    "unresolved_evidence": -3
+    "virtual": 4,
+    "no_source_address": 2,
+    "unresolved_evidence": 23
   }
 }

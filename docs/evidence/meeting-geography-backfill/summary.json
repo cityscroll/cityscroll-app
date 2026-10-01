@@ -1,27 +1,27 @@
 {
   "schema": "cityscroll.meeting_geography_backfill_evidence.v1",
-  "generation": "gen-cfcb6c2fbc90-2026-09-30",
-  "built_at": "2026-09-30T05:39:36.433Z",
-  "source_generation_hash": "cfcb6c2fbc90e17beaefe2e6041ef8173ccbcd96d8444e35086642278f5477df",
+  "generation": "gen-3b8a4fd71518-2026-10-01",
+  "built_at": "2026-10-01T06:30:36.738Z",
+  "source_generation_hash": "3b8a4fd71518c7e131128bd2ac70dc0bf8eedcc12ea61eb6ad82c745cd2fada5",
   "candidate_input": {
-    "canonical_meeting_count": 792,
-    "address_bearing_rows": 329,
-    "distinct_address_strings": 137
+    "canonical_meeting_count": 830,
+    "address_bearing_rows": 352,
+    "distinct_address_strings": 153
   },
   "counts": {
-    "input_rows": 792,
-    "processed_rows": 792,
-    "newly_processed": 792,
+    "input_rows": 830,
+    "processed_rows": 830,
+    "newly_processed": 830,
     "resumed_unchanged": 0,
-    "address_bearing_rows": 329,
-    "distinct_address_strings": 137,
+    "address_bearing_rows": 352,
+    "distinct_address_strings": 153,
     "by_outcome": {
-      "physical_venue": 82,
+      "physical_venue": 80,
       "subject": 0,
-      "broad_jurisdiction": 234,
-      "virtual": 63,
-      "no_source_address": 203,
-      "unresolved_evidence": 210
+      "broad_jurisdiction": 242,
+      "virtual": 67,
+      "no_source_address": 205,
+      "unresolved_evidence": 236
     }
   },
   "positive_record": {
