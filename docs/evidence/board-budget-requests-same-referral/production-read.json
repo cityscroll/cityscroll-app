@@ -1,0 +1,289 @@
+{
+  "capture": {
+    "browser": "chromium",
+    "diagnostic_publication_withheld": "20270217",
+    "page_extracted_fields": [
+      "referral_earlier",
+      "referral_later",
+      "sameness_text",
+      "rank_text",
+      "fiscal_year_text",
+      "fiscal_year_attr",
+      "tracking_code",
+      "agency_scope_after_return",
+      "board_path_after_return"
+    ],
+    "screenshot_binaries_committed": false,
+    "specimen": {
+      "agency_scope": "named-brooklyn-public-library",
+      "board_id": "brooklyn-cb-14",
+      "route": "/community-boards/brooklyn-cb-14/#board-budget-requests-named-brooklyn-public-library",
+      "tracking_code": "214202702C"
+    },
+    "tool": "tools/capture_board_budget_requests_same_referral_production_read.py",
+    "viewports": [
+      {
+        "height": 900,
+        "name": "desktop",
+        "width": 1440
+      },
+      {
+        "height": 844,
+        "name": "mobile",
+        "width": 390
+      }
+    ]
+  },
+  "deployment": {
+    "capture_revision_ancestor_of_head": true,
+    "deployment_at": "2026-10-01T10:42:50.133Z",
+    "generated_at": "2026-10-01T10:42:50.133Z",
+    "manifest_sha256": "a7b8135840cadaef9e5b8c668db30aba57d13aba8774a20914f620f1963f78d3",
+    "manifest_url": "https://cityscroll.org/artifact-manifest.json",
+    "required_ancestor": "893c0c03dc77ede8d059d55633c5d9f6646d47c5",
+    "required_ancestor_contained": true,
+    "required_ancestor_on_default_branch": true,
+    "revision": "0c3967244cadc9620347e44fc02c6a3a3431a463"
+  },
+  "evidence_class": "deployed-production-read-back",
+  "letters": {
+    "A1": {
+      "clause": "identical_referrals_named_on_served_page",
+      "reads": [
+        {
+          "agency_scope": "named-brooklyn-public-library",
+          "assertion": "/community-boards/brooklyn-cb-14/#board-budget-requests-named-brooklyn-public-library at 1440x900: both served answers for 214202702C carry the same elected-officials referral text read from the page, the page names that sameness, agency-specific rank and FY2027 remain visible, and board/agency/fiscal-year context survives return from the inspect detail; the withheld diagnostic publication is not served on the request.",
+          "board_id": "brooklyn-cb-14",
+          "clause": "identical_referrals_named_on_served_page",
+          "data_vintage": "community_board_budget_register as_of 2026-09-07; servable publications 20260512 and 20260630; diagnostic-only publication 20270217 withheld",
+          "image_binaries_committed": false,
+          "local_image_dir_ignored": "task-scratch/board-budget-requests-same-referral-production",
+          "name": "brooklyn-14-cortelyou-same-referral-desktop",
+          "render_sha256": "c5bbe99b03bc3715eb28bd7ca19b5c126427b4b475b26e5b2e3fabd352eb923b",
+          "revision": "0c3967244cadc9620347e44fc02c6a3a3431a463",
+          "route": "/community-boards/brooklyn-cb-14/#board-budget-requests-named-brooklyn-public-library",
+          "screenshot_file": null,
+          "screenshot_sha256": "0c69530d2c019913ae2ef6fb96b1afe905f2bb53c6e1d7d318f5e3d32a2f3950",
+          "served_values": {
+            "agency_scope_after_return": "board-budget-requests-named-brooklyn-public-library",
+            "agency_scope_before_detail": "board-budget-requests-named-brooklyn-public-library",
+            "answer_date_earlier": "Published May 12, 2026",
+            "answer_date_later": "Published June 30, 2026",
+            "board_path_after_return": "/community-boards/brooklyn-cb-14/",
+            "board_path_before_detail": "/community-boards/brooklyn-cb-14/",
+            "diagnostic_publication_served": false,
+            "filters_survived_detail_return": true,
+            "fiscal_year_attr": "2027",
+            "fiscal_year_text": "Fiscal year 2027",
+            "page_extracted_fields": [
+              "referral_earlier",
+              "referral_later",
+              "sameness_text",
+              "rank_text",
+              "fiscal_year_text",
+              "fiscal_year_attr",
+              "tracking_code",
+              "agency_scope_after_return",
+              "board_path_after_return"
+            ],
+            "publication_earlier": "20260512",
+            "publication_later": "20260630",
+            "rank_text": "Priority 02 among this board's capital requests to this agency",
+            "referral_earlier": "It is recommended that this request be brought to the attention of your Elected Officials.",
+            "referral_later": "It is recommended that this request be brought to the attention of your Elected Officials.",
+            "sameness_text": "This answer reads the same as the one published May 12, 2026.",
+            "section_publication_count": "2",
+            "tracking_code": "214202702C"
+          },
+          "source": "headless-playwright-production-served-site",
+          "tracking_code": "214202702C",
+          "viewport": {
+            "height": 900,
+            "name": "desktop",
+            "width": 1440
+          }
+        },
+        {
+          "agency_scope": "named-brooklyn-public-library",
+          "assertion": "/community-boards/brooklyn-cb-14/#board-budget-requests-named-brooklyn-public-library at 390x844: both served answers for 214202702C carry the same elected-officials referral text read from the page, the page names that sameness, agency-specific rank and FY2027 remain visible, and board/agency/fiscal-year context survives return from the inspect detail; the withheld diagnostic publication is not served on the request.",
+          "board_id": "brooklyn-cb-14",
+          "clause": "identical_referrals_named_on_served_page",
+          "data_vintage": "community_board_budget_register as_of 2026-09-07; servable publications 20260512 and 20260630; diagnostic-only publication 20270217 withheld",
+          "image_binaries_committed": false,
+          "local_image_dir_ignored": "task-scratch/board-budget-requests-same-referral-production",
+          "name": "brooklyn-14-cortelyou-same-referral-mobile",
+          "render_sha256": "c5bbe99b03bc3715eb28bd7ca19b5c126427b4b475b26e5b2e3fabd352eb923b",
+          "revision": "0c3967244cadc9620347e44fc02c6a3a3431a463",
+          "route": "/community-boards/brooklyn-cb-14/#board-budget-requests-named-brooklyn-public-library",
+          "screenshot_file": null,
+          "screenshot_sha256": "a04c109f36c8e1178cce1ed7bd11615a881bd671f87f5e2041c481f4cddc9291",
+          "served_values": {
+            "agency_scope_after_return": "board-budget-requests-named-brooklyn-public-library",
+            "agency_scope_before_detail": "board-budget-requests-named-brooklyn-public-library",
+            "answer_date_earlier": "Published May 12, 2026",
+            "answer_date_later": "Published June 30, 2026",
+            "board_path_after_return": "/community-boards/brooklyn-cb-14/",
+            "board_path_before_detail": "/community-boards/brooklyn-cb-14/",
+            "diagnostic_publication_served": false,
+            "filters_survived_detail_return": true,
+            "fiscal_year_attr": "2027",
+            "fiscal_year_text": "Fiscal year 2027",
+            "page_extracted_fields": [
+              "referral_earlier",
+              "referral_later",
+              "sameness_text",
+              "rank_text",
+              "fiscal_year_text",
+              "fiscal_year_attr",
+              "tracking_code",
+              "agency_scope_after_return",
+              "board_path_after_return"
+            ],
+            "publication_earlier": "20260512",
+            "publication_later": "20260630",
+            "rank_text": "Priority 02 among this board's capital requests to this agency",
+            "referral_earlier": "It is recommended that this request be brought to the attention of your Elected Officials.",
+            "referral_later": "It is recommended that this request be brought to the attention of your Elected Officials.",
+            "sameness_text": "This answer reads the same as the one published May 12, 2026.",
+            "section_publication_count": "2",
+            "tracking_code": "214202702C"
+          },
+          "source": "headless-playwright-production-served-site",
+          "tracking_code": "214202702C",
+          "viewport": {
+            "height": 844,
+            "name": "mobile",
+            "width": 390
+          }
+        }
+      ],
+      "route": "/community-boards/brooklyn-cb-14/#board-budget-requests-named-brooklyn-public-library"
+    }
+  },
+  "observed_at": "2026-10-01T11:17:15.022709Z",
+  "origin": "https://cityscroll.org",
+  "producer": {
+    "letters": [
+      "A1"
+    ],
+    "path": "docs/evidence/board-budget-requests-same-referral/read-back.json",
+    "schema": "cityscroll.board_budget_requests_same_referral_production_read.v1"
+  },
+  "public_alias": "cc479983fe385",
+  "reads": [
+    {
+      "agency_scope": "named-brooklyn-public-library",
+      "assertion": "/community-boards/brooklyn-cb-14/#board-budget-requests-named-brooklyn-public-library at 1440x900: both served answers for 214202702C carry the same elected-officials referral text read from the page, the page names that sameness, agency-specific rank and FY2027 remain visible, and board/agency/fiscal-year context survives return from the inspect detail; the withheld diagnostic publication is not served on the request.",
+      "board_id": "brooklyn-cb-14",
+      "clause": "identical_referrals_named_on_served_page",
+      "data_vintage": "community_board_budget_register as_of 2026-09-07; servable publications 20260512 and 20260630; diagnostic-only publication 20270217 withheld",
+      "image_binaries_committed": false,
+      "local_image_dir_ignored": "task-scratch/board-budget-requests-same-referral-production",
+      "name": "brooklyn-14-cortelyou-same-referral-desktop",
+      "render_sha256": "c5bbe99b03bc3715eb28bd7ca19b5c126427b4b475b26e5b2e3fabd352eb923b",
+      "revision": "0c3967244cadc9620347e44fc02c6a3a3431a463",
+      "route": "/community-boards/brooklyn-cb-14/#board-budget-requests-named-brooklyn-public-library",
+      "screenshot_file": null,
+      "screenshot_sha256": "0c69530d2c019913ae2ef6fb96b1afe905f2bb53c6e1d7d318f5e3d32a2f3950",
+      "served_values": {
+        "agency_scope_after_return": "board-budget-requests-named-brooklyn-public-library",
+        "agency_scope_before_detail": "board-budget-requests-named-brooklyn-public-library",
+        "answer_date_earlier": "Published May 12, 2026",
+        "answer_date_later": "Published June 30, 2026",
+        "board_path_after_return": "/community-boards/brooklyn-cb-14/",
+        "board_path_before_detail": "/community-boards/brooklyn-cb-14/",
+        "diagnostic_publication_served": false,
+        "filters_survived_detail_return": true,
+        "fiscal_year_attr": "2027",
+        "fiscal_year_text": "Fiscal year 2027",
+        "page_extracted_fields": [
+          "referral_earlier",
+          "referral_later",
+          "sameness_text",
+          "rank_text",
+          "fiscal_year_text",
+          "fiscal_year_attr",
+          "tracking_code",
+          "agency_scope_after_return",
+          "board_path_after_return"
+        ],
+        "publication_earlier": "20260512",
+        "publication_later": "20260630",
+        "rank_text": "Priority 02 among this board's capital requests to this agency",
+        "referral_earlier": "It is recommended that this request be brought to the attention of your Elected Officials.",
+        "referral_later": "It is recommended that this request be brought to the attention of your Elected Officials.",
+        "sameness_text": "This answer reads the same as the one published May 12, 2026.",
+        "section_publication_count": "2",
+        "tracking_code": "214202702C"
+      },
+      "source": "headless-playwright-production-served-site",
+      "tracking_code": "214202702C",
+      "viewport": {
+        "height": 900,
+        "name": "desktop",
+        "width": 1440
+      }
+    },
+    {
+      "agency_scope": "named-brooklyn-public-library",
+      "assertion": "/community-boards/brooklyn-cb-14/#board-budget-requests-named-brooklyn-public-library at 390x844: both served answers for 214202702C carry the same elected-officials referral text read from the page, the page names that sameness, agency-specific rank and FY2027 remain visible, and board/agency/fiscal-year context survives return from the inspect detail; the withheld diagnostic publication is not served on the request.",
+      "board_id": "brooklyn-cb-14",
+      "clause": "identical_referrals_named_on_served_page",
+      "data_vintage": "community_board_budget_register as_of 2026-09-07; servable publications 20260512 and 20260630; diagnostic-only publication 20270217 withheld",
+      "image_binaries_committed": false,
+      "local_image_dir_ignored": "task-scratch/board-budget-requests-same-referral-production",
+      "name": "brooklyn-14-cortelyou-same-referral-mobile",
+      "render_sha256": "c5bbe99b03bc3715eb28bd7ca19b5c126427b4b475b26e5b2e3fabd352eb923b",
+      "revision": "0c3967244cadc9620347e44fc02c6a3a3431a463",
+      "route": "/community-boards/brooklyn-cb-14/#board-budget-requests-named-brooklyn-public-library",
+      "screenshot_file": null,
+      "screenshot_sha256": "a04c109f36c8e1178cce1ed7bd11615a881bd671f87f5e2041c481f4cddc9291",
+      "served_values": {
+        "agency_scope_after_return": "board-budget-requests-named-brooklyn-public-library",
+        "agency_scope_before_detail": "board-budget-requests-named-brooklyn-public-library",
+        "answer_date_earlier": "Published May 12, 2026",
+        "answer_date_later": "Published June 30, 2026",
+        "board_path_after_return": "/community-boards/brooklyn-cb-14/",
+        "board_path_before_detail": "/community-boards/brooklyn-cb-14/",
+        "diagnostic_publication_served": false,
+        "filters_survived_detail_return": true,
+        "fiscal_year_attr": "2027",
+        "fiscal_year_text": "Fiscal year 2027",
+        "page_extracted_fields": [
+          "referral_earlier",
+          "referral_later",
+          "sameness_text",
+          "rank_text",
+          "fiscal_year_text",
+          "fiscal_year_attr",
+          "tracking_code",
+          "agency_scope_after_return",
+          "board_path_after_return"
+        ],
+        "publication_earlier": "20260512",
+        "publication_later": "20260630",
+        "rank_text": "Priority 02 among this board's capital requests to this agency",
+        "referral_earlier": "It is recommended that this request be brought to the attention of your Elected Officials.",
+        "referral_later": "It is recommended that this request be brought to the attention of your Elected Officials.",
+        "sameness_text": "This answer reads the same as the one published May 12, 2026.",
+        "section_publication_count": "2",
+        "tracking_code": "214202702C"
+      },
+      "source": "headless-playwright-production-served-site",
+      "tracking_code": "214202702C",
+      "viewport": {
+        "height": 844,
+        "name": "mobile",
+        "width": 390
+      }
+    }
+  ],
+  "schema": "cityscroll.board_budget_requests_same_referral_production_read.v1",
+  "summary": {
+    "board_id": "brooklyn-cb-14",
+    "capture_count": 2,
+    "case_count": 2,
+    "letter": "A1",
+    "tracking_code": "214202702C"
+  }
+}

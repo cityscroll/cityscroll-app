@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -12,7 +14,9 @@ import { loadManifest, modelEntry } from "../tools/d1_manifest.mjs";
 import { buildPublicationReceipt } from "../tools/d1_publication_receipt.mjs";
 import {
   MISSING_SNAPSHOT_REBUILD_REASON,
+  NO_DELTA_SNAPSHOT_BASELINE_REASON,
   buildMissingPriorSnapshotRecovery,
+  resolvePriorSnapshotBaseline,
   runMissingSnapshotRecovery,
   runProductionDelta,
   snapshotKeyForGeneration,
@@ -22,6 +26,7 @@ import { tableRows } from "../tools/d1_stable_keys.mjs";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const fixture = JSON.parse(readFileSync(join(ROOT, "test/fixtures/d1-production-delta/sources.json"), "utf8"));
 const missingSnapshotFixture = JSON.parse(readFileSync(join(ROOT, "test/fixtures/d1-production-delta/published-state-missing-snapshot.json"), "utf8"));
+const claimedNoBaselineFixture = JSON.parse(readFileSync(join(ROOT, "test/fixtures/d1-production-delta/published-state-claimed-no-baseline.json"), "utf8"));
 const manifest = loadManifest();
 const fingerprint = "b".repeat(64);
 const CLOCK = Date.parse("2026-09-12T12:00:00Z");
@@ -126,6 +131,53 @@ test("classifies Wrangler's colon-form missing snapshot error for the published 
     assert.equal(recovery?.reason, "published_snapshot_missing");
     assert.equal(recovery?.published_generation, missingSnapshotFixture.published_state.generation);
     assert.equal(recovery?.snapshot_key, "d1-publication:snapshot:v2:20");
+  }
+});
+
+test("claimed fence with no published baseline routes prior-snapshot-key to missing recovery", () => {
+  // Exact state from Deploy worker 36858881507 / follow-on failure 36862666147:
+  // generation 21 left claimed after 0032 failed, so prior-snapshot-key must not exit 1.
+  const state = claimedNoBaselineFixture.published_state;
+  assert.equal(state.status, "claimed");
+  assert.equal(state.generation, 21);
+
+  const resolved = resolvePriorSnapshotBaseline(state);
+  assert.equal(resolved.status, "missing");
+  assert.equal(resolved.generation, 21);
+  assert.equal(resolved.snapshot_key, "d1-publication:snapshot:v2:21");
+  assert.equal(resolved.recovery?.reason, NO_DELTA_SNAPSHOT_BASELINE_REASON);
+  assert.equal(resolved.recovery?.observed_fence_status, "claimed");
+  assert.equal(resolved.recovery?.status, "bootstrap_required");
+  assert.equal(resolved.recovery?.action, "explicit_rebuild");
+
+  const tempDir = mkdtempSync(join(tmpdir(), "d1-no-baseline-"));
+  const statePath = join(tempDir, "published.json");
+  const baselineOut = join(tempDir, "baseline.json");
+  const recoveryOut = join(tempDir, "recovery.json");
+  writeFileSync(statePath, `${JSON.stringify(state, null, 2)}\n`);
+  try {
+    const result = spawnSync(
+      process.execPath,
+      [
+        join(ROOT, "tools/d1_production_delta.mjs"),
+        "prior-snapshot-key",
+        "--state", statePath,
+        "--baseline-out", baselineOut,
+        "--recovery-out", recoveryOut,
+      ],
+      { encoding: "utf8" },
+    );
+    assert.equal(result.status, 0, `prior-snapshot-key must exit 0 for claimed baseline:\n${result.stderr}`);
+    assert.match(result.stderr, /no delta snapshot baseline/);
+    assert.equal(result.stdout.trim(), "");
+    const baseline = JSON.parse(readFileSync(baselineOut, "utf8"));
+    assert.equal(baseline.status, "missing");
+    assert.equal(baseline.observed_fence_status, "claimed");
+    const recovery = JSON.parse(readFileSync(recoveryOut, "utf8"));
+    assert.equal(recovery.reason, NO_DELTA_SNAPSHOT_BASELINE_REASON);
+    assert.equal(recovery.published_generation, 21);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
   }
 });
 

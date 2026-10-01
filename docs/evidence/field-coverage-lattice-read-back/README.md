@@ -49,6 +49,21 @@ Page-level readiness cells that clear the floor (measured values):
 Mobile and other below-floor device subgroups remain `insufficient_sample` with
 percentiles withheld; they are not treated as passes.
 
+## Two artifacts, one notice-context tail
+
+The lattice's Notice `component_ready_ms` / `notice-context` cell and the
+production-field readiness read-back at
+[`../notice-context-readiness/read-back.json`](../notice-context-readiness/read-back.json)
+both measure the same tail over separate fixed rolling windows. The retained
+`tail_artifact_disagreement` block names both artifacts by path, records the
+p95 each reports, and states the difference between them (including
+`difference_ms: 0` when they agree). Refresh or check that block with:
+
+```bash
+node tools/build_field_coverage_tail_disagreement.mjs
+node tools/build_field_coverage_tail_disagreement.mjs --check
+```
+
 ## Method
 
 ```bash
