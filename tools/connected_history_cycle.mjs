@@ -5,6 +5,7 @@
  * site/data/connected_history_sources/README.md for the contract.
  *
  *   node tools/connected_history_cycle.mjs --run
+ *   node tools/connected_history_cycle.mjs --run --pending-receipt <path>
  *   node tools/connected_history_cycle.mjs --run --dry-run --receipt-out <path>
  *   node tools/connected_history_cycle.mjs --check-declaration
  *   node tools/connected_history_cycle.mjs --summarize site/data/connected_history_cycle.json
@@ -12,8 +13,9 @@
  * `--run` acquires from the publishers, contacts the served origin for its
  * revision, and writes the receipt to site/data/connected_history_cycle.json.
  * It changes a served history materialization only when the derived decision
- * is `published`. `--dry-run` writes nothing under site/ and needs
- * `--receipt-out` outside it.
+ * is `published`. `--pending-receipt` carries an unmerged automation-branch
+ * receipt into `prior_runs` so a later run cannot drop it. `--dry-run` writes
+ * nothing under site/ and needs `--receipt-out` outside it.
  */
 
 import { spawnSync } from "node:child_process";
@@ -28,6 +30,7 @@ import {
   CONNECTED_HISTORY_CYCLE_RECEIPT_SCHEMA,
   CONNECTED_HISTORY_MATERIALIZATIONS,
   checkConnectedHistoryCycleDeclaration,
+  loadPendingCycleReceipt,
   runConnectedHistoryCycle,
 } from "./lib/connected_history_cycle.mjs";
 
@@ -37,6 +40,21 @@ const USER_AGENT = "CityScrollConnectedHistoryCycle/1.0";
 function option(argv, name, fallback = null) {
   const index = argv.indexOf(name);
   return index >= 0 ? argv[index + 1] : fallback;
+}
+
+/** Every `--pending-receipt <path>` argument, in order. */
+function pendingReceiptPaths(argv) {
+  const paths = [];
+  for (let index = 0; index < argv.length; index += 1) {
+    if (argv[index] !== "--pending-receipt") continue;
+    const path = argv[index + 1];
+    if (!path || path.startsWith("--")) {
+      throw new Error("--pending-receipt needs a receipt path");
+    }
+    paths.push(path);
+    index += 1;
+  }
+  return paths;
 }
 
 async function fetchServed(url, timeoutMs = 20_000) {
@@ -170,7 +188,7 @@ async function main(argv = process.argv.slice(2)) {
     return 0;
   }
   if (!argv.includes("--run")) {
-    console.error("usage: node tools/connected_history_cycle.mjs --run [--dry-run --receipt-out <path>] | --check-declaration | --summarize <receipt>");
+    console.error("usage: node tools/connected_history_cycle.mjs --run [--pending-receipt <path>] [--dry-run --receipt-out <path>] | --check-declaration | --summarize <receipt>");
     return 2;
   }
   const dryRun = argv.includes("--dry-run");
@@ -178,6 +196,11 @@ async function main(argv = process.argv.slice(2)) {
   if (dryRun && (!receiptOut || !relative(join(root, "site"), receiptOut).startsWith(".."))) {
     throw new Error("--dry-run needs --receipt-out outside site/ so a rehearsal never looks like a served cycle");
   }
+  const pendingReceipts = pendingReceiptPaths(argv).map((path) => {
+    const absolute = resolve(path);
+    if (!existsSync(absolute)) throw new Error(`pending cycle receipt is missing: ${path}`);
+    return loadPendingCycleReceipt(readFileSync(absolute, "utf8"));
+  });
   const origin = String(option(argv, "--origin", CONNECTED_HISTORY_CYCLE.origin)).replace(/\/+$/, "");
   const receiptPath = join(root, CONNECTED_HISTORY_CYCLE.receipt_path);
   const committedReceiptDigest = existsSync(receiptPath) ? contentHashOf(readFileSync(receiptPath)) : null;
@@ -190,6 +213,7 @@ async function main(argv = process.argv.slice(2)) {
     dryRun,
     receiptOut,
     heldDir: join(root, CONNECTED_HISTORY_CYCLE.held_dir),
+    pendingReceipts,
   });
   console.log(JSON.stringify({
     run_id: receipt.run.run_id,

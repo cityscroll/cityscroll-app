@@ -2,8 +2,8 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/connected-history-cycle",
   "status": "implemented",
-  "fingerprint": "connected-history-cycle.v1",
-  "updated_at": "2026-09-29T00:00:00.000Z",
+  "fingerprint": "connected-history-cycle.v2-append-only-prior-runs",
+  "updated_at": "2026-09-30T00:00:00.000Z",
   "projections": [
     {
       "id": "connected-history-cycle-contract",
