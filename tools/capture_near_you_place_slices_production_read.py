@@ -1,19 +1,24 @@
 #!/usr/bin/env python3
-"""Capture the live production read-back for the five Near You borough fixtures.
+"""Capture the live production read-back for Near You place slices.
 
-Each canonical residential fixture route is read from the deployed origins and
-classified into exactly one typed published coverage state: available records,
-published zero, unavailable source coverage, or transient publication failure.
-The classification is asserted against the state the live read-back receipt
-expects, so the capture itself is the test: a fabricated zero or a generic
-unavailable fails the run. The served page is then rendered in headless
-Chromium at desktop and mobile widths to prove the typed state is what a
-resident sees. Only hashes and the redacted schema/state/count fields are
-retained; screenshot binaries are not written.
+Owns two related served observations:
+
+1. Five borough residential fixtures classified into typed published coverage
+   states (available records, published zero, unavailable source coverage, or
+   transient publication failure).
+2. Recovered venue membership journeys at BK1503 and QN0602, including exact
+   venue rows, separately labeled broader district activity, clicked full
+   records, and boundary controls. Capture refuses until both Pages and Worker
+   deployments contain the recorded landed delivery ancestor.
+
+Only hashes and redacted schema/state/count/identity fields are retained;
+screenshot binaries are not written.
 
 Usage:
   python3 tools/capture_near_you_place_slices_production_read.py
   python3 tools/capture_near_you_place_slices_production_read.py --check
+  python3 tools/capture_near_you_place_slices_production_read.py --fixtures-only
+  python3 tools/capture_near_you_place_slices_production_read.py --membership-only
 """
 
 from __future__ import annotations
@@ -24,6 +29,7 @@ import html
 import json
 import re
 import secrets
+import sys
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -31,10 +37,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from playwright.sync_api import sync_playwright
-
-
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "tools"))
+from lib.near_you_membership_served_read import (  # noqa: E402
+    MEMBERSHIP_OUTPUT,
+    capture_membership_served_read,
+    check_membership_served_read,
+    write_json as write_membership_json,
+)
+
 RECEIPT = ROOT / "docs/evidence/near-you-place-slices/live-readback-receipt.json"
 OUTPUT = ROOT / "docs/evidence/near-you-place-slices/production-read.json"
 SCHEMA = "cityscroll.near_you_place_slices_production_read.v1"
@@ -193,6 +204,8 @@ def capture() -> dict[str, Any]:
     worker_commit = health.get("commit")
     if not isinstance(worker_commit, str) or not re.fullmatch(r"[0-9a-f]{40}", worker_commit):
         raise AssertionError("worker health has no serving commit")
+
+    from playwright.sync_api import sync_playwright
 
     reads: list[dict[str, Any]] = []
     with sync_playwright() as playwright:
@@ -480,22 +493,63 @@ def validate(production_read: dict[str, Any], receipt: dict[str, Any]) -> None:
             raise AssertionError("evidence artifact contains a local path reference")
 
 
-def check() -> None:
+def check_fixtures() -> None:
     validate(read_json(OUTPUT), read_json(RECEIPT))
+
+
+def check() -> None:
+    check_fixtures()
+    check_membership_served_read()
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true")
+    parser.add_argument(
+        "--check-fixtures",
+        action="store_true",
+        help="Validate only the five borough coverage-state production read-back",
+    )
+    parser.add_argument(
+        "--fixtures-only",
+        action="store_true",
+        help="Capture only the five borough coverage-state fixtures",
+    )
+    parser.add_argument(
+        "--membership-only",
+        action="store_true",
+        help="Capture only the BK1503/QN0602 recovered venue membership journeys",
+    )
     args = parser.parse_args()
+    if args.fixtures_only and args.membership_only:
+        parser.error("use only one of --fixtures-only or --membership-only")
+    if args.check and args.check_fixtures:
+        parser.error("use only one of --check or --check-fixtures")
+    if args.check_fixtures:
+        check_fixtures()
+        print(f"near-you place-slices production read-back passed: {OUTPUT.relative_to(ROOT)}")
+        return 0
     if args.check:
         check()
         print(f"near-you place-slices production read-back passed: {OUTPUT.relative_to(ROOT)}")
+        print(
+            "near-you membership served read-back passed: "
+            f"{MEMBERSHIP_OUTPUT.relative_to(ROOT)}"
+        )
         return 0
-    receipt = capture()
+
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    write_json(OUTPUT, receipt)
-    print(f"wrote {OUTPUT.relative_to(ROOT)} summary={receipt['summary']['result']}")
+    if not args.membership_only:
+        receipt = capture()
+        write_json(OUTPUT, receipt)
+        print(f"wrote {OUTPUT.relative_to(ROOT)} summary={receipt['summary']['result']}")
+    if not args.fixtures_only:
+        membership = capture_membership_served_read()
+        write_membership_json(MEMBERSHIP_OUTPUT, membership)
+        print(
+            f"wrote {MEMBERSHIP_OUTPUT.relative_to(ROOT)} "
+            f"summary={membership['summary']['result']}"
+        )
     return 0
 
 

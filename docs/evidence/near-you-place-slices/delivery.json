@@ -1,0 +1,7 @@
+{
+  "schema": "cityscroll.capture_delivery.v1",
+  "public_alias": "ce08b21f46de9",
+  "landed_commit": "a1a3fc0128ec2f11da77e26713fa3b61ceed4211",
+  "surface": "pages",
+  "note": "Squash-merge commit on the default branch that published recovered venue membership through shared geography generation."
+}
