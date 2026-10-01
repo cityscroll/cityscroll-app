@@ -129,8 +129,20 @@ test("workflow gates every D1 mutation without gating the Worker deploy", () => 
   assert.match(workflow, /kv key get d1-publication:state:v1/);
   assert.match(workflow, /kv key put d1-publication:state:v1/);
 
+  // Schema migrations run on every Deploy worker run and stay decoupled from the
+  // publication fingerprint / prior-snapshot / generation-fence path.
+  const migrationsStart = workflow.indexOf("- name: Apply D1 migrations");
+  assert.ok(migrationsStart >= 0, "Apply D1 migrations step is missing");
+  const migrationsEnd = workflow.indexOf("\n      - name:", migrationsStart + 1);
+  const migrationsStep = workflow.slice(migrationsStart, migrationsEnd === -1 ? undefined : migrationsEnd);
+  assert.match(migrationsStep, /d1 migrations apply crol-notices --remote/);
+  assert.doesNotMatch(migrationsStep, /d1-publication-gate|d1-prior-snapshot|d1-generation-claim/);
+  assert.ok(
+    migrationsStart < workflow.indexOf("- name: Compute D1 deploy fingerprint"),
+    "Apply D1 migrations must precede the deploy fingerprint step",
+  );
+
   const d1Steps = [
-    "Apply D1 migrations",
     "Verify bounded D1 publication plan",
     "Publish and verify bounded D1 delta",
     "Record published D1 fingerprint",
@@ -141,8 +153,15 @@ test("workflow gates every D1 mutation without gating the Worker deploy", () => 
     const step = workflow.slice(start, next === -1 ? undefined : next);
     assert.ok(start >= 0, `${name} step is missing`);
     assert.match(step, /if: steps\.d1-publication-gate\.outputs\.should-publish == 'true'/, `${name} is not gated`);
-    if (index < 3) assert.match(step, /(?:d1 migrations apply|d1_bounded_publisher|d1_production_delta)/);
+    if (index < 2) assert.match(step, /(?:d1_bounded_publisher|d1_production_delta)/);
   }
+
+  const abandonStart = workflow.indexOf("- name: Abandon incomplete D1 generation claim");
+  assert.ok(abandonStart >= 0, "incomplete-claim abandon step is missing");
+  const abandonEnd = workflow.indexOf("\n      - name:", abandonStart + 1);
+  const abandonStep = workflow.slice(abandonStart, abandonEnd === -1 ? undefined : abandonEnd);
+  assert.match(abandonStep, /if: always\(\) && steps\.d1-generation-claim\.outputs\.claimed == 'true'/);
+  assert.match(abandonStep, /d1_generation_fence\.mjs abandon/);
 
   const deployStart = workflow.indexOf("- name: Deploy");
   const deployEnd = workflow.indexOf("\n      - name:", deployStart + 1);

@@ -67,6 +67,27 @@ test("an expired lease is reclaimed with an audit receipt naming the abandoned c
   assert.deepEqual(store.audits, [reclaimed.audit]);
 });
 
+test("ordinary claim recovers a deploy that left an expired claimed fence", async () => {
+  // Deploy worker uses claimGeneration, not reclaimGeneration. A failed run that
+  // claimed generation N and then exited before abandon leaves status=claimed
+  // until lease_until. The next deploy must reclaim through the ordinary claim path.
+  const store = createMemoryStateStore();
+  const leftBehind = await claimGeneration(claimArgs(store, "Deploy worker:1:1", FINGERPRINT_A, 0));
+  assert.equal(leftBehind.claimed, true);
+  assert.equal(leftBehind.state.status, "claimed");
+
+  const busyWhileLive = await claimGeneration(claimArgs(store, "Deploy worker:2:1", FINGERPRINT_B, 500));
+  assert.equal(busyWhileLive.claimed, false);
+  assert.equal(busyWhileLive.result, "busy");
+
+  const recovered = await claimGeneration(claimArgs(store, "Deploy worker:2:1", FINGERPRINT_B, 1000));
+  assert.equal(recovered.claimed, true);
+  assert.equal(recovered.result, "reclaimed");
+  assert.equal(recovered.generation, leftBehind.generation + 1);
+  assert.equal(recovered.audit.abandoned_claim.holder, "Deploy worker:1:1");
+  assert.equal(recovered.audit.abandoned_claim.generation, leftBehind.generation);
+});
+
 test("a superseded generation is fenced at the D1 SQL execution boundary", async () => {
   const store = createMemoryStateStore();
   const old = await claimGeneration(claimArgs(store, "old-publisher", FINGERPRINT_A, 0));
