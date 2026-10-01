@@ -522,6 +522,43 @@ function writePublicationArtifacts(outDir, result, { generation, fingerprint }) 
   });
 }
 
+/**
+ * One-line stderr for a non-zero recover/execute exit. Deploy worker 36877675700
+ * failed recover-missing-snapshot with exit 1 and an empty step log; the outcome
+ * lived only in artifacts. Always print outcome + reason (and fence detail when
+ * the bounded publisher stopped) before returning non-zero.
+ */
+export function formatCliFailureMessage(command, result, { generation = null } = {}) {
+  const outcome = result?.outcome || "failed";
+  const reason = result?.reason
+    || result?.publishReceipt?.stopped_reason
+    || "unknown failure";
+  const fence = result?.publishReceipt?.fence;
+  const parts = [
+    `d1_production_delta ${command}: outcome=${outcome}`,
+    `reason=${reason}`,
+  ];
+  if (generation != null) parts.push(`generation=${generation}`);
+  if (fence?.reason) {
+    parts.push(
+      `fence=${fence.reason}`
+      + `${fence.current_generation != null ? ` current_generation=${fence.current_generation}` : ""}`
+      + `${fence.current_holder ? ` current_holder=${fence.current_holder}` : ""}`
+      + `${fence.current_status ? ` current_status=${fence.current_status}` : ""}`,
+    );
+  }
+  return `${parts.join(" ")}\n`;
+}
+
+function exitPublicationCommand(command, result, { generation = null } = {}) {
+  const ok = command === "execute"
+    ? ["published", "skipped"].includes(result.outcome)
+    : result.outcome === "published";
+  if (ok) return 0;
+  process.stderr.write(formatCliFailureMessage(command, result, { generation }));
+  return 1;
+}
+
 async function main(argv) {
   const args = parseArgs(argv);
   if (args.command === "snapshot-key") {
@@ -588,7 +625,7 @@ async function main(argv) {
     });
     writePublicationArtifacts(outDir, result, { generation, fingerprint });
     if (result.recovery) writeJson(required(args, "recovery"), result.recovery);
-    return result.outcome === "published" ? 0 : 1;
+    return exitPublicationCommand("recover-missing-snapshot", result, { generation });
   }
   if (args.command !== "execute") {
     console.error("d1_production_delta: usage: execute|recover-missing-snapshot --current <snapshot> [--prior <snapshot>] [--recovery <path>] --generation <n> --holder <id> --fingerprint <sha256> --database <name> --out-dir <dir>");
@@ -616,7 +653,7 @@ async function main(argv) {
     maxOpsPerBatch: args["max-ops"] ? Number(args["max-ops"]) : DEFAULT_MAX_OPS_PER_BATCH,
   });
   writePublicationArtifacts(outDir, result, { generation, fingerprint });
-  return ["published", "skipped"].includes(result.outcome) ? 0 : 1;
+  return exitPublicationCommand("execute", result, { generation });
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
