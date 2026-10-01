@@ -41,7 +41,7 @@
   "incremental_publication": {
     "enabled": true,
     "disable_input": "disable_incremental_publication",
-    "recovery": "workflow_dispatch explicit rebuild",
+    "recovery": "deploy-worker missing-snapshot rebuild; workflow_dispatch explicit rebuild for operator-directed cases",
     "ordinary_path": "delta_upsert_only"
   }
 }

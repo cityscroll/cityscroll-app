@@ -143,6 +143,7 @@ export function validateWorkflowWiring(workflow) {
     "- name: Claim D1 publication generation",
     "- name: Verify bounded D1 publication plan",
     "- name: Publish and verify bounded D1 delta",
+    "- name: Recover missing D1 publication snapshot",
     "- name: Record D1 publication receipt",
   ].map((marker) => stepIndex(workflow, marker));
   if (order.some((value, index) => index > 0 && value <= order[index - 1])) {
@@ -157,12 +158,22 @@ export function validateWorkflowWiring(workflow) {
   if (!/if:\s+steps\.d1-publication-gate\.outputs\.should-publish\s*==\s*'true'/.test(workflow)) {
     fail("workflow D1 write steps are not gated by the fingerprint decision");
   }
-  const ordinaryPath = workflow.slice(stepIndex(workflow, "- name: Plan D1 publication delta"), stepIndex(workflow, "- name: Record D1 publication receipt"));
-  if (/d1_explicit_rebuild\.mjs|--mode\s+rebuild|build_worker_d1_read_models\.mjs/.test(ordinaryPath)) {
+  const ordinaryPath = workflow.slice(stepIndex(workflow, "- name: Plan D1 publication delta"), stepIndex(workflow, "- name: Recover missing D1 publication snapshot"));
+  if (/d1_explicit_rebuild\.mjs|--mode\s+rebuild|build_worker_d1_read_models\.mjs|recover-missing-snapshot/.test(ordinaryPath)) {
     fail("ordinary D1 publication path references an explicit rebuild");
   }
   for (const command of ["d1_delta_plan.mjs plan", "d1_bounded_publisher.mjs dry-run", "d1_production_delta.mjs execute", "d1_canary.mjs check", "d1_reconcile.mjs check"]) {
     if (!ordinaryPath.includes(command)) fail(`ordinary D1 publication path is missing ${command}`);
+  }
+  const recoveryPath = workflow.slice(stepIndex(workflow, "- name: Recover missing D1 publication snapshot"), stepIndex(workflow, "- name: Record D1 publication receipt"));
+  if (!recoveryPath.includes("d1_production_delta.mjs recover-missing-snapshot")) {
+    fail("workflow missing-snapshot recovery path is not wired to recover-missing-snapshot");
+  }
+  if (!/d1-prior-snapshot\.outputs\.status == 'missing'/.test(recoveryPath)) {
+    fail("workflow missing-snapshot recovery is not gated on a missing prior snapshot");
+  }
+  if (!/kv key put "\$snapshot_key"[\s\S]*d1_generation_fence\.mjs complete/.test(workflow)) {
+    fail("workflow must write the generation-qualified snapshot before completing the fence");
   }
   if (!workflow.includes("disable_incremental_publication")) fail("workflow is missing the rollback feature-flag input");
   return { paths, order };

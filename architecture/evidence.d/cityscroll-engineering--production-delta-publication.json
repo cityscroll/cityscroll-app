@@ -2,8 +2,8 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/production-delta-publication",
   "status": "implemented",
-  "fingerprint": "production-delta-publication.v1",
-  "updated_at": "2026-09-12T00:00:00.000Z",
+  "fingerprint": "production-delta-publication.v2",
+  "updated_at": "2026-10-01T00:00:00.000Z",
   "projections": [
     {
       "id": "production-delta-runner",
@@ -20,6 +20,10 @@
     {
       "id": "production-delta-contract-tests",
       "path": "test/d1_production_delta_publication.test.mjs"
+    },
+    {
+      "id": "missing-snapshot-recovery-fixture",
+      "path": "test/fixtures/d1-production-delta/published-state-missing-snapshot.json"
     }
   ]
 }

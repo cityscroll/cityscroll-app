@@ -67,10 +67,14 @@ incremental publication when the flag is not set.
 
 If a published generation fence points to a missing generation-qualified KV
 snapshot, the ordinary deploy records `bootstrap_required` recovery evidence,
-retains the newly captured current snapshot, withholds incremental D1 writes,
-and continues the Worker deploy. The retained snapshot is the input to the
-explicit rebuild procedure; the missing baseline is never treated as an empty
-or zero-row baseline.
+retains the newly captured current snapshot, withholds the keyed delta path,
+and runs an unattended explicit rebuild that republishes the current baseline
+and writes a fresh generation-qualified snapshot before completing the fence.
+The next deploy can then plan and apply a delta. The missing baseline is never
+treated as an empty or zero-row prior. The `disable_incremental_publication`
+kill switch pauses both ordinary deltas and this recovery path. Operator-
+directed rebuilds remain available through the separate explicit rebuild
+workflow.
 
 ## Watermark provenance in a receipt
 

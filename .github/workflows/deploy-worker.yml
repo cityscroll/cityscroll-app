@@ -160,7 +160,7 @@ jobs:
               --out .artifacts/d1-publication-recovery.json; then
             rm -f .d1-publication-state/prior-snapshot.json
             echo "status=missing" >> "$GITHUB_OUTPUT"
-            echo "Published D1 state references a missing snapshot; incremental publication is withheld and explicit rebuild recovery is recorded."
+            echo "Published D1 state references a missing snapshot; ordinary delta is withheld and explicit rebuild recovery will run in this deploy."
           else
             cat "$snapshot_error" >&2
             exit 1
@@ -174,7 +174,7 @@ jobs:
             --out .artifacts/d1-delta-plan.json
       - name: Claim D1 publication generation
         id: d1-generation-claim
-        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && steps.d1-prior-snapshot.outputs.status == 'available'
+        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && (steps.d1-prior-snapshot.outputs.status == 'available' || steps.d1-prior-snapshot.outputs.status == 'missing')
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           D1_FENCE_HOLDER: ${{ github.workflow }}:${{ github.run_id }}:${{ github.run_attempt }}
@@ -196,7 +196,7 @@ jobs:
       # are idempotent; skipping this left passport_* tables missing in production and turned
       # every PASSPort lifecycle lookup into lookup_status=error.
       - name: Apply D1 migrations
-        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && steps.d1-prior-snapshot.outputs.status == 'available' && steps.d1-generation-claim.outputs.claimed == 'true'
+        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && (steps.d1-prior-snapshot.outputs.status == 'available' || steps.d1-prior-snapshot.outputs.status == 'missing') && steps.d1-generation-claim.outputs.claimed == 'true'
         uses: cloudflare/wrangler-action@v3.14.1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -249,9 +249,47 @@ jobs:
           node ../tools/d1_canary.mjs check --evidence ../.artifacts/d1-production-delta/canary-evidence.json
           node ../tools/d1_reconcile.mjs check --report ../.artifacts/d1-production-delta/reconcile-report.json
           trap - ERR
+      # When published fence state references a missing generation-qualified
+      # snapshot, republish the current baseline as an explicit rebuild and
+      # write a fresh snapshot under the claimed generation before completion.
+      # This clears the stuck bootstrap condition without a manual workflow.
+      - name: Recover missing D1 publication snapshot
+        id: d1-missing-snapshot-recovery
+        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && steps.d1-prior-snapshot.outputs.status == 'missing' && steps.d1-generation-claim.outputs.claimed == 'true'
+        working-directory: worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          D1_FENCE_HOLDER: ${{ github.workflow }}:${{ github.run_id }}:${{ github.run_attempt }}
+          D1_FENCE_GENERATION: ${{ steps.d1-generation-claim.outputs.generation }}
+        run: |
+          set -euo pipefail
+          abandon_fence() {
+            node ../tools/d1_generation_fence.mjs abandon \
+              --generation "$D1_FENCE_GENERATION" \
+              --holder "$D1_FENCE_HOLDER" \
+              --fingerprint "${{ steps.d1-deploy-fingerprint.outputs.fingerprint }}" \
+              --key d1-publication:state:v1 \
+              --binding ALERT_STATE --remote --config wrangler.toml \
+              --ledger ../.artifacts/d1-generation-ledger.json \
+              --receipt ../.artifacts/d1-generation-abandon.json || true
+          }
+          trap abandon_fence ERR
+          echo "recovery-started=true" >> "$GITHUB_OUTPUT"
+          node ../tools/d1_production_delta.mjs recover-missing-snapshot \
+            --current ../.d1-publication-state/current-snapshot.json \
+            --recovery ../.artifacts/d1-publication-recovery.json \
+            --generation "$D1_FENCE_GENERATION" \
+            --holder "$D1_FENCE_HOLDER" \
+            --fingerprint "${{ steps.d1-deploy-fingerprint.outputs.fingerprint }}" \
+            --database crol-notices \
+            --config wrangler.toml \
+            --ledger ../.artifacts/d1-generation-ledger.json \
+            --out-dir ../.artifacts/d1-missing-snapshot-recovery
+          node ../tools/d1_reconcile.mjs check --report ../.artifacts/d1-missing-snapshot-recovery/reconcile-report.json
+          trap - ERR
       - name: Record published D1 fingerprint
         id: d1-record-published
-        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && steps.d1-prior-snapshot.outputs.status == 'available' && steps.d1-generation-claim.outputs.claimed == 'true' && steps.d1-publication-sql.outputs.sql-started == 'true'
+        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && steps.d1-generation-claim.outputs.claimed == 'true' && (steps.d1-publication-sql.outputs.sql-started == 'true' || steps.d1-missing-snapshot-recovery.outputs.recovery-started == 'true')
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           FORCE_D1_PUBLICATION: ${{ github.event_name == 'workflow_dispatch' && inputs.force_d1_publication || false }}
@@ -305,18 +343,32 @@ jobs:
           CLAIM_OUTCOME: ${{ steps.d1-generation-claim.outcome }}
           SQL_OUTCOME: ${{ steps.d1-publication-sql.outcome }}
           SQL_STARTED: ${{ steps.d1-publication-sql.outputs.sql-started }}
+          RECOVERY_OUTCOME: ${{ steps.d1-missing-snapshot-recovery.outcome }}
+          RECOVERY_STARTED: ${{ steps.d1-missing-snapshot-recovery.outputs.recovery-started }}
           RECORD_OUTCOME: ${{ steps.d1-record-published.outcome }}
         run: |
           set -euo pipefail
           if [ "$SHOULD_PUBLISH" != "true" ]; then
             outcome=skipped
             reason="fingerprint-unchanged"
-          elif [ "$PRIOR_SNAPSHOT_STATUS" = "missing" ]; then
-            outcome=failed_permanent
-            reason="published D1 state references a missing snapshot; incremental publication withheld; explicit rebuild recovery is required"
           elif [ "$INCREMENTAL_ENABLED" != "true" ]; then
             outcome=skipped
             reason="incremental-publication-disabled"
+          elif [ "$PRIOR_SNAPSHOT_STATUS" = "missing" ] && [ -f .artifacts/d1-missing-snapshot-recovery/result.json ]; then
+            outcome=$(node -p "require('./.artifacts/d1-missing-snapshot-recovery/result.json').outcome")
+            reason=$(node -p "require('./.artifacts/d1-missing-snapshot-recovery/result.json').reason")
+          elif [ "$PRIOR_SNAPSHOT_STATUS" = "missing" ] && [ "$CLAIM_OUTCOME" != "success" ]; then
+            outcome=failed_permanent
+            reason="missing-snapshot recovery prerequisites failed before a generation was claimed"
+          elif [ "$PRIOR_SNAPSHOT_STATUS" = "missing" ] && [ "$CLAIMED" != "true" ]; then
+            outcome=skipped_fence_busy
+            reason="another publication run holds a live generation fence"
+          elif [ "$PRIOR_SNAPSHOT_STATUS" = "missing" ] && [ "$RECOVERY_OUTCOME" = "failure" ]; then
+            outcome=failed_permanent
+            reason="missing-snapshot recovery failed; its generation fence claim was abandoned"
+          elif [ "$PRIOR_SNAPSHOT_STATUS" = "missing" ]; then
+            outcome=failed_permanent
+            reason="missing-snapshot recovery did not complete"
           elif [ "$CLAIM_OUTCOME" != "success" ]; then
             outcome=failed_permanent
             reason="delta publication prerequisites failed before a generation was claimed"
@@ -351,15 +403,21 @@ jobs:
           publication_flags=()
           if [ -f .artifacts/d1-production-delta/batch-plan.json ]; then
             publication_flags+=(--batch-plan .artifacts/d1-production-delta/batch-plan.json)
+          elif [ -f .artifacts/d1-missing-snapshot-recovery/batch-plan.json ]; then
+            publication_flags+=(--batch-plan .artifacts/d1-missing-snapshot-recovery/batch-plan.json)
           fi
           if [ -f .artifacts/d1-production-delta/publish-receipt.json ]; then
             publication_flags+=(--publish-receipt .artifacts/d1-production-delta/publish-receipt.json)
+          elif [ -f .artifacts/d1-missing-snapshot-recovery/publish-receipt.json ]; then
+            publication_flags+=(--publish-receipt .artifacts/d1-missing-snapshot-recovery/publish-receipt.json)
           fi
           if [ -f .artifacts/d1-production-delta/canary-evidence.json ]; then
             publication_flags+=(--canary-evidence .artifacts/d1-production-delta/canary-evidence.json)
           fi
           if [ -f .artifacts/d1-production-delta/reconcile-report.json ]; then
             publication_flags+=(--reconcile-report .artifacts/d1-production-delta/reconcile-report.json)
+          elif [ -f .artifacts/d1-missing-snapshot-recovery/reconcile-report.json ]; then
+            publication_flags+=(--reconcile-report .artifacts/d1-missing-snapshot-recovery/reconcile-report.json)
           fi
           node tools/d1_publication_receipt.mjs record \
             --workflow "$D1_RUN_WORKFLOW" --run-id "$D1_RUN_ID" --attempt "$D1_RUN_ATTEMPT" \
@@ -462,6 +520,7 @@ jobs:
             .artifacts/d1-generation-complete.json
             .artifacts/d1-generation-abandon.json
             .artifacts/d1-production-delta/
+            .artifacts/d1-missing-snapshot-recovery/
             .artifacts/deployment-health/cloudflare-worker.json
           if-no-files-found: warn
 
