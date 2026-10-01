@@ -1,0 +1,28 @@
+{
+  "schema": "cityscroll.meetings_location_residual_sources.v1",
+  "observed_on": "2026-08-05",
+  "note": "Bounded source review for the 11 Meetings rows left after the August 4 venue-geography pass. A virtual hearing is classified without a district pin. A generic Board Meetings directory remains unlocated because it represents many bodies and venues rather than one event.",
+  "cases": [
+    { "request_id": "20260213011", "terminal_classification": "multi_event_directory", "source_locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213011" },
+    { "request_id": "20260213012", "terminal_classification": "multi_event_directory", "source_locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213012" },
+    { "request_id": "20260213013", "terminal_classification": "multi_event_directory", "source_locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213013" },
+    { "request_id": "20260213014", "terminal_classification": "multi_event_directory", "source_locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213014" },
+    { "request_id": "20260213015", "terminal_classification": "multi_event_directory", "source_locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213015" },
+    { "request_id": "20260504036", "terminal_classification": "multi_event_directory", "source_locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504036" },
+    { "request_id": "20260504037", "terminal_classification": "multi_event_directory", "source_locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504037" },
+    { "request_id": "20260504038", "terminal_classification": "multi_event_directory", "source_locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504038" },
+    { "request_id": "20260504039", "terminal_classification": "multi_event_directory", "source_locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504039" },
+    {
+      "request_id": "20260515001",
+      "terminal_classification": "virtual_only",
+      "source_locator": "https://www.nyc.gov/site/dcas/about/public-hearings/public-hearings-2026.page",
+      "source_label": "DCAS Public Hearings 2026 — Department of Cultural Affairs, June 3"
+    },
+    {
+      "request_id": "20260624005",
+      "terminal_classification": "virtual_only",
+      "source_locator": "https://www.nyc.gov/assets/dsny/downloads/collection/containerization/residential-containerization/deis-25dos003y-07012026.pdf",
+      "source_label": "DSNY Citywide Containerization Program Draft EIS — July 28 public hearing"
+    }
+  ]
+}

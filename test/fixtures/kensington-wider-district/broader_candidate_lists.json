@@ -1,0 +1,534 @@
+{
+  "note": "Main-vintage K12/K14 broader candidates. Refresh densifies K14 October meetings and newest-first preview drops Sept 23 Housing from top-3.",
+  "districts": {
+    "K12": [],
+    "K14": [
+      "20260618050",
+      "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+      "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/"
+    ]
+  },
+  "records": {
+    "20260618050": {
+      "id": "20260618050",
+      "title": "Brooklyn Borough President ULURP Public Hearing",
+      "agency": "Borough President - Brooklyn",
+      "type": "Public Hearings",
+      "date": "2026-07-08T18:00:00.000",
+      "status": null,
+      "basis": "Matter place",
+      "confidence": "strong",
+      "basis_method": "matter_title_place",
+      "route": "/#notice/20260618050",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618050",
+      "placement_methods": [
+        "matter_title_place"
+      ],
+      "place": {
+        "location_role": "matter",
+        "basis": "Matter place",
+        "method": "matter_title_place",
+        "confidence": "strong",
+        "association_kind": null,
+        "provenance": {
+          "placement_method": "matter_title_place",
+          "source_method": "matter_title_place",
+          "confidence_tier": "strong"
+        },
+        "geographies": [
+          {
+            "key": "geography:borough:3",
+            "type": "borough",
+            "id": "3",
+            "label": "Brooklyn",
+            "class": "administrative",
+            "relation": "located_in",
+            "method": "matter_title_place",
+            "source_id": "community-district-boundaries",
+            "boundary_vintage": "2026-05-26",
+            "location_role": "matter",
+            "basis": "Matter place",
+            "confidence": "strong",
+            "provenance": {
+              "placement_method": "matter_title_place",
+              "source_method": "matter_title_place",
+              "confidence_tier": "strong"
+            },
+            "visibility": "public"
+          },
+          {
+            "key": "geography:community_district:K01",
+            "type": "community_district",
+            "id": "K01",
+            "label": "Brooklyn Community District 1",
+            "class": "community_administrative",
+            "relation": "located_in",
+            "method": "matter_title_place",
+            "source_id": "community-district-boundaries",
+            "boundary_vintage": "2026-05-26",
+            "location_role": "matter",
+            "basis": "Matter place",
+            "confidence": "strong",
+            "provenance": {
+              "placement_method": "matter_title_place",
+              "source_method": "matter_title_place",
+              "confidence_tier": "strong"
+            },
+            "visibility": "public"
+          },
+          {
+            "key": "geography:community_district:K02",
+            "type": "community_district",
+            "id": "K02",
+            "label": "Brooklyn Community District 2",
+            "class": "community_administrative",
+            "relation": "located_in",
+            "method": "matter_title_place",
+            "source_id": "community-district-boundaries",
+            "boundary_vintage": "2026-05-26",
+            "location_role": "matter",
+            "basis": "Matter place",
+            "confidence": "strong",
+            "provenance": {
+              "placement_method": "matter_title_place",
+              "source_method": "matter_title_place",
+              "confidence_tier": "strong"
+            },
+            "visibility": "public"
+          },
+          {
+            "key": "geography:community_district:K14",
+            "type": "community_district",
+            "id": "K14",
+            "label": "Brooklyn Community District 14",
+            "class": "community_administrative",
+            "relation": "located_in",
+            "method": "matter_title_place",
+            "source_id": "community-district-boundaries",
+            "boundary_vintage": "2026-05-26",
+            "location_role": "matter",
+            "basis": "Matter place",
+            "confidence": "strong",
+            "provenance": {
+              "placement_method": "matter_title_place",
+              "source_method": "matter_title_place",
+              "confidence_tier": "strong"
+            },
+            "visibility": "public"
+          }
+        ]
+      }
+    },
+    "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/": {
+      "id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+      "title": "Housing and Land Use Committee Meeting",
+      "agency": null,
+      "type": "Community board meeting",
+      "date": "2026-09-23T18:30:00-04:00",
+      "status": null,
+      "basis": "Venue / logistics",
+      "confidence": "strong",
+      "basis_method": "parcel_membership",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",
+      "meeting_origin": "community_board_source_observed",
+      "source_url": "https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+      "placement_methods": [
+        "board_covers_district",
+        "community_board_ontology",
+        "admitted_venue_membership",
+        "parcel_membership"
+      ],
+      "venue_address": "810 East 16th Street, Brooklyn, NY 11230",
+      "venue_name": "Brooklyn CB14 District Office",
+      "place": {
+        "location_role": "venue",
+        "basis": "Venue / logistics",
+        "method": "parcel_membership",
+        "confidence": "strong",
+        "association_kind": null,
+        "provenance": {
+          "placement_method": "community_board_ontology",
+          "source_method": "board_covers_district",
+          "confidence_tier": "strong"
+        },
+        "geographies": [
+          {
+            "key": "geography:borough:3",
+            "type": "borough",
+            "id": "3",
+            "label": "Brooklyn",
+            "class": "administrative",
+            "relation": "located_in",
+            "method": "community_board_ontology",
+            "source_id": "community-district-boundaries",
+            "boundary_vintage": "2026-05-26",
+            "location_role": "subject_affected_area",
+            "basis": "Community board district",
+            "confidence": "strong",
+            "provenance": {
+              "placement_method": "community_board_ontology",
+              "source_method": "board_covers_district",
+              "confidence_tier": "strong"
+            },
+            "visibility": "public"
+          },
+          {
+            "key": "geography:community_district:K14",
+            "type": "community_district",
+            "id": "K14",
+            "label": "Brooklyn Community District 14",
+            "class": "community_administrative",
+            "relation": "located_in",
+            "method": "community_board_ontology",
+            "source_id": "community-district-boundaries",
+            "boundary_vintage": "2026-05-26",
+            "location_role": "subject_affected_area",
+            "basis": "Community board district",
+            "confidence": "strong",
+            "provenance": {
+              "placement_method": "community_board_ontology",
+              "source_method": "board_covers_district",
+              "confidence_tier": "strong"
+            },
+            "visibility": "public"
+          },
+          {
+            "key": "geography:council_district:45",
+            "type": "council_district",
+            "id": "45",
+            "label": "City Council District 45",
+            "class": "political",
+            "relation": "located_in",
+            "method": "parcel_membership",
+            "source_id": "city-council-district-boundaries",
+            "boundary_vintage": "2026-05-26",
+            "location_role": "venue",
+            "basis": "Venue / logistics",
+            "confidence": "strong",
+            "provenance": {
+              "placement_method": "parcel_membership",
+              "source_method": "admitted_venue_membership",
+              "confidence_tier": "strong"
+            },
+            "visibility": "public"
+          },
+          {
+            "key": "geography:nta2020:BK1403",
+            "type": "nta2020",
+            "id": "BK1403",
+            "label": "Midwood",
+            "class": "statistical",
+            "relation": "located_in",
+            "method": "parcel_membership",
+            "source_id": "dcp-nta2020-boundaries",
+            "boundary_vintage": "26B",
+            "location_role": "venue",
+            "basis": "Venue / logistics",
+            "confidence": "strong",
+            "provenance": {
+              "placement_method": "parcel_membership",
+              "source_method": "admitted_venue_membership",
+              "confidence_tier": "strong"
+            },
+            "visibility": "public"
+          },
+          {
+            "key": "geography:police_precinct:70",
+            "type": "police_precinct",
+            "id": "70",
+            "label": "Police Precinct 70",
+            "class": "service_administrative",
+            "relation": "located_in",
+            "method": "parcel_membership",
+            "source_id": "dcp-police-precinct-boundaries",
+            "boundary_vintage": "26B",
+            "location_role": "venue",
+            "basis": "Venue / logistics",
+            "confidence": "strong",
+            "provenance": {
+              "placement_method": "parcel_membership",
+              "source_method": "admitted_venue_membership",
+              "confidence_tier": "strong"
+            },
+            "visibility": "public"
+          }
+        ]
+      }
+    },
+    "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/": {
+      "id": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "title": "Public Hearing on ULURP Application and Executive Committee Meeting",
+      "agency": null,
+      "type": "Community board meeting",
+      "date": "2026-09-09",
+      "status": null,
+      "basis": "Venue / logistics",
+      "confidence": "strong",
+      "basis_method": "parcel_membership",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F",
+      "meeting_origin": "community_board_source_observed",
+      "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "placement_methods": [
+        "board_covers_district",
+        "community_board_ontology",
+        "admitted_venue_membership",
+        "parcel_membership"
+      ],
+      "venue_address": "810 East 16th Street, Brooklyn, NY 11230",
+      "venue_name": "Brooklyn CB14 District Office",
+      "place": {
+        "location_role": "venue",
+        "basis": "Venue / logistics",
+        "method": "parcel_membership",
+        "confidence": "strong",
+        "association_kind": null,
+        "provenance": {
+          "placement_method": "community_board_ontology",
+          "source_method": "board_covers_district",
+          "confidence_tier": "strong"
+        },
+        "geographies": [
+          {
+            "key": "geography:borough:3",
+            "type": "borough",
+            "id": "3",
+            "label": "Brooklyn",
+            "class": "administrative",
+            "relation": "located_in",
+            "method": "community_board_ontology",
+            "source_id": "community-district-boundaries",
+            "boundary_vintage": "2026-05-26",
+            "location_role": "subject_affected_area",
+            "basis": "Community board district",
+            "confidence": "strong",
+            "provenance": {
+              "placement_method": "community_board_ontology",
+              "source_method": "board_covers_district",
+              "confidence_tier": "strong"
+            },
+            "visibility": "public"
+          },
+          {
+            "key": "geography:community_district:K14",
+            "type": "community_district",
+            "id": "K14",
+            "label": "Brooklyn Community District 14",
+            "class": "community_administrative",
+            "relation": "located_in",
+            "method": "community_board_ontology",
+            "source_id": "community-district-boundaries",
+            "boundary_vintage": "2026-05-26",
+            "location_role": "subject_affected_area",
+            "basis": "Community board district",
+            "confidence": "strong",
+            "provenance": {
+              "placement_method": "community_board_ontology",
+              "source_method": "board_covers_district",
+              "confidence_tier": "strong"
+            },
+            "visibility": "public"
+          },
+          {
+            "key": "geography:council_district:45",
+            "type": "council_district",
+            "id": "45",
+            "label": "City Council District 45",
+            "class": "political",
+            "relation": "located_in",
+            "method": "parcel_membership",
+            "source_id": "city-council-district-boundaries",
+            "boundary_vintage": "2026-05-26",
+            "location_role": "venue",
+            "basis": "Venue / logistics",
+            "confidence": "strong",
+            "provenance": {
+              "placement_method": "parcel_membership",
+              "source_method": "admitted_venue_membership",
+              "confidence_tier": "strong"
+            },
+            "visibility": "public"
+          },
+          {
+            "key": "geography:nta2020:BK1403",
+            "type": "nta2020",
+            "id": "BK1403",
+            "label": "Midwood",
+            "class": "statistical",
+            "relation": "located_in",
+            "method": "parcel_membership",
+            "source_id": "dcp-nta2020-boundaries",
+            "boundary_vintage": "26B",
+            "location_role": "venue",
+            "basis": "Venue / logistics",
+            "confidence": "strong",
+            "provenance": {
+              "placement_method": "parcel_membership",
+              "source_method": "admitted_venue_membership",
+              "confidence_tier": "strong"
+            },
+            "visibility": "public"
+          },
+          {
+            "key": "geography:police_precinct:70",
+            "type": "police_precinct",
+            "id": "70",
+            "label": "Police Precinct 70",
+            "class": "service_administrative",
+            "relation": "located_in",
+            "method": "parcel_membership",
+            "source_id": "dcp-police-precinct-boundaries",
+            "boundary_vintage": "26B",
+            "location_role": "venue",
+            "basis": "Venue / logistics",
+            "confidence": "strong",
+            "provenance": {
+              "placement_method": "parcel_membership",
+              "source_method": "admitted_venue_membership",
+              "confidence_tier": "strong"
+            },
+            "visibility": "public"
+          }
+        ]
+      }
+    },
+    "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/": {
+      "id": "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
+      "title": "September 2026 Board Meeting and Public Hearings on Cannabis Application and NYC Budget FY 2028",
+      "agency": null,
+      "type": "Community board meeting",
+      "date": "2026-09-14T18:30:00-04:00",
+      "status": null,
+      "basis": "About 461 Coney Island Avenue",
+      "confidence": "strong",
+      "basis_method": "parcel_membership",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+      "meeting_origin": "community_board_source_observed",
+      "source_url": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
+      "placement_methods": [
+        "board_covers_district",
+        "community_board_ontology",
+        "admitted_subject_membership",
+        "parcel_membership"
+      ],
+      "venue_address": "1625 Ocean Avenue, Brooklyn, New York, 11230",
+      "venue_name": "East Midwood Jewish Center",
+      "subject_address": "461 Coney Island Avenue",
+      "place": {
+        "location_role": "matter",
+        "basis": "About 461 Coney Island Avenue",
+        "method": "parcel_membership",
+        "confidence": "strong",
+        "association_kind": null,
+        "provenance": {
+          "placement_method": "community_board_ontology",
+          "source_method": "board_covers_district",
+          "confidence_tier": "strong"
+        },
+        "geographies": [
+          {
+            "key": "geography:borough:3",
+            "type": "borough",
+            "id": "3",
+            "label": "Brooklyn",
+            "class": "administrative",
+            "relation": "located_in",
+            "method": "community_board_ontology",
+            "source_id": "community-district-boundaries",
+            "boundary_vintage": "2026-05-26",
+            "location_role": "subject_affected_area",
+            "basis": "Community board district",
+            "confidence": "strong",
+            "provenance": {
+              "placement_method": "community_board_ontology",
+              "source_method": "board_covers_district",
+              "confidence_tier": "strong"
+            },
+            "visibility": "public"
+          },
+          {
+            "key": "geography:community_district:K14",
+            "type": "community_district",
+            "id": "K14",
+            "label": "Brooklyn Community District 14",
+            "class": "community_administrative",
+            "relation": "located_in",
+            "method": "community_board_ontology",
+            "source_id": "community-district-boundaries",
+            "boundary_vintage": "2026-05-26",
+            "location_role": "subject_affected_area",
+            "basis": "Community board district",
+            "confidence": "strong",
+            "provenance": {
+              "placement_method": "community_board_ontology",
+              "source_method": "board_covers_district",
+              "confidence_tier": "strong"
+            },
+            "visibility": "public"
+          },
+          {
+            "key": "geography:council_district:40",
+            "type": "council_district",
+            "id": "40",
+            "label": "City Council District 40",
+            "class": "political",
+            "relation": "located_in",
+            "method": "parcel_membership",
+            "source_id": "city-council-district-boundaries",
+            "boundary_vintage": "2026-05-26",
+            "location_role": "matter",
+            "basis": "About 461 Coney Island Avenue",
+            "confidence": "strong",
+            "provenance": {
+              "placement_method": "parcel_membership",
+              "source_method": "admitted_subject_membership",
+              "confidence_tier": "strong"
+            },
+            "visibility": "public"
+          },
+          {
+            "key": "geography:nta2020:BK1402",
+            "type": "nta2020",
+            "id": "BK1402",
+            "label": "Flatbush (West)-Ditmas Park-Parkville",
+            "class": "statistical",
+            "relation": "located_in",
+            "method": "parcel_membership",
+            "source_id": "dcp-nta2020-boundaries",
+            "boundary_vintage": "26B",
+            "location_role": "matter",
+            "basis": "About 461 Coney Island Avenue",
+            "confidence": "strong",
+            "provenance": {
+              "placement_method": "parcel_membership",
+              "source_method": "admitted_subject_membership",
+              "confidence_tier": "strong"
+            },
+            "visibility": "public"
+          },
+          {
+            "key": "geography:police_precinct:70",
+            "type": "police_precinct",
+            "id": "70",
+            "label": "Police Precinct 70",
+            "class": "service_administrative",
+            "relation": "located_in",
+            "method": "parcel_membership",
+            "source_id": "dcp-police-precinct-boundaries",
+            "boundary_vintage": "26B",
+            "location_role": "matter",
+            "basis": "About 461 Coney Island Avenue",
+            "confidence": "strong",
+            "provenance": {
+              "placement_method": "parcel_membership",
+              "source_method": "admitted_subject_membership",
+              "confidence_tier": "strong"
+            },
+            "visibility": "public"
+          }
+        ]
+      }
+    }
+  }
+}

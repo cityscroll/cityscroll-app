@@ -5,6 +5,10 @@
  *
  * Public alias: ce70cec48d558
  *
+ * District activity is pinned to a main-vintage fixture: scheduled refresh
+ * densifies October K14 meetings and newest-first broader preview top-3 drops
+ * Sept 23. Do not change product Near You sort to compensate.
+ *
  * Verify: node --test test/kensington_wider_district_journey.test.mjs
  */
 
@@ -77,6 +81,11 @@ const readJson = (rel) => JSON.parse(readFileSync(join(ROOT, rel), "utf8"));
 const activity = readJson("site/data/district_activity.json");
 const boundaries = readJson("site/data/district_boundaries.json");
 const sharedMeetings = readJson("site/data/shared_meeting_read_model.json");
+// Main-vintage K12/K14 broader candidates + records. Refresh densifies October
+// K14 meetings so newest-first top-3 drops Sept 23; freeze candidates only.
+const broaderCandidates = readJson(
+  "test/fixtures/kensington-wider-district/broader_candidate_lists.json",
+);
 const residentialPlaces = residentialPlacesFromNtaLayer(
   readJson("site/data/geography/layers/nta2020/26B.json"),
 );
@@ -100,10 +109,13 @@ function kensingtonGeographyState() {
 function broaderSlicesFromActivity(relations) {
   const slices = {};
   for (const relation of relations || []) {
-    const memberIds = activity.district_items?.by_level?.community_district?.[relation.id]?.meetings || [];
+    const memberIds = broaderCandidates.districts?.[relation.id]
+      || activity.district_items?.by_level?.community_district?.[relation.id]?.meetings
+      || [];
     const meetings = {};
     for (const id of memberIds) {
-      if (activity.records?.meetings?.[id]) meetings[id] = activity.records.meetings[id];
+      const record = broaderCandidates.records?.[id] || activity.records?.meetings?.[id];
+      if (record) meetings[id] = record;
     }
     slices[`community-district:${relation.id}`] = {
       records: { meetings },

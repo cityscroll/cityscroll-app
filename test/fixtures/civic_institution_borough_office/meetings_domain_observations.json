@@ -1,0 +1,91 @@
+{
+  "row_count": 119,
+  "rows": [
+    {
+      "request_id": "20260618050",
+      "meeting_id": "meeting:city_record:20260618050",
+      "agency_name": "Borough President - Brooklyn",
+      "short_title": "Brooklyn Borough President ULURP Public Hearing",
+      "start_date": "2026-06-26T00:00:00.000",
+      "event_date": "2026-07-08T18:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "street_address_1": "209 Joralemon Street",
+      "city": "Brooklyn",
+      "state": "NY",
+      "zip_code": "11201",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618050",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "items",
+          "heard",
+          "kent",
+          "avenue",
+          "rezoning",
+          "zoning",
+          "amendment",
+          "districts",
+          "text",
+          "appendix",
+          "facilitate",
+          "story",
+          "mixed",
+          "building",
+          "including",
+          "ground",
+          "floor",
+          "commercial",
+          "space",
+          "sought",
+          "holdings",
+          "williamsburg",
+          "community",
+          "district",
+          "brooklyn",
+          "edison",
+          "permanent",
+          "easement",
+          "gateway",
+          "microtunnel",
+          "citywide",
+          "administrative"
+        ],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "community_districts": [
+          "1",
+          "2",
+          "14"
+        ],
+        "addresses": [
+          "209 Joralemon Street",
+          "289 Kent Avenue",
+          "209 York Street",
+          "1455 Coney Island Avenue"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter",
+          "evidence": [
+            "Brooklyn Borough President ULURP Public Hearing",
+            "Coney Island",
+            "Williamsburg"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "matter"
+      }
+    }
+  ]
+}

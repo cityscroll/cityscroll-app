@@ -1,15 +1,61 @@
 /**
- * Publish-time slim for the shared meeting catalog served to Pages.
+ * Producer publish slim for the shared meeting catalog written into
+ * site/data/shared_meeting_read_model.json (and Pages).
  *
- * Full per-row location_assertions (especially venue receipts) are large and
- * redundant with venue/search text for the static payload. Subject-property
- * assertions are not redundant: the meeting-detail renderer reads them (or the
- * compact agenda_subject_places projection) to emit the Subject property
- * section. Dropping every assertion made regenerated Pages catalogs lose that
- * resident label even when upstream admissions still carried it.
+ * Full per-row geography stamps are large. The resident UI reads only a subset:
+ * - venue text from `venue` / search fields (not venue location_assertions)
+ * - Subject property from subject_property location_assertions or
+ *   agenda_subject_places (meeting_document.mjs)
+ * - exact NTA / district placement from venue and subject_property
+ *   location_memberships (Near You / district activity)
+ *
+ * Host-jurisdiction memberships are rebuilt from board ontology by district
+ * activity; stamping them onto every shared row reclassifies board meetings as
+ * parcel_membership and blows the Pages headroom budget.
+ *
+ * Stripped on publish (not displayed from these fields on the catalog):
+ * 1. location_assertions where role !== subject_property
+ *    (venue receipts/components — redundant with venue.address / venue.name)
+ * 2. location_memberships where role is host_jurisdiction (or any role other
+ *    than venue / subject_property)
+ *
+ * Retained:
+ * - subject_property location_assertions
+ * - agenda_subject_places (projected when subject assertions exist)
+ * - venue + subject_property location_memberships
+ * - geography_backfill compact outcome receipt
+ * - all other row fields (venue, title, schedule, …)
  */
 
 export const SUBJECT_PROPERTY_ROLE = "subject_property";
+export const VENUE_MEMBERSHIP_ROLE = "venue";
+
+/** Membership roles the published shared catalog may carry. */
+export const PUBLIC_LOCATION_MEMBERSHIP_ROLES = Object.freeze([
+  VENUE_MEMBERSHIP_ROLE,
+  SUBJECT_PROPERTY_ROLE,
+]);
+
+/**
+ * Exact strip inventory for tests and producer docs. Each entry names what is
+ * removed and why the resident surface does not read it from the catalog.
+ */
+export const SHARED_MEETING_PUBLISH_STRIP = Object.freeze([
+  Object.freeze({
+    field: "location_assertions",
+    remove_when: "role !== subject_property",
+    why_not_displayed:
+      "Meeting detail and Near You read venue name/address from row.venue; "
+      + "Subject property reads only subject_property assertions (or agenda_subject_places).",
+  }),
+  Object.freeze({
+    field: "location_memberships",
+    remove_when: "role === host_jurisdiction (or any role outside venue/subject_property)",
+    why_not_displayed:
+      "District activity adds board covers from community-board ontology; "
+      + "Near You exact membership uses venue/subject_property memberships only.",
+  }),
+]);
 
 function cleanText(value, max = 500) {
   const text = String(value ?? "")
@@ -47,6 +93,12 @@ function subjectAssertionsOnly(assertions) {
   return assertions.filter((row) => row && row.role === SUBJECT_PROPERTY_ROLE);
 }
 
+function publicMembershipsOnly(memberships) {
+  if (!Array.isArray(memberships) || !memberships.length) return [];
+  const allowed = new Set(PUBLIC_LOCATION_MEMBERSHIP_ROLES);
+  return memberships.filter((row) => row && allowed.has(row.role));
+}
+
 function preserveExistingSubjectPlaces(row) {
   if (!Array.isArray(row?.agenda_subject_places) || !row.agenda_subject_places.length) {
     return [];
@@ -64,26 +116,33 @@ function preserveExistingSubjectPlaces(row) {
 
 /**
  * Slim one shared-meeting row for the Pages-served catalog.
- * Drops non-subject location_assertions; retains subject_property assertions
- * and a compact agenda_subject_places projection for the detail renderer.
+ * Drops non-subject location_assertions and non-public memberships; retains
+ * subject_property assertions, agenda_subject_places, and venue/subject
+ * memberships.
  */
 export function slimSharedMeetingRow(row) {
   if (!row || typeof row !== "object") return row;
-  const { location_assertions, ...rest } = row;
+  const {
+    location_assertions,
+    location_memberships,
+    ...rest
+  } = row;
   const subjects = subjectAssertionsOnly(location_assertions);
   const fromAssertions = agendaSubjectPlacesFromAssertions(subjects);
   const places = fromAssertions.length ? fromAssertions : preserveExistingSubjectPlaces(row);
+  const memberships = publicMembershipsOnly(location_memberships);
   const next = { ...rest };
   if (subjects.length) next.location_assertions = subjects;
+  if (memberships.length) next.location_memberships = memberships;
   if (places.length) next.agenda_subject_places = places;
   else delete next.agenda_subject_places;
   return next;
 }
 
 /**
- * Strip bulky non-subject location_assertions from the published shared meeting
- * catalog while retaining the subject-property assertions the meeting detail
- * renderer needs.
+ * Strip bulky non-public geography stamps from the published shared meeting
+ * catalog while retaining the subject-property assertions and venue/subject
+ * memberships the meeting detail and Near You surfaces need.
  */
 export function slimSharedMeetingReadModel(model) {
   if (!model || typeof model !== "object") return model;

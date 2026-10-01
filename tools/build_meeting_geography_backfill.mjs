@@ -51,6 +51,9 @@ import {
   FROZEN_NEIGHBORHOOD_PUBLICATION_BASELINE,
   NEIGHBORHOOD_PUBLICATION_ANCHORS,
 } from "./lib/neighborhood_publication_receipt.mjs";
+import {
+  slimSharedMeetingReadModel,
+} from "./lib/shared_meeting_publish_slim.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHARED_MEETING_PATH = path.join(ROOT, "site/data/shared_meeting_read_model.json");
@@ -290,7 +293,9 @@ export function runMeetingGeographyBackfill({
   };
 
   const stampedRows = stampMeetingRowsWithGeography(rows, result.outcomes);
-  const stampedShared = {
+  // Publish slim is part of the producer write path so scheduled refresh cannot
+  // leave host_jurisdiction / venue-assertion bulk on the committed catalog.
+  const stampedShared = slimSharedMeetingReadModel({
     ...shared,
     rows: stampedRows,
     hearings: Array.isArray(shared.hearings)
@@ -302,7 +307,7 @@ export function runMeetingGeographyBackfill({
       counts: result.counts,
       candidate_input: candidateSummary,
     },
-  };
+  });
 
   const manifest = {
     schema: MEETING_GEOGRAPHY_BACKFILL_MANIFEST_SCHEMA,

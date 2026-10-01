@@ -1124,6 +1124,7 @@ test/fixtures/determinism-lint/repo/tools/negative_write.mjs
 test/fixtures/determinism-lint/repo/tools/positive_gate.mjs
 test/fixtures/determinism-lint/repo/tools/reachable_gate.mjs
 test/fixtures/determinism-lint/repo/tools/write_mode.mjs
+test/fixtures/entity-intelligence/hpd_connection_view.json
 test/fixtures/franchise_concession/field_cases.json
 test/fixtures/inverse-control-plane/positive/test-example.mjs
 test/fixtures/land_prediction_backtest/gold.v1.json
@@ -2436,6 +2437,7 @@ worker/test/fixtures/entity-intelligence/rules_materialized_v2.json
 worker/test/fixtures/forecast-accuracy/frozen_set.json
 worker/test/fixtures/lifecycle-coherence/build_cases.mjs
 worker/test/fixtures/lifecycle-coherence/procurement_cases.json
+worker/test/fixtures/matter-coverage-recovery/meeting_outcomes_snapshot.json
 worker/test/fixtures/mirror_redirect_regressions.json
 worker/test/fixtures/money-watch-coverage-current-corpus.json
 worker/test/fixtures/normalize_pairs.json
@@ -2445,6 +2447,7 @@ worker/test/fixtures/predictions/build_cases.mjs
 worker/test/fixtures/predictions/expected_calibration.json
 worker/test/fixtures/research_read_output_schemas.v1.json
 worker/test/fixtures/subject-registry/pin_bearing_awards.json
+worker/test/fixtures/watch_text_query/meeting_notice_materialization.json
 worker/test/following.test.mjs
 worker/test/forecast_scoring.test.mjs
 worker/test/forecasting_api.test.mjs

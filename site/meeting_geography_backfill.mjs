@@ -651,15 +651,33 @@ export function createMeetingGeographyBackfill({
  * stamps keep venue/subject memberships plus a compact outcome receipt so the
  * published meeting slices stay under the Pages size headroom.
  */
+function publicSharedMemberships(memberships = []) {
+  return (Array.isArray(memberships) ? memberships : []).filter((membership) => (
+    membership?.role === LOCATION_ROLES.VENUE
+    || membership?.role === LOCATION_ROLES.SUBJECT_PROPERTY
+  ));
+}
+
+function stripNonPublicSharedMemberships(row) {
+  if (!row || typeof row !== "object") return row;
+  const memberships = row.location_memberships;
+  if (!Array.isArray(memberships) || !memberships.length) return row;
+  const kept = publicSharedMemberships(memberships);
+  if (kept.length === memberships.length) return row;
+  const next = { ...row };
+  if (kept.length) next.location_memberships = kept;
+  else delete next.location_memberships;
+  return next;
+}
+
 export function stampMeetingRowsWithGeography(rows = [], outcomes = []) {
   const byId = new Map((Array.isArray(outcomes) ? outcomes : []).map((outcome) => [outcome.meeting_id, outcome]));
   return (Array.isArray(rows) ? rows : []).map((row) => {
     const outcome = byId.get(row?.meeting_id);
-    if (!outcome) return row;
-    const memberships = (outcome.memberships || []).filter((membership) => (
-      membership?.role === LOCATION_ROLES.VENUE
-      || membership?.role === LOCATION_ROLES.SUBJECT_PROPERTY
-    ));
+    // Rows without a fresh outcome still must not carry host_jurisdiction on the
+    // published shared catalog (district activity rebuilds board covers).
+    if (!outcome) return stripNonPublicSharedMemberships(row);
+    const memberships = publicSharedMemberships(outcome.memberships || []);
     const stampAssertions = outcome.outcome === BACKFILL_OUTCOME.PHYSICAL_VENUE
       || outcome.outcome === BACKFILL_OUTCOME.SUBJECT;
     const next = {
@@ -671,6 +689,7 @@ export function stampMeetingRowsWithGeography(rows = [], outcomes = []) {
       },
     };
     if (memberships.length) next.location_memberships = memberships;
+    else delete next.location_memberships;
     if (stampAssertions && Array.isArray(outcome.assertions) && outcome.assertions.length) {
       next.location_assertions = outcome.assertions.filter((assertion) => (
         assertion?.role === LOCATION_ROLES.VENUE
