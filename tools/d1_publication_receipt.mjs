@@ -44,10 +44,8 @@
  *   node tools/d1_publication_receipt.mjs compare --receipts <jsonl> --from <iso> --to <iso>
  */
 
-import { execFile } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
-import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
 
 import { SNAPSHOT_SCHEMA } from "./d1_delta_plan.mjs";
@@ -58,8 +56,8 @@ import {
 } from "./d1_bounded_publisher.mjs";
 import { D1_CANARY_EVIDENCE_SCHEMA, FINDING_CLASSIFICATIONS } from "./d1_canary.mjs";
 import { D1_RECONCILE_REPORT_SCHEMA } from "./d1_reconcile.mjs";
+import { createWranglerInvoker } from "./lib/wrangler_exec.mjs";
 
-const execFileAsync = promisify(execFile);
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 export const D1_PUBLICATION_RECEIPT_SCHEMA = "cityscroll.d1-publication-receipt.v2";
@@ -823,7 +821,7 @@ export function createWranglerKvReceiptStore({
   wranglerVersion = "4.126.0",
   run = null,
 } = {}) {
-  const invoke = run || (async (args) => execFileAsync("npx", [`wrangler@${wranglerVersion}`, ...args], { encoding: "utf8" }));
+  const invoke = run || createWranglerInvoker({ wranglerVersion });
   return {
     async put(key, value) {
       await invoke([

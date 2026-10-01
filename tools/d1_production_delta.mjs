@@ -17,11 +17,9 @@
  */
 
 import { createHash } from "node:crypto";
-import { execFile } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
-import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
 
 import { readSourceDocument, sqlLiteral } from "./build_worker_d1_read_models.mjs";
@@ -42,8 +40,8 @@ import { PLAN_SCHEMA, SNAPSHOT_SCHEMA, planDelta } from "./d1_delta_plan.mjs";
 import { D1_GENERATION_FENCE_SCHEMA, createFileLedger, createWranglerKvStore } from "./d1_generation_fence.mjs";
 import { loadManifest } from "./d1_manifest.mjs";
 import { buildReconcileReport, selectReconcileScope } from "./d1_reconcile.mjs";
+import { createWranglerInvoker } from "./lib/wrangler_exec.mjs";
 
-const execFileAsync = promisify(execFile);
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 export const D1_PRODUCTION_DELTA_RESULT_SCHEMA = "cityscroll.d1-production-delta-result.v1";
@@ -451,7 +449,7 @@ export function createWranglerD1PublicationAdapter({
   run = null,
 } = {}) {
   if (!database) fail("database is required");
-  const invoke = run || (async (args) => execFileAsync("npx", [`wrangler@${wranglerVersion}`, ...args], { encoding: "utf8" }));
+  const invoke = run || createWranglerInvoker({ wranglerVersion });
   const location = remote ? ["--remote"] : ["--local"];
   const base = ["d1", "execute", database, ...location, "--yes", "--config", config];
   const select = async (sql, params = []) => {
