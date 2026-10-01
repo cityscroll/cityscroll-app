@@ -1876,7 +1876,7 @@
   "performance": {
     "production_field_vitals": {
       "status": "not_taken",
-      "reason": "Production Analytics Engine dataset crol_rum_observations_v1 retains LCP/INP/CLS for geography-navigation routes, but the repository sample floor (30) is not met for the required p75 × desktop/mobile matrix on surface near-you after the 2026-09-21 delivery merge. near-you LCP desktop n=2, CLS desktop n=2, INP n=0, and mobile near-you has no rows in the 7d window; percentiles are withheld below the floor rather than published. Pathname / after the default-local-home delivery classifies as surface home and is retained in the sibling observation for route-scope review. Earliest near-you floor dates use the queried-window rate (samples / window_days): desktop LCP/CLS project to 2027-01-06; INP and mobile have no positive rate. Home cells that remain below floor project from the same window basis (not the first-to-latest sample span).",
+      "reason": "Production Analytics Engine dataset crol_rum_observations_v1 retains LCP/INP/CLS for geography-navigation routes, but the repository sample floor (30) is not met for the required p75 × desktop/mobile matrix on surface near-you after the 2026-09-21 delivery merge. near-you LCP desktop n=2, CLS desktop n=2, INP n=0, and mobile near-you has no rows in the 7d window; percentiles are withheld below the floor rather than published. Earliest near-you floor dates apply the dataset retention ceiling (FIELD_VITALS_DATASET_RETENTION_DAYS): desktop LCP/CLS cannot reach the floor inside that horizon at the queried-window rate and record null with basis insufficient_rate_to_project. Home cells that remain below floor and project inside the horizon keep their window-basis dates.",
       "observation": {
         "path": "docs/evidence/geography-navigation-release/field-vitals-observation.json",
         "schema": "cityscroll.geography_navigation_field_vitals_observation.v1",
@@ -1905,7 +1905,8 @@
             "quantile_value": null,
             "budget": 2500,
             "pass": null,
-            "earliest_floor_date": "2027-01-06"
+            "earliest_floor_date": null,
+            "earliest_floor_basis": "insufficient_rate_to_project"
           },
           {
             "metric_id": "lcp_ms",
@@ -1916,7 +1917,8 @@
             "quantile_value": null,
             "budget": 2500,
             "pass": null,
-            "earliest_floor_date": null
+            "earliest_floor_date": null,
+            "earliest_floor_basis": "no_positive_sample_rate"
           },
           {
             "metric_id": "inp_ms",
@@ -1927,7 +1929,8 @@
             "quantile_value": null,
             "budget": 200,
             "pass": null,
-            "earliest_floor_date": null
+            "earliest_floor_date": null,
+            "earliest_floor_basis": "no_positive_sample_rate"
           },
           {
             "metric_id": "inp_ms",
@@ -1938,7 +1941,8 @@
             "quantile_value": null,
             "budget": 200,
             "pass": null,
-            "earliest_floor_date": null
+            "earliest_floor_date": null,
+            "earliest_floor_basis": "no_positive_sample_rate"
           },
           {
             "metric_id": "cls_score",
@@ -1949,7 +1953,8 @@
             "quantile_value": null,
             "budget": 0.1,
             "pass": null,
-            "earliest_floor_date": "2027-01-06"
+            "earliest_floor_date": null,
+            "earliest_floor_basis": "insufficient_rate_to_project"
           },
           {
             "metric_id": "cls_score",
@@ -1960,7 +1965,8 @@
             "quantile_value": null,
             "budget": 0.1,
             "pass": null,
-            "earliest_floor_date": null
+            "earliest_floor_date": null,
+            "earliest_floor_basis": "no_positive_sample_rate"
           }
         ],
         "home_cells": [
@@ -1973,7 +1979,8 @@
             "quantile_value": 600,
             "budget": 2500,
             "pass": true,
-            "earliest_floor_date": null
+            "earliest_floor_date": null,
+            "earliest_floor_basis": null
           },
           {
             "metric_id": "lcp_ms",
@@ -1984,7 +1991,8 @@
             "quantile_value": null,
             "budget": 2500,
             "pass": null,
-            "earliest_floor_date": "2026-10-12"
+            "earliest_floor_date": "2026-10-12",
+            "earliest_floor_basis": "linear_extrapolation_from_observed_window"
           },
           {
             "metric_id": "inp_ms",
@@ -1995,7 +2003,8 @@
             "quantile_value": null,
             "budget": 200,
             "pass": null,
-            "earliest_floor_date": "2026-10-12"
+            "earliest_floor_date": "2026-10-12",
+            "earliest_floor_basis": "linear_extrapolation_from_observed_window"
           },
           {
             "metric_id": "inp_ms",
@@ -2006,7 +2015,8 @@
             "quantile_value": null,
             "budget": 200,
             "pass": null,
-            "earliest_floor_date": "2026-12-02"
+            "earliest_floor_date": "2026-12-02",
+            "earliest_floor_basis": "linear_extrapolation_from_observed_window"
           },
           {
             "metric_id": "cls_score",
@@ -2017,7 +2027,8 @@
             "quantile_value": 0.015667289576903293,
             "budget": 0.1,
             "pass": true,
-            "earliest_floor_date": null
+            "earliest_floor_date": null,
+            "earliest_floor_basis": null
           },
           {
             "metric_id": "cls_score",
@@ -2028,7 +2039,8 @@
             "quantile_value": null,
             "budget": 0.1,
             "pass": null,
-            "earliest_floor_date": "2026-10-17"
+            "earliest_floor_date": "2026-10-17",
+            "earliest_floor_basis": "linear_extrapolation_from_observed_window"
           }
         ],
         "partial_home_passes": [

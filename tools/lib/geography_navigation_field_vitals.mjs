@@ -199,6 +199,12 @@ export function projectEarliestFloorDate({
 
 /**
  * Recompute earliest_floor_date for every observation row in a retained document.
+ *
+ * The retained geography-navigation observation always applies the dataset
+ * retention ceiling (`FIELD_VITALS_DATASET_RETENTION_DAYS`) unless a caller
+ * overrides `retentionHorizonDays`. That keeps unreachable floor dates out of
+ * the file anyone reads.
+ *
  * @param {object} observation
  * @param {{ retentionHorizonDays?: number }} [options]
  * @returns {object}
@@ -207,7 +213,7 @@ export function recomputeObservationEarliestFloorDates(observation, options = {}
   const sampleFloor = Number(observation.sample_floor) || 30;
   const queriedAt = observation.queried_at;
   const retentionHorizonDays =
-    options.retentionHorizonDays ?? FIELD_VITALS_DEFAULT_PROJECTION_HORIZON_DAYS;
+    options.retentionHorizonDays ?? FIELD_VITALS_DATASET_RETENTION_DAYS;
   const observations = (observation.observations || []).map((row) => {
     const projection = projectEarliestFloorDate({
       sampledCount: row.sampled_count,

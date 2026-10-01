@@ -51,17 +51,17 @@
       "first_observation_at": "2026-09-25T18:40:19.000Z",
       "latest_observation_at": "2026-09-25T23:50:43.000Z",
       "earliest_floor_date": {
-        "earliest_date": "2027-01-06",
-        "basis": "linear_extrapolation_from_observed_window",
+        "earliest_date": null,
+        "basis": "insufficient_rate_to_project",
         "observed_rate_per_day": 0.286,
         "samples_needed": 28,
         "queried_window_days": 7,
         "span_observed_rate_per_day": 9.278,
         "rate_clamp_per_day": null,
-        "retention_horizon_days": 365,
+        "retention_horizon_days": 90,
         "dataset_retention_days": 90,
         "latest_observation_lag_days": 4.78,
-        "note": "Optimistic bound from sampled_count / queried_window_days; a stall since the latest observation pushes the date later. Span-derived rate is recorded separately and is not the projection input."
+        "note": "Window-basis rate cannot supply the remaining samples inside the 90-day retention horizon."
       }
     },
     {
@@ -97,7 +97,7 @@
         "queried_window_days": 7,
         "span_observed_rate_per_day": null,
         "rate_clamp_per_day": null,
-        "retention_horizon_days": 365,
+        "retention_horizon_days": 90,
         "dataset_retention_days": 90,
         "note": "No retained rows in the queried window from which to project a floor date."
       }
@@ -135,7 +135,7 @@
         "queried_window_days": 7,
         "span_observed_rate_per_day": null,
         "rate_clamp_per_day": null,
-        "retention_horizon_days": 365,
+        "retention_horizon_days": 90,
         "dataset_retention_days": 90,
         "note": "No retained rows in the queried window from which to project a floor date."
       }
@@ -173,7 +173,7 @@
         "queried_window_days": 7,
         "span_observed_rate_per_day": null,
         "rate_clamp_per_day": null,
-        "retention_horizon_days": 365,
+        "retention_horizon_days": 90,
         "dataset_retention_days": 90,
         "note": "No retained rows in the queried window from which to project a floor date."
       }
@@ -204,17 +204,17 @@
       "first_observation_at": "2026-09-25T18:40:19.000Z",
       "latest_observation_at": "2026-09-25T23:50:43.000Z",
       "earliest_floor_date": {
-        "earliest_date": "2027-01-06",
-        "basis": "linear_extrapolation_from_observed_window",
+        "earliest_date": null,
+        "basis": "insufficient_rate_to_project",
         "observed_rate_per_day": 0.286,
         "samples_needed": 28,
         "queried_window_days": 7,
         "span_observed_rate_per_day": 9.278,
         "rate_clamp_per_day": null,
-        "retention_horizon_days": 365,
+        "retention_horizon_days": 90,
         "dataset_retention_days": 90,
         "latest_observation_lag_days": 4.78,
-        "note": "Optimistic bound from sampled_count / queried_window_days; a stall since the latest observation pushes the date later. Span-derived rate is recorded separately and is not the projection input."
+        "note": "Window-basis rate cannot supply the remaining samples inside the 90-day retention horizon."
       }
     },
     {
@@ -250,7 +250,7 @@
         "queried_window_days": 7,
         "span_observed_rate_per_day": null,
         "rate_clamp_per_day": null,
-        "retention_horizon_days": 365,
+        "retention_horizon_days": 90,
         "dataset_retention_days": 90,
         "note": "No retained rows in the queried window from which to project a floor date."
       }
@@ -315,7 +315,7 @@
         "queried_window_days": 7,
         "span_observed_rate_per_day": 2.162,
         "rate_clamp_per_day": null,
-        "retention_horizon_days": 365,
+        "retention_horizon_days": 90,
         "dataset_retention_days": 90,
         "latest_observation_lag_days": 0.97,
         "note": "Optimistic bound from sampled_count / queried_window_days; a stall since the latest observation pushes the date later. Span-derived rate is recorded separately and is not the projection input."
@@ -354,7 +354,7 @@
         "queried_window_days": 7,
         "span_observed_rate_per_day": 3.68,
         "rate_clamp_per_day": null,
-        "retention_horizon_days": 365,
+        "retention_horizon_days": 90,
         "dataset_retention_days": 90,
         "latest_observation_lag_days": 3.97,
         "note": "Optimistic bound from sampled_count / queried_window_days; a stall since the latest observation pushes the date later. Span-derived rate is recorded separately and is not the projection input."
@@ -393,7 +393,7 @@
         "queried_window_days": 7,
         "span_observed_rate_per_day": 32400,
         "rate_clamp_per_day": null,
-        "retention_horizon_days": 365,
+        "retention_horizon_days": 90,
         "dataset_retention_days": 90,
         "latest_observation_lag_days": 3.97,
         "note": "Optimistic bound from sampled_count / queried_window_days; a stall since the latest observation pushes the date later. Span-derived rate is recorded separately and is not the projection input."
@@ -459,7 +459,7 @@
         "queried_window_days": 7,
         "span_observed_rate_per_day": 1.769,
         "rate_clamp_per_day": null,
-        "retention_horizon_days": 365,
+        "retention_horizon_days": 90,
         "dataset_retention_days": 90,
         "latest_observation_lag_days": 0.97,
         "note": "Optimistic bound from sampled_count / queried_window_days; a stall since the latest observation pushes the date later. Span-derived rate is recorded separately and is not the projection input."
@@ -510,7 +510,7 @@
       "desktop",
       "mobile"
     ],
-    "earliest_date_near_you_only": "2027-01-06",
-    "earliest_date_note": "near-you desktop LCP/CLS project from the queried-window rate (2 samples / 7d) to 2027-01-06; INP and mobile near-you have no positive rate so no floor date can be projected for those cells. If home is admitted as a geography-navigation route surface, remaining home cells project to 2026-10-12–2026-12-02 at the queried-window rate."
+    "earliest_date_near_you_only": null,
+    "earliest_date_note": "near-you desktop LCP/CLS cannot reach the sample floor inside the 90-day dataset retention horizon at the queried-window rate (0.286/day); earliest_floor_date is null with basis insufficient_rate_to_project. INP and mobile near-you have no positive rate. Home cells that remain below floor and project inside the horizon keep their window-basis dates (2026-10-12–2026-12-02)."
   }
 }
