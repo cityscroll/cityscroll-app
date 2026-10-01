@@ -304,6 +304,7 @@
     "site/franchise_phase_spine.mjs",
     "site/generation_refresh_bootstrap.mjs",
     "site/geography_address_entry.mjs",
+    "site/geography_comparison_load.mjs",
     "site/geography_crosswalk_artifacts.mjs",
     "site/geography_navigation_capability.mjs",
     "site/geography_navigation_entry.mjs",

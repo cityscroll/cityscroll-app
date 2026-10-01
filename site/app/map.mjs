@@ -45,6 +45,7 @@ import {
   loadSimplifiedNavigationLayer,
   simplifiedLayerSiteUrl,
 } from "../geography_navigation_map.mjs";
+import { applyGeographyComparisonLoad } from "../geography_comparison_load.mjs";
 import {
   GEOGRAPHY_SHELL_DIRECTORY_FILTER_PARAM,
   aliasesByNtaIdFromGazetteer,
@@ -1102,34 +1103,25 @@ function wireOverlapDrawerInteractions() {
 async function applyGeographyComparison(compareType) {
   if (!geographyMapController) return;
   const generation = documentAdoptionGeneration;
-  const requestedCompare = compareType || null;
-  const state = parseGeographyNavigationState(location.search);
-  if (!compareType) {
-    geographyMapController.setComparisonLayer(null);
-    overlapHighlightKey = null;
-    if (state.key) geographyMapController.setSelectedKey(state.key);
-    return;
-  }
-  const layer = await loadGeographyLayer(compareType);
-  const current = parseGeographyNavigationState(location.search);
-  if (generation !== documentAdoptionGeneration) return;
-  if ((current.compare || null) !== requestedCompare) return;
-  const layerDoc = {
-    type: compareType,
-    geometry_fidelity: layer.geometry_fidelity || "simplified",
-    vintage: layer.vintage || null,
-    features: (layer.features || []).map((feature) => ({
-      key: feature.properties?.key || feature.key,
-      id: feature.properties?.id || feature.id,
-      type: feature.properties?.type || compareType,
-      label: feature.properties?.label || feature.label,
-      subtype: feature.properties?.subtype ?? feature.subtype ?? null,
-      geometry: feature.geometry,
-    })),
-  };
-  geographyMapController.setComparisonLayer(compareType, layerDoc);
-  if (current.key) geographyMapController.setSelectedKey(current.key);
-  if (overlapHighlightKey) {
+  const result = await applyGeographyComparisonLoad({
+    compareType: compareType || null,
+    loadLayer: loadGeographyLayer,
+    getCurrentCompare: () => parseGeographyNavigationState(location.search).compare || null,
+    getCurrentKey: () => parseGeographyNavigationState(location.search).key || null,
+    isGenerationCurrent: () => generation === documentAdoptionGeneration,
+    setComparisonLayer: (type, layerDoc) => {
+      if (!type) {
+        geographyMapController.setComparisonLayer(null);
+        overlapHighlightKey = null;
+        return;
+      }
+      geographyMapController.setComparisonLayer(type, layerDoc);
+    },
+    setSelectedKey: (key) => {
+      geographyMapController.setSelectedKey(key);
+    },
+  });
+  if (result.applied && result.compare && overlapHighlightKey) {
     await highlightOverlapComparison(overlapHighlightKey);
   }
 }
