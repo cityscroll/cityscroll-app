@@ -7,10 +7,16 @@ import { fileURLToPath } from "node:url";
 import { statementsForModel } from "../tools/build_worker_d1_read_models.mjs";
 import { publishBounded, planBatches, renderBatch } from "../tools/d1_bounded_publisher.mjs";
 import { planDelta, snapshotFor, watermarksFromSnapshot } from "../tools/d1_delta_plan.mjs";
-import { abandonGeneration, claimGeneration, createMemoryStateStore } from "../tools/d1_generation_fence.mjs";
+import { abandonGeneration, claimGeneration, completeGeneration, createMemoryStateStore } from "../tools/d1_generation_fence.mjs";
 import { loadManifest, modelEntry } from "../tools/d1_manifest.mjs";
 import { buildPublicationReceipt } from "../tools/d1_publication_receipt.mjs";
-import { buildMissingPriorSnapshotRecovery, runProductionDelta } from "../tools/d1_production_delta.mjs";
+import {
+  MISSING_SNAPSHOT_REBUILD_REASON,
+  buildMissingPriorSnapshotRecovery,
+  runMissingSnapshotRecovery,
+  runProductionDelta,
+  snapshotKeyForGeneration,
+} from "../tools/d1_production_delta.mjs";
 import { tableRows } from "../tools/d1_stable_keys.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -319,17 +325,116 @@ test("canary and reconciliation failures are terminal and block publication", { 
 
 test("the ordinary workflow uses the production delta runner and contains no whole-model SQL fallback", () => {
   const workflow = readFileSync(join(ROOT, ".github/workflows/deploy-worker.yml"), "utf8");
-  const ordinary = workflow.slice(workflow.indexOf("- name: Plan D1 publication delta"), workflow.indexOf("- name: Record D1 publication receipt"));
+  const ordinary = workflow.slice(
+    workflow.indexOf("- name: Plan D1 publication delta"),
+    workflow.indexOf("- name: Recover missing D1 publication snapshot"),
+  );
   assert.match(workflow, /id: d1-prior-snapshot/);
   assert.match(workflow, /classify-prior-snapshot-failure/);
   assert.match(workflow, /status=missing/);
   assert.match(ordinary, /steps\.d1-prior-snapshot\.outputs\.status == 'available'/);
   assert.match(ordinary, /d1_production_delta\.mjs execute/);
-  assert.doesNotMatch(ordinary, /build_worker_d1_read_models|keyword_search_read_model\.sql|ocp_awards_read_model\.sql|entity_intelligence_read_model\.sql|--mode\s+rebuild/);
+  assert.doesNotMatch(ordinary, /build_worker_d1_read_models|keyword_search_read_model\.sql|ocp_awards_read_model\.sql|entity_intelligence_read_model\.sql|--mode\s+rebuild|recover-missing-snapshot/);
   assert.match(ordinary, /d1_delta_plan\.mjs plan/);
   assert.match(ordinary, /d1_bounded_publisher/);
   assert.match(ordinary, /d1_canary/);
   assert.match(ordinary, /d1_reconcile/);
+});
+
+test("a missing prior snapshot recovers by rebuild and the next cycle plans a delta", { skip: !DatabaseSync }, async () => {
+  const recovery = buildMissingPriorSnapshotRecovery(missingSnapshotFixture);
+  const currentSnapshot = snapshotFor(manifest, fixture.current);
+  const fenceStore = createMemoryStateStore();
+  const claim = await claimGeneration({
+    fenceStore, store: fenceStore, holder: "missing-snapshot-recovery",
+    fingerprint, watermarks: watermarksFromSnapshot(currentSnapshot), now: clock(), leaseMs: 60_000,
+  });
+  // Start from an empty derived database so the rebuild establishes the baseline.
+  const db = new DatabaseSync(":memory:");
+  for (const migration of ["0025_search_and_ocp_read_models.sql", "0026_entity_intelligence_read_model.sql", "0031_d1_publication_batches.sql"]) {
+    db.exec(readFileSync(join(ROOT, "worker/migrations", migration), "utf8"));
+  }
+  const adapter = databaseAdapter(db);
+  const rebuilt = await runMissingSnapshotRecovery({
+    currentSnapshot, recovery, manifest, sourceDocuments: fixture.current,
+    generation: claim.generation, fingerprint, holder: "missing-snapshot-recovery",
+    fenceStore, adapter, appliedBatchStore: adapter, policy, maxOpsPerBatch: 8, now: clock,
+  });
+
+  assert.equal(rebuilt.outcome, "published");
+  assert.equal(rebuilt.plan.operation, "rebuild");
+  assert.equal(rebuilt.recovery.status, "rebuilt");
+  assert.equal(rebuilt.recovery.rebuilt_generation, claim.generation);
+  assert.equal(rebuilt.recovery.rebuilt_snapshot_key, snapshotKeyForGeneration(claim.generation));
+  assert.equal(rebuilt.reconcileReport.consistent, true);
+  assert.ok(adapter.executions.length > 0);
+
+  // Persist the rebuilt snapshot under the key published state will reference,
+  // then complete the fence so the next cycle can claim and apply a delta.
+  const persisted = new Map([[rebuilt.recovery.rebuilt_snapshot_key, rebuilt.snapshotToPersist]]);
+  assert.equal(persisted.has(snapshotKeyForGeneration(claim.generation)), true);
+  const completed = await completeGeneration({
+    store: fenceStore, generation: claim.generation, holder: "missing-snapshot-recovery",
+    fingerprint, now: clock(),
+  });
+  assert.equal(completed.completed, true);
+
+  const nextSources = structuredClone(fixture.current);
+  nextSources.keyword_search.families.alpha = {
+    ...nextSources.keyword_search.families.alpha,
+    as_of: "2026-09-13T00:00:00Z",
+    documents: [
+      { ...nextSources.keyword_search.families.alpha.documents[0], title: "Alpha hearing after recovery" },
+      nextSources.keyword_search.families.alpha.documents[1],
+      ...(nextSources.keyword_search.families.alpha.documents.slice(2) || []),
+    ],
+  };
+  const nextSnapshot = snapshotFor(manifest, nextSources);
+  const nextClaim = await claimGeneration({
+    fenceStore, store: fenceStore, holder: "post-recovery-delta",
+    fingerprint, watermarks: watermarksFromSnapshot(nextSnapshot), now: clock(), leaseMs: 60_000,
+  });
+  const priorFromKv = persisted.get(snapshotKeyForGeneration(claim.generation));
+  const delta = await runProductionDelta({
+    priorSnapshot: priorFromKv, currentSnapshot: nextSnapshot,
+    manifest, sourceDocuments: nextSources, generation: nextClaim.generation,
+    fingerprint, holder: "post-recovery-delta",
+    fenceStore, adapter, appliedBatchStore: adapter, policy, maxOpsPerBatch: 8, now: clock,
+  });
+  assert.equal(delta.outcome, "published");
+  assert.equal(delta.plan.operation, "delta");
+  assert.ok(delta.plan.models.some((model) => model.totals.update > 0 || model.totals.insert > 0));
+  assert.ok(delta.batchPlan.batches.every((batch) => batch.ops.every((op) => op.kind !== "truncate")));
+});
+
+test("missing-snapshot recovery honors the incremental kill switch wiring", () => {
+  const workflow = readFileSync(join(ROOT, ".github/workflows/deploy-worker.yml"), "utf8");
+  const recovery = workflow.slice(
+    workflow.indexOf("- name: Recover missing D1 publication snapshot"),
+    workflow.indexOf("- name: Record published D1 fingerprint"),
+  );
+  assert.match(recovery, /d1_production_delta\.mjs recover-missing-snapshot/);
+  assert.match(recovery, /incremental-enabled == 'true'/);
+  assert.match(recovery, /status == 'missing'/);
+  assert.match(workflow, /reason="incremental-publication-disabled"/);
+  // Cause fix: a missing prior snapshot must not hard-code permanent failure;
+  // recovery artifacts feed the receipt, and the snapshot is written before fence completion.
+  assert.doesNotMatch(
+    workflow,
+    /PRIOR_SNAPSHOT_STATUS" = "missing"[\s\S]{0,80}outcome=failed_permanent[\s\S]{0,120}explicit rebuild recovery is required/,
+  );
+  assert.match(workflow, /d1-missing-snapshot-recovery\/result\.json/);
+  const record = workflow.slice(
+    workflow.indexOf("- name: Record published D1 fingerprint"),
+    workflow.indexOf("- name: Record D1 publication receipt"),
+  );
+  assert.match(record, /kv key put "\$snapshot_key"/);
+  assert.ok(record.indexOf("kv key put \"$snapshot_key\"") < record.indexOf("d1_generation_fence.mjs complete"));
+});
+
+test("recovery reason stays bound to the missing-snapshot rebuild contract", () => {
+  assert.match(MISSING_SNAPSHOT_REBUILD_REASON, /missing generation-qualified snapshot/);
+  assert.match(MISSING_SNAPSHOT_REBUILD_REASON, /explicit rebuild recovery/);
 });
 
 test("the Wrangler adapter commits the application SQL and checkpoint marker in one import", async () => {

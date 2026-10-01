@@ -139,6 +139,7 @@ test("a changed snapshot uses bounded writes and reconciles consistently", { ski
 test("the policy documents explicit recovery, invoice authority, and dashboard lag", () => {
   const doc = readFileSync(join(ROOT, "docs/d1-release-policy-v1.md"), "utf8");
   assert.match(doc, /d1-explicit-rebuild-v1\.md/);
+  assert.match(doc, /unattended explicit rebuild/);
   assert.match(doc, /Cloudflare's final invoice is the authority/);
   assert.match(doc, /dashboard usage\s+may lag/);
   assert.match(doc, /operating budget report links here/);
@@ -152,8 +153,12 @@ test("the policy documents explicit recovery, invoice authority, and dashboard l
 test("the disabled incremental flag does not add a rebuild to the ordinary workflow", () => {
   const workflow = readFileSync(join(ROOT, ".github/workflows/deploy-worker.yml"), "utf8");
   validateWorkflowWiring(workflow);
-  const ordinary = workflow.slice(workflow.indexOf("- name: Build D1 search"), workflow.indexOf("- name: Record D1 publication receipt"));
-  assert.doesNotMatch(ordinary, /d1_explicit_rebuild\.mjs|--mode\s+rebuild/);
+  const ordinary = workflow.slice(
+    workflow.indexOf("- name: Plan D1 publication delta"),
+    workflow.indexOf("- name: Recover missing D1 publication snapshot"),
+  );
+  assert.doesNotMatch(ordinary, /d1_explicit_rebuild\.mjs|--mode\s+rebuild|recover-missing-snapshot/);
+  assert.match(workflow, /Recover missing D1 publication snapshot/);
   assert.match(workflow, /outcome=skipped\s*\n\s*reason="fingerprint-unchanged"/);
   assert.match(workflow, /INCREMENTAL_ENABLED/);
 });

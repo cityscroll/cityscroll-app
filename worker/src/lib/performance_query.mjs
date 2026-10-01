@@ -3,6 +3,7 @@
 // receives Analytics Engine credentials or SQL.
 
 import performanceAllowlist from "../data/performance-validation-allowlist.v1.json" with { type: "json" };
+import { NOTICE_EDGE_CACHE_OUTCOMES } from "../../../site/notice_edge_response.mjs";
 import {
   RUM_HEALTH_REASONS,
   RUM_OBSERVATION_SCHEMA,
@@ -66,6 +67,10 @@ const FILTER_COLUMNS = Object.freeze({
   traffic_class: "blob10",
   release_id: "blob13",
 });
+
+/** Analytics Engine blob that retains the Notice record-subrequest cache outcome. */
+export const RUM_RECORD_CACHE_OUTCOME_BLOB = "blob14";
+export const RUM_RECORD_CACHE_OUTCOME_DIMENSION = "record_cache_outcome";
 
 const GROUPABLE_DIMENSIONS = new Set([
   "metric_id",
@@ -881,5 +886,147 @@ export async function readPerformanceAnalytics(env, input = {}, options = {}) {
       await health(),
       coveragePlan ? coverageLatticeFor(coveragePlan, null, "unavailable") : null,
     );
+  }
+}
+
+/**
+ * Query plan for the Notice record-subrequest cache outcome distribution.
+ *
+ * Groups resident `ttfb_ms` observations on surface `notice` by blob14, the
+ * dimension the collector stamps from Server-Timing `cs-record`. Rows whose
+ * blob14 is outside the closed cache-outcome set (including the non-notice
+ * sentinel `none`) are excluded so pre-dimension traffic cannot collapse into
+ * one bucket.
+ */
+export function recordCacheOutcomeDistributionQueryPlan(options = {}) {
+  const now = checkedDate(options.now || new Date(), "query clock");
+  now.setUTCMilliseconds(0);
+  const window = options.window || "7d";
+  if (!Object.hasOwn(PERFORMANCE_WINDOWS, window)) {
+    throw new PerformanceQueryError("Unsupported performance window");
+  }
+  const dataset = checkedDataset(options.dataset);
+  const configuredSince = checkedDate(options.configuredSince, "RUM measured-since date");
+  const windowMs = PERFORMANCE_WINDOWS[window];
+  let startMs = now.getTime() - windowMs;
+  const endMs = now.getTime();
+  const deliveryAt = checkedDate(options.deliveryAt, "cache-dimension delivery");
+  if (deliveryAt && deliveryAt.getTime() > startMs) startMs = deliveryAt.getTime();
+  const retentionStartMs = now.getTime() - PERFORMANCE_RETENTION_DAYS * 86400000;
+  const availableSinceMs = Math.max(retentionStartMs, configuredSince?.getTime() ?? retentionStartMs);
+  const coverage = coverageFor(startMs, endMs, availableSinceMs);
+  const outcomes = [...NOTICE_EDGE_CACHE_OUTCOMES];
+  const sql = `SELECT
+  ${RUM_RECORD_CACHE_OUTCOME_BLOB} AS ${RUM_RECORD_CACHE_OUTCOME_DIMENSION},
+  count() AS sampled_count,
+  sum(_sample_interval) AS estimated_count,
+  formatDateTime(min(timestamp), '%Y-%m-%dT%H:%i:%SZ', 'Etc/UTC') AS first_observation_at,
+  formatDateTime(max(timestamp), '%Y-%m-%dT%H:%i:%SZ', 'Etc/UTC') AS latest_observation_at
+FROM ${dataset}
+WHERE timestamp >= ${dateTimeSql(coverage.query_start_ms)}
+  AND timestamp < ${dateTimeSql(coverage.query_end_ms)}
+  AND blob1 = ${sqlString(RUM_OBSERVATION_SCHEMA)}
+  AND blob10 = ${sqlString("production")}
+  AND blob2 = ${sqlString("ttfb_ms")}
+  AND blob3 = ${sqlString("notice")}
+  AND blob4 = ${sqlString("none")}
+  AND ${inSql(RUM_RECORD_CACHE_OUTCOME_BLOB, outcomes)}
+GROUP BY ${RUM_RECORD_CACHE_OUTCOME_BLOB}
+ORDER BY ${RUM_RECORD_CACHE_OUTCOME_BLOB}
+LIMIT ${outcomes.length + 1}`;
+
+  return Object.freeze({
+    dataset,
+    window,
+    queried_at: now.toISOString(),
+    current: coverage,
+    closed_outcomes: Object.freeze(outcomes),
+    dimension: RUM_RECORD_CACHE_OUTCOME_DIMENSION,
+    blob: RUM_RECORD_CACHE_OUTCOME_BLOB,
+    requests: coverage.queryable
+      ? Object.freeze([{ id: "cache_outcomes", sql }])
+      : Object.freeze([]),
+  });
+}
+
+/** Project AE rows into closed-outcome counts. Missing outcomes stay at zero. */
+export function projectRecordCacheOutcomeCounts(rows, closedOutcomes = NOTICE_EDGE_CACHE_OUTCOMES) {
+  const outcomes = Object.fromEntries([...closedOutcomes].map((name) => [name, 0]));
+  let sampled = 0;
+  for (const row of Array.isArray(rows) ? rows : []) {
+    const name = row?.[RUM_RECORD_CACHE_OUTCOME_DIMENSION];
+    const count = Number(row?.sampled_count);
+    if (!Object.hasOwn(outcomes, name) || !Number.isSafeInteger(count) || count < 0) continue;
+    outcomes[name] = count;
+    sampled += count;
+  }
+  return { outcomes, sampled_count: sampled };
+}
+
+/**
+ * Read the windowed record-cache-outcome distribution from Analytics Engine.
+ *
+ * A successful empty read is status `available` with every outcome at zero —
+ * that is a measurement. Status `unavailable` means the query could not run.
+ */
+export async function readRecordCacheOutcomeDistribution(env, options = {}) {
+  const readConfiguration = performanceReadConfiguration(env);
+  const plan = recordCacheOutcomeDistributionQueryPlan({
+    now: options.now || new Date(),
+    window: options.window || "7d",
+    dataset: env?.RUM_ANALYTICS_DATASET,
+    configuredSince: env?.RUM_MEASURED_SINCE,
+    deliveryAt: options.deliveryAt,
+  });
+  const empty = Object.fromEntries(plan.closed_outcomes.map((name) => [name, 0]));
+  if (!readConfiguration.configured) {
+    return {
+      status: "unavailable",
+      unavailable_reason: readConfiguration.reason,
+      plan,
+      outcomes: empty,
+      sampled_count: 0,
+      window: withoutInternalCoverage(plan.current),
+    };
+  }
+  if (!plan.requests.length) {
+    return {
+      status: "available",
+      plan,
+      outcomes: empty,
+      sampled_count: 0,
+      window: withoutInternalCoverage(plan.current),
+    };
+  }
+  const fetchImpl = options.fetchImpl || globalThis.fetch;
+  const endpoint = `https://api.cloudflare.com/client/v4/accounts/${env.ANALYTICS_ACCOUNT_ID}/analytics_engine/sql`;
+  try {
+    const responses = await fetchAnalyticsRows(
+      fetchImpl,
+      endpoint,
+      env.ANALYTICS_READ_TOKEN,
+      plan.requests,
+    );
+    const projected = projectRecordCacheOutcomeCounts(
+      responses.cache_outcomes,
+      plan.closed_outcomes,
+    );
+    return {
+      status: "available",
+      plan,
+      ...projected,
+      window: withoutInternalCoverage(plan.current),
+      rows: responses.cache_outcomes,
+    };
+  } catch (error) {
+    const reason = error instanceof PerformanceSqlError ? error.reason : "sql-unreachable";
+    return {
+      status: "unavailable",
+      unavailable_reason: reason,
+      plan,
+      outcomes: empty,
+      sampled_count: 0,
+      window: withoutInternalCoverage(plan.current),
+    };
   }
 }

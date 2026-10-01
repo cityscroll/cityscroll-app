@@ -85,6 +85,10 @@ export function scheduleProductionRumCollector({
             loadedManifest,
             runtime?.location?.pathname || "",
           );
+          const recordCacheOutcome = collector.resolveRecordCacheOutcomeForSurface?.(
+            classification?.surface_id,
+            runtime,
+          ) ?? "none";
           const sink = production.createProductionObservationSink({
             manifest: loadedManifest,
             classification,
@@ -93,6 +97,7 @@ export function scheduleProductionRumCollector({
               runtime,
               loadedManifest.collector?.device_classes,
             ),
+            recordCacheOutcome,
             deliver(batch) {
               return delivery.deliverRumBatch(batch, {
                 enabled: true,
