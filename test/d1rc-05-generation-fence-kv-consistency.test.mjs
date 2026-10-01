@@ -328,3 +328,66 @@ test("a stale prior-generation read without a confirming ledger still fences", a
   assert.equal(commit.outcome.reason, "generation_not_held");
   assert.equal(commit.outcome.current_generation, 21);
 });
+
+/**
+ * Deploy worker 36877675700 claimed generation 23 from an abandoned gen-22
+ * fence, then checkGenerationCommit's first KV get still saw abandoned gen 22
+ * (generation_not_held) with an empty recover-missing step log.
+ */
+test("after claim from abandoned prior, commit-check survives KV still serving the abandoned generation", async () => {
+  await withTempDir("d1-fence-abandoned-prior", async (dir) => {
+    const priorHolder = "Deploy worker:36872149742:1";
+    const abandonedAt = "2026-10-01T13:56:11.618Z";
+    const claimAt = Date.parse("2026-10-01T14:37:45.057Z");
+    const gen22Abandoned = fenceState({
+      generation: 22,
+      holder: priorHolder,
+      status: "abandoned",
+      lease_until: abandonedAt,
+      fingerprint: "9".repeat(64),
+    });
+
+    let authoritative = structuredClone(gen22Abandoned);
+    let staleReadsLeft = 0;
+    const kv = {
+      read(key) {
+        if (key !== KEY) return "";
+        if (staleReadsLeft > 0 && authoritative.generation > 22) {
+          staleReadsLeft -= 1;
+          return JSON.stringify(gen22Abandoned);
+        }
+        return JSON.stringify(authoritative);
+      },
+      write(key, value) {
+        if (key !== KEY) return;
+        authoritative = JSON.parse(value);
+        if (authoritative.generation === 23) staleReadsLeft = 5;
+      },
+    };
+    const store = laggingWranglerStore(kv, {
+      readAfterWriteMs: 90_000,
+      readAfterWritePollMs: 1,
+      sleep: async () => {},
+    });
+    const ledger = createFileLedger(join(dir, "ledger.json"));
+
+    const claimed = await claimGeneration({
+      store, ledger, holder: HOLDER, fingerprint: FINGERPRINT, watermarks: WATERMARKS,
+      now: claimAt, leaseMs: LEASE_MS,
+    });
+    assert.equal(claimed.claimed, true);
+    assert.equal(claimed.result, "claimed");
+    assert.equal(claimed.generation, 23);
+
+    staleReadsLeft = 5;
+    const commit = await checkGenerationCommit({
+      store, ledger, generation: 23, holder: HOLDER, fingerprint: FINGERPRINT,
+      now: claimAt + 24_000,
+      staleReadWaitMs: 90_000, staleReadPollMs: 1, sleep: async () => {},
+    });
+    assert.equal(commit.committable, true, "must not generation_not_held on stale abandoned gen-22 get");
+    assert.equal(commit.outcome.reason, "generation_held");
+    assert.equal(authoritative.generation, 23);
+    assert.equal(authoritative.status, "accepted");
+  });
+});

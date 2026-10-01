@@ -16,6 +16,7 @@ import {
   MISSING_SNAPSHOT_REBUILD_REASON,
   NO_DELTA_SNAPSHOT_BASELINE_REASON,
   buildMissingPriorSnapshotRecovery,
+  formatCliFailureMessage,
   resolvePriorSnapshotBaseline,
   runMissingSnapshotRecovery,
   runProductionDelta,
@@ -179,6 +180,30 @@ test("claimed fence with no published baseline routes prior-snapshot-key to miss
   } finally {
     rmSync(tempDir, { recursive: true, force: true });
   }
+});
+
+test("CLI failure message names outcome, reason, and fence detail for silent recover exits", () => {
+  // Deploy worker 36877675700 exited recover-missing-snapshot with code 1 and an
+  // empty step log; the generation_not_held fence lived only in artifacts.
+  const message = formatCliFailureMessage("recover-missing-snapshot", {
+    outcome: "abandoned",
+    reason: "generation 23 is fenced by generation 22 before batch 23:entity_intelligence:__model__:0 (generation_not_held)",
+    publishReceipt: {
+      fence: {
+        reason: "generation_not_held",
+        current_generation: 22,
+        current_holder: "Deploy worker:36872149742:1",
+        current_status: "abandoned",
+      },
+    },
+  }, { generation: 23 });
+  assert.match(message, /recover-missing-snapshot/);
+  assert.match(message, /outcome=abandoned/);
+  assert.match(message, /generation_not_held/);
+  assert.match(message, /current_generation=22/);
+  assert.match(message, /current_holder=Deploy worker:36872149742:1/);
+  assert.match(message, /generation=23/);
+  assert.equal(message.endsWith("\n"), true);
 });
 
 test("production delta applies keyed inserts, updates, explicit deletes, and no whole-table rebuild", { skip: !DatabaseSync }, async () => {
@@ -480,8 +505,14 @@ test("missing-snapshot recovery honors the incremental kill switch wiring", () =
     workflow.indexOf("- name: Record published D1 fingerprint"),
     workflow.indexOf("- name: Record D1 publication receipt"),
   );
-  assert.match(record, /kv key put "\$snapshot_key"/);
-  assert.ok(record.indexOf("kv key put \"$snapshot_key\"") < record.indexOf("d1_generation_fence.mjs complete"));
+  // Packed snapshot put (gzip/chunked) must land before fence complete; the
+  // hard assert-fits check keeps an oversize value from failing only at KV.
+  assert.match(record, /d1_publication_snapshot_kv\.mjs pack/);
+  assert.match(record, /d1_publication_snapshot_kv\.mjs assert-fits/);
+  assert.match(record, /kv key put "\$put_key"/);
+  assert.ok(record.indexOf("d1_publication_snapshot_kv.mjs pack") < record.indexOf("kv key put \"$put_key\""));
+  assert.ok(record.indexOf("kv key put \"$put_key\"") < record.indexOf("d1_generation_fence.mjs complete"));
+  assert.match(workflow, /d1_publication_snapshot_kv\.mjs unpack/);
 });
 
 test("recovery reason stays bound to the missing-snapshot rebuild contract", () => {

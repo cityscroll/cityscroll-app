@@ -175,9 +175,40 @@ jobs:
             exit 0
           fi
           snapshot_error="$RUNNER_TEMP/d1-prior-snapshot-error.txt"
+          prior_kv="$RUNNER_TEMP/d1-prior-snapshot-kv.json"
+          rm -f "$prior_kv" .d1-publication-state/prior-snapshot.json
           if npx wrangler@4.126.0 kv key get "$snapshot_key" \
               --binding ALERT_STATE --remote --text --config worker/wrangler.toml \
-              > .d1-publication-state/prior-snapshot.json 2> "$snapshot_error"; then
+              > "$prior_kv" 2> "$snapshot_error"; then
+            mkdir -p .d1-publication-state/prior-snapshot-chunks
+            # Packed envelopes may reference chunk keys; fetch any listed chunks
+            # before decoding so the planner always sees the raw partition snapshot.
+            chunk_keys=$(node -e '
+              const fs = require("node:fs");
+              const text = fs.readFileSync(process.argv[1], "utf8");
+              let parsed;
+              try { parsed = JSON.parse(text); } catch { process.exit(0); }
+              if (parsed?.encoding === "gzip-base64-chunked" && Array.isArray(parsed.chunk_keys)) {
+                for (const key of parsed.chunk_keys) process.stdout.write(`${key}\n`);
+              }
+            ' "$prior_kv")
+            index=0
+            if [ -n "$chunk_keys" ]; then
+              while IFS= read -r chunk_key; do
+                [ -n "$chunk_key" ] || continue
+                npx wrangler@4.126.0 kv key get "$chunk_key" \
+                  --binding ALERT_STATE --remote --text --config worker/wrangler.toml \
+                  > ".d1-publication-state/prior-snapshot-chunks/chunk-${index}.json"
+                index=$((index + 1))
+              done <<EOF
+$chunk_keys
+EOF
+            fi
+            unpack_args=(--in "$prior_kv" --out .d1-publication-state/prior-snapshot.json)
+            if [ "$index" -gt 0 ]; then
+              unpack_args+=(--chunks-dir .d1-publication-state/prior-snapshot-chunks)
+            fi
+            node tools/d1_publication_snapshot_kv.mjs unpack "${unpack_args[@]}"
             echo "status=available" >> "$GITHUB_OUTPUT"
           elif node tools/d1_production_delta.mjs classify-prior-snapshot-failure \
               --state .d1-publication-state/published.json \
@@ -316,9 +347,31 @@ jobs:
           # Generation-qualified snapshots may be staged before completion. A
           # failed completion leaves only an unreachable orphan; readers choose
           # a baseline exclusively through the published fence generation.
-          npx wrangler@4.126.0 kv key put "$snapshot_key" \
-            --path .d1-publication-state/current-snapshot.json \
-            --binding ALERT_STATE --remote --config worker/wrangler.toml
+          # Pack (gzip, and chunk when needed) with a hard pre-put size check so
+          # an oversize value fails loudly instead of hitting KV code 10024 after
+          # a full baseline rebuild.
+          pack_dir=".d1-publication-state/kv-pack"
+          rm -rf "$pack_dir"
+          node tools/d1_publication_snapshot_kv.mjs pack \
+            --in .d1-publication-state/current-snapshot.json \
+            --generation "$D1_FENCE_GENERATION" \
+            --out-dir "$pack_dir" \
+            --plan-out .artifacts/d1-snapshot-kv-plan.json
+          while IFS= read -r put_line; do
+            [ -n "$put_line" ] || continue
+            put_key=${put_line%%$'\t'*}
+            put_rel=${put_line#*$'\t'}
+            put_path="$pack_dir/$put_rel"
+            node tools/d1_publication_snapshot_kv.mjs assert-fits --path "$put_path" --key "$put_key"
+            npx wrangler@4.126.0 kv key put "$put_key" \
+              --path "$put_path" \
+              --binding ALERT_STATE --remote --config worker/wrangler.toml
+          done < <(node -e '
+            const plan = JSON.parse(require("node:fs").readFileSync(process.argv[1], "utf8"));
+            for (const put of plan.puts || []) {
+              process.stdout.write(`${put.key}\t${put.relative_path}\n`);
+            }
+          ' .artifacts/d1-snapshot-kv-plan.json)
           # The generation adapter performs the compare-and-set equivalent of
           # `wrangler kv key put d1-publication:state:v1` without overwriting a newer claim.
           node tools/d1_generation_fence.mjs complete \
@@ -549,7 +602,9 @@ jobs:
             .artifacts/d1-publication-receipt-final.json
             .artifacts/d1-publication-receipts.jsonl
             .artifacts/d1-publication-recovery.json
+            .artifacts/d1-snapshot-kv-plan.json
             .d1-publication-state/current-snapshot.json
+            .d1-publication-state/kv-pack/
             .artifacts/d1-delta-plan.json
             .artifacts/d1-bounded-publish-dry-run.json
             .artifacts/d1-generation-claim.json
