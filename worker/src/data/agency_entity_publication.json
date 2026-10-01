@@ -1534,6 +1534,7 @@
         "name": "Office of the Borough President of Brooklyn"
       },
       "agency_id": "borough-president-brooklyn",
+      "constellation_display_name": "Office of the Borough President of Brooklyn",
       "dossier_rows": [
         {
           "entity_id": "agency:id:borough-president-brooklyn",
@@ -2593,6 +2594,7 @@
         "name": "Charter Revision Commission"
       },
       "agency_id": "charter-revision-commission",
+      "constellation_display_name": "Charter Revision Commission",
       "dossier_rows": [
         {
           "entity_id": "agency:id:charter-revision-commission",
@@ -17616,6 +17618,7 @@
         "name": "Rent Guidelines Board"
       },
       "agency_id": "rent-guidelines-board",
+      "constellation_display_name": "Rent Guidelines Board",
       "dossier_rows": [
         {
           "entity_id": "agency:id:rent-guidelines-board",

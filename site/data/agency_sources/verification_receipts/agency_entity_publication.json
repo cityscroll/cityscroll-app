@@ -3,8 +3,8 @@
   "publication_schema": "cityscroll.agency_entity_publication.v1",
   "method": "agency_entity_publication_v1",
   "generated_at": "2026-09-09T06:33:01.880Z",
-  "input_digest": "sha256:91179e0e5b9ce94af791f6313df75b114d0bc8cd9b5f07a99606396e4c3803c1",
-  "publication_digest": "sha256:627f733be2719da0c7bda4315a3e5c4c624a6a2d21ee822387f7f4f7e89472d5",
+  "input_digest": "sha256:3419d24803d5042bf35a33aba7146f8229e052a38b14286deff276cfe8fecee2",
+  "publication_digest": "sha256:782154794d48d94b8b3962167cbb53abda83ad09078ecbccdf5d4cd236c9d19a",
   "sources": [
     {
       "system": "nyc_open_data",
