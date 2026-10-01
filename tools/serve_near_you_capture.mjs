@@ -10,21 +10,36 @@ import edgeWorker from "../site/pages_edge.mjs";
 import { BROWSE_FACETS } from "../site/browse_view.mjs";
 
 const root = join(process.cwd(), "site");
-// A journey that proves frozen record counts names the district-activity blob
-// it expects; the server then reads that exact object from the repository
-// instead of the working-tree file, and names its generation after it.
+// A journey that proves frozen record counts names the district-activity it
+// expects. Prefer a committed fixture file (shallow CI has no historical
+// blobs); fall back to `git cat-file` of a 40-hex blob id; otherwise read the
+// live working-tree file. Generation stays `capture-<blob12>` when a blob id
+// is supplied alongside a file so discovery-recovery lockstep stays intact.
 export const ACTIVITY_BLOB_ENV = "NEAR_YOU_CAPTURE_ACTIVITY_BLOB";
+export const ACTIVITY_FILE_ENV = "NEAR_YOU_CAPTURE_ACTIVITY_FILE";
 const activityBlob = process.env[ACTIVITY_BLOB_ENV] || "";
+const activityFile = process.env[ACTIVITY_FILE_ENV] || "";
 if (activityBlob && !/^[0-9a-f]{40}$/.test(activityBlob)) {
   throw new Error(`${ACTIVITY_BLOB_ENV} must be a 40-hex blob id, got ${JSON.stringify(activityBlob)}`);
 }
+if (activityFile && activityFile.includes("\0")) {
+  throw new Error(`${ACTIVITY_FILE_ENV} must be a filesystem path`);
+}
 // Exercise the same retained membership slices as the deployed route, not its
 // tiny no-binding floor fixture (which cannot prove neighborhood relevance).
-const activity = JSON.parse(activityBlob
-  ? execFileSync("git", ["cat-file", "blob", activityBlob], { cwd: process.cwd(), maxBuffer: 256 * 1024 * 1024 }).toString("utf8")
-  : await readFile(join(root, "data/district_activity.json"), "utf8"));
+const activityText = activityFile
+  ? await readFile(activityFile, "utf8")
+  : activityBlob
+    ? execFileSync("git", ["cat-file", "blob", activityBlob], { cwd: process.cwd(), maxBuffer: 256 * 1024 * 1024 }).toString("utf8")
+    : await readFile(join(root, "data/district_activity.json"), "utf8");
+const activity = JSON.parse(activityText);
 const geography = JSON.parse(await readFile(join(root, "data/community_board_geography_lookup.json"), "utf8"));
-const materialized = buildNearYou(activity, geography, activityBlob ? `capture-${activityBlob.slice(0, 12)}` : "capture");
+const captureGeneration = activityBlob
+  ? `capture-${activityBlob.slice(0, 12)}`
+  : activityFile
+    ? "capture-file"
+    : "capture";
+const materialized = buildNearYou(activity, geography, captureGeneration);
 const values = new Map(materialized.entries.map(({key, value}) => [key, value]));
 values.set("route-read-model:near-you:manifest:v1", JSON.stringify(materialized.manifest));
 const env = { ALERT_STATE: { get: async (key) => values.get(key) ?? null } };
