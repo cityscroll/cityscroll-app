@@ -1,0 +1,69 @@
+{
+  "schema": "cityscroll.near_you_synthetic_probe_pages.v1",
+  "surface_id": "near-you",
+  "traffic_class": "synthetic",
+  "purpose": "Fixed Near You routes the scheduled geography-navigation field-vitals probe visits at both binding viewports. Every observation is stamped traffic_class=synthetic so the synthetic measurement group never mixes with resident production traffic.",
+  "selection_rationale": "Geography-navigation release proof binds desktop and mobile viewports used by the capture harness (1440 and 390). The probe visits /near-you (and / after default-local-home for home-surface classification notes only when listed). Popularity is not a selection input.",
+  "maintenance": "Replace unreachable paths by reviewed edit. The probe reports unreachable pages per slot instead of substituting its own.",
+  "device_profiles": [
+    {
+      "id": "desktop-1440x900",
+      "device_class": "desktop",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "device_scale_factor": 1,
+      "is_mobile": false,
+      "has_touch": false,
+      "rationale": "Binding desktop viewport used by geography-navigation release captures."
+    },
+    {
+      "id": "mobile-390x844",
+      "device_class": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "device_scale_factor": 3,
+      "is_mobile": true,
+      "has_touch": true,
+      "rationale": "Binding mobile viewport used by geography-navigation release captures."
+    }
+  ],
+  "network_profile": {
+    "id": "throttled-4g",
+    "download_throughput_bytes_per_second": 1638400,
+    "upload_throughput_bytes_per_second": 768000,
+    "latency_ms": 150,
+    "rationale": "Fixed throttle so distribution changes track the deployed surface."
+  },
+  "visit_policy": {
+    "cold_cache_per_visit": true,
+    "visits_per_page_per_slot": 1,
+    "settle_ms": 8000,
+    "interaction_settle_ms": 4000,
+    "page_timeout_ms": 60000,
+    "run_budget_ms": 600000,
+    "interaction": {
+      "required": true,
+      "purpose": "INP requires a real interaction; load-and-idle leaves the INP cell unclosable forever.",
+      "preferred_selectors": [
+        "#near-geo-search-input",
+        "input.near-geo-search-input",
+        "button.near-geo-search",
+        ".near-geo-search button",
+        "button",
+        "a[href]"
+      ]
+    },
+    "rationale": "One cold visit per path per viewport per slot, then one driven interaction so LCP/CLS and INP can all retain observations."
+  },
+  "pages": [
+    {
+      "path": "/near-you",
+      "weight_class": "primary",
+      "rationale": "Canonical Near You document path for geography-navigation field vitals."
+    }
+  ]
+}

@@ -311,19 +311,73 @@ test("an unmerged automation-branch receipt is merged into prior_runs and cannot
   );
 });
 
-test("the retained tip names the recovered 2026-09-30 scheduled cycle in prior_runs", () => {
-  const tip = JSON.parse(readFileSync(join(ROOT, CONNECTED_HISTORY_CYCLE.receipt_path), "utf8"));
-  assert.equal(tip.run.github_run_id, 36755699826);
-  assert.equal(tip.run.trigger, "workflow_dispatch");
-  const scheduled = tip.prior_runs.find((entry) => entry.run_id === "github-actions:36723175863:1");
+/** Recovered 2026-09-30 scheduled cycle that must remain readable in any retained ledger. */
+const RECOVERED_SCHEDULED_2026_09_30 = Object.freeze({
+  run_id: "github-actions:36723175863:1",
+  trigger: "schedule",
+  started_at: "2026-09-30T13:39:26.483Z",
+  finished_at: "2026-09-30T13:39:32.748Z",
+  outcome: "held",
+  served_revision: "c9381ab637d8970e8653a0e7616d76f5faa45653",
+  receipt_sha256: "sha256:de213d84bdbffbb6428726880f341dfdee05f199fbf769ccb9ee1a3de2c04f28",
+});
+const MANUAL_2026_09_30_RUN_ID = "github-actions:36755699826:1";
+
+/**
+ * Assert the recovered scheduled run (and the same-day workflow_dispatch run) are
+ * present somewhere in the whole ledger — tip run plus prior_runs — without
+ * pinning which entry is currently the tip.
+ */
+function assertRecoveredScheduledRetainedInLedger(receipt) {
+  const history = ledgerHistoryOf(receipt, null);
+  const scheduled = history.find((entry) => entry.run_id === RECOVERED_SCHEDULED_2026_09_30.run_id);
   assert.ok(scheduled, "the first scheduled cycle must remain readable in the retained ledger");
-  assert.equal(scheduled.trigger, "schedule");
-  assert.equal(scheduled.started_at, "2026-09-30T13:39:26.483Z");
-  assert.equal(scheduled.finished_at, "2026-09-30T13:39:32.748Z");
-  assert.equal(scheduled.outcome, "held");
-  assert.equal(scheduled.served_revision, "c9381ab637d8970e8653a0e7616d76f5faa45653");
-  assert.equal(scheduled.receipt_sha256, "sha256:de213d84bdbffbb6428726880f341dfdee05f199fbf769ccb9ee1a3de2c04f28");
-  assert.ok(tip.prior_runs.some((entry) => entry.run_id === "github-actions:36555302802:1"));
+  assert.equal(scheduled.trigger, RECOVERED_SCHEDULED_2026_09_30.trigger);
+  assert.equal(scheduled.started_at, RECOVERED_SCHEDULED_2026_09_30.started_at);
+  assert.equal(scheduled.finished_at, RECOVERED_SCHEDULED_2026_09_30.finished_at);
+  assert.equal(scheduled.outcome, RECOVERED_SCHEDULED_2026_09_30.outcome);
+  assert.equal(scheduled.served_revision, RECOVERED_SCHEDULED_2026_09_30.served_revision);
+  assert.equal(scheduled.receipt_sha256, RECOVERED_SCHEDULED_2026_09_30.receipt_sha256);
+  assert.ok(
+    history.some((entry) => entry.run_id === MANUAL_2026_09_30_RUN_ID),
+    "the 2026-09-30 workflow_dispatch run must remain readable somewhere in the ledger",
+  );
+  assert.ok(
+    history.some((entry) => entry.run_id === "github-actions:36555302802:1"),
+    "the earlier workflow_dispatch cycle must remain readable in the retained ledger",
+  );
+}
+
+test("the retained ledger keeps the recovered 2026-09-30 scheduled cycle", () => {
+  const tip = JSON.parse(readFileSync(join(ROOT, CONNECTED_HISTORY_CYCLE.receipt_path), "utf8"));
+  assertRecoveredScheduledRetainedInLedger(tip);
+
+  // Mutation control: a newer tip that still carries the recovered history passes.
+  const withNewTip = {
+    ...tip,
+    run: {
+      ...tip.run,
+      run_id: "github-actions:99999999999:1",
+      github_run_id: 99999999999,
+      trigger: "schedule",
+      started_at: "2026-10-02T07:13:00.000Z",
+      finished_at: "2026-10-02T07:13:30.000Z",
+    },
+    prior_runs: ledgerHistoryOf(tip, null),
+  };
+  assertRecoveredScheduledRetainedInLedger(withNewTip);
+
+  // Mutation control: dropping the recovered scheduled entry fails closed.
+  const droppedRecovered = {
+    ...tip,
+    prior_runs: (tip.prior_runs || []).filter(
+      (entry) => entry.run_id !== RECOVERED_SCHEDULED_2026_09_30.run_id,
+    ),
+  };
+  assert.throws(
+    () => assertRecoveredScheduledRetainedInLedger(droppedRecovered),
+    /first scheduled cycle must remain readable/,
+  );
 });
 
 test("per-response markup is not a change, and the recorded fingerprint makes the next run exact", async (t) => {
