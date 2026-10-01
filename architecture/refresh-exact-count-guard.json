@@ -1,0 +1,53 @@
+{
+  "schema": "cityscroll.refresh_exact_count_guard.v1",
+  "purpose": "Fail closed when a test couples an exact population count to live refreshed site/data. Scheduled first-class refresh rewrites those artifacts; exact pins force hand-restamping and block unattended merges.",
+  "permitted_shapes": [
+    {
+      "id": "fixture-pin",
+      "summary": "Load the population from a committed fixture under test/fixtures/ and keep exact asserts against that frozen vintage."
+    },
+    {
+      "id": "refresh-invariant",
+      "summary": "Assert a property that survives refresh: a non-empty floor that still fails on an empty set, a complement that sums to the whole, required keys, ordering, or equality between independently derived views of the same committed input."
+    }
+  ],
+  "scope": {
+    "note": "Governs exact-count asserts only when a test loads one of the listed refreshed site/data artifacts. Exact counts against committed fixtures are allowed. Grow this artifact list only when a later scheduled refresh proves another member.",
+    "refreshed_site_data_artifacts": [
+      "site/data/committee_graph_lookup.json",
+      "site/data/district_activity.json",
+      "site/data/land_default_ulurp.json",
+      "site/data/land_project_map_points.json",
+      "site/data/land_project_map_points_receipt.json",
+      "site/data/legislative_matter_index.json",
+      "site/data/legislative_matter_lookup.json",
+      "site/data/meeting_outcomes_snapshot.json",
+      "site/data/money_resident_snapshot.json",
+      "site/data/official_committee_memberships_lookup.json",
+      "site/data/person_hub_lookup.json",
+      "site/data/shared_meeting_read_model.json",
+      "site/data/staffing_default_hires.json",
+      "site/data/staffing_exams.json",
+      "site/data/title_crosswalk.json"
+    ]
+  },
+  "count_property_pattern": "(?:count|length|total|size|appearances|matter_count|references|universe|rows|committees?|exams?|groups?|members?|mapped|unmapped)",
+  "empirical_starting_set": {
+    "source": "Scheduled first-class refresh pull request restamps that invalidated exact pins",
+    "test_files": [
+      "test/default_local_home_journey.test.mjs",
+      "test/existing_connections_committee.test.mjs",
+      "test/functional/32_near_you_location.py",
+      "test/interpret_preview.test.mjs",
+      "test/kensington_wider_district_journey.test.mjs",
+      "test/land_authority_summary.test.mjs",
+      "test/land_project_map_points.test.mjs",
+      "test/legislative_matter_continuation_availability.test.mjs",
+      "test/legislative_matter_history_population.test.mjs",
+      "test/meeting_geography_backfill.test.mjs",
+      "test/official_profile_committee_graph.test.mjs",
+      "test/resident_entry_presentation.test.mjs",
+      "test/same_consolidation.test.mjs"
+    ]
+  }
+}

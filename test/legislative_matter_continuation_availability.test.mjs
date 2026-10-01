@@ -16,9 +16,9 @@
  * three answers stay distinct and that no surface advertises a route the
  * generation does not carry — not that any particular identity is unpublished.
  *
- * Everything asserted here reads the committed offline corpus
- * (site/data/meeting_outcomes_snapshot.json and its published projection). The
- * counts below describe that retained corpus, not live publisher coverage.
+ * Everything asserted here reads the frozen main-vintage fixtures under
+ * test/fixtures/legislative-matter-population/ (snapshot + published lookup).
+ * The counts below describe that retained corpus, not live publisher coverage.
  *
  *   node --test test/legislative_matter_continuation_availability.test.mjs
  */
@@ -42,11 +42,18 @@ import {
 } from "../site/legislative_matter_availability.mjs";
 import { renderMeetingOutcomesFirstPaint } from "../site/meeting_outcomes_static.mjs";
 
-const snapshot = JSON.parse(readFileSync(new URL("../site/data/meeting_outcomes_snapshot.json", import.meta.url), "utf8"));
-const lookup = JSON.parse(readFileSync(new URL("../site/data/legislative_matter_lookup.json", import.meta.url), "utf8"));
-const manifest = JSON.parse(readFileSync(new URL("../docs/evidence/matter-continuation-availability/manifest.json", import.meta.url), "utf8"));
+const read = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
+
+// Frozen main-vintage legislative-matter corpus. Scheduled refresh rewrites
+// live site/data counts; regression still caught = corpus membership / route
+// publication / complement sums for this frozen vintage.
+const FIXTURE = "./fixtures/legislative-matter-population";
+const snapshot = read(`${FIXTURE}/meeting_outcomes_snapshot.json`);
+const lookup = read(`${FIXTURE}/legislative_matter_lookup.json`);
+const manifest = read("../docs/evidence/matter-continuation-availability/manifest.json");
 
 const PUBLISHED = publishedMatterIds(lookup);
+const destinationOpts = { published: lookup, lookup };
 
 /**
  * An exact identity outside the retained corpus that carries its own official
@@ -103,13 +110,13 @@ const lookupEnv = {
 // ---------------------------------------------------------------------------
 
 test("a published matter opens a local history and an unpublished exact matter opens its official record", async () => {
-  const published = resolveMatterDestination({ matter_id: "78605" });
+  const published = resolveMatterDestination({ matter_id: "78605" }, destinationOpts);
   assert.equal(published.availability, "local_history");
   assert.equal(published.href, "/matters/78605/");
   assert.equal(published.label, MATTER_HISTORY_LABEL);
   assert.equal(published.external, false);
 
-  const official = resolveMatterDestination(OFFICIAL_ONLY_MATTER);
+  const official = resolveMatterDestination(OFFICIAL_ONLY_MATTER, destinationOpts);
   assert.equal(official.availability, "official_record");
   assert.equal(official.href, OFFICIAL_ONLY_MATTER.matter_url);
   assert.equal(official.label, MATTER_OFFICIAL_RECORD_LABEL);
@@ -124,6 +131,8 @@ test("a published matter opens a local history and an unpublished exact matter o
 
   const officialHtml = renderCouncilHearingMatterContinuation(
     meeting("20260707022", constructedOutcome([OFFICIAL_ONLY_MATTER])),
+    null,
+    destinationOpts,
   );
   assert.ok(!advertisedHrefs(officialHtml).includes("/matters/999998/"), "no surface advertises the 404 route");
   assert.match(officialHtml, /View official matter record/);
@@ -138,7 +147,7 @@ test("every matter surface resolves the same identity to the same destination", 
     assert.ok(advertisedHrefs(firstPaint).includes(`/matters/${matterId}/`));
     assert.match(firstPaint, /data-matter-availability="local_history"/);
 
-    const continuation = projectCouncilHearingMatterContinuation(meeting(requestId));
+    const continuation = projectCouncilHearingMatterContinuation(meeting(requestId), null, destinationOpts);
     const matter = continuation.matters.find((row) => row.matter_id === matterId);
     assert.equal(matter.destination.href, `/matters/${matterId}/`);
     assert.equal(matter.canonical_href, `/matters/${matterId}/`);
@@ -154,7 +163,7 @@ test("every matter surface resolves the same identity to the same destination", 
   assert.ok(advertisedHrefs(firstPaintOfficial).includes(OFFICIAL_ONLY_MATTER.matter_url));
   assert.ok(!advertisedHrefs(firstPaintOfficial).includes("/matters/999998/"));
 
-  const official = projectCouncilHearingMatterContinuation(meeting("20260707022", outcome));
+  const official = projectCouncilHearingMatterContinuation(meeting("20260707022", outcome), null, destinationOpts);
   assert.equal(official.matters[0].destination.href, OFFICIAL_ONLY_MATTER.matter_url);
   assert.equal(official.matters[0].canonical_href, null);
 });
@@ -166,11 +175,11 @@ test("every matter surface resolves the same identity to the same destination", 
 
 test("a multi-matter hearing preserves all five exact choices with their own destinations", () => {
   const record = meeting("20260707021");
-  const projection = projectCouncilHearingMatterContinuation(record);
+  const projection = projectCouncilHearingMatterContinuation(record, null, destinationOpts);
   assert.equal(projection.state, "multiple");
   assert.deepEqual(projection.matters.map((matter) => matter.matter_id), ["79201", "79203", "79202", "79204", "79205"]);
 
-  const html = renderCouncilHearingMatterContinuation(record);
+  const html = renderCouncilHearingMatterContinuation(record, null, destinationOpts);
   const hrefs = advertisedHrefs(html);
   const offered = new Set();
   for (const matter of projection.matters) {
@@ -190,11 +199,11 @@ test("a multi-matter hearing preserves all five exact choices with their own des
 test("an unmatched notice acquires no matter, no local route, and no substitute destination", () => {
   const record = meeting("20260728026");
   assert.equal(snapshot.by_notice["20260728026"].snapshot_state, "absent");
-  const projection = projectCouncilHearingMatterContinuation(record);
+  const projection = projectCouncilHearingMatterContinuation(record, null, destinationOpts);
   assert.equal(projection.state, "unmatched");
   assert.equal(projection.matters.length, 0);
 
-  const html = renderCouncilHearingMatterContinuation(record);
+  const html = renderCouncilHearingMatterContinuation(record, null, destinationOpts);
   assert.deepEqual(advertisedHrefs(html), []);
   assert.doesNotMatch(html, /data-action-path-continuation/);
   assert.doesNotMatch(html, /committee|Gateway\.aspx|\/matters\//i);
@@ -207,10 +216,10 @@ test("an unmatched notice acquires no matter, no local route, and no substitute 
 
 test("continuation copy names a destination and never claims tracking, subscription, or attribution", () => {
   const continuation = [
-    renderCouncilHearingMatterContinuation(meeting("20260707022")),
-    renderCouncilHearingMatterContinuation(meeting("20260707021")),
-    renderCouncilHearingMatterContinuation(meeting("20260428021")),
-    renderCouncilHearingMatterContinuation(meeting("20260707022", constructedOutcome([OFFICIAL_ONLY_MATTER]))),
+    renderCouncilHearingMatterContinuation(meeting("20260707022"), null, destinationOpts),
+    renderCouncilHearingMatterContinuation(meeting("20260707021"), null, destinationOpts),
+    renderCouncilHearingMatterContinuation(meeting("20260428021"), null, destinationOpts),
+    renderCouncilHearingMatterContinuation(meeting("20260707022", constructedOutcome([OFFICIAL_ONLY_MATTER])), null, destinationOpts),
   ];
   const firstPaint = [
     renderMeetingOutcomesFirstPaint(snapshot, "20260428021"),
@@ -254,9 +263,9 @@ test("a matter with no reachable destination states that instead of offering a d
   // An exact identity the retained record carries no address for, and which
   // the published generation does not publish either.
   const record = meeting("20260827004", constructedOutcome([ADDRESSLESS_MATTER]));
-  const projection = projectCouncilHearingMatterContinuation(record);
+  const projection = projectCouncilHearingMatterContinuation(record, null, destinationOpts);
   assert.equal(projection.matters[0].destination.availability, "unavailable");
-  const html = renderCouncilHearingMatterContinuation(record);
+  const html = renderCouncilHearingMatterContinuation(record, null, destinationOpts);
   assert.deepEqual(advertisedHrefs(html), []);
   assert.match(html, /No matter record is available to open/);
   assert.match(html, /LU 9999-2026/, "the identity itself stays visible");
@@ -268,7 +277,7 @@ test("a matter with no reachable destination states that instead of offering a d
 
 test("continuation destinations are native anchors with no scripted activation", () => {
   for (const requestId of ["20260707022", "20260707021", "20260428021"]) {
-    const html = renderCouncilHearingMatterContinuation(meeting(requestId));
+    const html = renderCouncilHearingMatterContinuation(meeting(requestId), null, destinationOpts);
     assert.doesNotMatch(html, /<button/i, "a destination is a link, not a scripted control");
     assert.doesNotMatch(html, /\son[a-z]+="/i, "no inline event handlers");
     assert.doesNotMatch(html, /href="javascript:/i);
@@ -290,7 +299,7 @@ test("no advertised local destination in the frozen corpus is absent from the pu
   const unavailable = [];
 
   for (const requestId of Object.keys(snapshot.by_notice)) {
-    const projection = projectCouncilHearingMatterContinuation(meeting(requestId));
+    const projection = projectCouncilHearingMatterContinuation(meeting(requestId), null, destinationOpts);
     if (!projection.strict_join) continue;
     for (const matter of projection.matters) {
       appearances += 1;
@@ -312,12 +321,12 @@ test("no advertised local destination in the frozen corpus is absent from the pu
     }
   }
 
-  // The retained corpus, described rather than summarized: 81 distinct matter
-  // identities across 108 appearances, every one of them published locally.
-  assert.equal(appearances, 108);
-  assert.equal(seen.size, 81);
+  // The retained corpus, described rather than summarized: 78 distinct matter
+  // identities across 102 appearances, every one of them published locally.
+  assert.equal(appearances, 102);
+  assert.equal(seen.size, 78);
   assert.deepEqual([...PUBLISHED].sort(), [...seen.keys()].sort());
-  assert.equal(advertisedLocal + advertisedOfficial + unavailable.length, 108);
+  assert.equal(advertisedLocal + advertisedOfficial + unavailable.length, 102);
   assert.equal(advertisedLocal, [...seen.entries()].filter(([id]) => PUBLISHED.has(id)).reduce((sum, [, n]) => sum + n, 0));
   assert.equal(advertisedOfficial, 0, "no retained matter falls back to its publisher record");
   assert.deepEqual(unavailable, [], "every exact matter in this corpus resolves to a destination");
@@ -326,7 +335,7 @@ test("no advertised local destination in the frozen corpus is absent from the pu
   // publishes, and nothing else is advertised as local.
   const advertised = new Set();
   for (const requestId of Object.keys(snapshot.by_notice)) {
-    for (const href of advertisedHrefs(renderCouncilHearingMatterContinuation(meeting(requestId)))) {
+    for (const href of advertisedHrefs(renderCouncilHearingMatterContinuation(meeting(requestId), null, destinationOpts))) {
       if (href.startsWith("/matters/")) advertised.add(href);
     }
   }
@@ -343,7 +352,7 @@ test("resolution preserves source URLs, native identity, observation times and r
   const duplicates = ["20260430007", "20260422047"];
   const destinations = new Set();
   for (const requestId of duplicates) {
-    const projection = projectCouncilHearingMatterContinuation(meeting(requestId));
+    const projection = projectCouncilHearingMatterContinuation(meeting(requestId), null, destinationOpts);
     const matter = projection.matters.find((row) => row.matter_id === "78758");
     assert.ok(matter, `${requestId} keeps its reference to matter 78758`);
     assert.equal(projection.request_id, requestId);
@@ -363,16 +372,16 @@ test("resolution preserves source URLs, native identity, observation times and r
     assert.ok(appearance.event.event_id);
     assert.equal(appearance.source_receipt.snapshot_generated_at, snapshot.generated_at);
   }
-  const single = projectCouncilHearingMatterContinuation(meeting("20260707022"));
+  const single = projectCouncilHearingMatterContinuation(meeting("20260707022"), null, destinationOpts);
   assert.equal(single.state, "single");
   assert.equal(single.matters[0].outcome, "Laid Over by Subcommittee");
 });
 
 test("resolving a destination creates no saved watch and reads no publisher at request time", () => {
   const before = JSON.stringify(lookup);
-  resolveMatterDestination({ matter_id: "78605" });
-  resolveMatterDestination({ matter_id: "79200", matter_url: "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79200" });
-  renderCouncilHearingMatterContinuation(meeting("20260707021"));
+  resolveMatterDestination({ matter_id: "78605" }, destinationOpts);
+  resolveMatterDestination({ matter_id: "79200", matter_url: "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79200" }, destinationOpts);
+  renderCouncilHearingMatterContinuation(meeting("20260707021"), null, destinationOpts);
   assert.equal(JSON.stringify(lookup), before, "resolution is a read projection with no state of its own");
 
   // Read the module's executable body, with its prose stripped, so the

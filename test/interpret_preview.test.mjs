@@ -11,8 +11,8 @@ import { filterMoneySnapshot, moneySnapshotRows } from "../site/resident_snapsho
 
 const require = createRequire(import.meta.url);
 const { parseNL } = require("../site/nl_parse.js");
-// Frozen money snapshot for the education-contracts preview pin. Daily refresh
-// rolls the open window and changes the first-three static result ids.
+// Frozen money-snapshot vintage. Refresh rolls the open window and changes
+// first-three request ids; keep exact asserts against the fixture.
 const moneySnapshot = JSON.parse(readFileSync(new URL("./fixtures/interpret-preview/money_resident_snapshot.json", import.meta.url), "utf8"));
 
 test("interpret preview renders only the first three interpreted result records", () => {

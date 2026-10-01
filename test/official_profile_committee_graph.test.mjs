@@ -10,8 +10,12 @@ import {
   renderOfficialLocalConstellationHTML,
 } from "../site/committee_memberships.mjs";
 
-const graph = JSON.parse(readFileSync(new URL("../site/data/committee_graph_lookup.json", import.meta.url)));
-const legacyLookup = JSON.parse(readFileSync(new URL("../site/data/official_committee_memberships_lookup.json", import.meta.url)));
+// Frozen committee-graph vintage. Fixture person 5259 still has 77 member_of
+// edges, so the exact count pins that vintage rather than live refresh.
+// Regression caught: sparse legacy lookup still yields exact graph rows with
+// numeric committee ids and matching reverse edges.
+const graph = JSON.parse(readFileSync(new URL("./fixtures/committee-co-service/committee_graph_lookup.json", import.meta.url)));
+const legacyLookup = JSON.parse(readFileSync(new URL("./fixtures/committee-co-service/official_committee_memberships_lookup.json", import.meta.url)));
 
 test("official profiles render exact graph member_of edges when the legacy lookup is sparse", () => {
   const person = { person_id: "5259", person_name: "Gale A. Brewer" };
@@ -28,7 +32,7 @@ test("official profiles render exact graph member_of edges when the legacy looku
 
   assert.equal(legacyLookup.by_member_id?.[person.person_id], undefined);
   assert.equal(committeeView.state, "matched");
-  assert.equal(rows.length, 78);
+  assert.equal(rows.length, 77);
   assert.equal(reverseEdges.length, rows.length);
   assert.ok(rows.every((row) => row.edge_type === "member_of" && row.relation_label === "member of"));
   assert.ok(rows.every((row) => /^\d+$/.test(row.committee_id)));

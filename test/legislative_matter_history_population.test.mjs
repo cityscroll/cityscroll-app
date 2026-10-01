@@ -7,11 +7,11 @@
  * single privileged matter getting one while the other sixty five stay
  * invisible.
  *
- * Everything asserted here reads the committed offline corpus
- * (site/data/meeting_outcomes_snapshot.json) and the artifacts built from it.
- * The counts describe that retained corpus at its own data vintage. They are
- * not a claim about live publisher coverage, and the absence of a later action
- * for a matter is not a claim that the matter is finished.
+ * Everything asserted here reads the frozen main-vintage fixtures under
+ * test/fixtures/legislative-matter-population/ (snapshot + published lookup
+ * and index). The counts describe that retained corpus at its own data vintage.
+ * They are not a claim about live publisher coverage, and the absence of a
+ * later action for a matter is not a claim that the matter is finished.
  *
  * Coverage here is derived from the fixture's own membership: the expected
  * population is recomputed from the snapshot by a second, deliberately
@@ -39,9 +39,13 @@ import { publishedMatterIds, resolveMatterDestination } from "../site/legislativ
 
 const read = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
 
-const snapshot = read("../site/data/meeting_outcomes_snapshot.json");
-const lookup = read("../site/data/legislative_matter_lookup.json");
-const index = read("../site/data/legislative_matter_index.json");
+// Frozen main-vintage legislative-matter corpus. Scheduled refresh rewrites
+// live site/data counts; regression still caught = corpus membership / route
+// publication / complement sums for this frozen vintage.
+const FIXTURE = "./fixtures/legislative-matter-population";
+const snapshot = read(`${FIXTURE}/meeting_outcomes_snapshot.json`);
+const lookup = read(`${FIXTURE}/legislative_matter_lookup.json`);
+const index = read(`${FIXTURE}/legislative_matter_index.json`);
 
 /**
  * The expected population, recomputed from the fixture by a traversal that
@@ -132,11 +136,11 @@ test("every retained exact matter is published, with the counts the fixture itse
 
   // The same figures stated absolutely, so a corpus that silently changes shape
   // is visible rather than self-justifying.
-  assert.equal(population.matter_count, 81);
-  assert.equal(population.appearances, 106);
-  assert.equal(population.two_event_histories, 21);
-  assert.equal(population.one_event_histories, 58);
-  assert.equal(population.references, 108);
+  assert.equal(population.matter_count, 78);
+  assert.equal(population.appearances, 100);
+  assert.equal(population.two_event_histories, 22);
+  assert.equal(population.one_event_histories, 56);
+  assert.equal(population.references, 102);
 
   // The committed artifact is what this builder produces from this input.
   assert.deepEqual(built, lookup, "site/data/legislative_matter_lookup.json is current");
@@ -175,9 +179,9 @@ test("the matter that was already published keeps its history unchanged in shape
 // does not know instead of implying that nothing more will happen.
 // ---------------------------------------------------------------------------
 
-test("all 81 published matter routes resolve", async () => {
+test("all 78 published matter routes resolve", async () => {
   const ids = Object.keys(lookup.matters);
-  assert.equal(ids.length, 81);
+  assert.equal(ids.length, 78);
   const statuses = new Map();
   for (const id of ids) {
     assert.equal(edgeRequestKind(`https://cityscroll.org/matters/${id}/`), "matter");
@@ -193,7 +197,7 @@ test("all 81 published matter routes resolve", async () => {
 
 test("a single-appearance history states what has been located without claiming nothing follows", () => {
   const singles = Object.values(lookup.matters).filter((entry) => entry.appearances.length === 1);
-  assert.equal(singles.length, 58);
+  assert.equal(singles.length, 56);
 
   const html = htmlFor("79200");
   assert.equal(documentFor("79200").appearances.length, 1, "79200 is the single-appearance canary");
@@ -409,7 +413,7 @@ test("a matter id claimed by two publisher tenants publishes neither and says so
 
 test("every two-event history shows the earlier laid-over step before the later disposition", () => {
   const sequences = Object.values(lookup.matters).filter((entry) => entry.appearances.length === 2);
-  assert.equal(sequences.length, 21);
+  assert.equal(sequences.length, 22);
   for (const entry of sequences) {
     const [earlier, later] = entry.appearances;
     assert.ok(earlier.event.date < later.event.date, `${entry.matter_id} is ordered by source event date`);
@@ -477,10 +481,10 @@ test("the builder publishes by membership rather than by a named target", () => 
 });
 
 test("the shared availability rule answers over the published population", () => {
-  const published = publishedMatterIds();
+  const published = publishedMatterIds(lookup);
   assert.deepEqual([...published].sort(), Object.keys(lookup.matters).sort());
   for (const id of Object.keys(lookup.matters)) {
-    const destination = resolveMatterDestination({ matter_id: id });
+    const destination = resolveMatterDestination({ matter_id: id }, { published: lookup, lookup });
     assert.equal(destination.availability, "local_history");
     assert.equal(destination.href, `/matters/${id}/`);
   }

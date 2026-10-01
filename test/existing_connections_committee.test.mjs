@@ -27,6 +27,7 @@ import { buildCommitteeDocumentView, renderCommitteeDocument } from "../site/com
 
 // Frozen committee-graph vintage for shared-membership contract cases. Daily
 // refresh rewrites the live lookup and moves shared-membership counts.
+// Regression caught: shared-membership contract shape on the frozen graph.
 const graph = JSON.parse(readFileSync(new URL("./fixtures/committee-co-service/committee_graph_lookup.json", import.meta.url)));
 const people = JSON.parse(readFileSync(new URL("./fixtures/committee-co-service/person_hub_lookup.json", import.meta.url)));
 const documentStyles = readFileSync(new URL("../site/civic-documents.css", import.meta.url), "utf8");
