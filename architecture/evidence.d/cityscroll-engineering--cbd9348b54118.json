@@ -24,6 +24,18 @@
     {
       "id": "field-coverage-read-back-readme",
       "path": "docs/evidence/field-coverage-lattice-read-back/README.md"
+    },
+    {
+      "id": "field-coverage-tail-disagreement-lib",
+      "path": "tools/lib/tail_artifact_disagreement.mjs"
+    },
+    {
+      "id": "field-coverage-tail-disagreement-builder",
+      "path": "tools/build_field_coverage_tail_disagreement.mjs"
+    },
+    {
+      "id": "field-coverage-tail-disagreement-tests",
+      "path": "test/field_coverage_tail_disagreement.test.mjs"
     }
   ]
 }

@@ -1456,6 +1456,33 @@
       ]
     }
   },
+  "tail_artifact_disagreement": {
+    "metric_id": "component_ready_ms",
+    "surface_id": "notice",
+    "component_id": "notice-context",
+    "percentile": "p95",
+    "artifacts": [
+      {
+        "path": "docs/evidence/field-coverage-lattice-read-back/read-back.json",
+        "state": "measured",
+        "sampled_count": 85,
+        "p95_ms": 8001.9,
+        "percentile_withheld": false
+      },
+      {
+        "path": "docs/evidence/notice-context-readiness/read-back.json",
+        "state": "measured",
+        "sampled_count": 127,
+        "p95_ms": 3119.8,
+        "percentile_withheld": false
+      }
+    ],
+    "difference_ms": 4882.1,
+    "agreement": "disagree",
+    "percentile_published": true,
+    "note": "The two committed artifacts measure the same tail over separate windows; difference_ms is retained beside both values rather than left for the reader to subtract.",
+    "repository_revision": "107652fff0d978cfb1bc8dd7a9b97329c1d208d6"
+  },
   "evidence_hash": "217905d145e23c06add58072758010718e29afdc72472002113e175a67c81b4c",
   "query_hash": "c294d0d0fe2864cbe3b3ff1f331e118fa87ac22a01d4788999e60ffdf4384664"
 }
