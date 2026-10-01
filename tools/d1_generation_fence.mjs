@@ -11,15 +11,26 @@
  * The Wrangler adapter is intentionally thin. KV has no native compare-and-set,
  * so it uses a read, conditional put, and a read-back check. KV is also
  * eventually consistent: a read moments after a put can still return the value
- * the put replaced. Two rules keep the protocol correct on such a store.
+ * the put replaced, and a later get from another PoP can keep serving that
+ * older value for tens of seconds after this process already read its own write
+ * back (Deploy worker 36872149742: claim confirmed gen 22, then
+ * checkGenerationCommit's compareAndSet precondition read of
+ * d1-publication:state:v1 still saw gen 21). Three rules keep the protocol
+ * correct on such a store.
  *
  *  1. compareAndSet is read-your-writes. It polls after the put until the value
  *     it wrote is actually readable, so the next command in the deploy cannot
- *     read-modify-write a pre-put state.
+ *     read-modify-write a pre-put state. When the precondition read returns a
+ *     generation older than expected, it also polls: that is the cross-PoP
+ *     stale-read shape after a reclaim, not a competing writer.
  *  2. A holder's own view of its generation is monotonic. Each command records
  *     the state it confirmed in a per-run ledger, and a later command that reads
  *     an older status for the same generation, holder, and fingerprint writes
  *     forward from the ledger instead of regressing the fence.
+ *  3. When the ledger confirms this holder already wrote generation G, a fresh
+ *     KV read that still shows generation < G is treated as lag and polled —
+ *     not as a fence by the prior holder. A newer generation or a same-generation
+ *     different holder still fences immediately.
  *
  * Neither rule loosens the fence: a state belonging to a different generation or
  * holder always wins, and `abandoned` is terminal.
@@ -41,8 +52,15 @@ export const D1_GENERATION_FENCE_AUDIT_KEY_PREFIX = "d1-publication:audit:v1:";
 export const D1_GENERATION_FENCE_AUDIT_SCHEMA = "cityscroll.d1-publication-generation-fence-audit.v1";
 export const D1_GENERATION_FENCE_OUTCOME_SCHEMA = "cityscroll.d1-publication-generation-fence-outcome.v1";
 export const DEFAULT_LEASE_MS = 10 * 60 * 1000;
+/** Bound for polling a KV get that still serves a pre-put generation. */
+export const DEFAULT_STALE_READ_WAIT_MS = 90_000;
+export const DEFAULT_STALE_READ_POLL_MS = 3_000;
 
 const STATUSES = new Set(["claimed", "accepted", "published", "abandoned"]);
+
+function defaultSleep(ms) {
+  return new Promise((resolve) => { setTimeout(resolve, ms); });
+}
 
 // A holder only ever moves its own generation forward: claimed -> accepted ->
 // published. `abandoned` is terminal and ranks above every live status, so a
@@ -202,6 +220,56 @@ function monotonicPrior(remote, confirmed, identity) {
   return leaseMsOf(confirmed) > leaseMsOf(remote) ? confirmed : remote;
 }
 
+function isOlderGeneration(remote, generation) {
+  if (!Number.isInteger(generation)) return false;
+  if (remote == null) return true;
+  return Number.isInteger(remote.generation) && remote.generation < generation;
+}
+
+function isCompetingRemote(remote, identity) {
+  if (!remote || !Number.isInteger(identity.generation)) return false;
+  if (remote.generation > identity.generation) return true;
+  return remote.generation === identity.generation && remote.holder !== identity.holder;
+}
+
+/**
+ * KV get of d1-publication:state:v1 after this holder already confirmed a write
+ * in the run ledger. An older generation is lag, not a fence — poll until our
+ * identity is visible or a true competitor appears. Without a confirming ledger
+ * entry the first read stands: we cannot invent ownership from silence.
+ */
+async function readStateForConfirmedHolder({
+  store,
+  ledger,
+  identity,
+  waitMs = DEFAULT_STALE_READ_WAIT_MS,
+  pollMs = DEFAULT_STALE_READ_POLL_MS,
+  sleep = defaultSleep,
+}) {
+  const confirmed = await readLedger(ledger);
+  let remote = await readState(store);
+  if (identityMatches(remote, identity) || isCompetingRemote(remote, identity)) {
+    return remote;
+  }
+  if (!confirmed || !identityMatches(confirmed, identity)) {
+    return remote;
+  }
+  if (!isOlderGeneration(remote, identity.generation)) {
+    return remote;
+  }
+  for (let waited = 0; waited < waitMs; waited += pollMs) {
+    await sleep(pollMs);
+    remote = await readState(store);
+    if (identityMatches(remote, identity) || isCompetingRemote(remote, identity)) {
+      return remote;
+    }
+    if (!isOlderGeneration(remote, identity.generation)) {
+      return remote;
+    }
+  }
+  return remote;
+}
+
 function claimState({ generation, holder, fingerprint, watermarks, now, leaseMs }) {
   return {
     schema: D1_GENERATION_FENCE_SCHEMA,
@@ -283,12 +351,17 @@ export async function reclaimGeneration({ store, ledger = null, holder, fingerpr
 }
 
 /** Renew a live lease without changing its generation identity. */
-export async function renewGeneration({ store, ledger = null, generation, holder, fingerprint, now = Date.now(), leaseMs = DEFAULT_LEASE_MS }) {
+export async function renewGeneration({
+  store, ledger = null, generation, holder, fingerprint, now = Date.now(), leaseMs = DEFAULT_LEASE_MS,
+  staleReadWaitMs = DEFAULT_STALE_READ_WAIT_MS, staleReadPollMs = DEFAULT_STALE_READ_POLL_MS, sleep = defaultSleep,
+}) {
   requireStore(store);
   requireString(holder, "holder");
   const atMs = nowMs(now);
   const identity = { generation, holder, fingerprint };
-  const remote = await readState(store);
+  const remote = await readStateForConfirmedHolder({
+    store, ledger, identity, waitMs: staleReadWaitMs, pollMs: staleReadPollMs, sleep,
+  });
   if (!identityMatches(remote, identity)) {
     return { result: "fenced", renewed: false, fenced: true, state: remote };
   }
@@ -304,11 +377,17 @@ export async function renewGeneration({ store, ledger = null, generation, holder
 }
 
 /** Mark a failed holder abandoned, leaving the state and an audit receipt intact. */
-export async function abandonGeneration({ store, ledger = null, generation, holder, fingerprint, now = Date.now() }) {
+export async function abandonGeneration({
+  store, ledger = null, generation, holder, fingerprint, now = Date.now(),
+  staleReadWaitMs = DEFAULT_STALE_READ_WAIT_MS, staleReadPollMs = DEFAULT_STALE_READ_POLL_MS, sleep = defaultSleep,
+}) {
   requireStore(store);
   const atMs = nowMs(now);
-  const prior = await readState(store);
-  if (!identityMatches(prior, { generation, holder, fingerprint })) {
+  const identity = { generation, holder, fingerprint };
+  const prior = await readStateForConfirmedHolder({
+    store, ledger, identity, waitMs: staleReadWaitMs, pollMs: staleReadPollMs, sleep,
+  });
+  if (!identityMatches(prior, identity)) {
     return { result: "fenced", abandoned: false, fenced: true, state: prior };
   }
   const next = { ...prior, status: "abandoned", lease_until: isoTimestamp(atMs) };
@@ -362,11 +441,16 @@ export function fenceOutcome({ result, reason, generation = null, holder = null,
  * the decision — and, on a rejection, both generation numbers — survives in the
  * caller's receipt.
  */
-export async function checkGenerationCommit({ store, ledger = null, generation, holder, fingerprint, now = Date.now() }) {
+export async function checkGenerationCommit({
+  store, ledger = null, generation, holder, fingerprint, now = Date.now(),
+  staleReadWaitMs = DEFAULT_STALE_READ_WAIT_MS, staleReadPollMs = DEFAULT_STALE_READ_POLL_MS, sleep = defaultSleep,
+}) {
   requireStore(store);
   const atMs = nowMs(now);
   const identity = { generation, holder, fingerprint };
-  const remote = await readState(store);
+  const remote = await readStateForConfirmedHolder({
+    store, ledger, identity, waitMs: staleReadWaitMs, pollMs: staleReadPollMs, sleep,
+  });
   const reject = (reason, state) => ({
     result: "fenced",
     committable: false,
@@ -408,10 +492,15 @@ export async function checkGenerationCommit({ store, ledger = null, generation, 
 }
 
 /** Record successful SQL publication while preserving the accepted generation. */
-export async function completeGeneration({ store, ledger = null, generation, holder, fingerprint, now = Date.now() }) {
+export async function completeGeneration({
+  store, ledger = null, generation, holder, fingerprint, now = Date.now(),
+  staleReadWaitMs = DEFAULT_STALE_READ_WAIT_MS, staleReadPollMs = DEFAULT_STALE_READ_POLL_MS, sleep = defaultSleep,
+}) {
   requireStore(store);
   const identity = { generation, holder, fingerprint };
-  const remote = await readState(store);
+  const remote = await readStateForConfirmedHolder({
+    store, ledger, identity, waitMs: staleReadWaitMs, pollMs: staleReadPollMs, sleep,
+  });
   if (!identityMatches(remote, identity)) {
     return { result: "fenced", completed: false, fenced: true, state: remote };
   }
@@ -493,8 +582,20 @@ export function createWranglerKvStore({
   return {
     read,
     async compareAndSet(expected, next) {
-      const current = await read();
-      if ((current?.generation ?? null) !== expected) return false;
+      // Precondition read. A generation older than expected is the cross-PoP
+      // stale-read shape after a reclaim already confirmed expected in this run
+      // (see Deploy worker 36872149742): poll rather than treating it as lost.
+      // A newer generation is a real competitor and fails immediately.
+      let current = await read();
+      for (let waited = 0; ; ) {
+        const currentGen = current?.generation ?? null;
+        if (currentGen === expected) break;
+        if (currentGen != null && expected != null && currentGen > expected) return false;
+        if (waited >= readAfterWriteMs) return false;
+        await sleep(readAfterWritePollMs);
+        waited += readAfterWritePollMs;
+        current = await read();
+      }
       await putKey(key, next);
       // KV is eventually consistent, so poll until this process can read its own
       // write back. Returning before then lets the next fence command in the

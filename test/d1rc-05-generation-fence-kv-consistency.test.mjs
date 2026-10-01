@@ -6,11 +6,13 @@ import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 import {
   D1_GENERATION_FENCE_SCHEMA,
+  abandonGeneration,
   checkGenerationCommit,
   claimGeneration,
   completeGeneration,
   createFileLedger,
   createMemoryLedger,
+  createMemoryStateStore,
   createWranglerKvStore,
   renewGeneration,
 } from "../tools/d1_generation_fence.mjs";
@@ -231,4 +233,98 @@ test("an abandoned generation is terminal and is never revived by a local view",
     store, ledger, generation: 1, holder: HOLDER, fingerprint: FINGERPRINT, now: AT,
   })).completed, false);
   assert.equal(store.committed.status, "abandoned");
+});
+
+/**
+ * Production lost_race on Deploy worker 36872149742: claim/reclaim confirmed
+ * generation 22 on d1-publication:state:v1, then checkGenerationCommit's
+ * compareAndSet precondition read (and later abandon) still saw generation 21
+ * from the expired prior holder. Reproduce that cross-generation stale get and
+ * require the commit-check + abandon to wait for the holder's confirmed write.
+ */
+test("after reclaim, commit-check and abandon survive KV still serving the prior generation", async () => {
+  await withTempDir("d1-fence-cross-gen", async (dir) => {
+    const priorHolder = "Deploy worker:36858881507:1";
+    const expiredLease = "2026-10-01T12:11:11.432Z";
+    const reclaimAt = Date.parse("2026-10-01T13:55:38.925Z");
+    const gen21 = fenceState({
+      generation: 21,
+      holder: priorHolder,
+      lease_until: expiredLease,
+      fingerprint: "9".repeat(64),
+    });
+
+    // Authoritative KV advances on put; gets can keep returning gen 21 for a
+    // bounded number of reads after gen 22 is written (cross-PoP lag).
+    let authoritative = structuredClone(gen21);
+    let staleReadsLeft = 0;
+    const kv = {
+      read(key) {
+        if (key !== KEY) return "";
+        if (staleReadsLeft > 0 && authoritative.generation > 21) {
+          staleReadsLeft -= 1;
+          return JSON.stringify(gen21);
+        }
+        return JSON.stringify(authoritative);
+      },
+      write(key, value) {
+        if (key !== KEY) return;
+        authoritative = JSON.parse(value);
+        // After reclaim lands, the next several gets still serve gen 21.
+        if (authoritative.generation === 22) staleReadsLeft = 6;
+      },
+    };
+    const store = laggingWranglerStore(kv, {
+      readAfterWriteMs: 90_000,
+      readAfterWritePollMs: 1,
+      sleep: async () => {},
+    });
+    const ledger = createFileLedger(join(dir, "ledger.json"));
+
+    const claimed = await claimGeneration({
+      store, ledger, holder: HOLDER, fingerprint: FINGERPRINT, watermarks: WATERMARKS,
+      now: reclaimAt, leaseMs: LEASE_MS,
+    });
+    assert.equal(claimed.claimed, true);
+    assert.equal(claimed.result, "reclaimed");
+    assert.equal(claimed.generation, 22);
+    assert.equal(authoritative.generation, 22);
+
+    // Recover step opens a fresh get stream: PoPs still serve gen 21 even though
+    // this run's claim already read gen 22 back (Deploy worker 36872149742 gap).
+    staleReadsLeft = 6;
+
+    const identity = { generation: 22, holder: HOLDER, fingerprint: FINGERPRINT };
+    const commit = await checkGenerationCommit({
+      store, ledger, ...identity, now: reclaimAt + 26_700,
+      staleReadWaitMs: 90_000, staleReadPollMs: 1, sleep: async () => {},
+    });
+    assert.equal(commit.committable, true, "commit-check must not lost_race on a stale gen-21 get");
+    assert.equal(commit.fenced, false);
+    assert.equal(commit.state.generation, 22);
+    assert.equal(commit.state.status, "accepted");
+    assert.equal(authoritative.status, "accepted");
+
+    // Abandon after a failed publish: force more stale gen-21 reads, then clear.
+    staleReadsLeft = 4;
+    const abandoned = await abandonGeneration({
+      store, ledger, ...identity, now: reclaimAt + 40_000,
+      staleReadWaitMs: 90_000, staleReadPollMs: 1, sleep: async () => {},
+    });
+    assert.equal(abandoned.abandoned, true, "abandon must poll through stale gen-21 reads");
+    assert.equal(abandoned.fenced, false);
+    assert.equal(authoritative.status, "abandoned");
+    assert.equal(authoritative.generation, 22);
+  });
+});
+
+test("a stale prior-generation read without a confirming ledger still fences", async () => {
+  const prior = fenceState({ generation: 21, holder: "Deploy worker:old:1", lease_until: "2026-10-01T12:11:11.432Z" });
+  const store = createMemoryStateStore(prior);
+  const commit = await checkGenerationCommit({
+    store, generation: 22, holder: HOLDER, fingerprint: FINGERPRINT, now: Date.parse("2026-10-01T13:56:05.589Z"),
+  });
+  assert.equal(commit.fenced, true);
+  assert.equal(commit.outcome.reason, "generation_not_held");
+  assert.equal(commit.outcome.current_generation, 21);
 });
