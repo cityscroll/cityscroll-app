@@ -530,6 +530,12 @@ test("the workflow records exactly one D1 publication receipt per run, covering 
   assert.match(stepText, /outcome=abandoned/);
   assert.match(stepText, /node tools\/d1_publication_receipt\.mjs record/);
   assert.match(stepText, /\.artifacts\/d1-publication-receipts\.jsonl/);
+  // Positive snapshot_save observation: plan when Record published wrote one,
+  // not_attempted when that step never ran, failed keeps sizes (+ platform code).
+  assert.match(stepText, /--snapshot-kv-plan \.artifacts\/d1-snapshot-kv-plan\.json/);
+  assert.match(stepText, /--record-published-outcome/);
+  assert.match(stepText, /--snapshot-save-outcome not_attempted/);
+  assert.match(stepText, /d1-snapshot-kv-save-error\.json/);
 
   assert.match(workflow, /\.artifacts\/d1-publication-receipts\.jsonl/);
   assert.ok(

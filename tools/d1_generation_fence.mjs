@@ -36,17 +36,15 @@
  * holder always wins, and `abandoned` is terminal.
  */
 
-import { execFile } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
-import { promisify } from "node:util";
 
 import { SNAPSHOT_SCHEMA, watermarksFromSnapshot } from "./d1_delta_plan.mjs";
 import { D1_GENERATION_FENCE_SCHEMA, D1_PUBLICATION_STATE_SCHEMA } from "./d1_deploy_fingerprint.mjs";
+import { createWranglerInvoker } from "./lib/wrangler_exec.mjs";
 
 export { D1_GENERATION_FENCE_SCHEMA };
 
-const execFileAsync = promisify(execFile);
 export const D1_GENERATION_FENCE_KEY = "d1-publication:state:v1";
 export const D1_GENERATION_FENCE_AUDIT_KEY_PREFIX = "d1-publication:audit:v1:";
 export const D1_GENERATION_FENCE_AUDIT_SCHEMA = "cityscroll.d1-publication-generation-fence-audit.v1";
@@ -549,7 +547,7 @@ export function createWranglerKvStore({
   readAfterWritePollMs = 3_000,
   sleep = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); }),
 } = {}) {
-  const invoke = run || (async (args) => execFileAsync("npx", [`wrangler@${wranglerVersion}`, ...args], { encoding: "utf8" }));
+  const invoke = run || createWranglerInvoker({ wranglerVersion });
   const common = ["kv", "key", "--binding", binding, ...(remote ? ["--remote"] : []), "--config", config];
   const read = async () => {
     try {

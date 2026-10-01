@@ -509,11 +509,33 @@ jobs:
           elif [ -f .artifacts/d1-missing-snapshot-recovery/reconcile-report.json ]; then
             publication_flags+=(--reconcile-report .artifacts/d1-missing-snapshot-recovery/reconcile-report.json)
           fi
+          # Positive snapshot_save observation: sourced from the pack plan when
+          # Record published wrote one; not_attempted when that step never ran;
+          # failed keeps measured packed_bytes vs kv_limit_bytes (and platform
+          # code when a save-error artifact recorded one).
+          snapshot_save_flags=()
+          if [ -f .artifacts/d1-snapshot-kv-plan.json ]; then
+            snapshot_save_flags+=(--snapshot-kv-plan .artifacts/d1-snapshot-kv-plan.json)
+            snapshot_save_flags+=(--record-published-outcome "${RECORD_OUTCOME}")
+          else
+            snapshot_save_flags+=(--snapshot-save-outcome not_attempted)
+          fi
+          if [ -f .artifacts/d1-snapshot-kv-save-error.json ]; then
+            save_platform=$(node -p "const e=require('./.artifacts/d1-snapshot-kv-save-error.json'); e.platform_code ?? ''")
+            save_reason=$(node -p "const e=require('./.artifacts/d1-snapshot-kv-save-error.json'); e.reason ?? ''")
+            if [ -n "$save_platform" ]; then
+              snapshot_save_flags+=(--snapshot-save-platform-code "$save_platform")
+            fi
+            if [ -n "$save_reason" ]; then
+              snapshot_save_flags+=(--snapshot-save-reason "$save_reason")
+            fi
+          fi
           node tools/d1_publication_receipt.mjs record \
             --workflow "$D1_RUN_WORKFLOW" --run-id "$D1_RUN_ID" --attempt "$D1_RUN_ATTEMPT" \
             --deploy-fingerprint "$D1_FINGERPRINT" \
             --outcome "$outcome" --reason "$reason" \
             "${generation_flag[@]}" "${snapshot_flag[@]}" "${publication_flags[@]}" \
+            "${snapshot_save_flags[@]}" \
             --local .artifacts/d1-publication-receipts.jsonl \
             --binding ALERT_STATE --remote true --config worker/wrangler.toml \
             --out .artifacts/d1-publication-receipt-final.json

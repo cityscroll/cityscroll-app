@@ -55,11 +55,9 @@
  *   node tools/d1_bounded_publisher.mjs rollback --checkpoint <path> --reason "<text>"
  */
 
-import { execFile } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
-import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
 
 import { deleteOrder, deleteStatement, insertStatement, readSourceDocument, upsertStatements } from "./build_worker_d1_read_models.mjs";
@@ -67,8 +65,7 @@ import { PLAN_SCHEMA } from "./d1_delta_plan.mjs";
 import { checkGenerationCommit, createWranglerKvStore, fileStore, renewGeneration } from "./d1_generation_fence.mjs";
 import { loadManifest, modelEntry } from "./d1_manifest.mjs";
 import { VIRTUAL_TABLES, tableRows } from "./d1_stable_keys.mjs";
-
-const execFileAsync = promisify(execFile);
+import { createWranglerInvoker } from "./lib/wrangler_exec.mjs";
 
 export const D1_BOUNDED_PUBLISH_PLAN_SCHEMA = "cityscroll.d1-bounded-publish-plan.v1";
 export const D1_BOUNDED_PUBLISH_DRYRUN_SCHEMA = "cityscroll.d1-bounded-publish-dry-run.v1";
@@ -483,7 +480,7 @@ export function createWranglerD1Executor({
   run = null,
 } = {}) {
   if (!database) fail("createWranglerD1Executor requires a database name");
-  const invoke = run || (async (args) => execFileAsync("npx", [`wrangler@${wranglerVersion}`, ...args], { encoding: "utf8" }));
+  const invoke = run || createWranglerInvoker({ wranglerVersion });
   return {
     async execute(sql) {
       const dir = mkdtempSync(join(tmpdir(), "d1-bounded-batch-"));
