@@ -198,3 +198,13 @@ test("the refresh workflow publishes through the tested script and keeps its lea
   assert.match(workflow, /cron: "40 6 \* \* \*"/);
   assert.match(workflow, /node tools\/first_class_refresh\.mjs "\$mode"/);
 });
+
+test("the refresh workflow commits an append-only run history and carries unmerged tips", () => {
+  assert.match(workflow, /site\/data\/first_class_refresh_run_history\.json/);
+  assert.match(workflow, /Capture any unmerged refresh run history/);
+  assert.match(workflow, /--pending-receipt/);
+  assert.match(workflow, /data\/first-class-refresh-\*/);
+  assert.match(workflow, /FIRST_CLASS_REFRESH_STARTED_AT/);
+  const script = readFileSync(scriptPath, "utf8");
+  assert.match(script, /first_class_refresh_run_history\.json/);
+});

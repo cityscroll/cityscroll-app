@@ -71,6 +71,34 @@ jobs:
           command -v pdftotext >/dev/null
           pdftotext -v
 
+      # Record the job start so the retained run history can name started_at
+      # separately from the finish instant written with the receipt.
+      - name: Record refresh start time
+        run: echo "FIRST_CLASS_REFRESH_STARTED_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
+
+      # A still-open dated refresh branch must enter prior_runs before this run
+      # force-updates that branch; otherwise a later dispatch drops it. Reading
+      # those tips is the whole point; this step does not push or amend them.
+      - name: Capture any unmerged refresh run history
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/first-class-refresh
+          idx=0
+          while IFS=$'\t' read -r _sha ref; do
+            [ -n "${ref:-}" ] || continue
+            branch="${ref#refs/heads/}"
+            case "$branch" in
+              data/first-class-refresh-*) ;;
+              *) continue ;;
+            esac
+            git fetch --depth=1 origin "$branch"
+            if git cat-file -e "FETCH_HEAD:site/data/first_class_refresh_run_history.json" 2>/dev/null; then
+              git show "FETCH_HEAD:site/data/first_class_refresh_run_history.json" \
+                > ".artifacts/first-class-refresh/pending-receipt-${idx}.json"
+              idx=$((idx + 1))
+            fi
+          done < <(git ls-remote --heads origin 'data/first-class-refresh-*' || true)
+
       - name: Run the declared acquisition and builder for every due dataset
         env:
           LEGISTAR_API_TOKEN: ${{ secrets.LEGISTAR_API_TOKEN }}
@@ -121,8 +149,20 @@ jobs:
       # the rebuild steps that feed it succeed, and is it publishing — the
       # health of a dataset that never ran and one that ran and could not
       # publish otherwise look identical from either receipt alone.
+      # Writes site/data/first_class_refresh_run_history.json (committed inside
+      # the refresh pull request) and mirrors it under .artifacts/ for the
+      # summary and upload-artifact steps. prior_runs is append-only: any
+      # unmerged dated-branch tip captured above is merged in, and a publish
+      # that would drop a retained run fails here instead.
       - name: Write the combined first-class refresh run receipt
-        run: node tools/first_class_refresh_run_receipt.mjs
+        run: |
+          set -euo pipefail
+          pending_args=()
+          for pending in .artifacts/first-class-refresh/pending-receipt-*.json; do
+            [ -f "$pending" ] || continue
+            pending_args+=(--pending-receipt "$pending")
+          done
+          node tools/first_class_refresh_run_receipt.mjs "${pending_args[@]}"
 
       - name: Retain the refresh receipts
         if: always()
@@ -133,6 +173,7 @@ jobs:
             .artifacts/first-class-refresh-receipt.json
             .artifacts/first-class-rebuild-receipt.json
             .artifacts/first-class-refresh-run-receipt.json
+            site/data/first_class_refresh_run_history.json
             site/data/first_class_freshness_report.json
           if-no-files-found: warn
 
@@ -180,6 +221,15 @@ jobs:
             console.log("\n### Rebuild did not run to completion; no rebuild receipt was written\n");
           }
           if (run) {
+            if (run.run) {
+              console.log(`\n### Retained run\n`);
+              console.log(`- run_id: \`${run.run.run_id}\``);
+              console.log(`- trigger: \`${run.run.trigger}\``);
+              console.log(`- started_at: ${run.run.started_at}`);
+              console.log(`- finished_at: ${run.run.finished_at}`);
+              console.log(`- prior_runs retained: ${(run.prior_runs || []).length}`);
+              console.log(`- history path: \`site/data/first_class_refresh_run_history.json\``);
+            }
             const due = run.datasets.filter((d) => d.due);
             console.log(`\n### Due datasets (${run.due_count} of ${run.total} declared, ${run.published_count} publishing)\n`);
             if (due.length) {

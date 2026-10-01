@@ -2,8 +2,8 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/first-class-refresh-contracts",
   "status": "implemented",
-  "fingerprint": "first-class-refresh-contracts.v1",
-  "updated_at": "2026-09-04T00:00:00.000Z",
+  "fingerprint": "first-class-refresh-contracts.v2-retained-run-history",
+  "updated_at": "2026-09-30T00:00:00.000Z",
   "projections": [
     {
       "id": "source-contract-refresh-inventory",
@@ -32,6 +32,14 @@
     {
       "id": "refresh-contract-regressions",
       "path": "test/first_class_refresh.test.mjs"
+    },
+    {
+      "id": "scheduled-refresh-run-receipt-writer",
+      "path": "tools/first_class_refresh_run_receipt.mjs"
+    },
+    {
+      "id": "scheduled-refresh-run-receipt-regressions",
+      "path": "test/first_class_refresh_run_receipt.test.mjs"
     }
   ]
 }
