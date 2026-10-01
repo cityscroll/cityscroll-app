@@ -243,6 +243,113 @@ export function applyProbeSlot(aggregate, slot) {
 }
 
 /**
+ * Parse an unmerged automation-branch aggregate (the open refresh-PR tip).
+ * @param {string} text
+ * @returns {object}
+ */
+export function loadPendingSyntheticAggregate(text) {
+  const document = JSON.parse(text);
+  const read = readSyntheticAggregate(document);
+  if (!read.ok) {
+    throw new Error(
+      `pending synthetic aggregate invalid: ${read.reason} missing_field=${read.missing_field}`,
+    );
+  }
+  return read.document;
+}
+
+/**
+ * Fold a still-open automation-branch aggregate under the committed tip so an
+ * overlapping run does not rebuild from main alone and drop the unmerged slot.
+ * Prefer the pending tip when it retains a first-probe delivery the committed
+ * tip lacks; otherwise keep the committed tip (pending absent or empty).
+ *
+ * @param {object | null | undefined} committed
+ * @param {object | null | undefined} pending
+ * @returns {object}
+ */
+export function foldPendingSyntheticAggregate(committed, pending) {
+  const base = committed && typeof committed === "object"
+    ? structuredClone(committed)
+    : emptySyntheticAggregate();
+  if (!pending || typeof pending !== "object") return base;
+
+  const pendingRead = readSyntheticAggregate(pending);
+  if (!pendingRead.ok) {
+    throw new Error(
+      `pending synthetic aggregate invalid: ${pendingRead.reason} missing_field=${pendingRead.missing_field}`,
+    );
+  }
+  const pendingDoc = pendingRead.document;
+  const pendingSlot = pendingDoc.delivery?.slot_id;
+  const baseSlot = base.delivery?.slot_id;
+
+  // Open-branch tip already carries the unmerged retaining slot: use it whole.
+  if (pendingSlot && pendingSlot !== baseSlot) {
+    return structuredClone(pendingDoc);
+  }
+  if (pendingDoc.delivery?.at && !base.delivery?.at) {
+    return structuredClone(pendingDoc);
+  }
+
+  // Same first-slot identity (or neither retaining): keep committed cells, but
+  // never let pending cell counts fall below what the open branch already held.
+  const byKey = new Map(
+    (base.cells || []).map((cell) => [cellKey(cell.metric_id, cell.device_class), cell]),
+  );
+  for (const incoming of pendingDoc.cells || []) {
+    const key = cellKey(incoming.metric_id, incoming.device_class);
+    const current = byKey.get(key);
+    if (!current || Number(incoming.sampled_count) > Number(current.sampled_count)) {
+      byKey.set(key, structuredClone(incoming));
+    }
+  }
+  base.cells = SYNTHETIC_REQUIRED_METRICS.flatMap((metric_id) =>
+    SYNTHETIC_REQUIRED_VIEWPORTS.map((device_class) => {
+      const key = cellKey(metric_id, device_class);
+      return byKey.get(key) || emptySyntheticCell({ metric_id, device_class, surface_id: base.surface_id });
+    }),
+  );
+  return base;
+}
+
+/**
+ * Retained first-probe slots present on the pending tip but absent from proposed.
+ * @param {object | null | undefined} pending
+ * @param {object | null | undefined} proposed
+ * @returns {{ slot_id: string, at: string | null, trigger: string | null }[]}
+ */
+export function retainedSlotsDropped(pending, proposed) {
+  const pendingSlot = pending?.delivery?.slot_id;
+  if (!pendingSlot) return [];
+  const proposedSlot = proposed?.delivery?.slot_id;
+  if (proposedSlot === pendingSlot) return [];
+  return [
+    {
+      slot_id: pendingSlot,
+      at: pending?.delivery?.at ?? null,
+      trigger: pending?.delivery?.trigger ?? null,
+    },
+  ];
+}
+
+/**
+ * Positive control: a publish that would drop a still-open automation-branch
+ * first-probe slot fails instead of force-updating the quieter tip.
+ * @param {object | null | undefined} pending
+ * @param {object | null | undefined} proposed
+ */
+export function assertSyntheticAggregateRetainsPending(pending, proposed) {
+  if (!pending) return;
+  const dropped = retainedSlotsDropped(pending, proposed);
+  if (!dropped.length) return;
+  const names = dropped
+    .map((entry) => `${entry.slot_id} (${entry.trigger || "unknown"}, ${entry.at || "no-time"})`)
+    .join("; ");
+  throw new Error(`synthetic field-vitals aggregate would drop retained slot(s): ${names}`);
+}
+
+/**
  * Refuse an aggregate missing required per-cell fields; name the missing field.
  * @param {unknown} document
  * @returns {{ ok: true, document: object } | { ok: false, reason: string, missing_field: string | null, state: 'absent' | 'unread' | 'invalid' }}

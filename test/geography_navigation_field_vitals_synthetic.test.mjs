@@ -8,10 +8,14 @@ import test from "node:test";
 import {
   applyProbeSlot,
   assertResidentNearYouHonesty,
+  assertSyntheticAggregateRetainsPending,
   classifySyntheticCell,
   emptySyntheticAggregate,
   findForbiddenCrossGroupKeys,
+  foldPendingSyntheticAggregate,
+  loadPendingSyntheticAggregate,
   readSyntheticAggregate,
+  retainedSlotsDropped,
   slotRetainedObservation,
   syntheticGroupDelivery,
 } from "../tools/lib/geography_navigation_field_vitals_synthetic.mjs";
@@ -75,6 +79,8 @@ test("the scheduled workflow references the probe and the --from-slot build step
   assert.ok(workflow.includes(PROBE_COMMAND), "workflow must invoke the Near You synthetic probe");
   assert.ok(workflow.includes(BUILD_COMMAND), "workflow must invoke the synthetic aggregate builder");
   assert.match(workflow, /--from-slot/, "workflow must apply slots through the existing builder");
+  assert.match(workflow, /--pending-aggregate/, "workflow must fold any still-open automation-branch aggregate");
+  assert.match(workflow, /pending-aggregate\.json/, "workflow must capture the unmerged aggregate tip");
   assert.match(workflow, /GITHUB_EVENT_NAME/, "trigger must be captured at run time");
   assert.match(workflow, /slot\.trigger/, "captured trigger must be written onto the slot");
   assert.match(workflow, /peter-evans\/create-pull-request/);
@@ -200,4 +206,67 @@ test("retained synthetic aggregate validates; delivery nulls are explicit", () =
 test("resident near-you honesty survives (acceptance 7)", () => {
   const resident = JSON.parse(readFileSync(RESIDENT_PATH, "utf8"));
   assert.equal(assertResidentNearYouHonesty(resident), true);
+});
+
+test("overlapping runs fold the open automation-branch aggregate and refuse a silent slot drop", () => {
+  const retainingCells = [
+    { metric_id: "lcp_ms", device_class: "desktop", sampled_count: 2 },
+    { metric_id: "lcp_ms", device_class: "mobile", sampled_count: 2 },
+    { metric_id: "inp_ms", device_class: "desktop", sampled_count: 2 },
+    { metric_id: "inp_ms", device_class: "mobile", sampled_count: 2 },
+    { metric_id: "cls_score", device_class: "desktop", sampled_count: 2 },
+    { metric_id: "cls_score", device_class: "mobile", sampled_count: 2 },
+  ];
+  const firstSlot = {
+    run_key: "github-actions:111:1",
+    observed_at: "2026-10-01T02:17:00.000Z",
+    trigger: "schedule",
+    observations_emitted: 6,
+    retained_observation_count: 6,
+    cells: retainingCells,
+  };
+  const secondSlot = {
+    run_key: "github-actions:222:1",
+    observed_at: "2026-10-01T08:17:00.000Z",
+    trigger: "schedule",
+    observations_emitted: 6,
+    retained_observation_count: 6,
+    cells: retainingCells.map((cell) => ({ ...cell, sampled_count: 3 })),
+  };
+
+  // First scheduled run retains on the automation branch; main is still empty.
+  const pending = applyProbeSlot(emptySyntheticAggregate(), firstSlot);
+  assert.equal(pending.delivery.slot_id, "github-actions:111:1");
+  const pendingText = `${JSON.stringify(pending, null, 2)}\n`;
+  const loaded = loadPendingSyntheticAggregate(pendingText);
+  assert.equal(loaded.delivery.slot_id, "github-actions:111:1");
+
+  // Without folding the pending tip, a later run that rebuilds from main alone
+  // would publish only the second slot — the lost-update this guard closes.
+  const naive = applyProbeSlot(emptySyntheticAggregate(), secondSlot);
+  assert.equal(naive.delivery.slot_id, "github-actions:222:1");
+  assert.deepEqual(
+    retainedSlotsDropped(pending, naive).map((entry) => entry.slot_id),
+    ["github-actions:111:1"],
+  );
+  assert.throws(
+    () => assertSyntheticAggregateRetainsPending(pending, naive),
+    /would drop retained slot\(s\): github-actions:111:1 \(schedule, 2026-10-01T02:17:00\.000Z\)/,
+  );
+
+  // Folding the open-branch aggregate before applying the new slot keeps the
+  // first retaining delivery and lets the later slot update cells.
+  const folded = foldPendingSyntheticAggregate(emptySyntheticAggregate(), pending);
+  assert.equal(folded.delivery.slot_id, "github-actions:111:1");
+  const carried = applyProbeSlot(folded, secondSlot);
+  assertSyntheticAggregateRetainsPending(pending, carried);
+  assert.deepEqual(retainedSlotsDropped(pending, carried), []);
+  assert.equal(carried.delivery.slot_id, "github-actions:111:1");
+  assert.equal(carried.delivery.at, "2026-10-01T02:17:00.000Z");
+  assert.equal(carried.delivery.trigger, "schedule");
+  assert.equal(
+    carried.cells.find((cell) => cell.metric_id === "lcp_ms" && cell.device_class === "desktop")
+      .sampled_count,
+    3,
+  );
 });

@@ -5,6 +5,7 @@
  *   node tools/build_geography_navigation_field_vitals_synthetic.mjs
  *   node tools/build_geography_navigation_field_vitals_synthetic.mjs --check
  *   node tools/build_geography_navigation_field_vitals_synthetic.mjs --from-slot slot.json
+ *   node tools/build_geography_navigation_field_vitals_synthetic.mjs --from-slot slot.json --pending-aggregate pending.json
  */
 
 import { readFileSync, writeFileSync } from "node:fs";
@@ -13,7 +14,10 @@ import { fileURLToPath } from "node:url";
 
 import {
   applyProbeSlot,
+  assertSyntheticAggregateRetainsPending,
   emptySyntheticAggregate,
+  foldPendingSyntheticAggregate,
+  loadPendingSyntheticAggregate,
   readSyntheticAggregate,
 } from "./lib/geography_navigation_field_vitals_synthetic.mjs";
 
@@ -24,12 +28,13 @@ const OUT_PATH = join(
 );
 
 function parseArgs(argv) {
-  const args = { check: false, fromSlot: null, init: false };
+  const args = { check: false, fromSlot: null, pendingAggregate: null, init: false };
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg === "--check") args.check = true;
     else if (arg === "--init") args.init = true;
     else if (arg === "--from-slot") args.fromSlot = argv[++i];
+    else if (arg === "--pending-aggregate") args.pendingAggregate = argv[++i];
     else if (arg === "--help" || arg === "-h") args.help = true;
     else throw new Error(`unknown argument: ${arg}`);
   }
@@ -43,7 +48,9 @@ function loadJson(path) {
 function main() {
   const args = parseArgs(process.argv.slice(2));
   if (args.help) {
-    process.stdout.write(`Usage: node tools/build_geography_navigation_field_vitals_synthetic.mjs [--check] [--init] [--from-slot <path>]\n`);
+    process.stdout.write(
+      "Usage: node tools/build_geography_navigation_field_vitals_synthetic.mjs [--check] [--init] [--from-slot <path>] [--pending-aggregate <path>]\n",
+    );
     return;
   }
 
@@ -65,14 +72,19 @@ function main() {
   }
 
   if (args.fromSlot) {
-    let aggregate;
+    let committed;
     try {
-      aggregate = loadJson(OUT_PATH);
+      committed = loadJson(OUT_PATH);
     } catch {
-      aggregate = emptySyntheticAggregate();
+      committed = emptySyntheticAggregate();
     }
+    const pending = args.pendingAggregate
+      ? loadPendingSyntheticAggregate(readFileSync(args.pendingAggregate, "utf8"))
+      : null;
+    const base = foldPendingSyntheticAggregate(committed, pending);
     const slot = loadJson(args.fromSlot);
-    const next = applyProbeSlot(aggregate, slot);
+    const next = applyProbeSlot(base, slot);
+    assertSyntheticAggregateRetainsPending(pending, next);
     const read = readSyntheticAggregate(next);
     if (!read.ok) {
       throw new Error(`synthetic aggregate invalid after slot: ${read.reason} missing_field=${read.missing_field}`);
@@ -80,6 +92,10 @@ function main() {
     writeFileSync(OUT_PATH, `${JSON.stringify(next, null, 2)}\n`);
     process.stdout.write(`wrote ${OUT_PATH} delivery.at=${next.delivery.at}\n`);
     return;
+  }
+
+  if (args.pendingAggregate) {
+    throw new Error("--pending-aggregate requires --from-slot");
   }
 
   // Default: ensure a valid empty/current aggregate exists.

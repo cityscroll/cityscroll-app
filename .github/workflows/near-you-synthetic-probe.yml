@@ -45,6 +45,20 @@ jobs:
       - name: Install the notice-probe Playwright runtime
         run: tools/setup_notice_probe_runtime.sh
 
+      - name: Capture any still-open automation-branch aggregate
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/near-you-synthetic-probe
+          # Overlapping runs check out main; create-pull-request force-updates
+          # automation/near-you-synthetic-probe. Carry the unmerged tip forward
+          # so a later slot cannot silent-drop a retaining delivery still open
+          # on the automation branch (same lost-update class as connected-history).
+          if git ls-remote --exit-code --heads origin automation/near-you-synthetic-probe >/dev/null 2>&1; then
+            git fetch --depth=1 origin automation/near-you-synthetic-probe
+            git show FETCH_HEAD:docs/evidence/geography-navigation-release/field-vitals-synthetic-aggregate.json \
+              > .artifacts/near-you-synthetic-probe/pending-aggregate.json
+          fi
+
       - name: Run the Near You synthetic probe
         id: probe
         env:
@@ -73,8 +87,13 @@ jobs:
       - name: Apply the probe slot to the retained synthetic aggregate
         run: |
           set -euo pipefail
+          pending_args=()
+          if [ -f .artifacts/near-you-synthetic-probe/pending-aggregate.json ]; then
+            pending_args+=(--pending-aggregate .artifacts/near-you-synthetic-probe/pending-aggregate.json)
+          fi
           node tools/build_geography_navigation_field_vitals_synthetic.mjs \
-            --from-slot .artifacts/near-you-synthetic-probe/slot.json
+            --from-slot .artifacts/near-you-synthetic-probe/slot.json \
+            "${pending_args[@]}"
           node tools/build_geography_navigation_field_vitals_synthetic.mjs --check
 
       - name: Keep the probe slot with the run
@@ -83,6 +102,14 @@ jobs:
         with:
           name: near-you-synthetic-probe-slot
           path: .artifacts/near-you-synthetic-probe/slot.json
+          retention-days: 90
+
+      - name: Keep the pending aggregate with the run
+        if: ${{ !cancelled() && hashFiles('.artifacts/near-you-synthetic-probe/pending-aggregate.json') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: near-you-synthetic-pending-aggregate
+          path: .artifacts/near-you-synthetic-probe/pending-aggregate.json
           retention-days: 90
 
       - name: Guard generated changes
