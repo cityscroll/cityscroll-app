@@ -172,8 +172,14 @@ export function validateWorkflowWiring(workflow) {
   if (!/d1-prior-snapshot\.outputs\.status == 'missing'/.test(recoveryPath)) {
     fail("workflow missing-snapshot recovery is not gated on a missing prior snapshot");
   }
-  if (!/kv key put "\$snapshot_key"[\s\S]*d1_generation_fence\.mjs complete/.test(workflow)) {
-    fail("workflow must write the generation-qualified snapshot before completing the fence");
+  if (!/d1_publication_snapshot_kv\.mjs pack[\s\S]*kv key put "\$put_key"[\s\S]*d1_generation_fence\.mjs complete/.test(workflow)) {
+    fail("workflow must pack and write the generation-qualified snapshot before completing the fence");
+  }
+  if (!/d1_publication_snapshot_kv\.mjs assert-fits/.test(workflow)) {
+    fail("workflow must hard-check packed snapshot size before each KV put");
+  }
+  if (!/d1_publication_snapshot_kv\.mjs unpack/.test(workflow)) {
+    fail("workflow must unpack packed prior snapshots before planning a delta");
   }
   if (!workflow.includes("disable_incremental_publication")) fail("workflow is missing the rollback feature-flag input");
   return { paths, order };
