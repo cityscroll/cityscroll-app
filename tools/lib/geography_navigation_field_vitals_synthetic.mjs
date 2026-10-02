@@ -5,6 +5,8 @@
  * There is no combined / overall / total key across the two groups.
  */
 
+import { createHash } from "node:crypto";
+
 export const GEOGRAPHY_NAVIGATION_FIELD_VITALS_SYNTHETIC_SCHEMA =
   "cityscroll.geography_navigation_field_vitals_synthetic_aggregate.v1";
 
@@ -233,6 +235,9 @@ export function deriveSlotOutcome(slot) {
 
 /**
  * Build the append-only ledger entry for one applied probe slot.
+ * Native (live) applies omit provenance; back-filled applies attach it via
+ * {@link withSlotProvenance} / {@link applyProbeSlot} options so the marker's
+ * presence is the distinction.
  * @param {object} slot
  */
 export function buildSlotLedgerEntry(slot) {
@@ -260,6 +265,169 @@ export function buildSlotLedgerEntry(slot) {
     probe_status: slot?.status || null,
     outcome,
   };
+}
+
+/** @param {string | Uint8Array | Buffer} bytesOrString */
+export function sha256Digest(bytesOrString) {
+  return `sha256:${createHash("sha256").update(bytesOrString).digest("hex")}`;
+}
+
+/**
+ * Stable JSON for digests: sorted object keys, arrays keep order, no whitespace.
+ * @param {unknown} value
+ */
+export function canonicalizeForDigest(value) {
+  if (value === null || typeof value !== "object") return JSON.stringify(value);
+  if (Array.isArray(value)) {
+    return `[${value.map((item) => canonicalizeForDigest(item)).join(",")}]`;
+  }
+  const keys = Object.keys(value).sort();
+  return `{${keys.map((key) => `${JSON.stringify(key)}:${canonicalizeForDigest(value[key])}`).join(",")}}`;
+}
+
+/** Strip provenance so native and back-filled entries share one core shape. */
+export function slotValuesWithoutProvenance(entry) {
+  if (!entry || typeof entry !== "object") return entry;
+  const { provenance: _drop, ...rest } = entry;
+  return rest;
+}
+
+/** Digest of the ledger values taken from an artifact (never of the entry-with-provenance). */
+export function digestSlotLedgerValues(entry) {
+  return sha256Digest(canonicalizeForDigest(slotValuesWithoutProvenance(entry)));
+}
+
+export function digestArtifactBytes(bytes) {
+  return sha256Digest(bytes);
+}
+
+/**
+ * Provenance for a slot written from a workflow artifact rather than a live apply.
+ * Native slots omit this object; presence of `writing: "back_filled"` is the marker.
+ *
+ * When the artifact has already expired, set `verifiable: false` and name why —
+ * never invent a digest from the entry itself (a self-digest proves nothing).
+ *
+ * @param {object} args
+ */
+export function buildBackFilledSlotProvenance({
+  artifactId = null,
+  artifactName = null,
+  runId,
+  runAttempt = null,
+  repository = "cityscroll/cityscroll-app",
+  memberPath = "slot.json",
+  artifactSha256 = null,
+  valuesSha256 = null,
+  retrievedAt = null,
+  expiresAt = null,
+  verifiable = true,
+  unverifiableReason = null,
+} = {}) {
+  const artifact = {
+    kind: "github_actions_workflow_artifact",
+    repository,
+    run_id: runId != null ? String(runId) : null,
+    run_attempt: runAttempt != null ? String(runAttempt) : null,
+    artifact_id: artifactId != null ? String(artifactId) : null,
+    artifact_name: artifactName,
+    member_path: memberPath,
+    expires_at: expiresAt,
+  };
+
+  if (!verifiable) {
+    return {
+      writing: "back_filled",
+      verifiable: false,
+      unverifiable_reason: unverifiableReason || "workflow_artifact_expired",
+      artifact,
+      retrieved_at: retrievedAt,
+      artifact_sha256: null,
+      values_sha256: null,
+    };
+  }
+
+  if (!artifactSha256 || !valuesSha256) {
+    throw new Error("verifiable back-fill provenance requires artifact_sha256 and values_sha256");
+  }
+  if (!artifactId || !artifactName || runId == null) {
+    throw new Error("verifiable back-fill provenance requires artifact id, name, and run id");
+  }
+
+  const normalize = (digest) =>
+    String(digest).startsWith("sha256:") ? String(digest) : `sha256:${digest}`;
+
+  return {
+    writing: "back_filled",
+    verifiable: true,
+    unverifiable_reason: null,
+    artifact,
+    retrieved_at: retrievedAt,
+    artifact_sha256: normalize(artifactSha256),
+    values_sha256: normalize(valuesSha256),
+  };
+}
+
+/** Attach provenance onto a ledger entry. Native entries never call this. */
+export function withSlotProvenance(entry, provenance) {
+  if (!entry || typeof entry !== "object") {
+    throw new Error("withSlotProvenance requires a ledger entry");
+  }
+  if (!provenance || typeof provenance !== "object" || provenance.writing !== "back_filled") {
+    throw new Error('withSlotProvenance requires provenance.writing === "back_filled"');
+  }
+  return { ...entry, provenance };
+}
+
+/**
+ * Verify a back-filled entry against the artifact member it claims.
+ * Altering a back-filled value without updating the digest fails closed.
+ *
+ * @param {object} entry
+ * @param {string | Uint8Array | Buffer} artifactBytes
+ * @param {object | null} [artifactJson]
+ * @returns {{ ok: true } | { ok: false, reason: string }}
+ */
+export function verifyBackFilledSlotAgainstArtifact(entry, artifactBytes, artifactJson = null) {
+  const provenance = entry?.provenance;
+  if (!provenance || provenance.writing !== "back_filled") {
+    return { ok: false, reason: "not_back_filled" };
+  }
+  if (provenance.verifiable === false) {
+    return { ok: false, reason: "recorded_unverifiable" };
+  }
+  if (!provenance.artifact_sha256 || !provenance.values_sha256) {
+    return { ok: false, reason: "missing_digests" };
+  }
+
+  // Refuse a digest of the full entry (including provenance): that is a self-digest.
+  const fullEntryDigest = sha256Digest(canonicalizeForDigest(entry));
+  if (provenance.values_sha256 === fullEntryDigest) {
+    return { ok: false, reason: "self_digest_of_full_entry" };
+  }
+
+  const artifactDigest = digestArtifactBytes(artifactBytes);
+  if (artifactDigest !== provenance.artifact_sha256) {
+    return { ok: false, reason: "artifact_digest_mismatch" };
+  }
+
+  const text =
+    typeof artifactBytes === "string"
+      ? artifactBytes
+      : Buffer.from(artifactBytes).toString("utf8");
+  const parsed = artifactJson ?? JSON.parse(text);
+  const expectedEntry = buildSlotLedgerEntry(parsed);
+  const expectedValuesDigest = digestSlotLedgerValues(expectedEntry);
+  if (expectedValuesDigest !== provenance.values_sha256) {
+    return { ok: false, reason: "values_digest_mismatch" };
+  }
+
+  const actual = slotValuesWithoutProvenance(entry);
+  if (canonicalizeForDigest(actual) !== canonicalizeForDigest(expectedEntry)) {
+    return { ok: false, reason: "entry_values_mutated" };
+  }
+
+  return { ok: true };
 }
 
 /**
@@ -327,17 +495,24 @@ export function slotRetainedObservation(slot) {
  * A slot that retains nothing does not advance or set the delivery anchor.
  * The first slot that retains an observation sets the first_probe_slot delivery once.
  *
+ * Pass `options.provenance` only for a back-filled apply so the ledger marks the
+ * entry; native workflow applies omit it and stay marker-free.
+ *
  * @param {object} aggregate
  * @param {object} slot
+ * @param {{ provenance?: object }} [options]
  * @returns {object}
  */
-export function applyProbeSlot(aggregate, slot) {
+export function applyProbeSlot(aggregate, slot, options = {}) {
   if (!aggregate || aggregate.schema !== GEOGRAPHY_NAVIGATION_FIELD_VITALS_SYNTHETIC_SCHEMA) {
     throw new Error("applyProbeSlot requires a synthetic field-vitals aggregate");
   }
   const next = normalizeSyntheticAggregate(aggregate);
   const retained = slotRetainedObservation(slot);
-  const entry = buildSlotLedgerEntry(slot);
+  let entry = buildSlotLedgerEntry(slot);
+  if (options?.provenance) {
+    entry = withSlotProvenance(entry, options.provenance);
+  }
 
   const existingIndex = next.slots.findIndex((row) => row?.slot_id === entry.slot_id);
   if (existingIndex >= 0) next.slots[existingIndex] = entry;
