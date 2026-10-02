@@ -137,6 +137,71 @@ test("A2: ready, zero, unknown geography, and transient failure remain distinct 
 });
 
 
+/**
+ * Return whether a CSP header's connect-src directive permits posting to url.
+ * Mirrors the browser rule the synthetic probe hits: missing api host → zero
+ * beacons even when the collector boots and flushes.
+ */
+function connectSrcAllows(csp, url) {
+  const directive = String(csp || "")
+    .split(";")
+    .map((part) => part.trim())
+    .find((part) => part.startsWith("connect-src "));
+  if (!directive) return false;
+  const tokens = directive.slice("connect-src ".length).split(/\s+/).filter(Boolean);
+  if (tokens.includes("*")) return true;
+  let parsed;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return false;
+  }
+  const origin = parsed.origin;
+  return tokens.some((token) => {
+    if (token === "'self'") return origin === "https://cityscroll.org";
+    // Host-sources may be bare (*.example.com) or scheme-prefixed
+    // (https://*.example.com); browsers match the hostname against the suffix.
+    const wild = token.match(/^(?:https?:\/\/)?(\*\.[^/]+)$/i);
+    if (wild) {
+      const suffix = wild[1].slice(1); // .example.com
+      const host = wild[1].slice(2); // example.com
+      return parsed.hostname === host || parsed.hostname.endsWith(suffix);
+    }
+    try {
+      return new URL(token).origin === origin;
+    } catch {
+      return token === origin || token === parsed.host;
+    }
+  });
+}
+
+test("Near You CSP connect-src allows first-party RUM and analytics delivery", async () => {
+  // Behavioral contract: the page posts RUM batches to api.cityscroll.org.
+  // A connect-src list that names only the document host and basemap tiles
+  // blocks those POSTs in the browser, so a probe that reached /near-you and
+  // flushed still records marked_beacons=0 / reached_but_no_beacons.
+  const response = await handleNearYou(new Request("https://cityscroll.org/near-you"));
+  assert.equal(response.status, 200);
+  const csp = response.headers.get("content-security-policy") || "";
+  assert.equal(
+    connectSrcAllows(csp, "https://api.cityscroll.org/performance-events?traffic_class=synthetic"),
+    true,
+    "connect-src must allow RUM delivery to api.cityscroll.org",
+  );
+  assert.equal(
+    connectSrcAllows(csp, "https://api.cityscroll.org/events"),
+    true,
+    "connect-src must allow analytics delivery to api.cityscroll.org",
+  );
+  // Basemap tiles stay allowed; omitting cartocdn is a separate map concern.
+  assert.equal(
+    connectSrcAllows(csp, "https://a.basemaps.cartocdn.com/light_all/1/0/0.png"),
+    true,
+  );
+  // An unrelated API host must stay blocked so the allowlist stays tight.
+  assert.equal(connectSrcAllows(csp, "https://example.com/performance-events"), false);
+});
+
 test("the edge renderer returns an inspectable scoped HTML document and public cache policy", async () => {
   const response = await handleNearYou(new Request(
     "https://cityscroll.org/near-you?v=0&lens=meetings&boro=Queens&agency=Transportation",
