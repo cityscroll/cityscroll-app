@@ -118,5 +118,6 @@
     }
   ],
   "resident_observation_path": "docs/evidence/geography-navigation-release/field-vitals-observation.json",
-  "note": "Synthetic geography-navigation field-vitals aggregate. Resident values live in the sibling field-vitals-observation.json and are never pooled into this file."
+  "note": "Synthetic geography-navigation field-vitals aggregate. Resident values live in the sibling field-vitals-observation.json and are never pooled into this file.",
+  "updated_at": "2026-10-01T23:54:23Z"
 }
