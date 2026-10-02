@@ -36,6 +36,12 @@ PLAN_SCHEMA = "cityscroll.near_you_synthetic_probe_plan.v1"
 RUNTIME_SCHEMA = "cityscroll.near_you_synthetic_probe_runtime_check.v1"
 PAGES_SCHEMA = "cityscroll.near_you_synthetic_probe_pages.v1"
 
+# Vital×viewport cells the synthetic aggregate accumulates. Other retained
+# observations (FCP, TTFB, semantic milestones, unknown device class, …) stay
+# counted as unattributed so "retained N" cannot silently imply floor progress.
+ATTRIBUTABLE_METRICS = frozenset({"lcp_ms", "inp_ms", "cls_score"})
+ATTRIBUTABLE_VIEWPORTS = frozenset({"desktop", "mobile"})
+
 RUNTIME_DIR = ROOT / "ops" / "notice-probe"
 RUNTIME_PYTHON = RUNTIME_DIR / ".venv" / "bin" / "python3"
 DEFAULT_BROWSERS_PATH = RUNTIME_DIR / "browsers"
@@ -151,15 +157,86 @@ def emulate_network(page: Any, profile: dict[str, Any]) -> None:
     })
 
 
-def count_observations(body: str | None) -> int:
+def parse_observation_batch(body: str | None) -> list[dict[str, Any]]:
+    """Return observation dicts from a performance-events POST body."""
     if not body:
-        return 0
+        return []
     try:
         batch = json.loads(body)
     except ValueError:
-        return 0
+        return []
     observations = batch.get("observations") if isinstance(batch, dict) else None
-    return len(observations) if isinstance(observations, list) else 0
+    if not isinstance(observations, list):
+        return []
+    return [row for row in observations if isinstance(row, dict)]
+
+
+def count_observations(body: str | None) -> int:
+    return len(parse_observation_batch(body))
+
+
+def compact_observation(row: dict[str, Any], *, fallback_device_class: str | None = None) -> dict[str, Any]:
+    """Keep the fields needed to attribute a vital×viewport cell."""
+    device_class = row.get("device_class") or fallback_device_class
+    return {
+        "metric_id": row.get("metric_id"),
+        "device_class": device_class,
+        "value": row.get("value"),
+        "unit": row.get("unit"),
+        "surface_id": row.get("surface_id"),
+        "traffic_class": row.get("traffic_class"),
+    }
+
+
+def project_cells_from_observations(
+    observations: list[dict[str, Any]],
+    *,
+    surface_id: str = "near-you",
+) -> tuple[list[dict[str, Any]], int, int]:
+    """Project retained observations into the six aggregate cells.
+
+    Returns (cells, attributed_count, unattributed_count). Each attributable
+    observation (lcp_ms/inp_ms/cls_score × desktop/mobile with a finite value)
+    lands in exactly one cell; everything else is unattributed.
+    """
+    buckets: dict[tuple[str, str], list[float]] = {
+        (metric, device): []
+        for metric in sorted(ATTRIBUTABLE_METRICS)
+        for device in sorted(ATTRIBUTABLE_VIEWPORTS)
+    }
+    attributed = 0
+    unattributed = 0
+    for row in observations:
+        metric_id = row.get("metric_id")
+        device_class = row.get("device_class")
+        value = row.get("value")
+        if (
+            metric_id in ATTRIBUTABLE_METRICS
+            and device_class in ATTRIBUTABLE_VIEWPORTS
+            and isinstance(value, (int, float))
+            and value == value  # not NaN
+            and value >= 0
+        ):
+            buckets[(str(metric_id), str(device_class))].append(float(value))
+            attributed += 1
+        else:
+            unattributed += 1
+
+    cells: list[dict[str, Any]] = []
+    for metric_id in ("lcp_ms", "inp_ms", "cls_score"):
+        for device_class in ("desktop", "mobile"):
+            samples = buckets[(metric_id, device_class)]
+            cells.append(
+                {
+                    "metric_id": metric_id,
+                    "device_class": device_class,
+                    "surface_id": surface_id,
+                    "sampled_count": len(samples),
+                    "samples": samples,
+                    "quantile_value": None,
+                }
+            )
+    return cells, attributed, unattributed
 
 
 def drive_interaction(page: Any, selectors: list[str]) -> dict[str, Any]:
@@ -247,7 +324,7 @@ def run_slot(plan: dict[str, Any], run_key: str) -> dict[str, Any]:
 
     visited: list[dict[str, Any]] = []
     failures: list[dict[str, Any]] = []
-    observations = 0
+    retained_observations: list[dict[str, Any]] = []
     marked_beacons = 0
     unmarked_beacons = 0
     budget_exhausted = False
@@ -275,9 +352,10 @@ def run_slot(plan: dict[str, Any], run_key: str) -> dict[str, Any]:
                 f"window.CROL_RUM_TRAFFIC_CLASS = {json.dumps(TRAFFIC_CLASS)};"
             )
             page = context.new_page()
+            visit_device_class = visit["device_class"]
 
-            def record(request: Any) -> None:
-                nonlocal observations, marked_beacons, unmarked_beacons
+            def record(request: Any, *, _device_class: str = visit_device_class) -> None:
+                nonlocal marked_beacons, unmarked_beacons
                 if request.method != "POST":
                     return
                 parts = urlsplit(request.url)
@@ -285,7 +363,10 @@ def run_slot(plan: dict[str, Any], run_key: str) -> dict[str, Any]:
                     return
                 if f"traffic_class={TRAFFIC_CLASS}" in parts.query:
                     marked_beacons += 1
-                    observations += count_observations(request.post_data)
+                    for row in parse_observation_batch(request.post_data):
+                        retained_observations.append(
+                            compact_observation(row, fallback_device_class=_device_class)
+                        )
                 else:
                     unmarked_beacons += 1
 
@@ -342,6 +423,12 @@ def run_slot(plan: dict[str, Any], run_key: str) -> dict[str, Any]:
         browser.close()
 
     finished_at = now_iso()
+    observations = len(retained_observations)
+    surface_id = plan.get("surface_id") or "near-you"
+    cells, attributed, unattributed = project_cells_from_observations(
+        retained_observations,
+        surface_id=surface_id,
+    )
     diagnosis = collection_diagnosis(
         pages_visited=len(visited),
         failures=failures,
@@ -356,7 +443,7 @@ def run_slot(plan: dict[str, Any], run_key: str) -> dict[str, Any]:
         "finished_at": finished_at,
         "observed_at": finished_at,
         "traffic_class": TRAFFIC_CLASS,
-        "surface_id": plan.get("surface_id"),
+        "surface_id": surface_id,
         "base": plan.get("base"),
         "pages_listed": len(plan["visits"]),
         "pages_visited": len(visited),
@@ -364,6 +451,13 @@ def run_slot(plan: dict[str, Any], run_key: str) -> dict[str, Any]:
         "retained_observation_count": observations,
         "marked_beacons": marked_beacons,
         "unmarked_beacons": unmarked_beacons,
+        # Per-slot contribution (not a window census). The aggregate accumulates
+        # these cells across slots; unattributed counts retained rows that did
+        # not land in a vital×viewport cell.
+        "cells": cells,
+        "observations": retained_observations,
+        "attributed_observation_count": attributed,
+        "unattributed_observation_count": unattributed,
         "budget_exhausted": budget_exhausted,
         "visits": visited,
         "interactions": interactions,
