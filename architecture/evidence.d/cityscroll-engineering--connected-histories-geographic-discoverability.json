@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/connected-histories-geographic-discoverability",
+  "status": "implemented",
+  "fingerprint": "connected-histories-geographic-discoverability.v1",
+  "updated_at": "2026-10-02T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "connected-histories-geographic-discoverability-capture",
+      "path": "tools/capture_connected_histories_geographic_discoverability_production_read.py"
+    },
+    {
+      "id": "connected-histories-geographic-discoverability-readback",
+      "path": "docs/evidence/connected-histories/geographic-discoverability-readback.json"
+    },
+    {
+      "id": "connected-histories-geographic-discoverability-tests",
+      "path": "test/connected_histories_geographic_discoverability_production_read.test.mjs"
+    }
+  ]
+}
