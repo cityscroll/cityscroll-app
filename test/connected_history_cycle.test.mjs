@@ -614,6 +614,7 @@ const RELEASE_READBACK = "docs/evidence/connected-history-release/release-readba
 const JOURNEYS_MANIFEST = "docs/evidence/documented-history-journeys/capture-manifest.json";
 const COVERAGE_MANIFEST = "docs/evidence/connected-history-coverage/capture-manifest.json";
 const DISCOVER_JOURNEYS_READBACK = "docs/evidence/connected-histories/discover-journeys-readback.json";
+const GEOGRAPHIC_DISCOVERABILITY_READBACK = "docs/evidence/connected-histories/geographic-discoverability-readback.json";
 
 /**
  * Every retained production measurement that pins the bytes of a served data
@@ -622,7 +623,7 @@ const DISCOVER_JOURNEYS_READBACK = "docs/evidence/connected-histories/discover-j
  * them, and a reviewed publication re-measures them.
  */
 const RETAINED_SERVED_PINS = Object.freeze({
-  "site/data/connected_history_coverage.json": [COVERAGE_MANIFEST, RELEASE_READBACK],
+  "site/data/connected_history_coverage.json": [COVERAGE_MANIFEST, GEOGRAPHIC_DISCOVERABILITY_READBACK, RELEASE_READBACK],
   "site/data/connected_history_documents.json": [RELEASE_READBACK],
   "site/data/connected_history_evaluation_cohort.json": [RELEASE_READBACK],
   "site/data/connected_history_relations.json": [DISCOVER_JOURNEYS_READBACK, RELEASE_READBACK, JOURNEYS_MANIFEST],

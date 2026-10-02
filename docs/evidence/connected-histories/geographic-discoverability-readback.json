@@ -1,0 +1,526 @@
+{
+  "schema": "cityscroll.connected_histories_geographic_discoverability.v1",
+  "observed_at": "2026-10-02T16:42:56Z",
+  "origin": "https://cityscroll.org",
+  "public_alias": "cea7b8f3a22f7",
+  "required_landed_commit": "1a875a22035fcce03d374bec731e14a22678265e",
+  "served_revision": "d1719fcd8661ea4134ac2009d6f1d9f90859fb7c",
+  "served_revision_after": "d1719fcd8661ea4134ac2009d6f1d9f90859fb7c",
+  "repository_revision": "4d5222224f9f43eff85f2da8e56754092380e8de",
+  "revision_pin": {
+    "state": "descendant",
+    "required_landed_commit": "1a875a22035fcce03d374bec731e14a22678265e",
+    "served_revision_start": "d1719fcd8661ea4134ac2009d6f1d9f90859fb7c",
+    "served_revision_end": "d1719fcd8661ea4134ac2009d6f1d9f90859fb7c"
+  },
+  "provenance": {
+    "schema": "cityscroll.production_provenance.v1",
+    "evidence_class": "live-production-read",
+    "isolated": false,
+    "environment": "production",
+    "source": "https://cityscroll.org",
+    "observer": {
+      "tool": "tools/capture_connected_histories_geographic_discoverability_production_read.py",
+      "mode": "production"
+    }
+  },
+  "measurement_provenance": {
+    "revision": "4d5222224f9f43eff85f2da8e56754092380e8de",
+    "inputs": [
+      {
+        "path": "tools/capture_connected_histories_geographic_discoverability_production_read.py",
+        "sha256": "4315d5fbaefc933b81ba8b3df137e6ff26e6e4f59b817bc453120fa505865fa6"
+      },
+      {
+        "path": "site/data/connected_history_coverage.json",
+        "sha256": "3201eecccc0dd445ffd7a5534d30c4cff47b530fc298edd229fa1991d46562ed"
+      }
+    ]
+  },
+  "served_census": {
+    "url": "https://cityscroll.org/data/connected_history_coverage.json",
+    "bytes": 290094,
+    "sha256": "3201eecccc0dd445ffd7a5534d30c4cff47b530fc298edd229fa1991d46562ed",
+    "repository_path": "site/data/connected_history_coverage.json",
+    "snapshot": "post_change",
+    "data_vintage": {
+      "cohort_selection_hash": "b4801f21d70b05d492be7acbc9ab387bd2b9758c415719d96c73e136bfcc2013",
+      "documents_generated_at": "2026-09-21T20:19:01.507Z",
+      "relations_generated_at": "2026-09-26T00:00:00.000Z",
+      "time_generated_at": "2026-09-26T00:00:00.000Z",
+      "roles_generated_at": "2026-09-26T00:00:00.000Z"
+    }
+  },
+  "census": {
+    "areas_attempted": 59,
+    "areas_discoverable": 8,
+    "canonical_board_count": 59,
+    "snapshot": "post_change"
+  },
+  "areas": [
+    {
+      "board_id": "bronx-cb-01",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 3
+    },
+    {
+      "board_id": "bronx-cb-02",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 1
+    },
+    {
+      "board_id": "bronx-cb-03",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 2
+    },
+    {
+      "board_id": "bronx-cb-04",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 1
+    },
+    {
+      "board_id": "bronx-cb-05",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 2
+    },
+    {
+      "board_id": "bronx-cb-06",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 2
+    },
+    {
+      "board_id": "bronx-cb-07",
+      "discoverable": true,
+      "state": "partial",
+      "unique_subjects": 6,
+      "unknown_subjects": 2
+    },
+    {
+      "board_id": "bronx-cb-08",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 3
+    },
+    {
+      "board_id": "bronx-cb-09",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 3
+    },
+    {
+      "board_id": "bronx-cb-10",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 1
+    },
+    {
+      "board_id": "bronx-cb-11",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 2
+    },
+    {
+      "board_id": "bronx-cb-12",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 2
+    },
+    {
+      "board_id": "brooklyn-cb-01",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 11
+    },
+    {
+      "board_id": "brooklyn-cb-02",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 6
+    },
+    {
+      "board_id": "brooklyn-cb-03",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 8
+    },
+    {
+      "board_id": "brooklyn-cb-04",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 3
+    },
+    {
+      "board_id": "brooklyn-cb-05",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 6
+    },
+    {
+      "board_id": "brooklyn-cb-06",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 2
+    },
+    {
+      "board_id": "brooklyn-cb-07",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 3
+    },
+    {
+      "board_id": "brooklyn-cb-08",
+      "discoverable": false,
+      "state": "measured_zero",
+      "unique_subjects": 0,
+      "unknown_subjects": 0
+    },
+    {
+      "board_id": "brooklyn-cb-09",
+      "discoverable": true,
+      "state": "partial",
+      "unique_subjects": 6,
+      "unknown_subjects": 1
+    },
+    {
+      "board_id": "brooklyn-cb-10",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 3
+    },
+    {
+      "board_id": "brooklyn-cb-11",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 7
+    },
+    {
+      "board_id": "brooklyn-cb-12",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 2
+    },
+    {
+      "board_id": "brooklyn-cb-13",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 7
+    },
+    {
+      "board_id": "brooklyn-cb-14",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 4
+    },
+    {
+      "board_id": "brooklyn-cb-15",
+      "discoverable": true,
+      "state": "partial",
+      "unique_subjects": 4,
+      "unknown_subjects": 12
+    },
+    {
+      "board_id": "brooklyn-cb-16",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 1
+    },
+    {
+      "board_id": "brooklyn-cb-17",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 1
+    },
+    {
+      "board_id": "brooklyn-cb-18",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 3
+    },
+    {
+      "board_id": "manhattan-cb-01",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 5
+    },
+    {
+      "board_id": "manhattan-cb-02",
+      "discoverable": true,
+      "state": "partial",
+      "unique_subjects": 4,
+      "unknown_subjects": 1
+    },
+    {
+      "board_id": "manhattan-cb-03",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 5
+    },
+    {
+      "board_id": "manhattan-cb-04",
+      "discoverable": true,
+      "state": "partial",
+      "unique_subjects": 4,
+      "unknown_subjects": 14
+    },
+    {
+      "board_id": "manhattan-cb-05",
+      "discoverable": true,
+      "state": "partial",
+      "unique_subjects": 4,
+      "unknown_subjects": 17
+    },
+    {
+      "board_id": "manhattan-cb-06",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 6
+    },
+    {
+      "board_id": "manhattan-cb-07",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 2
+    },
+    {
+      "board_id": "manhattan-cb-08",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 5
+    },
+    {
+      "board_id": "manhattan-cb-09",
+      "discoverable": false,
+      "state": "measured_zero",
+      "unique_subjects": 0,
+      "unknown_subjects": 0
+    },
+    {
+      "board_id": "manhattan-cb-10",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 1
+    },
+    {
+      "board_id": "manhattan-cb-11",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 5
+    },
+    {
+      "board_id": "manhattan-cb-12",
+      "discoverable": false,
+      "state": "measured_zero",
+      "unique_subjects": 0,
+      "unknown_subjects": 0
+    },
+    {
+      "board_id": "queens-cb-01",
+      "discoverable": true,
+      "state": "partial",
+      "unique_subjects": 3,
+      "unknown_subjects": 4
+    },
+    {
+      "board_id": "queens-cb-02",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 7
+    },
+    {
+      "board_id": "queens-cb-03",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 1
+    },
+    {
+      "board_id": "queens-cb-04",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 4
+    },
+    {
+      "board_id": "queens-cb-05",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 4
+    },
+    {
+      "board_id": "queens-cb-06",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 5
+    },
+    {
+      "board_id": "queens-cb-07",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 6
+    },
+    {
+      "board_id": "queens-cb-08",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 4
+    },
+    {
+      "board_id": "queens-cb-09",
+      "discoverable": false,
+      "state": "measured_zero",
+      "unique_subjects": 0,
+      "unknown_subjects": 0
+    },
+    {
+      "board_id": "queens-cb-10",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 2
+    },
+    {
+      "board_id": "queens-cb-11",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 3
+    },
+    {
+      "board_id": "queens-cb-12",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 2
+    },
+    {
+      "board_id": "queens-cb-13",
+      "discoverable": false,
+      "state": "measured_zero",
+      "unique_subjects": 0,
+      "unknown_subjects": 0
+    },
+    {
+      "board_id": "queens-cb-14",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 4
+    },
+    {
+      "board_id": "staten-island-cb-01",
+      "discoverable": true,
+      "state": "partial",
+      "unique_subjects": 3,
+      "unknown_subjects": 13
+    },
+    {
+      "board_id": "staten-island-cb-02",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 12
+    },
+    {
+      "board_id": "staten-island-cb-03",
+      "discoverable": false,
+      "state": "unknown",
+      "unique_subjects": 0,
+      "unknown_subjects": 11
+    }
+  ],
+  "request_receipts": [
+    {
+      "request": "served_revision_start",
+      "url": "https://cityscroll.org/artifact-manifest.json",
+      "http_status": 200,
+      "observed_at": "2026-10-02T16:42:56.707Z",
+      "edge_ray": "a44529c7fb0f4239-EWR",
+      "sha256": "fdb85be9b7f3a4f72dd03bd19e1d6701aa6d8974165cf3438a2107e7a4b094e9",
+      "bytes": 518,
+      "headers": {
+        "Date": "Fri, 02 Oct 2026 16:42:56 GMT",
+        "CF-Ray": "a44529c7fb0f4239-EWR",
+        "CF-Cache-Status": "DYNAMIC",
+        "ETag": "\"744c3e8a079c122cd07b0b2943a87006\"",
+        "Content-Type": "application/json"
+      }
+    },
+    {
+      "request": "coverage_census",
+      "url": "https://cityscroll.org/data/connected_history_coverage.json",
+      "http_status": 200,
+      "observed_at": "2026-10-02T16:42:56.841Z",
+      "edge_ray": "a44529c8ca61dd64-EWR",
+      "sha256": "3201eecccc0dd445ffd7a5534d30c4cff47b530fc298edd229fa1991d46562ed",
+      "bytes": 290094,
+      "headers": {
+        "Date": "Fri, 02 Oct 2026 16:42:56 GMT",
+        "CF-Ray": "a44529c8ca61dd64-EWR",
+        "CF-Cache-Status": "DYNAMIC",
+        "ETag": "\"44662b9b83a08e2fc27645dfacf08c67\"",
+        "Content-Type": "application/json"
+      }
+    },
+    {
+      "request": "served_revision_end",
+      "url": "https://cityscroll.org/artifact-manifest.json",
+      "http_status": 200,
+      "observed_at": "2026-10-02T16:42:56.940Z",
+      "edge_ray": "a44529c99d531f47-EWR",
+      "sha256": "fdb85be9b7f3a4f72dd03bd19e1d6701aa6d8974165cf3438a2107e7a4b094e9",
+      "bytes": 518,
+      "headers": {
+        "Date": "Fri, 02 Oct 2026 16:42:56 GMT",
+        "CF-Ray": "a44529c99d531f47-EWR",
+        "CF-Cache-Status": "DYNAMIC",
+        "ETag": "\"744c3e8a079c122cd07b0b2943a87006\"",
+        "Content-Type": "application/json"
+      }
+    }
+  ],
+  "image_binaries_committed": false
+}
