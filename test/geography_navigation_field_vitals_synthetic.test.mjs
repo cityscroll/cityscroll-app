@@ -50,6 +50,121 @@ const WORKFLOW = join(ROOT, ".github/workflows/near-you-synthetic-probe.yml");
 const BUILD_COMMAND = "tools/build_geography_navigation_field_vitals_synthetic.mjs";
 const PROBE_COMMAND = "tools/run_near_you_synthetic_probe.py";
 
+/** First scheduled empty slot that must remain readable in any retained aggregate. */
+const EMPTY_SLOT_36943164756 = Object.freeze({
+  slot_id: "github-actions:36943164756:1",
+  run_id: "36943164756",
+  trigger: "schedule",
+  observations_emitted: 0,
+  outcome: Object.freeze({
+    retained: false,
+    stages: Object.freeze({ reached: true, collected: false, wrote: true }),
+    reason: "reached_but_no_beacons",
+  }),
+  provenance: Object.freeze({
+    writing: "back_filled",
+    artifact_id: "11200568291",
+    artifact_name: "near-you-synthetic-probe-slot",
+  }),
+});
+
+/**
+ * Assert the retrospective empty slot remains in slots[] with its outcome reason
+ * and artifact binding, without pinning aggregate-level probe_state or delivery.
+ */
+function assertEmptySlot36943164756Retained(document) {
+  assert.ok(Array.isArray(document?.slots), "aggregate must expose slots[]");
+  const entry = document.slots.find((row) => row.slot_id === EMPTY_SLOT_36943164756.slot_id);
+  assert.ok(
+    entry,
+    "retrospective empty slot for run 36943164756 must remain readable in slots[]",
+  );
+  assert.equal(entry.run_id, EMPTY_SLOT_36943164756.run_id);
+  assert.equal(entry.trigger, EMPTY_SLOT_36943164756.trigger);
+  assert.equal(entry.outcome.retained, EMPTY_SLOT_36943164756.outcome.retained);
+  assert.equal(entry.outcome.stages.reached, EMPTY_SLOT_36943164756.outcome.stages.reached);
+  assert.equal(entry.outcome.stages.collected, EMPTY_SLOT_36943164756.outcome.stages.collected);
+  assert.equal(entry.outcome.stages.wrote, EMPTY_SLOT_36943164756.outcome.stages.wrote);
+  assert.equal(entry.outcome.reason, EMPTY_SLOT_36943164756.outcome.reason);
+  assert.equal(entry.observations_emitted, EMPTY_SLOT_36943164756.observations_emitted);
+
+  const provenance = entry.provenance;
+  assert.ok(provenance, "back-filled empty slot must keep its artifact binding");
+  assert.equal(provenance.writing, EMPTY_SLOT_36943164756.provenance.writing);
+  assert.equal(provenance.artifact.artifact_id, EMPTY_SLOT_36943164756.provenance.artifact_id);
+  assert.equal(provenance.artifact.artifact_name, EMPTY_SLOT_36943164756.provenance.artifact_name);
+  assert.equal(provenance.artifact.run_id, EMPTY_SLOT_36943164756.run_id);
+}
+
+/**
+ * Delivery-anchor rules follow slot history: null while no slot retained, set to
+ * the first retaining slot once one has. merge_commit / pull_request stay null.
+ */
+function assertDeliveryAnchorConsistentWithSlots(document) {
+  const delivery = document?.delivery;
+  assert.ok(delivery && typeof delivery === "object" && !Array.isArray(delivery));
+  assert.equal(Object.hasOwn(delivery, "merge_commit"), true);
+  assert.equal(Object.hasOwn(delivery, "pull_request"), true);
+  assert.equal(Object.hasOwn(delivery, "trigger"), true);
+  assert.equal(delivery.merge_commit, null);
+  assert.equal(delivery.pull_request, null);
+  assert.equal(delivery.kind, "first_probe_slot");
+
+  const retainingSlots = (document.slots || []).filter(
+    (entry) => entry?.outcome?.retained === true,
+  );
+  const firstRetained = retainingSlots[0] || null;
+
+  if (!firstRetained) {
+    assert.equal(delivery.at, null, "delivery.at must stay null until a slot retains");
+    assert.equal(delivery.slot_id, null);
+    assert.equal(delivery.source, "unset");
+    assert.equal(delivery.trigger, null);
+  } else {
+    assert.equal(
+      delivery.at,
+      firstRetained.observed_at || firstRetained.finished_at,
+      "delivery.at must name the first retaining slot's observed time",
+    );
+    assert.equal(delivery.slot_id, firstRetained.slot_id);
+    assert.equal(delivery.source, "first_retained_observation");
+    assert.equal(delivery.trigger, firstRetained.trigger ?? null);
+  }
+
+  if (delivery.at != null || delivery.slot_id != null) {
+    const anchored = (document.slots || []).find((entry) => entry?.slot_id === delivery.slot_id);
+    assert.ok(anchored, "delivery.slot_id must name a slot entry that retained observations");
+    assert.equal(
+      anchored.outcome?.retained,
+      true,
+      "an anchored delivery requires a retaining slot entry",
+    );
+  }
+
+  assert.equal(document.probe_state, classifySyntheticProbeState(document));
+}
+
+function retainingSlotFixture(runKey, observedAt) {
+  return {
+    run_key: runKey,
+    observed_at: observedAt,
+    trigger: "schedule",
+    pages_visited: 2,
+    pages_listed: 2,
+    observations_emitted: 6,
+    retained_observation_count: 6,
+    marked_beacons: 2,
+    cells: [
+      { metric_id: "lcp_ms", device_class: "desktop", sampled_count: 1 },
+      { metric_id: "lcp_ms", device_class: "mobile", sampled_count: 1 },
+      { metric_id: "inp_ms", device_class: "desktop", sampled_count: 1 },
+      { metric_id: "inp_ms", device_class: "mobile", sampled_count: 1 },
+      { metric_id: "cls_score", device_class: "desktop", sampled_count: 1 },
+      { metric_id: "cls_score", device_class: "mobile", sampled_count: 1 },
+    ],
+  };
+}
+
 test("probe plan covers desktop and mobile and requires interaction for INP", () => {
   const pages = JSON.parse(readFileSync(PAGES_PATH, "utf8"));
   assert.equal(pages.traffic_class, "synthetic");
@@ -82,21 +197,30 @@ test("probe plan covers desktop and mobile and requires interaction for INP", ()
   assert.ok(body.visits.every((visit) => visit.interaction_required === true));
 });
 
-test("retained aggregate records scheduled run 36943164756 as an empty slot with a reason", () => {
+test("retained aggregate keeps scheduled run 36943164756 as an empty slot with a reason", () => {
   const document = JSON.parse(readFileSync(AGGREGATE_PATH, "utf8"));
-  assert.equal(document.probe_state, "ran_empty");
-  assert.equal(document.delivery.at, null);
-  assert.equal(document.delivery.source, "unset");
-  const entry = document.slots.find((row) => row.slot_id === "github-actions:36943164756:1");
-  assert.ok(entry, "retrospective slot for run 36943164756 must be present");
-  assert.equal(entry.run_id, "36943164756");
-  assert.equal(entry.trigger, "schedule");
-  assert.equal(entry.outcome.retained, false);
-  assert.equal(entry.outcome.stages.reached, true);
-  assert.equal(entry.outcome.stages.collected, false);
-  assert.equal(entry.outcome.stages.wrote, true);
-  assert.equal(entry.outcome.reason, "reached_but_no_beacons");
-  assert.equal(entry.observations_emitted, 0);
+  assertEmptySlot36943164756Retained(document);
+
+  // Mutation control: a later retaining slot that still carries the empty entry passes.
+  const withRetaining = applyProbeSlot(
+    structuredClone(document),
+    retainingSlotFixture("github-actions:mutation-retain:1", "2026-10-02T16:00:00.000Z"),
+  );
+  assert.equal(withRetaining.probe_state, "ran_retained");
+  assert.ok(withRetaining.delivery.at);
+  assertEmptySlot36943164756Retained(withRetaining);
+
+  // Mutation control: dropping the empty slot fails closed.
+  const droppedEmpty = {
+    ...document,
+    slots: (document.slots || []).filter(
+      (entry) => entry.slot_id !== EMPTY_SLOT_36943164756.slot_id,
+    ),
+  };
+  assert.throws(
+    () => assertEmptySlot36943164756Retained(droppedEmpty),
+    /retrospective empty slot for run 36943164756 must remain readable/,
+  );
 });
 
 test("back-filled slot names its workflow artifact and carries digests recomputed from that artifact", () => {
@@ -474,17 +598,70 @@ test("reader refuses missing required per-cell field and names it; absent vs unr
   assert.equal(ok.ok, true);
 });
 
-test("retained synthetic aggregate validates; delivery nulls are explicit", () => {
+test("retained synthetic aggregate validates; delivery anchor follows slot history", () => {
   const document = JSON.parse(readFileSync(AGGREGATE_PATH, "utf8"));
   const read = readSyntheticAggregate(document);
   assert.equal(read.ok, true, JSON.stringify(read));
-  assert.equal(Object.hasOwn(document.delivery, "merge_commit"), true);
-  assert.equal(Object.hasOwn(document.delivery, "pull_request"), true);
-  assert.equal(Object.hasOwn(document.delivery, "trigger"), true);
-  assert.equal(document.delivery.merge_commit, null);
-  assert.equal(document.delivery.pull_request, null);
-  assert.equal(document.delivery.trigger, null);
   assert.equal(document.cells.length, 6);
+  assertDeliveryAnchorConsistentWithSlots(document);
+
+  // Mutation control: an aggregate whose first retaining slot exists passes.
+  // Start from empty so the fixture is unambiguously the first retaining slot,
+  // whether or not the live aggregate has already retained.
+  const withRetaining = applyProbeSlot(
+    emptySyntheticAggregate(),
+    retainingSlotFixture("github-actions:mutation-anchor:1", "2026-10-02T16:30:00.000Z"),
+  );
+  assert.equal(withRetaining.probe_state, "ran_retained");
+  assertDeliveryAnchorConsistentWithSlots(withRetaining);
+  assert.equal(withRetaining.delivery.slot_id, "github-actions:mutation-anchor:1");
+  assert.equal(withRetaining.delivery.at, "2026-10-02T16:30:00.000Z");
+  assert.equal(withRetaining.delivery.trigger, "schedule");
+  assert.equal(withRetaining.delivery.merge_commit, null);
+  assert.equal(withRetaining.delivery.pull_request, null);
+
+  // A later retaining slot on the live aggregate must keep the live invariant
+  // and must not move an already-set first-slot anchor.
+  const liveHadRetaining = (document.slots || []).some((entry) => entry?.outcome?.retained === true);
+  const priorAnchor = document.delivery.slot_id;
+  const appended = applyProbeSlot(
+    structuredClone(document),
+    retainingSlotFixture("github-actions:mutation-anchor-later:1", "2026-10-02T17:00:00.000Z"),
+  );
+  assertDeliveryAnchorConsistentWithSlots(appended);
+  if (liveHadRetaining) {
+    assert.equal(appended.delivery.slot_id, priorAnchor);
+  } else {
+    assert.equal(appended.delivery.slot_id, "github-actions:mutation-anchor-later:1");
+  }
+
+  // Mutation control: an anchor without any retaining slot fails closed.
+  const anchorWithoutRetaining = {
+    ...document,
+    slots: (document.slots || []).map((entry) => ({
+      ...entry,
+      observations_emitted: 0,
+      retained_observation_count: 0,
+      outcome: {
+        ...(entry.outcome || {}),
+        retained: false,
+        stages: { reached: true, collected: false, wrote: true },
+        reason: "reached_but_no_beacons",
+      },
+    })),
+    delivery: {
+      ...document.delivery,
+      at: "2026-10-02T14:44:47Z",
+      slot_id: "github-actions:missing-retaining:1",
+      source: "first_retained_observation",
+      trigger: "schedule",
+    },
+    probe_state: "ran_retained",
+  };
+  assert.throws(
+    () => assertDeliveryAnchorConsistentWithSlots(anchorWithoutRetaining),
+    /delivery\.at must stay null until a slot retains|delivery\.slot_id must name a slot entry that retained observations/,
+  );
 });
 
 test("resident near-you honesty survives (acceptance 7)", () => {
