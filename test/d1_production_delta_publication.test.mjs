@@ -15,6 +15,7 @@ import { buildPublicationReceipt } from "../tools/d1_publication_receipt.mjs";
 import {
   MISSING_SNAPSHOT_REBUILD_REASON,
   NO_DELTA_SNAPSHOT_BASELINE_REASON,
+  applicationCheckpointId,
   buildMissingPriorSnapshotRecovery,
   formatCliFailureMessage,
   resolvePriorSnapshotBaseline,
@@ -47,7 +48,18 @@ function openDatabase(sources = fixture.prior) {
   return db;
 }
 
-function databaseAdapter(db, { loseConfirmationOnce = false, corruptTable = null } = {}) {
+function databaseAdapter(db, {
+  loseConfirmationOnce = false,
+  corruptTable = null,
+  generation,
+  holder = "production-fixture",
+} = {}) {
+  if (!Number.isInteger(generation) || generation < 1) {
+    throw new Error("databaseAdapter requires a positive generation");
+  }
+  if (typeof holder !== "string" || holder.length === 0) {
+    throw new Error("databaseAdapter requires a non-empty holder");
+  }
   let confirmationLost = false;
   const executions = [];
   const adapter = {
@@ -60,7 +72,17 @@ function databaseAdapter(db, { loseConfirmationOnce = false, corruptTable = null
         db.prepare(`INSERT INTO d1_publication_batches
           (batch_id, checkpoint_id, generation, fingerprint, model_id, partition_id, ordinal, op_count, estimated_application_writes)
           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-          .run(batch.batch_id, `${fingerprint}:${batch.model_id}:${batch.partition}:${batch.ordinal}`, Number(batch.batch_id.split(":", 1)[0]), fingerprint, batch.model_id, batch.partition, batch.ordinal, batch.op_count, batch.estimated_writes);
+          .run(
+            batch.batch_id,
+            applicationCheckpointId(fingerprint, batch, { generation, holder }),
+            generation,
+            fingerprint,
+            batch.model_id,
+            batch.partition,
+            batch.ordinal,
+            batch.op_count,
+            batch.estimated_writes,
+          );
         db.exec("COMMIT;");
       } catch (error) {
         db.exec("ROLLBACK;");
@@ -74,7 +96,9 @@ function databaseAdapter(db, { loseConfirmationOnce = false, corruptTable = null
       }
     },
     async has(batchId, batch = null) {
-      const checkpointId = batch ? `${fingerprint}:${batch.model_id}:${batch.partition}:${batch.ordinal}` : batchId;
+      const checkpointId = batch
+        ? applicationCheckpointId(fingerprint, batch, { generation, holder })
+        : batchId;
       return Boolean(db.prepare("SELECT 1 FROM d1_publication_batches WHERE checkpoint_id = ?").get(checkpointId));
     },
     async select(sql, params = []) {
@@ -206,11 +230,32 @@ test("CLI failure message names outcome, reason, and fence detail for silent rec
   assert.equal(message.endsWith("\n"), true);
 });
 
+test("applicationCheckpointId scopes markers to generation and holder", () => {
+  const batch = { model_id: "entity_intelligence", partition: "__model__", ordinal: 0 };
+  const gen27 = applicationCheckpointId(fingerprint, batch, { generation: 27, holder: "Deploy worker:36921583269:1" });
+  const gen28 = applicationCheckpointId(fingerprint, batch, { generation: 28, holder: "Deploy worker:36933227439:1" });
+  assert.equal(gen27, `27:Deploy worker:36921583269:1:${fingerprint}:entity_intelligence:__model__:0`);
+  assert.equal(gen28, `28:Deploy worker:36933227439:1:${fingerprint}:entity_intelligence:__model__:0`);
+  assert.notEqual(gen27, gen28);
+  assert.notEqual(
+    applicationCheckpointId(fingerprint, batch, { generation: 28, holder: "holder-a" }),
+    applicationCheckpointId(fingerprint, batch, { generation: 28, holder: "holder-b" }),
+  );
+  assert.throws(
+    () => applicationCheckpointId(fingerprint, batch, { generation: 28 }),
+    /non-empty holder/,
+  );
+  assert.throws(
+    () => applicationCheckpointId(fingerprint, batch, { holder: "h" }),
+    /positive generation/,
+  );
+});
+
 test("production delta applies keyed inserts, updates, explicit deletes, and no whole-table rebuild", { skip: !DatabaseSync }, async () => {
   const currentSnapshot = snapshotFor(manifest, fixture.current);
   const { fenceStore, generation, holder } = await claimed(currentSnapshot);
   const db = openDatabase();
-  const adapter = databaseAdapter(db);
+  const adapter = databaseAdapter(db, { generation, holder });
   const result = await runProductionDelta({
     priorSnapshot: snapshotFor(manifest, fixture.prior), currentSnapshot,
     manifest, sourceDocuments: fixture.current, generation, fingerprint, holder,
@@ -244,7 +289,7 @@ test("production delta applies keyed inserts, updates, explicit deletes, and no 
 test("an unchanged snapshot is a zero-write skip", { skip: !DatabaseSync }, async () => {
   const snapshot = snapshotFor(manifest, fixture.prior);
   const { fenceStore, generation, holder } = await claimed(snapshot);
-  const adapter = databaseAdapter(openDatabase());
+  const adapter = databaseAdapter(openDatabase(), { generation, holder });
   const result = await runProductionDelta({
     priorSnapshot: snapshot, currentSnapshot: snapshot, manifest, sourceDocuments: fixture.prior,
     generation, fingerprint, holder, fenceStore, adapter, appliedBatchStore: adapter, policy, now: clock,
@@ -278,7 +323,7 @@ test("A13: one changed partition converges on a no-op rerun without duplicate lo
 
   const { fenceStore, generation, holder } = await claimed(currentSnapshot, "a13-first-run");
   const db = openDatabase(prior);
-  const adapter = databaseAdapter(db);
+  const adapter = databaseAdapter(db, { generation, holder });
   const first = await runProductionDelta({
     priorSnapshot, currentSnapshot, manifest, sourceDocuments: current,
     generation, fingerprint, holder, fenceStore, adapter, appliedBatchStore: adapter, policy,
@@ -287,10 +332,11 @@ test("A13: one changed partition converges on a no-op rerun without duplicate lo
   assert.equal(first.outcome, "published");
 
   const rerunClaim = await claimed(currentSnapshot, "a13-no-op-rerun");
+  const rerunAdapter = databaseAdapter(db, { generation: rerunClaim.generation, holder: rerunClaim.holder });
   const rerun = await runProductionDelta({
     priorSnapshot: currentSnapshot, currentSnapshot, manifest, sourceDocuments: current,
     generation: rerunClaim.generation, fingerprint, holder: rerunClaim.holder,
-    fenceStore: rerunClaim.fenceStore, adapter, appliedBatchStore: adapter, policy, now: clock,
+    fenceStore: rerunClaim.fenceStore, adapter: rerunAdapter, appliedBatchStore: rerunAdapter, policy, now: clock,
   });
   assert.equal(rerun.outcome, "skipped");
   assert.equal(rerun.batchPlan.summary.total_ops, 0);
@@ -310,7 +356,7 @@ test("a stale generation is rejected before the first mutation", { skip: !Databa
   const { fenceStore, generation, holder } = await claimed(currentSnapshot, "stale-holder");
   const afterLeaseExpiry = () => CLOCK + 120_000;
   await claimGeneration({ store: fenceStore, holder: "new-holder", fingerprint, watermarks: watermarksFromSnapshot(currentSnapshot), now: afterLeaseExpiry(), leaseMs: 60_000 });
-  const adapter = databaseAdapter(openDatabase());
+  const adapter = databaseAdapter(openDatabase(), { generation, holder });
   const result = await runProductionDelta({
     priorSnapshot: snapshotFor(manifest, fixture.prior), currentSnapshot,
     manifest, sourceDocuments: fixture.current, generation, fingerprint, holder,
@@ -323,7 +369,7 @@ test("a stale generation is rejected before the first mutation", { skip: !Databa
 test("an interrupted batch is recovered from its atomic marker without replay", { skip: !DatabaseSync }, async () => {
   const currentSnapshot = snapshotFor(manifest, fixture.current);
   const { fenceStore, generation, holder } = await claimed(currentSnapshot);
-  const adapter = databaseAdapter(openDatabase(), { loseConfirmationOnce: true });
+  const adapter = databaseAdapter(openDatabase(), { loseConfirmationOnce: true, generation, holder });
   const result = await runProductionDelta({
     priorSnapshot: snapshotFor(manifest, fixture.prior), currentSnapshot,
     manifest, sourceDocuments: fixture.current, generation, fingerprint, holder,
@@ -334,12 +380,13 @@ test("an interrupted batch is recovered from its atomic marker without replay", 
   assert.ok(result.publishReceipt.completed_batches.some((batch) => batch.recovered === true));
 });
 
-test("a replacement generation resumes durable batches without replay", { skip: !DatabaseSync }, async () => {
+test("a replacement generation re-executes batches; prior-generation markers do not skip", { skip: !DatabaseSync }, async () => {
   const currentSnapshot = snapshotFor(manifest, fixture.current);
   const priorSnapshot = snapshotFor(manifest, fixture.prior);
   const plan = planDelta({ prior: priorSnapshot, current: currentSnapshot });
   const { fenceStore, generation, holder } = await claimed(currentSnapshot, "interrupted-holder");
-  const adapter = databaseAdapter(openDatabase());
+  const db = openDatabase();
+  const adapter = databaseAdapter(db, { generation, holder });
   const firstPlan = planBatches({ plan, manifest, sourceDocuments: fixture.current, generation, maxOpsPerBatch: 1 });
   let successfulBatches = 0;
   const interruptedExecutor = {
@@ -366,15 +413,16 @@ test("a replacement generation resumes durable batches without replay", { skip: 
     plan, manifest, sourceDocuments: fixture.current,
     generation: replacement.generation, maxOpsPerBatch: 1,
   });
+  const nextAdapter = databaseAdapter(db, { generation: replacement.generation, holder: replacementHolder });
   const resumed = await publishBounded({
     batchPlan: replacementPlan, manifest, fenceStore, holder: replacementHolder,
-    fingerprint, executor: adapter, appliedBatchStore: adapter, now: clock,
+    fingerprint, executor: nextAdapter, appliedBatchStore: nextAdapter, now: clock,
   });
 
   assert.equal(resumed.status, "complete");
-  assert.equal(resumed.completed_batches.filter((batch) => batch.recovered).length, 2);
-  assert.equal(adapter.executions.length, replacementPlan.batches.length);
-  assert.equal(new Set(adapter.executions).size, adapter.executions.length);
+  assert.equal(resumed.completed_batches.filter((batch) => batch.recovered).length, 0);
+  assert.equal(nextAdapter.executions.length, replacementPlan.batches.length);
+  assert.equal(new Set(nextAdapter.executions).size, nextAdapter.executions.length);
 });
 
 test("canary and reconciliation failures are terminal and block publication", { skip: !DatabaseSync }, async () => {
@@ -382,7 +430,11 @@ test("canary and reconciliation failures are terminal and block publication", { 
   for (const failure of ["canary", "reconcile"]) {
     const { fenceStore, generation, holder } = await claimed(currentSnapshot, `${failure}-holder`);
     const db = openDatabase();
-    const adapter = databaseAdapter(db, { corruptTable: failure === "reconcile" ? "ocp_awards_warehouse" : null });
+    const adapter = databaseAdapter(db, {
+      generation,
+      holder,
+      corruptTable: failure === "reconcile" ? "ocp_awards_warehouse" : null,
+    });
     if (failure === "canary") {
       const original = adapter.execute.bind(adapter);
       adapter.execute = async (sql, batch) => original(sql.split("\n").filter((line) => !line.includes("keyword_search_fts")).join("\n"), batch);
@@ -431,10 +483,11 @@ test("a missing prior snapshot recovers by rebuild and the next cycle plans a de
   for (const migration of ["0025_search_and_ocp_read_models.sql", "0026_entity_intelligence_read_model.sql", "0031_d1_publication_batches.sql"]) {
     db.exec(readFileSync(join(ROOT, "worker/migrations", migration), "utf8"));
   }
-  const adapter = databaseAdapter(db);
+  const recoveryHolder = "missing-snapshot-recovery";
+  const adapter = databaseAdapter(db, { generation: claim.generation, holder: recoveryHolder });
   const rebuilt = await runMissingSnapshotRecovery({
     currentSnapshot, recovery, manifest, sourceDocuments: fixture.current,
-    generation: claim.generation, fingerprint, holder: "missing-snapshot-recovery",
+    generation: claim.generation, fingerprint, holder: recoveryHolder,
     fenceStore, adapter, appliedBatchStore: adapter, policy, maxOpsPerBatch: 8, now: clock,
   });
 
@@ -451,7 +504,7 @@ test("a missing prior snapshot recovers by rebuild and the next cycle plans a de
   const persisted = new Map([[rebuilt.recovery.rebuilt_snapshot_key, rebuilt.snapshotToPersist]]);
   assert.equal(persisted.has(snapshotKeyForGeneration(claim.generation)), true);
   const completed = await completeGeneration({
-    store: fenceStore, generation: claim.generation, holder: "missing-snapshot-recovery",
+    store: fenceStore, generation: claim.generation, holder: recoveryHolder,
     fingerprint, now: clock(),
   });
   assert.equal(completed.completed, true);
@@ -472,16 +525,120 @@ test("a missing prior snapshot recovers by rebuild and the next cycle plans a de
     fingerprint, watermarks: watermarksFromSnapshot(nextSnapshot), now: clock(), leaseMs: 60_000,
   });
   const priorFromKv = persisted.get(snapshotKeyForGeneration(claim.generation));
+  const deltaAdapter = databaseAdapter(db, {
+    generation: nextClaim.generation,
+    holder: "post-recovery-delta",
+  });
   const delta = await runProductionDelta({
     priorSnapshot: priorFromKv, currentSnapshot: nextSnapshot,
     manifest, sourceDocuments: nextSources, generation: nextClaim.generation,
     fingerprint, holder: "post-recovery-delta",
-    fenceStore, adapter, appliedBatchStore: adapter, policy, maxOpsPerBatch: 8, now: clock,
+    fenceStore, adapter: deltaAdapter, appliedBatchStore: deltaAdapter, policy, maxOpsPerBatch: 8, now: clock,
   });
   assert.equal(delta.outcome, "published");
   assert.equal(delta.plan.operation, "delta");
   assert.ok(delta.plan.models.some((model) => model.totals.update > 0 || model.totals.insert > 0));
   assert.ok(delta.batchPlan.batches.every((batch) => batch.ops.every((op) => op.kind !== "truncate")));
+});
+
+test("abandoned prior-generation markers do not skip rebuild truncates (Deploy 36933227439)", { skip: !DatabaseSync }, async () => {
+  // Reproduces gen27 abandoned delta leaving an ordinal-0 marker that, under
+  // fingerprint-only checkpoint ids, made gen28 rebuild skip truncates and hit
+  // UNIQUE on entity_intelligence inserts. Generation+holder scoped ids force
+  // the rebuild truncate batch to run.
+  const currentSnapshot = snapshotFor(manifest, fixture.current);
+  const fenceStore = createMemoryStateStore();
+  const priorHolder = "Deploy worker:36921583269:1";
+  const priorClaim = await claimGeneration({
+    fenceStore, store: fenceStore, holder: priorHolder,
+    fingerprint, watermarks: watermarksFromSnapshot(currentSnapshot), now: clock(), leaseMs: 60_000,
+  });
+  const db = openDatabase(fixture.current);
+  const entityEntry = modelEntry(manifest, "entity_intelligence");
+  const entityRows = tableRows(entityEntry, fixture.current.entity_intelligence).rows;
+  assert.ok(entityRows.some((row) => row.table === "entity_intelligence_entities"));
+
+  const priorRebuildPlan = planBatches({
+    plan: planDelta({ prior: null, current: currentSnapshot, rebuild: NO_DELTA_SNAPSHOT_BASELINE_REASON }),
+    manifest, sourceDocuments: fixture.current, generation: priorClaim.generation, maxOpsPerBatch: 8,
+  });
+  const priorTruncateBatch = priorRebuildPlan.batches.find(
+    (batch) => batch.model_id === "entity_intelligence" && batch.ordinal === 0,
+  );
+  assert.ok(priorTruncateBatch);
+  assert.ok(priorTruncateBatch.ops.some((op) => op.kind === "truncate"));
+
+  // Legacy fingerprint-only marker shape that collided across generations.
+  const legacyCheckpointId = `${fingerprint}:entity_intelligence:__model__:0`;
+  db.prepare(`INSERT INTO d1_publication_batches
+    (batch_id, checkpoint_id, generation, fingerprint, model_id, partition_id, ordinal, op_count, estimated_application_writes)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+    .run(
+      priorTruncateBatch.batch_id,
+      legacyCheckpointId,
+      priorClaim.generation,
+      fingerprint,
+      "entity_intelligence",
+      "__model__",
+      0,
+      priorTruncateBatch.op_count,
+      priorTruncateBatch.estimated_writes,
+    );
+  // Also leave a properly scoped prior-generation marker (post-fix world).
+  db.prepare(`INSERT INTO d1_publication_batches
+    (batch_id, checkpoint_id, generation, fingerprint, model_id, partition_id, ordinal, op_count, estimated_application_writes)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+    .run(
+      `${priorClaim.generation}:entity_intelligence:__model__:scoped-prior`,
+      applicationCheckpointId(fingerprint, priorTruncateBatch, { generation: priorClaim.generation, holder: priorHolder }),
+      priorClaim.generation,
+      fingerprint,
+      "entity_intelligence",
+      "__model__",
+      0,
+      priorTruncateBatch.op_count,
+      priorTruncateBatch.estimated_writes,
+    );
+
+  await abandonGeneration({
+    store: fenceStore, generation: priorClaim.generation, holder: priorHolder, fingerprint, now: clock(),
+  });
+
+  const recoveryHolder = "Deploy worker:36933227439:1";
+  const nextClaim = await claimGeneration({
+    fenceStore, store: fenceStore, holder: recoveryHolder,
+    fingerprint, watermarks: watermarksFromSnapshot(currentSnapshot), now: clock(), leaseMs: 60_000,
+  });
+  assert.notEqual(nextClaim.generation, priorClaim.generation);
+
+  const recovery = {
+    schema: "cityscroll.d1-publication-recovery.v1",
+    status: "bootstrap_required",
+    action: "explicit_rebuild",
+    reason: NO_DELTA_SNAPSHOT_BASELINE_REASON,
+    published_generation: priorClaim.generation,
+    snapshot_key: snapshotKeyForGeneration(priorClaim.generation),
+    baseline: { status: "unavailable", source: "no_published_fence_baseline" },
+    d1_writes: { commands: null, rows: null },
+    observed_fence_status: "abandoned",
+  };
+  const adapter = databaseAdapter(db, { generation: nextClaim.generation, holder: recoveryHolder });
+  const rebuilt = await runMissingSnapshotRecovery({
+    currentSnapshot, recovery, manifest, sourceDocuments: fixture.current,
+    generation: nextClaim.generation, fingerprint, holder: recoveryHolder,
+    fenceStore, adapter, appliedBatchStore: adapter, policy, maxOpsPerBatch: 8, now: clock,
+  });
+
+  assert.equal(rebuilt.outcome, "published");
+  assert.equal(rebuilt.plan.operation, "rebuild");
+  const truncateBatchId = `${nextClaim.generation}:entity_intelligence:__model__:0`;
+  assert.ok(adapter.executions.includes(truncateBatchId), "rebuild truncate batch must execute");
+  const truncateReceipt = rebuilt.publishReceipt.completed_batches.find((batch) => batch.batch_id === truncateBatchId);
+  assert.ok(truncateReceipt);
+  assert.equal(truncateReceipt.recovered, false);
+  assert.ok(truncateReceipt.attempt >= 1);
+  const entityCount = db.prepare("SELECT COUNT(*) AS count FROM entity_intelligence_entities").get().count;
+  assert.equal(entityCount, entityRows.filter((row) => row.table === "entity_intelligence_entities").length);
 });
 
 test("missing-snapshot recovery honors the incremental kill switch wiring", () => {
@@ -523,15 +680,19 @@ test("recovery reason stays bound to the missing-snapshot rebuild contract", () 
 test("the Wrangler adapter commits the application SQL and checkpoint marker in one import", async () => {
   const { createWranglerD1PublicationAdapter } = await import("../tools/d1_production_delta.mjs");
   let imported = "";
+  const holder = "fixture-holder";
+  const expectedCheckpoint = applicationCheckpointId(fingerprint, {
+    model_id: "model", partition: "part", ordinal: 0,
+  }, { generation: 4, holder });
   const adapter = createWranglerD1PublicationAdapter({
-    database: "fixture-db", generation: 4, fingerprint,
+    database: "fixture-db", generation: 4, fingerprint, holder,
     run: async (args) => {
       const fileIndex = args.indexOf("--file");
       if (fileIndex >= 0) {
         imported = readFileSync(args[fileIndex + 1], "utf8");
         return { stdout: "" };
       }
-      return { stdout: JSON.stringify([{ success: true, results: [{ checkpoint_id: `${fingerprint}:model:part:0` }] }]) };
+      return { stdout: JSON.stringify([{ success: true, results: [{ checkpoint_id: expectedCheckpoint }] }]) };
     },
   });
   const batch = {
@@ -541,6 +702,7 @@ test("the Wrangler adapter commits the application SQL and checkpoint marker in 
   await adapter.execute("UPDATE sample SET value = 'new' WHERE id = 'one';", batch);
   assert.match(imported, /UPDATE sample/);
   assert.match(imported, /INSERT INTO d1_publication_batches/);
+  assert.match(imported, new RegExp(expectedCheckpoint.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   assert.ok(imported.indexOf("UPDATE sample") < imported.indexOf("INSERT INTO d1_publication_batches"));
   assert.equal(await adapter.has(batch.batch_id, batch), true);
 });

@@ -159,8 +159,19 @@ function sha256Text(text) {
   return createHash("sha256").update(text, "utf8").digest("hex");
 }
 
-export function applicationCheckpointId(fingerprint, batch) {
-  return `${fingerprint}:${batch.model_id}:${batch.partition}:${batch.ordinal}`;
+/**
+ * Durable applied-batch marker key. Scoped to the claimed generation and
+ * holder so an abandoned prior generation (same fingerprint) can never mark
+ * this generation's batches — especially rebuild truncates — as already done.
+ * Shape: generation:holder:fingerprint:model:partition:ordinal
+ */
+export function applicationCheckpointId(fingerprint, batch, { generation, holder } = {}) {
+  if (!Number.isInteger(generation) || generation < 1) fail("applicationCheckpointId requires a positive generation");
+  if (typeof holder !== "string" || holder.length === 0) fail("applicationCheckpointId requires a non-empty holder");
+  if (!fingerprint || !batch?.model_id || batch.partition === undefined || batch.ordinal === undefined) {
+    fail("applicationCheckpointId requires fingerprint and batch model/partition/ordinal");
+  }
+  return `${generation}:${holder}:${fingerprint}:${batch.model_id}:${batch.partition}:${batch.ordinal}`;
 }
 
 function fail(message) {
@@ -446,9 +457,13 @@ export function createWranglerD1PublicationAdapter({
   wranglerVersion = "4.126.0",
   fingerprint,
   generation,
+  holder,
   run = null,
 } = {}) {
   if (!database) fail("database is required");
+  if (!Number.isInteger(generation) || generation < 1) fail("generation must be a positive integer");
+  if (typeof holder !== "string" || holder.length === 0) fail("holder is required");
+  if (!fingerprint) fail("fingerprint is required");
   const invoke = run || createWranglerInvoker({ wranglerVersion });
   const location = remote ? ["--remote"] : ["--local"];
   const base = ["d1", "execute", database, ...location, "--yes", "--config", config];
@@ -456,10 +471,11 @@ export function createWranglerD1PublicationAdapter({
     const { stdout } = await invoke([...base, "--command", bindSql(sql, params), "--json"]);
     return parseWranglerRows(stdout);
   };
+  const checkpointFor = (batch) => applicationCheckpointId(fingerprint, batch, { generation, holder });
   return {
     async execute(sql, batch) {
       const marker = `INSERT INTO d1_publication_batches (batch_id, checkpoint_id, generation, fingerprint, model_id, partition_id, ordinal, op_count, estimated_application_writes) VALUES (${[
-        batch.batch_id, applicationCheckpointId(fingerprint, batch), generation, fingerprint, batch.model_id, batch.partition, batch.ordinal, batch.op_count, batch.estimated_writes,
+        batch.batch_id, checkpointFor(batch), generation, fingerprint, batch.model_id, batch.partition, batch.ordinal, batch.op_count, batch.estimated_writes,
       ].map(sqlLiteral).join(", ")});`;
       const dir = mkdtempSync(join(tmpdir(), "d1-production-batch-"));
       const file = join(dir, "batch.sql");
@@ -472,7 +488,7 @@ export function createWranglerD1PublicationAdapter({
     },
     select,
     async has(batchId, batch = null) {
-      const checkpointId = batch ? applicationCheckpointId(fingerprint, batch) : batchId;
+      const checkpointId = batch ? checkpointFor(batch) : batchId;
       const rows = await select("SELECT checkpoint_id FROM d1_publication_batches WHERE checkpoint_id = ?", [checkpointId]);
       return rows.some((row) => row.checkpoint_id === checkpointId);
     },
@@ -609,7 +625,7 @@ async function main(argv) {
     const fingerprint = required(args, "fingerprint");
     const holder = required(args, "holder");
     const config = args.config || "worker/wrangler.toml";
-    const adapter = createWranglerD1PublicationAdapter({ database: required(args, "database"), config, generation, fingerprint });
+    const adapter = createWranglerD1PublicationAdapter({ database: required(args, "database"), config, generation, fingerprint, holder });
     const fenceStore = createWranglerKvStore({
       key: args.key || "d1-publication:state:v1", binding: args.binding || "ALERT_STATE",
       config, remote: args.remote !== "false", wranglerVersion: args["wrangler-version"] || "4.126.0",
@@ -638,7 +654,7 @@ async function main(argv) {
   const fingerprint = required(args, "fingerprint");
   const holder = required(args, "holder");
   const config = args.config || "worker/wrangler.toml";
-  const adapter = createWranglerD1PublicationAdapter({ database: required(args, "database"), config, generation, fingerprint });
+  const adapter = createWranglerD1PublicationAdapter({ database: required(args, "database"), config, generation, fingerprint, holder });
   const fenceStore = createWranglerKvStore({
     key: args.key || "d1-publication:state:v1", binding: args.binding || "ALERT_STATE",
     config, remote: args.remote !== "false", wranglerVersion: args["wrangler-version"] || "4.126.0",
