@@ -121,12 +121,144 @@ export function emptySyntheticAggregate(options = {}) {
     combined_with_other_groups: false,
     delivery: syntheticGroupDelivery(),
     cells: buildEmptySyntheticCells(options.surface_id || "near-you"),
+    // Append-only probe ledger. updated_at alone must never be the only field a
+    // run changes: every applied slot records itself here, including empty ones.
+    slots: [],
+    probe_state: "never_run",
     resident_observation_path:
       options.resident_observation_path ||
       "docs/evidence/geography-navigation-release/field-vitals-observation.json",
     note:
       "Synthetic geography-navigation field-vitals aggregate. Resident values live in the sibling " +
       "field-vitals-observation.json and are never pooled into this file.",
+  };
+}
+
+/**
+ * Glanceable aggregate state separable by reading the file alone.
+ * - never_run: no slot entry has been recorded
+ * - ran_empty: at least one slot ran and none retained observations (reasons on entries)
+ * - ran_retained: at least one slot retained observations (delivery anchor set once)
+ * @param {object | null | undefined} aggregate
+ * @returns {"never_run" | "ran_empty" | "ran_retained"}
+ */
+export function classifySyntheticProbeState(aggregate) {
+  const slots = Array.isArray(aggregate?.slots) ? aggregate.slots : [];
+  if (slots.length === 0) return "never_run";
+  const retained = slots.some(
+    (entry) =>
+      entry?.outcome?.retained === true
+      || Number(entry?.retained_observation_count) > 0
+      || Number(entry?.observations_emitted) > 0,
+  );
+  if (retained || aggregate?.delivery?.at) return "ran_retained";
+  return "ran_empty";
+}
+
+/**
+ * Per-cell contribution counts a slot claims (zeros when the slot retained nothing).
+ * @param {object} slot
+ * @returns {Record<string, number>}
+ */
+export function slotCellContributionCounts(slot) {
+  const counts = {};
+  for (const metric_id of SYNTHETIC_REQUIRED_METRICS) {
+    for (const device_class of SYNTHETIC_REQUIRED_VIEWPORTS) {
+      counts[cellKey(metric_id, device_class)] = 0;
+    }
+  }
+  if (Array.isArray(slot?.cells)) {
+    for (const cell of slot.cells) {
+      const key = cellKey(cell.metric_id, cell.device_class);
+      if (key in counts) counts[key] = Number(cell.sampled_count) || 0;
+    }
+  }
+  return counts;
+}
+
+/**
+ * Derive reached / collected / wrote stages and a reason when the slot retained none.
+ * `wrote` is true once the builder records the slot entry into the aggregate ledger.
+ * @param {object} slot
+ * @returns {{ retained: boolean, stages: { reached: boolean, collected: boolean, wrote: boolean }, reason: string }}
+ */
+export function deriveSlotOutcome(slot) {
+  const failures = Array.isArray(slot?.failures) ? slot.failures : [];
+  const unreachable = failures.some((entry) => entry?.reason === "page_unreachable");
+  const visitFailed = failures.some((entry) => entry?.reason === "visit_failed");
+  const pagesVisited = Number(slot?.pages_visited) || 0;
+  const diagnosis = slot?.collection_diagnosis && typeof slot.collection_diagnosis === "object"
+    ? slot.collection_diagnosis
+    : null;
+
+  let reached = pagesVisited > 0 && !unreachable;
+  if (diagnosis && typeof diagnosis.reached === "boolean") {
+    reached = diagnosis.reached;
+  }
+
+  const marked = Number(slot?.marked_beacons) || 0;
+  const emitted = Number(slot?.observations_emitted) || 0;
+  const retainedCount = Number(slot?.retained_observation_count) || 0;
+  let collected = marked > 0 || emitted > 0 || retainedCount > 0 || slotRetainedObservation(slot);
+  if (diagnosis && typeof diagnosis.collected === "boolean") {
+    collected = diagnosis.collected;
+  }
+
+  let reason;
+  if (collected) {
+    reason = "retained_observations";
+  } else if (typeof diagnosis?.reason === "string" && diagnosis.reason) {
+    reason = diagnosis.reason;
+  } else if (!reached) {
+    if (unreachable) reason = "page_unreachable";
+    else if (visitFailed) reason = "visit_failed";
+    else if (pagesVisited === 0 && !Array.isArray(slot?.visits)) reason = "unknown";
+    else reason = "did_not_reach";
+  } else if ((Number(slot?.unmarked_beacons) || 0) > 0) {
+    reason = "unmarked_beacons_only";
+  } else {
+    reason = "reached_but_no_beacons";
+  }
+
+  return {
+    retained: collected,
+    stages: {
+      reached,
+      collected,
+      wrote: true,
+    },
+    reason,
+  };
+}
+
+/**
+ * Build the append-only ledger entry for one applied probe slot.
+ * @param {object} slot
+ */
+export function buildSlotLedgerEntry(slot) {
+  const slotId = slot?.run_key || slot?.slot_id || null;
+  if (!slotId) {
+    throw new Error("probe slot requires run_key or slot_id to record itself");
+  }
+  const outcome = deriveSlotOutcome(slot);
+  const finishedAt = slot?.finished_at || slot?.observed_at || null;
+  return {
+    slot_id: slotId,
+    run_id: slot?.github_run_id || slot?.run_id || null,
+    run_attempt: slot?.github_run_attempt || slot?.run_attempt || null,
+    trigger: slot?.trigger ?? null,
+    started_at: slot?.started_at || null,
+    finished_at: finishedAt,
+    observed_at: slot?.observed_at || finishedAt,
+    pages_listed: Number(slot?.pages_listed) || 0,
+    pages_visited: Number(slot?.pages_visited) || 0,
+    observations_emitted: Number(slot?.observations_emitted) || 0,
+    retained_observation_count: Number(slot?.retained_observation_count) || 0,
+    marked_beacons: Number(slot?.marked_beacons) || 0,
+    unmarked_beacons: Number(slot?.unmarked_beacons) || 0,
+    cell_contribution_counts: slotCellContributionCounts(slot),
+    probe_status: slot?.status || null,
+    outcome,
   };
 }
 
@@ -191,8 +323,9 @@ export function slotRetainedObservation(slot) {
 
 /**
  * Apply one probe slot to an aggregate.
- * A slot that retains nothing does not advance or set the delivery.
- * The first slot that retains an observation sets the first_probe_slot delivery.
+ * Every slot records itself in `slots` (including empty ones with an outcome reason).
+ * A slot that retains nothing does not advance or set the delivery anchor.
+ * The first slot that retains an observation sets the first_probe_slot delivery once.
  *
  * @param {object} aggregate
  * @param {object} slot
@@ -202,8 +335,13 @@ export function applyProbeSlot(aggregate, slot) {
   if (!aggregate || aggregate.schema !== GEOGRAPHY_NAVIGATION_FIELD_VITALS_SYNTHETIC_SCHEMA) {
     throw new Error("applyProbeSlot requires a synthetic field-vitals aggregate");
   }
-  const next = structuredClone(aggregate);
+  const next = normalizeSyntheticAggregate(aggregate);
   const retained = slotRetainedObservation(slot);
+  const entry = buildSlotLedgerEntry(slot);
+
+  const existingIndex = next.slots.findIndex((row) => row?.slot_id === entry.slot_id);
+  if (existingIndex >= 0) next.slots[existingIndex] = entry;
+  else next.slots.push(entry);
 
   if (Array.isArray(slot?.cells)) {
     const byKey = new Map(next.cells.map((cell) => [cellKey(cell.metric_id, cell.device_class), cell]));
@@ -238,7 +376,23 @@ export function applyProbeSlot(aggregate, slot) {
     }
   }
 
-  next.updated_at = slot?.observed_at || next.updated_at || null;
+  next.updated_at = slot?.observed_at || entry.finished_at || next.updated_at || null;
+  next.probe_state = classifySyntheticProbeState(next);
+  return next;
+}
+
+/**
+ * Fill the slot ledger / probe_state on aggregates written before those fields existed.
+ * @param {object} document
+ * @returns {object}
+ */
+export function normalizeSyntheticAggregate(document) {
+  if (!document || typeof document !== "object" || Array.isArray(document)) {
+    throw new Error("normalizeSyntheticAggregate requires an aggregate object");
+  }
+  const next = structuredClone(document);
+  if (!Array.isArray(next.slots)) next.slots = [];
+  next.probe_state = classifySyntheticProbeState(next);
   return next;
 }
 
@@ -248,7 +402,7 @@ export function applyProbeSlot(aggregate, slot) {
  * @returns {object}
  */
 export function loadPendingSyntheticAggregate(text) {
-  const document = JSON.parse(text);
+  const document = normalizeSyntheticAggregate(JSON.parse(text));
   const read = readSyntheticAggregate(document);
   if (!read.ok) {
     throw new Error(
@@ -272,7 +426,11 @@ export function foldPendingSyntheticAggregate(committed, pending) {
   const base = committed && typeof committed === "object"
     ? structuredClone(committed)
     : emptySyntheticAggregate();
-  if (!pending || typeof pending !== "object") return base;
+  if (!Array.isArray(base.slots)) base.slots = [];
+  if (!pending || typeof pending !== "object") {
+    base.probe_state = classifySyntheticProbeState(base);
+    return base;
+  }
 
   const pendingRead = readSyntheticAggregate(pending);
   if (!pendingRead.ok) {
@@ -310,6 +468,15 @@ export function foldPendingSyntheticAggregate(committed, pending) {
       return byKey.get(key) || emptySyntheticCell({ metric_id, device_class, surface_id: base.surface_id });
     }),
   );
+
+  // Union slot ledger entries by slot_id so an open empty/retaining tip is not lost.
+  const slotById = new Map((base.slots || []).map((entry) => [entry.slot_id, structuredClone(entry)]));
+  for (const entry of pendingDoc.slots || []) {
+    if (!entry?.slot_id) continue;
+    if (!slotById.has(entry.slot_id)) slotById.set(entry.slot_id, structuredClone(entry));
+  }
+  base.slots = [...slotById.values()];
+  base.probe_state = classifySyntheticProbeState(base);
   return base;
 }
 
@@ -379,10 +546,77 @@ export function readSyntheticAggregate(document) {
     "budgets",
     "delivery",
     "cells",
+    "slots",
+    "probe_state",
   ];
   for (const field of requiredTop) {
     if (!(field in document) || document[field] == null) {
       return { ok: false, reason: "missing_required_field", missing_field: field, state: "invalid" };
+    }
+  }
+  if (!Array.isArray(document.slots)) {
+    return { ok: false, reason: "missing_required_field", missing_field: "slots", state: "invalid" };
+  }
+  const expectedState = classifySyntheticProbeState(document);
+  if (document.probe_state !== expectedState) {
+    return {
+      ok: false,
+      reason: "probe_state_mismatch",
+      missing_field: "probe_state",
+      state: "invalid",
+    };
+  }
+  for (const [index, entry] of document.slots.entries()) {
+    if (!entry || typeof entry !== "object") {
+      return { ok: false, reason: "invalid_slot_entry", missing_field: `slots[${index}]`, state: "invalid" };
+    }
+    for (const field of ["slot_id", "trigger", "outcome", "cell_contribution_counts"]) {
+      if (!(field in entry) || entry[field] == null) {
+        return {
+          ok: false,
+          reason: "missing_required_field",
+          missing_field: `slots[${index}].${field}`,
+          state: "invalid",
+        };
+      }
+    }
+    const outcome = entry.outcome;
+    if (typeof outcome !== "object" || outcome == null || Array.isArray(outcome)) {
+      return {
+        ok: false,
+        reason: "missing_required_field",
+        missing_field: `slots[${index}].outcome`,
+        state: "invalid",
+      };
+    }
+    for (const field of ["retained", "stages", "reason"]) {
+      if (!(field in outcome)) {
+        return {
+          ok: false,
+          reason: "missing_required_field",
+          missing_field: `slots[${index}].outcome.${field}`,
+          state: "invalid",
+        };
+      }
+    }
+    const stages = outcome.stages;
+    if (!stages || typeof stages !== "object") {
+      return {
+        ok: false,
+        reason: "missing_required_field",
+        missing_field: `slots[${index}].outcome.stages`,
+        state: "invalid",
+      };
+    }
+    for (const field of ["reached", "collected", "wrote"]) {
+      if (!(field in stages)) {
+        return {
+          ok: false,
+          reason: "missing_required_field",
+          missing_field: `slots[${index}].outcome.stages.${field}`,
+          state: "invalid",
+        };
+      }
     }
   }
 

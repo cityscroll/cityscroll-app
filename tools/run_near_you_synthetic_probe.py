@@ -179,16 +179,71 @@ def drive_interaction(page: Any, selectors: list[str]) -> dict[str, Any]:
     return {"status": "no_target", "selector": None}
 
 
+def flush_rum_beacons(page: Any) -> None:
+    """Ask the page RUM sink to flush the way a real tab hide/unload would."""
+    page.evaluate(
+        """() => {
+          try {
+            Object.defineProperty(document, "visibilityState", {
+              configurable: true,
+              get() { return "hidden"; },
+            });
+          } catch (_) { /* best effort */ }
+          try {
+            document.dispatchEvent(new Event("visibilitychange"));
+          } catch (_) { /* best effort */ }
+          try {
+            window.dispatchEvent(new Event("pagehide"));
+          } catch (_) { /* best effort */ }
+        }"""
+    )
+
+
+def collection_diagnosis(
+    *,
+    pages_visited: int,
+    failures: list[dict[str, Any]],
+    marked_beacons: int,
+    unmarked_beacons: int,
+    observations: int,
+) -> dict[str, Any]:
+    unreachable = any(entry.get("reason") == "page_unreachable" for entry in failures)
+    visit_failed = any(entry.get("reason") == "visit_failed" for entry in failures)
+    reached = pages_visited > 0 and not unreachable
+    collected = marked_beacons > 0 or observations > 0
+    if collected:
+        reason = "retained_observations"
+    elif not reached:
+        if unreachable:
+            reason = "page_unreachable"
+        elif visit_failed:
+            reason = "visit_failed"
+        else:
+            reason = "did_not_reach"
+    elif unmarked_beacons > 0:
+        reason = "unmarked_beacons_only"
+    else:
+        reason = "reached_but_no_beacons"
+    return {
+        "reached": reached,
+        "collected": collected,
+        "beacon_counts": {"marked": marked_beacons, "unmarked": unmarked_beacons},
+        "reason": reason,
+    }
+
+
 def run_slot(plan: dict[str, Any], run_key: str) -> dict[str, Any]:
     sync_playwright = load_playwright()
     policy = plan.get("visit_policy") or {}
-    settle_ms = int(policy.get("settle_ms", 8000))
+    settle_ms = int(policy.get("settle_ms", 12000))
     interaction_settle_ms = int(policy.get("interaction_settle_ms", 4000))
-    page_timeout_ms = int(policy.get("page_timeout_ms", 60000))
+    flush_wait_ms = int(policy.get("flush_wait_ms", 6000))
+    page_timeout_ms = int(policy.get("page_timeout_ms", 90000))
     deadline = time.monotonic() + int(policy.get("run_budget_ms", 600000)) / 1000
     interaction = policy.get("interaction") or {}
     selectors = list(interaction.get("preferred_selectors") or ["button", "a[href]"])
     network = plan.get("network_profile") or {}
+    started_at = now_iso()
 
     visited: list[dict[str, Any]] = []
     failures: list[dict[str, Any]] = []
@@ -247,11 +302,21 @@ def run_slot(plan: dict[str, Any], run_key: str) -> dict[str, Any]:
                         "http_status": status,
                     })
                 else:
+                    # Production RUM boots only after window load + idle. Under the
+                    # fixed 4G throttle, waiting from domcontentloaded alone left the
+                    # collector unstarted and every cell at zero beacons.
+                    load_state = "load"
+                    try:
+                        page.wait_for_load_state("load", timeout=page_timeout_ms)
+                    except Exception:  # noqa: BLE001
+                        load_state = "load_timeout"
                     page.wait_for_timeout(settle_ms)
                     interaction_result = {"status": "skipped"}
                     if visit.get("interaction_required", True):
                         interaction_result = drive_interaction(page, selectors)
                         page.wait_for_timeout(interaction_settle_ms)
+                    flush_rum_beacons(page)
+                    page.wait_for_timeout(flush_wait_ms)
                     interactions.append({
                         "path": visit["path"],
                         "device_class": visit["device_class"],
@@ -262,6 +327,7 @@ def run_slot(plan: dict[str, Any], run_key: str) -> dict[str, Any]:
                         "device_class": visit["device_class"],
                         "http_status": status,
                         "interaction": interaction_result.get("status"),
+                        "load_state": load_state,
                     })
             except Exception as error:  # noqa: BLE001
                 failures.append({
@@ -275,10 +341,20 @@ def run_slot(plan: dict[str, Any], run_key: str) -> dict[str, Any]:
                 context.close()
         browser.close()
 
+    finished_at = now_iso()
+    diagnosis = collection_diagnosis(
+        pages_visited=len(visited),
+        failures=failures,
+        marked_beacons=marked_beacons,
+        unmarked_beacons=unmarked_beacons,
+        observations=observations,
+    )
     return {
         "schema": PROBE_SCHEMA,
         "run_key": run_key,
-        "observed_at": now_iso(),
+        "started_at": started_at,
+        "finished_at": finished_at,
+        "observed_at": finished_at,
         "traffic_class": TRAFFIC_CLASS,
         "surface_id": plan.get("surface_id"),
         "base": plan.get("base"),
@@ -292,7 +368,14 @@ def run_slot(plan: dict[str, Any], run_key: str) -> dict[str, Any]:
         "visits": visited,
         "interactions": interactions,
         "failures": failures,
-        "status": probe_status(len(plan["visits"]), len(visited), unmarked_beacons, interactions),
+        "collection_diagnosis": diagnosis,
+        "status": probe_status(
+            len(plan["visits"]),
+            len(visited),
+            unmarked_beacons,
+            interactions,
+            observations,
+        ),
     }
 
 
@@ -301,6 +384,7 @@ def probe_status(
     visited: int,
     unmarked_beacons: int,
     interactions: list[dict[str, Any]],
+    observations: int = 0,
 ) -> str:
     if unmarked_beacons:
         return "failed"
@@ -310,6 +394,9 @@ def probe_status(
         return "degraded"
     if visited < listed:
         return "degraded"
+    if observations <= 0:
+        # Reached the pages but retained nothing — distinct from a healthy retaining slot.
+        return "empty_collection"
     return "healthy"
 
 
@@ -344,7 +431,7 @@ def main(argv: list[str] | None = None) -> int:
         args.out.write_text(text, encoding="utf-8")
     else:
         sys.stdout.write(text)
-    return 0 if result["status"] in {"healthy", "degraded"} else 1
+    return 0 if result["status"] in {"healthy", "degraded", "empty_collection"} else 1
 
 
 if __name__ == "__main__":

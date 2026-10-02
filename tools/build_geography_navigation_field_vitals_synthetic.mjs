@@ -18,6 +18,7 @@ import {
   emptySyntheticAggregate,
   foldPendingSyntheticAggregate,
   loadPendingSyntheticAggregate,
+  normalizeSyntheticAggregate,
   readSyntheticAggregate,
 } from "./lib/geography_navigation_field_vitals_synthetic.mjs";
 
@@ -62,19 +63,19 @@ function main() {
   }
 
   if (args.check) {
-    const document = loadJson(OUT_PATH);
+    const document = normalizeSyntheticAggregate(loadJson(OUT_PATH));
     const read = readSyntheticAggregate(document);
     if (!read.ok) {
       throw new Error(`synthetic aggregate check failed: ${read.reason} missing_field=${read.missing_field}`);
     }
-    process.stdout.write(`ok ${OUT_PATH}\n`);
+    process.stdout.write(`ok ${OUT_PATH} probe_state=${document.probe_state} slots=${document.slots.length}\n`);
     return;
   }
 
   if (args.fromSlot) {
     let committed;
     try {
-      committed = loadJson(OUT_PATH);
+      committed = normalizeSyntheticAggregate(loadJson(OUT_PATH));
     } catch {
       committed = emptySyntheticAggregate();
     }
@@ -90,7 +91,9 @@ function main() {
       throw new Error(`synthetic aggregate invalid after slot: ${read.reason} missing_field=${read.missing_field}`);
     }
     writeFileSync(OUT_PATH, `${JSON.stringify(next, null, 2)}\n`);
-    process.stdout.write(`wrote ${OUT_PATH} delivery.at=${next.delivery.at}\n`);
+    process.stdout.write(
+      `wrote ${OUT_PATH} delivery.at=${next.delivery.at} probe_state=${next.probe_state} slots=${next.slots.length}\n`,
+    );
     return;
   }
 
@@ -101,7 +104,7 @@ function main() {
   // Default: ensure a valid empty/current aggregate exists.
   let document;
   try {
-    document = loadJson(OUT_PATH);
+    document = normalizeSyntheticAggregate(loadJson(OUT_PATH));
   } catch {
     document = emptySyntheticAggregate();
   }
@@ -110,7 +113,7 @@ function main() {
     throw new Error(`synthetic aggregate invalid: ${read.reason} missing_field=${read.missing_field}`);
   }
   writeFileSync(OUT_PATH, `${JSON.stringify(document, null, 2)}\n`);
-  process.stdout.write(`wrote ${OUT_PATH}\n`);
+  process.stdout.write(`wrote ${OUT_PATH} probe_state=${document.probe_state} slots=${document.slots.length}\n`);
 }
 
 main();
