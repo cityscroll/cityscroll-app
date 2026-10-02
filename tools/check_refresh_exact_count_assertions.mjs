@@ -10,10 +10,11 @@
  *      an empty or incoherent population
  *
  * Default scan discovers every test file that loads a governed refreshed
- * artifact by content. architecture/refresh-exact-count-guard.json records
- * the empirical restamp set as provenance (which suites a real refresh
- * invalidated); that list stays covered but is not the scan allowlist.
- * Grow refreshed_site_data_artifacts only when a later refresh proves another
+ * artifact by content, including helper-based loads and JSON module imports.
+ * architecture/refresh-exact-count-guard.json records the empirical restamp
+ * set as provenance (which suites a real refresh invalidated); that list
+ * stays covered but is not the scan allowlist. Grow
+ * refreshed_site_data_artifacts only when a later refresh proves another
  * member.
  *
  *   node tools/check_refresh_exact_count_assertions.mjs
@@ -30,11 +31,18 @@ const POLICY_PATH = "architecture/refresh-exact-count-guard.json";
 const ASSERT_EQUAL_RE =
   /\bassert\.(?:equal|strictEqual)\s*\(\s*([^,]+?)\s*,\s*(\d+)\s*(?:,|\))/g;
 
+// Discovery matches load idioms, including helpers whose names look like
+// readers/loaders with a bare governed path argument
+// (loadJsonFile("site/data/...")), JSON module imports, and join/URL path
+// forms. A path that only appears in a string array, object literal, or
+// non-load call such as indexOf stays unscanned.
 const LOAD_PATTERNS = [
-  /(?:readFileSync|readFile|readJson|requireJson|loadJson)\s*\(\s*(?:new\s+URL\(\s*)?['"`]([^'"`]+)['"`]/g,
-  /\bread\s*\(\s*['"`]((?:(?:\.\.\/)+)?site\/data\/[^'"`]+\.json)['"`]\s*\)/g,
+  /(?:readFileSync|readFile|readJson|requireJson|loadJson|loadJsonFile)\s*\(\s*(?:new\s+URL\(\s*)?['"`]([^'"`]+)['"`]/g,
+  // Helper calls named like load*/read*/parse*/require* with a bare path arg.
+  /\b[A-Za-z_$]*(?:load|Load|read|Read|parse|Parse|require|Require)[A-Za-z_$]*\s*\(\s*(?:new\s+URL\(\s*)?['"`]((?:(?:\.\.\/)+)?site\/data\/[^'"`]+\.json)['"`]/g,
+  /from\s+['"`]((?:(?:\.\.\/)+)?site\/data\/[^'"`]+\.json)['"`]/g,
   /new\s+URL\(\s*['"`]((?:(?:\.\.\/)+)?site\/data\/[^'"`]+\.json)['"`]/g,
-  /(?:path\.join|join)\(\s*ROOT\s*,\s*['"`](site\/data\/[^'"`]+\.json)['"`]\s*\)/g,
+  /(?:path\.join|join)\(\s*[A-Za-z_$][\w$]*\s*,\s*['"`]((?:(?:\.\.\/)+)?site\/data\/[^'"`]+\.json)['"`]\s*\)/g,
   /=\s*['"`]((?:(?:\.\.\/)+)?site\/data\/[^'"`]+\.json)['"`]/g,
 ];
 
@@ -137,11 +145,29 @@ function extractSiteDataPaths(text) {
 }
 
 /**
+ * True when an expression loads JSON (parse, named readers, or any helper
+ * call whose first argument is a site/data path). Path-only join/URL/string
+ * forms are excluded so they stay one-hop aliases.
+ */
+function rhsLoadsGovernedJson(rhs) {
+  if (/JSON\.parse/.test(rhs)) return true;
+  if (/(?:readFileSync|readFile)\s*\(/.test(rhs)) return true;
+  // Helper named like load*/read*/parse*/require* with a bare site/data path.
+  if (
+    /\b[A-Za-z_$]*(?:load|Load|read|Read|parse|Parse|require|Require)[A-Za-z_$]*\s*\(\s*['"`][^'"`]*site\/data\//.test(rhs)
+  ) {
+    return true;
+  }
+  return false;
+}
+
+/**
  * Identifiers bound to a governed refreshed artifact load. Path aliases
  * (join(ROOT, "site/data/...")) are followed one hop into JSON.parse/readJson
  * loads so `const land = JSON.parse(readFileSync(LAND_DEFAULT))` couples.
- * Count asserts must reference one of these bindings; otherwise a file that
- * merely loads a governed artifact would flag unrelated markup/source counts.
+ * Helper loads (`loadJsonFile("site/data/...")`) and JSON module imports also
+ * bind. Count asserts must reference one of these bindings; otherwise a file
+ * that merely loads a governed artifact would flag unrelated markup/source counts.
  */
 export function refreshedLoadBindings(source, refreshedArtifacts) {
   const refreshedSet = new Set(refreshedArtifacts || []);
@@ -154,8 +180,7 @@ export function refreshedLoadBindings(source, refreshedArtifacts) {
     const rhs = match[2];
     const paths = extractSiteDataPaths(rhs);
     if (!paths.some((path) => refreshedSet.has(path))) continue;
-    const loadsJson = /JSON\.parse|readJson\s*\(/.test(rhs);
-    if (loadsJson) {
+    if (rhsLoadsGovernedJson(rhs)) {
       bindings.add(name);
       continue;
     }
@@ -167,13 +192,20 @@ export function refreshedLoadBindings(source, refreshedArtifacts) {
     const name = match[1];
     const rhs = match[2];
     if (bindings.has(name)) continue;
-    if (!/JSON\.parse|readJson\s*\(/.test(rhs)) continue;
+    if (!rhsLoadsGovernedJson(rhs) && !/JSON\.parse|readJson\s*\(/.test(rhs)) continue;
     for (const alias of pathAliases) {
       if (new RegExp(`\\b${alias}\\b`).test(rhs)) {
         bindings.add(name);
         break;
       }
     }
+  }
+  // `import name from "../site/data/....json" with { type: "json" }`
+  const importRe =
+    /import\s+([A-Za-z_$][\w$]*)\s+from\s+['"`]((?:(?:\.\.\/)+)?site\/data\/[^'"`]+\.json)['"`]/g;
+  while ((match = importRe.exec(source))) {
+    const normalized = normalizeSiteDataPath(match[2]);
+    if (normalized && refreshedSet.has(normalized)) bindings.add(match[1]);
   }
   return bindings;
 }

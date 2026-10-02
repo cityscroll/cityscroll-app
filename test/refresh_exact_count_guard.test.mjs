@@ -297,6 +297,133 @@ test("CLI reports scanned-file count on a clean repository pass", () => {
   assert.ok(count > 13, `CLI scanned count must exceed 13 (got ${count})`);
 });
 
+test("discovery recognises a governed artifact loaded through a helper call", () => {
+  // Bare string argument to any helper — not only readFileSync / new URL.
+  const source = `
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+const ROOT = process.cwd();
+const loadJsonFile = (rel) => JSON.parse(readFileSync(path.join(ROOT, rel), "utf8"));
+const shared = loadJsonFile("site/data/shared_meeting_read_model.json");
+assert.equal((shared.meetings || []).length, 2);
+`;
+  const findings = scanSource(source, {
+    relativePath: "test/helper_load_probe.test.mjs",
+    refreshedArtifacts: REFRESHED,
+    countPropertyPattern: COUNT_RE,
+  });
+  assert.equal(findings.length, 1, "helper-loaded exact count must be flagged");
+  assert.equal(findings[0].literal, 2);
+  const message = formatFinding(findings[0], POLICY);
+  assert.match(message, /helper_load_probe\.test\.mjs:\d+/);
+  assert.match(message, /fixture-pin/);
+  assert.match(message, /refresh-invariant/);
+  assert.match(message, /shared_meeting_read_model\.json/);
+});
+
+test("helper-load mutation control: adding an exact count fails, converting it passes", async () => {
+  await withTempDir("refresh-exact-count-helper", async (root) => {
+    const policy = {
+      ...POLICY,
+      empirical_starting_set: {
+        ...POLICY.empirical_starting_set,
+        test_files: [],
+      },
+    };
+    writeTree(root, {
+      "architecture/refresh-exact-count-guard.json": `${JSON.stringify(policy, null, 2)}\n`,
+      "site/data/shared_meeting_read_model.json": `${JSON.stringify({ meetings: [{}, {}] }, null, 2)}\n`,
+      "test/fixtures/helper-probe/shared_meeting_read_model.json": `${JSON.stringify({ meetings: [{}, {}] }, null, 2)}\n`,
+      "test/helper_load_refresh_count.test.mjs": `
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+const ROOT = process.cwd();
+const loadJsonFile = (rel) => JSON.parse(readFileSync(path.join(ROOT, rel), "utf8"));
+const shared = loadJsonFile("site/data/shared_meeting_read_model.json");
+assert.equal((shared.meetings || []).length, 2);
+`,
+    });
+
+    const discovered = discoverGovernedTestFiles(policy, root);
+    assert.ok(
+      discovered.some((t) => t.relative === "test/helper_load_refresh_count.test.mjs"),
+      "content discovery must find the helper-loading file",
+    );
+
+    const failRun = spawnSync(process.execPath, [TOOL, "--root", root], {
+      encoding: "utf8",
+    });
+    assert.notEqual(failRun.status, 0, "CI-shaped invocation must fail on helper-loaded exact count");
+    assert.match(failRun.stderr, /helper_load_refresh_count\.test\.mjs:\d+/);
+    assert.match(failRun.stderr, /fixture-pin/);
+    assert.match(failRun.stderr, /refresh-invariant/);
+    assert.match(failRun.stderr, /scanned \d+ test file/);
+
+    writeFileSync(join(root, "test/helper_load_refresh_count.test.mjs"), `
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+const ROOT = process.cwd();
+const loadJsonFile = (rel) => JSON.parse(readFileSync(path.join(ROOT, rel), "utf8"));
+const shared = loadJsonFile("test/fixtures/helper-probe/shared_meeting_read_model.json");
+assert.equal((shared.meetings || []).length, 2);
+`);
+    const passFixture = spawnSync(process.execPath, [TOOL, "--root", root], {
+      encoding: "utf8",
+    });
+    assert.equal(passFixture.status, 0, "fixture conversion of helper load must pass");
+    assert.match(passFixture.stdout, /scanned \d+ test file/);
+
+    writeFileSync(join(root, "test/helper_load_refresh_count.test.mjs"), `
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+const ROOT = process.cwd();
+const loadJsonFile = (rel) => JSON.parse(readFileSync(path.join(ROOT, rel), "utf8"));
+const shared = loadJsonFile("site/data/shared_meeting_read_model.json");
+const count = (shared.meetings || []).length;
+assert.ok(count >= 1);
+assert.equal(count, (shared.meetings || []).length);
+`);
+    const passInvariant = spawnSync(process.execPath, [TOOL, "--root", root], {
+      encoding: "utf8",
+    });
+    assert.equal(passInvariant.status, 0, "invariant conversion of helper load must pass");
+    assert.match(passInvariant.stdout, /scanned \d+ test file/);
+  });
+});
+
+test("mention-only governed paths stay unscanned (first_class_refresh fixture)", () => {
+  // Lists governed paths in a string array and loads only an ungoverned one.
+  const discovered = discoverGovernedTestFiles(POLICY);
+  assert.equal(
+    discovered.some((t) => t.relative === "test/first_class_refresh.test.mjs"),
+    false,
+    "first_class_refresh.test.mjs must stay unscanned: it mentions governed paths without loading them",
+  );
+  // Positive control: a real helper load of the same artifact is discovered.
+  assert.ok(
+    discovered.some((t) => t.relative === "test/district_activity_membership_role.test.mjs"),
+    "district_activity_membership_role.test.mjs must be discovered via loadJsonFile helper",
+  );
+});
+
+test("widened discovery scans more than the prior direct-load set and stays clean or reports", () => {
+  const run = spawnSync(process.execPath, [TOOL], { encoding: "utf8" });
+  assert.match(run.stdout + run.stderr, /scanned (\d+) test file/);
+  const combined = `${run.stdout}\n${run.stderr}`;
+  const count = Number(combined.match(/scanned (\d+) test file/)[1]);
+  assert.ok(count > 97, `helper-aware discovery must scan more than 97 (got ${count})`);
+  // Either a clean pass or explicit findings — never a silent miss of the new set.
+  if (run.status === 0) {
+    assert.match(run.stdout, /0 exact-count asserts/);
+  } else {
+    assert.match(run.stderr, /finding/);
+  }
+});
+
 test("clean repository check exports messages only when findings exist", () => {
   // Shape check: the helper returns strings, not raw finding objects.
   const messages = checkRepository({
