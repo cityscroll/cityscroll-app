@@ -10,10 +10,12 @@ import {
   assertResidentNearYouHonesty,
   assertSyntheticAggregateRetainsPending,
   classifySyntheticCell,
+  classifySyntheticProbeState,
   emptySyntheticAggregate,
   findForbiddenCrossGroupKeys,
   foldPendingSyntheticAggregate,
   loadPendingSyntheticAggregate,
+  normalizeSyntheticAggregate,
   readSyntheticAggregate,
   retainedSlotsDropped,
   slotRetainedObservation,
@@ -44,6 +46,14 @@ test("probe plan covers desktop and mobile and requires interaction for INP", ()
   );
   assert.equal(pages.visit_policy.interaction.required, true);
   assert.ok(pages.visit_policy.interaction.preferred_selectors.includes("#near-geo-search-input"));
+  assert.ok(pages.visit_policy.flush_wait_ms >= 6000, "flush wait must outlast idle beacon delivery");
+  assert.ok(pages.visit_policy.settle_ms >= 12000, "settle must follow load under the fixed 4G throttle");
+
+  const probeSource = readFileSync(PROBE, "utf8");
+  assert.match(probeSource, /wait_for_load_state\("load"/);
+  assert.match(probeSource, /flush_rum_beacons/);
+  assert.match(probeSource, /pagehide/);
+  assert.match(probeSource, /empty_collection/);
 
   const plan = spawnSync("python3", [PROBE, "--plan", "--pages", PAGES_PATH], {
     encoding: "utf8",
@@ -57,6 +67,23 @@ test("probe plan covers desktop and mobile and requires interaction for INP", ()
   const classes = body.visits.map((visit) => visit.device_class).sort();
   assert.deepEqual(classes, ["desktop", "mobile"]);
   assert.ok(body.visits.every((visit) => visit.interaction_required === true));
+});
+
+test("retained aggregate records scheduled run 36943164756 as an empty slot with a reason", () => {
+  const document = JSON.parse(readFileSync(AGGREGATE_PATH, "utf8"));
+  assert.equal(document.probe_state, "ran_empty");
+  assert.equal(document.delivery.at, null);
+  assert.equal(document.delivery.source, "unset");
+  const entry = document.slots.find((row) => row.slot_id === "github-actions:36943164756:1");
+  assert.ok(entry, "retrospective slot for run 36943164756 must be present");
+  assert.equal(entry.run_id, "36943164756");
+  assert.equal(entry.trigger, "schedule");
+  assert.equal(entry.outcome.retained, false);
+  assert.equal(entry.outcome.stages.reached, true);
+  assert.equal(entry.outcome.stages.collected, false);
+  assert.equal(entry.outcome.stages.wrote, true);
+  assert.equal(entry.outcome.reason, "reached_but_no_beacons");
+  assert.equal(entry.observations_emitted, 0);
 });
 
 test("delivery records first_probe_slot with null merge_commit, pull_request, and trigger (present, not absent)", () => {
@@ -124,21 +151,103 @@ test("retained aggregate has no combined/overall/total cross-group keys", () => 
   assert.ok(!("combined" in document));
 });
 
+test("three probe states are separable from the file alone: never_run, ran_empty, ran_retained", () => {
+  const neverRun = emptySyntheticAggregate();
+  assert.equal(neverRun.probe_state, "never_run");
+  assert.equal(classifySyntheticProbeState(neverRun), "never_run");
+  assert.equal(neverRun.slots.length, 0);
+  assert.equal(neverRun.delivery.at, null);
+
+  const emptySlot = {
+    run_key: "slot-empty-a",
+    observed_at: "2026-10-01T12:00:00.000Z",
+    trigger: "schedule",
+    pages_visited: 2,
+    pages_listed: 2,
+    observations_emitted: 0,
+    retained_observation_count: 0,
+    marked_beacons: 0,
+    unmarked_beacons: 0,
+    visits: [
+      { path: "/near-you", device_class: "desktop", http_status: 200 },
+      { path: "/near-you", device_class: "mobile", http_status: 200 },
+    ],
+    failures: [],
+  };
+  let ranEmpty = applyProbeSlot(emptySyntheticAggregate(), emptySlot);
+  assert.equal(ranEmpty.probe_state, "ran_empty");
+  assert.equal(classifySyntheticProbeState(ranEmpty), "ran_empty");
+  assert.equal(ranEmpty.delivery.at, null);
+  assert.equal(ranEmpty.slots.length, 1);
+  assert.equal(ranEmpty.slots[0].outcome.retained, false);
+  assert.equal(ranEmpty.slots[0].outcome.stages.reached, true);
+  assert.equal(ranEmpty.slots[0].outcome.stages.collected, false);
+  assert.equal(ranEmpty.slots[0].outcome.stages.wrote, true);
+  assert.equal(ranEmpty.slots[0].outcome.reason, "reached_but_no_beacons");
+  assert.ok(ranEmpty.updated_at);
+  // A second empty slot appends; updated_at is never the only field that changes.
+  const beforeKeys = JSON.stringify(Object.keys(ranEmpty).sort());
+  ranEmpty = applyProbeSlot(ranEmpty, {
+    ...emptySlot,
+    run_key: "slot-empty-b",
+    observed_at: "2026-10-01T12:30:00.000Z",
+  });
+  assert.equal(ranEmpty.slots.length, 2);
+  assert.equal(ranEmpty.probe_state, "ran_empty");
+  assert.equal(beforeKeys, JSON.stringify(Object.keys(ranEmpty).sort()));
+
+  const retainingSlot = {
+    run_key: "slot-retain-1",
+    observed_at: "2026-10-01T13:00:00.000Z",
+    trigger: "schedule",
+    pages_visited: 2,
+    pages_listed: 2,
+    observations_emitted: 6,
+    retained_observation_count: 6,
+    marked_beacons: 2,
+    cells: [
+      { metric_id: "lcp_ms", device_class: "desktop", sampled_count: 1 },
+      { metric_id: "lcp_ms", device_class: "mobile", sampled_count: 1 },
+      { metric_id: "inp_ms", device_class: "desktop", sampled_count: 1 },
+      { metric_id: "inp_ms", device_class: "mobile", sampled_count: 1 },
+      { metric_id: "cls_score", device_class: "desktop", sampled_count: 1 },
+      { metric_id: "cls_score", device_class: "mobile", sampled_count: 1 },
+    ],
+  };
+  const ranRetained = applyProbeSlot(emptySyntheticAggregate(), retainingSlot);
+  assert.equal(ranRetained.probe_state, "ran_retained");
+  assert.equal(classifySyntheticProbeState(ranRetained), "ran_retained");
+  assert.equal(ranRetained.delivery.at, "2026-10-01T13:00:00.000Z");
+  assert.equal(ranRetained.slots[0].outcome.retained, true);
+  assert.equal(ranRetained.slots[0].outcome.reason, "retained_observations");
+  assert.notEqual(neverRun.probe_state, ranEmpty.probe_state);
+  assert.notEqual(ranEmpty.probe_state, ranRetained.probe_state);
+  assert.notEqual(neverRun.probe_state, ranRetained.probe_state);
+});
+
 test("mutation control: empty slot does not set delivery; first retaining slot does", () => {
   let aggregate = emptySyntheticAggregate();
   assert.equal(aggregate.delivery.at, null);
+  assert.equal(aggregate.probe_state, "never_run");
 
   const emptySlot = {
     run_key: "slot-empty",
     observed_at: "2026-10-01T12:00:00.000Z",
+    trigger: "schedule",
+    pages_visited: 2,
     observations_emitted: 0,
     retained_observation_count: 0,
+    marked_beacons: 0,
   };
   assert.equal(slotRetainedObservation(emptySlot), false);
   aggregate = applyProbeSlot(aggregate, emptySlot);
   assert.equal(aggregate.delivery.at, null);
   assert.equal(aggregate.delivery.merge_commit, null);
   assert.equal(aggregate.delivery.pull_request, null);
+  assert.equal(aggregate.probe_state, "ran_empty");
+  assert.equal(aggregate.slots.length, 1);
+  assert.equal(aggregate.slots[0].slot_id, "slot-empty");
+  assert.equal(aggregate.slots[0].outcome.retained, false);
 
   const retainingSlot = {
     run_key: "slot-retain-1",
@@ -163,6 +272,13 @@ test("mutation control: empty slot does not set delivery; first retaining slot d
   assert.equal(aggregate.delivery.merge_commit, null);
   assert.equal(aggregate.delivery.pull_request, null);
   assert.equal(aggregate.delivery.kind, "first_probe_slot");
+  assert.equal(aggregate.probe_state, "ran_retained");
+  assert.equal(aggregate.slots.length, 2);
+  assert.equal(
+    aggregate.cells.find((cell) => cell.metric_id === "lcp_ms" && cell.device_class === "desktop")
+      .sampled_count,
+    1,
+  );
 
   // A later retaining slot must not move the first-slot anchor or its trigger.
   aggregate = applyProbeSlot(aggregate, {
@@ -174,6 +290,18 @@ test("mutation control: empty slot does not set delivery; first retaining slot d
   assert.equal(aggregate.delivery.at, "2026-10-01T13:00:00.000Z");
   assert.equal(aggregate.delivery.slot_id, "slot-retain-1");
   assert.equal(aggregate.delivery.trigger, "schedule");
+  assert.equal(aggregate.slots.length, 3);
+});
+
+test("legacy aggregates without slots normalize instead of failing the reader path", () => {
+  const legacy = emptySyntheticAggregate();
+  delete legacy.slots;
+  delete legacy.probe_state;
+  legacy.updated_at = "2026-10-01T23:54:23Z";
+  const normalized = normalizeSyntheticAggregate(legacy);
+  assert.deepEqual(normalized.slots, []);
+  assert.equal(normalized.probe_state, "never_run");
+  assert.equal(readSyntheticAggregate(normalized).ok, true);
 });
 
 test("reader refuses missing required per-cell field and names it; absent vs unread", () => {

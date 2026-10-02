@@ -41,9 +41,10 @@
   "visit_policy": {
     "cold_cache_per_visit": true,
     "visits_per_page_per_slot": 1,
-    "settle_ms": 8000,
+    "settle_ms": 12000,
     "interaction_settle_ms": 4000,
-    "page_timeout_ms": 60000,
+    "flush_wait_ms": 6000,
+    "page_timeout_ms": 90000,
     "run_budget_ms": 600000,
     "interaction": {
       "required": true,
@@ -57,7 +58,7 @@
         "a[href]"
       ]
     },
-    "rationale": "One cold visit per path per viewport per slot, then one driven interaction so LCP/CLS and INP can all retain observations."
+    "rationale": "One cold visit per path per viewport per slot. Wait for window load under the fixed 4G throttle before settling, drive one interaction, then flush on pagehide so LCP/CLS/INP beacons can leave before the context closes."
   },
   "pages": [
     {

@@ -119,5 +119,41 @@
   ],
   "resident_observation_path": "docs/evidence/geography-navigation-release/field-vitals-observation.json",
   "note": "Synthetic geography-navigation field-vitals aggregate. Resident values live in the sibling field-vitals-observation.json and are never pooled into this file.",
-  "updated_at": "2026-10-01T23:54:23Z"
+  "updated_at": "2026-10-01T23:54:23Z",
+  "slots": [
+    {
+      "slot_id": "github-actions:36943164756:1",
+      "run_id": "36943164756",
+      "run_attempt": "1",
+      "trigger": "schedule",
+      "started_at": "2026-10-01T23:53:55Z",
+      "finished_at": "2026-10-01T23:54:23Z",
+      "observed_at": "2026-10-01T23:54:23Z",
+      "pages_listed": 2,
+      "pages_visited": 2,
+      "observations_emitted": 0,
+      "retained_observation_count": 0,
+      "marked_beacons": 0,
+      "unmarked_beacons": 0,
+      "cell_contribution_counts": {
+        "lcp_ms::desktop": 0,
+        "lcp_ms::mobile": 0,
+        "inp_ms::desktop": 0,
+        "inp_ms::mobile": 0,
+        "cls_score::desktop": 0,
+        "cls_score::mobile": 0
+      },
+      "probe_status": "healthy",
+      "outcome": {
+        "retained": false,
+        "stages": {
+          "reached": true,
+          "collected": false,
+          "wrote": true
+        },
+        "reason": "reached_but_no_beacons"
+      }
+    }
+  ],
+  "probe_state": "ran_empty"
 }
