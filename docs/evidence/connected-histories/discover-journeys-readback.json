@@ -1,0 +1,564 @@
+{
+  "schema": "cityscroll.connected_histories_discover_journeys.v1",
+  "observed_at": "2026-10-02T15:33:27Z",
+  "origin": "https://cityscroll.org",
+  "public_alias": "cf369ad9238fe",
+  "required_landed_commit": "405a600e49d5c76d30b4ecd7fd8de17c3b54aa3c",
+  "served_revision": "d1719fcd8661ea4134ac2009d6f1d9f90859fb7c",
+  "served_revision_after": "d1719fcd8661ea4134ac2009d6f1d9f90859fb7c",
+  "repository_revision": "d1719fcd8661ea4134ac2009d6f1d9f90859fb7c",
+  "revision_pin": {
+    "state": "descendant",
+    "required_landed_commit": "405a600e49d5c76d30b4ecd7fd8de17c3b54aa3c",
+    "served_revision_start": "d1719fcd8661ea4134ac2009d6f1d9f90859fb7c",
+    "served_revision_end": "d1719fcd8661ea4134ac2009d6f1d9f90859fb7c"
+  },
+  "provenance": {
+    "schema": "cityscroll.production_provenance.v1",
+    "evidence_class": "live-production-read",
+    "isolated": false,
+    "environment": "production",
+    "source": "https://cityscroll.org",
+    "observer": {
+      "tool": "tools/capture_connected_histories_discover_journeys_production_read.py",
+      "mode": "production"
+    }
+  },
+  "measurement_provenance": {
+    "revision": "d1719fcd8661ea4134ac2009d6f1d9f90859fb7c",
+    "inputs": [
+      {
+        "path": "tools/capture_connected_histories_discover_journeys_production_read.py",
+        "sha256": "503e5da861f9359ffce02ae897ebcaaa2a9055384c34e8c162dbb874dccb197c"
+      }
+    ]
+  },
+  "data_vintage": {
+    "/data/connected_history_relations.json": "2026-09-26T00:00:00.000Z",
+    "/data/connected_history_time.json": "2026-09-26T00:00:00.000Z",
+    "/data/connected_history_roles.json": "2026-09-26T00:00:00.000Z"
+  },
+  "census": {
+    "journeys_attempted": 18,
+    "journeys_satisfied": 18,
+    "families": [
+      "coyle",
+      "franklin-avenue",
+      "kingsbridge-armory",
+      "sixth-avenue",
+      "thirty-first-avenue",
+      "lighthouse-point"
+    ],
+    "profiles": [
+      "desktop-keyboard",
+      "narrow-touch",
+      "no-javascript"
+    ],
+    "expected_journeys": 18
+  },
+  "journeys": [
+    {
+      "family_id": "coyle",
+      "title": "Coyle Street BSA cases",
+      "query": "2025-54-A",
+      "profile": "desktop-keyboard",
+      "route": "/search/?q=2025-54-A&source_scope=all#connected-history",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "has_touch": false
+      },
+      "satisfied": true,
+      "runtime": {
+        "width": 1440,
+        "height": 900,
+        "query": "2025-54-A",
+        "state": "ready",
+        "family": "coyle"
+      },
+      "observation": {
+        "event_count": 2,
+        "identity_separators": 3
+      }
+    },
+    {
+      "family_id": "franklin-avenue",
+      "title": "Franklin Avenue application history",
+      "query": "960 Franklin Avenue",
+      "profile": "desktop-keyboard",
+      "route": "/search/?q=960+Franklin+Avenue&source_scope=all#connected-history",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "has_touch": false
+      },
+      "satisfied": true,
+      "runtime": {
+        "width": 1440,
+        "height": 900,
+        "query": "960 Franklin Avenue",
+        "state": "ready",
+        "family": "franklin-avenue"
+      },
+      "observation": {
+        "event_count": 8,
+        "identity_separators": 5
+      }
+    },
+    {
+      "family_id": "kingsbridge-armory",
+      "title": "Kingsbridge Armory proposal history",
+      "query": "Kingsbridge Armory",
+      "profile": "desktop-keyboard",
+      "route": "/search/?q=Kingsbridge+Armory&source_scope=all#connected-history",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "has_touch": false
+      },
+      "satisfied": true,
+      "runtime": {
+        "width": 1440,
+        "height": 900,
+        "query": "Kingsbridge Armory",
+        "state": "ready",
+        "family": "kingsbridge-armory"
+      },
+      "observation": {
+        "event_count": 8,
+        "identity_separators": 5
+      }
+    },
+    {
+      "family_id": "sixth-avenue",
+      "title": "Sixth Avenue corridor history",
+      "query": "Sixth Avenue",
+      "profile": "desktop-keyboard",
+      "route": "/search/?q=Sixth+Avenue&source_scope=all#connected-history",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "has_touch": false
+      },
+      "satisfied": true,
+      "runtime": {
+        "width": 1440,
+        "height": 900,
+        "query": "Sixth Avenue",
+        "state": "ready",
+        "family": "sixth-avenue"
+      },
+      "observation": {
+        "event_count": 3,
+        "identity_separators": 3
+      }
+    },
+    {
+      "family_id": "thirty-first-avenue",
+      "title": "31st Avenue corridor history",
+      "query": "31st Avenue",
+      "profile": "desktop-keyboard",
+      "route": "/search/?q=31st+Avenue&source_scope=all#connected-history",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "has_touch": false
+      },
+      "satisfied": true,
+      "runtime": {
+        "width": 1440,
+        "height": 900,
+        "query": "31st Avenue",
+        "state": "ready",
+        "family": "thirty-first-avenue"
+      },
+      "observation": {
+        "event_count": 4,
+        "identity_separators": 2
+      }
+    },
+    {
+      "family_id": "lighthouse-point",
+      "title": "Lighthouse Point component history",
+      "query": "Lighthouse Point",
+      "profile": "desktop-keyboard",
+      "route": "/search/?q=Lighthouse+Point&source_scope=all#connected-history",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "has_touch": false
+      },
+      "satisfied": true,
+      "runtime": {
+        "width": 1440,
+        "height": 900,
+        "query": "Lighthouse Point",
+        "state": "ready",
+        "family": "lighthouse-point"
+      },
+      "observation": {
+        "event_count": 5,
+        "identity_separators": 2
+      }
+    },
+    {
+      "family_id": "coyle",
+      "title": "Coyle Street BSA cases",
+      "query": "2025-54-A",
+      "profile": "narrow-touch",
+      "route": "/search/?q=2025-54-A&source_scope=all#connected-history",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "has_touch": true
+      },
+      "satisfied": true,
+      "runtime": {
+        "width": 390,
+        "height": 844,
+        "query": "2025-54-A",
+        "state": "ready",
+        "family": "coyle"
+      },
+      "observation": {
+        "event_count": 2,
+        "identity_separators": 3
+      }
+    },
+    {
+      "family_id": "franklin-avenue",
+      "title": "Franklin Avenue application history",
+      "query": "960 Franklin Avenue",
+      "profile": "narrow-touch",
+      "route": "/search/?q=960+Franklin+Avenue&source_scope=all#connected-history",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "has_touch": true
+      },
+      "satisfied": true,
+      "runtime": {
+        "width": 390,
+        "height": 844,
+        "query": "960 Franklin Avenue",
+        "state": "ready",
+        "family": "franklin-avenue"
+      },
+      "observation": {
+        "event_count": 8,
+        "identity_separators": 5
+      }
+    },
+    {
+      "family_id": "kingsbridge-armory",
+      "title": "Kingsbridge Armory proposal history",
+      "query": "Kingsbridge Armory",
+      "profile": "narrow-touch",
+      "route": "/search/?q=Kingsbridge+Armory&source_scope=all#connected-history",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "has_touch": true
+      },
+      "satisfied": true,
+      "runtime": {
+        "width": 390,
+        "height": 844,
+        "query": "Kingsbridge Armory",
+        "state": "ready",
+        "family": "kingsbridge-armory"
+      },
+      "observation": {
+        "event_count": 8,
+        "identity_separators": 5
+      }
+    },
+    {
+      "family_id": "sixth-avenue",
+      "title": "Sixth Avenue corridor history",
+      "query": "Sixth Avenue",
+      "profile": "narrow-touch",
+      "route": "/search/?q=Sixth+Avenue&source_scope=all#connected-history",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "has_touch": true
+      },
+      "satisfied": true,
+      "runtime": {
+        "width": 390,
+        "height": 844,
+        "query": "Sixth Avenue",
+        "state": "ready",
+        "family": "sixth-avenue"
+      },
+      "observation": {
+        "event_count": 3,
+        "identity_separators": 3
+      }
+    },
+    {
+      "family_id": "thirty-first-avenue",
+      "title": "31st Avenue corridor history",
+      "query": "31st Avenue",
+      "profile": "narrow-touch",
+      "route": "/search/?q=31st+Avenue&source_scope=all#connected-history",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "has_touch": true
+      },
+      "satisfied": true,
+      "runtime": {
+        "width": 390,
+        "height": 844,
+        "query": "31st Avenue",
+        "state": "ready",
+        "family": "thirty-first-avenue"
+      },
+      "observation": {
+        "event_count": 4,
+        "identity_separators": 2
+      }
+    },
+    {
+      "family_id": "lighthouse-point",
+      "title": "Lighthouse Point component history",
+      "query": "Lighthouse Point",
+      "profile": "narrow-touch",
+      "route": "/search/?q=Lighthouse+Point&source_scope=all#connected-history",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "has_touch": true
+      },
+      "satisfied": true,
+      "runtime": {
+        "width": 390,
+        "height": 844,
+        "query": "Lighthouse Point",
+        "state": "ready",
+        "family": "lighthouse-point"
+      },
+      "observation": {
+        "event_count": 5,
+        "identity_separators": 2
+      }
+    },
+    {
+      "family_id": "coyle",
+      "title": "Coyle Street BSA cases",
+      "query": "2025-54-A",
+      "profile": "no-javascript",
+      "route": "/search/?q=2025-54-A&source_scope=all#connected-history",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "has_touch": false
+      },
+      "satisfied": true,
+      "runtime": {
+        "width": 1440,
+        "height": 900,
+        "query": "2025-54-A",
+        "route": "/search/?q=2025-54-A&source_scope=all#connected-history"
+      },
+      "observation": {
+        "official_source_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723030"
+      }
+    },
+    {
+      "family_id": "franklin-avenue",
+      "title": "Franklin Avenue application history",
+      "query": "960 Franklin Avenue",
+      "profile": "no-javascript",
+      "route": "/search/?q=960+Franklin+Avenue&source_scope=all#connected-history",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "has_touch": false
+      },
+      "satisfied": true,
+      "runtime": {
+        "width": 1440,
+        "height": 900,
+        "query": "960 Franklin Avenue",
+        "route": "/search/?q=960+Franklin+Avenue&source_scope=all#connected-history"
+      },
+      "observation": {
+        "official_source_href": "https://zap-api-production.herokuapp.com/document/projectaction/sites/nycdcppfs/dcp_projectaction/ZM%20-%20Zoning%20Map%20Amendment%20_90047288D727ED11B83C001DD80696EC/230356.pdf"
+      }
+    },
+    {
+      "family_id": "kingsbridge-armory",
+      "title": "Kingsbridge Armory proposal history",
+      "query": "Kingsbridge Armory",
+      "profile": "no-javascript",
+      "route": "/search/?q=Kingsbridge+Armory&source_scope=all#connected-history",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "has_touch": false
+      },
+      "satisfied": true,
+      "runtime": {
+        "width": 1440,
+        "height": 900,
+        "query": "Kingsbridge Armory",
+        "route": "/search/?q=Kingsbridge+Armory&source_scope=all#connected-history"
+      },
+      "observation": {
+        "official_source_href": "https://zap.planning.nyc.gov/projects/2025X0262"
+      }
+    },
+    {
+      "family_id": "sixth-avenue",
+      "title": "Sixth Avenue corridor history",
+      "query": "Sixth Avenue",
+      "profile": "no-javascript",
+      "route": "/search/?q=Sixth+Avenue&source_scope=all#connected-history",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "has_touch": false
+      },
+      "satisfied": true,
+      "runtime": {
+        "width": 1440,
+        "height": 900,
+        "query": "Sixth Avenue",
+        "route": "/search/?q=Sixth+Avenue&source_scope=all#connected-history"
+      },
+      "observation": {
+        "official_source_href": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml"
+      }
+    },
+    {
+      "family_id": "thirty-first-avenue",
+      "title": "31st Avenue corridor history",
+      "query": "31st Avenue",
+      "profile": "no-javascript",
+      "route": "/search/?q=31st+Avenue&source_scope=all#connected-history",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "has_touch": false
+      },
+      "satisfied": true,
+      "runtime": {
+        "width": 1440,
+        "height": 900,
+        "query": "31st Avenue",
+        "route": "/search/?q=31st+Avenue&source_scope=all#connected-history"
+      },
+      "observation": {
+        "official_source_href": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf"
+      }
+    },
+    {
+      "family_id": "lighthouse-point",
+      "title": "Lighthouse Point component history",
+      "query": "Lighthouse Point",
+      "profile": "no-javascript",
+      "route": "/search/?q=Lighthouse+Point&source_scope=all#connected-history",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "has_touch": false
+      },
+      "satisfied": true,
+      "runtime": {
+        "width": 1440,
+        "height": 900,
+        "query": "Lighthouse Point",
+        "route": "/search/?q=Lighthouse+Point&source_scope=all#connected-history"
+      },
+      "observation": {
+        "official_source_href": "https://edc.nyc/project/lighthouse-point"
+      }
+    }
+  ],
+  "request_receipts": [
+    {
+      "request": "served_revision_start",
+      "url": "https://cityscroll.org/artifact-manifest.json",
+      "http_status": 200,
+      "observed_at": "2026-10-02T15:33:11.162Z",
+      "edge_ray": "a444c3987d2b6127-EWR",
+      "sha256": "fdb85be9b7f3a4f72dd03bd19e1d6701aa6d8974165cf3438a2107e7a4b094e9",
+      "bytes": 518,
+      "headers": {
+        "Date": "Fri, 02 Oct 2026 15:33:11 GMT",
+        "CF-Ray": "a444c3987d2b6127-EWR",
+        "CF-Cache-Status": "DYNAMIC",
+        "ETag": "\"744c3e8a079c122cd07b0b2943a87006\"",
+        "Content-Type": "application/json"
+      }
+    },
+    {
+      "request": "history_data:/data/connected_history_relations.json",
+      "url": "https://cityscroll.org/data/connected_history_relations.json",
+      "http_status": 200,
+      "observed_at": "2026-10-02T15:33:11.249Z",
+      "edge_ray": "a444c398f956e55d-EWR",
+      "sha256": "20883bc7a09276e37f0ec85cfe299a398e496132dcd14763f5caeff38c47d56a",
+      "bytes": 26514,
+      "headers": {
+        "Date": "Fri, 02 Oct 2026 15:33:11 GMT",
+        "CF-Ray": "a444c398f956e55d-EWR",
+        "CF-Cache-Status": "DYNAMIC",
+        "ETag": "\"7524af449bace8aa10ad1273c807e5a4\"",
+        "Content-Type": "application/json"
+      }
+    },
+    {
+      "request": "history_data:/data/connected_history_time.json",
+      "url": "https://cityscroll.org/data/connected_history_time.json",
+      "http_status": 200,
+      "observed_at": "2026-10-02T15:33:11.367Z",
+      "edge_ray": "a444c3999dd17ce7-EWR",
+      "sha256": "2df8f0ebbcabf5b4ba3bb1ea87becf4252e694839bdbd5cfe92d08a602a1a889",
+      "bytes": 108815,
+      "headers": {
+        "Date": "Fri, 02 Oct 2026 15:33:11 GMT",
+        "CF-Ray": "a444c3999dd17ce7-EWR",
+        "CF-Cache-Status": "DYNAMIC",
+        "ETag": "\"90770a5c326ae7f8bcbc43b2e72bb8cb\"",
+        "Content-Type": "application/json"
+      }
+    },
+    {
+      "request": "history_data:/data/connected_history_roles.json",
+      "url": "https://cityscroll.org/data/connected_history_roles.json",
+      "http_status": 200,
+      "observed_at": "2026-10-02T15:33:11.465Z",
+      "edge_ray": "a444c39a5e79c3ab-EWR",
+      "sha256": "d25ac875ec2d620002621959012df2731e908d150b026d9716d9ac525557a210",
+      "bytes": 11845,
+      "headers": {
+        "Date": "Fri, 02 Oct 2026 15:33:11 GMT",
+        "CF-Ray": "a444c39a5e79c3ab-EWR",
+        "CF-Cache-Status": "DYNAMIC",
+        "ETag": "\"0bc9688b5d89a510d563ed782a671acb\"",
+        "Content-Type": "application/json"
+      }
+    },
+    {
+      "request": "served_revision_end",
+      "url": "https://cityscroll.org/artifact-manifest.json",
+      "http_status": 200,
+      "observed_at": "2026-10-02T15:33:27.285Z",
+      "edge_ray": "a444c3fcf8af6da2-EWR",
+      "sha256": "fdb85be9b7f3a4f72dd03bd19e1d6701aa6d8974165cf3438a2107e7a4b094e9",
+      "bytes": 518,
+      "headers": {
+        "Date": "Fri, 02 Oct 2026 15:33:27 GMT",
+        "CF-Ray": "a444c3fcf8af6da2-EWR",
+        "CF-Cache-Status": "DYNAMIC",
+        "ETag": "\"744c3e8a079c122cd07b0b2943a87006\"",
+        "Content-Type": "application/json"
+      }
+    }
+  ],
+  "image_binaries_committed": false
+}

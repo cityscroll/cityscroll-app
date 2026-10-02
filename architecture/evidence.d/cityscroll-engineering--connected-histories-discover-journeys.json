@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/connected-histories-discover-journeys",
+  "status": "implemented",
+  "fingerprint": "connected-histories-discover-journeys.v1",
+  "updated_at": "2026-10-02T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "connected-histories-discover-journeys-capture",
+      "path": "tools/capture_connected_histories_discover_journeys_production_read.py"
+    },
+    {
+      "id": "connected-histories-discover-journeys-readback",
+      "path": "docs/evidence/connected-histories/discover-journeys-readback.json"
+    },
+    {
+      "id": "connected-histories-discover-journeys-readme",
+      "path": "docs/evidence/connected-histories/README.md"
+    },
+    {
+      "id": "connected-histories-discover-journeys-tests",
+      "path": "test/connected_histories_discover_journeys_production_read.test.mjs"
+    }
+  ]
+}
