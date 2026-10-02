@@ -3,6 +3,17 @@
  *
  * The synthetic group is retained separately from the resident observation file.
  * There is no combined / overall / total key across the two groups.
+ *
+ * Slot cell semantics (settled): each probe slot reports its **own contribution**
+ * for the visit it just ran — never a window-to-date census. The field name
+ * `cell_contribution_counts` matches that meaning. `applyProbeSlot` accumulates
+ * those per-slot contributions into the aggregate cells (and recomputes the
+ * required quantile from retained samples) rather than assigning the latest
+ * slot's counts over the matrix. A slot with no `cells` array is distinct from
+ * a slot whose cells are present but all zero; both yield zero contribution,
+ * and any retained observations that do not land in a vital×viewport cell are
+ * recorded as `unattributed_observation_count` so "retained N" cannot read as
+ * floor progress when no cell moved.
  */
 
 import { createHash } from "node:crypto";
@@ -158,24 +169,207 @@ export function classifySyntheticProbeState(aggregate) {
 }
 
 /**
- * Per-cell contribution counts a slot claims (zeros when the slot retained nothing).
- * @param {object} slot
+ * Empty per-slot contribution matrix (six vital×viewport keys at zero).
  * @returns {Record<string, number>}
  */
-export function slotCellContributionCounts(slot) {
+export function emptyCellContributionCounts() {
   const counts = {};
   for (const metric_id of SYNTHETIC_REQUIRED_METRICS) {
     for (const device_class of SYNTHETIC_REQUIRED_VIEWPORTS) {
       counts[cellKey(metric_id, device_class)] = 0;
     }
   }
-  if (Array.isArray(slot?.cells)) {
-    for (const cell of slot.cells) {
-      const key = cellKey(cell.metric_id, cell.device_class);
-      if (key in counts) counts[key] = Number(cell.sampled_count) || 0;
+  return counts;
+}
+
+/**
+ * Sum of per-cell contribution counts.
+ * @param {Record<string, number> | null | undefined} counts
+ */
+export function sumCellContributionCounts(counts) {
+  if (!counts || typeof counts !== "object") return 0;
+  let total = 0;
+  for (const value of Object.values(counts)) {
+    total += Number(value) || 0;
+  }
+  return total;
+}
+
+/**
+ * p75 (or other fraction) over a finite sample list. Returns null when empty.
+ * @param {number[]} values
+ * @param {number} [fraction=0.75]
+ */
+export function computeSyntheticQuantile(values, fraction = 0.75) {
+  const sorted = (Array.isArray(values) ? values : [])
+    .filter((value) => typeof value === "number" && Number.isFinite(value))
+    .sort((a, b) => a - b);
+  if (!sorted.length) return null;
+  const index = (sorted.length - 1) * fraction;
+  const lower = Math.floor(index);
+  const upper = Math.ceil(index);
+  if (lower === upper) return sorted[lower];
+  return sorted[lower] + (sorted[upper] - sorted[lower]) * (index - lower);
+}
+
+/**
+ * Project retained RUM observations into the six vital×viewport cells.
+ * An observation attributes to exactly one cell when its metric_id is one of
+ * the three required vitals and its device_class is desktop or mobile; every
+ * other retained observation is unattributed (never silently dropped).
+ *
+ * @param {object[] | null | undefined} observations
+ * @param {{ surface_id?: string }} [options]
+ * @returns {{ cells: object[], unattributed_observation_count: number, attributed_observation_count: number }}
+ */
+export function projectObservationsToSyntheticCells(observations, options = {}) {
+  const surfaceId = options.surface_id || "near-you";
+  const samplesByKey = new Map();
+  for (const metric_id of SYNTHETIC_REQUIRED_METRICS) {
+    for (const device_class of SYNTHETIC_REQUIRED_VIEWPORTS) {
+      samplesByKey.set(cellKey(metric_id, device_class), []);
     }
   }
-  return counts;
+
+  let unattributed = 0;
+  let attributed = 0;
+  const rows = Array.isArray(observations) ? observations : [];
+  for (const row of rows) {
+    if (!row || typeof row !== "object") {
+      unattributed += 1;
+      continue;
+    }
+    const metricId = row.metric_id;
+    const deviceClass = row.device_class;
+    const value = row.value;
+    const key = cellKey(metricId, deviceClass);
+    if (
+      SYNTHETIC_REQUIRED_METRICS.includes(metricId)
+      && SYNTHETIC_REQUIRED_VIEWPORTS.includes(deviceClass)
+      && typeof value === "number"
+      && Number.isFinite(value)
+      && value >= 0
+    ) {
+      samplesByKey.get(key).push(value);
+      attributed += 1;
+    } else {
+      unattributed += 1;
+    }
+  }
+
+  const cells = SYNTHETIC_REQUIRED_METRICS.flatMap((metric_id) =>
+    SYNTHETIC_REQUIRED_VIEWPORTS.map((device_class) => {
+      const key = cellKey(metric_id, device_class);
+      const samples = samplesByKey.get(key);
+      return {
+        metric_id,
+        device_class,
+        surface_id: surfaceId,
+        sampled_count: samples.length,
+        samples: [...samples],
+        quantile_value: null,
+      };
+    }),
+  );
+
+  return {
+    cells,
+    unattributed_observation_count: unattributed,
+    attributed_observation_count: attributed,
+  };
+}
+
+/**
+ * Resolve a slot's contribution cells and attribution source.
+ *
+ * Distinguishes:
+ * - `slot_cells`: payload carried a cells array (even when every count is 0)
+ * - `projected_from_observations`: no cells array; projected from observations[]
+ * - `cells_absent`: neither cells nor observations — contribution is zero and
+ *   every retained observation is unattributed
+ *
+ * @param {object} slot
+ * @returns {{
+ *   cells: object[],
+ *   counts: Record<string, number>,
+ *   samples: Record<string, number[]>,
+ *   attribution_source: "slot_cells" | "projected_from_observations" | "cells_absent",
+ *   unattributed_observation_count: number,
+ * }}
+ */
+export function resolveSlotContribution(slot) {
+  const counts = emptyCellContributionCounts();
+  const samples = {};
+  for (const key of Object.keys(counts)) samples[key] = [];
+
+  const retained = Number(slot?.retained_observation_count) || Number(slot?.observations_emitted) || 0;
+  const surfaceId = slot?.surface_id || "near-you";
+
+  let cells;
+  let attributionSource;
+  let unattributed;
+
+  if (Array.isArray(slot?.cells)) {
+    attributionSource = "slot_cells";
+    cells = slot.cells;
+    for (const cell of cells) {
+      const key = cellKey(cell?.metric_id, cell?.device_class);
+      if (!(key in counts)) continue;
+      const n = Number(cell?.sampled_count) || 0;
+      counts[key] = n;
+      const cellSamples = Array.isArray(cell?.samples)
+        ? cell.samples.filter((value) => typeof value === "number" && Number.isFinite(value))
+        : [];
+      samples[key] = cellSamples;
+    }
+    if (typeof slot?.unattributed_observation_count === "number" && Number.isFinite(slot.unattributed_observation_count)) {
+      unattributed = Math.max(0, Number(slot.unattributed_observation_count));
+    } else {
+      unattributed = Math.max(0, retained - sumCellContributionCounts(counts));
+    }
+  } else if (Array.isArray(slot?.observations)) {
+    attributionSource = "projected_from_observations";
+    const projected = projectObservationsToSyntheticCells(slot.observations, { surface_id: surfaceId });
+    cells = projected.cells;
+    for (const cell of cells) {
+      const key = cellKey(cell.metric_id, cell.device_class);
+      counts[key] = Number(cell.sampled_count) || 0;
+      samples[key] = Array.isArray(cell.samples) ? [...cell.samples] : [];
+    }
+    unattributed = projected.unattributed_observation_count;
+  } else {
+    attributionSource = "cells_absent";
+    cells = [];
+    unattributed = Math.max(0, retained);
+  }
+
+  return {
+    cells,
+    counts,
+    samples,
+    attribution_source: attributionSource,
+    unattributed_observation_count: unattributed,
+  };
+}
+
+/**
+ * Per-cell contribution counts a slot claims (zeros when the slot retained nothing
+ * attributable). Uses {@link resolveSlotContribution} so observation-only slots
+ * still project, and cells-absent slots stay explicitly zero.
+ * @param {object} slot
+ * @returns {Record<string, number>}
+ */
+export function slotCellContributionCounts(slot) {
+  return resolveSlotContribution(slot).counts;
+}
+
+/**
+ * Retained observations that did not land in a vital×viewport cell.
+ * @param {object} slot
+ * @returns {number}
+ */
+export function slotUnattributedObservationCount(slot) {
+  return resolveSlotContribution(slot).unattributed_observation_count;
 }
 
 /**
@@ -247,6 +441,7 @@ export function buildSlotLedgerEntry(slot) {
   }
   const outcome = deriveSlotOutcome(slot);
   const finishedAt = slot?.finished_at || slot?.observed_at || null;
+  const contribution = resolveSlotContribution(slot);
   return {
     slot_id: slotId,
     run_id: slot?.github_run_id || slot?.run_id || null,
@@ -261,10 +456,106 @@ export function buildSlotLedgerEntry(slot) {
     retained_observation_count: Number(slot?.retained_observation_count) || 0,
     marked_beacons: Number(slot?.marked_beacons) || 0,
     unmarked_beacons: Number(slot?.unmarked_beacons) || 0,
-    cell_contribution_counts: slotCellContributionCounts(slot),
+    cell_contribution_counts: contribution.counts,
+    cell_samples: contribution.samples,
+    unattributed_observation_count: contribution.unattributed_observation_count,
+    attribution_source: contribution.attribution_source,
     probe_status: slot?.status || null,
     outcome,
   };
+}
+
+/**
+ * Recompute aggregate cells by summing every slot's per-visit contribution.
+ * Slot payloads are contributions, not window censuses; this is the accumulate path.
+ * @param {object} aggregate
+ * @returns {object}
+ */
+export function recomputeAggregateCellsFromSlots(aggregate) {
+  if (!aggregate || typeof aggregate !== "object") {
+    throw new Error("recomputeAggregateCellsFromSlots requires an aggregate");
+  }
+  const counts = emptyCellContributionCounts();
+  const samples = {};
+  for (const key of Object.keys(counts)) samples[key] = [];
+
+  for (const entry of Array.isArray(aggregate.slots) ? aggregate.slots : []) {
+    const contrib = entry?.cell_contribution_counts || emptyCellContributionCounts();
+    for (const [key, value] of Object.entries(contrib)) {
+      if (key in counts) counts[key] += Number(value) || 0;
+    }
+    const entrySamples = entry?.cell_samples || {};
+    for (const [key, values] of Object.entries(entrySamples)) {
+      if (!(key in samples) || !Array.isArray(values)) continue;
+      for (const value of values) {
+        if (typeof value === "number" && Number.isFinite(value)) samples[key].push(value);
+      }
+    }
+  }
+
+  const surfaceId = aggregate.surface_id || "near-you";
+  const floor = Number(aggregate.sample_floor) || GEOGRAPHY_NAVIGATION_FIELD_VITALS_SYNTHETIC_SAMPLE_FLOOR;
+  aggregate.cells = SYNTHETIC_REQUIRED_METRICS.flatMap((metric_id) =>
+    SYNTHETIC_REQUIRED_VIEWPORTS.map((device_class) => {
+      const key = cellKey(metric_id, device_class);
+      const n = counts[key];
+      const cellSamples = samples[key];
+      let quantile_value = null;
+      if (n >= floor && cellSamples.length > 0) {
+        quantile_value = computeSyntheticQuantile(cellSamples, aggregate.required_quantile || 0.75);
+      }
+      return classifySyntheticCell({
+        metric_id,
+        device_class,
+        sampled_count: n,
+        quantile_value,
+        surface_id: surfaceId,
+        samples: cellSamples,
+      });
+    }),
+  );
+  return aggregate;
+}
+
+/**
+ * Fill attribution fields on legacy ledger entries that predate them.
+ * @param {object} entry
+ * @returns {object}
+ */
+export function normalizeSlotLedgerEntry(entry) {
+  if (!entry || typeof entry !== "object") return entry;
+  const next = { ...entry };
+  if (!next.cell_contribution_counts || typeof next.cell_contribution_counts !== "object") {
+    next.cell_contribution_counts = emptyCellContributionCounts();
+  } else {
+    const filled = emptyCellContributionCounts();
+    for (const key of Object.keys(filled)) {
+      filled[key] = Number(next.cell_contribution_counts[key]) || 0;
+    }
+    next.cell_contribution_counts = filled;
+  }
+  if (!next.cell_samples || typeof next.cell_samples !== "object") {
+    next.cell_samples = Object.fromEntries(
+      Object.keys(next.cell_contribution_counts).map((key) => [key, []]),
+    );
+  }
+  if (
+    typeof next.unattributed_observation_count !== "number"
+    || !Number.isFinite(next.unattributed_observation_count)
+  ) {
+    const retained = Number(next.retained_observation_count) || Number(next.observations_emitted) || 0;
+    next.unattributed_observation_count = Math.max(
+      0,
+      retained - sumCellContributionCounts(next.cell_contribution_counts),
+    );
+  }
+  if (!next.attribution_source) {
+    const contributed = sumCellContributionCounts(next.cell_contribution_counts);
+    if (contributed > 0) next.attribution_source = "slot_cells";
+    else if ((Number(next.retained_observation_count) || 0) > 0) next.attribution_source = "cells_absent";
+    else next.attribution_source = "cells_absent";
+  }
+  return next;
 }
 
 /** @param {string | Uint8Array | Buffer} bytesOrString */
@@ -292,9 +583,28 @@ export function slotValuesWithoutProvenance(entry) {
   return rest;
 }
 
+/**
+ * Ledger fields frozen into back-fill digests. Additive attribution fields
+ * (`cell_samples`, `unattributed_observation_count`, `attribution_source`) are
+ * verified in tests and on apply, but must not invalidate historical
+ * `values_sha256` digests written before those fields existed.
+ * @param {object} entry
+ */
+export function slotValuesForDigest(entry) {
+  const rest = slotValuesWithoutProvenance(entry);
+  if (!rest || typeof rest !== "object") return rest;
+  const {
+    cell_samples: _samples,
+    unattributed_observation_count: _unattributed,
+    attribution_source: _source,
+    ...core
+  } = rest;
+  return core;
+}
+
 /** Digest of the ledger values taken from an artifact (never of the entry-with-provenance). */
 export function digestSlotLedgerValues(entry) {
-  return sha256Digest(canonicalizeForDigest(slotValuesWithoutProvenance(entry)));
+  return sha256Digest(canonicalizeForDigest(slotValuesForDigest(entry)));
 }
 
 export function digestArtifactBytes(bytes) {
@@ -422,8 +732,9 @@ export function verifyBackFilledSlotAgainstArtifact(entry, artifactBytes, artifa
     return { ok: false, reason: "values_digest_mismatch" };
   }
 
-  const actual = slotValuesWithoutProvenance(entry);
-  if (canonicalizeForDigest(actual) !== canonicalizeForDigest(expectedEntry)) {
+  const actualCore = slotValuesForDigest(entry);
+  const expectedCore = slotValuesForDigest(expectedEntry);
+  if (canonicalizeForDigest(actualCore) !== canonicalizeForDigest(expectedCore)) {
     return { ok: false, reason: "entry_values_mutated" };
   }
 
@@ -432,7 +743,10 @@ export function verifyBackFilledSlotAgainstArtifact(entry, artifactBytes, artifa
 
 /**
  * Classify a cell from a sampled count and optional quantile value.
- * @param {{ metric_id: string, device_class: string, sampled_count: number, quantile_value?: number | null, surface_id?: string }} args
+ * Below the floor the percentile stays withheld. At or above the floor the
+ * quantile is published when a finite value (or recomputed samples) is present;
+ * a missing quantile at the floor withholds rather than inventing a pass/fail.
+ * @param {{ metric_id: string, device_class: string, sampled_count: number, quantile_value?: number | null, surface_id?: string, samples?: number[] }} args
  */
 export function classifySyntheticCell({
   metric_id,
@@ -440,6 +754,7 @@ export function classifySyntheticCell({
   sampled_count,
   quantile_value = null,
   surface_id = "near-you",
+  samples = null,
 }) {
   const base = emptySyntheticCell({ metric_id, device_class, surface_id });
   const n = Number(sampled_count) || 0;
@@ -460,9 +775,20 @@ export function classifySyntheticCell({
       reason: "below_floor",
     };
   }
-  const value = typeof quantile_value === "number" && Number.isFinite(quantile_value) ? quantile_value : null;
+  let value = typeof quantile_value === "number" && Number.isFinite(quantile_value) ? quantile_value : null;
+  if (value == null && Array.isArray(samples) && samples.length > 0) {
+    value = computeSyntheticQuantile(samples, 0.75);
+  }
   if (value == null) {
-    throw new Error(`quantile_value required when sampled_count >= sample_floor (${metric_id}/${device_class})`);
+    return {
+      ...base,
+      sampled_count: n,
+      status: "insufficient_sample",
+      quantile_value: null,
+      percentile_withheld: true,
+      pass: null,
+      reason: "quantile_samples_missing",
+    };
   }
   return {
     ...base,
@@ -514,30 +840,13 @@ export function applyProbeSlot(aggregate, slot, options = {}) {
     entry = withSlotProvenance(entry, options.provenance);
   }
 
+  // Replace-by-slot_id keeps re-applies idempotent: cells are recomputed from the
+  // full ledger, so a repeated slot_id does not double-count its contribution.
   const existingIndex = next.slots.findIndex((row) => row?.slot_id === entry.slot_id);
   if (existingIndex >= 0) next.slots[existingIndex] = entry;
   else next.slots.push(entry);
 
-  if (Array.isArray(slot?.cells)) {
-    const byKey = new Map(next.cells.map((cell) => [cellKey(cell.metric_id, cell.device_class), cell]));
-    for (const incoming of slot.cells) {
-      const key = cellKey(incoming.metric_id, incoming.device_class);
-      const classified = classifySyntheticCell({
-        metric_id: incoming.metric_id,
-        device_class: incoming.device_class,
-        sampled_count: incoming.sampled_count,
-        quantile_value: incoming.quantile_value,
-        surface_id: incoming.surface_id || next.surface_id,
-      });
-      byKey.set(key, classified);
-    }
-    next.cells = SYNTHETIC_REQUIRED_METRICS.flatMap((metric_id) =>
-      SYNTHETIC_REQUIRED_VIEWPORTS.map((device_class) => {
-        const key = cellKey(metric_id, device_class);
-        return byKey.get(key) || emptySyntheticCell({ metric_id, device_class, surface_id: next.surface_id });
-      }),
-    );
-  }
+  recomputeAggregateCellsFromSlots(next);
 
   if (retained) {
     const existingAt = next.delivery?.at;
@@ -567,6 +876,7 @@ export function normalizeSyntheticAggregate(document) {
   }
   const next = structuredClone(document);
   if (!Array.isArray(next.slots)) next.slots = [];
+  next.slots = next.slots.map((entry) => normalizeSlotLedgerEntry(entry));
   next.probe_state = classifySyntheticProbeState(next);
   return next;
 }
@@ -607,7 +917,8 @@ export function foldPendingSyntheticAggregate(committed, pending) {
     return base;
   }
 
-  const pendingRead = readSyntheticAggregate(pending);
+  const pendingNormalized = normalizeSyntheticAggregate(pending);
+  const pendingRead = readSyntheticAggregate(pendingNormalized);
   if (!pendingRead.ok) {
     throw new Error(
       `pending synthetic aggregate invalid: ${pendingRead.reason} missing_field=${pendingRead.missing_field}`,
@@ -617,40 +928,35 @@ export function foldPendingSyntheticAggregate(committed, pending) {
   const pendingSlot = pendingDoc.delivery?.slot_id;
   const baseSlot = base.delivery?.slot_id;
 
-  // Open-branch tip already carries the unmerged retaining slot: use it whole.
+  // Open-branch tip already carries the unmerged retaining slot: use it whole,
+  // with cells recomputed from its slot contributions.
   if (pendingSlot && pendingSlot !== baseSlot) {
-    return structuredClone(pendingDoc);
+    const whole = structuredClone(pendingDoc);
+    recomputeAggregateCellsFromSlots(whole);
+    whole.probe_state = classifySyntheticProbeState(whole);
+    return whole;
   }
   if (pendingDoc.delivery?.at && !base.delivery?.at) {
-    return structuredClone(pendingDoc);
+    const whole = structuredClone(pendingDoc);
+    recomputeAggregateCellsFromSlots(whole);
+    whole.probe_state = classifySyntheticProbeState(whole);
+    return whole;
   }
-
-  // Same first-slot identity (or neither retaining): keep committed cells, but
-  // never let pending cell counts fall below what the open branch already held.
-  const byKey = new Map(
-    (base.cells || []).map((cell) => [cellKey(cell.metric_id, cell.device_class), cell]),
-  );
-  for (const incoming of pendingDoc.cells || []) {
-    const key = cellKey(incoming.metric_id, incoming.device_class);
-    const current = byKey.get(key);
-    if (!current || Number(incoming.sampled_count) > Number(current.sampled_count)) {
-      byKey.set(key, structuredClone(incoming));
-    }
-  }
-  base.cells = SYNTHETIC_REQUIRED_METRICS.flatMap((metric_id) =>
-    SYNTHETIC_REQUIRED_VIEWPORTS.map((device_class) => {
-      const key = cellKey(metric_id, device_class);
-      return byKey.get(key) || emptySyntheticCell({ metric_id, device_class, surface_id: base.surface_id });
-    }),
-  );
 
   // Union slot ledger entries by slot_id so an open empty/retaining tip is not lost.
-  const slotById = new Map((base.slots || []).map((entry) => [entry.slot_id, structuredClone(entry)]));
+  // Cells are recomputed from the unioned contributions (accumulate), never by
+  // taking max(committed, pending) assignment.
+  const slotById = new Map(
+    (base.slots || []).map((entry) => [entry.slot_id, normalizeSlotLedgerEntry(structuredClone(entry))]),
+  );
   for (const entry of pendingDoc.slots || []) {
     if (!entry?.slot_id) continue;
-    if (!slotById.has(entry.slot_id)) slotById.set(entry.slot_id, structuredClone(entry));
+    if (!slotById.has(entry.slot_id)) {
+      slotById.set(entry.slot_id, normalizeSlotLedgerEntry(structuredClone(entry)));
+    }
   }
   base.slots = [...slotById.values()];
+  recomputeAggregateCellsFromSlots(base);
   base.probe_state = classifySyntheticProbeState(base);
   return base;
 }
@@ -732,6 +1038,9 @@ export function readSyntheticAggregate(document) {
   if (!Array.isArray(document.slots)) {
     return { ok: false, reason: "missing_required_field", missing_field: "slots", state: "invalid" };
   }
+  // Fill additive attribution fields on legacy ledger rows before validating so
+  // a tip that predates those fields still reads without rewriting the file.
+  document.slots = document.slots.map((entry) => normalizeSlotLedgerEntry(entry));
   const expectedState = classifySyntheticProbeState(document);
   if (document.probe_state !== expectedState) {
     return {
@@ -745,7 +1054,13 @@ export function readSyntheticAggregate(document) {
     if (!entry || typeof entry !== "object") {
       return { ok: false, reason: "invalid_slot_entry", missing_field: `slots[${index}]`, state: "invalid" };
     }
-    for (const field of ["slot_id", "trigger", "outcome", "cell_contribution_counts"]) {
+    for (const field of [
+      "slot_id",
+      "trigger",
+      "outcome",
+      "cell_contribution_counts",
+      "unattributed_observation_count",
+    ]) {
       if (!(field in entry) || entry[field] == null) {
         return {
           ok: false,

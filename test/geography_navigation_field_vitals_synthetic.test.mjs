@@ -14,18 +14,24 @@ import {
   canonicalizeForDigest,
   classifySyntheticCell,
   classifySyntheticProbeState,
+  computeSyntheticQuantile,
   digestArtifactBytes,
   digestSlotLedgerValues,
   emptySyntheticAggregate,
   findForbiddenCrossGroupKeys,
   foldPendingSyntheticAggregate,
+  GEOGRAPHY_NAVIGATION_FIELD_VITALS_SYNTHETIC_SAMPLE_FLOOR,
   loadPendingSyntheticAggregate,
   normalizeSyntheticAggregate,
+  projectObservationsToSyntheticCells,
   readSyntheticAggregate,
   retainedSlotsDropped,
+  resolveSlotContribution,
   sha256Digest,
   slotRetainedObservation,
+  slotUnattributedObservationCount,
   slotValuesWithoutProvenance,
+  sumCellContributionCounts,
   syntheticGroupDelivery,
   verifyBackFilledSlotAgainstArtifact,
   withSlotProvenance,
@@ -43,6 +49,10 @@ const RESIDENT_PATH = join(
 const FIXTURE_PATH = join(
   ROOT,
   "docs/evidence/geography-navigation-release/fixtures/near-you-synthetic-probe-slot-36943164756.json",
+);
+const RETAINING_FIXTURE_PATH = join(
+  ROOT,
+  "docs/evidence/geography-navigation-release/fixtures/near-you-synthetic-probe-slot-37021833984.json",
 );
 const PAGES_PATH = join(ROOT, "data/performance/near-you-synthetic-probe.json");
 const PROBE = join(ROOT, "tools/run_near_you_synthetic_probe.py");
@@ -716,7 +726,8 @@ test("overlapping runs fold the open automation-branch aggregate and refuse a si
   );
 
   // Folding the open-branch aggregate before applying the new slot keeps the
-  // first retaining delivery and lets the later slot update cells.
+  // first retaining delivery and accumulates the later slot's contribution
+  // (2 + 3 = 5), rather than assigning the latest slot's count alone.
   const folded = foldPendingSyntheticAggregate(emptySyntheticAggregate(), pending);
   assert.equal(folded.delivery.slot_id, "github-actions:111:1");
   const carried = applyProbeSlot(folded, secondSlot);
@@ -728,6 +739,239 @@ test("overlapping runs fold the open automation-branch aggregate and refuse a si
   assert.equal(
     carried.cells.find((cell) => cell.metric_id === "lcp_ms" && cell.device_class === "desktop")
       .sampled_count,
+    5,
+  );
+});
+
+test("successive slots accumulate the same cell instead of assigning the latest count", () => {
+  // Acceptance (1): two slots each contributing one sample in the same cell
+  // must leave the aggregate at 2. Today's assignment path would leave it at 1.
+  const first = {
+    run_key: "slot-accumulate-a",
+    observed_at: "2026-10-02T15:00:00.000Z",
+    trigger: "schedule",
+    observations_emitted: 1,
+    retained_observation_count: 1,
+    cells: [
+      {
+        metric_id: "lcp_ms",
+        device_class: "desktop",
+        sampled_count: 1,
+        samples: [1800],
+      },
+    ],
+  };
+  const second = {
+    run_key: "slot-accumulate-b",
+    observed_at: "2026-10-02T16:00:00.000Z",
+    trigger: "schedule",
+    observations_emitted: 1,
+    retained_observation_count: 1,
+    cells: [
+      {
+        metric_id: "lcp_ms",
+        device_class: "desktop",
+        sampled_count: 1,
+        samples: [1900],
+      },
+    ],
+  };
+
+  let aggregate = applyProbeSlot(emptySyntheticAggregate(), first);
+  assert.equal(
+    aggregate.cells.find((cell) => cell.metric_id === "lcp_ms" && cell.device_class === "desktop")
+      .sampled_count,
+    1,
+  );
+  aggregate = applyProbeSlot(aggregate, second);
+  assert.equal(
+    aggregate.cells.find((cell) => cell.metric_id === "lcp_ms" && cell.device_class === "desktop")
+      .sampled_count,
+    2,
+    "aggregate must accumulate per-slot contributions, not replace with the latest slot count",
+  );
+  // Re-applying the same slot_id stays idempotent (replace-by-id, then recompute).
+  aggregate = applyProbeSlot(aggregate, second);
+  assert.equal(
+    aggregate.cells.find((cell) => cell.metric_id === "lcp_ms" && cell.device_class === "desktop")
+      .sampled_count,
+    2,
+  );
+});
+
+test("retaining slot with no cells array records unattributed equal to retained count", () => {
+  // Acceptance (2) + real artifact diagnosis: run 37021833984 retained 14
+  // observations, carried no cells array (missing cell projection), and left
+  // every vital×viewport contribution at zero. That gap must be explicit.
+  const artifact = JSON.parse(readFileSync(RETAINING_FIXTURE_PATH, "utf8"));
+  assert.equal(artifact.retained_observation_count, 14);
+  assert.equal(Array.isArray(artifact.cells), false);
+  assert.equal(Array.isArray(artifact.observations), false);
+
+  const contribution = resolveSlotContribution(artifact);
+  assert.equal(contribution.attribution_source, "cells_absent");
+  assert.equal(sumCellContributionCounts(contribution.counts), 0);
+  assert.equal(contribution.unattributed_observation_count, 14);
+  assert.equal(slotUnattributedObservationCount(artifact), 14);
+
+  const aggregate = applyProbeSlot(emptySyntheticAggregate(), artifact);
+  const entry = aggregate.slots.find((row) => row.slot_id === artifact.run_key);
+  assert.ok(entry);
+  assert.equal(entry.retained_observation_count, 14);
+  assert.equal(entry.unattributed_observation_count, 14);
+  assert.equal(entry.attribution_source, "cells_absent");
+  assert.equal(sumCellContributionCounts(entry.cell_contribution_counts), 0);
+  assert.ok(
+    aggregate.cells.every((cell) => cell.sampled_count === 0),
+    "cells-absent retaining slot must not invent cell progress",
+  );
+});
+
+test("retained count above cell contributions records the difference as unattributed", () => {
+  // Acceptance (2): a counted zero carries its complement; a silent drop cannot pass.
+  const slot = {
+    run_key: "slot-unattributed-mix",
+    observed_at: "2026-10-02T17:00:00.000Z",
+    trigger: "schedule",
+    observations_emitted: 5,
+    retained_observation_count: 5,
+    cells: [
+      {
+        metric_id: "lcp_ms",
+        device_class: "desktop",
+        sampled_count: 1,
+        samples: [2100],
+      },
+      {
+        metric_id: "inp_ms",
+        device_class: "mobile",
+        sampled_count: 1,
+        samples: [80],
+      },
+    ],
+    // three retained observations did not land in a vital×viewport cell
+    unattributed_observation_count: 3,
+  };
+  assert.equal(slotUnattributedObservationCount(slot), 3);
+  assert.equal(
+    slot.retained_observation_count - sumCellContributionCounts(resolveSlotContribution(slot).counts),
     3,
   );
+
+  const aggregate = applyProbeSlot(emptySyntheticAggregate(), slot);
+  const entry = aggregate.slots[0];
+  assert.equal(entry.unattributed_observation_count, 3);
+  assert.equal(entry.cell_contribution_counts["lcp_ms::desktop"], 1);
+  assert.equal(entry.cell_contribution_counts["inp_ms::mobile"], 1);
+  assert.equal(sumCellContributionCounts(entry.cell_contribution_counts), 2);
+});
+
+test("quantile stays withheld below the floor and is computed once at or above it", () => {
+  // Acceptance (3): both directions around the sample floor.
+  const floor = GEOGRAPHY_NAVIGATION_FIELD_VITALS_SYNTHETIC_SAMPLE_FLOOR;
+  const belowSamples = Array.from({ length: floor - 1 }, (_, index) => 1000 + index);
+  const below = classifySyntheticCell({
+    metric_id: "lcp_ms",
+    device_class: "desktop",
+    sampled_count: belowSamples.length,
+    samples: belowSamples,
+  });
+  assert.equal(below.status, "insufficient_sample");
+  assert.equal(below.percentile_withheld, true);
+  assert.equal(below.quantile_value, null);
+
+  const atFloorSamples = [...belowSamples, 2000];
+  assert.equal(atFloorSamples.length, floor);
+  const expected = computeSyntheticQuantile(atFloorSamples, 0.75);
+  const atFloor = classifySyntheticCell({
+    metric_id: "lcp_ms",
+    device_class: "desktop",
+    sampled_count: atFloorSamples.length,
+    samples: atFloorSamples,
+  });
+  assert.equal(atFloor.status, "available");
+  assert.equal(atFloor.percentile_withheld, false);
+  assert.equal(atFloor.quantile_value, expected);
+  assert.equal(typeof atFloor.pass, "boolean");
+
+  // Dropping back below the floor (e.g. after a corrective rebuild) withholds again.
+  const dropped = classifySyntheticCell({
+    metric_id: "lcp_ms",
+    device_class: "desktop",
+    sampled_count: floor - 1,
+    samples: belowSamples,
+    quantile_value: expected,
+  });
+  assert.equal(dropped.status, "insufficient_sample");
+  assert.equal(dropped.percentile_withheld, true);
+  assert.equal(dropped.quantile_value, null);
+});
+
+test("observations project into vital cells; non-vital rows stay unattributed", () => {
+  // Built from the real retaining-slot shape: fourteen retained rows, only the
+  // three vitals × two binding viewports attribute; the rest are unattributed.
+  const observations = [
+    { metric_id: "lcp_ms", device_class: "desktop", value: 1800 },
+    { metric_id: "inp_ms", device_class: "desktop", value: 90 },
+    { metric_id: "cls_score", device_class: "desktop", value: 0.02 },
+    { metric_id: "lcp_ms", device_class: "mobile", value: 2400 },
+    { metric_id: "inp_ms", device_class: "mobile", value: 120 },
+    { metric_id: "cls_score", device_class: "mobile", value: 0.04 },
+    { metric_id: "fcp_ms", device_class: "desktop", value: 900 },
+    { metric_id: "ttfb_ms", device_class: "desktop", value: 200 },
+    { metric_id: "fcp_ms", device_class: "mobile", value: 1100 },
+    { metric_id: "ttfb_ms", device_class: "mobile", value: 250 },
+    { metric_id: "content_ready_ms", device_class: "desktop", value: 1500 },
+    { metric_id: "content_ready_ms", device_class: "mobile", value: 1700 },
+    { metric_id: "lcp_ms", device_class: "tablet", value: 2000 },
+    { metric_id: "inp_ms", device_class: "unknown", value: 70 },
+  ];
+  assert.equal(observations.length, 14);
+
+  const projected = projectObservationsToSyntheticCells(observations);
+  assert.equal(projected.attributed_observation_count, 6);
+  assert.equal(projected.unattributed_observation_count, 8);
+  assert.equal(
+    projected.cells.find((cell) => cell.metric_id === "lcp_ms" && cell.device_class === "desktop")
+      .sampled_count,
+    1,
+  );
+  assert.deepEqual(
+    projected.cells.find((cell) => cell.metric_id === "lcp_ms" && cell.device_class === "desktop")
+      .samples,
+    [1800],
+  );
+
+  const slot = {
+    run_key: "slot-projected-14",
+    observed_at: "2026-10-02T18:00:00.000Z",
+    trigger: "schedule",
+    observations_emitted: 14,
+    retained_observation_count: 14,
+    observations,
+  };
+  const contribution = resolveSlotContribution(slot);
+  assert.equal(contribution.attribution_source, "projected_from_observations");
+  assert.equal(sumCellContributionCounts(contribution.counts), 6);
+  assert.equal(contribution.unattributed_observation_count, 8);
+
+  const aggregate = applyProbeSlot(emptySyntheticAggregate(), slot);
+  assert.equal(
+    aggregate.cells.find((cell) => cell.metric_id === "cls_score" && cell.device_class === "mobile")
+      .sampled_count,
+    1,
+  );
+  assert.equal(aggregate.slots[0].unattributed_observation_count, 8);
+  assert.equal(aggregate.slots[0].cell_contribution_counts["lcp_ms::desktop"], 1);
+});
+
+test("probe source retains observation payloads and projects cells", () => {
+  const probeSource = readFileSync(PROBE, "utf8");
+  assert.match(probeSource, /project_cells_from_observations/);
+  assert.match(probeSource, /parse_observation_batch/);
+  assert.match(probeSource, /ATTRIBUTABLE_METRICS/);
+  assert.match(probeSource, /unattributed_observation_count/);
+  assert.match(probeSource, /"cells": cells/);
+  // Positive control: counting alone is no longer enough — payloads must be kept.
+  assert.match(probeSource, /retained_observations/);
 });

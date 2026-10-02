@@ -1,0 +1,61 @@
+{
+  "schema": "cityscroll.near_you_synthetic_probe_result.v1",
+  "run_key": "github-actions:37021833984:1",
+  "started_at": "2026-10-02T14:43:58Z",
+  "finished_at": "2026-10-02T14:44:47Z",
+  "observed_at": "2026-10-02T14:44:47Z",
+  "traffic_class": "synthetic",
+  "surface_id": "near-you",
+  "base": "https://cityscroll.org",
+  "pages_listed": 2,
+  "pages_visited": 2,
+  "observations_emitted": 14,
+  "retained_observation_count": 14,
+  "marked_beacons": 4,
+  "unmarked_beacons": 0,
+  "budget_exhausted": false,
+  "visits": [
+    {
+      "path": "/near-you",
+      "device_class": "desktop",
+      "http_status": 200,
+      "interaction": "clicked",
+      "load_state": "load"
+    },
+    {
+      "path": "/near-you",
+      "device_class": "mobile",
+      "http_status": 200,
+      "interaction": "clicked",
+      "load_state": "load"
+    }
+  ],
+  "interactions": [
+    {
+      "path": "/near-you",
+      "device_class": "desktop",
+      "status": "clicked",
+      "selector": "#near-geo-search-input"
+    },
+    {
+      "path": "/near-you",
+      "device_class": "mobile",
+      "status": "clicked",
+      "selector": "#near-geo-search-input"
+    }
+  ],
+  "failures": [],
+  "collection_diagnosis": {
+    "reached": true,
+    "collected": true,
+    "beacon_counts": {
+      "marked": 4,
+      "unmarked": 0
+    },
+    "reason": "retained_observations"
+  },
+  "status": "healthy",
+  "trigger": "schedule",
+  "github_run_id": "37021833984",
+  "github_run_attempt": "1"
+}
