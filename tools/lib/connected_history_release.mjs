@@ -711,6 +711,7 @@ export const REVIEWED_REPUBLICATIONS = Object.freeze([
     to_sha256: "d25ac875ec2d620002621959012df2731e908d150b026d9716d9ac525557a210",
     cause: "The committed roles artifact lagged its builder: the same selection hash, counts and missing strata, but a rejected basis and the scope field position differed. A byte-exact builder check detected it and the artifact was regenerated without changing any admitted or rejected role.",
     invalidated_measurements: Object.freeze([
+      "docs/evidence/connected-histories/discover-journeys-readback.json",
       "docs/evidence/connected-history-release/release-readback.json",
       "docs/evidence/documented-history-journeys/capture-manifest.json",
     ]),

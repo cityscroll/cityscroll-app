@@ -61,7 +61,7 @@
       },
       {
         "path": "tools/lib/connected_history_release.mjs",
-        "sha256": "c6a8f07d09584e7f16c2db24c1971f7eb42347a549466f1c486e7b73193d799f"
+        "sha256": "278c87d4ad0f43413ec5a05bc2d753182b92bcc64bccf029c0c31386b35427ab"
       },
       {
         "path": "warehouse/receipts/proof/site_lifecycle_population_latest.json",
