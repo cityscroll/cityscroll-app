@@ -38,13 +38,14 @@
       "device_class": "desktop",
       "measurement_group": "synthetic",
       "traffic_class": "synthetic",
-      "sampled_count": 0,
-      "status": "no_data",
+      "sampled_count": 1,
+      "status": "insufficient_sample",
       "quantile": 0.75,
       "quantile_value": null,
       "percentile_withheld": true,
       "budget": 2500,
-      "pass": null
+      "pass": null,
+      "reason": "below_floor"
     },
     {
       "surface_id": "near-you",
@@ -52,13 +53,14 @@
       "device_class": "mobile",
       "measurement_group": "synthetic",
       "traffic_class": "synthetic",
-      "sampled_count": 0,
-      "status": "no_data",
+      "sampled_count": 1,
+      "status": "insufficient_sample",
       "quantile": 0.75,
       "quantile_value": null,
       "percentile_withheld": true,
       "budget": 2500,
-      "pass": null
+      "pass": null,
+      "reason": "below_floor"
     },
     {
       "surface_id": "near-you",
@@ -66,13 +68,14 @@
       "device_class": "desktop",
       "measurement_group": "synthetic",
       "traffic_class": "synthetic",
-      "sampled_count": 0,
-      "status": "no_data",
+      "sampled_count": 1,
+      "status": "insufficient_sample",
       "quantile": 0.75,
       "quantile_value": null,
       "percentile_withheld": true,
       "budget": 200,
-      "pass": null
+      "pass": null,
+      "reason": "below_floor"
     },
     {
       "surface_id": "near-you",
@@ -80,13 +83,14 @@
       "device_class": "mobile",
       "measurement_group": "synthetic",
       "traffic_class": "synthetic",
-      "sampled_count": 0,
-      "status": "no_data",
+      "sampled_count": 1,
+      "status": "insufficient_sample",
       "quantile": 0.75,
       "quantile_value": null,
       "percentile_withheld": true,
       "budget": 200,
-      "pass": null
+      "pass": null,
+      "reason": "below_floor"
     },
     {
       "surface_id": "near-you",
@@ -94,13 +98,14 @@
       "device_class": "desktop",
       "measurement_group": "synthetic",
       "traffic_class": "synthetic",
-      "sampled_count": 0,
-      "status": "no_data",
+      "sampled_count": 1,
+      "status": "insufficient_sample",
       "quantile": 0.75,
       "quantile_value": null,
       "percentile_withheld": true,
       "budget": 0.1,
-      "pass": null
+      "pass": null,
+      "reason": "below_floor"
     },
     {
       "surface_id": "near-you",
@@ -108,18 +113,19 @@
       "device_class": "mobile",
       "measurement_group": "synthetic",
       "traffic_class": "synthetic",
-      "sampled_count": 0,
-      "status": "no_data",
+      "sampled_count": 1,
+      "status": "insufficient_sample",
       "quantile": 0.75,
       "quantile_value": null,
       "percentile_withheld": true,
       "budget": 0.1,
-      "pass": null
+      "pass": null,
+      "reason": "below_floor"
     }
   ],
   "resident_observation_path": "docs/evidence/geography-navigation-release/field-vitals-observation.json",
   "note": "Synthetic geography-navigation field-vitals aggregate. Resident values live in the sibling field-vitals-observation.json and are never pooled into this file.",
-  "updated_at": "2026-10-02T14:44:47Z",
+  "updated_at": "2026-10-02T19:23:19Z",
   "slots": [
     {
       "slot_id": "github-actions:36943164756:1",
@@ -170,7 +176,17 @@
         "retrieved_at": "2026-10-02T04:30:00Z",
         "artifact_sha256": "sha256:a59f33ec6c0b9dca5c5f2d0b9ff5ba2cdf10555cd2fd28aba4feadab3f19096f",
         "values_sha256": "sha256:d4507757473f5353396722f7a5198033674178442b19728efa756ae53fc12377"
-      }
+      },
+      "cell_samples": {
+        "lcp_ms::desktop": [],
+        "lcp_ms::mobile": [],
+        "inp_ms::desktop": [],
+        "inp_ms::mobile": [],
+        "cls_score::desktop": [],
+        "cls_score::mobile": []
+      },
+      "unattributed_observation_count": 0,
+      "attribution_source": "cells_absent"
     },
     {
       "slot_id": "github-actions:36984810167:1",
@@ -203,7 +219,17 @@
           "wrote": true
         },
         "reason": "reached_but_no_beacons"
-      }
+      },
+      "cell_samples": {
+        "lcp_ms::desktop": [],
+        "lcp_ms::mobile": [],
+        "inp_ms::desktop": [],
+        "inp_ms::mobile": [],
+        "cls_score::desktop": [],
+        "cls_score::mobile": []
+      },
+      "unattributed_observation_count": 0,
+      "attribution_source": "cells_absent"
     },
     {
       "slot_id": "github-actions:37021833984:1",
@@ -227,6 +253,71 @@
         "cls_score::desktop": 0,
         "cls_score::mobile": 0
       },
+      "probe_status": "healthy",
+      "outcome": {
+        "retained": true,
+        "stages": {
+          "reached": true,
+          "collected": true,
+          "wrote": true
+        },
+        "reason": "retained_observations"
+      },
+      "cell_samples": {
+        "lcp_ms::desktop": [],
+        "lcp_ms::mobile": [],
+        "inp_ms::desktop": [],
+        "inp_ms::mobile": [],
+        "cls_score::desktop": [],
+        "cls_score::mobile": []
+      },
+      "unattributed_observation_count": 14,
+      "attribution_source": "cells_absent"
+    },
+    {
+      "slot_id": "github-actions:37053596607:1",
+      "run_id": "37053596607",
+      "run_attempt": "1",
+      "trigger": "schedule",
+      "started_at": "2026-10-02T19:22:26Z",
+      "finished_at": "2026-10-02T19:23:19Z",
+      "observed_at": "2026-10-02T19:23:19Z",
+      "pages_listed": 2,
+      "pages_visited": 2,
+      "observations_emitted": 14,
+      "retained_observation_count": 14,
+      "marked_beacons": 4,
+      "unmarked_beacons": 0,
+      "cell_contribution_counts": {
+        "lcp_ms::desktop": 1,
+        "lcp_ms::mobile": 1,
+        "inp_ms::desktop": 1,
+        "inp_ms::mobile": 1,
+        "cls_score::desktop": 1,
+        "cls_score::mobile": 1
+      },
+      "cell_samples": {
+        "lcp_ms::desktop": [
+          2192
+        ],
+        "lcp_ms::mobile": [
+          3308
+        ],
+        "inp_ms::desktop": [
+          24
+        ],
+        "inp_ms::mobile": [
+          16
+        ],
+        "cls_score::desktop": [
+          0.22107581252947103
+        ],
+        "cls_score::mobile": [
+          0.16122754336904682
+        ]
+      },
+      "unattributed_observation_count": 8,
+      "attribution_source": "slot_cells",
       "probe_status": "healthy",
       "outcome": {
         "retained": true,
