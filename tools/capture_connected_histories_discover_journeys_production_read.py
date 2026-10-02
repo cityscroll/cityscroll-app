@@ -454,6 +454,7 @@ def production_read(
     )
 
     data_vintages: dict[str, str | None] = {}
+    served_data_inputs: list[dict] = []
     for path in DATA_PATHS:
         url, response = fetch(f"history_data:{path}", path)
         try:
@@ -468,6 +469,13 @@ def production_read(
                 vintage = payload[key]
                 break
         data_vintages[path] = vintage
+        # Repository path form so a regeneration of the served artifact names
+        # this observation among the measurements it invalidates.
+        repo_path = f"site{path}" if path.startswith("/data/") else path
+        served_data_inputs.append({
+            "path": repo_path,
+            "sha256": sha256_bytes(response["body"] or b""),
+        })
 
     runner = journey_runner or run_browser_journeys
     journeys = runner(base.rstrip("/"))
@@ -529,6 +537,7 @@ def production_read(
             "revision": revision,
             "inputs": [
                 {"path": tool_path, "sha256": tool_sha},
+                *served_data_inputs,
             ],
         },
         "data_vintage": data_vintages,

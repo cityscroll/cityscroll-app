@@ -29,7 +29,19 @@
     "inputs": [
       {
         "path": "tools/capture_connected_histories_discover_journeys_production_read.py",
-        "sha256": "503e5da861f9359ffce02ae897ebcaaa2a9055384c34e8c162dbb874dccb197c"
+        "sha256": "8c38ee17a97fe847c987aa5d68cdd411fddbaaeccfedc8348f1fbcba6b8739b5"
+      },
+      {
+        "path": "site/data/connected_history_relations.json",
+        "sha256": "20883bc7a09276e37f0ec85cfe299a398e496132dcd14763f5caeff38c47d56a"
+      },
+      {
+        "path": "site/data/connected_history_time.json",
+        "sha256": "2df8f0ebbcabf5b4ba3bb1ea87becf4252e694839bdbd5cfe92d08a602a1a889"
+      },
+      {
+        "path": "site/data/connected_history_roles.json",
+        "sha256": "d25ac875ec2d620002621959012df2731e908d150b026d9716d9ac525557a210"
       }
     ]
   },

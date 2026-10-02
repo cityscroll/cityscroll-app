@@ -613,6 +613,7 @@ test("a receipt carries no local path and stays small enough to serve", async (t
 const RELEASE_READBACK = "docs/evidence/connected-history-release/release-readback.json";
 const JOURNEYS_MANIFEST = "docs/evidence/documented-history-journeys/capture-manifest.json";
 const COVERAGE_MANIFEST = "docs/evidence/connected-history-coverage/capture-manifest.json";
+const DISCOVER_JOURNEYS_READBACK = "docs/evidence/connected-histories/discover-journeys-readback.json";
 
 /**
  * Every retained production measurement that pins the bytes of a served data
@@ -624,9 +625,9 @@ const RETAINED_SERVED_PINS = Object.freeze({
   "site/data/connected_history_coverage.json": [COVERAGE_MANIFEST, RELEASE_READBACK],
   "site/data/connected_history_documents.json": [RELEASE_READBACK],
   "site/data/connected_history_evaluation_cohort.json": [RELEASE_READBACK],
-  "site/data/connected_history_relations.json": [RELEASE_READBACK, JOURNEYS_MANIFEST],
-  "site/data/connected_history_roles.json": [RELEASE_READBACK, JOURNEYS_MANIFEST],
-  "site/data/connected_history_time.json": [RELEASE_READBACK, JOURNEYS_MANIFEST],
+  "site/data/connected_history_relations.json": [DISCOVER_JOURNEYS_READBACK, RELEASE_READBACK, JOURNEYS_MANIFEST],
+  "site/data/connected_history_roles.json": [DISCOVER_JOURNEYS_READBACK, RELEASE_READBACK, JOURNEYS_MANIFEST],
+  "site/data/connected_history_time.json": [DISCOVER_JOURNEYS_READBACK, RELEASE_READBACK, JOURNEYS_MANIFEST],
   "site/data/site_lifecycle/manifest.json": [RELEASE_READBACK],
 });
 
