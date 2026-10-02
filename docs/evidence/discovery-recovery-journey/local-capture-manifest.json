@@ -3,7 +3,7 @@
   "scenario": "discovery-recovery",
   "public_alias": "c94563a6bbaf3",
   "capture_mode": "headless-playwright-local-fixture-server",
-  "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+  "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
   "base": "local-fixture-server",
   "viewports": [
     {
@@ -18,8 +18,8 @@
     }
   ],
   "run_receipt": {
-    "started_at": "2026-10-01T19:50:01Z",
-    "finished_at": "2026-10-01T19:50:53Z"
+    "started_at": "2026-10-02T09:15:22Z",
+    "finished_at": "2026-10-02T09:16:14Z"
   },
   "identity": {
     "before": {
@@ -40,7 +40,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/",
         "viewport": {
@@ -66,7 +66,7 @@
       "render": {
         "sha256": "62ba45ddb1bc34d72458b4115193703e0d3ce0f9d2c8be1ac22c2f76fe86d797",
         "bytes": 67667,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/root-category-record-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/root-category-record-phone.png",
         "url": "/",
         "viewport": {
           "width": 390,
@@ -129,14 +129,14 @@
           "status": 200,
           "marker": "browse",
           "overflow_x": 0,
-          "record_links": 534
+          "record_links": 524
         },
-        "record_href": "/meetings/meeting%3Acommunity_board%3ArecirDkekViJCC517",
-        "record_title": "Environment, Open Space & Parks",
+        "record_href": "/meetings/meeting%3Acommunity_board%3A6uuu1gepuatu6p4ko859g9njr2%40google.com%3A%3A2026-10-02",
+        "record_title": "Transportation, Public Transit, Street Safety Committee Briefing",
         "destination": {
-          "url": "/meetings/meeting%3Acommunity_board%3ArecirDkekViJCC517",
-          "record_id": "meeting:community_board:recirDkekViJCC517",
-          "heading": "Environment, Open Space & Parks",
+          "url": "/meetings/meeting%3Acommunity_board%3A6uuu1gepuatu6p4ko859g9njr2%40google.com%3A%3A2026-10-02",
+          "record_id": "meeting:community_board:6uuu1gepuatu6p4ko859g9njr2@google.com::2026-10-02",
+          "heading": "Transportation, Public Transit, Street Safety Committee Briefing",
           "near_you_shell": false,
           "fragment": null,
           "anchor_present": null,
@@ -168,7 +168,7 @@
           "read_model_version": null
         },
         {
-          "path": "/meetings/meeting%3Acommunity_board%3ArecirDkekViJCC517",
+          "path": "/meetings/meeting%3Acommunity_board%3A6uuu1gepuatu6p4ko859g9njr2%40google.com%3A%3A2026-10-02",
           "status": 200,
           "worker": false,
           "read_model_version": null
@@ -202,7 +202,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records",
         "viewport": {
@@ -228,7 +228,7 @@
       "render": {
         "sha256": "1c0917f373d79767801899a5784e5a0f78c59a0b7813b220ac76aedfa6822cf9",
         "bytes": 74830,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/typed-place-record-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/typed-place-record-phone.png",
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records",
         "viewport": {
           "width": 390,
@@ -376,7 +376,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
         "viewport": {
@@ -401,7 +401,7 @@
       "render": {
         "sha256": "a48b2de064c88100a94405ac28663e7a6fd5d6daa95f8091952b21b20d482a87",
         "bytes": 54512,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/unsupported-place-escape-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/unsupported-place-escape-phone.png",
         "url": "/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
         "viewport": {
           "width": 390,
@@ -446,7 +446,7 @@
           "status": 200,
           "marker": "browse",
           "overflow_x": 0,
-          "record_links": 792
+          "record_links": 830
         },
         "record_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-03-28%3Ageneral-board-meeting",
         "record_title": "General Board Meeting",
@@ -510,7 +510,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/near-you?v=0&scope=citywide&surface=records",
         "viewport": {
@@ -535,7 +535,7 @@
       "render": {
         "sha256": "e22f1651429ac96a3fa54f50ae95e28632ecc6331a76b9f90275a0e5ee882576",
         "bytes": 42525,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/citywide-bucket-record-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/citywide-bucket-record-phone.png",
         "url": "/near-you?v=0&scope=citywide&surface=records",
         "viewport": {
           "width": 390,
@@ -707,7 +707,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/",
         "viewport": {
@@ -733,7 +733,7 @@
       "render": {
         "sha256": "62ba45ddb1bc34d72458b4115193703e0d3ce0f9d2c8be1ac22c2f76fe86d797",
         "bytes": 67667,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/suggested-place-record-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/suggested-place-record-phone.png",
         "url": "/",
         "viewport": {
           "width": 390,
@@ -1054,7 +1054,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/near-you/",
         "viewport": {
@@ -1078,9 +1078,9 @@
         "scroll_y": 0
       },
       "render": {
-        "sha256": "870be5fab9daabc138f9694119b88fc7d04fd25187c35983cd9aeb6890044d93",
-        "bytes": 68475,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/location-denied-phone.png",
+        "sha256": "24031d740568b4ba24a99de643ca5d8eddf52305d2e30b12c4b1f0e726c5591d",
+        "bytes": 68529,
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/location-denied-phone.png",
         "url": "/near-you/",
         "viewport": {
           "width": 390,
@@ -1158,7 +1158,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/near-you/",
         "viewport": {
@@ -1184,7 +1184,7 @@
       "render": {
         "sha256": "d32e710e600fa69efe53efaf9cf3307c70293f86a1a5300cae90d5bb45e6b294",
         "bytes": 66269,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/location-timeout-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/location-timeout-phone.png",
         "url": "/near-you/",
         "viewport": {
           "width": 390,
@@ -1265,7 +1265,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABX0101&surface=records&lens=meetings",
         "viewport": {
@@ -1290,7 +1290,7 @@
       "render": {
         "sha256": "1be0f736aed7aa3b35d93612351c73b61db4953fae68b947d6048356a8ef668f",
         "bytes": 51213,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/explicit-zero-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/explicit-zero-phone.png",
         "url": "/near-you/?geo=nta2020%3ABX0101&surface=records&lens=meetings",
         "viewport": {
           "width": 390,
@@ -1383,7 +1383,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
@@ -1408,7 +1408,7 @@
       "render": {
         "sha256": "40dd839540722a14e0d64a3ee4a489a2a9d5c40ee8426eba12ba3bc1cb10abc3",
         "bytes": 47381,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/failed-section-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/failed-section-phone.png",
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
           "width": 390,
@@ -1488,7 +1488,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/near-you/?geo=nta2020%3AQN0103&surface=records&lens=meetings",
         "viewport": {
@@ -1513,7 +1513,7 @@
       "render": {
         "sha256": "392d763f55d8a82031f2d3eee143700f354ae8084b0275ff5f42da24643f96bd",
         "bytes": 50236,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/missing-coverage-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/missing-coverage-phone.png",
         "url": "/near-you/?geo=nta2020%3AQN0103&surface=records&lens=meetings",
         "viewport": {
           "width": 390,
@@ -1607,7 +1607,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
@@ -1633,7 +1633,7 @@
       "render": {
         "sha256": "a1305a874324a0b1b7201110463aaa51065b5d8639bad9d3cf0e1fa3d26f6ed3",
         "bytes": 56943,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/detail-failure-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/detail-failure-phone.png",
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
           "width": 390,
@@ -1734,7 +1734,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/",
         "viewport": {
@@ -1760,7 +1760,7 @@
       "render": {
         "sha256": "b2a0419a3ce4d790cc01a4a51e27462f02cb21864f4fa64d42b83031fcfb906a",
         "bytes": 91842,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/root-category-record-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/root-category-record-desktop.png",
         "url": "/",
         "viewport": {
           "width": 1440,
@@ -1823,14 +1823,14 @@
           "status": 200,
           "marker": "browse",
           "overflow_x": 0,
-          "record_links": 534
+          "record_links": 524
         },
-        "record_href": "/meetings/meeting%3Acommunity_board%3ArecirDkekViJCC517",
-        "record_title": "Environment, Open Space & Parks",
+        "record_href": "/meetings/meeting%3Acommunity_board%3A6uuu1gepuatu6p4ko859g9njr2%40google.com%3A%3A2026-10-02",
+        "record_title": "Transportation, Public Transit, Street Safety Committee Briefing",
         "destination": {
-          "url": "/meetings/meeting%3Acommunity_board%3ArecirDkekViJCC517",
-          "record_id": "meeting:community_board:recirDkekViJCC517",
-          "heading": "Environment, Open Space & Parks",
+          "url": "/meetings/meeting%3Acommunity_board%3A6uuu1gepuatu6p4ko859g9njr2%40google.com%3A%3A2026-10-02",
+          "record_id": "meeting:community_board:6uuu1gepuatu6p4ko859g9njr2@google.com::2026-10-02",
+          "heading": "Transportation, Public Transit, Street Safety Committee Briefing",
           "near_you_shell": false,
           "fragment": null,
           "anchor_present": null,
@@ -1862,7 +1862,7 @@
           "read_model_version": null
         },
         {
-          "path": "/meetings/meeting%3Acommunity_board%3ArecirDkekViJCC517",
+          "path": "/meetings/meeting%3Acommunity_board%3A6uuu1gepuatu6p4ko859g9njr2%40google.com%3A%3A2026-10-02",
           "status": 200,
           "worker": false,
           "read_model_version": null
@@ -1896,7 +1896,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records",
         "viewport": {
@@ -1922,7 +1922,7 @@
       "render": {
         "sha256": "95ef5198c85879eb491b629fd3967abe3c8f70f98bc13af8dc36cb77c10eb34a",
         "bytes": 94079,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/typed-place-record-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/typed-place-record-desktop.png",
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records",
         "viewport": {
           "width": 1440,
@@ -2070,7 +2070,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
         "viewport": {
@@ -2095,7 +2095,7 @@
       "render": {
         "sha256": "bccda2e37f04433d11a2ed4c43b45b01c95cf7d44601a53a9c02cdad5a43c9dd",
         "bytes": 82550,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/unsupported-place-escape-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/unsupported-place-escape-desktop.png",
         "url": "/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
         "viewport": {
           "width": 1440,
@@ -2140,7 +2140,7 @@
           "status": 200,
           "marker": "browse",
           "overflow_x": 0,
-          "record_links": 792
+          "record_links": 830
         },
         "record_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-03-28%3Ageneral-board-meeting",
         "record_title": "General Board Meeting",
@@ -2204,7 +2204,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/near-you?v=0&scope=citywide&surface=records",
         "viewport": {
@@ -2229,7 +2229,7 @@
       "render": {
         "sha256": "2f499011f5c65b9097146fa4ae5a9df0a277c9f0377366188cb11b02063b80dc",
         "bytes": 64957,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/citywide-bucket-record-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/citywide-bucket-record-desktop.png",
         "url": "/near-you?v=0&scope=citywide&surface=records",
         "viewport": {
           "width": 1440,
@@ -2401,7 +2401,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/",
         "viewport": {
@@ -2427,7 +2427,7 @@
       "render": {
         "sha256": "b2a0419a3ce4d790cc01a4a51e27462f02cb21864f4fa64d42b83031fcfb906a",
         "bytes": 91842,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/suggested-place-record-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/suggested-place-record-desktop.png",
         "url": "/",
         "viewport": {
           "width": 1440,
@@ -2748,7 +2748,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/near-you/",
         "viewport": {
@@ -2774,7 +2774,7 @@
       "render": {
         "sha256": "7d08e6c3d1cfee2d71eb77f5bdf96d7860e88baf22d39e6a1ce77d541677bc4b",
         "bytes": 96280,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/location-denied-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/location-denied-desktop.png",
         "url": "/near-you/",
         "viewport": {
           "width": 1440,
@@ -2852,7 +2852,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/near-you/",
         "viewport": {
@@ -2878,7 +2878,7 @@
       "render": {
         "sha256": "866d4f895d4afa746729874abe585375aa4bd41a9f9b4b25e56ef9f433b5db00",
         "bytes": 93462,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/location-timeout-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/location-timeout-desktop.png",
         "url": "/near-you/",
         "viewport": {
           "width": 1440,
@@ -2959,7 +2959,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABX0101&surface=records&lens=meetings",
         "viewport": {
@@ -2984,7 +2984,7 @@
       "render": {
         "sha256": "74bd375813a0e4f2dd0e85a2f63f50faedb71dedd3a59040cef932192e239e53",
         "bytes": 71602,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/explicit-zero-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/explicit-zero-desktop.png",
         "url": "/near-you/?geo=nta2020%3ABX0101&surface=records&lens=meetings",
         "viewport": {
           "width": 1440,
@@ -3077,7 +3077,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
@@ -3102,7 +3102,7 @@
       "render": {
         "sha256": "0929d3f60f5e885c02a023b372fef9dc13618da9293aed5654406eb18ff88460",
         "bytes": 67484,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/failed-section-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/failed-section-desktop.png",
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
           "width": 1440,
@@ -3182,7 +3182,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/near-you/?geo=nta2020%3AQN0103&surface=records&lens=meetings",
         "viewport": {
@@ -3207,7 +3207,7 @@
       "render": {
         "sha256": "d713defc4170bc4164b65882552df7ee75b01eb0fd854de0b470f4bd05f9c9e4",
         "bytes": 71216,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/missing-coverage-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/missing-coverage-desktop.png",
         "url": "/near-you/?geo=nta2020%3AQN0103&surface=records&lens=meetings",
         "viewport": {
           "width": 1440,
@@ -3301,7 +3301,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f",
+      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
@@ -3327,7 +3327,7 @@
       "render": {
         "sha256": "5a496c5dbb08404f9b366b874daca5ae0668bf81e3b8f916b93d06f049d9f00c",
         "bytes": 87689,
-        "local_image": ".artifacts/discovery-recovery-journey/4b1cc3fd-d3c0-4b2a-9b87-be5dcecaf41f/detail-failure-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/detail-failure-desktop.png",
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
           "width": 1440,
@@ -3422,7 +3422,7 @@
     }
   ],
   "provenance": {
-    "capture_revision": "8287dac35645cbb9d541344f6c50b45dfca152c1",
+    "capture_revision": "e050756cee95a5f3c520f3410176bd587461befe",
     "capture_revision_rule": "merge base of the capture checkout with origin/main",
     "frozen_activity": {
       "path": "site/data/district_activity.json",
@@ -3446,7 +3446,7 @@
       },
       {
         "path": "worker/src/near_you.mjs",
-        "sha256": "e917b229d7dbe8c6426e72da15cbd773cbb0a3a388d70a5acbcd618ea9752902"
+        "sha256": "e87b322b835d377a9bebb31d819855afe98d8c7985ed288882fa1567fef9dc11"
       },
       {
         "path": "site/near_you_view.mjs",

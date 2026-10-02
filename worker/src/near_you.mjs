@@ -57,7 +57,11 @@ function responseHeaders() {
     "Cache-Control": "public, max-age=300, s-maxage=900, stale-while-revalidate=86400",
     // Basemap tiles are contextual decoration for the progressive Near You map.
     // Local boundary layers and controls remain usable when cartocdn is blocked.
-    "Content-Security-Policy": "default-src 'self'; script-src 'self' https://cityscroll.org; worker-src 'self' blob:; style-src 'self' https://cityscroll.org https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.basemaps.cartocdn.com; connect-src 'self' https://cityscroll.org https://*.basemaps.cartocdn.com; base-uri 'none'; frame-ancestors 'none'",
+    // connect-src must allow https://api.cityscroll.org: first-party analytics
+    // (/events) and RUM (/performance-events) post there from the page context.
+    // Omitting it blocks every beacon while the collector still boots, which
+    // reads as reached_but_no_beacons on the synthetic field-vitals probe.
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' https://cityscroll.org; worker-src 'self' blob:; style-src 'self' https://cityscroll.org https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.basemaps.cartocdn.com; connect-src 'self' https://cityscroll.org https://api.cityscroll.org https://*.basemaps.cartocdn.com; base-uri 'none'; frame-ancestors 'none'",
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "X-Content-Type-Options": "nosniff",
     "Access-Control-Allow-Origin": SITE_BASE,
