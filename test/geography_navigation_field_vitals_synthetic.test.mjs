@@ -9,8 +9,13 @@ import {
   applyProbeSlot,
   assertResidentNearYouHonesty,
   assertSyntheticAggregateRetainsPending,
+  buildBackFilledSlotProvenance,
+  buildSlotLedgerEntry,
+  canonicalizeForDigest,
   classifySyntheticCell,
   classifySyntheticProbeState,
+  digestArtifactBytes,
+  digestSlotLedgerValues,
   emptySyntheticAggregate,
   findForbiddenCrossGroupKeys,
   foldPendingSyntheticAggregate,
@@ -18,8 +23,12 @@ import {
   normalizeSyntheticAggregate,
   readSyntheticAggregate,
   retainedSlotsDropped,
+  sha256Digest,
   slotRetainedObservation,
+  slotValuesWithoutProvenance,
   syntheticGroupDelivery,
+  verifyBackFilledSlotAgainstArtifact,
+  withSlotProvenance,
 } from "../tools/lib/geography_navigation_field_vitals_synthetic.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -30,6 +39,10 @@ const AGGREGATE_PATH = join(
 const RESIDENT_PATH = join(
   ROOT,
   "docs/evidence/geography-navigation-release/field-vitals-observation.json",
+);
+const FIXTURE_PATH = join(
+  ROOT,
+  "docs/evidence/geography-navigation-release/fixtures/near-you-synthetic-probe-slot-36943164756.json",
 );
 const PAGES_PATH = join(ROOT, "data/performance/near-you-synthetic-probe.json");
 const PROBE = join(ROOT, "tools/run_near_you_synthetic_probe.py");
@@ -84,6 +97,149 @@ test("retained aggregate records scheduled run 36943164756 as an empty slot with
   assert.equal(entry.outcome.stages.wrote, true);
   assert.equal(entry.outcome.reason, "reached_but_no_beacons");
   assert.equal(entry.observations_emitted, 0);
+});
+
+test("back-filled slot names its workflow artifact and carries digests recomputed from that artifact", () => {
+  const document = JSON.parse(readFileSync(AGGREGATE_PATH, "utf8"));
+  const entry = document.slots.find((row) => row.slot_id === "github-actions:36943164756:1");
+  assert.ok(entry, "back-filled slot must be present");
+  const provenance = entry.provenance;
+  assert.ok(provenance, "back-filled entry must carry provenance");
+  assert.equal(provenance.writing, "back_filled");
+  assert.equal(provenance.verifiable, true);
+  assert.equal(provenance.unverifiable_reason, null);
+  assert.equal(provenance.artifact.kind, "github_actions_workflow_artifact");
+  assert.equal(provenance.artifact.repository, "cityscroll/cityscroll-app");
+  assert.equal(provenance.artifact.run_id, "36943164756");
+  assert.equal(provenance.artifact.run_attempt, "1");
+  assert.equal(provenance.artifact.artifact_id, "11200568291");
+  assert.equal(provenance.artifact.artifact_name, "near-you-synthetic-probe-slot");
+  assert.equal(provenance.artifact.member_path, "slot.json");
+  assert.match(provenance.artifact_sha256, /^sha256:[0-9a-f]{64}$/);
+  assert.match(provenance.values_sha256, /^sha256:[0-9a-f]{64}$/);
+
+  // Positive control: the committed fixture is the exact artifact member; recomputing
+  // both digests from it reproduces the retained provenance exactly.
+  const artifactBytes = readFileSync(FIXTURE_PATH);
+  const artifactJson = JSON.parse(artifactBytes.toString("utf8"));
+  assert.equal(digestArtifactBytes(artifactBytes), provenance.artifact_sha256);
+  const expectedValues = buildSlotLedgerEntry(artifactJson);
+  assert.equal(digestSlotLedgerValues(expectedValues), provenance.values_sha256);
+  const verified = verifyBackFilledSlotAgainstArtifact(entry, artifactBytes, artifactJson);
+  assert.equal(verified.ok, true, verified.reason);
+});
+
+test("natively written slots omit the back-filled marker; core shape matches apart from provenance", () => {
+  const aggregate = emptySyntheticAggregate();
+  const nativeSlot = {
+    run_key: "github-actions:native-test:1",
+    github_run_id: "native-test",
+    github_run_attempt: "1",
+    trigger: "workflow_dispatch",
+    observed_at: "2026-10-02T00:00:00.000Z",
+    pages_listed: 2,
+    pages_visited: 2,
+    observations_emitted: 0,
+    retained_observation_count: 0,
+    marked_beacons: 0,
+    unmarked_beacons: 0,
+    status: "healthy",
+    failures: [],
+  };
+  const withNative = applyProbeSlot(aggregate, nativeSlot);
+  const nativeEntry = withNative.slots[0];
+  assert.equal(Object.hasOwn(nativeEntry, "provenance"), false);
+
+  const artifactBytes = readFileSync(FIXTURE_PATH);
+  const artifactJson = JSON.parse(artifactBytes.toString("utf8"));
+  const provenance = buildBackFilledSlotProvenance({
+    artifactId: "11200568291",
+    artifactName: "near-you-synthetic-probe-slot",
+    runId: "36943164756",
+    runAttempt: "1",
+    artifactSha256: digestArtifactBytes(artifactBytes),
+    valuesSha256: digestSlotLedgerValues(buildSlotLedgerEntry(artifactJson)),
+    retrievedAt: "2026-10-02T04:30:00Z",
+    expiresAt: "2026-12-30T23:53:16Z",
+  });
+  const withBackFill = applyProbeSlot(emptySyntheticAggregate(), artifactJson, { provenance });
+  const backFilledEntry = withBackFill.slots[0];
+  assert.equal(backFilledEntry.provenance.writing, "back_filled");
+
+  // Byte-identical core shape: same keys once provenance is stripped.
+  assert.deepEqual(
+    Object.keys(slotValuesWithoutProvenance(backFilledEntry)).sort(),
+    Object.keys(nativeEntry).sort(),
+  );
+  assert.deepEqual(
+    Object.keys(nativeEntry).sort(),
+    Object.keys(buildSlotLedgerEntry(nativeSlot)).sort(),
+  );
+});
+
+test("mutating a back-filled value without updating the digest is detectable", () => {
+  const artifactBytes = readFileSync(FIXTURE_PATH);
+  const artifactJson = JSON.parse(artifactBytes.toString("utf8"));
+  const baseEntry = buildSlotLedgerEntry(artifactJson);
+  const provenance = buildBackFilledSlotProvenance({
+    artifactId: "11200568291",
+    artifactName: "near-you-synthetic-probe-slot",
+    runId: "36943164756",
+    runAttempt: "1",
+    artifactSha256: digestArtifactBytes(artifactBytes),
+    valuesSha256: digestSlotLedgerValues(baseEntry),
+    retrievedAt: "2026-10-02T04:30:00Z",
+    expiresAt: "2026-12-30T23:53:16Z",
+  });
+  const honest = withSlotProvenance(baseEntry, provenance);
+  assert.equal(verifyBackFilledSlotAgainstArtifact(honest, artifactBytes, artifactJson).ok, true);
+
+  const mutated = {
+    ...honest,
+    observations_emitted: 99,
+    provenance: { ...honest.provenance },
+  };
+  const result = verifyBackFilledSlotAgainstArtifact(mutated, artifactBytes, artifactJson);
+  assert.equal(result.ok, false);
+  assert.equal(result.reason, "entry_values_mutated");
+
+  // Positive control: updating the digest alongside the value still fails against the artifact.
+  const forged = {
+    ...mutated,
+    provenance: {
+      ...mutated.provenance,
+      values_sha256: digestSlotLedgerValues(slotValuesWithoutProvenance(mutated)),
+    },
+  };
+  const forgedResult = verifyBackFilledSlotAgainstArtifact(forged, artifactBytes, artifactJson);
+  assert.equal(forgedResult.ok, false);
+  assert.equal(forgedResult.reason, "values_digest_mismatch");
+});
+
+test("expired-artifact back-fill records unverifiable instead of a self-digest", () => {
+  const unverifiable = buildBackFilledSlotProvenance({
+    artifactId: "11200568291",
+    artifactName: "near-you-synthetic-probe-slot",
+    runId: "36943164756",
+    runAttempt: "1",
+    verifiable: false,
+    unverifiableReason: "workflow_artifact_expired",
+    expiresAt: "2026-01-01T00:00:00Z",
+    retrievedAt: null,
+  });
+  assert.equal(unverifiable.writing, "back_filled");
+  assert.equal(unverifiable.verifiable, false);
+  assert.equal(unverifiable.unverifiable_reason, "workflow_artifact_expired");
+  assert.equal(unverifiable.artifact_sha256, null);
+  assert.equal(unverifiable.values_sha256, null);
+
+  const entry = withSlotProvenance(buildSlotLedgerEntry(JSON.parse(readFileSync(FIXTURE_PATH, "utf8"))), unverifiable);
+  // A self-digest of the full entry must never be accepted as proof.
+  const selfDigest = sha256Digest(canonicalizeForDigest(entry));
+  assert.notEqual(unverifiable.values_sha256, selfDigest);
+  const result = verifyBackFilledSlotAgainstArtifact(entry, readFileSync(FIXTURE_PATH));
+  assert.equal(result.ok, false);
+  assert.equal(result.reason, "recorded_unverifiable");
 });
 
 test("delivery records first_probe_slot with null merge_commit, pull_request, and trigger (present, not absent)", () => {

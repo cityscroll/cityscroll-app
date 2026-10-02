@@ -44,18 +44,5 @@
   "status": "healthy",
   "trigger": "schedule",
   "github_run_id": "36943164756",
-  "github_run_attempt": "1",
-  "started_at": "2026-10-01T23:53:55Z",
-  "finished_at": "2026-10-01T23:54:23Z",
-  "collection_diagnosis": {
-    "reached": true,
-    "collected": false,
-    "beacon_counts": {
-      "marked": 0,
-      "unmarked": 0
-    },
-    "reason": "reached_but_no_beacons",
-    "source": "run_artifact_near-you-synthetic-probe-slot",
-    "github_run_id": "36943164756"
-  }
+  "github_run_attempt": "1"
 }

@@ -126,7 +126,7 @@
       "run_id": "36943164756",
       "run_attempt": "1",
       "trigger": "schedule",
-      "started_at": "2026-10-01T23:53:55Z",
+      "started_at": null,
       "finished_at": "2026-10-01T23:54:23Z",
       "observed_at": "2026-10-01T23:54:23Z",
       "pages_listed": 2,
@@ -152,6 +152,24 @@
           "wrote": true
         },
         "reason": "reached_but_no_beacons"
+      },
+      "provenance": {
+        "writing": "back_filled",
+        "verifiable": true,
+        "unverifiable_reason": null,
+        "artifact": {
+          "kind": "github_actions_workflow_artifact",
+          "repository": "cityscroll/cityscroll-app",
+          "run_id": "36943164756",
+          "run_attempt": "1",
+          "artifact_id": "11200568291",
+          "artifact_name": "near-you-synthetic-probe-slot",
+          "member_path": "slot.json",
+          "expires_at": "2026-12-30T23:53:16Z"
+        },
+        "retrieved_at": "2026-10-02T04:30:00Z",
+        "artifact_sha256": "sha256:a59f33ec6c0b9dca5c5f2d0b9ff5ba2cdf10555cd2fd28aba4feadab3f19096f",
+        "values_sha256": "sha256:d4507757473f5353396722f7a5198033674178442b19728efa756ae53fc12377"
       }
     }
   ],
