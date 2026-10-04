@@ -1,6 +1,6 @@
 {
-  "fetched_at": "2026-09-30",
-  "fetched_at_utc": "2026-09-30T13:14:42.369Z",
+  "fetched_at": "2026-10-04",
+  "fetched_at_utc": "2026-10-04T13:03:11.783Z",
   "http_status": 200,
   "payload": [
     {
@@ -276,6 +276,43 @@
       "filingFee": 0,
       "isPromotional": false,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277313000.pdf"
+    },
+    {
+      "examId": 9673,
+      "title": "Police Officer",
+      "examNumber": "7314",
+      "filingStart": "2026-10-01T00:00:00",
+      "filingEnd": "2026-10-14T00:00:00",
+      "filingFee": 0,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277314000.pdf",
+      "examParts": [
+        {
+          "examId": 9673,
+          "examPartId": 5192,
+          "partNo": 1,
+          "partTypeCode": "MC",
+          "title": "Multiple Choice Test",
+          "examPartType": {
+            "partTypeCode": "MC",
+            "partTypeDescription": "Multiple Choice Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": true,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": true
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": true,
+      "updatedOn": "2026-09-30T16:32:33.51",
+      "isAddedToTop": false
     },
     {
       "examId": 9634,

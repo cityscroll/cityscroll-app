@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-09-30T13:14:16.581Z",
+  "generated_at": "2026-10-04T13:02:36.578Z",
   "sources": [
     "zap-api-dispositions",
     "zap-api-milestones"
@@ -9,17 +9,17 @@
   "materialization": {
     "method": "zap_published_hearing_sweep_v2",
     "mode": "live",
-    "today": "2026-09-30",
+    "today": "2026-10-04",
     "projects_listed": 235,
     "projects_fetched": 234,
     "projects_failed": 1,
     "unavailable_project_ids": [
       "2026X0464"
     ],
-    "hearings_extracted": 411,
-    "disposition_hearings_extracted": 87,
+    "hearings_extracted": 412,
+    "disposition_hearings_extracted": 88,
     "milestone_hearings_extracted": 324,
-    "disposition_upcoming_count": 4,
+    "disposition_upcoming_count": 3,
     "milestone_upcoming_count": 155,
     "incremental_milestone_count": 155,
     "accepted_milestone_classes": {
@@ -28,7 +28,7 @@
     },
     "published_meeting_dates_evaluated": 890,
     "hearing_shaped_candidates_reviewed": 846,
-    "upcoming_count": 159,
+    "upcoming_count": 158,
     "statuses": [
       "In Public Review",
       "Noticed",
@@ -38,104 +38,6 @@
     "polite_delay_ms": 350
   },
   "hearings": [
-    {
-      "schema_version": 1,
-      "source": "zap-api-dispositions",
-      "project_id": "2023K0368",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2023K0368",
-      "borough": "Brooklyn",
-      "disposition_id": "a5cb44d1-d25b-ef11-bfe3-001dd804e2db",
-      "disposition_name": "2023K0368_ZM_BK CB7",
-      "representing": "Community Board",
-      "phase_id": "community_board",
-      "hearing_date": "2026-09-30",
-      "hearing_at": "2026-09-30T22:00:00.000Z",
-      "hearing_location_raw": "4201 4th Avenue, Brooklyn NY 11232 (Entrance on 43rd Street & 4th Avenue)",
-      "venue_address": "4201 4th Avenue, Brooklyn NY 11232 (Entrance on 43rd Street & 4th Avenue)",
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [
-        "in_person"
-      ],
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=4201%204th%20Avenue%2C%20Brooklyn%20NY%2011232%20(Entrance%20on%2043rd%20Street%20%26%204th%20Avenue)%2C%20New%20York%2C%20NY",
-      "parse_status": "partial",
-      "provenance": {
-        "field": "dcp-publichearinglocation",
-        "source": "zap-api-dispositions",
-        "derived": [
-          {
-            "field": "venue_address",
-            "method": "address_shaped_raw",
-            "excerpt": "4201 4th Avenue, Brooklyn NY 11232 (Entrance on 43rd Street & 4th Avenue)"
-          }
-        ],
-        "hearing_at": {
-          "field": "dcp-dateofpublichearing",
-          "source": "zap-api-dispositions",
-          "value": "2026-09-30T22:00:00.000Z"
-        },
-        "representing": {
-          "field": "dcp-representing",
-          "source": "zap-api-dispositions",
-          "value": "Community Board"
-        }
-      },
-      "project_name": "783 Fourth Avenue Rezoning",
-      "public_status": "In Public Review",
-      "community_district": "K07",
-      "cc_district": "38",
-      "latitude": null,
-      "longitude": null
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-dispositions",
-      "project_id": "2024K0233",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2024K0233",
-      "borough": "Brooklyn",
-      "disposition_id": "1aee668e-f96e-f011-bec2-001dd80d9613",
-      "disposition_name": "2024K0233_ZR_BK CB5",
-      "representing": "Community Board",
-      "phase_id": "community_board",
-      "hearing_date": "2026-10-02",
-      "hearing_at": "2026-10-02T22:30:00.000Z",
-      "hearing_location_raw": "127 Pennsylvania Avenue, 3rd Floor - Brooklyn NY 11207",
-      "venue_address": "127 Pennsylvania Avenue, 3rd Floor - Brooklyn NY 11207",
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [
-        "in_person"
-      ],
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=127%20Pennsylvania%20Avenue%2C%203rd%20Floor%20-%20Brooklyn%20NY%2011207%2C%20New%20York%2C%20NY",
-      "parse_status": "partial",
-      "provenance": {
-        "field": "dcp-publichearinglocation",
-        "source": "zap-api-dispositions",
-        "derived": [
-          {
-            "field": "venue_address",
-            "method": "address_shaped_raw",
-            "excerpt": "127 Pennsylvania Avenue, 3rd Floor - Brooklyn NY 11207"
-          }
-        ],
-        "hearing_at": {
-          "field": "dcp-dateofpublichearing",
-          "source": "zap-api-dispositions",
-          "value": "2026-10-02T22:30:00.000Z"
-        },
-        "representing": {
-          "field": "dcp-representing",
-          "source": "zap-api-dispositions",
-          "value": "Community Board"
-        }
-      },
-      "project_name": "17-21 Wharton Place Rezoning",
-      "public_status": "In Public Review",
-      "community_district": "K05",
-      "cc_district": "37",
-      "latitude": null,
-      "longitude": null
-    },
     {
       "schema_version": 1,
       "source": "zap-api-milestones",
@@ -462,6 +364,55 @@
       "public_status": "In Public Review",
       "community_district": "M04",
       "cc_district": "6",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-dispositions",
+      "project_id": "2022Q0160",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2022Q0160",
+      "borough": "Queens",
+      "disposition_id": "aff636d6-c1f0-f011-8407-001dd80d9613",
+      "disposition_name": "2022Q0160_ZR_QN CB5",
+      "representing": "Community Board",
+      "phase_id": "community_board",
+      "hearing_date": "2026-10-14",
+      "hearing_at": "2026-10-14T23:30:00.000Z",
+      "hearing_location_raw": "Christ the King High School Cafeteria at 68-02 Metropolitan Avenue, 11379",
+      "venue_address": "Christ the King High School Cafeteria at 68-02 Metropolitan Avenue, 11379",
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [
+        "in_person"
+      ],
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Christ%20the%20King%20High%20School%20Cafeteria%20at%2068-02%20Metropolitan%20Avenue%2C%2011379%2C%20New%20York%2C%20NY",
+      "parse_status": "partial",
+      "provenance": {
+        "field": "dcp-publichearinglocation",
+        "source": "zap-api-dispositions",
+        "derived": [
+          {
+            "field": "venue_address",
+            "method": "address_shaped_raw",
+            "excerpt": "Christ the King High School Cafeteria at 68-02 Metropolitan Avenue, 11379"
+          }
+        ],
+        "hearing_at": {
+          "field": "dcp-dateofpublichearing",
+          "source": "zap-api-dispositions",
+          "value": "2026-10-14T23:30:00.000Z"
+        },
+        "representing": {
+          "field": "dcp-representing",
+          "source": "zap-api-dispositions",
+          "value": "Community Board"
+        }
+      },
+      "project_name": "10-86 Cypress Avenue Rezoning",
+      "public_status": "In Public Review",
+      "community_district": "Q05",
+      "cc_district": "34",
       "latitude": null,
       "longitude": null
     },

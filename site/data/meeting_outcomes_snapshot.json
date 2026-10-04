@@ -1,10 +1,10 @@
 {
   "schema": "cityscroll.meeting_outcomes_snapshot.v1",
-  "generated_at": "2026-09-30T13:12:58.771Z",
+  "generated_at": "2026-10-04T08:03:20.195Z",
   "delivery_tier": "inline-at-build",
-  "record_count": 305,
+  "record_count": 312,
   "present_count": 18,
-  "absent_count": 287,
+  "absent_count": 294,
   "by_notice": {
     "20260922023": {
       "request_id": "20260922023",
@@ -21,7 +21,308 @@
           }
         ]
       },
-      "matters": []
+      "matters": [
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442611",
+              "action": "Introduced",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79573",
+          "matter_file": "T2026-2620",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79573",
+          "title": "Zoning, 108-05 68th Road Rezoning, Queens (C 260234 ZMQ).",
+          "outcome": "Introduced",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442612",
+              "action": "Introduced",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79574",
+          "matter_file": "T2026-2621",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79574",
+          "title": "Zoning, 108-05 68th Road Rezoning, Queens (N 260235 ZRQ).",
+          "outcome": "Introduced",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442613",
+              "action": "Introduced",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79575",
+          "matter_file": "T2026-2622",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79575",
+          "title": "Zoning, 100-12 Queens Boulevard Rezoning, Queens (C 260184 ZMQ).",
+          "outcome": "Introduced",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442614",
+              "action": "Introduced",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79576",
+          "matter_file": "T2026-2623",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79576",
+          "title": "Zoning, 100-12 Queens Boulevard Rezoning, Queens (N 260185 ZRQ).",
+          "outcome": "Introduced",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442615",
+              "action": "Introduced",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79577",
+          "matter_file": "T2026-2624",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79577",
+          "title": "Zoning, South Richmond Designated Open Space Amendment, Staten Island (N 260362 ZRR).",
+          "outcome": "Introduced",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442616",
+              "action": "Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79452",
+          "matter_file": "LU 0131-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79452",
+          "title": "Zoning, Fort Hamilton Mews Rezoning, Brooklyn (C 260238 ZMK).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442617",
+              "action": "Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79453",
+          "matter_file": "LU 0132-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79453",
+          "title": "Zoning, Fort Hamilton Mews Rezoning, Brooklyn (N 260239 ZRK).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442618",
+              "action": "Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79454",
+          "matter_file": "LU 0133-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79454",
+          "title": "Zoning, Park Avenue Brooklyn Rezoning, Brooklyn (C 240218 ZMK).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442619",
+              "action": "Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79455",
+          "matter_file": "LU 0134-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79455",
+          "title": "Zoning, Park Avenue Brooklyn Rezoning, Brooklyn (N 240219 ZRK).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442620",
+              "action": "Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79456",
+          "matter_file": "LU 0135-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79456",
+          "title": "Zoning, Sojourner Truth – Mapes Rezoning, Bronx (C 240206 ZMX).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442621",
+              "action": "Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79457",
+          "matter_file": "LU 0136-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79457",
+          "title": "Zoning, Sojourner Truth – Mapes Rezoning, Bronx (N 240207 ZRX).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442622",
+              "action": "Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79458",
+          "matter_file": "LU 0137-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79458",
+          "title": "Zoning, 69-67 108th Street Rezoning, Queens (C 260186 ZMQ).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442623",
+              "action": "Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79459",
+          "matter_file": "LU 0138-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79459",
+          "title": "Zoning, 69-67 108th Street Rezoning, Queens (N 260187 ZRQ).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442624",
+              "action": "Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79460",
+          "matter_file": "LU 0139-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79460",
+          "title": "Zoning, 289 Kent Avenue Rezoning, Brooklyn (C 260087 ZMK).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442625",
+              "action": "Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79461",
+          "matter_file": "LU 0140-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79461",
+          "title": "Zoning, 289 Kent Avenue Rezoning, Brooklyn (N 260088 ZRK).",
+          "outcome": "Committee",
+          "votes": null
+        }
+      ]
     },
     "20260909019": {
       "request_id": "20260909019",
@@ -6150,8 +6451,8 @@
         }
       ]
     },
-    "20260430007": {
-      "request_id": "20260430007",
+    "20260422047": {
+      "request_id": "20260422047",
       "snapshot_state": "present",
       "event": {
         "event_id": "22396",
@@ -6226,8 +6527,8 @@
         }
       ]
     },
-    "20260422047": {
-      "request_id": "20260422047",
+    "20260430007": {
+      "request_id": "20260430007",
       "snapshot_state": "present",
       "event": {
         "event_id": "22396",
@@ -7374,8 +7675,32 @@
         }
       ]
     },
+    "20260922022": {
+      "request_id": "20260922022",
+      "snapshot_state": "absent"
+    },
+    "20261001007": {
+      "request_id": "20261001007",
+      "snapshot_state": "absent"
+    },
+    "20260929011": {
+      "request_id": "20260929011",
+      "snapshot_state": "absent"
+    },
+    "20260925024": {
+      "request_id": "20260925024",
+      "snapshot_state": "absent"
+    },
     "20260923020": {
       "request_id": "20260923020",
+      "snapshot_state": "absent"
+    },
+    "20260929023": {
+      "request_id": "20260929023",
+      "snapshot_state": "absent"
+    },
+    "20260924007": {
+      "request_id": "20260924007",
       "snapshot_state": "absent"
     },
     "20260915032": {
@@ -7392,6 +7717,10 @@
     },
     "20260918021": {
       "request_id": "20260918021",
+      "snapshot_state": "absent"
+    },
+    "20260923002": {
+      "request_id": "20260923002",
       "snapshot_state": "absent"
     },
     "20260922032": {
@@ -7416,6 +7745,10 @@
     },
     "20260915022": {
       "request_id": "20260915022",
+      "snapshot_state": "absent"
+    },
+    "20260924023": {
+      "request_id": "20260924023",
       "snapshot_state": "absent"
     },
     "20260827021": {
@@ -7478,12 +7811,12 @@
       "request_id": "20260909002",
       "snapshot_state": "absent"
     },
-    "20260826006": {
-      "request_id": "20260826006",
-      "snapshot_state": "absent"
-    },
     "20260817025": {
       "request_id": "20260817025",
+      "snapshot_state": "absent"
+    },
+    "20260826006": {
+      "request_id": "20260826006",
       "snapshot_state": "absent"
     },
     "20260911022": {
@@ -7494,16 +7827,16 @@
       "request_id": "20260814012",
       "snapshot_state": "absent"
     },
-    "20260819033": {
-      "request_id": "20260819033",
-      "snapshot_state": "absent"
-    },
     "20260902022": {
       "request_id": "20260902022",
       "snapshot_state": "absent"
     },
     "20260817001": {
       "request_id": "20260817001",
+      "snapshot_state": "absent"
+    },
+    "20260819033": {
+      "request_id": "20260819033",
       "snapshot_state": "absent"
     },
     "20260828012": {
@@ -7530,12 +7863,12 @@
       "request_id": "20260903021",
       "snapshot_state": "absent"
     },
-    "20260818004": {
-      "request_id": "20260818004",
-      "snapshot_state": "absent"
-    },
     "20260910007": {
       "request_id": "20260910007",
+      "snapshot_state": "absent"
+    },
+    "20260818004": {
+      "request_id": "20260818004",
       "snapshot_state": "absent"
     },
     "20260810007": {
@@ -7586,16 +7919,20 @@
       "request_id": "20260819025",
       "snapshot_state": "absent"
     },
-    "20260803009": {
-      "request_id": "20260803009",
-      "snapshot_state": "absent"
-    },
     "20260817015": {
       "request_id": "20260817015",
       "snapshot_state": "absent"
     },
+    "20260803009": {
+      "request_id": "20260803009",
+      "snapshot_state": "absent"
+    },
     "20260901022": {
       "request_id": "20260901022",
+      "snapshot_state": "absent"
+    },
+    "20260826043": {
+      "request_id": "20260826043",
       "snapshot_state": "absent"
     },
     "20260810025": {
@@ -7604,10 +7941,6 @@
     },
     "20260810024": {
       "request_id": "20260810024",
-      "snapshot_state": "absent"
-    },
-    "20260826043": {
-      "request_id": "20260826043",
       "snapshot_state": "absent"
     },
     "20260901021": {
@@ -7630,6 +7963,18 @@
       "request_id": "20260709020",
       "snapshot_state": "absent"
     },
+    "20260810050": {
+      "request_id": "20260810050",
+      "snapshot_state": "absent"
+    },
+    "20260714002": {
+      "request_id": "20260714002",
+      "snapshot_state": "absent"
+    },
+    "20260811001": {
+      "request_id": "20260811001",
+      "snapshot_state": "absent"
+    },
     "20260818027": {
       "request_id": "20260818027",
       "snapshot_state": "absent"
@@ -7644,18 +7989,6 @@
     },
     "20260723022": {
       "request_id": "20260723022",
-      "snapshot_state": "absent"
-    },
-    "20260811001": {
-      "request_id": "20260811001",
-      "snapshot_state": "absent"
-    },
-    "20260714002": {
-      "request_id": "20260714002",
-      "snapshot_state": "absent"
-    },
-    "20260810050": {
-      "request_id": "20260810050",
       "snapshot_state": "absent"
     },
     "20260805006": {
@@ -7886,12 +8219,12 @@
       "request_id": "20260609065",
       "snapshot_state": "absent"
     },
-    "20260522008": {
-      "request_id": "20260522008",
-      "snapshot_state": "absent"
-    },
     "20260610012": {
       "request_id": "20260610012",
+      "snapshot_state": "absent"
+    },
+    "20260522008": {
+      "request_id": "20260522008",
       "snapshot_state": "absent"
     },
     "20260506007": {
@@ -8098,16 +8431,16 @@
       "request_id": "20260518031",
       "snapshot_state": "absent"
     },
+    "20260515001": {
+      "request_id": "20260515001",
+      "snapshot_state": "absent"
+    },
     "20260512013": {
       "request_id": "20260512013",
       "snapshot_state": "absent"
     },
     "20260521019": {
       "request_id": "20260521019",
-      "snapshot_state": "absent"
-    },
-    "20260515001": {
-      "request_id": "20260515001",
       "snapshot_state": "absent"
     },
     "20260512014": {
@@ -8230,16 +8563,16 @@
       "request_id": "20260414033",
       "snapshot_state": "absent"
     },
+    "20260422037": {
+      "request_id": "20260422037",
+      "snapshot_state": "absent"
+    },
     "20260424018": {
       "request_id": "20260424018",
       "snapshot_state": "absent"
     },
     "20260407014": {
       "request_id": "20260407014",
-      "snapshot_state": "absent"
-    },
-    "20260422037": {
-      "request_id": "20260422037",
       "snapshot_state": "absent"
     },
     "20260428004": {
@@ -8334,16 +8667,16 @@
       "request_id": "20260323027",
       "snapshot_state": "absent"
     },
-    "20260408026": {
-      "request_id": "20260408026",
-      "snapshot_state": "absent"
-    },
     "20260331010": {
       "request_id": "20260331010",
       "snapshot_state": "absent"
     },
     "20260408001": {
       "request_id": "20260408001",
+      "snapshot_state": "absent"
+    },
+    "20260408026": {
+      "request_id": "20260408026",
       "snapshot_state": "absent"
     },
     "20260303009": {
@@ -8490,12 +8823,12 @@
       "request_id": "20260320012",
       "snapshot_state": "absent"
     },
-    "20260325031": {
-      "request_id": "20260325031",
-      "snapshot_state": "absent"
-    },
     "20260318017": {
       "request_id": "20260318017",
+      "snapshot_state": "absent"
+    },
+    "20260325031": {
+      "request_id": "20260325031",
       "snapshot_state": "absent"
     },
     "20260316027": {
@@ -8516,10 +8849,6 @@
     },
     "20260317001": {
       "request_id": "20260317001",
-      "snapshot_state": "absent"
-    },
-    "20260225026": {
-      "request_id": "20260225026",
       "snapshot_state": "absent"
     }
   }

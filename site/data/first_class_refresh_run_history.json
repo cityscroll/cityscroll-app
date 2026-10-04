@@ -1,18 +1,18 @@
 {
   "schema": "cityscroll.first_class_refresh_run_history.v1",
-  "generated_at": "2026-09-30T13:39:28.466Z",
+  "generated_at": "2026-10-04T13:14:27.636Z",
   "run": {
-    "run_id": "github-actions:36718192869:1",
-    "github_run_id": 36718192869,
-    "run_url": "https://github.com/cityscroll/cityscroll-app/actions/runs/36718192869",
+    "run_id": "github-actions:37203405869:1",
+    "github_run_id": 37203405869,
+    "run_url": "https://github.com/cityscroll/cityscroll-app/actions/runs/37203405869",
     "trigger": "schedule",
-    "started_at": "2026-09-30T12:57:20Z",
-    "finished_at": "2026-09-30T13:39:28.466Z",
-    "code_revision": "c9381ab637d8970e8653a0e7616d76f5faa45653"
+    "started_at": "2026-10-04T12:50:04Z",
+    "finished_at": "2026-10-04T13:14:27.636Z",
+    "code_revision": "685c489d7de5c56c4b2c6333772484ff2f8356aa"
   },
   "total": 39,
   "due_count": 35,
-  "published_count": 26,
+  "published_count": 25,
   "datasets": [
     {
       "id": "agency-constellation",
@@ -20,8 +20,8 @@
       "due": false,
       "acquisition_status": "not_due",
       "builder_status": "not_due",
-      "rebuild_status": "succeeded",
-      "published": true
+      "rebuild_status": "skipped",
+      "published": false
     },
     {
       "id": "agency-obligations",
@@ -29,7 +29,7 @@
       "due": true,
       "acquisition_status": "failed",
       "builder_status": "not_applicable",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": false
     },
     {
@@ -38,7 +38,7 @@
       "due": true,
       "acquisition_status": "failed",
       "builder_status": "skipped",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": false
     },
     {
@@ -47,7 +47,7 @@
       "due": true,
       "acquisition_status": "failed",
       "builder_status": "skipped",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": false
     },
     {
@@ -56,7 +56,7 @@
       "due": true,
       "acquisition_status": "failed",
       "builder_status": "skipped",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": false
     },
     {
@@ -65,7 +65,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "not_applicable",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": true
     },
     {
@@ -74,7 +74,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "not_applicable",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": true
     },
     {
@@ -83,7 +83,7 @@
       "due": false,
       "acquisition_status": "not_due",
       "builder_status": "not_due",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": false
     },
     {
@@ -92,7 +92,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "succeeded",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": false
     },
     {
@@ -101,7 +101,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "not_applicable",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": true
     },
     {
@@ -110,17 +110,17 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "not_applicable",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": false
     },
     {
       "id": "public-consultations",
       "public_artifact_path": "site/data/consultations.json",
-      "due": false,
-      "acquisition_status": "not_due",
-      "builder_status": "not_due",
-      "rebuild_status": "succeeded",
-      "published": false
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
+      "rebuild_status": "skipped",
+      "published": true
     },
     {
       "id": "land-default",
@@ -128,7 +128,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "not_applicable",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": true
     },
     {
@@ -137,7 +137,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "not_applicable",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": true
     },
     {
@@ -146,7 +146,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "not_applicable",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": true
     },
     {
@@ -155,7 +155,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "not_applicable",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": true
     },
     {
@@ -164,7 +164,7 @@
       "due": false,
       "acquisition_status": "not_due",
       "builder_status": "not_due",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": false
     },
     {
@@ -173,7 +173,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "not_applicable",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "failed",
       "published": true
     },
     {
@@ -182,7 +182,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "not_applicable",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": true
     },
     {
@@ -191,7 +191,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "not_applicable",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": true
     },
     {
@@ -200,7 +200,7 @@
       "due": true,
       "acquisition_status": "failed",
       "builder_status": "skipped",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": true
     },
     {
@@ -209,7 +209,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "not_applicable",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": false
     },
     {
@@ -218,7 +218,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "succeeded",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": true
     },
     {
@@ -227,17 +227,17 @@
       "due": true,
       "acquisition_status": "failed",
       "builder_status": "not_applicable",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": false
     },
     {
       "id": "official-cfb-influence",
       "public_artifact_path": "site/data/official_cfb_influence_lookup.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
-      "rebuild_status": "succeeded",
-      "published": true
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
+      "rebuild_status": "skipped",
+      "published": false
     },
     {
       "id": "pdc-calendar",
@@ -245,7 +245,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "succeeded",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": true
     },
     {
@@ -254,7 +254,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "succeeded",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": true
     },
     {
@@ -263,7 +263,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "not_applicable",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": true
     },
     {
@@ -272,7 +272,7 @@
       "due": true,
       "acquisition_status": "failed",
       "builder_status": "skipped",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": false
     },
     {
@@ -281,7 +281,7 @@
       "due": true,
       "acquisition_status": "failed",
       "builder_status": "skipped",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": false
     },
     {
@@ -290,7 +290,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "not_applicable",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "failed",
       "published": true
     },
     {
@@ -299,7 +299,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "succeeded",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": true
     },
     {
@@ -308,7 +308,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "not_applicable",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "failed",
       "published": true
     },
     {
@@ -317,7 +317,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "succeeded",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": true
     },
     {
@@ -326,7 +326,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "succeeded",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": true
     },
     {
@@ -335,7 +335,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "not_applicable",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": true
     },
     {
@@ -344,7 +344,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "succeeded",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": true
     },
     {
@@ -353,7 +353,7 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "succeeded",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": true
     },
     {
@@ -362,9 +362,19 @@
       "due": true,
       "acquisition_status": "succeeded",
       "builder_status": "not_applicable",
-      "rebuild_status": "succeeded",
+      "rebuild_status": "skipped",
       "published": true
     }
   ],
-  "prior_runs": []
+  "prior_runs": [
+    {
+      "run_id": "github-actions:36718192869:1",
+      "trigger": "schedule",
+      "started_at": "2026-09-30T12:57:20Z",
+      "finished_at": "2026-09-30T13:39:28.466Z",
+      "due_count": 35,
+      "published_count": 26,
+      "receipt_sha256": "sha256:d2ab4acd98adb9f515839d8f88d0c7c0a8645542706d87097bfb1a51e6cdf47d"
+    }
+  ]
 }

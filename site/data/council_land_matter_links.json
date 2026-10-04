@@ -1,11 +1,11 @@
 {
   "bridge": {
-    "eligible_appearances": 108,
+    "eligible_appearances": 123,
     "gate": "GO",
-    "linked_matters": 55,
-    "linked_projects": 27,
-    "matched_appearances": 71,
-    "matched_rate": 0.657407
+    "linked_matters": 60,
+    "linked_projects": 30,
+    "matched_appearances": 86,
+    "matched_rate": 0.699187
   },
   "generated_at": "2026-09-05T00:00:00.000Z",
   "matters": {
@@ -1136,6 +1136,16 @@
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
           "outcome": "P-C Item Laid Over by Comm"
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-10-06",
+          "event_id": "22615",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Committee"
         }
       ],
       "join_key": "ulurp_number",
@@ -1159,6 +1169,16 @@
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
           "outcome": "P-C Item Laid Over by Comm"
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-10-06",
+          "event_id": "22615",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Committee"
         }
       ],
       "join_key": "ulurp_number",
@@ -1182,6 +1202,16 @@
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
           "outcome": "P-C Item Laid Over by Comm"
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-10-06",
+          "event_id": "22615",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Committee"
         }
       ],
       "join_key": "ulurp_number",
@@ -1205,6 +1235,16 @@
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
           "outcome": "P-C Item Laid Over by Comm"
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-10-06",
+          "event_id": "22615",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Committee"
         }
       ],
       "join_key": "ulurp_number",
@@ -1228,6 +1268,16 @@
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
           "outcome": "P-C Item Laid Over by Comm"
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-10-06",
+          "event_id": "22615",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Committee"
         }
       ],
       "join_key": "ulurp_number",
@@ -1251,6 +1301,16 @@
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
           "outcome": "P-C Item Laid Over by Comm"
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-10-06",
+          "event_id": "22615",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Committee"
         }
       ],
       "join_key": "ulurp_number",
@@ -1274,6 +1334,16 @@
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
           "outcome": "P-C Item Laid Over by Comm"
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-10-06",
+          "event_id": "22615",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Committee"
         }
       ],
       "join_key": "ulurp_number",
@@ -1297,6 +1367,16 @@
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
           "outcome": "P-C Item Laid Over by Comm"
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-10-06",
+          "event_id": "22615",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Committee"
         }
       ],
       "join_key": "ulurp_number",
@@ -1320,6 +1400,16 @@
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
           "outcome": "P-C Item Laid Over by Comm"
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-10-06",
+          "event_id": "22615",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Committee"
         }
       ],
       "join_key": "ulurp_number",
@@ -1343,6 +1433,16 @@
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
           "outcome": "P-C Item Laid Over by Comm"
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-10-06",
+          "event_id": "22615",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Committee"
         }
       ],
       "join_key": "ulurp_number",
@@ -1445,6 +1545,116 @@
       "project_id": "2024Q0219",
       "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79532",
       "title": "Zoning, 135-27 Sapphire Street Rezoning, Queens (N 250330 ZRQ)."
+    },
+    "79573": {
+      "appearances": [
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "event_date": "2026-10-06",
+          "event_id": "22615",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Introduced"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260234ZMQ",
+      "matter_file": "T2026-2620",
+      "matter_id": "79573",
+      "project_id": "2024Q0292",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79573",
+      "title": "Zoning, 108-05 68th Road Rezoning, Queens (C 260234 ZMQ)."
+    },
+    "79574": {
+      "appearances": [
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "event_date": "2026-10-06",
+          "event_id": "22615",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Introduced"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260235ZRQ",
+      "matter_file": "T2026-2621",
+      "matter_id": "79574",
+      "project_id": "2024Q0292",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79574",
+      "title": "Zoning, 108-05 68th Road Rezoning, Queens (N 260235 ZRQ)."
+    },
+    "79575": {
+      "appearances": [
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "event_date": "2026-10-06",
+          "event_id": "22615",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Introduced"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260184ZMQ",
+      "matter_file": "T2026-2622",
+      "matter_id": "79575",
+      "project_id": "2023Q0450",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79575",
+      "title": "Zoning, 100-12 Queens Boulevard Rezoning, Queens (C 260184 ZMQ)."
+    },
+    "79576": {
+      "appearances": [
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "event_date": "2026-10-06",
+          "event_id": "22615",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Introduced"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260185ZRQ",
+      "matter_file": "T2026-2623",
+      "matter_id": "79576",
+      "project_id": "2023Q0450",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79576",
+      "title": "Zoning, 100-12 Queens Boulevard Rezoning, Queens (N 260185 ZRQ)."
+    },
+    "79577": {
+      "appearances": [
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "event_date": "2026-10-06",
+          "event_id": "22615",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Introduced"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260362ZRR",
+      "matter_file": "T2026-2624",
+      "matter_id": "79577",
+      "project_id": "2026R0319",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79577",
+      "title": "Zoning, South Richmond Designated Open Space Amendment, Staten Island (N 260362 ZRR)."
     }
   },
   "projects": {
@@ -1513,6 +1723,14 @@
       ],
       "project_id": "2023Q0125",
       "project_name": "21-31 46th Ave Rezoning"
+    },
+    "2023Q0450": {
+      "matter_ids": [
+        "79575",
+        "79576"
+      ],
+      "project_id": "2023Q0450",
+      "project_name": "100-12 Queens Boulevard Rezoning"
     },
     "2023X0149": {
       "matter_ids": [
@@ -1587,6 +1805,14 @@
       ],
       "project_id": "2024Q0219",
       "project_name": "135-27 Sapphire Street Rezoning"
+    },
+    "2024Q0292": {
+      "matter_ids": [
+        "79573",
+        "79574"
+      ],
+      "project_id": "2024Q0292",
+      "project_name": "108-05 68th Road Rezoning"
     },
     "2024R0300": {
       "matter_ids": [
@@ -1664,6 +1890,13 @@
       ],
       "project_id": "2025Q0316",
       "project_name": "Queens CD 2 Walk to Park Site Selection/Acq."
+    },
+    "2026R0319": {
+      "matter_ids": [
+        "79577"
+      ],
+      "project_id": "2026R0319",
+      "project_name": "South Richmond Designated Open Space Amendment"
     }
   },
   "relation": {
@@ -1676,11 +1909,11 @@
   "schema": "cityscroll.council_land_matter_links.v1",
   "source_vintage": {
     "meeting_outcomes_snapshot_counts": {
-      "absent_count": 287,
+      "absent_count": 294,
       "present_count": 18,
-      "record_count": 305
+      "record_count": 312
     },
-    "meeting_outcomes_snapshot_generated_at": "2026-09-30T13:12:58.771Z",
-    "zap_projects_warehouse_lookup_materialized_at": "2026-09-30T13:15:13.798Z"
+    "meeting_outcomes_snapshot_generated_at": "2026-10-04T08:03:20.195Z",
+    "zap_projects_warehouse_lookup_materialized_at": "2026-10-04T13:03:46.355Z"
   }
 }

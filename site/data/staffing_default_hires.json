@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-09-30T13:14:36.071Z",
+  "generated_at": "2026-10-04T13:03:04.652Z",
   "source": {
     "name": "City Record Online — Changes in Personnel (APPOINTED)",
     "dataset": "dg92-zbpx",
@@ -17,564 +17,564 @@
   "count": 80,
   "notices": [
     {
-      "request_id": "992922",
+      "request_id": "993586",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: COOKS,JARELL M."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MARZULLO,DOMINIC  ."
     },
     {
-      "request_id": "992921",
+      "request_id": "993585",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "FIRE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 19.50; Employee Name: DEL CARMEN,TIARA D."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: PIERRE-LOUIS,SULFANIA  ."
     },
     {
-      "request_id": "992917",
+      "request_id": "993584",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: COX,JASANI M."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: RAHMAN,SADIQUR  ."
     },
     {
-      "request_id": "992913",
+      "request_id": "993583",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: SCHWARTZ,NICOLE R."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MUNROE,JADA  ."
     },
     {
-      "request_id": "992911",
+      "request_id": "993582",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/05/2026; Provisional Status: Yes; Title Code: 1002D; Reason For Change: APPOINTED; Salary: 122660.00; Employee Name: ZHEN,QING YAN  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: PAGAN,JUAN  ."
     },
     {
-      "request_id": "992909",
+      "request_id": "993581",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/08/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: HARTRIDGE-HARDY,TYLER J."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MATHEWS,STEFANIE  ."
     },
     {
-      "request_id": "992908",
+      "request_id": "993580",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: OBI,HAILEY A."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: PETTIFORD,LONNIE  ."
     },
     {
-      "request_id": "992902",
+      "request_id": "993579",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: MALDONADO,LYNNELL  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: RAHMAN,ANISUR  ."
     },
     {
-      "request_id": "992897",
+      "request_id": "993578",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/05/2026; Provisional Status: Yes; Title Code: 95005; Reason For Change: APPOINTED; Salary: 191744.00; Employee Name: CHASAN,REBECCA K."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: RAPHAEL,DAHLIA  ."
     },
     {
-      "request_id": "992896",
+      "request_id": "993577",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: QUATTLEBAUM-NIX,NYSEER D."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MULLEN,JOSEPH  ."
     },
     {
-      "request_id": "992895",
+      "request_id": "993576",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/09/2026; Provisional Status: Yes; Title Code: 60817; Reason For Change: APPOINTED; Salary: 40480.00; Employee Name: VICTOR,ROLAND  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MELTZER,YOSEF S."
     },
     {
-      "request_id": "992891",
+      "request_id": "993575",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: CARTER,MARIAH J."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MOHAMED,MARIAM  ."
     },
     {
-      "request_id": "992890",
+      "request_id": "993574",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "FIRE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 21744; Reason For Change: APPOINTED; Salary: 81991.00; Employee Name: KHAN,SARAH S."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: PACHECO,JENNIFER  ."
     },
     {
-      "request_id": "992889",
+      "request_id": "993573",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "FIRE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/07/2026; Provisional Status: Yes; Title Code: 97022; Reason For Change: APPOINTED; Salary: 76.73; Employee Name: CREGLOW,HUNTER S."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MORONEY,ELSA  ."
     },
     {
-      "request_id": "992884",
+      "request_id": "993572",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: RIOS,LIANDRA M."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MCCLEAN,REGINA  ."
     },
     {
-      "request_id": "992883",
+      "request_id": "993571",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: DIALLO,FATOUMAT B."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MIHINDOU,OLIVER K."
     },
     {
-      "request_id": "992881",
+      "request_id": "993570",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: GIBBS,MICHAEL N."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: RAHMAN,MRITIKA T."
     },
     {
-      "request_id": "992878",
+      "request_id": "993569",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: PEREZ VENTURA,MAELIEH E."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: RAFI,ABIDUR  ."
     },
     {
-      "request_id": "992877",
+      "request_id": "993568",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: RAHMAN,FARIHA  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: NAPOLI,GABRIELL G."
     },
     {
-      "request_id": "992868",
+      "request_id": "993567",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: VILLALONA,JULIAN A."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MOMBELLI,LAETITIA C."
     },
     {
-      "request_id": "992867",
+      "request_id": "993566",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10251; Reason For Change: APPOINTED; Salary: 23.15; Employee Name: MELENDEZ,CARMEN M."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: PORCU,GINA M."
     },
     {
-      "request_id": "992862",
+      "request_id": "993565",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: HORTON,SHATEZ Q."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: PRAMANIK,HOSNEARA  ."
     },
     {
-      "request_id": "992856",
+      "request_id": "993564",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/21/2026; Provisional Status: Yes; Title Code: 1002D; Reason For Change: APPOINTED; Salary: 121973.00; Employee Name: SALINAS ENCINAS,RIQUELME B."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: PETTAWAY,MADISON  ."
     },
     {
-      "request_id": "992855",
+      "request_id": "993563",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 03/15/2026; Provisional Status: Yes; Title Code: 1002A; Reason For Change: APPOINTED; Salary: 98140.00; Employee Name: MAHONEY,SCOTT M."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: PITT,TATIA  ."
     },
     {
-      "request_id": "992841",
+      "request_id": "993562",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 91415; Reason For Change: APPOINTED; Salary: 68377.00; Employee Name: WHITEHALL,NATHANIE J."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: O\u001aBRIEN,TERESA  ."
     },
     {
-      "request_id": "992840",
+      "request_id": "993561",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: CARLOS,MALACHI S."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: NICHOLLS,SANDRA  ."
     },
     {
-      "request_id": "992834",
+      "request_id": "993560",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: NEDD,AIDAN J."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: OGUNDIRAN,MICHAEL O."
     },
     {
-      "request_id": "992831",
+      "request_id": "993559",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: MARTINEZ,JOSHUA X."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: NI,ERIC  ."
     },
     {
-      "request_id": "992827",
+      "request_id": "993558",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: HUDDLESON,JANIYA G."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: PARK,JAKE  ."
     },
     {
-      "request_id": "992826",
+      "request_id": "993557",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 21744; Reason For Change: APPOINTED; Salary: 110120.00; Employee Name: GALLAGHER,MARGARET H."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MORETA LAZARO,BRIGETTE  ."
     },
     {
-      "request_id": "992816",
+      "request_id": "993556",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: CORDANO,EMILY H."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MCRAE,XAVIER L."
     },
     {
-      "request_id": "992811",
+      "request_id": "993555",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: ROMERO JR,ANGEL C."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: PAYTON,LYNN R."
     },
     {
-      "request_id": "992809",
+      "request_id": "993554",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10232; Reason For Change: APPOINTED; Salary: 17.90; Employee Name: HERNANDEZ,BIANCA D."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: PAREDES,EVELLYN  ."
     },
     {
-      "request_id": "992808",
+      "request_id": "993553",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: PARNELL,SHAUN  ."
+      "additional_description_1": "Effective Date: 07/02/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: RAKHMATJONOVA,SHAKHZOD  ."
     },
     {
-      "request_id": "992807",
+      "request_id": "993552",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: LOPEZ,IVANA V."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MURCHISON,PAULETTA  ."
     },
     {
-      "request_id": "992800",
+      "request_id": "993551",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: KINSALE III,KENRICK J."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: PAYANO,VANESSA E."
     },
     {
-      "request_id": "992781",
+      "request_id": "993550",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: JAMAL BABA,ABDUL AZ S."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: NURUZZAMAN,NFN  ."
     },
     {
-      "request_id": "992779",
+      "request_id": "993549",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: RIVERA,ELIJAH G."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MULLAH,RAFI  ."
     },
     {
-      "request_id": "992776",
+      "request_id": "993548",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: BUTLER,LEVI D."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MICHAEL,CHRISTIA  ."
     },
     {
-      "request_id": "992773",
+      "request_id": "993547",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: BOWLES,AKEISHA E."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: QUINONES,JALEXIS  ."
     },
     {
-      "request_id": "992770",
+      "request_id": "993546",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/05/2026; Provisional Status: Yes; Title Code: 1002A; Reason For Change: APPOINTED; Salary: 120000.00; Employee Name: CHANG,SCOTT  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: PAULINO,MELODY D."
     },
     {
-      "request_id": "992768",
+      "request_id": "993545",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/09/2026; Provisional Status: Yes; Title Code: 60817; Reason For Change: APPOINTED; Salary: 40480.00; Employee Name: PEREIRA,JASMIN  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: OKUNKOVA,ANNA  ."
     },
     {
-      "request_id": "992766",
+      "request_id": "993544",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: HORTON,SHAMAR E."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: PERRONE,JOANN  ."
     },
     {
-      "request_id": "992765",
+      "request_id": "993543",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: COOMBS,JAMES W."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: OWENS,JACQULIN  ."
     },
     {
-      "request_id": "992761",
+      "request_id": "993542",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: IQBAL,MUHAMMAD S."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: NAVARETTE MIRON,MARIA M."
     },
     {
-      "request_id": "992760",
+      "request_id": "993541",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/14/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: LI,SI Z."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: NAGY,GREGORY  ."
     },
     {
-      "request_id": "992757",
+      "request_id": "993540",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/21/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 42288.00; Employee Name: HADIUZZAMAN,KHANDOKA  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: RADICE JR,STEPHEN A."
     },
     {
-      "request_id": "992755",
+      "request_id": "993539",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: SCANTLEBURY,JAVON L."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MEJIA,CHRISTOP A."
     },
     {
-      "request_id": "992753",
+      "request_id": "993538",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: GIBSON,ELIJAH D."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: OMOZUSI,JULIA S."
     },
     {
-      "request_id": "992752",
+      "request_id": "993537",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: SIMMS,ANIYAH S."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: ORTIZ DE VILLAT,KRYSTLE  ."
     },
     {
-      "request_id": "992751",
+      "request_id": "993536",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "FIRE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 12626; Reason For Change: APPOINTED; Salary: 72595.00; Employee Name: MEHTA,BHAVESH  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: PENNY,MARGARET  ."
     },
     {
-      "request_id": "992749",
+      "request_id": "993535",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "FIRE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 51227.00; Employee Name: MERCURE,ALISON  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: OAKLEY-WILLIAMS,RAVAN M."
     },
     {
-      "request_id": "992748",
+      "request_id": "993534",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: MARTORELL JR,CARLOS L."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MINA,CARLOS A."
     },
     {
-      "request_id": "992747",
+      "request_id": "993533",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: ROBINSON,ELIJAH J."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MEREDITH,AMY J."
     },
     {
-      "request_id": "992739",
+      "request_id": "993532",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: EL ZAYAT,OMER M."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MIAKE-KYE,RYN  ."
     },
     {
-      "request_id": "992738",
+      "request_id": "993531",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: LOPEZ,JOHN F."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: PENATRUJILLO,EDUARDO  ."
     },
     {
-      "request_id": "992737",
+      "request_id": "993530",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: CAER,ARTHUR B."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: NAVARRO,MARCUS  ."
     },
     {
-      "request_id": "992735",
+      "request_id": "993529",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "FIRE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/05/2026; Provisional Status: Yes; Title Code: 30087; Reason For Change: APPOINTED; Salary: 110478.00; Employee Name: VISCOMI,ALTA R."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: NICHOLS,ASHAUNTI N."
     },
     {
-      "request_id": "992731",
+      "request_id": "993528",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: COLLIER,CASSIUS D."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: NAHID,ASADUJJA  ."
     },
     {
-      "request_id": "992730",
+      "request_id": "993527",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: LYONS,DESIRAY A."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: ORTIZ,PERLA  ."
     },
     {
-      "request_id": "992727",
+      "request_id": "993526",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: FIGUEROA,ANTHONY  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MEJIA,CAROLINA  ."
     },
     {
-      "request_id": "992725",
+      "request_id": "993525",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: GONZALEZ,AIDEN-AA H."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MCEVOY,FRANCES  ."
     },
     {
-      "request_id": "992722",
+      "request_id": "993524",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 95714; Reason For Change: APPOINTED; Salary: 109538.00; Employee Name: CHOWDHURY,SARJEEL A."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MOLINA,JOSUE  ."
     },
     {
-      "request_id": "992716",
+      "request_id": "993523",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: THORNTON-ROACH,ELIJAH O."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MENESES,ARTURO  ."
     },
     {
-      "request_id": "992705",
+      "request_id": "993522",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/08/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: BARNETT,RYAN S."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: OLADOSU,DORCAS O."
     },
     {
-      "request_id": "992704",
+      "request_id": "993521",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: GIDDINGS,LYDIA M."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 14.00; Employee Name: QUETZART,VICTOR  ."
     },
     {
-      "request_id": "992703",
+      "request_id": "993520",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 12626; Reason For Change: APPOINTED; Salary: 83484.00; Employee Name: SINHA,SUNILA  ."
+      "additional_description_1": "Effective Date: 06/29/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MENDEZ,STEISY C."
     },
     {
-      "request_id": "992702",
+      "request_id": "993519",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: HOLM,NICHOLAS N."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MCDONALD,NDIGO  ."
     },
     {
-      "request_id": "992701",
+      "request_id": "993518",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: ELIE,STEPHAN  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: PHILLIPS,SHERYL Y."
     },
     {
-      "request_id": "992692",
+      "request_id": "993517",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: SIMPSON,BRISON J."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: NOBLE,ALONICA T."
     },
     {
-      "request_id": "992691",
+      "request_id": "993516",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: PITAN,OLUWALOT S."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: PATRICK,SHAWNIEC S."
     },
     {
-      "request_id": "992687",
+      "request_id": "993515",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: FRAZIER,DONOVAN J."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: PALMER,KELSEY A."
     },
     {
-      "request_id": "992686",
+      "request_id": "993514",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: MCNEILL,DEMARIJO M."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: PEREZ FELIX,RAYMOND  ."
     },
     {
-      "request_id": "992685",
+      "request_id": "993513",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/08/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: TROISSOU,JAIDEN  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MORRISON,AUDREY  ."
     },
     {
-      "request_id": "992682",
+      "request_id": "993512",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: BONNER JR,LOCKINVA R."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: MEAH,JAHED  ."
     },
     {
-      "request_id": "992680",
+      "request_id": "993511",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: IQBAL,MUHAMMAD  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: O\u001aHARA,DILLON  ."
     },
     {
-      "request_id": "992676",
+      "request_id": "993510",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "FIRE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/05/2026; Provisional Status: Yes; Title Code: 95714; Reason For Change: APPOINTED; Salary: 180000.00; Employee Name: ALI,ANNALYSH  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: NUYAN,NAFI  ."
     },
     {
-      "request_id": "992674",
+      "request_id": "993509",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 30087; Reason For Change: APPOINTED; Salary: 106404.00; Employee Name: LIANG,JING  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: PALEAU,OLIVIA A."
     },
     {
-      "request_id": "992668",
+      "request_id": "993508",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 60822; Reason For Change: APPOINTED; Salary: 38553.00; Employee Name: LEGGETT,JEREMY J."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: POOLE,LANEE  ."
     },
     {
-      "request_id": "992666",
+      "request_id": "993507",
       "start_date": "2026-07-17T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10232; Reason For Change: APPOINTED; Salary: 17.90; Employee Name: GHULIANI,ARNAV B."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: D\u001aANGELO,HELENA  ."
     }
   ]
 }

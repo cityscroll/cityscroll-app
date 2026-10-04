@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-09-30T13:04:22.921Z",
+  "generated_at": "2026-10-04T12:57:27.775Z",
   "source": {
     "name": "Zoning Application Portal projects (Open Data)",
     "dataset": "hgx4-8ukb",
@@ -1435,8 +1435,8 @@
       "name": "CityScroll ZAP outcomes daily read model",
       "endpoint": "https://api.cityscroll.org/zap-outcomes"
     },
-    "present_count": 33,
-    "absent_count": 1,
+    "present_count": 34,
+    "absent_count": 0,
     "missing_count": 6,
     "by_project": {
       "2020M0385": {
@@ -1642,7 +1642,7 @@
           }
         ],
         "n_documents": 33,
-        "generated_at": "2026-09-29T13:15:23.525Z",
+        "generated_at": "2026-10-02T13:08:46.502Z",
         "snapshot_state": "present"
       },
       "2025K0305": {
@@ -1866,7 +1866,7 @@
           }
         ],
         "n_documents": 61,
-        "generated_at": "2026-09-27T13:11:02.783Z",
+        "generated_at": "2026-10-02T13:14:56.348Z",
         "snapshot_state": "present"
       },
       "2026K0123": {
@@ -2061,7 +2061,7 @@
           }
         ],
         "n_documents": 46,
-        "generated_at": "2026-09-27T13:10:58.611Z",
+        "generated_at": "2026-10-02T13:14:41.806Z",
         "snapshot_state": "present"
       },
       "2024Q0325": {
@@ -2255,8 +2255,8 @@
             "time_created": "2026-06-30T16:09:42Z"
           }
         ],
-        "n_documents": 46,
-        "generated_at": "2026-09-28T13:13:06.917Z",
+        "n_documents": 61,
+        "generated_at": "2026-10-02T13:12:53.889Z",
         "snapshot_state": "present"
       },
       "2024K0214": {
@@ -2441,18 +2441,243 @@
           }
         ],
         "n_documents": 45,
-        "generated_at": "2026-09-27T13:11:02.062Z",
+        "generated_at": "2026-10-02T13:14:58.041Z",
         "snapshot_state": "present"
       },
       "2024M0244": {
         "project_id": "2024M0244",
+        "public_status": "Completed",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2024M0244",
         "join": {
-          "matched": false,
-          "method": null,
-          "reason": "Could not reach the ZAP project API for decision documents."
+          "matched": true,
+          "method": "exact_project_id",
+          "reason": null
         },
-        "filled": false,
-        "snapshot_state": "absent"
+        "filled": true,
+        "actions": [
+          {
+            "id": "c4c0bb2e-7598-ee11-be37-001dd804eb39",
+            "action": "ZS",
+            "ulurp_number": "C260015ZSM",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZS_Zoning Special Permit_C4C0BB2E7598EE11BE37001DD804EB39"
+          },
+          {
+            "id": "3993a146-7598-ee11-be37-001dd804eb39",
+            "action": "ZM",
+            "ulurp_number": "C260013ZMM",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM_Zoning Map Amendment_3993A1467598EE11BE37001DD804EB39"
+          },
+          {
+            "id": "85859158-7598-ee11-be37-001dd804eb39",
+            "action": "ZR",
+            "ulurp_number": "N260014ZRM",
+            "status": "Referred",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZR_Zoning Text Amendment_858591587598EE11BE37001DD804EB39"
+          },
+          {
+            "id": "cd1510c7-00cb-f011-bbd3-001dd80a67c9",
+            "action": "LD",
+            "ulurp_number": "260201LDM",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          },
+          {
+            "id": "7e4803d3-00cb-f011-bbd3-001dd80a67c9",
+            "action": "LD",
+            "ulurp_number": "260202LDM",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          }
+        ],
+        "approved_actions": [
+          {
+            "id": "c4c0bb2e-7598-ee11-be37-001dd804eb39",
+            "action": "ZS",
+            "ulurp_number": "C260015ZSM",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZS_Zoning Special Permit_C4C0BB2E7598EE11BE37001DD804EB39"
+          },
+          {
+            "id": "3993a146-7598-ee11-be37-001dd804eb39",
+            "action": "ZM",
+            "ulurp_number": "C260013ZMM",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM_Zoning Map Amendment_3993A1467598EE11BE37001DD804EB39"
+          }
+        ],
+        "dispositions": [
+          {
+            "id": "43f3b5d2-ed7d-f011-b4cc-001dd8006beb",
+            "name": "2024M0244_ZS_MN BP",
+            "status": "Submitted",
+            "representing": "Borough President",
+            "vote_date": null,
+            "hearing_date": null,
+            "hearing_at": null,
+            "hearing_location": null,
+            "vote_location": null,
+            "community_board": null,
+            "board_id": null,
+            "borough_president": "Conditional Favorable",
+            "borough_board": null,
+            "votes_for": null,
+            "votes_against": null,
+            "votes_abstain": null,
+            "n_documents": 6,
+            "action_codes": [
+              "ZM",
+              "ZR",
+              "ZS"
+            ],
+            "source_ids": [
+              "43f3b5d2-ed7d-f011-b4cc-001dd8006beb",
+              "99f3b5d2-ed7d-f011-b4cc-001dd8006beb",
+              "a1f3b5d2-ed7d-f011-b4cc-001dd8006beb"
+            ],
+            "n_source_rows": 3
+          },
+          {
+            "id": "e8aa3fca-ed7d-f011-b4cb-001dd80f50ac",
+            "name": "2024M0244_ZS_MN CB4",
+            "status": "Submitted",
+            "representing": "Community Board",
+            "vote_date": "2026-02-04",
+            "hearing_date": "2026-02-04",
+            "hearing_at": "2026-02-04T23:00:00.000Z",
+            "hearing_location": "Hotel Trades Council 305 W.44th St bet. 8th and 9th Aves",
+            "vote_location": null,
+            "community_board": "Conditional Unfavorable",
+            "board_id": "manhattan-cb-04",
+            "borough_president": null,
+            "borough_board": null,
+            "votes_for": 33,
+            "votes_against": 1,
+            "votes_abstain": 1,
+            "n_documents": 6,
+            "action_codes": [
+              "ZM",
+              "ZR",
+              "ZS"
+            ],
+            "source_ids": [
+              "e8aa3fca-ed7d-f011-b4cb-001dd80f50ac",
+              "92ab3fca-ed7d-f011-b4cb-001dd80f50ac",
+              "afab3fca-ed7d-f011-b4cb-001dd80f50ac"
+            ],
+            "n_source_rows": 3
+          }
+        ],
+        "documents": [
+          {
+            "kind": "disposition",
+            "id": "01QY2C5KNNY2AIWTPMPNH3SXCQXKP2BCTL",
+            "group_id": "43f3b5d2-ed7d-f011-b4cc-001dd8006beb",
+            "group_name": "2024M0244_ZS_MN BP",
+            "name": "Borough President Recommendation.pdf",
+            "url": "https://zap-api-production.herokuapp.com/document/disposition/01QY2C5KNNY2AIWTPMPNH3SXCQXKP2BCTL",
+            "time_created": "2026-03-26T03:04:26Z"
+          },
+          {
+            "kind": "disposition",
+            "id": "01QY2C5KNGTTUS5AJHNNA3I66XIUE25O5Q",
+            "group_id": "43f3b5d2-ed7d-f011-b4cc-001dd8006beb",
+            "group_name": "2024M0244_ZS_MN BP",
+            "name": "MBP Hoylman-Sigal Recommendation - Dewitt Clinton Park North - 2026-03-25.pdf",
+            "url": "https://zap-api-production.herokuapp.com/document/disposition/01QY2C5KNGTTUS5AJHNNA3I66XIUE25O5Q",
+            "time_created": "2026-03-25T21:31:59Z"
+          },
+          {
+            "kind": "disposition",
+            "id": "01QY2C5KIZPIQKG53WXZCINH556MCSK5FZ",
+            "group_id": "99f3b5d2-ed7d-f011-b4cc-001dd8006beb",
+            "group_name": "2024M0244_ZM_MN BP",
+            "name": "Borough President Recommendation.pdf",
+            "url": "https://zap-api-production.herokuapp.com/document/disposition/01QY2C5KIZPIQKG53WXZCINH556MCSK5FZ",
+            "time_created": "2026-03-26T03:04:29Z"
+          },
+          {
+            "kind": "disposition",
+            "id": "01QY2C5KMJS5BXPN6ZQ5E2HTS5LCLQK43A",
+            "group_id": "99f3b5d2-ed7d-f011-b4cc-001dd8006beb",
+            "group_name": "2024M0244_ZM_MN BP",
+            "name": "MBP Hoylman-Sigal Recommendation - Dewitt Clinton Park North - 2026-03-25.pdf",
+            "url": "https://zap-api-production.herokuapp.com/document/disposition/01QY2C5KMJS5BXPN6ZQ5E2HTS5LCLQK43A",
+            "time_created": "2026-03-25T21:32:02Z"
+          },
+          {
+            "kind": "disposition",
+            "id": "01QY2C5KMRIRZ6NFUGSZELDP5LSXPDAPPA",
+            "group_id": "a1f3b5d2-ed7d-f011-b4cc-001dd8006beb",
+            "group_name": "2024M0244_ZR_MN BP",
+            "name": "Borough President Recommendation.pdf",
+            "url": "https://zap-api-production.herokuapp.com/document/disposition/01QY2C5KMRIRZ6NFUGSZELDP5LSXPDAPPA",
+            "time_created": "2026-03-26T03:04:33Z"
+          },
+          {
+            "kind": "disposition",
+            "id": "01QY2C5KOZ32GLFPXQ2JEIXAH5NPBWPTEI",
+            "group_id": "a1f3b5d2-ed7d-f011-b4cc-001dd8006beb",
+            "group_name": "2024M0244_ZR_MN BP",
+            "name": "MBP Hoylman-Sigal Recommendation - Dewitt Clinton Park North - 2026-03-25.pdf",
+            "url": "https://zap-api-production.herokuapp.com/document/disposition/01QY2C5KOZ32GLFPXQ2JEIXAH5NPBWPTEI",
+            "time_created": "2026-03-25T21:32:06Z"
+          },
+          {
+            "kind": "disposition",
+            "id": "01QY2C5KJLYHRYQAXD3RBIXWTG7F7ARPY4",
+            "group_id": "e8aa3fca-ed7d-f011-b4cb-001dd80f50ac",
+            "group_name": "2024M0244_ZS_MN CB4",
+            "name": "11 EXEC CHKLU Letter to DCP re ULURP for DCN 801 11 Ave and 629 W 54th St.pdf",
+            "url": "https://zap-api-production.herokuapp.com/document/disposition/01QY2C5KJLYHRYQAXD3RBIXWTG7F7ARPY4",
+            "time_created": "2026-03-06T20:36:57Z"
+          },
+          {
+            "kind": "disposition",
+            "id": "01QY2C5KIDBT7FBJ4QRNFITVNIVRD5EK2W",
+            "group_id": "e8aa3fca-ed7d-f011-b4cb-001dd80f50ac",
+            "group_name": "2024M0244_ZS_MN CB4",
+            "name": "Community -Borough Board Recommendation.pdf",
+            "url": "https://zap-api-production.herokuapp.com/document/disposition/01QY2C5KIDBT7FBJ4QRNFITVNIVRD5EK2W",
+            "time_created": "2026-03-06T21:07:46Z"
+          },
+          {
+            "kind": "disposition",
+            "id": "01QY2C5KNU254S2NIXQZCL5YUE55BVUWRG",
+            "group_id": "92ab3fca-ed7d-f011-b4cb-001dd80f50ac",
+            "group_name": "2024M0244_ZM_MN CB4",
+            "name": "11 EXEC CHKLU Letter to DCP re ULURP for DCN 801 11 Ave and 629 W 54th St.pdf",
+            "url": "https://zap-api-production.herokuapp.com/document/disposition/01QY2C5KNU254S2NIXQZCL5YUE55BVUWRG",
+            "time_created": "2026-03-06T20:36:12Z"
+          },
+          {
+            "kind": "disposition",
+            "id": "01QY2C5KPUTJSWSVPTWFFJYGBHSKNHHD26",
+            "group_id": "92ab3fca-ed7d-f011-b4cb-001dd80f50ac",
+            "group_name": "2024M0244_ZM_MN CB4",
+            "name": "Community -Borough Board Recommendation.pdf",
+            "url": "https://zap-api-production.herokuapp.com/document/disposition/01QY2C5KPUTJSWSVPTWFFJYGBHSKNHHD26",
+            "time_created": "2026-03-06T21:07:22Z"
+          }
+        ],
+        "n_documents": 201,
+        "generated_at": "2026-10-02T13:08:55.040Z",
+        "snapshot_state": "present"
       },
       "2025M0338": {
         "project_id": "2025M0338",
@@ -2654,8 +2879,8 @@
             "time_created": "2026-06-30T21:43:30Z"
           }
         ],
-        "n_documents": 69,
-        "generated_at": "2026-09-28T13:13:08.028Z",
+        "n_documents": 84,
+        "generated_at": "2026-10-02T13:12:53.910Z",
         "snapshot_state": "present"
       },
       "2024K0358": {
@@ -2938,7 +3163,7 @@
           }
         ],
         "n_documents": 268,
-        "generated_at": "2026-09-29T13:15:52.018Z",
+        "generated_at": "2026-10-02T13:09:15.412Z",
         "snapshot_state": "present"
       },
       "2023M0213": {
@@ -3173,7 +3398,7 @@
           }
         ],
         "n_documents": 201,
-        "generated_at": "2026-09-29T13:15:43.982Z",
+        "generated_at": "2026-10-02T13:09:07.334Z",
         "snapshot_state": "present"
       },
       "2019K0383": {
@@ -3372,7 +3597,7 @@
           }
         ],
         "n_documents": 100,
-        "generated_at": "2026-09-27T13:11:02.044Z",
+        "generated_at": "2026-10-02T13:14:56.657Z",
         "snapshot_state": "present"
       },
       "2025K0287": {
@@ -3554,7 +3779,7 @@
           }
         ],
         "n_documents": 85,
-        "generated_at": "2026-09-29T13:15:23.652Z",
+        "generated_at": "2026-10-02T13:08:54.616Z",
         "snapshot_state": "present"
       },
       "2025M0252": {
@@ -3732,7 +3957,7 @@
           }
         ],
         "n_documents": 105,
-        "generated_at": "2026-09-28T13:09:35.519Z",
+        "generated_at": "2026-10-02T13:09:43.449Z",
         "snapshot_state": "present"
       },
       "2024K0286": {
@@ -3936,7 +4161,7 @@
           }
         ],
         "n_documents": 98,
-        "generated_at": "2026-09-28T13:09:50.458Z",
+        "generated_at": "2026-10-02T13:09:56.102Z",
         "snapshot_state": "present"
       },
       "2023M0116": {
@@ -4127,7 +4352,7 @@
           }
         ],
         "n_documents": 96,
-        "generated_at": "2026-09-28T13:09:35.729Z",
+        "generated_at": "2026-10-02T13:09:43.588Z",
         "snapshot_state": "present"
       },
       "2024Q0219": {
@@ -4322,7 +4547,7 @@
           }
         ],
         "n_documents": 82,
-        "generated_at": "2026-09-28T13:09:23.173Z",
+        "generated_at": "2026-10-02T13:09:31.655Z",
         "snapshot_state": "present"
       },
       "2026R0186": {
@@ -4504,7 +4729,7 @@
           }
         ],
         "n_documents": 52,
-        "generated_at": "2026-09-28T13:09:23.209Z",
+        "generated_at": "2026-10-02T13:09:31.446Z",
         "snapshot_state": "present"
       },
       "2025K0284": {
@@ -4699,7 +4924,7 @@
           }
         ],
         "n_documents": 85,
-        "generated_at": "2026-09-28T13:09:50.341Z",
+        "generated_at": "2026-10-02T13:09:56.035Z",
         "snapshot_state": "present"
       },
       "2023X0149": {
@@ -4894,7 +5119,7 @@
           }
         ],
         "n_documents": 220,
-        "generated_at": "2026-09-29T13:15:48.130Z",
+        "generated_at": "2026-10-02T13:09:07.304Z",
         "snapshot_state": "present"
       },
       "2022K0416": {
@@ -5089,7 +5314,7 @@
           }
         ],
         "n_documents": 56,
-        "generated_at": "2026-09-28T13:13:17.109Z",
+        "generated_at": "2026-10-02T13:12:56.295Z",
         "snapshot_state": "present"
       },
       "2025Q0142": {
@@ -5293,7 +5518,7 @@
           }
         ],
         "n_documents": 48,
-        "generated_at": "2026-09-29T13:15:51.359Z",
+        "generated_at": "2026-10-02T13:09:07.222Z",
         "snapshot_state": "present"
       },
       "2025Q0247": {
@@ -5488,7 +5713,7 @@
           }
         ],
         "n_documents": 67,
-        "generated_at": "2026-09-28T13:09:35.998Z",
+        "generated_at": "2026-10-02T13:09:43.700Z",
         "snapshot_state": "present"
       },
       "2025R0222": {
@@ -5506,7 +5731,7 @@
             "id": "1e19ba8c-e343-f111-88b4-001dd800e224",
             "action": "LD",
             "ulurp_number": "260389LDR",
-            "status": "Active",
+            "status": "Referred",
             "approved": false,
             "cc_resolution": null,
             "sharepoint_url": null
@@ -5686,8 +5911,8 @@
             "time_created": "2026-09-16T15:22:35Z"
           }
         ],
-        "n_documents": 47,
-        "generated_at": "2026-09-28T13:13:20.329Z",
+        "n_documents": 50,
+        "generated_at": "2026-10-02T13:12:55.826Z",
         "snapshot_state": "present"
       },
       "2025R0137": {
@@ -5865,7 +6090,7 @@
           }
         ],
         "n_documents": 47,
-        "generated_at": "2026-09-28T13:09:35.693Z",
+        "generated_at": "2026-10-02T13:09:43.429Z",
         "snapshot_state": "present"
       },
       "2025Q0316": {
@@ -6047,7 +6272,7 @@
           }
         ],
         "n_documents": 56,
-        "generated_at": "2026-09-28T13:09:23.237Z",
+        "generated_at": "2026-10-02T13:09:27.668Z",
         "snapshot_state": "present"
       },
       "2026Q0210": {
@@ -6229,7 +6454,7 @@
           }
         ],
         "n_documents": 53,
-        "generated_at": "2026-09-28T13:09:50.137Z",
+        "generated_at": "2026-10-02T13:09:55.937Z",
         "snapshot_state": "present"
       },
       "2025M0395": {
@@ -6424,7 +6649,7 @@
           }
         ],
         "n_documents": 66,
-        "generated_at": "2026-09-28T13:13:24.795Z",
+        "generated_at": "2026-10-02T13:12:56.430Z",
         "snapshot_state": "present"
       },
       "2022K0430": {
@@ -6619,7 +6844,7 @@
           }
         ],
         "n_documents": 162,
-        "generated_at": "2026-09-28T13:09:50.063Z",
+        "generated_at": "2026-10-02T13:10:04.383Z",
         "snapshot_state": "present"
       },
       "2026K0233": {
@@ -6866,7 +7091,7 @@
           }
         ],
         "n_documents": 120,
-        "generated_at": "2026-09-28T13:13:32.830Z",
+        "generated_at": "2026-10-02T13:13:13.016Z",
         "snapshot_state": "present"
       },
       "2024K0196": {
@@ -7061,7 +7286,7 @@
           }
         ],
         "n_documents": 66,
-        "generated_at": "2026-09-28T13:10:04.076Z",
+        "generated_at": "2026-10-02T13:10:18.562Z",
         "snapshot_state": "present"
       },
       "2023Q0303": {
@@ -7256,7 +7481,7 @@
           }
         ],
         "n_documents": 60,
-        "generated_at": "2026-09-28T13:13:17.180Z",
+        "generated_at": "2026-10-02T13:12:56.933Z",
         "snapshot_state": "present"
       },
       "2025K0154": {
@@ -7460,7 +7685,7 @@
           }
         ],
         "n_documents": 40,
-        "generated_at": "2026-09-28T13:10:04.209Z",
+        "generated_at": "2026-10-02T13:10:16.469Z",
         "snapshot_state": "present"
       },
       "2024K0421": {
@@ -7645,7 +7870,7 @@
           }
         ],
         "n_documents": 60,
-        "generated_at": "2026-09-28T13:13:37.961Z",
+        "generated_at": "2026-10-02T13:13:06.116Z",
         "snapshot_state": "present"
       },
       "2022Q0449": {
@@ -7849,7 +8074,7 @@
           }
         ],
         "n_documents": 38,
-        "generated_at": "2026-09-28T13:10:04.172Z",
+        "generated_at": "2026-10-02T13:10:16.558Z",
         "snapshot_state": "present"
       },
       "2023K0183": {
@@ -8095,7 +8320,7 @@
           }
         ],
         "n_documents": 165,
-        "generated_at": "2026-09-28T13:10:17.118Z",
+        "generated_at": "2026-10-02T13:10:31.367Z",
         "snapshot_state": "present"
       }
     }

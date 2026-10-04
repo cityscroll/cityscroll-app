@@ -6,14 +6,14 @@
     "url": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
     "listing_page": "https://a856-exams.nyc.gov/OASysWeb/exams",
     "noe_url_pattern": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=:examId",
-    "fetched_at": "2026-09-30",
+    "fetched_at": "2026-10-04",
     "refresh_cadence": "Rebuild with staffing exams while application windows are open.",
     "stale_after_days": 3,
     "note": "OASys examId is not the DCAS exam number; join on examNumber from this listing."
   },
   "summary": {
-    "input_rows": 33,
-    "mapped": 33,
+    "input_rows": 34,
+    "mapped": 34,
     "skipped": 0
   },
   "records": [
@@ -280,6 +280,18 @@
       "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9650",
       "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277313000.pdf",
       "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9650"
+    },
+    {
+      "exam_number": "7314",
+      "oasys_exam_id": "9673",
+      "title": "Police Officer",
+      "is_promotional": false,
+      "filing_start": "2026-10-01",
+      "filing_end": "2026-10-14",
+      "filing_fee": 0,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9673",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277314000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9673"
     },
     {
       "exam_number": "7323",

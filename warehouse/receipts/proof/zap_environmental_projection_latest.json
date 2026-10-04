@@ -1,9 +1,9 @@
 {
   "schema": "cityscroll.zap_environmental_projection.v1",
   "dataset_id": "hgx4-8ukb",
-  "generated_at": "2026-09-30T13:15:13.798Z",
-  "lookup_materialized_at": "2026-09-30T13:15:13.798Z",
-  "overlay_as_of": "2026-09-30T13:15:13.798Z",
+  "generated_at": "2026-10-04T13:03:46.355Z",
+  "lookup_materialized_at": "2026-10-04T13:03:46.355Z",
+  "overlay_as_of": "2026-10-04T13:03:46.355Z",
   "mode": "soda_sell_facing",
   "coverage": {
     "schema": "cityscroll.zap_environmental_projection.v1",
@@ -29,8 +29,8 @@
   },
   "first_paint": {
     "artifact": "site/data/land_default_ulurp.json",
-    "land_default_bytes": 331674,
-    "land_default_gzip_bytes": 33184,
+    "land_default_bytes": 341490,
+    "land_default_gzip_bytes": 33775,
     "land_default_has_environmental_projection": false,
     "growth_pct": 0,
     "threshold_pct": 5,
