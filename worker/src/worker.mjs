@@ -102,7 +102,14 @@ import { handleEntityDossier } from "./entity_dossier.mjs";
 import { handlePublicRelationshipGraph } from "./public_relationship_graph.mjs";
 import { handleEntityIntelligence } from "./entity_intelligence.mjs";
 import { handleAdminAttachmentMetadata, handleAttachmentMetadata } from "./attachment_metadata.mjs";
-import { persistDigestShadowFailure, runDigestShadow } from "./digest_shadow.mjs";
+import {
+  applyFreshnessDegradation,
+  finalizeDigestShadowRun,
+  persistDigestShadowFailure,
+  persistDigestShadowStarted,
+  runBudgetedNoticeFreshness,
+  runDigestShadow,
+} from "./digest_shadow.mjs";
 import { handleDigestShadowRebuildQueueMessage } from "./digest_shadow_rebuild.mjs";
 import { handleNearYou } from "./near_you.mjs";
 import { isNearYouDeferredPath, isNearYouDocumentPath } from "../../site/near_you_scope_runtime.mjs";
@@ -324,12 +331,52 @@ export default {
     }
     // 06:00 ET rehearsal: the real digest builders run inline against live data, but delivery,
     // watermarks, send counters, and the 09:00 queue path remain untouched.
-    // The rehearsal is this window's critical path. Notice ingest/prewarm stay advisory and
-    // must not consume the scheduled isolate's wall-time budget before a receipt exists.
+    // Order: STARTED receipt → budgeted advisory freshness → rehearsal → finalize. A killed
+    // isolate after STARTED reads as STARTED_NOT_FINISHED, never MISSING_RUN. Freshness has a
+    // hard time/subrequest budget; exhaustion records DEGRADED_UPSTREAM and the rehearsal still runs.
     if (event.cron === "0 10 * * *") {
+      const shadowNow = new Date();
       try {
-        const summary = await runDigestShadow(env);
-        await recordDigestShadowReceipt(env, summary);
+        await persistDigestShadowStarted(env, { now: shadowNow });
+      } catch (error) {
+        console.error("digest shadow start receipt failed:", String(error?.message || error));
+      }
+
+      let freshness = { ok: true, degraded: false };
+      try {
+        freshness = await runBudgetedNoticeFreshness(env, {
+          acquisitionFn: withWorkerAcquisitionReceipt,
+          runId,
+          ingestFn: ingestNotices,
+          prewarmFn: prewarmNotices,
+        });
+        if (freshness.degraded) {
+          console.error("digest shadow freshness degraded (rehearsal continues):", JSON.stringify({
+            reason: freshness.reason,
+            code: freshness.code || null,
+            elapsed_ms: freshness.elapsed_ms,
+            subrequests: freshness.subrequests,
+            budget_ms: freshness.budget_ms,
+            subrequest_budget: freshness.subrequest_budget,
+          }));
+        } else {
+          console.log("digest shadow ingest:", JSON.stringify(freshness.result));
+          console.log("digest shadow notice prewarm:", JSON.stringify(freshness.prewarm));
+        }
+      } catch (error) {
+        freshness = {
+          ok: false,
+          degraded: true,
+          reason: String(error?.message || error),
+        };
+        console.error("digest shadow freshness failed (rehearsal continues):", freshness.reason);
+      }
+
+      try {
+        let summary = await runDigestShadow(env, { now: shadowNow });
+        // Await so schedule-harness stubs (async wrappers) and a future async helper both land.
+        if (freshness.degraded) summary = await applyFreshnessDegradation(summary, freshness);
+        await finalizeDigestShadowRun(env, summary, { now: shadowNow });
         console.log("digest shadow:", JSON.stringify(summary, (key, value) => {
           if (typeof value !== "string") return value;
           if (key === "recipient") return redactEmail(value);
@@ -339,7 +386,7 @@ export default {
       } catch (error) {
         console.error("digest shadow failed:", String(error?.message || error));
         try {
-          const failed = await persistDigestShadowFailure(env, error);
+          const failed = await persistDigestShadowFailure(env, error, { now: shadowNow });
           console.error("digest shadow failure receipt:", JSON.stringify({
             run_day: failed?.run_day,
             status: failed?.status,
@@ -351,18 +398,6 @@ export default {
           console.error("digest shadow failure receipt failed:", String(persistError?.message || persistError));
         }
       }
-      // Advisory freshness after the rehearsal (and off the critical await path) so a slow
-      // or unavailable upstream cannot prevent the day's rehearsal from recording its state.
-      ctx.waitUntil((async () => {
-        try {
-          const result = await withWorkerAcquisitionReceipt(env, "city-record", runId, () => ingestNotices(env));
-          console.log("digest shadow ingest:", JSON.stringify(result));
-          const prewarm = await prewarmNotices(env, result?.noticeRequestIds);
-          console.log("digest shadow notice prewarm:", JSON.stringify(prewarm));
-        } catch (error) {
-          console.error("digest shadow ingest failed (rehearsal continues):", String(error?.message || error));
-        }
-      })());
       return;
     }
     // Delivery is the scheduled run's critical path. Keep it ahead of advisory read-model

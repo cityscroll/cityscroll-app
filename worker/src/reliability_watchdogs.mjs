@@ -67,16 +67,25 @@ export async function recordDigestShadowReceipt(env, summary, now = new Date(), 
   const codes = [...new Set(redlines.map((item) => trimmed(item?.code, 60)).filter(Boolean))];
   const complete = summary?.rebuild_complete !== false;
   const failed = error != null;
+  const started = !failed && (summary?.status === "STARTED" || summary?.phase === "started");
+  const status = failed
+    ? "FAILED"
+    : started
+      ? "STARTED"
+      : !complete
+        ? "PARTIAL"
+        : (summary?.ok === true && summary?.status !== "DEGRADED_UPSTREAM" ? "READY" : "DEGRADED");
   const receipt = {
     schema: "cityscroll.digest-shadow-ready-receipt.v1",
     day: day(now),
     observed_at: now.toISOString(),
-    status: failed ? "FAILED" : (complete ? (summary?.ok === true ? "READY" : "DEGRADED") : "PARTIAL"),
-    complete: failed ? false : complete,
+    status,
+    complete: failed || started ? false : complete,
     redlines: redlines.length,
     redline_codes: codes.slice(0, DIGEST_SHADOW_REASON_CODE_LIMIT),
     reason: trimmed(redlines[0]?.reason, 200)
-      || (failed ? trimmed(String(error?.message || error), 200) : null),
+      || (failed ? trimmed(String(error?.message || error), 200) : null)
+      || (started ? "rehearsal started; final status pending" : null),
     // A rehearsal that built nothing is indistinguishable from a healthy quiet
     // day in a count of redlines alone, so the build shape is recorded too.
     digest_count: Number(summary?.digest_count) || 0,

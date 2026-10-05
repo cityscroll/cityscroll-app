@@ -92,7 +92,7 @@ export const COUNCIL_DISCOVERY = Object.freeze({
 export const DIGEST_SHADOW = Object.freeze({
   contract: "digest-shadow.v1",
   cron_utc: "0 10 * * *",
-  status_values: ["READY", "DEGRADED_UPSTREAM", "NEEDS_ATTENTION"],
+  status_values: ["STARTED", "READY", "DEGRADED_UPSTREAM", "NEEDS_ATTENTION"],
   endpoint: "/admin/digest-shadow",
   storage: {
     binding: "DB",

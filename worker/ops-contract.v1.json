@@ -42,6 +42,7 @@
     "contract": "digest-shadow.v1",
     "cron_utc": "0 10 * * *",
     "status_values": [
+      "STARTED",
       "READY",
       "DEGRADED_UPSTREAM",
       "NEEDS_ATTENTION"

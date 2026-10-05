@@ -91,9 +91,7 @@ for (const cron of CRONS) {
     await Promise.all(worker.pending);
     assert.equal(worker.calls[0], "refreshPublicSearchUsageSnapshot");
     assert.equal(worker.calls.filter((name) => name === "refreshPublicSearchUsageSnapshot").length, 1);
-    // 10:00 also retains advisory notice ingest/prewarm off the critical path.
-    const expectedPending = cron === "0 10 * * *" ? 2 : 1;
-    assert.equal(worker.pending.length, expectedPending, "the platform retains independent waitUntil work");
+    assert.equal(worker.pending.length, 1, "the platform retains the independent refresh");
     const published = await readPublicSearchUsage(env, { now: NOW });
     assert.equal(published.available, true);
     assert.equal(published.refresh.verified_at, NOW);
