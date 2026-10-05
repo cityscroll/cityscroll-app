@@ -2688,7 +2688,7 @@
           "max_date": null
         },
         "publisher_vintage": null,
-        "retrieved_at": "2026-09-05T13:23:40.000Z",
+        "retrieved_at": "2026-10-05T17:33:36.000Z",
         "expected_lag_tolerance_days": 14,
         "current_lag": {
           "value": null,
@@ -3194,7 +3194,7 @@
           "max_date": null
         },
         "publisher_vintage": null,
-        "retrieved_at": "2026-09-04T11:12:42.000Z",
+        "retrieved_at": "2026-10-05T17:34:21.000Z",
         "expected_lag_tolerance_days": 120,
         "current_lag": {
           "value": null,
@@ -3243,7 +3243,7 @@
           "max_date": null
         },
         "publisher_vintage": null,
-        "retrieved_at": "2026-08-03T05:05:03.000Z",
+        "retrieved_at": "2026-10-05T17:34:45.000Z",
         "expected_lag_tolerance_days": 120,
         "current_lag": {
           "value": null,
