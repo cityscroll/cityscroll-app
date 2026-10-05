@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.source_vintage_observations.v1",
-  "generated_at": "2026-09-30T13:15:13.798Z",
+  "generated_at": "2026-10-05T17:35:26.970Z",
   "contract_count": 67,
   "observations": [
     {
@@ -1734,7 +1734,7 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-09-05T13:23:40.000Z",
+        "retrieved_at": "2026-10-05T17:33:36.000Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
         "run_id": "warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json"
@@ -2044,7 +2044,7 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-09-04T11:12:42.000Z",
+        "retrieved_at": "2026-10-05T17:34:21.000Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
         "run_id": "warehouse/receipts/proof/zap-bbl_bulk_latest.json"
@@ -2075,7 +2075,7 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-08-03T05:05:03.000Z",
+        "retrieved_at": "2026-10-05T17:34:45.000Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
         "run_id": "warehouse/receipts/proof/zap-projects_bulk_latest.json"

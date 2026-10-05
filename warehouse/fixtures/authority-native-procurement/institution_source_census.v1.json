@@ -53,11 +53,11 @@
     "rejected"
   ],
   "existing_snapshot": {
-    "generated_at": "2026-09-09T06:33:01.880Z",
+    "generated_at": "2026-10-05T23:35:21.665Z",
     "artifacts": {
       "browse_rows": {
         "path": "site/data/procurement_browse_rows.json",
-        "sha256": "0717d400cdc5ff52d3342ecd799521f29e1bc59b5100c2d6760a78d10c11c8ec",
+        "sha256": "eea6d0c09997eeda572835982972988cf3fc2845b9c916166c50da0c8e96295a",
         "row_count": 19872
       },
       "spine_sources": {
@@ -67,7 +67,7 @@
       },
       "shared_read_model": {
         "path": "site/data/shared_procurement_read_model.json",
-        "sha256": "82416f9de41beb3ab8e0f03dcfe16dc0d7d4f47a2d4ce0060de8eb5eed5a30b4",
+        "sha256": "6baebbb23811d9ddb47d48f37dcde2483a6dec98a66cfb25a2a950b8b613dd4e",
         "object_count": 19872
       }
     },
