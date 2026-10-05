@@ -270,13 +270,15 @@ const NOTICE_REMOTE_SIGNAL = /\b(?:via\s+video\s+conference|video\s+conference|v
  * are empty but notice body text is remote-only, restore mode=virtual so
  * frozen virtual outcomes survive the rolling notice window.
  */
-/** City Record dropdown placeholder — not a geocodable street. */
 const NOTICE_STREET_PLACEHOLDER = /^address not listed in the dropdown$/i;
 
 function noticeStreetText(value) {
   const text = optionalText(value);
-  if (!text || NOTICE_STREET_PLACEHOLDER.test(text)) return null;
-  return text;
+  return text && !NOTICE_STREET_PLACEHOLDER.test(text) ? text : null;
+}
+
+function modeOnlyVenue(mode) {
+  return { mode };
 }
 
 export function composeVenueFromNoticeStreetFields(row = {}) {
@@ -287,8 +289,7 @@ export function composeVenueFromNoticeStreetFields(row = {}) {
   const zip = optionalText(row.zip_code);
   const building = optionalText(row.building_name);
   // Placeholder-only street rows must not become in-person venue.address.
-  const hasRealStreet = Boolean(street1 || street2);
-  const parts = hasRealStreet
+  const parts = (street1 || street2)
     ? [street1, street2, city, state, zip].filter(Boolean)
     : [];
   if (parts.length || building) {
@@ -318,28 +319,12 @@ export function composeVenueFromNoticeStreetFields(row = {}) {
     row.attendance_mode,
   ].map((part) => optionalText(part)).filter(Boolean).join(" ");
   if (body && NOTICE_REMOTE_SIGNAL.test(body)) {
-    return {
-      mode: "virtual",
-      building: "",
-      address: null,
-      borough: null,
-      neighborhood: null,
-    };
-  }
-  // Hearing-adapter City Record rows always carry a venue mode, even when the
-  // publisher left street fields empty or used the dropdown placeholder.
-  if (String(row.meeting_origin || "").trim() === "city_record_notice"
-    || String(row.source_system || "").trim() === "city_record") {
-    return {
-      mode: "not-stated",
-      building: "",
-      address: null,
-      borough: null,
-      neighborhood: null,
-    };
+    return modeOnlyVenue("virtual");
   }
   return null;
 }
+
+
 
 function venueHasUsableText(venue) {
   if (!venue || typeof venue !== "object") return false;

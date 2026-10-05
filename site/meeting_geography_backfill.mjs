@@ -128,7 +128,16 @@ export function rowWithComposedVenue(row = {}) {
   if (cleanText(venue?.address) || ["virtual", "remote", "online"].includes(mode)) {
     return row;
   }
-  const composed = composeVenueFromNoticeStreetFields(row);
+  let composed = composeVenueFromNoticeStreetFields(row);
+  // Hearing-adapter City Record rows always need venue.mode; keep that floor off
+  // the Notice cold-path module graph.
+  if (!composed) {
+    const origin = String(row.meeting_origin || "").trim();
+    const source = String(row.source_system || "").trim();
+    if (origin === "city_record_notice" || source === "city_record") {
+      composed = { mode: "not-stated" };
+    }
+  }
   if (!composed) return row;
   const composedMode = cleanText(composed.mode)?.toLowerCase() || "";
   // Keep mode-only hearing-adapter venues (virtual / not-stated) even when the
@@ -136,15 +145,21 @@ export function rowWithComposedVenue(row = {}) {
   if (!composed.address && !composedMode) {
     return row;
   }
+  const nextVenue = {
+    ...(venue || {}),
+    ...composed,
+    // Prefer an existing non-empty building/name when the row already had one.
+    building: cleanText(venue?.building) || composed.building || undefined,
+    name: cleanText(venue?.name) || composed.name || undefined,
+  };
+  if (!nextVenue.building) delete nextVenue.building;
+  if (!nextVenue.name) delete nextVenue.name;
+  if (nextVenue.address == null) delete nextVenue.address;
+  if (nextVenue.borough == null) delete nextVenue.borough;
+  if (nextVenue.neighborhood == null) delete nextVenue.neighborhood;
   return {
     ...row,
-    venue: {
-      ...(venue || {}),
-      ...composed,
-      // Prefer an existing non-empty building/name when the row already had one.
-      building: cleanText(venue?.building) || composed.building,
-      name: cleanText(venue?.name) || composed.name || null,
-    },
+    venue: nextVenue,
   };
 }
 
