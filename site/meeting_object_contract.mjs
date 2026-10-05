@@ -259,6 +259,72 @@ function retainedNoticeFields(row) {
     .map((field) => [field, row[field]]));
 }
 
+const NOTICE_REMOTE_SIGNAL = /\b(?:via\s+video\s+conference|video\s+conference|virtual|online|zoom|webex|teams|webinar|conference call)\b/i;
+
+/**
+ * Compose a venue object from retained City Record notice street fields when
+ * the producer left `venue` empty. Domain observations and residual browse rows
+ * keep street_address_1/2 + city/state/zip after the notice window rolls, and
+ * geography backfill / resident venue text need that address on `venue`.
+ * Address join matches worker venueFromRow / hearingVenue. When street fields
+ * are empty but notice body text is remote-only, restore mode=virtual so
+ * frozen virtual outcomes survive the rolling notice window.
+ */
+export function composeVenueFromNoticeStreetFields(row = {}) {
+  const street1 = optionalText(row.street_address_1);
+  const street2 = optionalText(row.street_address_2);
+  const city = optionalText(row.city);
+  const state = optionalText(row.state);
+  const zip = optionalText(row.zip_code);
+  const building = optionalText(row.building_name);
+  const parts = [street1, street2, city, state, zip].filter(Boolean);
+  if (parts.length || building) {
+    const address = parts.length
+      ? parts.join(", ").replace(/\s*,\s*/g, ", ").replace(/[.,;:\s]+$/, "").trim()
+      : null;
+    if (address || building) {
+      return {
+        mode: address ? "in-person" : "not-stated",
+        building: building || "",
+        address: address || null,
+        borough: null,
+        neighborhood: null,
+      };
+    }
+  }
+
+  const body = [
+    row.additional_description_1,
+    row.additional_description_2,
+    row.additional_description_3,
+    row.other_info_1,
+    row.other_info_2,
+    row.other_info_3,
+    row.printout_1,
+    row.description,
+    row.attendance_mode,
+  ].map((part) => optionalText(part)).filter(Boolean).join(" ");
+  if (body && NOTICE_REMOTE_SIGNAL.test(body)) {
+    return {
+      mode: "virtual",
+      building: "",
+      address: null,
+      borough: null,
+      neighborhood: null,
+    };
+  }
+  return null;
+}
+
+function venueHasUsableText(venue) {
+  if (!venue || typeof venue !== "object") return false;
+  return Boolean(
+    optionalText(venue.address)
+    || optionalText(venue.name)
+    || optionalText(venue.building),
+  );
+}
+
 /**
  * Return the stable id for one publisher's source key.
  *
@@ -286,18 +352,23 @@ export function normalizeMeetingObject(row = {}) {
   const sourceHref = sourceUrl(row);
   const requestId = source === "city_record" ? key?.value || null : null;
   const boardId = optionalText(row.board_id);
-  const incomingVenue = row.venue && typeof row.venue === "object" ? row.venue : null;
+  const rawVenue = row.venue && typeof row.venue === "object" ? row.venue : null;
+  const noticeVenue = composeVenueFromNoticeStreetFields(row);
+  const fallbackVenue = rawVenue && venueHasUsableText(rawVenue)
+    ? rawVenue
+    : noticeVenue || (row.address || row.venue_name ? {
+      name: row.venue_name || null,
+      address: row.address || null,
+      mode: row.mode || null,
+      components: row.location_components || null,
+    } : null) || rawVenue;
+  const incomingVenue = fallbackVenue;
   const locationAssertions = Array.isArray(row.location_assertions) && row.location_assertions.length
     ? row.location_assertions
     : buildMeetingLocationAssertions({
       ...row,
       meeting_id: meetingId,
-      venue: incomingVenue || (row.address || row.venue_name ? {
-        name: row.venue_name || null,
-        address: row.address || null,
-        mode: row.mode || null,
-        components: row.location_components || null,
-      } : null),
+      venue: incomingVenue,
       location_components: row.location_components || row.address_components || incomingVenue?.components || null,
       location_wrapper: row.location_wrapper || null,
     }, {

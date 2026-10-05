@@ -1,8 +1,10 @@
 {
-  "schema": "cityscroll.meeting_geography_backfill_evidence.v1",
+  "schema": "cityscroll.meeting_geography_backfill_manifest.v1",
   "generation": "gen-688f479a297c-2026-10-05",
   "built_at": "2026-10-05T20:21:40.442Z",
   "source_generation_hash": "688f479a297ccdcd30c29e0f553ba24d9551890ab3c7972abe8c7a89b0613463",
+  "shared_meeting_schema": "cityscroll.shared_meeting_read_model.v1",
+  "shared_meeting_generated_at": "2026-10-05T17:33:11.875Z",
   "candidate_input": {
     "canonical_meeting_count": 840,
     "address_bearing_rows": 363,
@@ -28,6 +30,5 @@
     "meeting_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
     "expected_nta2020": "BK1403",
     "expected_role": "venue"
-  },
-  "neighborhood_publication_receipt": "docs/evidence/meeting-geography-backfill/neighborhood-publication-receipt.json"
+  }
 }

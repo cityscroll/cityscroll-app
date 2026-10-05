@@ -334,8 +334,11 @@ export function createRecordAddressResolutionCache({
 
     let result = resolveFn(query, shard, activeManifest);
     // When explicit borough/ZIP filters erase every candidate that an
-    // unconstrained house+street query would still see as ambiguous, keep the
-    // unresolved outcome visible — do not silently collapse to a bare miss.
+    // unconstrained house+street query would still see:
+    // - unique match → accept it (subject assertions often inherit a venue ZIP
+    //   that PAD does not carry for that house number, e.g. 461 Coney Island
+    //   Avenue under Midwood 11230 vs PAD 11218);
+    // - ambiguous → surface contradictory_locality rather than a bare miss.
     if (
       result?.status === "unknown"
       && result?.reason === "not_covered"
@@ -347,7 +350,9 @@ export function createRecordAddressResolutionCache({
         zip: null,
       };
       const open = resolveFn(unconstrained, shard, activeManifest);
-      if (open?.status === "unknown" && open?.reason === "ambiguous") {
+      if (open?.status === "matched" && open?.bbl) {
+        result = open;
+      } else if (open?.status === "unknown" && open?.reason === "ambiguous") {
         result = {
           status: "unknown",
           reason: "contradictory_locality",
