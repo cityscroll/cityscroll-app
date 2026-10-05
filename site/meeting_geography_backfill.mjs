@@ -131,7 +131,9 @@ export function rowWithComposedVenue(row = {}) {
   const composed = composeVenueFromNoticeStreetFields(row);
   if (!composed) return row;
   const composedMode = cleanText(composed.mode)?.toLowerCase() || "";
-  if (!composed.address && !["virtual", "remote", "online"].includes(composedMode)) {
+  // Keep mode-only hearing-adapter venues (virtual / not-stated) even when the
+  // publisher left no geocodable street.
+  if (!composed.address && !composedMode) {
     return row;
   }
   return {
@@ -755,14 +757,26 @@ export function stampMeetingRowsWithGeography(rows = [], outcomes = []) {
     // Only fill a missing venue object. Rewriting an existing venue (mode /
     // components / hybrid projection) would change meetingGeographyInputHash and
     // break idempotent replay against stamped rows.
-    if (!cleanText(row?.venue?.address)) {
+    // Mode-only venues (virtual / not-stated) are part of the hearing-adapter
+    // projection and must survive even when address/name/building are empty.
+    if (!cleanText(row?.venue?.address) && !cleanText(row?.venue?.mode)) {
       const projectedVenue = projectVenueFromAssertions(
         outcome.assertions || [],
         composed.venue || null,
       );
-      if (projectedVenue && (projectedVenue.address || projectedVenue.name || projectedVenue.building)) {
+      if (projectedVenue && (
+        projectedVenue.address
+        || projectedVenue.name
+        || projectedVenue.building
+        || projectedVenue.mode
+      )) {
         next.venue = projectedVenue;
-      } else if (composed.venue?.address) {
+      } else if (composed.venue && (
+        composed.venue.address
+        || composed.venue.name
+        || composed.venue.building
+        || composed.venue.mode
+      )) {
         next.venue = composed.venue;
       }
     }

@@ -18324,7 +18324,8 @@
             "borough": "3",
             "community_district": "K10",
             "council_district": "50",
-            "nta2020": "BK1002"
+            "nta2020": "BK1002",
+            "police_precinct": "68"
           },
           "point": {
             "lat": 40.6141059,
@@ -41294,7 +41295,8 @@
             "borough": "3",
             "community_district": "K10",
             "council_district": "50",
-            "nta2020": "BK1091"
+            "nta2020": "BK1091",
+            "police_precinct": "68"
           },
           "point": {
             "lat": 40.6100427,
@@ -45349,7 +45351,8 @@
             "borough": "3",
             "community_district": "K10",
             "council_district": "43",
-            "nta2020": "BK1002"
+            "nta2020": "BK1002",
+            "police_precinct": "68"
           },
           "point": {
             "lat": 40.6249266,
@@ -55717,7 +55720,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": {
         "links": [
           {
@@ -58187,7 +58197,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": {
         "links": [
           {
@@ -58332,7 +58349,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "virtual",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": {
         "links": [
           {
@@ -58759,7 +58783,12 @@
       "observer_access": null,
       "access_steps": [],
       "venue": {
-        "mode": "not-stated"
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [
@@ -58905,7 +58934,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": {
         "links": [
           {
@@ -59299,7 +59335,8 @@
             "borough": "1",
             "community_district": "M07",
             "council_district": "6",
-            "nta2020": "MN0701"
+            "nta2020": "MN0701",
+            "police_precinct": "20"
           },
           "point": {
             "lat": 40.7709712,
@@ -60222,7 +60259,12 @@
       "observer_access": null,
       "access_steps": [],
       "venue": {
-        "mode": "not-stated"
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [
@@ -60370,7 +60412,12 @@
       "observer_access": null,
       "access_steps": [],
       "venue": {
-        "mode": "not-stated"
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [
@@ -60877,7 +60924,12 @@
       "observer_access": null,
       "access_steps": [],
       "venue": {
-        "mode": "not-stated"
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [
@@ -61033,7 +61085,12 @@
       "observer_access": null,
       "access_steps": [],
       "venue": {
-        "mode": "not-stated"
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [
@@ -61187,7 +61244,12 @@
       "observer_access": null,
       "access_steps": [],
       "venue": {
-        "mode": "not-stated"
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [
@@ -62640,7 +62702,8 @@
             "borough": "3",
             "community_district": "K14",
             "council_district": "45",
-            "nta2020": "BK1403"
+            "nta2020": "BK1403",
+            "police_precinct": "70"
           },
           "point": {
             "lat": 40.6297346,
@@ -64002,7 +64065,12 @@
       "observer_access": null,
       "access_steps": [],
       "venue": {
-        "mode": "in-person"
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [],
@@ -64163,7 +64231,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "virtual",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": {
         "links": [],
         "remote_join_url": null,
@@ -65135,7 +65210,8 @@
             "borough": "3",
             "community_district": "K14",
             "council_district": "45",
-            "nta2020": "BK1403"
+            "nta2020": "BK1403",
+            "police_precinct": "70"
           },
           "point": {
             "lat": 40.6297346,
@@ -70098,7 +70174,8 @@
             "borough": "4",
             "community_district": "Q02",
             "council_district": "26",
-            "nta2020": "QN0202"
+            "nta2020": "QN0202",
+            "police_precinct": "108"
           },
           "point": {
             "lat": 40.7439573,
@@ -70703,7 +70780,12 @@
       "observer_access": null,
       "access_steps": [],
       "venue": {
-        "mode": "not-stated"
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [
@@ -71007,7 +71089,8 @@
             "borough": "1",
             "community_district": "M01",
             "council_district": "1",
-            "nta2020": "MN0102"
+            "nta2020": "MN0102",
+            "police_precinct": "5"
           },
           "point": {
             "lat": 40.7143925,
@@ -72095,7 +72178,8 @@
             "borough": "3",
             "community_district": "K14",
             "council_district": "45",
-            "nta2020": "BK1403"
+            "nta2020": "BK1403",
+            "police_precinct": "70"
           },
           "point": {
             "lat": 40.6223241,
@@ -72455,7 +72539,8 @@
             "borough": "3",
             "community_district": "K10",
             "council_district": "50",
-            "nta2020": "BK1002"
+            "nta2020": "BK1002",
+            "police_precinct": "68"
           },
           "point": {
             "lat": 40.6141059,
@@ -74636,7 +74721,12 @@
       "observer_access": null,
       "access_steps": [],
       "venue": {
-        "mode": "in-person"
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [],
@@ -74797,7 +74887,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "virtual",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": {
         "links": [],
         "remote_join_url": null,
@@ -74955,7 +75052,12 @@
       "observer_access": null,
       "access_steps": [],
       "venue": {
-        "mode": "in-person"
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [],
@@ -75528,7 +75630,8 @@
             "borough": "3",
             "community_district": "K14",
             "council_district": "45",
-            "nta2020": "BK1403"
+            "nta2020": "BK1403",
+            "police_precinct": "70"
           },
           "point": {
             "lat": 40.6297346,
@@ -76192,7 +76295,8 @@
             "borough": "1",
             "community_district": "M10",
             "council_district": "9",
-            "nta2020": "MN1001"
+            "nta2020": "MN1001",
+            "police_precinct": "28"
           },
           "point": {
             "lat": 40.8096925,
@@ -76519,7 +76623,8 @@
             "borough": "1",
             "community_district": "M10",
             "council_district": "9",
-            "nta2020": "MN1001"
+            "nta2020": "MN1001",
+            "police_precinct": "28"
           },
           "point": {
             "lat": 40.8096925,
@@ -77590,7 +77695,8 @@
             "borough": "3",
             "community_district": "K02",
             "council_district": "33",
-            "nta2020": "BK0202"
+            "nta2020": "BK0202",
+            "police_precinct": "84"
           },
           "point": {
             "lat": 40.69365,
@@ -77965,7 +78071,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "virtual",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": {
         "links": [],
         "remote_join_url": null,
@@ -80091,7 +80204,8 @@
             "borough": "1",
             "community_district": "M10",
             "council_district": "9",
-            "nta2020": "MN1001"
+            "nta2020": "MN1001",
+            "police_precinct": "28"
           },
           "point": {
             "lat": 40.8096925,
@@ -80853,7 +80967,8 @@
             "borough": "1",
             "community_district": "M01",
             "council_district": "1",
-            "nta2020": "MN0102"
+            "nta2020": "MN0102",
+            "police_precinct": "1"
           },
           "point": {
             "lat": 40.7143701,
@@ -81743,7 +81858,8 @@
             "borough": "3",
             "community_district": "K14",
             "council_district": "45",
-            "nta2020": "BK1403"
+            "nta2020": "BK1403",
+            "police_precinct": "70"
           },
           "point": {
             "lat": 40.6297346,
@@ -82742,7 +82858,8 @@
             "borough": "3",
             "community_district": "K10",
             "council_district": "47",
-            "nta2020": "BK1001"
+            "nta2020": "BK1001",
+            "police_precinct": "68"
           },
           "point": {
             "lat": 40.6244437,
@@ -83069,7 +83186,8 @@
             "borough": "1",
             "community_district": "M10",
             "council_district": "9",
-            "nta2020": "MN1001"
+            "nta2020": "MN1001",
+            "police_precinct": "28"
           },
           "point": {
             "lat": 40.8096925,
@@ -85943,7 +86061,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "virtual",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": {
         "links": [],
         "remote_join_url": null,
@@ -86535,7 +86660,8 @@
             "borough": "3",
             "community_district": "K10",
             "council_district": "47",
-            "nta2020": "BK1001"
+            "nta2020": "BK1001",
+            "police_precinct": "68"
           },
           "point": {
             "lat": 40.6244437,
@@ -86903,7 +87029,8 @@
             "borough": "1",
             "community_district": "M10",
             "council_district": "9",
-            "nta2020": "MN1001"
+            "nta2020": "MN1001",
+            "police_precinct": "28"
           },
           "point": {
             "lat": 40.8096925,
@@ -87254,7 +87381,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": {
         "links": [],
         "remote_join_url": null,
@@ -88626,7 +88760,8 @@
             "borough": "3",
             "community_district": "K14",
             "council_district": "45",
-            "nta2020": "BK1403"
+            "nta2020": "BK1403",
+            "police_precinct": "70"
           },
           "point": {
             "lat": 40.6297346,
@@ -89621,7 +89756,8 @@
             "borough": "1",
             "community_district": "M10",
             "council_district": "9",
-            "nta2020": "MN1001"
+            "nta2020": "MN1001",
+            "police_precinct": "28"
           },
           "point": {
             "lat": 40.8090111,
@@ -89986,7 +90122,8 @@
             "borough": "1",
             "community_district": "M10",
             "council_district": "9",
-            "nta2020": "MN1001"
+            "nta2020": "MN1001",
+            "police_precinct": "28"
           },
           "point": {
             "lat": 40.8085587,
@@ -92161,7 +92298,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "virtual",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": {
         "links": [],
         "remote_join_url": null,
@@ -94815,7 +94959,12 @@
       "observer_access": null,
       "access_steps": [],
       "venue": {
-        "mode": "not-stated"
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [
@@ -95490,7 +95639,8 @@
             "borough": "1",
             "community_district": "M01",
             "council_district": "1",
-            "nta2020": "MN0102"
+            "nta2020": "MN0102",
+            "police_precinct": "5"
           },
           "point": {
             "lat": 40.7143925,
@@ -95901,7 +96051,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "virtual",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": {
         "links": [],
         "remote_join_url": null,
@@ -96784,7 +96941,8 @@
             "borough": "1",
             "community_district": "M10",
             "council_district": "9",
-            "nta2020": "MN1001"
+            "nta2020": "MN1001",
+            "police_precinct": "28"
           },
           "point": {
             "lat": 40.8096925,
@@ -98365,7 +98523,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Transportation",
@@ -98675,7 +98840,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Transportation",
@@ -99027,7 +99199,8 @@
             "borough": "4",
             "community_district": "Q02",
             "council_district": "26",
-            "nta2020": "QN0202"
+            "nta2020": "QN0202",
+            "police_precinct": "108"
           },
           "point": {
             "lat": 40.7447695,
@@ -100230,7 +100403,8 @@
             "borough": "1",
             "community_district": "M04",
             "council_district": "3",
-            "nta2020": "MN0402"
+            "nta2020": "MN0402",
+            "police_precinct": "14"
           },
           "point": {
             "lat": 40.759914,
@@ -101513,7 +101687,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Community Boards",
@@ -102943,7 +103124,8 @@
             "borough": "1",
             "community_district": "M01",
             "council_district": "1",
-            "nta2020": "MN0102"
+            "nta2020": "MN0102",
+            "police_precinct": "5"
           },
           "point": {
             "lat": 40.7143925,
@@ -106308,7 +106490,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "virtual",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": {
         "links": [],
         "remote_join_url": null,
@@ -107790,7 +107979,8 @@
             "borough": "1",
             "community_district": "M10",
             "council_district": "9",
-            "nta2020": "MN1001"
+            "nta2020": "MN1001",
+            "police_precinct": "28"
           },
           "point": {
             "lat": 40.8096925,
@@ -107861,7 +108051,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Mayor's Office of Environmental Coordination",
@@ -108322,7 +108519,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "virtual",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": {
         "links": [],
         "remote_join_url": null,
@@ -108604,7 +108808,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "virtual",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": {
         "links": [],
         "remote_join_url": null,
@@ -109205,7 +109416,8 @@
             "borough": "1",
             "community_district": "M02",
             "council_district": "2",
-            "nta2020": "MN0202"
+            "nta2020": "MN0202",
+            "police_precinct": "6"
           },
           "point": {
             "lat": 40.7280752,
@@ -109525,7 +109737,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -109850,7 +110063,8 @@
             "borough": "1",
             "community_district": "M03",
             "council_district": "1",
-            "nta2020": "MN0302"
+            "nta2020": "MN0302",
+            "police_precinct": "7"
           },
           "point": {
             "lat": 40.7212839,
@@ -110290,7 +110504,8 @@
             "borough": "1",
             "community_district": "M10",
             "council_district": "9",
-            "nta2020": "MN1001"
+            "nta2020": "MN1001",
+            "police_precinct": "28"
           },
           "point": {
             "lat": 40.8096925,
@@ -110616,7 +110831,8 @@
             "borough": "1",
             "community_district": "M10",
             "council_district": "9",
-            "nta2020": "MN1001"
+            "nta2020": "MN1001",
+            "police_precinct": "28"
           },
           "point": {
             "lat": 40.8096925,
@@ -110949,7 +111165,8 @@
             "borough": "1",
             "community_district": "M04",
             "council_district": "3",
-            "nta2020": "MN0402"
+            "nta2020": "MN0402",
+            "police_precinct": "14"
           },
           "point": {
             "lat": 40.759914,
@@ -111282,7 +111499,8 @@
             "borough": "1",
             "community_district": "M04",
             "council_district": "3",
-            "nta2020": "MN0402"
+            "nta2020": "MN0402",
+            "police_precinct": "14"
           },
           "point": {
             "lat": 40.759914,
@@ -112621,7 +112839,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Buildings",
@@ -114593,7 +114818,8 @@
             "borough": "1",
             "community_district": "M02",
             "council_district": "2",
-            "nta2020": "MN0202"
+            "nta2020": "MN0202",
+            "police_precinct": "6"
           },
           "point": {
             "lat": 40.7289809,
@@ -115944,7 +116170,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Buildings",
@@ -116302,7 +116535,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Housing Authority",
@@ -116465,7 +116705,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Housing Preservation and Development",
@@ -116642,7 +116889,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
@@ -119349,7 +119603,8 @@
             "borough": "3",
             "community_district": "K05",
             "council_district": "37",
-            "nta2020": "BK0502"
+            "nta2020": "BK0502",
+            "police_precinct": "75"
           },
           "point": {
             "lat": 40.6746783,
@@ -119679,7 +119934,8 @@
             "borough": "3",
             "community_district": "K14",
             "council_district": "45",
-            "nta2020": "BK1403"
+            "nta2020": "BK1403",
+            "police_precinct": "70"
           },
           "point": {
             "lat": 40.6297346,
@@ -120596,7 +120852,8 @@
             "borough": "1",
             "community_district": "M04",
             "council_district": "3",
-            "nta2020": "MN0402"
+            "nta2020": "MN0402",
+            "police_precinct": "14"
           },
           "point": {
             "lat": 40.759914,
@@ -120966,7 +121223,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "City Council",
@@ -121382,7 +121646,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Educational Construction Fund",
@@ -122980,7 +123251,8 @@
             "borough": "1",
             "community_district": "M02",
             "council_district": "2",
-            "nta2020": "MN0202"
+            "nta2020": "MN0202",
+            "police_precinct": "6"
           },
           "point": {
             "lat": 40.7280752,
@@ -123313,7 +123585,8 @@
             "borough": "1",
             "community_district": "M04",
             "council_district": "3",
-            "nta2020": "MN0402"
+            "nta2020": "MN0402",
+            "police_precinct": "14"
           },
           "point": {
             "lat": 40.759914,
@@ -125643,7 +125916,8 @@
             "borough": "3",
             "community_district": "K05",
             "council_district": "37",
-            "nta2020": "BK0502"
+            "nta2020": "BK0502",
+            "police_precinct": "75"
           },
           "point": {
             "lat": 40.6746783,
@@ -125951,7 +126225,8 @@
             "borough": "3",
             "community_district": "K05",
             "council_district": "37",
-            "nta2020": "BK0502"
+            "nta2020": "BK0502",
+            "police_precinct": "75"
           },
           "point": {
             "lat": 40.6746783,
@@ -126609,7 +126884,8 @@
             "borough": "1",
             "community_district": "M10",
             "council_district": "9",
-            "nta2020": "MN1001"
+            "nta2020": "MN1001",
+            "police_precinct": "28"
           },
           "point": {
             "lat": 40.8096925,
@@ -127268,7 +127544,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Sanitation",
@@ -128382,7 +128665,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Consumer and Worker Protection",
@@ -130518,7 +130808,8 @@
             "borough": "4",
             "community_district": "Q09",
             "council_district": "29",
-            "nta2020": "QN0901"
+            "nta2020": "QN0901",
+            "police_precinct": "102"
           },
           "point": {
             "lat": 40.7140061,
@@ -130884,7 +131175,8 @@
             "borough": "1",
             "community_district": "M10",
             "council_district": "9",
-            "nta2020": "MN1001"
+            "nta2020": "MN1001",
+            "police_precinct": "28"
           },
           "point": {
             "lat": 40.8096925,
@@ -131210,7 +131502,8 @@
             "borough": "1",
             "community_district": "M10",
             "council_district": "9",
-            "nta2020": "MN1001"
+            "nta2020": "MN1001",
+            "police_precinct": "28"
           },
           "point": {
             "lat": 40.8096925,
@@ -131854,7 +132147,8 @@
             "borough": "1",
             "community_district": "M02",
             "council_district": "2",
-            "nta2020": "MN0202"
+            "nta2020": "MN0202",
+            "police_precinct": "6"
           },
           "point": {
             "lat": 40.7280752,
@@ -132187,7 +132481,8 @@
             "borough": "1",
             "community_district": "M04",
             "council_district": "3",
-            "nta2020": "MN0402"
+            "nta2020": "MN0402",
+            "police_precinct": "14"
           },
           "point": {
             "lat": 40.759914,
@@ -132850,7 +133145,8 @@
             "borough": "1",
             "community_district": "M03",
             "council_district": "1",
-            "nta2020": "MN0302"
+            "nta2020": "MN0302",
+            "police_precinct": "5"
           },
           "point": {
             "lat": 40.7217071,
@@ -132972,7 +133268,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Community Boards",
@@ -133179,7 +133482,8 @@
             "borough": "1",
             "community_district": "M01",
             "council_district": "1",
-            "nta2020": "MN0102"
+            "nta2020": "MN0102",
+            "police_precinct": "1"
           },
           "point": {
             "lat": 40.7143701,
@@ -133478,7 +133782,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Consumer and Worker Protection",
@@ -133706,7 +134017,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Health and Mental Hygiene",
@@ -135382,7 +135700,8 @@
             "borough": "1",
             "community_district": "M10",
             "council_district": "9",
-            "nta2020": "MN1001"
+            "nta2020": "MN1001",
+            "police_precinct": "28"
           },
           "point": {
             "lat": 40.8096925,
@@ -135715,7 +136034,8 @@
             "borough": "1",
             "community_district": "M04",
             "council_district": "3",
-            "nta2020": "MN0402"
+            "nta2020": "MN0402",
+            "police_precinct": "14"
           },
           "point": {
             "lat": 40.759914,
@@ -137715,7 +138035,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Buildings",
@@ -138262,7 +138589,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Borough President - Bronx",
@@ -138979,7 +139313,8 @@
             "borough": "3",
             "community_district": "K05",
             "council_district": "37",
-            "nta2020": "BK0502"
+            "nta2020": "BK0502",
+            "police_precinct": "75"
           },
           "point": {
             "lat": 40.6746783,
@@ -139921,7 +140256,8 @@
             "borough": "1",
             "community_district": "M10",
             "council_district": "9",
-            "nta2020": "MN1001"
+            "nta2020": "MN1001",
+            "police_precinct": "28"
           },
           "point": {
             "lat": 40.8096925,
@@ -140600,7 +140936,8 @@
             "borough": "1",
             "community_district": "M02",
             "council_district": "2",
-            "nta2020": "MN0202"
+            "nta2020": "MN0202",
+            "police_precinct": "6"
           },
           "point": {
             "lat": 40.7280752,
@@ -141372,7 +141709,8 @@
             "borough": "1",
             "community_district": "M01",
             "council_district": "1",
-            "nta2020": "MN0102"
+            "nta2020": "MN0102",
+            "police_precinct": "1"
           },
           "point": {
             "lat": 40.7143701,
@@ -142127,7 +142465,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Health and Mental Hygiene",
@@ -142388,7 +142733,8 @@
             "borough": "1",
             "community_district": "M01",
             "council_district": "1",
-            "nta2020": "MN0102"
+            "nta2020": "MN0102",
+            "police_precinct": "5"
           },
           "point": {
             "lat": 40.7143925,
@@ -144131,7 +144477,8 @@
             "borough": "3",
             "community_district": "K14",
             "council_district": "40",
-            "nta2020": "BK1402"
+            "nta2020": "BK1402",
+            "police_precinct": "70"
           },
           "point": {
             "lat": 40.6466644,
@@ -144152,7 +144499,8 @@
             "borough": "3",
             "community_district": "K14",
             "council_district": "45",
-            "nta2020": "BK1403"
+            "nta2020": "BK1403",
+            "police_precinct": "70"
           },
           "point": {
             "lat": 40.6223241,
@@ -144518,7 +144866,8 @@
             "borough": "1",
             "community_district": "M10",
             "council_district": "9",
-            "nta2020": "MN1001"
+            "nta2020": "MN1001",
+            "police_precinct": "28"
           },
           "point": {
             "lat": 40.8096925,
@@ -145903,7 +146252,8 @@
             "borough": "1",
             "community_district": "M02",
             "council_district": "2",
-            "nta2020": "MN0202"
+            "nta2020": "MN0202",
+            "police_precinct": "6"
           },
           "point": {
             "lat": 40.7280752,
@@ -146236,7 +146586,8 @@
             "borough": "1",
             "community_district": "M04",
             "council_district": "3",
-            "nta2020": "MN0402"
+            "nta2020": "MN0402",
+            "police_precinct": "14"
           },
           "point": {
             "lat": 40.759914,
@@ -151302,7 +151653,8 @@
             "borough": "4",
             "community_district": "Q09",
             "council_district": "29",
-            "nta2020": "QN0901"
+            "nta2020": "QN0901",
+            "police_precinct": "102"
           },
           "point": {
             "lat": 40.7140061,
@@ -151669,7 +152021,8 @@
             "borough": "1",
             "community_district": "M10",
             "council_district": "9",
-            "nta2020": "MN1001"
+            "nta2020": "MN1001",
+            "police_precinct": "28"
           },
           "point": {
             "lat": 40.8096925,
@@ -152459,7 +152812,8 @@
             "borough": "1",
             "community_district": "M02",
             "council_district": "3",
-            "nta2020": "MN0203"
+            "nta2020": "MN0203",
+            "police_precinct": "6"
           },
           "point": {
             "lat": 40.7377148,
@@ -152792,7 +153146,8 @@
             "borough": "1",
             "community_district": "M04",
             "council_district": "3",
-            "nta2020": "MN0402"
+            "nta2020": "MN0402",
+            "police_precinct": "14"
           },
           "point": {
             "lat": 40.759914,
@@ -153421,7 +153776,8 @@
             "borough": "3",
             "community_district": "K11",
             "council_district": "38",
-            "nta2020": "BK1102"
+            "nta2020": "BK1102",
+            "police_precinct": "62"
           },
           "point": {
             "lat": 40.6090452,
@@ -154721,7 +155077,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Community Boards",
@@ -154857,7 +155220,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Community Boards",
@@ -155184,7 +155554,8 @@
             "borough": "1",
             "community_district": "M01",
             "council_district": "1",
-            "nta2020": "MN0102"
+            "nta2020": "MN0102",
+            "police_precinct": "5"
           },
           "point": {
             "lat": 40.7156689,
@@ -155255,7 +155626,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Buildings",
@@ -157946,7 +158324,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Housing Preservation and Development",
@@ -158060,7 +158445,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Environmental Protection",
@@ -158174,7 +158566,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Environmental Protection",
@@ -158288,7 +158687,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Environmental Protection",
@@ -158402,7 +158808,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
@@ -159855,7 +160268,8 @@
             "borough": "3",
             "community_district": "K05",
             "council_district": "37",
-            "nta2020": "BK0502"
+            "nta2020": "BK0502",
+            "police_precinct": "75"
           },
           "point": {
             "lat": 40.6746783,
@@ -160185,7 +160599,8 @@
             "borough": "3",
             "community_district": "K14",
             "council_district": "45",
-            "nta2020": "BK1403"
+            "nta2020": "BK1403",
+            "police_precinct": "70"
           },
           "point": {
             "lat": 40.6297346,
@@ -160843,7 +161258,8 @@
             "borough": "1",
             "community_district": "M10",
             "council_district": "9",
-            "nta2020": "MN1001"
+            "nta2020": "MN1001",
+            "police_precinct": "28"
           },
           "point": {
             "lat": 40.8096925,
@@ -161172,7 +161588,8 @@
             "borough": "1",
             "community_district": "M02",
             "council_district": "3",
-            "nta2020": "MN0203"
+            "nta2020": "MN0203",
+            "police_precinct": "6"
           },
           "point": {
             "lat": 40.7377148,
@@ -161505,7 +161922,8 @@
             "borough": "1",
             "community_district": "M04",
             "council_district": "3",
-            "nta2020": "MN0402"
+            "nta2020": "MN0402",
+            "police_precinct": "14"
           },
           "point": {
             "lat": 40.759914,
@@ -163900,7 +164318,8 @@
             "borough": "4",
             "community_district": "Q06",
             "council_district": "29",
-            "nta2020": "QN0602"
+            "nta2020": "QN0602",
+            "police_precinct": "112"
           },
           "point": {
             "lat": 40.7103628,
@@ -164208,7 +164627,8 @@
             "borough": "3",
             "community_district": "K05",
             "council_district": "37",
-            "nta2020": "BK0502"
+            "nta2020": "BK0502",
+            "police_precinct": "75"
           },
           "point": {
             "lat": 40.6746783,
@@ -164818,7 +165238,8 @@
             "borough": "1",
             "community_district": "M10",
             "council_district": "9",
-            "nta2020": "MN1001"
+            "nta2020": "MN1001",
+            "police_precinct": "28"
           },
           "point": {
             "lat": 40.8096925,
@@ -165569,7 +165990,8 @@
             "borough": "1",
             "community_district": "M02",
             "council_district": "3",
-            "nta2020": "MN0203"
+            "nta2020": "MN0203",
+            "police_precinct": "6"
           },
           "point": {
             "lat": 40.7377148,
@@ -165902,7 +166324,8 @@
             "borough": "1",
             "community_district": "M04",
             "council_district": "3",
-            "nta2020": "MN0402"
+            "nta2020": "MN0402",
+            "police_precinct": "14"
           },
           "point": {
             "lat": 40.759914,
@@ -167701,7 +168124,8 @@
             "borough": "3",
             "community_district": "K05",
             "council_district": "37",
-            "nta2020": "BK0502"
+            "nta2020": "BK0502",
+            "police_precinct": "75"
           },
           "point": {
             "lat": 40.6746783,
@@ -169083,7 +169507,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Transportation",
@@ -170630,7 +171061,8 @@
             "borough": "3",
             "community_district": "K05",
             "council_district": "37",
-            "nta2020": "BK0502"
+            "nta2020": "BK0502",
+            "police_precinct": "75"
           },
           "point": {
             "lat": 40.6746783,
@@ -172431,7 +172863,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Office of Labor Relations",
@@ -173717,7 +174156,8 @@
             "borough": "1",
             "community_district": "M10",
             "council_district": "9",
-            "nta2020": "MN1001"
+            "nta2020": "MN1001",
+            "police_precinct": "28"
           },
           "point": {
             "lat": 40.8090111,
@@ -174050,7 +174490,8 @@
             "borough": "1",
             "community_district": "M04",
             "council_district": "3",
-            "nta2020": "MN0402"
+            "nta2020": "MN0402",
+            "police_precinct": "14"
           },
           "point": {
             "lat": 40.7588543,
@@ -175417,7 +175858,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Transportation",
@@ -178288,7 +178736,8 @@
             "borough": "1",
             "community_district": "M02",
             "council_district": "2",
-            "nta2020": "MN0202"
+            "nta2020": "MN0202",
+            "police_precinct": "6"
           },
           "point": {
             "lat": 40.7280752,
@@ -178359,7 +178808,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Buildings",
@@ -178528,7 +178984,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Transportation",
@@ -179636,7 +180099,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Sanitation",
@@ -180316,7 +180786,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
@@ -180430,7 +180907,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Consumer and Worker Protection",
@@ -180544,7 +181028,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
@@ -180658,7 +181149,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
@@ -181555,7 +182053,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Transportation",
@@ -182046,7 +182551,8 @@
             "borough": "1",
             "community_district": "M01",
             "council_district": "1",
-            "nta2020": "MN0102"
+            "nta2020": "MN0102",
+            "police_precinct": "1"
           },
           "point": {
             "lat": 40.7143701,
@@ -183766,7 +184272,8 @@
             "borough": "1",
             "community_district": "M01",
             "council_district": "1",
-            "nta2020": "MN0102"
+            "nta2020": "MN0102",
+            "police_precinct": "1"
           },
           "point": {
             "lat": 40.7143701,
@@ -183956,7 +184463,8 @@
             "borough": "1",
             "community_district": "M01",
             "council_district": "1",
-            "nta2020": "MN0102"
+            "nta2020": "MN0102",
+            "police_precinct": "1"
           },
           "point": {
             "lat": 40.7143701,
@@ -184169,7 +184677,8 @@
             "borough": "1",
             "community_district": "M01",
             "council_district": "1",
-            "nta2020": "MN0102"
+            "nta2020": "MN0102",
+            "police_precinct": "5"
           },
           "point": {
             "lat": 40.7143925,
@@ -184296,7 +184805,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Transportation",
@@ -185836,7 +186352,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Housing Authority",
@@ -188823,7 +189346,8 @@
             "borough": "3",
             "community_district": "K05",
             "council_district": "37",
-            "nta2020": "BK0502"
+            "nta2020": "BK0502",
+            "police_precinct": "75"
           },
           "point": {
             "lat": 40.6746783,
@@ -189719,7 +190243,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -191204,7 +191729,8 @@
             "borough": "4",
             "community_district": "Q09",
             "council_district": "29",
-            "nta2020": "QN0901"
+            "nta2020": "QN0901",
+            "police_precinct": "102"
           },
           "point": {
             "lat": 40.7140061,
@@ -192214,7 +192740,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -192635,7 +193162,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -193056,7 +193584,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -196363,7 +196892,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -196683,7 +197213,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -197003,7 +197534,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -197323,7 +197855,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -197643,7 +198176,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -197963,7 +198497,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -198283,7 +198818,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -198603,7 +199139,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -198923,7 +199460,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -199243,7 +199781,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -199563,7 +200102,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -199883,7 +200423,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -200203,7 +200744,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -200523,7 +201065,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -200843,7 +201386,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -201163,7 +201707,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -201483,7 +202028,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -201803,7 +202349,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -202123,7 +202670,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -202443,7 +202991,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -202763,7 +203312,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -203083,7 +203633,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -203403,7 +203954,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -203723,7 +204275,8 @@
             "borough": "3",
             "community_district": "K15",
             "council_district": "48",
-            "nta2020": "BK1503"
+            "nta2020": "BK1503",
+            "police_precinct": "61"
           },
           "point": {
             "lat": 40.5779717,
@@ -204974,7 +205527,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Board Meetings",
@@ -205084,7 +205644,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Board Meetings",
@@ -205190,7 +205757,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Board Meetings",
@@ -205296,7 +205870,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Board Meetings",
@@ -205402,7 +205983,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Board Meetings",
@@ -205508,7 +206096,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Board Meetings",
@@ -205614,7 +206209,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Board Meetings",
@@ -205720,7 +206322,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Board Meetings",
@@ -205826,7 +206435,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Board Meetings",
@@ -205932,7 +206548,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Board Meetings",
@@ -206054,7 +206677,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Charter Revision Commission",
@@ -206214,7 +206844,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Housing Preservation and Development",
@@ -206320,7 +206957,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Office of the Mayor",
@@ -263609,7 +264253,8 @@
         "building": "",
         "address": null,
         "borough": null,
-        "neighborhood": null
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [
@@ -265087,7 +265732,8 @@
         "building": "",
         "address": null,
         "borough": null,
-        "neighborhood": null
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [
@@ -265239,7 +265885,8 @@
         "building": "",
         "address": null,
         "borough": null,
-        "neighborhood": null
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [
@@ -265750,7 +266397,8 @@
         "building": "",
         "address": null,
         "borough": null,
-        "neighborhood": null
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [
@@ -265910,7 +266558,8 @@
         "building": "",
         "address": null,
         "borough": null,
-        "neighborhood": null
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [
@@ -266068,7 +266717,8 @@
         "building": "",
         "address": null,
         "borough": null,
-        "neighborhood": null
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [
@@ -268892,11 +269542,12 @@
       "observer_access": null,
       "access_steps": [],
       "venue": {
-        "mode": "in-person",
+        "mode": "not-stated",
         "building": "",
         "address": null,
         "borough": null,
-        "neighborhood": null
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [],
@@ -275629,7 +276280,8 @@
         "building": "",
         "address": null,
         "borough": null,
-        "neighborhood": null
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [
@@ -279578,11 +280230,12 @@
       "observer_access": null,
       "access_steps": [],
       "venue": {
-        "mode": "in-person",
+        "mode": "not-stated",
         "building": "",
         "address": null,
         "borough": null,
-        "neighborhood": null
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [],
@@ -279907,11 +280560,12 @@
       "observer_access": null,
       "access_steps": [],
       "venue": {
-        "mode": "in-person",
+        "mode": "not-stated",
         "building": "",
         "address": null,
         "borough": null,
-        "neighborhood": null
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [],
@@ -299926,7 +300580,8 @@
         "building": "",
         "address": null,
         "borough": null,
-        "neighborhood": null
+        "neighborhood": null,
+        "name": null
       },
       "participation": {
         "links": [
@@ -303813,7 +304468,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Transportation",
@@ -313040,7 +313702,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Mayor's Office of Environmental Coordination",
@@ -317831,7 +318500,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Buildings",
@@ -317998,7 +318674,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Transportation",
@@ -321170,7 +321853,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Buildings",
@@ -321528,7 +322218,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Housing Authority",
@@ -321691,7 +322388,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Housing Preservation and Development",
@@ -321868,7 +322572,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
@@ -326211,7 +326922,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "City Council",
@@ -332556,7 +333274,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Sanitation",
@@ -333677,7 +334402,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Consumer and Worker Protection",
@@ -333826,7 +334558,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Transportation",
@@ -333985,7 +334724,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Transportation",
@@ -338281,7 +339027,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Community Boards",
@@ -338792,7 +339545,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Consumer and Worker Protection",
@@ -339020,7 +339780,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Health and Mental Hygiene",
@@ -339711,7 +340478,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Independent Budget Office",
@@ -343042,7 +343816,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Buildings",
@@ -343589,7 +344370,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Borough President - Bronx",
@@ -347479,7 +348267,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Health and Mental Hygiene",
@@ -353878,7 +354673,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Community Boards",
@@ -360120,7 +360922,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Community Boards",
@@ -360256,7 +361065,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Community Boards",
@@ -360659,7 +361475,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Buildings",
@@ -363047,7 +363870,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
@@ -363356,7 +364186,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Housing Preservation and Development",
@@ -363470,7 +364307,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Environmental Protection",
@@ -363584,7 +364428,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Environmental Protection",
@@ -363698,7 +364549,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Environmental Protection",
@@ -363812,7 +364670,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
@@ -374542,7 +375407,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Transportation",
@@ -377904,7 +378776,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Office of Labor Relations",
@@ -380899,7 +381778,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Transportation",
@@ -383860,7 +384746,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Buildings",
@@ -384029,7 +384922,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Transportation",
@@ -385154,7 +386054,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Sanitation",
@@ -385839,7 +386746,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
@@ -385953,7 +386867,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Consumer and Worker Protection",
@@ -386067,7 +386988,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
@@ -386181,7 +387109,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
@@ -387085,7 +388020,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Transportation",
@@ -389859,7 +390801,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Transportation",
@@ -391409,7 +392358,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Housing Authority",
@@ -410729,7 +411685,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Board Meetings",
@@ -410839,7 +411802,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Board Meetings",
@@ -410945,7 +411915,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Board Meetings",
@@ -411051,7 +412028,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Board Meetings",
@@ -411157,7 +412141,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Board Meetings",
@@ -411263,7 +412254,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Board Meetings",
@@ -411369,7 +412367,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Board Meetings",
@@ -411475,7 +412480,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Board Meetings",
@@ -411581,7 +412593,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Board Meetings",
@@ -411687,7 +412706,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Board Meetings",
@@ -411809,7 +412835,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Charter Revision Commission",
@@ -411969,7 +413002,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Housing Preservation and Development",
@@ -412075,7 +413115,14 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "not-stated",
+        "building": "",
+        "address": null,
+        "borough": null,
+        "neighborhood": null,
+        "name": null
+      },
       "participation": null,
       "committee": null,
       "agency": "Office of the Mayor",

@@ -52,10 +52,8 @@
         "convening_body": "full_board",
         "convening_body_basis": "publisher_meeting_title",
         "venue": {
-          "name": null,
           "address": "g Board Meeting",
-          "mode": "in-person",
-          "components": null
+          "mode": "in-person"
         },
         "source": {
           "source_system": "community_board",
@@ -263,8 +261,7 @@
         "venue": {
           "name": "SBH Wellness Center",
           "address": "4507 3rd Avenue, Bronx, NY, 10457",
-          "mode": "in-person",
-          "components": null
+          "mode": "in-person"
         },
         "source": {
           "source_system": "community_board",
@@ -387,7 +384,9 @@
         "board_name": "Bronx Community Board 8",
         "convening_body": "full_board",
         "convening_body_basis": "publisher_meeting_title",
-        "venue": null,
+        "venue": {
+          "mode": "virtual"
+        },
         "source": {
           "source_system": "community_board",
           "publisher": "Bronx Community Board 8",
@@ -488,10 +487,8 @@
         "convening_body": "full_board",
         "convening_body_basis": "publisher_meeting_title",
         "venue": {
-          "name": null,
           "address": "CB#10 Full Board",
-          "mode": "in-person",
-          "components": null
+          "mode": "in-person"
         },
         "source": {
           "source_system": "community_board",
@@ -535,10 +532,8 @@
         "convening_body": "full_board",
         "convening_body_basis": "publisher_meeting_title",
         "venue": {
-          "name": null,
           "address": "6:45 PM Public",
-          "mode": "in-person",
-          "components": null
+          "mode": "in-person"
         },
         "source": {
           "source_system": "community_board",
@@ -779,10 +774,8 @@
         "convening_body": "full_board",
         "convening_body_basis": "publisher_meeting_title",
         "venue": {
-          "name": null,
           "address": "127 Pennsylvania Ave, Brooklyn, NY 11207, USA",
-          "mode": "in-person",
-          "components": null
+          "mode": "in-person"
         },
         "source": {
           "source_system": "community_board",
@@ -1274,10 +1267,8 @@
         "convening_body": "full_board",
         "convening_body_basis": "publisher_meeting_title",
         "venue": {
-          "name": null,
           "address": "Kingsborough Community College, 2001 Oriental Boulevard, Room U112 Faculty Dining Room, Brooklyn, NY 11235",
-          "mode": "in-person",
-          "components": null
+          "mode": "in-person"
         },
         "source": {
           "source_system": "community_board",
@@ -1617,10 +1608,8 @@
         "convening_body": "full_board",
         "convening_body_basis": "publisher_meeting_title",
         "venue": {
-          "name": null,
           "address": "PS 20 - 166 Essex Street (E Houston & Stanton Sts)",
-          "mode": "hybrid",
-          "components": null
+          "mode": "hybrid"
         },
         "source": {
           "source_system": "community_board",
@@ -1761,7 +1750,9 @@
         "board_name": "Manhattan Community Board 5",
         "convening_body": "full_board",
         "convening_body_basis": "publisher_meeting_title",
-        "venue": null,
+        "venue": {
+          "mode": "virtual"
+        },
         "source": {
           "source_system": "community_board",
           "publisher": "Manhattan Community Board 5",
@@ -1904,10 +1895,8 @@
         "convening_body": "full_board",
         "convening_body_basis": "publisher_meeting_title",
         "venue": {
-          "name": null,
           "address": "10 Lincoln Center Plaza, New York, NY 10023, USA",
           "mode": "not-stated",
-          "components": null,
           "attendance_conflict": true
         },
         "source": {
@@ -2122,7 +2111,6 @@
           "name": "via Video Conference, 2017 First Avenue, New York, NY 10029",
           "address": "via Video Conference, 2017 First Avenue, New York, NY 10029",
           "mode": "not-stated",
-          "components": null,
           "attendance_conflict": true
         },
         "source": {
@@ -2287,7 +2275,9 @@
         "board_name": "Queens Community Board 2",
         "convening_body": "full_board",
         "convening_body_basis": "publisher_meeting_title",
-        "venue": null,
+        "venue": {
+          "mode": "virtual"
+        },
         "source": {
           "source_system": "community_board",
           "publisher": "Queens Community Board 2",
@@ -2457,10 +2447,8 @@
         "convening_body": "full_board",
         "convening_body_basis": "publisher_meeting_title",
         "venue": {
-          "name": null,
           "address": "Queens Borough Hall, 120-55 Queens Blvd, Kew Gardens, NY 11424, USA",
           "mode": "not-stated",
-          "components": null,
           "attendance_conflict": true
         },
         "source": {

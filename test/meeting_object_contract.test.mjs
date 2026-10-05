@@ -231,6 +231,26 @@ test("City Record residual street fields compose venue when venue is empty", () 
   );
 });
 
+
+test("City Record dropdown placeholder and remote body keep a hearing-adapter venue mode", () => {
+  const placeholder = composeVenueFromNoticeStreetFields({
+    source_system: "city_record",
+    meeting_origin: "city_record_notice",
+    street_address_1: "Address Not Listed In The Dropdown",
+    additional_description_1: "Agency Rules Section Finance",
+  });
+  assert.equal(placeholder.mode, "not-stated");
+  assert.equal(placeholder.address, null);
+
+  const remote = composeVenueFromNoticeStreetFields({
+    source_system: "city_record",
+    meeting_origin: "city_record_notice",
+    additional_description_1: "Join by Zoom at https://health-nyc.zoomgov.com/j/1",
+  });
+  assert.equal(remote.mode, "virtual");
+  assert.equal(remote.address, null);
+});
+
 test("identity never falls back to title/date and missing institutions stay honest", () => {
   assert.throws(() => meetingIdForSource("community_board", ""), /publisher_event_id is required/);
   assert.throws(() => meetingIdForSource("nyc_legistar_events", ""), /event_id is required/);

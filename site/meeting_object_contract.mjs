@@ -270,14 +270,27 @@ const NOTICE_REMOTE_SIGNAL = /\b(?:via\s+video\s+conference|video\s+conference|v
  * are empty but notice body text is remote-only, restore mode=virtual so
  * frozen virtual outcomes survive the rolling notice window.
  */
+/** City Record dropdown placeholder — not a geocodable street. */
+const NOTICE_STREET_PLACEHOLDER = /^address not listed in the dropdown$/i;
+
+function noticeStreetText(value) {
+  const text = optionalText(value);
+  if (!text || NOTICE_STREET_PLACEHOLDER.test(text)) return null;
+  return text;
+}
+
 export function composeVenueFromNoticeStreetFields(row = {}) {
-  const street1 = optionalText(row.street_address_1);
-  const street2 = optionalText(row.street_address_2);
+  const street1 = noticeStreetText(row.street_address_1);
+  const street2 = noticeStreetText(row.street_address_2);
   const city = optionalText(row.city);
   const state = optionalText(row.state);
   const zip = optionalText(row.zip_code);
   const building = optionalText(row.building_name);
-  const parts = [street1, street2, city, state, zip].filter(Boolean);
+  // Placeholder-only street rows must not become in-person venue.address.
+  const hasRealStreet = Boolean(street1 || street2);
+  const parts = hasRealStreet
+    ? [street1, street2, city, state, zip].filter(Boolean)
+    : [];
   if (parts.length || building) {
     const address = parts.length
       ? parts.join(", ").replace(/\s*,\s*/g, ", ").replace(/[.,;:\s]+$/, "").trim()
@@ -307,6 +320,18 @@ export function composeVenueFromNoticeStreetFields(row = {}) {
   if (body && NOTICE_REMOTE_SIGNAL.test(body)) {
     return {
       mode: "virtual",
+      building: "",
+      address: null,
+      borough: null,
+      neighborhood: null,
+    };
+  }
+  // Hearing-adapter City Record rows always carry a venue mode, even when the
+  // publisher left street fields empty or used the dropdown placeholder.
+  if (String(row.meeting_origin || "").trim() === "city_record_notice"
+    || String(row.source_system || "").trim() === "city_record") {
+    return {
+      mode: "not-stated",
       building: "",
       address: null,
       borough: null,
