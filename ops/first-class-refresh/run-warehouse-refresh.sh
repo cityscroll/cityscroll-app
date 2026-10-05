@@ -57,6 +57,13 @@ tools/install_worker_dependencies.sh
 node tools/priority_source_warehouse_acquire.mjs --bounded
 
 node tools/first_class_refresh.mjs --run-due
+
+# Rematerialize every warehouse serve lookup that is past half its CI max age
+# (and the digests that must stay coherent with refreshed ZAP twins). Hosted
+# runners cannot do this; without this step the serve-publish age gates rot
+# between warehouse refreshes even when --run-due selected nothing else.
+node "$SCRIPT_DIR/refresh-warehouse-serve-lookups.mjs"
+
 # --run-due stops after each owning builder. Every committed read model derived
 # from those datasets is rebuilt here, before committing; otherwise the pull
 # request carries a read model whose coherence receipt no longer matches the

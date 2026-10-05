@@ -5814,6 +5814,118 @@
       "production_evidence_field": "first_class.zap_projects"
     },
     {
+      "id": "zap-bbl",
+      "public_artifact_path": "site/data/zap_bbl_warehouse_lookup.json",
+      "primary_routes": [
+        "/browse/",
+        "/browse/zoning/",
+        "/land/"
+      ],
+      "source_contract_id": "zap-bbl",
+      "acquisition_command": [
+        "node",
+        "tools/build_zap_bbl_warehouse_lookup.mjs",
+        "--all"
+      ],
+      "owning_builder": "tools/build_zap_bbl_warehouse_lookup.mjs",
+      "builder_command": [
+        "node",
+        "tools/build_zap_bbl_warehouse_lookup.mjs",
+        "--all"
+      ],
+      "dependent_materializers": [
+        "tools/build_e_designation_digest.mjs",
+        "tools/build_later_housing_activity.mjs",
+        "tools/build_land_project_map_points.mjs"
+      ],
+      "normal_refresh_cadence_hours": 24,
+      "warning_age_hours": 336,
+      "hard_maximum_age_hours": 720,
+      "vintage_fields": [
+        "materialized_at"
+      ],
+      "population_fields": [
+        "project_count",
+        "rows"
+      ],
+      "last_known_good_behavior": "Retain the last verified ZAP BBL lookup within its hard age and disclose degraded freshness.",
+      "resident_stale_behavior": "Do not describe ZAP tax-lot coverage as current after the hard maximum age.",
+      "resident_unavailable_behavior": "Show ZAP tax-lot coverage as unavailable; never infer that no lots exist.",
+      "production_evidence_field": "first_class.zap_bbl"
+    },
+    {
+      "id": "doing-business",
+      "public_artifact_path": "site/data/doing_business_warehouse_lookup.json",
+      "primary_routes": [
+        "/browse/",
+        "/browse/contracts/"
+      ],
+      "source_contract_id": "doing-business-entities",
+      "acquisition_command": [
+        "node",
+        "tools/build_doing_business_warehouse_lookup.mjs"
+      ],
+      "owning_builder": "tools/build_doing_business_warehouse_lookup.mjs",
+      "builder_command": [
+        "node",
+        "tools/build_doing_business_warehouse_lookup.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs"
+      ],
+      "normal_refresh_cadence_hours": 168,
+      "cadence_justification": "Doing Business entities change slowly; a weekly warehouse rematerialization stays well inside the 180-day serve window.",
+      "warning_age_hours": 2160,
+      "hard_maximum_age_hours": 4320,
+      "vintage_fields": [
+        "materialized_at"
+      ],
+      "population_fields": [
+        "row_count",
+        "rows"
+      ],
+      "last_known_good_behavior": "Retain the last verified Doing Business lookup within its hard age and disclose degraded freshness.",
+      "resident_stale_behavior": "Do not describe Doing Business coverage as current after the hard maximum age.",
+      "resident_unavailable_behavior": "Show Doing Business coverage as unavailable; never infer that no entities exist.",
+      "production_evidence_field": "first_class.doing_business"
+    },
+    {
+      "id": "city-record-pin-chain",
+      "public_artifact_path": "site/data/city_record_pin_chain_warehouse_lookup.json",
+      "primary_routes": [
+        "/browse/",
+        "/browse/contracts/"
+      ],
+      "source_contract_id": "city-record",
+      "acquisition_command": [
+        "node",
+        "tools/build_city_record_pin_chain_lookup.mjs"
+      ],
+      "owning_builder": "tools/build_city_record_pin_chain_lookup.mjs",
+      "builder_command": [
+        "node",
+        "tools/build_city_record_pin_chain_lookup.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_shared_procurement_read_model.mjs"
+      ],
+      "normal_refresh_cadence_hours": 168,
+      "cadence_justification": "PIN-chain history is sparse and slow-moving; a weekly rematerialization stays well inside the 180-day serve window.",
+      "warning_age_hours": 2160,
+      "hard_maximum_age_hours": 4320,
+      "vintage_fields": [
+        "materialized_at"
+      ],
+      "population_fields": [
+        "row_count",
+        "rows"
+      ],
+      "last_known_good_behavior": "Retain the last verified City Record PIN-chain lookup within its hard age and disclose degraded freshness.",
+      "resident_stale_behavior": "Do not describe PIN-chain coverage as current after the hard maximum age.",
+      "resident_unavailable_behavior": "Show PIN-chain coverage as unavailable; never infer that no related notices exist.",
+      "production_evidence_field": "first_class.city_record_pin_chain"
+    },
+    {
       "id": "community-board-budget-register",
       "public_artifact_path": "site/data/community_board_budget_register.json",
       "primary_routes": [

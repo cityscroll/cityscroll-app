@@ -55,6 +55,18 @@ These datasets refresh on the machine that holds the warehouse:
 | `site/data/analytics_payments.json` | `tools/build_analytical_payments.mjs` |
 | `site/data/analytics_performance_evidence.json` | `tools/build_analytical_performance_evidence.mjs` |
 | `site/data/zap_projects_warehouse_lookup.json` | `tools/build_zap_warehouse_lookup.mjs` |
+| `site/data/zap_bbl_warehouse_lookup.json` | `tools/build_zap_bbl_warehouse_lookup.mjs` |
+| `site/data/doing_business_warehouse_lookup.json` | `tools/build_doing_business_warehouse_lookup.mjs` |
+| `site/data/city_record_pin_chain_warehouse_lookup.json` | `tools/build_city_record_pin_chain_lookup.mjs` |
+| `site/data/e_designation_project_digest.json` | `tools/build_e_designation_digest.mjs` |
+| `site/data/later_housing_activity.json` | `tools/build_later_housing_activity.mjs` |
+
+After `--run-due`, `run-warehouse-refresh.sh` also runs
+`refresh-warehouse-serve-lookups.mjs`. That step rematerializes every warehouse
+serve lookup once its committed stamp passes half of its CI max age, and
+rebuilds the E-Designation and later-housing digests when their ZAP inputs
+moved. The half-age threshold keeps the wall-clock serve-publish gates green
+between warehouse refreshes without raising those limits.
 
 ## Installing the scheduled job
 
