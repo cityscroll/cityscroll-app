@@ -53,7 +53,7 @@
   ],
   "evidence_vintage": {
     "oldest": "2026-05-26T00:00:00.000Z",
-    "newest": "2026-09-30T13:15:43.197Z"
+    "newest": "2026-10-05T00:00:00.000Z"
   },
   "domains": [
     {
@@ -167,8 +167,8 @@
           "source_id": "ocp-recent-contract-awards",
           "source_name": "Recent Contract Awards (OCP)",
           "state": "measured",
-          "value": 53600,
-          "evidence_vintage": "2026-09-05T00:00:00.000Z",
+          "value": 53817,
+          "evidence_vintage": "2026-10-05T00:00:00.000Z",
           "vintage_field": "source_snapshot.snapshot_date",
           "vintage_basis": "single"
         }

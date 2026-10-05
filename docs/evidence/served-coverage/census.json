@@ -60,7 +60,7 @@
       "vintage_field": "source_snapshot.snapshot_date",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 53600,
+      "value": 53817,
       "reason": null
     },
     {
@@ -1196,8 +1196,8 @@
           {
             "unit_id": "contract-awards",
             "route": "/browse/contracts/",
-            "served_records": 53600,
-            "evidence_vintage": "2026-09-05T00:00:00.000Z"
+            "served_records": 53817,
+            "evidence_vintage": "2026-10-05T00:00:00.000Z"
           }
         ]
       }
