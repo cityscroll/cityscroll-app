@@ -102,7 +102,7 @@ import { handleEntityDossier } from "./entity_dossier.mjs";
 import { handlePublicRelationshipGraph } from "./public_relationship_graph.mjs";
 import { handleEntityIntelligence } from "./entity_intelligence.mjs";
 import { handleAdminAttachmentMetadata, handleAttachmentMetadata } from "./attachment_metadata.mjs";
-import { runDigestShadow } from "./digest_shadow.mjs";
+import { persistDigestShadowFailure, runDigestShadow } from "./digest_shadow.mjs";
 import { handleDigestShadowRebuildQueueMessage } from "./digest_shadow_rebuild.mjs";
 import { handleNearYou } from "./near_you.mjs";
 import { isNearYouDeferredPath, isNearYouDocumentPath } from "../../site/near_you_scope_runtime.mjs";
@@ -324,18 +324,10 @@ export default {
     }
     // 06:00 ET rehearsal: the real digest builders run inline against live data, but delivery,
     // watermarks, send counters, and the 09:00 queue path remain untouched.
+    // The rehearsal is this window's critical path. Notice ingest/prewarm stay advisory and
+    // must not consume the scheduled isolate's wall-time budget before a receipt exists.
     if (event.cron === "0 10 * * *") {
       try {
-        // Match the send cron's source freshness: refresh the notices mirror first, then let
-        // runAlerts use the same D1/SODA selection logic it will use at 09:00.
-        try {
-          const result = await withWorkerAcquisitionReceipt(env, "city-record", runId, () => ingestNotices(env));
-          console.log("digest shadow ingest:", JSON.stringify(result));
-          const prewarm = await prewarmNotices(env, result?.noticeRequestIds);
-          console.log("digest shadow notice prewarm:", JSON.stringify(prewarm));
-        } catch (error) {
-          console.error("digest shadow ingest failed (rehearsal continues):", String(error?.message || error));
-        }
         const summary = await runDigestShadow(env);
         await recordDigestShadowReceipt(env, summary);
         console.log("digest shadow:", JSON.stringify(summary, (key, value) => {
@@ -346,7 +338,31 @@ export default {
         }));
       } catch (error) {
         console.error("digest shadow failed:", String(error?.message || error));
+        try {
+          const failed = await persistDigestShadowFailure(env, error);
+          console.error("digest shadow failure receipt:", JSON.stringify({
+            run_day: failed?.run_day,
+            status: failed?.status,
+            receipt_status: failed?.receipt?.status,
+            delivery_policy: failed?.hold?.delivery_policy,
+            error: String(error?.message || error),
+          }));
+        } catch (persistError) {
+          console.error("digest shadow failure receipt failed:", String(persistError?.message || persistError));
+        }
       }
+      // Advisory freshness after the rehearsal (and off the critical await path) so a slow
+      // or unavailable upstream cannot prevent the day's rehearsal from recording its state.
+      ctx.waitUntil((async () => {
+        try {
+          const result = await withWorkerAcquisitionReceipt(env, "city-record", runId, () => ingestNotices(env));
+          console.log("digest shadow ingest:", JSON.stringify(result));
+          const prewarm = await prewarmNotices(env, result?.noticeRequestIds);
+          console.log("digest shadow notice prewarm:", JSON.stringify(prewarm));
+        } catch (error) {
+          console.error("digest shadow ingest failed (rehearsal continues):", String(error?.message || error));
+        }
+      })());
       return;
     }
     // Delivery is the scheduled run's critical path. Keep it ahead of advisory read-model

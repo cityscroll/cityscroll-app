@@ -1,7 +1,7 @@
 // 06:00 ET digest shadow run: execute the real account builders inline with delivery and
 // state advancement disabled, persist rendered previews in D1, and publish structured redlines.
 
-import { describeCollapse, mergeFunnels, normalizeFunnel } from "./lib/digest_funnel.mjs";
+import { describeCollapse, emptyFunnel, mergeFunnels, normalizeFunnel } from "./lib/digest_funnel.mjs";
 import { dayLogBuiltItemTotal, isCatchUpDayLogEntry } from "./lib/digest_ops.mjs";
 import {
   DIGEST_SHADOW_DEGRADED_UPSTREAM,
@@ -705,6 +705,94 @@ export async function persistDigestShadow(db, summary) {
       ));
   }
   await db.batch(statements);
+}
+
+/**
+ * Explicit failure summary for a rehearsal that threw before it could finish.
+ * Uses a run-level redline so hold policy stays fail-open (ALL_DIGESTS_ELIGIBLE)
+ * while still leaving a same-day D1 row the monitor can read instead of MISSING_RUN.
+ */
+export function buildDigestShadowFailureSummary(error, now = new Date()) {
+  const ranAt = new Date(now).toISOString();
+  const day = ranAt.slice(0, 10);
+  const message = String(error?.message || error || "digest shadow failed");
+  const finding = redline(
+    "render_error",
+    "run",
+    "The digest shadow rehearsal failed before it could finish.",
+    { error: message },
+  );
+  return {
+    contract: DIGEST_SHADOW_CONTRACT,
+    run_day: day,
+    ran_at: ranAt,
+    ok: false,
+    status: DIGEST_SHADOW_ATTENTION,
+    digest_count: 0,
+    evaluated_count: 0,
+    total_items: 0,
+    per_watch_item_counts: [],
+    delta_vs_yesterday_send: {
+      digest_count: 0,
+      item_count: 0,
+      yesterday_present: false,
+    },
+    trailing_average: 0,
+    trailing_average_basis: "built_digest_items",
+    trailing_average_comparable: false,
+    trailing_baseline: 0,
+    trailing_baseline_method: "unavailable",
+    selection_funnel: emptyFunnel(),
+    owed_drain_checks: [],
+    collapse_stage: null,
+    observations: [],
+    redlines: [finding],
+    upstream_incidents: [],
+    upstream_sources_unavailable: [],
+    affected_digest_ids: [],
+    repair: {
+      state: "dispatch_required",
+      affected_digest_ids: [],
+      rerun_method: "POST /admin/digest-shadow",
+      rerun_scope: "full_build_path",
+    },
+    ontology_delta: {
+      contract: ONTOLOGY_DELTA_SHADOW_CONTRACT,
+      observed_at: ranAt,
+      candidate_count: 0,
+      emitted_count: 0,
+      events: [],
+      receipts: [],
+    },
+    previews: [],
+    failure: {
+      error: message,
+    },
+  };
+}
+
+/**
+ * Persist a same-day failure row, hold decision, and READY-receipt ledger entry
+ * so a thrown rehearsal never reads as MISSING_RUN / rehearsal-stale.
+ */
+export async function persistDigestShadowFailure(env, error, { now = new Date() } = {}) {
+  const at = new Date(now);
+  const summary = buildDigestShadowFailureSummary(error, at);
+  if (!env?.DB) throw new Error("digest shadow requires DB");
+  const [{ recordDigestShadowHoldState }, { recordDigestShadowReceipt }] = await Promise.all([
+    import("./digest_shadow_hold.mjs"),
+    import("./reliability_watchdogs.mjs"),
+  ]);
+  await persistDigestShadow(env.DB, summary);
+  summary.hold = await recordDigestShadowHoldState(env.DB, summary, {
+    now: at,
+    receiptStore: env.ALERT_STATE,
+  });
+  await persistDigestShadow(env.DB, summary);
+  summary.receipt = await recordDigestShadowReceipt(env, summary, at, error);
+  const out = { ...summary };
+  delete out._rendered_previews;
+  return out;
 }
 
 /** Run the real digest builders with delivery, queue fan-out, and state advancement disabled. */
