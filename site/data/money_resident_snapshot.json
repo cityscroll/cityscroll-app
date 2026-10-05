@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "delivery_tier": "resident-snapshot",
-  "generated_at": "2026-09-30T13:14:25.240Z",
+  "generated_at": "2026-10-05T17:33:57.544Z",
   "source_vintages": {
     "default_open": "2026-09-30T13:14:25.240Z",
     "domain_observations": "2026-08-03T22:31:10.617Z",
-    "award_warehouse": "2026-09-05T13:44:00.909Z"
+    "award_warehouse": "2026-10-05T17:33:57.544Z"
   },
   "count": 380,
   "rows": [
@@ -2455,7 +2455,7 @@
       "short_title": "COMPASS Center Based - Bronx 11 Elementary",
       "pin": "26026P0004051",
       "contract_amount": "29912085",
-      "vendor_name": "East Side House Inc",
+      "vendor_name": "East Side House Inc.",
       "source_system": "ocp-recent-contract-awards",
       "place": {
         "scope": "local",

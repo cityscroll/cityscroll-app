@@ -126,7 +126,7 @@
       "vintage_field": "generated_at",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 1366,
+      "value": 1369,
       "reason": null
     },
     {
@@ -277,8 +277,8 @@
       "source_system": "city_record",
       "source_contract_id": "city-record",
       "registered": true,
-      "served_observations": 12690,
-      "declared_input_rows": 12990,
+      "served_observations": 12729,
+      "declared_input_rows": 13031,
       "specimen": {
         "source_observation_ref": "city_record:20210621107",
         "procurement_id": "procurement:contract:20211201861",
@@ -634,7 +634,7 @@
             "unit_id": "public-meetings",
             "route": "/browse/meetings/",
             "served_records": 830,
-            "evidence_vintage": "2026-09-30T13:14:18.912Z"
+            "evidence_vintage": "2026-09-09T06:52:08.255Z"
           },
           {
             "unit_id": "properties",
@@ -1068,7 +1068,7 @@
           {
             "unit_id": "organizations",
             "route": "/browse/people/",
-            "served_records": 1366,
+            "served_records": 1369,
             "evidence_vintage": "2026-09-30T13:14:27.823Z"
           }
         ]
