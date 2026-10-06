@@ -23,15 +23,17 @@ import {
   discoverGovernedTestFiles,
   empiricalProvenanceFiles,
   formatFinding,
+  governedRefreshedArtifacts,
   loadPolicy,
   scanRepository,
   scanSource,
 } from "../tools/check_refresh_exact_count_assertions.mjs";
 
 const POLICY = loadPolicy();
-const REFRESHED = POLICY.scope.refreshed_site_data_artifacts;
+const REFRESHED = governedRefreshedArtifacts(POLICY);
 const COUNT_RE = POLICY.count_property_pattern;
 const TOOL = new URL("../tools/check_refresh_exact_count_assertions.mjs", import.meta.url).pathname;
+const EMPIRICAL_COUNT = 14;
 
 function writeTree(root, files) {
   for (const [rel, body] of Object.entries(files)) {
@@ -48,6 +50,7 @@ test("policy names the two permitted shapes and scopes refreshed artifacts", () 
     ["fixture-pin", "refresh-invariant"],
   );
   assert.ok(REFRESHED.includes("site/data/meeting_outcomes_snapshot.json"));
+  assert.ok(REFRESHED.includes("warehouse/receipts/proof/zap-projects_bulk_latest.json"));
   assert.ok(POLICY.empirical_starting_set.test_files.length >= 10);
 });
 
@@ -55,14 +58,18 @@ test("default scan discovers by content and exceeds the empirical starting set",
   const empirical = empiricalProvenanceFiles(POLICY);
   const discovered = discoverGovernedTestFiles(POLICY);
   const targets = defaultScanTargets(POLICY);
-  assert.equal(empirical.length, 13, "empirical provenance stays the 13-file restamp set");
+  assert.equal(
+    empirical.length,
+    EMPIRICAL_COUNT,
+    `empirical provenance stays the ${EMPIRICAL_COUNT}-file restamp set`,
+  );
   assert.ok(
     discovered.length > empirical.length,
     `content discovery must exceed the empirical list (got ${discovered.length})`,
   );
   assert.ok(
-    targets.length > 13,
-    `default scan targets must exceed 13 (got ${targets.length})`,
+    targets.length > EMPIRICAL_COUNT,
+    `default scan targets must exceed ${EMPIRICAL_COUNT} (got ${targets.length})`,
   );
   const targetRels = new Set(targets.map((t) => t.relative));
   for (const file of empirical) {
@@ -71,6 +78,10 @@ test("default scan discovers by content and exceeds the empirical starting set",
       `empirical provenance file must stay covered: ${file.relative}`,
     );
   }
+  assert.ok(
+    targetRels.has("test/warehouse_bulk.test.mjs"),
+    "warehouse bulk proof suite must stay covered",
+  );
 });
 
 test("adding an exact-count assert on refreshed site/data fails with file, line, and permitted shapes", () => {
@@ -294,7 +305,89 @@ test("CLI reports scanned-file count on a clean repository pass", () => {
   assert.equal(run.status, 0, run.stderr || run.stdout);
   assert.match(run.stdout, /scanned (\d+) test file/);
   const count = Number(run.stdout.match(/scanned (\d+) test file/)[1]);
-  assert.ok(count > 13, `CLI scanned count must exceed 13 (got ${count})`);
+  assert.ok(
+    count > EMPIRICAL_COUNT,
+    `CLI scanned count must exceed ${EMPIRICAL_COUNT} (got ${count})`,
+  );
+});
+
+test("warehouse proof join-load exact row_count fails; invariant conversion passes", async () => {
+  // Positive control for the warehouse bulk rematerialization pattern:
+  // join(WAREHOUSE_DIR, "receipts", "proof", "zap-projects_bulk_latest.json")
+  // plus assert.equal(...row_count, 32_964) must fail closed.
+  await withTempDir("refresh-exact-count-warehouse", async (root) => {
+    const policy = {
+      ...POLICY,
+      empirical_starting_set: {
+        ...POLICY.empirical_starting_set,
+        test_files: [],
+      },
+    };
+    writeTree(root, {
+      "architecture/refresh-exact-count-guard.json": `${JSON.stringify(policy, null, 2)}\n`,
+      "warehouse/receipts/proof/zap-projects_bulk_latest.json": `${JSON.stringify({
+        register: { row_count: 3 },
+        snapshot_profile: { row_count: 3 },
+        raw: { row_count: 3, mode: "soda_bulk" },
+        parquet: { row_count: 3 },
+      }, null, 2)}\n`,
+      "test/warehouse_bulk_probe.test.mjs": `
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+const WAREHOUSE_DIR = join(process.cwd(), "warehouse");
+const proof = JSON.parse(readFileSync(
+  join(WAREHOUSE_DIR, "receipts", "proof", "zap-projects_bulk_latest.json"),
+  "utf8",
+));
+assert.equal(proof.register.row_count, 32_964);
+assert.equal(proof.snapshot_profile.row_count, 32_964);
+`,
+    });
+
+    const discovered = discoverGovernedTestFiles(policy, root);
+    assert.ok(
+      discovered.some((t) => t.relative === "test/warehouse_bulk_probe.test.mjs"),
+      "content discovery must find the warehouse proof join-load",
+    );
+
+    const liveFindings = scanRepository({ rootDir: root, policy });
+    assert.equal(liveFindings.length, 2, "exact register and snapshot row_count pins must fail");
+    assert.equal(liveFindings[0].literal, 32964);
+    assert.match(formatFinding(liveFindings[0], policy), /zap-projects_bulk_latest\.json/);
+    assert.match(formatFinding(liveFindings[0], policy), /fixture-pin/);
+    assert.match(formatFinding(liveFindings[0], policy), /refresh-invariant/);
+
+    const failRun = spawnSync(process.execPath, [TOOL, "--root", root], {
+      encoding: "utf8",
+    });
+    assert.notEqual(failRun.status, 0, "CI-shaped invocation must fail on warehouse exact row_count");
+    assert.match(failRun.stderr, /warehouse_bulk_probe\.test\.mjs:\d+/);
+    assert.match(failRun.stderr, /32964/);
+    assert.match(failRun.stderr, /zap-projects_bulk_latest\.json/);
+
+    writeFileSync(join(root, "test/warehouse_bulk_probe.test.mjs"), `
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+const WAREHOUSE_DIR = join(process.cwd(), "warehouse");
+const proof = JSON.parse(readFileSync(
+  join(WAREHOUSE_DIR, "receipts", "proof", "zap-projects_bulk_latest.json"),
+  "utf8",
+));
+assert.ok(proof.register.row_count > 0);
+assert.equal(proof.register.row_count, proof.snapshot_profile.row_count);
+assert.equal(proof.register.row_count, proof.raw.row_count);
+assert.equal(proof.register.row_count, proof.parquet.row_count);
+`);
+    const invariantFindings = scanRepository({ rootDir: root, policy });
+    assert.deepEqual(invariantFindings, [], "warehouse refresh invariant must clear the guard");
+    const passInvariant = spawnSync(process.execPath, [TOOL, "--root", root], {
+      encoding: "utf8",
+    });
+    assert.equal(passInvariant.status, 0, "warehouse invariant conversion must pass CI-shaped invocation");
+    assert.match(passInvariant.stdout, /scanned \d+ test file/);
+  });
 });
 
 test("discovery recognises a governed artifact loaded through a helper call", () => {
@@ -422,6 +515,23 @@ test("widened discovery scans more than the prior direct-load set and stays clea
   } else {
     assert.match(run.stderr, /finding/);
   }
+});
+
+test("repository warehouse_bulk suite is discovered and stays invariant-clean", () => {
+  const discovered = discoverGovernedTestFiles(POLICY);
+  assert.ok(
+    discovered.some((t) => t.relative === "test/warehouse_bulk.test.mjs"),
+    "test/warehouse_bulk.test.mjs must be discovered via warehouse proof join-load",
+  );
+  const findings = scanRepository({
+    policy: POLICY,
+    files: [new URL("./warehouse_bulk.test.mjs", import.meta.url).pathname],
+  });
+  assert.deepEqual(
+    findings,
+    [],
+    "converted warehouse_bulk invariants must leave zero exact-count findings",
+  );
 });
 
 test("clean repository check exports messages only when findings exist", () => {
