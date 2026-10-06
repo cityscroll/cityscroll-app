@@ -96,12 +96,15 @@ describe("WH-07 City Record PIN-chain serve lookup", () => {
         "utf8",
       ),
     );
+    // Age the committed twins against their own stamp so a refresh cannot
+    // look "in the future" relative to the August 2026 fixture clock.
+    const now = site.materialized_at;
     assertServePublishTwins(
       site,
       worker,
       SERVE_LOOKUP_CONTRACTS.city_record_pin_chain,
-      { now: "2026-08-18T12:00:00.000Z" },
+      { now },
     );
-    assertCityRecordPinChainServeGate(site, { now: "2026-08-18T12:00:00.000Z" });
+    assertCityRecordPinChainServeGate(site, { now });
   });
 });

@@ -71,7 +71,7 @@
       "vintage_field": "sources.city_record.generated_at",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 830,
+      "value": 840,
       "reason": null
     },
     {
@@ -633,8 +633,8 @@
           {
             "unit_id": "public-meetings",
             "route": "/browse/meetings/",
-            "served_records": 830,
-            "evidence_vintage": "2026-09-30T13:14:18.912Z"
+            "served_records": 840,
+            "evidence_vintage": "2026-10-05T17:33:11.875Z"
           },
           {
             "unit_id": "properties",
