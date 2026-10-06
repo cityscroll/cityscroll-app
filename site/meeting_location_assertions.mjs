@@ -163,23 +163,33 @@ export function resolveAttendanceMeaning({
   description = null,
   components = null,
 } = {}) {
-  const blob = [mode, address, venue_name, description].map((part) => mlaClean(part, 500)).filter(Boolean).join(" ");
-  const remote = MLA_REMOTE_SIGNAL.test(blob);
+  const addressText = mlaClean(address, 500);
+  const nameBlob = [mode, venue_name, description].map((part) => mlaClean(part, 500)).filter(Boolean).join(" ");
+  const remoteInAddress = addressText ? MLA_REMOTE_SIGNAL.test(addressText) : false;
+  const remoteElsewhere = MLA_REMOTE_SIGNAL.test(nameBlob);
+  const remote = remoteInAddress || remoteElsewhere;
   const physical = mlaHasPhysicalStreetEvidence(address, components);
   const stated = mlaClean(mode, 40)?.toLowerCase() || null;
 
-  if (remote && physical) {
-    if (stated === "hybrid") return ATTENDANCE_MEANING.HYBRID;
-    return ATTENDANCE_MEANING.UNRESOLVED_CONFLICT;
-  }
-  if (stated === "hybrid" || (remote && physical)) return ATTENDANCE_MEANING.HYBRID;
-  if (stated === "virtual" || stated === "online" || (remote && !physical)) {
-    return ATTENDANCE_MEANING.REMOTE;
-  }
+  // Explicit in-person plus any remote signal stays unresolved.
   if (stated === "in-person" || stated === "in_person") {
     if (remote) return ATTENDANCE_MEANING.UNRESOLVED_CONFLICT;
     return ATTENDANCE_MEANING.IN_PERSON;
   }
+  if (stated === "hybrid") return ATTENDANCE_MEANING.HYBRID;
+  // Explicit virtual/online mode wins even when a leftover address string is
+  // present (A5 virtual-only control keeps Kingsborough text with mode=virtual).
+  if (stated === "virtual" || stated === "online") {
+    return ATTENDANCE_MEANING.REMOTE;
+  }
+  // Remote tokens inside the address line collide with street evidence
+  // ("1664 Park Avenue via Video Conference"). Name-only remote with a clean
+  // street ("Conference Room (and via Video Conference)" + Ocean Avenue) is
+  // the common hybrid form; after publish-slim drops venue assertions the
+  // backfill must re-admit those as physical venues.
+  if (remoteInAddress && physical) return ATTENDANCE_MEANING.UNRESOLVED_CONFLICT;
+  if (remote && physical) return ATTENDANCE_MEANING.HYBRID;
+  if (remote && !physical) return ATTENDANCE_MEANING.REMOTE;
   if (physical && !remote) return ATTENDANCE_MEANING.IN_PERSON;
   if (remote) return ATTENDANCE_MEANING.REMOTE;
   return ATTENDANCE_MEANING.NOT_STATED;

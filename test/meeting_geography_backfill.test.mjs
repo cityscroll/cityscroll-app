@@ -23,10 +23,12 @@ import { withTempDirSync } from "../tools/lib/with_temp_dir.mjs";
 import {
   BACKFILL_OUTCOME,
   activateMeetingGeographyBackfill,
+  assertionsForGeographyRow,
   collectAddressCandidates,
   createMeetingGeographyBackfill,
   loadActiveMeetingGeographyBackfill,
   meetingGeographyInputHash,
+  rowWithComposedVenue,
   stampMeetingRowsWithGeography,
 } from "../site/meeting_geography_backfill.mjs";
 import {
@@ -696,6 +698,149 @@ test("input hash reuse skips unchanged meetings across resume", () => {
 
   const assertions = buildMeetingLocationAssertions(dateShapedRow());
   assert.equal(assertions[0].validity, LOCATION_VALIDITY.REJECTED_DATE_SHAPED);
+});
+
+test("publish-slim subject-only assertions still recover venue membership from venue.address", () => {
+  const SEPT14_ID =
+    "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/";
+  const row = {
+    meeting_id: SEPT14_ID,
+    source_system: "community_board",
+    meeting_origin: "community_board_source_observed",
+    board_id: "brooklyn-cb-14",
+    title: "September 2026 Board Meeting",
+    event_date: "2026-09-14T19:00:00-04:00",
+    venue: {
+      name: "East Midwood Jewish Center",
+      address: "1625 Ocean Avenue, Brooklyn, NY 11230",
+      mode: "in-person",
+      components: {
+        street_address: "1625 Ocean Avenue",
+        address_locality: "Brooklyn",
+        address_region: "New York",
+        postal_code: "11230",
+      },
+    },
+    // Publish slim retains subject_property and drops venue assertions.
+    location_assertions: [{
+      schema: "cityscroll.meeting_location_assertion.v1",
+      assertion_id: `${SEPT14_ID}::subject_property::description::2`,
+      meeting_id: SEPT14_ID,
+      role: LOCATION_ROLES.SUBJECT_PROPERTY,
+      validity: LOCATION_VALIDITY.ADMITTED_SUBJECT_PROPERTY,
+      original_address: "461 Coney Island Avenue",
+      source_field: "description",
+    }],
+  };
+
+  const merged = assertionsForGeographyRow(row);
+  assert.equal(merged.some((assertion) => assertion.role === LOCATION_ROLES.VENUE), true);
+  assert.equal(merged.some((assertion) => assertion.role === LOCATION_ROLES.SUBJECT_PROPERTY), true);
+
+  const runner = createProductionRunner();
+  const result = runner.run({
+    rows: [row],
+    generation: "test-slim-venue-merge",
+    sourceGenerationHash: "slim-venue-merge",
+    observedAt: "2026-10-05T20:00:00.000Z",
+  });
+  const outcome = result.outcomes.find((entry) => entry.meeting_id === SEPT14_ID);
+  assert.equal(outcome.outcome, BACKFILL_OUTCOME.PHYSICAL_VENUE);
+  const venue = outcome.memberships.find((membership) => membership.role === LOCATION_ROLES.VENUE);
+  assert.ok(venue);
+  assert.equal(venue.memberships.nta2020, "BK1403");
+  assert.equal(venue.bbl, "3076200025");
+});
+
+test("subject assertion with inherited venue ZIP still resolves when PAD zip differs", () => {
+  const SEPT14_ID =
+    "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/";
+  const row = {
+    meeting_id: SEPT14_ID,
+    source_system: "community_board",
+    meeting_origin: "community_board_source_observed",
+    board_id: "brooklyn-cb-14",
+    title: "September 2026 Board Meeting",
+    event_date: "2026-09-14T19:00:00-04:00",
+    venue: {
+      name: "East Midwood Jewish Center",
+      address: "1625 Ocean Avenue, Brooklyn, NY 11230",
+      mode: "in-person",
+    },
+    location_assertions: [{
+      schema: "cityscroll.meeting_location_assertion.v1",
+      assertion_id: `${SEPT14_ID}::subject_property::description::2`,
+      meeting_id: SEPT14_ID,
+      role: LOCATION_ROLES.SUBJECT_PROPERTY,
+      validity: LOCATION_VALIDITY.ADMITTED_SUBJECT_PROPERTY,
+      original_address: "461 Coney Island Avenue",
+      // Venue Midwood ZIP incorrectly stamped onto the subject assertion.
+      components: {
+        street_address: "461 Coney Island Avenue",
+        address_locality: "Brooklyn",
+        address_region: "New York",
+        postal_code: "11230",
+        address_borough: "Brooklyn",
+      },
+      source_field: "description",
+    }],
+  };
+
+  const runner = createProductionRunner();
+  const result = runner.run({
+    rows: [row],
+    generation: "test-subject-zip-retry",
+    sourceGenerationHash: "subject-zip-retry",
+    observedAt: "2026-10-05T20:00:00.000Z",
+  });
+  const outcome = result.outcomes.find((entry) => entry.meeting_id === SEPT14_ID);
+  assert.equal(outcome.outcome, BACKFILL_OUTCOME.PHYSICAL_VENUE);
+  const subject = outcome.memberships.find(
+    (membership) => membership.role === LOCATION_ROLES.SUBJECT_PROPERTY,
+  );
+  assert.ok(subject, "subject membership must survive inherited venue ZIP");
+  assert.equal(subject.bbl, "3050700035");
+  assert.equal(subject.memberships.nta2020, "BK1402");
+  const venue = outcome.memberships.find((membership) => membership.role === LOCATION_ROLES.VENUE);
+  assert.equal(venue.memberships.nta2020, "BK1403");
+});
+
+test("City Record notice street fields recover venue when residual rows omit venue", () => {
+  const WORTH_ID = "meeting:city_record:20260106034";
+  const row = {
+    meeting_id: WORTH_ID,
+    source_system: "city_record",
+    title: "Board of Correction Public Meeting",
+    event_date: "2026-09-09T13:00:00.000",
+    venue: null,
+    street_address_1: "125 Worth Street",
+    street_address_2: "2nd Floor Auditorium",
+    city: "New York",
+    state: "NY",
+    zip_code: "10013",
+  };
+  const composed = rowWithComposedVenue(row);
+  assert.match(composed.venue.address, /125 Worth Street/);
+  assert.equal(
+    collectAddressCandidates(row).some((candidate) => /125 Worth Street/.test(candidate.value)),
+    true,
+  );
+
+  const runner = createProductionRunner();
+  const result = runner.run({
+    rows: [row],
+    generation: "test-notice-street-venue",
+    sourceGenerationHash: "notice-street-venue",
+    observedAt: "2026-10-05T20:00:00.000Z",
+  });
+  const outcome = result.outcomes.find((entry) => entry.meeting_id === WORTH_ID);
+  assert.equal(outcome.outcome, BACKFILL_OUTCOME.PHYSICAL_VENUE);
+  const venue = outcome.memberships.find((membership) => membership.role === LOCATION_ROLES.VENUE);
+  assert.equal(venue.bbl, "1001680032");
+  assert.equal(venue.memberships.nta2020, "MN0102");
+
+  const stamped = stampMeetingRowsWithGeography([row], result.outcomes)[0];
+  assert.match(stamped.venue?.address || "", /125 Worth Street/);
 });
 
 test("locality and unit suffixes resolve through production PAD and parcel shards", () => {

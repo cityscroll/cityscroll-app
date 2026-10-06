@@ -30,7 +30,11 @@ import {
   isAdmittedPhysicalVenue,
   isAdmittedSubjectProperty,
   isDateShapedVenueText,
+  projectVenueFromAssertions,
 } from "./meeting_location_assertions.mjs";
+import {
+  composeVenueFromNoticeStreetFields,
+} from "./meeting_object_contract.mjs";
 import {
   linkAssertionToResolution,
 } from "./record_address_resolution_cache.mjs";
@@ -113,6 +117,70 @@ function readJsonIfExists(filePath) {
  * Raw address-bearing candidate strings before validity / physical admission.
  * Counts measure candidate input, never a geocode success quota.
  */
+/**
+ * Ensure City Record residual rows expose venue.address when only notice street
+ * fields remain after the rolling notice window drops the hearing adapter path.
+ */
+export function rowWithComposedVenue(row = {}) {
+  if (!row || typeof row !== "object") return row;
+  const venue = row.venue && typeof row.venue === "object" ? row.venue : null;
+  const mode = cleanText(venue?.mode)?.toLowerCase() || "";
+  if (cleanText(venue?.address) || ["virtual", "remote", "online"].includes(mode)) {
+    return row;
+  }
+  let composed = composeVenueFromNoticeStreetFields(row);
+  // Hearing-adapter City Record rows always need venue.mode; keep that floor off
+  // the Notice cold-path module graph.
+  if (!composed) {
+    const origin = String(row.meeting_origin || "").trim();
+    const source = String(row.source_system || "").trim();
+    if (origin === "city_record_notice" || source === "city_record") {
+      composed = { mode: "not-stated" };
+    }
+  }
+  if (!composed) return row;
+  const composedMode = cleanText(composed.mode)?.toLowerCase() || "";
+  // Keep mode-only hearing-adapter venues (virtual / not-stated) even when the
+  // publisher left no geocodable street.
+  if (!composed.address && !composedMode) {
+    return row;
+  }
+  const nextVenue = {
+    ...(venue || {}),
+    ...composed,
+    // Prefer an existing non-empty building/name when the row already had one.
+    building: cleanText(venue?.building) || composed.building || undefined,
+    name: cleanText(venue?.name) || composed.name || undefined,
+  };
+  if (!nextVenue.building) delete nextVenue.building;
+  if (!nextVenue.name) delete nextVenue.name;
+  if (nextVenue.address == null) delete nextVenue.address;
+  if (nextVenue.borough == null) delete nextVenue.borough;
+  if (nextVenue.neighborhood == null) delete nextVenue.neighborhood;
+  return {
+    ...row,
+    venue: nextVenue,
+  };
+}
+
+/**
+ * Publish-slim keeps subject_property assertions and drops venue assertions.
+ * Rebuild must still derive the venue role from venue.address / street fields
+ * so neighborhood membership survives a refresh → slim → backfill cycle.
+ */
+export function assertionsForGeographyRow(row = {}) {
+  const working = rowWithComposedVenue(row);
+  const existing = Array.isArray(working.location_assertions)
+    ? working.location_assertions.filter(Boolean)
+    : [];
+  const built = buildMeetingLocationAssertions(working);
+  if (!existing.length) return built;
+  const hasVenue = existing.some((assertion) => assertion?.role === LOCATION_ROLES.VENUE);
+  if (hasVenue) return [...existing];
+  const venueBuilt = built.filter((assertion) => assertion?.role === LOCATION_ROLES.VENUE);
+  return venueBuilt.length ? [...existing, ...venueBuilt] : [...existing];
+}
+
 export function collectAddressCandidates(row = {}) {
   const candidates = [];
   const seen = new Set();
@@ -125,13 +193,20 @@ export function collectAddressCandidates(row = {}) {
     candidates.push({ source, value: text });
   };
 
-  const venue = row?.venue && typeof row.venue === "object" ? row.venue : null;
+  const working = rowWithComposedVenue(row);
+  const venue = working?.venue && typeof working.venue === "object" ? working.venue : null;
   push("venue.address", venue?.address);
   push("venue.building", venue?.building);
-  push("row.address", row?.address);
-  const components = row?.location_components || venue?.components || null;
+  push("row.address", working?.address);
+  const components = working?.location_components || venue?.components || null;
   push("components.street_address", components?.street_address);
-  for (const address of row?.affected_area?.addresses || []) {
+  push(
+    "notice.street_address",
+    [working?.street_address_1, working?.street_address_2, working?.city, working?.state, working?.zip_code]
+      .filter(Boolean)
+      .join(", "),
+  );
+  for (const address of working?.affected_area?.addresses || []) {
     push("affected_area.addresses", address);
   }
   return candidates;
@@ -142,12 +217,18 @@ export function collectAddressCandidates(row = {}) {
  * reuse the prior checkpoint outcome without re-resolving.
  */
 export function meetingGeographyInputHash(row = {}) {
-  const venue = row?.venue && typeof row.venue === "object" ? row.venue : null;
+  const working = rowWithComposedVenue(row);
+  const venue = working?.venue && typeof working.venue === "object" ? working.venue : null;
   const payload = {
-    meeting_id: row?.meeting_id || null,
-    source_system: row?.source_system || null,
-    meeting_origin: row?.meeting_origin || null,
-    board_id: row?.board_id || null,
+    meeting_id: working?.meeting_id || null,
+    source_system: working?.source_system || null,
+    meeting_origin: working?.meeting_origin || null,
+    board_id: working?.board_id || null,
+    street_address_1: working?.street_address_1 || null,
+    street_address_2: working?.street_address_2 || null,
+    city: working?.city || null,
+    state: working?.state || null,
+    zip_code: working?.zip_code || null,
     venue: venue
       ? {
         name: venue.name || null,
@@ -157,11 +238,11 @@ export function meetingGeographyInputHash(row = {}) {
         components: venue.components || null,
       }
       : null,
-    address: row?.address || null,
-    attendance_mode: row?.attendance_mode || null,
-    location_components: row?.location_components || null,
-    affected_area_addresses: row?.affected_area?.addresses || [],
-    description: cleanText(row?.description, 2_000),
+    address: working?.address || null,
+    attendance_mode: working?.attendance_mode || null,
+    location_components: working?.location_components || null,
+    affected_area_addresses: working?.affected_area?.addresses || [],
+    description: cleanText(working?.description, 2_000),
   };
   return sha256Hex(stableStringify(payload));
 }
@@ -364,13 +445,12 @@ export function createMeetingGeographyBackfill({
     }
 
     const stamp = observedAt || now();
-    const inputHash = meetingGeographyInputHash(row);
-    const addressCandidates = collectAddressCandidates(row);
-    const assertions = Array.isArray(row.location_assertions) && row.location_assertions.length
-      ? [...row.location_assertions]
-      : buildMeetingLocationAssertions(row);
+    const working = rowWithComposedVenue(row);
+    const inputHash = meetingGeographyInputHash(working);
+    const addressCandidates = collectAddressCandidates(working);
+    const assertions = assertionsForGeographyRow(working);
 
-    const hostGeography = hostGeographyForRow(row, communityBoardGeography);
+    const hostGeography = hostGeographyForRow(working, communityBoardGeography);
     const projectionInputs = [];
     const pointsByAssertion = new Map();
 
@@ -398,9 +478,9 @@ export function createMeetingGeographyBackfill({
     if (hostGeography && !assertions.some((assertion) => assertion?.role === LOCATION_ROLES.HOST_JURISDICTION)) {
       const hostAssertion = {
         schema: "cityscroll.meeting_location_assertion.v1",
-        assertion_id: `location_assertion:${row.meeting_id}::host_jurisdiction::board_id::1`,
-        meeting_id: row.meeting_id,
-        record_id: row.meeting_id,
+        assertion_id: `location_assertion:${working.meeting_id}::host_jurisdiction::board_id::1`,
+        meeting_id: working.meeting_id,
+        record_id: working.meeting_id,
         role: LOCATION_ROLES.HOST_JURISDICTION,
         validity: LOCATION_VALIDITY.UNLOCATED,
         attendance_meaning: ATTENDANCE_MEANING.NOT_STATED,
@@ -419,13 +499,13 @@ export function createMeetingGeographyBackfill({
     }
 
     const document = membershipProjection.replaceRecordAssertions(
-      row.meeting_id,
+      working.meeting_id,
       projectionInputs,
       { observedAt: stamp },
     );
-    const edges = document.edges.filter((edge) => edge.record_id === row.meeting_id);
+    const edges = document.edges.filter((edge) => edge.record_id === working.meeting_id);
     const memberships = compactMembershipsLocal(edges, {
-      recordId: row.meeting_id,
+      recordId: working.meeting_id,
       pointsByAssertion,
     });
 
@@ -434,7 +514,7 @@ export function createMeetingGeographyBackfill({
       const hostEdge = edges.find((edge) => edge.role === LOCATION_ROLES.HOST_JURISDICTION);
       if (hostEdge) {
         memberships.push({
-          record_id: row.meeting_id,
+          record_id: working.meeting_id,
           assertion_id: hostEdge.assertion_id,
           role: LOCATION_ROLES.HOST_JURISDICTION,
           bbl: null,
@@ -450,7 +530,7 @@ export function createMeetingGeographyBackfill({
     }
 
     const outcome = classifyMeetingGeographyOutcome({
-      row,
+      row: working,
       assertions,
       memberships,
       addressCandidates,
@@ -458,7 +538,7 @@ export function createMeetingGeographyBackfill({
 
     return {
       schema: MEETING_GEOGRAPHY_BACKFILL_OUTCOME_SCHEMA,
-      meeting_id: row.meeting_id,
+      meeting_id: working.meeting_id,
       input_hash: inputHash,
       outcome,
       address_candidate_count: addressCandidates.length,
@@ -676,18 +756,45 @@ export function stampMeetingRowsWithGeography(rows = [], outcomes = []) {
     const outcome = byId.get(row?.meeting_id);
     // Rows without a fresh outcome still must not carry host_jurisdiction on the
     // published shared catalog (district activity rebuilds board covers).
-    if (!outcome) return stripNonPublicSharedMemberships(row);
+    if (!outcome) return stripNonPublicSharedMemberships(rowWithComposedVenue(row));
     const memberships = publicSharedMemberships(outcome.memberships || []);
     const stampAssertions = outcome.outcome === BACKFILL_OUTCOME.PHYSICAL_VENUE
       || outcome.outcome === BACKFILL_OUTCOME.SUBJECT;
+    const composed = rowWithComposedVenue(row);
     const next = {
-      ...row,
+      ...composed,
       geography_backfill: {
         outcome: outcome.outcome,
         input_hash: outcome.input_hash,
         processed_at: outcome.processed_at || null,
       },
     };
+    // Only fill a missing venue object. Rewriting an existing venue (mode /
+    // components / hybrid projection) would change meetingGeographyInputHash and
+    // break idempotent replay against stamped rows.
+    // Mode-only venues (virtual / not-stated) are part of the hearing-adapter
+    // projection and must survive even when address/name/building are empty.
+    if (!cleanText(row?.venue?.address) && !cleanText(row?.venue?.mode)) {
+      const projectedVenue = projectVenueFromAssertions(
+        outcome.assertions || [],
+        composed.venue || null,
+      );
+      if (projectedVenue && (
+        projectedVenue.address
+        || projectedVenue.name
+        || projectedVenue.building
+        || projectedVenue.mode
+      )) {
+        next.venue = projectedVenue;
+      } else if (composed.venue && (
+        composed.venue.address
+        || composed.venue.name
+        || composed.venue.building
+        || composed.venue.mode
+      )) {
+        next.venue = composed.venue;
+      }
+    }
     if (memberships.length) next.location_memberships = memberships;
     else delete next.location_memberships;
     if (stampAssertions && Array.isArray(outcome.assertions) && outcome.assertions.length) {

@@ -13,6 +13,8 @@ import {
   agendaSubjectPlacesFromAssertions,
   PUBLIC_LOCATION_MEMBERSHIP_ROLES,
   SHARED_MEETING_PUBLISH_STRIP,
+  slimGeographyBackfillReceipt,
+  slimPublicLocationMembership,
   slimSharedMeetingReadModel,
   slimSharedMeetingRow,
   SUBJECT_PROPERTY_ROLE,
@@ -80,7 +82,16 @@ function venueMembership() {
     record_id: SEPT14_ID,
     role: VENUE_MEMBERSHIP_ROLE,
     geography_key: "geography:nta2020:BK1403",
-    provenance: { source_path: { original_address: VENUE_ADDRESS } },
+    memberships: {
+      nta2020: "BK1403",
+      community_district: "K14",
+      police_precinct: "70",
+    },
+    provenance: {
+      source_method: "admitted_venue_membership",
+      parcel_bbl: "3076200025",
+      source_path: { original_address: VENUE_ADDRESS },
+    },
   };
 }
 
@@ -96,12 +107,24 @@ function upstreamRow() {
       {
         record_id: SEPT14_ID,
         role: SUBJECT_PROPERTY_ROLE,
-        provenance: { source_path: { original_address: SUBJECT_ADDRESS } },
+        geography_key: "geography:nta2020:BK1402",
+        memberships: {
+          nta2020: "BK1402",
+          community_district: "K14",
+          police_precinct: "70",
+        },
+        provenance: {
+          source_method: "admitted_subject_membership",
+          parcel_bbl: "3050700035",
+          source_path: { original_address: SUBJECT_ADDRESS },
+        },
       },
     ],
     geography_backfill: {
       outcome: "subject",
       generation: "test-generation",
+      input_hash: "deadbeef".repeat(8),
+      processed_at: "2026-10-05T20:21:40.442Z",
     },
   };
 }
@@ -174,7 +197,13 @@ test("agendaSubjectPlacesFromAssertions keeps only subject_property addresses", 
 test("SHARED_MEETING_PUBLISH_STRIP lists exactly what is removed and why it is not displayed", () => {
   assert.deepEqual(
     SHARED_MEETING_PUBLISH_STRIP.map((entry) => entry.field).sort(),
-    ["location_assertions", "location_memberships"],
+    [
+      "geography_backfill.input_hash",
+      "location_assertions",
+      "location_memberships",
+      "location_memberships.provenance.source_path",
+      "location_memberships.record_id",
+    ],
   );
   for (const entry of SHARED_MEETING_PUBLISH_STRIP) {
     assert.equal(typeof entry.remove_when, "string");
@@ -191,6 +220,30 @@ test("SHARED_MEETING_PUBLISH_STRIP lists exactly what is removed and why it is n
   ]);
 });
 
+test("slimPublicLocationMembership drops record_id and source_path; keeps placement + police_precinct", () => {
+  const slim = slimPublicLocationMembership(venueMembership());
+  assert.equal(Object.prototype.hasOwnProperty.call(slim, "record_id"), false);
+  assert.equal(slim.role, VENUE_MEMBERSHIP_ROLE);
+  assert.equal(slim.geography_key, "geography:nta2020:BK1403");
+  assert.equal(slim.memberships?.police_precinct, "70");
+  assert.equal(slim.provenance?.source_method, "admitted_venue_membership");
+  assert.equal(slim.provenance?.parcel_bbl, "3076200025");
+  assert.equal(Object.prototype.hasOwnProperty.call(slim.provenance || {}, "source_path"), false);
+});
+
+test("slimGeographyBackfillReceipt keeps outcome + processed_at only", () => {
+  const slim = slimGeographyBackfillReceipt({
+    outcome: "physical_venue",
+    processed_at: "2026-10-05T20:21:40.442Z",
+    generation: "gen-test",
+    input_hash: "abc123",
+  });
+  assert.deepEqual(slim, {
+    outcome: "physical_venue",
+    processed_at: "2026-10-05T20:21:40.442Z",
+  });
+});
+
 test("slimSharedMeetingRow drops venue assertions and host memberships; retains user-visible fields", () => {
   const published = slimSharedMeetingRow(upstreamRow());
   assert.ok(published.location_assertions);
@@ -204,6 +257,17 @@ test("slimSharedMeetingRow drops venue assertions and host memberships; retains 
   assert.equal(published.venue?.name, "East Midwood Jewish Center");
   assert.equal(published.title?.includes("September 2026"), true);
   assert.equal(published.geography_backfill?.outcome, "subject");
+  assert.equal(published.geography_backfill?.processed_at, "2026-10-05T20:21:40.442Z");
+  assert.equal(
+    Object.prototype.hasOwnProperty.call(published.geography_backfill || {}, "input_hash"),
+    false,
+    "catalog geography_backfill must drop input_hash",
+  );
+  assert.equal(
+    Object.prototype.hasOwnProperty.call(published.geography_backfill || {}, "generation"),
+    false,
+    "catalog geography_backfill must drop generation",
+  );
   assert.equal(
     (published.location_memberships || []).some((row) => row.role === "host_jurisdiction"),
     false,
@@ -224,6 +288,23 @@ test("slimSharedMeetingRow drops venue assertions and host memberships; retains 
     false,
     "venue assertions must be stripped (redundant with venue text)",
   );
+  for (const membership of published.location_memberships || []) {
+    assert.equal(
+      Object.prototype.hasOwnProperty.call(membership, "record_id"),
+      false,
+      "published memberships must drop redundant record_id",
+    );
+    assert.equal(
+      Object.prototype.hasOwnProperty.call(membership.provenance || {}, "source_path"),
+      false,
+      "published memberships must drop provenance.source_path",
+    );
+    assert.equal(
+      membership.memberships?.police_precinct,
+      "70",
+      "police_precinct stays on retained venue/subject memberships",
+    );
+  }
 });
 
 test("regression: published model keeps subject places when upstream row has subject assertions", () => {

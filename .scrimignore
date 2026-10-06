@@ -15,3 +15,8 @@ site/data/meeting-geography-backfill/frozen-baseline-ids.json
 docs/evidence/near-you-shell-readback/capture-manifest.json
 docs/evidence/near-you-shell-readback/read-back.json
 docs/evidence/near-you-shell-readback/delivery.json
+# City Record meeting text carries Webex join URLs (*.webex.com). Scrim L090
+# matches the literal substring x.com inside those hostnames as if they were
+# Twitter/X profile links. These files are publisher civic notice material.
+site/data/meeting_notice_materialization.json
+site/data/shared_meeting_read_model.json

@@ -3,12 +3,34 @@
   "delivery_tier": "resident-snapshot",
   "generated_at": "2026-10-05T17:33:57.544Z",
   "source_vintages": {
-    "default_open": "2026-09-30T13:14:25.240Z",
+    "default_open": "2026-10-05T17:33:01.337Z",
     "domain_observations": "2026-08-03T22:31:10.617Z",
     "award_warehouse": "2026-10-05T17:33:57.544Z"
   },
   "count": 380,
   "rows": [
+    {
+      "request_id": "20260924015",
+      "start_date": "2026-10-01T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods",
+      "short_title": "SMPD_Materials_Electrical Controls Items",
+      "pin": "528409",
+      "due_date": "2026-10-14T12:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260923024",
+      "start_date": "2026-09-28T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods and Services",
+      "short_title": "34th STREET PARTNERSHIP(\u001a34SP\u001a) REQUEST FOR PROPOSALS TO MANAGE AND OPERATE A PUBLIC OUTDOOR RECREATION SUBCONCESSION AT HERALD SQUARE PLAZA.",
+      "pin": "3434",
+      "due_date": "2026-10-13T10:00:00.000",
+      "selection_method_description": "Competitive Sealed Proposals"
+    },
     {
       "request_id": "20260915033",
       "start_date": "2026-09-22T00:00:00.000",
@@ -30,6 +52,59 @@
       "pin": "528362",
       "due_date": "2026-10-08T12:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260910017",
+      "start_date": "2026-09-17T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "Requirement Contract for Installation of V/C Floor Tile in Apartments- Development Specific pursuant to RFQ's 523131,523132, 523133, 523135, 523136, 523146 -523147, located in Bronx Neighborhood (BX05) & (BX06)",
+      "due_date": "2026-10-09T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260910018",
+      "start_date": "2026-09-17T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "Requirement Contract for Installation of V/C Floor Tile in Apartments- Development Specific pursuant to RFQ: 528367- Clason Point Houses, Located in Bronx Neighborhood (BX03).",
+      "pin": "528367-Clason Point",
+      "due_date": "2026-10-09T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Proposals"
+    },
+    {
+      "request_id": "20260910020",
+      "start_date": "2026-09-17T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "Requirement Contract for Installation of V/C Floor Tile in Apartments- Development Specific pursuant to RFQ's 523148, 523149, 523150, 528366, Located in Bronx Neighborhood (BX07)",
+      "due_date": "2026-10-09T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260901012",
+      "start_date": "2026-09-15T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "SMPD_PS_RFP 523121_ Personal Injury and Claims Investigation and Adjustment Services",
+      "pin": "523121",
+      "due_date": "2026-10-13T14:00:00.000",
+      "selection_method_description": "Request for Proposals"
+    },
+    {
+      "request_id": "20260901026",
+      "start_date": "2026-09-15T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "Correction: RFP 523138 - Construction Management Services",
+      "pin": "523138",
+      "due_date": "2026-10-13T14:00:00.000",
+      "selection_method_description": "Request for Proposals"
     },
     {
       "request_id": "20260909003",
@@ -65,6 +140,17 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
+      "request_id": "20260831025",
+      "start_date": "2026-09-09T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "84125P0014-ESA, Roadway Eng, Data Coll, Design, Inspect & Related Srvs",
+      "pin": "84125P0014",
+      "due_date": "2026-10-09T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Proposals"
+    },
+    {
       "request_id": "20260827024",
       "start_date": "2026-09-08T00:00:00.000",
       "agency_name": "Citywide Administrative Services",
@@ -73,17 +159,6 @@
       "short_title": "Bid Extension: 85727B0020-2700009-VANS, PASSENGER - NYPD",
       "pin": "85727B0020",
       "due_date": "2026-10-08T10:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260831021",
-      "start_date": "2026-09-04T00:00:00.000",
-      "agency_name": "Design and Construction",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction Related Services",
-      "short_title": "HWS2026K-PRIOR NOTICE SIDEWALKS, BROOKLYN",
-      "pin": "85027B0018",
-      "due_date": "2026-10-01T14:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
@@ -102,7 +177,7 @@
       "agency_name": "Citywide Administrative Services",
       "type_of_notice_description": "Solicitation",
       "category_description": "Goods",
-      "short_title": "Bid 2600063 - Salt Stockpile Coverings - DSNY",
+      "short_title": "Correction: Bid 2600063 - Salt Stockpile Coverings - DSNY",
       "pin": "85727B0001",
       "due_date": "2026-10-06T11:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
@@ -118,6 +193,17 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
+      "request_id": "20260825004",
+      "start_date": "2026-09-02T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "LINAC SUITE RENOVATION AT KINGS COUNTY HOSPITAL",
+      "pin": "26202503",
+      "due_date": "2026-10-14T11:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
       "request_id": "20260825018",
       "start_date": "2026-09-02T00:00:00.000",
       "agency_name": "Citywide Administrative Services",
@@ -126,6 +212,17 @@
       "short_title": "Correction: EPIN 85726B0065 - BID 2600039 - Printed Election Supplies",
       "pin": "85726B0065",
       "due_date": "2026-10-05T10:30:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260825035",
+      "start_date": "2026-09-02T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "Loading Dock + Morgue at South Brooklyn Health, Brooklyn, NY",
+      "pin": "26202503",
+      "due_date": "2026-10-14T11:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
@@ -151,6 +248,39 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
+      "request_id": "20260824039",
+      "start_date": "2026-09-01T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods",
+      "short_title": "Correction: DOC Kosher Foods",
+      "pin": "85727B0010",
+      "due_date": "2026-10-09T11:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260824040",
+      "start_date": "2026-09-01T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods",
+      "short_title": "Bid Extension: DOC Fresh Fruits and Vegetables",
+      "pin": "85727B0009",
+      "due_date": "2026-10-09T11:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260824041",
+      "start_date": "2026-09-01T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods",
+      "short_title": "Bid Extension: 85727B0008 - DOC - Dairy",
+      "pin": "85727B0008",
+      "due_date": "2026-10-09T11:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
       "request_id": "20260824042",
       "start_date": "2026-09-01T00:00:00.000",
       "agency_name": "Citywide Administrative Services",
@@ -158,6 +288,17 @@
       "category_description": "Goods",
       "short_title": "Bid Extension: 85727B0006 - DOC - Cereals",
       "pin": "85727B0006",
+      "due_date": "2026-10-09T11:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260824043",
+      "start_date": "2026-09-01T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods",
+      "short_title": "Correction: 85727B0005-DOC - Baked Goods",
+      "pin": "85727B0005",
       "due_date": "2026-10-09T11:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
@@ -239,58 +380,14 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
-      "request_id": "20260825023",
+      "request_id": "20260826044",
       "start_date": "2026-09-01T00:00:00.000",
       "agency_name": "NYC Health + Hospitals",
       "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Correction: Post Acute Care Debt Collection Services",
-      "pin": "2879",
-      "due_date": "2026-09-30T17:00:00.000",
-      "selection_method_description": "Request for Proposals"
-    },
-    {
-      "request_id": "20260825027",
-      "start_date": "2026-09-01T00:00:00.000",
-      "agency_name": "Citywide Administrative Services",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods",
-      "short_title": "85726B0068-2600087- GRP: MACK TRUCKS",
-      "pin": "85726B0068",
-      "due_date": "2026-10-01T10:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260825028",
-      "start_date": "2026-09-01T00:00:00.000",
-      "agency_name": "Citywide Administrative Services",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods",
-      "short_title": "85726B0070-2600086-GRP: MERITOR REPLACEMENT PARTS",
-      "pin": "85726B0070",
-      "due_date": "2026-10-01T10:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260821023",
-      "start_date": "2026-08-31T00:00:00.000",
-      "agency_name": "Transportation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction Related Services",
-      "short_title": "84126P0016-In-Process Fabrication Inspection of Precast and Prestressed Concrete in the United States and Canada",
-      "pin": "84126P0016",
-      "due_date": "2026-10-01T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Proposals"
-    },
-    {
-      "request_id": "20260825030",
-      "start_date": "2026-08-31T00:00:00.000",
-      "agency_name": "Transportation",
-      "type_of_notice_description": "Solicitation",
       "category_description": "Construction/Construction Services",
-      "short_title": "84126B0007-84126MBTR741 Retrofit of Signalized Intersections to Incorporate Accessible Pedestrian Signals",
-      "pin": "84126B0007",
-      "due_date": "2026-09-30T11:00:00.000",
+      "short_title": "Correction: Steam Tank Modernization at Elmhurst Hospital Center",
+      "pin": "33202504",
+      "due_date": "2026-10-14T11:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
@@ -305,72 +402,6 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
-      "request_id": "20260824036",
-      "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "Design and Construction",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction Related Services",
-      "short_title": "EC-SEQN27 RECONSTRUCTION OF EXISTING SEWERS, NORTH QUEENS",
-      "pin": "85027B0001",
-      "due_date": "2026-09-30T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260819032",
-      "start_date": "2026-08-27T00:00:00.000",
-      "agency_name": "Environmental Protection",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction Related Services",
-      "short_title": "BEDC EHSM-05: Environmental Health and Safety Management Services",
-      "pin": "82626P0029",
-      "due_date": "2026-09-30T16:30:00.000",
-      "selection_method_description": "Competitive Sealed Proposals"
-    },
-    {
-      "request_id": "20260819034",
-      "start_date": "2026-08-26T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods",
-      "short_title": "Bid Extension: SMPD_Materials_Door Locking, Electromagnetic Devices and Accessories",
-      "pin": "527263",
-      "due_date": "2026-09-30T12:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260819035",
-      "start_date": "2026-08-26T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods",
-      "short_title": "Bid Extension: SMPD_MATERIALS_GROUNDS MAINTENANCE",
-      "pin": "527267",
-      "due_date": "2026-09-30T12:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260817002",
-      "start_date": "2026-08-21T00:00:00.000",
-      "agency_name": "Parks and Recreation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods and Services",
-      "short_title": "Request for Proposals for the Renovation, Operation, and Maintenance of an Amusement Park at 1824 Shore Parkway, Brooklyn",
-      "pin": "B280-AP-2026",
-      "due_date": "2026-10-02T15:00:00.000",
-      "selection_method_description": "Competitive Sealed Proposals"
-    },
-    {
-      "request_id": "20260811020",
-      "start_date": "2026-08-18T00:00:00.000",
-      "agency_name": "Campaign Finance Board",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Community and Stakeholder Mapping within Priority Neighborhoods",
-      "pin": "004202700003",
-      "due_date": "2026-09-30T17:00:00.000",
-      "selection_method_description": "M/WBE Noncompetitive Small Purchase"
-    },
-    {
       "request_id": "20260810055",
       "start_date": "2026-08-17T00:00:00.000",
       "agency_name": "Citywide Administrative Services",
@@ -380,17 +411,6 @@
       "pin": "85625P0005",
       "due_date": "2026-10-08T00:00:00.000",
       "selection_method_description": "Competitive Sealed Proposals"
-    },
-    {
-      "request_id": "20260810059",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Bid Extension: FIRE ALARM REPLACEMENT AT BELLEVUE HOSPITAL CENTER",
-      "pin": "11202201",
-      "due_date": "2026-09-30T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
     },
     {
       "request_id": "20260727023",
@@ -4972,17 +4992,6 @@
       }
     },
     {
-      "request_id": "20260706027",
-      "start_date": "2026-07-13T00:00:00.000",
-      "agency_name": "Environmental Protection",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction Related Services",
-      "short_title": "82626B0055-BEDC-C547B: SHAFT EQUPMENT INSTALLATION & RETROFIT TUNNEL ACTIVATION",
-      "pin": "82626B0055",
-      "due_date": "2026-09-30T10:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids/Pre-Qualified List"
-    },
-    {
       "request_id": "20260706028",
       "start_date": "2026-07-13T00:00:00.000",
       "agency_name": "Housing Authority",
@@ -6805,17 +6814,6 @@
         "unlocated_reason": "no_place_signal",
         "virtual_only": false
       }
-    },
-    {
-      "request_id": "20260130016",
-      "start_date": "2026-02-06T00:00:00.000",
-      "agency_name": "Education",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods and Services",
-      "short_title": "Bid Extension: Requirements Contract for Central Station Monitoring of Fire Alarm Systems",
-      "pin": "B5710040",
-      "due_date": "2026-09-30T16:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
     },
     {
       "request_id": "20190403034",
