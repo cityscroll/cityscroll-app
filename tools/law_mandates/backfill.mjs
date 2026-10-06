@@ -1,4 +1,4 @@
-import { mkdir, open, readFile, rename, unlink, writeFile } from "node:fs/promises";
+import { access, mkdir, open, readFile, rename, unlink, writeFile } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
@@ -86,6 +86,15 @@ function safeModelError(error) {
 }
 
 async function journalBatch({ script, what, why, undo }) {
+  // The estate autonomy journal is host-local. Public CI and other machines
+  // without that private path must still complete extraction / not_run receipts.
+  if (!script) return;
+  try {
+    await access(script);
+  } catch {
+    console.log(`journal-skip: script_unavailable path=${script}`);
+    return;
+  }
   await new Promise((resolvePromise, reject) => {
     const child = spawn("python3", [script, "add", "--actor", "cityscroll-obligations-backfill", "--action-class", "batch-mutation", "--what", what, "--why", why, "--undo", undo, "--no-regen"], { stdio: ["ignore", "ignore", "pipe"] });
     let stderr = "";

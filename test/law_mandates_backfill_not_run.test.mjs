@@ -13,7 +13,8 @@ test("comparator records not_run when private reference is unavailable", async (
       {
         reference: null,
         outputDir,
-        journalScript: join(process.env.HOME, "dev/fiduciary-heartbeat/tools/autonomy_journal.py"),
+        // Intentionally missing: public CI has no estate autonomy journal.
+        journalScript: join(outputDir, "missing-autonomy-journal.py"),
       },
       { law_count: 3 },
       { laws: [{ matter_id: "1" }, { matter_id: "2" }, { matter_id: "3" }] },
