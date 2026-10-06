@@ -131,7 +131,17 @@ describe("WH-01 proof ingest + query seam", () => {
       // CI without venv: structural tests above still run.
       return;
     }
-    withScratchWarehouseRoot(() => {
+    const committedProof = join(
+      WAREHOUSE_DIR,
+      "receipts",
+      "proof",
+      "ocp-recent-contract-awards_latest.json"
+    );
+    const committedBefore = existsSync(committedProof)
+      ? readFileSync(committedProof, "utf8")
+      : null;
+
+    withScratchWarehouseRoot((scratchRoot) => {
       // Retry when WH-04 ER tests hold the shared single-job lock.
       const ingest = spawnWithLockRetry(
         py,
@@ -158,20 +168,29 @@ describe("WH-01 proof ingest + query seam", () => {
       );
       assert.ok(byAgency.length >= 1);
       assert.ok(byAgency.every((r) => r.agency_name && Number(r.n) >= 1));
+
+      const proof = join(
+        scratchRoot,
+        "receipts",
+        "proof",
+        "ocp-recent-contract-awards_latest.json"
+      );
+      assert.ok(existsSync(proof), "fixture ingest must write proof beside the scratch root");
+      const receipt = JSON.parse(readFileSync(proof, "utf8"));
+      assert.equal(receipt.phase, "WH-01");
+      assert.equal(receipt.raw.mode, "fixture");
+      assert.equal(receipt.cpu_discipline.single_job_lock, true);
+      assert.equal(receipt.cpu_discipline.duckdb_threads, 1);
     });
 
-    const proof = join(
-      WAREHOUSE_DIR,
-      "receipts",
-      "proof",
-      "ocp-recent-contract-awards_latest.json"
+    const committedAfter = existsSync(committedProof)
+      ? readFileSync(committedProof, "utf8")
+      : null;
+    assert.equal(
+      committedAfter,
+      committedBefore,
+      "fixture ingest under CITYSCROLL_WAREHOUSE_ROOT must not rewrite committed proof"
     );
-    assert.ok(existsSync(proof));
-    const receipt = JSON.parse(readFileSync(proof, "utf8"));
-    assert.equal(receipt.phase, "WH-01");
-    assert.equal(receipt.raw.mode, "fixture");
-    assert.equal(receipt.cpu_discipline.single_job_lock, true);
-    assert.equal(receipt.cpu_discipline.duckdb_threads, 1);
   });
 
   it("carries bulk materialization results larger than the old 16 MiB transport cap", () => {
