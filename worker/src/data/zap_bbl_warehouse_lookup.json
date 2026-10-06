@@ -5,7 +5,7 @@
   "dataset_id": "2iga-a6mk",
   "table_name": "zap_bbl",
   "mode": "bulk_warehouse",
-  "materialized_at": "2026-09-04T11:12:46.107Z",
+  "materialized_at": "2026-10-05T17:35:26.970Z",
   "project_count": 24575,
   "bbl_row_count": 50630,
   "replaces_live_fetch": {

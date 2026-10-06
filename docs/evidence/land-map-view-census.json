@@ -19,10 +19,10 @@
       "phase": "WH-06",
       "dataset_id": "2iga-a6mk",
       "mode": "bulk_warehouse",
-      "materialized_at": "2026-09-04T11:12:46.107Z",
+      "materialized_at": "2026-10-05T17:35:26.970Z",
       "project_count": 24575,
       "bbl_row_count": 50630,
-      "sha256": "15a4312ad4b65a27f0611182fa5d33e617b7f6ca294e41ad278aa4bac66d3eb5"
+      "sha256": "86d7a10e1c00935ae172780f4f25c1c447c0b48ce49b1614be7b2acc15c0257e"
     },
     "mappluto_centroids": {
       "path": "site/data/bbl_mappluto_centroids_lookup.json",

@@ -14,7 +14,7 @@
   },
   "source_snapshot": {
     "path": "warehouse/manifests/wh02_load_manifest.json",
-    "sha256": "befc8d6f9d3be39b00b7b285a2fa97b1e5f1008c34bf29a9d2b7b038e0b52e34",
+    "sha256": "b65bf09d84c942bfeb8a8f8374d7f0d5707ce360b95274f9c56487c2a2eeceb6",
     "max_age_days": 30,
     "required_receipts": [
       "warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json",
@@ -23,9 +23,9 @@
       "warehouse/receipts/proof/city-record_bulk_latest.json"
     ],
     "required_receipt_hashes": {
-      "warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json": "63dee592d49a4199136da66d2ca4de6d7025fa23b275d6bed56de0366ddae334",
-      "warehouse/receipts/proof/zap-projects_bulk_latest.json": "dba71c3cb205298eeb9c03d36a059d6f6df495964bbce436ee34243cfb923578",
-      "warehouse/receipts/proof/zap-bbl_bulk_latest.json": "17c1699a79c072ceb093e97b0f3cba99e603b7a151282dd1c1f06c3f886618df",
+      "warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json": "a6db3811745abdbea5f550116596679c8d2a5d56cfecc1cf11591a5f003ff45c",
+      "warehouse/receipts/proof/zap-projects_bulk_latest.json": "186f54ae4a2ac93d638d5ba068c5bb97f19b4565e84addbf957c4418457a8c9d",
+      "warehouse/receipts/proof/zap-bbl_bulk_latest.json": "233c2679ee6b86603fdf9450df82711fb97bbf1903d593d348409ba7e932c752",
       "warehouse/receipts/proof/city-record_bulk_latest.json": "94752e2f57d8f04be028ddbdf3901839aeec658c7ea14efa67835dac8a643b53"
     }
   },

@@ -105,7 +105,7 @@
       "status": "available",
       "available": true,
       "generated_at": "2026-09-09T06:33:01.880Z",
-      "row_count": 12990,
+      "row_count": 13031,
       "reason": null
     }
   },
@@ -192700,7 +192700,7 @@
   ],
   "counts": {
     "total": 19872,
-    "source_observations": 34851,
+    "source_observations": 34892,
     "identity_edges": 21861,
     "cross_source_identity_joins": 1965,
     "lifecycle_rows": 0,
@@ -192715,7 +192715,7 @@
     "floor": "2025-09-09",
     "row_cap": null,
     "coverage": "City Record Award window (valid amount, last 365 days); not a citywide inventory",
-    "selected_rows": 34851,
+    "selected_rows": 34892,
     "census_rows": {
       "passport_contracts": 12795,
       "checkbook_contracts": 9811,
@@ -192724,11 +192724,11 @@
   },
   "coherence_receipt": {
     "schema": "cityscroll.procurement_index_coherence.v1",
-    "source_model_fingerprint": "b6edc9b271fb4383dc13304a0ed4f39a92eebd1017788b8da69760a9d33fe2ae",
+    "source_model_fingerprint": "ff91430d6ece6d558ed6ea6e275a86ac8d33e8327ad0cc73acdb1624ef6d60c0",
     "generated_at": "2026-09-09T06:33:01.880Z",
-    "selected_row_count": 34851,
+    "selected_row_count": 34892,
     "artifact_hashes": {
-      "shared_procurement_read_model": "cc238b684da31bb1e33ca4ce521d5b459fa186738263ab8840a88e534eccac0f",
+      "shared_procurement_read_model": "aaee7d3357f63f99edd71923ceb3eee5f81daf725693e42ec1ae7e9ee94e119d",
       "keyword_search_procurements": "13dcc007596f67d7273e38bb9ae66782dcc96a7573bd809196579b1861cbd502"
     }
   },
@@ -192749,81 +192749,81 @@
     },
     {
       "path": "shared_procurement_read_model/shard-002.json",
-      "bytes": 18850016,
+      "bytes": 18851939,
       "row_count": 1544,
-      "observation_count": 2208
+      "observation_count": 2209
     },
     {
       "path": "shared_procurement_read_model/shard-003.json",
-      "bytes": 18857104,
+      "bytes": 18860673,
       "row_count": 936,
-      "observation_count": 2097
+      "observation_count": 2099
     },
     {
       "path": "shared_procurement_read_model/shard-004.json",
-      "bytes": 18853051,
+      "bytes": 18856961,
       "row_count": 1266,
-      "observation_count": 2813
+      "observation_count": 2815
     },
     {
       "path": "shared_procurement_read_model/shard-005.json",
-      "bytes": 18854422,
-      "row_count": 1293,
-      "observation_count": 2541
+      "bytes": 18849890,
+      "row_count": 1292,
+      "observation_count": 2543
     },
     {
       "path": "shared_procurement_read_model/shard-006.json",
-      "bytes": 18851390,
+      "bytes": 18856293,
       "row_count": 1192,
-      "observation_count": 2441
+      "observation_count": 2443
     },
     {
       "path": "shared_procurement_read_model/shard-007.json",
-      "bytes": 18860376,
-      "row_count": 1194,
-      "observation_count": 2402
+      "bytes": 18857648,
+      "row_count": 1191,
+      "observation_count": 2412
     },
     {
       "path": "shared_procurement_read_model/shard-008.json",
-      "bytes": 18816343,
-      "row_count": 1439,
-      "observation_count": 2620
+      "bytes": 18821340,
+      "row_count": 1442,
+      "observation_count": 2627
     },
     {
       "path": "shared_procurement_read_model/shard-009.json",
-      "bytes": 18846525,
-      "row_count": 1164,
-      "observation_count": 2215
+      "bytes": 18849532,
+      "row_count": 1163,
+      "observation_count": 2219
     },
     {
       "path": "shared_procurement_read_model/shard-010.json",
-      "bytes": 18855031,
-      "row_count": 1091,
-      "observation_count": 2327
+      "bytes": 18853578,
+      "row_count": 1088,
+      "observation_count": 2323
     },
     {
       "path": "shared_procurement_read_model/shard-011.json",
-      "bytes": 18851233,
+      "bytes": 18852862,
       "row_count": 1519,
-      "observation_count": 2237
+      "observation_count": 2238
     },
     {
       "path": "shared_procurement_read_model/shard-012.json",
-      "bytes": 18824159,
-      "row_count": 1204,
-      "observation_count": 2397
+      "bytes": 18843535,
+      "row_count": 1208,
+      "observation_count": 2408
     },
     {
       "path": "shared_procurement_read_model/shard-013.json",
-      "bytes": 18831868,
+      "bytes": 18831707,
       "row_count": 1516,
       "observation_count": 2318
     },
     {
       "path": "shared_procurement_read_model/shard-014.json",
-      "bytes": 13697424,
-      "row_count": 796,
-      "observation_count": 1630
+      "bytes": 13742020,
+      "row_count": 797,
+      "observation_count": 1633
     }
   ],
   "procurement_shard_by_id": {
@@ -201583,7 +201583,7 @@
     "procurement:contract:CT112520258803997": "shared_procurement_read_model/shard-005.json",
     "procurement:contract:CT112520258803998": "shared_procurement_read_model/shard-005.json",
     "procurement:contract:CT112520258803999": "shared_procurement_read_model/shard-005.json",
-    "procurement:contract:CT112520258804000": "shared_procurement_read_model/shard-005.json",
+    "procurement:contract:CT112520258804000": "shared_procurement_read_model/shard-006.json",
     "procurement:contract:CT112520258804002": "shared_procurement_read_model/shard-006.json",
     "procurement:contract:CT112520258804003": "shared_procurement_read_model/shard-006.json",
     "procurement:contract:CT112520258804077": "shared_procurement_read_model/shard-006.json",
@@ -202775,7 +202775,7 @@
     "procurement:contract:CT126020268800241": "shared_procurement_read_model/shard-006.json",
     "procurement:contract:CT126020268800247": "shared_procurement_read_model/shard-006.json",
     "procurement:contract:CT126020268800249": "shared_procurement_read_model/shard-006.json",
-    "procurement:contract:CT126020268800251": "shared_procurement_read_model/shard-006.json",
+    "procurement:contract:CT126020268800251": "shared_procurement_read_model/shard-007.json",
     "procurement:contract:CT126020268800252": "shared_procurement_read_model/shard-007.json",
     "procurement:contract:CT126020268800254": "shared_procurement_read_model/shard-007.json",
     "procurement:contract:CT126020268800257": "shared_procurement_read_model/shard-007.json",
@@ -203966,10 +203966,10 @@
     "procurement:contract:CT180620258806239": "shared_procurement_read_model/shard-007.json",
     "procurement:contract:CT180620258806554": "shared_procurement_read_model/shard-007.json",
     "procurement:contract:CT180620258806620": "shared_procurement_read_model/shard-007.json",
-    "procurement:contract:CT180620258806655": "shared_procurement_read_model/shard-007.json",
-    "procurement:contract:CT180620258806672": "shared_procurement_read_model/shard-007.json",
-    "procurement:contract:CT180620258806725": "shared_procurement_read_model/shard-007.json",
-    "procurement:contract:CT180620258806763": "shared_procurement_read_model/shard-007.json",
+    "procurement:contract:CT180620258806655": "shared_procurement_read_model/shard-008.json",
+    "procurement:contract:CT180620258806672": "shared_procurement_read_model/shard-008.json",
+    "procurement:contract:CT180620258806725": "shared_procurement_read_model/shard-008.json",
+    "procurement:contract:CT180620258806763": "shared_procurement_read_model/shard-008.json",
     "procurement:contract:CT180620258806868": "shared_procurement_read_model/shard-008.json",
     "procurement:contract:CT180620258806896": "shared_procurement_read_model/shard-008.json",
     "procurement:contract:CT180620258807142": "shared_procurement_read_model/shard-008.json",
@@ -205408,7 +205408,7 @@
     "procurement:contract:CT181620268804375": "shared_procurement_read_model/shard-008.json",
     "procurement:contract:CT181620268804376": "shared_procurement_read_model/shard-008.json",
     "procurement:contract:CT181620268804377": "shared_procurement_read_model/shard-008.json",
-    "procurement:contract:CT181620268804409": "shared_procurement_read_model/shard-008.json",
+    "procurement:contract:CT181620268804409": "shared_procurement_read_model/shard-009.json",
     "procurement:contract:CT181620268804441": "shared_procurement_read_model/shard-009.json",
     "procurement:contract:CT181620268804447": "shared_procurement_read_model/shard-009.json",
     "procurement:contract:CT181620268804462": "shared_procurement_read_model/shard-009.json",
@@ -206571,8 +206571,8 @@
     "procurement:contract:CT182620268808885": "shared_procurement_read_model/shard-009.json",
     "procurement:contract:CT182620268808886": "shared_procurement_read_model/shard-009.json",
     "procurement:contract:CT182620268808893": "shared_procurement_read_model/shard-009.json",
-    "procurement:contract:CT182620268808897": "shared_procurement_read_model/shard-009.json",
-    "procurement:contract:CT182620270001366": "shared_procurement_read_model/shard-009.json",
+    "procurement:contract:CT182620268808897": "shared_procurement_read_model/shard-010.json",
+    "procurement:contract:CT182620270001366": "shared_procurement_read_model/shard-010.json",
     "procurement:contract:CT182620278800751": "shared_procurement_read_model/shard-010.json",
     "procurement:contract:CT182620278800752": "shared_procurement_read_model/shard-010.json",
     "procurement:contract:CT182620278800874": "shared_procurement_read_model/shard-010.json",
@@ -207659,11 +207659,11 @@
     "procurement:contract:CT184620238806648": "shared_procurement_read_model/shard-010.json",
     "procurement:contract:CT184620238806664": "shared_procurement_read_model/shard-010.json",
     "procurement:contract:CT184620238806804": "shared_procurement_read_model/shard-010.json",
-    "procurement:contract:CT184620238806872": "shared_procurement_read_model/shard-010.json",
-    "procurement:contract:CT184620238807012": "shared_procurement_read_model/shard-010.json",
-    "procurement:contract:CT184620238807016": "shared_procurement_read_model/shard-010.json",
-    "procurement:contract:CT184620238807094": "shared_procurement_read_model/shard-010.json",
-    "procurement:contract:CT184620238807096": "shared_procurement_read_model/shard-010.json",
+    "procurement:contract:CT184620238806872": "shared_procurement_read_model/shard-011.json",
+    "procurement:contract:CT184620238807012": "shared_procurement_read_model/shard-011.json",
+    "procurement:contract:CT184620238807016": "shared_procurement_read_model/shard-011.json",
+    "procurement:contract:CT184620238807094": "shared_procurement_read_model/shard-011.json",
+    "procurement:contract:CT184620238807096": "shared_procurement_read_model/shard-011.json",
     "procurement:contract:CT184620238807098": "shared_procurement_read_model/shard-011.json",
     "procurement:contract:CT184620238807136": "shared_procurement_read_model/shard-011.json",
     "procurement:contract:CT184620238807138": "shared_procurement_read_model/shard-011.json",
@@ -209178,11 +209178,11 @@
     "procurement:contract:CT185020258803563": "shared_procurement_read_model/shard-011.json",
     "procurement:contract:CT185020258803889": "shared_procurement_read_model/shard-011.json",
     "procurement:contract:CT185020258804586": "shared_procurement_read_model/shard-011.json",
-    "procurement:contract:CT185020258804590": "shared_procurement_read_model/shard-011.json",
-    "procurement:contract:CT185020258804731": "shared_procurement_read_model/shard-011.json",
-    "procurement:contract:CT185020258805090": "shared_procurement_read_model/shard-011.json",
-    "procurement:contract:CT185020258805099": "shared_procurement_read_model/shard-011.json",
-    "procurement:contract:CT185020258805145": "shared_procurement_read_model/shard-011.json",
+    "procurement:contract:CT185020258804590": "shared_procurement_read_model/shard-012.json",
+    "procurement:contract:CT185020258804731": "shared_procurement_read_model/shard-012.json",
+    "procurement:contract:CT185020258805090": "shared_procurement_read_model/shard-012.json",
+    "procurement:contract:CT185020258805099": "shared_procurement_read_model/shard-012.json",
+    "procurement:contract:CT185020258805145": "shared_procurement_read_model/shard-012.json",
     "procurement:contract:CT185020258805166": "shared_procurement_read_model/shard-012.json",
     "procurement:contract:CT185020258805229": "shared_procurement_read_model/shard-012.json",
     "procurement:contract:CT185020258805235": "shared_procurement_read_model/shard-012.json",
@@ -210386,7 +210386,7 @@
     "procurement:contract:CT185820268806432": "shared_procurement_read_model/shard-012.json",
     "procurement:contract:CT185820268806434": "shared_procurement_read_model/shard-012.json",
     "procurement:contract:CT185820268806437": "shared_procurement_read_model/shard-012.json",
-    "procurement:contract:CT185820268806439": "shared_procurement_read_model/shard-012.json",
+    "procurement:contract:CT185820268806439": "shared_procurement_read_model/shard-013.json",
     "procurement:contract:CT185820268806442": "shared_procurement_read_model/shard-013.json",
     "procurement:contract:CT185820268806444": "shared_procurement_read_model/shard-013.json",
     "procurement:contract:CT185820268806445": "shared_procurement_read_model/shard-013.json",
@@ -211902,7 +211902,7 @@
     "procurement:contract:MA185720268804123": "shared_procurement_read_model/shard-013.json",
     "procurement:contract:MA185720268804274": "shared_procurement_read_model/shard-013.json",
     "procurement:contract:MA185720268804403": "shared_procurement_read_model/shard-013.json",
-    "procurement:contract:MA185720268804439": "shared_procurement_read_model/shard-013.json",
+    "procurement:contract:MA185720268804439": "shared_procurement_read_model/shard-014.json",
     "procurement:contract:MA185720268804497": "shared_procurement_read_model/shard-014.json",
     "procurement:contract:MA185720268804575": "shared_procurement_read_model/shard-014.json",
     "procurement:contract:MA185720268804580": "shared_procurement_read_model/shard-014.json",
@@ -212703,9 +212703,9 @@
   "notice_procurement_subjects": {
     "schema": "cityscroll.notice_procurement_subjects.v1",
     "path": "data/notice_procurement_subjects_lookup.json",
-    "notice_count": 12947,
-    "subject_link_count": 12947,
-    "source_model_fingerprint": "b6edc9b271fb4383dc13304a0ed4f39a92eebd1017788b8da69760a9d33fe2ae"
+    "notice_count": 12988,
+    "subject_link_count": 12988,
+    "source_model_fingerprint": "ff91430d6ece6d558ed6ea6e275a86ac8d33e8327ad0cc73acdb1624ef6d60c0"
   },
   "observation_order": [
     "checkbook_contracts:contract:registered:CT100220261405927:SELECTIVE INSURANCE COMPANY OF AMERICA:prime-vendor:2025-11-12",
@@ -234759,6 +234759,47 @@
     "city_record:20260804028",
     "city_record:20260824020",
     "city_record:20260826030",
+    "city_record:20260831026",
+    "city_record:20260831028",
+    "city_record:20260901004",
+    "city_record:20260901005",
+    "city_record:20260901006",
+    "city_record:20260901015",
+    "city_record:20260901024",
+    "city_record:20260902009",
+    "city_record:20260902010",
+    "city_record:20260902011",
+    "city_record:20260902013",
+    "city_record:20260902026",
+    "city_record:20260902027",
+    "city_record:20260902029",
+    "city_record:20260902030",
+    "city_record:20260903006",
+    "city_record:20260903007",
+    "city_record:20260903008",
+    "city_record:20260903009",
+    "city_record:20260903010",
+    "city_record:20260903011",
+    "city_record:20260903012",
+    "city_record:20260903013",
+    "city_record:20260903014",
+    "city_record:20260903015",
+    "city_record:20260903016",
+    "city_record:20260903025",
+    "city_record:20260904012",
+    "city_record:20260904013",
+    "city_record:20260908003",
+    "city_record:20260908004",
+    "city_record:20260908005",
+    "city_record:20260908010",
+    "city_record:20260908011",
+    "city_record:20260908012",
+    "city_record:20260908013",
+    "city_record:20260908014",
+    "city_record:20260908015",
+    "city_record:20260908016",
+    "city_record:20260908019",
+    "city_record:20260915017",
     "mta_annual_contracts:contract:8000000863",
     "mta_cd_awards:award:A37703",
     "passport_public_contracts:contract:00214P0172001R002:4620521",

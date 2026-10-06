@@ -4,6 +4,386 @@
   "shard_id": "001",
   "rows": [
     {
+      "procurement_id": "procurement:contract:CT181620268804303",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620268804303",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620268804303:CICATELLI ASSOCIATES INC:prime-vendor:2026-02-17",
+        "city_record:20260218008",
+        "passport_public_contracts:contract:81626U0012001:5601510"
+      ],
+      "request_id": "20260218008",
+      "start_date": "2026-02-01",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Mental Health trainings for clinicians",
+      "pin": "81626U0012001",
+      "contract_id": "CT181620268804303",
+      "contract_amount": 97500,
+      "vendor_name": "Cicatelli Associates, Inc.",
+      "official_url": null,
+      "selection_method_description": "Subscription",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Cicatelli Associates, Inc. · $97,500",
+      "notice_evidence": [
+        {
+          "request_id": "20260218008",
+          "type_of_notice_description": "Award",
+          "short_title": "Mental Health trainings for clinicians",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-02-24",
+          "href": "/notices/20260218008"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts",
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620268804312",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620268804312",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620268804312:STARFISH LLC:prime-vendor:2026-01-28",
+        "city_record:20260129007",
+        "passport_public_contracts:contract:81625P0004002:5487905"
+      ],
+      "request_id": "20260129007",
+      "start_date": "2026-01-01",
+      "end_date": "2031-12-31",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Creative Development of Public Education",
+      "pin": "81625P0004002",
+      "contract_id": "CT181620268804312",
+      "contract_amount": 10000000,
+      "vendor_name": "Starfish LLC",
+      "official_url": null,
+      "selection_method_description": "Competitive Sealed Proposal",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Starfish LLC · $10,000,000",
+      "notice_evidence": [
+        {
+          "request_id": "20260129007",
+          "type_of_notice_description": "Award",
+          "short_title": "Creative Development of Public Education",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-02-04",
+          "href": "/notices/20260129007"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts",
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620268804313",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620268804313",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620268804313:BANDUJO ADVERTISING AND DESIGN, INC:prime-vendor:2026-02-10",
+        "city_record:20260211008",
+        "passport_public_contracts:contract:81625P0004005:5487933"
+      ],
+      "request_id": "20260211008",
+      "start_date": "2026-01-01",
+      "end_date": "2031-12-31",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Creative Development of Public Education",
+      "pin": "81625P0004005",
+      "contract_id": "CT181620268804313",
+      "contract_amount": 10000000,
+      "vendor_name": "Bandujo Advertising and Design, Inc.",
+      "official_url": null,
+      "selection_method_description": "Competitive Sealed Proposal",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Bandujo Advertising and Design, Inc. · $10,000,000",
+      "notice_evidence": [
+        {
+          "request_id": "20260211008",
+          "type_of_notice_description": "Award",
+          "short_title": "Creative Development of Public Education",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-02-18",
+          "href": "/notices/20260211008"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts",
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620268804314",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620268804314",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620268804314:VANGUARD DIRECT ENTERPRISES LLC:prime-vendor:2026-02-17",
+        "city_record:20260218007",
+        "passport_public_contracts:contract:81625P0004003:5487938"
+      ],
+      "request_id": "20260218007",
+      "start_date": "2026-01-01",
+      "end_date": "2031-12-31",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Creative Development of Public Education",
+      "pin": "81625P0004003",
+      "contract_id": "CT181620268804314",
+      "contract_amount": 10000000,
+      "vendor_name": "Vanguard Direct Enterprises LLC",
+      "official_url": null,
+      "selection_method_description": "Competitive Sealed Proposal",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Vanguard Direct Enterprises LLC · $10,000,000",
+      "notice_evidence": [
+        {
+          "request_id": "20260218007",
+          "type_of_notice_description": "Award",
+          "short_title": "Creative Development of Public Education",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-02-24",
+          "href": "/notices/20260218007"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts",
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620268804316",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620268804316",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620268804316:SHERRY MATTHEWS INC:prime-vendor:2026-01-28",
+        "city_record:20260129006",
+        "passport_public_contracts:contract:81625P0004004:5487942"
+      ],
+      "request_id": "20260129006",
+      "start_date": "2026-01-01",
+      "end_date": "2031-12-31",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Creative Development of Public Education",
+      "pin": "81625P0004004",
+      "contract_id": "CT181620268804316",
+      "contract_amount": 10000000,
+      "vendor_name": "Sherry Matthews Inc",
+      "official_url": null,
+      "selection_method_description": "Competitive Sealed Proposal",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Sherry Matthews Inc · $10,000,000",
+      "notice_evidence": [
+        {
+          "request_id": "20260129006",
+          "type_of_notice_description": "Award",
+          "short_title": "Creative Development of Public Education",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-02-04",
+          "href": "/notices/20260129006"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts",
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620268804317",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620268804317",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620268804317:MIND4, INC:prime-vendor:2026-01-27",
+        "city_record:20260128010",
+        "passport_public_contracts:contract:81625P0004006:5487939"
+      ],
+      "request_id": "20260128010",
+      "start_date": "2026-01-01",
+      "end_date": "2031-12-31",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Creative Development of Public Education",
+      "pin": "81625P0004006",
+      "contract_id": "CT181620268804317",
+      "contract_amount": 10000000,
+      "vendor_name": "Mind4, Inc",
+      "official_url": null,
+      "selection_method_description": "Competitive Sealed Proposal",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Mind4, Inc · $10,000,000",
+      "notice_evidence": [
+        {
+          "request_id": "20260128010",
+          "type_of_notice_description": "Award",
+          "short_title": "Creative Development of Public Education",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-02-03",
+          "href": "/notices/20260128010"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts",
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620268804346",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620268804346",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20260601010",
+        "passport_public_contracts:contract:81625M0015001:5482773"
+      ],
+      "request_id": "20260601010",
+      "start_date": "2025-07-01",
+      "end_date": "2031-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "FY26 RQM -RFMH Community-based services",
+      "pin": "81625M0015001",
+      "contract_id": "CT181620268804346",
+      "contract_amount": 141171708,
+      "vendor_name": "Research Foundation for Mental Hygiene, Inc.",
+      "official_url": null,
+      "selection_method_description": "Required Method",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Research Foundation for Mental Hygiene, Inc. · $141,171,708",
+      "notice_evidence": [
+        {
+          "request_id": "20260601010",
+          "type_of_notice_description": "Award",
+          "short_title": "FY26 RQM -RFMH Community-based services",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-06-05",
+          "href": "/notices/20260601010"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620268804349",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620268804349",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20260501002",
+        "passport_public_contracts:contract:81624L1512001:5491159"
+      ],
+      "request_id": "20260501002",
+      "start_date": "2023-07-01",
+      "end_date": "2026-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Abortion Access Fund",
+      "pin": "81624L1512001",
+      "contract_id": "CT181620268804349",
+      "contract_amount": 2031250,
+      "vendor_name": "The Brigid Alliance Inc.",
+      "official_url": null,
+      "selection_method_description": "Line Item Appropriation",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · The Brigid Alliance Inc. · $2,031,250",
+      "notice_evidence": [
+        {
+          "request_id": "20260501002",
+          "type_of_notice_description": "Award",
+          "short_title": "Abortion Access Fund",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-05-07",
+          "href": "/notices/20260501002"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CT181620268804375",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT181620268804375",
       "procurement_stages": [
@@ -8913,30 +9293,45 @@
       "procurement_id": "procurement:contract:CT181620278800534",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT181620278800534",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT181620278800534:NEW YORK FOUNDLING:prime-vendor:2026-09-07"
+        "checkbook_contracts:contract:registered:CT181620278800534:NEW YORK FOUNDLING:prime-vendor:2026-09-07",
+        "city_record:20260908014"
       ],
+      "request_id": "20260908014",
       "start_date": "2026-07-01",
       "end_date": "2032-06-30",
       "agency_id": null,
-      "agency_name": "Department of Health and Mental Hygiene",
+      "agency_name": "Health and Mental Hygiene",
       "short_title": "FY27- RSQ- New Contract/Family Support Services",
       "pin": "81626R0002002",
       "contract_id": "CT181620278800534",
       "contract_amount": 11772078,
-      "vendor_name": "NEW YORK FOUNDLING",
+      "vendor_name": "New York Foundling",
       "official_url": null,
       "selection_method_description": "DETERMINED BY GOV'T MANDATE",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Health and Mental Hygiene · NEW YORK FOUNDLING · $11,772,078",
-      "notice_evidence": [],
+      "additional_description_1": "Health and Mental Hygiene · New York Foundling · $11,772,078",
+      "notice_evidence": [
+        {
+          "request_id": "20260908014",
+          "type_of_notice_description": "Award",
+          "short_title": "FY27- RSQ- New Contract/Family Support Services",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-09-14",
+          "href": "/notices/20260908014"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -9607,30 +10002,45 @@
       "procurement_id": "procurement:contract:CT181620278801272",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT181620278801272",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT181620278801272:QIAGEN LLC:prime-vendor:2026-09-01"
+        "checkbook_contracts:contract:registered:CT181620278801272:QIAGEN LLC:prime-vendor:2026-09-01",
+        "city_record:20260902011"
       ],
+      "request_id": "20260902011",
       "start_date": "2026-07-01",
       "end_date": "2029-06-30",
       "agency_id": null,
-      "agency_name": "Department of Health and Mental Hygiene",
+      "agency_name": "Chief Medical Examiner",
       "short_title": "QIAGEN EZ1 & QIACUBE SERVICE AGREEMENT",
       "pin": "81626S0004001",
       "contract_id": "CT181620278801272",
       "contract_amount": 201321.92,
-      "vendor_name": "QIAGEN LLC",
+      "vendor_name": "Qiagen LLC",
       "official_url": null,
       "selection_method_description": "SOLE SOURCE",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Health and Mental Hygiene · QIAGEN LLC · $201,321.92",
-      "notice_evidence": [],
+      "additional_description_1": "Chief Medical Examiner · Qiagen LLC · $201,321.92",
+      "notice_evidence": [
+        {
+          "request_id": "20260902011",
+          "type_of_notice_description": "Award",
+          "short_title": "QIAGEN EZ1 & QIACUBE SERVICE AGREEMENT",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-09-09",
+          "href": "/notices/20260902011"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -9848,30 +10258,45 @@
       "procurement_id": "procurement:contract:CT181620278802059",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT181620278802059",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT181620278802059:FUND FOR PUBLIC HEALTH IN NEW YORK INC:prime-vendor:2026-08-31"
+        "checkbook_contracts:contract:registered:CT181620278802059:FUND FOR PUBLIC HEALTH IN NEW YORK INC:prime-vendor:2026-08-31",
+        "city_record:20260901004"
       ],
+      "request_id": "20260901004",
       "start_date": "2026-06-01",
       "end_date": "2031-05-31",
       "agency_id": null,
-      "agency_name": "Department of Health and Mental Hygiene",
+      "agency_name": "Health and Mental Hygiene",
       "short_title": "FY26 - NA Non-Profit Partner for Federally Funded Projects",
       "pin": "81626N0005001",
       "contract_id": "CT181620278802059",
       "contract_amount": 35000000,
-      "vendor_name": "FUND FOR PUBLIC HEALTH IN NEW YORK INC",
+      "vendor_name": "Fund for Public Health in New York Inc.",
       "official_url": null,
       "selection_method_description": "NEGOTIATED ACQUISITION AND DOE NEGOTIATED SERVICES",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Health and Mental Hygiene · FUND FOR PUBLIC HEALTH IN NEW YORK INC · $35,000,000",
-      "notice_evidence": [],
+      "additional_description_1": "Health and Mental Hygiene · Fund for Public Health in New York Inc. · $35,000,000",
+      "notice_evidence": [
+        {
+          "request_id": "20260901004",
+          "type_of_notice_description": "Award",
+          "short_title": "FY26 - NA Non-Profit Partner for Federally Funded Projects",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-09-08",
+          "href": "/notices/20260901004"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -9879,30 +10304,45 @@
       "procurement_id": "procurement:contract:CT181620278802187",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT181620278802187",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT181620278802187:CEDAR PARK GROUP INC:prime-vendor:2026-08-27"
+        "checkbook_contracts:contract:registered:CT181620278802187:CEDAR PARK GROUP INC:prime-vendor:2026-08-27",
+        "city_record:20260902027"
       ],
+      "request_id": "20260902027",
       "start_date": "2026-09-01",
       "end_date": "2027-08-31",
       "agency_id": null,
-      "agency_name": "Department of Health and Mental Hygiene",
+      "agency_name": "Chief Medical Examiner",
       "short_title": "LOCUM TENENS FORENSIC PATHOLOGY SERVICES",
       "pin": "81626W0055001",
       "contract_id": "CT181620278802187",
       "contract_amount": 500000,
-      "vendor_name": "CEDAR PARK GROUP INC",
+      "vendor_name": "Cedar Park Group Inc",
       "official_url": null,
       "selection_method_description": "M/WBE SMALL PURCHASE",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Health and Mental Hygiene · CEDAR PARK GROUP INC · $500,000",
-      "notice_evidence": [],
+      "additional_description_1": "Chief Medical Examiner · Cedar Park Group Inc · $500,000",
+      "notice_evidence": [
+        {
+          "request_id": "20260902027",
+          "type_of_notice_description": "Award",
+          "short_title": "LOCUM TENENS FORENSIC PATHOLOGY SERVICES",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-09-10",
+          "href": "/notices/20260902027"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ],
       "method_family": "mwbe_small_purchase"
@@ -9911,30 +10351,45 @@
       "procurement_id": "procurement:contract:CT181620278802632",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT181620278802632",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT181620278802632:K SYSTEMS SOLUTIONS LLC:prime-vendor:2026-09-03"
+        "checkbook_contracts:contract:registered:CT181620278802632:K SYSTEMS SOLUTIONS LLC:prime-vendor:2026-09-03",
+        "city_record:20260903025"
       ],
+      "request_id": "20260903025",
       "start_date": "2026-06-01",
       "end_date": "2027-07-01",
       "agency_id": null,
-      "agency_name": "Department of Health and Mental Hygiene",
+      "agency_name": "Chief Medical Examiner",
       "short_title": "DYNAMSOFT BARCODE READER RENEWAL LICENSE - 27R0000",
       "pin": "81627W0011001",
       "contract_id": "CT181620278802632",
       "contract_amount": 31792.07,
-      "vendor_name": "K SYSTEMS SOLUTIONS LLC",
+      "vendor_name": "K Systems Solutions LLC",
       "official_url": null,
       "selection_method_description": "M/WBE SMALL PURCHASE",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Health and Mental Hygiene · K SYSTEMS SOLUTIONS LLC · $31,792.07",
-      "notice_evidence": [],
+      "additional_description_1": "Chief Medical Examiner · K Systems Solutions LLC · $31,792.07",
+      "notice_evidence": [
+        {
+          "request_id": "20260903025",
+          "type_of_notice_description": "Award",
+          "short_title": "DYNAMSOFT BARCODE READER RENEWAL LICENSE - 27R0000",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-09-11",
+          "href": "/notices/20260903025"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ],
       "method_family": "mwbe_small_purchase"
@@ -12827,14 +13282,14 @@
       "pin": "82621W0001001",
       "contract_id": "CT182620218800067",
       "contract_amount": 179849.69,
-      "vendor_name": "CARE SECURITY SYSTEMS INC",
+      "vendor_name": "Care Security Systems Inc",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Environmental Protection · CARE SECURITY SYSTEMS INC · $179,849.69",
+      "additional_description_1": "Environmental Protection · Care Security Systems Inc · $179,849.69",
       "notice_evidence": [
         {
           "request_id": "20201117112",
@@ -17576,14 +18031,14 @@
       "pin": "82622S0005001",
       "contract_id": "CT182620238802274",
       "contract_amount": 609966,
-      "vendor_name": "RESEARCH TRIANGLE INSTITUTE",
+      "vendor_name": "Research Triangle Institute",
       "official_url": null,
       "selection_method_description": "Sole Source",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Environmental Protection · RESEARCH TRIANGLE INSTITUTE · $609,966",
+      "additional_description_1": "Environmental Protection · Research Triangle Institute · $609,966",
       "notice_evidence": [
         {
           "request_id": "20221103107",
@@ -21624,14 +22079,14 @@
       "pin": "82623S0005001",
       "contract_id": "CT182620238807130",
       "contract_amount": 68900,
-      "vendor_name": "COOPER MACHINERY SERVICES LLC",
+      "vendor_name": "Cooper Machinery Services LLC",
       "official_url": null,
       "selection_method_description": "Sole Source",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Environmental Protection · COOPER MACHINERY SERVICES LLC · $68,900",
+      "additional_description_1": "Environmental Protection · Cooper Machinery Services LLC · $68,900",
       "notice_evidence": [
         {
           "request_id": "20230418104",
@@ -31891,14 +32346,14 @@
       "pin": "82624W0082001",
       "contract_id": "CT182620248807716",
       "contract_amount": 24436,
-      "vendor_name": "CARE SECURITY SYSTEMS INC",
+      "vendor_name": "Care Security Systems Inc",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Environmental Protection · CARE SECURITY SYSTEMS INC · $24,436",
+      "additional_description_1": "Environmental Protection · Care Security Systems Inc · $24,436",
       "notice_evidence": [
         {
           "request_id": "20240508109",
@@ -34953,14 +35408,14 @@
       "pin": "82625U0003001",
       "contract_id": "CT182620258802267",
       "contract_amount": 25000,
-      "vendor_name": "METROPOLITAN WATER DISTRICT OF SOUTHERN CALIFORNIA",
+      "vendor_name": "Metropolitan Water District of Southern California",
       "official_url": null,
       "selection_method_description": "Subscription",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Environmental Protection · METROPOLITAN WATER DISTRICT OF SOUTHERN CALIFORNIA · $25,000",
+      "additional_description_1": "Environmental Protection · Metropolitan Water District of Southern California · $25,000",
       "notice_evidence": [
         {
           "request_id": "20240821115",
@@ -37330,14 +37785,14 @@
       "pin": "82625W0042001",
       "contract_id": "CT182620258805102",
       "contract_amount": 60793.6,
-      "vendor_name": "CARE SECURITY SYSTEMS INC",
+      "vendor_name": "Care Security Systems Inc",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Environmental Protection · CARE SECURITY SYSTEMS INC · $60,793.6",
+      "additional_description_1": "Environmental Protection · Care Security Systems Inc · $60,793.6",
       "notice_evidence": [
         {
           "request_id": "20250107039",
@@ -38727,14 +39182,14 @@
       "pin": "82625U0018001",
       "contract_id": "CT182620258806681",
       "contract_amount": 25000,
-      "vendor_name": "METROPOLITAN WATER DISTRICT OF SOUTHERN CALIFORNIA",
+      "vendor_name": "Metropolitan Water District of Southern California",
       "official_url": null,
       "selection_method_description": "Subscription",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Environmental Protection · METROPOLITAN WATER DISTRICT OF SOUTHERN CALIFORNIA · $25,000",
+      "additional_description_1": "Environmental Protection · Metropolitan Water District of Southern California · $25,000",
       "notice_evidence": [
         {
           "request_id": "20250325034",
@@ -51364,14 +51819,14 @@
       "pin": "82719B8202KXLR001",
       "contract_id": "CT182720228804216",
       "contract_amount": 2000000,
-      "vendor_name": "EAST COAST RETREADERS LLC",
+      "vendor_name": "East Coast Retreaders LLC",
       "official_url": null,
       "selection_method_description": "Renewal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Sanitation · EAST COAST RETREADERS LLC · $2,000,000",
+      "additional_description_1": "Sanitation · East Coast Retreaders LLC · $2,000,000",
       "notice_evidence": [
         {
           "request_id": "20220209104",
@@ -57272,14 +57727,14 @@
       "pin": "82720B8159KXLR001",
       "contract_id": "CT182720258806177",
       "contract_amount": 500000,
-      "vendor_name": "TWIN PEAKS INC",
+      "vendor_name": "Twin Peaks Inc",
       "official_url": null,
       "selection_method_description": "Renewal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Sanitation · TWIN PEAKS INC · $500,000",
+      "additional_description_1": "Sanitation · Twin Peaks Inc · $500,000",
       "notice_evidence": [
         {
           "request_id": "20250402009",
@@ -61810,30 +62265,45 @@
       "procurement_id": "procurement:contract:CT182720278801604",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT182720278801604",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT182720278801604:LENOX HILL RADIOLOGY & MEDICAL IMAGING ASSOCIATES PC:prime-vendor:2026-09-01"
+        "checkbook_contracts:contract:registered:CT182720278801604:LENOX HILL RADIOLOGY & MEDICAL IMAGING ASSOCIATES PC:prime-vendor:2026-09-01",
+        "city_record:20260902010"
       ],
+      "request_id": "20260902010",
       "start_date": "2026-08-01",
       "end_date": "2031-08-01",
       "agency_id": null,
-      "agency_name": "Department of Sanitation",
+      "agency_name": "Sanitation",
       "short_title": "Xrays with Interpretations",
       "pin": "82726B0006001",
       "contract_id": "CT182720278801604",
       "contract_amount": 900000,
-      "vendor_name": "LENOX HILL RADIOLOGY & MEDICAL IMAGING ASSOCIATES PC",
+      "vendor_name": "Lenox Hill Radiology & Medical Imaging Associates",
       "official_url": null,
       "selection_method_description": "COMPETITIVE SEALED BIDDING",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Sanitation · LENOX HILL RADIOLOGY & MEDICAL IMAGING ASSOCIATES PC · $900,000",
-      "notice_evidence": [],
+      "additional_description_1": "Sanitation · Lenox Hill Radiology & Medical Imaging Associates · $900,000",
+      "notice_evidence": [
+        {
+          "request_id": "20260902010",
+          "type_of_notice_description": "Award",
+          "short_title": "Xrays with Interpretations",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-09-09",
+          "href": "/notices/20260902010"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -61890,30 +62360,45 @@
       "procurement_id": "procurement:contract:CT182720278802345",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT182720278802345",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT182720278802345:TERRYWORLDWIDE LLC:prime-vendor:2026-09-02"
+        "checkbook_contracts:contract:registered:CT182720278802345:TERRYWORLDWIDE LLC:prime-vendor:2026-09-02",
+        "city_record:20260902029"
       ],
+      "request_id": "20260902029",
       "start_date": "2026-09-01",
       "end_date": "2031-08-31",
       "agency_id": null,
-      "agency_name": "Department of Sanitation",
+      "agency_name": "Sanitation",
       "short_title": "DIESEL PURE FILTER KITS",
       "pin": "82727W0004001",
       "contract_id": "CT182720278802345",
       "contract_amount": 250000,
-      "vendor_name": "TERRYWORLDWIDE LLC",
+      "vendor_name": "TerryWorldWide LLC",
       "official_url": null,
       "selection_method_description": "M/WBE SMALL PURCHASE",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Sanitation · TERRYWORLDWIDE LLC · $250,000",
-      "notice_evidence": [],
+      "additional_description_1": "Sanitation · TerryWorldWide LLC · $250,000",
+      "notice_evidence": [
+        {
+          "request_id": "20260902029",
+          "type_of_notice_description": "Award",
+          "short_title": "DIESEL PURE FILTER KITS",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-09-10",
+          "href": "/notices/20260902029"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ],
       "method_family": "mwbe_small_purchase"
@@ -68956,14 +69441,14 @@
       "pin": "84121W0387001",
       "contract_id": "CT184120218801071",
       "contract_amount": 84774.46,
-      "vendor_name": "Blackhawk Data LLC",
+      "vendor_name": "BlackHawk Data LLC",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Transportation · Blackhawk Data LLC · $84,774.46",
+      "additional_description_1": "Transportation · BlackHawk Data LLC · $84,774.46",
       "notice_evidence": [
         {
           "request_id": "20210222115",
@@ -72254,14 +72739,14 @@
       "pin": "84122P0004001",
       "contract_id": "CT184120238803512",
       "contract_amount": 3095074.69,
-      "vendor_name": "TWIN PEAKS INC",
+      "vendor_name": "Twin Peaks Inc",
       "official_url": null,
       "selection_method_description": "Competitive Sealed Proposal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Transportation · TWIN PEAKS INC · $3,095,074.69",
+      "additional_description_1": "Transportation · Twin Peaks Inc · $3,095,074.69",
       "notice_evidence": [
         {
           "request_id": "20221018106",
@@ -82026,14 +82511,14 @@
       "pin": "84124W0074001",
       "contract_id": "CT184120258801783",
       "contract_amount": 440700,
-      "vendor_name": "Infopeople Corporation",
+      "vendor_name": "InfoPeople Corporation",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Transportation · Infopeople Corporation · $440,700",
+      "additional_description_1": "Transportation · InfoPeople Corporation · $440,700",
       "notice_evidence": [
         {
           "request_id": "20250306010",
@@ -93905,14 +94390,14 @@
       "pin": "84126W0069001",
       "contract_id": "CT184120268807630",
       "contract_amount": 454090,
-      "vendor_name": "Infopeople Corporation",
+      "vendor_name": "InfoPeople Corporation",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Transportation · Infopeople Corporation · $454,090",
+      "additional_description_1": "Transportation · InfoPeople Corporation · $454,090",
       "notice_evidence": [
         {
           "request_id": "20260520021",
@@ -95360,14 +95845,14 @@
       "pin": "84620B8400KXLR001",
       "contract_id": "CT184620228800617",
       "contract_amount": 986775,
-      "vendor_name": "BEUCLER TREE EXPERTS LLC",
+      "vendor_name": "Beucler Tree Experts LLC",
       "official_url": null,
       "selection_method_description": "Renewal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Parks and Recreation · BEUCLER TREE EXPERTS LLC · $1,486,775",
+      "additional_description_1": "Parks and Recreation · Beucler Tree Experts LLC · $1,486,775",
       "notice_evidence": [
         {
           "request_id": "20211001102",
@@ -95452,14 +95937,14 @@
       "pin": "84620B8401KXLR001",
       "contract_id": "CT184620228802169",
       "contract_amount": 603960,
-      "vendor_name": "BEUCLER TREE EXPERTS LLC",
+      "vendor_name": "Beucler Tree Experts LLC",
       "official_url": null,
       "selection_method_description": "Renewal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Parks and Recreation · BEUCLER TREE EXPERTS LLC · $1,103,960",
+      "additional_description_1": "Parks and Recreation · Beucler Tree Experts LLC · $1,103,960",
       "notice_evidence": [
         {
           "request_id": "20211213102",
@@ -97246,14 +97731,14 @@
       "pin": "84622B0068001",
       "contract_id": "CT184620238802207",
       "contract_amount": 1107328.44,
-      "vendor_name": "CRONOS FIRE AND ELECTRICAL CORP",
+      "vendor_name": "Cronos Fire and Electrical Corp",
       "official_url": null,
       "selection_method_description": "Competitive Sealed Bid",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Parks and Recreation · CRONOS FIRE AND ELECTRICAL CORP · $1,107,328.44",
+      "additional_description_1": "Parks and Recreation · Cronos Fire and Electrical Corp · $1,107,328.44",
       "notice_evidence": [
         {
           "request_id": "20220910101",
@@ -101941,14 +102426,14 @@
       "pin": "84623B0062001",
       "contract_id": "CT184620248801830",
       "contract_amount": 3441231,
-      "vendor_name": "BEUCLER TREE EXPERTS LLC",
+      "vendor_name": "Beucler Tree Experts LLC",
       "official_url": null,
       "selection_method_description": "Competitive Sealed Bid",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Parks and Recreation · BEUCLER TREE EXPERTS LLC · $3,441,231",
+      "additional_description_1": "Parks and Recreation · Beucler Tree Experts LLC · $3,441,231",
       "notice_evidence": [
         {
           "request_id": "20230817104",
@@ -101987,14 +102472,14 @@
       "pin": "84623B0066001",
       "contract_id": "CT184620248801889",
       "contract_amount": 3133446,
-      "vendor_name": "BEUCLER TREE EXPERTS LLC",
+      "vendor_name": "Beucler Tree Experts LLC",
       "official_url": null,
       "selection_method_description": "Competitive Sealed Bid",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Parks and Recreation · BEUCLER TREE EXPERTS LLC · $3,133,446",
+      "additional_description_1": "Parks and Recreation · Beucler Tree Experts LLC · $3,133,446",
       "notice_evidence": [
         {
           "request_id": "20230816105",
@@ -125603,14 +126088,14 @@
       "pin": "84626W0015001",
       "contract_id": "CT184620268804656",
       "contract_amount": 29495,
-      "vendor_name": "SimBio USA Inc",
+      "vendor_name": "Simbio USA Inc",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Parks and Recreation · SimBio USA Inc · $29,495",
+      "additional_description_1": "Parks and Recreation · Simbio USA Inc · $29,495",
       "notice_evidence": [
         {
           "request_id": "20260122015",
@@ -143638,30 +144123,45 @@
       "procurement_id": "procurement:contract:CT184620278802156",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278802156",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT184620278802156:JRCRUZ CORP:prime-vendor:2026-09-01"
+        "checkbook_contracts:contract:registered:CT184620278802156:JRCRUZ CORP:prime-vendor:2026-09-01",
+        "city_record:20260902009"
       ],
+      "request_id": "20260902009",
       "start_date": "2026-08-12",
       "end_date": "2028-08-10",
       "agency_id": null,
-      "agency_name": "Department of Parks and Recreation",
-      "short_title": "CNYG-2423MR: BX and Manhattan Tree-Damaged Sidewalk Recon",
+      "agency_name": "Parks and Recreation",
+      "short_title": "CNYG-2423MR: Bronx and Manhattan Tree-Damaged Sidewalk Reconstruction, Citywide",
       "pin": "84624B0009001R001",
       "contract_id": "CT184620278802156",
       "contract_amount": 4345037.6,
-      "vendor_name": "JRCRUZ CORP",
+      "vendor_name": "JRCRUZ Corp",
       "official_url": null,
       "selection_method_description": "RENEWAL OF CONTRACT",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Parks and Recreation · JRCRUZ CORP · $4,345,037.6",
-      "notice_evidence": [],
+      "additional_description_1": "Parks and Recreation · JRCRUZ Corp · $4,345,037.6",
+      "notice_evidence": [
+        {
+          "request_id": "20260902009",
+          "type_of_notice_description": "Award",
+          "short_title": "CNYG-2423MR: Bronx and Manhattan Tree-Damaged Sidewalk Reconstruction, Citywide",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-09-09",
+          "href": "/notices/20260902009"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -165019,30 +165519,45 @@
       "procurement_id": "procurement:contract:CT185020278802594",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT185020278802594",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT185020278802594:K SYSTEMS SOLUTIONS LLC:prime-vendor:2026-09-01"
+        "checkbook_contracts:contract:registered:CT185020278802594:K SYSTEMS SOLUTIONS LLC:prime-vendor:2026-09-01",
+        "city_record:20260902026"
       ],
+      "request_id": "20260902026",
       "start_date": "2026-07-17",
       "end_date": "2027-07-16",
       "agency_id": null,
-      "agency_name": "Department of Design and Construction",
+      "agency_name": "Design and Construction",
       "short_title": "Track IT! Licenses Maintenance and Support",
       "pin": "85027W0007001",
       "contract_id": "CT185020278802594",
       "contract_amount": 30098.31,
-      "vendor_name": "K SYSTEMS SOLUTIONS LLC",
+      "vendor_name": "K Systems Solutions LLC",
       "official_url": null,
       "selection_method_description": "M/WBE SMALL PURCHASE",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Design and Construction · K SYSTEMS SOLUTIONS LLC · $30,098.31",
-      "notice_evidence": [],
+      "additional_description_1": "Design and Construction · K Systems Solutions LLC · $30,098.31",
+      "notice_evidence": [
+        {
+          "request_id": "20260902026",
+          "type_of_notice_description": "Award",
+          "short_title": "Track IT! Licenses Maintenance and Support",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-09-10",
+          "href": "/notices/20260902026"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ],
       "method_family": "mwbe_small_purchase"
@@ -165723,14 +166238,14 @@
       "pin": "85619P8193KXLR001",
       "contract_id": "CT185620218801844",
       "contract_amount": 118576.8,
-      "vendor_name": "CABRAL ENTERPRISES LLC",
+      "vendor_name": "Cabral Enterprises LLC",
       "official_url": null,
       "selection_method_description": "Renewal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Citywide Administrative Services · CABRAL ENTERPRISES LLC · $118,576.8",
+      "additional_description_1": "Citywide Administrative Services · Cabral Enterprises LLC · $118,576.8",
       "notice_evidence": [
         {
           "request_id": "20210624145",
@@ -166279,14 +166794,14 @@
       "pin": "85619P8187KXLR001",
       "contract_id": "CT185620218802031",
       "contract_amount": 144830.92,
-      "vendor_name": "CORA GROUP, INC.",
+      "vendor_name": "CORA Group, Inc.",
       "official_url": null,
       "selection_method_description": "Renewal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Citywide Administrative Services · CORA GROUP, INC. · $164,908.09",
+      "additional_description_1": "Citywide Administrative Services · CORA Group, Inc. · $164,908.09",
       "notice_evidence": [
         {
           "request_id": "20210701162",
@@ -167158,14 +167673,14 @@
       "pin": "85619P8201KXLR001",
       "contract_id": "CT185620228801502",
       "contract_amount": 362007.58,
-      "vendor_name": "NORMA BRECKER, PH.D. HUMAN RESOURCE CONSULTIN",
+      "vendor_name": "Norma Becker, Ph.D. Human Resource Consulting",
       "official_url": null,
       "selection_method_description": "Renewal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Citywide Administrative Services · NORMA BRECKER, PH.D. HUMAN RESOURCE CONSULTIN · $362,007.58",
+      "additional_description_1": "Citywide Administrative Services · Norma Becker, Ph.D. Human Resource Consulting · $362,007.58",
       "notice_evidence": [
         {
           "request_id": "20210813105",
@@ -167894,14 +168409,14 @@
       "pin": "85622U0006001",
       "contract_id": "CT185620228804004",
       "contract_amount": 20000,
-      "vendor_name": "SMARTLING INC",
+      "vendor_name": "Smartling Inc",
       "official_url": null,
       "selection_method_description": "Subscription",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Citywide Administrative Services · SMARTLING INC · $20,000",
+      "additional_description_1": "Citywide Administrative Services · Smartling Inc · $20,000",
       "notice_evidence": [
         {
           "request_id": "20211213110",
@@ -169505,14 +170020,14 @@
       "pin": "85619P8193KXLR002",
       "contract_id": "CT185620238804322",
       "contract_amount": 130730.92,
-      "vendor_name": "CABRAL ENTERPRISES LLC",
+      "vendor_name": "Cabral Enterprises LLC",
       "official_url": null,
       "selection_method_description": "Renewal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Citywide Administrative Services · CABRAL ENTERPRISES LLC · $339,533.78",
+      "additional_description_1": "Citywide Administrative Services · Cabral Enterprises LLC · $339,533.78",
       "notice_evidence": [
         {
           "request_id": "20230301106",
@@ -169643,14 +170158,14 @@
       "pin": "85619P8187KXLR002",
       "contract_id": "CT185620238804449",
       "contract_amount": 159676.09,
-      "vendor_name": "CORA GROUP, INC.",
+      "vendor_name": "CORA Group, Inc.",
       "official_url": null,
       "selection_method_description": "Renewal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Citywide Administrative Services · CORA GROUP, INC. · $159,676.09",
+      "additional_description_1": "Citywide Administrative Services · CORA Group, Inc. · $159,676.09",
       "notice_evidence": [
         {
           "request_id": "20230406105",
@@ -170103,14 +170618,14 @@
       "pin": "85619P8201KXLR002",
       "contract_id": "CT185620238804814",
       "contract_amount": 399113.36,
-      "vendor_name": "NORMA BRECKER, PH.D. HUMAN RESOURCE CONSULTIN",
+      "vendor_name": "Norma Becker, Ph.D. Human Resource Consulting",
       "official_url": null,
       "selection_method_description": "Renewal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Citywide Administrative Services · NORMA BRECKER, PH.D. HUMAN RESOURCE CONSULTIN · $399,113.36",
+      "additional_description_1": "Citywide Administrative Services · Norma Becker, Ph.D. Human Resource Consulting · $399,113.36",
       "notice_evidence": [
         {
           "request_id": "20230404107",
@@ -170931,14 +171446,14 @@
       "pin": "85619P8195KXLR002",
       "contract_id": "CT185620238807840",
       "contract_amount": 113461.86,
-      "vendor_name": "MRW CONSULTING GROUP INTERNATIONAL LLC",
+      "vendor_name": "MRW Consulting Group International LLC",
       "official_url": null,
       "selection_method_description": "Renewal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Citywide Administrative Services · MRW CONSULTING GROUP INTERNATIONAL LLC · $113,461.86",
+      "additional_description_1": "Citywide Administrative Services · MRW Consulting Group International LLC · $113,461.86",
       "notice_evidence": [
         {
           "request_id": "20230722101",
@@ -174991,14 +175506,14 @@
       "pin": "85623W0030001",
       "contract_id": "CT185620248809101",
       "contract_amount": 235005.85,
-      "vendor_name": "MASON TECHNOLOGIES INC",
+      "vendor_name": "Mason Technologies Inc",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Citywide Administrative Services · MASON TECHNOLOGIES INC · $235,005.85",
+      "additional_description_1": "Citywide Administrative Services · Mason Technologies Inc · $235,005.85",
       "notice_evidence": [
         {
           "request_id": "20240610123",
@@ -186676,30 +187191,45 @@
       "procurement_id": "procurement:contract:CT185620278802005",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT185620278802005",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT185620278802005:JEWISH COMMUNITY COUNCIL OF GREATER CONEY ISLAND INC:prime-vendor:2026-09-07"
+        "checkbook_contracts:contract:registered:CT185620278802005:JEWISH COMMUNITY COUNCIL OF GREATER CONEY ISLAND INC:prime-vendor:2026-09-07",
+        "city_record:20260908013"
       ],
+      "request_id": "20260908013",
       "start_date": "2026-07-01",
       "end_date": "2026-12-31",
       "agency_id": null,
-      "agency_name": "Department of Citywide Administrative Services",
-      "short_title": "102(f) JEWISH COMMUNITY COUNCIL OF GREATER CONEY ISLAND",
+      "agency_name": "Citywide Administrative Services",
+      "short_title": "Professional Development Off-the-Shelf Training",
       "pin": "85627U0007001",
       "contract_id": "CT185620278802005",
       "contract_amount": 99999,
-      "vendor_name": "JEWISH COMMUNITY COUNCIL OF GREATER CONEY ISLAND INC",
+      "vendor_name": "Jewish Community Council of Greater Coney Island",
       "official_url": null,
       "selection_method_description": "SUBSCRIPTION ETC PER PPB",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Citywide Administrative Services · JEWISH COMMUNITY COUNCIL OF GREATER CONEY ISLAND INC · $99,999",
-      "notice_evidence": [],
+      "additional_description_1": "Citywide Administrative Services · Jewish Community Council of Greater Coney Island · $99,999",
+      "notice_evidence": [
+        {
+          "request_id": "20260908013",
+          "type_of_notice_description": "Award",
+          "short_title": "Professional Development Off-the-Shelf Training",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-09-14",
+          "href": "/notices/20260908013"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -186739,30 +187269,45 @@
       "procurement_id": "procurement:contract:CT185620278802075",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT185620278802075",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT185620278802075:CORA GROUP, INC.:prime-vendor:2026-09-07"
+        "checkbook_contracts:contract:registered:CT185620278802075:CORA GROUP, INC.:prime-vendor:2026-09-07",
+        "city_record:20260908012"
       ],
+      "request_id": "20260908012",
       "start_date": "2026-07-01",
       "end_date": "2026-12-31",
       "agency_id": null,
-      "agency_name": "Department of Citywide Administrative Services",
-      "short_title": "102(f) CORA GROUP, INC",
+      "agency_name": "Citywide Administrative Services",
+      "short_title": "Professional Development Off-the-Shelf Training",
       "pin": "85627U0005001",
       "contract_id": "CT185620278802075",
       "contract_amount": 99999,
-      "vendor_name": "CORA GROUP, INC.",
+      "vendor_name": "CORA Group, Inc.",
       "official_url": null,
       "selection_method_description": "SUBSCRIPTION ETC PER PPB",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Citywide Administrative Services · CORA GROUP, INC. · $99,999",
-      "notice_evidence": [],
+      "additional_description_1": "Citywide Administrative Services · CORA Group, Inc. · $99,999",
+      "notice_evidence": [
+        {
+          "request_id": "20260908012",
+          "type_of_notice_description": "Award",
+          "short_title": "Professional Development Off-the-Shelf Training",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-09-14",
+          "href": "/notices/20260908012"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -186994,30 +187539,45 @@
       "procurement_id": "procurement:contract:CT185620278802637",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT185620278802637",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT185620278802637:T R JOY & ASSOCIATES INC:prime-vendor:2026-09-02"
+        "checkbook_contracts:contract:registered:CT185620278802637:T R JOY & ASSOCIATES INC:prime-vendor:2026-09-02",
+        "city_record:20260902030"
       ],
+      "request_id": "20260902030",
       "start_date": "2026-07-01",
       "end_date": "2028-06-30",
       "agency_id": null,
-      "agency_name": "Department of Citywide Administrative Services",
+      "agency_name": "Citywide Administrative Services",
       "short_title": "CCTV Maintenance",
       "pin": "85627W0004001",
       "contract_id": "CT185620278802637",
       "contract_amount": 99999,
-      "vendor_name": "T R JOY & ASSOCIATES INC",
+      "vendor_name": "T R Joy & Associates Inc",
       "official_url": null,
       "selection_method_description": "M/WBE SMALL PURCHASE",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Citywide Administrative Services · T R JOY & ASSOCIATES INC · $99,999",
-      "notice_evidence": [],
+      "additional_description_1": "Citywide Administrative Services · T R Joy & Associates Inc · $99,999",
+      "notice_evidence": [
+        {
+          "request_id": "20260902030",
+          "type_of_notice_description": "Award",
+          "short_title": "CCTV Maintenance",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-09-10",
+          "href": "/notices/20260902030"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ],
       "method_family": "mwbe_small_purchase"
@@ -189242,14 +189802,14 @@
       "pin": "06823O0009001",
       "contract_id": "CT185720248800452",
       "contract_amount": 344949,
-      "vendor_name": "NORIX GROUP INC",
+      "vendor_name": "Norix Group Inc",
       "official_url": null,
       "selection_method_description": "Intergovernmental OGS",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Citywide Administrative Services · NORIX GROUP INC · $344,949",
+      "additional_description_1": "Citywide Administrative Services · Norix Group Inc · $344,949",
       "notice_evidence": [
         {
           "request_id": "20230808104",
@@ -189288,14 +189848,14 @@
       "pin": "05623O0012001",
       "contract_id": "CT185720248801761",
       "contract_amount": 2793140,
-      "vendor_name": "CENTRAL LAKE ARMOR EXPRESS INC",
+      "vendor_name": "Central Lake Armor Express Inc",
       "official_url": null,
       "selection_method_description": "Intergovernmental GSA",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Citywide Administrative Services · CENTRAL LAKE ARMOR EXPRESS INC · $2,793,140",
+      "additional_description_1": "Citywide Administrative Services · Central Lake Armor Express Inc · $2,793,140",
       "notice_evidence": [
         {
           "request_id": "20231006103",
@@ -189978,14 +190538,14 @@
       "pin": "05624O0013001",
       "contract_id": "CT185720248807609",
       "contract_amount": 490000,
-      "vendor_name": "CENTRAL LAKE ARMOR EXPRESS INC",
+      "vendor_name": "Central Lake Armor Express Inc",
       "official_url": null,
       "selection_method_description": "Intergovernmental OGS",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Citywide Administrative Services · CENTRAL LAKE ARMOR EXPRESS INC · $490,000",
+      "additional_description_1": "Citywide Administrative Services · Central Lake Armor Express Inc · $490,000",
       "notice_evidence": [
         {
           "request_id": "20240725105",
@@ -192093,14 +192653,14 @@
       "pin": "85821W0403001",
       "contract_id": "CT185820218801106",
       "contract_amount": 499800,
-      "vendor_name": "Infopeople Corporation",
+      "vendor_name": "InfoPeople Corporation",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Information Technology and Telecommunications · Infopeople Corporation · $499,800",
+      "additional_description_1": "Information Technology and Telecommunications · InfoPeople Corporation · $499,800",
       "notice_evidence": [
         {
           "request_id": "20210226109",
@@ -192327,14 +192887,14 @@
       "pin": "85819P8198KXLR001",
       "contract_id": "CT185820228800705",
       "contract_amount": 10500000,
-      "vendor_name": "NEW YORK FOUNDATION FOR THE ARTS",
+      "vendor_name": "New York Foundation for the Arts",
       "official_url": null,
       "selection_method_description": "Renewal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Information Technology and Telecommunications · NEW YORK FOUNDATION FOR THE ARTS · $10,500,000",
+      "additional_description_1": "Information Technology and Telecommunications · New York Foundation for the Arts · $10,500,000",
       "notice_evidence": [
         {
           "request_id": "20210727105",
@@ -197896,14 +198456,14 @@
       "pin": "85824W0069001",
       "contract_id": "CT185820248805924",
       "contract_amount": 576940,
-      "vendor_name": "Infopeople Corporation",
+      "vendor_name": "InfoPeople Corporation",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Information Technology and Telecommunications · Infopeople Corporation · $576,940",
+      "additional_description_1": "Information Technology and Telecommunications · InfoPeople Corporation · $576,940",
       "notice_evidence": [
         {
           "request_id": "20240227111",
@@ -197943,14 +198503,14 @@
       "pin": "85819P8198KXLR002",
       "contract_id": "CT185820248806144",
       "contract_amount": 1580000,
-      "vendor_name": "NEW YORK FOUNDATION FOR THE ARTS",
+      "vendor_name": "New York Foundation for the Arts",
       "official_url": null,
       "selection_method_description": "Renewal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Information Technology and Telecommunications · NEW YORK FOUNDATION FOR THE ARTS · $1,761,500",
+      "additional_description_1": "Information Technology and Telecommunications · New York Foundation for the Arts · $1,761,500",
       "notice_evidence": [
         {
           "request_id": "20240403116",
@@ -204082,14 +204642,14 @@
       "pin": "85825W0103001",
       "contract_id": "CT185820258806963",
       "contract_amount": 423259.2,
-      "vendor_name": "Infopeople Corporation",
+      "vendor_name": "InfoPeople Corporation",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Information Technology and Telecommunications · Infopeople Corporation · $423,259.2",
+      "additional_description_1": "Information Technology and Telecommunications · InfoPeople Corporation · $423,259.2",
       "notice_evidence": [
         {
           "request_id": "20250404019",
@@ -204223,14 +204783,14 @@
       "pin": "85825W0085001",
       "contract_id": "CT185820258807066",
       "contract_amount": 618800,
-      "vendor_name": "Infopeople Corporation",
+      "vendor_name": "InfoPeople Corporation",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Information Technology and Telecommunications · Infopeople Corporation · $618,800",
+      "additional_description_1": "Information Technology and Telecommunications · InfoPeople Corporation · $618,800",
       "notice_evidence": [
         {
           "request_id": "20250501038",
@@ -206087,14 +206647,14 @@
       "pin": "85825W0138001",
       "contract_id": "CT185820268801830",
       "contract_amount": 398361.6,
-      "vendor_name": "Infopeople Corporation",
+      "vendor_name": "InfoPeople Corporation",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Information Technology and Telecommunications · Infopeople Corporation · $398,361.6",
+      "additional_description_1": "Information Technology and Telecommunications · InfoPeople Corporation · $398,361.6",
       "notice_evidence": [
         {
           "request_id": "20250815010",
@@ -206509,14 +207069,14 @@
       "pin": "85826W0011001",
       "contract_id": "CT185820268802005",
       "contract_amount": 653120,
-      "vendor_name": "Infopeople Corporation",
+      "vendor_name": "InfoPeople Corporation",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Information Technology and Telecommunications · Infopeople Corporation · $653,120",
+      "additional_description_1": "Information Technology and Telecommunications · InfoPeople Corporation · $653,120",
       "notice_evidence": [
         {
           "request_id": "20250815011",
@@ -207636,14 +208196,14 @@
       "pin": "85826W0034001",
       "contract_id": "CT185820268803085",
       "contract_amount": 326560,
-      "vendor_name": "Infopeople Corporation",
+      "vendor_name": "InfoPeople Corporation",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Information Technology and Telecommunications · Infopeople Corporation · $326,560",
+      "additional_description_1": "Information Technology and Telecommunications · InfoPeople Corporation · $326,560",
       "notice_evidence": [
         {
           "request_id": "20251003013",
@@ -207926,14 +208486,14 @@
       "pin": "85826W0040001",
       "contract_id": "CT185820268803249",
       "contract_amount": 423259.2,
-      "vendor_name": "Infopeople Corporation",
+      "vendor_name": "InfoPeople Corporation",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Information Technology and Telecommunications · Infopeople Corporation · $423,259.2",
+      "additional_description_1": "Information Technology and Telecommunications · InfoPeople Corporation · $423,259.2",
       "notice_evidence": [
         {
           "request_id": "20251010022",
@@ -208255,14 +208815,14 @@
       "pin": "85826W0007001",
       "contract_id": "CT185820268803451",
       "contract_amount": 441490,
-      "vendor_name": "Infopeople Corporation",
+      "vendor_name": "InfoPeople Corporation",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Information Technology and Telecommunications · Infopeople Corporation · $441,490",
+      "additional_description_1": "Information Technology and Telecommunications · InfoPeople Corporation · $441,490",
       "notice_evidence": [
         {
           "request_id": "20251023007",
@@ -208592,14 +209152,14 @@
       "pin": "85826W0044001",
       "contract_id": "CT185820268803716",
       "contract_amount": 389130,
-      "vendor_name": "Infopeople Corporation",
+      "vendor_name": "InfoPeople Corporation",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Information Technology and Telecommunications · Infopeople Corporation · $389,130",
+      "additional_description_1": "Information Technology and Telecommunications · InfoPeople Corporation · $389,130",
       "notice_evidence": [
         {
           "request_id": "20251120021",
@@ -211100,14 +211660,14 @@
       "pin": "85826W0073001",
       "contract_id": "CT185820268806448",
       "contract_amount": 306250,
-      "vendor_name": "Infopeople Corporation",
+      "vendor_name": "InfoPeople Corporation",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Information Technology and Telecommunications · Infopeople Corporation · $306,250",
+      "additional_description_1": "Information Technology and Telecommunications · InfoPeople Corporation · $306,250",
       "notice_evidence": [
         {
           "request_id": "20260327030",
@@ -216231,14 +216791,14 @@
       "pin": "86625W0014001",
       "contract_id": "CT186620268802153",
       "contract_amount": 898307.2,
-      "vendor_name": "Infopeople Corporation",
+      "vendor_name": "InfoPeople Corporation",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Consumer and Worker Protection · Infopeople Corporation · $898,307.2",
+      "additional_description_1": "Consumer and Worker Protection · InfoPeople Corporation · $898,307.2",
       "notice_evidence": [
         {
           "request_id": "20250822012",
@@ -246282,14 +246842,14 @@
       "pin": "85722B0185001",
       "contract_id": "MA185720238802956",
       "contract_amount": 6040080,
-      "vendor_name": "ATLANTIC SALT INC",
+      "vendor_name": "Atlantic Salt Inc",
       "official_url": null,
       "selection_method_description": "Competitive Sealed Bid",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Citywide Administrative Services · ATLANTIC SALT INC · $6,040,080",
+      "additional_description_1": "Citywide Administrative Services · Atlantic Salt Inc · $6,040,080",
       "notice_evidence": [
         {
           "request_id": "20220930116",
@@ -261508,14 +262068,14 @@
       "pin": "85724B0099001",
       "contract_id": "MA185720258801283",
       "contract_amount": 2140040,
-      "vendor_name": "MORTON SALT INC",
+      "vendor_name": "Morton Salt Inc",
       "official_url": null,
       "selection_method_description": "Competitive Sealed Bid",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Citywide Administrative Services · MORTON SALT INC · $2,140,040",
+      "additional_description_1": "Citywide Administrative Services · Morton Salt Inc · $2,140,040",
       "notice_evidence": [
         {
           "request_id": "20241230004",
@@ -261554,14 +262114,14 @@
       "pin": "85724B0099002",
       "contract_id": "MA185720258801284",
       "contract_amount": 5895000,
-      "vendor_name": "ATLANTIC SALT INC",
+      "vendor_name": "Atlantic Salt Inc",
       "official_url": null,
       "selection_method_description": "Competitive Sealed Bid",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Citywide Administrative Services · ATLANTIC SALT INC · $5,895,000",
+      "additional_description_1": "Citywide Administrative Services · Atlantic Salt Inc · $5,895,000",
       "notice_evidence": [
         {
           "request_id": "20240813107",
@@ -265945,14 +266505,14 @@
       "pin": "85725B0085002",
       "contract_id": "MA185720268800984",
       "contract_amount": 5200,
-      "vendor_name": "LIC Com LLC",
+      "vendor_name": "LIC COM LLC",
       "official_url": null,
       "selection_method_description": "Competitive Sealed Bid",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Citywide Administrative Services · LIC Com LLC · $5,200",
+      "additional_description_1": "Citywide Administrative Services · LIC COM LLC · $5,200",
       "notice_evidence": [
         {
           "request_id": "20250625018",
@@ -266593,14 +267153,14 @@
       "pin": "85725B0084001",
       "contract_id": "MA185720268801048",
       "contract_amount": 366543.24,
-      "vendor_name": "LIC Com LLC",
+      "vendor_name": "LIC COM LLC",
       "official_url": null,
       "selection_method_description": "Competitive Sealed Bid",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Citywide Administrative Services · LIC Com LLC · $366,543.24",
+      "additional_description_1": "Citywide Administrative Services · LIC COM LLC · $366,543.24",
       "notice_evidence": [
         {
           "request_id": "20250626033",
@@ -266777,14 +267337,14 @@
       "pin": "85725B0067001",
       "contract_id": "MA185720268801087",
       "contract_amount": 280035,
-      "vendor_name": "LIC Com LLC",
+      "vendor_name": "LIC COM LLC",
       "official_url": null,
       "selection_method_description": "Competitive Sealed Bid",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Citywide Administrative Services · LIC Com LLC · $280,035",
+      "additional_description_1": "Citywide Administrative Services · LIC COM LLC · $280,035",
       "notice_evidence": [
         {
           "request_id": "20250703024",
@@ -273059,14 +273619,14 @@
       "pin": "85823X8001KXLR001",
       "contract_id": "MA185820258800267",
       "contract_amount": 42000000,
-      "vendor_name": "MASON TECHNOLOGIES INC",
+      "vendor_name": "Mason Technologies Inc",
       "official_url": null,
       "selection_method_description": "Renewal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Information Technology and Telecommunications · MASON TECHNOLOGIES INC · $42,000,000",
+      "additional_description_1": "Information Technology and Telecommunications · Mason Technologies Inc · $42,000,000",
       "notice_evidence": [
         {
           "request_id": "20240605102",
@@ -278141,14 +278701,14 @@
       "pin": "06919P0006011",
       "contract_id": "MMA106920238802058",
       "contract_amount": 1664152.09,
-      "vendor_name": "BEHAVIORAL IDEAS LAB INC",
+      "vendor_name": "Behavioral Ideas Lab Inc",
       "official_url": null,
       "selection_method_description": "Competitive Sealed Proposal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Dept. of Social Svcs/Human Resources Administration · BEHAVIORAL IDEAS LAB INC · $1,664,152.09",
+      "additional_description_1": "Dept. of Social Svcs/Human Resources Administration · Behavioral Ideas Lab Inc · $1,664,152.09",
       "notice_evidence": [
         {
           "request_id": "20220825110",
@@ -296610,14 +297170,14 @@
       "pin": "85024P0014012",
       "contract_id": "MMA185020258807201",
       "contract_amount": 50000000,
-      "vendor_name": "M&J ENGINEERING DPC",
+      "vendor_name": "M&J Engineering DPC",
       "official_url": null,
       "selection_method_description": "Competitive Sealed Proposal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Design and Construction · M&J ENGINEERING DPC · $50,000,000",
+      "additional_description_1": "Design and Construction · M&J Engineering DPC · $50,000,000",
       "notice_evidence": [
         {
           "request_id": "20250515010",

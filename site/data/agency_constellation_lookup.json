@@ -2,7 +2,7 @@
   "schema": "cityscroll.agency_constellation.v1",
   "method": "agency_constellation_v1",
   "er_match_basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1",
-  "generated_at": "12796|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-05T13:44:00.909Z|2026-09-30T13:15:13.798Z|2026-09-30T13:15:55.664Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-09-05T13:44:00.909Z|2026-09-09|2026-09-09T06:33:01.880Z|2026-09-09T06:33:01.880Z|2026-09-30|2026-09-30T13:14:25.240Z|2026-09-30T13:15:43.197Z|2026-09-30T13:15:55.664Z",
+  "generated_at": "12796|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-30T13:15:13.798Z|2026-09-30T13:15:55.664Z|2026-10-05T17:33:57.544Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-09-09|2026-09-09T06:33:01.880Z|2026-09-09T06:33:01.880Z|2026-09-30|2026-09-30T13:14:25.240Z|2026-09-30T13:15:43.197Z|2026-09-30T13:15:55.664Z|2026-10-05T17:33:57.544Z",
   "iteration": "v1",
   "demo_ids": [
     "parks-and-recreation",
@@ -10,7 +10,7 @@
     "economic-development-corporation"
   ],
   "agency_count": 86,
-  "multi_category_count": 59,
+  "multi_category_count": 60,
   "verified_demo": "agency:id:parks-and-recreation",
   "aliases": {
     "board-meetings": "board-meetings",
@@ -178,15 +178,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aadministration-for-childrens-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aadministration-for-childrens-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aadministration-for-childrens-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aadministration-for-childrens-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:administration-for-childrens-services"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "administration-for-childrens-services",
@@ -198,7 +198,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -242,8 +242,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -617,8 +617,8 @@
           "subject_ref": "vendor:stem:JEWISH%20CHILD%20CARE%20ASSOCIATION",
           "label": "Jewish Child Care Association of New York",
           "href": "/vendors/JEWISH%20CHILD%20CARE%20ASSOCIATION/",
-          "award_count": 7,
-          "award_total": 322922964,
+          "award_count": 8,
+          "award_total": 333635399,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -628,19 +628,8 @@
           "subject_ref": "vendor:stem:THE%20CHILDREN%20S%20VILLAGE",
           "label": "The Children's Village",
           "href": "/vendors/THE%20CHILDREN%20S%20VILLAGE/",
-          "award_count": 9,
-          "award_total": 320414948,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
-          "id": "vendor:stem:NEW%20YORK%20FOUNDLING",
-          "subject_ref": "vendor:stem:NEW%20YORK%20FOUNDLING",
-          "label": "New York Foundling",
-          "href": "/vendors/NEW%20YORK%20FOUNDLING/",
-          "award_count": 15,
-          "award_total": 284181543,
+          "award_count": 7,
+          "award_total": 314304098,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -657,12 +646,23 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
+          "id": "vendor:stem:NEW%20YORK%20FOUNDLING",
+          "subject_ref": "vendor:stem:NEW%20YORK%20FOUNDLING",
+          "label": "New York Foundling",
+          "href": "/vendors/NEW%20YORK%20FOUNDLING/",
+          "award_count": 14,
+          "award_total": 281175462,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
           "id": "vendor:stem:GOOD%20SHEPHERD%20SERVICES",
           "subject_ref": "vendor:stem:GOOD%20SHEPHERD%20SERVICES",
           "label": "Good Shepherd Services",
           "href": "/vendors/GOOD%20SHEPHERD%20SERVICES/",
-          "award_count": 8,
-          "award_total": 222639105,
+          "award_count": 11,
+          "award_total": 235556657,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -832,15 +832,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aadministrative-trials-and-hearings%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aadministrative-trials-and-hearings%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aadministrative-trials-and-hearings%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aadministrative-trials-and-hearings%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:administrative-trials-and-hearings"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "administrative-trials-and-hearings",
@@ -852,7 +852,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -896,8 +896,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -1498,15 +1498,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aaging%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aaging%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aaging%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aaging%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:aging"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "aging",
@@ -1518,7 +1518,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -1562,8 +1562,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -2166,7 +2166,7 @@
             "mode": null,
             "entity_ref": "agency:id:board-meetings"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "board-meetings",
@@ -2178,7 +2178,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -2216,8 +2216,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -2719,7 +2719,7 @@
             "mode": null,
             "entity_ref": "agency:id:board-of-correction"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "board-of-correction",
@@ -2731,7 +2731,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -2769,8 +2769,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -3290,7 +3290,7 @@
             "mode": null,
             "entity_ref": "agency:id:board-of-elections"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "board-of-elections",
@@ -3302,7 +3302,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -3340,8 +3340,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -3843,7 +3843,7 @@
             "mode": null,
             "entity_ref": "agency:id:board-of-standards-and-appeals"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "board-of-standards-and-appeals",
@@ -3855,7 +3855,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -3893,8 +3893,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -4402,7 +4402,7 @@
             "mode": null,
             "entity_ref": "agency:id:borough-president-bronx"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "borough-president-bronx",
@@ -4414,7 +4414,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -4452,8 +4452,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -4961,7 +4961,7 @@
             "mode": null,
             "entity_ref": "agency:id:borough-president-brooklyn"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "borough-president-brooklyn",
@@ -4973,7 +4973,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -5011,8 +5011,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -5508,7 +5508,7 @@
             "mode": null,
             "entity_ref": "agency:id:borough-president-queens"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "borough-president-queens",
@@ -5520,7 +5520,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -5558,8 +5558,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -6059,15 +6059,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abuildings%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abuildings%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abuildings%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abuildings%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:buildings"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "buildings",
@@ -6079,7 +6079,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -6123,8 +6123,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -6731,15 +6731,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 1,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abusiness-integrity-commission%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abusiness-integrity-commission%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abusiness-integrity-commission%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abusiness-integrity-commission%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:business-integrity-commission"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "business-integrity-commission",
@@ -6751,7 +6751,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -6795,8 +6795,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -7328,7 +7328,7 @@
             "mode": null,
             "entity_ref": "agency:id:campaign-finance-board"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "campaign-finance-board",
@@ -7340,7 +7340,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -7378,8 +7378,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -7887,7 +7887,7 @@
             "mode": null,
             "entity_ref": "agency:id:charter-revision-commission"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "charter-revision-commission",
@@ -7899,7 +7899,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -7937,8 +7937,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -8432,15 +8432,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Achief-medical-examiner%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Achief-medical-examiner%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Achief-medical-examiner%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Achief-medical-examiner%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:chief-medical-examiner"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "chief-medical-examiner",
@@ -8452,7 +8452,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -8496,8 +8496,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -8899,6 +8899,17 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
+          "id": "vendor:stem:CEDAR%20PARK%20GROUP",
+          "subject_ref": "vendor:stem:CEDAR%20PARK%20GROUP",
+          "label": "Cedar Park Group Inc",
+          "href": "/vendors/CEDAR%20PARK%20GROUP/",
+          "award_count": 1,
+          "award_total": 500000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
           "id": "vendor:stem:BECKMAN%20COULTER",
           "subject_ref": "vendor:stem:BECKMAN%20COULTER",
           "label": "Beckman Coulter Inc",
@@ -8916,17 +8927,6 @@
           "href": "/vendors/AVANTI%20MECHANICAL/",
           "award_count": 1,
           "award_total": 300000,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
-          "id": "vendor:stem:OLYMPIC%20PLUMBING%20HEATING%20SERVICES",
-          "subject_ref": "vendor:stem:OLYMPIC%20PLUMBING%20HEATING%20SERVICES",
-          "label": "Olympic Plumbing & Heating Services, Inc.",
-          "href": "/vendors/OLYMPIC%20PLUMBING%20HEATING%20SERVICES/",
-          "award_count": 1,
-          "award_total": 250680,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -9082,7 +9082,7 @@
             "mode": null,
             "entity_ref": "agency:id:city-clerk"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "city-clerk",
@@ -9094,7 +9094,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -9132,8 +9132,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -9641,7 +9641,7 @@
             "mode": null,
             "entity_ref": "agency:id:city-council"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "city-council",
@@ -9653,7 +9653,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -9691,8 +9691,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -10070,7 +10070,7 @@
         },
         "vendors": {
           "status": "matched",
-          "count": 5,
+          "count": 4,
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
@@ -10196,17 +10196,17 @@
           "target_kind": "vendor",
           "target_id": null,
           "target_name": "Top vendors by award $ (last 12 mo)",
-          "count": 5,
+          "count": 4,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-planning%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-planning%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-planning%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-planning%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:city-planning"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "city-planning",
@@ -10218,7 +10218,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -10227,15 +10227,15 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "5",
-              "materialized": "5",
+              "total": "4",
+              "materialized": "4",
               "dated": "0",
-              "undated": "5",
+              "undated": "4",
               "by_state": {
-                "matched": "5"
+                "matched": "4"
               },
               "by_relation": {
-                "top_vendor_by_award_12mo": "5"
+                "top_vendor_by_award_12mo": "4"
               }
             },
             "spans": {
@@ -10254,16 +10254,16 @@
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "5"
+                "unknown": "4"
               },
               "by_stage": {
-                "unknown": "5"
+                "unknown": "4"
               },
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -10661,17 +10661,6 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
-          "id": "vendor:stem:MOUGONDHA%20ACHARYA",
-          "subject_ref": "vendor:stem:MOUGONDHA%20ACHARYA",
-          "label": "Mougondha Acharya",
-          "href": "/vendors/MOUGONDHA%20ACHARYA/",
-          "award_count": 1,
-          "award_total": 58134,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
           "id": "vendor:stem:COSTAR%20REALTY%20INFORMATION",
           "subject_ref": "vendor:stem:COSTAR%20REALTY%20INFORMATION",
           "label": "Costar Realty Information, Inc.",
@@ -10833,7 +10822,7 @@
             "mode": null,
             "entity_ref": "agency:id:city-planning-commission"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "city-planning-commission",
@@ -10845,7 +10834,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -10883,8 +10872,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -11390,15 +11379,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acitywide-administrative-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acitywide-administrative-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acitywide-administrative-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acitywide-administrative-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:citywide-administrative-services"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "citywide-administrative-services",
@@ -11410,7 +11399,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -11454,8 +11443,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -12056,15 +12045,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 1,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acivilian-complaint-review-board%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acivilian-complaint-review-board%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acivilian-complaint-review-board%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acivilian-complaint-review-board%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:civilian-complaint-review-board"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "civilian-complaint-review-board",
@@ -12076,7 +12065,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -12120,8 +12109,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -12639,15 +12628,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 1,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acommission-on-human-rights%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acommission-on-human-rights%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acommission-on-human-rights%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acommission-on-human-rights%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:commission-on-human-rights"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "commission-on-human-rights",
@@ -12659,7 +12648,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -12703,8 +12692,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -13230,7 +13219,7 @@
             "mode": null,
             "entity_ref": "agency:id:commission-on-racial-equity"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "commission-on-racial-equity",
@@ -13242,7 +13231,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -13280,8 +13269,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -13783,7 +13772,7 @@
             "mode": null,
             "entity_ref": "agency:id:community-boards"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "community-boards",
@@ -13795,7 +13784,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -13833,8 +13822,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -14206,7 +14195,7 @@
         },
         "vendors": {
           "status": "matched",
-          "count": 7,
+          "count": 8,
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
@@ -14326,17 +14315,17 @@
           "target_kind": "vendor",
           "target_id": null,
           "target_name": "Top vendors by award $ (last 12 mo)",
-          "count": 7,
+          "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acomptroller%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acomptroller%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acomptroller%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acomptroller%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:comptroller"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "comptroller",
@@ -14348,7 +14337,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -14357,15 +14346,15 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "7",
-              "materialized": "7",
+              "total": "8",
+              "materialized": "8",
               "dated": "0",
-              "undated": "7",
+              "undated": "8",
               "by_state": {
-                "matched": "7"
+                "matched": "8"
               },
               "by_relation": {
-                "top_vendor_by_award_12mo": "7"
+                "top_vendor_by_award_12mo": "8"
               }
             },
             "spans": {
@@ -14384,16 +14373,16 @@
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "7"
+                "unknown": "8"
               },
               "by_stage": {
-                "unknown": "7"
+                "unknown": "8"
               },
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -14780,6 +14769,17 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
+          "id": "vendor:stem:NEW%20YORK%20STATE%20TECHNOLOGY%20ENTERPRISE",
+          "subject_ref": "vendor:stem:NEW%20YORK%20STATE%20TECHNOLOGY%20ENTERPRISE",
+          "label": "New York State Technology Enterprise Corporation",
+          "href": "/vendors/NEW%20YORK%20STATE%20TECHNOLOGY%20ENTERPRISE/",
+          "award_count": 1,
+          "award_total": 145000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
           "id": "vendor:stem:GIOIA%20P%20AMBRETTE%20INC%20DBA%20NEWCASTLE%20COMMUNICATIONS",
           "subject_ref": "vendor:stem:GIOIA%20P%20AMBRETTE%20INC%20DBA%20NEWCASTLE%20COMMUNICATIONS",
           "label": "Gioia P Ambrette Inc DBA Newcastle Communications",
@@ -14983,15 +14983,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aconsumer-and-worker-protection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aconsumer-and-worker-protection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aconsumer-and-worker-protection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aconsumer-and-worker-protection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:consumer-and-worker-protection"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "consumer-and-worker-protection",
@@ -15003,7 +15003,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -15047,8 +15047,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -15489,8 +15489,8 @@
           "subject_ref": "vendor:stem:NEW%20YORK%20STATE%20INDUSTRIES%20FOR%20THE%20DISABLED",
           "label": "New York State Industries for the Disabled Inc",
           "href": "/vendors/NEW%20YORK%20STATE%20INDUSTRIES%20FOR%20THE%20DISABLED/",
-          "award_count": 3,
-          "award_total": 222000,
+          "award_count": 2,
+          "award_total": 152000,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -15655,15 +15655,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acorrection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acorrection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acorrection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acorrection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:correction"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "correction",
@@ -15675,7 +15675,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -15719,8 +15719,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -16145,23 +16145,23 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
+          "id": "vendor:stem:APEX%20BUILDING%20SOLUTIONS",
+          "subject_ref": "vendor:stem:APEX%20BUILDING%20SOLUTIONS",
+          "label": "Apex Building Solutions LLC",
+          "href": "/vendors/APEX%20BUILDING%20SOLUTIONS/",
+          "award_count": 3,
+          "award_total": 4111790,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
           "id": "vendor:stem:SECURUS%20TECHNOLOGIES",
           "subject_ref": "vendor:stem:SECURUS%20TECHNOLOGIES",
           "label": "Securus Technologies LLC",
           "href": "/vendors/SECURUS%20TECHNOLOGIES/",
           "award_count": 1,
           "award_total": 3941456,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
-          "id": "vendor:stem:THE%20OSBORNE%20ASSOCIATION",
-          "subject_ref": "vendor:stem:THE%20OSBORNE%20ASSOCIATION",
-          "label": "The Osborne Association, Inc.",
-          "href": "/vendors/THE%20OSBORNE%20ASSOCIATION/",
-          "award_count": 1,
-          "award_total": 3900204,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -16317,7 +16317,7 @@
             "mode": null,
             "entity_ref": "agency:id:criminal-justice-coordinator"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "criminal-justice-coordinator",
@@ -16329,7 +16329,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -16367,8 +16367,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -16740,7 +16740,7 @@
         },
         "vendors": {
           "status": "matched",
-          "count": 8,
+          "count": 7,
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
@@ -16866,17 +16866,17 @@
           "target_kind": "vendor",
           "target_id": null,
           "target_name": "Top vendors by award $ (last 12 mo)",
-          "count": 8,
+          "count": 7,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acultural-affairs%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acultural-affairs%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acultural-affairs%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acultural-affairs%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:cultural-affairs"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "cultural-affairs",
@@ -16888,7 +16888,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -16897,15 +16897,15 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "8",
-              "materialized": "8",
+              "total": "7",
+              "materialized": "7",
               "dated": "0",
-              "undated": "8",
+              "undated": "7",
               "by_state": {
-                "matched": "8"
+                "matched": "7"
               },
               "by_relation": {
-                "top_vendor_by_award_12mo": "8"
+                "top_vendor_by_award_12mo": "7"
               }
             },
             "spans": {
@@ -16924,16 +16924,16 @@
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "8"
+                "unknown": "7"
               },
               "by_stage": {
-                "unknown": "8"
+                "unknown": "7"
               },
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -17330,12 +17330,12 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
-          "id": "vendor:stem:FAUST%20HARRISON%20PIANOS",
-          "subject_ref": "vendor:stem:FAUST%20HARRISON%20PIANOS",
-          "label": "Faust Harrison Pianos Inc.",
-          "href": "/vendors/FAUST%20HARRISON%20PIANOS/",
+          "id": "vendor:stem:CREATE%20TODAY",
+          "subject_ref": "vendor:stem:CREATE%20TODAY",
+          "label": "Create Today LLC",
+          "href": "/vendors/CREATE%20TODAY/",
           "award_count": 1,
-          "award_total": 313572,
+          "award_total": 350000,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -17347,17 +17347,6 @@
           "href": "/vendors/AMERICAN%20COMPUTER%20CONSULTANTS/",
           "award_count": 1,
           "award_total": 112000,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
-          "id": "vendor:stem:MOUGONDHA%20ACHARYA",
-          "subject_ref": "vendor:stem:MOUGONDHA%20ACHARYA",
-          "label": "Mougondha Acharya",
-          "href": "/vendors/MOUGONDHA%20ACHARYA/",
-          "award_count": 1,
-          "award_total": 67750,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -17530,7 +17519,7 @@
             "mode": null,
             "entity_ref": "agency:id:department-of-social-services"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "department-of-social-services",
@@ -17542,7 +17531,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -17580,8 +17569,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -18075,15 +18064,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adesign-and-construction%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adesign-and-construction%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adesign-and-construction%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adesign-and-construction%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:design-and-construction"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "design-and-construction",
@@ -18095,7 +18084,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -18139,8 +18128,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -18548,17 +18537,6 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
-          "id": "vendor:stem:CITNALTA%20CONSTRUCTION",
-          "subject_ref": "vendor:stem:CITNALTA%20CONSTRUCTION",
-          "label": "Citnalta Construction Corp.",
-          "href": "/vendors/CITNALTA%20CONSTRUCTION/",
-          "award_count": 1,
-          "award_total": 53570415,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
           "id": "vendor:stem:MASPETH%20SUPPLY",
           "subject_ref": "vendor:stem:MASPETH%20SUPPLY",
           "label": "Maspeth Supply Co LLC",
@@ -18576,6 +18554,17 @@
           "href": "/vendors/ZAMAN%20CONSTRUCTION/",
           "award_count": 3,
           "award_total": 52751985,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:DEWBERRY-GF%20RESIDENT%20ENGINEERING%20JV",
+          "subject_ref": "vendor:stem:DEWBERRY-GF%20RESIDENT%20ENGINEERING%20JV",
+          "label": "Dewberry-GF Resident Engineering JV",
+          "href": "/vendors/DEWBERRY-GF%20RESIDENT%20ENGINEERING%20JV/",
+          "award_count": 1,
+          "award_total": 50000000,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -18731,7 +18720,7 @@
             "mode": null,
             "entity_ref": "agency:id:district-attorney-bronx-county"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "district-attorney-bronx-county",
@@ -18743,7 +18732,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -18781,8 +18770,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -19284,7 +19273,7 @@
             "mode": null,
             "entity_ref": "agency:id:district-attorney-kings-county"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "district-attorney-kings-county",
@@ -19296,7 +19285,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -19334,8 +19323,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -19829,15 +19818,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-new-york-county%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-new-york-county%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-new-york-county%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-new-york-county%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:district-attorney-new-york-county"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "district-attorney-new-york-county",
@@ -19849,7 +19838,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -19893,8 +19882,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -20269,6 +20258,17 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
+          "id": "vendor:stem:XEROX",
+          "subject_ref": "vendor:stem:XEROX",
+          "label": "Xerox Corporation",
+          "href": "/vendors/XEROX/",
+          "award_count": 1,
+          "award_total": 208787.04,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
           "id": "vendor:stem:COMPULINK%20TECHNOLOGIES",
           "subject_ref": "vendor:stem:COMPULINK%20TECHNOLOGIES",
           "label": "Compulink Technologies Inc",
@@ -20322,17 +20322,6 @@
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
-          "id": "vendor:stem:INSIGHT%20PUBLIC%20SECTOR",
-          "subject_ref": "vendor:stem:INSIGHT%20PUBLIC%20SECTOR",
-          "label": "Insight Public Sector Inc.",
-          "href": "/vendors/INSIGHT%20PUBLIC%20SECTOR/",
-          "award_count": 1,
-          "award_total": 50579.5,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
         }
       ]
     },
@@ -20346,7 +20335,7 @@
         "status": "matched",
         "source_observation_count": 4
       },
-      "matched_categories": 1,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
           "status": "empty",
@@ -20354,8 +20343,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 1,
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
@@ -20475,17 +20464,17 @@
           "target_kind": "vendor",
           "target_id": null,
           "target_name": "Top vendors by award $ (last 12 mo)",
-          "count": 0,
-          "state": "empty",
-          "href": null,
-          "canonical_href": null,
+          "count": 1,
+          "state": "matched",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-queens-county%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-queens-county%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:district-attorney-queens-county"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "district-attorney-queens-county",
@@ -20497,7 +20486,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -20506,12 +20495,16 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "0",
-              "materialized": "0",
+              "total": "1",
+              "materialized": "1",
               "dated": "0",
-              "undated": "0",
-              "by_state": {},
-              "by_relation": {}
+              "undated": "1",
+              "by_state": {
+                "matched": "1"
+              },
+              "by_relation": {
+                "top_vendor_by_award_12mo": "1"
+              }
             },
             "spans": {
               "valid": {
@@ -20529,14 +20522,16 @@
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "0"
+                "unknown": "1"
               },
-              "by_stage": {},
+              "by_stage": {
+                "unknown": "1"
+              },
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -20887,7 +20882,19 @@
           "cross_spine_explicit": false
         }
       ],
-      "top_vendors": []
+      "top_vendors": [
+        {
+          "id": "vendor:stem:QUALITY%20AND%20ASSURANCE%20TECHNOLOGY",
+          "subject_ref": "vendor:stem:QUALITY%20AND%20ASSURANCE%20TECHNOLOGY",
+          "label": "Quality and Assurance Technology Corp.",
+          "href": "/vendors/QUALITY%20AND%20ASSURANCE%20TECHNOLOGY/",
+          "award_count": 1,
+          "award_total": 156795,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "district-attorney-richmond-county": {
       "subject_ref": "agency:id:district-attorney-richmond-county",
@@ -21038,7 +21045,7 @@
             "mode": null,
             "entity_ref": "agency:id:district-attorney-richmond-county"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "district-attorney-richmond-county",
@@ -21050,7 +21057,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -21088,8 +21095,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -21597,7 +21604,7 @@
             "mode": null,
             "entity_ref": "agency:id:economic-development-corporation"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "economic-development-corporation",
@@ -21609,7 +21616,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -21647,8 +21654,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -22142,15 +22149,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeducation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeducation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeducation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeducation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:education"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "education",
@@ -22162,7 +22169,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -22206,8 +22213,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -22802,15 +22809,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemergency-management%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemergency-management%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemergency-management%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemergency-management%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:emergency-management"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "emergency-management",
@@ -22822,7 +22829,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -22866,8 +22873,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -23242,6 +23249,17 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
+          "id": "vendor:stem:AVI-SPL",
+          "subject_ref": "vendor:stem:AVI-SPL",
+          "label": "AVI-SPL LLC",
+          "href": "/vendors/AVI-SPL/",
+          "award_count": 1,
+          "award_total": 1385145,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
           "id": "vendor:stem:SLAM%20TECHNICAL%20SERVICES",
           "subject_ref": "vendor:stem:SLAM%20TECHNICAL%20SERVICES",
           "label": "SLAM Technical Services LLC",
@@ -23290,17 +23308,6 @@
           "subject_ref": "vendor:stem:LIFE%20STYLE%20AWARDS%20PROMOTIONAL%20PRODUCTS",
           "label": "Life Style Awards & Promotional Products",
           "href": "/vendors/LIFE%20STYLE%20AWARDS%20PROMOTIONAL%20PRODUCTS/",
-          "award_count": 1,
-          "award_total": 250000,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
-          "id": "vendor:stem:THE%20DESIGN%20AND%20BRANDING",
-          "subject_ref": "vendor:stem:THE%20DESIGN%20AND%20BRANDING",
-          "label": "The Design and Branding Company Inc.",
-          "href": "/vendors/THE%20DESIGN%20AND%20BRANDING/",
           "award_count": 1,
           "award_total": 250000,
           "confidence": "strong",
@@ -23450,15 +23457,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemployees-retirement-system%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemployees-retirement-system%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemployees-retirement-system%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemployees-retirement-system%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:employees-retirement-system"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "employees-retirement-system",
@@ -23470,7 +23477,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -23514,8 +23521,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -24104,15 +24111,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aenvironmental-protection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aenvironmental-protection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aenvironmental-protection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aenvironmental-protection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:environmental-protection"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "environmental-protection",
@@ -24124,7 +24131,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -24168,8 +24175,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -24778,7 +24785,7 @@
             "mode": null,
             "entity_ref": "agency:id:equal-employment-practices-commission"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "equal-employment-practices-commission",
@@ -24790,7 +24797,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -24828,8 +24835,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -25335,15 +25342,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinance%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinance%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinance%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinance%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:finance"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "finance",
@@ -25355,7 +25362,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -25399,8 +25406,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -25780,8 +25787,19 @@
           "subject_ref": "vendor:stem:TYLER%20TECHNOLOGIES",
           "label": "Tyler Technologies Inc",
           "href": "/vendors/TYLER%20TECHNOLOGIES/",
+          "award_count": 3,
+          "award_total": 17354522,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:IMMEDIATE%20MAILING%20SERVICES",
+          "subject_ref": "vendor:stem:IMMEDIATE%20MAILING%20SERVICES",
+          "label": "Immediate Mailing Services Inc",
+          "href": "/vendors/IMMEDIATE%20MAILING%20SERVICES/",
           "award_count": 2,
-          "award_total": 17255740,
+          "award_total": 14793314,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -25802,8 +25820,8 @@
           "subject_ref": "vendor:stem:SOURCECORP%20BPS",
           "label": "Sourcecorp BPS Inc.",
           "href": "/vendors/SOURCECORP%20BPS/",
-          "award_count": 1,
-          "award_total": 6745524,
+          "award_count": 2,
+          "award_total": 7272724,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -25820,34 +25838,23 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
-          "id": "vendor:stem:IMMEDIATE%20MAILING%20SERVICES",
-          "subject_ref": "vendor:stem:IMMEDIATE%20MAILING%20SERVICES",
-          "label": "Immediate Mailing Services Inc",
-          "href": "/vendors/IMMEDIATE%20MAILING%20SERVICES/",
-          "award_count": 1,
-          "award_total": 2626800,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
-          "id": "vendor:stem:SOLVEXIA%20PTY",
-          "subject_ref": "vendor:stem:SOLVEXIA%20PTY",
-          "label": "Solvexia Pty Ltd.",
-          "href": "/vendors/SOLVEXIA%20PTY/",
-          "award_count": 1,
-          "award_total": 1010000,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
           "id": "vendor:stem:WONDERWARE%20INC%20CORE%20BUSINESS%20TECHNOLOGIES",
           "subject_ref": "vendor:stem:WONDERWARE%20INC%20CORE%20BUSINESS%20TECHNOLOGIES",
           "label": "Wonderware, Inc. Core Business Technologies",
           "href": "/vendors/WONDERWARE%20INC%20CORE%20BUSINESS%20TECHNOLOGIES/",
           "award_count": 1,
           "award_total": 1000800,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:SHI%20INTERNATIONAL",
+          "subject_ref": "vendor:stem:SHI%20INTERNATIONAL",
+          "label": "SHI International Corp.",
+          "href": "/vendors/SHI%20INTERNATIONAL/",
+          "award_count": 1,
+          "award_total": 997751,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -25995,15 +26002,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 6,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinancial-information-services-agency%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinancial-information-services-agency%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinancial-information-services-agency%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinancial-information-services-agency%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:financial-information-services-agency"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "financial-information-services-agency",
@@ -26015,7 +26022,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -26059,8 +26066,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -26428,8 +26435,8 @@
           "subject_ref": "vendor:stem:COMPULINK%20TECHNOLOGIES",
           "label": "Compulink Technologies Inc",
           "href": "/vendors/COMPULINK%20TECHNOLOGIES/",
-          "award_count": 8,
-          "award_total": 774006.0700000001,
+          "award_count": 9,
+          "award_total": 881595.67,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -26437,10 +26444,10 @@
         {
           "id": "vendor:stem:COMPCITI%20BUSINESS%20SOLUTIONS",
           "subject_ref": "vendor:stem:COMPCITI%20BUSINESS%20SOLUTIONS",
-          "label": "CompCiti Business Solutions",
+          "label": "Compciti Business Solutions Inc.",
           "href": "/vendors/COMPCITI%20BUSINESS%20SOLUTIONS/",
-          "award_count": 6,
-          "award_total": 271008,
+          "award_count": 4,
+          "award_total": 136938,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -26627,15 +26634,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afire-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afire-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afire-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afire-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:fire-department"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "fire-department",
@@ -26647,7 +26654,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -26691,8 +26698,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -27134,12 +27141,12 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
-          "id": "vendor:stem:ATLANTIC%20ROLLING%20STEEL%20DOOR",
-          "subject_ref": "vendor:stem:ATLANTIC%20ROLLING%20STEEL%20DOOR",
-          "label": "Atlantic Rolling Steel Door Corp.",
-          "href": "/vendors/ATLANTIC%20ROLLING%20STEEL%20DOOR/",
-          "award_count": 2,
-          "award_total": 3000000,
+          "id": "vendor:stem:RESEARCH%20TRIANGLE%20INSTITUTE",
+          "subject_ref": "vendor:stem:RESEARCH%20TRIANGLE%20INSTITUTE",
+          "label": "Research Triangle Institute",
+          "href": "/vendors/RESEARCH%20TRIANGLE%20INSTITUTE/",
+          "award_count": 1,
+          "award_total": 5448234,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -27293,15 +27300,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahealth-and-mental-hygiene%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahealth-and-mental-hygiene%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahealth-and-mental-hygiene%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahealth-and-mental-hygiene%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:health-and-mental-hygiene"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "health-and-mental-hygiene",
@@ -27313,7 +27320,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -27357,8 +27364,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -27762,12 +27769,12 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
-          "id": "vendor:stem:SERVICES%20FOR%20THE%20UNDERSERVED",
-          "subject_ref": "vendor:stem:SERVICES%20FOR%20THE%20UNDERSERVED",
-          "label": "Services For The Underserved Inc.",
-          "href": "/vendors/SERVICES%20FOR%20THE%20UNDERSERVED/",
-          "award_count": 3,
-          "award_total": 65725323,
+          "id": "vendor:stem:FUND%20FOR%20PUBLIC%20HEALTH%20IN%20NEW%20YORK",
+          "subject_ref": "vendor:stem:FUND%20FOR%20PUBLIC%20HEALTH%20IN%20NEW%20YORK",
+          "label": "Fund for Public Health in New York Inc.",
+          "href": "/vendors/FUND%20FOR%20PUBLIC%20HEALTH%20IN%20NEW%20YORK/",
+          "award_count": 4,
+          "award_total": 66375036,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -27810,8 +27817,8 @@
           "subject_ref": "vendor:stem:THE%20FORTUNE%20SOCIETY",
           "label": "The Fortune Society Inc",
           "href": "/vendors/THE%20FORTUNE%20SOCIETY/",
-          "award_count": 3,
-          "award_total": 50321624,
+          "award_count": 2,
+          "award_total": 48654959,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -27965,15 +27972,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahomeless-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahomeless-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahomeless-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahomeless-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:homeless-services"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "homeless-services",
@@ -27985,7 +27992,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -28029,8 +28036,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -28411,12 +28418,23 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
+          "id": "vendor:stem:SAMARITAN%20DAYTOP%20VILLAGE",
+          "subject_ref": "vendor:stem:SAMARITAN%20DAYTOP%20VILLAGE",
+          "label": "Samaritan Daytop Village Inc",
+          "href": "/vendors/SAMARITAN%20DAYTOP%20VILLAGE/",
+          "award_count": 6,
+          "award_total": 539100954,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
           "id": "vendor:stem:BOWERY%20RESIDENTS%20COMMITTEE",
           "subject_ref": "vendor:stem:BOWERY%20RESIDENTS%20COMMITTEE",
           "label": "Bowery Residents' Committee, Inc.",
           "href": "/vendors/BOWERY%20RESIDENTS%20COMMITTEE/",
-          "award_count": 9,
-          "award_total": 566231157,
+          "award_count": 8,
+          "award_total": 537841637,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -28428,17 +28446,6 @@
           "href": "/vendors/NEIGHBORHOOD%20ASSOCIATION%20FOR%20INTER-CULTURAL%20AFFAIRS/",
           "award_count": 4,
           "award_total": 368342085,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
-          "id": "vendor:stem:SAMARITAN%20DAYTOP%20VILLAGE",
-          "subject_ref": "vendor:stem:SAMARITAN%20DAYTOP%20VILLAGE",
-          "label": "Samaritan Daytop Village Inc",
-          "href": "/vendors/SAMARITAN%20DAYTOP%20VILLAGE/",
-          "award_count": 5,
-          "award_total": 339725090,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -28625,15 +28632,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 1,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:housing-authority"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "housing-authority",
@@ -28645,7 +28652,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -28689,8 +28696,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -29208,15 +29215,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:housing-preservation-and-development"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "housing-preservation-and-development",
@@ -29228,7 +29235,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -29272,8 +29279,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -29655,17 +29662,6 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
-          "id": "vendor:stem:HELP%20SOCIAL%20SERVICE",
-          "subject_ref": "vendor:stem:HELP%20SOCIAL%20SERVICE",
-          "label": "Help Social Service Corporation",
-          "href": "/vendors/HELP%20SOCIAL%20SERVICE/",
-          "award_count": 1,
-          "award_total": 23949438,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
           "id": "vendor:stem:WEST%20HARLEM%20GROUP%20ASSISTANCE",
           "subject_ref": "vendor:stem:WEST%20HARLEM%20GROUP%20ASSISTANCE",
           "label": "West Harlem Group Assistance Inc.",
@@ -29692,8 +29688,8 @@
           "subject_ref": "vendor:stem:STATEWIDE%20DEMOLITION",
           "label": "Statewide Demolition Corp",
           "href": "/vendors/STATEWIDE%20DEMOLITION/",
-          "award_count": 17,
-          "award_total": 13750784,
+          "award_count": 15,
+          "award_total": 13511391,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -29727,6 +29723,17 @@
           "href": "/vendors/URBAN%20HOMESTEADING%20ASSISTANCE%20UHAB/",
           "award_count": 1,
           "award_total": 8711039,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:LINEAR%20ENVIRONMENTAL",
+          "subject_ref": "vendor:stem:LINEAR%20ENVIRONMENTAL",
+          "label": "Linear Environmental Corp",
+          "href": "/vendors/LINEAR%20ENVIRONMENTAL/",
+          "award_count": 3,
+          "award_total": 7500000,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -29880,15 +29887,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahuman-resources-administration%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahuman-resources-administration%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahuman-resources-administration%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahuman-resources-administration%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:human-resources-administration"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "human-resources-administration",
@@ -29900,7 +29907,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -29944,8 +29951,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -30327,50 +30334,6 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
-          "id": "vendor:stem:UNIVERSITY%20BEHAVIORAL%20ASSOCIATES",
-          "subject_ref": "vendor:stem:UNIVERSITY%20BEHAVIORAL%20ASSOCIATES",
-          "label": "University Behavioral Associates, Inc.",
-          "href": "/vendors/UNIVERSITY%20BEHAVIORAL%20ASSOCIATES/",
-          "award_count": 2,
-          "award_total": 76349526,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
-          "id": "vendor:stem:AMERICA%20WORKS",
-          "subject_ref": "vendor:stem:AMERICA%20WORKS",
-          "label": "America Works of New York Inc.",
-          "href": "/vendors/AMERICA%20WORKS/",
-          "award_count": 3,
-          "award_total": 65351992,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
-          "id": "vendor:stem:FEDCAP%20NYC",
-          "subject_ref": "vendor:stem:FEDCAP%20NYC",
-          "label": "Fedcap NYC Inc.",
-          "href": "/vendors/FEDCAP%20NYC/",
-          "award_count": 2,
-          "award_total": 64083168,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
-          "id": "vendor:stem:DB%20GRANT%20ASSOCIATES",
-          "subject_ref": "vendor:stem:DB%20GRANT%20ASSOCIATES",
-          "label": "DB Grant Associates Inc.",
-          "href": "/vendors/DB%20GRANT%20ASSOCIATES/",
-          "award_count": 2,
-          "award_total": 61550108,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
           "id": "vendor:stem:ARBOR%20E%20T",
           "subject_ref": "vendor:stem:ARBOR%20E%20T",
           "label": "Arbor E&T LLC",
@@ -30393,12 +30356,56 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
+          "id": "vendor:stem:UNIVERSITY%20BEHAVIORAL%20ASSOCIATES",
+          "subject_ref": "vendor:stem:UNIVERSITY%20BEHAVIORAL%20ASSOCIATES",
+          "label": "University Behavioral Associates, Inc.",
+          "href": "/vendors/UNIVERSITY%20BEHAVIORAL%20ASSOCIATES/",
+          "award_count": 1,
+          "award_total": 51551875,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:FEDCAP%20NYC",
+          "subject_ref": "vendor:stem:FEDCAP%20NYC",
+          "label": "Fedcap NYC Inc.",
+          "href": "/vendors/FEDCAP%20NYC/",
+          "award_count": 1,
+          "award_total": 46305658,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
           "id": "vendor:stem:VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK",
           "subject_ref": "vendor:stem:VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK",
           "label": "Volunteers of America Greater New York Inc.",
           "href": "/vendors/VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK/",
           "award_count": 5,
           "award_total": 35364393,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:URBAN%20JUSTICE%20CENTER",
+          "subject_ref": "vendor:stem:URBAN%20JUSTICE%20CENTER",
+          "label": "Urban Justice Center",
+          "href": "/vendors/URBAN%20JUSTICE%20CENTER/",
+          "award_count": 4,
+          "award_total": 33832230,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:HELP%20SOCIAL%20SERVICE",
+          "subject_ref": "vendor:stem:HELP%20SOCIAL%20SERVICE",
+          "label": "Help Social Service Corporation",
+          "href": "/vendors/HELP%20SOCIAL%20SERVICE/",
+          "award_count": 4,
+          "award_total": 25686683,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -30554,7 +30561,7 @@
             "mode": null,
             "entity_ref": "agency:id:independent-budget-office"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "independent-budget-office",
@@ -30566,7 +30573,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -30604,8 +30611,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -31111,15 +31118,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainformation-technology-and-telecommunications%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainformation-technology-and-telecommunications%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainformation-technology-and-telecommunications%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainformation-technology-and-telecommunications%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:information-technology-and-telecommunications"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "information-technology-and-telecommunications",
@@ -31131,7 +31138,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -31175,8 +31182,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -31552,6 +31559,17 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
+          "id": "vendor:stem:TIME%20WARNER%20CABLE%20NEW%20YORK%20CITY",
+          "subject_ref": "vendor:stem:TIME%20WARNER%20CABLE%20NEW%20YORK%20CITY",
+          "label": "Time Warner Cable New York City LLC",
+          "href": "/vendors/TIME%20WARNER%20CABLE%20NEW%20YORK%20CITY/",
+          "award_count": 1,
+          "award_total": 96500000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
           "id": "vendor:stem:INTERNATIONAL%20BUSINESS%20MACHINES",
           "subject_ref": "vendor:stem:INTERNATIONAL%20BUSINESS%20MACHINES",
           "label": "International Business Machines Corp",
@@ -31616,17 +31634,6 @@
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
-          "id": "vendor:stem:WORLD%20WIDE%20TECHNOLOGY",
-          "subject_ref": "vendor:stem:WORLD%20WIDE%20TECHNOLOGY",
-          "label": "World Wide Technology LLC",
-          "href": "/vendors/WORLD%20WIDE%20TECHNOLOGY/",
-          "award_count": 1,
-          "award_total": 50000000,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
         }
       ]
     },
@@ -31649,7 +31656,7 @@
         },
         "vendors": {
           "status": "matched",
-          "count": 2,
+          "count": 3,
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
@@ -31775,17 +31782,17 @@
           "target_kind": "vendor",
           "target_id": null,
           "target_name": "Top vendors by award $ (last 12 mo)",
-          "count": 2,
+          "count": 3,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainvestigation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainvestigation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainvestigation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainvestigation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:investigation"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "investigation",
@@ -31797,7 +31804,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -31806,15 +31813,15 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "2",
-              "materialized": "2",
+              "total": "3",
+              "materialized": "3",
               "dated": "0",
-              "undated": "2",
+              "undated": "3",
               "by_state": {
-                "matched": "2"
+                "matched": "3"
               },
               "by_relation": {
-                "top_vendor_by_award_12mo": "2"
+                "top_vendor_by_award_12mo": "3"
               }
             },
             "spans": {
@@ -31833,16 +31840,16 @@
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "2"
+                "unknown": "3"
               },
               "by_stage": {
-                "unknown": "2"
+                "unknown": "3"
               },
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -32221,6 +32228,17 @@
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:K%20SYSTEMS%20SOLUTIONS",
+          "subject_ref": "vendor:stem:K%20SYSTEMS%20SOLUTIONS",
+          "label": "K Systems Solutions LLC",
+          "href": "/vendors/K%20SYSTEMS%20SOLUTIONS/",
+          "award_count": 1,
+          "award_total": 64008,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
         }
       ]
     },
@@ -32371,15 +32389,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 1,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alandmarks-preservation-commission%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alandmarks-preservation-commission%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alandmarks-preservation-commission%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alandmarks-preservation-commission%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:landmarks-preservation-commission"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "landmarks-preservation-commission",
@@ -32391,7 +32409,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -32435,8 +32453,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -32966,15 +32984,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 6,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alaw-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alaw-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alaw-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alaw-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:law-department"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "law-department",
@@ -32986,7 +33004,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -33030,8 +33048,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -33612,7 +33630,7 @@
             "mode": null,
             "entity_ref": "agency:id:long-island-rail-road"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "long-island-rail-road",
@@ -33624,7 +33642,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -33662,8 +33680,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -34157,15 +34175,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 4,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amanagement-and-budget%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amanagement-and-budget%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amanagement-and-budget%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amanagement-and-budget%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:management-and-budget"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "management-and-budget",
@@ -34177,7 +34195,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -34221,8 +34239,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -34645,7 +34663,7 @@
         },
         "vendors": {
           "status": "matched",
-          "count": 2,
+          "count": 1,
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
@@ -34765,17 +34783,17 @@
           "target_kind": "vendor",
           "target_id": null,
           "target_name": "Top vendors by award $ (last 12 mo)",
-          "count": 2,
+          "count": 1,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amayors-office-of-contract-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amayors-office-of-contract-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amayors-office-of-contract-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amayors-office-of-contract-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:mayors-office-of-contract-services"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "mayors-office-of-contract-services",
@@ -34787,7 +34805,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -34796,15 +34814,15 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "2",
-              "materialized": "2",
+              "total": "1",
+              "materialized": "1",
               "dated": "0",
-              "undated": "2",
+              "undated": "1",
               "by_state": {
-                "matched": "2"
+                "matched": "1"
               },
               "by_relation": {
-                "top_vendor_by_award_12mo": "2"
+                "top_vendor_by_award_12mo": "1"
               }
             },
             "spans": {
@@ -34823,16 +34841,16 @@
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "2"
+                "unknown": "1"
               },
               "by_stage": {
-                "unknown": "2"
+                "unknown": "1"
               },
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -35197,17 +35215,6 @@
       ],
       "top_vendors": [
         {
-          "id": "vendor:stem:IN%20OUR%20SHOES",
-          "subject_ref": "vendor:stem:IN%20OUR%20SHOES",
-          "label": "In Our Shoes LLC",
-          "href": "/vendors/IN%20OUR%20SHOES/",
-          "award_count": 1,
-          "award_total": 498500,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
           "id": "vendor:stem:SHI%20INTERNATIONAL",
           "subject_ref": "vendor:stem:SHI%20INTERNATIONAL",
           "label": "Shi International Corp.",
@@ -35361,15 +35368,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amayors-office-of-criminal-justice%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amayors-office-of-criminal-justice%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amayors-office-of-criminal-justice%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amayors-office-of-criminal-justice%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:mayors-office-of-criminal-justice"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "mayors-office-of-criminal-justice",
@@ -35381,7 +35388,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -35425,8 +35432,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -36017,7 +36024,7 @@
             "mode": null,
             "entity_ref": "agency:id:metropolitan-transportation-authority"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "metropolitan-transportation-authority",
@@ -36029,7 +36036,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -36067,8 +36074,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -36570,7 +36577,7 @@
             "mode": null,
             "entity_ref": "agency:id:mta-construction-and-development"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "mta-construction-and-development",
@@ -36582,7 +36589,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -36620,8 +36627,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -37123,7 +37130,7 @@
             "mode": null,
             "entity_ref": "agency:id:n-y-c-transit-authority"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "n-y-c-transit-authority",
@@ -37135,7 +37142,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -37173,8 +37180,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -37676,7 +37683,7 @@
             "mode": null,
             "entity_ref": "agency:id:new-york-city-police-pension-fund"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "new-york-city-police-pension-fund",
@@ -37688,7 +37695,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -37726,8 +37733,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -38227,15 +38234,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 2,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-department-of-veterans-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-department-of-veterans-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-department-of-veterans-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-department-of-veterans-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:nyc-department-of-veterans-services"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "nyc-department-of-veterans-services",
@@ -38247,7 +38254,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -38291,8 +38298,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -38829,7 +38836,7 @@
             "mode": null,
             "entity_ref": "agency:id:nyc-health-hospitals"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "nyc-health-hospitals",
@@ -38841,7 +38848,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -38879,8 +38886,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -39382,7 +39389,7 @@
             "mode": null,
             "entity_ref": "agency:id:office-of-collective-bargaining"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "office-of-collective-bargaining",
@@ -39394,7 +39401,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -39432,8 +39439,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -39805,7 +39812,7 @@
         },
         "vendors": {
           "status": "matched",
-          "count": 2,
+          "count": 1,
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
@@ -39931,17 +39938,17 @@
           "target_kind": "vendor",
           "target_id": null,
           "target_name": "Top vendors by award $ (last 12 mo)",
-          "count": 2,
+          "count": 1,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-labor-relations%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-labor-relations%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-labor-relations%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-labor-relations%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:office-of-labor-relations"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "office-of-labor-relations",
@@ -39953,7 +39960,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -39962,15 +39969,15 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "2",
-              "materialized": "2",
+              "total": "1",
+              "materialized": "1",
               "dated": "0",
-              "undated": "2",
+              "undated": "1",
               "by_state": {
-                "matched": "2"
+                "matched": "1"
               },
               "by_relation": {
-                "top_vendor_by_award_12mo": "2"
+                "top_vendor_by_award_12mo": "1"
               }
             },
             "spans": {
@@ -39989,16 +39996,16 @@
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "2"
+                "unknown": "1"
               },
               "by_stage": {
-                "unknown": "2"
+                "unknown": "1"
               },
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -40366,17 +40373,6 @@
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
-          "id": "vendor:stem:WUKKOUT",
-          "subject_ref": "vendor:stem:WUKKOUT",
-          "label": "Wukkout LLC",
-          "href": "/vendors/WUKKOUT/",
-          "award_count": 1,
-          "award_total": 150000,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
         }
       ]
     },
@@ -40529,7 +40525,7 @@
             "mode": null,
             "entity_ref": "agency:id:office-of-racial-equity"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "office-of-racial-equity",
@@ -40541,7 +40537,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -40579,8 +40575,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -41068,15 +41064,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 1,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-special-narcotics-prosecutor%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-special-narcotics-prosecutor%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-special-narcotics-prosecutor%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-special-narcotics-prosecutor%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:office-of-special-narcotics-prosecutor"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "office-of-special-narcotics-prosecutor",
@@ -41088,7 +41084,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -41132,8 +41128,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -41639,15 +41635,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-the-mayor%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-the-mayor%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-the-mayor%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-the-mayor%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:office-of-the-mayor"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "office-of-the-mayor",
@@ -41659,7 +41655,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -41703,8 +41699,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -42305,15 +42301,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aparks-and-recreation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aparks-and-recreation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aparks-and-recreation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aparks-and-recreation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:parks-and-recreation"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "parks-and-recreation",
@@ -42325,7 +42321,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -42369,8 +42365,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -42807,23 +42803,23 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
-          "id": "vendor:stem:PIONEER%20LANDSCAPING%20ASPHALT%20PAVING",
-          "subject_ref": "vendor:stem:PIONEER%20LANDSCAPING%20ASPHALT%20PAVING",
-          "label": "Pioneer Landscaping & Asphalt Paving Inc",
-          "href": "/vendors/PIONEER%20LANDSCAPING%20ASPHALT%20PAVING/",
-          "award_count": 2,
-          "award_total": 22557465,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
           "id": "vendor:stem:CP%20PERMA%20PAVING%20CONSTRUCTION",
           "subject_ref": "vendor:stem:CP%20PERMA%20PAVING%20CONSTRUCTION",
           "label": "CP Perma Paving Construction Inc",
           "href": "/vendors/CP%20PERMA%20PAVING%20CONSTRUCTION/",
           "award_count": 1,
           "award_total": 19428098,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:IMEG%20CONSULTANTS",
+          "subject_ref": "vendor:stem:IMEG%20CONSULTANTS",
+          "label": "IMEG Consultants Corp",
+          "href": "/vendors/IMEG%20CONSULTANTS/",
+          "award_count": 2,
+          "award_total": 18000000,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -42979,7 +42975,7 @@
             "mode": null,
             "entity_ref": "agency:id:payroll-administration"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "payroll-administration",
@@ -42991,7 +42987,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -43029,8 +43025,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -43524,15 +43520,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apolice-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apolice-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apolice-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apolice-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:police-department"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "police-department",
@@ -43544,7 +43540,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -43588,8 +43584,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -43987,23 +43983,23 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
-          "id": "vendor:stem:GRYPHON%20CONSTRUCTION",
-          "subject_ref": "vendor:stem:GRYPHON%20CONSTRUCTION",
-          "label": "Gryphon Construction Inc.",
-          "href": "/vendors/GRYPHON%20CONSTRUCTION/",
-          "award_count": 1,
-          "award_total": 10374367,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
           "id": "vendor:stem:LIRO%20ARCHITECTS%20AND%20PLANNERS",
           "subject_ref": "vendor:stem:LIRO%20ARCHITECTS%20AND%20PLANNERS",
           "label": "LiRo Architects and Planners, PC",
           "href": "/vendors/LIRO%20ARCHITECTS%20AND%20PLANNERS/",
           "award_count": 1,
           "award_total": 8871610,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:THERMO%20EBERLINE",
+          "subject_ref": "vendor:stem:THERMO%20EBERLINE",
+          "label": "THERMO EBERLINE LLC",
+          "href": "/vendors/THERMO%20EBERLINE/",
+          "award_count": 1,
+          "award_total": 5446872,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -44031,12 +44027,12 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
-          "id": "vendor:stem:THE%20ANIMAL%20MEDICAL%20CENTER",
-          "subject_ref": "vendor:stem:THE%20ANIMAL%20MEDICAL%20CENTER",
-          "label": "The Animal Medical Center",
-          "href": "/vendors/THE%20ANIMAL%20MEDICAL%20CENTER/",
+          "id": "vendor:stem:SLADE%20INDUSTRIES",
+          "subject_ref": "vendor:stem:SLADE%20INDUSTRIES",
+          "label": "Slade Industries, Inc.",
+          "href": "/vendors/SLADE%20INDUSTRIES/",
           "award_count": 1,
-          "award_total": 2431925,
+          "award_total": 1972371,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -44190,15 +44186,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aprobation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aprobation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aprobation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aprobation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:probation"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "probation",
@@ -44210,7 +44206,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -44254,8 +44250,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -44614,6 +44610,61 @@
       ],
       "top_vendors": [
         {
+          "id": "vendor:stem:URBAN%20YOUTH%20ALLIANCE%20INTERNATIONAL",
+          "subject_ref": "vendor:stem:URBAN%20YOUTH%20ALLIANCE%20INTERNATIONAL",
+          "label": "Urban Youth Alliance International Inc.",
+          "href": "/vendors/URBAN%20YOUTH%20ALLIANCE%20INTERNATIONAL/",
+          "award_count": 1,
+          "award_total": 2068000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:COMMUNITY%20MEDIATION%20SERVICES",
+          "subject_ref": "vendor:stem:COMMUNITY%20MEDIATION%20SERVICES",
+          "label": "Community Mediation Services, Inc.",
+          "href": "/vendors/COMMUNITY%20MEDIATION%20SERVICES/",
+          "award_count": 1,
+          "award_total": 1654744,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:JUSTICE%20INNOVATION",
+          "subject_ref": "vendor:stem:JUSTICE%20INNOVATION",
+          "label": "Justice Innovation Inc",
+          "href": "/vendors/JUSTICE%20INNOVATION/",
+          "award_count": 2,
+          "award_total": 1638929,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:RENAISSANCE%20YOUTH%20CENTER",
+          "subject_ref": "vendor:stem:RENAISSANCE%20YOUTH%20CENTER",
+          "label": "Renaissance Youth Center",
+          "href": "/vendors/RENAISSANCE%20YOUTH%20CENTER/",
+          "award_count": 1,
+          "award_total": 1575000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:UNION%20SETTLEMENT%20ASSOCIATION",
+          "subject_ref": "vendor:stem:UNION%20SETTLEMENT%20ASSOCIATION",
+          "label": "Union Settlement Association Inc.",
+          "href": "/vendors/UNION%20SETTLEMENT%20ASSOCIATION/",
+          "award_count": 1,
+          "award_total": 1083500,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
           "id": "vendor:stem:THE%20OSBORNE%20ASSOCIATION",
           "subject_ref": "vendor:stem:THE%20OSBORNE%20ASSOCIATION",
           "label": "The Osborne Association Inc.",
@@ -44642,61 +44693,6 @@
           "href": "/vendors/CENTER%20FOR%20EMPLOYMENT%20OPPORTUNITIES/",
           "award_count": 1,
           "award_total": 570808,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
-          "id": "vendor:stem:JUSTICE%20INNOVATION",
-          "subject_ref": "vendor:stem:JUSTICE%20INNOVATION",
-          "label": "Justice Innovation Inc",
-          "href": "/vendors/JUSTICE%20INNOVATION/",
-          "award_count": 1,
-          "award_total": 531613,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
-          "id": "vendor:stem:CATALIS%20COURTS%20LAND%20RECORDS",
-          "subject_ref": "vendor:stem:CATALIS%20COURTS%20LAND%20RECORDS",
-          "label": "Catalis Courts & Land Records LLC",
-          "href": "/vendors/CATALIS%20COURTS%20LAND%20RECORDS/",
-          "award_count": 1,
-          "award_total": 408852,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
-          "id": "vendor:stem:NEW%20YORK%20CENTER%20FOR%20INTERPERSONAL%20DEVELOPMENT",
-          "subject_ref": "vendor:stem:NEW%20YORK%20CENTER%20FOR%20INTERPERSONAL%20DEVELOPMENT",
-          "label": "New York Center for Interpersonal Development Inc",
-          "href": "/vendors/NEW%20YORK%20CENTER%20FOR%20INTERPERSONAL%20DEVELOPMENT/",
-          "award_count": 1,
-          "award_total": 334113,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
-          "id": "vendor:stem:LIVING%20REDEMPTION%20COMMUNITY%20DEVELOPMENT",
-          "subject_ref": "vendor:stem:LIVING%20REDEMPTION%20COMMUNITY%20DEVELOPMENT",
-          "label": "Living Redemption Community Development Corporation",
-          "href": "/vendors/LIVING%20REDEMPTION%20COMMUNITY%20DEVELOPMENT/",
-          "award_count": 1,
-          "award_total": 269113,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
-          "id": "vendor:stem:HEALTH%20PEOPLE",
-          "subject_ref": "vendor:stem:HEALTH%20PEOPLE",
-          "label": "Health People Inc.",
-          "href": "/vendors/HEALTH%20PEOPLE/",
-          "award_count": 1,
-          "award_total": 262500,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -44852,7 +44848,7 @@
             "mode": null,
             "entity_ref": "agency:id:public-advocate"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "public-advocate",
@@ -44864,7 +44860,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -44902,8 +44898,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -45405,7 +45401,7 @@
             "mode": null,
             "entity_ref": "agency:id:public-design-commission"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "public-design-commission",
@@ -45417,7 +45413,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -45455,8 +45451,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -45956,15 +45952,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 1,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Arecords-and-information-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Arecords-and-information-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Arecords-and-information-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Arecords-and-information-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:records-and-information-services"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "records-and-information-services",
@@ -45976,7 +45972,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -46020,8 +46016,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -46541,7 +46537,7 @@
             "mode": null,
             "entity_ref": "agency:id:rent-guidelines-board"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "rent-guidelines-board",
@@ -46553,7 +46549,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -46591,8 +46587,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -47086,15 +47082,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asanitation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asanitation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asanitation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asanitation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:sanitation"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "sanitation",
@@ -47106,7 +47102,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -47150,8 +47146,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -47758,15 +47754,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asmall-business-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asmall-business-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asmall-business-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asmall-business-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:small-business-services"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "small-business-services",
@@ -47778,7 +47774,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -47822,8 +47818,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -48199,34 +48195,23 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
-          "id": "vendor:stem:GOVERNORS%20ISLAND",
-          "subject_ref": "vendor:stem:GOVERNORS%20ISLAND",
-          "label": "Governors Island Corporation",
-          "href": "/vendors/GOVERNORS%20ISLAND/",
-          "award_count": 1,
-          "award_total": 394100395,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
           "id": "vendor:stem:DB%20GRANT%20ASSOCIATES",
           "subject_ref": "vendor:stem:DB%20GRANT%20ASSOCIATES",
           "label": "DB Grant Associates Inc",
           "href": "/vendors/DB%20GRANT%20ASSOCIATES/",
-          "award_count": 3,
-          "award_total": 45966647,
+          "award_count": 2,
+          "award_total": 23614404,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
-          "id": "vendor:stem:EDUCATIONAL%20DATA%20SYSTEMS",
-          "subject_ref": "vendor:stem:EDUCATIONAL%20DATA%20SYSTEMS",
-          "label": "Educational Data Systems Inc.",
-          "href": "/vendors/EDUCATIONAL%20DATA%20SYSTEMS/",
-          "award_count": 3,
-          "award_total": 14362229,
+          "id": "vendor:stem:MANISH%20MAJITHA%20CPA",
+          "subject_ref": "vendor:stem:MANISH%20MAJITHA%20CPA",
+          "label": "Manish Majitha CPA PC",
+          "href": "/vendors/MANISH%20MAJITHA%20CPA/",
+          "award_count": 1,
+          "award_total": 15629298,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -48249,6 +48234,17 @@
           "href": "/vendors/COMMUNITY%20REINVESTMENT%20FUND/",
           "award_count": 1,
           "award_total": 8597000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:EDUCATIONAL%20DATA%20SYSTEMS",
+          "subject_ref": "vendor:stem:EDUCATIONAL%20DATA%20SYSTEMS",
+          "label": "Educational Data Systems Inc",
+          "href": "/vendors/EDUCATIONAL%20DATA%20SYSTEMS/",
+          "award_count": 2,
+          "award_total": 5868425,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -48426,7 +48422,7 @@
             "mode": null,
             "entity_ref": "agency:id:tax-commission"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "tax-commission",
@@ -48438,7 +48434,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -48476,8 +48472,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -48977,15 +48973,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ataxi-and-limousine-commission%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ataxi-and-limousine-commission%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ataxi-and-limousine-commission%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ataxi-and-limousine-commission%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:taxi-and-limousine-commission"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "taxi-and-limousine-commission",
@@ -48997,7 +48993,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -49041,8 +49037,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -49645,7 +49641,7 @@
             "mode": null,
             "entity_ref": "agency:id:teachers-retirement-system"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "teachers-retirement-system",
@@ -49657,7 +49653,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -49695,8 +49691,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -50202,15 +50198,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atransportation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atransportation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atransportation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atransportation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:transportation"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "transportation",
@@ -50222,7 +50218,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -50266,8 +50262,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -50876,7 +50872,7 @@
             "mode": null,
             "entity_ref": "agency:id:triborough-bridge-and-tunnel-authority"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "triborough-bridge-and-tunnel-authority",
@@ -50888,7 +50884,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -50926,8 +50922,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -51427,15 +51423,15 @@
           "target_name": "Top vendors by award $ (last 12 mo)",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ayouth-and-community-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ayouth-and-community-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-05",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ayouth-and-community-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ayouth-and-community-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-10-05",
           "scope": {
             "facet": null,
             "universe": null,
             "mode": null,
             "entity_ref": "agency:id:youth-and-community-development"
           },
-          "as_of": "2026-09-05",
+          "as_of": "2026-10-05",
           "source": {
             "kind": "agency",
             "id": "youth-and-community-development",
@@ -51447,7 +51443,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-09-05",
+            "observed_at": "2026-10-05",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -51491,8 +51487,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-09-05",
-              "snapshot_day": "2026-09-05",
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -51873,6 +51869,17 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         {
+          "id": "vendor:stem:NEW%20YORK%20JUNIOR%20TENNIS%20LEAGUE",
+          "subject_ref": "vendor:stem:NEW%20YORK%20JUNIOR%20TENNIS%20LEAGUE",
+          "label": "New York Junior Tennis League Inc.",
+          "href": "/vendors/NEW%20YORK%20JUNIOR%20TENNIS%20LEAGUE/",
+          "award_count": 2,
+          "award_total": 160531200,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
           "id": "vendor:stem:CHILD%20DEVELOPMENT%20CENTER%20-%20MOSHOLU%20MONTEFIORE%20COMMUNITY%20CENTER",
           "subject_ref": "vendor:stem:CHILD%20DEVELOPMENT%20CENTER%20-%20MOSHOLU%20MONTEFIORE%20COMMUNITY%20CENTER",
           "label": "Child Development Center - Mosholu Montefiore Community Center",
@@ -51899,8 +51906,8 @@
           "subject_ref": "vendor:stem:THE%20CHILDREN%20S%20AID%20SOCIETY",
           "label": "The Children s Aid Society",
           "href": "/vendors/THE%20CHILDREN%20S%20AID%20SOCIETY/",
-          "award_count": 9,
-          "award_total": 129192776,
+          "award_count": 10,
+          "award_total": 129561326,
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
@@ -51926,17 +51933,6 @@
           "confidence": "strong",
           "relation": "top_vendor_by_award_12mo",
           "method": "agency_vendor_awards_12mo_v1"
-        },
-        {
-          "id": "vendor:stem:NIA%20COMMUNITY%20SERVICES%20NETWORK",
-          "subject_ref": "vendor:stem:NIA%20COMMUNITY%20SERVICES%20NETWORK",
-          "label": "NIA Community Services Network Inc",
-          "href": "/vendors/NIA%20COMMUNITY%20SERVICES%20NETWORK/",
-          "award_count": 2,
-          "award_total": 103570346,
-          "confidence": "strong",
-          "relation": "top_vendor_by_award_12mo",
-          "method": "agency_vendor_awards_12mo_v1"
         }
       ]
     }
@@ -51945,9 +51941,9 @@
     "intelligence_generated_at": "2026-09-30T13:15:55.664Z",
     "certification_generated_at": "2026-08-06T00:00:00Z",
     "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-    "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-05T13:44:00.909Z|2026-09-30T13:15:13.798Z|2026-09-30T13:15:55.664Z",
-    "vendor_rollup_as_of": "2026-09-05",
-    "vendor_rollup_window_start": "2025-09-05",
+    "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-30T13:15:13.798Z|2026-09-30T13:15:55.664Z|2026-10-05T17:33:57.544Z",
+    "vendor_rollup_as_of": "2026-10-05",
+    "vendor_rollup_window_start": "2025-10-05",
     "passport_graph_observed_on": "2026-09-09",
     "passport_graph_selected_rows": 12796,
     "fiscal_context_generated_at": "2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z",

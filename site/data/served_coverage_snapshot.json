@@ -53,7 +53,7 @@
   ],
   "evidence_vintage": {
     "oldest": "2026-05-26T00:00:00.000Z",
-    "newest": "2026-09-30T13:15:43.197Z"
+    "newest": "2026-10-05T00:00:00.000Z"
   },
   "domains": [
     {
@@ -95,7 +95,7 @@
             {
               "source_id": "city-record",
               "source_name": "City Record Online",
-              "served_records": 12690,
+              "served_records": 12729,
               "state": "measured"
             },
             {
@@ -167,8 +167,8 @@
           "source_id": "ocp-recent-contract-awards",
           "source_name": "Recent Contract Awards (OCP)",
           "state": "measured",
-          "value": 53600,
-          "evidence_vintage": "2026-09-05T00:00:00.000Z",
+          "value": 53817,
+          "evidence_vintage": "2026-10-05T00:00:00.000Z",
           "vintage_field": "source_snapshot.snapshot_date",
           "vintage_basis": "single"
         }
@@ -264,7 +264,7 @@
           "source_id": "nyc-council-members",
           "source_name": "NYC Council Members (1999 to Present)",
           "state": "measured",
-          "value": 1366,
+          "value": 1369,
           "evidence_vintage": "2026-09-30T13:14:27.823Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single"
