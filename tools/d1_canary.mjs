@@ -208,20 +208,62 @@ function partitionScopeClause(entry, table) {
   return { clause: "1 = 1", bound: false };
 }
 
-/** Every row of one table currently in the target, scoped to a partition, keyed the same way tableRows keys them. */
-async function scanTableForPartition({ entry, table, partition, adapter }) {
-  const columns = TABLE_COLUMNS[table];
-  const scope = partitionScopeClause(entry, table);
-  const sql = `SELECT ${columns.join(", ")} FROM ${table} WHERE ${scope.clause}`;
-  const rows = await adapter.select(sql, scope.bound ? [partition] : []);
-  const keyCols = keyColumns(entry, table);
-  const byKey = new Map();
+/**
+ * Rows per wrangler `d1 execute --json` page when scanning a partition.
+ *
+ * Deploy worker 37399462266 failed post-publish reconcile when a single
+ * unpaged SELECT of ocp_awards (~54k rows) produced ~68 MiB of wrangler
+ * stdout and tripped tools/lib/wrangler_exec.mjs's 32 MiB retain bound.
+ * Paging keeps each remote JSON dump under that bound while still comparing
+ * every observed row (missing / duplicate / stale / unexpected).
+ */
+export const DEFAULT_PARTITION_SCAN_PAGE_ROWS = 500;
+
+function orderByKeyColumns(keyCols) {
+  if (!Array.isArray(keyCols) || keyCols.length === 0) {
+    canaryFail("partition scan needs at least one key column for stable paging");
+  }
+  return keyCols.join(", ");
+}
+
+function addRowsToKeyMap(byKey, rows, keyCols) {
   for (const row of rows) {
     const keyValues = keyCols.map((column) => row[column]);
     const key = keyValues.join("|");
     const bucket = byKey.get(key) || [];
     bucket.push(row);
     byKey.set(key, bucket);
+  }
+}
+
+/**
+ * Every row of one table currently in the target, scoped to a partition,
+ * keyed the same way tableRows keys them. Reads page through LIMIT/OFFSET so
+ * each adapter.select response stays wrangler-stdout-bounded.
+ */
+export async function scanTableForPartition({
+  entry,
+  table,
+  partition,
+  adapter,
+  pageRows = DEFAULT_PARTITION_SCAN_PAGE_ROWS,
+} = {}) {
+  if (!Number.isInteger(pageRows) || pageRows < 1) {
+    canaryFail(`partition scan pageRows must be a positive integer, got ${pageRows}`);
+  }
+  const columns = TABLE_COLUMNS[table];
+  if (!columns) canaryFail(`no TABLE_COLUMNS entry for ${table}`);
+  const scope = partitionScopeClause(entry, table);
+  const keyCols = keyColumns(entry, table);
+  const orderBy = orderByKeyColumns(keyCols);
+  const byKey = new Map();
+  let offset = 0;
+  for (;;) {
+    const sql = `SELECT ${columns.join(", ")} FROM ${table} WHERE ${scope.clause} ORDER BY ${orderBy} LIMIT ${pageRows} OFFSET ${offset}`;
+    const rows = await adapter.select(sql, scope.bound ? [partition] : []);
+    addRowsToKeyMap(byKey, rows, keyCols);
+    if (rows.length < pageRows) break;
+    offset += pageRows;
   }
   return byKey;
 }
