@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 /**
  * Fail closed when a refresh-sensitive test asserts an exact population count
- * against live refreshed site/data. Scheduled first-class refresh rewrites
- * those artifacts; exact pins force hand-restamping and block unattended merges.
+ * against live refreshed site/data or warehouse bulk proof receipts. Scheduled
+ * first-class refresh and warehouse rematerialization rewrite those artifacts;
+ * exact pins force hand-restamping and block unattended merges.
  *
  * Permitted shapes:
  *   1. fixture-pin — load from test/fixtures/ and keep exact asserts
@@ -14,8 +15,8 @@
  * architecture/refresh-exact-count-guard.json records the empirical restamp
  * set as provenance (which suites a real refresh invalidated); that list
  * stays covered but is not the scan allowlist. Grow
- * refreshed_site_data_artifacts only when a later refresh proves another
- * member.
+ * refreshed_site_data_artifacts / refreshed_warehouse_proof_artifacts only
+ * when a later refresh proves another member.
  *
  *   node tools/check_refresh_exact_count_assertions.mjs
  *   node tools/check_refresh_exact_count_assertions.mjs --root <dir>
@@ -28,8 +29,9 @@ import { fileURLToPath } from "node:url";
 const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const POLICY_PATH = "architecture/refresh-exact-count-guard.json";
 
+// Numeric literals may use underscores (32_964). Number() needs them stripped.
 const ASSERT_EQUAL_RE =
-  /\bassert\.(?:equal|strictEqual)\s*\(\s*([^,]+?)\s*,\s*(\d+)\s*(?:,|\))/g;
+  /\bassert\.(?:equal|strictEqual)\s*\(\s*([^,]+?)\s*,\s*(\d[\d_]*)\s*(?:,|\))/g;
 
 // Discovery matches load idioms, including helpers whose names look like
 // readers/loaders with a bare governed path argument
@@ -39,11 +41,13 @@ const ASSERT_EQUAL_RE =
 const LOAD_PATTERNS = [
   /(?:readFileSync|readFile|readJson|requireJson|loadJson|loadJsonFile)\s*\(\s*(?:new\s+URL\(\s*)?['"`]([^'"`]+)['"`]/g,
   // Helper calls named like load*/read*/parse*/require* with a bare path arg.
-  /\b[A-Za-z_$]*(?:load|Load|read|Read|parse|Parse|require|Require)[A-Za-z_$]*\s*\(\s*(?:new\s+URL\(\s*)?['"`]((?:(?:\.\.\/)+)?site\/data\/[^'"`]+\.json)['"`]/g,
-  /from\s+['"`]((?:(?:\.\.\/)+)?site\/data\/[^'"`]+\.json)['"`]/g,
-  /new\s+URL\(\s*['"`]((?:(?:\.\.\/)+)?site\/data\/[^'"`]+\.json)['"`]/g,
-  /(?:path\.join|join)\(\s*[A-Za-z_$][\w$]*\s*,\s*['"`]((?:(?:\.\.\/)+)?site\/data\/[^'"`]+\.json)['"`]\s*\)/g,
-  /=\s*['"`]((?:(?:\.\.\/)+)?site\/data\/[^'"`]+\.json)['"`]/g,
+  /\b[A-Za-z_$]*(?:load|Load|read|Read|parse|Parse|require|Require)[A-Za-z_$]*\s*\(\s*(?:new\s+URL\(\s*)?['"`]((?:(?:\.\.\/)+)?(?:site\/data|warehouse\/receipts\/proof)\/[^'"`]+\.json)['"`]/g,
+  /from\s+['"`]((?:(?:\.\.\/)+)?(?:site\/data|warehouse\/receipts\/proof)\/[^'"`]+\.json)['"`]/g,
+  /new\s+URL\(\s*['"`]((?:(?:\.\.\/)+)?(?:site\/data|warehouse\/receipts\/proof)\/[^'"`]+\.json)['"`]/g,
+  /(?:path\.join|join)\(\s*[A-Za-z_$][\w$]*\s*,\s*['"`]((?:(?:\.\.\/)+)?(?:site\/data|warehouse\/receipts\/proof)\/[^'"`]+\.json)['"`]\s*\)/g,
+  /=\s*['"`]((?:(?:\.\.\/)+)?(?:site\/data|warehouse\/receipts\/proof)\/[^'"`]+\.json)['"`]/g,
+  // join(WAREHOUSE_DIR, "receipts", "proof", "zap-projects_bulk_latest.json")
+  /(?:path\.join|join)\(\s*[^)]*?['"`]receipts['"`]\s*,\s*['"`]proof['"`]\s*,\s*['"`]([^'"`]+\.json)['"`]/g,
 ];
 
 const EXCLUDED_EXPR_RE = /(?:digest|sha256|hash|hex|status|viewport|width|height)/i;
@@ -52,11 +56,29 @@ export function loadPolicy(rootDir = ROOT) {
   return JSON.parse(readFileSync(join(rootDir, POLICY_PATH), "utf8"));
 }
 
-function normalizeSiteDataPath(raw) {
+/** Union of governed refreshed site/data and warehouse proof artifact paths. */
+export function governedRefreshedArtifacts(policy) {
+  const site = policy?.scope?.refreshed_site_data_artifacts || [];
+  const warehouse = policy?.scope?.refreshed_warehouse_proof_artifacts || [];
+  return [...new Set([...site, ...warehouse])].sort();
+}
+
+function normalizeGovernedPath(raw) {
   const text = String(raw || "").replaceAll("\\", "/");
-  const idx = text.indexOf("site/data/");
-  if (idx < 0) return null;
-  return text.slice(idx).split(/[?#]/)[0];
+  for (const marker of ["site/data/", "warehouse/receipts/proof/"]) {
+    const idx = text.indexOf(marker);
+    if (idx >= 0) return text.slice(idx).split(/[?#]/)[0];
+  }
+  // Bare proof filename from join(WAREHOUSE_DIR, "receipts", "proof", "X.json")
+  if (/^[A-Za-z0-9_.-]+\.json$/.test(text) && !text.includes("/")) {
+    return `warehouse/receipts/proof/${text}`;
+  }
+  return null;
+}
+
+/** @deprecated Prefer normalizeGovernedPath; kept for callers that import the old name. */
+function normalizeSiteDataPath(raw) {
+  return normalizeGovernedPath(raw);
 }
 
 function lineNumberAt(source, index) {
@@ -112,7 +134,7 @@ export function loadsRefreshedArtifacts(source, refreshedArtifacts) {
     re.lastIndex = 0;
     let match;
     while ((match = re.exec(source))) {
-      const normalized = normalizeSiteDataPath(match[1]);
+      const normalized = normalizeGovernedPath(match[1]);
       if (normalized && refreshedSet.has(normalized)) loaded.add(normalized);
     }
   }
@@ -134,14 +156,26 @@ function countLikeExpression(expr, countPropertyPattern) {
   return re.test(expr);
 }
 
-const SITE_DATA_PATH_RE = /site\/data\/[A-Za-z0-9_./-]+\.json/g;
+const GOVERNED_PATH_RE =
+  /(?:site\/data|warehouse\/receipts\/proof)\/[A-Za-z0-9_./-]+\.json/g;
+const WAREHOUSE_PROOF_JOIN_RE =
+  /(?:path\.join|join)\(\s*[^)]*?['"`]receipts['"`]\s*,\s*['"`]proof['"`]\s*,\s*['"`]([^'"`]+\.json)['"`]/g;
 
-function extractSiteDataPaths(text) {
+function extractGovernedPaths(text) {
   const out = [];
-  SITE_DATA_PATH_RE.lastIndex = 0;
+  GOVERNED_PATH_RE.lastIndex = 0;
   let match;
-  while ((match = SITE_DATA_PATH_RE.exec(text))) out.push(match[0]);
+  while ((match = GOVERNED_PATH_RE.exec(text))) out.push(match[0]);
+  WAREHOUSE_PROOF_JOIN_RE.lastIndex = 0;
+  while ((match = WAREHOUSE_PROOF_JOIN_RE.exec(text))) {
+    out.push(`warehouse/receipts/proof/${match[1]}`);
+  }
   return out;
+}
+
+/** @deprecated Prefer extractGovernedPaths. */
+function extractSiteDataPaths(text) {
+  return extractGovernedPaths(text);
 }
 
 /**
@@ -152,9 +186,9 @@ function extractSiteDataPaths(text) {
 function rhsLoadsGovernedJson(rhs) {
   if (/JSON\.parse/.test(rhs)) return true;
   if (/(?:readFileSync|readFile)\s*\(/.test(rhs)) return true;
-  // Helper named like load*/read*/parse*/require* with a bare site/data path.
+  // Helper named like load*/read*/parse*/require* with a bare governed path.
   if (
-    /\b[A-Za-z_$]*(?:load|Load|read|Read|parse|Parse|require|Require)[A-Za-z_$]*\s*\(\s*['"`][^'"`]*site\/data\//.test(rhs)
+    /\b[A-Za-z_$]*(?:load|Load|read|Read|parse|Parse|require|Require)[A-Za-z_$]*\s*\(\s*['"`][^'"`]*(?:site\/data|warehouse\/receipts\/proof)\//.test(rhs)
   ) {
     return true;
   }
@@ -178,7 +212,7 @@ export function refreshedLoadBindings(source, refreshedArtifacts) {
   while ((match = decl.exec(source))) {
     const name = match[1];
     const rhs = match[2];
-    const paths = extractSiteDataPaths(rhs);
+    const paths = extractGovernedPaths(rhs);
     if (!paths.some((path) => refreshedSet.has(path))) continue;
     if (rhsLoadsGovernedJson(rhs)) {
       bindings.add(name);
@@ -202,9 +236,9 @@ export function refreshedLoadBindings(source, refreshedArtifacts) {
   }
   // `import name from "../site/data/....json" with { type: "json" }`
   const importRe =
-    /import\s+([A-Za-z_$][\w$]*)\s+from\s+['"`]((?:(?:\.\.\/)+)?site\/data\/[^'"`]+\.json)['"`]/g;
+    /import\s+([A-Za-z_$][\w$]*)\s+from\s+['"`]((?:(?:\.\.\/)+)?(?:site\/data|warehouse\/receipts\/proof)\/[^'"`]+\.json)['"`]/g;
   while ((match = importRe.exec(source))) {
-    const normalized = normalizeSiteDataPath(match[2]);
+    const normalized = normalizeGovernedPath(match[2]);
     if (normalized && refreshedSet.has(normalized)) bindings.add(match[1]);
   }
   return bindings;
@@ -236,7 +270,7 @@ export function scanSource(source, {
   let match;
   while ((match = ASSERT_EQUAL_RE.exec(scanText))) {
     const expr = match[1].trim();
-    const literal = Number(match[2]);
+    const literal = Number(String(match[2]).replaceAll("_", ""));
     // Exactly-zero empty-state checks are refresh-stable invariants (a required
     // absence), not population pins that move when publishers roll.
     if (literal === 0) continue;
@@ -299,7 +333,7 @@ function walkTestFiles(rootDir, relativeRoot) {
  * being listed in empirical_starting_set.
  */
 export function discoverGovernedTestFiles(policy, rootDir = ROOT) {
-  const refreshedArtifacts = policy?.scope?.refreshed_site_data_artifacts || [];
+  const refreshedArtifacts = governedRefreshedArtifacts(policy);
   const discovered = [];
   for (const scanRoot of TEST_SCAN_ROOTS) {
     for (const target of walkTestFiles(rootDir, scanRoot)) {
@@ -351,9 +385,9 @@ export function scanRepository({
   policy = loadPolicy(rootDir),
   files = null,
 } = {}) {
-  const refreshedArtifacts = policy?.scope?.refreshed_site_data_artifacts || [];
+  const refreshedArtifacts = governedRefreshedArtifacts(policy);
   const countPropertyPattern = policy?.count_property_pattern
-    || "(?:count|length|total|size|appearances|matter_count|references|universe)";
+    || "(?:count|length|total|size|appearances|matter_count|references|universe|row_count)";
   const targets = files
     ? files.map((abs) => ({
       absolute: resolve(abs),
@@ -396,7 +430,7 @@ export function formatFinding(finding, policy = null) {
   const permitted = shapes.length
     ? shapes.join(" | ")
     : "fixture-pin (load test/fixtures/) | refresh-invariant (property that survives refresh)";
-  return `${finding.file}:${finding.line}: exact-count assertion ${finding.expression} == ${finding.literal} reads refreshed site/data (${finding.loaded_artifacts.join(", ")}). `
+  return `${finding.file}:${finding.line}: exact-count assertion ${finding.expression} == ${finding.literal} reads refreshed artifact (${finding.loaded_artifacts.join(", ")}). `
     + `Replace it with one of the two permitted shapes — ${permitted}`;
 }
 
@@ -434,7 +468,7 @@ function main(argv = process.argv.slice(2)) {
     return;
   }
   console.log(
-    `refresh exact-count guard OK — scanned ${scannedCount} test file(s) that load governed refreshed site/data; 0 exact-count asserts`,
+    `refresh exact-count guard OK — scanned ${scannedCount} test file(s) that load governed refreshed artifacts; 0 exact-count asserts`,
   );
 }
 

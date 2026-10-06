@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.refresh_exact_count_guard.v1",
-  "purpose": "Fail closed when a test couples an exact population count to live refreshed site/data. Scheduled first-class refresh rewrites those artifacts; exact pins force hand-restamping and block unattended merges.",
+  "purpose": "Fail closed when a test couples an exact population count to live refreshed site/data or warehouse bulk proof receipts. Scheduled first-class refresh and warehouse rematerialization rewrite those artifacts; exact pins force hand-restamping and block unattended merges.",
   "permitted_shapes": [
     {
       "id": "fixture-pin",
@@ -12,7 +12,7 @@
     }
   ],
   "scope": {
-    "note": "Governs exact-count asserts only when a test loads one of the listed refreshed site/data artifacts and the asserted expression references that load binding. The default guard run discovers those test files by content under test/ and worker/test/, including helper-based loads (for example loadJsonFile(\"site/data/...\")) and JSON module imports; it does not limit the scan to a fixed file allowlist. Paths that only appear in string arrays or non-load calls stay unscanned. Exact counts against committed fixtures are allowed. Grow this artifact list only when a later scheduled refresh proves another member.",
+    "note": "Governs exact-count asserts only when a test loads one of the listed refreshed site/data or warehouse proof artifacts and the asserted expression references that load binding. The default guard run discovers those test files by content under test/ and worker/test/, including helper-based loads, JSON module imports, and join(WAREHOUSE_DIR, \"receipts\", \"proof\", \"…\") forms; it does not limit the scan to a fixed file allowlist. Paths that only appear in string arrays or non-load calls stay unscanned. Exact counts against committed fixtures are allowed. Grow these artifact lists only when a later refresh proves another member.",
     "refreshed_site_data_artifacts": [
       "site/data/committee_graph_lookup.json",
       "site/data/district_activity.json",
@@ -29,12 +29,15 @@
       "site/data/staffing_default_hires.json",
       "site/data/staffing_exams.json",
       "site/data/title_crosswalk.json"
+    ],
+    "refreshed_warehouse_proof_artifacts": [
+      "warehouse/receipts/proof/zap-projects_bulk_latest.json"
     ]
   },
-  "count_property_pattern": "(?:count|length|total|size|appearances|matter_count|references|universe|rows|committees?|exams?|groups?|members?|mapped|unmapped)",
+  "count_property_pattern": "(?:count|length|total|size|appearances|matter_count|references|universe|rows|row_count|committees?|exams?|groups?|members?|mapped|unmapped)",
   "empirical_starting_set": {
     "source": "Scheduled first-class refresh pull request restamps that invalidated exact pins",
-    "note": "Provenance of the suites a real refresh invalidated. Kept covered by the default scan and is not the scan allowlist; content discovery is authoritative for which files are checked.",
+    "note": "Provenance of the suites a real refresh invalidated. Kept covered by the default scan and is not the scan allowlist; content discovery is authoritative for which files are checked. warehouse_bulk is provenance for warehouse proof rematerialization restamps.",
     "test_files": [
       "test/default_local_home_journey.test.mjs",
       "test/existing_connections_committee.test.mjs",
@@ -48,7 +51,8 @@
       "test/meeting_geography_backfill.test.mjs",
       "test/official_profile_committee_graph.test.mjs",
       "test/resident_entry_presentation.test.mjs",
-      "test/same_consolidation.test.mjs"
+      "test/same_consolidation.test.mjs",
+      "test/warehouse_bulk.test.mjs"
     ]
   }
 }
