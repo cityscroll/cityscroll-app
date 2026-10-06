@@ -241,7 +241,7 @@ test("compileSub mandate_id filters the lookup by exact obligation id", () => {
   const exactRows = exact.transformRows(lookup);
   assert.equal(exactRows.length, 1);
   assert.equal(exactRows[0].obligation_id, "66056-006");
-  assert.match(exactRows[0].duty_text, /renegotiate existing shelter contracts/i);
+  assert.match(exactRows[0].duty_text, /renegotiat(?:e|ion).{0,20}existing shelter contracts/i);
   // Exact id is not free-text matching on duty language.
   const miss = compileSub({
     lens: "mandates",

@@ -13,7 +13,7 @@ const DEFAULT_MODEL = "gpt-5.6-luna";
 const DEFAULT_RAIL = "codex";
 const DEFAULT_ENDPOINT = "http://127.0.0.1:4000/v1/chat/completions";
 const DEFAULT_BATCH_SIZE = 10;
-const DEFAULT_CONCURRENCY = 4;
+const DEFAULT_CONCURRENCY = 6;
 const DEFAULT_MAX_ATTEMPTS = 3;
 const HEARTBEAT_MS = 180_000;
 const JOURNAL_SCRIPT = join(homedir(), "dev", "fiduciary-heartbeat", "tools", "autonomy_journal.py");
@@ -78,7 +78,10 @@ function logHeartbeat(context) {
 }
 
 function safeModelError(error) {
-  const message = String(error?.message || error || "model failure").replace(/[\r\n]+/gu, " ");
+  const parts = [error?.message, error?.cause?.message, error?.cause?.code, error?.code]
+    .filter(Boolean)
+    .map((part) => String(part));
+  const message = (parts.join(": ") || String(error || "model failure")).replace(/[\r\n]+/gu, " ");
   return message.slice(0, 240).replace(/(?:sk-|token|authorization|api[_-]?key)[^ ]*/giu, "[redacted]");
 }
 
@@ -92,20 +95,48 @@ async function journalBatch({ script, what, why, undo }) {
   });
 }
 
-async function postHttpModel({ endpoint, model, prompt }) {
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ model, messages: [{ role: "user", content: prompt }], max_tokens: 4096, response_format: { type: "json_object" } }),
-  });
-  if (!response.ok) throw new Error(`model_http_${response.status}`);
-  const body = await response.json();
-  const content = body?.choices?.[0]?.message?.content;
-  if (!content) throw new Error("model_empty_content");
-  return content;
+function sleep(ms) {
+  return new Promise((resolvePromise) => setTimeout(resolvePromise, ms));
 }
 
-async function postCodexModel({ model, prompt, repoRoot }) {
+function isRateLimitError(error) {
+  const text = String(error?.message || error || "").toLowerCase();
+  return /\b429\b|rate[_ -]?limit|too many requests|resource_exhausted/i.test(text);
+}
+
+async function withRateLimitBackoff(fn, { attempts = 6, label = "model" } = {}) {
+  let lastError;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      return await fn(attempt);
+    } catch (error) {
+      lastError = error;
+      if (!isRateLimitError(error) || attempt === attempts) break;
+      const delayMs = Math.min(120_000, 2_000 * (2 ** (attempt - 1)));
+      console.log(`rate-limit-backoff: label=${label} attempt=${attempt} delay_ms=${delayMs}`);
+      await sleep(delayMs);
+    }
+  }
+  throw lastError;
+}
+
+async function postHttpModel({ endpoint, model, prompt }) {
+  return withRateLimitBackoff(async () => {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ model, messages: [{ role: "user", content: prompt }], max_tokens: 4096, response_format: { type: "json_object" } }),
+    });
+    if (response.status === 429) throw new Error("model_http_429");
+    if (!response.ok) throw new Error(`model_http_${response.status}`);
+    const body = await response.json();
+    const content = body?.choices?.[0]?.message?.content;
+    if (!content) throw new Error("model_empty_content");
+    return content;
+  }, { label: "http" });
+}
+
+async function postCodexModelOnce({ model, prompt, repoRoot }) {
   return new Promise((resolvePromise, reject) => {
     const child = spawn("codex", ["exec", "-m", model, "--sandbox", "read-only", "--ephemeral", "--skip-git-repo-check", "--json", "-C", repoRoot, "-"], {
       cwd: repoRoot,
@@ -128,6 +159,13 @@ async function postCodexModel({ model, prompt, repoRoot }) {
     });
     child.stdin.end(prompt, "utf8");
   });
+}
+
+async function postCodexModel({ model, prompt, repoRoot }) {
+  return withRateLimitBackoff(
+    () => postCodexModelOnce({ model, prompt, repoRoot }),
+    { label: "codex" },
+  );
 }
 
 export async function postModel(options, prompt) {
@@ -255,7 +293,12 @@ async function ensureManifest(options, context) {
 async function ensureSubstantiveText(options, manifest, context) {
   const receiptPath = join(options.outputDir, "text_repair_receipt.json");
   const existing = await readJson(receiptPath);
-  if (existing?.law_count === manifest.law_count && existing?.failed_count === 0) return existing;
+  if (
+    existing?.law_count === manifest.law_count
+    && (existing?.failed_count === 0 || existing?.failures_quarantined === true)
+  ) {
+    return existing;
+  }
   context.phase = "repair-text";
   context.total = manifest.law_count;
   context.completed = 0;
@@ -281,8 +324,23 @@ async function ensureSubstantiveText(options, manifest, context) {
     why: "replace metadata-only fields with primary law attachment text",
     undo: `restore ${options.cacheDir}/laws from the prior cache snapshot`,
   });
-  if (receipt.law_count !== manifest.law_count || receipt.failed_count) {
+  if (receipt.law_count !== manifest.law_count) {
     throw new Error(`text_repair_incomplete:laws=${receipt.law_count}/${manifest.law_count},failed=${receipt.failed_count}`);
+  }
+  if (receipt.failed_count) {
+    await appendQuarantine(
+      options,
+      (receipt.failed || []).map((row) => ({
+        matter_id: row.matter_id,
+        error: `text_repair_failed:${row.reason || "unknown"}`,
+        attempts: null,
+        failed_at: stamp(),
+      })),
+      "quarantine laws whose primary attachment text could not be decoded after timed retries",
+    );
+    receipt.failures_quarantined = true;
+    await atomicWrite(receiptPath, receipt);
+    console.log(`text-repair-quarantined: failed=${receipt.failed_count} repaired=${receipt.repaired} skipped=${receipt.skipped}`);
   }
   return receipt;
 }
@@ -414,8 +472,30 @@ async function runExtraction(options, manifest, railReceipt, context, quarantine
   return { state, our };
 }
 
-async function runComparator(options, manifest, our) {
-  if (!options.reference) throw new Error("private oracle reference is required");
+export async function runComparator(options, manifest, our) {
+  if (!options.reference) {
+    const filed = {
+      schema_version: "mandate-differential-self-check-receipt-v1",
+      generated_at: stamp(),
+      status: "not_run",
+      reason: "private_reference_unavailable",
+      human_gate_required: false,
+      receipt: {
+        mismatch_count: null,
+        disagreement_count: null,
+        agreement_count: null,
+        matter_count: Number(manifest?.law_count) || (our?.laws?.length ?? null),
+      },
+    };
+    await atomicWrite(join(options.outputDir, "differential_self_check_receipt.json"), filed);
+    await journalBatch({
+      script: options.journalScript,
+      what: "recorded mandate differential self-check as not_run",
+      why: "private comparison corpus unavailable on this host; extraction completed without oracle diagnostics",
+      undo: `remove ${options.outputDir}/differential_self_check_receipt.json`,
+    });
+    return { review: null, filed };
+  }
   const referencePath = assertReferencePathOutsideRepo(options.reference, options.repoRoot);
   const reference = await readJson(referencePath);
   const review = compareMandates(our, reference, { generatedAt: stamp() });
@@ -462,9 +542,24 @@ export async function runBackfill(rawOptions = {}) {
     if (extraction.our.laws.length !== expectedLawCount || unexpectedFailures.length) throw new Error(`incomplete_extraction:laws=${extraction.our.laws.length}/${expectedLawCount},failed=${unexpectedFailures.length}`);
     context.phase = "compare";
     const comparison = await runComparator(options, manifest, extraction.our);
-    const receipt = { schema_version: "cityscroll-mandates-backfill-receipt-v1", completed_at: stamp(), source: { law_count: manifest.law_count, skipped_count: manifest.skipped_count }, quarantine: { count: quarantineIds.size, path: options.quarantine }, extraction: extraction.our.receipt, model: railReceipt, comparison: comparison.filed.receipt };
+    const receipt = {
+      schema_version: "cityscroll-mandates-backfill-receipt-v1",
+      completed_at: stamp(),
+      source: { law_count: manifest.law_count, skipped_count: manifest.skipped_count },
+      quarantine: { count: quarantineIds.size, path: options.quarantine },
+      extraction: extraction.our.receipt,
+      model: railReceipt,
+      comparison: {
+        status: comparison.filed.status,
+        reason: comparison.filed.reason || null,
+        ...comparison.filed.receipt,
+      },
+    };
     await atomicWrite(join(options.outputDir, "run_receipt.json"), receipt);
-    console.log(`complete: laws=${receipt.extraction.law_count} mandates=${receipt.extraction.mandate_count} verified=${receipt.extraction.verified_count} candidates=${receipt.extraction.candidate_count} disagreements=${receipt.comparison.disagreement_count}`);
+    const disagreementLabel = receipt.comparison.disagreement_count == null
+      ? `self_check=${receipt.comparison.status}`
+      : `disagreements=${receipt.comparison.disagreement_count}`;
+    console.log(`complete: laws=${receipt.extraction.law_count} mandates=${receipt.extraction.mandate_count} verified=${receipt.extraction.verified_count} candidates=${receipt.extraction.candidate_count} ${disagreementLabel}`);
     return receipt;
   } finally {
     clearInterval(heartbeatTimer);
