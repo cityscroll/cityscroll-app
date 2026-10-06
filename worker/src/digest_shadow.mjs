@@ -1,7 +1,7 @@
 // 06:00 ET digest shadow run: execute the real account builders inline with delivery and
 // state advancement disabled, persist rendered previews in D1, and publish structured redlines.
 
-import { describeCollapse, mergeFunnels, normalizeFunnel } from "./lib/digest_funnel.mjs";
+import { describeCollapse, emptyFunnel, mergeFunnels, normalizeFunnel } from "./lib/digest_funnel.mjs";
 import { dayLogBuiltItemTotal, isCatchUpDayLogEntry } from "./lib/digest_ops.mjs";
 import {
   DIGEST_SHADOW_DEGRADED_UPSTREAM,
@@ -14,10 +14,18 @@ const ONTOLOGY_DELTA_SHADOW_CONTRACT = "ontology-delta-shadow.v1";
 export const DIGEST_SHADOW_CONTRACT = "digest-shadow.v1";
 export const DIGEST_SHADOW_READY = "READY";
 export const DIGEST_SHADOW_ATTENTION = "NEEDS_ATTENTION";
+// Written at the top of the 10:00 UTC window before advisory freshness. A killed isolate that
+// never finalizes still leaves this same-day row, so hold/monitor read STARTED_NOT_FINISHED
+// instead of MISSING_RUN.
+export const DIGEST_SHADOW_STARTED = "STARTED";
 // A third outcome, between the other two. The rehearsal ran and found nothing wrong with what we
 // build; a source it reads did not answer. That is a real degradation and it is reported as one,
 // but it is not a redline against our digest and it never holds a subscriber's mail.
 export { DIGEST_SHADOW_DEGRADED_UPSTREAM };
+// Advisory notice ingest/prewarm share one hard budget well under the ~900s scheduled-isolate
+// wall. Exhaustion stops freshness and records DEGRADED_UPSTREAM; the rehearsal still runs.
+export const DIGEST_SHADOW_FRESHNESS_BUDGET_MS = 90_000;
+export const DIGEST_SHADOW_FRESHNESS_SUBREQUEST_BUDGET = 40;
 const HISTORY_DAYS = 30;
 const TRAILING_DAYS = 7;
 const COLLAPSE_RATIO = 0.25;
@@ -705,6 +713,256 @@ export async function persistDigestShadow(db, summary) {
       ));
   }
   await db.batch(statements);
+}
+
+function emptyShadowSkeleton(now, status) {
+  const ranAt = new Date(now).toISOString();
+  const day = ranAt.slice(0, 10);
+  return {
+    contract: DIGEST_SHADOW_CONTRACT,
+    run_day: day,
+    ran_at: ranAt,
+    ok: status === DIGEST_SHADOW_READY || status === DIGEST_SHADOW_STARTED || status === DIGEST_SHADOW_DEGRADED_UPSTREAM,
+    status,
+    digest_count: 0,
+    evaluated_count: 0,
+    total_items: 0,
+    per_watch_item_counts: [],
+    delta_vs_yesterday_send: {
+      digest_count: 0,
+      item_count: 0,
+      yesterday_present: false,
+    },
+    trailing_average: 0,
+    trailing_average_basis: "built_digest_items",
+    trailing_average_comparable: false,
+    trailing_baseline: 0,
+    trailing_baseline_method: "unavailable",
+    selection_funnel: emptyFunnel(),
+    owed_drain_checks: [],
+    collapse_stage: null,
+    observations: [],
+    redlines: [],
+    upstream_incidents: [],
+    upstream_sources_unavailable: [],
+    affected_digest_ids: [],
+    repair: {
+      state: "none",
+      affected_digest_ids: [],
+      rerun_method: "POST /admin/digest-shadow",
+      rerun_scope: "full_build_path",
+    },
+    ontology_delta: {
+      contract: ONTOLOGY_DELTA_SHADOW_CONTRACT,
+      observed_at: ranAt,
+      candidate_count: 0,
+      emitted_count: 0,
+      events: [],
+      receipts: [],
+    },
+    previews: [],
+  };
+}
+
+/** Same-day placeholder written before advisory freshness so a killed cron is never MISSING_RUN. */
+export function buildDigestShadowStartedSummary(now = new Date()) {
+  const summary = emptyShadowSkeleton(now, DIGEST_SHADOW_STARTED);
+  summary.phase = "started";
+  summary.complete = false;
+  return summary;
+}
+
+/**
+ * Explicit failure summary for a rehearsal that threw before it could finish.
+ * Uses a run-level redline so hold policy stays fail-open (ALL_DIGESTS_ELIGIBLE)
+ * while still leaving a same-day D1 row the monitor can read instead of MISSING_RUN.
+ */
+export function buildDigestShadowFailureSummary(error, now = new Date()) {
+  const summary = emptyShadowSkeleton(now, DIGEST_SHADOW_ATTENTION);
+  const message = String(error?.message || error || "digest shadow failed");
+  summary.ok = false;
+  summary.phase = "failed";
+  summary.complete = false;
+  summary.redlines = [redline(
+    "render_error",
+    "run",
+    "The digest shadow rehearsal failed before it could finish.",
+    { error: message },
+  )];
+  summary.repair = {
+    state: "dispatch_required",
+    affected_digest_ids: [],
+    rerun_method: "POST /admin/digest-shadow",
+    rerun_scope: "full_build_path",
+  };
+  summary.failure = { error: message };
+  return summary;
+}
+
+async function persistShadowState(env, summary, { now = new Date(), error = null } = {}) {
+  if (!env?.DB) throw new Error("digest shadow requires DB");
+  const at = new Date(now);
+  const [{ recordDigestShadowHoldState }, { recordDigestShadowReceipt }] = await Promise.all([
+    import("./digest_shadow_hold.mjs"),
+    import("./reliability_watchdogs.mjs"),
+  ]);
+  await persistDigestShadow(env.DB, summary);
+  summary.hold = await recordDigestShadowHoldState(env.DB, summary, {
+    now: at,
+    receiptStore: env.ALERT_STATE,
+  });
+  await persistDigestShadow(env.DB, summary);
+  summary.receipt = await recordDigestShadowReceipt(env, summary, at, error);
+  const out = { ...summary };
+  delete out._rendered_previews;
+  return out;
+}
+
+/** Persist the run-day STARTED row and ledger receipt before advisory freshness. */
+export async function persistDigestShadowStarted(env, { now = new Date() } = {}) {
+  return persistShadowState(env, buildDigestShadowStartedSummary(now), { now });
+}
+
+/**
+ * Persist a same-day failure row, hold decision, and FAILED ledger receipt
+ * so a thrown rehearsal never reads as MISSING_RUN / rehearsal-stale.
+ */
+export async function persistDigestShadowFailure(env, error, { now = new Date() } = {}) {
+  return persistShadowState(env, buildDigestShadowFailureSummary(error, now), { now, error });
+}
+
+/** Overwrite the day's D1 row, hold decision, and ledger receipt with a final summary. */
+export async function finalizeDigestShadowRun(env, summary, { now = new Date(), error = null } = {}) {
+  return persistShadowState(env, summary, { now, error });
+}
+
+function freshnessIncident(reason, evidence = {}) {
+  return {
+    code: UPSTREAM_UNAVAILABLE,
+    digest_id: "watch:notices-freshness",
+    watch_id: null,
+    reason: "A source the digest reads did not answer within its retry budget.",
+    evidence: {
+      error: String(reason || "notice freshness degraded"),
+      source: "soda",
+      ...evidence,
+    },
+    degraded_output: {
+      mode: "none",
+      reason: "advisory notice freshness stopped before the rehearsal",
+    },
+  };
+}
+
+/**
+ * When advisory freshness hits its hard budget or throws, keep every digest eligible and
+ * record DEGRADED_UPSTREAM on an otherwise READY rehearsal.
+ */
+export function applyFreshnessDegradation(summary, freshness) {
+  if (!summary || !freshness?.degraded) return summary;
+  const incident = freshnessIncident(freshness.reason, {
+    http_status: freshness.http_status ?? null,
+    attempts: freshness.attempts ?? 1,
+    budget_ms: freshness.budget_ms ?? DIGEST_SHADOW_FRESHNESS_BUDGET_MS,
+    subrequest_budget: freshness.subrequest_budget ?? DIGEST_SHADOW_FRESHNESS_SUBREQUEST_BUDGET,
+    subrequests: freshness.subrequests ?? null,
+    elapsed_ms: freshness.elapsed_ms ?? null,
+  });
+  const upstreamIncidents = [...(Array.isArray(summary.upstream_incidents) ? summary.upstream_incidents : []), incident];
+  const sources = [...new Set([
+    ...(Array.isArray(summary.upstream_sources_unavailable) ? summary.upstream_sources_unavailable : []),
+    "soda",
+  ])].sort();
+  const status = summary.status === DIGEST_SHADOW_ATTENTION
+    ? DIGEST_SHADOW_ATTENTION
+    : DIGEST_SHADOW_DEGRADED_UPSTREAM;
+  return {
+    ...summary,
+    status,
+    ok: summary.redlines?.length ? false : true,
+    upstream_incidents: upstreamIncidents,
+    upstream_sources_unavailable: sources,
+    freshness: {
+      degraded: true,
+      reason: String(freshness.reason || "notice freshness degraded"),
+    },
+  };
+}
+
+/**
+ * Run notice ingest + prewarm under a hard wall-time and subrequest budget.
+ * Exhaustion or throw returns degraded=true; callers still run the rehearsal.
+ */
+export async function runBudgetedNoticeFreshness(env, {
+  budgetMs = DIGEST_SHADOW_FRESHNESS_BUDGET_MS,
+  maxSubrequests = DIGEST_SHADOW_FRESHNESS_SUBREQUEST_BUDGET,
+  ingestFn,
+  prewarmFn,
+  acquisitionFn = null,
+  runId = null,
+  now = Date.now(),
+  fetchImpl = globalThis.fetch,
+} = {}) {
+  const startedAt = Number(now) || Date.now();
+  const budget = {
+    budget_ms: budgetMs,
+    subrequest_budget: maxSubrequests,
+    subrequests: 0,
+    elapsed_ms: 0,
+  };
+  const originalFetch = fetchImpl;
+  const countingFetch = (...args) => {
+    budget.subrequests += 1;
+    if (budget.subrequests > maxSubrequests) {
+      const error = new Error(
+        `digest shadow freshness subrequest budget exhausted (${maxSubrequests})`,
+      );
+      error.code = "FRESHNESS_SUBREQUEST_BUDGET";
+      return Promise.reject(error);
+    }
+    return originalFetch(...args);
+  };
+  let timer;
+  const timeout = new Promise((_, reject) => {
+    timer = setTimeout(() => {
+      const error = new Error(`digest shadow freshness time budget exhausted (${budgetMs}ms)`);
+      error.code = "FRESHNESS_TIME_BUDGET";
+      reject(error);
+    }, budgetMs);
+    timer.unref?.();
+  });
+  const work = async () => {
+    const priorFetch = globalThis.fetch;
+    globalThis.fetch = countingFetch;
+    try {
+      const ingest = ingestFn || (await import("./ingest.mjs")).ingestNotices;
+      const prewarm = prewarmFn || (await import("./notice.mjs")).prewarmNotices;
+      const runIngest = acquisitionFn
+        ? () => acquisitionFn(env, "city-record", runId, () => ingest(env))
+        : () => ingest(env);
+      const result = await runIngest();
+      const prewarmResult = await prewarm(env, result?.noticeRequestIds);
+      return { result, prewarm: prewarmResult };
+    } finally {
+      globalThis.fetch = priorFetch;
+    }
+  };
+  try {
+    const result = await Promise.race([work(), timeout]);
+    budget.elapsed_ms = Date.now() - startedAt;
+    return { ok: true, degraded: false, ...budget, ...result };
+  } catch (error) {
+    budget.elapsed_ms = Date.now() - startedAt;
+    return {
+      ok: false,
+      degraded: true,
+      reason: String(error?.message || error),
+      code: error?.code || null,
+      ...budget,
+    };
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 /** Run the real digest builders with delivery, queue fan-out, and state advancement disabled. */
