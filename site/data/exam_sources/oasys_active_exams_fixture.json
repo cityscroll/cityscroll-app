@@ -1,6 +1,6 @@
 {
-  "fetched_at": "2026-09-30",
-  "fetched_at_utc": "2026-09-30T13:14:42.369Z",
+  "fetched_at": "2026-10-07",
+  "fetched_at_utc": "2026-10-07T14:06:56.795Z",
   "http_status": 200,
   "payload": [
     {
@@ -44,6 +44,243 @@
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277006000.pdf"
     },
     {
+      "examId": 9676,
+      "title": "Auto Mechanic",
+      "examNumber": "7010",
+      "filingStart": "2026-10-07T00:00:00",
+      "filingEnd": "2026-10-27T00:00:00",
+      "filingFee": 96,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277010000.pdf",
+      "examParts": [
+        {
+          "examId": 9676,
+          "examPartId": 5199,
+          "partNo": 1,
+          "partTypeCode": "MC",
+          "title": "Multiple Choice Test",
+          "examPartType": {
+            "partTypeCode": "MC",
+            "partTypeDescription": "Multiple Choice Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9676,
+          "examPartId": 5200,
+          "partNo": 2,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9676,
+          "examPartId": 5201,
+          "partNo": 3,
+          "partTypeCode": "PR",
+          "title": "Practical Test",
+          "examPartType": {
+            "partTypeCode": "PR",
+            "partTypeDescription": "Practical Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-10-07T06:54:07.703",
+      "isAddedToTop": false
+    },
+    {
+      "examId": 9677,
+      "title": "Auto Mechanic (CUNY)",
+      "examNumber": "7011",
+      "filingStart": "2026-10-07T00:00:00",
+      "filingEnd": "2026-10-27T00:00:00",
+      "filingFee": 96,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277011000.pdf",
+      "examParts": [
+        {
+          "examId": 9677,
+          "examPartId": 5202,
+          "partNo": 1,
+          "partTypeCode": "MC",
+          "title": "Multiple Choice Test",
+          "examPartType": {
+            "partTypeCode": "MC",
+            "partTypeDescription": "Multiple Choice Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9677,
+          "examPartId": 5203,
+          "partNo": 2,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9677,
+          "examPartId": 5204,
+          "partNo": 3,
+          "partTypeCode": "PR",
+          "title": "Practical Test",
+          "examPartType": {
+            "partTypeCode": "PR",
+            "partTypeDescription": "Practical Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 4,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-10-07T06:54:29.253",
+      "isAddedToTop": false
+    },
+    {
+      "examId": 9679,
+      "title": "Auto Mechanic (Diesel)",
+      "examNumber": "7012",
+      "filingStart": "2026-10-07T00:00:00",
+      "filingEnd": "2026-10-27T00:00:00",
+      "filingFee": 96,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277012000.pdf",
+      "examParts": [
+        {
+          "examId": 9679,
+          "examPartId": 5209,
+          "partNo": 1,
+          "partTypeCode": "MC",
+          "title": "Multiple Choice Test",
+          "examPartType": {
+            "partTypeCode": "MC",
+            "partTypeDescription": "Multiple Choice Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9679,
+          "examPartId": 5210,
+          "partNo": 2,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9679,
+          "examPartId": 5211,
+          "partNo": 3,
+          "partTypeCode": "PR",
+          "title": "Practical Test",
+          "examPartType": {
+            "partTypeCode": "PR",
+            "partTypeDescription": "Practical Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-10-07T06:54:47.387",
+      "isAddedToTop": false
+    },
+    {
       "examId": 9628,
       "title": "Automotive Service Worker",
       "examNumber": "7013",
@@ -82,6 +319,164 @@
       "filingFee": 68,
       "isPromotional": false,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277023000.pdf"
+    },
+    {
+      "examId": 9672,
+      "title": "Customer Information Representative",
+      "examNumber": "7024",
+      "filingStart": "2026-10-07T00:00:00",
+      "filingEnd": "2026-10-27T00:00:00",
+      "filingFee": 61,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277024000.pdf",
+      "examParts": [
+        {
+          "examId": 9672,
+          "examPartId": 5189,
+          "partNo": 1,
+          "partTypeCode": "MC",
+          "title": "Multiple Choice Test",
+          "examPartType": {
+            "partTypeCode": "MC",
+            "partTypeDescription": "Multiple Choice Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": true,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9672,
+          "examPartId": 5190,
+          "partNo": 2,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9672,
+          "examPartId": 5191,
+          "partNo": 3,
+          "partTypeCode": "PR",
+          "title": "Practical Test",
+          "examPartType": {
+            "partTypeCode": "PR",
+            "partTypeDescription": "Practical Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": true,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-10-07T06:55:07.357",
+      "isAddedToTop": false
+    },
+    {
+      "examId": 9675,
+      "title": "Electrician (Automobile)",
+      "examNumber": "7027",
+      "filingStart": "2026-10-07T00:00:00",
+      "filingEnd": "2026-10-27T00:00:00",
+      "filingFee": 96,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277027000.pdf",
+      "examParts": [
+        {
+          "examId": 9675,
+          "examPartId": 5196,
+          "partNo": 1,
+          "partTypeCode": "MC",
+          "title": "Multiple Choice Test",
+          "examPartType": {
+            "partTypeCode": "MC",
+            "partTypeDescription": "Multiple Choice Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9675,
+          "examPartId": 5197,
+          "partNo": 2,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9675,
+          "examPartId": 5198,
+          "partNo": 3,
+          "partTypeCode": "PR",
+          "title": "Practical Test",
+          "examPartType": {
+            "partTypeCode": "PR",
+            "partTypeDescription": "Practical Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-10-07T06:55:22.523",
+      "isAddedToTop": false
     },
     {
       "examId": 9639,
@@ -152,6 +547,101 @@
       "filingFee": 68,
       "isPromotional": false,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277041000.pdf"
+    },
+    {
+      "examId": 9666,
+      "title": "Management Auditor",
+      "examNumber": "7047",
+      "filingStart": "2026-10-07T00:00:00",
+      "filingEnd": "2026-10-27T00:00:00",
+      "filingFee": 82,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277047000.pdf",
+      "examParts": [
+        {
+          "examId": 9666,
+          "examPartId": 5182,
+          "partNo": 1,
+          "partTypeCode": "MC",
+          "title": "Multiple Choice Test",
+          "examPartType": {
+            "partTypeCode": "MC",
+            "partTypeDescription": "Multiple Choice Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9666,
+          "examPartId": 5183,
+          "partNo": 2,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-10-07T06:55:36.453",
+      "isAddedToTop": false
+    },
+    {
+      "examId": 9667,
+      "title": "Occupational Therapist (DOE)",
+      "examNumber": "7052",
+      "filingStart": "2026-10-07T00:00:00",
+      "filingEnd": "2026-10-27T00:00:00",
+      "filingFee": 91,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277052000.pdf",
+      "examParts": [
+        {
+          "examId": 9667,
+          "examPartId": 5184,
+          "partNo": 1,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-10-07T09:59:04.657",
+      "isAddedToTop": false
     },
     {
       "examId": 9643,
@@ -278,6 +768,43 @@
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277313000.pdf"
     },
     {
+      "examId": 9673,
+      "title": "Police Officer",
+      "examNumber": "7314",
+      "filingStart": "2026-10-01T00:00:00",
+      "filingEnd": "2026-10-14T00:00:00",
+      "filingFee": 0,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277314000.pdf",
+      "examParts": [
+        {
+          "examId": 9673,
+          "examPartId": 5192,
+          "partNo": 1,
+          "partTypeCode": "MC",
+          "title": "Multiple Choice Test",
+          "examPartType": {
+            "partTypeCode": "MC",
+            "partTypeDescription": "Multiple Choice Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": true,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": true
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": true,
+      "updatedOn": "2026-09-30T16:32:33.51",
+      "isAddedToTop": false
+    },
+    {
       "examId": 9634,
       "title": "School Safety Agent",
       "examNumber": "7323",
@@ -286,6 +813,43 @@
       "filingFee": 61,
       "isPromotional": false,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277323000.pdf"
+    },
+    {
+      "examId": 9671,
+      "title": "School Safety Agent",
+      "examNumber": "7324",
+      "filingStart": "2026-10-07T00:00:00",
+      "filingEnd": "2026-11-25T00:00:00",
+      "filingFee": 61,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277324000.pdf",
+      "examParts": [
+        {
+          "examId": 9671,
+          "examPartId": 5188,
+          "partNo": 1,
+          "partTypeCode": "MC",
+          "title": "Multiple Choice Test",
+          "examPartType": {
+            "partTypeCode": "MC",
+            "partTypeDescription": "Multiple Choice Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": true,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-10-07T06:57:49.317",
+      "isAddedToTop": false
     },
     {
       "examId": 9663,
@@ -383,6 +947,206 @@
       "filingFee": 91,
       "isPromotional": true,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277509000.pdf"
+    },
+    {
+      "examId": 9680,
+      "title": "Auto Mechanic (Diesel) (Prom)",
+      "examNumber": "7512",
+      "filingStart": "2026-10-07T00:00:00",
+      "filingEnd": "2026-10-27T00:00:00",
+      "filingFee": 96,
+      "isPromotional": true,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277512000.pdf",
+      "examParts": [
+        {
+          "examId": 9680,
+          "examPartId": 5212,
+          "partNo": 1,
+          "partTypeCode": "MC",
+          "title": "Multiple Choice Test",
+          "examPartType": {
+            "partTypeCode": "MC",
+            "partTypeDescription": "Multiple Choice Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9680,
+          "examPartId": 5213,
+          "partNo": 3,
+          "partTypeCode": "EL",
+          "title": "Eligibility Check",
+          "examPartType": {
+            "partTypeCode": "EL",
+            "partTypeDescription": "Eligibility Check",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9680,
+          "examPartId": 5214,
+          "partNo": 2,
+          "partTypeCode": "PR",
+          "title": "Practical Test",
+          "examPartType": {
+            "partTypeCode": "PR",
+            "partTypeDescription": "Practical Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9680,
+          "examPartId": 5215,
+          "partNo": 4,
+          "partTypeCode": "PS",
+          "title": "Performance and Seniority Test",
+          "examPartType": {
+            "partTypeCode": "PS",
+            "partTypeDescription": "Performance and Seniority Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-10-07T06:56:19.347",
+      "isAddedToTop": false
+    },
+    {
+      "examId": 9678,
+      "title": "Auto Mechanic (Prom)",
+      "examNumber": "7513",
+      "filingStart": "2026-10-07T00:00:00",
+      "filingEnd": "2026-10-27T00:00:00",
+      "filingFee": 96,
+      "isPromotional": true,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277513000.pdf",
+      "examParts": [
+        {
+          "examId": 9678,
+          "examPartId": 5205,
+          "partNo": 1,
+          "partTypeCode": "MC",
+          "title": "Multiple Choice Test",
+          "examPartType": {
+            "partTypeCode": "MC",
+            "partTypeDescription": "Multiple Choice Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9678,
+          "examPartId": 5206,
+          "partNo": 3,
+          "partTypeCode": "EL",
+          "title": "Eligibility Check",
+          "examPartType": {
+            "partTypeCode": "EL",
+            "partTypeDescription": "Eligibility Check",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9678,
+          "examPartId": 5207,
+          "partNo": 2,
+          "partTypeCode": "PR",
+          "title": "Practical Test",
+          "examPartType": {
+            "partTypeCode": "PR",
+            "partTypeDescription": "Practical Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9678,
+          "examPartId": 5208,
+          "partNo": 4,
+          "partTypeCode": "PS",
+          "title": "Performance and Seniority Test",
+          "examPartType": {
+            "partTypeCode": "PS",
+            "partTypeDescription": "Performance and Seniority Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-10-07T06:57:00.073",
+      "isAddedToTop": false
     },
     {
       "examId": 9642,

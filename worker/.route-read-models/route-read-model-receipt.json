@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "version": "v1-62ca9bd99e7933d7",
+  "generated_at": "2026-10-07T14:08:08.280Z",
+  "near_you_slice_count": 2430,
+  "community_district_digest_slice_count": 59,
+  "meeting_slice_count": 91,
+  "residential_place_count": 197,
+  "coverage_census": {
+    "ready": 796,
+    "zero": 960,
+    "source_unavailable": 674
+  },
+  "publication_dependencies": {
+    "parcel_membership_generation": "2026-10-07T14:05:49.796Z",
+    "parcel_coordinate_vintage": "pluto_25v4",
+    "assertion_generation": "refresh-151b72628ab6",
+    "source_generation": "2026-10-07T14:05:41.517Z"
+  }
+}

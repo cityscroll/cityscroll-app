@@ -1,10 +1,10 @@
 {
   "schema_version": 6,
-  "generated_at": "2026-09-30",
-  "sources_retrieved_as_of": "2026-09-30",
-  "data_current_as_of": "2026-09-30",
-  "list_current_as_of": "2026-09-30",
-  "open_window_as_of": "2026-09-30",
+  "generated_at": "2026-10-07",
+  "sources_retrieved_as_of": "2026-10-07",
+  "data_current_as_of": "2026-10-07",
+  "list_current_as_of": "2026-10-07",
+  "open_window_as_of": "2026-10-07",
   "annual_schedule_current_as_of": "2026-07-22",
   "interest_areas": [
     "public-safety",
@@ -93,8 +93,8 @@
       "public-safety": {
         "id": "public-safety",
         "exam_count": 60,
-        "open_count": 3,
-        "upcoming_count": 35,
+        "open_count": 6,
+        "upcoming_count": 32,
         "closed_count": 22,
         "canceled_count": 0,
         "postponed_count": 0,
@@ -104,7 +104,10 @@
         "open_exam_numbers": [
           "7302",
           "7307",
-          "7329"
+          "7314",
+          "7324",
+          "7329",
+          "7533"
         ],
         "upcoming_exam_numbers": [
           "7009",
@@ -116,7 +119,6 @@
           "7308",
           "7309",
           "7310",
-          "7314",
           "7315",
           "7316",
           "7317",
@@ -125,7 +127,6 @@
           "7320",
           "7321",
           "7322",
-          "7324",
           "7325",
           "7326",
           "7328",
@@ -139,7 +140,6 @@
           "7520",
           "7528",
           "7529",
-          "7533",
           "7534",
           "7535"
         ],
@@ -209,25 +209,27 @@
       },
       "health-care": {
         "id": "health-care",
-        "exam_count": 19,
-        "open_count": 0,
-        "upcoming_count": 9,
+        "exam_count": 20,
+        "open_count": 5,
+        "upcoming_count": 5,
         "closed_count": 10,
         "canceled_count": 0,
         "postponed_count": 0,
         "unscheduled_count": 0,
         "continuous_count": 0,
-        "actionable_count": 9,
-        "open_exam_numbers": [],
+        "actionable_count": 10,
+        "open_exam_numbers": [
+          "7031",
+          "7032",
+          "7052",
+          "7054",
+          "7131"
+        ],
         "upcoming_exam_numbers": [
           "7000",
           "7025",
           "7026",
-          "7031",
-          "7032",
-          "7052",
           "7053",
-          "7054",
           "7059"
         ],
         "continuous_exam_numbers": [],
@@ -250,7 +252,8 @@
           "7052",
           "7053",
           "7054",
-          "7059"
+          "7059",
+          "7131"
         ]
       },
       "engineering-construction": {
@@ -361,8 +364,8 @@
         "exam_count": 24,
         "open_count": 0,
         "upcoming_count": 10,
-        "closed_count": 13,
-        "canceled_count": 1,
+        "closed_count": 14,
+        "canceled_count": 0,
         "postponed_count": 0,
         "unscheduled_count": 0,
         "continuous_count": 0,
@@ -411,23 +414,24 @@
       "administration-finance": {
         "id": "administration-finance",
         "exam_count": 29,
-        "open_count": 0,
-        "upcoming_count": 17,
+        "open_count": 2,
+        "upcoming_count": 15,
         "closed_count": 12,
         "canceled_count": 0,
         "postponed_count": 0,
         "unscheduled_count": 0,
         "continuous_count": 0,
         "actionable_count": 17,
-        "open_exam_numbers": [],
+        "open_exam_numbers": [
+          "7024",
+          "7047"
+        ],
         "upcoming_exam_numbers": [
           "7001",
           "7004",
           "7005",
           "7017",
           "7019",
-          "7024",
-          "7047",
           "7057",
           "7060",
           "7067",
@@ -475,24 +479,27 @@
       "trades-operations": {
         "id": "trades-operations",
         "exam_count": 45,
-        "open_count": 0,
-        "upcoming_count": 25,
+        "open_count": 6,
+        "upcoming_count": 19,
         "closed_count": 20,
         "canceled_count": 0,
         "postponed_count": 0,
         "unscheduled_count": 0,
         "continuous_count": 0,
         "actionable_count": 25,
-        "open_exam_numbers": [],
-        "upcoming_exam_numbers": [
-          "7008",
+        "open_exam_numbers": [
           "7010",
           "7011",
           "7012",
+          "7027",
+          "7512",
+          "7513"
+        ],
+        "upcoming_exam_numbers": [
+          "7008",
           "7014",
           "7015",
           "7021",
-          "7027",
           "7030",
           "7044",
           "7045",
@@ -503,8 +510,6 @@
           "7051",
           "7064",
           "7066",
-          "7512",
-          "7513",
           "7521",
           "7525",
           "7526",
@@ -578,11 +583,11 @@
       }
     },
     "summary": {
-      "exam_count": 226,
+      "exam_count": 227,
       "area_count": 8,
-      "tagged_non_other": 226,
-      "open_count": 4,
-      "upcoming_count": 112
+      "tagged_non_other": 227,
+      "open_count": 20,
+      "upcoming_count": 97
     }
   },
   "sources": [
@@ -590,11 +595,11 @@
       "id": "dcas-open-competitive",
       "name": "DCAS Open Competitive Exams for Anyone",
       "url": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
-      "verified_at": "2026-09-30",
+      "verified_at": "2026-10-07",
       "refresh_cadence": "Check daily while an application window is open; DCAS publishes a monthly schedule and may amend individual NOEs between releases.",
       "stale_after_days": 35,
       "method": "The published schedule table is read directly and cross-checked against the OASys active-exam listing. Reviewed Notice of Examination prose from the previous snapshot is carried forward only while the exam and its filing window are unchanged.",
-      "fetched_at": "2026-09-30"
+      "fetched_at": "2026-10-07"
     },
     {
       "id": "dcas-annual-schedule",
@@ -602,7 +607,7 @@
       "dataset_id": "4ptz-hmtc",
       "url": "https://data.cityofnewyork.us/resource/4ptz-hmtc.json",
       "landing_page": "https://data.cityofnewyork.us/d/4ptz-hmtc",
-      "fetched_at": "2026-09-30",
+      "fetched_at": "2026-10-07",
       "data_current_as_of": "2026-07-22",
       "refresh_cadence": "DCAS says the public schedule is updated monthly; Open Data metadata says annual updates and quarterly data changes.",
       "stale_after_days": 95
@@ -612,7 +617,7 @@
       "name": "Civil Service List (Active)",
       "dataset_id": "vx8i-nprf",
       "url": "https://data.cityofnewyork.us/resource/vx8i-nprf.json",
-      "fetched_at": "2026-09-30",
+      "fetched_at": "2026-10-07",
       "refresh_cadence": "Daily",
       "stale_after_days": 3,
       "privacy": "Only aggregate counts are retained; candidate records and names are not copied."
@@ -623,7 +628,7 @@
       "dataset_id": "dg92-zbpx",
       "url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
       "landing_page": "https://data.cityofnewyork.us/d/dg92-zbpx",
-      "fetched_at": "2026-09-30",
+      "fetched_at": "2026-10-07",
       "refresh_cadence": "Daily",
       "stale_after_days": 3,
       "role": "Negative control: keyword candidates are reviewed so unrelated contracts and uses of “examination” are not presented as civil-service exam announcements."
@@ -688,7 +693,7 @@
       "url": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
       "listing_page": "https://a856-exams.nyc.gov/OASysWeb/exams",
       "noe_url_pattern": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=:examId",
-      "fetched_at": "2026-09-30",
+      "fetched_at": "2026-10-07",
       "refresh_cadence": "Rebuild with staffing exams while application windows are open.",
       "stale_after_days": 3,
       "note": "OASys examId is not the DCAS exam number; join on examNumber from this listing."
@@ -707,50 +712,50 @@
   ],
   "source_checks": {
     "active_list": {
-      "candidate_rows": "406880",
-      "distinct_exams": "872",
-      "distinct_titles": "440",
-      "latest_established": "2026-09-30T00:00:00.000",
+      "candidate_rows": "406711",
+      "distinct_exams": "874",
+      "distinct_titles": "441",
+      "latest_established": "2026-10-07T00:00:00.000",
       "latest_extension": "2027-10-02T00:00:00.000"
     },
     "city_record": {
-      "candidate_rows": "187",
+      "candidate_rows": "188",
       "accepted_exam_announcements": 0,
       "finding": "The City Record dataset does not expose DCAS Notices of Examination as a notice section. DCAS schedule pages and NOEs are the authoritative application sources."
     },
     "list_aggregates": {
-      "distinct_exams": 872,
-      "total_list_rows_sum": 406880,
-      "latest_established": "2026-09-30"
+      "distinct_exams": 874,
+      "total_list_rows_sum": 406711,
+      "latest_established": "2026-10-07"
     },
     "list_depth_closed": {
       "count": 77,
-      "list_joined": 77
+      "list_joined": 78
     },
     "noe_fee_salary_densify": {
       "densify_records": 13,
-      "densify_applied": 12,
+      "densify_applied": 11,
       "fee_salary_non_null_before": {
-        "total": 226,
-        "both": 16,
-        "rate": 0.07079646017699115
+        "total": 227,
+        "both": 21,
+        "rate": 0.09251101321585903
       },
       "fee_salary_non_null_after": {
-        "total": 226,
-        "both": 28,
-        "rate": 0.12389380530973451
+        "total": 227,
+        "both": 32,
+        "rate": 0.14096916299559473
       }
     },
     "oasys_exam_map": {
       "source_id": "oasys-active-exams",
-      "map_records": 33,
-      "exams_deep_linked": 31,
-      "exams_landing": 195
+      "map_records": 44,
+      "exams_deep_linked": 42,
+      "exams_landing": 185
     },
     "noe_differentiators": {
       "densify_records": 9,
       "densify_applied": 7,
-      "exams_with_format": 18,
+      "exams_with_format": 26,
       "corpus": {
         "field_stats": {
           "exam_format": {
@@ -827,8 +832,8 @@
     "interest_taxonomy": {
       "mapping_file": "interest_area_taxonomy.json",
       "area_count": 8,
-      "tagged_non_other": 226,
-      "exam_count": 226
+      "tagged_non_other": 227,
+      "exam_count": 227
     },
     "eligible_list_utilization": {
       "eligible": 228,
@@ -879,7 +884,7 @@
   "exam_cycle_coherence": {
     "metric": "exam_cycle_temporal_incoherence_count",
     "exam_cycle_temporal_incoherence_count": 0,
-    "exam_count": 226,
+    "exam_count": 227,
     "rate": 0,
     "incoherent_exam_numbers": []
   },
@@ -889,14 +894,14 @@
       "name": "Civil Service List (Active) — exam-level aggregates only",
       "dataset_id": "vx8i-nprf",
       "landing_page": "https://data.cityofnewyork.us/d/vx8i-nprf",
-      "fetched_at": "2026-09-30",
+      "fetched_at": "2026-10-07",
       "privacy": "Only exam-level counts and list dates are retained; candidate records and names are not copied."
     },
     "summary": {
-      "distinct_exams": 872,
-      "total_list_rows_sum": 406880,
-      "latest_established": "2026-09-30",
-      "exams_with_list_aggregate": 77
+      "distinct_exams": 874,
+      "total_list_rows_sum": 406711,
+      "latest_established": "2026-10-07",
+      "exams_with_list_aggregate": 78
     }
   },
   "list_establishment_prediction": {
@@ -905,12 +910,12 @@
       "method": "exact_exam_number_zero_pad",
       "schedule_rows": 1271,
       "distinct_schedule_exams": 1271,
-      "distinct_list_aggregate_exams": 872,
-      "matched_pairs": 452,
+      "distinct_list_aggregate_exams": 874,
+      "matched_pairs": 453,
       "misses": {
         "no_list_aggregate": 761,
-        "missing_application_close": 7,
-        "missing_established_date": 51,
+        "missing_application_close": 8,
+        "missing_established_date": 49,
         "established_before_application_close": 0
       },
       "privacy": "Exam-level aggregates only; no applicant rows, names, scores, or ranks."
@@ -923,45 +928,45 @@
         "citywide": {
           "key": "citywide",
           "label": "citywide",
-          "n": 452,
+          "n": 453,
           "eligible": true,
           "p10_days": 99,
           "p50_days": 274,
-          "p90_days": 722,
+          "p90_days": 736,
           "median_months": 9,
           "train_from": "2021-05-05",
-          "train_to": "2026-09-23"
+          "train_to": "2026-10-07"
         },
         "open_competitive": {
           "key": "open_competitive",
           "label": "open competitive",
-          "n": 312,
+          "n": 313,
           "eligible": true,
           "p10_days": 92,
           "p50_days": 239,
-          "p90_days": 744,
+          "p90_days": 834,
           "median_months": 8,
           "train_from": "2021-05-05",
-          "train_to": "2026-09-23"
+          "train_to": "2026-10-07"
         },
         "promotion": {
           "key": "promotion",
           "label": "promotion",
           "n": 140,
           "eligible": true,
-          "p10_days": 127,
+          "p10_days": 119,
           "p50_days": 351,
           "p90_days": 610,
           "median_months": 12,
           "train_from": "2021-05-26",
-          "train_to": "2026-09-23"
+          "train_to": "2026-09-30"
         }
       }
     },
     "backtest": {
       "protocol": "train establishment events through 2024; score lists established in 2025–2026 for exams already open at 2025-01-01",
-      "training_pairs": 271,
-      "scoring_pairs": 87,
+      "training_pairs": 268,
+      "scoring_pairs": 90,
       "scorecard": {
         "metric": "prediction_calibration",
         "version": "prediction_calibration_v1",
@@ -974,22 +979,22 @@
           "from": "2021-05-05",
           "to": "2024-12-18"
         },
-        "prediction_count": 87,
-        "resolved_backtest_predictions": 87,
+        "prediction_count": 90,
+        "resolved_backtest_predictions": 90,
         "resolution_rate": 1,
         "resolution_counts": {
           "resolved_hit": 52,
-          "resolved_miss": 35,
+          "resolved_miss": 38,
           "open": 0
         },
-        "timing_prediction_count": 87,
-        "timing_realized_count": 87,
+        "timing_prediction_count": 90,
+        "timing_realized_count": 90,
         "timing_resolution_hits": 52,
         "interval_nominal": 0.8,
-        "interval_coverage": 0.5977,
+        "interval_coverage": 0.5778,
         "interval_coverage_hits": 52,
-        "interval_coverage_count": 87,
-        "median_absolute_error_p50_days": 237,
+        "interval_coverage_count": 90,
+        "median_absolute_error_p50_days": 255.5,
         "occurrence_prediction_count": 0,
         "occurrence_resolved_count": 0,
         "occurrence_calibration": [
@@ -30588,7 +30593,7 @@
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
-        "list_count": 878,
+        "list_count": 879,
         "established_date": "2026-04-15",
         "extension_date": null,
         "title_count": 1,
@@ -32071,13 +32076,13 @@
       "title_code": "20210",
       "title": "Assistant Civil Engineer",
       "application_start": "2026-07-01",
-      "application_end": "2026-09-11",
+      "application_end": "2026-07-21",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
         "dcas-annual-schedule",
-        "dcas-open-competitive",
         "dcas-noe",
+        "dcas-open-competitive",
         "dcas-noe-differentiators",
         "oasys_noe_html",
         "oasys-active-exams"
@@ -32183,11 +32188,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -32249,11 +32254,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -32375,11 +32380,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -32502,11 +32507,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -32629,11 +32634,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -32684,7 +32689,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -32708,15 +32713,14 @@
       "salary_band": "unknown",
       "fee_level": "unknown",
       "outcome": null,
-      "outcome_gap": {
-        "class": "not_yet_ingested",
-        "pending_stage": "list_establishment",
-        "public_sources": [
-          "dcas-annual-exam-outcomes",
-          "dcas-active-civil-service-list"
-        ]
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 1,
+        "established_date": "2026-09-30",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
       },
-      "list_aggregate": null,
       "fee_salary_gap": {
         "class": "not_yet_ingested",
         "missing": [
@@ -32731,19 +32735,7 @@
       },
       "official_application_url": "https://www.nyc.gov/examsforjobs",
       "application_handoff_mode": "landing",
-      "list_establishment_forecast": {
-        "method": "phase_duration_ecdf",
-        "target_event_kind": "staffing.list_established",
-        "cohort": "promotion",
-        "n": 140,
-        "since_year": 2018,
-        "p10_days": 127,
-        "p50_days": 351,
-        "p90_days": 610,
-        "median_months": 12,
-        "public_projection": "cohort_statistic_only",
-        "prediction": null
-      },
+      "list_establishment_forecast": null,
       "eligible_list_utilization": {
         "status": "linked",
         "row_count": 2,
@@ -32801,11 +32793,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -32927,11 +32919,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -33066,11 +33058,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -33221,11 +33213,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -33286,7 +33278,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -33349,7 +33341,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -33403,11 +33395,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -33466,11 +33458,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -33522,11 +33514,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -33585,11 +33577,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -33643,7 +33635,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -33697,11 +33689,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -33755,7 +33747,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -33780,15 +33772,14 @@
       "schedule_status": "scheduled",
       "sources": [
         "dcas-annual-schedule",
-        "dcas-open-competitive",
         "dcas-noe",
+        "dcas-open-competitive",
         "oasys-active-exams"
       ],
       "interest_area": "trades-operations",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277070000.pdf",
       "fee": 88,
       "test_method": "Multiple-choice test",
-      "salary_publication": "The notice does not state a minimum annual salary for this title.",
       "exam_format": "multiple_choice",
       "card_leads": [
         {
@@ -33823,11 +33814,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -33843,8 +33834,8 @@
       "schedule_status": "scheduled",
       "sources": [
         "dcas-annual-schedule",
-        "dcas-open-competitive",
         "dcas-noe",
+        "dcas-open-competitive",
         "oasys-active-exams"
       ],
       "interest_area": "public-safety",
@@ -33884,11 +33875,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -33908,15 +33899,11 @@
       "application_start": "2026-09-02",
       "application_end": "2026-09-22",
       "eligibility": "open_competitive",
-      "schedule_status": "canceled",
+      "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule",
-        "dcas-open-competitive",
-        "dcas-noe"
+        "dcas-annual-schedule"
       ],
       "interest_area": "community-social-services",
-      "notice_url": null,
-      "application_notes": "Canceled",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -33944,7 +33931,19 @@
       },
       "official_application_url": "https://www.nyc.gov/examsforjobs",
       "application_handoff_mode": "landing",
-      "list_establishment_forecast": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 313,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 239,
+        "p90_days": 834,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      },
       "eligible_list_utilization": {
         "status": "linked",
         "row_count": 3,
@@ -33998,7 +33997,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -34023,15 +34022,14 @@
       "schedule_status": "scheduled",
       "sources": [
         "dcas-annual-schedule",
-        "dcas-open-competitive",
         "dcas-noe",
+        "dcas-open-competitive",
         "oasys-active-exams"
       ],
       "interest_area": "administration-finance",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277003000.pdf",
       "fee": 82,
       "test_method": "Education and experience exam",
-      "salary_publication": "The notice does not state a minimum annual salary for this title.",
       "exam_format": "education_experience",
       "card_leads": [
         {
@@ -34066,11 +34064,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -34131,7 +34129,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -34194,7 +34192,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -34258,11 +34256,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -34285,8 +34283,8 @@
       "schedule_status": "scheduled",
       "sources": [
         "dcas-annual-schedule",
-        "dcas-open-competitive",
         "dcas-noe",
+        "dcas-open-competitive",
         "oasys-active-exams"
       ],
       "interest_area": "trades-operations",
@@ -34323,11 +34321,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -34343,8 +34341,8 @@
       "schedule_status": "scheduled",
       "sources": [
         "dcas-annual-schedule",
-        "dcas-open-competitive",
         "dcas-noe",
+        "dcas-open-competitive",
         "oasys-active-exams"
       ],
       "interest_area": "trades-operations",
@@ -34381,11 +34379,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -34408,8 +34406,8 @@
       "schedule_status": "scheduled",
       "sources": [
         "dcas-annual-schedule",
-        "dcas-open-competitive",
         "dcas-noe",
+        "dcas-open-competitive",
         "oasys-active-exams"
       ],
       "interest_area": "trades-operations",
@@ -34446,11 +34444,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -34473,8 +34471,8 @@
       "schedule_status": "scheduled",
       "sources": [
         "dcas-annual-schedule",
-        "dcas-open-competitive",
         "dcas-noe",
+        "dcas-open-competitive",
         "oasys-active-exams"
       ],
       "interest_area": "engineering-construction",
@@ -34511,11 +34509,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -34576,11 +34574,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -34603,8 +34601,8 @@
       "schedule_status": "scheduled",
       "sources": [
         "dcas-annual-schedule",
-        "dcas-open-competitive",
         "dcas-noe",
+        "dcas-open-competitive",
         "oasys-active-exams"
       ],
       "interest_area": "technology-science",
@@ -34641,11 +34639,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -34661,8 +34659,8 @@
       "schedule_status": "scheduled",
       "sources": [
         "dcas-annual-schedule",
-        "dcas-open-competitive",
         "dcas-noe",
+        "dcas-open-competitive",
         "oasys-active-exams"
       ],
       "interest_area": "public-safety",
@@ -34699,11 +34697,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -34764,11 +34762,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -34829,7 +34827,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -34847,11 +34845,16 @@
       "schedule_status": "scheduled",
       "sources": [
         "dcas-annual-schedule",
+        "dcas-open-competitive",
         "dcas-noe",
-        "dcas-noe-fee-salary-densify"
+        "oasys-active-exams"
       ],
       "interest_area": "public-safety",
-      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277314000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
       "card_leads": [
         {
           "key": "fee",
@@ -34862,11 +34865,6 @@
           "value": 55942
         }
       ],
-      "fee": 0,
-      "salary_min": 55942,
-      "salary_max": 109352,
-      "salary_note": "Current minimum annual salary",
-      "fee_salary_densify": "noe_pdf_body_multi_exam",
       "salary_band": "45k_60k",
       "fee_level": "none",
       "outcome": null,
@@ -34880,17 +34878,19 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9673",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9673",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9673",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -34912,12 +34912,29 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "trades-operations",
-      "card_leads": [],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277010000.pdf",
+      "fee": 96,
+      "test_method": "Multiple-choice test",
+      "salary_publication": "The notice states a rate for this title rather than a yearly minimum salary.",
+      "exam_format": "multiple_choice",
+      "card_leads": [
+        {
+          "key": "exam_format",
+          "value": "multiple_choice"
+        },
+        {
+          "key": "fee",
+          "value": 96
+        }
+      ],
       "salary_band": "unknown",
-      "fee_level": "unknown",
+      "fee_level": "high",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -34929,28 +34946,25 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": {
-        "class": "not_yet_ingested",
+        "class": "not_published",
         "missing": [
-          "fee",
           "salary_min"
         ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
+        "would_appear_in": "the Notice of Examination if DCAS stated the amount"
       },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9676",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9676",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9676",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -34972,12 +34986,29 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "trades-operations",
-      "card_leads": [],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277011000.pdf",
+      "fee": 96,
+      "test_method": "Multiple-choice test",
+      "salary_publication": "The notice states a rate for this title rather than a yearly minimum salary.",
+      "exam_format": "multiple_choice",
+      "card_leads": [
+        {
+          "key": "exam_format",
+          "value": "multiple_choice"
+        },
+        {
+          "key": "fee",
+          "value": 96
+        }
+      ],
       "salary_band": "unknown",
-      "fee_level": "unknown",
+      "fee_level": "high",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -34989,28 +35020,25 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": {
-        "class": "not_yet_ingested",
+        "class": "not_published",
         "missing": [
-          "fee",
           "salary_min"
         ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
+        "would_appear_in": "the Notice of Examination if DCAS stated the amount"
       },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9677",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9677",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9677",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -35032,12 +35060,29 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "trades-operations",
-      "card_leads": [],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277012000.pdf",
+      "fee": 96,
+      "test_method": "Multiple-choice test",
+      "salary_publication": "The notice states a rate for this title rather than a yearly minimum salary.",
+      "exam_format": "multiple_choice",
+      "card_leads": [
+        {
+          "key": "exam_format",
+          "value": "multiple_choice"
+        },
+        {
+          "key": "fee",
+          "value": 96
+        }
+      ],
       "salary_band": "unknown",
-      "fee_level": "unknown",
+      "fee_level": "high",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -35049,28 +35094,25 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": {
-        "class": "not_yet_ingested",
+        "class": "not_published",
         "missing": [
-          "fee",
           "salary_min"
         ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
+        "would_appear_in": "the Notice of Examination if DCAS stated the amount"
       },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9679",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9679",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9679",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -35092,7 +35134,8 @@
       "eligibility": "promotion",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "oasys-active-exams"
       ],
       "interest_area": "trades-operations",
       "card_leads": [],
@@ -35120,15 +35163,17 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9680",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9680",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9680",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -35145,7 +35190,8 @@
       "eligibility": "promotion",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "oasys-active-exams"
       ],
       "interest_area": "trades-operations",
       "card_leads": [],
@@ -35173,15 +35219,17 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9678",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9678",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9678",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -35198,12 +35246,34 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "administration-finance",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277024000.pdf",
+      "fee": 61,
+      "salary_min": 43477,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Multiple-choice test",
+      "exam_format": "multiple_choice",
+      "card_leads": [
+        {
+          "key": "exam_format",
+          "value": "multiple_choice"
+        },
+        {
+          "key": "fee",
+          "value": 61
+        },
+        {
+          "key": "salary_min",
+          "value": 43477
+        }
+      ],
+      "salary_band": "under_45k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -35214,29 +35284,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "fee_salary_gap": null,
+      "oasys_exam_id": "9672",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9672",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9672",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -35258,12 +35319,29 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "trades-operations",
-      "card_leads": [],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277027000.pdf",
+      "fee": 96,
+      "test_method": "Multiple-choice test",
+      "salary_publication": "The notice states a rate for this title rather than a yearly minimum salary.",
+      "exam_format": "multiple_choice",
+      "card_leads": [
+        {
+          "key": "exam_format",
+          "value": "multiple_choice"
+        },
+        {
+          "key": "fee",
+          "value": 96
+        }
+      ],
       "salary_band": "unknown",
-      "fee_level": "unknown",
+      "fee_level": "high",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -35275,28 +35353,25 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": {
-        "class": "not_yet_ingested",
+        "class": "not_published",
         "missing": [
-          "fee",
           "salary_min"
         ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
+        "would_appear_in": "the Notice of Examination if DCAS stated the amount"
       },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9675",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9675",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9675",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -35345,11 +35420,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -35363,15 +35438,17 @@
       }
     },
     {
-      "exam_number": "7032",
-      "title_code": "53052",
-      "title": "Emergency Medical Specialist Trainee",
+      "exam_number": "7131",
+      "title": "Emergency Medical Specialist - EMT",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277131000.pdf",
       "application_start": "2026-10-07",
       "application_end": "2026-11-18",
-      "eligibility": "open_competitive",
+      "salary_publication": "The notice does not state a minimum annual salary for this title.",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-open-competitive",
+        "dcas-noe"
       ],
       "interest_area": "health-care",
       "card_leads": [],
@@ -35388,16 +35465,12 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": {
-        "class": "not_yet_ingested",
+        "class": "not_published",
         "missing": [
           "fee",
           "salary_min"
         ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
+        "would_appear_in": "the Notice of Examination if DCAS stated the amount"
       },
       "official_application_url": "https://www.nyc.gov/examsforjobs",
       "application_handoff_mode": "landing",
@@ -35405,11 +35478,64 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
+    },
+    {
+      "exam_number": "7032",
+      "title_code": "53052",
+      "title": "Emergency Medical Specialist Trainee",
+      "application_start": "2026-10-07",
+      "application_end": "2026-11-18",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "sources": [
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe"
+      ],
+      "interest_area": "health-care",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277032000.pdf",
+      "salary_publication": "The notice does not state a minimum annual salary for this title.",
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
+      },
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_published",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "would_appear_in": "the Notice of Examination if DCAS stated the amount"
+      },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 313,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 239,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -35431,12 +35557,34 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "administration-finance",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277047000.pdf",
+      "fee": 82,
+      "salary_min": 65091,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Multiple-choice test",
+      "exam_format": "multiple_choice",
+      "card_leads": [
+        {
+          "key": "exam_format",
+          "value": "multiple_choice"
+        },
+        {
+          "key": "fee",
+          "value": 82
+        },
+        {
+          "key": "salary_min",
+          "value": 65091
+        }
+      ],
+      "salary_band": "60k_80k",
+      "fee_level": "high",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -35447,29 +35595,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "fee_salary_gap": null,
+      "oasys_exam_id": "9666",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9666",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9666",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -35484,12 +35623,34 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "health-care",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277052000.pdf",
+      "fee": 91,
+      "salary_min": 85705,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Education and experience exam",
+      "exam_format": "education_experience",
+      "card_leads": [
+        {
+          "key": "exam_format",
+          "value": "education_experience"
+        },
+        {
+          "key": "fee",
+          "value": 91
+        },
+        {
+          "key": "salary_min",
+          "value": 85705
+        }
+      ],
+      "salary_band": "80k_plus",
+      "fee_level": "high",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -35500,29 +35661,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "fee_salary_gap": null,
+      "oasys_exam_id": "9667",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9667",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9667",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -35537,9 +35689,13 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe"
       ],
       "interest_area": "health-care",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277054000.pdf",
+      "salary_publication": "The notice does not state a minimum annual salary for this title.",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -35554,16 +35710,12 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": {
-        "class": "not_yet_ingested",
+        "class": "not_published",
         "missing": [
           "fee",
           "salary_min"
         ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
+        "would_appear_in": "the Notice of Examination if DCAS stated the amount"
       },
       "official_application_url": "https://www.nyc.gov/examsforjobs",
       "application_handoff_mode": "landing",
@@ -35571,11 +35723,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -35586,16 +35738,39 @@
       "title_code": "60817",
       "title": "School Safety Agent",
       "application_start": "2026-10-07",
-      "application_end": "2026-10-27",
+      "application_end": "2026-11-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "public-safety",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277324000.pdf",
+      "fee": 61,
+      "salary_min": 40480,
+      "salary_max": 58345,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Multiple-choice test",
+      "exam_format": "multiple_choice",
+      "card_leads": [
+        {
+          "key": "exam_format",
+          "value": "multiple_choice"
+        },
+        {
+          "key": "fee",
+          "value": 61
+        },
+        {
+          "key": "salary_min",
+          "value": 40480
+        }
+      ],
+      "salary_band": "under_45k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -35606,29 +35781,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "fee_salary_gap": null,
+      "oasys_exam_id": "9671",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9671",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9671",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -35686,7 +35852,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -35743,11 +35909,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -35803,11 +35969,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -35863,11 +36029,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -35925,7 +36091,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -35983,11 +36149,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -36036,11 +36202,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -36089,11 +36255,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -36142,11 +36308,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -36202,11 +36368,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -36262,11 +36428,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -36317,7 +36483,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -36375,11 +36541,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -36428,11 +36594,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -36481,11 +36647,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -36540,11 +36706,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -36600,11 +36766,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -36660,11 +36826,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -36715,7 +36881,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -36773,11 +36939,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -36833,11 +36999,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -36893,11 +37059,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -36946,11 +37112,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -37008,7 +37174,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -37059,11 +37225,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -37112,11 +37278,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -37167,7 +37333,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -37218,11 +37384,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -37277,11 +37443,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -37330,11 +37496,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -37385,7 +37551,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -37443,11 +37609,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -37503,11 +37669,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -37563,11 +37729,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -37618,7 +37784,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -37676,11 +37842,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -37729,11 +37895,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -37784,7 +37950,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -37842,11 +38008,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -37895,11 +38061,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -37957,7 +38123,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -38014,11 +38180,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -38074,11 +38240,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -38127,11 +38293,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -38182,7 +38348,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -38240,11 +38406,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -38300,11 +38466,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -38362,7 +38528,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -38420,11 +38586,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -38473,11 +38639,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -38526,11 +38692,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -38581,7 +38747,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -38632,11 +38798,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -38691,11 +38857,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -38744,11 +38910,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -38806,7 +38972,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -38859,7 +39025,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -38919,7 +39085,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -38977,11 +39143,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -39037,11 +39203,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -39097,11 +39263,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -39150,11 +39316,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -39210,11 +39376,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -39263,11 +39429,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -39316,11 +39482,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -39375,11 +39541,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -39435,11 +39601,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -39497,7 +39663,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -39555,11 +39721,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -39608,11 +39774,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -39668,11 +39834,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -39728,11 +39894,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -39788,11 +39954,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -39850,7 +40016,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -39901,11 +40067,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -39956,7 +40122,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -40007,11 +40173,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -40069,7 +40235,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -40126,11 +40292,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -40188,7 +40354,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -40239,11 +40405,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -40292,11 +40458,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -40345,11 +40511,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -40400,7 +40566,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -40453,7 +40619,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -40511,11 +40677,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -40570,11 +40736,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -40630,11 +40796,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -40685,7 +40851,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -40745,7 +40911,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -40798,7 +40964,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -40856,11 +41022,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -40911,7 +41077,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -40962,11 +41128,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -41017,7 +41183,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
@@ -41068,11 +41234,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -41121,11 +41287,11 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 312,
+        "n": 313,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "public_projection": "cohort_statistic_only",
         "prediction": null
@@ -41176,7 +41342,7 @@
         "cohort": "promotion",
         "n": 140,
         "since_year": 2018,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,

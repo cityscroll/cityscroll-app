@@ -1,341 +1,12 @@
 {
   "schema": "cityscroll.land_project_map_points.v1",
   "points": {
-    "2018X0438": {
-      "lat": 40.857116,
-      "lon": -73.9165954,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 6
-    },
-    "2019K0147": {
-      "lat": 40.5921143,
-      "lon": -73.9388354,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "2019K0190": {
-      "lat": 40.69481,
-      "lon": -73.9600833,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 15
-    },
-    "2019K0217": {
-      "lat": 40.6094951,
-      "lon": -73.9735897,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2019K0219": {
-      "lat": 40.7350101,
-      "lon": -73.9608783,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 4
-    },
-    "2019K0301": {
-      "lat": 40.620978,
-      "lon": -73.9461113,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 12
-    },
-    "2019K0383": {
-      "lat": 40.6189229,
-      "lon": -73.9617712,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 6
-    },
-    "2019M0059": {
-      "lat": 40.7508621,
-      "lon": -74.0022702,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2019M0107": {
-      "lat": 40.7503515,
-      "lon": -74.0055473,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2019M0206": {
-      "lat": 40.7752753,
-      "lon": -73.982637,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2019M0453": {
-      "lat": 40.8045878,
-      "lon": -73.9386193,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2019M0455": {
-      "lat": 40.8047004,
-      "lon": -73.9388287,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2019R0267": {
-      "lat": 40.5800596,
-      "lon": -74.0912198,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 25
-    },
-    "2019X0255": {
-      "lat": 40.810432,
-      "lon": -73.8561383,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2020K0276": {
-      "lat": 40.621243,
-      "lon": -73.9641401,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 7
-    },
-    "2020K0370": {
-      "lat": 40.6682093,
-      "lon": -73.8965297,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 6
-    },
-    "2020K0413": {
-      "lat": 40.6796584,
-      "lon": -73.9455844,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 5
-    },
-    "2020M0266": {
-      "lat": 40.7735512,
-      "lon": -73.9801101,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 8
-    },
-    "2020M0325": {
-      "lat": 40.7593379,
-      "lon": -73.9977981,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2020M0375": {
-      "lat": 40.7520698,
-      "lon": -74.0035082,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "2020M0383": {
-      "lat": 40.8052831,
-      "lon": -73.9403091,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
     "2020M0429": {
       "lat": 40.756693,
       "lon": -73.9800141,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
       "bbl_count": 25
-    },
-    "2020M0474": {
-      "lat": 40.7162919,
-      "lon": -74.0054002,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2020M0487": {
-      "lat": 40.7401876,
-      "lon": -73.9736245,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2020Q0157": {
-      "lat": 40.5816132,
-      "lon": -73.8274707,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "2020Q0240": {
-      "lat": 40.7015211,
-      "lon": -73.7731055,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 4
-    },
-    "2020Q0353": {
-      "lat": 40.6533431,
-      "lon": -73.8388754,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 13
-    },
-    "2020R0264": {
-      "lat": 40.605583,
-      "lon": -74.0952522,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2020X0410": {
-      "lat": 40.8464731,
-      "lon": -73.8396727,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2021K0187": {
-      "lat": 40.730471,
-      "lon": -73.9429343,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 7
-    },
-    "2021K0261": {
-      "lat": 40.5744123,
-      "lon": -73.9793775,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2021K0376": {
-      "lat": 40.6705561,
-      "lon": -73.8625214,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "2021K0380": {
-      "lat": 40.676572,
-      "lon": -73.908814,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 16
-    },
-    "2021K0420": {
-      "lat": 40.7079262,
-      "lon": -73.9338426,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 6
-    },
-    "2021M0264": {
-      "lat": 40.7578482,
-      "lon": -73.9667954,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2021M0357": {
-      "lat": 40.748957,
-      "lon": -73.9733432,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2021Q0168": {
-      "lat": 40.7575071,
-      "lon": -73.7910493,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 6
-    },
-    "2021Q0439": {
-      "lat": 40.767821,
-      "lon": -73.8660968,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "2021R0348": {
-      "lat": 40.5776501,
-      "lon": -74.1353722,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2021X0247": {
-      "lat": 40.8235845,
-      "lon": -73.8374045,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2022K0121": {
-      "lat": 40.6219977,
-      "lon": -73.9921903,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 6
-    },
-    "2022K0171": {
-      "lat": 40.64557,
-      "lon": -73.9939749,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 12
-    },
-    "2022K0252": {
-      "lat": 40.7188406,
-      "lon": -73.9361766,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 6
-    },
-    "2022K0302": {
-      "lat": 40.6785601,
-      "lon": -73.9447705,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "2022K0416": {
-      "lat": 40.6321196,
-      "lon": -73.9473273,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 6
-    },
-    "2022K0419": {
-      "lat": 40.6154571,
-      "lon": -74.0005763,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 16
-    },
-    "2022K0430": {
-      "lat": 40.6971605,
-      "lon": -73.9552675,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 23
-    },
-    "2022K0441": {
-      "lat": 40.6957304,
-      "lon": -73.9483805,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 7
     },
     "2022M0258": {
       "lat": 40.8007769,
@@ -344,463 +15,12 @@
       "precision": "exact",
       "bbl_count": 1
     },
-    "2022Q0160": {
-      "lat": 40.6959812,
-      "lon": -73.8999775,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 8
-    },
-    "2022Q0196": {
-      "lat": 40.6054453,
-      "lon": -73.7583423,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2022Q0214": {
-      "lat": 40.7697621,
-      "lon": -73.9054083,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 14
-    },
-    "2022Q0248": {
-      "lat": 40.7086657,
-      "lon": -73.8178648,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 6
-    },
-    "2022Q0449": {
-      "lat": 40.7116899,
-      "lon": -73.900412,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 14
-    },
-    "2022R0134": {
-      "lat": 40.6082965,
-      "lon": -74.1059057,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2022X0150": {
-      "lat": 40.852507,
-      "lon": -73.9120357,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 25
-    },
-    "2022X0392": {
-      "lat": 40.8740118,
-      "lon": -73.8737367,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2022X0393": {
-      "lat": 40.8133057,
-      "lon": -73.9319144,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "2023K0126": {
-      "lat": 40.5804254,
-      "lon": -73.9755704,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2023K0148": {
-      "lat": 40.7080772,
-      "lon": -73.9209694,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "2023K0183": {
-      "lat": 40.5745977,
-      "lon": -73.9914328,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "geometry_shard": "cf"
-    },
-    "2023K0203": {
-      "lat": 40.7035205,
-      "lon": -73.9949723,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2023K0231": {
-      "lat": 40.7030961,
-      "lon": -73.9304355,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 8
-    },
-    "2023K0248": {
-      "lat": 40.6756886,
-      "lon": -73.9962903,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2023K0276": {
-      "lat": 40.6795363,
-      "lon": -73.9891083,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2023K0357": {
-      "lat": 40.6394672,
-      "lon": -73.9226685,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 12
-    },
-    "2023K0368": {
-      "lat": 40.6586655,
-      "lon": -73.9990917,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 10
-    },
-    "2023K0398": {
-      "lat": 40.5896832,
-      "lon": -73.9736732,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 8
-    },
-    "2023K0400": {
-      "lat": 40.5771257,
-      "lon": -73.99185,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 4
-    },
-    "2023M0116": {
-      "lat": 40.713653,
-      "lon": -73.9831256,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "geometry_shard": "e7"
-    },
-    "2023M0117": {
-      "lat": 40.7195193,
-      "lon": -74.0108694,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2023M0200": {
-      "lat": 40.719448,
-      "lon": -73.989816,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2023M0213": {
-      "lat": 40.7622089,
-      "lon": -74.0032922,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 7
-    },
-    "2023M0271": {
-      "lat": 40.7561726,
-      "lon": -73.9881573,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2023M0309": {
-      "lat": 40.7532912,
-      "lon": -73.9971017,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2023M0316": {
-      "lat": 40.7607068,
-      "lon": -73.9620508,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 10
-    },
-    "2023M0399": {
-      "lat": 40.7343951,
-      "lon": -73.9830012,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2023Q0125": {
-      "lat": 40.7459505,
-      "lon": -73.9467862,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2023Q0177": {
-      "lat": 40.7420336,
-      "lon": -73.9145814,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 5
-    },
-    "2023Q0211": {
-      "lat": 40.7208077,
-      "lon": -73.8560215,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 7
-    },
-    "2023Q0242": {
-      "lat": 40.7243109,
-      "lon": -73.8127892,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 7
-    },
-    "2023Q0303": {
-      "lat": 40.7225154,
-      "lon": -73.8026783,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 11
-    },
-    "2023Q0328": {
-      "lat": 40.7623447,
-      "lon": -73.8360054,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2023Q0351": {
-      "lat": 40.7616532,
-      "lon": -73.8341697,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 24
-    },
-    "2023Q0364": {
-      "lat": 40.740074,
-      "lon": -73.9361021,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2023Q0424": {
-      "lat": 40.7216748,
-      "lon": -73.9097769,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2023Q0450": {
-      "lat": 40.7263905,
-      "lon": -73.8538664,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 7
-    },
-    "2023R0111": {
-      "lat": 40.5956137,
-      "lon": -74.1049385,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2023R0153": {
-      "lat": 40.58187,
-      "lon": -74.1658663,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 12
-    },
-    "2023R0199": {
-      "lat": 40.5483562,
-      "lon": -74.2225171,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2023R0281": {
-      "lat": 40.5726466,
-      "lon": -74.1419745,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2023R0329": {
-      "lat": 40.7653971,
-      "lon": -73.7772776,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2023R0413": {
-      "lat": 40.6097081,
-      "lon": -74.0588821,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2023X0140": {
-      "lat": 40.829953,
-      "lon": -73.9042387,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 23
-    },
-    "2023X0146": {
-      "lat": 40.8551354,
-      "lon": -73.8944604,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 17
-    },
-    "2023X0149": {
-      "lat": 40.8475607,
-      "lon": -73.8837014,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 12
-    },
-    "2023X0347": {
-      "lat": 40.8145178,
-      "lon": -73.8447387,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2023X0393": {
-      "lat": 40.8271038,
-      "lon": -73.9108444,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 22
-    },
-    "2024K0196": {
-      "lat": 40.6994304,
-      "lon": -73.9326861,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 5
-    },
-    "2024K0214": {
-      "lat": 40.6844389,
-      "lon": -73.890357,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2024K0215": {
-      "lat": 40.6604654,
-      "lon": -73.8841789,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 20
-    },
-    "2024K0233": {
-      "lat": 40.6881524,
-      "lon": -73.8740706,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 10
-    },
     "2024K0240": {
       "lat": 40.7147196,
       "lon": -73.9656337,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
       "bbl_count": 7
-    },
-    "2024K0274": {
-      "lat": 40.6128233,
-      "lon": -74.0315116,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2024K0286": {
-      "lat": 40.7179526,
-      "lon": -73.9646761,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "geometry_shard": "ba"
-    },
-    "2024K0294": {
-      "lat": 40.677967,
-      "lon": -73.9292828,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2024K0299": {
-      "lat": 40.6637063,
-      "lon": -73.9224638,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 25
-    },
-    "2024K0358": {
-      "lat": 40.7258666,
-      "lon": -73.958939,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2024K0369": {
-      "lat": 40.6490692,
-      "lon": -73.9722335,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 8
-    },
-    "2024K0421": {
-      "lat": 40.6162229,
-      "lon": -73.9289664,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 11
-    },
-    "2024K0437": {
-      "lat": 40.6803627,
-      "lon": -73.9378142,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2024K0444": {
-      "lat": 40.5874573,
-      "lon": -73.9955535,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 25
-    },
-    "2024M0104": {
-      "lat": 40.7399215,
-      "lon": -73.9743283,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2024M0120": {
-      "lat": 40.757966,
-      "lon": -73.9768156,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
     },
     "2024M0193": {
       "lat": 40.7643185,
@@ -809,69 +29,6 @@
       "precision": "anchor",
       "bbl_count": 3
     },
-    "2024M0194": {
-      "lat": 40.7157044,
-      "lon": -73.9926122,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "2024M0223": {
-      "lat": 40.8086611,
-      "lon": -73.9502834,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 4
-    },
-    "2024M0243": {
-      "lat": 40.7140877,
-      "lon": -73.9932365,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2024M0244": {
-      "lat": 40.7622089,
-      "lon": -74.0032922,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 8
-    },
-    "2024M0267": {
-      "lat": 40.7631221,
-      "lon": -73.9712221,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2024M0372": {
-      "lat": 40.7449027,
-      "lon": -73.9884877,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2024Q0113": {
-      "lat": 40.744196,
-      "lon": -73.8561875,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 24
-    },
-    "2024Q0164": {
-      "lat": 40.7261775,
-      "lon": -73.8045941,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 6
-    },
-    "2024Q0189": {
-      "lat": 40.7396147,
-      "lon": -73.7944722,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
     "2024Q0219": {
       "lat": 40.669094,
       "lon": -73.85649,
@@ -879,641 +36,12 @@
       "precision": "anchor",
       "bbl_count": 12
     },
-    "2024Q0292": {
-      "lat": 40.7268141,
-      "lon": -73.846112,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2024Q0297": {
-      "lat": 40.7397814,
-      "lon": -73.8312218,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2024Q0324": {
-      "lat": 40.7670249,
-      "lon": -73.8324596,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 7
-    },
-    "2024Q0325": {
-      "lat": 40.5883955,
-      "lon": -73.8116508,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 12
-    },
-    "2024Q0356": {
-      "lat": 40.7585008,
-      "lon": -73.7736586,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2024R0137": {
-      "lat": 40.6365536,
-      "lon": -74.0939885,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2024R0289": {
-      "lat": 40.5291508,
-      "lon": -74.1836497,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2024R0300": {
-      "lat": 40.6467994,
-      "lon": -74.0801363,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 5
-    },
-    "2024R0332": {
-      "lat": 40.5270016,
-      "lon": -74.201651,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2024R0425": {
-      "lat": 40.5492064,
-      "lon": -74.2352364,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2024X0132": {
-      "lat": 40.8309548,
-      "lon": -73.856607,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 4
-    },
-    "2024X0210": {
-      "lat": 40.8266051,
-      "lon": -73.8954813,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2025K0150": {
-      "lat": 40.7015305,
-      "lon": -73.9949112,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 4
-    },
-    "2025K0154": {
-      "lat": 40.6839111,
-      "lon": -73.9543101,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "2025K0226": {
-      "lat": 40.6844389,
-      "lon": -73.890357,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2025K0229": {
-      "lat": 40.6331356,
-      "lon": -74.0123866,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 4
-    },
-    "2025K0232": {
-      "lat": 40.6336658,
-      "lon": -74.0074651,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 5
-    },
-    "2025K0250": {
-      "lat": 40.5788513,
-      "lon": -73.9698616,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "2025K0284": {
-      "lat": 40.6167845,
-      "lon": -74.0298206,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "geometry_shard": "b9"
-    },
-    "2025K0287": {
-      "lat": 40.7259823,
-      "lon": -73.9600213,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "geometry_shard": "00"
-    },
-    "2025K0293": {
-      "lat": 40.7082018,
-      "lon": -73.9693847,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2025K0305": {
-      "lat": 40.5869002,
-      "lon": -73.9960072,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 25
-    },
-    "2025K0306": {
-      "lat": 40.5880558,
-      "lon": -73.9972961,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "2025K0318": {
-      "lat": 40.6542652,
-      "lon": -74.0096442,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 23
-    },
-    "2025K0374": {
-      "lat": 40.596926,
-      "lon": -73.9847791,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 7
-    },
-    "2025K0419": {
-      "lat": 40.6872641,
-      "lon": -73.9788702,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2025K0470": {
-      "lat": 40.612361,
-      "lon": -73.9167031,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2025K0497": {
-      "lat": 40.701768,
-      "lon": -73.9817112,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2025M0115": {
-      "lat": 40.7631309,
-      "lon": -73.973453,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2025M0265": {
-      "lat": 40.764055,
-      "lon": -73.9700052,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 11
-    },
-    "2025M0329": {
-      "lat": 40.7227361,
-      "lon": -74.0112127,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2025M0332": {
-      "lat": 40.7617389,
-      "lon": -73.9873296,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2025M0338": {
-      "lat": 40.7592851,
-      "lon": -73.9876911,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 6
-    },
-    "2025M0360": {
-      "lat": 40.7699569,
-      "lon": -73.9895592,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 4
-    },
-    "2025M0395": {
-      "lat": 40.7495688,
-      "lon": -73.9884219,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "geometry_shard": "2a"
-    },
-    "2025M0441": {
-      "lat": 40.7512626,
-      "lon": -73.9923737,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "2025M0473": {
-      "lat": 40.7584821,
-      "lon": -73.9663042,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 5
-    },
-    "2025Q0124": {
-      "lat": 40.7565776,
-      "lon": -73.9217096,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 4
-    },
-    "2025Q0142": {
-      "lat": 40.7463368,
-      "lon": -73.8561684,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "geometry_shard": "b8"
-    },
-    "2025Q0155": {
-      "lat": 40.7628813,
-      "lon": -73.806775,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
     "2025Q0247": {
       "lat": 40.7232627,
       "lon": -73.8442875,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
       "bbl_count": 2
-    },
-    "2025Q0304": {
-      "lat": 40.7430846,
-      "lon": -73.9142553,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "2025Q0314": {
-      "lat": 40.7394375,
-      "lon": -73.8784808,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 16
-    },
-    "2025Q0316": {
-      "lat": 40.7459602,
-      "lon": -73.933729,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 25
-    },
-    "2025Q0331": {
-      "lat": 40.7421199,
-      "lon": -73.9201568,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "2025Q0335": {
-      "lat": 40.7378857,
-      "lon": -73.8629093,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2025Q0445": {
-      "lat": 40.7614448,
-      "lon": -73.8286798,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2025R0137": {
-      "lat": 40.6450388,
-      "lon": -74.0777884,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "2025R0140": {
-      "lat": 40.5321222,
-      "lon": -74.2381046,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2025R0222": {
-      "lat": 40.5255405,
-      "lon": -74.1771867,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2025R0277": {
-      "lat": 40.5829011,
-      "lon": -74.128053,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2025R0285": {
-      "lat": 40.6247446,
-      "lon": -74.0881432,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2025R0309": {
-      "lat": 40.524096,
-      "lon": -74.1685501,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "2025R0312": {
-      "lat": 40.5885963,
-      "lon": -74.1068069,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "2025R0398": {
-      "lat": 40.6377896,
-      "lon": -74.0857788,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2025X0116": {
-      "lat": 40.8864292,
-      "lon": -73.8621075,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 8
-    },
-    "2025X0143": {
-      "lat": 40.8504137,
-      "lon": -73.8471707,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 20
-    },
-    "2025X0283": {
-      "lat": 40.8617913,
-      "lon": -73.9143047,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "2025X0385": {
-      "lat": 40.8021971,
-      "lon": -73.9060088,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2026K0123": {
-      "lat": 40.6696224,
-      "lon": -73.9557834,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2026K0129": {
-      "lat": 40.7277201,
-      "lon": -73.9610558,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2026K0233": {
-      "lat": 40.6980489,
-      "lon": -73.9819394,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2026K0443": {
-      "lat": 40.6861417,
-      "lon": -73.979772,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2026M0120": {
-      "lat": 40.7052441,
-      "lon": -74.0067554,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2026M0136": {
-      "lat": 40.7655046,
-      "lon": -73.9714269,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2026M0164": {
-      "lat": 40.7834265,
-      "lon": -73.958333,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "2026M0206": {
-      "lat": 40.7642074,
-      "lon": -73.9761997,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 4
-    },
-    "2026M0211": {
-      "lat": 40.7540823,
-      "lon": -73.9777157,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "2026M0247": {
-      "lat": 40.7644138,
-      "lon": -73.9789071,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "2026M0275": {
-      "lat": 40.7566621,
-      "lon": -73.9760581,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2026M0366": {
-      "lat": 40.7682893,
-      "lon": -73.9583858,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 8
-    },
-    "2026M0432": {
-      "lat": 40.760925,
-      "lon": -73.978013,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2026M0444": {
-      "lat": 40.7158766,
-      "lon": -73.9852317,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2026M0445": {
-      "lat": 40.7500963,
-      "lon": -73.9957701,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2026Q0128": {
-      "lat": 40.776461,
-      "lon": -73.9311785,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 6
-    },
-    "2026Q0210": {
-      "lat": 40.6986302,
-      "lon": -73.8041122,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 25
-    },
-    "2026Q0320": {
-      "lat": 40.7300034,
-      "lon": -73.8439975,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2026R0127": {
-      "lat": 40.6128941,
-      "lon": -74.1198445,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "geometry_shard": "2b"
-    },
-    "2026R0137": {
-      "lat": 40.6394947,
-      "lon": -74.0988317,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2026R0142": {
-      "lat": 40.5939082,
-      "lon": -74.1059945,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2026R0145": {
-      "lat": 40.6090542,
-      "lon": -74.0601853,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2026R0166": {
-      "lat": 40.6364415,
-      "lon": -74.0786827,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2026R0186": {
-      "lat": 40.6005122,
-      "lon": -74.1958808,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "geometry_shard": "82"
-    },
-    "2026R0189": {
-      "lat": 40.6082071,
-      "lon": -74.0918381,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2026R0195": {
-      "lat": 40.6173903,
-      "lon": -74.0894266,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2026R0196": {
-      "lat": 40.617369,
-      "lon": -74.0886377,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2026R0319": {
-      "lat": 40.5506677,
-      "lon": -74.1764545,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 25
-    },
-    "2026X0274": {
-      "lat": 40.8997596,
-      "lon": -73.9085042,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2026X0282": {
-      "lat": 40.8942456,
-      "lon": -73.9121541,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "2026X0354": {
-      "lat": 40.8925631,
-      "lon": -73.9120623,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
     },
     "2026X0362": {
       "lat": 40.8080595,
@@ -1535,115 +63,662 @@
       "method": "single_bbl_centroid",
       "precision": "exact",
       "bbl_count": 1
-    },
-    "P2012R0043": {
-      "lat": 40.5870038,
-      "lon": -74.1884172,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 4
-    },
-    "P2014M0309": {
-      "lat": 40.7596261,
-      "lon": -73.9985453,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1
-    },
-    "P2014R0345": {
-      "lat": 40.5408524,
-      "lon": -74.2208011,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 24
-    },
-    "P2015M0247": {
-      "lat": 40.7549738,
-      "lon": -74.001155,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "P2016K0287": {
-      "lat": 40.7241236,
-      "lon": -73.9348367,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 10
-    },
-    "P2016M0148": {
-      "lat": 40.7596261,
-      "lon": -73.9985453,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
-    },
-    "P2016Q0288": {
-      "lat": 40.7312763,
-      "lon": -73.9256109,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 7
-    },
-    "P2017Q0152": {
-      "lat": 40.7713118,
-      "lon": -73.8946727,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3
-    },
-    "P2017X0149": {
-      "lat": 40.9044218,
-      "lon": -73.8563147,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 5
-    },
-    "P2018M0168": {
-      "lat": 40.7073905,
-      "lon": -74.0065068,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 4
-    },
-    "P2018X0328": {
-      "lat": 40.8204881,
-      "lon": -73.9250523,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2
     }
   },
   "unmapped": {
+    "2018X0438": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2019K0147": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2019K0190": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2019K0217": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2019K0219": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2019K0301": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2019K0383": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2019M0059": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2019M0107": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2019M0206": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2019M0453": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2019M0455": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2019R0267": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2019X0255": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2020K0276": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2020K0370": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2020K0413": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
     "2020K0444": {
       "status": "source_missing",
-      "reason": "exact_bbl_missing_centroid"
+      "reason": "no_retained_bbl"
+    },
+    "2020M0266": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2020M0325": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2020M0375": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2020M0383": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
     },
     "2020M0385": {
       "status": "source_missing",
-      "reason": "exact_bbl_missing_centroid"
+      "reason": "no_retained_bbl"
+    },
+    "2020M0474": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2020M0487": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2020Q0157": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2020Q0240": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
     },
     "2020Q0317": {
       "status": "source_missing",
-      "reason": "exact_bbl_missing_centroid"
+      "reason": "no_retained_bbl"
+    },
+    "2020Q0353": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2020R0264": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2020X0410": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2021K0187": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2021K0261": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2021K0376": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2021K0380": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2021K0420": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2021M0264": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2021M0357": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2021Q0168": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2021Q0439": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2021R0348": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2021X0247": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2022K0121": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2022K0171": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2022K0252": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2022K0302": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2022K0416": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2022K0419": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2022K0430": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2022K0441": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2022Q0160": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2022Q0196": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2022Q0214": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2022Q0248": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2022Q0449": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2022R0134": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2022X0150": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2022X0392": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2022X0393": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
     },
     "2022Y0395": {
       "status": "source_missing",
       "reason": "no_retained_bbl"
     },
+    "2023K0126": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023K0148": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023K0183": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023K0203": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023K0231": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023K0248": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023K0276": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023K0357": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023K0368": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023K0398": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023K0400": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023M0116": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023M0117": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023M0200": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023M0213": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023M0271": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023M0309": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023M0316": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023M0399": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
     "2023M0452": {
       "status": "source_missing",
-      "reason": "exact_bbl_missing_centroid"
+      "reason": "no_retained_bbl"
+    },
+    "2023Q0125": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023Q0177": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023Q0211": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023Q0242": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023Q0303": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023Q0328": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023Q0351": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023Q0364": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023Q0424": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023Q0450": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023R0111": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023R0153": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023R0199": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023R0281": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023R0329": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023R0413": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023X0140": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023X0146": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023X0149": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023X0347": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023X0393": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024K0196": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024K0214": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024K0215": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024K0233": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024K0274": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024K0286": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024K0294": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024K0299": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024K0358": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024K0369": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024K0421": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024K0437": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024K0444": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024M0104": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024M0120": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024M0194": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024M0223": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024M0243": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024M0244": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024M0267": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
     },
     "2024M0278": {
       "status": "source_missing",
-      "reason": "exact_bbl_missing_centroid"
+      "reason": "no_retained_bbl"
+    },
+    "2024M0372": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024Q0113": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
     },
     "2024Q0135": {
       "status": "source_missing",
-      "reason": "exact_bbl_missing_centroid"
+      "reason": "no_retained_bbl"
+    },
+    "2024Q0164": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024Q0189": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024Q0292": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024Q0297": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024Q0324": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024Q0325": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024Q0356": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024R0137": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024R0289": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024R0300": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024R0332": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024R0425": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024X0132": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2024X0210": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025K0150": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025K0154": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025K0226": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025K0229": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025K0232": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025K0250": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025K0284": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025K0287": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025K0293": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025K0305": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025K0306": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025K0318": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025K0374": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025K0419": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025K0470": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025K0497": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025M0115": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
     },
     "2025M0252": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025M0265": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025M0329": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025M0332": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025M0338": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025M0360": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025M0395": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025M0441": {
       "status": "source_missing",
       "reason": "no_retained_bbl"
     },
@@ -1651,11 +726,223 @@
       "status": "source_missing",
       "reason": "no_retained_bbl"
     },
+    "2025M0473": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025Q0124": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025Q0142": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025Q0155": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025Q0304": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025Q0314": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025Q0316": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025Q0331": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025Q0335": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025Q0445": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025R0137": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025R0140": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025R0222": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025R0277": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025R0285": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025R0309": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025R0312": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025R0398": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025X0116": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025X0143": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025X0283": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025X0385": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
     "2025Y0279": {
       "status": "source_missing",
       "reason": "no_retained_bbl"
     },
+    "2026K0123": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026K0129": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026K0233": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026K0443": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026M0120": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026M0136": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026M0164": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026M0206": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026M0211": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026M0247": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026M0275": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026M0366": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026M0432": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026M0444": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026M0445": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026Q0128": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026Q0210": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026Q0320": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026R0127": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026R0137": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026R0142": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026R0145": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026R0166": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026R0186": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026R0189": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026R0195": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026R0196": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026R0319": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
     "2026R0327": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026X0274": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026X0282": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026X0354": {
       "status": "source_missing",
       "reason": "no_retained_bbl"
     },
@@ -1669,11 +956,55 @@
     },
     "P2009M0029": {
       "status": "source_missing",
-      "reason": "exact_bbl_missing_centroid"
+      "reason": "no_retained_bbl"
+    },
+    "P2012R0043": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
     },
     "P2012X0048": {
       "status": "source_missing",
-      "reason": "exact_bbl_missing_centroid"
+      "reason": "no_retained_bbl"
+    },
+    "P2014M0309": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "P2014R0345": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "P2015M0247": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "P2016K0287": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "P2016M0148": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "P2016Q0288": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "P2017Q0152": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "P2017X0149": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "P2018M0168": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "P2018X0328": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
     }
   }
 }
