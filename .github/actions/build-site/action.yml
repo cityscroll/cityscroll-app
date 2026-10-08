@@ -62,7 +62,7 @@ runs:
         set -euo pipefail
         . /etc/os-release
         case "${VERSION_CODENAME:-}" in
-          noble) pkg="poppler-utils=24.02.0-1ubuntu9.9" ;;
+          noble) pkg="poppler-utils=24.02.0-1ubuntu9.10" ;;
           jammy) pkg="poppler-utils=22.02.0-2ubuntu0.13" ;;
           *)
             echo "Unsupported runner suite '${VERSION_CODENAME:-unknown}' for pinned poppler-utils (expected noble or jammy)" >&2
