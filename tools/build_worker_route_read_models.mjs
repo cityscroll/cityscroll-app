@@ -522,6 +522,20 @@ function keyFor(version, kind, id) {
   return `${kind}:v1:${version}:${encodeURIComponent(id)}`;
 }
 
+/**
+ * Address an immutable slice by its own bytes, not by the generation-wide
+ * manifest version. The slice's version is derived before it is added to the
+ * payload, so an unrelated slice change cannot invalidate this key.
+ */
+export function contentAddressedEntry(kind, id, payload) {
+  const serializedPayload = JSON.stringify(payload);
+  const version = `sha256-${createHash("sha256").update(serializedPayload).digest("hex").slice(0, 24)}`;
+  return {
+    key: keyFor(version, kind, id),
+    value: JSON.stringify({ ...payload, version }),
+  };
+}
+
 function idsFor(activity, id, lens) {
   if (id === "citywide" || id === "virtual" || id === "unlocated") {
     return activity.district_items?.[id]?.[lens] || [];
@@ -661,14 +675,11 @@ export function buildNearYou(activity, geography, version, {
     for (const lens of LENSES) {
       const coverageState = placeCoverageState(sourceActivity, id, lens);
       const activitySlice = sliceActivity(sourceActivity, id, lens);
-      const key = keyFor(version, "near-you", `${id}:${lens}`);
       const sliceId = `${id}:${lens}`;
-      slices[sliceId] = key;
       coverageBySlice[sliceId] = coverageState;
-      entries.push({ key, value: JSON.stringify({
+      const entry = contentAddressedEntry("near-you", sliceId, {
         schema_version: 1,
         kind: "near-you",
-        version,
         slice_id: id,
         lens,
         coverage: {
@@ -678,7 +689,9 @@ export function buildNearYou(activity, geography, version, {
         },
         activity: activitySlice,
         community_geography: communityGeographySlice(geography, id),
-      }) });
+      });
+      slices[sliceId] = entry.key;
+      entries.push(entry);
     }
   }
   return {
@@ -709,12 +722,12 @@ function buildCommunityDistrictDigests(digest, version) {
   const entries = [];
   const slices = {};
   for (const id of Object.keys(digest.by_community_district || {}).sort()) {
-    const key = keyFor(version, "community-district-digest", id);
-    slices[id] = key;
-    entries.push({ key, value: JSON.stringify({
-      schema_version: 1, kind: "community-district-digest", version, slice_id: id,
+    const entry = contentAddressedEntry("community-district-digest", id, {
+      schema_version: 1, kind: "community-district-digest", slice_id: id,
       digest: { ...digest, by_community_district: { [id]: digest.by_community_district[id] } },
-    }) });
+    });
+    slices[id] = entry.key;
+    entries.push(entry);
   }
   return { entries, manifest: { schema_version: 1, kind: "community-district-digest", version, source_schema: digest.schema, slices } };
 }
@@ -760,10 +773,10 @@ export function buildMeetings(meetings, version) {
   const entries = [];
   const slices = {};
   for (const [month, rows] of grouped) {
-    const key = keyFor(version, "meetings", month);
-    if (month !== UNDATED_MEETING_SLICE) slices[month] = key;
-    for (const row of rows) idToSlice[row.meeting_id] = key;
-    entries.push({ key, value: JSON.stringify({ schema_version: 1, kind: "meetings", version, month, rows }) });
+    const entry = contentAddressedEntry("meetings", month, { schema_version: 1, kind: "meetings", month, rows });
+    if (month !== UNDATED_MEETING_SLICE) slices[month] = entry.key;
+    for (const row of rows) idToSlice[row.meeting_id] = entry.key;
+    entries.push(entry);
   }
   const canary = (meetings.rows || []).find((row) => row?.meeting_id && row?.event_date);
   return {
