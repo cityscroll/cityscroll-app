@@ -45,14 +45,11 @@ def visible_map(page, minimum=150):
 def selected_map(page):
     page.wait_for_function("""() => {
       const m = window.__entryObservedMap;
-      const features = m?.getStyle().sources?.['geography-selected']?.data?.features || [];
+      const features = m?.getStyle()?.sources?.['geography-selected']?.data?.features || [];
       const selected = features.find(f => String(f.properties?.key || f.id).includes('MN0401'));
       if (!m || m.isMoving() || !m.getLayer('geography-selected-fill') || !selected) return false;
-      const coordinates = selected.geometry.coordinates.flat(Infinity);
-      const pixels = [];
-      for (let i=0; i<coordinates.length; i+=2) pixels.push(m.project([coordinates[i], coordinates[i+1]]));
-      const height = Math.max(...pixels.map(p => p.y)) - Math.min(...pixels.map(p => p.y));
-      return height > m.getCanvas().getBoundingClientRect().height * .4;
+      return m.queryRenderedFeatures({layers: ['geography-selected-fill']})
+        .some(f => String(f.properties?.key || f.id).includes('MN0401'));
     }""", polling=100)
     assert page.locator('h1').inner_text() == 'Chelsea-Hudson Yards'
     assert parse_qs(urlsplit(page.url).query)['geo'] == ['nta2020:MN0401']
@@ -68,6 +65,23 @@ def selected_map(page):
     }""")
     assert geometry['height'] > box['height'] * .4, geometry
     return {'map': box, 'selected_boundary': geometry}
+
+
+def hidden_boundary_control(page):
+    layers = ['geography-selected-fill', 'geography-selected-line', 'geography-selected-label']
+    page.evaluate("""layers => {
+      const map = window.__entryObservedMap;
+      for (const layer of layers) if (map.getLayer(layer)) map.setLayoutProperty(layer, 'visibility', 'none');
+    }""", layers)
+    page.wait_for_function("""() => {
+      const map = window.__entryObservedMap;
+      return map && map.queryRenderedFeatures({layers: ['geography-selected-fill']}).length === 0;
+    }""", polling=100)
+    page.evaluate("""layers => {
+      const map = window.__entryObservedMap;
+      for (const layer of layers) if (map.getLayer(layer)) map.setLayoutProperty(layer, 'visibility', 'visible');
+    }""", layers)
+    selected_map(page)
 
 
 def main():
@@ -104,6 +118,7 @@ def main():
                 page.locator('#near-geo-search-input').press('Enter')
                 page.wait_for_url('**/*MN0401*')
                 selected = selected_map(page)
+                hidden_boundary_control(page)
                 # A failed records read cannot erase the selected map.
                 page.route('**/near-you/deferred.json*', lambda route: route.abort())
                 page.reload()
