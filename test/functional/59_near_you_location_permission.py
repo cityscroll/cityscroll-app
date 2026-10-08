@@ -45,7 +45,7 @@ ASTORIA = {"latitude": 40.7644, "longitude": -73.9235}
 ASTORIA_GEO = "nta2020:QN0103"
 SELECTED_GEO = "nta2020:MN0102"
 
-BLOCKED = "Location is blocked for this site in your browser, so it cannot ask."
+BLOCKED = "Location is blocked."
 BLOCKED_HOW = "set Location to Allow, then press Use my location"
 DENIED = "Location permission was not granted. Choose an area from the list."
 ALTERNATIVES = ["Enter an address", "Browse all NYC records"]
@@ -293,7 +293,7 @@ def press_granted(browser: Browser, base: str, viewport: tuple[str, int, int], *
         assert visit.permission_state() == "granted"
         visit.press()
         visit.await_place(ASTORIA_GEO, timeout=timeout)
-        assert query(visit.page.url).get("surface") == ["records"], visit.page.url
+        assert query(visit.page.url).get("surface") == ["map"], visit.page.url
         return {"case": "press-granted-real-permission", "viewport": name, "geo": ASTORIA_GEO}
     finally:
         visit.close()
@@ -432,7 +432,7 @@ def main() -> None:
     results: list[dict] = []
     try:
         with sync_playwright() as playwright:
-            browser = playwright.chromium.launch(headless=True)
+            browser = playwright.chromium.launch(headless=True, channel=os.environ.get("PLAYWRIGHT_CHANNEL") or None)
             assert_checkers_can_fail(browser, base)
             results.append(check_press_positive_control(browser, base))
             for viewport in VIEWPORTS:

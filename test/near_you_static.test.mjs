@@ -1107,12 +1107,12 @@ test("A4: a place-role filter is never relaxed to fill the citywide preview; the
   assert.equal(citywideView("https://cityscroll.org/near-you/?geo=nta2020:BK1403&lens=meetings", rows).bags.citywide.count, 20);
 });
 
-test("A6: before a place is chosen, citywide records come after the entry row and before the map in reading order", () => {
+test("A6: before a place is chosen, citywide records follow the map in reading order", () => {
   const html = renderNearYouDocument(citywideView("https://cityscroll.org/near-you/", citywideRows()));
   const section = specialSection(html);
   const at = html.indexOf(section);
   assert.ok(html.indexOf('class="near-collection-entry"') < at, "after the collection row");
-  assert.ok(at < html.indexOf('class="near-geo-workspace"'), "before the map and area directory");
+  assert.ok(at > html.indexOf('class="near-geo-workspace"'), "after the map and area directory");
   assert.match(section, /data-near-special-records="entry"/);
   assert.equal(previewIds(html).length, NEAR_YOU_SPECIAL_PREVIEW_LIMIT);
   // In the document each preview title is the native record link; the deferred
@@ -1342,7 +1342,7 @@ test("A4: a failed or partial records read offers no ranked suggestions while se
   assert.equal(suggestionView(`${SUGGESTION_BASE}/`, rows).placeSuggestions.length, 3);
 });
 
-test("A6: suggestions are at most three plain document links after the citywide preview and before the map", () => {
+test("A6: suggestions are at most three plain document links after the map and citywide preview", () => {
   // Add the frozen citywide bucket so the entry shows both sections.
   const rows = suggestionRows();
   const citywide = readSectionIsolationFixture();
@@ -1355,7 +1355,7 @@ test("A6: suggestions are at most three plain document links after the citywide 
   assert.doesNotMatch(nav, /<(?:script|button|form|input|img)\b|\bhidden\b|js-only|data-near-deferred|\.json/);
   const at = html.indexOf(nav);
   assert.ok(html.indexOf('data-near-special-records="entry"') < at, "after the citywide preview");
-  assert.ok(at < html.indexOf('class="near-geo-workspace"'), "before the map and area directory");
+  assert.ok(at > html.indexOf('class="near-geo-workspace"'), "after the map and area directory");
   assert.ok(at < html.indexOf("<script"), "in the document before any script");
   // The committed root document carries the same bounded, count-labeled row.
   const committed = renderedSuggestions(readFileSync(new URL("../site/near-you/index.html", import.meta.url), "utf8"));

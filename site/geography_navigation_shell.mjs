@@ -630,9 +630,8 @@ export function renderGeographyShellEntry({
     : "";
   // Local records and the one-shot location action stay outside the secondary
   // disclosure so the primary ways to enter a local scope remain immediately
-  // available. The citywide collection links follow them, still ahead of the
-  // map, so a visitor who is not looking for a place never needs the map or a
-  // location. Layer chrome and follow/share stay inside the disclosure. Nested
+  // available. Citywide collection links and secondary controls stay in the
+  // disclosure so the map remains visible on a narrow screen. Nested
   // details/summaries are avoided here: focusing a parent summary can reveal an
   // inner summary under the enhanced map canvas and fail the
   // focus-not-obscured gate.
@@ -649,9 +648,9 @@ export function renderGeographyShellEntry({
         </div>
       </div>
       <p class="near-map-status" data-map-status aria-live="polite"></p>
-      ${geographyShellCollectionEntryHtml({ siteBase })}
       <details class="near-entry-secondary">
         <summary>More ways to choose</summary>
+        ${geographyShellCollectionEntryHtml({ siteBase })}
         <div class="near-place-actions">
           <a href="#near-area-list">Browse the area list</a>
         </div>

@@ -77,7 +77,7 @@ export const GEOGRAPHY_ENTRY_RECOVERY_COPY = Object.freeze({
   [GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_DENIED]:
     "Location permission was not granted. Choose an area from the list.",
   [GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_BLOCKED]:
-    "Location is blocked for this site in your browser, so it cannot ask. To allow it, open the site settings beside the web address, set Location to Allow, then press Use my location. Or choose an area from the list.",
+    "Location is blocked. In browser site settings, set Location to Allow, then press Use my location. Or choose an area from the list.",
   [GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_TIMEOUT]:
     "Location timed out. Try again or choose an area from the list.",
   [GEOGRAPHY_ENTRY_RECOVERY.LOOKUP_FAILURE]:
@@ -887,19 +887,10 @@ export function shouldRequestGeographyEntryLocationOnLoad({
   return !PLACE_BEARING_PARAMS.some((name) => params.has(name));
 }
 
-/**
- * Typed addresses, place names and an explicit location request are a request
- * for local records, so they open the Records surface. A click on the map is
- * a map gesture and keeps the Map surface with its drawer.
- */
-const RECORDS_ENTRY_SOURCES = new Set([
-  GEOGRAPHY_ENTRY_SOURCES.ADDRESS,
-  GEOGRAPHY_ENTRY_SOURCES.PLACE_LABEL,
-  GEOGRAPHY_ENTRY_SOURCES.GEOLOCATION,
-]);
-
-export function geographyEntryDestinationSurface(source) {
-  return RECORDS_ENTRY_SOURCES.has(source)
+/** Place resolution preserves Map/Records choice; map gestures open the map. */
+export function geographyEntryDestinationSurface(source, currentSurface = GEOGRAPHY_NAVIGATION_SURFACE_MAP) {
+  return source !== GEOGRAPHY_ENTRY_SOURCES.MAP_CLICK
+    && currentSurface === GEOGRAPHY_NAVIGATION_SURFACE_RECORDS
     ? GEOGRAPHY_NAVIGATION_SURFACE_RECORDS
     : GEOGRAPHY_NAVIGATION_SURFACE_MAP;
 }
@@ -911,7 +902,7 @@ export function geographyEntryDestinationSurface(source) {
  */
 export function geographyEntrySelectionState(current, entry) {
   if (!entry?.ok || !entry.selection) return null;
-  const surface = geographyEntryDestinationSurface(entry.source);
+  const surface = geographyEntryDestinationSurface(entry.source, current?.surface);
   const mapSurface = surface === GEOGRAPHY_NAVIGATION_SURFACE_MAP;
   return {
     ...(current || {}),

@@ -324,7 +324,7 @@ test("entry chrome render includes required first-viewport controls", () => {
   assert.ok(html.indexOf('data-near-surface="records"') < html.indexOf("near-entry-secondary"));
   assert.ok(html.indexOf("data-use-location") < html.indexOf("near-entry-secondary"));
   assert.ok(html.indexOf("data-use-location") < html.indexOf("data-near-collection-entry"));
-  assert.ok(html.indexOf("data-near-collection-entry") < html.indexOf("near-entry-secondary"));
+  assert.ok(html.indexOf("data-near-collection-entry") > html.indexOf("near-entry-secondary"));
   assert.ok(html.indexOf("near-entry-secondary") < html.indexOf("data-geography-layer-switcher"));
 });
 
@@ -405,9 +405,9 @@ test("A2/A4: the collection row follows place entry, precedes the map, and appea
   assert.ok(order.every((at) => at > 0), `markers present: ${order}`);
   assert.deepEqual([...order].sort((left, right) => left - right), order);
   assert.equal((html.match(/data-near-collection-entry/g) || []).length, 1);
-  // The row is outside every disclosure: its nav is not nested in a details element.
+  // Secondary collections remain available inside More ways to choose.
   const beforeRow = html.slice(0, html.indexOf("data-near-collection-entry"));
-  assert.equal((beforeRow.match(/<details\b/g) || []).length, (beforeRow.match(/<\/details>/g) || []).length);
+  assert.equal((beforeRow.match(/<details\b/g) || []).length, (beforeRow.match(/<\/details>/g) || []).length + 1);
 
   // Converse: a selected neighborhood keeps its own records switch and no entry row.
   const selected = renderNearYouDocument(buildNearYouViewModel(

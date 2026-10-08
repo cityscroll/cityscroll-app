@@ -3978,10 +3978,9 @@ select {
 [data-near-you-root] > .near-map-section { order: 5; }
 [data-near-you-root] > .near-bags,
 [data-near-you-root] > .near-bags-shell { order: 8; }
-/* Before a place is chosen, citywide records follow the entry row, ahead of the map,
-   and neighborhood suggestions follow them in document order. */
+/* Keep the chosen map workspace ahead of supplementary citywide records. */
 [data-near-you-root] > .near-special-records[data-near-special-records="entry"],
-[data-near-you-root] > .near-place-suggestions { order: 4; }
+[data-near-you-root] > .near-place-suggestions { order: 8; }
 [data-near-you-root] > .near-explore,
 [data-near-you-root] > .local-constellation { order: 9; }
 

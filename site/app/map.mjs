@@ -65,6 +65,7 @@ import {
   geographyEntryRecoveryActions,
   geographyEntryRecoveryResult,
   geographyEntrySelectionState,
+  geographyPlaceAliasIndexFromGazetteer,
   geographyEntryUnavailableApiResult,
   resolveGeographyEntryFromGeolocation,
   resolveGeographyEntryFromGeolocationError,
@@ -593,7 +594,7 @@ async function adoptGeographyEntrySelection(entry, {
     showGeographyEntryFailure(entry, { retry });
     return false;
   }
-  // Search and location open the place's Records; a map click keeps the Map.
+  // Keep the resident's chosen surface when resolving a place.
   const nextState = geographyEntrySelectionState(parseGeographyNavigationState(location.search), entry);
   const adoption = adoptDocument(geographySelectionHref(nextState));
   const adoptionGeneration = documentAdoptionGeneration;
@@ -801,7 +802,9 @@ function wireForms() {
         try {
           const layerData = await loadGeographyEntryLayers();
           if (!isGeographyEntryCurrent(generation)) return;
-          let entry = resolveGeographyEntryFromPlaceLabel(query, { layerData });
+          let entry = resolveGeographyEntryFromPlaceLabel(query, {
+            layerData, aliasIndex: geographyPlaceAliasIndexFromGazetteer(neighborhoodGazetteer),
+          });
           let ephemeralPoint = null;
           if (!entry.ok) {
             // PAD BBL + one parcel-geography shard → shared entry result.
