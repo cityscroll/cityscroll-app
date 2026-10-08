@@ -23,6 +23,7 @@ These are representative entry points on the live site. Step-by-step walkthrough
 [public guide](https://cityscroll.org/guide/).
 
 *   Search a topic, then compare the matching records: [housing](https://cityscroll.org/search/?q=housing), taught in [Explore housing across city records](https://cityscroll.org/guide/start/explore-housing-across-city-records/).
+*   Find a neighborhood on the homepage map: search for Chelsea, then switch between Map and Records without losing your record filters.
 *   Save a watch: [Following](https://cityscroll.org/following/), taught in [Follow a search](https://cityscroll.org/guide/how-to/follow-a-search/).
 *   Put dated actions on a calendar: [Now](https://cityscroll.org/now/), taught in [Put dates in your calendar](https://cityscroll.org/guide/how-to/put-dates-in-your-calendar/).
 

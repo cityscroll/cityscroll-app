@@ -4079,8 +4079,9 @@ select {
   font-size: clamp(1.8rem, 4vw, 2.6rem);
   line-height: 1.1;
 }
-/* Citywide collections: one compact wrapping line of plain links ahead of the
-   map. Inline-size containment keeps the row from widening the entry column. */
+/* Citywide collections: one compact wrapping line of plain links inside the
+   secondary entry disclosure. Inline-size containment keeps the row from
+   widening the entry column. */
 .near-collection-entry {
   contain: inline-size;
   margin: var(--space-1) 0 0;
@@ -4107,8 +4108,8 @@ select {
   min-height: 24px;
   padding-block: 2px;
 }
-/* Neighborhood suggestions: at most three plain links in a short list, in a
-   centered reading measure like the blocks above it, ahead of the map. */
+/* Neighborhood suggestions: at most three plain links in a short list after
+   the map, in the same centered reading measure as the supplementary records. */
 .near-place-suggestions {
   box-sizing: border-box;
   width: 100%;
