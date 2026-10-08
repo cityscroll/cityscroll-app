@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "delivery_tier": "resident-snapshot",
-  "generated_at": "2026-10-05T17:33:57.544Z",
+  "generated_at": "2026-10-07T14:06:13.743Z",
   "source_vintages": {
-    "default_open": "2026-10-05T17:33:01.337Z",
+    "default_open": "2026-10-07T14:06:13.743Z",
     "domain_observations": "2026-08-03T22:31:10.617Z",
     "award_warehouse": "2026-10-05T17:33:57.544Z"
   },
@@ -30,17 +30,6 @@
       "pin": "3434",
       "due_date": "2026-10-13T10:00:00.000",
       "selection_method_description": "Competitive Sealed Proposals"
-    },
-    {
-      "request_id": "20260915033",
-      "start_date": "2026-09-22T00:00:00.000",
-      "agency_name": "Economic Development Corporation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods and Services",
-      "short_title": "Consultant Services, NYCEDC Asset Management Building Plans and Document Management Platform RFEI",
-      "pin": "11799",
-      "due_date": "2026-10-06T16:00:00.000",
-      "selection_method_description": "Request for Information"
     },
     {
       "request_id": "20260909021",
@@ -107,15 +96,14 @@
       "selection_method_description": "Request for Proposals"
     },
     {
-      "request_id": "20260909003",
+      "request_id": "20260903029",
       "start_date": "2026-09-15T00:00:00.000",
-      "agency_name": "Brooklyn Bridge Park",
+      "agency_name": "Housing Authority",
       "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Brooklyn Bridge Park Pier 1 Pavilion Stair Replacement",
-      "pin": "BBP Pier 1 Pavilion",
-      "due_date": "2026-10-05T16:00:00.000",
-      "selection_method_description": "Request for Proposals"
+      "category_description": "Services (other than human services)",
+      "short_title": "Correction: SMD_RFQ_528319, 528327, 528328, 528329, 528330, 528331 - IDIQ Contract for Asbestos Investigation and Testing Services for NYCHA Building - Citywide",
+      "due_date": "2026-10-15T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
     },
     {
       "request_id": "20260903027",
@@ -126,6 +114,28 @@
       "short_title": "CNYG-2124M Industrial Hygiene Svcs at Various Park Locations",
       "pin": "84626B0096",
       "due_date": "2026-10-08T10:30:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260904008",
+      "start_date": "2026-09-14T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "84127Y0885 \u001a Request for Information (RFI) Regarding Electric Vehicle Charging Incentive Program",
+      "pin": "84127Y0885",
+      "due_date": "2026-10-14T17:00:00.000",
+      "selection_method_description": "Request for Information"
+    },
+    {
+      "request_id": "20260901025",
+      "start_date": "2026-09-10T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "SMD_A&CM_RFQ #517934 Basketball Court at Clinton Houses - Manhattan",
+      "pin": "517934",
+      "due_date": "2026-10-15T11:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
@@ -156,7 +166,7 @@
       "agency_name": "Citywide Administrative Services",
       "type_of_notice_description": "Solicitation",
       "category_description": "Goods",
-      "short_title": "Bid Extension: 85727B0020-2700009-VANS, PASSENGER - NYPD",
+      "short_title": "Correction: 85727B0020-2700009-VANS, PASSENGER - NYPD",
       "pin": "85727B0020",
       "due_date": "2026-10-08T10:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
@@ -169,17 +179,6 @@
       "category_description": "Construction/Construction Services",
       "short_title": "SMD_Services IDIQ Contract for Annual Cleaning and Inspection of Gravity Roof Tanks at Various NYCHA Buildings, Citywide",
       "due_date": "2026-10-08T10:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260827025",
-      "start_date": "2026-09-03T00:00:00.000",
-      "agency_name": "Citywide Administrative Services",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods",
-      "short_title": "Correction: Bid 2600063 - Salt Stockpile Coverings - DSNY",
-      "pin": "85727B0001",
-      "due_date": "2026-10-06T11:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
@@ -201,17 +200,6 @@
       "short_title": "LINAC SUITE RENOVATION AT KINGS COUNTY HOSPITAL",
       "pin": "26202503",
       "due_date": "2026-10-14T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260825018",
-      "start_date": "2026-09-02T00:00:00.000",
-      "agency_name": "Citywide Administrative Services",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods",
-      "short_title": "Correction: EPIN 85726B0065 - BID 2600039 - Printed Election Supplies",
-      "pin": "85726B0065",
-      "due_date": "2026-10-05T10:30:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
@@ -380,6 +368,17 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
+      "request_id": "20260825032",
+      "start_date": "2026-09-01T00:00:00.000",
+      "agency_name": "Small Business Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "80126P0020-Commercial Corridor Resilience Program RFP",
+      "pin": "80126P0020",
+      "due_date": "2026-10-15T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Proposals"
+    },
+    {
       "request_id": "20260826044",
       "start_date": "2026-09-01T00:00:00.000",
       "agency_name": "NYC Health + Hospitals",
@@ -388,17 +387,6 @@
       "short_title": "Correction: Steam Tank Modernization at Elmhurst Hospital Center",
       "pin": "33202504",
       "due_date": "2026-10-14T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260826033",
-      "start_date": "2026-08-31T00:00:00.000",
-      "agency_name": "City University",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction Related Services",
-      "short_title": "Brooklyn College - Ingersoll Hall HVAC Upgrades",
-      "pin": "BC-CUCF-19-26",
-      "due_date": "2026-10-05T23:59:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
@@ -6577,6 +6565,17 @@
       }
     },
     {
+      "request_id": "20260624027",
+      "start_date": "2026-06-26T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Bid Extension: 48202205/72202001: Woodhull Outposted Therapeutic Housing Units (OTxHU) Main Construction",
+      "pin": "WOO-48202205/7220200",
+      "due_date": "2026-10-15T11:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
       "request_id": "20260617041",
       "start_date": "2026-06-25T00:00:00.000",
       "agency_name": "Information Technology and Telecommunications",
@@ -6756,17 +6755,6 @@
       }
     },
     {
-      "request_id": "20260515016",
-      "start_date": "2026-05-22T00:00:00.000",
-      "agency_name": "Education",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods and Services",
-      "short_title": "Bid Extension: Requirements Contracts for Postsecondary Pathways Programs",
-      "pin": "R1875040",
-      "due_date": "2026-10-06T13:00:00.000",
-      "selection_method_description": "Request for Proposals"
-    },
-    {
       "request_id": "20260514019",
       "start_date": "2026-05-20T00:00:00.000",
       "agency_name": "Citywide Administrative Services",
@@ -6816,15 +6804,26 @@
       }
     },
     {
-      "request_id": "20190403034",
-      "start_date": "2019-04-10T00:00:00.000",
+      "request_id": "20260203008",
+      "start_date": "2026-02-10T00:00:00.000",
       "agency_name": "Education",
       "type_of_notice_description": "Solicitation",
       "category_description": "Goods and Services",
-      "short_title": "DEGREE AND CERTIFICATION SERVICES FOR TEACHERS AND TEACHER CANDIDATES (FOR PRIVATE COLLEGES AND UNIVERSITIES)",
-      "pin": "R1188040",
-      "due_date": "2026-10-05T13:00:00.000",
-      "selection_method_description": "Request for Proposals"
+      "short_title": "Bid Extension: Requirements Contract for Repair and Replacement of Playground Safety Mats and Sport Surfacing",
+      "pin": "B5697040",
+      "due_date": "2026-10-15T16:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260105018",
+      "start_date": "2026-01-13T00:00:00.000",
+      "agency_name": "Education",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods and Services",
+      "short_title": "Bid Extension: Request for Bids for Transportation of Goods and Equipment",
+      "pin": "B5929040",
+      "due_date": "2026-10-14T16:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
     }
   ]
 }

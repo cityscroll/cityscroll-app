@@ -1,9 +1,9 @@
 {
   "schema": "cityscroll.source_acquisition_receipt.v1",
   "source_contract_id": "omb-community-board-budget-requests",
-  "run_id": "omb-community-board-budget-requests:2026-09-07T11:54:00.629Z",
+  "run_id": "omb-community-board-budget-requests:2026-10-07T14:07:12.846Z",
   "status": "succeeded",
-  "observed_at": "2026-09-07T11:54:00.629Z",
+  "observed_at": "2026-10-07T14:07:12.846Z",
   "publisher_clock_basis": "publisher_publication_date",
   "publisher_updated_at": "2026-06-30T00:00:00.000Z",
   "dataset_id": "vn4m-mk4t",
@@ -56,79 +56,79 @@
     {
       "url": "https://data.cityofnewyork.us/resource/vn4m-mk4t.json?%24select=publication%2Ccount%28*%29+AS+published_row_count&%24group=publication&%24order=publication&%24limit=1000",
       "attempt": 1,
-      "at": "2026-09-07T11:54:00.631Z",
+      "at": "2026-10-07T14:07:12.846Z",
       "status": "succeeded"
     },
     {
       "url": "https://data.cityofnewyork.us/resource/vn4m-mk4t.json?%24select=*&%24where=publication%3D%2720260512%27&%24order=tracking_code&%24limit=1000&%24offset=0",
       "attempt": 1,
-      "at": "2026-09-07T11:54:02.758Z",
+      "at": "2026-10-07T14:07:13.489Z",
       "status": "succeeded"
     },
     {
       "url": "https://data.cityofnewyork.us/resource/vn4m-mk4t.json?%24select=*&%24where=publication%3D%2720260512%27&%24order=tracking_code&%24limit=1000&%24offset=1000",
       "attempt": 1,
-      "at": "2026-09-07T11:54:03.174Z",
+      "at": "2026-10-07T14:07:16.627Z",
       "status": "succeeded"
     },
     {
       "url": "https://data.cityofnewyork.us/resource/vn4m-mk4t.json?%24select=*&%24where=publication%3D%2720260512%27&%24order=tracking_code&%24limit=1000&%24offset=2000",
       "attempt": 1,
-      "at": "2026-09-07T11:54:04.478Z",
+      "at": "2026-10-07T14:07:17.960Z",
       "status": "succeeded"
     },
     {
       "url": "https://data.cityofnewyork.us/resource/vn4m-mk4t.json?%24select=*&%24where=publication%3D%2720260512%27&%24order=tracking_code&%24limit=1000&%24offset=3000",
       "attempt": 1,
-      "at": "2026-09-07T11:54:04.810Z",
+      "at": "2026-10-07T14:07:18.432Z",
       "status": "succeeded"
     },
     {
       "url": "https://data.cityofnewyork.us/resource/vn4m-mk4t.json?%24select=*&%24where=publication%3D%2720260630%27&%24order=tracking_code&%24limit=1000&%24offset=0",
       "attempt": 1,
-      "at": "2026-09-07T11:54:05.209Z",
+      "at": "2026-10-07T14:07:19.078Z",
       "status": "succeeded"
     },
     {
       "url": "https://data.cityofnewyork.us/resource/vn4m-mk4t.json?%24select=*&%24where=publication%3D%2720260630%27&%24order=tracking_code&%24limit=1000&%24offset=1000",
       "attempt": 1,
-      "at": "2026-09-07T11:54:05.627Z",
+      "at": "2026-10-07T14:07:20.098Z",
       "status": "succeeded"
     },
     {
       "url": "https://data.cityofnewyork.us/resource/vn4m-mk4t.json?%24select=*&%24where=publication%3D%2720260630%27&%24order=tracking_code&%24limit=1000&%24offset=2000",
       "attempt": 1,
-      "at": "2026-09-07T11:54:06.164Z",
+      "at": "2026-10-07T14:07:20.419Z",
       "status": "succeeded"
     },
     {
       "url": "https://data.cityofnewyork.us/resource/vn4m-mk4t.json?%24select=*&%24where=publication%3D%2720260630%27&%24order=tracking_code&%24limit=1000&%24offset=3000",
       "attempt": 1,
-      "at": "2026-09-07T11:54:06.548Z",
+      "at": "2026-10-07T14:07:20.701Z",
       "status": "succeeded"
     },
     {
       "url": "https://data.cityofnewyork.us/resource/vn4m-mk4t.json?%24select=*&%24where=publication%3D%2720270217%27&%24order=tracking_code&%24limit=1000&%24offset=0",
       "attempt": 1,
-      "at": "2026-09-07T11:54:07.205Z",
+      "at": "2026-10-07T14:07:22.538Z",
       "status": "succeeded"
     },
     {
       "url": "https://data.cityofnewyork.us/resource/vn4m-mk4t.json?%24select=*&%24where=publication%3D%2720270217%27&%24order=tracking_code&%24limit=1000&%24offset=1000",
       "attempt": 1,
-      "at": "2026-09-07T11:54:07.536Z",
+      "at": "2026-10-07T14:07:23.753Z",
       "status": "succeeded"
     },
     {
       "url": "https://data.cityofnewyork.us/resource/vn4m-mk4t.json?%24select=*&%24where=publication%3D%2720270217%27&%24order=tracking_code&%24limit=1000&%24offset=2000",
       "attempt": 1,
-      "at": "2026-09-07T11:54:08.977Z",
+      "at": "2026-10-07T14:07:24.262Z",
       "status": "succeeded"
     },
     {
       "url": "https://data.cityofnewyork.us/resource/vn4m-mk4t.json?%24select=*&%24where=publication%3D%2720270217%27&%24order=tracking_code&%24limit=1000&%24offset=3000",
       "attempt": 1,
-      "at": "2026-09-07T11:54:09.391Z",
+      "at": "2026-10-07T14:07:24.895Z",
       "status": "succeeded"
     }
   ],
@@ -137,8 +137,8 @@
   "failed_requests": 0,
   "exact_error": null,
   "last_successful_acquisition": {
-    "observed_at": "2026-09-07T11:54:00.629Z",
-    "run_id": "omb-community-board-budget-requests:2026-09-07T11:54:00.629Z"
+    "observed_at": "2026-10-07T14:07:12.846Z",
+    "run_id": "omb-community-board-budget-requests:2026-10-07T14:07:12.846Z"
   },
   "preserved_materialization_on_failure": false
 }
