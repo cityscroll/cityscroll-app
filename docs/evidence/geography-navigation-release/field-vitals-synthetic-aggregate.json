@@ -38,7 +38,7 @@
       "device_class": "desktop",
       "measurement_group": "synthetic",
       "traffic_class": "synthetic",
-      "sampled_count": 21,
+      "sampled_count": 22,
       "status": "insufficient_sample",
       "quantile": 0.75,
       "quantile_value": null,
@@ -53,7 +53,7 @@
       "device_class": "mobile",
       "measurement_group": "synthetic",
       "traffic_class": "synthetic",
-      "sampled_count": 21,
+      "sampled_count": 22,
       "status": "insufficient_sample",
       "quantile": 0.75,
       "quantile_value": null,
@@ -68,7 +68,7 @@
       "device_class": "desktop",
       "measurement_group": "synthetic",
       "traffic_class": "synthetic",
-      "sampled_count": 21,
+      "sampled_count": 22,
       "status": "insufficient_sample",
       "quantile": 0.75,
       "quantile_value": null,
@@ -83,7 +83,7 @@
       "device_class": "mobile",
       "measurement_group": "synthetic",
       "traffic_class": "synthetic",
-      "sampled_count": 21,
+      "sampled_count": 22,
       "status": "insufficient_sample",
       "quantile": 0.75,
       "quantile_value": null,
@@ -98,7 +98,7 @@
       "device_class": "desktop",
       "measurement_group": "synthetic",
       "traffic_class": "synthetic",
-      "sampled_count": 21,
+      "sampled_count": 22,
       "status": "insufficient_sample",
       "quantile": 0.75,
       "quantile_value": null,
@@ -113,7 +113,7 @@
       "device_class": "mobile",
       "measurement_group": "synthetic",
       "traffic_class": "synthetic",
-      "sampled_count": 21,
+      "sampled_count": 22,
       "status": "insufficient_sample",
       "quantile": 0.75,
       "quantile_value": null,
@@ -125,7 +125,7 @@
   ],
   "resident_observation_path": "docs/evidence/geography-navigation-release/field-vitals-observation.json",
   "note": "Synthetic geography-navigation field-vitals aggregate. Resident values live in the sibling field-vitals-observation.json and are never pooled into this file.",
-  "updated_at": "2026-10-07T20:01:40Z",
+  "updated_at": "2026-10-08T00:14:11Z",
   "slots": [
     {
       "slot_id": "github-actions:36943164756:1",
@@ -1405,6 +1405,61 @@
         ],
         "inp_ms::desktop": [
           24
+        ],
+        "inp_ms::mobile": [
+          16
+        ],
+        "cls_score::desktop": [
+          0.2169828222287862
+        ],
+        "cls_score::mobile": [
+          0.16122754336904682
+        ]
+      },
+      "unattributed_observation_count": 8,
+      "attribution_source": "slot_cells",
+      "probe_status": "healthy",
+      "outcome": {
+        "retained": true,
+        "stages": {
+          "reached": true,
+          "collected": true,
+          "wrote": true
+        },
+        "reason": "retained_observations"
+      }
+    },
+    {
+      "slot_id": "github-actions:37706551278:1",
+      "run_id": "37706551278",
+      "run_attempt": "1",
+      "trigger": "schedule",
+      "started_at": "2026-10-08T00:13:21Z",
+      "finished_at": "2026-10-08T00:14:11Z",
+      "observed_at": "2026-10-08T00:14:11Z",
+      "pages_listed": 2,
+      "pages_visited": 2,
+      "observations_emitted": 14,
+      "retained_observation_count": 14,
+      "marked_beacons": 4,
+      "unmarked_beacons": 0,
+      "cell_contribution_counts": {
+        "lcp_ms::desktop": 1,
+        "lcp_ms::mobile": 1,
+        "inp_ms::desktop": 1,
+        "inp_ms::mobile": 1,
+        "cls_score::desktop": 1,
+        "cls_score::mobile": 1
+      },
+      "cell_samples": {
+        "lcp_ms::desktop": [
+          2880
+        ],
+        "lcp_ms::mobile": [
+          2408
+        ],
+        "inp_ms::desktop": [
+          16
         ],
         "inp_ms::mobile": [
           16
