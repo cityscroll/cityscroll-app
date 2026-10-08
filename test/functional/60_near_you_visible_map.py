@@ -45,15 +45,21 @@ def visible_map(page, minimum=150):
 def selected_map(page):
     page.wait_for_function("""() => {
       const m = window.__entryObservedMap;
-      return m && !m.isMoving() && m.queryRenderedFeatures({layers:['geography-selected-fill']})
-        .some(f => String(f.properties.key || f.id).includes('MN0401'));
-    }""")
+      const features = m?.getStyle().sources?.['geography-selected']?.data?.features || [];
+      const selected = features.find(f => String(f.properties?.key || f.id).includes('MN0401'));
+      if (!m || m.isMoving() || !m.getLayer('geography-selected-fill') || !selected) return false;
+      const coordinates = selected.geometry.coordinates.flat(Infinity);
+      const pixels = [];
+      for (let i=0; i<coordinates.length; i+=2) pixels.push(m.project([coordinates[i], coordinates[i+1]]));
+      const height = Math.max(...pixels.map(p => p.y)) - Math.min(...pixels.map(p => p.y));
+      return height > m.getCanvas().getBoundingClientRect().height * .4;
+    }""", polling=100)
     assert page.locator('h1').inner_text() == 'Chelsea-Hudson Yards'
     assert parse_qs(urlsplit(page.url).query)['geo'] == ['nta2020:MN0401']
     box = visible_map(page, 250)
     geometry = page.evaluate("""() => {
       const map = window.__entryObservedMap;
-      const features = map.queryRenderedFeatures({layers:['geography-selected-fill']});
+      const features = map.getStyle().sources['geography-selected'].data.features;
       const points = features.flatMap(f => f.geometry.coordinates.flat(Infinity));
       const pixels = [];
       for(let i=0;i<points.length;i+=2) pixels.push(map.project([points[i],points[i+1]]));
@@ -112,6 +118,8 @@ def main():
                 page.locator('#near-geo-search-input').fill('Chelsea')
                 page.locator('#near-geo-search-input').press('Enter')
                 page.wait_for_url('**/*MN0401*')
+                page.locator('[data-near-you-root][data-near-surface="records"]').wait_for()
+                assert page.locator('[data-near-surface="records"][aria-current="true"]').count() > 0
                 retained = parse_qs(urlsplit(page.url).query)
                 assert retained['surface'] == ['records']
                 assert retained['q'] == ['rezoning']
