@@ -1172,6 +1172,27 @@ class Journey:
         response = self.navigate_response(locator)
         return response.status if response else 0
 
+    def navigate_record(self, locator, obs: dict) -> int:  # noqa: ANN001
+        # Activation and late layout can scroll after scroll_into_view_if_needed.
+        # Measure the actual leaving document at the same lifecycle boundary
+        # used by the product's persisted scroll entry.
+        key = "discovery-recovery:observed-departure"
+        self.page.evaluate("""key => {
+          sessionStorage.removeItem(key);
+          window.addEventListener('pagehide', () => {
+            sessionStorage.setItem(key, JSON.stringify((""" + RETURN_STATE_JS + """)()));
+          }, {capture: true, once: true});
+        }""", key)
+        status = self.navigate(locator)
+        obs["departure"] = self.page.evaluate("""key => {
+          const value = JSON.parse(sessionStorage.getItem(key));
+          sessionStorage.removeItem(key);
+          return value;
+        }""", key)
+        if not obs["departure"]:
+            raise AssertionError("record document departure was not observed")
+        return status
+
     def settle(self) -> None:
         self.page.wait_for_function(
             "() => ['ready', 'error', 'partial'].includes(document.querySelector('[data-near-you-root]')?.dataset.nearDeferredState)",
@@ -1197,12 +1218,12 @@ class Journey:
         self.page.wait_for_function("() => document.body?.dataset.appReady === 'true' || !document.body?.dataset.appRoute", timeout=60_000)
 
     def render(self, label: str) -> dict:
-        for attempt in range(3):
+        for attempt in range(4):
             try:
                 png = self.page.screenshot(full_page=False, type="png", animations="disabled")
                 break
-            except Exception:  # noqa: BLE001 - a compositor hiccup; the third failure propagates
-                if attempt == 2:
+            except Exception:  # noqa: BLE001 - bounded compositor retries; a final failure propagates
+                if attempt == 3:
                     raise
                 self.page.wait_for_timeout(500)
         image = self.run.image_dir / f"{label}.png"
@@ -1238,6 +1259,20 @@ def wait_records(journey: Journey, geo: str | None = None) -> None:
     )
 
 
+def choose_records_surface(journey: Journey, geo: str | None = None) -> None:
+    """Select Records explicitly after place entry, on either deployed UI version."""
+    page = journey.page
+    page.wait_for_function(
+        """geo => { const url = new URL(location.href); const root = document.querySelector('[data-near-you-root]');
+          return Boolean(url.searchParams.get('geo')) && (!geo || url.searchParams.get('geo') === geo)
+            && ['map', 'records'].includes(root?.dataset.nearSurface); }""",
+        arg=geo, timeout=60_000,
+    )
+    if page.locator('[data-near-you-root]').get_attribute('data-near-surface') == 'map':
+        journey.activate(page.locator('[data-near-surface-switch] [data-near-surface="records"]').first)
+    wait_records(journey, geo)
+
+
 def record_round_trip(journey: Journey, record_id: str, obs: dict, *, wait: Callable[[], None]) -> None:
     """Inspect -> dismiss -> full record -> Back -> continue, from one listed card."""
     page = journey.page
@@ -1259,9 +1294,7 @@ def record_round_trip(journey: Journey, record_id: str, obs: dict, *, wait: Call
     }
     full = page.locator(f"{card} a.near-record-full-record").first
     obs["full_link"] = full.evaluate(LINK_JS)
-    full.scroll_into_view_if_needed()
-    obs["departure"] = page.evaluate(RETURN_STATE_JS)
-    obs["destination"] = journey.destination(journey.navigate(full))
+    obs["destination"] = journey.destination(journey.navigate_record(full, obs))
     page.go_back(wait_until="domcontentloaded")
     wait()
     page.wait_for_function(FOCUS_RESTORED_JS, arg=[card, obs["departure"]["scroll_y"]], timeout=15_000)
@@ -1317,6 +1350,8 @@ def family_root_category_record(journey: Journey, obs: dict) -> None:
         "nodes => nodes.map((node) => ({ text: node.textContent.trim(), href: node.getAttribute('href'), family: node.dataset.browseFamily || null }))",
     )
     family = page.locator('[data-near-collection-entry] a[data-browse-family="meetings-decisions"]').first
+    if not family.is_visible():
+        journey.activate(page.locator('.near-entry-secondary > summary'))
     obs["family_link"] = family.evaluate(LINK_JS)
     obs["collection"] = collection_state(journey, journey.navigate_response(family))
     open_collection_record(journey, obs)
@@ -1337,7 +1372,7 @@ def family_typed_place_record(journey: Journey, obs: dict) -> None:
         page.locator(".near-place-guide > summary").click()
     field.fill(MIDWOOD_ADDRESS)
     journey.activate(page.locator("form.near-geo-search button[type='submit']"))
-    wait_records(journey, MIDWOOD_GEO)
+    choose_records_surface(journey, MIDWOOD_GEO)
     journey.mark_principal()
     obs["scope"] = journey.measure()
     obs["listed_ids"] = page.evaluate(LOCAL_LIST_JS)
@@ -1363,8 +1398,19 @@ def records_panel_recovery(journey: Journey, obs: dict) -> None:
 
 
 def family_unsupported_place_escape(journey: Journey, obs: dict) -> None:
-    journey.goto(f"/near-you/?geo={UNSUPPORTED_GEO.replace(':', '%3A')}&surface=records&lens=meetings")
-    wait_records(journey, UNSUPPORTED_GEO)
+    # Production coverage rolls. Prove the unavailable-state interaction using
+    # an observed unavailable residential place, not a permanent absence claim
+    # about one named neighborhood. Offline proof keeps its frozen control.
+    candidates = [UNSUPPORTED_GEO] if journey.run.mode == LOCAL_MODE else [
+        UNSUPPORTED_GEO, "nta2020:MN0401", "nta2020:QN0103", "nta2020:SI0101",
+    ]
+    for geo in candidates:
+        journey.goto(f"/near-you/?geo={geo.replace(':', '%3A')}&surface=records&lens=meetings")
+        wait_records(journey, geo)
+        if journey.page.locator('[data-near-surface-panel="records"] [data-near-local-recovery="unsupported"]').count():
+            break
+    else:
+        raise PendingObligation("no-unavailable-place-in-checked-population")
     records_panel_recovery(journey, obs)
     escape = journey.page.locator('[data-near-surface-panel="records"] [data-near-recovery="all-nyc"]').first
     if not escape.count():
@@ -1461,7 +1507,7 @@ def case_location(journey: Journey, obs: dict, *, denied: bool) -> None:
         obs["browse"] = collection_state(journey, journey.navigate_response(page.locator('[data-near-entry-recovery-action="browse_all"]')))
     else:
         journey.activate(page.locator('[data-near-entry-recovery-action="retry"]'))
-        wait_records(journey)
+        choose_records_surface(journey)
         obs["after_retry"] = {"url": page.url}
         obs["location_requests"] = page.evaluate("() => window.__locationRequests")
 
@@ -1524,9 +1570,7 @@ def case_detail_failure(journey: Journey, obs: dict) -> None:
         route.fulfill(status=503, content_type="text/html", body="<!doctype html><title>Unavailable</title><h1>Unavailable</h1>")
 
     page.route(f"**{detail_path}", unavailable)
-    full.scroll_into_view_if_needed()
-    obs["departure"] = page.evaluate(RETURN_STATE_JS)
-    obs["failed_status"] = journey.navigate(full)
+    obs["failed_status"] = journey.navigate_record(full, obs)
     page.go_back(wait_until="domcontentloaded")
     wait_records(journey, MIDWOOD_GEO)
     page.wait_for_function(FOCUS_RESTORED_JS, arg=[card, obs["departure"]["scroll_y"]], timeout=15_000)

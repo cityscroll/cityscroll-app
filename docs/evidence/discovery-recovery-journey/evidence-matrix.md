@@ -2,11 +2,11 @@
 
 Derived by `python3 tools/capture_default_local_home_journey.py --scenario discovery-recovery` from `capture-manifest.json` and `local-capture-manifest.json`; `--check` re-derives this file and refuses any difference.
 
-- Served capture run: `db223c4d-91bf-4545-83ff-0bab7d1105a2`, 2026-09-30T01:42:32Z to 2026-09-30T01:43:29Z
+- Served capture run: `da93ae33-10f6-4137-a8d7-d48086af9f56`, 2026-10-08T21:57:31Z to 2026-10-08T21:58:29Z
 - Pinned landed commit: `24b94b943fd8ca9c5d1ebeb7703328c4cb61344e`
-- Served Pages revision: `49b0017ec1839a3792d6edb338db14711da49fc4`; served Worker revision: `49b0017ec1839a3792d6edb338db14711da49fc4`
-- Read-model generation: `v1-a06d60763c2ad49b`; Pages data receipt: `960b533d844b29a993808e2a6b6f34e960193a863244004225e24ac83546ac25`
-- Harness capture revision: `49b0017ec1839a3792d6edb338db14711da49fc4`
+- Served Pages revision: `2bb2734917d9db9dba12b37d9090384b8679f2b6`; served Worker revision: `0d199259163fbcd4162351ec17eaa03eaa13dd01`
+- Read-model generation: `v1-a8f68c68d742edc3`; Pages data receipt: `3c913de3c8d84349a49ea7db184f26a18285a763a00023c31b4b09d6ead275f0`
+- Harness capture revision: `f6c261e72354ff484706a546732239edab0769d9`
 - Served result: pass
 
 Outcomes are shown by public alias. Journey cells read phone / desktop (390x844 / 1440x900).
@@ -25,13 +25,13 @@ Refusal controls for every row: `test/default_local_home_journey.test.mjs`, "dis
 
 ## Served observations
 
-- root-category-record-phone: pass; opened `meeting:oath_trial_calendar:242838:2026-09-30:09:30:00:Scheduled-For-Trial`
-- typed-place-record-phone: pass; 2 local records, 2 listed; opened `meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/`
+- root-category-record-phone: pass; opened `meeting:community_board:rectQy6gJVEczYvLa`
+- typed-place-record-phone: pass; 9 local records, 9 listed; opened `meeting:community_board:https://cb14brooklyn.com/meeting/community-environment-cultural-affairs-and-economic-development-committee-meeting-october-2026/`
 - unsupported-place-escape-phone: pass; local count None, escape /browse/meetings/; opened `meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-03-28:general-board-meeting`
-- citywide-bucket-record-phone: pass; preview total 20 = destination 20; opened `meeting:nyc_legistar_events:22568`
-- suggested-place-record-phone: pass; suggestions MN0102 26 = 26, MN0402 12 = 12, MN0101 9 = 9; opened `meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/`
-- root-category-record-desktop: pass; opened `meeting:oath_trial_calendar:242838:2026-09-30:09:30:00:Scheduled-For-Trial`
-- typed-place-record-desktop: pass; 2 local records, 2 listed; opened `meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/`
+- citywide-bucket-record-phone: pass; preview total 22 = destination 22; opened `meeting:nyc_legistar_events:22568`
+- suggested-place-record-phone: pass; suggestions BK1503 29 = 29, MN0102 26 = 26, MN1001 21 = 21; opened `meeting:community_board:nyc-calendar:brooklyn-cb-15:2026-09-29:general-board-meeting-in-person`
+- root-category-record-desktop: pass; opened `meeting:community_board:rectQy6gJVEczYvLa`
+- typed-place-record-desktop: pass; 9 local records, 9 listed; opened `meeting:community_board:https://cb14brooklyn.com/meeting/community-environment-cultural-affairs-and-economic-development-committee-meeting-october-2026/`
 - unsupported-place-escape-desktop: pass; local count None, escape /browse/meetings/; opened `meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-03-28:general-board-meeting`
-- citywide-bucket-record-desktop: pass; preview total 20 = destination 20; opened `meeting:nyc_legistar_events:22568`
-- suggested-place-record-desktop: pass; suggestions MN0102 26 = 26, MN0402 12 = 12, MN0101 9 = 9; opened `meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/`
+- citywide-bucket-record-desktop: pass; preview total 22 = destination 22; opened `meeting:nyc_legistar_events:22568`
+- suggested-place-record-desktop: pass; suggestions BK1503 29 = 29, MN0102 26 = 26, MN1001 21 = 21; opened `meeting:community_board:nyc-calendar:brooklyn-cb-15:2026-09-29:general-board-meeting-in-person`
