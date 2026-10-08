@@ -578,10 +578,9 @@ function geographySelectionHref(state) {
   // root selection onto the canonical Near You document before adopting it;
   // an existing /near-you/ route can continue preserving its current path.
   const rootPath = String(location.pathname || "").replace(/\/+$/, "") || "/";
-  const base = rootPath === "/" || rootPath === "/index.html"
-    ? new URL("/near-you/", location.href).toString()
-    : location.href;
-  return geographyNavigationUrlWithFilters(state, {base});
+  const base = new URL(location.href);
+  if (rootPath === "/" || rootPath === "/index.html") base.pathname = "/near-you/";
+  return geographyNavigationUrlWithFilters(state, {base: base.toString()});
 }
 
 async function adoptGeographyEntrySelection(entry, {

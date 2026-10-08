@@ -107,6 +107,16 @@ def main():
                 page.unroute('**/near-you/deferred.json*')
                 page.reload()
                 selected_map(page)
+                page.goto(base.rstrip('/') + '/')
+                page.evaluate("history.replaceState({}, '', '/?surface=records&q=rezoning&agency=Planning&when=month')")
+                page.locator('#near-geo-search-input').fill('Chelsea')
+                page.locator('#near-geo-search-input').press('Enter')
+                page.wait_for_url('**/*MN0401*')
+                retained = parse_qs(urlsplit(page.url).query)
+                assert retained['surface'] == ['records']
+                assert retained['q'] == ['rezoning']
+                assert retained['agency'] == ['Planning']
+                assert retained['when'] == ['month']
                 print(json.dumps({'viewport':[width,height], 'homepage':initial,'chelsea':selected}), flush=True)
                 context.close()
             browser.close()
