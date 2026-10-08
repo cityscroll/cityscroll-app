@@ -18,6 +18,7 @@ import { buildDistrictWeeklyDigests } from "./lib/district_weekly_digest.mjs";
 import { buildCommunityDistrictDigests } from "./lib/community_district_digest.mjs";
 import { GEOGRAPHY_COMMUNITY_DISTRICT_IDS } from "../worker/src/lib/subject_registry.mjs";
 import { catalogGenerationIdentity } from "../site/land_catalog_generation.mjs";
+import { readSharedMeetingReadModelDocument } from "./lib/shared_meeting_read_model_io.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE_OUT = join(ROOT, "site/data/district_activity.json");
@@ -136,7 +137,9 @@ export function loadDistrictActivityInputs() {
     throw new Error("missing a public Near You geography layer");
   }
   const property = loadJson(PATHS.property);
-  const meetings = loadJson(PATHS.meetings);
+  const meetings = existsSync(PATHS.meetings)
+    ? readSharedMeetingReadModelDocument(PATHS.meetings)
+    : null;
   const meetingLocations = loadJson(PATHS.meetingLocations);
   const communityBoardGeography = loadJson(PATHS.communityBoardGeography);
   const rules = loadJson(PATHS.rules);

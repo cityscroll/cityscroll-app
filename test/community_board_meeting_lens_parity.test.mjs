@@ -23,15 +23,16 @@ import { scopeWithPlace } from "../site/near_you_scope_runtime.mjs";
 import { buildNearYouViewModel } from "../site/near_you_view.mjs";
 import { buildCommunityBoardConstellationMaterialization } from "../tools/build_community_board_constellation_documents.mjs";
 import { readCommunityBoardMeetingIndex } from "../tools/lib/community_board_meeting_index_io.mjs";
+import { readSharedMeetingReadModelDocument } from "../tools/lib/shared_meeting_read_model_io.mjs";
 
 function edgePublicationBasis(row) {
   return (row.institution_edges || []).find((edge) => edge?.relation === "hosts_meeting")?.publication_basis || null;
 }
 
-const shared = JSON.parse(fs.readFileSync(new URL(
+const shared = readSharedMeetingReadModelDocument(new URL(
   "../site/data/shared_meeting_read_model.json",
   import.meta.url,
-), "utf8"));
+));
 const meetingIndex = readCommunityBoardMeetingIndex(new URL(
   "../site/data/community_board_meeting_index.json",
   import.meta.url,

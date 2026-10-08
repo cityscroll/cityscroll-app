@@ -21,9 +21,10 @@ import {
 } from "../src/lib/digest_routes.mjs";
 import { parseRedirect } from "../src/lib/stats.mjs";
 import { parseOathTrialCsv } from "../../site/oath_trial_calendar.mjs";
+import { readSharedMeetingReadModelDocument } from "../../tools/lib/shared_meeting_read_model_io.mjs";
 
-const SHARED_MEETING_READ_MODEL = JSON.parse(
-  readFileSync(new URL("../../site/data/shared_meeting_read_model.json", import.meta.url), "utf8"),
+const SHARED_MEETING_READ_MODEL = readSharedMeetingReadModelDocument(
+  new URL("../../site/data/shared_meeting_read_model.json", import.meta.url),
 );
 const CAPTURED_OATH_CSV = readFileSync(
   new URL("../../test/fixtures/oath/daily-calendar-2026-09-15.csv", import.meta.url),

@@ -34,6 +34,7 @@ import {
   loadActiveMeetingGeographyBackfill,
   stampMeetingRowsWithGeography,
 } from "../site/meeting_geography_backfill.mjs";
+import { readSharedMeetingReadModelDocument } from "../tools/lib/shared_meeting_read_model_io.mjs";
 import { LOCATION_ROLES } from "../site/meeting_location_assertions.mjs";
 import { civicGeographyKey } from "../site/civic_geography_registry.mjs";
 import {
@@ -296,7 +297,7 @@ function createInstrumentedAdapters(paths, {
 
   const loadPad = () => loadJson(path.join(paths.addressDir, "manifest.json"));
   const loadParcel = () => loadJson(path.join(paths.parcelDir, "manifest.json"));
-  const loadShared = () => loadJson(paths.sharedMeetingPath);
+  const loadShared = () => readSharedMeetingReadModelDocument(paths.sharedMeetingPath);
   const loadBoundaries = () => {
     const registry = loadJson(paths.layerRegistry);
     const digests = {};

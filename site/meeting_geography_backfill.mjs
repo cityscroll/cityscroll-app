@@ -13,6 +13,7 @@ import { createHash } from "node:crypto";
 import {
   existsSync,
   mkdirSync,
+  readdirSync,
   readFileSync,
   renameSync,
   rmSync,
@@ -43,6 +44,10 @@ import {
   RECORD_LOCATION_HOST_METHOD,
   createRecordLocationMembershipProjection,
 } from "./record_location_memberships.mjs";
+import {
+  buildSharedMeetingReadModelShardArtifacts,
+  SHARED_MEETING_READ_MODEL_SHARD_DIRECTORY,
+} from "./shared_meeting_read_model_shards.mjs";
 
 export const MEETING_GEOGRAPHY_BACKFILL_SCHEMA = "cityscroll.meeting_geography_backfill.v1";
 export const MEETING_GEOGRAPHY_BACKFILL_OUTCOME_SCHEMA =
@@ -885,10 +890,29 @@ export function activateMeetingGeographyBackfill({
     );
 
     if (stampedSharedMeetingModel && sharedMeetingReadModelPath) {
+      const artifacts = buildSharedMeetingReadModelShardArtifacts(stampedSharedMeetingModel);
+      const indexDir = path.dirname(sharedMeetingReadModelPath);
+      const shardDir = path.join(indexDir, SHARED_MEETING_READ_MODEL_SHARD_DIRECTORY);
+      mkdirSync(shardDir, { recursive: true });
+      const expectedNames = new Set(
+        artifacts.manifest.shards.map((descriptor) => descriptor.path.split("/").at(-1)),
+      );
+      if (existsSync(shardDir)) {
+        for (const name of readdirSync(shardDir)) {
+          if (!expectedNames.has(name)) rmSync(path.join(shardDir, name), { force: true });
+        }
+      }
       atomicWriteFile(
         sharedMeetingReadModelPath,
-        `${JSON.stringify(stampedSharedMeetingModel, null, 2)}\n`,
+        `${JSON.stringify(artifacts.manifest, null, 2)}\n`,
       );
+      for (let index = 0; index < artifacts.shards.length; index += 1) {
+        const descriptor = artifacts.manifest.shards[index];
+        atomicWriteFile(
+          path.join(indexDir, descriptor.path),
+          `${JSON.stringify(artifacts.shards[index], null, 2)}\n`,
+        );
+      }
     }
 
     return {

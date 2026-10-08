@@ -20,6 +20,7 @@ import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.m
 import { readCommunityBoardMeetingIndex } from "./lib/community_board_meeting_index_io.mjs";
 import { readUpcomingCouncilMeetingsIndex } from "./lib/upcoming_council_meetings_io.mjs";
 import { slimSharedMeetingReadModel } from "./lib/shared_meeting_publish_slim.mjs";
+import { sharedMeetingReadModelOutputPairs } from "./lib/shared_meeting_read_model_io.mjs";
 import { eligibleCityRecordMeetings } from "../site/city_record_meeting.mjs";
 import { normalizeHearing } from "../worker/src/lib/hearings.mjs";
 import { EXAMS_SURFACE, PEOPLE_ORGANIZATIONS_SURFACE, STAFFING_SURFACE } from "../site/browse_surface_contracts.mjs";
@@ -325,10 +326,10 @@ function buildSharedMeetingArtifacts() {
 export function sharedMeetingOutputs() {
   const { sharedMeetings } = buildSharedMeetingArtifacts();
   const published = slimSharedMeetingReadModel(sharedMeetings);
-  return [[
+  return sharedMeetingReadModelOutputPairs(
     join(SITE, "data/shared_meeting_read_model.json"),
-    `${JSON.stringify(published, null, 2)}\n`,
-  ]];
+    published,
+  ).outputs;
 }
 
 function buildDayClock(argv) {

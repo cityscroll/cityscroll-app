@@ -7,6 +7,7 @@ import {
 } from "../community_board_watch.mjs";
 import { geocodeAddressText } from "../address_geocoder.mjs";
 import { validateMinRemainingDays } from "../money_watch_min_remaining_days.mjs";
+import { loadSharedMeetingReadModelDocument } from "../shared_meeting_read_model_shards.mjs";
 
 /* ===================== ALERTS ===================== */
 const AKEY = "crd_alerts_v1";
@@ -182,9 +183,11 @@ async function aFetch(){
   if(w==="communityboard"){
     const ref=communityBoardIdFromSelection($("#acommunityboardboro").value,$("#acommunityboardnumber").value);
     if(!ref) return {kind:"notice",rows:[]};
-    const response=await fetch("data/shared_meeting_read_model.json",{cache:"no-cache"});
-    if(!response.ok) throw new Error(String(response.status));
-    const payload=await response.json();
+    const payload=await loadSharedMeetingReadModelDocument("data/shared_meeting_read_model.json",async(u)=>{
+      const response=await fetch(u,{cache:"no-cache"});
+      return response.ok?response.json():null;
+    });
+    if(!payload) throw new Error("shared-meeting-unavailable");
     const end=hearingDateWindowEnd(todayISO(),meetingWatchExtra.dateWindow);
     const rows=(payload.rows||[]).filter(row=>normalizeCommunityBoardRef(
       row?.institution_refs?.board_ref || (row?.board_id ? `community-board:${row.board_id}` : ""),

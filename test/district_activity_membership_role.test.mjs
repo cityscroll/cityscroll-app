@@ -30,6 +30,7 @@ import { buildDistrictActivity } from "../tools/lib/district_activity.mjs";
 import {
   NEIGHBORHOOD_PUBLICATION_ANCHORS,
 } from "../tools/lib/neighborhood_publication_receipt.mjs";
+import { readSharedMeetingReadModelDocument } from "../tools/lib/shared_meeting_read_model_io.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const loadJsonFile = (rel) => JSON.parse(readFileSync(path.join(ROOT, rel), "utf8"));
@@ -158,7 +159,9 @@ test("served Near You route renders the explanation from the selected membership
 
 test("neighborhood publication recovered venue keeps exact NTA venue role distinct from broader district activity", async () => {
   const anchor = NEIGHBORHOOD_PUBLICATION_ANCHORS.cb15_sept29;
-  const shared = loadJsonFile("site/data/shared_meeting_read_model.json");
+  const shared = readSharedMeetingReadModelDocument(
+    path.join(ROOT, "site/data/shared_meeting_read_model.json"),
+  );
   const row = structuredClone(shared.rows.find((candidate) => candidate.meeting_id === anchor.meeting_id));
   assert.ok(row);
   delete row.location_memberships;

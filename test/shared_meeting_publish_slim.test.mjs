@@ -10,6 +10,10 @@ import test from "node:test";
 
 import { PAGES_FILE_HEADROOM_BYTES } from "../tools/check_pages_bundle_sizes.mjs";
 import {
+  DEFAULT_SHARED_MEETING_SHARD_MAX_BYTES,
+  buildSharedMeetingReadModelShardArtifacts,
+} from "../site/shared_meeting_read_model_shards.mjs";
+import {
   agendaSubjectPlacesFromAssertions,
   PUBLIC_LOCATION_MEMBERSHIP_ROLES,
   SHARED_MEETING_PUBLISH_STRIP,
@@ -363,7 +367,7 @@ test("regression: producer must not emit a subject meeting without subject place
   );
 });
 
-test("producer slim of an over-headroom catalog stays under the Pages refresh headroom budget", () => {
+test("producer slim plus sharding keeps every published part under Pages refresh headroom", () => {
   const fat = fatCatalogOverHeadroom();
   const fatPretty = `${JSON.stringify(fat, null, 2)}\n`;
   assert.ok(
@@ -371,12 +375,28 @@ test("producer slim of an over-headroom catalog stays under the Pages refresh he
     `fat fixture must exceed headroom (${fatPretty.length} > ${PAGES_FILE_HEADROOM_BYTES})`,
   );
   const published = slimSharedMeetingReadModel(fat);
-  const publishedPretty = `${JSON.stringify(published, null, 2)}\n`;
+  const { manifest, shards } = buildSharedMeetingReadModelShardArtifacts(published);
+  assert.equal(Object.prototype.hasOwnProperty.call(manifest, "rows"), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(manifest, "hearings"), false);
+  const indexPretty = `${JSON.stringify(manifest, null, 2)}\n`;
   assert.ok(
-    publishedPretty.length <= PAGES_FILE_HEADROOM_BYTES,
-    `published shared_meeting must stay under ${PAGES_FILE_HEADROOM_BYTES} bytes after producer slim; got ${publishedPretty.length}`,
+    indexPretty.length < 1024 * 1024,
+    `published index must stay small; got ${indexPretty.length}`,
   );
-  assert.equal(published.rows.length, fat.rows.length);
+  assert.deepEqual(
+    manifest.shards.filter((descriptor) => descriptor.bytes > DEFAULT_SHARED_MEETING_SHARD_MAX_BYTES),
+    [],
+    "each shard must stay under the 12 MiB shared-meeting ceiling",
+  );
+  assert.deepEqual(
+    manifest.shards.filter((descriptor) => descriptor.bytes > PAGES_FILE_HEADROOM_BYTES),
+    [],
+    "each published part must keep Pages refresh headroom under the 24 MiB guard",
+  );
+  assert.equal(
+    shards.reduce((sum, shard) => sum + shard.rows.length, 0),
+    fat.rows.length,
+  );
   for (const row of published.rows) {
     assert.equal(
       (row.location_assertions || []).every((item) => item.role === SUBJECT_PROPERTY_ROLE),

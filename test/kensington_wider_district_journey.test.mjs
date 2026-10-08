@@ -57,6 +57,7 @@ import {
   MEETING_MANIFEST_KEY,
   NEAR_YOU_MANIFEST_KEY,
 } from "../worker/src/lib/route_read_model_kv.mjs";
+import { readSharedMeetingReadModelDocument } from "../tools/lib/shared_meeting_read_model_io.mjs";
 
 const ROOT = process.cwd();
 const EVIDENCE_DIR = join(ROOT, "docs/evidence/near-you-kensington-wider-district");
@@ -80,7 +81,9 @@ const CB14_PARCELS = Object.freeze(["3066990010", "3076200025", "3050700035"]);
 const readJson = (rel) => JSON.parse(readFileSync(join(ROOT, rel), "utf8"));
 const activity = readJson("site/data/district_activity.json");
 const boundaries = readJson("site/data/district_boundaries.json");
-const sharedMeetings = readJson("site/data/shared_meeting_read_model.json");
+const sharedMeetings = readSharedMeetingReadModelDocument(
+  join(ROOT, "site/data/shared_meeting_read_model.json"),
+);
 // Main-vintage K12/K14 broader candidates + records. Refresh densifies October
 // K14 meetings so newest-first top-3 drops Sept 23; freeze candidates only.
 const broaderCandidates = readJson(

@@ -37,7 +37,7 @@
     },
     {
       "path": "site/data/shared_meeting_read_model.json",
-      "reason": "Resident meeting read model restamped when meeting-geography memberships change."
+      "reason": "Resident meeting read model restamped when meeting-geography memberships change. The published catalog is an index plus site/data/shared_meeting_read_model/shards; coverage digests must include every named shard."
     },
     {
       "path": "site/data/parcel-geography",

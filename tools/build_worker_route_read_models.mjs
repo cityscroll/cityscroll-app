@@ -9,6 +9,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { isMaterialForNavigation } from "../site/geography_crosswalk_artifacts.mjs";
 import { geographyCoverageForLens, geographyRecordProjection } from "../site/geography_navigation_records.mjs";
+import { readSharedMeetingReadModelDocument } from "./lib/shared_meeting_read_model_io.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_OUT = join(ROOT, "worker/.route-read-models");
@@ -268,7 +269,9 @@ export function loadLocalGeographyPublicationDependencies(root = ROOT) {
   return localGeographyPublicationDependencies({
     parcelManifest: existsSync(parcelPath) ? readJson(parcelPath) : null,
     meetingGeographyPointer: existsSync(activePath) ? readJson(activePath) : null,
-    sharedMeetingModel: existsSync(meetingsPath) ? readJson(meetingsPath) : null,
+    sharedMeetingModel: existsSync(meetingsPath)
+      ? readSharedMeetingReadModelDocument(meetingsPath)
+      : null,
   });
 }
 
@@ -846,7 +849,7 @@ function main() {
   if (existsSync(out)) rmSync(out, { recursive: true, force: true });
   mkdirSync(out, { recursive: true });
   const activity = readJson(resolveActivityPath());
-  const meetings = readJson(PATHS.meetings);
+  const meetings = readSharedMeetingReadModelDocument(PATHS.meetings);
   const geography = readJson(PATHS.geography);
   const communityDigest = existsSync(PATHS.communityDigest) ? readJson(PATHS.communityDigest) : null;
   if (!existsSync(PATHS.ntaLayer)) {

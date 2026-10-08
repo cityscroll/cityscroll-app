@@ -22,6 +22,7 @@ import {
 } from "../site/civic_outcome_transition.mjs";
 import { renderMeetingOutcomesFirstPaint } from "../site/meeting_outcomes_static.mjs";
 import { renderMeetingDocument } from "../site/meeting_document.mjs";
+import { readSharedMeetingReadModelDocument } from "./lib/shared_meeting_read_model_io.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const out = process.argv[2];
@@ -30,7 +31,7 @@ if (!out) {
 }
 
 const read = (rel) => JSON.parse(readFileSync(join(ROOT, rel), "utf8"));
-const meetings = read("site/data/shared_meeting_read_model.json");
+const meetings = readSharedMeetingReadModelDocument(join(ROOT, "site/data/shared_meeting_read_model.json"));
 const sources = {
   sourceRegistry: read("site/data/non_council_outcome_sources/source_registry.json"),
   sourceInventory: read("site/data/non_council_outcome_sources/board_source_inventory.json"),

@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import test from "node:test";
 
@@ -10,6 +9,7 @@ import {
   normalizeMeetingOrigin,
 } from "../site/meeting_origin.mjs";
 import { meetingCanonicalHref } from "../site/meeting_object_contract.mjs";
+import { readSharedMeetingReadModelDocument } from "../tools/lib/shared_meeting_read_model_io.mjs";
 
 const require = createRequire(import.meta.url);
 const { normalizeHearingRow } = require("../site/hearing_location.js");
@@ -70,7 +70,9 @@ test("OATH and PDC feed cards keep a detail route and a real publisher handoff",
 });
 
 test("published shared meeting rows never yield bare RequestDetail handoffs or missing detail routes", () => {
-  const model = JSON.parse(readFileSync(new URL("../site/data/shared_meeting_read_model.json", import.meta.url), "utf8"));
+  const model = readSharedMeetingReadModelDocument(
+    new URL("../site/data/shared_meeting_read_model.json", import.meta.url),
+  );
   assert.ok(Array.isArray(model.rows) && model.rows.length > 0);
 
   let oathCount = 0;

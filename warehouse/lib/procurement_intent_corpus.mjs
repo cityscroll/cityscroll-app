@@ -9,9 +9,11 @@
 
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { extractSource } from "./procurement_intent_extractor.mjs";
 import { assertHistoricalIntent } from "./procurement_intent_realization_matcher.mjs";
 import { assertNoTemporalLeakage } from "../../worker/src/lib/forecast_calibration.mjs";
+import { readSharedMeetingReadModelDocument } from "../../tools/lib/shared_meeting_read_model_io.mjs";
 
 export const CORPUS_COVERAGE_SCHEMA = "cityscroll.procurement_intent_radar.corpus_coverage.v1";
 export const CORPUS_COVERAGE_VERSION = "pir-corpus-coverage.v1";
@@ -262,6 +264,23 @@ export function hashFile(path) {
   return createHash("sha256").update(readFileSync(path)).digest("hex");
 }
 
+/** Stable digest over the published shared meeting index and every shard it names. */
+export function hashSharedMeetingReadModelArtifact(indexPath) {
+  if (!existsSync(indexPath)) return null;
+  const manifest = JSON.parse(readFileSync(indexPath, "utf8"));
+  const hash = createHash("sha256");
+  hash.update(readFileSync(indexPath));
+  const directory = dirname(indexPath);
+  const shardPaths = Array.isArray(manifest?.shards)
+    ? manifest.shards.map((descriptor) => descriptor?.path).filter(Boolean)
+    : [];
+  for (const shardPath of shardPaths) {
+    const absolute = join(directory, shardPath);
+    if (existsSync(absolute)) hash.update(readFileSync(absolute));
+  }
+  return hash.digest("hex");
+}
+
 export function buildCorpusCoverage({
   labeledPack,
   retainedMeetings,
@@ -300,12 +319,12 @@ export function loadCorpusCoverageFromRepo(root, {
 } = {}) {
   const labeled = JSON.parse(readFileSync(labeledPath, "utf8"));
   const meetings = existsSync(meetingsPath)
-    ? JSON.parse(readFileSync(meetingsPath, "utf8"))
+    ? readSharedMeetingReadModelDocument(meetingsPath)
     : { rows: [], generated_at: null };
   return buildCorpusCoverage({
     labeledPack: labeled,
     retainedMeetings: meetings,
-    retainedMeetingsSha256: existsSync(meetingsPath) ? hashFile(meetingsPath) : null,
+    retainedMeetingsSha256: hashSharedMeetingReadModelArtifact(meetingsPath),
     labeledPackSha256: hashFile(labeledPath),
     asOf,
   });

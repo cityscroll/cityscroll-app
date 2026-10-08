@@ -35,10 +35,12 @@ import {
   assertCutoffForecast,
   buildCorpusCoverage,
   hashFile,
+  hashSharedMeetingReadModelArtifact,
   leakageCheck,
   loadCorpusCoverageFromRepo,
   reconstructAtCutoff,
 } from "../warehouse/lib/procurement_intent_corpus.mjs";
+import { readSharedMeetingReadModelDocument } from "./lib/shared_meeting_read_model_io.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 export const BACKTEST_SCHEMA = "cityscroll.procurement_intent_radar.corpus_backtest.v1";
@@ -558,8 +560,10 @@ export function buildBacktestArtifact(input, options = {}) {
   const meetingsPath = join(ROOT, RETAINED_MEETINGS_ARTIFACT);
   const coverage = buildCorpusCoverage({
     labeledPack: pack,
-    retainedMeetings: existsSync(meetingsPath) ? readJson(meetingsPath) : { rows: [] },
-    retainedMeetingsSha256: existsSync(meetingsPath) ? hashFile(meetingsPath) : null,
+    retainedMeetings: existsSync(meetingsPath)
+      ? readSharedMeetingReadModelDocument(meetingsPath)
+      : { rows: [] },
+    retainedMeetingsSha256: hashSharedMeetingReadModelArtifact(meetingsPath),
     labeledPackSha256: options.labeledPackSha256 ?? null,
     asOf: "2026-08-30",
   });

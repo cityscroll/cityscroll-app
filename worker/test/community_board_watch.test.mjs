@@ -1,11 +1,15 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import districtActivity from "../../site/data/district_activity.json" with { type: "json" };
-import sharedMeetings from "../../site/data/shared_meeting_read_model.json" with { type: "json" };
 import { communityBoardIdFromSelection, communityBoardLabel } from "../../site/community_board_watch.mjs";
 import { sanitize } from "../src/lib/filter.mjs";
 import { compileSub } from "../src/lib/compile.mjs";
 import { describeFilter } from "../src/lib/confirm_email.mjs";
+import { readSharedMeetingReadModelDocument } from "../../tools/lib/shared_meeting_read_model_io.mjs";
+
+const sharedMeetings = readSharedMeetingReadModelDocument(
+  new URL("../../site/data/shared_meeting_read_model.json", import.meta.url),
+);
 
 test("Manhattan Community Board 7 compiles through its covering Community District", () => {
   const board = communityBoardIdFromSelection("Manhattan", "7");

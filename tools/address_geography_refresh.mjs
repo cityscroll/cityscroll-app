@@ -53,6 +53,7 @@ import {
   createRecordLocationMembershipProjection,
 } from "../site/record_location_memberships.mjs";
 import { runMembershipBuild } from "./build_parcel_memberships.mjs";
+import { readSharedMeetingReadModelDocument } from "./lib/shared_meeting_read_model_io.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_PUBLIC_DIR = path.join(ROOT, "site/data/meeting-geography-backfill");
@@ -292,7 +293,7 @@ export function buildAddressGeographyRefreshAdapters(options = {}) {
       const coordinateManifest = existsSync(parcelManifestPath)
         ? loadJson(parcelManifestPath)
         : null;
-      const shared = loadJson(args.sharedMeetingPath);
+      const shared = readSharedMeetingReadModelDocument(args.sharedMeetingPath);
       const metadata = await readPublisherMetadata();
       return {
         fingerprints: computeAddressGeographyFingerprints({
@@ -377,7 +378,7 @@ export function buildAddressGeographyRefreshAdapters(options = {}) {
       membershipsChanged,
       changedMeetingIds,
     }) => {
-      const shared = loadJson(args.sharedMeetingPath);
+      const shared = readSharedMeetingReadModelDocument(args.sharedMeetingPath);
       const rows = shared.rows || [];
       const venueChanged = Array.isArray(changedMeetingIds) && changedMeetingIds.length > 0;
       const forceAddressReprocess = padChanged || plan.stages.pad !== "skip";

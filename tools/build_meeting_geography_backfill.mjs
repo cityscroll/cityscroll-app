@@ -54,6 +54,9 @@ import {
 import {
   slimSharedMeetingReadModel,
 } from "./lib/shared_meeting_publish_slim.mjs";
+import {
+  readSharedMeetingReadModelDocument,
+} from "./lib/shared_meeting_read_model_io.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHARED_MEETING_PATH = path.join(ROOT, "site/data/shared_meeting_read_model.json");
@@ -214,7 +217,7 @@ export function runMeetingGeographyBackfill({
   runner = null,
   now = () => new Date().toISOString(),
 } = {}) {
-  const shared = loadJson(sharedMeetingPath);
+  const shared = readSharedMeetingReadModelDocument(sharedMeetingPath);
   const rows = Array.isArray(shared?.rows) ? shared.rows : [];
   if (!rows.length) throw new Error("shared meeting read model has no rows");
 
@@ -295,12 +298,12 @@ export function runMeetingGeographyBackfill({
   const stampedRows = stampMeetingRowsWithGeography(rows, result.outcomes);
   // Publish slim is part of the producer write path so scheduled refresh cannot
   // leave host_jurisdiction / venue-assertion bulk on the committed catalog.
+  // hearings stays the Worker/feed alias of the same stamped rows; shards store
+  // rows once and restore the alias on load.
   const stampedShared = slimSharedMeetingReadModel({
     ...shared,
     rows: stampedRows,
-    hearings: Array.isArray(shared.hearings)
-      ? stampMeetingRowsWithGeography(shared.hearings, result.outcomes)
-      : shared.hearings,
+    hearings: stampedRows,
     geography_backfill: {
       generation,
       built_at: builtAt,
@@ -391,7 +394,7 @@ function checkBackfill(publicDir = PUBLIC_DIR, sharedMeetingPath = SHARED_MEETIN
   if (!active?.manifest || !active?.outcomes) {
     throw new Error("meeting geography backfill is not activated");
   }
-  const shared = loadJson(sharedMeetingPath);
+  const shared = readSharedMeetingReadModelDocument(sharedMeetingPath);
   const rows = shared.rows || [];
   const candidateSummary = summarizeCandidates(rows);
   const outcomes = active.outcomes.outcomes || [];

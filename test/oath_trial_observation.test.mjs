@@ -15,6 +15,7 @@ import { installOathObserverRequestControls } from "../site/oath_trial_observati
 import { renderMeetingDocument } from "../site/meeting_document.mjs";
 import { meetingPlacementsFromRow } from "../tools/lib/district_activity.mjs";
 import { buildOathTrialCalendar } from "../tools/build_oath_trial_calendar.mjs";
+import { readSharedMeetingReadModelDocument } from "../tools/lib/shared_meeting_read_model_io.mjs";
 import { click, mountDocument } from "./helpers/preview_dom.mjs";
 import { testClockISOString, todayISO, withPinnedClock } from "./helpers/test_clock.mjs";
 
@@ -128,7 +129,9 @@ test("OATH builder rejects a partial parse when a publisher row changes schema",
 
 test("every OATH calendar meeting_id is present in the shared meeting read model", () => {
   const calendar = JSON.parse(readFileSync(new URL("../site/data/oath_trial_calendar.json", import.meta.url), "utf8"));
-  const shared = JSON.parse(readFileSync(new URL("../site/data/shared_meeting_read_model.json", import.meta.url), "utf8"));
+  const shared = readSharedMeetingReadModelDocument(
+    new URL("../site/data/shared_meeting_read_model.json", import.meta.url),
+  );
   const calendarIds = (calendar.records || calendar.rows || [])
     .map((row) => row?.meeting_id)
     .filter(Boolean);

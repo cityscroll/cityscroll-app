@@ -20,6 +20,10 @@ import {
   buildProcurementBrowsePopulationShardArtifacts,
   combineProcurementBrowsePopulation,
 } from "../site/procurement_browse_population_shards.mjs";
+import {
+  DEFAULT_SHARED_MEETING_SHARD_MAX_BYTES,
+} from "../site/shared_meeting_read_model_shards.mjs";
+import { readSharedMeetingReadModelDocument } from "../tools/lib/shared_meeting_read_model_io.mjs";
 
 const ROOT = new URL("../", import.meta.url).pathname;
 
@@ -134,6 +138,57 @@ test("the Contracts Browse projection is a bounded index over row shards", () =>
 // accepting its own field-stripped output, and the acquisition spine outgrew it
 // on the same refresh. Both are held to their fixed shape here so the next
 // growth fails in this suite rather than at deploy.
+test("the shared meeting read model is published as a bounded index and shards", () => {
+  const published = publishedSourceFiles(ROOT);
+  const index = published.find((file) => file.relativePath === "data/shared_meeting_read_model.json");
+  assert.ok(index, "the shared meeting read model index must stay published");
+
+  const document = JSON.parse(readFileSync(join(ROOT, "site", index.relativePath), "utf8"));
+  assert.equal(
+    Object.prototype.hasOwnProperty.call(document, "rows"),
+    false,
+    "the published document is the index: its rows belong in the shards it names, or a build-time "
+    + "source refresh puts it back over the 24 MiB Pages guard",
+  );
+  assert.equal(
+    Object.prototype.hasOwnProperty.call(document, "hearings"),
+    false,
+    "hearings is the rows alias restored on load; publishing both copies doubles the catalog past headroom",
+  );
+  assert.ok(Array.isArray(document.shards) && document.shards.length, "the index must name its shards");
+  assert.ok(
+    index.bytes < 1024 * 1024,
+    `the index is ${index.bytes} bytes; it must stay a small document beside the shards that carry the rows`,
+  );
+
+  const shards = published.filter((file) => file.relativePath.startsWith("data/shared_meeting_read_model/"));
+  assert.deepEqual(
+    shards.map((file) => file.relativePath).sort(),
+    document.shards.map((descriptor) => `data/${descriptor.path}`).sort(),
+    "every shard the index names is published, and no shard is published that it does not name",
+  );
+  assert.deepEqual(
+    shards
+      .filter((file) => file.bytes > DEFAULT_SHARED_MEETING_SHARD_MAX_BYTES)
+      .map((file) => `${file.relativePath} (${(file.bytes / (1024 * 1024)).toFixed(2)} MiB)`),
+    [],
+    "a shard over the 12 MiB ceiling has lost its growth margin under the 15 MiB structural target "
+    + "and the 18 MiB Pages refresh headroom mark",
+  );
+  assert.deepEqual(
+    shards
+      .filter((file) => file.bytes > 15 * 1024 * 1024)
+      .map((file) => `${file.relativePath} (${(file.bytes / (1024 * 1024)).toFixed(2)} MiB)`),
+    [],
+    "each published shared meeting part must stay well under 15 MiB",
+  );
+
+  const combined = readSharedMeetingReadModelDocument(join(ROOT, "site", index.relativePath));
+  assert.ok(Array.isArray(combined.rows) && combined.rows.length, "combined catalog retains rows");
+  assert.equal(combined.hearings, combined.rows);
+  assert.equal(combined.row_count ?? combined.rows.length, combined.rows.length);
+});
+
 test("the registered-contract projection is published as a bounded index and shards", () => {
   const published = publishedSourceFiles(ROOT);
   const index = published.find((file) => file.relativePath === "data/analytics_registered_contracts.json");

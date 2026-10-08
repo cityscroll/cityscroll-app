@@ -69,6 +69,7 @@ import {
 } from "../tools/lib/district_activity.mjs";
 import { handleNearYou } from "../worker/src/near_you.mjs";
 import { NEAR_YOU_MANIFEST_KEY } from "../worker/src/lib/route_read_model_kv.mjs";
+import { readSharedMeetingReadModelDocument } from "../tools/lib/shared_meeting_read_model_io.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHARED_MEETING_PATH = path.join(ROOT, "site/data/shared_meeting_read_model.json");
@@ -225,7 +226,7 @@ function oathRow(index = 1) {
 }
 
 test("A1 [G1] pinned corpus processes once; address candidates reconcile before validation", () => {
-  const shared = loadJson(SHARED_MEETING_PATH);
+  const shared = readSharedMeetingReadModelDocument(SHARED_MEETING_PATH);
   const rows = shared.rows || [];
   // Regression caught: backfill population does not fall below retained floor.
   assert.ok(rows.length >= 780, `expected at least 780 rows, got ${rows.length}`);
@@ -438,7 +439,7 @@ test("A3 [boundary] date-shaped and remote-office stay non-physical; OATH unloca
 
 test("A4 [verification] retained-corpus interrupt/resume and exact per-id outcome file", () => {
   withTempDirSync("meeting-geography-backfill-a4-", (dir) => {
-    const shared = loadJson(SHARED_MEETING_PATH);
+    const shared = readSharedMeetingReadModelDocument(SHARED_MEETING_PATH);
     const sharedCopyPath = path.join(dir, "shared_meeting_read_model.json");
     writeFileSync(sharedCopyPath, JSON.stringify(shared));
     const publicDir = path.join(dir, "meeting-geography-backfill");
@@ -522,7 +523,7 @@ test("A4 [verification] retained-corpus interrupt/resume and exact per-id outcom
     const venue = (sept23.memberships || []).find((membership) => membership.role === "venue");
     assert.equal(venue?.memberships?.nta2020, "BK1403");
 
-    const stampedShared = loadJson(sharedCopyPath);
+    const stampedShared = readSharedMeetingReadModelDocument(sharedCopyPath);
     const stampedRow = stampedShared.rows.find((row) => row.meeting_id === SEPT23_ID);
     assert.ok(stampedRow.location_memberships.some((membership) => (
       membership.role === "venue" && membership.memberships?.nta2020 === "BK1403"
@@ -945,7 +946,7 @@ test("locality and unit suffixes resolve through production PAD and parcel shard
     FROZEN_NEIGHBORHOOD_PUBLICATION_BASELINE.by_outcome.virtual,
   );
 
-  const shared = loadJson(SHARED_MEETING_PATH);
+  const shared = readSharedMeetingReadModelDocument(SHARED_MEETING_PATH);
   const retainedIds = new Set([
     ...frozenIds.physical_venue_meeting_ids,
     ...frozenIds.virtual_meeting_ids,
@@ -983,7 +984,7 @@ const GEOGRAPHY_LAYERS = [
 const RESIDENTIAL_PLACES = residentialPlacesFromNtaLayer(GEOGRAPHY_LAYERS[0]);
 
 function sharedRow(meetingId) {
-  const shared = loadJson(SHARED_MEETING_PATH);
+  const shared = readSharedMeetingReadModelDocument(SHARED_MEETING_PATH);
   const row = shared.rows.find((candidate) => candidate.meeting_id === meetingId);
   assert.ok(row, `missing shared row ${meetingId}`);
   return structuredClone(row);
@@ -1003,7 +1004,7 @@ function publicationKv(publication) {
 
 test("neighborhood publication A1/A2 [outcome] recovered venues publish into exact NTA lists and keep host districts", async () => {
   const anchors = NEIGHBORHOOD_PUBLICATION_ANCHORS;
-  const sharedCorpus = loadJson(SHARED_MEETING_PATH);
+  const sharedCorpus = readSharedMeetingReadModelDocument(SHARED_MEETING_PATH);
   const forestHillsId = resolveNeighborhoodPublicationAnchorId(
     anchors.forest_hills,
     sharedCorpus.rows,

@@ -5,6 +5,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { extractSources, isEligibleHistoricalCouncilSource } from "../warehouse/lib/procurement_intent_extractor.mjs";
+import { readSharedMeetingReadModelDocument } from "./lib/shared_meeting_read_model_io.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_INPUT = join(ROOT, "test/fixtures/procurement_intent_radar/gold_fixtures.v0.json");
@@ -28,7 +29,7 @@ function retainedCoverage() {
   if (!existsSync(RETAINED_MEETINGS)) {
     return { artifact: "site/data/shared_meeting_read_model.json", rows: 0, council_attributable_rows: 0, text_bearing_council_rows: 0, note: "retained meeting artifact is absent" };
   }
-  const payload = JSON.parse(readFileSync(RETAINED_MEETINGS, "utf8"));
+  const payload = readSharedMeetingReadModelDocument(RETAINED_MEETINGS);
   const rows = Array.isArray(payload.rows) ? payload.rows : [];
   const councilRows = rows.filter((row) => /council|legistar/iu.test(JSON.stringify(row.source_record || row)) || /council|legistar/iu.test(String(row.source_system || "")));
   const textBearing = councilRows.filter((row) => [row.transcript, row.testimony, row.briefing_paper, row.text, row.body, row.search_text].some((value) => typeof value === "string" && value.trim()));

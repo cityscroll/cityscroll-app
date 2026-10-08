@@ -55,6 +55,7 @@ import {
   MEETING_MANIFEST_KEY,
   NEAR_YOU_MANIFEST_KEY,
 } from "../worker/src/lib/route_read_model_kv.mjs";
+import { readSharedMeetingReadModelDocument } from "../tools/lib/shared_meeting_read_model_io.mjs";
 
 const ROOT = process.cwd();
 const EVIDENCE_DIR = join(ROOT, "docs/evidence/default-local-home-journey");
@@ -147,7 +148,9 @@ function publicationEnv() {
   const publication = buildLocalGeographyPublication({
     activity,
     geography: {},
-    meetings: readJson("site/data/shared_meeting_read_model.json"),
+    meetings: readSharedMeetingReadModelDocument(
+      join(ROOT, "site/data/shared_meeting_read_model.json"),
+    ),
     version: "default-local-home",
     residentialPlaces,
     dependencies: {

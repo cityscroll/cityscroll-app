@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
@@ -113,6 +113,11 @@ test("build_primary_documents --output-root writes the shared meeting model only
     const staged = join(outputRoot, "data/shared_meeting_read_model.json");
     const stagedBody = readFileSync(staged, "utf8");
     assert.match(stagedBody, /cityscroll\.shared_meeting_read_model\.v1/);
+    assert.match(stagedBody, /"representation": "sharded"/);
+    assert.match(stagedBody, /shared_meeting_read_model\/shard-/);
+    const stagedShard = join(outputRoot, "data/shared_meeting_read_model/shard-000.json");
+    assert.ok(existsSync(stagedShard), "staging root must receive the first meeting row shard");
+    assert.ok(readFileSync(stagedShard, "utf8").length > 100);
     // When the committed model already matches the builder, staged bytes can equal
     // the tracked hash. Hermeticity is the unchanged tracked path above; prove the
     // staged write happened by size rather than requiring byte drift.

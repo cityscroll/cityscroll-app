@@ -23,6 +23,7 @@ import {
   renderProcurementPaymentEvidenceHtml,
 } from "./procurement_payment_place_context.mjs";
 import { procurementShardPathForId } from "./procurement_read_model_shards.mjs";
+import { loadSharedMeetingReadModelDocument } from "./shared_meeting_read_model_shards.mjs";
 import { meetingCalendarICS } from "./hearing_attend_pack.mjs";
 import rulesSemanticLaneArtifact from "./data/rules_semantic_lane.json" with { type: "json" };
 import { NOTICE_MODULE_PRELOADS } from "./notice_module_preload.mjs";
@@ -419,23 +420,41 @@ export function attachHearingContextAgendaSegments(record, hearingContext) {
   };
 }
 
+function sharedMeetingAssetFetchJson(env, request) {
+  return async (url) => {
+    const pathname = String(url).startsWith("/") ? String(url) : `/${String(url)}`;
+    const response = await staticAsset(env, request, pathname);
+    if (!response.ok) return null;
+    try {
+      return await response.json();
+    } catch {
+      return null;
+    }
+  };
+}
+
+async function loadSharedMeetingReadModelFromAssets(env, request) {
+  return loadSharedMeetingReadModelDocument(
+    "/data/shared_meeting_read_model.json",
+    sharedMeetingAssetFetchJson(env, request),
+  );
+}
+
 async function handleMeeting(request, env, meetingId) {
   let decoded;
   try { decoded = decodeURIComponent(meetingId); } catch (_error) {
     return new Response("Invalid meeting link", { status: 400 });
   }
   const snapshotRequest = request.method === "HEAD" ? new Request(request, { method: "GET" }) : request;
-  const snapshot = await staticAsset(env, snapshotRequest, "/data/shared_meeting_read_model.json");
   let record = null;
   let payload = null;
-  if (snapshot.ok) {
-    try {
-      payload = await snapshot.json();
-      const rows = Array.isArray(payload?.rows) ? payload.rows : Array.isArray(payload?.hearings) ? payload.hearings : [];
-      record = rows.find((row) => row?.meeting_id === decoded) || null;
-    } catch (_error) {
-      record = null;
-    }
+  try {
+    payload = await loadSharedMeetingReadModelFromAssets(env, snapshotRequest);
+    const rows = Array.isArray(payload?.rows) ? payload.rows : Array.isArray(payload?.hearings) ? payload.hearings : [];
+    record = rows.find((row) => row?.meeting_id === decoded) || null;
+  } catch (_error) {
+    record = null;
+    payload = null;
   }
   if (record) {
     record = attachHearingContextAgendaSegments(
@@ -541,15 +560,15 @@ async function handleMeetingICS(request, env) {
 
   // Load the shared meeting projection from published ASSETS only. Bundling the
   // multi-megabyte JSON into the Pages Function exceeds Cloudflare's 25 MiB
-  // uncompressed Function limit once the retained meeting corpus grows.
-  const asset = await staticAsset(env, request, "/data/shared_meeting_read_model.json");
-  if (!asset.ok) return new Response("meeting projection unavailable", { status: 503 });
+  // uncompressed Function limit once the retained meeting corpus grows. The
+  // published document is the index; rows live in bounded shards beside it.
   let snapshot;
   try {
-    snapshot = await asset.json();
+    snapshot = await loadSharedMeetingReadModelFromAssets(env, request);
   } catch (_error) {
     return new Response("meeting projection unavailable", { status: 503 });
   }
+  if (!snapshot) return new Response("meeting projection unavailable", { status: 503 });
   const record = meetingForCalendar(snapshot, id);
   if (!record) return new Response("meeting not found", { status: 404 });
   const ics = meetingCalendarICS(record);

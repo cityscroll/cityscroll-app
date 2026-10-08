@@ -31,6 +31,7 @@ import {
   residentialPlacesFromNtaLayer,
   validateMeetingDetailCompleteness,
 } from "../tools/build_worker_route_read_models.mjs";
+import { readSharedMeetingReadModelDocument } from "../tools/lib/shared_meeting_read_model_io.mjs";
 
 const ROOT_URL = new URL("../", import.meta.url);
 const readJson = (rel) => JSON.parse(readFileSync(new URL(rel, ROOT_URL), "utf8"));
@@ -41,7 +42,9 @@ const MIDWOOD_GEO = "nta2020:BK1403";
 const MIDWOOD_SLICE = "geography:nta2020:BK1403:meetings";
 
 const committedActivity = readJson("site/data/district_activity.json");
-const committedMeetings = readJson("site/data/shared_meeting_read_model.json");
+const committedMeetings = readSharedMeetingReadModelDocument(
+  new URL("site/data/shared_meeting_read_model.json", ROOT_URL),
+);
 const residentialPlaces = residentialPlacesFromNtaLayer(
   readJson("site/data/geography/layers/nta2020/26B.json"),
 );

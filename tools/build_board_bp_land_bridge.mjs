@@ -6,6 +6,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { measureBoardBpLandBridge } from "../warehouse/lib/board_bp_land_bridge.mjs";
+import { readSharedMeetingReadModelDocument } from "./lib/shared_meeting_read_model_io.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHARED_MEETING_MODEL = path.join(ROOT, "site/data/shared_meeting_read_model.json");
@@ -27,7 +28,7 @@ function stringify(value) {
 }
 
 function build() {
-  const model = JSON.parse(readFileSync(SHARED_MEETING_MODEL, "utf8"));
+  const model = readSharedMeetingReadModelDocument(SHARED_MEETING_MODEL);
   const zap = JSON.parse(readFileSync(ZAP_PROJECTS, "utf8"));
   const landDefault = JSON.parse(readFileSync(LAND_DEFAULT_ULURP, "utf8"));
   return measureBoardBpLandBridge({

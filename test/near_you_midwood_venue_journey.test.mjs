@@ -41,6 +41,7 @@ import {
   MEETING_MANIFEST_KEY,
   NEAR_YOU_MANIFEST_KEY,
 } from "../worker/src/lib/route_read_model_kv.mjs";
+import { readSharedMeetingReadModelDocument } from "../tools/lib/shared_meeting_read_model_io.mjs";
 
 const ROOT = process.cwd();
 const EVIDENCE_DIR = join(ROOT, "docs/evidence/near-you-midwood-venue-journey");
@@ -60,7 +61,9 @@ const DETAIL_ROUTE =
 const readJson = (rel) => JSON.parse(readFileSync(join(ROOT, rel), "utf8"));
 const activity = readJson("site/data/district_activity.json");
 const boundaries = readJson("site/data/district_boundaries.json");
-const sharedMeetings = readJson("site/data/shared_meeting_read_model.json");
+const sharedMeetings = readSharedMeetingReadModelDocument(
+  join(ROOT, "site/data/shared_meeting_read_model.json"),
+);
 const residentialPlaces = residentialPlacesFromNtaLayer(
   readJson("site/data/geography/layers/nta2020/26B.json"),
 );
