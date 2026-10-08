@@ -101,6 +101,8 @@ def main():
                 # A failed records read cannot erase the selected map.
                 page.route('**/near-you/deferred.json*', lambda route: route.abort())
                 page.reload()
+                page.locator('[data-near-you-root][data-near-deferred-state="error"]').wait_for()
+                page.locator('[data-near-deferred="results"][data-near-deferred-state="error"]').wait_for(state='attached')
                 selected_map(page)
                 page.unroute('**/near-you/deferred.json*')
                 page.reload()
