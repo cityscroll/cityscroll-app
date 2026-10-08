@@ -30,9 +30,9 @@
     "status": "ok"
   },
   "limit": null,
-  "observed_at": "2026-08-03T05:05:03Z",
+  "observed_at": "2026-10-05T17:34:45Z",
   "parquet": {
-    "bytes": 1884056,
+    "bytes": 1889292,
     "column_map_applied": true,
     "column_map_size": 35,
     "columns": [
@@ -73,82 +73,84 @@
       "dcp_visibility",
       "snapshot_date"
     ],
-    "parquet_path": "warehouse/parquet/zap-projects/snapshot_date=2026-08-03/part-000.parquet",
-    "row_count": 32931,
+    "parquet_path": "warehouse/parquet/zap-projects/snapshot_date=2026-10-05/part-000.parquet",
+    "parquet_sha256": "b0b20f31eb2dea4453da9cfb9fdf6751256d4965c26d33bb4fe19daf89ce8c6d",
+    "row_count": 32964,
+    "source_sha256": "05dae56150cf241145e7fc14ae1bf1614e5ade4c69e08403bf86edec11dba007",
     "threads": 1
   },
   "phase": "WH-02",
   "raw": {
-    "bytes": 9182677,
+    "bytes": 9204949,
     "column_map_entries": 35,
-    "column_map_path": "warehouse/raw/zap-projects/snapshot_date=2026-08-03/column_map.json",
+    "column_map_path": "warehouse/raw/zap-projects/snapshot_date=2026-10-05/column_map.json",
     "content_type": "text/csv; charset=utf-8",
-    "elapsed_s": 2.51,
+    "elapsed_s": 15.89,
     "http_status": 200,
-    "last_modified": "Tue, 26 May 2026 16:35:56 GMT",
+    "last_modified": "Wed, 12 Aug 2026 14:49:00 GMT",
     "mode": "soda_bulk",
-    "path": "warehouse/raw/zap-projects/snapshot_date=2026-08-03/hgx4-8ukb_bulk.csv",
-    "row_count": 32931,
-    "sha256": "93014bddd92b28b239f9a1639aaf2b25eb907f076fc30a12432aa9c7cbce851c",
+    "path": "warehouse/raw/zap-projects/snapshot_date=2026-10-05/hgx4-8ukb_bulk.csv",
+    "row_count": 32964,
+    "sha256": "05dae56150cf241145e7fc14ae1bf1614e5ade4c69e08403bf86edec11dba007",
     "snapshot_profile": {
-      "certification_to_final_date_pairs": 29589,
+      "certification_to_final_date_pairs": 29612,
       "date_fields": {
         "app_filed_date": {
-          "count": 1409,
-          "max": "2026-04-20",
+          "count": 1439,
+          "max": "2026-07-02",
           "min": "2017-08-01"
         },
         "approval_date": {
-          "count": 929,
-          "max": "2026-04-16",
+          "count": 953,
+          "max": "2026-07-02",
           "min": "2018-02-23"
         },
         "certified_referred": {
-          "count": 32017,
-          "max": "2026-04-20",
+          "count": 32051,
+          "max": "2026-07-13",
           "min": "1970-04-21"
         },
         "completed_date": {
-          "count": 29882,
-          "max": "2026-04-22",
+          "count": 29893,
+          "max": "2026-07-02",
           "min": "1976-07-19"
         },
         "current_envmilestone_date": {
-          "count": 483,
-          "max": "2026-04-24",
+          "count": 488,
+          "max": "2026-07-02",
           "min": "2017-04-08"
         },
         "current_milestone_date": {
-          "count": 2069,
-          "max": "2026-04-24",
+          "count": 2101,
+          "max": "2026-07-03",
           "min": "2014-04-23"
         },
         "noticed_date": {
-          "count": 456,
-          "max": "2026-04-10",
+          "count": 474,
+          "max": "2026-06-26",
           "min": "2020-08-14"
         }
       },
-      "milestone_date_max": "2026-04-24",
+      "milestone_date_max": "2026-07-03",
       "milestone_date_min": "2014-04-23",
       "profile": "zap_milestone_status_dates_v1",
       "project_status_counts": {
-        "Active": 263,
-        "Complete": 28342,
-        "On-Hold": 71,
-        "Record Closed": 3,
-        "Terminated": 1677,
-        "Terminated-Applicant Unresponsive": 59,
-        "Withdrawn-Other": 2516
+        "Active": 267,
+        "Complete": 28361,
+        "On-Hold": 76,
+        "Record Closed": 4,
+        "Terminated": 1678,
+        "Terminated-Applicant Unresponsive": 60,
+        "Withdrawn-Other": 2518
       },
       "public_status_counts": {
-        "Completed": 32700,
-        "Filed": 137,
-        "In Public Review": 55,
-        "Noticed": 38
+        "Completed": 32728,
+        "Filed": 128,
+        "In Public Review": 65,
+        "Noticed": 42
       },
-      "row_count": 32931,
-      "status_date_max": "2026-04-24",
+      "row_count": 32964,
+      "status_date_max": "2026-07-13",
       "status_date_min": "1970-04-21"
     },
     "url": "https://data.cityofnewyork.us/api/views/hgx4-8ukb/rows.csv?accessType=DOWNLOAD"
@@ -193,75 +195,81 @@
       "dcp_visibility",
       "snapshot_date"
     ],
-    "parquet_glob": "warehouse/parquet/zap-projects/snapshot_date=2026-08-03/*.parquet",
-    "row_count": 32931,
+    "parquet_glob": "warehouse/parquet/zap-projects/snapshot_date=2026-10-05/*.parquet",
+    "row_count": 32964,
     "table": "zap_projects"
   },
   "schema_version": 1,
-  "snapshot_date": "2026-08-03",
+  "snapshot_date": "2026-10-05",
   "snapshot_profile": {
-    "certification_to_final_date_pairs": 29589,
+    "certification_to_final_date_pairs": 29612,
     "date_fields": {
       "app_filed_date": {
-        "count": 1409,
-        "max": "2026-04-20",
+        "count": 1439,
+        "max": "2026-07-02",
         "min": "2017-08-01"
       },
       "approval_date": {
-        "count": 929,
-        "max": "2026-04-16",
+        "count": 953,
+        "max": "2026-07-02",
         "min": "2018-02-23"
       },
       "certified_referred": {
-        "count": 32017,
-        "max": "2026-04-20",
+        "count": 32051,
+        "max": "2026-07-13",
         "min": "1970-04-21"
       },
       "completed_date": {
-        "count": 29882,
-        "max": "2026-04-22",
+        "count": 29893,
+        "max": "2026-07-02",
         "min": "1976-07-19"
       },
       "current_envmilestone_date": {
-        "count": 483,
-        "max": "2026-04-24",
+        "count": 488,
+        "max": "2026-07-02",
         "min": "2017-04-08"
       },
       "current_milestone_date": {
-        "count": 2069,
-        "max": "2026-04-24",
+        "count": 2101,
+        "max": "2026-07-03",
         "min": "2014-04-23"
       },
       "noticed_date": {
-        "count": 456,
-        "max": "2026-04-10",
+        "count": 474,
+        "max": "2026-06-26",
         "min": "2020-08-14"
       }
     },
-    "milestone_date_max": "2026-04-24",
+    "milestone_date_max": "2026-07-03",
     "milestone_date_min": "2014-04-23",
     "profile": "zap_milestone_status_dates_v1",
     "project_status_counts": {
-      "Active": 263,
-      "Complete": 28342,
-      "On-Hold": 71,
-      "Record Closed": 3,
-      "Terminated": 1677,
-      "Terminated-Applicant Unresponsive": 59,
-      "Withdrawn-Other": 2516
+      "Active": 267,
+      "Complete": 28361,
+      "On-Hold": 76,
+      "Record Closed": 4,
+      "Terminated": 1678,
+      "Terminated-Applicant Unresponsive": 60,
+      "Withdrawn-Other": 2518
     },
     "public_status_counts": {
-      "Completed": 32700,
-      "Filed": 137,
-      "In Public Review": 55,
-      "Noticed": 38
+      "Completed": 32728,
+      "Filed": 128,
+      "In Public Review": 65,
+      "Noticed": 42
     },
-    "row_count": 32931,
-    "status_date_max": "2026-04-24",
+    "row_count": 32964,
+    "status_date_max": "2026-07-13",
     "status_date_min": "1970-04-21"
   },
   "socrata_dataset_id": "hgx4-8ukb",
   "source_contract_id": "zap-projects",
+  "source_summary": {
+    "row_count": 32964,
+    "section_counts": {},
+    "start_date_max": null,
+    "start_date_min": null
+  },
   "table_name": "zap_projects",
   "warehouse_root": "warehouse"
 }

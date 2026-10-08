@@ -161,6 +161,19 @@ export function buildDigestShadowHoldState({
   const affected = uniqueIds(summary.affected_digest_ids);
   const overridden = uniqueIds(overriddenDigestIds).filter((id) => affected.includes(id));
 
+  // A cron that recorded STARTED and then died mid-window is an explicit incomplete run,
+  // never a missing one. Delivery stays fail-open; operators still get a loud degraded receipt.
+  if (summary.status === "STARTED") {
+    return openState({
+      now,
+      sourceStatus: "STARTED_NOT_FINISHED",
+      observation: "rehearsal recorded start but did not finalize",
+      lastReadyRunDay,
+      attempts,
+      darkDays,
+    });
+  }
+
   if (summary.status === "READY" && summary.ok !== false) {
     return {
       ...base,

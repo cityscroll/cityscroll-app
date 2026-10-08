@@ -208,20 +208,162 @@ function partitionScopeClause(entry, table) {
   return { clause: "1 = 1", bound: false };
 }
 
-/** Every row of one table currently in the target, scoped to a partition, keyed the same way tableRows keys them. */
-async function scanTableForPartition({ entry, table, partition, adapter }) {
-  const columns = TABLE_COLUMNS[table];
-  const scope = partitionScopeClause(entry, table);
-  const sql = `SELECT ${columns.join(", ")} FROM ${table} WHERE ${scope.clause}`;
-  const rows = await adapter.select(sql, scope.bound ? [partition] : []);
-  const keyCols = keyColumns(entry, table);
-  const byKey = new Map();
+/**
+ * Rows per wrangler `d1 execute --json` page when scanning a partition.
+ *
+ * Deploy worker 37399462266 failed post-publish reconcile when a single
+ * unpaged SELECT of ocp_awards (~54k rows) produced ~68 MiB of wrangler
+ * stdout and tripped tools/lib/wrangler_exec.mjs's 32 MiB retain bound.
+ * Keyset paging (ORDER BY key, WHERE key > last) keeps each remote JSON dump
+ * under that bound without OFFSET's quadratic rows-read cost, while still
+ * comparing every observed row (missing / duplicate / stale / unexpected).
+ *
+ * Page size starts at DEFAULT_PARTITION_SCAN_PAGE_ROWS and then tracks the
+ * measured JSON bytes-per-row so later pages stay near
+ * PARTITION_SCAN_TARGET_PAGE_BYTES (comfortably under the 32 MiB retain bound).
+ */
+export const DEFAULT_PARTITION_SCAN_PAGE_ROWS = 500;
+/** Hard ceiling after bytes-per-row sizing; keeps a single page far under 32 MiB. */
+export const MAX_PARTITION_SCAN_PAGE_ROWS = 8_000;
+/** Target retained JSON size per page (~8 MiB); well under WRANGLER_STDIO_MAX_BYTES. */
+export const PARTITION_SCAN_TARGET_PAGE_BYTES = 8 * 1024 * 1024;
+export const MIN_PARTITION_SCAN_PAGE_ROWS = 1;
+
+function orderByKeyColumns(keyCols) {
+  if (!Array.isArray(keyCols) || keyCols.length === 0) {
+    canaryFail("partition scan needs at least one key column for stable paging");
+  }
+  return keyCols.join(", ");
+}
+
+/**
+ * Keyset "strictly after last key" predicate for one or more ORDER BY columns.
+ * Uses SQLite row-value comparison `(c1, c2, ...) > (?, ?, ...)` so multi-column
+ * keys stay a single lexicographic step with one bound value per key column.
+ */
+export function keysetAfterPredicate(keyCols, lastKeyValues) {
+  if (!Array.isArray(keyCols) || keyCols.length === 0) {
+    canaryFail("keyset predicate needs at least one key column");
+  }
+  if (!Array.isArray(lastKeyValues) || lastKeyValues.length !== keyCols.length) {
+    canaryFail(
+      `keyset predicate key has ${Array.isArray(lastKeyValues) ? lastKeyValues.length : 0} `
+      + `values for ${keyCols.length} key columns`,
+    );
+  }
+  if (keyCols.length === 1) {
+    return { clause: `${keyCols[0]} > ?`, params: [lastKeyValues[0]] };
+  }
+  return {
+    clause: `(${keyCols.join(", ")}) > (${keyCols.map(() => "?").join(", ")})`,
+    params: [...lastKeyValues],
+  };
+}
+
+/**
+ * Choose the next page row count from a measured JSON dump so the next page
+ * stays near the target byte budget and never exceeds maxRows.
+ */
+export function partitionScanPageRowsFromBytes({
+  encodedBytes,
+  rowCount,
+  targetBytes = PARTITION_SCAN_TARGET_PAGE_BYTES,
+  maxRows = MAX_PARTITION_SCAN_PAGE_ROWS,
+  minRows = MIN_PARTITION_SCAN_PAGE_ROWS,
+} = {}) {
+  if (!Number.isInteger(rowCount) || rowCount < 1) return Math.max(minRows, Math.min(maxRows, DEFAULT_PARTITION_SCAN_PAGE_ROWS));
+  if (!Number.isInteger(encodedBytes) || encodedBytes < 1) {
+    return Math.max(minRows, Math.min(maxRows, DEFAULT_PARTITION_SCAN_PAGE_ROWS));
+  }
+  if (!Number.isInteger(targetBytes) || targetBytes < 1) {
+    canaryFail(`partition scan targetBytes must be a positive integer, got ${targetBytes}`);
+  }
+  if (!Number.isInteger(maxRows) || maxRows < 1) {
+    canaryFail(`partition scan maxRows must be a positive integer, got ${maxRows}`);
+  }
+  if (!Number.isInteger(minRows) || minRows < 1) {
+    canaryFail(`partition scan minRows must be a positive integer, got ${minRows}`);
+  }
+  if (minRows > maxRows) canaryFail(`partition scan minRows ${minRows} exceeds maxRows ${maxRows}`);
+  const bytesPerRow = encodedBytes / rowCount;
+  const sized = Math.floor(targetBytes / bytesPerRow);
+  if (!Number.isFinite(sized) || sized < 1) return minRows;
+  return Math.max(minRows, Math.min(maxRows, sized));
+}
+
+function addRowsToKeyMap(byKey, rows, keyCols) {
   for (const row of rows) {
     const keyValues = keyCols.map((column) => row[column]);
     const key = keyValues.join("|");
     const bucket = byKey.get(key) || [];
     bucket.push(row);
     byKey.set(key, bucket);
+  }
+}
+
+/**
+ * Every row of one table currently in the target, scoped to a partition,
+ * keyed the same way tableRows keys them. Reads page with keyset pagination
+ * (WHERE key cols > last key, ORDER BY key, LIMIT n) so each adapter.select
+ * response stays wrangler-stdout-bounded without OFFSET's quadratic cost.
+ *
+ * When `pageRows` is omitted, the first page uses DEFAULT_PARTITION_SCAN_PAGE_ROWS
+ * and later pages resize from the measured JSON bytes-per-row toward
+ * PARTITION_SCAN_TARGET_PAGE_BYTES (capped at MAX_PARTITION_SCAN_PAGE_ROWS).
+ * An explicit `pageRows` keeps a fixed page size (tests and forced ceilings).
+ */
+export async function scanTableForPartition({
+  entry,
+  table,
+  partition,
+  adapter,
+  pageRows = null,
+  targetPageBytes = PARTITION_SCAN_TARGET_PAGE_BYTES,
+  maxPageRows = MAX_PARTITION_SCAN_PAGE_ROWS,
+} = {}) {
+  const adaptive = pageRows == null;
+  if (!adaptive && (!Number.isInteger(pageRows) || pageRows < 1)) {
+    canaryFail(`partition scan pageRows must be a positive integer, got ${pageRows}`);
+  }
+  if (!Number.isInteger(targetPageBytes) || targetPageBytes < 1) {
+    canaryFail(`partition scan targetPageBytes must be a positive integer, got ${targetPageBytes}`);
+  }
+  if (!Number.isInteger(maxPageRows) || maxPageRows < 1) {
+    canaryFail(`partition scan maxPageRows must be a positive integer, got ${maxPageRows}`);
+  }
+  const columns = TABLE_COLUMNS[table];
+  if (!columns) canaryFail(`no TABLE_COLUMNS entry for ${table}`);
+  const scope = partitionScopeClause(entry, table);
+  const keyCols = keyColumns(entry, table);
+  const orderBy = orderByKeyColumns(keyCols);
+  const byKey = new Map();
+  let limit = adaptive ? Math.min(DEFAULT_PARTITION_SCAN_PAGE_ROWS, maxPageRows) : Math.min(pageRows, maxPageRows);
+  let lastKeyValues = null;
+  for (;;) {
+    const requestLimit = limit;
+    const params = [];
+    let where = scope.clause;
+    if (scope.bound) params.push(partition);
+    if (lastKeyValues) {
+      const keyset = keysetAfterPredicate(keyCols, lastKeyValues);
+      where = `(${where}) AND ${keyset.clause}`;
+      params.push(...keyset.params);
+    }
+    const sql = `SELECT ${columns.join(", ")} FROM ${table} WHERE ${where} ORDER BY ${orderBy} LIMIT ${requestLimit}`;
+    const rows = await adapter.select(sql, params);
+    addRowsToKeyMap(byKey, rows, keyCols);
+    if (rows.length === 0) break;
+    if (adaptive) {
+      const encodedBytes = Buffer.byteLength(JSON.stringify(rows), "utf8");
+      limit = partitionScanPageRowsFromBytes({
+        encodedBytes,
+        rowCount: rows.length,
+        targetBytes: targetPageBytes,
+        maxRows: maxPageRows,
+      });
+    }
+    if (rows.length < requestLimit) break;
+    lastKeyValues = keyCols.map((column) => rows[rows.length - 1][column]);
   }
   return byKey;
 }

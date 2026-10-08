@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.neighborhood_publication_receipt.v1",
-  "built_at": "2026-09-30T05:39:36.433Z",
+  "built_at": "2026-10-05T20:21:40.442Z",
   "frozen_baseline": {
     "canonical_meeting_count": 792,
     "broad_jurisdiction": 281,
@@ -21,30 +21,29 @@
     "note": "Frozen diagnostic controls from the pre-recovery 792-row backfill; not release quotas."
   },
   "before": {
-    "generation": "refresh-7182f2a4933b",
-    "canonical_meeting_count": 792,
+    "generation": "gen-688f479a297c-2026-10-05",
+    "canonical_meeting_count": 840,
     "by_outcome": {
-      "physical_venue": 31,
-      "subject": 1,
-      "broad_jurisdiction": 281,
-      "virtual": 63,
-      "no_source_address": 203,
-      "unresolved_evidence": 213
+      "physical_venue": 115,
+      "subject": 0,
+      "broad_jurisdiction": 259,
+      "virtual": 76,
+      "no_source_address": 200,
+      "unresolved_evidence": 190
     },
     "address_candidate_classes": {
       "not_full_address": 54,
       "not_covered": 25,
       "no_candidate": 201,
-      "matched_bbl_missing_parcel": 1,
-      "observed_no_candidate_among_broad": 201
+      "matched_bbl_missing_parcel": 1
     },
     "anchors": {
       "cb15_sept29": {
         "meeting_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2026-09-29:general-board-meeting-in-person",
-        "outcome": "broad_jurisdiction",
-        "venue_bbl": null,
-        "venue_nta2020": null,
-        "venue_community_district": null,
+        "outcome": "physical_venue",
+        "venue_bbl": "3087600060",
+        "venue_nta2020": "BK1503",
+        "venue_community_district": "K15",
         "host_community_district": "K15"
       },
       "forest_hills": {
@@ -53,18 +52,18 @@
           "kind": "publisher_calendar_uid",
           "suffix": "::2026-09-08"
         },
-        "outcome": "broad_jurisdiction",
-        "venue_bbl": null,
-        "venue_nta2020": null,
-        "venue_community_district": null,
+        "outcome": "physical_venue",
+        "venue_bbl": "4032400041",
+        "venue_nta2020": "QN0602",
+        "venue_community_district": "Q06",
         "host_community_district": "Q06"
       },
       "worth_street": {
         "meeting_id": "meeting:city_record:20260106034",
-        "outcome": "unresolved_evidence",
-        "venue_bbl": null,
-        "venue_nta2020": null,
-        "venue_community_district": null,
+        "outcome": "physical_venue",
+        "venue_bbl": "1001680032",
+        "venue_nta2020": "MN0102",
+        "venue_community_district": "M01",
         "host_community_district": null
       },
       "bronx_missing_parcel": {
@@ -78,15 +77,15 @@
     }
   },
   "after": {
-    "generation": "gen-cfcb6c2fbc90-2026-09-30",
-    "canonical_meeting_count": 792,
+    "generation": "gen-688f479a297c-2026-10-05",
+    "canonical_meeting_count": 840,
     "by_outcome": {
-      "physical_venue": 82,
+      "physical_venue": 119,
       "subject": 0,
-      "broad_jurisdiction": 234,
-      "virtual": 63,
-      "no_source_address": 203,
-      "unresolved_evidence": 210
+      "broad_jurisdiction": 255,
+      "virtual": 76,
+      "no_source_address": 200,
+      "unresolved_evidence": 190
     },
     "address_candidate_classes": null,
     "anchors": {
@@ -129,11 +128,11 @@
     }
   },
   "deltas": {
-    "physical_venue": 51,
-    "broad_jurisdiction": -47,
-    "subject": -1,
+    "physical_venue": 4,
+    "broad_jurisdiction": -4,
+    "subject": 0,
     "virtual": 0,
     "no_source_address": 0,
-    "unresolved_evidence": -3
+    "unresolved_evidence": 0
   }
 }

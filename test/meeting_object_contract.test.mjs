@@ -4,6 +4,7 @@ import test from "node:test";
 
 import {
   MEETING_OBJECT_SCHEMA,
+  composeVenueFromNoticeStreetFields,
   meetingCanonicalHref,
   meetingIdForSource,
   meetingRouteLinks,
@@ -193,6 +194,60 @@ test("City Record notice fields stay on the normalized materialized meeting", ()
   assert.equal(record.street_address_1, "250 Broadway");
   assert.equal(record.contact_name, "Public Hearings Unit");
   assert.equal(record.email, "hearings@example.gov");
+});
+
+test("City Record residual street fields compose venue when venue is empty", () => {
+  const composed = composeVenueFromNoticeStreetFields({
+    street_address_1: "125 Worth Street",
+    street_address_2: "2nd Floor Auditorium",
+    city: "New York",
+    state: "NY",
+    zip_code: "10013",
+  });
+  assert.match(
+    composed.address,
+    /^125 Worth Street, 2nd Floor Auditorium, New York, NY,? 10013$/,
+  );
+  assert.equal(composed.mode, "in-person");
+
+  const record = normalizeCityRecordMeeting({
+    request_id: "20260106034",
+    title: "Board of Correction Public Meeting",
+    venue: null,
+    street_address_1: "125 Worth Street",
+    street_address_2: "2nd Floor Auditorium",
+    city: "New York",
+    state: "NY",
+    zip_code: "10013",
+  });
+  assert.match(
+    record.venue?.address || "",
+    /^125 Worth Street, 2nd Floor Auditorium, New York, NY,? 10013$/,
+  );
+  assert.equal(
+    record.location_assertions.some((assertion) => assertion.role === "venue"
+      && assertion.original_address?.includes("125 Worth Street")),
+    true,
+  );
+});
+
+
+test("City Record dropdown placeholder is not an in-person street; remote body stays virtual", () => {
+  const placeholder = composeVenueFromNoticeStreetFields({
+    source_system: "city_record",
+    meeting_origin: "city_record_notice",
+    street_address_1: "Address Not Listed In The Dropdown",
+    additional_description_1: "Agency Rules Section Finance",
+  });
+  assert.equal(placeholder, null, "placeholder street alone does not invent an address venue");
+
+  const remote = composeVenueFromNoticeStreetFields({
+    source_system: "city_record",
+    meeting_origin: "city_record_notice",
+    additional_description_1: "Join by Zoom at https://health-nyc.zoomgov.com/j/1",
+  });
+  assert.equal(remote.mode, "virtual");
+  assert.equal(remote.address, undefined);
 });
 
 test("identity never falls back to title/date and missing institutions stay honest", () => {

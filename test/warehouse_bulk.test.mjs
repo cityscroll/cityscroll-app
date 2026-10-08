@@ -330,9 +330,14 @@ print(json.dumps(p, sort_keys=True))
       "utf8",
     ));
     assert.equal(proof.raw.mode, "soda_bulk");
-    assert.equal(proof.register.row_count, 32_931);
+    // Refresh-surviving invariants: population stays non-empty, register and
+    // snapshot agree, and both match the rows measured on the same receipt
+    // (raw CSV + parquet). Exact live totals move on every warehouse refresh.
+    assert.ok(proof.register.row_count > 0);
+    assert.equal(proof.register.row_count, proof.snapshot_profile.row_count);
+    assert.equal(proof.register.row_count, proof.raw.row_count);
+    assert.equal(proof.register.row_count, proof.parquet.row_count);
     assert.equal(proof.snapshot_profile.profile, "zap_milestone_status_dates_v1");
-    assert.equal(proof.snapshot_profile.row_count, 32_931);
     assert.match(proof.snapshot_profile.milestone_date_min, /^\d{4}-\d{2}-\d{2}$/);
     assert.match(proof.snapshot_profile.milestone_date_max, /^\d{4}-\d{2}-\d{2}$/);
     assert.ok(proof.snapshot_profile.certification_to_final_date_pairs > 20_000);

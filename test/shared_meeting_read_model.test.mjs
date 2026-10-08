@@ -201,9 +201,14 @@ test("the canonical snapshot carries the hearing adapter projection for a City R
     // than inventing one, and states an unknown venue and access as unknown.
     assert.equal(row.description, row.additional_description_1);
     assert.ok(["not-stated", "in-person", "virtual", "hybrid"].includes(row.venue.mode));
-    assert.ok(["unknown", "in-person", "virtual", "hybrid"].includes(row.meeting_access.mode));
+    assert.ok(["unknown", "in-person", "virtual", "hybrid", "remote"].includes(row.meeting_access.mode));
     assert.equal(row.source_url, `https://a856-cityrecord.nyc.gov/RequestDetail/${requestId}`);
-    for (const link of row.source_links) {
+    // source_links may also carry remote-join URLs; attachment witnesses stay GetFile.
+    const getFileLinks = row.source_links.filter((link) => (
+      /^https:\/\/a856-cityrecord\.nyc\.gov\/Search\/GetFile\?/.test(link)
+    ));
+    assert.ok(getFileLinks.length > 0, "City Record notice rows keep at least one GetFile attachment link");
+    for (const link of getFileLinks) {
       assert.match(link, new RegExp(`^https://a856-cityrecord\\.nyc\\.gov/Search/GetFile\\?[^"]*requestId=${requestId}\\b`));
     }
     assert.ok(row.search_text.includes(row.additional_description_1.slice(0, 20)));

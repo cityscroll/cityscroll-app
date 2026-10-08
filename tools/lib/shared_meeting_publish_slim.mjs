@@ -18,11 +18,16 @@
  *    (venue receipts/components — redundant with venue.address / venue.name)
  * 2. location_memberships where role is host_jurisdiction (or any role other
  *    than venue / subject_property)
+ * 3. membership provenance.source_path and redundant record_id (assertion_id
+ *    + row meeting_id already identify the edge; source_path duplicates venue
+ *    text and blows the Pages ~18 MiB headroom after neighborhood publication)
+ * 4. geography_backfill.input_hash (full hash stays in meeting-geography-backfill
+ *    artifacts; the catalog keeps outcome + processed_at only)
  *
  * Retained:
  * - subject_property location_assertions
  * - agenda_subject_places (projected when subject assertions exist)
- * - venue + subject_property location_memberships
+ * - venue + subject_property location_memberships (including police_precinct)
  * - geography_backfill compact outcome receipt
  * - all other row fields (venue, title, schedule, …)
  */
@@ -54,6 +59,27 @@ export const SHARED_MEETING_PUBLISH_STRIP = Object.freeze([
     why_not_displayed:
       "District activity adds board covers from community-board ontology; "
       + "Near You exact membership uses venue/subject_property memberships only.",
+  }),
+  Object.freeze({
+    field: "location_memberships.provenance.source_path",
+    remove_when: "always on publish",
+    why_not_displayed:
+      "Resident surfaces read venue/subject text from row.venue and subject "
+      + "assertions; the bulky source_path copy is evidence-plane detail.",
+  }),
+  Object.freeze({
+    field: "location_memberships.record_id",
+    remove_when: "always on publish",
+    why_not_displayed:
+      "The catalog row already carries meeting_id; repeating record_id on every "
+      + "membership edge is redundant for Near You / detail placement.",
+  }),
+  Object.freeze({
+    field: "geography_backfill.input_hash",
+    remove_when: "always on publish",
+    why_not_displayed:
+      "Backfill artifacts under site/data/meeting-geography-backfill keep the "
+      + "input hash; the catalog only needs outcome + processed_at.",
   }),
 ]);
 
@@ -99,6 +125,39 @@ function publicMembershipsOnly(memberships) {
   return memberships.filter((row) => row && allowed.has(row.role));
 }
 
+/**
+ * Drop publish-only bulk from one retained venue/subject membership while
+ * keeping placement fields Near You and district activity read.
+ */
+export function slimPublicLocationMembership(membership) {
+  if (!membership || typeof membership !== "object") return membership;
+  const {
+    record_id: _recordId,
+    provenance,
+    ...rest
+  } = membership;
+  const next = { ...rest };
+  if (provenance && typeof provenance === "object") {
+    const slimProvenance = {};
+    if (provenance.source_method) slimProvenance.source_method = provenance.source_method;
+    if (provenance.parcel_bbl) slimProvenance.parcel_bbl = provenance.parcel_bbl;
+    if (Object.keys(slimProvenance).length) next.provenance = slimProvenance;
+    else delete next.provenance;
+  }
+  return next;
+}
+
+/**
+ * Catalog geography_backfill keeps outcome + processed_at only.
+ */
+export function slimGeographyBackfillReceipt(receipt) {
+  if (!receipt || typeof receipt !== "object") return receipt;
+  const next = {};
+  if (receipt.outcome != null) next.outcome = receipt.outcome;
+  if (receipt.processed_at != null) next.processed_at = receipt.processed_at;
+  return Object.keys(next).length ? next : receipt;
+}
+
 function preserveExistingSubjectPlaces(row) {
   if (!Array.isArray(row?.agenda_subject_places) || !row.agenda_subject_places.length) {
     return [];
@@ -125,17 +184,20 @@ export function slimSharedMeetingRow(row) {
   const {
     location_assertions,
     location_memberships,
+    geography_backfill,
     ...rest
   } = row;
   const subjects = subjectAssertionsOnly(location_assertions);
   const fromAssertions = agendaSubjectPlacesFromAssertions(subjects);
   const places = fromAssertions.length ? fromAssertions : preserveExistingSubjectPlaces(row);
-  const memberships = publicMembershipsOnly(location_memberships);
+  const memberships = publicMembershipsOnly(location_memberships)
+    .map(slimPublicLocationMembership);
   const next = { ...rest };
   if (subjects.length) next.location_assertions = subjects;
   if (memberships.length) next.location_memberships = memberships;
   if (places.length) next.agenda_subject_places = places;
   else delete next.agenda_subject_places;
+  if (geography_backfill) next.geography_backfill = slimGeographyBackfillReceipt(geography_backfill);
   return next;
 }
 

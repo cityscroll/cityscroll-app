@@ -3,10 +3,10 @@
   "version": 1,
   "generated_at": "2026-09-09T06:33:01.880Z",
   "method": "compatibility.city_record_notice_hrefs",
-  "source_model_fingerprint": "b6edc9b271fb4383dc13304a0ed4f39a92eebd1017788b8da69760a9d33fe2ae",
+  "source_model_fingerprint": "ff91430d6ece6d558ed6ea6e275a86ac8d33e8327ad0cc73acdb1624ef6d60c0",
   "counts": {
-    "notices": 12947,
-    "subject_links": 12947
+    "notices": 12988,
+    "subject_links": 12988
   },
   "by_notice": {
     "20201016111": [
@@ -90635,6 +90635,293 @@
       {
         "procurement_id": "procurement:contract:CT185720268802102",
         "href": "/procurements/procurement%3Acontract%3ACT185720268802102",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260831026": [
+      {
+        "procurement_id": "procurement:contract:CT105720278802544",
+        "href": "/procurements/procurement%3Acontract%3ACT105720278802544",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260831028": [
+      {
+        "procurement_id": "procurement:contract:CT112720271403151",
+        "href": "/procurements/procurement%3Acontract%3ACT112720271403151",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260901004": [
+      {
+        "procurement_id": "procurement:contract:CT181620278802059",
+        "href": "/procurements/procurement%3Acontract%3ACT181620278802059",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260901005": [
+      {
+        "procurement_id": "procurement:contract:CT126020278802241",
+        "href": "/procurements/procurement%3Acontract%3ACT126020278802241",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260901006": [
+      {
+        "procurement_id": "procurement:contract:CT107220278801185",
+        "href": "/procurements/procurement%3Acontract%3ACT107220278801185",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260901015": [
+      {
+        "procurement_id": "procurement:contract:CT107220278802622",
+        "href": "/procurements/procurement%3Acontract%3ACT107220278802622",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260901024": [
+      {
+        "procurement_id": "procurement:contract:CT112620278802644",
+        "href": "/procurements/procurement%3Acontract%3ACT112620278802644",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260902009": [
+      {
+        "procurement_id": "procurement:contract:CT184620278802156",
+        "href": "/procurements/procurement%3Acontract%3ACT184620278802156",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260902010": [
+      {
+        "procurement_id": "procurement:contract:CT182720278801604",
+        "href": "/procurements/procurement%3Acontract%3ACT182720278801604",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260902011": [
+      {
+        "procurement_id": "procurement:contract:CT181620278801272",
+        "href": "/procurements/procurement%3Acontract%3ACT181620278801272",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260902013": [
+      {
+        "procurement_id": "procurement:contract:CT106820248800206",
+        "href": "/procurements/procurement%3Acontract%3ACT106820248800206",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260902026": [
+      {
+        "procurement_id": "procurement:contract:CT185020278802594",
+        "href": "/procurements/procurement%3Acontract%3ACT185020278802594",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260902027": [
+      {
+        "procurement_id": "procurement:contract:CT181620278802187",
+        "href": "/procurements/procurement%3Acontract%3ACT181620278802187",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260902029": [
+      {
+        "procurement_id": "procurement:contract:CT182720278802345",
+        "href": "/procurements/procurement%3Acontract%3ACT182720278802345",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260902030": [
+      {
+        "procurement_id": "procurement:contract:CT185620278802637",
+        "href": "/procurements/procurement%3Acontract%3ACT185620278802637",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260903006": [
+      {
+        "procurement_id": "procurement:contract:CT180620278801309",
+        "href": "/procurements/procurement%3Acontract%3ACT180620278801309",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260903007": [
+      {
+        "procurement_id": "procurement:contract:CT178120278801442",
+        "href": "/procurements/procurement%3Acontract%3ACT178120278801442",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260903008": [
+      {
+        "procurement_id": "procurement:contract:CT126020278802304",
+        "href": "/procurements/procurement%3Acontract%3ACT126020278802304",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260903009": [
+      {
+        "procurement_id": "procurement:contract:CT126020278802173",
+        "href": "/procurements/procurement%3Acontract%3ACT126020278802173",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260903010": [
+      {
+        "procurement_id": "procurement:contract:CT126020278802033",
+        "href": "/procurements/procurement%3Acontract%3ACT126020278802033",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260903011": [
+      {
+        "procurement_id": "procurement:contract:CT126020278801608",
+        "href": "/procurements/procurement%3Acontract%3ACT126020278801608",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260903012": [
+      {
+        "procurement_id": "procurement:contract:CT126020278801602",
+        "href": "/procurements/procurement%3Acontract%3ACT126020278801602",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260903013": [
+      {
+        "procurement_id": "procurement:contract:CT126020278801558",
+        "href": "/procurements/procurement%3Acontract%3ACT126020278801558",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260903014": [
+      {
+        "procurement_id": "procurement:contract:CT107120278800149",
+        "href": "/procurements/procurement%3Acontract%3ACT107120278800149",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260903015": [
+      {
+        "procurement_id": "procurement:contract:CT106920278802066",
+        "href": "/procurements/procurement%3Acontract%3ACT106920278802066",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260903016": [
+      {
+        "procurement_id": "procurement:contract:CT106920278802379",
+        "href": "/procurements/procurement%3Acontract%3ACT106920278802379",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260903025": [
+      {
+        "procurement_id": "procurement:contract:CT181620278802632",
+        "href": "/procurements/procurement%3Acontract%3ACT181620278802632",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260904012": [
+      {
+        "procurement_id": "procurement:contract:CT126020278802451",
+        "href": "/procurements/procurement%3Acontract%3ACT126020278802451",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260904013": [
+      {
+        "procurement_id": "procurement:contract:CT126020278802008",
+        "href": "/procurements/procurement%3Acontract%3ACT126020278802008",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260908003": [
+      {
+        "procurement_id": "procurement:contract:CT126020278802330",
+        "href": "/procurements/procurement%3Acontract%3ACT126020278802330",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260908004": [
+      {
+        "procurement_id": "procurement:contract:CT126020278802203",
+        "href": "/procurements/procurement%3Acontract%3ACT126020278802203",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260908005": [
+      {
+        "procurement_id": "procurement:contract:CT126020278801867",
+        "href": "/procurements/procurement%3Acontract%3ACT126020278801867",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260908010": [
+      {
+        "procurement_id": "procurement:contract:CT180620278802423",
+        "href": "/procurements/procurement%3Acontract%3ACT180620278802423",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260908011": [
+      {
+        "procurement_id": "procurement:contract:CT178120278800587",
+        "href": "/procurements/procurement%3Acontract%3ACT178120278800587",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260908012": [
+      {
+        "procurement_id": "procurement:contract:CT185620278802075",
+        "href": "/procurements/procurement%3Acontract%3ACT185620278802075",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260908013": [
+      {
+        "procurement_id": "procurement:contract:CT185620278802005",
+        "href": "/procurements/procurement%3Acontract%3ACT185620278802005",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260908014": [
+      {
+        "procurement_id": "procurement:contract:CT181620278800534",
+        "href": "/procurements/procurement%3Acontract%3ACT181620278800534",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260908015": [
+      {
+        "procurement_id": "procurement:contract:CT126020278802590",
+        "href": "/procurements/procurement%3Acontract%3ACT126020278802590",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260908016": [
+      {
+        "procurement_id": "procurement:contract:CT126020278801160",
+        "href": "/procurements/procurement%3Acontract%3ACT126020278801160",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260908019": [
+      {
+        "procurement_id": "procurement:contract:CT107220278801648",
+        "href": "/procurements/procurement%3Acontract%3ACT107220278801648",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20260915017": [
+      {
+        "procurement_id": "procurement:contract:CT106820248800328",
+        "href": "/procurements/procurement%3Acontract%3ACT106820248800328",
         "relation_basis": "compatibility.city_record_notice_hrefs"
       }
     ]

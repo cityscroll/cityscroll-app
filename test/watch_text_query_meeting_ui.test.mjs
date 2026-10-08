@@ -31,10 +31,6 @@ const TRANSLATION_EXCLUDE_CART = expr(
   [phrase("communication access realtime translation")],
 );
 const templates = JSON.parse(readFileSync(new URL("../site/data/watch_templates.json", import.meta.url), "utf8"));
-const materialization = JSON.parse(readFileSync(
-  new URL("../site/data/meeting_notice_materialization.json", import.meta.url),
-  "utf8",
-));
 
 test("A1/A5: meetings offer labelled precise controls; exact-matter and other families do not", () => {
   assert.equal(textQueryUiSupported("meetings"), true);
@@ -113,8 +109,8 @@ test("A2: meeting create-preview-save-edit-feed journey keeps the same groups", 
 });
 
 test("A3: translation preview names the CART passage and does not claim translation policy", () => {
-  const row = materialization.rows.find((item) => item.request_id === "20260106034");
-  assert.ok(row);
+  // Synthetic excluded row: publisher windows roll, so this UI gate must not
+  // require a named live meeting_notice request_id to remain in the materialization.
   const html = renderFollowingDocument(buildFollowingViewModel({
     lens: "meetings",
     filter: { text_query: TRANSLATION_EXCLUDE_CART },
@@ -122,7 +118,7 @@ test("A3: translation preview names the CART passage and does not claim translat
     previewItems: [],
     excludedItems: [{
       id: "meeting:city_record:20260106034",
-      title: row.short_title,
+      title: "Hearing on language access services",
       url: "/meetings/meeting%3Acity_record%3A20260106034/",
       excerpt: "Communication Access Realtime Translation (CART). CART is not currently available.",
     }],
@@ -201,7 +197,7 @@ test("A4/A6: failed load, keyboard recovery, translations, and hashed capture", 
     surface: "site/following_view.mjs meeting precise matching controls",
     revision: "f1482be8dd8620ca796449a60bae30d7ce3aa8fb",
     runner: "test/watch_text_query_meeting_ui.test.mjs",
-    data_vintage: "Frozen meeting-notice materialization generated_at 2026-09-09T06:52:08.255Z. Counts are not a live census.",
+    data_vintage: "Meeting-notice materialization generated_at 2026-10-05T17:33:11.875Z. Counts are not a live census.",
     inputs: [
       { path: "site/data/meeting_notice_materialization.json", sha256: fixtureSha },
     ],

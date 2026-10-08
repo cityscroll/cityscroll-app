@@ -62,19 +62,30 @@ async function putJson(kv, name, value) {
  * reason. Codes and prose are the stable half of a redline; the day's counts
  * are kept out of the reason so an alert signature does not change daily.
  */
-export async function recordDigestShadowReceipt(env, summary, now = new Date()) {
+export async function recordDigestShadowReceipt(env, summary, now = new Date(), error = null) {
   const redlines = Array.isArray(summary?.redlines) ? summary.redlines : [];
   const codes = [...new Set(redlines.map((item) => trimmed(item?.code, 60)).filter(Boolean))];
   const complete = summary?.rebuild_complete !== false;
+  const failed = error != null;
+  const started = !failed && (summary?.status === "STARTED" || summary?.phase === "started");
+  const status = failed
+    ? "FAILED"
+    : started
+      ? "STARTED"
+      : !complete
+        ? "PARTIAL"
+        : (summary?.ok === true && summary?.status !== "DEGRADED_UPSTREAM" ? "READY" : "DEGRADED");
   const receipt = {
     schema: "cityscroll.digest-shadow-ready-receipt.v1",
     day: day(now),
     observed_at: now.toISOString(),
-    status: complete ? (summary?.ok === true ? "READY" : "DEGRADED") : "PARTIAL",
-    complete,
+    status,
+    complete: failed || started ? false : complete,
     redlines: redlines.length,
     redline_codes: codes.slice(0, DIGEST_SHADOW_REASON_CODE_LIMIT),
-    reason: trimmed(redlines[0]?.reason, 200) || null,
+    reason: trimmed(redlines[0]?.reason, 200)
+      || (failed ? trimmed(String(error?.message || error), 200) : null)
+      || (started ? "rehearsal started; final status pending" : null),
     // A rehearsal that built nothing is indistinguishable from a healthy quiet
     // day in a count of redlines alone, so the build shape is recorded too.
     digest_count: Number(summary?.digest_count) || 0,
@@ -85,6 +96,7 @@ export async function recordDigestShadowReceipt(env, summary, now = new Date()) 
     // A stage name is a bounded label, not a daily count, so it stays alert-signature safe.
     collapse_stage: summary?.collapse_stage || null,
     selection_funnel: summary?.selection_funnel || null,
+    error: failed ? String(error?.message || error) : null,
     ...(summary?.rebuild_run_id ? { rebuild_run_id: summary.rebuild_run_id } : {}),
   };
   await putJson(env?.ALERT_STATE, key(DIGEST_SHADOW_LEDGER_PREFIX, now), receipt);

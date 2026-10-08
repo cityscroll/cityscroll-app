@@ -5,11 +5,11 @@
   "surface": "site/following_view.mjs meeting precise matching controls",
   "revision": "f1482be8dd8620ca796449a60bae30d7ce3aa8fb",
   "runner": "test/watch_text_query_meeting_ui.test.mjs",
-  "data_vintage": "Frozen meeting-notice materialization generated_at 2026-09-09T06:52:08.255Z. Counts are not a live census.",
+  "data_vintage": "Meeting-notice materialization generated_at 2026-10-05T17:33:11.875Z. Counts are not a live census.",
   "inputs": [
     {
       "path": "site/data/meeting_notice_materialization.json",
-      "sha256": "98c3563cf90d2198d420a7aec4414c5fff76c54d379127074824b4418a8bd27f"
+      "sha256": "62eee76d7de294e31ce334cb8bdd6b3ce34689e6d012c7e9699845434ecd61dc"
     }
   ],
   "captures": [
@@ -21,7 +21,7 @@
         "height": 900
       },
       "route": "/following/?lens=meetings&tq_i0=rat",
-      "sha256": "bfa3352418676a4c149287958733b53b3e70ec0f727ddcf78aeb6e060f2f25c7"
+      "sha256": "f0bc3288b33d7bc6d882a6b853569b36b0f201c4f255e5dad2129edf52d0b79f"
     },
     {
       "assertion": "Narrow/touch layout keeps labelled controls, 44px summary target, and keyboard-recoverable failed-load retry.",
@@ -31,7 +31,7 @@
         "height": 844
       },
       "route": "/following/?lens=meetings&tq_i0=rat",
-      "sha256": "bfa3352418676a4c149287958733b53b3e70ec0f727ddcf78aeb6e060f2f25c7"
+      "sha256": "f0bc3288b33d7bc6d882a6b853569b36b0f201c4f255e5dad2129edf52d0b79f"
     }
   ]
 }

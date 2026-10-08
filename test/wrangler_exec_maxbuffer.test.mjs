@@ -44,11 +44,28 @@ test("the stream-to-file wrangler runner retains stdout larger than 1 MiB", asyn
   assert.equal(result.stderr, "ok");
 });
 
-test("createWranglerInvoker matches the adapter seam and the bound exceeds 1 MiB", () => {
+test("createWranglerInvoker matches the adapter seam and the bound stays 32 MiB", () => {
   const viaInvoker = createWranglerInvoker({});
   assert.equal(typeof viaInvoker, "function");
   assert.ok(WRANGLER_STDIO_MAX_BYTES > NODE_DEFAULT_STDIO_MAX_BUFFER_BYTES);
-  assert.ok(WRANGLER_STDIO_MAX_BYTES >= 32 * 1024 * 1024);
+  assert.equal(WRANGLER_STDIO_MAX_BYTES, 32 * 1024 * 1024);
+});
+
+test("runWrangler fails closed when retained stdout exceeds the 32 MiB bound", async () => {
+  // Mirrors Deploy worker 37399462266: wrangler d1 execute --json dumped
+  // ~68 MiB for one unpaged partition SELECT. Keep the bound; page the scan.
+  const overBound = WRANGLER_STDIO_MAX_BYTES + 1;
+  await assert.rejects(
+    () => runWrangler([], {
+      command: process.execPath,
+      commandArgs: ["-e", `process.stdout.write("x".repeat(${overBound}))`],
+    }),
+    (error) => {
+      assert.match(String(error?.message || error), /wrangler stdout exceeded bound/);
+      assert.match(String(error?.message || error), new RegExp(`limit=${WRANGLER_STDIO_MAX_BYTES}`));
+      return true;
+    },
+  );
 });
 
 test("D1 wrangler adapters use the shared invoker instead of bare execFileAsync", async () => {

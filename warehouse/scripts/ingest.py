@@ -567,17 +567,26 @@ def _write_receipt(ds, snap, limit, raw_meta, pq_meta, register_meta, *, headroo
     out = receipts_dir() / f"{ds['id']}_{snap}.json"
     write_json(out, receipt)
 
-    # Committed proof: fixture runs + bulk WH-02 runs (portable paths).
+    # Proof receipt: fixture runs + bulk WH-02 runs (portable paths).
+    # Only the real warehouse root may rewrite committed warehouse/receipts/proof.
+    # CITYSCROLL_WAREHOUSE_ROOT scratch/overrides keep proof beside that root so
+    # fixture tests never dirty the tracked proof tree.
     if raw_meta.get("mode") in ("fixture", "soda_bulk"):
         proof_name = (
             f"{ds['id']}_bulk_latest.json"
             if raw_meta.get("mode") == "soda_bulk"
             else f"{ds['id']}_latest.json"
         )
-        proof = WAREHOUSE_DIR / "receipts" / "proof" / proof_name
+        root = warehouse_root()
+        proof_parent = (
+            WAREHOUSE_DIR / "receipts" / "proof"
+            if root.resolve() == WAREHOUSE_DIR.resolve()
+            else root / "receipts" / "proof"
+        )
+        proof = proof_parent / proof_name
         proof.parent.mkdir(parents=True, exist_ok=True)
         portable = json.loads(json.dumps(receipt))
-        root_s = str(warehouse_root())
+        root_s = str(root)
         wh_s = str(WAREHOUSE_DIR)
 
         def port(s: str) -> str:
