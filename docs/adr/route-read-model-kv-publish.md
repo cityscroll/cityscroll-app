@@ -6,7 +6,7 @@
 | Date | 2026-08-24 |
 | Scope | Worker Near You and meeting route read-model deploy publishing |
 | Supersedes | — |
-| Related | `.github/workflows/deploy-worker.yml`, `worker/wrangler.toml`, `tools/build_worker_route_read_models.mjs`, `architecture/generated/watermark.json` |
+| Related | `docs/worker-cost-controls.md`, `tools/worker_route_publication.mjs`, `worker/wrangler.toml` |
 
 ## Context
 
@@ -19,15 +19,14 @@ configured for the Worker.
 
 ## Decision
 
-Publish every route read-model slice and manifest with the Worker Wrangler
-configuration explicitly selected:
+Publish route read models through `tools/worker_route_publication.mjs`, with the
+Worker Wrangler configuration explicitly selected:
 
 - Use the `ALERT_STATE` binding declared in the production `kv_namespaces`
   entries in `worker/wrangler.toml`.
-- Pass `--config worker/wrangler.toml` to each `kv bulk put` and `kv key put`
-  command in the deploy workflow.
-- Preserve slice-first, manifest-last publication so readers never follow a
-  partially published version.
+- Pass `--config worker/wrangler.toml` to every Wrangler KV operation.
+- Keep the detailed content-addressing, write ordering, retry, and completed-state
+  contract in `docs/worker-cost-controls.md` and its owning publisher module.
 
 Do not hardcode a namespace ID in the workflow. The Worker configuration is the
 authoritative binding-to-namespace mapping.
@@ -36,15 +35,17 @@ authoritative binding-to-namespace mapping.
 
 - The route read-model publish step resolves the same KV namespace used by the
   Worker at runtime.
-- A deploy still fails closed on Cloudflare authentication or a real publish
-  error; it no longer fails because the command started outside the config
-  directory.
-- The workflow regression test checks both the binding name and the explicit
-  configuration path against the committed Worker configuration.
+- A deploy still reports Cloudflare authentication or a real publication error;
+  it no longer fails because the command started outside the config directory.
+- Publication tests check the observable Wrangler arguments against the
+  committed Worker configuration.
 
 ## Evidence
 
-- `.github/workflows/deploy-worker.yml` — three config-qualified KV publishes.
+- `tools/worker_route_publication.mjs` — publication command entry point.
+- `tools/lib/worker_route_publication.mjs` — config-qualified KV operations and
+  publication transaction boundary.
 - `worker/wrangler.toml` — production `ALERT_STATE` KV namespace declaration.
 - `test/worker_deploy_safety.test.mjs` — deploy wiring regression coverage.
-- `tools/build_worker_route_read_models.mjs` — slice and manifest build input.
+- `tools/test_worker_route_publication_noop.mjs` — publication behavior and
+  Wrangler argument coverage.

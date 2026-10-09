@@ -5,6 +5,10 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { loadDeclaredProductionBoundaries } from "./deployment_health_receipt.mjs";
+import {
+  normalizedExecutables,
+  parseWorkflowText,
+} from "./check_github_workflows_yaml.mjs";
 
 const root = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const read = (path) => readFileSync(join(root, path), "utf8");
@@ -17,6 +21,7 @@ function requireCheck(condition, message) {
 
 const pagesWorkflow = read(".github/workflows/deploy-cloudflare-pages.yml");
 const workerWorkflow = read(".github/workflows/deploy-worker.yml");
+const workerWorkflowModel = parseWorkflowText(workerWorkflow, { filename: "deploy-worker.yml" })[0];
 const sharedBuild = read(".github/actions/build-site/action.yml");
 const legacyPagesWorkflow = join(root, ".github/workflows/deploy-pages.yml");
 const deployOnMainPush = (workflow, name, { allowSchedule = false } = {}) => {
@@ -56,15 +61,31 @@ requireCheck(
     && config.worker?.preview_deploy_command?.includes("--var WRANGLER_ENV:preview"),
   "Worker Builds preview deploy must stamp GIT_COMMIT_SHA and WRANGLER_ENV",
 );
-const workerDeployStep = workerWorkflow.slice(
-  workerWorkflow.indexOf("- name: Deploy"),
-  workerWorkflow.indexOf("- name: Record Worker provider and publication evidence"),
+const workerSteps = workerWorkflowModel.jobs.deploy.steps;
+const workerStageSteps = workerWorkflowModel.jobs.stage.steps;
+const workerDeployCommands = normalizedExecutables(
+  workerSteps.find((step) => step.name === "Deploy")?.run,
+);
+const workerStageCommands = normalizedExecutables(
+  workerStageSteps.find((step) => step.name === "Upload exact tagged canary version")?.run,
+);
+const versionUpload = workerStageCommands.find((argv) => argv[0] === "npx" && argv[2] === "versions" && argv[3] === "upload");
+requireCheck(
+  versionUpload?.includes("GIT_COMMIT_SHA:$GITHUB_SHA")
+    && versionUpload?.includes("WRANGLER_ENV:production"),
+  "GitHub Actions Worker staging must stamp GIT_COMMIT_SHA and WRANGLER_ENV",
 );
 requireCheck(
-  /command:\s*deploy\s+--var GIT_COMMIT_SHA:\$\{\{\s*github\.sha\s*\}\}\s+--var WRANGLER_ENV:production/.test(workerDeployStep),
-  "GitHub Actions Worker deploy must stamp GIT_COMMIT_SHA and WRANGLER_ENV via wrangler --var",
+  workerDeployCommands.some((argv) => argv[0] === "npx"
+    && argv[2] === "versions"
+    && argv[3] === "deploy"
+    && argv[4] === "${candidate}@100%"),
+  "GitHub Actions Worker promotion must deploy the measured candidate version",
 );
-requireCheck(!/^\s+vars:/m.test(workerDeployStep), "GitHub Actions Worker deploy must not use the wrangler-action bulk vars input");
+requireCheck(
+  !workerSteps.find((step) => step.name === "Deploy")?.with?.vars,
+  "GitHub Actions Worker deploy must not use the wrangler-action bulk vars input",
+);
 const workerPackage = JSON.parse(read("worker/package.json"));
 requireCheck(
   typeof workerPackage.scripts?.deploy === "string"

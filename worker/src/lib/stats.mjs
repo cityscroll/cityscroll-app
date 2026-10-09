@@ -74,12 +74,14 @@ export function validWatchParam(w) {
 
 // Bump one per-day counter. Fire-and-forget safe: swallows KV errors (a lost count must never
 // break a redirect or a feed response).
-export async function bumpStat(kv, metric, now) {
-  if (!kv) return;
+export async function bumpStat(kv, metric, now, increment = 1) {
+  if (!kv || !Number.isSafeInteger(increment) || increment < 1 || increment > 16) return;
   try {
     const key = statsKey(metric, dayStr(now));
     const cur = parseInt((await kv.get(key)) || "0", 10) || 0;
-    await kv.put(key, String(cur + 1), { expirationTtl: STATS_TTL });
+    const next = cur + increment;
+    if (!Number.isSafeInteger(next) || next < 0) return;
+    await kv.put(key, String(next), { expirationTtl: STATS_TTL });
   } catch { /* counting is best-effort */ }
 }
 

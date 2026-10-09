@@ -378,12 +378,10 @@ function requestTrafficClass(req) {
 
 async function recordHealth(env, reason, now, count = 1) {
   if (!HEALTH_REASON_SET.has(reason) || !env?.ALERT_STATE) return;
-  // bumpStat is a KV read-modify-write operation, so serialize the bounded increments inside
-  // one request rather than racing each observation against the same starting value.
-  const increments = Math.max(1, Math.min(count, RUM_MAX_BATCH_SIZE));
-  for (let index = 0; index < increments; index += 1) {
-    await bumpStat(env.ALERT_STATE, `rum_health.${reason}`, now);
-  }
+  // One weighted update preserves observation counts without rewriting the same key.
+  // KV remains eventually consistent; this is diagnostic counting, not atomic billing.
+  if (!Number.isSafeInteger(count) || count < 1 || count > RUM_MAX_BATCH_SIZE) return;
+  await bumpStat(env.ALERT_STATE, `rum_health.${reason}`, now, count);
 }
 
 async function recordLatestAccepted(env, now) {

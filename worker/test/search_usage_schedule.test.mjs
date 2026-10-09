@@ -39,7 +39,7 @@ function scheduledWorker({ now = NOW, overrides = {} } = {}) {
   vm.runInNewContext(source.replace(/^import[\s\S]*?;\s*/gm, "")
     .replace("export default", "globalThis.worker ="), context);
   const ctx = { waitUntil(promise) { pending.push(promise); } };
-  return { calls, errors, logs, pending, run: (cron, env, event = {}) => context.worker.scheduled({ cron, ...event }, env, ctx) };
+  return { calls, errors, logs, pending, run: (cron, env, event = {}) => context.worker.runScheduled({ cron, ...event }, env, ctx) };
 }
 
 function fixtureStore() {

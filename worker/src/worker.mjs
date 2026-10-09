@@ -120,7 +120,12 @@ import { handleCitedPassages } from "./cited_retrieval.mjs";
 import { handleContract, handleContractsAnalysis, handleContractsBrowse } from "./contracts.mjs";
 import { handleLandDecisionPath, handleLandProject, handleLandProjectsBrowse } from "./land_projects.mjs";
 import { recordSourceAcquisitionReceipt } from "./lib/source_acquisition_receipt.mjs";
-import { beginCostControlProbe, canonicalCostProbeWorkload, logCostControlProbe } from "./lib/cost_control_probe.mjs";
+import {
+  beginCostControlProbe,
+  canonicalCostProbeWorkload,
+  logCostControlProbe,
+  runNativeCostControlProbe,
+} from "./lib/cost_control_probe.mjs";
 import { LAND_PROJECT_ID_PATTERN } from "../../capabilities/land_projects.mjs";
 import { RUM_MARKED_TRAFFIC_CLASSES, isRumProductionOrigin } from "../../site/rum_production.mjs";
 
@@ -261,6 +266,46 @@ async function readCostProbeInput(request) {
   return JSON.parse(new TextDecoder().decode(bytes));
 }
 
+function collectCostProbeSemantics(value, pattern, path = "$", output = []) {
+  if (Array.isArray(value)) {
+    value.forEach((item, index) => collectCostProbeSemantics(item, pattern, `${path}[${index}]`, output));
+  } else if (value && typeof value === "object") {
+    for (const [key, child] of Object.entries(value)) {
+      const childPath = `${path}.${key}`;
+      if (pattern.test(key)) output.push([childPath, child]);
+      else collectCostProbeSemantics(child, pattern, childPath, output);
+    }
+  }
+  return output;
+}
+
+function normalizeCostProbeResponse(value) {
+  if (Array.isArray(value)) return value.map(normalizeCostProbeResponse);
+  if (!value || typeof value !== "object") return value;
+  return Object.fromEntries(Object.entries(value)
+    .filter(([key]) => !/^(?:commit|revision|request_?id)$/i.test(key))
+    .map(([key, child]) => [key, normalizeCostProbeResponse(child)]));
+}
+
+async function costProbeCorrectness(workloadHash, status, responseText) {
+  let value;
+  try { value = JSON.parse(responseText); }
+  catch { value = responseText; }
+  const responseDigest = await sha256Text(canonicalCostProbeWorkload(normalizeCostProbeResponse(value)));
+  const digest = async (pattern, includeResponse = false) => sha256Text(canonicalCostProbeWorkload({
+    status,
+    fields: collectCostProbeSemantics(value, pattern),
+    ...(includeResponse ? { response_digest: responseDigest } : {}),
+  }));
+  return {
+    input_digest: workloadHash,
+    joins_digest: await digest(/join|match|relation|link/i, true),
+    provenance_digest: await digest(/source|provenance|citation|publisher/i),
+    miss_digest: await digest(/miss|missing|not.?found|empty|status/i),
+    freshness_digest: await digest(/fresh|stale|updated|observed|published|as.?of/i),
+  };
+}
+
 async function handleCostControlProbe(request, env) {
   let input;
   try { input = await readCostProbeInput(request); }
@@ -321,7 +366,12 @@ async function handleCostControlProbe(request, env) {
     const childContext = costProbeContext();
     const response = await worker.fetch(childRequest, probe.env, childContext);
     await childContext.settle();
-    result = { status: response.status, body_sha256: await sha256Text(await response.text()) };
+    const responseText = await response.text();
+    result = {
+      status: response.status,
+      body_sha256: await sha256Text(responseText),
+      correctness: await costProbeCorrectness(workloadHash, response.status, responseText),
+    };
   } else if (kind === "scheduled") {
     const childContext = costProbeContext();
     await worker.scheduled({ cron: input.cron, scheduledTime: Date.now(), type: "scheduled", costProbe: true }, probe.env, childContext);
@@ -466,6 +516,14 @@ const worker = {
   },
 
   async scheduled(event, env, ctx) {
+    return runNativeCostControlProbe(env, ctx, {
+      kind: "scheduled",
+      trigger: event.cron,
+      scheduledTime: event.scheduledTime,
+    }, (measuredEnv, measuredCtx) => worker.runScheduled(event, measuredEnv, measuredCtx));
+  },
+
+  async runScheduled(event, env, ctx) {
     const runId = `worker:${event.cron}:${new Date().toISOString()}`;
     // Each scheduled window starts the receipt-only public summary independently.
     // Early-return branches, delivery errors, and slow publisher refreshes must not
@@ -820,7 +878,16 @@ const worker = {
   },
 
   // Digest queue consumer: one account job per message (single watch or rollup; see alerts.mjs).
-  async queue(batch, env) {
+  async queue(batch, env, ctx) {
+    return runNativeCostControlProbe(env, ctx, {
+      kind: "queue",
+      queue: batch.queue,
+      batchSize: batch.messages.length,
+      messages: batch.messages,
+    }, (measuredEnv) => worker.runQueue(batch, measuredEnv));
+  },
+
+  async runQueue(batch, env) {
     if (batch.queue === "crol-digest-shadow-rebuild") {
       for (const msg of batch.messages) {
         try {

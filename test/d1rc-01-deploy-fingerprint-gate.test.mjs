@@ -13,6 +13,10 @@ import {
   decidePublication,
   resolveFingerprintInputs,
 } from "../tools/d1_deploy_fingerprint.mjs";
+import {
+  normalizedExecutables,
+  parseWorkflowText,
+} from "../tools/check_github_workflows_yaml.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const FIXTURE = new URL("fixtures/d1rc-01/", import.meta.url);
@@ -163,11 +167,20 @@ test("workflow gates every D1 mutation without gating the Worker deploy", () => 
   assert.match(abandonStep, /if: always\(\) && steps\.d1-generation-claim\.outputs\.claimed == 'true'/);
   assert.match(abandonStep, /d1_generation_fence\.mjs abandon/);
 
-  const deployStart = workflow.indexOf("- name: Deploy");
-  const deployEnd = workflow.indexOf("\n      - name:", deployStart + 1);
-  const workerDeploy = workflow.slice(deployStart, deployEnd);
-  assert.match(workerDeploy, /command: deploy /);
-  assert.doesNotMatch(workerDeploy, /d1-publication-gate/);
+  const parsedWorkflow = parseWorkflowText(workflow, { filename: "deploy-worker.yml" })[0];
+  const workerDeploy = parsedWorkflow.jobs.deploy.steps.find((step) => step.name === "Deploy");
+  assert.ok(workerDeploy, "Worker deploy step is missing");
+  assert.equal(workerDeploy.if, undefined, "Worker deploy must not be gated by D1 publication");
+  const deployCommands = normalizedExecutables(workerDeploy.run);
+  assert.ok(
+    deployCommands.some((argv) => argv[0] === "npx" && argv[1] === "wrangler@4.126.0" && argv[2] === "deploy"),
+    "inactive enforcement must retain the ordinary Worker deploy",
+  );
+  assert.ok(
+    deployCommands.some((argv) => argv[0] === "npx" && argv[1] === "wrangler@4.126.0"
+      && argv[2] === "versions" && argv[3] === "deploy"),
+    "active enforcement must promote the measured Worker version",
+  );
 });
 
 // The two tests below run the deploy fingerprint against the REAL repository

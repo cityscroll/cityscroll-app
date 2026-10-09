@@ -50,7 +50,7 @@ function scheduledWorker({ now = NOW, overrides = {} } = {}) {
     calls,
     errors,
     pending,
-    run: (cron, env) => context.worker.scheduled({ cron }, env, ctx),
+    run: (cron, env) => context.worker.runScheduled({ cron }, env, ctx),
   };
 }
 
