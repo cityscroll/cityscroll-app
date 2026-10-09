@@ -10,6 +10,7 @@ import { BROWSE_SURFACES } from "../site/browse_surface_contracts.mjs";
 import { ANALYTICAL_PROJECTION_URL } from "../site/analytical_projection.mjs";
 import { PAYMENT_ANALYTICAL_PROJECTION_URL } from "../site/analytical_payment_projection.mjs";
 import { PERFORMANCE_EVIDENCE_ANALYTICAL_PROJECTION_URL } from "../site/analytical_performance_evidence.mjs";
+import { readSharedMeetingReadModelDocument } from "./lib/shared_meeting_read_model_io.mjs";
 
 export const FIRST_CLASS_REPORT_SCHEMA = "cityscroll.first_class_freshness_report.v1";
 export const FIRST_CLASS_REFRESH_RECEIPT_SCHEMA = "cityscroll.first_class_refresh_receipt.v1";
@@ -98,7 +99,11 @@ function artifactSource(root, artifact) {
   const path = join(root, artifact.public_artifact_path);
   if (!existsSync(path)) return { payload: null, vintage: null, population: null };
   try {
-    const payload = readJson(path);
+    // The shared meeting catalog may be published as a sharded index (no inline
+    // rows). Follow shards so population_fields like `rows` still resolve.
+    const payload = artifact.public_artifact_path === "site/data/shared_meeting_read_model.json"
+      ? readSharedMeetingReadModelDocument(path)
+      : readJson(path);
     return {
       payload,
       vintage: vintageFrom(payload, artifact.vintage_fields),
