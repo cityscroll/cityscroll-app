@@ -13,6 +13,12 @@ import {
 
 const revision = "b".repeat(40);
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const providerDeployment = (profileRevision) => ({
+  source: "cloudflare-deployment-receipt+health",
+  health_revision: profileRevision,
+  script_version_id: `provider-${profileRevision.slice(0, 12)}`,
+  provider_receipt_sha256: "f".repeat(64),
+});
 function profile(profileRevision = revision, totals = {}, samplesPerCohort = 1) {
   const routeCohortCount = REQUIRED_COST_COHORTS.length - 1;
   const samples = REQUIRED_COST_COHORTS.flatMap((cohort, cohortIndex) => Array.from({ length: samplesPerCohort }, (_, sampleIndex) => ({
@@ -25,7 +31,7 @@ function profile(profileRevision = revision, totals = {}, samplesPerCohort = 1) 
       ? (totals.collector_cpu_ms ?? 1) / samplesPerCohort
       : (totals.native_cpu_ms ?? routeCohortCount) / routeCohortCount / samplesPerCohort,
     native_cpu_source: { field: "cpuTime", unit: "milliseconds", precision: "integer" },
-    outcome: "ok", script_version_id: "v",
+    outcome: "ok", script_version_id: providerDeployment(profileRevision).script_version_id,
     operations: Object.fromEntries(
       ["kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes"].map((meter) => [
         meter,
@@ -39,6 +45,7 @@ function profile(profileRevision = revision, totals = {}, samplesPerCohort = 1) 
   })));
   return buildWorkerCostProfile(samples, {
     revision: profileRevision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 30, eventCount: samples.length,
+    providerDeployment: providerDeployment(profileRevision),
   });
 }
 function receipt(meters = {}, overrides = {}) {

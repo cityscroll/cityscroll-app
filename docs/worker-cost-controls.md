@@ -31,6 +31,10 @@ Every retained sample keeps its own revision, source field, provider condition,
 operation counts, and error count. Release-level CPU, KV, D1, stored-byte, and
 error totals must equal the sums of those samples; an independent top-level
 meter cannot override contradictory provider evidence.
+The profile also retains a digest-addressed Cloudflare deployment receipt that
+binds the provider `scriptVersion.id` to the revision returned by production
+health. Every sample must match that provider version; a caller-supplied Git SHA
+cannot relabel telemetry from an older deployment.
 
 Collection is capped at 30 minutes and 10,000 events. Before persistence, an
 event must match the probe's literal header value and exact URL and method. The

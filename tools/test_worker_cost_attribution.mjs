@@ -3,12 +3,26 @@ import test from "node:test";
 
 import {
   REQUIRED_COST_COHORTS,
-  buildWorkerCostProfile,
-  sanitizeNativeInvocation,
+  buildWorkerCostProfile as buildWorkerCostProfileRaw,
+  sanitizeNativeInvocation as sanitizeNativeInvocationRaw,
   validateWorkerCostProfile,
 } from "./lib/worker_cost_control.mjs";
 
 const revision = "a".repeat(40);
+const PROVIDER_DEPLOYMENT = Object.freeze({
+  source: "cloudflare-deployment-receipt+health",
+  health_revision: revision,
+  script_version_id: "provider-version",
+  provider_receipt_sha256: "d".repeat(64),
+});
+const buildWorkerCostProfile = (samples, options) => buildWorkerCostProfileRaw(samples, {
+  providerDeployment: structuredClone(PROVIDER_DEPLOYMENT),
+  ...options,
+});
+const sanitizeNativeInvocation = (rawEvent, options) => sanitizeNativeInvocationRaw(rawEvent, {
+  providerDeployment: structuredClone(PROVIDER_DEPLOYMENT),
+  ...options,
+});
 const emptyOperations = () => Object.fromEntries([
   "kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes",
 ].map((meter) => [meter, { attempted: 0, confirmed: 0 }]));
@@ -62,6 +76,23 @@ test("one failed invocation is not double-counted when it also has an exception"
     operations: emptyOperations(),
   });
   assert.equal(retained.error_count, 1);
+});
+
+test("provider samples must match the receipt-bound version for the health revision", () => {
+  const wrongVersion = event();
+  wrongVersion.scriptVersion.id = "older-provider-version";
+  assert.throws(() => sanitizeNativeInvocation(wrongVersion, {
+    cohort: "health:cold", revision,
+    condition: { mode: "provider-observed", source: "$metadata.coldStart", cold_start: true },
+    expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
+    operations: emptyOperations(),
+  }), /script version does not match/);
+  const profile = buildWorkerCostProfile(REQUIRED_COST_COHORTS.map((cohort) => sample(cohort)), {
+    revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 1,
+    eventCount: REQUIRED_COST_COHORTS.length,
+  });
+  profile.provider_deployment.health_revision = "b".repeat(40);
+  assert.throws(() => validateWorkerCostProfile(profile), /health_revision does not match/);
 });
 
 test("literal header, URL and method ownership are all required before persistence", () => {

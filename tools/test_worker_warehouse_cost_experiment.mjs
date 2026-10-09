@@ -24,6 +24,12 @@ function run(overrides = {}) {
     error_count: 0,
     ...overrides,
   };
+  result.provider_deployment ||= {
+    source: "cloudflare-deployment-receipt+health",
+    health_revision: result.deployed_revision,
+    script_version_id: `provider-${result.deployed_revision.slice(0, 12)}`,
+    provider_receipt_sha256: "e".repeat(64),
+  };
   result.cohorts ||= Object.fromEntries(WAREHOUSE_EXPERIMENT_COHORTS.map((name, cohortIndex) => [name, {
     sample_count: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
     samples: Array.from({ length: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT }, (_, sampleIndex) => {
@@ -33,6 +39,7 @@ function run(overrides = {}) {
         native_cpu_ms: carriesTotals ? result.meters.native_cpu_ms : 0,
         collector_cpu_ms: carriesTotals ? result.meters.collector_cpu_ms : 0,
         native_cpu_source: { field: "cpuTime", unit: "milliseconds", precision: "provider" },
+        script_version_id: result.provider_deployment.script_version_id,
         condition: {
           mode: "provider-observed", source: "$metadata.coldStart", cold_start: name.endsWith(":cold"),
         },

@@ -20,6 +20,7 @@ export const COST_METERS = Object.freeze([
 const OPERATION_METERS = Object.freeze(["kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes"]);
 
 const FORBIDDEN_RETAINED_KEYS = /(?:^|_)(?:url|query|headers?|body|token|credential|email|ip|account_id|user_agent|identifier)(?:_|$)/i;
+const SHA256 = /^[a-f0-9]{64}$/;
 
 function fail(message) {
   throw new Error(message);
@@ -68,6 +69,17 @@ function validateCondition(cohort, condition, path) {
   }
 }
 
+function validateProviderDeployment(deployment, revision, path) {
+  if (!deployment || typeof deployment !== "object") fail(`${path} is required`);
+  if (deployment.source !== "cloudflare-deployment-receipt+health") fail(`${path}.source is unsupported`);
+  if (deployment.health_revision !== revision) fail(`${path}.health_revision does not match revision`);
+  if (typeof deployment.script_version_id !== "string" || !deployment.script_version_id.trim()) {
+    fail(`${path}.script_version_id is required`);
+  }
+  if (!SHA256.test(String(deployment.provider_receipt_sha256 || ""))) fail(`${path}.provider_receipt_sha256 is invalid`);
+  return deployment.script_version_id;
+}
+
 /**
  * Convert one owned provider event into the narrow retained shape. Ownership is
  * checked against the literal probe header and exact URL/method before any raw
@@ -81,6 +93,7 @@ export function sanitizeNativeInvocation(event, {
   expectedUrl,
   expectedMethod = "GET",
   operations,
+  providerDeployment,
 } = {}) {
   if (!REQUIRED_COST_COHORTS.includes(cohort)) fail(`unknown cost cohort ${cohort}`);
   const request = requestFromTailEvent(event);
@@ -96,6 +109,8 @@ export function sanitizeNativeInvocation(event, {
   finiteNonNegativeInteger(exceptionCount, "provider exception count");
   validateCondition(cohort, condition, "condition");
   if (!/^[a-f0-9]{40}$/.test(String(revision || ""))) fail("revision must be a full commit SHA");
+  const providerVersionId = validateProviderDeployment(providerDeployment, revision, "provider_deployment");
+  if (event?.scriptVersion?.id !== providerVersionId) fail("provider sample script version does not match the deployed revision binding");
   const sample = {
     cohort,
     condition,
@@ -131,13 +146,14 @@ function retainedSample(sample) {
     native_cpu_ms: sample.native_cpu_ms,
     native_cpu_source: sample.native_cpu_source,
     condition: sample.condition,
+    script_version_id: sample.script_version_id,
     outcome: sample.outcome,
     operations: sample.operations || {},
     error_count: sample.error_count,
   };
 }
 
-function validateRetainedSample(sample, cohort, revision, path) {
+function validateRetainedSample(sample, cohort, revision, providerVersionId, path) {
   if (!sample || typeof sample !== "object") fail(`${path} is required`);
   if (sample.revision !== revision) fail(`${path}.revision does not match profile revision`);
   finiteNonNegative(sample.native_cpu_ms, `${path}.native_cpu_ms`);
@@ -145,6 +161,7 @@ function validateRetainedSample(sample, cohort, revision, path) {
     fail(`${path} does not use provider-native invocation CPU`);
   }
   validateCondition(cohort, sample.condition, `${path}.condition`);
+  if (sample.script_version_id !== providerVersionId) fail(`${path}.script_version_id does not match provider deployment`);
   if (typeof sample.outcome !== "string" || !sample.outcome) fail(`${path}.outcome is required`);
   validateOperationCounts(sample.operations, `${path}.operations`);
   finiteNonNegativeInteger(sample.error_count, `${path}.error_count`);
@@ -158,18 +175,20 @@ export function buildWorkerCostProfile(samples, {
   eventCount,
   trafficMix = "fixed-controlled-v1",
   correctness = {},
+  providerDeployment,
 } = {}) {
   if (!/^[a-f0-9]{40}$/.test(String(revision || ""))) fail("profile revision must be a full commit SHA");
   finiteNonNegative(durationSeconds, "duration_seconds");
   finiteNonNegativeInteger(eventCount, "event_count");
   if (durationSeconds > 30 * 60) fail("collection exceeded the 30 minute bound");
   if (eventCount > 10_000) fail("collection exceeded the 10000 event bound");
+  const providerVersionId = validateProviderDeployment(providerDeployment, revision, "provider_deployment");
   const cohorts = {};
   for (const name of REQUIRED_COST_COHORTS) {
     const owned = samples.filter((sample) => sample.cohort === name);
     for (const sample of owned) {
       if (sample.revision !== revision) fail(`${name} sample revision does not match profile revision`);
-      validateRetainedSample(sample, name, revision, `${name}.sample`);
+      validateRetainedSample(sample, name, revision, providerVersionId, `${name}.sample`);
     }
     cohorts[name] = owned.length
       ? {
@@ -193,6 +212,7 @@ export function buildWorkerCostProfile(samples, {
     observed_at: observedAt,
     window: { duration_seconds: durationSeconds, event_count: eventCount, max_seconds: 1800, max_events: 10_000 },
     traffic_mix: trafficMix,
+    provider_deployment: providerDeployment,
     cohorts,
     correctness,
   };
@@ -206,6 +226,7 @@ export function validateWorkerCostProfile(profile, { requireComplete = true } = 
   if (profile?.schema !== "cityscroll.worker_cost_profile.v1" || profile.kind !== "provider-native-bounded") fail("unsupported worker cost profile");
   if (!/^[a-f0-9]{40}$/.test(String(profile.revision || ""))) fail("profile revision must be a full commit SHA");
   if (!Number.isFinite(Date.parse(profile.observed_at))) fail("profile observed_at is invalid");
+  const providerVersionId = validateProviderDeployment(profile.provider_deployment, profile.revision, "profile.provider_deployment");
   finiteNonNegative(profile.window?.duration_seconds, "profile.window.duration_seconds");
   finiteNonNegativeInteger(profile.window?.event_count, "profile.window.event_count");
   if (profile.window?.duration_seconds > profile.window?.max_seconds || profile.window?.max_seconds !== 1800) fail("profile exceeds duration bound");
@@ -226,7 +247,7 @@ export function validateWorkerCostProfile(profile, { requireComplete = true } = 
     if (!Array.isArray(cohort.samples) || cohort.samples.length !== cohort.sample_count) fail(`${name} retained samples do not match sample_count`);
     cohort.native_cpu_ms.forEach((value, index) => {
       finiteNonNegative(value, `${name}.native_cpu_ms`);
-      validateRetainedSample(cohort.samples[index], name, profile.revision, `${name}.samples[${index}]`);
+      validateRetainedSample(cohort.samples[index], name, profile.revision, providerVersionId, `${name}.samples[${index}]`);
       if (cohort.samples[index].native_cpu_ms !== value) fail(`${name}.samples[${index}] CPU does not match aggregate`);
     });
     if (!["cpuTime", "$workers.cpuTimeMs"].includes(cohort.native_cpu_source?.field)) fail(`${name} does not use provider-native invocation CPU`);
@@ -307,7 +328,7 @@ function warehouseMeterTotals(run, label) {
     cohort.samples.forEach((sample, index) => {
       sampleCount += 1;
       const path = `${label}.${cohortName}.samples[${index}]`;
-      validateRetainedSample(sample, cohortName, run.deployed_revision, path);
+      validateRetainedSample(sample, cohortName, run.deployed_revision, run.provider_deployment.script_version_id, path);
       finiteNonNegative(sample.collector_cpu_ms, `${path}.collector_cpu_ms`);
       totals.native_cpu_ms += sample.native_cpu_ms;
       totals.collector_cpu_ms += sample.collector_cpu_ms;
@@ -334,6 +355,7 @@ export function evaluateWarehouseExperiment({ baseline, candidate } = {}) {
   for (const [label, run] of Object.entries({ baseline, candidate })) {
     if (!run || run.schema !== "cityscroll.warehouse_cost_experiment_run.v1") fail(`invalid ${label} experiment run`);
     requireActualWindow(run, label);
+    validateProviderDeployment(run.provider_deployment, run.deployed_revision, `${label}.provider_deployment`);
     if (run.workload_id !== baseline.workload_id || run.workload_count !== baseline.workload_count) fail("experiment workloads are not matched");
     for (const cohort of WAREHOUSE_EXPERIMENT_COHORTS) {
       const evidence = run.cohorts?.[cohort];
