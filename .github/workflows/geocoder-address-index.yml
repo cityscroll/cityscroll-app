@@ -54,7 +54,7 @@ jobs:
             case "$path" in
               site/data/address-index/*.json) ;;
               site/data/meeting-geography-backfill|site/data/meeting-geography-backfill/*) ;;
-              site/data/shared_meeting_read_model.json) ;;
+              site/data/shared_meeting_read_model.json|site/data/shared_meeting_read_model|site/data/shared_meeting_read_model/*) ;;
               site/data/parcel-geography|site/data/parcel-geography/*) ;;
               site/data/land_place_membership.json) ;;
               site/data/land-place-evidence|site/data/land-place-evidence/*) ;;
@@ -90,6 +90,7 @@ jobs:
             site/data/address-index/*.json
             site/data/meeting-geography-backfill/**
             site/data/shared_meeting_read_model.json
+            site/data/shared_meeting_read_model/**
             site/data/parcel-geography/**
             site/data/land_place_membership.json
             site/data/land-place-evidence/**

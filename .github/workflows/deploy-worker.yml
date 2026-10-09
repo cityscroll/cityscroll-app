@@ -19,6 +19,7 @@ on:
       - "site/data/district_activity.json"
       - "site/data/district_boundaries.json"
       - "site/data/shared_meeting_read_model.json"
+      - "site/data/shared_meeting_read_model/**"
       - "site/data/community_board_geography_lookup.json"
       - "site/following_view.mjs"
       - "site/data/watch_templates.json"
