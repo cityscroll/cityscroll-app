@@ -340,8 +340,120 @@ class FakeSocket {
   }
   close() {
     this.closed = true;
+    this.emit("close", {});
   }
 }
+
+function liveTransport(overrides = {}) {
+  return createLiveWorkerCostTransport({
+    env: {
+      CLOUDFLARE_OBSERVABILITY_TOKEN: "telemetry-only",
+      WORKER_COST_ADMIN_KEY: "admin-key",
+      CLOUDFLARE_ACCOUNT_ID: "account",
+      WORKER_HEALTH_URL: "https://worker.example/health",
+      WORKER_API_ORIGIN: "https://worker.example",
+      WORKER_NAME: "cityscroll-worker",
+      WORKER_COST_LIVE_TAIL_SETTLE_MS: "0",
+      WORKER_COST_MEASUREMENT_PLAN: JSON.stringify({ run_marker: RUN, workload_digest: WORKLOAD }),
+    },
+    now: () => Date.parse("2026-10-09T08:00:00Z"),
+    ...overrides,
+  });
+}
+
+test("live-tail heartbeat starts before acquisition and is stopped after idle collection", async () => {
+  const requests = [];
+  const intervals = [];
+  const cleared = [];
+  let socket;
+  const transport = liveTransport({
+    fetchImpl: async (url, init = {}) => {
+      requests.push({ url, init });
+      if (url.endsWith("/heartbeat")) return Response.json({ success: true, result: {} });
+      return Response.json({ success: true, result: { wsUrl: "wss://tail.example/session" } });
+    },
+    webSocketFactory: () => (socket = new FakeSocket()),
+    setIntervalImpl: (callback, milliseconds) => {
+      intervals.push({ callback, milliseconds });
+      return "heartbeat-interval";
+    },
+    clearIntervalImpl: (timer) => cleared.push(timer),
+    sleep: async () => {},
+  });
+  await transport.collectProviderEvents({
+    from: "2026-10-09T08:00:00Z",
+    to: "2026-10-09T08:30:00Z",
+    limit: 100,
+  });
+  const heartbeatRequests = requests.filter(({ url }) => url.endsWith("/heartbeat"));
+  assert.equal(heartbeatRequests.length, 1);
+  assert.deepEqual(JSON.parse(heartbeatRequests[0].init.body), { scriptId: "cityscroll-worker" });
+  assert.equal(heartbeatRequests[0].init.headers.Authorization, "Bearer telemetry-only");
+  assert.equal(intervals[0].milliseconds, 15_000);
+  assert.deepEqual(cleared, ["heartbeat-interval"]);
+  assert.equal(socket.closed, true);
+});
+
+test("live-tail heartbeat failure aborts acquisition and clears its interval", async () => {
+  let heartbeatCount = 0;
+  let intervalCallback;
+  const cleared = [];
+  let socket;
+  const transport = liveTransport({
+    fetchImpl: async (url) => {
+      if (!url.endsWith("/heartbeat")) return Response.json({ success: true, result: { wsUrl: "wss://tail.example/session" } });
+      heartbeatCount += 1;
+      return heartbeatCount === 1
+        ? Response.json({ success: true, result: {} })
+        : Response.json({ success: false, errors: [{ message: "expired" }] }, { status: 401 });
+    },
+    webSocketFactory: () => (socket = new FakeSocket()),
+    setIntervalImpl: (callback) => {
+      intervalCallback = callback;
+      return "heartbeat-interval";
+    },
+    clearIntervalImpl: (timer) => cleared.push(timer),
+    sleep: async () => { await intervalCallback(); },
+  });
+  await assert.rejects(transport.collectProviderEvents({
+    from: "2026-10-09T08:00:00Z",
+    to: "2026-10-09T08:30:00Z",
+    limit: 100,
+  }), /authenticated live-tail heartbeat failed/);
+  assert.deepEqual(cleared, ["heartbeat-interval"]);
+  assert.equal(socket.closed, true);
+});
+
+test("initial heartbeat precedes acquisition and abort cancels further scheduling", async () => {
+  const controller = new AbortController();
+  let heartbeatCount = 0;
+  const cleared = [];
+  const transport = liveTransport({
+    fetchImpl: async (url) => {
+      if (url.endsWith("/heartbeat")) {
+        heartbeatCount += 1;
+        return Response.json({ success: true, result: {} });
+      }
+      return Response.json({ success: true, result: { wsUrl: "wss://tail.example/session" } });
+    },
+    webSocketFactory: () => new FakeSocket(),
+    setIntervalImpl: () => "heartbeat-interval",
+    clearIntervalImpl: (timer) => cleared.push(timer),
+    sleep: async (_milliseconds, signal) => {
+      controller.abort();
+      if (signal.aborted) throw new Error("provider event collection was cancelled");
+    },
+  });
+  await assert.rejects(transport.collectProviderEvents({
+    from: "2026-10-09T08:00:00Z",
+    to: "2026-10-09T08:30:00Z",
+    limit: 100,
+    signal: controller.signal,
+    execute: async () => assert.equal(heartbeatCount, 1),
+  }), /cancelled/);
+  assert.equal(heartbeatCount, 1);
+  assert.deepEqual(cleared, ["heartbeat-interval"]);
+});
 
 test("future live-tail windows wait before starting their collection timeout", async () => {
   let current = Date.parse("2026-10-09T08:25:00Z");

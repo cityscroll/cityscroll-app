@@ -24,6 +24,7 @@ import {
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const WORKER_DIRECTORY = join(ROOT, "worker");
 const QUERY_PAGE_LIMIT = 2_000;
+const LIVE_TAIL_HEARTBEAT_MS = 15_000;
 const WAREHOUSE_BASE_COHORTS = Object.freeze([...new Set(WAREHOUSE_EXPERIMENT_COHORTS.map((cohort) => cohort.replace(/:(?:cold|warm)$/, "")))]);
 const WAREHOUSE_COLLECTOR_SAMPLES = WAREHOUSE_EXPERIMENT_COHORTS.length * WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT;
 const WAREHOUSE_MAX_ATTEMPTS_PER_INPUT = Math.floor((MAX_COLLECTOR_EVENTS - WAREHOUSE_COLLECTOR_SAMPLES) / WAREHOUSE_BASE_COHORTS.length);
@@ -302,6 +303,8 @@ export function createLiveWorkerCostTransport({
   invokeWrangler = defaultWrangler,
   now = () => Date.now(),
   sleep = wait,
+  setIntervalImpl = setInterval,
+  clearIntervalImpl = clearInterval,
   warehouseAttemptsPerInput = WAREHOUSE_MAX_ATTEMPTS_PER_INPUT,
 } = {}) {
   const telemetryToken = secret(env, "CLOUDFLARE_OBSERVABILITY_TOKEN");
@@ -402,6 +405,33 @@ export function createLiveWorkerCostTransport({
       const events = [];
       let socket;
       let failure;
+      let closing = false;
+      let heartbeatTimer;
+      let heartbeatPending;
+      const heartbeat = async () => {
+        const response = await fetchImpl(`https://api.cloudflare.com/client/v4/accounts/${encodeURIComponent(accountId)}/workers/observability/telemetry/live-tail/heartbeat`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${telemetryToken}`, "Content-Type": "application/json" },
+          signal: controller.signal,
+          body: JSON.stringify({ scriptId: workerName }),
+        });
+        const payload = await response.json();
+        if (!response.ok || payload?.success !== true) throw new Error("authenticated live-tail heartbeat failed");
+      };
+      const scheduleHeartbeat = () => {
+        heartbeatTimer = setIntervalImpl(() => {
+          if (heartbeatPending || controller.signal.aborted) return heartbeatPending;
+          heartbeatPending = heartbeat()
+            .catch((error) => {
+              if (!closing && !controller.signal.aborted) {
+                failure = error;
+                controller.abort();
+              }
+            })
+            .finally(() => { heartbeatPending = undefined; });
+          return heartbeatPending;
+        }, LIVE_TAIL_HEARTBEAT_MS);
+      };
       try {
         socket = await openLiveTail({
           accountId, token: telemetryToken, workerName, fetchImpl, webSocketFactory, signal: controller.signal,
@@ -417,7 +447,17 @@ export function createLiveWorkerCostTransport({
             failure = new Error("live-tail emitted an invalid event envelope");
           }
         });
-        socketListener(socket, "error", () => { failure = new Error("live-tail collection failed"); });
+        socketListener(socket, "error", () => {
+          failure = new Error("live-tail collection failed");
+          controller.abort();
+        });
+        socketListener(socket, "close", () => {
+          if (closing) return;
+          failure = new Error("live-tail connection closed");
+          controller.abort();
+        });
+        await heartbeat();
+        scheduleHeartbeat();
         await execute?.(controller.signal);
         const requestedRemaining = Math.max(0, endsAt - now());
         const settle = execute
@@ -427,10 +467,15 @@ export function createLiveWorkerCostTransport({
         if (failure) throw failure;
         return events;
       } catch (error) {
+        if (failure) throw failure;
         if (!execute && collectionEnded) return events;
         throw error;
       } finally {
+        closing = true;
         clearTimeout(timeout);
+        if (heartbeatTimer !== undefined) clearIntervalImpl(heartbeatTimer);
+        controller.abort();
+        if (heartbeatPending) await heartbeatPending;
         if (socket && typeof socket.close === "function") socket.close();
       }
     },

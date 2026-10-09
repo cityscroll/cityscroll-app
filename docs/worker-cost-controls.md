@@ -73,6 +73,11 @@ HTTP workloads with an exact Worker-version override, and opens a short-lived
 Workers Observability live tail before the workload begins. The telemetry token
 is separate from the existing authenticated Wrangler deployment session and is
 never reused for deployment reads. Retained Logs and Traces remain disabled.
+Each live-tail session sends an authenticated heartbeat for the exact Worker
+before acquisition and every 15 seconds while open; heartbeat or socket failure
+aborts the collection, and shutdown cancels the heartbeat. This maintains
+session eligibility only. Missing live events or cold-start metadata still
+leave the affected evidence incomplete.
 Multiple collection windows may cover the natural cron schedule, but every
 future live tail opens at its declared window start rather than spending its
 collection timeout waiting. Every individual live tail is limited to 30 minutes,
