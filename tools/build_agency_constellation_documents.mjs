@@ -653,6 +653,10 @@ export function buildAgencyRouteIdentityReport(rawSources, publisherRows, genera
 
 export function buildAgencyConstellationMaterialization(sources = loadSources()) {
   // Stable across rebuilds when inputs are unchanged (deploy --check gate).
+  // D1 publication compares this composite per named source when producers emit
+  // `name=vintage` tokens via tools/lib/keyed_watermark.mjs; the legacy anonymous
+  // sorted join remains valid and is treated as a source-set change when stamps
+  // appear or disappear without a shared-source regression.
   const generatedAt = [
     sources.intelligence?.generated_at,
     sources.certification?.generated_at,

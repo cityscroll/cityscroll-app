@@ -12,11 +12,13 @@ import {
   PLAN_SCHEMA,
   SNAPSHOT_SCHEMA,
   WHOLE_MODEL_PARTITION,
+  compareWatermarks,
   planDelta,
   snapshotFor,
   watermarkInstants,
   watermarkRegressed,
 } from "../tools/d1_delta_plan.mjs";
+import { composeKeyedWatermark } from "../tools/lib/keyed_watermark.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const TOOL = join(ROOT, "tools", "d1_delta_plan.mjs");
@@ -36,7 +38,9 @@ function fixtureSources() {
           ],
         },
         beta: {
-          source: "beta-src", as_of: "1200|2026-09-01T00:00:00Z|2026-09-02T00:00:00Z", source_row_count: 1, indexed_count: 1,
+          source: "beta-src",
+          as_of: "count=1200|src_a=2026-09-01T00:00:00Z|src_b=2026-09-02T00:00:00Z",
+          source_row_count: 1, indexed_count: 1,
           coverage: [], documents: [{ title: "Beta one", object_ref: "notice:b1" }],
         },
       },
@@ -112,7 +116,7 @@ test("an unchanged source yields zero operations in every partition", () => {
 test("golden: one changed source partition yields a bounded delta and unrelated partitions stay untouched", () => {
   const prior = snapshotFor(manifest, fixtureSources());
   const sources = fixtureSources();
-  sources.keyword_search.families.beta.as_of = "1201|2026-09-01T00:00:00Z|2026-09-03T00:00:00Z";
+  sources.keyword_search.families.beta.as_of = "count=1201|src_a=2026-09-01T00:00:00Z|src_b=2026-09-03T00:00:00Z";
   sources.keyword_search.families.beta.indexed_count = 2;
   sources.keyword_search.families.beta.documents.push({ title: "Beta two", object_ref: "notice:b2" });
   const plan = planDelta({ prior, current: snapshotFor(manifest, sources) });
@@ -172,11 +176,154 @@ test("a missing or regressed watermark refuses the plan instead of publishing pa
   assert.throws(() => planDelta({ prior, current: missingSnapshot }), (error) => (
     error instanceof DeltaPlanError && error.code === "watermark_missing" && error.context.partition === "alpha"));
   const regressed = fixtureSources();
-  regressed.keyword_search.families.beta.as_of = "1200|2026-08-31T00:00:00Z|2026-09-02T00:00:00Z";
+  regressed.keyword_search.families.beta.as_of = "count=1200|src_a=2026-08-31T00:00:00Z|src_b=2026-09-02T00:00:00Z";
   assert.throws(() => planDelta({ prior, current: snapshotFor(manifest, regressed) }), (error) => (
-    error instanceof DeltaPlanError && error.code === "watermark_regressed" && error.context.partition === "beta"));
-  assert.equal(watermarkRegressed(watermarkInstants("2026-09-01T00:00:00Z"), watermarkInstants("2026-09-01T00:00:00Z")), false);
-  assert.equal(watermarkRegressed(watermarkInstants("1|2026-09-01T00:00:00Z|2026-09-02T00:00:00Z"), watermarkInstants("2|2026-09-01T00:00:00Z")), true);
+    error instanceof DeltaPlanError
+    && error.code === "watermark_regressed"
+    && error.context.partition === "beta"
+    && error.context.shared_regressed.includes("src_a")));
+  assert.equal(watermarkRegressed("2026-09-01T00:00:00Z", "2026-09-01T00:00:00Z"), false);
+  // Legacy unkeyed multi-component: losing a stamp is a source-set change, not a regression.
+  assert.equal(watermarkRegressed("1|2026-09-01T00:00:00Z|2026-09-02T00:00:00Z", "2|2026-09-01T00:00:00Z"), false);
+  // Keyed positive control: a shared source moving earlier still refuses.
+  assert.equal(
+    watermarkRegressed(
+      "count=1|src_a=2026-09-01T00:00:00Z|src_b=2026-09-02T00:00:00Z",
+      "count=2|src_a=2026-09-01T00:00:00Z|src_b=2026-09-01T00:00:00Z",
+    ),
+    true,
+  );
+});
+
+test("agency-obligations composite source-set change is allowed; shared-source regression is refused", () => {
+  // Exact prior/current pair from Deploy worker run 37872344010 after the
+  // agency-obligations full refresh. The legacy positional comparator refused
+  // this as watermark_regressed because Aug-7 stamps disappeared and later
+  // components shifted; no shared named source moved backwards.
+  const priorAgencies = [
+    "12796",
+    "2026-08-06T00:00:00Z",
+    "2026-08-07T23:52:53.226Z",
+    "2026-08-07T23:52:53.226Z",
+    "2026-08-11T21:12:40.677Z",
+    "2026-09-30T13:15:13.798Z",
+    "2026-09-30T13:15:55.664Z",
+    "2026-10-05T17:33:57.544Z",
+    "2026-08-18T04:05:51.552Z",
+    "2026-08-26T00:00:00.000Z",
+    "2026-08-27T17:59:48Z",
+    "2026-09-09",
+    "2026-09-09T06:33:01.880Z",
+    "2026-09-09T06:33:01.880Z",
+    "2026-09-30T13:15:43.197Z",
+    "2026-09-30T13:15:55.664Z",
+    "2026-10-05",
+    "2026-10-05T17:33:01.337Z",
+    "2026-10-05T17:33:57.544Z",
+  ].join("|");
+  const currentAgencies = [
+    "12796",
+    "2026-08-06T00:00:00Z",
+    "2026-08-11T21:12:40.677Z",
+    "2026-09-30T13:15:13.798Z",
+    "2026-09-30T13:15:55.664Z",
+    "2026-10-05T17:33:57.544Z",
+    "2026-10-06T13:48:38.716Z",
+    "2026-08-18T04:05:51.552Z",
+    "2026-08-26T00:00:00.000Z",
+    "2026-08-27T17:59:48Z",
+    "2026-09-09",
+    "2026-09-09T06:33:01.880Z",
+    "2026-09-09T06:33:01.880Z",
+    "2026-09-30T13:15:43.197Z",
+    "2026-09-30T13:15:55.664Z",
+    "2026-10-05",
+    "2026-10-05T17:33:01.337Z",
+    "2026-10-05T17:33:57.544Z",
+    "2026-10-06T13:48:38.716Z",
+  ].join("|");
+
+  // Fail-before witness: the old positional rule (length drop or earlier
+  // aligned component) refuses this pair.
+  const priorInstants = watermarkInstants(priorAgencies);
+  const currentInstants = watermarkInstants(currentAgencies);
+  const positionalRegressed = currentInstants.length < priorInstants.length
+    || priorInstants.some((before, index) => currentInstants[index] < before);
+  assert.equal(positionalRegressed, true, "positional comparator refuses the production pair");
+
+  // Pass-after: keyed/legacy-aware compare allows the source-set change.
+  const legacyChange = compareWatermarks(priorAgencies, currentAgencies);
+  assert.equal(legacyChange.regressed, false);
+  assert.equal(legacyChange.source_set_changed, true);
+
+  const prior = snapshotFor(manifest, fixtureSources());
+  const current = clone(prior);
+  current.models.keyword_search.partitions.agencies = {
+    watermark: currentAgencies,
+    rows: prior.models.keyword_search.partitions.alpha.rows,
+  };
+  prior.models.keyword_search.partitions.agencies = {
+    watermark: priorAgencies,
+    rows: prior.models.keyword_search.partitions.alpha.rows,
+  };
+  const plan = planDelta({ prior, current });
+  const agencies = plan.models
+    .find((model) => model.model_id === "keyword_search")
+    .partitions.find((item) => item.partition === "agencies");
+  assert.ok(agencies, "agencies partition is planned");
+  assert.equal(agencies.watermark_change?.source_set_changed, true);
+
+  // Named-source form of the same obligations refresh: obligations advanced,
+  // nested process_conformance lost the old obligations leaf and gained the new.
+  const priorKeyed = composeKeyedWatermark({
+    certification: "2026-08-06T00:00:00Z",
+    intelligence: "2026-09-30T13:15:55.664Z",
+    obligations: "2026-08-07T23:52:53.226Z",
+    passport_graph_selected_rows: "12796",
+    process_conformance: composeKeyedWatermark({
+      obligations_lookup: "2026-08-07T23:52:53.226Z",
+      rules_domain: "2026-08-11T21:12:40.677Z",
+      entity_intelligence: "2026-09-30T13:15:55.664Z",
+      procurement_awards: "2026-09-30T13:15:13.798Z",
+      land_projects: "2026-10-05T17:33:57.544Z",
+    }),
+  });
+  const currentKeyed = composeKeyedWatermark({
+    certification: "2026-08-06T00:00:00Z",
+    intelligence: "2026-09-30T13:15:55.664Z",
+    obligations: "2026-10-06T13:48:38.716Z",
+    passport_graph_selected_rows: "12796",
+    process_conformance: composeKeyedWatermark({
+      obligations_lookup: "2026-10-06T13:48:38.716Z",
+      rules_domain: "2026-08-11T21:12:40.677Z",
+      entity_intelligence: "2026-09-30T13:15:55.664Z",
+      procurement_awards: "2026-09-30T13:15:13.798Z",
+      land_projects: "2026-10-05T17:33:57.544Z",
+    }),
+  });
+  const keyedChange = compareWatermarks(priorKeyed, currentKeyed);
+  assert.equal(keyedChange.regressed, false);
+  assert.equal(keyedChange.source_set_changed, false);
+  assert.ok(!keyedChange.shared_regressed.length);
+
+  // Positive control: same keyed shape with obligations moved earlier refuses.
+  const regressedKeyed = composeKeyedWatermark({
+    certification: "2026-08-06T00:00:00Z",
+    intelligence: "2026-09-30T13:15:55.664Z",
+    obligations: "2026-08-01T00:00:00Z",
+    passport_graph_selected_rows: "12796",
+    process_conformance: composeKeyedWatermark({
+      obligations_lookup: "2026-08-01T00:00:00Z",
+      rules_domain: "2026-08-11T21:12:40.677Z",
+      entity_intelligence: "2026-09-30T13:15:55.664Z",
+      procurement_awards: "2026-09-30T13:15:13.798Z",
+      land_projects: "2026-10-05T17:33:57.544Z",
+    }),
+  });
+  const refusal = compareWatermarks(priorKeyed, regressedKeyed);
+  assert.equal(refusal.regressed, true);
+  assert.ok(refusal.shared_regressed.includes("obligations"));
+  assert.ok(refusal.shared_regressed.includes("process_conformance.obligations_lookup"));
 });
 
 test("a rebuild is an explicit, separately named operation with a reason", () => {

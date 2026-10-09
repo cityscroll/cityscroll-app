@@ -82,19 +82,26 @@ Each model in a publication receipt carries the lexicographic extremes of its
 partition watermarks, recorded exactly as the source published them. A watermark
 is the manifest's source snapshot field, and that field has two published forms:
 a single instant, and a composite of the vintages of every source that fed one
-partition, joined on `|`, sometimes with a published row count as its first
-component. The keyword search model's agency families use the composite form so
-the token stays byte-stable across rebuilds when the inputs are unchanged, and
-it gains a component whenever that model gains a source.
+partition, joined on `|`. The preferred composite form names each contributing
+source as `name=vintage` (`tools/lib/keyed_watermark.mjs` `composeKeyedWatermark`)
+so the token stays byte-stable across rebuilds when the inputs are unchanged,
+gains a component whenever that model gains a source, and can be compared per
+source. Legacy anonymous composites (sorted stamps without names, sometimes with
+a published row count as a bare first component) remain readable for already-
+published snapshots and for producers that have not yet switched to keyed form.
 
 A receipt therefore bounds a watermark as a composite rather than as a single
 instant: at most 1024 characters, at most 32 `|`-joined components, and at most
 120 characters per component, with a secret-shaped component still refused. The
 per-component bound is the width this field as a whole once allowed, so the
 bounds are a strict widening and every watermark that validated before still
-validates. The recorded value is never shortened to fit. The delta plan compares these tokens
-component by component to decide whether a partition's watermark regressed, so a
-truncated token in a receipt would no longer name the vintage that was actually
+validates. The recorded value is never shortened to fit. The delta plan compares
+keyed tokens per named source: a shared source that moves earlier refuses the
+plan, while an added or removed source is a recorded source-set change when every
+shared source is still at least its prior value. Legacy anonymous multi-component
+tokens treat a disappeared stamp as a source-set change rather than a regression,
+so a legitimate contributing-source refresh is not refused by positional shift.
+Truncating a token in a receipt would no longer name the vintage that was actually
 published. Widening these bounds is a deliberate contract change made in
 `tools/d1_publication_receipt.mjs`, and the receipt is built over the live
 publication snapshot in the unit suite so an unexpected watermark shape fails on
