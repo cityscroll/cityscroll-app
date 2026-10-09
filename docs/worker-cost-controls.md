@@ -28,9 +28,9 @@ Retained CPU must come from the native Wrangler-tail `cpuTime` field or the
 Workers Observability telemetry `$workers.cpuTimeMs` field. Wall time, startup
 time, and JavaScript elapsed timers are not accepted as invocation CPU.
 Every retained sample keeps its own revision, source field, provider condition,
-operation counts, and error count. Release-level CPU, KV, D1, and error totals
-must equal the sums of those samples; an independent top-level meter cannot
-override contradictory provider evidence.
+operation counts, and error count. Release-level CPU, KV, D1, stored-byte, and
+error totals must equal the sums of those samples; an independent top-level
+meter cannot override contradictory provider evidence.
 
 Collection is capped at 30 minutes and 10,000 events. Before persistence, an
 event must match the probe's literal header value and exact URL and method. The
@@ -50,7 +50,7 @@ isolate state from request order.
 The fixed warehouse experiment compares the current static ZAP BBL, ZAP
 project, and Doing Business lookups with the route-scoped candidate under the
 same inputs and workload. Joins, provenance, miss behavior, freshness, and
-cohort sizes must match. The candidate is retained only when no CPU, KV,
+cohort sizes must match. The candidate is retained only when no CPU, KV, D1,
 storage, collector, or error meter regresses and at least one meter improves;
 otherwise the baseline stays active. The experiment records an operational
 retention recommendation, never a financial-savings claim.
