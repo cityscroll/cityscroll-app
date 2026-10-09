@@ -1604,8 +1604,14 @@ function renderNearYouOverview(view) {
     || place.neighborhood);
   if (!hasNamedPlace) return "";
   const lensScopeHref = (lens) => {
-    const scope = normalizeScope({ ...view.scope, facets: { ...view.scope.facets, domains: [lens] } });
-    return nearYouUrlFromScope(scope, { base: view.canonicalBase });
+    const scope = scopeWithGeographies({ ...view.scope, facets: { ...view.scope.facets, domains: [lens] } });
+    const base = nearYouUrlFromScope(scope, { base: view.canonicalBase });
+    return geographyNavigationUrlWithFilters({
+      ...(view.geographyState?.ok ? view.geographyState : parseGeographyNavigationState(base)),
+      geo: view.geographyState?.geo || scope.place.geographies?.[0]?.replace(/^geography:/, ""),
+      surface: view.shellSurface,
+      lens,
+    }, { base });
   };
   const sections = view.overview.sections.map((section) => {
     const records = section.records.length ? recordList(section.records, undefined, { now: view.now }) : "";

@@ -104,6 +104,7 @@ function chelseaOverviewView(query, options = {}) {
       ? chelseaBroaderDistricts(activity)
       : options.broaderDistricts,
     now: options.now,
+    geographySearch: query,
     dataState: options.dataState,
   });
 }
@@ -436,6 +437,28 @@ test("A3 failure-3: multi-lens coverage merge keeps Zoning when Meetings metadat
   assert.equal(poisoned.by_lens.land.status, "unavailable");
   assert.equal(poisoned.by_lens.land.reason, "slice_coverage_conflict");
   assert.deepEqual(poisoned.by_lens.meetings, meetings.geography_items.coverage.by_lens.meetings);
+});
+
+test("overview category links retain Chelsea and the selected browsing surface", () => {
+  for (const surface of ["records", "map"]) {
+    const view = chelseaOverviewView(`geo=nta2020:MN0401&surface=${surface}`, {
+      now: "2026-09-01T12:00:00.000Z",
+    });
+    const html = renderNearYouDocument(view);
+    const links = [...html.matchAll(/<a href="([^"]+)">Open (meetings|Zoning)<\/a>/g)]
+      .filter(([, href]) => new URL(href.replaceAll("&amp;", "&"), "https://cityscroll.org").pathname.startsWith("/near-you"));
+    assert.ok(links.length >= 2, "both local category destinations must render");
+    for (const [, href, label] of links) {
+      const url = new URL(href.replaceAll("&amp;", "&"), "https://cityscroll.org");
+      assert.equal(url.searchParams.get("geo"), "nta2020:MN0401", label);
+      assert.equal(url.searchParams.get("surface"), surface, label);
+      assert.equal(url.searchParams.get("lens"), label === "Zoning" ? "land" : "meetings");
+      const destination = chelseaOverviewView(url.search.slice(1));
+      assert.equal(destination.scope.place.geographies[0], CHELSEA);
+      assert.equal(destination.shellSurface, surface);
+      assert.equal(destination.isOverview, false);
+    }
+  }
 });
 
 test("overview A1: no-lens Chelsea exposes Zoning, broader M04, and the board calendar", () => {
