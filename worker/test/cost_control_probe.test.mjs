@@ -1,25 +1,33 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import test from "node:test";
 
 import worker from "../src/worker.mjs";
-import { beginCostControlProbe } from "../src/lib/cost_control_probe.mjs";
+import { beginCostControlProbe, canonicalCostProbeWorkload } from "../src/lib/cost_control_probe.mjs";
 import { RUM_BATCH_SCHEMA, RUM_OBSERVATION_SCHEMA } from "../src/performance_events.mjs";
 
 const ADMIN_KEY = "probe-test-admin-key";
-const WORKLOAD = "a".repeat(64);
+const DEFAULT_BODY = Object.freeze({ kind: "collector-overhead" });
+
+function workloadHash(body) {
+  return createHash("sha256").update(canonicalCostProbeWorkload(body)).digest("hex");
+}
+
+const WORKLOAD = workloadHash(DEFAULT_BODY);
 
 function request(overrides = {}) {
+  const body = overrides.body ?? DEFAULT_BODY;
   return new Request("https://api.cityscroll.org/admin/cost-control-probe", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${ADMIN_KEY}`,
       "x-cityscroll-cost-probe": overrides.tag || "probe-test-0001",
       "x-cityscroll-cost-cohort": overrides.cohort || "collector-overhead",
-      "x-cityscroll-cost-workload": overrides.workload || WORKLOAD,
+      "x-cityscroll-cost-workload": overrides.workload || workloadHash(body),
       "x-cityscroll-cost-series": overrides.series || overrides.tag || "series-test-0001",
       "Content-Type": "application/json",
     },
-    body: overrides.rawBody ?? JSON.stringify(overrides.body || { kind: "collector-overhead" }),
+    body: overrides.rawBody ?? JSON.stringify(body),
   });
 }
 
@@ -82,13 +90,16 @@ test("probe rejects missing operator authorization without exposing the route", 
       "x-cityscroll-cost-workload": WORKLOAD,
       "x-cityscroll-cost-series": "series-test-0002",
     },
-  }), { ADMIN_KEY });
+  }), { ADMIN_KEY }, { workloadHash: WORKLOAD });
   assert.equal(denied.denied.status, 404);
 });
 
 test("probe counts real KV operations and suppresses rehearsal writes", async () => {
   const namespace = kv();
-  const probe = beginCostControlProbe(request(), { ADMIN_KEY, STORE: namespace }, { suppressWrites: true });
+  const probe = beginCostControlProbe(request(), { ADMIN_KEY, STORE: namespace }, {
+    suppressWrites: true,
+    workloadHash: WORKLOAD,
+  });
   probe.accept();
   assert.equal(await probe.env.STORE.get("present"), "yes");
   await probe.env.STORE.put("blocked", "value");
@@ -107,10 +118,11 @@ test("probe counts real KV operations and suppresses rehearsal writes", async ()
 });
 
 test("probe derives D1 row counts and converts first to a metered all query", async () => {
-  const probe = beginCostControlProbe(request({ tag: "probe-test-d1", series: "series-test-d1" }), {
-    ADMIN_KEY,
-    DB: d1(),
-  });
+  const probe = beginCostControlProbe(
+    request({ tag: "probe-test-d1", series: "series-test-d1" }),
+    { ADMIN_KEY, DB: d1() },
+    { workloadHash: WORKLOAD },
+  );
   probe.accept();
   const row = await probe.env.DB.prepare("SELECT value FROM sample LIMIT 1").first();
   await probe.env.DB.prepare("UPDATE sample SET value = 8").run();
@@ -153,6 +165,51 @@ test("probe rejects a cohort that does not match the validated workload", async 
     cohort: "browse",
     body: { kind: "http", route: "health", method: "GET", url: "https://api.cityscroll.org/health" },
   }), { ADMIN_KEY }, { waitUntil() {} });
+  assert.equal(response.status, 404);
+});
+
+test("probe rejects the events workload instead of contaminating resident usage", async () => {
+  const analyticsPoints = [];
+  const state = kv();
+  const response = await worker.fetch(request({
+    tag: "probe-test-events",
+    series: "series-test-events",
+    cohort: "events",
+    body: {
+      kind: "http",
+      route: "events",
+      method: "POST",
+      url: "https://api.cityscroll.org/events",
+      origin: "https://cityscroll.org",
+      body: { event: "page_view", surface: "home" },
+    },
+  }), {
+    ADMIN_KEY,
+    ANALYTICS_ENVIRONMENT: "production",
+    ALERT_STATE: state,
+    USAGE_ANALYTICS: { writeDataPoint(point) { analyticsPoints.push(point); } },
+  }, { waitUntil() {} });
+  assert.equal(response.status, 404);
+  assert.equal(analyticsPoints.length, 0);
+  assert.deepEqual([...state.store.keys()], ["present"]);
+});
+
+test("probe rejects a workload hash copied from a different request", async () => {
+  const first = {
+    kind: "http",
+    route: "search",
+    method: "GET",
+    url: "https://api.cityscroll.org/search?q=parks",
+  };
+  const second = { ...first, url: "https://api.cityscroll.org/search?q=schools" };
+  const response = await worker.fetch(request({
+    tag: "probe-test-workload-hash",
+    series: "series-test-workload-hash",
+    cohort: "search",
+    workload: workloadHash(first),
+    body: second,
+  }), { ADMIN_KEY }, { waitUntil() {} });
+  assert.notEqual(workloadHash(first), workloadHash(second));
   assert.equal(response.status, 404);
 });
 
@@ -284,11 +341,11 @@ test("collector-overhead endpoint returns a bounded no-store observation", async
   const body = await response.json();
   assert.equal(body.schema, "cityscroll.worker_cost_probe.v1");
   assert.equal(body.execution_mode, "production-read-only-rehearsal");
+  assert.equal(body.workload_hash, WORKLOAD);
   assert.equal(body.result.status, 204);
 });
 
 test("authenticated HTTP probe runs the real route without synthetic isolate labels", async () => {
-  const workload = "b".repeat(64);
   const body = {
     kind: "http",
     route: "health",
@@ -296,9 +353,9 @@ test("authenticated HTTP probe runs the real route without synthetic isolate lab
     url: "https://api.cityscroll.org/health",
   };
   const env = { ADMIN_KEY, GIT_COMMIT_SHA: "a".repeat(40), WRANGLER_ENV: "production" };
-  const syntheticResponse = await worker.fetch(request({ tag: "probe-test-http-0", series: "series-test-http-0", cohort: "health:cold", workload, body }), env, { waitUntil() {} });
-  const firstResponse = await worker.fetch(request({ tag: "probe-test-http-1", series: "series-test-http-1", cohort: "health", workload, body }), env, { waitUntil() {} });
-  const secondResponse = await worker.fetch(request({ tag: "probe-test-http-2", series: "series-test-http-2", cohort: "health", workload, body }), env, { waitUntil() {} });
+  const syntheticResponse = await worker.fetch(request({ tag: "probe-test-http-0", series: "series-test-http-0", cohort: "health:cold", body }), env, { waitUntil() {} });
+  const firstResponse = await worker.fetch(request({ tag: "probe-test-http-1", series: "series-test-http-1", cohort: "health", body }), env, { waitUntil() {} });
+  const secondResponse = await worker.fetch(request({ tag: "probe-test-http-2", series: "series-test-http-2", cohort: "health", body }), env, { waitUntil() {} });
   const first = await firstResponse.json();
   const second = await secondResponse.json();
   assert.equal(syntheticResponse.status, 404);

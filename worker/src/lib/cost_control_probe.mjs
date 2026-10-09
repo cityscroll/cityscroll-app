@@ -25,6 +25,21 @@ function authorizationToken(request) {
   return value.startsWith("Bearer ") ? value.slice(7) : "";
 }
 
+export function canonicalCostProbeWorkload(value) {
+  if (value === null || typeof value === "boolean" || typeof value === "number" || typeof value === "string") {
+    return JSON.stringify(value);
+  }
+  if (Array.isArray(value)) {
+    return `[${value.map(canonicalCostProbeWorkload).join(",")}]`;
+  }
+  if (value && typeof value === "object") {
+    return `{${Object.keys(value).sort().map((key) => (
+      `${JSON.stringify(key)}:${canonicalCostProbeWorkload(value[key])}`
+    )).join(",")}}`;
+  }
+  throw new TypeError("unsupported cost probe workload value");
+}
+
 function resultMeta(result, counters) {
   const meta = result?.meta || {};
   const rowsRead = Number(meta.rows_read);
@@ -188,7 +203,7 @@ function instrumentEnvironment(env, counters, suppressWrites) {
   return measured;
 }
 
-export function beginCostControlProbe(request, env, { suppressWrites = false } = {}) {
+export function beginCostControlProbe(request, env, { suppressWrites = false, workloadHash: expectedWorkloadHash = "" } = {}) {
   const tag = request.headers.get(PROBE_HEADER) || "";
   if (!tag) return null;
   const cohort = request.headers.get(COHORT_HEADER) || "";
@@ -199,6 +214,8 @@ export function beginCostControlProbe(request, env, { suppressWrites = false } =
     || !cohort
     || cohort.length > 80
     || !WORKLOAD_HASH.test(workloadHash)
+    || !WORKLOAD_HASH.test(expectedWorkloadHash)
+    || !constantTimeEqual(workloadHash, expectedWorkloadHash)
     || !PROBE_TAG.test(series)
     || !constantTimeEqual(authorizationToken(request), env.ADMIN_KEY)
   ) {
@@ -232,7 +249,7 @@ export function beginCostControlProbe(request, env, { suppressWrites = false } =
         tag,
         series,
         cohort,
-        workload_hash: workloadHash,
+        workload_hash: expectedWorkloadHash,
         execution_mode: mode,
         elapsed_ms: Math.max(0, Date.now() - startedAt),
         operations: { ...counters },

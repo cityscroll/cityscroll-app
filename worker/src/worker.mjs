@@ -120,8 +120,7 @@ import { handleCitedPassages } from "./cited_retrieval.mjs";
 import { handleContract, handleContractsAnalysis, handleContractsBrowse } from "./contracts.mjs";
 import { handleLandDecisionPath, handleLandProject, handleLandProjectsBrowse } from "./land_projects.mjs";
 import { recordSourceAcquisitionReceipt } from "./lib/source_acquisition_receipt.mjs";
-import { beginCostControlProbe, logCostControlProbe } from "./lib/cost_control_probe.mjs";
-import { normalizeUsageEvent } from "./lib/analytics.mjs";
+import { beginCostControlProbe, canonicalCostProbeWorkload, logCostControlProbe } from "./lib/cost_control_probe.mjs";
 import { LAND_PROJECT_ID_PATTERN } from "../../capabilities/land_projects.mjs";
 import { RUM_MARKED_TRAFFIC_CLASSES, isRumProductionOrigin } from "../../site/rum_production.mjs";
 
@@ -163,11 +162,6 @@ async function withWorkerAcquisitionReceipt(env, sourceContractId, runId, work) 
 const COST_PROBE_HTTP_WORKLOADS = Object.freeze({
   health: { path: "/health", method: "GET" },
   "unknown-route": { path: "/__cost-probe-not-found", method: "GET" },
-  events: {
-    path: "/events",
-    method: "POST",
-    validate: (input) => normalizeUsageEvent(input.body) !== null,
-  },
   "rum-16": {
     path: "/performance-events",
     method: "POST",
@@ -262,7 +256,8 @@ async function handleCostControlProbe(request, env) {
   catch { return new Response("Not found", { status: 404 }); }
   const kind = input?.kind;
   const suppressWrites = kind === "scheduled" || kind === "queue" || kind === "collector-overhead";
-  const probe = beginCostControlProbe(request, env, { suppressWrites });
+  const workloadHash = await sha256Text(canonicalCostProbeWorkload(input));
+  const probe = beginCostControlProbe(request, env, { suppressWrites, workloadHash });
   if (!probe || probe.denied) return probe?.denied || new Response("Not found", { status: 404 });
 
   let childRequest = null;
