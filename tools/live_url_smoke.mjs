@@ -11,6 +11,7 @@
 // deploy workflow reported success. The missing gate is this module.
 
 import { pathToFileURL } from "node:url";
+import { loadSharedMeetingReadModelDocument } from "../site/shared_meeting_read_model_shards.mjs";
 
 /** Stable markers that real CityScroll HTML carries; error shells must not. */
 export const CONTENT_MARKER = /CityScroll/;
@@ -98,14 +99,16 @@ export async function resolvePublishedMeetingTargets(base, {
   const timer = setTimeout(() => controller.abort(), requestTimeoutMs);
   let model;
   try {
-    const response = await fetchImpl(cacheBust ? cacheBustUrl(modelUrl, now) : modelUrl, {
-      method: "GET",
-      redirect: "follow",
-      signal: controller.signal,
-      headers: { "Cache-Control": "no-cache", Pragma: "no-cache", "User-Agent": "cityscroll-live-url-smoke/1.0" },
+    model = await loadSharedMeetingReadModelDocument(modelUrl, async (url) => {
+      const response = await fetchImpl(cacheBust ? cacheBustUrl(url, now) : url, {
+        method: "GET",
+        redirect: "follow",
+        signal: controller.signal,
+        headers: { "Cache-Control": "no-cache", Pragma: "no-cache", "User-Agent": "cityscroll-live-url-smoke/1.0" },
+      });
+      if (response.status !== 200) throw new Error(`HTTP ${response.status}`);
+      return JSON.parse(await response.text());
     });
-    if (response.status !== 200) throw new Error(`HTTP ${response.status}`);
-    model = JSON.parse(await response.text());
     if (model?.schema !== "cityscroll.shared_meeting_read_model.v1" || !Array.isArray(model.rows)) {
       throw new Error("invalid shared meeting read model");
     }
