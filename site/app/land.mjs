@@ -22,7 +22,6 @@ import {
 import { landGeo } from "../land_nta_geography_runtime.mjs";
 landGeo.install();
 import { loadJsonPreferWorker } from "../json_prefer_worker.mjs";
-import { loadMeetingSnapshotOrNull } from "../meeting_snapshot_client.mjs";
 import {
   DEFAULT_LAND_FAMILY,
   DEFAULT_LAND_PROCEDURE,
@@ -227,7 +226,8 @@ function hideLandMap(selection, reason){
 }
 function loadLandMeetingsSnapshot(){
   if(!landMeetingsSnapshotPromise){
-    landMeetingsSnapshotPromise=loadMeetingSnapshotOrNull(LAND_MEETINGS_SNAPSHOT_URL);
+    landMeetingsSnapshotPromise=import("../meeting_snapshot_client.mjs")
+      .then((m)=>m.loadMeetingSnapshotOrNull(LAND_MEETINGS_SNAPSHOT_URL));
   }
   return landMeetingsSnapshotPromise;
 }

@@ -23,7 +23,6 @@ import {
   renderProcurementPaymentEvidenceHtml,
 } from "./procurement_payment_place_context.mjs";
 import { procurementShardPathForId } from "./procurement_read_model_shards.mjs";
-import { loadSharedMeetingReadModelDocument } from "./shared_meeting_read_model_shards.mjs";
 import { meetingCalendarICS } from "./hearing_attend_pack.mjs";
 import rulesSemanticLaneArtifact from "./data/rules_semantic_lane.json" with { type: "json" };
 import { NOTICE_MODULE_PRELOADS } from "./notice_module_preload.mjs";
@@ -420,26 +419,6 @@ export function attachHearingContextAgendaSegments(record, hearingContext) {
   };
 }
 
-function sharedMeetingAssetFetchJson(env, request) {
-  return async (url) => {
-    const pathname = String(url).startsWith("/") ? String(url) : `/${String(url)}`;
-    const response = await staticAsset(env, request, pathname);
-    if (!response.ok) return null;
-    try {
-      return await response.json();
-    } catch {
-      return null;
-    }
-  };
-}
-
-async function loadSharedMeetingReadModelFromAssets(env, request) {
-  return loadSharedMeetingReadModelDocument(
-    "/data/shared_meeting_read_model.json",
-    sharedMeetingAssetFetchJson(env, request),
-  );
-}
-
 async function handleMeeting(request, env, meetingId) {
   let decoded;
   try { decoded = decodeURIComponent(meetingId); } catch (_error) {
@@ -449,7 +428,8 @@ async function handleMeeting(request, env, meetingId) {
   let record = null;
   let payload = null;
   try {
-    payload = await loadSharedMeetingReadModelFromAssets(env, snapshotRequest);
+    const { loadSharedMeetingReadModelFromAssets } = await import("./shared_meeting_edge_load.mjs");
+    payload = await loadSharedMeetingReadModelFromAssets(staticAsset, env, snapshotRequest);
     const rows = Array.isArray(payload?.rows) ? payload.rows : Array.isArray(payload?.hearings) ? payload.hearings : [];
     record = rows.find((row) => row?.meeting_id === decoded) || null;
   } catch (_error) {
@@ -564,7 +544,8 @@ async function handleMeetingICS(request, env) {
   // published document is the index; rows live in bounded shards beside it.
   let snapshot;
   try {
-    snapshot = await loadSharedMeetingReadModelFromAssets(env, request);
+    const { loadSharedMeetingReadModelFromAssets } = await import("./shared_meeting_edge_load.mjs");
+    snapshot = await loadSharedMeetingReadModelFromAssets(staticAsset, env, request);
   } catch (_error) {
     return new Response("meeting projection unavailable", { status: 503 });
   }

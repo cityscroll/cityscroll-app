@@ -7,7 +7,6 @@ import {
 } from "../community_board_watch.mjs";
 import { geocodeAddressText } from "../address_geocoder.mjs";
 import { validateMinRemainingDays } from "../money_watch_min_remaining_days.mjs";
-import { loadMeetingSnapshot } from "../meeting_snapshot_client.mjs";
 
 /* ===================== ALERTS ===================== */
 const AKEY = "crd_alerts_v1";
@@ -183,6 +182,7 @@ async function aFetch(){
   if(w==="communityboard"){
     const ref=communityBoardIdFromSelection($("#acommunityboardboro").value,$("#acommunityboardnumber").value);
     if(!ref) return {kind:"notice",rows:[]};
+    const { loadMeetingSnapshot }=await import("../meeting_snapshot_client.mjs");
     const payload=await loadMeetingSnapshot("data/shared_meeting_read_model.json",{cache:"no-cache",credentials:"omit"});
     const end=hearingDateWindowEnd(todayISO(),meetingWatchExtra.dateWindow);
     const rows=(payload.rows||[]).filter(row=>normalizeCommunityBoardRef(

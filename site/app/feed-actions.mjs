@@ -38,7 +38,6 @@ import {
   landParticipationStepsMissingKey,
   normalizeLandUseActionType,
 } from "../land_use_action_type.mjs";
-import { loadMeetingSnapshot } from "../meeting_snapshot_client.mjs";
 import {
   buildMeetingGroupingReportTarget,
   renderReportIssueAffordance,
@@ -139,7 +138,8 @@ function loadPropertyView(){
 }
 function loadMeetingView(){
   if(!meetingViewPromise){
-    meetingViewPromise=loadMeetingSnapshot(MEETINGS_SNAPSHOT_URL);
+    meetingViewPromise=import("../meeting_snapshot_client.mjs")
+      .then((m)=>m.loadMeetingSnapshot(MEETINGS_SNAPSHOT_URL));
   }
   return meetingViewPromise;
 }
