@@ -39,7 +39,6 @@ ROUTE = "/near-you/?geo=nta2020%3ABK1503&compare=council_district&surface=map&dr
 VIEWPORTS = (("desktop", 1440, 900), ("narrow_touch", 390, 844), ("compact_touch", 360, 800))
 PRODUCTION_VIEWPORTS = (("desktop", 1440, 900), ("narrow_touch", 390, 844))
 MINIMUM_VISIBLE_MAP_HEIGHT = 240
-MAXIMUM_MAP_GAP_AFTER_CITYWIDE = 48
 TARGET_SIZE_FLOOR_CSS_PX = 44
 INNER_WIDTH_TOLERANCE_PX = 32
 ENTRY_ROUTES = (

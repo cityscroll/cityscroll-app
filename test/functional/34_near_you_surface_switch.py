@@ -20,26 +20,19 @@ def is_visible(page: Page, selector: str) -> bool:
     )
 
 
-# Before a place is chosen, citywide records and then any neighborhood
-# suggestions come first by design, so the map may start below the first
-# viewport; it must then follow the last of them directly.
-MAP_REACHED_JS = """([height, maxGap]) => {
+# Map-first entry: the map starts in the first viewport. Citywide specials and
+# place suggestions follow it (flex order 8), so reachability is first-viewport
+# presence with a positive visible slice — not a gap after citywide.
+MAP_REACHED_JS = """(height) => {
   const map = document.querySelector('[data-near-surface-panel="map"]').getBoundingClientRect();
-  if (map.top < height) return true;
-  const citywide = document.querySelector('.near-special-records[data-near-special-records="entry"]');
-  const suggestions = document.querySelector('.near-place-suggestions');
-  const last = suggestions || citywide;
-  if (!last) return false;
-  if (suggestions && citywide
-    && suggestions.getBoundingClientRect().top < citywide.getBoundingClientRect().bottom) return false;
-  const gap = map.top - last.getBoundingClientRect().bottom;
-  return gap >= 0 && gap <= maxGap;
+  if (!(map.height > 0)) return false;
+  const visible = Math.min(height, map.bottom) - Math.max(0, map.top);
+  return map.top < height && visible > 0;
 }"""
-MAXIMUM_MAP_GAP_AFTER_CITYWIDE = 48
 
 
 def map_reached(page: Page, height: int) -> bool:
-    return page.evaluate(MAP_REACHED_JS, [height, MAXIMUM_MAP_GAP_AFTER_CITYWIDE])
+    return page.evaluate(MAP_REACHED_JS, height)
 
 
 def assert_switches(page: Page, width: int, height: int) -> None:
@@ -64,7 +57,7 @@ def assert_switches(page: Page, width: int, height: int) -> None:
     assert is_visible(page, map_panel)
     assert not is_visible(page, results)
     assert page.evaluate("document.activeElement?.dataset.nearSurface") == "map"
-    assert map_reached(page, height), f"the map does not follow the entry at {width}px"
+    assert map_reached(page, height), f"the map is outside the first viewport at {width}px"
 
     records.click()
     assert page.locator("[data-near-you-root]").get_attribute("data-near-mobile-surface") == "records"
