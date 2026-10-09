@@ -24,6 +24,12 @@ const OPERATION_METERS = Object.freeze(["kv_reads", "kv_writes", "d1_rows_read",
 const FORBIDDEN_RETAINED_KEYS = /(?:^|_)(?:url|query|headers?|body|token|credential|email|ip|account_id|user_agent|identifier)(?:_|$)/i;
 const SHA256 = /^[a-f0-9]{64}$/;
 
+export function workerCostEnforcementMode(value) {
+  return value === "enabled"
+    ? { mode: "active", protection: "all-meter-enforced" }
+    : { mode: "inactive", protection: "incomplete-pending-evidence" };
+}
+
 function fail(message) {
   throw new Error(message);
 }
@@ -120,12 +126,12 @@ function validateProviderDeployment(deployment, revision, path) {
 export function validateTrustedProviderDeployment(deployment, trustedDeployment, revision, path = "provider_deployment") {
   const providerVersionId = validateProviderDeployment(deployment, revision, path);
   const trustedVersionId = validateProviderDeployment(trustedDeployment, revision, `${path}.trusted`);
-  if (providerVersionId !== trustedVersionId) fail(`${path} provider version does not match trusted deployment evidence`);
+  if (providerVersionId !== trustedVersionId) fail(`${path} provider version does not match supplied deployment evidence`);
   if (deployment.provider_receipt_sha256 !== trustedDeployment.provider_receipt_sha256) {
-    fail(`${path} receipt digest does not match trusted deployment evidence`);
+    fail(`${path} receipt digest does not match supplied deployment evidence`);
   }
   if (canonicalJson(deployment.receipt) !== canonicalJson(trustedDeployment.receipt)) {
-    fail(`${path} receipt does not match trusted deployment evidence`);
+    fail(`${path} receipt does not match supplied deployment evidence`);
   }
   return providerVersionId;
 }
@@ -404,7 +410,7 @@ function normalizedMeters(run) {
 export function evaluateWarehouseExperiment({ baseline, candidate, trustedDeployments } = {}) {
   assertSanitized({ baseline, candidate });
   if (!trustedDeployments?.baseline || !trustedDeployments?.candidate) {
-    fail("independent trusted deployment evidence is required for baseline and candidate");
+    fail("separately acquired deployment evidence is required for baseline and candidate");
   }
   for (const [label, run] of Object.entries({ baseline, candidate })) {
     if (!run || run.schema !== "cityscroll.warehouse_cost_experiment_run.v1") fail(`invalid ${label} experiment run`);
@@ -495,7 +501,7 @@ export function evaluateAllMeterRelease({ baseline, candidate, trustedDeployment
     }
   }
   if (!trustedDeployments?.baseline || !trustedDeployments?.candidate) {
-    fail("independent trusted deployment evidence is required for baseline and candidate");
+    fail("separately acquired deployment evidence is required for baseline and candidate");
   }
   validateTrustedProviderDeployment(
     baseline.profile.provider_deployment,

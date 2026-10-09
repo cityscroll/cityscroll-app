@@ -263,6 +263,42 @@ export async function acquireActiveDeploymentBinding({
   });
 }
 
+export async function acquireWarehouseDeploymentBindings({
+  providerStatus,
+  providerVersions: versions,
+  healthUrl,
+  workerName,
+  baselineRevision,
+  candidateRevision,
+  fetchImpl = fetch,
+}) {
+  const plan = planCanaryPromotion({ status: providerStatus, versions, revision: candidateRevision });
+  if (plan.state !== "staged" || !plan.rollback_version_id) {
+    fail("warehouse acquisition requires the bounded baseline and candidate split");
+  }
+  const [baseline, candidate] = await Promise.all([
+    acquireHealthBinding({
+      providerStatus,
+      healthUrl,
+      workerName,
+      expectedRevision: baselineRevision,
+      providerVersionId: plan.rollback_version_id,
+      overrideVersion: true,
+      fetchImpl,
+    }),
+    acquireHealthBinding({
+      providerStatus,
+      healthUrl,
+      workerName,
+      expectedRevision: candidateRevision,
+      providerVersionId: plan.candidate_version_id,
+      overrideVersion: true,
+      fetchImpl,
+    }),
+  ]);
+  return { baseline, candidate };
+}
+
 function readJson(path, label) {
   if (!path) fail(`${label} path is required`);
   return JSON.parse(readFileSync(path, "utf8"));

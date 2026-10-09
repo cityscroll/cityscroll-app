@@ -35,9 +35,9 @@ The profile also retains and hashes a structured Cloudflare deployment-binding
 receipt. The validator requires that receipt to identify the Cloudflare Versions
 API and production health as its sources, recomputes its digest from canonical
 contents, and requires every sample to match its declared provider version and
-revision. This proves internal consistency only: the current command does not
-acquire either source independently, so a caller can still construct a
-self-consistent receipt that does not describe the actual deployment.
+revision. Pure evaluator calls prove matching and internal consistency only;
+they do not authenticate a caller-supplied receipt. Authentication belongs to
+the command boundary that acquires provider state and health itself.
 
 Collection is capped at 30 minutes and 10,000 events. Before persistence, an
 event must match the probe's literal header value and exact URL and method. The
@@ -64,10 +64,11 @@ storage, collector, or error meter regresses and at least one meter improves;
 otherwise the baseline stays active. The experiment records an operational
 retention recommendation, never a financial-savings claim.
 Both warehouse runs must also match independently acquired deployment bindings;
-the receipts embedded in the runs cannot authenticate themselves. A historical
-baseline may be acquired from its untagged, single full-traffic provider version
-and plain production health response. The candidate binding still requires the
-exact tagged staged revision and its version-targeted health response.
+the receipts embedded in the runs cannot authenticate themselves. The warehouse
+command reads authenticated deployment status and version metadata itself, then
+queries production health with exact version overrides for the untagged rollback
+baseline and tagged candidate in the bounded split. Caller-supplied trusted
+deployment JSON is rejected.
 
 The all-meter gate applies the same tariff-free, per-meter ratchet to an
 equivalent numeric workload, including D1 reads and writes as independent
@@ -84,7 +85,18 @@ populations must match for each meter. Each receipt's `workload_count` must also
 equal the full number of retained provider samples, so an independently
 supplied divisor cannot make a regressed total look neutral.
 
-The Worker release workflow is a fail-closed two-phase deployment. An explicit
+The Worker release workflow has an explicit phased-activation boundary. While
+the `WORKER_COST_ENFORCEMENT` repository variable is absent or differs from the
+literal `enabled`, ordinary main and manual Worker deployments retain their
+direct deploy behavior and report all-meter protection as incomplete. This
+inactive state does not claim the pending CPU optimization is measured or
+protected. Current production observation records 17 KV reads and 18 KV writes
+for each sixteen-observation RUM batch; that baseline does not relax the
+candidate's three-put release threshold. Once deliberately enabled, missing or
+mismatched evidence fails closed and the workflow uses the two-phase promotion
+path below.
+
+An explicit
 `workflow_dispatch` `stage` request uploads the exact revision as a tagged
 Worker Version and assigns it 5 percent of HTTP traffic while retaining the
 current version at 95 percent as the rollback identity. Staging never runs the
@@ -95,7 +107,7 @@ deployment status and version metadata and compares candidate and rollback IDs
 with the initial plan. An intervening provider change fails closed; an exact
 already-staged or already-promoted state is the only no-op retry.
 
-The promotion path fails closed before it mutates production by
+The activated promotion path fails closed before it mutates production by
 evaluating the sanitized JSON receipts in the `WORKER_COST_BASELINE_EVIDENCE`
 and `WORKER_COST_CANDIDATE_EVIDENCE` repository variables. The separately
 retained baseline deployment binding is supplied through

@@ -10,6 +10,7 @@ import {
   buildWorkerCostProfile,
   evaluateAllMeterRelease,
   providerDeploymentReceiptSha256,
+  workerCostEnforcementMode,
 } from "./lib/worker_cost_control.mjs";
 
 const revision = "b".repeat(40);
@@ -28,6 +29,17 @@ const providerDeployment = (profileRevision) => {
     provider_receipt_sha256: providerDeploymentReceiptSha256(receipt),
   };
 };
+
+test("cost enforcement activates only through the explicit repository value", () => {
+  assert.deepEqual(workerCostEnforcementMode("enabled"), {
+    mode: "active", protection: "all-meter-enforced",
+  });
+  for (const value of [undefined, "", "true", "ENABLED", "disabled"]) {
+    assert.deepEqual(workerCostEnforcementMode(value), {
+      mode: "inactive", protection: "incomplete-pending-evidence",
+    });
+  }
+});
 function profile(profileRevision = revision, totals = {}, samplesPerCohort = 1) {
   const routeCohortCount = REQUIRED_COST_COHORTS.length - 1;
   const samples = REQUIRED_COST_COHORTS.flatMap((cohort, cohortIndex) => Array.from({ length: samplesPerCohort }, (_, sampleIndex) => ({
@@ -187,10 +199,10 @@ test("release evidence cannot authenticate its own provider deployment binding",
   independentlyDifferent.receipt.cloudflare_version.id = "independently-observed-version";
   independentlyDifferent.provider_receipt_sha256 = providerDeploymentReceiptSha256(independentlyDifferent.receipt);
   evidence.trustedDeployments.candidate = independentlyDifferent;
-  assert.throws(() => evaluateAllMeterRelease(evidence), /trusted deployment evidence/);
+  assert.throws(() => evaluateAllMeterRelease(evidence), /supplied deployment evidence/);
   const missing = pair();
   delete missing.trustedDeployments;
-  assert.throws(() => evaluateAllMeterRelease(missing), /independent trusted deployment evidence/);
+  assert.throws(() => evaluateAllMeterRelease(missing), /separately acquired deployment evidence/);
 });
 
 test("release CLI gates the exact candidate revision from configured evidence", () => {

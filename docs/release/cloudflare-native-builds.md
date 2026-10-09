@@ -42,9 +42,12 @@ Both stage and promotion re-read provider deployment and version state directly
 before changing traffic and refuse the mutation if candidate or rollback
 identity changed after the initial plan.
 
-Before either trigger mutates production, the Worker workflow evaluates the
-provider-native all-meter release gate. Its evidence variables, normalization
-contract, and failure conditions are owned by
+The all-meter ratchet is deliberately activated only when the
+`WORKER_COST_ENFORCEMENT` repository variable is the literal `enabled`. Until
+then, ordinary deployments continue and report that cost protection and the CPU
+optimization remain incomplete. Once active, missing or mismatched evidence
+fails closed before promotion. Its evidence variables, normalization contract,
+and failure conditions are owned by
 [`docs/worker-cost-controls.md`](../worker-cost-controls.md).
 
 The Worker path filter is wide — `worker/**`, `capabilities/**`,

@@ -80,6 +80,54 @@ export function parseWorkflowText(text, { filename = "<workflow>" } = {}) {
   return docs;
 }
 
+export function shellArgv(command) {
+  const words = [];
+  let word = "";
+  let quote = null;
+  for (const character of command.replace(/\\\r?\n/g, " ").trim()) {
+    if (quote) {
+      if (character === quote) quote = null;
+      else word += character;
+    } else if (character === '"' || character === "'") quote = character;
+    else if (/\s/.test(character)) {
+      if (word) words.push(word), word = "";
+    } else word += character;
+  }
+  if (quote) throw new Error("unterminated shell quote");
+  if (word) words.push(word);
+  return words;
+}
+
+export function normalizedRunCommands(run = "") {
+  return run.replace(/\\\r?\n/g, " ").split("\n").map((line) => line.trim()).filter(Boolean).map((line) => {
+    let command = line;
+    const subshell = command.indexOf("&&");
+    if (command.startsWith("(") && subshell >= 0) command = command.slice(subshell + 2).trim();
+    const redirected = command.indexOf(") > ");
+    if (redirected >= 0) command = command.slice(0, redirected);
+    return shellArgv(command);
+  });
+}
+
+export function normalizedExecutables(run = "") {
+  return normalizedRunCommands(run).flatMap((rawArgv) => {
+    let argv = rawArgv;
+    const assignmentCommand = argv[0]?.match(/^[^=]+=\$\(([^)]+)$/);
+    if (assignmentCommand) argv = [assignmentCommand[1], ...argv.slice(1)];
+    const indexes = [argv.indexOf("npx"), argv.indexOf("node")].filter((index) => index >= 0);
+    if (!indexes.length) {
+      if (!argv.length || ["set", "mkdir", "echo", "exit", "if", "then", "else", "fi"].includes(argv[0])) return [];
+      if (argv[0].includes("=")) return [];
+      return [argv];
+    }
+    const start = Math.min(...indexes);
+    const redirected = argv.findIndex((word, index) => index > start && (word === ">" || word.startsWith(">")));
+    const command = argv.slice(start, redirected >= 0 ? redirected : undefined);
+    command[command.length - 1] = command.at(-1).replace(/\)$/, "");
+    return [command];
+  });
+}
+
 function main() {
   const files = listWorkflowFiles();
   if (!files.length) {

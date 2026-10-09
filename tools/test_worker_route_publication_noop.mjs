@@ -119,6 +119,37 @@ test("Wrangler's provider 404 for the new state key is first-publication absence
   }
 });
 
+test("Wrangler's exact missing-value outputs start the first publication", async () => {
+  for (const missing of [
+    { stdout: "Value not found\n" },
+    { error: "A request to the Cloudflare API failed [code: 10009]" },
+  ]) {
+    const dir = fixture();
+    const remote = fakeWrangler();
+    let first = true;
+    try {
+      const result = await publishRouteReadModels({
+        routeDir: dir,
+        invoke: async (args) => {
+          if (first && args.slice(0, 4).join(" ") === `kv key get ${ROUTE_PUBLICATION_STATE_KEY}`) {
+            first = false;
+            if (missing.stdout) return { stdout: missing.stdout };
+            const error = new Error(`wrangler exited 1: ${missing.error}`);
+            error.status = 1;
+            error.stderr = missing.error;
+            throw error;
+          }
+          return remote.invoke(args);
+        },
+      });
+      assert.equal(result.decision, "state-missing-republish");
+      assert.equal(result.confirmed.state_puts, 1);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  }
+});
+
 test("state reads preserve authentication and non-404 provider failures", async () => {
   const dir = fixture();
   try {
@@ -135,6 +166,25 @@ test("state reads preserve authentication and non-404 provider failures", async 
         }),
         new RegExp(message.split(" ")[0]),
       );
+    }
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("missing-state detection rejects nearby provider failures", async () => {
+  const dir = fixture();
+  try {
+    for (const message of ["namespace not found [code: 10009x]", "API request failed: 404 Unauthorized"]) {
+      await assert.rejects(() => publishRouteReadModels({
+        routeDir: dir,
+        invoke: async () => {
+          const error = new Error(`wrangler exited 1: ${message}`);
+          error.status = 1;
+          error.stderr = message;
+          throw error;
+        },
+      }), /wrangler exited 1/);
     }
   } finally {
     rmSync(dir, { recursive: true, force: true });

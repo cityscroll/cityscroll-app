@@ -141,12 +141,15 @@ function kvArgs(configPath) {
 
 function parseState(raw) {
   const text = String(raw || "").trim();
+  if (text === "Value not found") return null;
   return text ? JSON.parse(text) : null;
 }
 
 function isMissingPublicationState(error) {
   const providerText = `${error?.stdout || ""}\n${error?.stderr || ""}\n${error?.message || ""}`;
-  return error?.status === 1 && /\b404\b/.test(providerText) && /\bNot Found\b/i.test(providerText);
+  if (error?.status !== 1) return false;
+  return /\b404 Not Found\b/.test(providerText)
+    || /\b(?:code|error)(?::)?\s*10009\b/i.test(providerText);
 }
 
 /**

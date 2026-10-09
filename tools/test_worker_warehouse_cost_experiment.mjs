@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -12,6 +11,8 @@ import {
   evaluateWarehouseExperiment,
   providerDeploymentReceiptSha256,
 } from "./lib/worker_cost_control.mjs";
+import { canaryVersionTag } from "./cloudflare_deployment_binding.mjs";
+import { runWorkerCostControl } from "./worker_cost_control.mjs";
 
 function run(overrides = {}) {
   const result = {
@@ -33,7 +34,7 @@ function run(overrides = {}) {
     const receipt = {
       schema: "cityscroll.cloudflare_deployment_binding.v1",
       evidence_mode: "actual-production",
-      observed_at: "2026-10-08T22:59:00Z",
+      observed_at: "2026-10-08T22:59:00.000Z",
       production_health: { source: "cityscroll-production-health", revision: result.deployed_revision },
       cloudflare_version: { source: "cloudflare-versions-api", id: `provider-${result.deployed_revision.slice(0, 12)}` },
     };
@@ -189,47 +190,72 @@ test("warehouse evaluation requires independent deployment bindings", () => {
     deployed_revision: "b".repeat(40), observed_at: "2026-10-08T23:10:00Z",
     meters: { ...baseline.meters, native_cpu_ms: 80 },
   });
-  assert.throws(() => evaluateWarehouseExperiment({ baseline, candidate }), /independent trusted deployment evidence/);
+  assert.throws(() => evaluateWarehouseExperiment({ baseline, candidate }), /separately acquired deployment evidence/);
   const trusted = trustedDeployments(baseline, candidate);
   trusted.candidate.receipt.cloudflare_version.id = "different-provider-version";
   trusted.candidate.provider_receipt_sha256 = providerDeploymentReceiptSha256(trusted.candidate.receipt);
   assert.throws(() => evaluateWarehouseExperiment({
     baseline, candidate, trustedDeployments: trusted,
-  }), /trusted deployment evidence/);
+  }), /supplied deployment evidence/);
 });
 
-test("warehouse CLI requires and consumes trusted deployment bindings", () => {
+test("warehouse command acquires provider status and version-targeted health itself", async () => {
   const baseline = run();
   const candidate = run({
     deployed_revision: "b".repeat(40), observed_at: "2026-10-08T23:10:00Z",
     meters: { ...baseline.meters, native_cpu_ms: 80 },
   });
-  const trusted = trustedDeployments(baseline, candidate);
   const dir = mkdtempSync(join(tmpdir(), "cityscroll-warehouse-"));
   try {
-    const paths = Object.fromEntries(Object.entries({
-      baseline,
-      candidate,
-      trustedBaseline: trusted.baseline,
-      trustedCandidate: trusted.candidate,
-    }).map(([name, value]) => {
+    const paths = Object.fromEntries(Object.entries({ baseline, candidate }).map(([name, value]) => {
       const path = join(dir, `${name}.json`);
       writeFileSync(path, JSON.stringify(value));
       return [name, path];
     }));
-    const args = [
-      "tools/worker_cost_control.mjs", "warehouse-evaluate",
+    const invocations = [];
+    const result = await runWorkerCostControl([
+      "warehouse-evaluate",
       "--baseline", paths.baseline,
       "--candidate", paths.candidate,
-      "--trusted-baseline-deployment", paths.trustedBaseline,
-      "--trusted-candidate-deployment", paths.trustedCandidate,
-    ];
-    const accepted = spawnSync(process.execPath, args, { encoding: "utf8" });
-    assert.equal(accepted.status, 0);
-    assert.equal(JSON.parse(accepted.stdout).decision, "candidate-retained");
-    const missingTrust = spawnSync(process.execPath, args.slice(0, -4), { encoding: "utf8" });
-    assert.notEqual(missingTrust.status, 0);
-    assert.match(missingTrust.stderr, /trusted-baseline-deployment/);
+    ], {
+      env: { CLOUDFLARE_API_TOKEN: "injected-test-token" },
+      invokeWrangler: async (args) => {
+        invocations.push(args);
+        if (args[0] === "deployments") return {
+          created_on: "2026-10-08T22:59:00.000Z",
+          versions: [
+            { version_id: baseline.provider_deployment.receipt.cloudflare_version.id, percentage: 95 },
+            { version_id: candidate.provider_deployment.receipt.cloudflare_version.id, percentage: 5 },
+          ],
+        };
+        return [
+          { id: baseline.provider_deployment.receipt.cloudflare_version.id, annotations: {} },
+          {
+            id: candidate.provider_deployment.receipt.cloudflare_version.id,
+            annotations: { "workers/tag": canaryVersionTag(candidate.deployed_revision) },
+          },
+        ];
+      },
+      fetchImpl: async (_url, init) => {
+        const override = init.headers["Cloudflare-Workers-Version-Overrides"];
+        const revision = override.includes(baseline.provider_deployment.receipt.cloudflare_version.id)
+          ? baseline.deployed_revision
+          : candidate.deployed_revision;
+        return {
+          ok: true,
+          json: async () => ({ status: "cityscroll-worker ok", environment: "production", commit: revision }),
+        };
+      },
+    });
+    assert.equal(result.decision, "candidate-retained");
+    assert.deepEqual(invocations, [
+      ["deployments", "status", "--json"],
+      ["versions", "list", "--json"],
+    ]);
+    await assert.rejects(() => runWorkerCostControl([
+      "warehouse-evaluate", "--baseline", paths.baseline, "--candidate", paths.candidate,
+      "--trusted-baseline-deployment", paths.baseline,
+    ], { invokeWrangler: async () => ({}) }), /cannot be supplied by callers/);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

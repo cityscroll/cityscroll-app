@@ -172,6 +172,14 @@ jobs:
           cache-dependency-path: worker/pnpm-lock.yaml
       - name: Install worker dependencies
         run: tools/install_worker_dependencies.sh
+      - name: Resolve Worker cost-control enforcement
+        id: cost_enforcement
+        env:
+          WORKER_COST_ENFORCEMENT: ${{ vars.WORKER_COST_ENFORCEMENT }}
+        run: |
+          node tools/worker_cost_control.mjs enforcement-mode \
+            --value-env WORKER_COST_ENFORCEMENT \
+            --github-output "$GITHUB_OUTPUT"
       - name: Verify Worker trigger coverage from dependency surface
         run: |
           set -euo pipefail
@@ -206,6 +214,7 @@ jobs:
       - name: Validate D1 release policy
         run: node tools/d1_release_policy.mjs --check
       - name: Acquire trusted staged Worker deployment binding
+        if: ${{ steps.cost_enforcement.outputs.mode == 'active' }}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
@@ -226,6 +235,7 @@ jobs:
             --expected-revision "$GITHUB_SHA" \
             --out .artifacts/cost-control/candidate-deployment.json
       - name: Enforce the all-meter Worker release gate
+        if: ${{ steps.cost_enforcement.outputs.mode == 'active' }}
         env:
           WORKER_COST_BASELINE_EVIDENCE: ${{ vars.WORKER_COST_BASELINE_EVIDENCE }}
           WORKER_COST_CANDIDATE_EVIDENCE: ${{ vars.WORKER_COST_CANDIDATE_EVIDENCE }}
@@ -700,6 +710,17 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           set -euo pipefail
+          if [ "${{ steps.cost_enforcement.outputs.mode }}" = "inactive" ]; then
+            log="$RUNNER_TEMP/cityscroll-worker-deploy.log"
+            if ! (cd worker && npx wrangler@4.126.0 deploy \
+              --var "GIT_COMMIT_SHA:$GITHUB_SHA" \
+              --var WRANGLER_ENV:production) > "$log" 2>&1; then
+              echo "Cloudflare rejected the Worker deployment." >&2
+              exit 1
+            fi
+            echo "Worker all-meter enforcement is inactive; protection remains incomplete pending production evidence."
+            exit 0
+          fi
           state_dir="$RUNNER_TEMP/cityscroll-worker-promotion"
           mkdir -p "$state_dir"
           (cd worker && npx wrangler@4.126.0 deployments status --json) > "$state_dir/provider-status.json"
@@ -725,6 +746,7 @@ jobs:
           fi
 
       - name: Apply Worker triggers after promotion
+        if: ${{ steps.cost_enforcement.outputs.mode == 'active' }}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |

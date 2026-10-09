@@ -6,57 +6,14 @@ import {
   digestDeployDelayMs,
   waitForDigestCronWindow,
 } from "../tools/wait_for_digest_cron_window.mjs";
-import { parseWorkflowText } from "../tools/check_github_workflows_yaml.mjs";
+import {
+  normalizedExecutables,
+  normalizedRunCommands,
+  parseWorkflowText,
+  shellArgv,
+} from "../tools/check_github_workflows_yaml.mjs";
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
-
-function shellArgv(command) {
-  const words = [];
-  let word = "";
-  let quote = null;
-  for (const character of command.replace(/\\\r?\n/g, " ").trim()) {
-    if (quote) {
-      if (character === quote) quote = null;
-      else word += character;
-    } else if (character === '"' || character === "'") quote = character;
-    else if (/\s/.test(character)) {
-      if (word) words.push(word), word = "";
-    } else word += character;
-  }
-  if (quote) throw new Error("unterminated shell quote");
-  if (word) words.push(word);
-  return words;
-}
-
-function normalizedRunCommands(run) {
-  return run.replace(/\\\r?\n/g, " ").split("\n").map((line) => line.trim()).filter(Boolean).map((line) => {
-    let command = line;
-    const subshell = command.indexOf("&&");
-    if (command.startsWith("(") && subshell >= 0) command = command.slice(subshell + 2).trim();
-    const redirected = command.indexOf(") > ");
-    if (redirected >= 0) command = command.slice(0, redirected);
-    return shellArgv(command);
-  });
-}
-
-function normalizedExecutables(run) {
-  return normalizedRunCommands(run).flatMap((rawArgv) => {
-    let argv = rawArgv;
-    const assignmentCommand = argv[0]?.match(/^[^=]+=\$\(([^)]+)$/);
-    if (assignmentCommand) argv = [assignmentCommand[1], ...argv.slice(1)];
-    const indexes = [argv.indexOf("npx"), argv.indexOf("node")].filter((index) => index >= 0);
-    if (!indexes.length) {
-      if (!argv.length || ["set", "mkdir", "echo", "exit", "if", "then", "fi"].includes(argv[0])) return [];
-      if (argv[0].includes("=")) return [];
-      return [argv];
-    }
-    const start = Math.min(...indexes);
-    const redirected = argv.findIndex((word, index) => index > start && (word === ">" || word.startsWith(">")));
-    const command = argv.slice(start, redirected >= 0 ? redirected : undefined);
-    command[command.length - 1] = command.at(-1).replace(/\)$/, "");
-    return [command];
-  });
-}
 
 test("Worker routes retain API domains and claim only canonical dynamic-document paths", () => {
   const config = read("worker/wrangler.toml");
@@ -93,14 +50,22 @@ test("Worker deploy uses the pinned dry-run budget and read-model canary guard",
   assert.match(workflow, /64 MiB/);
 });
 
-test("deploy workflow executes route publication and the all-meter gate", () => {
+test("deploy workflow preserves ordinary deploys and gates only activated promotion", () => {
   const workflow = parseWorkflowText(read(".github/workflows/deploy-worker.yml"), {
     filename: "deploy-worker.yml",
   })[0];
   const steps = workflow.jobs.deploy.steps;
   const publication = steps.find((step) => step.name === "Publish Near You and meeting route read models");
   assert.equal(publication.run, "node tools/worker_route_publication.mjs publish --route-dir \"$RUNNER_TEMP/cityscroll-worker-route-read-models\"");
+  const enforcement = steps.find((step) => step.name === "Resolve Worker cost-control enforcement");
+  assert.equal(enforcement.env.WORKER_COST_ENFORCEMENT, "${{ vars.WORKER_COST_ENFORCEMENT }}");
+  assert.deepEqual(normalizedExecutables(enforcement.run), [[
+    "node", "tools/worker_cost_control.mjs", "enforcement-mode",
+    "--value-env", "WORKER_COST_ENFORCEMENT",
+    "--github-output", "$GITHUB_OUTPUT",
+  ]]);
   const gate = steps.find((step) => step.name === "Enforce the all-meter Worker release gate");
+  assert.equal(gate.if, "${{ steps.cost_enforcement.outputs.mode == 'active' }}");
   assert.equal(gate.env.WORKER_COST_BASELINE_EVIDENCE, "${{ vars.WORKER_COST_BASELINE_EVIDENCE }}");
   assert.equal(gate.env.WORKER_COST_CANDIDATE_EVIDENCE, "${{ vars.WORKER_COST_CANDIDATE_EVIDENCE }}");
   assert.equal(gate.env.WORKER_COST_BASELINE_DEPLOYMENT, "${{ vars.WORKER_COST_BASELINE_DEPLOYMENT }}");
@@ -113,6 +78,7 @@ test("deploy workflow executes route publication and the all-meter gate", () => 
     "--expected-candidate-revision", "$GITHUB_SHA",
   ]);
   const acquisition = steps.find((step) => step.name === "Acquire trusted staged Worker deployment binding");
+  assert.equal(acquisition.if, "${{ steps.cost_enforcement.outputs.mode == 'active' }}");
   const acquisitionCommands = normalizedRunCommands(acquisition.run);
   assert.deepEqual(acquisitionCommands.find((argv) => argv[0] === "npx" && argv[2] === "deployments"), [
     "npx", "wrangler@4.126.0", "deployments", "status", "--json",
@@ -146,6 +112,7 @@ test("deploy workflow executes route publication and the all-meter gate", () => 
   assert.deepEqual(promotionCommands
     .filter((argv) => argv[0] === "npx" && argv[1] === "wrangler@4.126.0")
     .map((argv) => argv.slice(2, 5)), [
+    ["deploy", "--var", "GIT_COMMIT_SHA:$GITHUB_SHA"],
     ["deployments", "status", "--json"],
     ["versions", "list", "--json"],
     ["versions", "deploy", "${candidate}@100%"],
