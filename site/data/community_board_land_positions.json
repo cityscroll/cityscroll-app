@@ -2,20 +2,20 @@
   "schema": "cityscroll.community_board_land_positions.v1",
   "method": "retained_board_identity_reverse_index_v1",
   "negative_rule": "A recorded position is one board's advisory recommendation on one application, read back from the identity the retained record already carries. It is never a decision on the project, never a count of meetings, and a recorded tally is the vote on the recommendation motion rather than a count of support for the development.",
-  "generated_at": "2026-09-30T13:04:22.921Z",
+  "generated_at": "2026-10-09T13:55:03.598Z",
   "source": {
     "publisher": "NYC Department of City Planning, Zoning Application Portal",
     "dataset_id": "hgx4-8ukb",
     "source_url": "https://data.cityofnewyork.us/d/hgx4-8ukb",
-    "observed_on": "2026-09-30T13:04:22.921Z"
+    "observed_on": "2026-10-09T13:55:03.598Z"
   },
   "counts": {
     "retained_projects": 40,
-    "projects_with_observed_recommendations": 22,
-    "board_recommendations": 20,
-    "board_positions": 20,
+    "projects_with_observed_recommendations": 23,
+    "board_recommendations": 21,
+    "board_positions": 21,
     "boards_with_positions": 16,
-    "projects_with_board_positions": 20,
+    "projects_with_board_positions": 21,
     "undated_board_recommendations": 0,
     "unsubmitted_board_recommendations": 0,
     "unresolved_board_recommendations": 0,
@@ -345,8 +345,8 @@
     },
     "manhattan-cb-04": {
       "body_id": "manhattan-cb-04",
-      "position_count": 1,
-      "project_count": 1,
+      "position_count": 2,
+      "project_count": 2,
       "recorded_date_count": 1,
       "positions": [
         {
@@ -380,6 +380,40 @@
                 "votes_abstain": null
               },
               "source_record_id": "a0334747-3d79-f011-b4cb-001dd8020d3e"
+            }
+          ]
+        },
+        {
+          "project_id": "2024M0244",
+          "project_name": "Dewitt Clinton Park North (801 Eleventh Avenue)",
+          "project_public_status": "In Public Review",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2024M0244",
+          "position": "Conditional Unfavorable",
+          "position_class": "conditional_unfavorable",
+          "status": "Submitted",
+          "recorded_on": "2026-02-04",
+          "recorded_tally": {
+            "recorded": true,
+            "votes_for": 33,
+            "votes_against": 1,
+            "votes_abstain": 1
+          },
+          "source_record_id": "e8aa3fca-ed7d-f011-b4cb-001dd80f50ac",
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": null,
+              "position": "Conditional Favorable",
+              "position_class": "conditional_favorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "43f3b5d2-ed7d-f011-b4cc-001dd8006beb"
             }
           ]
         }
