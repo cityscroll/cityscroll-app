@@ -404,6 +404,52 @@ test("official-cfb-influence freshness is measured from the scheduled check, not
   });
 });
 
+test("sharded shared meeting index still counts population through rows", async () => {
+  // The published catalog keeps rows in shards; a bare JSON.parse of the index
+  // leaves population_fields=["rows"] null and falsely marks a current vintage
+  // stale. The freshness reader must follow shards before measuring population.
+  await withTempDir("shared-meeting-shard-freshness", async (root) => {
+    const write = (path, value) => {
+      const target = join(root, path);
+      mkdirSync(dirname(target), { recursive: true });
+      writeFileSync(target, `${JSON.stringify(value, null, 2)}\n`);
+    };
+    const definition = {
+      ...artifact("shared-meetings", "site/data/shared_meeting_read_model.json", "city-record"),
+      hard_maximum_age_hours: 168,
+      warning_age_hours: 48,
+      vintage_fields: ["sources.city_record.generated_at", "generated_at"],
+      population_fields: ["rows"],
+    };
+    write("site/data/shared_meeting_read_model/shard-000.json", {
+      schema: "cityscroll.shared_meeting_read_model_shard.v1",
+      version: 1,
+      shard_id: "shard-000",
+      rows: [{ id: "m1" }, { id: "m2" }, { id: "m3" }],
+    });
+    write(definition.public_artifact_path, {
+      schema: "cityscroll.shared_meeting_read_model.v1",
+      version: 1,
+      generated_at: "2026-09-04T11:00:00.000Z",
+      representation: "sharded",
+      shard_schema: "cityscroll.shared_meeting_read_model_shard.v1",
+      row_count: 3,
+      shards: [{ path: "shared_meeting_read_model/shard-000.json", bytes: 200, row_count: 3 }],
+      sources: { city_record: { generated_at: "2026-09-04T10:00:00.000Z" } },
+    });
+
+    const report = buildFirstClassFreshnessReport(
+      { first_class_artifacts: [definition] },
+      { root, now: "2026-09-04T12:00:00.000Z" },
+    );
+    const surface = report.surfaces[0];
+    assert.equal(surface.population_count, 3);
+    assert.equal(surface.population_state, "populated");
+    assert.equal(surface.freshness_state, "fresh");
+    assert.deepEqual(productionFreshnessFindings(report), []);
+  });
+});
+
 test("production build emits and retains the first-class freshness proof", () => {
   const build = readFileSync(new URL("../tools/build_cloudflare_pages.mjs", import.meta.url), "utf8");
   assert.match(build, /first_class_refresh\.mjs/);
