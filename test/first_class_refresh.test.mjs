@@ -458,7 +458,7 @@ test("production build emits and retains the first-class freshness proof", () =>
   assert.match(build, /mergeResidentSnapshotRefreshEvidence/);
   const workflow = readFileSync(new URL("../.github/workflows/deploy-cloudflare-pages.yml", import.meta.url), "utf8");
   assert.match(workflow, /first-class-refresh-plan\.json/);
-  assert.match(workflow, /first_class-refresh-receipt\.json/);
+  assert.match(workflow, /first-class-refresh-receipt\.json/);
   assert.match(workflow, /first_class_freshness_report\.json/);
   assert.match(workflow, /first_class_live_smoke\.mjs/);
 });
