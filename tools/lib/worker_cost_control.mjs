@@ -66,7 +66,7 @@ function assertSanitized(value, path = "receipt") {
 }
 
 function requestFromTailEvent(event) {
-  return event?.event?.request || event?.request || null;
+  return event?.event?.request || event?.$workers?.event?.request || event?.request || null;
 }
 
 function providerInvocation(event) {

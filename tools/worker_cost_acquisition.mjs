@@ -24,6 +24,10 @@ import {
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const WORKER_DIRECTORY = join(ROOT, "worker");
 const QUERY_PAGE_LIMIT = 2_000;
+const WAREHOUSE_BASE_COHORTS = Object.freeze([...new Set(WAREHOUSE_EXPERIMENT_COHORTS.map((cohort) => cohort.replace(/:(?:cold|warm)$/, "")))]);
+const WAREHOUSE_COLLECTOR_SAMPLES = WAREHOUSE_EXPERIMENT_COHORTS.length * WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT;
+const WAREHOUSE_MAX_ATTEMPTS_PER_INPUT = Math.floor((MAX_COLLECTOR_EVENTS - WAREHOUSE_COLLECTOR_SAMPLES) / WAREHOUSE_BASE_COHORTS.length);
+const WAREHOUSE_PROBE_CONCURRENCY = 32;
 
 function arg(argv, name) {
   const index = argv.indexOf(name);
@@ -60,11 +64,13 @@ function timestamp(value) {
 }
 
 export function providerEventsFromEnvelope(payload) {
+  const invocationGroups = payload?.result?.invocations ?? payload?.invocations;
+  if (invocationGroups && typeof invocationGroups === "object" && !Array.isArray(invocationGroups)) {
+    return Object.values(invocationGroups).map((records) => mergeInvocationRecords(Array.isArray(records) ? records : [records]));
+  }
   const candidates = [
     payload?.result?.events?.events,
-    payload?.result?.invocations,
     payload?.events?.events,
-    payload?.invocations,
     payload?.events,
     payload?.data,
   ];
@@ -75,10 +81,32 @@ export function providerEventsFromEnvelope(payload) {
         ? Object.values(candidate).flat()
         : null;
     if (!entries) continue;
-    return entries.flatMap((entry) => Array.isArray(entry?.events) ? entry.events : [entry]);
+    return entries.map((entry) => Array.isArray(entry?.events) ? mergeInvocationRecords(entry.events) : entry);
   }
   if (payload?.$workers || payload?.event || payload?.logs || payload?.source) return [payload];
   return [];
+}
+
+function mergeInvocationRecords(records) {
+  if (records.length === 1) return records[0];
+  const merged = { logs: [], exceptions: [] };
+  for (const record of records) {
+    for (const [key, value] of Object.entries(record || {})) {
+      if (!["$metadata", "$workers", "event", "logs", "Logs", "source", "exceptions"].includes(key) && value !== undefined) {
+        merged[key] = value;
+      }
+    }
+    merged.$metadata = { ...merged.$metadata, ...record?.$metadata };
+    merged.event = { ...merged.event, ...record?.event };
+    merged.$workers = { ...merged.$workers, ...record?.$workers };
+    if (record?.$workers?.event) {
+      merged.$workers.event = { ...merged.$workers.event, ...record.$workers.event };
+    }
+    if (record?.source !== undefined) merged.logs.push({ message: record.source });
+    merged.logs.push(...(record?.logs || record?.Logs || []));
+    merged.exceptions.push(...(record?.exceptions || []));
+  }
+  return merged;
 }
 
 export async function queryProviderEvents({
@@ -149,6 +177,7 @@ function socketText(message) {
 
 function wait(milliseconds, signal) {
   if (milliseconds <= 0) return Promise.resolve();
+  if (signal?.aborted) return Promise.reject(new Error("provider event collection was cancelled"));
   return new Promise((resolve, reject) => {
     const timer = setTimeout(resolve, milliseconds);
     signal?.addEventListener("abort", () => {
@@ -156,6 +185,17 @@ function wait(milliseconds, signal) {
       reject(new Error("provider event collection was cancelled"));
     }, { once: true });
   });
+}
+
+export function secureWebSocketUrl(value) {
+  let url;
+  try { url = new URL(value); }
+  catch { throw new Error("live-tail response is incomplete"); }
+  if (url.username || url.password || !["https:", "wss:"].includes(url.protocol)) {
+    throw new Error("live-tail URL must be secure and contain no user information");
+  }
+  if (url.protocol === "https:") url.protocol = "wss:";
+  return url.href;
 }
 
 async function openLiveTail({ accountId, token, workerName, fetchImpl, webSocketFactory, signal }) {
@@ -170,8 +210,7 @@ async function openLiveTail({ accountId, token, workerName, fetchImpl, webSocket
     }),
   });
   if (!response.ok) throw new Error("authenticated live-tail creation failed");
-  const wsUrl = (await response.json())?.result?.wsUrl;
-  if (typeof wsUrl !== "string" || !wsUrl.startsWith("wss://")) throw new Error("live-tail response is incomplete");
+  const wsUrl = secureWebSocketUrl((await response.json())?.result?.wsUrl);
   const socket = webSocketFactory(wsUrl);
   await new Promise((resolve, reject) => {
     socketListener(socket, "open", resolve);
@@ -184,7 +223,9 @@ async function openLiveTail({ accountId, token, workerName, fetchImpl, webSocket
 function receiptExpectation({ receipt, header, outerUrl, providerVersionId, series }) {
   if (receipt?.schema !== "cityscroll.worker_cost_probe.v1") throw new Error("owned HTTP workload receipt is invalid");
   if (receipt.tag !== header || receipt.series !== series) throw new Error("owned HTTP workload receipt ownership is invalid");
-  if (!receipt.result || !receipt.result.correctness) throw new Error("owned HTTP workload correctness is unavailable");
+  if (!receipt.result || (receipt.cohort !== "collector-overhead" && !receipt.result.correctness)) {
+    throw new Error("owned HTTP workload correctness is unavailable");
+  }
   return {
     header,
     series,
@@ -196,12 +237,72 @@ function receiptExpectation({ receipt, header, outerUrl, providerVersionId, seri
   };
 }
 
+async function mapConcurrent(items, concurrency, signal, operation) {
+  const results = new Array(items.length);
+  let next = 0;
+  const workers = Array.from({ length: Math.min(concurrency, items.length) }, async () => {
+    while (next < items.length) {
+      if (signal?.aborted) throw new Error("cost workload collection was cancelled");
+      const index = next;
+      next += 1;
+      results[index] = await operation(items[index], index, signal);
+    }
+  });
+  await Promise.all(workers);
+  return results;
+}
+
+function warehouseWorkloadPairs(byCohort) {
+  const pairs = new Map();
+  for (const base of WAREHOUSE_BASE_COHORTS) {
+    const cold = byCohort.get(`${base}:cold`);
+    const warm = byCohort.get(`${base}:warm`);
+    if (!cold || !warm || cold.workload_hash !== warm.workload_hash) {
+      throw new Error(`${base} cold and warm workloads must be an exact matched input`);
+    }
+    pairs.set(base, cold);
+  }
+  return pairs;
+}
+
+function providerEventsByProbeHeader(events) {
+  const indexed = new Map();
+  for (const event of events) {
+    const request = event?.event?.request || event?.$workers?.event?.request || event?.request;
+    const header = request?.headers?.["x-cityscroll-cost-probe"] || request?.headers?.["X-Cityscroll-Cost-Probe"];
+    if (!header) continue;
+    indexed.set(header, [...(indexed.get(header) || []), event]);
+  }
+  return indexed;
+}
+
+function selectConditionedEvents(eventIndex, expectations, cohort, count) {
+  const selected = [];
+  for (const expectation of expectations) {
+    try {
+      selected.push({ expectation, event: selectOwnedHttpEvent(eventIndex.get(expectation.header) || [], expectation, cohort) });
+    } catch {}
+    if (selected.length === count) break;
+  }
+  if (selected.length !== count) throw new Error(`${cohort} provider samples are incomplete`);
+  return selected;
+}
+
+function correctnessFingerprint(expectation) {
+  const correctness = expectation?.receipt?.result?.correctness;
+  return ["input_digest", "joins_digest", "provenance_digest", "miss_digest", "freshness_digest"]
+    .map((field) => correctness?.[field] || "")
+    .join(":");
+}
+
 export function createLiveWorkerCostTransport({
   env = process.env,
   fetchImpl = fetch,
   webSocketFactory = (url) => new WebSocket(url),
   invokeWrangler = defaultWrangler,
   now = () => Date.now(),
+  sleep = wait,
+  warehouseAttemptsPerInput = WAREHOUSE_MAX_ATTEMPTS_PER_INPUT,
 } = {}) {
   const telemetryToken = secret(env, "CLOUDFLARE_OBSERVABILITY_TOKEN");
   const adminKey = secret(env, "WORKER_COST_ADMIN_KEY");
@@ -230,7 +331,13 @@ export function createLiveWorkerCostTransport({
     }
     return plan;
   };
-  const executeWorkload = async (workload, series, deployment, header = workload.header) => {
+  if (!Number.isInteger(warehouseAttemptsPerInput)
+    || warehouseAttemptsPerInput < WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT * 2
+    || warehouseAttemptsPerInput > WAREHOUSE_MAX_ATTEMPTS_PER_INPUT) {
+    throw new Error("warehouse attempt bound is invalid");
+  }
+  const executeWorkload = async (workload, series, deployment, header = workload.header, signal) => {
+    if (signal?.aborted) throw new Error("cost workload collection was cancelled");
     const probeCohort = workload.probe_cohort || workload.cohort.replace(/:(?:cold|warm)$/, "");
     const providerVersionId = deployment?.receipt?.cloudflare_version?.id;
     if (!providerVersionId) throw new Error("exact provider version is unavailable");
@@ -238,6 +345,7 @@ export function createLiveWorkerCostTransport({
     const response = await fetchImpl(outerUrl, {
       method: "POST",
       redirect: "error",
+      signal,
       headers: {
         Authorization: `Bearer ${adminKey}`,
         "Content-Type": "application/json",
@@ -249,6 +357,7 @@ export function createLiveWorkerCostTransport({
       },
       body: JSON.stringify(workload.body),
     });
+    if (signal?.aborted) throw new Error("cost workload collection was cancelled");
     if (!response.ok) throw new Error(`owned HTTP workload ${workload.cohort} failed`);
     const receipt = await response.json();
     if (receipt.cohort !== probeCohort || receipt.workload_hash !== workload.workload_hash) {
@@ -267,16 +376,28 @@ export function createLiveWorkerCostTransport({
         ...providerState(), healthUrl, workerName, baselineRevision, candidateRevision, fetchImpl,
       });
     },
-    async executeFixedHttpWorkloads({ plan, deployment }) {
+    async executeFixedHttpWorkloads({ plan, deployment, signal }) {
       const expectations = {};
       for (const workload of plan.http_workloads || []) {
-        expectations[workload.cohort] = await executeWorkload(workload, plan.series, deployment);
+        if (signal?.aborted) throw new Error("cost workload collection was cancelled");
+        expectations[workload.cohort] = await executeWorkload(workload, plan.series, deployment, workload.header, signal);
       }
       return expectations;
     },
     async collectProviderEvents({ from, to, limit, execute, signal }) {
+      const startsAt = timestamp(from);
+      const endsAt = timestamp(to);
+      if (endsAt <= startsAt) throw new Error("provider event window is invalid");
+      if (now() < startsAt) await sleep(startsAt - now(), signal);
+      if (signal?.aborted) throw new Error("provider event collection was cancelled");
+      if (now() >= endsAt) return [];
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), MAX_COLLECTOR_SECONDS * 1000);
+      const collectionMilliseconds = Math.min(MAX_COLLECTOR_SECONDS * 1000, endsAt - now());
+      let collectionEnded = false;
+      const timeout = setTimeout(() => {
+        collectionEnded = true;
+        controller.abort();
+      }, collectionMilliseconds);
       signal?.addEventListener("abort", () => controller.abort(), { once: true });
       const events = [];
       let socket;
@@ -297,14 +418,17 @@ export function createLiveWorkerCostTransport({
           }
         });
         socketListener(socket, "error", () => { failure = new Error("live-tail collection failed"); });
-        await execute?.();
-        const requestedRemaining = Math.max(0, timestamp(to) - now());
+        await execute?.(controller.signal);
+        const requestedRemaining = Math.max(0, endsAt - now());
         const settle = execute
           ? Math.min(Number(env.WORKER_COST_LIVE_TAIL_SETTLE_MS || 10_000), MAX_COLLECTOR_SECONDS * 1000)
           : Math.min(requestedRemaining, MAX_COLLECTOR_SECONDS * 1000);
-        await wait(settle, controller.signal);
+        await sleep(settle, controller.signal);
         if (failure) throw failure;
         return events;
+      } catch (error) {
+        if (!execute && collectionEnded) return events;
+        throw error;
       } finally {
         clearTimeout(timeout);
         if (socket && typeof socket.close === "function") socket.close();
@@ -319,38 +443,71 @@ export function createLiveWorkerCostTransport({
       if (cohorts.some((cohort) => !byCohort.has(cohort)) || !plan.collector_workload) {
         return { status: "blocked", reason: "fixed warehouse workload plan is incomplete" };
       }
-      const expectations = Object.fromEntries(cohorts.map((cohort) => [cohort, []]));
-      const collectorExpectations = [];
+      let pairs;
+      try { pairs = warehouseWorkloadPairs(byCohort); }
+      catch (error) { return { status: "blocked", reason: String(error?.message || error) }; }
+      const attempts = Array.from({ length: warehouseAttemptsPerInput }, (_, index) => (
+        [...pairs.entries()].map(([base, workload]) => ({ base, workload, index }))
+      )).flat();
+      const collectorAttempts = Array.from({ length: WAREHOUSE_COLLECTOR_SAMPLES }, (_, index) => index);
+      let expectations = [];
+      let collectorExpectations = [];
       const started = now();
-      const events = await this.collectProviderEvents({
-        from: new Date(started).toISOString(),
-        to: new Date(started + MAX_COLLECTOR_SECONDS * 1000).toISOString(),
-        limit: maxEvents,
-        execute: async () => {
-          for (const cohort of cohorts) {
-            const workload = byCohort.get(cohort);
-            for (let index = 0; index < samplesPerCohort; index += 1) {
-              const header = `cost-${label}-${cohort.replaceAll(/[^a-z0-9]/g, "-")}-${index}`;
-              expectations[cohort].push(await executeWorkload(workload, workloadId, deployment, header));
-            }
-          }
-          for (let index = 0; index < cohorts.length * samplesPerCohort; index += 1) {
-            const header = `cost-${label}-collector-${index}`;
-            collectorExpectations.push(await executeWorkload(plan.collector_workload, workloadId, deployment, header));
-          }
-        },
-      });
+      let events;
+      try {
+        events = await this.collectProviderEvents({
+          from: new Date(started).toISOString(),
+          to: new Date(started + MAX_COLLECTOR_SECONDS * 1000).toISOString(),
+          limit: maxEvents,
+          execute: async (signal) => {
+            expectations = await mapConcurrent(attempts, WAREHOUSE_PROBE_CONCURRENCY, signal, ({ base, workload, index }) => (
+              executeWorkload(workload, workloadId, deployment, `cost-${label}-${base}-${index}`, signal)
+            ));
+            collectorExpectations = await mapConcurrent(collectorAttempts, WAREHOUSE_PROBE_CONCURRENCY, signal, (index) => (
+              executeWorkload(plan.collector_workload, workloadId, deployment, `cost-${label}-collector-${index}`, signal)
+            ));
+          },
+        });
+      } catch (error) {
+        return { status: "blocked", reason: String(error?.message || error) };
+      }
       if (now() - started > MAX_COLLECTOR_SECONDS * 1000) {
         return { status: "blocked", reason: "warehouse collector exceeded 30 minutes" };
       }
+      if (!Array.isArray(events) || events.length > maxEvents) {
+        return { status: "blocked", reason: "warehouse provider event collection exceeded its bound" };
+      }
       const retained = {};
       let collectorIndex = 0;
+      const retainedCorrectness = {};
       try {
-        for (const cohort of WAREHOUSE_EXPERIMENT_COHORTS) {
-          retained[cohort] = expectations[cohort].map((expectation) => {
-            const event = selectOwnedHttpEvent(events, expectation, cohort);
-            const collectorExpectation = collectorExpectations[collectorIndex++];
-            const collector = selectOwnedHttpEvent(events, collectorExpectation, "collector-overhead");
+        const eventIndex = providerEventsByProbeHeader(events);
+        const conditioned = Object.fromEntries(WAREHOUSE_EXPERIMENT_COHORTS.map((cohort) => [
+          cohort,
+          selectConditionedEvents(
+            eventIndex,
+            expectations.filter((expectation) => expectation.probeCohort === cohort.replace(/:(?:cold|warm)$/, "")),
+            cohort,
+            samplesPerCohort,
+          ),
+        ]));
+        for (const base of WAREHOUSE_BASE_COHORTS) {
+          const fingerprints = new Set([
+            ...conditioned[`${base}:cold`],
+            ...conditioned[`${base}:warm`],
+          ].map(({ expectation }) => correctnessFingerprint(expectation)));
+          if (fingerprints.size !== 1 || [...fingerprints][0].startsWith(":")) {
+            throw new Error(`${base} cold and warm responses are not matched`);
+          }
+        }
+        const collectors = collectorExpectations.map((expectation) => ({
+          expectation,
+          event: selectOwnedHttpEvent(eventIndex.get(expectation.header) || [], expectation, "collector-overhead"),
+        }));
+        if (collectors.length < WAREHOUSE_COLLECTOR_SAMPLES) throw new Error("collector-overhead provider samples are incomplete");
+        for (const cohort of cohorts) {
+          retained[cohort] = conditioned[cohort].map(({ expectation, event }, index) => {
+            const collector = collectors[collectorIndex++].event;
             const sample = sanitizeNativeInvocation(event, {
               cohort,
               revision,
@@ -362,6 +519,7 @@ export function createLiveWorkerCostTransport({
             });
             const collectorCpu = collector?.$workers?.cpuTimeMs;
             if (!Number.isFinite(collectorCpu) || collectorCpu < 0) throw new Error("collector CPU evidence is unavailable");
+            retainedCorrectness[`${cohort}:${index}`] = expectation;
             return { ...sample, collector_cpu_ms: collectorCpu };
           });
         }
@@ -372,9 +530,7 @@ export function createLiveWorkerCostTransport({
         status: "complete",
         observedAt: new Date(now()).toISOString(),
         cohorts: retained,
-        correctness: aggregateObservedCorrectness(Object.fromEntries(
-          Object.entries(expectations).flatMap(([cohort, values]) => values.map((value, index) => [`${cohort}:${index}`, value])),
-        )),
+        correctness: aggregateObservedCorrectness(retainedCorrectness),
       };
     },
   };

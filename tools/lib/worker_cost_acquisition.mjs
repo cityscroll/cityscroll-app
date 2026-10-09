@@ -109,7 +109,7 @@ function requireTransport(transport, methods) {
 }
 
 function httpRequest(event) {
-  return event?.event?.request || event?.request;
+  return event?.event?.request || event?.$workers?.event?.request || event?.request;
 }
 
 export function selectOwnedHttpEvent(events, expectation, cohort) {
@@ -139,16 +139,16 @@ export async function acquireWorkerCostProfile({ revision, window, transport } =
   const deployment = await transport.acquireDeployment(revision);
   const plan = await transport.measurementPlan({ revision, window: bounds });
   let httpExpectations = {};
-  const collections = [];
-  for (let index = 0; index < windows.length; index += 1) {
-    const entry = windows[index];
-    collections.push(await transport.collectProviderEvents({
-      revision, from: entry.from, to: entry.to, limit: MAX_COLLECTOR_EVENTS,
-      execute: index === 0 ? async () => {
-        httpExpectations = await transport.executeFixedHttpWorkloads({ revision, window: bounds, plan, deployment });
-      } : undefined,
-    }));
-  }
+  const baseLimit = Math.floor(MAX_COLLECTOR_EVENTS / windows.length);
+  const collections = await Promise.all(windows.map((entry, index) => transport.collectProviderEvents({
+    revision,
+    from: entry.from,
+    to: entry.to,
+    limit: baseLimit + (index < MAX_COLLECTOR_EVENTS % windows.length ? 1 : 0),
+    execute: index === 0 ? async (signal) => {
+      httpExpectations = await transport.executeFixedHttpWorkloads({ revision, window: bounds, plan, deployment, signal });
+    } : undefined,
+  })));
   if (collections.some((events) => !Array.isArray(events))) throw new Error("provider event collection is unavailable");
   if (collections.some((events) => events.length > MAX_COLLECTOR_EVENTS)) throw new Error("provider collector run exceeds 10000 events");
   const events = collections.flat();

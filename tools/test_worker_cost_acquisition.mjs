@@ -7,6 +7,7 @@ import {
   acquireWorkerCostProfile,
   queueFingerprintFromProviderEvent,
   runMatchedWarehouseExperiment,
+  selectOwnedHttpEvent,
 } from "./lib/worker_cost_acquisition.mjs";
 import {
   OPERATION_METERS,
@@ -19,6 +20,7 @@ import {
   createLiveWorkerCostTransport,
   providerEventsFromEnvelope,
   queryProviderEvents,
+  secureWebSocketUrl,
 } from "./worker_cost_acquisition.mjs";
 
 const REVISION = "a".repeat(40);
@@ -238,6 +240,37 @@ test("unbound queue evidence remains partial instead of becoming zero", async ()
   assert.match(result.reasons.find((entry) => entry.cohort === "queue").reason, /fingerprint/);
 });
 
+test("profile collection coordinates future windows without serially consuming their timeouts", async () => {
+  let active = 0;
+  let maximumActive = 0;
+  const limits = [];
+  const result = await acquireWorkerCostProfile({
+    revision: REVISION,
+    window: { windows: [
+      { from: "2026-10-09T07:55:00Z", to: "2026-10-09T08:25:00Z" },
+      { from: "2026-10-09T09:55:00Z", to: "2026-10-09T10:25:00Z" },
+      { from: "2026-10-09T12:55:00Z", to: "2026-10-09T13:25:00Z" },
+    ] },
+    transport: {
+      acquireDeployment: async () => deployment(REVISION),
+      measurementPlan: async () => plan(),
+      executeFixedHttpWorkloads: async () => ({ "health:cold": expectation("health:cold") }),
+      collectProviderEvents: async ({ execute, limit }) => {
+        active += 1;
+        maximumActive = Math.max(maximumActive, active);
+        limits.push(limit);
+        await execute?.();
+        await Promise.resolve();
+        active -= 1;
+        return [];
+      },
+    },
+  });
+  assert.equal(result.status, "partial");
+  assert.equal(maximumActive, 3);
+  assert.equal(limits.reduce((sum, value) => sum + value, 0), 10_000);
+});
+
 test("provider query uses official envelopes, nested parameters, and bounded cursor pages", async () => {
   const requests = [];
   const first = Array.from({ length: 2_000 }, (_, index) => ({ $metadata: { id: `event-${index}` } }));
@@ -263,6 +296,37 @@ test("provider query uses official envelopes, nested parameters, and bounded cur
   assert.equal(requests[1].offsetDirection, "next");
 });
 
+test("provider invocation envelopes merge structured logs with nested Worker requests", () => {
+  const owned = expectation("health:cold");
+  const events = providerEventsFromEnvelope({
+    result: {
+      invocations: {
+        request: [
+          { source: owned.receipt },
+          {
+            $metadata: { id: "event-grouped", coldStart: 1 },
+            $workers: {
+              cpuTimeMs: 2,
+              outcome: "ok",
+              scriptVersion: { id: owned.providerVersionId },
+              event: { request: { url: owned.outerUrl, method: "POST", headers: { "x-cityscroll-cost-probe": owned.header } } },
+            },
+          },
+        ],
+      },
+    },
+  });
+  assert.equal(events.length, 1);
+  assert.equal(selectOwnedHttpEvent(events, owned, "health:cold").$metadata.id, "event-grouped");
+});
+
+test("live-tail URLs accept secure provider schemes and reject user information", () => {
+  assert.equal(secureWebSocketUrl("https://tail.example/session"), "wss://tail.example/session");
+  assert.equal(secureWebSocketUrl("wss://tail.example/session"), "wss://tail.example/session");
+  assert.throws(() => secureWebSocketUrl("https://user:secret@tail.example/session"), /user information/);
+  assert.throws(() => secureWebSocketUrl("ws://tail.example/session"), /secure/);
+});
+
 class FakeSocket {
   constructor() {
     this.listeners = new Map();
@@ -278,6 +342,79 @@ class FakeSocket {
     this.closed = true;
   }
 }
+
+test("future live-tail windows wait before starting their collection timeout", async () => {
+  let current = Date.parse("2026-10-09T08:25:00Z");
+  const activity = [];
+  const transport = createLiveWorkerCostTransport({
+    env: {
+      CLOUDFLARE_OBSERVABILITY_TOKEN: "telemetry-only",
+      WORKER_COST_ADMIN_KEY: "admin-key",
+      CLOUDFLARE_ACCOUNT_ID: "account",
+      WORKER_HEALTH_URL: "https://worker.example/health",
+      WORKER_API_ORIGIN: "https://worker.example",
+      WORKER_COST_MEASUREMENT_PLAN: JSON.stringify({ run_marker: RUN, workload_digest: WORKLOAD }),
+    },
+    now: () => current,
+    sleep: async (milliseconds) => {
+      activity.push(["wait", milliseconds]);
+      current += milliseconds;
+    },
+    fetchImpl: async (url) => {
+      activity.push(["fetch", url]);
+      return Response.json({ success: true, result: { wsUrl: "https://tail.example/session" } });
+    },
+    webSocketFactory: (url) => {
+      activity.push(["socket", url]);
+      return new FakeSocket();
+    },
+  });
+  await transport.collectProviderEvents({
+    from: "2026-10-09T09:55:00Z",
+    to: "2026-10-09T10:25:00Z",
+    limit: 100,
+  });
+  assert.deepEqual(activity[0], ["wait", 90 * 60 * 1000]);
+  assert.equal(activity[1][0], "fetch");
+  assert.deepEqual(activity[2], ["socket", "wss://tail.example/session"]);
+});
+
+test("collection cancellation reaches in-flight workload fetches", async () => {
+  const controller = new AbortController();
+  let workloadSignal;
+  const transport = createLiveWorkerCostTransport({
+    env: {
+      CLOUDFLARE_OBSERVABILITY_TOKEN: "telemetry-only",
+      WORKER_COST_ADMIN_KEY: "admin-key",
+      CLOUDFLARE_ACCOUNT_ID: "account",
+      WORKER_HEALTH_URL: "https://worker.example/health",
+      WORKER_API_ORIGIN: "https://worker.example",
+      WORKER_COST_LIVE_TAIL_SETTLE_MS: "0",
+      WORKER_COST_MEASUREMENT_PLAN: JSON.stringify({ run_marker: RUN, workload_digest: WORKLOAD }),
+    },
+    now: () => Date.parse("2026-10-09T08:00:00Z"),
+    webSocketFactory: () => new FakeSocket(),
+    fetchImpl: async (url, init = {}) => {
+      if (url.includes("/live-tail")) return Response.json({ success: true, result: { wsUrl: "wss://tail.example/session" } });
+      workloadSignal = init.signal;
+      queueMicrotask(() => controller.abort());
+      return new Promise((_resolve, reject) => init.signal.addEventListener("abort", () => reject(new Error("request aborted")), { once: true }));
+    },
+  });
+  const acquired = deployment(REVISION);
+  const planValue = {
+    series: "fixed-series",
+    http_workloads: [{ cohort: "health:cold", probe_cohort: "health", header: expectation("health:cold").header, workload_hash: WORKLOAD, body: { kind: "http", route: "health" } }],
+  };
+  await assert.rejects(transport.collectProviderEvents({
+    from: "2026-10-09T08:00:00Z",
+    to: "2026-10-09T08:30:00Z",
+    limit: 100,
+    signal: controller.signal,
+    execute: (signal) => transport.executeFixedHttpWorkloads({ plan: planValue, deployment: acquired, signal }),
+  }), /aborted|cancelled/);
+  assert.equal(workloadSignal.aborted, true);
+});
 
 test("live transport separates telemetry authentication and targets the authenticated version", async () => {
   const fetches = [];
@@ -342,6 +479,122 @@ test("live transport separates telemetry authentication and targets the authenti
   const workloadRequest = fetches.find((entry) => entry.url.endsWith("/admin/cost-control-probe"));
   assert.equal(workloadRequest.init.headers["Cloudflare-Workers-Version-Overrides"], 'cityscroll-worker="version-aaaaaaaa"');
   assert.equal(workloadRequest.init.method, "POST");
+});
+
+function liveWarehouseTransport({ coldCoverage = true } = {}) {
+  const bases = [...new Set(WAREHOUSE_EXPERIMENT_COHORTS.map((cohort) => cohort.replace(/:(?:cold|warm)$/, "")))];
+  const workloads = WAREHOUSE_EXPERIMENT_COHORTS.map((cohort) => {
+    const base = cohort.replace(/:(?:cold|warm)$/, "");
+    return {
+      cohort,
+      probe_cohort: base,
+      workload_hash: createHash("sha256").update(base).digest("hex"),
+      body: { kind: "http", route: base },
+    };
+  });
+  const measurement = {
+    run_marker: RUN,
+    workload_digest: WORKLOAD,
+    warehouse_workloads: workloads,
+    collector_workload: {
+      cohort: "collector-overhead",
+      probe_cohort: "collector-overhead",
+      workload_hash: createHash("sha256").update("collector-overhead").digest("hex"),
+      body: { kind: "collector-overhead" },
+    },
+  };
+  const events = [];
+  const counts = new Map(bases.map((base) => [base, 0]));
+  let requests = 0;
+  const transport = createLiveWorkerCostTransport({
+    env: {
+      CLOUDFLARE_OBSERVABILITY_TOKEN: "telemetry-only",
+      WORKER_COST_ADMIN_KEY: "admin-key",
+      CLOUDFLARE_ACCOUNT_ID: "account",
+      WORKER_HEALTH_URL: "https://worker.example/health",
+      WORKER_API_ORIGIN: "https://worker.example",
+      WORKER_COST_MEASUREMENT_PLAN: JSON.stringify(measurement),
+    },
+    warehouseAttemptsPerInput: 200,
+    now: () => Date.parse("2026-10-09T08:00:00Z"),
+    fetchImpl: async (url, init) => {
+      if (!url.endsWith("/admin/cost-control-probe")) throw new Error(`unexpected fetch ${url}`);
+      requests += 1;
+      const headers = init.headers;
+      const cohort = headers["x-cityscroll-cost-cohort"];
+      const isCollector = cohort === "collector-overhead";
+      const seen = isCollector ? 0 : counts.get(cohort);
+      if (!isCollector) counts.set(cohort, seen + 1);
+      const receipt = {
+        schema: "cityscroll.worker_cost_probe.v1",
+        tag: headers["x-cityscroll-cost-probe"],
+        series: headers["x-cityscroll-cost-series"],
+        cohort,
+        workload_hash: headers["x-cityscroll-cost-workload"],
+        execution_mode: "production-read-only-rehearsal",
+        operation_counts: operations(),
+        result: {
+          status: isCollector ? 204 : 200,
+          body_sha256: "6".repeat(64),
+          ...(!isCollector ? { correctness: CORRECTNESS } : {}),
+        },
+      };
+      events.push({
+        source: receipt,
+        $metadata: {
+          id: `warehouse-${requests}`,
+          ...(!isCollector ? { coldStart: coldCoverage && seen < 100 ? 1 : 0 } : {}),
+        },
+        $workers: {
+          cpuTimeMs: 2,
+          outcome: "ok",
+          scriptVersion: { id: deployment(REVISION).receipt.cloudflare_version.id },
+          event: { request: { url: OUTER_URL, method: "POST", headers: { "x-cityscroll-cost-probe": receipt.tag } } },
+        },
+        exceptions: [],
+      });
+      return Response.json(receipt);
+    },
+  });
+  transport.collectProviderEvents = async ({ execute }) => {
+    await execute(new AbortController().signal);
+    return events;
+  };
+  return { transport, requestCount: () => requests };
+}
+
+test("warehouse runner samples until exact provider-observed cold and warm populations exist", async () => {
+  const { transport, requestCount } = liveWarehouseTransport();
+  const result = await transport.collectWarehouseRun({
+    label: "baseline",
+    revision: REVISION,
+    deployment: deployment(REVISION),
+    workloadId: "fixed-warehouse-test",
+    cohorts: WAREHOUSE_EXPERIMENT_COHORTS,
+    samplesPerCohort: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+    maxEvents: 10_000,
+  });
+  assert.equal(result.status, "complete");
+  assert.equal(requestCount(), 2_000);
+  for (const cohort of WAREHOUSE_EXPERIMENT_COHORTS) {
+    assert.equal(result.cohorts[cohort].length, 100);
+    assert.ok(result.cohorts[cohort].every((sample) => sample.condition.cold_start === cohort.endsWith(":cold")));
+  }
+});
+
+test("warehouse runner reports incomplete genuine cold coverage", async () => {
+  const { transport } = liveWarehouseTransport({ coldCoverage: false });
+  const result = await transport.collectWarehouseRun({
+    label: "baseline",
+    revision: REVISION,
+    deployment: deployment(REVISION),
+    workloadId: "fixed-warehouse-test",
+    cohorts: WAREHOUSE_EXPERIMENT_COHORTS,
+    samplesPerCohort: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+    maxEvents: 10_000,
+  });
+  assert.equal(result.status, "blocked");
+  assert.match(result.reason, /cold provider samples are incomplete/);
 });
 
 function warehouseSample(revision, meter = 0) {

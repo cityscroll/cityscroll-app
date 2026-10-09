@@ -74,8 +74,10 @@ Workers Observability live tail before the workload begins. The telemetry token
 is separate from the existing authenticated Wrangler deployment session and is
 never reused for deployment reads. Retained Logs and Traces remain disabled.
 Multiple collection windows may cover the natural cron schedule, but every
-individual live tail is limited to 30 minutes and 10,000 events and the combined
-profile remains within 24 hours. Raw provider events stay in memory; only
+future live tail opens at its declared window start rather than spending its
+collection timeout waiting. Every individual live tail is limited to 30 minutes,
+the combined collectors accept at most 10,000 events, and the complete profile
+remains within 24 hours. Raw provider events stay in memory; only
 sanitized samples are returned. Missing access, cold-start metadata, native
 events, or provider batch messages yields a partial result rather than a zero or
 complete profile.
@@ -101,6 +103,13 @@ retention recommendation, never a financial-savings claim.
 calls the evaluator only after both authenticated versions have the fixed
 100-sample cold and warm cohorts, correctness/freshness/miss digests, and the
 complete CPU, collector, KV, D1, storage, Queue, and Analytics Engine vector.
+The runner uses bounded concurrent attempts within the same 30-minute and
+10,000-event ceiling, then retains exactly 100 invocations whose provider
+metadata proves cold execution and 100 whose metadata proves warm execution for
+each identical input digest. If either population is unavailable, the run is
+incomplete; it never relabels an invocation or forces a deployment to create a
+cold sample. Cancellation reaches every in-flight workload request and prevents
+new attempts from being scheduled.
 Correctness, join, provenance, miss, and freshness digests are derived from each
 version's observed child responses and structured receipts; measurement-plan
 assertions cannot substitute for observed results.
