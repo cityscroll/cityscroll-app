@@ -79,6 +79,7 @@ function parseArgs(argv) {
     if (argv[i] === "--fixture") out.fixture = true;
     else if (argv[i] === "--check") out.check = true;
     else if (argv[i] === "--bench") out.bench = true;
+    // determinism-lint: allow external-data opt-in SODA acquisition flag; --check never sets it
     else if (argv[i] === "--from-soda") out.fromSoda = true;
     else if (argv[i] === "--limit") out.limit = Number(argv[++i]);
   }
@@ -175,6 +176,7 @@ async function fetchDoingBusinessFromSoda({ limit = null, fetchImpl = fetch } = 
     });
     const res = await fetchImpl(`${DOING_BUSINESS_SODA}?${params}`);
     if (!res.ok) {
+      // determinism-lint: allow external-data live SODA path only for --from-soda rematerialization
       throw new Error(`Doing Business SODA ${res.status} during --from-soda materialization`);
     }
     const pageRows = await res.json();
@@ -198,6 +200,7 @@ async function collectRows({ fixture, fromSoda, limit }) {
       "Doing Business SODA materialization",
     );
     const rows = dedupeRows(sodaRows);
+    // determinism-lint: allow clock acquisition receipt timestamp only on --from-soda path
     const observedAt = new Date().toISOString();
     return {
       rows,
@@ -295,6 +298,7 @@ async function bench(rows, acquisitionReceipt = null) {
   const receipt = {
     ...acquisitionReceipt,
     phase: "WH-05",
+    // determinism-lint: allow clock benchmark receipt timestamp only outside --check
     measured_at: new Date().toISOString(),
     replaces_live_fetch: {
       function: "attachDoingBusiness",
@@ -320,7 +324,9 @@ async function bench(rows, acquisitionReceipt = null) {
       `Doing Business attach p50: live multi-page SODA floor ${sodaCatalogMsFloor}ms → ` +
       `warehouse materialization ${indexMs.p50_ms}ms (sub-ms; removes catalog SODA RTTs)`,
   };
+  // determinism-lint: allow write benchmark receipt outside --check
   mkdirSync(path.dirname(BENCH_RECEIPT), { recursive: true });
+  // determinism-lint: allow write benchmark receipt outside --check
   writeFileSync(BENCH_RECEIPT, stableStringify(receipt));
   return receipt;
 }
@@ -341,7 +347,9 @@ function writeOrCheck(filePath, doc, check) {
     );
     return { path: filePath, status: "ok" };
   }
+  // determinism-lint: allow write non-check materialization output
   mkdirSync(path.dirname(filePath), { recursive: true });
+  // determinism-lint: allow write non-check materialization output
   writeFileSync(filePath, rendered);
   return { path: filePath, status: "wrote", bytes: Buffer.byteLength(rendered) };
 }
@@ -371,6 +379,7 @@ async function main() {
   }
 
   const { rows, mode, publisherRowCount, acquisitionReceipt } = await collectRows(args);
+  // determinism-lint: allow clock fixture/benchmark materialization timestamp
   let now = new Date().toISOString();
   if (args.check && existsSync(OUT_WORKER)) {
     try {
@@ -452,7 +461,9 @@ async function main() {
     console.log(receipt.summary);
     console.log("receipt:", path.relative(ROOT, BENCH_RECEIPT));
   } else if (!args.check && acquisitionReceipt) {
+    // determinism-lint: allow write acquisition receipt outside --check
     mkdirSync(path.dirname(BENCH_RECEIPT), { recursive: true });
+    // determinism-lint: allow write acquisition receipt outside --check
     writeFileSync(BENCH_RECEIPT, stableStringify(acquisitionReceipt));
     console.log("receipt:", path.relative(ROOT, BENCH_RECEIPT));
   }

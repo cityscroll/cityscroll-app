@@ -218,6 +218,7 @@ async function bench(projectRows) {
     let lastCount = 0;
     for (let i = 0; i < 3; i++) {
       const t0 = performance.now();
+      // determinism-lint: allow network live benchmark runs only outside --check
       const resp = await fetch(url);
       const data = resp.ok ? await resp.json() : [];
       samples.push(performance.now() - t0);
@@ -252,6 +253,7 @@ async function bench(projectRows) {
 
   return {
     phase: "WH-06",
+    // determinism-lint: allow clock benchmark receipt timestamp only outside --check
     measured_at: new Date().toISOString(),
     replaced_fetch: {
       function: "fetchBbls",
@@ -320,7 +322,9 @@ function writeOutputs(doc, check, { allowDegraded = false } = {}) {
   assertZapBblServeGate(doc);
   const rendered = stableStringify(doc);
   for (const filePath of targets) {
+    // determinism-lint: allow write non-check materialization output
     mkdirSync(path.dirname(filePath), { recursive: true });
+    // determinism-lint: allow write non-check materialization output
     writeFileSync(filePath, rendered);
   }
   return {
@@ -361,6 +365,7 @@ async function main() {
   });
   assert.ok(projectRows.length >= 1, "expected at least one project BBL group to materialize");
 
+  // determinism-lint: allow clock fixture/benchmark materialization timestamp
   let now = new Date().toISOString();
   if (args.check && existsSync(OUT_WORKER)) {
     try {
