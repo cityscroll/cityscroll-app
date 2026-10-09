@@ -41,7 +41,10 @@ describe("warehouse serve retain-last-good", () => {
   it("retains a full ZAP BBL catalog when rematerialization collapses to verified_seed", () => {
     const existing = readJson("site/data/zap_bbl_warehouse_lookup.json");
     assert.equal(isZapBblFullCatalog(existing), true);
-    assert.equal(zapBblServeGateFindings(existing).length, 0);
+    // Pin now to the twin stamp so serve-age does not depend on ambient /
+    // time-travel clocks; retain is about catalog fullness, not freshness.
+    const twinNow = existing.materialized_at;
+    assert.equal(zapBblServeGateFindings(existing, { now: twinNow }).length, 0);
 
     const candidate = {
       ...existing,
@@ -51,7 +54,11 @@ describe("warehouse serve retain-last-good", () => {
       rows: existing.rows.slice(0, 9),
     };
     assert.equal(isZapBblFullCatalog(candidate), false);
-    assert.ok(zapBblServeGateFindings(candidate).some((f) => /verified_seed|below floor/i.test(f)));
+    assert.ok(
+      zapBblServeGateFindings(candidate, { now: twinNow }).some((f) =>
+        /verified_seed|below floor/i.test(f),
+      ),
+    );
 
     const decision = decideWarehouseServePublish(existing, candidate, {
       isFullCatalog: isZapBblFullCatalog,
@@ -65,7 +72,8 @@ describe("warehouse serve retain-last-good", () => {
   it("retains a full Doing Business catalog when rematerialization is live_fallback empty", () => {
     const existing = readJson("site/data/doing_business_warehouse_lookup.json");
     assert.equal(isDoingBusinessFullCatalog(existing), true);
-    assert.equal(doingBusinessServeGateFindings(existing).length, 0);
+    const twinNow = existing.materialized_at;
+    assert.equal(doingBusinessServeGateFindings(existing, { now: twinNow }).length, 0);
 
     const candidate = {
       schema_version: 1,
@@ -73,10 +81,14 @@ describe("warehouse serve retain-last-good", () => {
       mode: "live_fallback",
       row_count: 0,
       rows: [],
-      materialized_at: "2026-10-07T14:00:00.000Z",
+      materialized_at: twinNow,
     };
     assert.equal(isDoingBusinessFullCatalog(candidate), false);
-    assert.ok(doingBusinessServeGateFindings(candidate).some((f) => /live_fallback|empty/i.test(f)));
+    assert.ok(
+      doingBusinessServeGateFindings(candidate, { now: twinNow }).some((f) =>
+        /live_fallback|empty/i.test(f),
+      ),
+    );
 
     const decision = decideWarehouseServePublish(existing, candidate, {
       isFullCatalog: isDoingBusinessFullCatalog,
