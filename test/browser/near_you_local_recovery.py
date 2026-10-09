@@ -666,7 +666,16 @@ def check_record_journeys(browser, base: str, expected: list[dict]) -> list[dict
             except Exception as error:
                 raise AssertionError(f"record-{family}: the collection lists no {prefix} record to open") from error
             href = record_link.get_attribute("href") or ""
-            title = " ".join((record_link.inner_text() or "").replace("◆", " ").split())
+            # Browse may disambiguate visible headings for uniqueness while
+            # preserving the publisher title on data-source-title.
+            source_title = record_link.evaluate(
+                """(el) => {
+                  const article = el.closest('article[data-source-title], article.browse-static-record');
+                  return (article?.getAttribute('data-source-title') || '').trim();
+                }"""
+            )
+            listed = " ".join((record_link.inner_text() or "").replace("◆", " ").split())
+            title = source_title or listed
             with page.expect_navigation(timeout=30_000) as navigation:
                 record_link.click()
             response = navigation.value
@@ -687,7 +696,13 @@ def check_record_journeys(browser, base: str, expected: list[dict]) -> list[dict
                 heading = " ".join(page.locator("main h1").first.inner_text().split())
                 if heading != title:
                     raise AssertionError(f"record-{family}: record page heading {heading!r} is not the listed {title!r}")
-            results.append({"label": f"record-{family}", "clock_day": day, "record": href, "title": title})
+            results.append({
+                "label": f"record-{family}",
+                "clock_day": day,
+                "record": href,
+                "title": title,
+                "listed_heading": listed,
+            })
         finally:
             context.close()
     return results
