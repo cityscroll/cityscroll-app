@@ -60,7 +60,7 @@ function receipt(meters = {}, overrides = {}) {
     deployed_revision: deployedRevision,
     observed_at: overrides.observed_at || "2026-10-08T23:30:00Z",
     workload_id: "fixed-workload-v1",
-    workload_count: 10,
+    workload_count: REQUIRED_COST_COHORTS.length,
     publication: { unchanged: { route_key_puts: 0, manifest_puts: 0 } },
     rum: { full_batch: { accepted: 16, kv_puts: 3 } },
     d1: { authority: "independent", complete: true },
@@ -90,7 +90,7 @@ test("a complete tariff-free cost vector passes when no meter regresses", () => 
   assert.equal(result.pass, true);
   assert.deepEqual(result.regressions, []);
   assert.equal(result.tariff_free, true);
-  assert.equal(result.candidate_normalized.native_cpu_ms, 0.9);
+  assert.equal(result.candidate_normalized.native_cpu_ms, 0.36);
 });
 
 test("D1 savings cannot hide redundant KV writes", () => {
@@ -136,7 +136,7 @@ test("failed provider outcomes cannot be retained as zero errors", () => {
 test("release profiles require matched cohort sample counts", () => {
   const evidence = pair();
   evidence.candidate.profile = profile(evidence.candidate.deployed_revision, evidence.candidate.meters, 2);
-  assert.throws(() => evaluateAllMeterRelease(evidence), /sample counts are not matched/);
+  assert.throws(() => evaluateAllMeterRelease(evidence), /workload_count does not match retained profile samples/);
 });
 
 test("the independent D1 control cannot be silently collapsed", () => {
@@ -148,8 +148,8 @@ test("the independent D1 control cannot be silently collapsed", () => {
 test("baseline may expose the old write behavior but evidence must stay actual and matched", () => {
   assert.equal(evaluateAllMeterRelease(pair()).pass, true);
   const { baseline, candidate } = pair();
-  candidate.workload_count = 11;
-  assert.throws(() => evaluateAllMeterRelease({ baseline, candidate }), /equivalent/);
+  candidate.workload_count = REQUIRED_COST_COHORTS.length + 1;
+  assert.throws(() => evaluateAllMeterRelease({ baseline, candidate }), /workload_count does not match retained profile samples/);
   const invalid = pair();
   invalid.candidate.evidence_mode = "fixture";
   assert.throws(() => evaluateAllMeterRelease(invalid), /actual production/);

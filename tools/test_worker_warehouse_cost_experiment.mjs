@@ -15,7 +15,7 @@ function run(overrides = {}) {
     deployed_revision: "a".repeat(40),
     observed_at: "2026-10-08T23:00:00Z",
     workload_id: "fixed-zap-bbl-zap-project-doing-business-v1",
-    workload_count: 10,
+    workload_count: WAREHOUSE_EXPERIMENT_COHORTS.length * WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
     correctness: {
       input_digest: "inputs", joins_digest: "joins", provenance_digest: "provenance",
       miss_digest: "miss", freshness_digest: "freshness",
@@ -135,4 +135,14 @@ test("experiment totals and errors are derived from retained provider samples", 
   candidate.cohorts["zap-bbl:cold"].samples[0].outcome = "exception";
   candidate.cohorts["zap-bbl:cold"].samples[0].error_count = 0;
   assert.throws(() => evaluateWarehouseExperiment({ baseline, candidate }), /failed provider outcome/);
+});
+
+test("experiment workload normalization equals the retained population", () => {
+  const baseline = run();
+  const candidate = run({
+    deployed_revision: "b".repeat(40), observed_at: "2026-10-08T23:10:00Z",
+  });
+  baseline.workload_count -= 1;
+  candidate.workload_count -= 1;
+  assert.throws(() => evaluateWarehouseExperiment({ baseline, candidate }), /workload_count does not match retained warehouse samples/);
 });

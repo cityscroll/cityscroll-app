@@ -105,7 +105,7 @@ export function sanitizeNativeInvocation(event, {
     outcome,
     script_version_id: event?.scriptVersion?.id || null,
     operations: operations || {},
-    error_count: exceptionCount + (outcome === "ok" ? 0 : 1),
+    error_count: Math.max(exceptionCount, outcome === "ok" ? 0 : 1),
   };
   assertSanitized(sample);
   return sample;
@@ -274,6 +274,7 @@ export const WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT = 100;
 function warehouseMeterTotals(run, label) {
   const totals = Object.fromEntries(COST_METERS.map((meter) => [meter, 0]));
   let errors = 0;
+  let sampleCount = 0;
   for (const cohortName of WAREHOUSE_EXPERIMENT_COHORTS) {
     const cohort = run.cohorts?.[cohortName];
     if (!cohort) fail(`${label} is missing ${cohortName}`);
@@ -282,6 +283,7 @@ function warehouseMeterTotals(run, label) {
     }
     if (cohort.sample_count !== cohort.samples.length) fail(`${label}.${cohortName}.sample_count does not match retained samples`);
     cohort.samples.forEach((sample, index) => {
+      sampleCount += 1;
       const path = `${label}.${cohortName}.samples[${index}]`;
       validateRetainedSample(sample, cohortName, run.deployed_revision, path);
       finiteNonNegative(sample.collector_cpu_ms, `${path}.collector_cpu_ms`);
@@ -291,7 +293,7 @@ function warehouseMeterTotals(run, label) {
       errors += sample.error_count;
     });
   }
-  return { meters: totals, errors };
+  return { meters: totals, errors, sampleCount };
 }
 
 function normalizedMeters(run) {
@@ -324,6 +326,7 @@ export function evaluateWarehouseExperiment({ baseline, candidate } = {}) {
     }
     finiteNonNegativeInteger(run.error_count, `${label}.error_count`);
     const observed = warehouseMeterTotals(run, label);
+    if (run.workload_count !== observed.sampleCount) fail(`${label}.workload_count does not match retained warehouse samples`);
     for (const meter of COST_METERS) {
       if (run.meters?.[meter] !== observed.meters[meter]) fail(`${label}.${meter} does not match retained warehouse samples`);
     }
@@ -367,6 +370,9 @@ export function evaluateAllMeterRelease({ baseline, candidate } = {}) {
     finiteNonNegativeInteger(receipt.errors, `${label}.errors`);
     normalizedMeters(receipt);
     const profileTotals = profileMeterTotals(receipt.profile);
+    const retainedSampleCount = Object.values(receipt.profile.cohorts)
+      .reduce((sum, cohort) => sum + cohort.sample_count, 0);
+    if (receipt.workload_count !== retainedSampleCount) fail(`${label}.workload_count does not match retained profile samples`);
     for (const meter of COST_METERS) {
       if (receipt.meters?.[meter] !== profileTotals[meter]) fail(`${label}.${meter} does not match provider profile samples`);
     }

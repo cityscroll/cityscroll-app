@@ -51,6 +51,19 @@ test("owned tail events retain provider-native CPU and discard raw request mater
   assert.equal("request" in retained, false);
 });
 
+test("one failed invocation is not double-counted when it also has an exception", () => {
+  const raw = event();
+  raw.outcome = "exception";
+  raw.exceptions = [{ name: "Error", message: "bounded" }];
+  const retained = sanitizeNativeInvocation(raw, {
+    cohort: "health:cold", revision,
+    condition: { mode: "provider-observed", source: "$metadata.coldStart", cold_start: true },
+    expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
+    operations: emptyOperations(),
+  });
+  assert.equal(retained.error_count, 1);
+});
+
 test("literal header, URL and method ownership are all required before persistence", () => {
   for (const override of [
     { expectedHeaderValue: "other" },
