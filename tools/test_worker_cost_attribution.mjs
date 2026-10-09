@@ -4,16 +4,23 @@ import test from "node:test";
 import {
   REQUIRED_COST_COHORTS,
   buildWorkerCostProfile as buildWorkerCostProfileRaw,
+  providerDeploymentReceiptSha256,
   sanitizeNativeInvocation as sanitizeNativeInvocationRaw,
   validateWorkerCostProfile,
 } from "./lib/worker_cost_control.mjs";
 
 const revision = "a".repeat(40);
+const PROVIDER_RECEIPT = Object.freeze({
+  schema: "cityscroll.cloudflare_deployment_binding.v1",
+  evidence_mode: "actual-production",
+  observed_at: "2026-10-08T23:29:00Z",
+  production_health: { source: "cityscroll-production-health", revision },
+  cloudflare_version: { source: "cloudflare-versions-api", id: "provider-version" },
+});
 const PROVIDER_DEPLOYMENT = Object.freeze({
   source: "cloudflare-deployment-receipt+health",
-  health_revision: revision,
-  script_version_id: "provider-version",
-  provider_receipt_sha256: "d".repeat(64),
+  receipt: PROVIDER_RECEIPT,
+  provider_receipt_sha256: providerDeploymentReceiptSha256(PROVIDER_RECEIPT),
 });
 const buildWorkerCostProfile = (samples, options) => buildWorkerCostProfileRaw(samples, {
   providerDeployment: structuredClone(PROVIDER_DEPLOYMENT),
@@ -91,8 +98,17 @@ test("provider samples must match the receipt-bound version for the health revis
     revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 1,
     eventCount: REQUIRED_COST_COHORTS.length,
   });
-  profile.provider_deployment.health_revision = "b".repeat(40);
-  assert.throws(() => validateWorkerCostProfile(profile), /health_revision does not match/);
+  profile.provider_deployment.receipt.production_health.revision = "b".repeat(40);
+  assert.throws(() => validateWorkerCostProfile(profile), /production health revision does not match/);
+});
+
+test("provider deployment digest authenticates the retained binding receipt", () => {
+  const profile = buildWorkerCostProfile(REQUIRED_COST_COHORTS.map((cohort) => sample(cohort)), {
+    revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 1,
+    eventCount: REQUIRED_COST_COHORTS.length,
+  });
+  profile.provider_deployment.receipt.cloudflare_version.id = "older-provider-version";
+  assert.throws(() => validateWorkerCostProfile(profile), /does not match receipt contents/);
 });
 
 test("literal header, URL and method ownership are all required before persistence", () => {

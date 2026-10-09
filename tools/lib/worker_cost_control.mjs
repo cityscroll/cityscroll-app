@@ -1,3 +1,5 @@
+import { createHash } from "node:crypto";
+
 export const REQUIRED_COST_COHORTS = Object.freeze([
   "health:cold", "health:warm",
   "unknown-route:cold", "unknown-route:warm",
@@ -69,15 +71,50 @@ function validateCondition(cohort, condition, path) {
   }
 }
 
+function canonicalJson(value) {
+  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(",")}]`;
+  if (value && typeof value === "object") {
+    return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${canonicalJson(value[key])}`).join(",")}}`;
+  }
+  return JSON.stringify(value);
+}
+
+export function providerDeploymentReceiptSha256(receipt) {
+  return createHash("sha256").update(canonicalJson(receipt)).digest("hex");
+}
+
+function requireExactKeys(value, keys, path) {
+  const actual = Object.keys(value).sort();
+  const expected = [...keys].sort();
+  if (actual.length !== expected.length || actual.some((key, index) => key !== expected[index])) {
+    fail(`${path} has unsupported fields`);
+  }
+}
+
 function validateProviderDeployment(deployment, revision, path) {
   if (!deployment || typeof deployment !== "object") fail(`${path} is required`);
+  requireExactKeys(deployment, ["source", "receipt", "provider_receipt_sha256"], path);
   if (deployment.source !== "cloudflare-deployment-receipt+health") fail(`${path}.source is unsupported`);
-  if (deployment.health_revision !== revision) fail(`${path}.health_revision does not match revision`);
-  if (typeof deployment.script_version_id !== "string" || !deployment.script_version_id.trim()) {
-    fail(`${path}.script_version_id is required`);
+  const receipt = deployment.receipt;
+  if (!receipt || receipt.schema !== "cityscroll.cloudflare_deployment_binding.v1") fail(`${path}.receipt is invalid`);
+  requireExactKeys(receipt, ["schema", "evidence_mode", "observed_at", "production_health", "cloudflare_version"], `${path}.receipt`);
+  if (receipt.evidence_mode !== "actual-production") fail(`${path}.receipt must be actual production evidence`);
+  if (!Number.isFinite(Date.parse(receipt.observed_at))) fail(`${path}.receipt.observed_at is invalid`);
+  if (!receipt.production_health || typeof receipt.production_health !== "object") fail(`${path}.receipt.production_health is required`);
+  requireExactKeys(receipt.production_health, ["source", "revision"], `${path}.receipt.production_health`);
+  if (receipt.production_health?.source !== "cityscroll-production-health") fail(`${path}.receipt.production_health.source is unsupported`);
+  if (receipt.production_health?.revision !== revision) fail(`${path}.receipt production health revision does not match revision`);
+  if (!receipt.cloudflare_version || typeof receipt.cloudflare_version !== "object") fail(`${path}.receipt.cloudflare_version is required`);
+  requireExactKeys(receipt.cloudflare_version, ["source", "id"], `${path}.receipt.cloudflare_version`);
+  if (receipt.cloudflare_version?.source !== "cloudflare-versions-api") fail(`${path}.receipt.cloudflare_version.source is unsupported`);
+  if (typeof receipt.cloudflare_version?.id !== "string" || !receipt.cloudflare_version.id.trim()) {
+    fail(`${path}.receipt.cloudflare_version.id is required`);
   }
   if (!SHA256.test(String(deployment.provider_receipt_sha256 || ""))) fail(`${path}.provider_receipt_sha256 is invalid`);
-  return deployment.script_version_id;
+  if (providerDeploymentReceiptSha256(receipt) !== deployment.provider_receipt_sha256) {
+    fail(`${path}.provider_receipt_sha256 does not match receipt contents`);
+  }
+  return receipt.cloudflare_version.id;
 }
 
 /**
@@ -318,6 +355,7 @@ function warehouseMeterTotals(run, label) {
   const totals = Object.fromEntries(COST_METERS.map((meter) => [meter, 0]));
   let errors = 0;
   let sampleCount = 0;
+  const providerVersionId = validateProviderDeployment(run.provider_deployment, run.deployed_revision, `${label}.provider_deployment`);
   for (const cohortName of WAREHOUSE_EXPERIMENT_COHORTS) {
     const cohort = run.cohorts?.[cohortName];
     if (!cohort) fail(`${label} is missing ${cohortName}`);
@@ -328,7 +366,7 @@ function warehouseMeterTotals(run, label) {
     cohort.samples.forEach((sample, index) => {
       sampleCount += 1;
       const path = `${label}.${cohortName}.samples[${index}]`;
-      validateRetainedSample(sample, cohortName, run.deployed_revision, run.provider_deployment.script_version_id, path);
+      validateRetainedSample(sample, cohortName, run.deployed_revision, providerVersionId, path);
       finiteNonNegative(sample.collector_cpu_ms, `${path}.collector_cpu_ms`);
       totals.native_cpu_ms += sample.native_cpu_ms;
       totals.collector_cpu_ms += sample.collector_cpu_ms;

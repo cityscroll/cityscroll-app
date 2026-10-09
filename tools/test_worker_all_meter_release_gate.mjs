@@ -9,16 +9,25 @@ import {
   REQUIRED_COST_COHORTS,
   buildWorkerCostProfile,
   evaluateAllMeterRelease,
+  providerDeploymentReceiptSha256,
 } from "./lib/worker_cost_control.mjs";
 
 const revision = "b".repeat(40);
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const providerDeployment = (profileRevision) => ({
-  source: "cloudflare-deployment-receipt+health",
-  health_revision: profileRevision,
-  script_version_id: `provider-${profileRevision.slice(0, 12)}`,
-  provider_receipt_sha256: "f".repeat(64),
-});
+const providerDeployment = (profileRevision) => {
+  const receipt = {
+    schema: "cityscroll.cloudflare_deployment_binding.v1",
+    evidence_mode: "actual-production",
+    observed_at: "2026-10-08T23:29:00Z",
+    production_health: { source: "cityscroll-production-health", revision: profileRevision },
+    cloudflare_version: { source: "cloudflare-versions-api", id: `provider-${profileRevision.slice(0, 12)}` },
+  };
+  return {
+    source: "cloudflare-deployment-receipt+health",
+    receipt,
+    provider_receipt_sha256: providerDeploymentReceiptSha256(receipt),
+  };
+};
 function profile(profileRevision = revision, totals = {}, samplesPerCohort = 1) {
   const routeCohortCount = REQUIRED_COST_COHORTS.length - 1;
   const samples = REQUIRED_COST_COHORTS.flatMap((cohort, cohortIndex) => Array.from({ length: samplesPerCohort }, (_, sampleIndex) => ({
@@ -31,7 +40,7 @@ function profile(profileRevision = revision, totals = {}, samplesPerCohort = 1) 
       ? (totals.collector_cpu_ms ?? 1) / samplesPerCohort
       : (totals.native_cpu_ms ?? routeCohortCount) / routeCohortCount / samplesPerCohort,
     native_cpu_source: { field: "cpuTime", unit: "milliseconds", precision: "integer" },
-    outcome: "ok", script_version_id: providerDeployment(profileRevision).script_version_id,
+    outcome: "ok", script_version_id: providerDeployment(profileRevision).receipt.cloudflare_version.id,
     operations: Object.fromEntries(
       ["kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes"].map((meter) => [
         meter,

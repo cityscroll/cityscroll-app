@@ -6,6 +6,7 @@ import {
   WAREHOUSE_EXPERIMENT_COHORTS,
   WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
   evaluateWarehouseExperiment,
+  providerDeploymentReceiptSha256,
 } from "./lib/worker_cost_control.mjs";
 
 function run(overrides = {}) {
@@ -24,12 +25,20 @@ function run(overrides = {}) {
     error_count: 0,
     ...overrides,
   };
-  result.provider_deployment ||= {
-    source: "cloudflare-deployment-receipt+health",
-    health_revision: result.deployed_revision,
-    script_version_id: `provider-${result.deployed_revision.slice(0, 12)}`,
-    provider_receipt_sha256: "e".repeat(64),
-  };
+  if (!result.provider_deployment) {
+    const receipt = {
+      schema: "cityscroll.cloudflare_deployment_binding.v1",
+      evidence_mode: "actual-production",
+      observed_at: "2026-10-08T22:59:00Z",
+      production_health: { source: "cityscroll-production-health", revision: result.deployed_revision },
+      cloudflare_version: { source: "cloudflare-versions-api", id: `provider-${result.deployed_revision.slice(0, 12)}` },
+    };
+    result.provider_deployment = {
+      source: "cloudflare-deployment-receipt+health",
+      receipt,
+      provider_receipt_sha256: providerDeploymentReceiptSha256(receipt),
+    };
+  }
   result.cohorts ||= Object.fromEntries(WAREHOUSE_EXPERIMENT_COHORTS.map((name, cohortIndex) => [name, {
     sample_count: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
     samples: Array.from({ length: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT }, (_, sampleIndex) => {
@@ -39,7 +48,7 @@ function run(overrides = {}) {
         native_cpu_ms: carriesTotals ? result.meters.native_cpu_ms : 0,
         collector_cpu_ms: carriesTotals ? result.meters.collector_cpu_ms : 0,
         native_cpu_source: { field: "cpuTime", unit: "milliseconds", precision: "provider" },
-        script_version_id: result.provider_deployment.script_version_id,
+        script_version_id: result.provider_deployment.receipt.cloudflare_version.id,
         condition: {
           mode: "provider-observed", source: "$metadata.coldStart", cold_start: name.endsWith(":cold"),
         },
