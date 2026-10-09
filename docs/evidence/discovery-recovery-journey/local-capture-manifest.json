@@ -3,7 +3,7 @@
   "scenario": "discovery-recovery",
   "public_alias": "c94563a6bbaf3",
   "capture_mode": "headless-playwright-local-fixture-server",
-  "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+  "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
   "base": "local-fixture-server",
   "viewports": [
     {
@@ -18,8 +18,8 @@
     }
   ],
   "run_receipt": {
-    "started_at": "2026-10-02T09:15:22Z",
-    "finished_at": "2026-10-02T09:16:14Z"
+    "started_at": "2026-10-09T16:07:23Z",
+    "finished_at": "2026-10-09T16:08:20Z"
   },
   "identity": {
     "before": {
@@ -40,7 +40,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
         "url": "/",
         "viewport": {
@@ -64,9 +64,9 @@
         "scroll_y": 0
       },
       "render": {
-        "sha256": "62ba45ddb1bc34d72458b4115193703e0d3ce0f9d2c8be1ac22c2f76fe86d797",
-        "bytes": 67667,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/root-category-record-phone.png",
+        "sha256": "b63f8c036ccfad3eeb7afb7cecefb4dc9fe5ce66b5a1f0aeac503c8361bee0f7",
+        "bytes": 50585,
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/root-category-record-phone.png",
         "url": "/",
         "viewport": {
           "width": 390,
@@ -129,14 +129,14 @@
           "status": 200,
           "marker": "browse",
           "overflow_x": 0,
-          "record_links": 524
+          "record_links": 567
         },
-        "record_href": "/meetings/meeting%3Acommunity_board%3A6uuu1gepuatu6p4ko859g9njr2%40google.com%3A%3A2026-10-02",
-        "record_title": "Transportation, Public Transit, Street Safety Committee Briefing",
+        "record_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-12%3A2026-10-10%3Acommunity-recycling-event",
+        "record_title": "Community Recycling Event",
         "destination": {
-          "url": "/meetings/meeting%3Acommunity_board%3A6uuu1gepuatu6p4ko859g9njr2%40google.com%3A%3A2026-10-02",
-          "record_id": "meeting:community_board:6uuu1gepuatu6p4ko859g9njr2@google.com::2026-10-02",
-          "heading": "Transportation, Public Transit, Street Safety Committee Briefing",
+          "url": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-12%3A2026-10-10%3Acommunity-recycling-event",
+          "record_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-10:community-recycling-event",
+          "heading": "Community Recycling Event",
           "near_you_shell": false,
           "fragment": null,
           "anchor_present": null,
@@ -168,7 +168,7 @@
           "read_model_version": null
         },
         {
-          "path": "/meetings/meeting%3Acommunity_board%3A6uuu1gepuatu6p4ko859g9njr2%40google.com%3A%3A2026-10-02",
+          "path": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-12%3A2026-10-10%3Acommunity-recycling-event",
           "status": 200,
           "worker": false,
           "read_model_version": null
@@ -202,9 +202,9 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
-        "url": "/near-you/?geo=nta2020%3ABK1403&surface=records",
+        "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&drawer=open&focus=geography%3Anta2020%3ABK1403",
         "viewport": {
           "width": 390,
           "height": 844
@@ -223,13 +223,13 @@
         "surface": "records",
         "deferred_state": "ready",
         "results_count": "2",
-        "scroll_y": 1826
+        "scroll_y": 5
       },
       "render": {
-        "sha256": "1c0917f373d79767801899a5784e5a0f78c59a0b7813b220ac76aedfa6822cf9",
-        "bytes": 74830,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/typed-place-record-phone.png",
-        "url": "/near-you/?geo=nta2020%3ABK1403&surface=records",
+        "sha256": "126e10e1536da5f6f22c183e771cc4e75963c94cec764d9e36515a4ee4fa2405",
+        "bytes": 46031,
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/typed-place-record-phone.png",
+        "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&drawer=open&focus=geography%3Anta2020%3ABK1403",
         "viewport": {
           "width": 390,
           "height": 844
@@ -238,7 +238,7 @@
       },
       "observations": {
         "scope": {
-          "url": "/near-you/?geo=nta2020%3ABK1403&surface=records",
+          "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&drawer=open&focus=geography%3Anta2020%3ABK1403",
           "viewport": {
             "width": 390,
             "height": 844
@@ -257,7 +257,7 @@
           "surface": "records",
           "deferred_state": "ready",
           "results_count": "2",
-          "scroll_y": 1826
+          "scroll_y": 5
         },
         "listed_ids": [
           "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
@@ -280,12 +280,12 @@
           "in_closed_details": false
         },
         "departure": {
-          "url": "/near-you/?geo=nta2020%3ABK1403&surface=records",
+          "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&drawer=open&focus=geography%3Anta2020%3ABK1403",
           "heading": "Midwood",
           "surface": "records",
-          "scroll_y": 1826,
+          "scroll_y": 4456,
           "focus_record_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
-          "focus_class": "near-record-inspect near-record-title"
+          "focus_class": "near-record-full-record"
         },
         "destination": {
           "url": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",
@@ -298,10 +298,10 @@
           "status": 200
         },
         "returned": {
-          "url": "/near-you/?geo=nta2020%3ABK1403&surface=records",
+          "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&drawer=open&focus=geography%3Anta2020%3ABK1403",
           "heading": "Midwood",
           "surface": "records",
-          "scroll_y": 1826,
+          "scroll_y": 4456,
           "focus_record_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
           "focus_class": "near-record-full-record"
         },
@@ -321,13 +321,13 @@
           "read_model_version": "capture-5deaa202fe57"
         },
         {
-          "path": "/near-you/?geo=nta2020%3ABK1403&surface=records",
+          "path": "/near-you/?geo=nta2020%3ABK1403&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1403",
           "status": 200,
           "worker": true,
           "read_model_version": "capture-5deaa202fe57"
         },
         {
-          "path": "/near-you/deferred.json?geo=nta2020%3ABK1403&surface=records",
+          "path": "/near-you/deferred.json?geo=nta2020%3ABK1403&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1403",
           "status": 200,
           "worker": true,
           "read_model_version": "capture-5deaa202fe57"
@@ -339,13 +339,13 @@
           "read_model_version": null
         },
         {
-          "path": "/near-you/?geo=nta2020%3ABK1403&surface=records",
+          "path": "/near-you/?geo=nta2020%3ABK1403&surface=records&drawer=open&focus=geography%3Anta2020%3ABK1403",
           "status": 200,
           "worker": true,
           "read_model_version": "capture-5deaa202fe57"
         },
         {
-          "path": "/near-you/deferred.json?geo=nta2020%3ABK1403&surface=records",
+          "path": "/near-you/deferred.json?geo=nta2020%3ABK1403&surface=records&drawer=open&focus=geography%3Anta2020%3ABK1403",
           "status": 200,
           "worker": true,
           "read_model_version": "capture-5deaa202fe57"
@@ -376,7 +376,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
         "viewport": {
@@ -401,7 +401,7 @@
       "render": {
         "sha256": "a48b2de064c88100a94405ac28663e7a6fd5d6daa95f8091952b21b20d482a87",
         "bytes": 54512,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/unsupported-place-escape-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/unsupported-place-escape-phone.png",
         "url": "/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
         "viewport": {
           "width": 390,
@@ -446,7 +446,7 @@
           "status": 200,
           "marker": "browse",
           "overflow_x": 0,
-          "record_links": 830
+          "record_links": 840
         },
         "record_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-03-28%3Ageneral-board-meeting",
         "record_title": "General Board Meeting",
@@ -510,7 +510,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
         "url": "/near-you?v=0&scope=citywide&surface=records",
         "viewport": {
@@ -533,9 +533,9 @@
         "scroll_y": 0
       },
       "render": {
-        "sha256": "e22f1651429ac96a3fa54f50ae95e28632ecc6331a76b9f90275a0e5ee882576",
-        "bytes": 42525,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/citywide-bucket-record-phone.png",
+        "sha256": "7476466f2bc302913a002d513a48cb4b5b24fd4b5f5dc95e9b24eb337f6bcda5",
+        "bytes": 41382,
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/citywide-bucket-record-phone.png",
         "url": "/near-you?v=0&scope=citywide&surface=records",
         "viewport": {
           "width": 390,
@@ -614,9 +614,9 @@
           "url": "/near-you?v=0&scope=citywide&surface=records",
           "heading": "Citywide",
           "surface": "records",
-          "scroll_y": 517,
+          "scroll_y": 489,
           "focus_record_id": "meeting:nyc_legistar_events:22568",
-          "focus_class": "near-record-inspect near-record-title"
+          "focus_class": "near-record-full-record"
         },
         "destination": {
           "url": "/meetings/meeting%3Anyc_legistar_events%3A22568",
@@ -632,7 +632,7 @@
           "url": "/near-you?v=0&scope=citywide&surface=records",
           "heading": "Citywide",
           "surface": "records",
-          "scroll_y": 517,
+          "scroll_y": 489,
           "focus_record_id": "meeting:nyc_legistar_events:22568",
           "focus_class": "near-record-full-record"
         },
@@ -707,7 +707,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
         "url": "/",
         "viewport": {
@@ -731,9 +731,9 @@
         "scroll_y": 0
       },
       "render": {
-        "sha256": "62ba45ddb1bc34d72458b4115193703e0d3ce0f9d2c8be1ac22c2f76fe86d797",
-        "bytes": 67667,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/suggested-place-record-phone.png",
+        "sha256": "b63f8c036ccfad3eeb7afb7cecefb4dc9fe5ce66b5a1f0aeac503c8361bee0f7",
+        "bytes": 50585,
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/suggested-place-record-phone.png",
         "url": "/",
         "viewport": {
           "width": 390,
@@ -914,7 +914,7 @@
           "surface": "records",
           "scroll_y": 1029,
           "focus_record_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
-          "focus_class": "near-record-inspect near-record-title"
+          "focus_class": "near-record-full-record"
         },
         "destination": {
           "url": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fhousing-health-human-services-committee-hhhs-53%2F",
@@ -1054,7 +1054,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
         "url": "/near-you/",
         "viewport": {
@@ -1078,9 +1078,9 @@
         "scroll_y": 0
       },
       "render": {
-        "sha256": "24031d740568b4ba24a99de643ca5d8eddf52305d2e30b12c4b1f0e726c5591d",
-        "bytes": 68529,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/location-denied-phone.png",
+        "sha256": "b831cf8d2d35e942624a2bc579b28dc3ece264a11d09dd98d9b61aacd35c3578",
+        "bytes": 60818,
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/location-denied-phone.png",
         "url": "/near-you/",
         "viewport": {
           "width": 390,
@@ -1158,7 +1158,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
         "url": "/near-you/",
         "viewport": {
@@ -1182,9 +1182,9 @@
         "scroll_y": 0
       },
       "render": {
-        "sha256": "d32e710e600fa69efe53efaf9cf3307c70293f86a1a5300cae90d5bb45e6b294",
-        "bytes": 66269,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/location-timeout-phone.png",
+        "sha256": "bad2eabf368fd1f6d9d20f08c269a58fba31ef8f27213f5f449677500d3974f4",
+        "bytes": 58513,
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/location-timeout-phone.png",
         "url": "/near-you/",
         "viewport": {
           "width": 390,
@@ -1213,7 +1213,7 @@
           ]
         },
         "after_retry": {
-          "url": "/near-you/?geo=nta2020%3AQN0103&surface=records"
+          "url": "/near-you/?geo=nta2020%3AQN0103&surface=records&drawer=open&focus=geography%3Anta2020%3AQN0103"
         },
         "location_requests": 2
       },
@@ -1231,13 +1231,13 @@
           "read_model_version": "capture-5deaa202fe57"
         },
         {
-          "path": "/near-you/?geo=nta2020%3AQN0103&surface=records",
+          "path": "/near-you/?geo=nta2020%3AQN0103&surface=map&drawer=open&focus=geography%3Anta2020%3AQN0103",
           "status": 503,
           "worker": true,
           "read_model_version": "capture-5deaa202fe57"
         },
         {
-          "path": "/near-you/deferred.json?geo=nta2020%3AQN0103&surface=records",
+          "path": "/near-you/deferred.json?geo=nta2020%3AQN0103&surface=map&drawer=open&focus=geography%3Anta2020%3AQN0103",
           "status": 503,
           "worker": true,
           "read_model_version": "capture-5deaa202fe57"
@@ -1265,7 +1265,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABX0101&surface=records&lens=meetings",
         "viewport": {
@@ -1290,7 +1290,7 @@
       "render": {
         "sha256": "1be0f736aed7aa3b35d93612351c73b61db4953fae68b947d6048356a8ef668f",
         "bytes": 51213,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/explicit-zero-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/explicit-zero-phone.png",
         "url": "/near-you/?geo=nta2020%3ABX0101&surface=records&lens=meetings",
         "viewport": {
           "width": 390,
@@ -1383,7 +1383,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
@@ -1408,7 +1408,7 @@
       "render": {
         "sha256": "40dd839540722a14e0d64a3ee4a489a2a9d5c40ee8426eba12ba3bc1cb10abc3",
         "bytes": 47381,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/failed-section-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/failed-section-phone.png",
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
           "width": 390,
@@ -1488,7 +1488,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
         "url": "/near-you/?geo=nta2020%3AQN0103&surface=records&lens=meetings",
         "viewport": {
@@ -1513,7 +1513,7 @@
       "render": {
         "sha256": "392d763f55d8a82031f2d3eee143700f354ae8084b0275ff5f42da24643f96bd",
         "bytes": 50236,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/missing-coverage-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/missing-coverage-phone.png",
         "url": "/near-you/?geo=nta2020%3AQN0103&surface=records&lens=meetings",
         "viewport": {
           "width": 390,
@@ -1607,7 +1607,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
@@ -1633,7 +1633,7 @@
       "render": {
         "sha256": "a1305a874324a0b1b7201110463aaa51065b5d8639bad9d3cf0e1fa3d26f6ed3",
         "bytes": 56943,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/detail-failure-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/detail-failure-phone.png",
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
           "width": 390,
@@ -1655,8 +1655,8 @@
           "heading": "Midwood",
           "surface": "records",
           "scroll_y": 1201,
-          "focus_record_id": null,
-          "focus_class": "BODY"
+          "focus_record_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+          "focus_class": "near-record-full-record"
         },
         "failed_status": 503,
         "returned": {
@@ -1734,7 +1734,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
         "url": "/",
         "viewport": {
@@ -1758,9 +1758,9 @@
         "scroll_y": 0
       },
       "render": {
-        "sha256": "b2a0419a3ce4d790cc01a4a51e27462f02cb21864f4fa64d42b83031fcfb906a",
-        "bytes": 91842,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/root-category-record-desktop.png",
+        "sha256": "0a89dd616262ae61ebff93997a6e7b8eb1a2fe0c2dace7d36ce5f76af1fb7847",
+        "bytes": 116342,
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/root-category-record-desktop.png",
         "url": "/",
         "viewport": {
           "width": 1440,
@@ -1823,14 +1823,14 @@
           "status": 200,
           "marker": "browse",
           "overflow_x": 0,
-          "record_links": 524
+          "record_links": 567
         },
-        "record_href": "/meetings/meeting%3Acommunity_board%3A6uuu1gepuatu6p4ko859g9njr2%40google.com%3A%3A2026-10-02",
-        "record_title": "Transportation, Public Transit, Street Safety Committee Briefing",
+        "record_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-12%3A2026-10-10%3Acommunity-recycling-event",
+        "record_title": "Community Recycling Event",
         "destination": {
-          "url": "/meetings/meeting%3Acommunity_board%3A6uuu1gepuatu6p4ko859g9njr2%40google.com%3A%3A2026-10-02",
-          "record_id": "meeting:community_board:6uuu1gepuatu6p4ko859g9njr2@google.com::2026-10-02",
-          "heading": "Transportation, Public Transit, Street Safety Committee Briefing",
+          "url": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-12%3A2026-10-10%3Acommunity-recycling-event",
+          "record_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-10:community-recycling-event",
+          "heading": "Community Recycling Event",
           "near_you_shell": false,
           "fragment": null,
           "anchor_present": null,
@@ -1862,7 +1862,7 @@
           "read_model_version": null
         },
         {
-          "path": "/meetings/meeting%3Acommunity_board%3A6uuu1gepuatu6p4ko859g9njr2%40google.com%3A%3A2026-10-02",
+          "path": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-12%3A2026-10-10%3Acommunity-recycling-event",
           "status": 200,
           "worker": false,
           "read_model_version": null
@@ -1896,9 +1896,9 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
-        "url": "/near-you/?geo=nta2020%3ABK1403&surface=records",
+        "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&drawer=open&focus=geography%3Anta2020%3ABK1403",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -1917,13 +1917,13 @@
         "surface": "records",
         "deferred_state": "ready",
         "results_count": "2",
-        "scroll_y": 1470
+        "scroll_y": 0
       },
       "render": {
-        "sha256": "95ef5198c85879eb491b629fd3967abe3c8f70f98bc13af8dc36cb77c10eb34a",
-        "bytes": 94079,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/typed-place-record-desktop.png",
-        "url": "/near-you/?geo=nta2020%3ABK1403&surface=records",
+        "sha256": "a5f787c802db4cf554433a843fa4146aacb2e215a58e3830e2a99127eacf0620",
+        "bytes": 69371,
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/typed-place-record-desktop.png",
+        "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&drawer=open&focus=geography%3Anta2020%3ABK1403",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -1932,7 +1932,7 @@
       },
       "observations": {
         "scope": {
-          "url": "/near-you/?geo=nta2020%3ABK1403&surface=records",
+          "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&drawer=open&focus=geography%3Anta2020%3ABK1403",
           "viewport": {
             "width": 1440,
             "height": 900
@@ -1951,7 +1951,7 @@
           "surface": "records",
           "deferred_state": "ready",
           "results_count": "2",
-          "scroll_y": 1470
+          "scroll_y": 0
         },
         "listed_ids": [
           "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
@@ -1974,12 +1974,12 @@
           "in_closed_details": false
         },
         "departure": {
-          "url": "/near-you/?geo=nta2020%3ABK1403&surface=records",
+          "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&drawer=open&focus=geography%3Anta2020%3ABK1403",
           "heading": "Midwood",
           "surface": "records",
-          "scroll_y": 1470,
+          "scroll_y": 3545,
           "focus_record_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
-          "focus_class": "near-record-inspect near-record-title"
+          "focus_class": "near-record-full-record"
         },
         "destination": {
           "url": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",
@@ -1992,10 +1992,10 @@
           "status": 200
         },
         "returned": {
-          "url": "/near-you/?geo=nta2020%3ABK1403&surface=records",
+          "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&drawer=open&focus=geography%3Anta2020%3ABK1403",
           "heading": "Midwood",
           "surface": "records",
-          "scroll_y": 1470,
+          "scroll_y": 3545,
           "focus_record_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
           "focus_class": "near-record-full-record"
         },
@@ -2015,13 +2015,13 @@
           "read_model_version": "capture-5deaa202fe57"
         },
         {
-          "path": "/near-you/?geo=nta2020%3ABK1403&surface=records",
+          "path": "/near-you/?geo=nta2020%3ABK1403&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1403",
           "status": 200,
           "worker": true,
           "read_model_version": "capture-5deaa202fe57"
         },
         {
-          "path": "/near-you/deferred.json?geo=nta2020%3ABK1403&surface=records",
+          "path": "/near-you/deferred.json?geo=nta2020%3ABK1403&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1403",
           "status": 200,
           "worker": true,
           "read_model_version": "capture-5deaa202fe57"
@@ -2033,13 +2033,13 @@
           "read_model_version": null
         },
         {
-          "path": "/near-you/?geo=nta2020%3ABK1403&surface=records",
+          "path": "/near-you/?geo=nta2020%3ABK1403&surface=records&drawer=open&focus=geography%3Anta2020%3ABK1403",
           "status": 200,
           "worker": true,
           "read_model_version": "capture-5deaa202fe57"
         },
         {
-          "path": "/near-you/deferred.json?geo=nta2020%3ABK1403&surface=records",
+          "path": "/near-you/deferred.json?geo=nta2020%3ABK1403&surface=records&drawer=open&focus=geography%3Anta2020%3ABK1403",
           "status": 200,
           "worker": true,
           "read_model_version": "capture-5deaa202fe57"
@@ -2070,7 +2070,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
         "viewport": {
@@ -2095,7 +2095,7 @@
       "render": {
         "sha256": "bccda2e37f04433d11a2ed4c43b45b01c95cf7d44601a53a9c02cdad5a43c9dd",
         "bytes": 82550,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/unsupported-place-escape-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/unsupported-place-escape-desktop.png",
         "url": "/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
         "viewport": {
           "width": 1440,
@@ -2140,7 +2140,7 @@
           "status": 200,
           "marker": "browse",
           "overflow_x": 0,
-          "record_links": 830
+          "record_links": 840
         },
         "record_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-03-28%3Ageneral-board-meeting",
         "record_title": "General Board Meeting",
@@ -2204,7 +2204,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
         "url": "/near-you?v=0&scope=citywide&surface=records",
         "viewport": {
@@ -2227,9 +2227,9 @@
         "scroll_y": 0
       },
       "render": {
-        "sha256": "2f499011f5c65b9097146fa4ae5a9df0a277c9f0377366188cb11b02063b80dc",
-        "bytes": 64957,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/citywide-bucket-record-desktop.png",
+        "sha256": "71db258ea5635d0e9626b932d9fd5a4c628119a3ba240f22b393bd408e2cba12",
+        "bytes": 61473,
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/citywide-bucket-record-desktop.png",
         "url": "/near-you?v=0&scope=citywide&surface=records",
         "viewport": {
           "width": 1440,
@@ -2310,7 +2310,7 @@
           "surface": "records",
           "scroll_y": 571,
           "focus_record_id": "meeting:nyc_legistar_events:22568",
-          "focus_class": "near-record-inspect near-record-title"
+          "focus_class": "near-record-full-record"
         },
         "destination": {
           "url": "/meetings/meeting%3Anyc_legistar_events%3A22568",
@@ -2401,7 +2401,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
         "url": "/",
         "viewport": {
@@ -2425,9 +2425,9 @@
         "scroll_y": 0
       },
       "render": {
-        "sha256": "b2a0419a3ce4d790cc01a4a51e27462f02cb21864f4fa64d42b83031fcfb906a",
-        "bytes": 91842,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/suggested-place-record-desktop.png",
+        "sha256": "2f2bf7e455ffc6626c1402588b42e2793c6c425c1766fa2c5567e25b17f0e26b",
+        "bytes": 116345,
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/suggested-place-record-desktop.png",
         "url": "/",
         "viewport": {
           "width": 1440,
@@ -2608,7 +2608,7 @@
           "surface": "records",
           "scroll_y": 888,
           "focus_record_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
-          "focus_class": "near-record-inspect near-record-title"
+          "focus_class": "near-record-full-record"
         },
         "destination": {
           "url": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fhousing-health-human-services-committee-hhhs-53%2F",
@@ -2748,7 +2748,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
         "url": "/near-you/",
         "viewport": {
@@ -2772,9 +2772,9 @@
         "scroll_y": 0
       },
       "render": {
-        "sha256": "7d08e6c3d1cfee2d71eb77f5bdf96d7860e88baf22d39e6a1ce77d541677bc4b",
-        "bytes": 96280,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/location-denied-desktop.png",
+        "sha256": "a4024fb0f0469148f2749a31f433812ef5bf2596dc1c6d2bf91f75bb5203ba3f",
+        "bytes": 111399,
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/location-denied-desktop.png",
         "url": "/near-you/",
         "viewport": {
           "width": 1440,
@@ -2852,7 +2852,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
         "url": "/near-you/",
         "viewport": {
@@ -2876,9 +2876,9 @@
         "scroll_y": 0
       },
       "render": {
-        "sha256": "866d4f895d4afa746729874abe585375aa4bd41a9f9b4b25e56ef9f433b5db00",
-        "bytes": 93462,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/location-timeout-desktop.png",
+        "sha256": "dabc9c00b9da3bb0b0b0b9744c8ac218c26ec85602853467144bfd0c986f0ab0",
+        "bytes": 211101,
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/location-timeout-desktop.png",
         "url": "/near-you/",
         "viewport": {
           "width": 1440,
@@ -2907,7 +2907,7 @@
           ]
         },
         "after_retry": {
-          "url": "/near-you/?geo=nta2020%3AQN0103&surface=records"
+          "url": "/near-you/?geo=nta2020%3AQN0103&surface=records&drawer=open&focus=geography%3Anta2020%3AQN0103"
         },
         "location_requests": 2
       },
@@ -2925,13 +2925,13 @@
           "read_model_version": "capture-5deaa202fe57"
         },
         {
-          "path": "/near-you/?geo=nta2020%3AQN0103&surface=records",
+          "path": "/near-you/?geo=nta2020%3AQN0103&surface=map&drawer=open&focus=geography%3Anta2020%3AQN0103",
           "status": 503,
           "worker": true,
           "read_model_version": "capture-5deaa202fe57"
         },
         {
-          "path": "/near-you/deferred.json?geo=nta2020%3AQN0103&surface=records",
+          "path": "/near-you/deferred.json?geo=nta2020%3AQN0103&surface=map&drawer=open&focus=geography%3Anta2020%3AQN0103",
           "status": 503,
           "worker": true,
           "read_model_version": "capture-5deaa202fe57"
@@ -2959,7 +2959,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABX0101&surface=records&lens=meetings",
         "viewport": {
@@ -2984,7 +2984,7 @@
       "render": {
         "sha256": "74bd375813a0e4f2dd0e85a2f63f50faedb71dedd3a59040cef932192e239e53",
         "bytes": 71602,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/explicit-zero-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/explicit-zero-desktop.png",
         "url": "/near-you/?geo=nta2020%3ABX0101&surface=records&lens=meetings",
         "viewport": {
           "width": 1440,
@@ -3077,7 +3077,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
@@ -3102,7 +3102,7 @@
       "render": {
         "sha256": "0929d3f60f5e885c02a023b372fef9dc13618da9293aed5654406eb18ff88460",
         "bytes": 67484,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/failed-section-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/failed-section-desktop.png",
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
           "width": 1440,
@@ -3182,7 +3182,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
         "url": "/near-you/?geo=nta2020%3AQN0103&surface=records&lens=meetings",
         "viewport": {
@@ -3207,7 +3207,7 @@
       "render": {
         "sha256": "d713defc4170bc4164b65882552df7ee75b01eb0fd854de0b470f4bd05f9c9e4",
         "bytes": 71216,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/missing-coverage-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/missing-coverage-desktop.png",
         "url": "/near-you/?geo=nta2020%3AQN0103&surface=records&lens=meetings",
         "viewport": {
           "width": 1440,
@@ -3301,7 +3301,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "f8d462ef-095a-4195-b531-884810b51f90",
+      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
@@ -3327,7 +3327,7 @@
       "render": {
         "sha256": "5a496c5dbb08404f9b366b874daca5ae0668bf81e3b8f916b93d06f049d9f00c",
         "bytes": 87689,
-        "local_image": ".artifacts/discovery-recovery-journey/f8d462ef-095a-4195-b531-884810b51f90/detail-failure-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/detail-failure-desktop.png",
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
           "width": 1440,
@@ -3349,8 +3349,8 @@
           "heading": "Midwood",
           "surface": "records",
           "scroll_y": 1067,
-          "focus_record_id": null,
-          "focus_class": "BODY"
+          "focus_record_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+          "focus_class": "near-record-full-record"
         },
         "failed_status": 503,
         "returned": {
@@ -3422,7 +3422,7 @@
     }
   ],
   "provenance": {
-    "capture_revision": "e050756cee95a5f3c520f3410176bd587461befe",
+    "capture_revision": "076ed4015cfa19b43f19139c9ca45d9d7e0c2ee5",
     "capture_revision_rule": "merge base of the capture checkout with origin/main",
     "frozen_activity": {
       "path": "site/data/district_activity.json",
@@ -3438,7 +3438,7 @@
       },
       {
         "path": "tools/discovery_recovery_journey.py",
-        "sha256": "16b74db8d0c1c0cba5d89d6252796d7b67b35e627ad5e195f2935e99f77c2daf"
+        "sha256": "d660513686f3371754a662493c5727c052535ecf84d61b8006046a9a729bfdaa"
       },
       {
         "path": "tools/serve_near_you_capture.mjs",
@@ -3450,11 +3450,11 @@
       },
       {
         "path": "site/near_you_view.mjs",
-        "sha256": "b932cc0ef8b8a9f5ed0fee5f984700c563a2acbc836eae71b66cecc459762e00"
+        "sha256": "63c4b6b2d7079987b87f0388748489d04c4c4f0fa07712c45f9c69bb45633a7c"
       },
       {
         "path": "site/app/map.mjs",
-        "sha256": "439dd3d4224cb1ef6e3741d9ea5049712c1341ed7d225fcf6a98d704ffbb977a"
+        "sha256": "6ff010ef4948769812be83fb94f386f5d33394ff96e7e770ec06b4e6fa6b2b8c"
       }
     ],
     "recapture_command": "python3 tools/capture_default_local_home_journey.py --scenario discovery-recovery --local",
