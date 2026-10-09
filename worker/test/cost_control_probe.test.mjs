@@ -118,7 +118,7 @@ test("native probe records use bounded scheduled windows and owned queue batches
   };
   const batchFingerprint = await queueBatchFingerprint(batch);
   const operations = Object.fromEntries([
-    "kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes",
+    "kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes", "queue_writes", "analytics_points",
   ].map((meter) => [meter, { attempted: 0, confirmed: 0 }]));
   const config = {
     schema: "cityscroll.worker_native_cost_probe.v1",
@@ -133,7 +133,7 @@ test("native probe records use bounded scheduled windows and owned queue batches
       { trigger: "0 13 * * *", scheduled_time: Date.parse("2026-10-09T13:00:00Z"), starts_at: "2026-10-09T12:55:00Z", expires_at: "2026-10-09T13:05:00Z" },
     ],
     queue: "crol-cost-probe",
-    queue_batch_fingerprints: [batchFingerprint],
+    queue_window: { starts_at: "2026-10-09T07:55:00Z", expires_at: "2026-10-09T08:05:00Z" },
     max_queue_batch: 2,
   };
   const env = { WORKER_COST_NATIVE_PROBE: JSON.stringify(config) };
@@ -156,10 +156,14 @@ test("native probe records use bounded scheduled windows and owned queue batches
     batch_size: 2,
     batch_fingerprint_sha256: batchFingerprint,
   });
-  assert.equal(createNativeCostControlProbeRecord(env, {
+  assert.deepEqual(createNativeCostControlProbeRecord(env, {
     kind: "queue", queue: "crol-cost-probe", batchSize: 1,
     batchFingerprint: "c".repeat(64), operations, operationMeterComplete: true,
-  }, now), null);
+  }, now)?.batch_fingerprint_sha256, "c".repeat(64));
+  assert.equal(createNativeCostControlProbeRecord(env, {
+    kind: "queue", queue: "crol-cost-probe", batchSize: 1,
+    batchFingerprint, operations, operationMeterComplete: true,
+  }, Date.parse("2026-10-09T08:06:00Z")), null);
   assert.notEqual(batchFingerprint, await queueBatchFingerprint({
     ...batch,
     messages: [{ ...batch.messages[0], id: "provider-message-3" }, batch.messages[1]],
@@ -193,7 +197,7 @@ test("native receipts measure real binding work after waitUntil completion", asy
           starts_at: "2026-10-09T07:55:00Z", expires_at: "2026-10-09T08:05:00Z",
         }],
         queue: "crol-cost-probe",
-        queue_batch_fingerprints: ["c".repeat(64)],
+        queue_window: { starts_at: "2026-10-09T07:55:00Z", expires_at: "2026-10-09T08:05:00Z" },
         max_queue_batch: 1,
       }),
     }, {
@@ -216,6 +220,8 @@ test("native receipts measure real binding work after waitUntil completion", asy
     d1_rows_read: { attempted: 0, confirmed: 0 },
     d1_rows_written: { attempted: 0, confirmed: 0 },
     storage_bytes: { attempted: 1, confirmed: 1 },
+    queue_writes: { attempted: 0, confirmed: 0 },
+    analytics_points: { attempted: 0, confirmed: 0 },
   });
 });
 

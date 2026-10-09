@@ -37,7 +37,7 @@ const sanitizeNativeInvocation = (rawEvent, options) => sanitizeNativeInvocation
   ...options,
 });
 const emptyOperations = () => Object.fromEntries([
-  "kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes",
+  "kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes", "queue_writes", "analytics_points",
 ].map((meter) => [meter, { attempted: 0, confirmed: 0 }]));
 function event(cpuTime = 4, coldStart = 1) {
   return {
@@ -78,7 +78,7 @@ function nativeEvent(kind, trigger, cpuTime = 4) {
         expires_at: new Date(scheduledTime(cron) + 5 * 60_000).toISOString(),
       })),
       queue: "crol-cost-probe",
-      queue_batch_fingerprints: [BATCH_FINGERPRINT],
+      queue_window: { starts_at: "2026-10-09T08:55:00Z", expires_at: "2026-10-09T09:05:00Z" },
       max_queue_batch: 1,
     }),
   }, kind === "scheduled"

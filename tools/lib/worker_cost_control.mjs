@@ -16,10 +16,12 @@ export const REQUIRED_COST_COHORTS = Object.freeze([
 
 export const COST_METERS = Object.freeze([
   "native_cpu_ms", "collector_cpu_ms", "kv_reads", "kv_writes",
-  "d1_rows_read", "d1_rows_written", "storage_bytes",
+  "d1_rows_read", "d1_rows_written", "storage_bytes", "queue_writes", "analytics_points",
 ]);
 
-const OPERATION_METERS = Object.freeze(["kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes"]);
+export const OPERATION_METERS = Object.freeze([
+  "kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes", "queue_writes", "analytics_points",
+]);
 
 const FORBIDDEN_RETAINED_KEYS = /(?:^|_)(?:url|query|headers?|body|token|credential|email|ip|account_id|user_agent|identifier)(?:_|$)/i;
 const SHA256 = /^[a-f0-9]{64}$/;
@@ -508,6 +510,8 @@ function profileMeterEvidence(profile) {
     d1_rows_read: 0,
     d1_rows_written: 0,
     storage_bytes: 0,
+    queue_writes: 0,
+    analytics_points: 0,
     errors: 0,
   };
   const populations = Object.fromEntries([...COST_METERS, "errors"].map((meter) => [meter, 0]));

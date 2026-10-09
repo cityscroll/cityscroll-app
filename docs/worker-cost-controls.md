@@ -47,8 +47,9 @@ workload digest. Native queue cohorts require the provider queue trigger,
 request ID, run marker, workload digest, and a bounded fingerprint derived from
 the actual provider message IDs, timestamps, attempts, and body structure. The
 Worker emits only that one-way fingerprint, never the message IDs or bodies,
-and accepts it only when it was independently allowlisted for the measurement
-run. Native binding operations are counted in memory and emitted in the same
+within the configured at-most-30-minute queue window. Acquisition independently
+recomputes that fingerprint from authenticated provider batch evidence before
+accepting the Worker receipt. Native binding operations are counted in memory and emitted in the same
 final structured receipt after the handler and its `waitUntil` work finish;
 acquisition callers cannot supply replacement operation totals. An HTTP
 rehearsal, arbitrary log text, cross-run fingerprint, wrong trigger, or
@@ -65,6 +66,16 @@ identifiers, and resident identifiers. Missing cohorts remain `unknown`; they
 never become zero-valued samples. Attempted and confirmed operations are kept
 separate, and collector overhead is a required cohort.
 
+`tools/worker_cost_acquisition.mjs profile` owns live acquisition. It reads
+credentials only from the environment or a mode-0600 file, authenticates
+deployment/version state and version-specific health, executes the fixed owned
+HTTP workloads, and queries Workers Observability directly. Multiple collection
+windows may cover the natural cron schedule, but every individual query is
+limited to 30 minutes and 10,000 events and the combined profile remains within
+24 hours. Raw provider events stay in memory; only sanitized samples are
+returned. Missing access, cold-start metadata, native events, or provider batch
+messages yields a partial result rather than a zero or complete profile.
+
 The fixed profile covers cold and warm health, unknown-route, events, full RUM,
 search, Near You, Browse, ZAP BBL, ZAP project, and Doing Business requests;
 all three configured cron windows; the queue; and collector overhead. Each cold
@@ -78,10 +89,14 @@ project, and Doing Business lookups with the route-scoped candidate under the
 same inputs and workload. Each valid lookup plus the unrelated health and
 browse controls uses exactly 100 cold and 100 warm provider-observed samples.
 Joins, provenance, miss behavior, freshness, and cohort sizes must match. The
-candidate is retained only when no CPU, KV, D1,
-storage, collector, or error meter regresses and at least one meter improves;
+candidate is retained only when no CPU, KV, D1, storage, Queue, Analytics
+Engine, collector, or error meter regresses and at least one meter improves;
 otherwise the baseline stays active. The experiment records an operational
 retention recommendation, never a financial-savings claim.
+`tools/worker_cost_acquisition.mjs warehouse` owns the matched live run and
+calls the evaluator only after both authenticated versions have the fixed
+100-sample cold and warm cohorts, correctness/freshness/miss digests, and the
+complete CPU, collector, KV, D1, storage, Queue, and Analytics Engine vector.
 Both warehouse runs must also match independently acquired deployment bindings;
 the receipts embedded in the runs cannot authenticate themselves. The warehouse
 command reads authenticated deployment status and version metadata itself, then

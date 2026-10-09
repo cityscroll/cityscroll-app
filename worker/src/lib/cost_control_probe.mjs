@@ -101,7 +101,7 @@ function nativeProbeConfig(env, now) {
   catch { return null; }
   if (!exactObjectKeys(config, [
     "schema", "enabled", "starts_at", "expires_at", "run_marker_sha256", "workload_digest",
-    "scheduled_windows", "queue", "queue_batch_fingerprints", "max_queue_batch",
+    "scheduled_windows", "queue", "queue_window", "max_queue_batch",
   ])) return null;
   const startsAt = Date.parse(config.starts_at);
   const expiresAt = Date.parse(config.expires_at);
@@ -137,10 +137,13 @@ function nativeProbeConfig(env, now) {
     || typeof config.queue !== "string"
     || !config.queue
     || config.queue.length > 128
-    || !Array.isArray(config.queue_batch_fingerprints)
-    || config.queue_batch_fingerprints.length < 1
-    || config.queue_batch_fingerprints.length > 100
-    || config.queue_batch_fingerprints.some((fingerprint) => !WORKLOAD_HASH.test(fingerprint))
+    || !exactObjectKeys(config.queue_window, ["starts_at", "expires_at"])
+    || !Number.isFinite(Date.parse(config.queue_window.starts_at))
+    || !Number.isFinite(Date.parse(config.queue_window.expires_at))
+    || Date.parse(config.queue_window.expires_at) <= Date.parse(config.queue_window.starts_at)
+    || Date.parse(config.queue_window.expires_at) - Date.parse(config.queue_window.starts_at) > MAX_NATIVE_SCHEDULED_WINDOW_MS
+    || Date.parse(config.queue_window.starts_at) < startsAt
+    || Date.parse(config.queue_window.expires_at) > expiresAt
     || !Number.isInteger(config.max_queue_batch)
     || config.max_queue_batch < 1
     || config.max_queue_batch > 100
@@ -178,7 +181,8 @@ export function createNativeCostControlProbeRecord(env, invocation, now = Date.n
       || invocation.batchSize < 1
       || invocation.batchSize > config.max_queue_batch
       || !WORKLOAD_HASH.test(invocation.batchFingerprint)
-      || !config.queue_batch_fingerprints.includes(invocation.batchFingerprint)
+      || now < Date.parse(config.queue_window.starts_at)
+      || now > Date.parse(config.queue_window.expires_at)
     ) return null;
     return {
       ...shared,
@@ -454,6 +458,8 @@ function nativeOperationSnapshot(counters) {
     ["d1_rows_read", [counters.attempted.d1_rows_read, counters.d1_rows_read]],
     ["d1_rows_written", [counters.attempted.d1_rows_written, counters.d1_rows_written]],
     ["storage_bytes", [counters.attempted.storage_bytes, counters.storage_bytes]],
+    ["queue_writes", [counters.attempted.queue_writes, counters.queue_writes]],
+    ["analytics_points", [counters.attempted.analytics_points, counters.analytics_points]],
   ].map(([meter, [attempted, confirmed]]) => [meter, { attempted, confirmed }]));
 }
 
@@ -557,6 +563,7 @@ export function beginCostControlProbe(request, env, { suppressWrites = false, wo
           queue_writes: counters.attempted.queue_writes,
           analytics_points: counters.attempted.analytics_points,
         },
+        operation_counts: nativeOperationSnapshot(counters),
         ...extra,
       };
     },

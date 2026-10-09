@@ -59,7 +59,7 @@ function run(overrides = {}) {
         },
         outcome: carriesTotals && result.error_count > 0 ? "exception" : "ok",
         operations: Object.fromEntries(
-          ["kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes"].map((meter) => [
+          ["kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes", "queue_writes", "analytics_points"].map((meter) => [
             meter,
             { attempted: carriesTotals ? result.meters[meter] : 0, confirmed: carriesTotals ? result.meters[meter] : 0 },
           ]),

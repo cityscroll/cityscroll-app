@@ -71,7 +71,7 @@ function profile(profileRevision = revision, totals = {}, samplesPerCohort = 1) 
     native_cpu_source: { field: "cpuTime", unit: "milliseconds", precision: "integer" },
     outcome: "ok", script_version_id: providerDeployment(profileRevision).receipt.cloudflare_version.id,
     operations: Object.fromEntries(
-      ["kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes"].map((meter) => [
+      ["kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes", "queue_writes", "analytics_points"].map((meter) => [
         meter,
         {
           attempted: cohortIndex === 0 && sampleIndex === 0 ? (totals[meter] ?? 0) : 0,
@@ -96,6 +96,8 @@ function receipt(meters = {}, overrides = {}) {
     d1_rows_read: 0,
     d1_rows_written: 0,
     storage_bytes: 10,
+    queue_writes: 0,
+    analytics_points: 0,
     ...meters,
   };
   const errors = overrides.errors ?? 0;
@@ -152,6 +154,11 @@ test("D1 savings cannot hide redundant KV writes", () => {
   const result = evaluateAllMeterRelease(pair({ d1_rows_written: 0, kv_writes: 11 }));
   assert.equal(result.pass, false);
   assert.deepEqual(result.regressions, ["kv_writes"]);
+});
+
+test("queue and Analytics Engine operations remain release meters", () => {
+  assert.deepEqual(evaluateAllMeterRelease(pair({ queue_writes: 1 })).regressions, ["queue_writes"]);
+  assert.deepEqual(evaluateAllMeterRelease(pair({ analytics_points: 1 })).regressions, ["analytics_points"]);
 });
 
 test("incomplete profiles, nonzero unchanged publication and broadened RUM budgets fail", () => {
