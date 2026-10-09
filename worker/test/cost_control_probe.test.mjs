@@ -3,6 +3,7 @@ import test from "node:test";
 
 import worker from "../src/worker.mjs";
 import { beginCostControlProbe } from "../src/lib/cost_control_probe.mjs";
+import { RUM_BATCH_SCHEMA, RUM_OBSERVATION_SCHEMA } from "../src/performance_events.mjs";
 
 const ADMIN_KEY = "probe-test-admin-key";
 const WORKLOAD = "a".repeat(64);
@@ -46,6 +47,30 @@ function d1() {
   return {
     prepare: statement,
     async batch(statements) { return Promise.all(statements.map((item) => item.all())); },
+  };
+}
+
+function rumBatch() {
+  const observation = {
+    schema: RUM_OBSERVATION_SCHEMA,
+    state: "measured",
+    metric_id: "ttfb_ms",
+    metric_version: "1.0.0",
+    unit: "ms",
+    value: 123.5,
+    surface_id: "home",
+    component_id: "none",
+    device_class: "mobile",
+    navigation_type: "navigate",
+    delivery_class: "static",
+    result_state: "content",
+    collector_version: "rum-browser-v1",
+    manifest_version: "rum-surfaces-v1",
+    release_id: "a".repeat(40),
+  };
+  return {
+    schema: RUM_BATCH_SCHEMA,
+    observations: Array.from({ length: 16 }, () => ({ ...observation })),
   };
 }
 
@@ -154,6 +179,64 @@ test("probe rejects malformed cohort payloads before accepting their series", as
   }), { ADMIN_KEY }, { waitUntil() {} });
   assert.equal(invalid.status, 404);
   assert.equal(corrected.status, 200);
+});
+
+test("RUM probe requires production origin and marked traffic", async () => {
+  const batch = rumBatch();
+  const missingOrigin = await worker.fetch(request({
+    tag: "probe-test-rum-origin",
+    series: "series-test-rum-origin",
+    cohort: "rum-16",
+    body: {
+      kind: "http",
+      route: "rum-16",
+      method: "POST",
+      url: "https://api.cityscroll.org/performance-events?traffic_class=synthetic",
+      body: batch,
+    },
+  }), { ADMIN_KEY }, { waitUntil() {} });
+  const residentTraffic = await worker.fetch(request({
+    tag: "probe-test-rum-resident",
+    series: "series-test-rum-resident",
+    cohort: "rum-16",
+    body: {
+      kind: "http",
+      route: "rum-16",
+      method: "POST",
+      url: "https://api.cityscroll.org/performance-events",
+      origin: "https://cityscroll.org",
+      body: batch,
+    },
+  }), { ADMIN_KEY }, { waitUntil() {} });
+  assert.equal(missingOrigin.status, 404);
+  assert.equal(residentTraffic.status, 404);
+});
+
+test("RUM probe retains all observations outside resident traffic", async () => {
+  const points = [];
+  const response = await worker.fetch(request({
+    tag: "probe-test-rum-synthetic",
+    series: "series-test-rum-synthetic",
+    cohort: "rum-16",
+    body: {
+      kind: "http",
+      route: "rum-16",
+      method: "POST",
+      url: "https://api.cityscroll.org/performance-events?traffic_class=synthetic",
+      origin: "https://cityscroll.org",
+      body: rumBatch(),
+    },
+  }), {
+    ADMIN_KEY,
+    RUM_INGEST_ENABLED: "true",
+    ANALYTICS_ENVIRONMENT: "production",
+    RUM_ANALYTICS: { writeDataPoint(point) { points.push(point); } },
+  }, { waitUntil() {} });
+  assert.equal(response.status, 200);
+  const result = await response.json();
+  assert.equal(result.operations.analytics_points, 16);
+  assert.equal(points.length, 16);
+  assert.ok(points.every((point) => point.blobs[9] === "synthetic"));
 });
 
 test("probe binds each route to its supported method", async () => {

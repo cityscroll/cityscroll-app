@@ -123,6 +123,7 @@ import { recordSourceAcquisitionReceipt } from "./lib/source_acquisition_receipt
 import { beginCostControlProbe, logCostControlProbe } from "./lib/cost_control_probe.mjs";
 import { normalizeUsageEvent } from "./lib/analytics.mjs";
 import { LAND_PROJECT_ID_PATTERN } from "../../capabilities/land_projects.mjs";
+import { RUM_MARKED_TRAFFIC_CLASSES, isRumProductionOrigin } from "../../site/rum_production.mjs";
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
 
@@ -170,9 +171,12 @@ const COST_PROBE_HTTP_WORKLOADS = Object.freeze({
   "rum-16": {
     path: "/performance-events",
     method: "POST",
-    validate: (input) => {
+    validate: (input, target) => {
       const normalized = normalizeRumBatch(input.body);
-      return normalized.ok && normalized.observations.length === 16;
+      return normalized.ok
+        && normalized.observations.length === 16
+        && isRumProductionOrigin(input.origin)
+        && RUM_MARKED_TRAFFIC_CLASSES.includes(target.searchParams.get("traffic_class"));
     },
   },
   search: {
