@@ -275,6 +275,26 @@ class Journey:
             timeout=60_000,
         )
 
+    def wait_map(self, geo: str) -> None:
+        """Typed entry keeps the fitted Map surface; drawer/focus may name the place."""
+        self.page.wait_for_function(
+            """(geo) => {
+              const url = new URL(location.href);
+              const root = document.querySelector('[data-near-you-root]');
+              return url.searchParams.get('geo') === geo
+                && (url.searchParams.get('surface') || 'map') === 'map'
+                && root?.dataset.nearSurface === 'map';
+            }""",
+            arg=geo,
+            timeout=60_000,
+        )
+
+    def open_browse_records(self) -> None:
+        """Explicit Records intent from the Map / Browse records switch."""
+        records = self.page.locator('[data-near-surface-switch] [data-near-surface="records"]').first
+        records.wait_for(state="visible", timeout=30_000)
+        self.activate(records)
+
     def entry_state(self) -> dict:
         return self.page.evaluate(ENTRY_STATE_JS)
 
@@ -428,11 +448,23 @@ def check_typed_entries(browser: Browser, base: str, viewport: tuple[str, int, i
         # Converse state: the unselected entry is not a selected place's Records.
         assert "geo" not in query(before["url"]) and before["surface"] == "map", before
         journey.search(MIDWOOD_ADDRESS)
-        journey.wait_records(MIDWOOD_GEO)
+        # Map-first: typed entry fits the place on Map; Records is an explicit switch.
+        journey.wait_map(MIDWOOD_GEO)
         page = journey.page
+        mapped = journey.entry_state()
+        assert mapped["heading"] == "Midwood", mapped
+        assert mapped["surface"] == "map", mapped
+        assert query(mapped["url"]).get("geo") == [MIDWOOD_GEO], mapped["url"]
+        results.append({"case": f"typed-address-map-{name}", "geo": MIDWOOD_GEO, "surface": "map"})
+        journey.open_browse_records()
+        journey.wait_records(MIDWOOD_GEO)
         after = journey.entry_state()
         assert after["heading"] == "Midwood", after
-        assert "drawer" not in query(after["url"]) and "focus" not in query(after["url"]), after["url"]
+        assert after["surface"] == "records", after
+        assert query(after["url"]).get("geo") == [MIDWOOD_GEO], after["url"]
+        assert query(after["url"]).get("surface") == ["records"], after["url"]
+        # drawer/focus may remain from the fitted Map selection that preceded
+        # the explicit Browse records switch.
         results_heading = page.locator("#near-results-heading")
         # No-lens typed place opens the overview; Meetings stay reachable as records.
         assert results_heading.is_visible() and "Records for this place" in results_heading.inner_text()
@@ -452,9 +484,12 @@ def check_typed_entries(browser: Browser, base: str, viewport: tuple[str, int, i
         results.append(check_record_return(journey, name=name))
         results.append(check_detail_failure_return(journey, name=name))
 
+        # Place search preserves the current surface: after Browse records,
+        # the subject address stays on Records.
         journey.search(SUBJECT_ADDRESS)
         journey.wait_records(SUBJECT_GEO)
         assert journey.entry_state()["heading"].startswith("Flatbush"), journey.entry_state()
+        assert journey.entry_state()["surface"] == "records", journey.entry_state()
         results.append({"case": f"typed-subject-address-{name}", "geo": SUBJECT_GEO})
     finally:
         journey.close()

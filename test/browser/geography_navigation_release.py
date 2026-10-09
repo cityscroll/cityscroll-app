@@ -1155,15 +1155,21 @@ def browser_capture(
                 "rendered_html": rendered,
             })
             if dynamic and width in (390, 1440) and not deferred_failure:
+                # Map-first entry: the map starts in the first viewport and keeps
+                # full geometry. Desktop requires the 240px visible floor; narrow
+                # keeps a positive first-viewport slice while entry chrome varies.
+                # Citywide specials and suggestions follow the map (order 8).
+                visible_height = snapshot.get("visible_map_height", 0)
+                map_top = snapshot.get("map_top")
+                assert map_top is not None, snapshot
+                assert 0 <= map_top < height, snapshot
+                assert visible_height > 0, snapshot
+                assert snapshot["map_area"]["height"] >= MINIMUM_VISIBLE_MAP_HEIGHT, snapshot
+                if width >= 1440:
+                    assert visible_height >= MINIMUM_VISIBLE_MAP_HEIGHT, snapshot
                 special_bottom = snapshot.get("entry_special_bottom")
-                if special_bottom is None:
-                    assert snapshot.get("visible_map_height", height) >= MINIMUM_VISIBLE_MAP_HEIGHT, snapshot
-                else:
-                    # Before a place is chosen, citywide records and any
-                    # neighborhood suggestions come first by design; the
-                    # full-size map follows them directly.
-                    assert snapshot["map_area"]["height"] >= MINIMUM_VISIBLE_MAP_HEIGHT, snapshot
-                    assert 0 <= snapshot["map_top"] - special_bottom <= MAXIMUM_MAP_GAP_AFTER_CITYWIDE, snapshot
+                if special_bottom is not None:
+                    assert special_bottom >= map_top + visible_height - 1, snapshot
             if webgl_unavailable:
                 assert snapshot.get("map_runtime") != "maplibre", snapshot
             if not overlap:
