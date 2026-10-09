@@ -432,7 +432,7 @@ export const ADMIN_ROUTES = Object.freeze([
   {
     path: "/admin/cost-control-probe",
     methods: ["POST"],
-    auth: "ADMIN_KEY",
+    auth: "COST_CONTROL_PROBE",
     description: "Bounded private production-cost rehearsal with workload-bound inputs and no retained observations.",
   },
   {
@@ -641,6 +641,12 @@ export const AUTH_CLASSES = Object.freeze([
     presentation: ["?key=", "Authorization: Bearer"],
     fail_closed: "404 until secret is configured; 401 on wrong key",
     description: "Shared operator secret for /admin/* read and recovery routes.",
+  },
+  {
+    id: "COST_CONTROL_PROBE",
+    presentation: ["Authorization: Bearer"],
+    fail_closed: "404 when ADMIN_KEY is absent or credentials are invalid",
+    description: "ADMIN_KEY bearer authentication for the private production-cost rehearsal.",
   },
   {
     id: "OPERATOR_PROBE",
