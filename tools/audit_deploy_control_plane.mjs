@@ -60,9 +60,19 @@ const workerDeployStep = workerWorkflow.slice(
   workerWorkflow.indexOf("- name: Deploy"),
   workerWorkflow.indexOf("- name: Record Worker provider and publication evidence"),
 );
+const workerStageStep = workerWorkflow.slice(
+  workerWorkflow.indexOf("- name: Upload exact tagged canary version"),
+  workerWorkflow.indexOf("- name: Assign bounded canary traffic"),
+);
 requireCheck(
-  /command:\s*deploy\s+--var GIT_COMMIT_SHA:\$\{\{\s*github\.sha\s*\}\}\s+--var WRANGLER_ENV:production/.test(workerDeployStep),
-  "GitHub Actions Worker deploy must stamp GIT_COMMIT_SHA and WRANGLER_ENV via wrangler --var",
+  workerStageStep.includes("versions upload")
+    && workerStageStep.includes('--var "GIT_COMMIT_SHA:$GITHUB_SHA"')
+    && workerStageStep.includes("--var WRANGLER_ENV:production"),
+  "GitHub Actions Worker staging must stamp GIT_COMMIT_SHA and WRANGLER_ENV",
+);
+requireCheck(
+  workerDeployStep.includes("versions deploy") && workerDeployStep.includes('"${candidate}@100%"'),
+  "GitHub Actions Worker promotion must deploy the measured candidate version",
 );
 requireCheck(!/^\s+vars:/m.test(workerDeployStep), "GitHub Actions Worker deploy must not use the wrangler-action bulk vars input");
 const workerPackage = JSON.parse(read("worker/package.json"));

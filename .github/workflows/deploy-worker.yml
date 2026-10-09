@@ -32,6 +32,14 @@ on:
       - ".github/workflows/deploy-worker.yml"
   workflow_dispatch:
     inputs:
+      release_mode:
+        description: Promote a measured revision or explicitly stage this revision at 5% traffic
+        required: true
+        default: promote
+        type: choice
+        options:
+          - promote
+          - stage
       force_d1_publication:
         description: Publish D1 read models even when the deploy fingerprint is unchanged
         required: false
@@ -48,8 +56,101 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  stage:
+    name: Stage bounded Worker canary
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.release_mode == 'stage' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.1
+          run_install: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+          cache-dependency-path: worker/pnpm-lock.yaml
+      - name: Install worker dependencies
+        run: tools/install_worker_dependencies.sh
+      - name: Inspect bounded canary state
+        id: stage_plan
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          state_dir="$RUNNER_TEMP/cityscroll-worker-canary"
+          mkdir -p "$state_dir"
+          (cd worker && npx wrangler@4.126.0 deployments status --json) > "$state_dir/provider-status.json"
+          (cd worker && npx wrangler@4.126.0 versions list --json) > "$state_dir/provider-versions.json"
+          node tools/cloudflare_deployment_binding.mjs stage-plan \
+            --provider-status "$state_dir/provider-status.json" \
+            --provider-versions "$state_dir/provider-versions.json" \
+            --event-name "$GITHUB_EVENT_NAME" \
+            --release-mode stage \
+            --expected-revision "$GITHUB_SHA" \
+            --out "$state_dir/stage-plan.json"
+          action=$(node -p "require('$state_dir/stage-plan.json').action")
+          echo "action=$action" >> "$GITHUB_OUTPUT"
+      - name: Upload exact tagged canary version
+        if: ${{ steps.stage_plan.outputs.action == 'upload' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          log="$RUNNER_TEMP/cityscroll-worker-canary/upload.log"
+          if ! (cd worker && npx wrangler@4.126.0 versions upload \
+            --tag "cityscroll-canary-$GITHUB_SHA" \
+            --message "bounded canary for revision $GITHUB_SHA" \
+            --keep-vars --strict \
+            --var "GIT_COMMIT_SHA:$GITHUB_SHA" \
+            --var WRANGLER_ENV:production) > "$log" 2>&1; then
+            echo "Cloudflare rejected the bounded canary upload." >&2
+            exit 1
+          fi
+      - name: Assign bounded canary traffic
+        if: ${{ steps.stage_plan.outputs.action != 'already-staged' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          state_dir="$RUNNER_TEMP/cityscroll-worker-canary"
+          (cd worker && npx wrangler@4.126.0 versions list --json) > "$state_dir/provider-versions.json"
+          node tools/cloudflare_deployment_binding.mjs stage-plan \
+            --provider-status "$state_dir/provider-status.json" \
+            --provider-versions "$state_dir/provider-versions.json" \
+            --event-name "$GITHUB_EVENT_NAME" \
+            --release-mode stage \
+            --expected-revision "$GITHUB_SHA" \
+            --out "$state_dir/stage-plan.json"
+          candidate=$(node -p "require('$state_dir/stage-plan.json').candidate_version_id")
+          rollback=$(node -p "require('$state_dir/stage-plan.json').rollback_version_id")
+          log="$state_dir/deploy.log"
+          if ! (cd worker && npx wrangler@4.126.0 versions deploy \
+            "${rollback}@95%" "${candidate}@5%" --yes \
+            --message "bounded canary for revision $GITHUB_SHA") > "$log" 2>&1; then
+            echo "Cloudflare rejected the bounded canary traffic assignment." >&2
+            exit 1
+          fi
+      - name: Verify bounded canary traffic
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          state_dir="$RUNNER_TEMP/cityscroll-worker-canary"
+          (cd worker && npx wrangler@4.126.0 deployments status --json) > "$state_dir/provider-status.json"
+          (cd worker && npx wrangler@4.126.0 versions list --json) > "$state_dir/provider-versions.json"
+          node tools/cloudflare_deployment_binding.mjs promotion-plan \
+            --provider-status "$state_dir/provider-status.json" \
+            --provider-versions "$state_dir/provider-versions.json" \
+            --expected-revision "$GITHUB_SHA" \
+            --out "$state_dir/promotion-plan.json"
+
   deploy:
     name: Deploy to Cloudflare Workers
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.release_mode != 'stage' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -99,18 +200,29 @@ jobs:
           node ../tools/worker_startup_budget.mjs --metafile "$bundle_dir/meta.json"
       - name: Validate D1 release policy
         run: node tools/d1_release_policy.mjs --check
-      - name: Acquire trusted active Worker deployment binding
+      - name: Acquire trusted staged Worker deployment binding
+        id: candidate_binding
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           set -euo pipefail
           mkdir -p .artifacts/cost-control
           (cd worker && npx wrangler@4.126.0 deployments status --json) > .artifacts/cost-control/provider-status.json
+          (cd worker && npx wrangler@4.126.0 versions list --json) > .artifacts/cost-control/provider-versions.json
+          node tools/cloudflare_deployment_binding.mjs promotion-plan \
+            --provider-status .artifacts/cost-control/provider-status.json \
+            --provider-versions .artifacts/cost-control/provider-versions.json \
+            --expected-revision "$GITHUB_SHA" \
+            --out .artifacts/cost-control/promotion-plan.json
           node tools/cloudflare_deployment_binding.mjs acquire \
             --provider-status .artifacts/cost-control/provider-status.json \
+            --provider-versions .artifacts/cost-control/provider-versions.json \
             --health-url https://cityscroll-worker.crol-worker.workers.dev/health \
+            --worker-name cityscroll-worker \
             --expected-revision "$GITHUB_SHA" \
             --out .artifacts/cost-control/candidate-deployment.json
+          state=$(node -p "require('./.artifacts/cost-control/promotion-plan.json').state")
+          echo "state=$state" >> "$GITHUB_OUTPUT"
       - name: Enforce the all-meter Worker release gate
         env:
           WORKER_COST_BASELINE_EVIDENCE: ${{ vars.WORKER_COST_BASELINE_EVIDENCE }}
@@ -582,16 +694,33 @@ jobs:
         run: node tools/wait_for_digest_cron_window.mjs
       - name: Deploy
         id: worker_deploy
-        uses: cloudflare/wrangler-action@v3.14.1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          workingDirectory: worker
-          wranglerVersion: "4.126.0"
-          # No accountId input: wrangler.toml carries no account_id, so wrangler resolves the
-          # account from the API token itself — avoids a second repo secret to keep in sync.
-          # No `secrets:` or bulk `vars:` inputs — those would clobber real secrets of the
-          # same name (see worker/README.md). `--var` injects only the health identity pair.
-          command: deploy --var GIT_COMMIT_SHA:${{ github.sha }} --var WRANGLER_ENV:production
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ "${{ steps.candidate_binding.outputs.state }}" = "already-promoted" ]; then
+            echo "The exact measured Worker version is already promoted; retaining it for this retry."
+            exit 0
+          fi
+          candidate=$(node -p "require('./.artifacts/cost-control/promotion-plan.json').candidate_version_id")
+          log="$RUNNER_TEMP/cityscroll-worker-promotion.log"
+          if ! (cd worker && npx wrangler@4.126.0 versions deploy \
+            "${candidate}@100%" --yes \
+            --message "promote measured revision $GITHUB_SHA") > "$log" 2>&1; then
+            echo "Cloudflare rejected promotion of the measured Worker version." >&2
+            exit 1
+          fi
+
+      - name: Apply Worker triggers after promotion
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          log="$RUNNER_TEMP/cityscroll-worker-triggers.log"
+          if ! (cd worker && npx wrangler@4.126.0 triggers deploy) > "$log" 2>&1; then
+            echo "Cloudflare rejected the Worker trigger update." >&2
+            exit 1
+          fi
 
       - name: Refuse incomplete route-data publication after independent code deployment
         if: ${{ steps.route_publication.outcome == 'failure' }}

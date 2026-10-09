@@ -79,20 +79,30 @@ populations must match for each meter. Each receipt's `workload_count` must also
 equal the full number of retained provider samples, so an independently
 supplied divisor cannot make a regressed total look neutral.
 
-The Worker deployment workflow fails closed before it mutates production by
+The Worker release workflow is a fail-closed two-phase deployment. An explicit
+`workflow_dispatch` `stage` request uploads the exact revision as a tagged
+Worker Version and assigns it 5 percent of HTTP traffic while retaining the
+current version at 95 percent as the rollback identity. Staging never runs the
+D1 or KV publication path, trigger updates, or scheduled and queue sampling.
+Pushes and ordinary manual promotions never stage a revision automatically.
+
+The promotion path fails closed before it mutates production by
 evaluating the sanitized JSON receipts in the `WORKER_COST_BASELINE_EVIDENCE`
 and `WORKER_COST_CANDIDATE_EVIDENCE` repository variables. The separately
 retained baseline deployment binding is supplied through
 `WORKER_COST_BASELINE_DEPLOYMENT`. For the candidate, the workflow obtains the
-active version with authenticated `wrangler deployments status --json`, probes
-the identified production `/health` endpoint, and builds the binding itself.
+active deployment and tagged versions through authenticated Wrangler JSON,
+rejects any unrelated or ambiguous split, and targets the staged version's
+production `/health` handler with a provider version override. The ordinary
+production health response is not required to select the canary before
+promotion.
 The evidence-embedded bindings must byte-match those independently supplied
-receipts and their canonical SHA-256 digests. The active version must receive
-100 percent of traffic, production health must name the exact commit being
-released, and every meter must pass. A candidate therefore enters this workflow
-only after its bounded production experiment has established the active
-provider version; a caller-authored checksum or mixed rollout cannot authorize
-release.
+receipts and their canonical SHA-256 digests. Candidate health must name the
+exact commit, every retained cohort sample must name the exact staged provider
+version, and every meter must pass. Promotion moves that same immutable version
+to 100 percent, with an already-promoted exact version accepted only as a safe
+retry. A caller-authored checksum, an untagged version, or a mixed unrelated
+rollout cannot authorize release.
 
 The current provider references are the [Workers Observability telemetry query
 API](https://developers.cloudflare.com/api/resources/workers/subresources/observability/subresources/telemetry/methods/query/),

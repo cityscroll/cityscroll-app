@@ -28,6 +28,17 @@ function shellArgv(command) {
   return words;
 }
 
+function normalizedRunCommands(run) {
+  return run.replace(/\\\r?\n/g, " ").split("\n").map((line) => line.trim()).filter(Boolean).map((line) => {
+    let command = line;
+    const subshell = command.indexOf("&&");
+    if (command.startsWith("(") && subshell >= 0) command = command.slice(subshell + 2).trim();
+    const redirected = command.indexOf(") > ");
+    if (redirected >= 0) command = command.slice(0, redirected);
+    return shellArgv(command);
+  });
+}
+
 test("Worker routes retain API domains and claim only canonical dynamic-document paths", () => {
   const config = read("worker/wrangler.toml");
   const start = config.indexOf("routes = [");
@@ -82,10 +93,58 @@ test("deploy workflow executes route publication and the all-meter gate", () => 
     "--trusted-candidate-deployment", ".artifacts/cost-control/candidate-deployment.json",
     "--expected-candidate-revision", "$GITHUB_SHA",
   ]);
-  const acquisition = steps.find((step) => step.name === "Acquire trusted active Worker deployment binding");
-  assert.match(acquisition.run, /wrangler@4\.126\.0 deployments status --json/);
-  assert.match(acquisition.run, /cloudflare_deployment_binding\.mjs acquire/);
-  assert.match(acquisition.run, /--expected-revision "\$GITHUB_SHA"/);
+  const acquisition = steps.find((step) => step.name === "Acquire trusted staged Worker deployment binding");
+  const acquisitionCommands = normalizedRunCommands(acquisition.run);
+  assert.deepEqual(acquisitionCommands.find((argv) => argv[0] === "npx" && argv[2] === "deployments"), [
+    "npx", "wrangler@4.126.0", "deployments", "status", "--json",
+  ]);
+  assert.deepEqual(acquisitionCommands.find((argv) => argv.includes("promotion-plan")), [
+    "node", "tools/cloudflare_deployment_binding.mjs", "promotion-plan",
+    "--provider-status", ".artifacts/cost-control/provider-status.json",
+    "--provider-versions", ".artifacts/cost-control/provider-versions.json",
+    "--expected-revision", "$GITHUB_SHA",
+    "--out", ".artifacts/cost-control/promotion-plan.json",
+  ]);
+  assert.deepEqual(acquisitionCommands.find((argv) => argv.includes("acquire")), [
+    "node", "tools/cloudflare_deployment_binding.mjs", "acquire",
+    "--provider-status", ".artifacts/cost-control/provider-status.json",
+    "--provider-versions", ".artifacts/cost-control/provider-versions.json",
+    "--health-url", "https://cityscroll-worker.crol-worker.workers.dev/health",
+    "--worker-name", "cityscroll-worker",
+    "--expected-revision", "$GITHUB_SHA",
+    "--out", ".artifacts/cost-control/candidate-deployment.json",
+  ]);
+});
+
+test("canary stage is manual-only and isolated from publication jobs", () => {
+  const workflow = parseWorkflowText(read(".github/workflows/deploy-worker.yml"), {
+    filename: "deploy-worker.yml",
+  })[0];
+  assert.deepEqual(workflow.on.workflow_dispatch.inputs.release_mode.options, ["promote", "stage"]);
+  assert.equal(workflow.on.workflow_dispatch.inputs.release_mode.default, "promote");
+  assert.equal(workflow.jobs.stage.if, "${{ github.event_name == 'workflow_dispatch' && inputs.release_mode == 'stage' }}");
+  assert.equal(workflow.jobs.deploy.if, "${{ github.event_name != 'workflow_dispatch' || inputs.release_mode != 'stage' }}");
+  assert.deepEqual(workflow.jobs.stage.steps.map((step) => step.name || step.uses), [
+    "actions/checkout@v4",
+    "pnpm/action-setup@v4",
+    "actions/setup-node@v4",
+    "Install worker dependencies",
+    "Inspect bounded canary state",
+    "Upload exact tagged canary version",
+    "Assign bounded canary traffic",
+    "Verify bounded canary traffic",
+  ]);
+  const inspect = workflow.jobs.stage.steps.find((step) => step.name === "Inspect bounded canary state");
+  const inspectCommands = normalizedRunCommands(inspect.run);
+  assert.deepEqual(inspectCommands.find((argv) => argv.includes("stage-plan")), [
+    "node", "tools/cloudflare_deployment_binding.mjs", "stage-plan",
+    "--provider-status", "$state_dir/provider-status.json",
+    "--provider-versions", "$state_dir/provider-versions.json",
+    "--event-name", "$GITHUB_EVENT_NAME",
+    "--release-mode", "stage",
+    "--expected-revision", "$GITHUB_SHA",
+    "--out", "$state_dir/stage-plan.json",
+  ]);
 });
 
 test("digest deploy guard covers trigger propagation before the cron", () => {

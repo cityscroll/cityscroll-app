@@ -32,9 +32,12 @@ if this page disagrees with any of those files.
 
 GitHub Actions is the release control plane for both production boundaries. The
 Worker workflow is not a recovery path: an ordinary merge that touches any path
-in its filter deploys the Worker, and `workflow_dispatch` exists on top of that
-for a re-run without a new commit and for the two D1 publication inputs
-(`force_d1_publication`, `disable_incremental_publication`).
+in its filter attempts to promote a previously measured version. The manual
+`workflow_dispatch` `stage` mode is the only path that uploads and assigns a
+bounded 5 percent canary; it does not run D1/KV publication or trigger updates.
+The default manual `promote` mode supports a re-run without a new commit and the
+two D1 publication inputs (`force_d1_publication`,
+`disable_incremental_publication`).
 
 Before either trigger mutates production, the Worker workflow evaluates the
 provider-native all-meter release gate. Its evidence variables, normalization

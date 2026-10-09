@@ -400,7 +400,10 @@ locally by hitting `/__scheduled?cron=0+8+*+*+*`, `/__scheduled?cron=0+10+*+*+*`
 that matches its path filter — `worker/**`, `capabilities/**`, `entity_resolution/**`,
 `ontology/**`, `site/**`, `tools/**`, `warehouse/**`, the shared Following renderer
 (`site/following_view.mjs` / `site/data/watch_templates.json`) and several named builders — and
-also runs by hand via `workflow_dispatch` for a re-run without a new commit. The trigger,
+also runs by hand via `workflow_dispatch`. Its explicit `stage` mode uploads the exact
+revision as a tagged Worker Version and assigns a bounded 5 percent canary without D1/KV
+publication or trigger updates; the default `promote` mode and `main` pushes only promote a
+previously staged and measured revision. The trigger,
 schedule and binding inventory this section summarizes is owned by
 [`docs/release/cloudflare-native-builds.md`](../docs/release/cloudflare-native-builds.md); read
 the exact `paths:` list there or in the workflow rather than from prose. Its post-deploy smoke includes the
@@ -409,15 +412,15 @@ workflow enforces the provider-native, all-meter release gate documented in
 [`docs/worker-cost-controls.md`](../docs/worker-cost-controls.md); that document also owns the
 content-addressed route-publication and evidence-variable contracts. Each deploy **applies pending D1
 migrations** (`wrangler d1 migrations apply
-crol-notices --remote`) before `wrangler deploy`, so schema changes under `migrations/` land
+crol-notices --remote`) before promoting the staged Worker Version, so schema changes under `migrations/` land
 with the code that needs them. Skipping that step left the PASSPort tables uncreated and every
 lifecycle PASSPort lookup returning `lookup_status=error`. The deploy is still **code-only**
-for secrets — no `secrets:` or bulk `vars:` inputs on the action — because Cloudflare will silently
+for secrets — no `secrets:` or bulk `vars:` inputs — because Cloudflare will silently
 overwrite a live secret with a `[vars]` entry of the same name on deploy; keep secrets going
 through `wrangler secret put` by hand (above) and never add one to `wrangler.toml`'s `[vars]`
-block or to the workflow's bulk `vars:` input. Identity for `GET /health` is the exception:
-`wrangler deploy --var GIT_COMMIT_SHA:<sha> --var WRANGLER_ENV:production` injects only that
-pair. The Workers Builds commands declared in the release contract use `WORKERS_CI_COMMIT_SHA`
+block or to a workflow bulk `vars:` input. Identity for `GET /health` is the exception:
+the staging upload injects `GIT_COMMIT_SHA:<sha>` and `WRANGLER_ENV:production` while retaining
+the other provider vars. The Workers Builds commands declared in the release contract use `WORKERS_CI_COMMIT_SHA`
 the same way; whether that dashboard connection exists is not verifiable from this repository and
 is recorded as unverified in the release reference. A `concurrency: worker-deploy` group (no cancel-in-progress) makes
 two quick merges deploy in order rather than racing. `npm run deploy` from a laptop
