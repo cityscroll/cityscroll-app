@@ -623,16 +623,17 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     : [];
   const resultCount = localMembershipAvailable ? resultIds.length : null;
   // Records-loading state governs only records. Geometry health owns mapState.
-  // Overview has no selected category, so it does not invent an unsupported
-  // meetings map state when the place boundary itself is ready.
+  // Overview with a ready place boundary stays map-ready instead of inventing a
+  // meetings-unsupported state. Citywide / unscoped overview still uses the
+  // membership projection, so the map does not claim a place outline it lacks.
   const mapState = geometryState === "pending"
     ? "pending"
     : geometryState === "missing"
       ? "missing"
       : geometryState === "error"
         ? "error"
-        : isOverview
-          ? (geometryState === "ready" || dataState === "ready" ? "ready" : "unsupported")
+        : isOverview && geometryState === "ready"
+          ? "ready"
           : dataState === "ready"
             ? (!mapped || !localMembershipAvailable
               ? "unsupported"
@@ -1528,6 +1529,16 @@ function renderNearYouDeferredResultsShell(view) {
 
 function renderNearYouOverview(view) {
   if (!view.isOverview || !view.hasPlace) return "";
+  // Citywide / virtual / unlocated are collections. They keep no-lens records
+  // lists, but they are not a selected-neighborhood district overview — rendering
+  // overview cards there duplicates result rows and steals Back focus.
+  const place = view.scope?.place || {};
+  const hasNamedPlace = !!(place.boroughs?.length
+    || place.community_districts?.length
+    || place.council_districts?.length
+    || (place.geographies || []).length
+    || place.neighborhood);
+  if (!hasNamedPlace) return "";
   const lensScopeHref = (lens) => {
     const scope = normalizeScope({ ...view.scope, facets: { ...view.scope.facets, domains: [lens] } });
     return nearYouUrlFromScope(scope, { base: view.canonicalBase });

@@ -3450,7 +3450,7 @@
       },
       {
         "path": "site/near_you_view.mjs",
-        "sha256": "37c1f3b8acb068b4ed692bb1cee4d64dcfedfaa98e5ec38c6c0673ecb52dd504"
+        "sha256": "7a76792a3483d4379ca0f73411dec973b26b8ba69a1282a24fa930995cd8aaaf"
       },
       {
         "path": "site/app/map.mjs",
