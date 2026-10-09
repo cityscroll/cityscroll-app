@@ -850,7 +850,8 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     const dateB = Date.parse(b.date || "") || Number.POSITIVE_INFINITY;
     return dateA - dateB || String(a.title).localeCompare(String(b.title));
   });
-  const recent = ["land", "property", "rules"].flatMap((name) => overviewAll[name])
+  const recentLensNames = ["land", "property", "rules"];
+  const recent = recentLensNames.flatMap((name) => overviewAll[name])
     .filter((record) => {
       const date = Date.parse(record.date || "");
       const recentStart = clockTime - (180 * 24 * 60 * 60 * 1000);
@@ -858,15 +859,78 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     })
     .sort(recordSort);
   const projects = overviewAll.land;
+  // Per-lens membership state decides known count vs unknown. A ready activity
+  // root with an absent/unfilterable lens must not render as measured zero.
+  const overviewLensMeasurable = (lensName) => {
+    if (dataState !== "ready" || !activityRoot) return false;
+    const lensScope = scopeWithGeographies({ ...scope, facets: { ...scope.facets, domains: [lensName] } });
+    const projection = recordIdsForScope(activityRoot, lensName, lensScope);
+    return projection.state === "ready" || projection.state === "zero";
+  };
+  const overviewUnknownCoverage = (lensName) => {
+    const noun = LOCAL_RECOVERY_NOUNS[lensName] || "records";
+    const keyType = String(geographyKeyForScope(scope) || "").split(":")[1];
+    const place = scope.place || {};
+    const placeNoun = LOCAL_RECOVERY_PLACE_NOUNS[keyType]
+      || (place.council_districts?.length ? "council district"
+        : place.community_districts?.length ? "community district"
+          : place.boroughs?.length ? "borough" : "place");
+    return `We can’t filter these ${noun} to this ${placeNoun} yet.`;
+  };
+  const overviewCountedSection = ({ key, title, lens, records, emptyCoverage, measurable }) => {
+    if (dataState !== "ready") {
+      return { key, title, lens, count: null, records: [], coverage: emptyCoverage };
+    }
+    if (!measurable) {
+      return { key, title, lens, count: null, records: [], coverage: overviewUnknownCoverage(lens) };
+    }
+    return {
+      key,
+      title,
+      lens,
+      count: records.length,
+      records: records.slice(0, 3),
+      coverage: records.length ? null : emptyCoverage,
+    };
+  };
+  const recentMeasurable = recentLensNames.some((name) => overviewLensMeasurable(name));
   const overview = {
     state: isOverview ? dataState : "not_requested",
     sections: [
-      { key: "upcoming", title: "Upcoming", count: dataState === "ready" ? upcoming.length : null, records: upcoming.slice(0, 3), coverage: upcoming.length ? null : "No upcoming activity is recorded for this district in the retained sources.", lens: "meetings" },
-      { key: "recent-changes", title: "Recent changes", count: dataState === "ready" ? recent.length : null, records: recent.slice(0, 3), coverage: recent.length ? null : "No recent changes are recorded for this district in the retained sources.", lens: "land" },
+      overviewCountedSection({
+        key: "upcoming",
+        title: "Upcoming",
+        lens: "meetings",
+        records: upcoming,
+        emptyCoverage: "No upcoming activity is recorded for this district in the retained sources.",
+        measurable: overviewLensMeasurable("meetings"),
+      }),
+      overviewCountedSection({
+        key: "recent-changes",
+        title: "Recent changes",
+        lens: "land",
+        records: recent,
+        emptyCoverage: "No recent changes are recorded for this district in the retained sources.",
+        measurable: recentMeasurable,
+      }),
       { key: "board-activity", title: "Board activity", count: null, records: [], coverage: viewBoardCoverage(scope, options.communityGeography || {}, { coveringCommunityDistrict }), lens: "meetings" },
-      { key: "projects", title: "Projects", count: dataState === "ready" ? projects.length : null, records: projects.slice(0, 3), coverage: projects.length ? null : "No district projects are published in this digest.", lens: "land" },
+      overviewCountedSection({
+        key: "projects",
+        title: "Projects",
+        lens: "land",
+        records: projects,
+        emptyCoverage: "No district projects are published in this digest.",
+        measurable: overviewLensMeasurable("land"),
+      }),
       { key: "district-priorities", title: "District priorities", count: null, records: [], coverage: "District priorities are not published in this digest.", lens: "meetings" },
-      { key: "consultations", title: "Consultations", count: dataState === "ready" ? overviewAll.consultations.length : null, records: overviewAll.consultations.slice(0, 3), coverage: overviewAll.consultations.length ? null : "No consultations are recorded for this district in the retained sources.", lens: "consultations" },
+      overviewCountedSection({
+        key: "consultations",
+        title: "Consultations",
+        lens: "consultations",
+        records: overviewAll.consultations,
+        emptyCoverage: "No consultations are recorded for this district in the retained sources.",
+        measurable: overviewLensMeasurable("consultations"),
+      }),
     ],
   };
   const localFollowBundle = isOverview && scope.place.community_districts.length

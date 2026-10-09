@@ -23,6 +23,10 @@ import { test } from "node:test";
 import { geographyRecordProjection } from "../site/geography_navigation_records.mjs";
 import { scopeFromNearYouUrl } from "../site/near_you_scope_runtime.mjs";
 import {
+  applyNearYouDeferredPayload,
+  beginNearYouDeferredGeneration,
+} from "../site/near_you_scope_adoption.mjs";
+import {
   buildNearYouViewModel,
   renderNearYouDeferredParts,
   renderNearYouDocument,
@@ -41,6 +45,7 @@ import {
   nearYouLensesForRequest,
   NEAR_YOU_ACTIVITY_LENSES,
 } from "../worker/src/lib/route_read_model_kv.mjs";
+import { mountDocument } from "./helpers/preview_dom.mjs";
 import { MILLISECONDS_PER_DAY, withPinnedClock } from "./helpers/test_clock.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -465,13 +470,60 @@ test("overview A1: no-lens Chelsea exposes Zoning, broader M04, and the board ca
   assert.doesNotMatch(html, /<details class="near-selected-context">[\s\S]*data-near-overview="true"/);
   assert.match(html, /Chelsea-Hudson Yards/);
   assert.match(html, /Open Zoning|Projects/i);
-  assert.doesNotMatch(html, /We can’t filter these meetings to this neighborhood yet/);
+  // Meetings stay unknown in the overview section; that is not a local-recovery banner.
+  assert.match(html, /id="near-overview-upcoming"[\s\S]*We can’t filter these meetings to this neighborhood yet/);
+  assert.doesNotMatch(html, /data-near-local-recovery=/);
   assert.doesNotMatch(html, /All NYC meetings/);
 
   const continuation = view.overlapModel?.continuation?.href || "";
   assert.match(continuation, /surface=records/);
   assert.doesNotMatch(continuation, /lens=meetings/);
   assert.doesNotMatch(view.shareHref, /lens=/);
+});
+
+test("overview review-1: absent Meetings stay unknown while ready Land stays positive; measured empty is zero", () => {
+  const view = chelseaOverviewView("geo=nta2020:MN0401&surface=records", {
+    now: "2026-09-01T12:00:00.000Z",
+  });
+  const upcoming = view.overview.sections.find((section) => section.key === "upcoming");
+  const projects = view.overview.sections.find((section) => section.key === "projects");
+  const consultations = view.overview.sections.find((section) => section.key === "consultations");
+
+  assert.equal(
+    geographyRecordProjection(committedActivity(), { key: CHELSEA, lens: "meetings" }).state,
+    "unfilterable",
+  );
+  assert.equal(upcoming.count, null, "unfilterable Meetings must not become overview zero");
+  assert.equal(upcoming.records.length, 0);
+  assert.match(upcoming.coverage || "", /can’t filter these meetings/i);
+  assert.doesNotMatch(upcoming.coverage || "", /No upcoming activity/);
+
+  assert.ok(projects.count > 0, "ready Land / projects must stay positive");
+  assert.ok(projects.records.length > 0);
+
+  assert.equal(consultations.count, null, "absent consultations stay unknown");
+  assert.match(consultations.coverage || "", /can’t filter these consultations/i);
+  assert.doesNotMatch(consultations.coverage || "", /No consultations are recorded/);
+
+  // Measured-empty control: an explicit empty meetings array remains zero.
+  const measured = structuredClone(committedActivity());
+  measured.geography_items.by_key[CHELSEA] = {
+    ...measured.geography_items.by_key[CHELSEA],
+    meetings: [],
+  };
+  const zeroView = chelseaOverviewView("geo=nta2020:MN0401&surface=records", {
+    activity: measured,
+    now: "2026-09-01T12:00:00.000Z",
+    broaderDistricts: chelseaBroaderDistricts(measured),
+  });
+  const zeroUpcoming = zeroView.overview.sections.find((section) => section.key === "upcoming");
+  assert.equal(
+    geographyRecordProjection(measured, { key: CHELSEA, lens: "meetings" }).state,
+    "zero",
+  );
+  assert.equal(zeroUpcoming.count, 0);
+  assert.match(zeroUpcoming.coverage || "", /No upcoming activity/);
+  assert.doesNotMatch(zeroUpcoming.coverage || "", /can’t filter these meetings/i);
 });
 
 test("overview A2: explicit meetings stays meetings; another NTA and zero stay scoped", () => {
@@ -514,31 +566,38 @@ test("overview A3: upcoming uses the resident clock, not artifact built_at", asy
   const builtAt = Date.parse(activity.built_at);
   assert.ok(Number.isFinite(builtAt));
 
-  // Seed an exact Chelsea meeting between a past clock and built_at so built_at
-  // would wrongly keep it "upcoming" while the resident clock marks it past.
-  const pastId = "meeting:chelsea-overview-past-control";
-  const futureId = "meeting:chelsea-overview-future-control";
-  const clock = "2026-09-20T12:00:00.000Z";
+  // Clock after built_at; seed a meeting strictly between them so built_at would
+  // still call it upcoming while the resident clock marks it past. Add two
+  // later meetings to prove ascending order and the three-record preview cap.
+  const betweenId = "meeting:chelsea-overview-between-control";
+  const futureA = "meeting:chelsea-overview-future-a";
+  const futureB = "meeting:chelsea-overview-future-b";
+  const futureC = "meeting:chelsea-overview-future-c";
+  const futureD = "meeting:chelsea-overview-future-d";
+  const clockMs = builtAt + (12 * MILLISECONDS_PER_DAY);
+  const clock = new Date(clockMs).toISOString();
+  const betweenDate = new Date(builtAt + (5 * MILLISECONDS_PER_DAY)).toISOString();
+  const futureDates = [1, 2, 3, 4].map((n) => new Date(clockMs + n * MILLISECONDS_PER_DAY).toISOString());
   activity.geography_items.by_key[CHELSEA] = {
     ...activity.geography_items.by_key[CHELSEA],
-    meetings: [pastId, futureId],
+    meetings: [betweenId, futureA, futureB, futureC, futureD],
   };
-  activity.records.meetings[pastId] = {
-    id: pastId,
-    title: "Past Chelsea control meeting",
-    date: "2026-09-10T18:00:00.000Z",
+  const meeting = (id, title, date) => ({
+    id,
+    title,
+    date,
     agency: "Manhattan Community Board 4",
     type: "Meeting",
-    route: "/meetings/chelsea-overview-past-control/",
-  };
-  activity.records.meetings[futureId] = {
-    id: futureId,
-    title: "Future Chelsea control meeting",
-    date: "2026-10-15T18:00:00.000Z",
-    agency: "Manhattan Community Board 4",
-    type: "Meeting",
-    route: "/meetings/chelsea-overview-future-control/",
-  };
+    route: `/meetings/${id.replace(/^meeting:/, "")}/`,
+  });
+  activity.records.meetings[betweenId] = meeting(betweenId, "Between built_at and clock", betweenDate);
+  activity.records.meetings[futureA] = meeting(futureA, "Future Chelsea A", futureDates[0]);
+  activity.records.meetings[futureB] = meeting(futureB, "Future Chelsea B", futureDates[1]);
+  activity.records.meetings[futureC] = meeting(futureC, "Future Chelsea C", futureDates[2]);
+  activity.records.meetings[futureD] = meeting(futureD, "Future Chelsea D", futureDates[3]);
+
+  assert.ok(Date.parse(betweenDate) > builtAt, "control date must be after built_at");
+  assert.ok(Date.parse(betweenDate) < clockMs, "control date must be before resident clock");
 
   await withPinnedClock(clock, () => {
     const view = chelseaOverviewView("geo=nta2020:MN0401&surface=records", {
@@ -547,12 +606,17 @@ test("overview A3: upcoming uses the resident clock, not artifact built_at", asy
       broaderDistricts: chelseaBroaderDistricts(activity),
     });
     const upcoming = view.overview.sections.find((section) => section.key === "upcoming");
-    assert.equal(upcoming.records.some((row) => row.id === pastId), false);
-    assert.equal(upcoming.records.some((row) => row.id === futureId), true);
-    // Positive control: built_at is after the past meeting, so a built_at clock
-    // would have kept it. The resident clock must not.
-    assert.ok(Date.parse(activity.records.meetings[pastId].date) < builtAt);
-    assert.ok(Date.parse(activity.records.meetings[pastId].date) < Date.parse(clock));
+    assert.equal(upcoming.records.some((row) => row.id === betweenId), false,
+      "resident clock must drop the between-built_at meeting");
+    assert.equal(upcoming.count, 4);
+    assert.equal(upcoming.records.length, 3, "overview upcoming preview stays capped at 3");
+    assert.deepEqual(
+      upcoming.records.map((row) => row.id),
+      [futureA, futureB, futureC],
+      "upcoming preview keeps ascending date order and drops the 4th future",
+    );
+    // Positive control: a built_at clock would still treat the between meeting as upcoming.
+    assert.ok(Date.parse(betweenDate) >= builtAt);
   });
 
   // Broader M04 previews also prioritize current-clock upcoming first.
@@ -576,4 +640,103 @@ test("overview A3: deferred parts carry overview HTML and scoped category links"
   assert.doesNotMatch(parts.resultsHtml, /We can’t filter these meetings/);
   // Explicit section drill-downs may add a lens; the no-lens continuation must not.
   assert.doesNotMatch(view.overlapModel.continuation.href, /lens=/);
+});
+
+test("overview review-2: soft lens transition clears overview via explicit empty overview_html; Back restores it", () => {
+  const overviewView = chelseaOverviewView("geo=nta2020:MN0401&surface=records", {
+    now: "2026-09-01T12:00:00.000Z",
+  });
+  const landView = chelseaOverviewView("geo=nta2020:MN0401&lens=land&surface=records", {
+    now: "2026-09-01T12:00:00.000Z",
+  });
+  assert.equal(overviewView.isOverview, true);
+  assert.equal(landView.isOverview, false);
+
+  const overviewParts = renderNearYouDeferredParts(overviewView);
+  const landParts = renderNearYouDeferredParts(landView);
+  assert.match(overviewParts.overviewHtml, /data-near-overview="true"/);
+  assert.equal(landParts.overviewHtml, "", "explicit lens deferred overview markup is empty");
+
+  // Worker/static emitters must always include overview_html, including "".
+  const landDeferred = {
+    schema: "cityscroll.near_you_deferred.v1",
+    results_html: `<section class="near-results" data-near-deferred="results" aria-labelledby="near-results-heading"><h2 id="near-results-heading">Zoning records</h2></section>`,
+    bags_html: `<section class="near-bags" data-near-deferred="bags" aria-labelledby="near-bags-heading"><h2 id="near-bags-heading">Other records</h2></section>`,
+    overview_html: landParts.overviewHtml,
+  };
+  assert.equal(Object.prototype.hasOwnProperty.call(landDeferred, "overview_html"), true);
+  assert.equal(landDeferred.overview_html, "");
+  // Worker and static builders always emit the key, including the empty string.
+  assert.match(
+    readFileSync(join(ROOT, "worker/src/near_you.mjs"), "utf8"),
+    /overview_html:\s*deferredParts\.overviewHtml\s*\|\|\s*""/,
+  );
+  assert.match(
+    readFileSync(join(ROOT, "tools/build_near_you_pages.mjs"), "utf8"),
+    /overview_html:\s*deferredParts\.overviewHtml\s*\|\|\s*""/,
+  );
+
+  // Minimal soft-nav shell: overview summary beside deferred hosts (avoid full SSR DOM cost).
+  const { doc } = mountDocument(`<main id="main" data-near-you-root data-lens="" data-near-deferred-state="pending">
+  <nav class="near-surface-switch" data-near-surface-switch><a data-near-surface="records">Records</a></nav>
+  <section class="near-overview" data-near-overview="true" aria-labelledby="near-overview-heading">
+    <h2 id="near-overview-heading">What is happening here</h2>
+  </section>
+  <section class="near-results near-results-shell" data-near-deferred="results" data-near-deferred-state="pending" aria-labelledby="near-results-heading">
+    <h2 id="near-results-heading">Records for this place</h2>
+  </section>
+  <section class="near-bags near-bags-shell" data-near-deferred="bags" data-near-deferred-state="pending" aria-labelledby="near-bags-heading">
+    <h2 id="near-bags-heading">Other records</h2>
+  </section>
+</main>`);
+  const root = doc.querySelector("[data-near-you-root]");
+  assert.ok(root);
+  const installInsertAdjacent = (node) => {
+    if (!node || typeof node.insertAdjacentElement === "function") return;
+    node.insertAdjacentElement = function insertAdjacentElement(position, element) {
+      const parent = this.parentNode;
+      if (position === "beforebegin") parent?.insertBefore(element, this);
+      else if (position === "afterbegin") this.insertBefore(element, this.firstChild);
+      else if (position === "beforeend") this.append(element);
+      else if (position === "afterend") {
+        if (this.nextSibling) parent?.insertBefore(element, this.nextSibling);
+        else parent?.append(element);
+      }
+      return element;
+    };
+    for (const child of node.children || []) installInsertAdjacent(child);
+  };
+  installInsertAdjacent(root);
+  const parseHtml = (html) => {
+    const wrap = doc.createElement("div");
+    wrap.innerHTML = html;
+    const next = wrap.children[0] || null;
+    installInsertAdjacent(next);
+    return next;
+  };
+  assert.ok(root.querySelector(".near-overview"), "overview starts with the place summary");
+
+  // Omitting overview_html leaves the stale summary — the bug soft transitions hit.
+  const omitGeneration = beginNearYouDeferredGeneration(root);
+  applyNearYouDeferredPayload(root, {
+    schema: "cityscroll.near_you_deferred.v1",
+    results_html: landDeferred.results_html,
+    bags_html: landDeferred.bags_html,
+  }, { generation: omitGeneration, parseHtml });
+  assert.ok(root.querySelector(".near-overview"), "omitted overview_html retains the stale summary");
+
+  const clearGeneration = beginNearYouDeferredGeneration(root);
+  applyNearYouDeferredPayload(root, landDeferred, { generation: clearGeneration, parseHtml });
+  assert.equal(root.querySelector(".near-overview"), null, "explicit empty overview_html removes the summary");
+
+  const restoreGeneration = beginNearYouDeferredGeneration(root);
+  applyNearYouDeferredPayload(root, {
+    schema: "cityscroll.near_you_deferred.v1",
+    results_html: `<section class="near-results" data-near-deferred="results" aria-labelledby="near-results-heading"><h2 id="near-results-heading">Records for this place</h2></section>`,
+    bags_html: landDeferred.bags_html,
+    overview_html: `<section class="near-overview" data-near-overview="true" aria-labelledby="near-overview-heading"><h2 id="near-overview-heading">What is happening here</h2></section>`,
+  }, { generation: restoreGeneration, parseHtml });
+  const restored = root.querySelector(".near-overview");
+  assert.ok(restored, "Back to overview restores the place summary");
+  assert.equal(restored.getAttribute("data-near-overview"), "true");
 });
