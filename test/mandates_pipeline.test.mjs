@@ -195,6 +195,54 @@ test("Legistar matter enumeration and attachment helpers preserve authenticated 
   assert.match(seen[0].searchParams.get("$filter"), /MatterStatusName eq 'Enacted'/);
 });
 
+
+test("law fetch reuses substantive cached laws on resume", async () => {
+  await withTempDir("crol-mandates-cache-hit", async (cacheDir) => {
+    const matter = {
+      MatterId: 9,
+      MatterFile: "Int 0009-2024",
+      MatterName: "Cached law",
+      MatterTypeName: "Introduction",
+      MatterStatusName: "Enacted",
+      MatterEnactmentDate: "2024-01-01T00:00:00Z",
+      MatterText1: "A".repeat(250),
+    };
+    let detailCalls = 0;
+    const fetchImpl = async (url) => {
+      const parsed = new URL(url);
+      if (parsed.pathname.endsWith("/Matters") && !parsed.pathname.endsWith("/Attachments")) {
+        return jsonResponse([matter]);
+      }
+      if (parsed.pathname.endsWith("/Attachments")) return jsonResponse([]);
+      if (parsed.pathname.endsWith("/Matters/9")) {
+        detailCalls += 1;
+        return jsonResponse(matter);
+      }
+      return jsonResponse({});
+    };
+    const first = await fetchEnactedLaws({
+      token: TOKEN,
+      fetchImpl,
+      cacheDir,
+      startYear: 2024,
+      endYear: 2024,
+      fetchedAt: "2026-10-06T00:00:00Z",
+    });
+    assert.equal(first.laws.length, 1);
+    const second = await fetchEnactedLaws({
+      token: TOKEN,
+      fetchImpl,
+      cacheDir,
+      startYear: 2024,
+      endYear: 2024,
+      fetchedAt: "2026-10-06T01:00:00Z",
+    });
+    assert.equal(second.laws.length, 1);
+    assert.equal(second.laws[0].provenance.fetched_at, "2026-10-06T00:00:00Z");
+    assert.equal(detailCalls, 1);
+  });
+});
+
 test("law fetch caches text with provenance and skips matters without text", async () => {
   await withTempDir("crol-mandates", async (cacheDir) => {
     const fetchImpl = async (url) => {

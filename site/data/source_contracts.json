@@ -4590,21 +4590,19 @@
       "source_contract_id": "nyc-administrative-code",
       "acquisition_command": [
         "node",
-        "tools/build_agency_obligations.mjs",
-        "--check"
+        "tools/build_agency_obligations.mjs"
       ],
       "owning_builder": "tools/build_agency_obligations.mjs",
       "builder_command": [
         "node",
-        "tools/build_agency_obligations.mjs",
-        "--check"
+        "tools/build_agency_obligations.mjs"
       ],
       "dependent_materializers": [
         "tools/build_primary_documents.mjs",
         "tools/build_process_conformance.mjs"
       ],
       "normal_refresh_cadence_hours": 720,
-      "cadence_justification": "The source is a versioned bulk legal-code release; a monthly verification is tighter than its declared 60-day source contract.",
+      "cadence_justification": "The source is a versioned bulk legal-code release; a monthly verification is tighter than its declared 60-day source contract. Rematerialization reads the operator-retained enacted-law mandate backfill payload (tools/law_mandates/output/our.json or CROL_MANDATES_OUR_JSON); scheduled refresh does not invoke model extraction.",
       "warning_age_hours": 1080,
       "hard_maximum_age_hours": 1440,
       "vintage_fields": [
