@@ -87,25 +87,33 @@ export function primaryLawAttachment(attachments = []) {
   return lawAttachmentCandidates(attachments)[0] || null;
 }
 
+const ATTACHMENT_DECODE_TIMEOUT_MS = 60_000;
+
 function decodeAttachmentBytes(data, kind) {
   const decodeWithTextutil = () => {
     const result = spawnSync("textutil", ["-convert", "txt", "-stdout", "-stdin"], {
       input: data,
       encoding: "buffer",
       maxBuffer: 20_000_000,
+      timeout: ATTACHMENT_DECODE_TIMEOUT_MS,
+      killSignal: "SIGKILL",
     });
+    if (result.error?.code === "ETIMEDOUT" || result.signal) return null;
     if (result.status === 0 && result.stdout.length) return result.stdout.toString("utf8").trim().slice(0, 120_000) || null;
     return null;
   };
   if (kind === "doc") return decodeWithTextutil();
   if (kind === "docx" && data.length > 5_000_000) return decodeWithTextutil();
-  if (kind === "docx" && data.length <= 5_000_000) {
-    const extractor = resolve(dirname(new URL(import.meta.url).pathname), "../../warehouse/lib/attachment_text_extract.py");
-    const result = spawnSync("python3", [extractor, "--kind", kind], {
+  const extractor = resolve(dirname(new URL(import.meta.url).pathname), "../../warehouse/lib/attachment_text_extract.py");
+  const runPython = (extractKind) => {
+    const result = spawnSync("python3", [extractor, "--kind", extractKind], {
       input: data,
       encoding: "buffer",
       maxBuffer: 5_200_000,
+      timeout: ATTACHMENT_DECODE_TIMEOUT_MS,
+      killSignal: "SIGKILL",
     });
+    if (result.error?.code === "ETIMEDOUT" || result.signal) return null;
     if (result.status !== 0) return null;
     try {
       const payload = JSON.parse(result.stdout.toString("utf8"));
@@ -113,20 +121,9 @@ function decodeAttachmentBytes(data, kind) {
     } catch {
       return null;
     }
-  }
-  const extractor = resolve(dirname(new URL(import.meta.url).pathname), "../../warehouse/lib/attachment_text_extract.py");
-  const result = spawnSync("python3", [extractor, "--kind", kind], {
-    input: data,
-    encoding: "buffer",
-    maxBuffer: 5_200_000,
-  });
-  if (result.status !== 0) return null;
-  try {
-    const payload = JSON.parse(result.stdout.toString("utf8"));
-    return payload.status === "ok" && payload.text ? String(payload.text) : null;
-  } catch {
-    return null;
-  }
+  };
+  if (kind === "docx" && data.length <= 5_000_000) return runPython(kind);
+  return runPython(kind);
 }
 
 export async function fetchAttachmentText(attachment, fetchImpl = fetch) {
@@ -298,6 +295,46 @@ export async function fetchTextSource(url, fetchImpl = fetch) {
 /**
  * Fetch enacted Introductions and cache text plus provenance.
  */
+function sleep(ms) {
+  return new Promise((resolvePromise) => setTimeout(resolvePromise, ms));
+}
+
+function errorText(error) {
+  const parts = [error?.message, error?.cause?.message, error?.cause?.code, error?.code]
+    .filter(Boolean)
+    .map((part) => String(part));
+  return parts.join(": ") || "unknown_error";
+}
+
+function isTransientFetchError(error) {
+  const text = errorText(error).toLowerCase();
+  return /fetch failed|econnreset|etimedout|eai_again|enotfound|socket|network|429|502|503|504|und_err|other side closed/i.test(text);
+}
+
+async function withTransientRetries(fn, { attempts = 4, label = "fetch" } = {}) {
+  let lastError;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      return await fn(attempt);
+    } catch (error) {
+      lastError = error;
+      if (!isTransientFetchError(error) || attempt === attempts) break;
+      await sleep(Math.min(30_000, 500 * (2 ** (attempt - 1))));
+    }
+  }
+  throw new Error(`${label}_failed:${errorText(lastError)}`);
+}
+
+async function readCachedLaw(cacheDir, matterId) {
+  try {
+    const law = JSON.parse(await readFile(join(cacheDir, "laws", `${matterId}.json`), "utf8"));
+    if (String(law?.text || "").trim().length >= 200) return law;
+  } catch (error) {
+    if (error?.code !== "ENOENT") throw error;
+  }
+  return null;
+}
+
 export async function fetchEnactedLaws({
   token,
   fetchImpl = fetch,
@@ -307,9 +344,13 @@ export async function fetchEnactedLaws({
   cacheDir = DEFAULT_LAW_CACHE_DIR,
   fetchedAt = new Date().toISOString(),
   onProgress = null,
+  retryAttempts = 4,
 } = {}) {
   if (!token) throw new Error("LEGISTAR_API_TOKEN is required");
-  const matters = await fetchLegistarMatters({ token, fetchImpl, startYear, endYear, limit });
+  const matters = await withTransientRetries(
+    () => fetchLegistarMatters({ token, fetchImpl, startYear, endYear, limit }),
+    { attempts: retryAttempts, label: "legistar_matters" },
+  );
   const laws = [];
   const skipped = [];
   await mkdir(join(cacheDir, "laws"), { recursive: true });
@@ -320,37 +361,67 @@ export async function fetchEnactedLaws({
       if (typeof onProgress === "function") await onProgress({ index: index + 1, total: matters.length, matter_id: null, status: "skipped_missing_id" });
       continue;
     }
-    const detail = await fetchLegistarMatter({ matterId, token, fetchImpl }) || row;
-    const attachments = await fetchLegistarMatterAttachments({ matterId, token, fetchImpl });
-    const textInfo = lawTextFromMatter(detail, attachments);
-    const metadata = canonicalMatter(row, detail);
-    const lawAttachment = primaryLawAttachment(attachments);
-    const attachmentText = lawAttachment && String(textInfo.text || "").length < 200 ? await fetchAttachmentText(lawAttachment, fetchImpl) : null;
-    const fetchedReportText = String(textInfo.text || "").length >= 200 ? null : await fetchTextSource(textInfo.source_url, fetchImpl);
-    const text = attachmentText || fetchedReportText || textInfo.text;
-    if (!text) {
-      skipped.push({ ...metadata, text_status: textInfo.text_status || "unavailable", source_url: textInfo.source_url });
-      if (typeof onProgress === "function") await onProgress({ index: index + 1, total: matters.length, matter_id: matterId, status: "skipped_missing_text" });
+    const cached = await readCachedLaw(cacheDir, matterId);
+    if (cached) {
+      laws.push(cached);
+      if (typeof onProgress === "function") await onProgress({ index: index + 1, total: matters.length, matter_id: matterId, status: "cache_hit" });
       continue;
     }
-    const textValue = String(text);
-    const provenance = {
-      source_url: attachmentText ? (lawAttachment.url || lawAttachment.MatterAttachmentHyperlink) : (textInfo.source_url || `https://webapi.legistar.com/v1/nyc/Matters/${encodeURIComponent(matterId)}`),
-      fetched_at: fetchedAt,
-      sha256: sha256(textValue),
-      source_kind: attachmentText ? "matter_attachment_text" : (textInfo.text ? textInfo.source_kind : "matter_report"),
-      attachments: attachments.map((item) => ({
-        id: item?.MatterAttachmentId ?? null,
-        name: item?.MatterAttachmentName ?? null,
-        url: item?.MatterAttachmentHyperlink ?? null,
-        version: item?.MatterAttachmentMatterVersion ?? null,
-      })),
-    };
-    const law = { ...metadata, text: textValue, provenance };
-    await writeFile(join(cacheDir, "text", `${matterId}.txt`), textValue, "utf8");
-    await writeFile(join(cacheDir, "laws", `${matterId}.json`), `${JSON.stringify(law, null, 2)}\n`, "utf8");
-    laws.push(law);
-    if (typeof onProgress === "function") await onProgress({ index: index + 1, total: matters.length, matter_id: matterId, status: "cached" });
+    try {
+      const law = await withTransientRetries(async () => {
+        const detail = await fetchLegistarMatter({ matterId, token, fetchImpl }) || row;
+        const attachments = await fetchLegistarMatterAttachments({ matterId, token, fetchImpl });
+        const textInfo = lawTextFromMatter(detail, attachments);
+        const metadata = canonicalMatter(row, detail);
+        const lawAttachment = primaryLawAttachment(attachments);
+        const attachmentText = lawAttachment && String(textInfo.text || "").length < 200
+          ? await fetchAttachmentText(lawAttachment, fetchImpl)
+          : null;
+        const fetchedReportText = String(textInfo.text || "").length >= 200
+          ? null
+          : await fetchTextSource(textInfo.source_url, fetchImpl);
+        const text = attachmentText || fetchedReportText || textInfo.text;
+        if (!text) {
+          return {
+            skipped: true,
+            row: { ...metadata, text_status: textInfo.text_status || "unavailable", source_url: textInfo.source_url },
+          };
+        }
+        const textValue = String(text);
+        const provenance = {
+          source_url: attachmentText
+            ? (lawAttachment.url || lawAttachment.MatterAttachmentHyperlink)
+            : (textInfo.source_url || `https://webapi.legistar.com/v1/nyc/Matters/${encodeURIComponent(matterId)}`),
+          fetched_at: fetchedAt,
+          sha256: sha256(textValue),
+          source_kind: attachmentText ? "matter_attachment_text" : (textInfo.text ? textInfo.source_kind : "matter_report"),
+          attachments: attachments.map((item) => ({
+            id: item?.MatterAttachmentId ?? null,
+            name: item?.MatterAttachmentName ?? null,
+            url: item?.MatterAttachmentHyperlink ?? null,
+            version: item?.MatterAttachmentMatterVersion ?? null,
+          })),
+        };
+        return { skipped: false, law: { ...metadata, text: textValue, provenance } };
+      }, { attempts: retryAttempts, label: `legistar_matter_${matterId}` });
+
+      if (law.skipped) {
+        skipped.push(law.row);
+        if (typeof onProgress === "function") await onProgress({ index: index + 1, total: matters.length, matter_id: matterId, status: "skipped_missing_text" });
+        continue;
+      }
+      await writeFile(join(cacheDir, "text", `${matterId}.txt`), law.law.text, "utf8");
+      await writeFile(join(cacheDir, "laws", `${matterId}.json`), `${JSON.stringify(law.law, null, 2)}\n`, "utf8");
+      laws.push(law.law);
+      if (typeof onProgress === "function") await onProgress({ index: index + 1, total: matters.length, matter_id: matterId, status: "cached" });
+    } catch (error) {
+      skipped.push({
+        matter_id: matterId,
+        text_status: "fetch_error",
+        error: errorText(error).slice(0, 240),
+      });
+      if (typeof onProgress === "function") await onProgress({ index: index + 1, total: matters.length, matter_id: matterId, status: "skipped_fetch_error" });
+    }
   }
   return { laws, skipped, fetched_at: fetchedAt, source: "nyc_legistar_web_api" };
 }

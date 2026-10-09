@@ -448,10 +448,13 @@ export function buildAgencyObligationsLookup(payload = {}, { generatedAt = null,
     generated_at: generatedAt || payload.generated_at || new Date().toISOString(),
     as_of: asOf || validDate(payload.generated_at?.slice(0, 10)) || null,
     iteration: "v1",
-    // Machine policy (not user-facing copy): surface standable duty/deadline facts only.
+    // Public honesty for the lookup surface. Deadlines stay statutory timed events;
+    // expected-vs-observed adjudication lives on the process-conformance surface.
     honesty: {
       surface: "duty_deadline_recurrence",
-      certification: "auto_certified_quote_verify_v1",
+      compliance: "Deadlines are statutory timed events from enacted local law.",
+      observation: "Expected-vs-observed City Record matching lives on the mandates process-conformance surface.",
+      certification: "Rows are auto-certified by mechanical quote verification against fetched law text.",
     },
     source_receipt: {
       schema_version: payload.schema_version || null,

@@ -1,15 +1,15 @@
 {
   "schema": "cityscroll.keyword_search_index.v1",
   "version": 1,
-  "generated_at": "2026-10-05T17:33:57.544Z",
+  "generated_at": "2026-10-06T13:48:38.716Z",
   "match_mode": "keyword",
   "representation": "family-sharded-compressed",
   "shard_schema": "cityscroll.keyword_search_index_shard.v1",
   "logical_index": {
-    "sha256": "df6129ad21186aa2085f0e4764a940e3e940b0f409bd0d840f84ca33a1e05a95",
-    "bytes": 81938805,
+    "sha256": "4cc806d52543ebca9ee035a86a987e07fa4631f3ec12d8a2d03b4df250514112",
+    "bytes": 81944263,
     "family_count": 12,
-    "document_count": 22239
+    "document_count": 22241
   },
   "build_receipt": {
     "source_artifacts": {
@@ -69,27 +69,27 @@
       "family": "agencies",
       "path": "agencies.json.br",
       "gzip_path": "agencies.json.gz",
-      "document_count": 86,
-      "uncompressed_bytes": 207214,
-      "gzip_bytes": 10500,
-      "brotli_bytes": 8742,
-      "sha256": "6219a02107a4372e58cd73805eb25cfdfa6675ccbc3123e68c435e4b701ca53a",
-      "gzip_sha256": "b5b6e4ce8341ae9895964337487539ef59127b2730b99d0e9d9907e5a01b45ea",
-      "brotli_sha256": "3e26056ca07148f5c12bedb504869874957ff3c392447106cbfa985a37586cd5",
-      "receipt_sha256": "219b0c1e098f370fc882f06e9e16ab84388859b5ccc0df2500fe581d64974c42"
+      "document_count": 87,
+      "uncompressed_bytes": 209783,
+      "gzip_bytes": 10622,
+      "brotli_bytes": 8851,
+      "sha256": "8389db2961663c1e9f6ad02caa22e5f0cae92e257d9c206796dd4c70f19c8592",
+      "gzip_sha256": "4296149cf8ccad9bafdcb75ac6fa6487ba592151eec17475b39aca3d7603929a",
+      "brotli_sha256": "8138319ad358aee4d576d3c60ad3cbdf75a01ae75a3bd3440cda959a694c9d21",
+      "receipt_sha256": "bcca7b7b9dbb708ab6f6ee9ec9705f239f3204b043b5bc1fb7c99c062ca97465"
     },
     {
       "family": "people-organizations",
       "path": "people-organizations.json.br",
       "gzip_path": "people-organizations.json.gz",
-      "document_count": 86,
-      "uncompressed_bytes": 207238,
-      "gzip_bytes": 10518,
-      "brotli_bytes": 8752,
-      "sha256": "2de39cb3dabb13a7b38d835b207821b705478d2f83d7d45c157bf640aec71216",
-      "gzip_sha256": "47e6d5c6549fb74ff29e56fff3d2c81ed077a5d410dd82d75f213177a9104bea",
-      "brotli_sha256": "202488f1353f421fed9a20754cb68491a84d78c73e06d297a90e4607879363e7",
-      "receipt_sha256": "2d7e025ae65253a73d2ed0ab0544cc6b78d413d285344c735c94417dd0bcee5e"
+      "document_count": 87,
+      "uncompressed_bytes": 209807,
+      "gzip_bytes": 10642,
+      "brotli_bytes": 8862,
+      "sha256": "f8ee80a78a73fafcbbc38113a84d523a96927582075e3cbf3db3155c1ffaef02",
+      "gzip_sha256": "a73db571bfcd680e15010ab1ca89515b8c619bc0b938fbb7bd7ca7ee2ccbc033",
+      "brotli_sha256": "2bf37d5f53003f30f8207e49b5dbe5465e4ec650a4be185a5db5e53b56ad2abc",
+      "receipt_sha256": "f31f8cf1f84853da89a6d698e6bc0dcd7dd3e7f0b140106abfc2804d284b7601"
     },
     {
       "family": "vendors",

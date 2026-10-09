@@ -114,15 +114,27 @@ function servedCount(body) {
 
 test("the classifier types each served borough fixture into its published-coverage state", async () => {
   const { values } = materialize(committedActivity, "offline-coverage-states");
+  // Measured zero stays a first-class published state, but it must come from an
+  // explicit meetings [] rather than sibling-lens admission. Stamp that on a
+  // dedicated materialization so Mott Haven's observed-only bag can stay honest.
+  const zeroActivity = structuredClone(committedActivity);
+  zeroActivity.geography_items.by_key["geography:nta2020:BX0101"] = {
+    ...zeroActivity.geography_items.by_key["geography:nta2020:BX0101"],
+    meetings: [],
+  };
+  const { values: zeroValues } = materialize(zeroActivity, "offline-coverage-states-zero");
+
   const cases = [];
-  for (const code of ["MN0102", "BX0101", "BK0101", "QN0103", "SI0101"]) {
+  for (const code of ["MN0102", "BK0101", "QN0103", "SI0101"]) {
     cases.push(await serveCase(code, deferredUrl(code), values));
   }
+  cases.push(await serveCase("BX0101", deferredUrl("BX0101"), values));
+  cases.push(await serveCase("BX0101-zero", deferredUrl("BX0101"), zeroValues));
 
   // Serving-level distinctness before any classification: populated, empty,
   // and source-unavailable are three different values, not three labels.
   const byId = Object.fromEntries(cases.map((row) => [row.id, row]));
-  for (const code of ["BK0101", "QN0103", "SI0101"]) {
+  for (const code of ["BK0101", "QN0103", "SI0101", "BX0101"]) {
     assert.equal(byId[code].status, 200, code);
     assert.equal(JSON.parse(byId[code].body).schema, DEFERRED_SCHEMA, code);
     assert.equal(servedCount(byId[code].body), null, `${code}: unavailable coverage carries no fabricated count`);
@@ -131,17 +143,18 @@ test("the classifier types each served borough fixture into its published-covera
     assert.match(unavailableResults, new RegExp(escapeRe(LOCAL_UNSUPPORTED_COPY)), code);
     assert.doesNotMatch(unavailableResults, new RegExp(escapeRe(LOCAL_ZERO_COPY)), code);
   }
-  const bxResults = JSON.parse(byId.BX0101.body).results_html;
-  assert.match(bxResults, /data-results-count="0"/);
-  assert.match(bxResults, /data-near-local-recovery="zero"/);
-  assert.match(bxResults, new RegExp(escapeRe(LOCAL_ZERO_COPY)));
+  const zeroResults = JSON.parse(byId["BX0101-zero"].body).results_html;
+  assert.match(zeroResults, /data-results-count="0"/);
+  assert.match(zeroResults, /data-near-local-recovery="zero"/);
+  assert.match(zeroResults, new RegExp(escapeRe(LOCAL_ZERO_COPY)));
   assert.equal(servedCount(byId.MN0102.body) >= 1, true, "positive membership publishes a positive count");
 
   const results = classifyCases(cases);
   const resultById = Object.fromEntries(results.map((row) => [row.id, row]));
   const expected = {
     MN0102: { state: "available_records", count: servedCount(byId.MN0102.body) },
-    BX0101: { state: "published_zero", count: 0, typed_copy: LOCAL_ZERO_COPY },
+    BX0101: { state: "unavailable_source_coverage", count: null, typed_copy: LOCAL_UNSUPPORTED_COPY },
+    "BX0101-zero": { state: "published_zero", count: 0, typed_copy: LOCAL_ZERO_COPY },
     BK0101: { state: "unavailable_source_coverage", count: null, typed_copy: LOCAL_UNSUPPORTED_COPY },
     QN0103: { state: "unavailable_source_coverage", count: null, typed_copy: LOCAL_UNSUPPORTED_COPY },
     SI0101: { state: "unavailable_source_coverage", count: null, typed_copy: LOCAL_UNSUPPORTED_COPY },

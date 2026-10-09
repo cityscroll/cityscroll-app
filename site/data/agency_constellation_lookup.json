@@ -2,15 +2,15 @@
   "schema": "cityscroll.agency_constellation.v1",
   "method": "agency_constellation_v1",
   "er_match_basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1",
-  "generated_at": "12796|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-30T13:15:13.798Z|2026-09-30T13:15:55.664Z|2026-10-05T17:33:57.544Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-09-09|2026-09-09T06:33:01.880Z|2026-09-09T06:33:01.880Z|2026-09-30T13:15:43.197Z|2026-09-30T13:15:55.664Z|2026-10-05|2026-10-05T17:33:01.337Z|2026-10-05T17:33:57.544Z",
+  "generated_at": "12796|2026-08-06T00:00:00Z|2026-08-11T21:12:40.677Z|2026-09-30T13:15:13.798Z|2026-09-30T13:15:55.664Z|2026-10-05T17:33:57.544Z|2026-10-06T13:48:38.716Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-09-09|2026-09-09T06:33:01.880Z|2026-09-09T06:33:01.880Z|2026-09-30T13:15:43.197Z|2026-09-30T13:15:55.664Z|2026-10-05|2026-10-05T17:33:01.337Z|2026-10-05T17:33:57.544Z|2026-10-06T13:48:38.716Z",
   "iteration": "v1",
   "demo_ids": [
     "parks-and-recreation",
     "housing-preservation-and-development",
     "economic-development-corporation"
   ],
-  "agency_count": 86,
-  "multi_category_count": 60,
+  "agency_count": 87,
+  "multi_category_count": 63,
   "verified_demo": "agency:id:parks-and-recreation",
   "aliases": {
     "board-meetings": "board-meetings",
@@ -65,7 +65,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 65,
+          "count": 88,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -431,7 +431,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 65,
+          "count": 88,
           "state": "matched",
           "href": "/agencies/administration-for-childrens-services/#mandates-conformance",
           "canonical_href": "/agencies/administration-for-childrens-services/#mandates-conformance",
@@ -462,10 +462,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "65",
+              "total": "88",
               "materialized": "8",
-              "dated": "6",
-              "undated": "2",
+              "dated": "4",
+              "undated": "4",
               "by_state": {
                 "matched": "8"
               },
@@ -475,14 +475,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2015-01-31",
-                "end": "2023-07-31"
+                "start": "2014-07-31",
+                "end": "2018-04-30"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "3103",
+              "valid_days": "1369",
               "observed_days": null
             },
             "lifecycle": {
@@ -499,7 +499,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2023-07-31",
+              "latest_day": "2018-04-30",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -1385,7 +1385,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 25,
+          "count": 36,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -1757,7 +1757,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 25,
+          "count": 36,
           "state": "matched",
           "href": "/agencies/aging/#mandates-conformance",
           "canonical_href": "/agencies/aging/#mandates-conformance",
@@ -1788,10 +1788,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "25",
+              "total": "36",
               "materialized": "8",
-              "dated": "2",
-              "undated": "6",
+              "dated": "1",
+              "undated": "7",
               "by_state": {
                 "matched": "8"
               },
@@ -1801,14 +1801,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2016-10-30",
-                "end": "2018-09-01"
+                "start": "2025-01-04",
+                "end": "2025-01-04"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "671",
+              "valid_days": "0",
               "observed_days": null
             },
             "lifecycle": {
@@ -1825,7 +1825,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2018-09-01",
+              "latest_day": "2025-01-04",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -2604,7 +2604,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 14,
+          "count": 20,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -2970,7 +2970,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 14,
+          "count": 20,
           "state": "matched",
           "href": "/agencies/board-of-correction/#mandates-conformance",
           "canonical_href": "/agencies/board-of-correction/#mandates-conformance",
@@ -3001,10 +3001,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "14",
+              "total": "20",
               "materialized": "8",
-              "dated": "3",
-              "undated": "5",
+              "dated": "4",
+              "undated": "4",
               "by_state": {
                 "matched": "8"
               },
@@ -3015,13 +3015,13 @@
             "spans": {
               "valid": {
                 "start": "2018-12-04",
-                "end": "2024-03-30"
+                "end": "2024-01-30"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "1943",
+              "valid_days": "1883",
               "observed_days": null
             },
             "lifecycle": {
@@ -3038,7 +3038,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2024-03-30",
+              "latest_day": "2024-01-30",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -3175,7 +3175,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 57,
+          "count": 62,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -3529,7 +3529,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 57,
+          "count": 62,
           "state": "matched",
           "href": "/agencies/board-of-elections/#mandates-conformance",
           "canonical_href": "/agencies/board-of-elections/#mandates-conformance",
@@ -3560,10 +3560,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "57",
+              "total": "62",
               "materialized": "8",
-              "dated": "1",
-              "undated": "7",
+              "dated": "2",
+              "undated": "6",
               "by_state": {
                 "matched": "8"
               },
@@ -3574,13 +3574,13 @@
             "spans": {
               "valid": {
                 "start": "2016-10-03",
-                "end": "2016-10-03"
+                "end": "2022-01-09"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "0",
+              "valid_days": "1924",
               "observed_days": null
             },
             "lifecycle": {
@@ -3597,7 +3597,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2016-10-03",
+              "latest_day": "2022-01-09",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -5946,7 +5946,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 221,
+          "count": 314,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -6324,7 +6324,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 221,
+          "count": 314,
           "state": "matched",
           "href": "/agencies/buildings/#mandates-conformance",
           "canonical_href": "/agencies/buildings/#mandates-conformance",
@@ -6355,7 +6355,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "221",
+              "total": "314",
               "materialized": "8",
               "dated": "8",
               "undated": "0",
@@ -6368,14 +6368,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2016-06-28",
-                "end": "2017-12-28"
+                "start": "2015-09-02",
+                "end": "2017-04-05"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "548",
+              "valid_days": "581",
               "observed_days": null
             },
             "lifecycle": {
@@ -6392,7 +6392,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2017-12-28",
+              "latest_day": "2017-04-05",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -6592,7 +6592,7 @@
         "schema": "cityscroll.civic_institution_identity_evidence.v1",
         "institution_ref": "civic-institution:business-integrity-commission",
         "status": "matched",
-        "source_observation_count": 11
+        "source_observation_count": 12
       },
       "matched_categories": 5,
       "categories": {
@@ -6618,7 +6618,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 7,
+          "count": 10,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -6990,7 +6990,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 7,
+          "count": 10,
           "state": "matched",
           "href": "/agencies/business-integrity-commission/#mandates-conformance",
           "canonical_href": "/agencies/business-integrity-commission/#mandates-conformance",
@@ -7021,15 +7021,15 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "7",
-              "materialized": "7",
+              "total": "10",
+              "materialized": "8",
               "dated": "0",
-              "undated": "7",
+              "undated": "8",
               "by_state": {
-                "matched": "7"
+                "matched": "8"
               },
               "by_relation": {
-                "statute_duty": "7"
+                "statute_duty": "8"
               }
             },
             "spans": {
@@ -7048,12 +7048,12 @@
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "7"
+                "unknown": "8"
               },
               "by_stage": {
-                "unknown": "7"
+                "unknown": "8"
               },
-              "complete": "true"
+              "complete": "false"
             },
             "freshness": {
               "reference_day": null,
@@ -7207,7 +7207,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 62,
+          "count": 66,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -7567,7 +7567,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 62,
+          "count": 66,
           "state": "matched",
           "href": "/agencies/campaign-finance-board/#mandates-conformance",
           "canonical_href": "/agencies/campaign-finance-board/#mandates-conformance",
@@ -7598,7 +7598,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "62",
+              "total": "66",
               "materialized": "8",
               "dated": "1",
               "undated": "7",
@@ -7611,8 +7611,8 @@
             },
             "spans": {
               "valid": {
-                "start": "2015-04-07",
-                "end": "2015-04-07"
+                "start": "2026-03-25",
+                "end": "2026-03-25"
               },
               "observed": {
                 "start": null,
@@ -7635,7 +7635,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2015-04-07",
+              "latest_day": "2026-03-25",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -9520,7 +9520,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 23,
+          "count": 30,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -9880,7 +9880,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 23,
+          "count": 30,
           "state": "matched",
           "href": "/agencies/city-council/#mandates-conformance",
           "canonical_href": "/agencies/city-council/#mandates-conformance",
@@ -9911,10 +9911,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "23",
+              "total": "30",
               "materialized": "8",
-              "dated": "6",
-              "undated": "2",
+              "dated": "7",
+              "undated": "1",
               "by_state": {
                 "matched": "8"
               },
@@ -9924,14 +9924,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2014-05-19",
-                "end": "2015-05-04"
+                "start": "2015-03-03",
+                "end": "2017-04-03"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "350",
+              "valid_days": "762",
               "observed_days": null
             },
             "lifecycle": {
@@ -9948,7 +9948,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2015-05-04",
+              "latest_day": "2017-04-03",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -10079,7 +10079,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 8,
+          "count": 14,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -10451,7 +10451,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 8,
+          "count": 14,
           "state": "matched",
           "href": "/agencies/city-planning/#mandates-conformance",
           "canonical_href": "/agencies/city-planning/#mandates-conformance",
@@ -10482,10 +10482,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "8",
+              "total": "14",
               "materialized": "8",
-              "dated": "1",
-              "undated": "7",
+              "dated": "2",
+              "undated": "6",
               "by_state": {
                 "matched": "8"
               },
@@ -10495,14 +10495,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2018-07-01",
+                "start": "2016-08-31",
                 "end": "2018-07-01"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "0",
+              "valid_days": "669",
               "observed_days": null
             },
             "lifecycle": {
@@ -10514,7 +10514,7 @@
               "by_stage": {
                 "unknown": "8"
               },
-              "complete": "true"
+              "complete": "false"
             },
             "freshness": {
               "reference_day": null,
@@ -11260,7 +11260,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 64,
+          "count": 91,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -11632,7 +11632,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 64,
+          "count": 91,
           "state": "matched",
           "href": "/agencies/citywide-administrative-services/#mandates-conformance",
           "canonical_href": "/agencies/citywide-administrative-services/#mandates-conformance",
@@ -11663,10 +11663,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "64",
+              "total": "91",
               "materialized": "8",
-              "dated": "4",
-              "undated": "4",
+              "dated": "3",
+              "undated": "5",
               "by_state": {
                 "matched": "8"
               },
@@ -11676,14 +11676,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2018-12-31",
-                "end": "2024-06-24"
+                "start": "2020-01-15",
+                "end": "2025-09-01"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "2002",
+              "valid_days": "2056",
               "observed_days": null
             },
             "lifecycle": {
@@ -11700,7 +11700,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2024-06-24",
+              "latest_day": "2025-09-01",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -11900,7 +11900,7 @@
         "schema": "cityscroll.civic_institution_identity_evidence.v1",
         "institution_ref": "civic-institution:civilian-complaint-review-board",
         "status": "matched",
-        "source_observation_count": 6
+        "source_observation_count": 7
       },
       "matched_categories": 4,
       "categories": {
@@ -11926,7 +11926,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 3,
+          "count": 4,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -12292,7 +12292,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 3,
+          "count": 4,
           "state": "matched",
           "href": "/agencies/civilian-complaint-review-board/#mandates-conformance",
           "canonical_href": "/agencies/civilian-complaint-review-board/#mandates-conformance",
@@ -12323,15 +12323,15 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "3",
-              "materialized": "3",
+              "total": "4",
+              "materialized": "4",
               "dated": "0",
-              "undated": "3",
+              "undated": "4",
               "by_state": {
-                "matched": "3"
+                "matched": "4"
               },
               "by_relation": {
-                "statute_duty": "3"
+                "statute_duty": "4"
               }
             },
             "spans": {
@@ -12350,10 +12350,10 @@
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "3"
+                "unknown": "4"
               },
               "by_stage": {
-                "unknown": "3"
+                "unknown": "4"
               },
               "complete": "true"
             },
@@ -12509,7 +12509,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 36,
+          "count": 59,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -12881,7 +12881,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 36,
+          "count": 59,
           "state": "matched",
           "href": "/agencies/commission-on-human-rights/#mandates-conformance",
           "canonical_href": "/agencies/commission-on-human-rights/#mandates-conformance",
@@ -12912,10 +12912,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "36",
+              "total": "59",
               "materialized": "8",
-              "dated": "6",
-              "undated": "2",
+              "dated": "7",
+              "undated": "1",
               "by_state": {
                 "matched": "8"
               },
@@ -12926,13 +12926,13 @@
             "spans": {
               "valid": {
                 "start": "2016-01-31",
-                "end": "2018-12-31"
+                "end": "2021-12-31"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "1065",
+              "valid_days": "2161",
               "observed_days": null
             },
             "lifecycle": {
@@ -12949,7 +12949,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2018-12-31",
+              "latest_day": "2021-12-31",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -13098,7 +13098,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 16,
+          "count": 11,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -13452,7 +13452,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 16,
+          "count": 11,
           "state": "matched",
           "href": "/agencies/commission-on-racial-equity/#mandates-conformance",
           "canonical_href": "/agencies/commission-on-racial-equity/#mandates-conformance",
@@ -13483,10 +13483,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "16",
+              "total": "11",
               "materialized": "8",
-              "dated": "5",
-              "undated": "3",
+              "dated": "1",
+              "undated": "7",
               "by_state": {
                 "matched": "8"
               },
@@ -14204,7 +14204,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 32,
+          "count": 49,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -14570,7 +14570,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 32,
+          "count": 49,
           "state": "matched",
           "href": "/agencies/comptroller/#mandates-conformance",
           "canonical_href": "/agencies/comptroller/#mandates-conformance",
@@ -14601,10 +14601,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "32",
+              "total": "49",
               "materialized": "8",
-              "dated": "0",
-              "undated": "8",
+              "dated": "1",
+              "undated": "7",
               "by_state": {
                 "matched": "8"
               },
@@ -14614,14 +14614,14 @@
             },
             "spans": {
               "valid": {
-                "start": null,
-                "end": null
+                "start": "2016-11-27",
+                "end": "2016-11-27"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": null,
+              "valid_days": "0",
               "observed_days": null
             },
             "lifecycle": {
@@ -14638,11 +14638,11 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": null,
-              "latest_source": null,
+              "latest_day": "2016-11-27",
+              "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
-              "status": "unknown"
+              "status": "known"
             }
           },
           "absence_reason": null,
@@ -14864,7 +14864,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 149,
+          "count": 132,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -15242,7 +15242,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 149,
+          "count": 132,
           "state": "matched",
           "href": "/agencies/consumer-and-worker-protection/#mandates-conformance",
           "canonical_href": "/agencies/consumer-and-worker-protection/#mandates-conformance",
@@ -15273,7 +15273,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "149",
+              "total": "132",
               "materialized": "8",
               "dated": "8",
               "undated": "0",
@@ -15286,14 +15286,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2016-06-28",
-                "end": "2026-05-17"
+                "start": "2016-01-01",
+                "end": "2018-07-18"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "3610",
+              "valid_days": "929",
               "observed_days": null
             },
             "lifecycle": {
@@ -15310,7 +15310,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2026-05-17",
+              "latest_day": "2018-07-18",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -15536,7 +15536,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 196,
+          "count": 203,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -15902,7 +15902,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 196,
+          "count": 203,
           "state": "matched",
           "href": "/agencies/correction/#mandates-conformance",
           "canonical_href": "/agencies/correction/#mandates-conformance",
@@ -15933,10 +15933,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "196",
+              "total": "203",
               "materialized": "8",
-              "dated": "8",
-              "undated": "0",
+              "dated": "7",
+              "undated": "1",
               "by_state": {
                 "matched": "8"
               },
@@ -15946,14 +15946,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2015-11-06",
-                "end": "2026-03-15"
+                "start": "2017-03-06",
+                "end": "2025-09-01"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "3782",
+              "valid_days": "3101",
               "observed_days": null
             },
             "lifecycle": {
@@ -15970,7 +15970,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2026-03-15",
+              "latest_day": "2025-09-01",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -16170,7 +16170,7 @@
         "schema": "cityscroll.civic_institution_identity_evidence.v1",
         "institution_ref": "civic-institution:criminal-justice-coordinator",
         "status": "matched",
-        "source_observation_count": 11
+        "source_observation_count": 12
       },
       "matched_categories": 1,
       "categories": {
@@ -16196,7 +16196,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 7,
+          "count": 16,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -16550,7 +16550,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 7,
+          "count": 16,
           "state": "matched",
           "href": "/agencies/criminal-justice-coordinator/#mandates-conformance",
           "canonical_href": "/agencies/criminal-justice-coordinator/#mandates-conformance",
@@ -16581,44 +16581,44 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "7",
-              "materialized": "7",
-              "dated": "3",
-              "undated": "4",
+              "total": "16",
+              "materialized": "8",
+              "dated": "1",
+              "undated": "7",
               "by_state": {
-                "matched": "7"
+                "matched": "8"
               },
               "by_relation": {
-                "statute_duty": "7"
+                "statute_duty": "8"
               }
             },
             "spans": {
               "valid": {
-                "start": "2018-02-01",
-                "end": "2023-08-13"
+                "start": "2017-08-21",
+                "end": "2017-08-21"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "2019",
+              "valid_days": "0",
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "7"
+                "unknown": "8"
               },
               "by_stage": {
-                "unknown": "7"
+                "unknown": "8"
               },
-              "complete": "true"
+              "complete": "false"
             },
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2023-08-13",
+              "latest_day": "2017-08-21",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -16723,7 +16723,7 @@
         "schema": "cityscroll.civic_institution_identity_evidence.v1",
         "institution_ref": "civic-institution:cultural-affairs",
         "status": "matched",
-        "source_observation_count": 9
+        "source_observation_count": 11
       },
       "matched_categories": 3,
       "categories": {
@@ -16749,7 +16749,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 6,
+          "count": 34,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -17115,7 +17115,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 6,
+          "count": 34,
           "state": "matched",
           "href": "/agencies/cultural-affairs/#mandates-conformance",
           "canonical_href": "/agencies/cultural-affairs/#mandates-conformance",
@@ -17146,15 +17146,15 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "6",
-              "materialized": "6",
+              "total": "34",
+              "materialized": "8",
               "dated": "1",
-              "undated": "5",
+              "undated": "7",
               "by_state": {
-                "matched": "6"
+                "matched": "8"
               },
               "by_relation": {
-                "statute_duty": "6"
+                "statute_duty": "8"
               }
             },
             "spans": {
@@ -17173,12 +17173,12 @@
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "6"
+                "unknown": "8"
               },
               "by_stage": {
-                "unknown": "6"
+                "unknown": "8"
               },
-              "complete": "true"
+              "complete": "false"
             },
             "freshness": {
               "reference_day": null,
@@ -17368,7 +17368,7 @@
         "status": "unknown",
         "source_observation_count": 0
       },
-      "matched_categories": 1,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
           "status": "matched",
@@ -17391,8 +17391,8 @@
           "method": "agency_canonical_v1"
         },
         "obligations": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 50,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -17752,8 +17752,8 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 0,
-          "state": "empty",
+          "count": 50,
+          "state": "matched",
           "href": "/agencies/department-of-social-services/#mandates-conformance",
           "canonical_href": "/agencies/department-of-social-services/#mandates-conformance",
           "scope": {
@@ -17783,42 +17783,48 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "0",
-              "materialized": "0",
-              "dated": "0",
-              "undated": "0",
-              "by_state": {},
-              "by_relation": {}
+              "total": "50",
+              "materialized": "8",
+              "dated": "6",
+              "undated": "2",
+              "by_state": {
+                "matched": "8"
+              },
+              "by_relation": {
+                "statute_duty": "8"
+              }
             },
             "spans": {
               "valid": {
-                "start": null,
-                "end": null
+                "start": "2017-03-17",
+                "end": "2024-04-18"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": null,
+              "valid_days": "2589",
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "0"
+                "unknown": "8"
               },
-              "by_stage": {},
-              "complete": "true"
+              "by_stage": {
+                "unknown": "8"
+              },
+              "complete": "false"
             },
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": null,
-              "latest_source": null,
+              "latest_day": "2024-04-18",
+              "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
-              "status": "unknown"
+              "status": "known"
             }
           },
           "absence_reason": null,
@@ -22030,7 +22036,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 107,
+          "count": 193,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -22396,7 +22402,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 107,
+          "count": 193,
           "state": "matched",
           "href": "/agencies/education/#mandates-conformance",
           "canonical_href": "/agencies/education/#mandates-conformance",
@@ -22427,10 +22433,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "107",
+              "total": "193",
               "materialized": "8",
-              "dated": "8",
-              "undated": "0",
+              "dated": "3",
+              "undated": "5",
               "by_state": {
                 "matched": "8"
               },
@@ -22440,14 +22446,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2014-11-01",
-                "end": "2024-04-05"
+                "start": "2015-06-15",
+                "end": "2026-05-17"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "3443",
+              "valid_days": "3989",
               "observed_days": null
             },
             "lifecycle": {
@@ -22464,7 +22470,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2024-04-05",
+              "latest_day": "2026-05-17",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -22664,7 +22670,7 @@
         "schema": "cityscroll.civic_institution_identity_evidence.v1",
         "institution_ref": "civic-institution:emergency-management",
         "status": "matched",
-        "source_observation_count": 12
+        "source_observation_count": 8
       },
       "matched_categories": 3,
       "categories": {
@@ -22690,7 +22696,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 12,
+          "count": 4,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -23056,7 +23062,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 12,
+          "count": 4,
           "state": "matched",
           "href": "/agencies/emergency-management/#mandates-conformance",
           "canonical_href": "/agencies/emergency-management/#mandates-conformance",
@@ -23087,21 +23093,21 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "12",
-              "materialized": "8",
+              "total": "4",
+              "materialized": "4",
               "dated": "1",
-              "undated": "7",
+              "undated": "3",
               "by_state": {
-                "matched": "8"
+                "matched": "4"
               },
               "by_relation": {
-                "statute_duty": "8"
+                "statute_duty": "4"
               }
             },
             "spans": {
               "valid": {
-                "start": "2014-12-01",
-                "end": "2014-12-01"
+                "start": "2017-03-18",
+                "end": "2017-03-18"
               },
               "observed": {
                 "start": null,
@@ -23114,17 +23120,17 @@
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "8"
+                "unknown": "4"
               },
               "by_stage": {
-                "unknown": "8"
+                "unknown": "4"
               },
-              "complete": "false"
+              "complete": "true"
             },
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2014-12-01",
+              "latest_day": "2017-03-18",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -23992,7 +23998,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 112,
+          "count": 141,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -24370,7 +24376,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 112,
+          "count": 141,
           "state": "matched",
           "href": "/agencies/environmental-protection/#mandates-conformance",
           "canonical_href": "/agencies/environmental-protection/#mandates-conformance",
@@ -24401,7 +24407,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "112",
+              "total": "141",
               "materialized": "8",
               "dated": "8",
               "undated": "0",
@@ -24414,14 +24420,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2014-02-04",
-                "end": "2028-01-01"
+                "start": "2014-08-03",
+                "end": "2028-07-01"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "5079",
+              "valid_days": "5081",
               "observed_days": null
             },
             "lifecycle": {
@@ -24438,7 +24444,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2028-01-01",
+              "latest_day": "2028-07-01",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -25223,7 +25229,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 131,
+          "count": 159,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -25595,7 +25601,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 131,
+          "count": 159,
           "state": "matched",
           "href": "/agencies/finance/#mandates-conformance",
           "canonical_href": "/agencies/finance/#mandates-conformance",
@@ -25626,10 +25632,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "131",
+              "total": "159",
               "materialized": "8",
-              "dated": "6",
-              "undated": "2",
+              "dated": "7",
+              "undated": "1",
               "by_state": {
                 "matched": "8"
               },
@@ -25639,14 +25645,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2015-03-12",
-                "end": "2020-11-01"
+                "start": "2017-11-01",
+                "end": "2026-03-01"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "2061",
+              "valid_days": "3042",
               "observed_days": null
             },
             "lifecycle": {
@@ -25663,7 +25669,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2020-11-01",
+              "latest_day": "2026-03-01",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -26515,7 +26521,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 50,
+          "count": 62,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -26887,7 +26893,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 50,
+          "count": 62,
           "state": "matched",
           "href": "/agencies/fire-department/#mandates-conformance",
           "canonical_href": "/agencies/fire-department/#mandates-conformance",
@@ -26918,10 +26924,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "50",
+              "total": "62",
               "materialized": "8",
-              "dated": "2",
-              "undated": "6",
+              "dated": "0",
+              "undated": "8",
               "by_state": {
                 "matched": "8"
               },
@@ -26931,14 +26937,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2019-01-01",
-                "end": "2023-01-30"
+                "start": null,
+                "end": null
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "1490",
+              "valid_days": null,
               "observed_days": null
             },
             "lifecycle": {
@@ -26955,11 +26961,11 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2023-01-30",
-              "latest_source": "published_record",
+              "latest_day": null,
+              "latest_source": null,
               "age_days": null,
               "max_age_days": null,
-              "status": "known"
+              "status": "unknown"
             }
           },
           "absence_reason": null,
@@ -27181,7 +27187,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 232,
+          "count": 294,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -27559,7 +27565,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 232,
+          "count": 294,
           "state": "matched",
           "href": "/agencies/health-and-mental-hygiene/#mandates-conformance",
           "canonical_href": "/agencies/health-and-mental-hygiene/#mandates-conformance",
@@ -27590,7 +27596,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "232",
+              "total": "294",
               "materialized": "8",
               "dated": "8",
               "undated": "0",
@@ -27603,14 +27609,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2015-01-08",
-                "end": "2027-09-30"
+                "start": "2016-04-06",
+                "end": "2027-03-23"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "4648",
+              "valid_days": "4003",
               "observed_days": null
             },
             "lifecycle": {
@@ -27627,7 +27633,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2027-09-30",
+              "latest_day": "2027-03-23",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -27853,7 +27859,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 42,
+          "count": 58,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -28219,7 +28225,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 42,
+          "count": 58,
           "state": "matched",
           "href": "/agencies/homeless-services/#mandates-conformance",
           "canonical_href": "/agencies/homeless-services/#mandates-conformance",
@@ -28250,10 +28256,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "42",
+              "total": "58",
               "materialized": "8",
-              "dated": "6",
-              "undated": "2",
+              "dated": "4",
+              "undated": "4",
               "by_state": {
                 "matched": "8"
               },
@@ -28264,13 +28270,13 @@
             "spans": {
               "valid": {
                 "start": "2021-12-07",
-                "end": "2024-03-13"
+                "end": "2026-11-08"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "827",
+              "valid_days": "1797",
               "observed_days": null
             },
             "lifecycle": {
@@ -28287,7 +28293,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2024-03-13",
+              "latest_day": "2026-11-08",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -28487,9 +28493,9 @@
         "schema": "cityscroll.civic_institution_identity_evidence.v1",
         "institution_ref": "civic-institution:housing-authority",
         "status": "matched",
-        "source_observation_count": 11
+        "source_observation_count": 12
       },
-      "matched_categories": 4,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
           "status": "matched",
@@ -28512,8 +28518,8 @@
           "method": "agency_canonical_v1"
         },
         "obligations": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 1,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -28885,8 +28891,8 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 0,
-          "state": "empty",
+          "count": 1,
+          "state": "matched",
           "href": "/agencies/housing-authority/#mandates-conformance",
           "canonical_href": "/agencies/housing-authority/#mandates-conformance",
           "scope": {
@@ -28916,12 +28922,16 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "0",
-              "materialized": "0",
+              "total": "1",
+              "materialized": "1",
               "dated": "0",
-              "undated": "0",
-              "by_state": {},
-              "by_relation": {}
+              "undated": "1",
+              "by_state": {
+                "matched": "1"
+              },
+              "by_relation": {
+                "statute_duty": "1"
+              }
             },
             "spans": {
               "valid": {
@@ -28939,9 +28949,11 @@
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "0"
+                "unknown": "1"
               },
-              "by_stage": {},
+              "by_stage": {
+                "unknown": "1"
+              },
               "complete": "true"
             },
             "freshness": {
@@ -29096,7 +29108,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 132,
+          "count": 219,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -29474,7 +29486,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 132,
+          "count": 219,
           "state": "matched",
           "href": "/agencies/housing-preservation-and-development/#mandates-conformance",
           "canonical_href": "/agencies/housing-preservation-and-development/#mandates-conformance",
@@ -29505,7 +29517,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "132",
+              "total": "219",
               "materialized": "8",
               "dated": "8",
               "undated": "0",
@@ -29518,14 +29530,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2014-09-30",
-                "end": "2022-10-31"
+                "start": "2015-06-12",
+                "end": "2027-08-01"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "2953",
+              "valid_days": "4433",
               "observed_days": null
             },
             "lifecycle": {
@@ -29542,7 +29554,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2022-10-31",
+              "latest_day": "2027-08-01",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -29768,7 +29780,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 94,
+          "count": 68,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -30146,7 +30158,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 94,
+          "count": 68,
           "state": "matched",
           "href": "/agencies/human-resources-administration/#mandates-conformance",
           "canonical_href": "/agencies/human-resources-administration/#mandates-conformance",
@@ -30177,10 +30189,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "94",
+              "total": "68",
               "materialized": "8",
-              "dated": "7",
-              "undated": "1",
+              "dated": "8",
+              "undated": "0",
               "by_state": {
                 "matched": "8"
               },
@@ -30190,14 +30202,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2015-10-09",
-                "end": "2024-04-18"
+                "start": "2018-04-19",
+                "end": "2022-02-14"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "3114",
+              "valid_days": "1397",
               "observed_days": null
             },
             "lifecycle": {
@@ -30214,7 +30226,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2024-04-18",
+              "latest_day": "2022-02-14",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -30844,8 +30856,8 @@
             },
             "spans": {
               "valid": {
-                "start": "2017-02-15",
-                "end": "2017-02-15"
+                "start": "2026-06-01",
+                "end": "2026-06-01"
               },
               "observed": {
                 "start": null,
@@ -30868,7 +30880,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2017-02-15",
+              "latest_day": "2026-06-01",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -30999,7 +31011,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 24,
+          "count": 32,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -31371,7 +31383,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 24,
+          "count": 32,
           "state": "matched",
           "href": "/agencies/information-technology-and-telecommunications/#mandates-conformance",
           "canonical_href": "/agencies/information-technology-and-telecommunications/#mandates-conformance",
@@ -31402,7 +31414,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "24",
+              "total": "32",
               "materialized": "8",
               "dated": "3",
               "undated": "5",
@@ -31416,13 +31428,13 @@
             "spans": {
               "valid": {
                 "start": "2020-02-15",
-                "end": "2022-06-12"
+                "end": "2026-10-25"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "848",
+              "valid_days": "2444",
               "observed_days": null
             },
             "lifecycle": {
@@ -31439,7 +31451,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2022-06-12",
+              "latest_day": "2026-10-25",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -31665,7 +31677,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 19,
+          "count": 24,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -32031,7 +32043,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 19,
+          "count": 24,
           "state": "matched",
           "href": "/agencies/investigation/#mandates-conformance",
           "canonical_href": "/agencies/investigation/#mandates-conformance",
@@ -32062,10 +32074,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "19",
+              "total": "24",
               "materialized": "8",
-              "dated": "6",
-              "undated": "2",
+              "dated": "1",
+              "undated": "7",
               "by_state": {
                 "matched": "8"
               },
@@ -32075,14 +32087,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2016-12-06",
+                "start": "2025-11-11",
                 "end": "2025-11-11"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "3262",
+              "valid_days": "0",
               "observed_days": null
             },
             "lifecycle": {
@@ -32244,7 +32256,7 @@
         "schema": "cityscroll.civic_institution_identity_evidence.v1",
         "institution_ref": "civic-institution:landmarks-preservation-commission",
         "status": "matched",
-        "source_observation_count": 16
+        "source_observation_count": 17
       },
       "matched_categories": 6,
       "categories": {
@@ -32270,7 +32282,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 6,
+          "count": 7,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -32648,7 +32660,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 6,
+          "count": 7,
           "state": "matched",
           "href": "/agencies/landmarks-preservation-commission/#mandates-conformance",
           "canonical_href": "/agencies/landmarks-preservation-commission/#mandates-conformance",
@@ -32679,15 +32691,15 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "6",
-              "materialized": "6",
+              "total": "7",
+              "materialized": "7",
               "dated": "0",
-              "undated": "6",
+              "undated": "7",
               "by_state": {
-                "matched": "6"
+                "matched": "7"
               },
               "by_relation": {
-                "statute_duty": "6"
+                "statute_duty": "7"
               }
             },
             "spans": {
@@ -32706,10 +32718,10 @@
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "6"
+                "unknown": "7"
               },
               "by_stage": {
-                "unknown": "6"
+                "unknown": "7"
               },
               "complete": "true"
             },
@@ -32865,7 +32877,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 20,
+          "count": 44,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -33231,7 +33243,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 20,
+          "count": 44,
           "state": "matched",
           "href": "/agencies/law-department/#mandates-conformance",
           "canonical_href": "/agencies/law-department/#mandates-conformance",
@@ -33262,10 +33274,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "20",
+              "total": "44",
               "materialized": "8",
-              "dated": "4",
-              "undated": "4",
+              "dated": "3",
+              "undated": "5",
               "by_state": {
                 "matched": "8"
               },
@@ -33275,14 +33287,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2017-03-18",
-                "end": "2024-02-04"
+                "start": "2014-07-31",
+                "end": "2017-01-31"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "2514",
+              "valid_days": "915",
               "observed_days": null
             },
             "lifecycle": {
@@ -33299,7 +33311,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2024-02-04",
+              "latest_day": "2017-01-31",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -34646,7 +34658,7 @@
         "schema": "cityscroll.civic_institution_identity_evidence.v1",
         "institution_ref": "civic-institution:mayors-office-of-contract-services",
         "status": "matched",
-        "source_observation_count": 10
+        "source_observation_count": 11
       },
       "matched_categories": 4,
       "categories": {
@@ -34672,7 +34684,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 6,
+          "count": 7,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -35038,7 +35050,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 6,
+          "count": 7,
           "state": "matched",
           "href": "/agencies/mayors-office-of-contract-services/#mandates-conformance",
           "canonical_href": "/agencies/mayors-office-of-contract-services/#mandates-conformance",
@@ -35069,44 +35081,44 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "6",
-              "materialized": "6",
-              "dated": "3",
-              "undated": "3",
+              "total": "7",
+              "materialized": "7",
+              "dated": "1",
+              "undated": "6",
               "by_state": {
-                "matched": "6"
+                "matched": "7"
               },
               "by_relation": {
-                "statute_duty": "6"
+                "statute_duty": "7"
               }
             },
             "spans": {
               "valid": {
-                "start": "2023-12-01",
-                "end": "2028-01-01"
+                "start": "2027-01-17",
+                "end": "2027-01-17"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "1492",
+              "valid_days": "0",
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "6"
+                "unknown": "7"
               },
               "by_stage": {
-                "unknown": "6"
+                "unknown": "7"
               },
               "complete": "true"
             },
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2028-01-01",
+              "latest_day": "2027-01-17",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -35229,9 +35241,9 @@
         "schema": "cityscroll.civic_institution_identity_evidence.v1",
         "institution_ref": "civic-institution:mayors-office-of-criminal-justice",
         "status": "matched",
-        "source_observation_count": 2
+        "source_observation_count": 7
       },
-      "matched_categories": 1,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
           "status": "empty",
@@ -35254,8 +35266,8 @@
           "method": "agency_canonical_v1"
         },
         "obligations": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 5,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -35615,8 +35627,8 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 0,
-          "state": "empty",
+          "count": 5,
+          "state": "matched",
           "href": "/agencies/mayors-office-of-criminal-justice/#mandates-conformance",
           "canonical_href": "/agencies/mayors-office-of-criminal-justice/#mandates-conformance",
           "scope": {
@@ -35646,42 +35658,48 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "0",
-              "materialized": "0",
-              "dated": "0",
-              "undated": "0",
-              "by_state": {},
-              "by_relation": {}
+              "total": "5",
+              "materialized": "5",
+              "dated": "1",
+              "undated": "4",
+              "by_state": {
+                "matched": "5"
+              },
+              "by_relation": {
+                "statute_duty": "5"
+              }
             },
             "spans": {
               "valid": {
-                "start": null,
-                "end": null
+                "start": "2023-03-14",
+                "end": "2023-03-14"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": null,
+              "valid_days": "0",
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "0"
+                "unknown": "5"
               },
-              "by_stage": {},
+              "by_stage": {
+                "unknown": "5"
+              },
               "complete": "true"
             },
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": null,
-              "latest_source": null,
+              "latest_day": "2023-03-14",
+              "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
-              "status": "unknown"
+              "status": "known"
             }
           },
           "absence_reason": null,
@@ -35862,6 +35880,559 @@
           "method": "agency_vendor_awards_12mo_v1"
         }
       ]
+    },
+    "mayors-office-to-end-domestic-and-gender-based-violence": {
+      "subject_ref": "agency:id:mayors-office-to-end-domestic-and-gender-based-violence",
+      "display_name": "Mayor's Office to End Domestic and Gender-Based Violence",
+      "path": "/agencies/mayors-office-to-end-domestic-and-gender-based-violence/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:mayors-office-to-end-domestic-and-gender-based-violence",
+        "status": "unknown",
+        "source_observation_count": 0
+      },
+      "matched_categories": 1,
+      "categories": {
+        "contracts": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        "meetings": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "rules": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "obligations": {
+          "status": "matched",
+          "count": 1,
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "staffing": {
+          "status": "empty",
+          "count": 0,
+          "method": "publisher_certification_record_v1"
+        }
+      },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
+      "edge_summary": [
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "mayors-office-to-end-domestic-and-gender-based-violence",
+          "edge_type": "published_by_agency",
+          "relation_label": "published by this agency",
+          "label": "Contracts: published by this agency",
+          "target_kind": "contract",
+          "target_id": null,
+          "target_name": "Contracts",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": "open",
+            "mode": "open",
+            "entity_ref": "agency:id:mayors-office-to-end-domestic-and-gender-based-violence"
+          },
+          "as_of": "2026-10-05",
+          "source": {
+            "kind": "agency",
+            "id": "mayors-office-to-end-domestic-and-gender-based-violence",
+            "name": "Mayor's Office to End Domestic and Gender-Based Violence",
+            "canonical_href": "/agencies/mayors-office-to-end-domestic-and-gender-based-violence/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-10-05",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "mayors-office-to-end-domestic-and-gender-based-violence",
+          "edge_type": "top_vendor_by_award_12mo",
+          "relation_label": "top vendors by award value",
+          "label": "Top vendors by award $ (last 12 mo): top vendors by award value",
+          "target_kind": "vendor",
+          "target_id": null,
+          "target_name": "Top vendors by award $ (last 12 mo)",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:mayors-office-to-end-domestic-and-gender-based-violence"
+          },
+          "as_of": "2026-10-05",
+          "source": {
+            "kind": "agency",
+            "id": "mayors-office-to-end-domestic-and-gender-based-violence",
+            "name": "Mayor's Office to End Domestic and Gender-Based Violence",
+            "canonical_href": "/agencies/mayors-office-to-end-domestic-and-gender-based-violence/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-10-05",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-10-05",
+              "snapshot_day": "2026-10-05",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "mayors-office-to-end-domestic-and-gender-based-violence",
+          "edge_type": "hosts_meeting",
+          "relation_label": "related meetings and hearings",
+          "label": "Meetings and hearings: related meetings and hearings",
+          "target_kind": "meeting",
+          "target_id": null,
+          "target_name": "Meetings and hearings",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": "linked",
+            "mode": null,
+            "entity_ref": "agency:id:mayors-office-to-end-domestic-and-gender-based-violence"
+          },
+          "as_of": "2026-09-30",
+          "source": {
+            "kind": "agency",
+            "id": "mayors-office-to-end-domestic-and-gender-based-violence",
+            "name": "Mayor's Office to End Domestic and Gender-Based Violence",
+            "canonical_href": "/agencies/mayors-office-to-end-domestic-and-gender-based-violence/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-09-30",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-09-30",
+              "snapshot_day": "2026-09-30",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "mayors-office-to-end-domestic-and-gender-based-violence",
+          "edge_type": "issued_rule",
+          "relation_label": "issued rule",
+          "label": "Rules: issued rule",
+          "target_kind": "rule",
+          "target_id": null,
+          "target_name": "Rules",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:mayors-office-to-end-domestic-and-gender-based-violence"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "mayors-office-to-end-domestic-and-gender-based-violence",
+            "name": "Mayor's Office to End Domestic and Gender-Based Violence",
+            "canonical_href": "/agencies/mayors-office-to-end-domestic-and-gender-based-violence/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "mayors-office-to-end-domestic-and-gender-based-violence",
+          "edge_type": "statute_duty",
+          "relation_label": "statutory mandates",
+          "label": "Mandates: statutory mandates",
+          "target_kind": "mandate",
+          "target_id": null,
+          "target_name": "Mandates",
+          "count": 1,
+          "state": "matched",
+          "href": "/agencies/mayors-office-to-end-domestic-and-gender-based-violence/#mandates-conformance",
+          "canonical_href": "/agencies/mayors-office-to-end-domestic-and-gender-based-violence/#mandates-conformance",
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:mayors-office-to-end-domestic-and-gender-based-violence"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "mayors-office-to-end-domestic-and-gender-based-violence",
+            "name": "Mayor's Office to End Domestic and Gender-Based Violence",
+            "canonical_href": "/agencies/mayors-office-to-end-domestic-and-gender-based-violence/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "1",
+              "materialized": "1",
+              "dated": "0",
+              "undated": "1",
+              "by_state": {
+                "matched": "1"
+              },
+              "by_relation": {
+                "statute_duty": "1"
+              }
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "1"
+              },
+              "by_stage": {
+                "unknown": "1"
+              },
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "mayors-office-to-end-domestic-and-gender-based-violence",
+          "edge_type": "certified_to_agency",
+          "relation_label": "certified to the agency",
+          "label": "Staffing exams: certified to the agency",
+          "target_kind": "exam",
+          "target_id": null,
+          "target_name": "Staffing exams",
+          "count": 0,
+          "state": "empty",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amayors-office-to-end-domestic-and-gender-based-violence%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amayors-office-to-end-domestic-and-gender-based-violence%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:mayors-office-to-end-domestic-and-gender-based-violence"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "mayors-office-to-end-domestic-and-gender-based-violence",
+            "name": "Mayor's Office to End Domestic and Gender-Based Violence",
+            "canonical_href": "/agencies/mayors-office-to-end-domestic-and-gender-based-violence/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "absence_reason": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        }
+      ],
+      "top_vendors": []
     },
     "metropolitan-transportation-authority": {
       "subject_ref": "agency:id:metropolitan-transportation-authority",
@@ -38115,7 +38686,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 10,
+          "count": 11,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -38481,7 +39052,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 10,
+          "count": 11,
           "state": "matched",
           "href": "/agencies/nyc-department-of-veterans-services/#mandates-conformance",
           "canonical_href": "/agencies/nyc-department-of-veterans-services/#mandates-conformance",
@@ -38512,7 +39083,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "10",
+              "total": "11",
               "materialized": "8",
               "dated": "2",
               "undated": "6",
@@ -38525,14 +39096,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2019-06-24",
+                "start": "2025-03-01",
                 "end": "2025-03-01"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "2077",
+              "valid_days": "0",
               "observed_days": null
             },
             "lifecycle": {
@@ -39242,9 +39813,9 @@
         "schema": "cityscroll.civic_institution_identity_evidence.v1",
         "institution_ref": "civic-institution:office-of-collective-bargaining",
         "status": "matched",
-        "source_observation_count": 5
+        "source_observation_count": 3
       },
-      "matched_categories": 1,
+      "matched_categories": 0,
       "categories": {
         "contracts": {
           "status": "empty",
@@ -39267,8 +39838,8 @@
           "method": "agency_canonical_v1"
         },
         "obligations": {
-          "status": "matched",
-          "count": 2,
+          "status": "empty",
+          "count": 0,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -39622,8 +40193,8 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 2,
-          "state": "matched",
+          "count": 0,
+          "state": "empty",
           "href": "/agencies/office-of-collective-bargaining/#mandates-conformance",
           "canonical_href": "/agencies/office-of-collective-bargaining/#mandates-conformance",
           "scope": {
@@ -39653,16 +40224,12 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "2",
-              "materialized": "2",
+              "total": "0",
+              "materialized": "0",
               "dated": "0",
-              "undated": "2",
-              "by_state": {
-                "matched": "2"
-              },
-              "by_relation": {
-                "statute_duty": "2"
-              }
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
             },
             "spans": {
               "valid": {
@@ -39680,11 +40247,9 @@
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "2"
+                "unknown": "0"
               },
-              "by_stage": {
-                "unknown": "2"
-              },
+              "by_stage": {},
               "complete": "true"
             },
             "freshness": {
@@ -41522,7 +42087,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 174,
+          "count": 240,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -41894,7 +42459,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 174,
+          "count": 240,
           "state": "matched",
           "href": "/agencies/office-of-the-mayor/#mandates-conformance",
           "canonical_href": "/agencies/office-of-the-mayor/#mandates-conformance",
@@ -41925,7 +42490,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "174",
+              "total": "240",
               "materialized": "8",
               "dated": "8",
               "undated": "0",
@@ -41938,14 +42503,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2015-02-09",
-                "end": "2030-01-01"
+                "start": "2015-02-24",
+                "end": "2027-12-31"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "5440",
+              "valid_days": "4693",
               "observed_days": null
             },
             "lifecycle": {
@@ -41962,7 +42527,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2030-01-01",
+              "latest_day": "2027-12-31",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -42182,7 +42747,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 53,
+          "count": 78,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -42560,7 +43125,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 53,
+          "count": 78,
           "state": "matched",
           "href": "/agencies/parks-and-recreation/#mandates-conformance",
           "canonical_href": "/agencies/parks-and-recreation/#mandates-conformance",
@@ -42591,10 +43156,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "53",
+              "total": "78",
               "materialized": "8",
-              "dated": "4",
-              "undated": "4",
+              "dated": "8",
+              "undated": "0",
               "by_state": {
                 "matched": "8"
               },
@@ -42604,14 +43169,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2022-12-31",
+                "start": "2015-12-01",
                 "end": "2029-10-01"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "2466",
+              "valid_days": "5053",
               "observed_days": null
             },
             "lifecycle": {
@@ -43407,7 +43972,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 124,
+          "count": 169,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -43773,7 +44338,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 124,
+          "count": 169,
           "state": "matched",
           "href": "/agencies/police-department/#mandates-conformance",
           "canonical_href": "/agencies/police-department/#mandates-conformance",
@@ -43804,10 +44369,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "124",
+              "total": "169",
               "materialized": "8",
-              "dated": "5",
-              "undated": "3",
+              "dated": "8",
+              "undated": "0",
               "by_state": {
                 "matched": "8"
               },
@@ -43817,14 +44382,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2015-11-12",
-                "end": "2021-01-30"
+                "start": "2015-09-30",
+                "end": "2021-05-05"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "1906",
+              "valid_days": "2044",
               "observed_days": null
             },
             "lifecycle": {
@@ -43841,7 +44406,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2021-01-30",
+              "latest_day": "2021-05-05",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -44067,7 +44632,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 13,
+          "count": 17,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -44433,7 +44998,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 13,
+          "count": 17,
           "state": "matched",
           "href": "/agencies/probation/#mandates-conformance",
           "canonical_href": "/agencies/probation/#mandates-conformance",
@@ -44464,10 +45029,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "13",
+              "total": "17",
               "materialized": "8",
-              "dated": "2",
-              "undated": "6",
+              "dated": "0",
+              "undated": "8",
               "by_state": {
                 "matched": "8"
               },
@@ -44477,14 +45042,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2017-07-31",
-                "end": "2019-05-10"
+                "start": null,
+                "end": null
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "648",
+              "valid_days": null,
               "observed_days": null
             },
             "lifecycle": {
@@ -44501,11 +45066,11 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2019-05-10",
-              "latest_source": "published_record",
+              "latest_day": null,
+              "latest_source": null,
               "age_days": null,
               "max_age_days": null,
-              "status": "known"
+              "status": "unknown"
             }
           },
           "absence_reason": null,
@@ -44701,7 +45266,7 @@
         "schema": "cityscroll.civic_institution_identity_evidence.v1",
         "institution_ref": "civic-institution:public-advocate",
         "status": "matched",
-        "source_observation_count": 9
+        "source_observation_count": 12
       },
       "matched_categories": 1,
       "categories": {
@@ -44727,7 +45292,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 5,
+          "count": 9,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -45081,7 +45646,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 5,
+          "count": 9,
           "state": "matched",
           "href": "/agencies/public-advocate/#mandates-conformance",
           "canonical_href": "/agencies/public-advocate/#mandates-conformance",
@@ -45112,44 +45677,44 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "5",
-              "materialized": "5",
-              "dated": "4",
-              "undated": "1",
+              "total": "9",
+              "materialized": "8",
+              "dated": "6",
+              "undated": "2",
               "by_state": {
-                "matched": "5"
+                "matched": "8"
               },
               "by_relation": {
-                "statute_duty": "5"
+                "statute_duty": "8"
               }
             },
             "spans": {
               "valid": {
                 "start": "2016-11-27",
-                "end": "2025-02-11"
+                "end": "2022-04-09"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "2998",
+              "valid_days": "1959",
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "5"
+                "unknown": "8"
               },
               "by_stage": {
-                "unknown": "5"
+                "unknown": "8"
               },
-              "complete": "true"
+              "complete": "false"
             },
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2025-02-11",
+              "latest_day": "2022-04-09",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -45254,9 +45819,9 @@
         "schema": "cityscroll.civic_institution_identity_evidence.v1",
         "institution_ref": "civic-institution:public-design-commission",
         "status": "matched",
-        "source_observation_count": 6
+        "source_observation_count": 14
       },
-      "matched_categories": 1,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
           "status": "empty",
@@ -45279,8 +45844,8 @@
           "method": "agency_canonical_v1"
         },
         "obligations": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 8,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -45640,8 +46205,8 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 0,
-          "state": "empty",
+          "count": 8,
+          "state": "matched",
           "href": "/agencies/public-design-commission/#mandates-conformance",
           "canonical_href": "/agencies/public-design-commission/#mandates-conformance",
           "scope": {
@@ -45671,12 +46236,16 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "0",
-              "materialized": "0",
+              "total": "8",
+              "materialized": "8",
               "dated": "0",
-              "undated": "0",
-              "by_state": {},
-              "by_relation": {}
+              "undated": "8",
+              "by_state": {
+                "matched": "8"
+              },
+              "by_relation": {
+                "statute_duty": "8"
+              }
             },
             "spans": {
               "valid": {
@@ -45694,9 +46263,11 @@
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "0"
+                "unknown": "8"
               },
-              "by_stage": {},
+              "by_stage": {
+                "unknown": "8"
+              },
               "complete": "true"
             },
             "freshness": {
@@ -45807,7 +46378,7 @@
         "schema": "cityscroll.civic_institution_identity_evidence.v1",
         "institution_ref": "civic-institution:records-and-information-services",
         "status": "matched",
-        "source_observation_count": 4
+        "source_observation_count": 5
       },
       "matched_categories": 4,
       "categories": {
@@ -45833,7 +46404,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 1,
+          "count": 2,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -46199,7 +46770,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 1,
+          "count": 2,
           "state": "matched",
           "href": "/agencies/records-and-information-services/#mandates-conformance",
           "canonical_href": "/agencies/records-and-information-services/#mandates-conformance",
@@ -46230,15 +46801,15 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "1",
-              "materialized": "1",
+              "total": "2",
+              "materialized": "2",
               "dated": "0",
-              "undated": "1",
+              "undated": "2",
               "by_state": {
-                "matched": "1"
+                "matched": "2"
               },
               "by_relation": {
-                "statute_duty": "1"
+                "statute_duty": "2"
               }
             },
             "spans": {
@@ -46257,10 +46828,10 @@
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "1"
+                "unknown": "2"
               },
               "by_stage": {
-                "unknown": "1"
+                "unknown": "2"
               },
               "complete": "true"
             },
@@ -46963,7 +47534,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 46,
+          "count": 54,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -47341,7 +47912,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 46,
+          "count": 54,
           "state": "matched",
           "href": "/agencies/sanitation/#mandates-conformance",
           "canonical_href": "/agencies/sanitation/#mandates-conformance",
@@ -47372,10 +47943,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "46",
+              "total": "54",
               "materialized": "8",
-              "dated": "0",
-              "undated": "8",
+              "dated": "2",
+              "undated": "6",
               "by_state": {
                 "matched": "8"
               },
@@ -47385,14 +47956,14 @@
             },
             "spans": {
               "valid": {
-                "start": null,
-                "end": null
+                "start": "2018-07-18",
+                "end": "2018-07-18"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": null,
+              "valid_days": "0",
               "observed_days": null
             },
             "lifecycle": {
@@ -47409,11 +47980,11 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": null,
-              "latest_source": null,
+              "latest_day": "2018-07-18",
+              "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
-              "status": "unknown"
+              "status": "known"
             }
           },
           "absence_reason": null,
@@ -47635,7 +48206,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 54,
+          "count": 80,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -48007,7 +48578,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 54,
+          "count": 80,
           "state": "matched",
           "href": "/agencies/small-business-services/#mandates-conformance",
           "canonical_href": "/agencies/small-business-services/#mandates-conformance",
@@ -48038,10 +48609,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "54",
+              "total": "80",
               "materialized": "8",
-              "dated": "8",
-              "undated": "0",
+              "dated": "7",
+              "undated": "1",
               "by_state": {
                 "matched": "8"
               },
@@ -48051,14 +48622,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2018-03-31",
-                "end": "2024-02-01"
+                "start": "2017-12-01",
+                "end": "2026-07-28"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "2133",
+              "valid_days": "3161",
               "observed_days": null
             },
             "lifecycle": {
@@ -48075,7 +48646,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2024-02-01",
+              "latest_day": "2026-07-28",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -48860,7 +49431,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 61,
+          "count": 69,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -49226,7 +49797,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 61,
+          "count": 69,
           "state": "matched",
           "href": "/agencies/taxi-and-limousine-commission/#mandates-conformance",
           "canonical_href": "/agencies/taxi-and-limousine-commission/#mandates-conformance",
@@ -49257,7 +49828,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "61",
+              "total": "69",
               "materialized": "8",
               "dated": "8",
               "undated": "0",
@@ -49271,13 +49842,13 @@
             "spans": {
               "valid": {
                 "start": "2015-02-01",
-                "end": "2019-08-23"
+                "end": "2019-06-01"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "1664",
+              "valid_days": "1581",
               "observed_days": null
             },
             "lifecycle": {
@@ -49294,7 +49865,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2019-08-23",
+              "latest_day": "2019-06-01",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -50079,7 +50650,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 116,
+          "count": 155,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -50457,7 +51028,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 116,
+          "count": 155,
           "state": "matched",
           "href": "/agencies/transportation/#mandates-conformance",
           "canonical_href": "/agencies/transportation/#mandates-conformance",
@@ -50488,7 +51059,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "116",
+              "total": "155",
               "materialized": "8",
               "dated": "7",
               "undated": "1",
@@ -50501,14 +51072,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2018-01-19",
-                "end": "2023-02-01"
+                "start": "2016-04-21",
+                "end": "2020-10-15"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "1839",
+              "valid_days": "1638",
               "observed_days": null
             },
             "lifecycle": {
@@ -50525,7 +51096,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2023-02-01",
+              "latest_day": "2020-10-15",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -51304,7 +51875,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 10,
+          "count": 12,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -51670,7 +52241,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 10,
+          "count": 12,
           "state": "matched",
           "href": "/agencies/youth-and-community-development/#mandates-conformance",
           "canonical_href": "/agencies/youth-and-community-development/#mandates-conformance",
@@ -51701,10 +52272,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "10",
+              "total": "12",
               "materialized": "8",
-              "dated": "1",
-              "undated": "7",
+              "dated": "4",
+              "undated": "4",
               "by_state": {
                 "matched": "8"
               },
@@ -51714,14 +52285,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2023-01-31",
-                "end": "2023-01-31"
+                "start": "2018-10-27",
+                "end": "2023-08-10"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "0",
+              "valid_days": "1748",
               "observed_days": null
             },
             "lifecycle": {
@@ -51738,7 +52309,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2023-01-31",
+              "latest_day": "2023-08-10",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -51934,8 +52505,8 @@
   "provenance": {
     "intelligence_generated_at": "2026-09-30T13:15:55.664Z",
     "certification_generated_at": "2026-08-06T00:00:00Z",
-    "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-    "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-30T13:15:13.798Z|2026-09-30T13:15:55.664Z|2026-10-05T17:33:57.544Z",
+    "obligations_generated_at": "2026-10-06T13:48:38.716Z",
+    "process_conformance_generated_at": "2026-08-11T21:12:40.677Z|2026-09-30T13:15:13.798Z|2026-09-30T13:15:55.664Z|2026-10-05T17:33:57.544Z|2026-10-06T13:48:38.716Z",
     "vendor_rollup_as_of": "2026-10-05",
     "vendor_rollup_window_start": "2025-10-05",
     "passport_graph_observed_on": "2026-09-09",
