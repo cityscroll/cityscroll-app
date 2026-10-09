@@ -157,7 +157,7 @@ def record_parity(preview_ids: list[str], membership_ids: list[str]) -> dict:
 
 def main() -> int:
     membership_ids = independent_membership_ids()
-    assert "2026R0127" in membership_ids, membership_ids
+    assert membership_ids, "SI0105 membership must stay populated for the signed-out preview journey"
 
     process, base = start_server()
     try:
@@ -172,7 +172,7 @@ def main() -> int:
             assert_sign_in_affordance(page)
             parity = record_parity(observed["preview_ids"], membership_ids)
             assert parity["parity_equal"], parity
-            assert "2026R0127" in parity["intersection"], parity
+            assert parity["intersection"], parity
 
             # Positive control: a mutated expectation must fail the parity check.
             mutated = record_parity(observed["preview_ids"] + ["1999Z9999"], membership_ids)
@@ -205,7 +205,7 @@ def main() -> int:
             {
                 "ok": True,
                 "membership_project_ids": membership_ids,
-                "preview_includes": "2026R0127",
+                "preview_membership_intersection_count": len(membership_ids),
             }
         )
     )

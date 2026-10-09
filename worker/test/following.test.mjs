@@ -483,6 +483,11 @@ test("meeting delivery temporal fixtures cover replay, join, reschedule, cancell
 });
 
 test("anonymous Land geography Following preview uses public place membership", async () => {
+  const membershipDoc = JSON.parse(
+    readFileSync(new URL("../../site/data/land_place_membership.json", import.meta.url), "utf8"),
+  );
+  const members = membershipDoc?.by_geography?.nta2020?.SI0105 || [];
+  assert.ok(members.length >= 1, "SI0105 membership must stay populated for the preview invariant");
   const filter = encodeURIComponent(JSON.stringify({
     geographies: ["geography:nta2020:SI0105"],
   }));
@@ -497,7 +502,11 @@ test("anonymous Land geography Following preview uses public place membership", 
   const html = await response.text();
   assert.equal(response.status, 200);
   assert.match(html, /data-following-preview-status="complete"/);
-  assert.match(html, /data-preview-id="2026R0127"/);
+  const previewIds = [...html.matchAll(/data-preview-id="([^"]+)"/g)].map((m) => m[1]);
+  assert.ok(previewIds.length >= 1, "populated membership must yield at least one preview id");
+  for (const id of previewIds) {
+    assert.ok(members.includes(id), `preview id ${id} must stay inside SI0105 membership`);
+  }
   assert.match(html, /data-session-recognized="false"/);
   assert.match(html, /data-following-subscribe-form/);
   assert.match(html, /type="email"/);

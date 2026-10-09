@@ -86,11 +86,17 @@ test("A1 SI0105 and MN0401 browse, preview transform, and matching helper share 
       source: "activity",
       today: TODAY,
     });
+    const members = membership?.by_geography?.nta2020?.[nta] || [];
     assert.equal(match.status, "ready", nta);
     assert.deepEqual(delivered, [...match.ids], `${nta} delivery vs activity match`);
     assert.deepEqual(delivered, browse, `${nta} delivery vs browse`);
-    if (nta === "SI0105") assert.ok(delivered.includes("2026R0127"));
-    if (nta === "MN0401") assert.ok(delivered.includes("2023M0213"));
+    // Refresh-surviving invariant: when membership publishes members for the
+    // NTA, delivery is a non-empty subset of that membership (never a named id).
+    assert.ok(Array.isArray(members) && members.length >= 1, `${nta} membership must stay populated`);
+    assert.ok(delivered.length >= 1, `${nta} delivery must stay non-empty while membership is populated`);
+    for (const id of delivered) {
+      assert.ok(members.includes(id), `${nta} delivered ${id} must stay inside membership`);
+    }
   }
 });
 
@@ -105,8 +111,13 @@ test("A1 supported facets stay aligned across browse and delivery for SI0105", (
     `#land?status=all&stage=any&boro=Staten%20Island&geo=${encodeURIComponent(NTA.SI0105)}`,
   );
   const delivered = deliveryIds(filter);
+  const members = membership?.by_geography?.nta2020?.SI0105 || [];
   assert.deepEqual(delivered, browse);
-  assert.deepEqual(delivered, ["2026R0127"]);
+  assert.ok(members.length >= 1, "SI0105 membership must stay populated");
+  assert.ok(delivered.length >= 1, "SI0105 faceted delivery must stay non-empty");
+  for (const id of delivered) {
+    assert.ok(members.includes(id), `SI0105 faceted delivery ${id} must stay inside membership`);
+  }
 });
 
 test("A2 no-BBL / publisher-only projects stay outside NTA subscriptions", () => {
@@ -144,14 +155,23 @@ test("A3 missing current artifact skips instead of emitting a successful empty d
   );
   assert.equal(landGeographyArtifactState(NEAR_YOU_FLOOR).status, "unavailable");
 
-  // Converse control: a ready artifact still delivers the retained SI0105 member.
+  // Converse control: a ready artifact still delivers the current SI0105 members.
+  const members = membership?.by_geography?.nta2020?.SI0105 || [];
+  assert.ok(members.length >= 1, "SI0105 membership must stay populated for the converse control");
   const rows = query.transformRows(activity);
-  assert.deepEqual(rows.map((row) => row.project_id), ["2026R0127"]);
+  const delivered = rows.map((row) => row.project_id).filter(Boolean);
+  assert.ok(delivered.length >= 1);
+  for (const id of delivered) {
+    assert.ok(members.includes(id), `SI0105 ready delivery ${id} must stay inside membership`);
+  }
 });
 
 test("A3 unavailable artifact does not clear previously seen membership as a geographic departure", async () => {
   // Ordering observation: inject the failure between compile and seen mutation.
-  const seen = new Set(["land:2026R0127"]);
+  const members = membership?.by_geography?.nta2020?.SI0105 || [];
+  assert.ok(members.length >= 1, "SI0105 membership must stay populated for the seen-set control");
+  const retainedId = members[0];
+  const seen = new Set([`land:${retainedId}`]);
   const prepared = prepareWatchFilter("land", {
     status: "all",
     geographies: [NTA.SI0105],
@@ -166,12 +186,12 @@ test("A3 unavailable artifact does not clear previously seen membership as a geo
   }
   assert.equal(transformFailed, true);
   // Seen set is untouched when the artifact path fails before delivery.
-  assert.deepEqual([...seen], ["land:2026R0127"]);
+  assert.deepEqual([...seen], [`land:${retainedId}`]);
 
-  // Converse control: a successful transform still names the same id without rewriting seen.
+  // Converse control: a successful transform still names a membership id without rewriting seen.
   const okRows = query.transformRows(activity);
-  assert.equal(okRows[0].geography_item_id, "land:2026R0127");
-  assert.deepEqual([...seen], ["land:2026R0127"]);
+  assert.ok(okRows.some((row) => row.geography_item_id === `land:${retainedId}`));
+  assert.deepEqual([...seen], [`land:${retainedId}`]);
 });
 
 test("A4 single, rollup, and queued evaluators still share loadWatchRows for geography artifacts", () => {
@@ -280,11 +300,21 @@ test("transformLandGeographyWatchRows OR-unions multi-NTA geography keys", () =>
     { status: "all", stage: "any", geographies: [NTA.SI0105, NTA.MN0401] },
     { catalogRows, today: TODAY },
   );
-  const ids = rows.map((row) => row.project_id);
-  assert.ok(ids.includes("2026R0127"));
-  assert.ok(ids.includes("2023M0213"));
-  // Must not require presence in both neighborhoods (AND would drop both anchors).
-  assert.equal(ids.includes("2026R0127") && ids.includes("2023M0213"), true);
+  const ids = rows.map((row) => row.project_id).filter(Boolean);
+  const siMembers = membership?.by_geography?.nta2020?.SI0105 || [];
+  const mnMembers = membership?.by_geography?.nta2020?.MN0401 || [];
+  assert.ok(siMembers.length >= 1 && mnMembers.length >= 1);
+  // OR-union: every delivered id belongs to at least one of the NTAs, and each
+  // NTA contributes at least one id when membership is populated.
+  assert.ok(ids.length >= 1);
+  for (const id of ids) {
+    assert.ok(
+      siMembers.includes(id) || mnMembers.includes(id),
+      `multi-NTA delivery ${id} must stay inside SI0105∪MN0401 membership`,
+    );
+  }
+  assert.ok(ids.some((id) => siMembers.includes(id)), "SI0105 must contribute under OR-union");
+  assert.ok(ids.some((id) => mnMembers.includes(id)), "MN0401 must contribute under OR-union");
 });
 
 void ROOT_PATH;

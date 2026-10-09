@@ -161,7 +161,12 @@ describe("land NTA geography filter parity", () => {
     const direct = runLandQuery(route);
     const again = runLandQuery(route);
     assert.deepEqual(direct.ids, again.ids);
-    assert.ok(direct.ids.includes("2026R0127"));
+    const members = ntaMembers("SI0105");
+    assert.ok(members.length >= 1, "SI0105 membership must stay populated");
+    assert.ok(direct.ids.length >= 1, "SI0105 query must stay non-empty while membership is populated");
+    for (const id of direct.ids) {
+      assert.ok(members.includes(id), `SI0105 result ${id} must stay inside membership`);
+    }
     assert.deepEqual(direct.receipt.list_ids, direct.ids);
     assert.deepEqual(
       [...direct.receipt.marker_ids, ...direct.receipt.unmapped_ids].sort(),
@@ -184,11 +189,19 @@ describe("land NTA geography filter parity", () => {
     const route = `#land?status=all&stage=any&geo=${encodeURIComponent(NTA.BK1301)}&geo=${encodeURIComponent(NTA.BK1391)}`;
     const { ids, state } = runLandQuery(route);
     assert.deepEqual(state.geographies, [NTA.BK1301, NTA.BK1391].sort());
-    assert.equal(ids.filter((id) => id === "2025K0305").length, 1);
-    assert.ok(ids.includes("2025K0305"));
-    assert.ok(ids.includes("2023K0398") || ntaMembers("BK1301").includes("2023K0398"));
+    const bk1301 = ntaMembers("BK1301");
+    const bk1391 = ntaMembers("BK1391");
+    assert.ok(bk1301.length >= 1 && bk1391.length >= 1, "BK1301/BK1391 membership must stay populated");
+    const overlap = bk1301.filter((id) => bk1391.includes(id));
+    assert.ok(overlap.length >= 1, "BK1301∩BK1391 overlap must stay populated for the dedup control");
+    assert.ok(ids.length >= 1, "multi-NTA OR must stay non-empty while membership is populated");
+    const overlapInResults = overlap.filter((id) => ids.includes(id));
+    assert.ok(overlapInResults.length >= 1, "OR union must surface at least one overlap member");
+    for (const id of overlapInResults) {
+      assert.equal(ids.filter((item) => item === id).length, 1, `${id} must appear once`);
+    }
 
-    const union = new Set([...ntaMembers("BK1301"), ...ntaMembers("BK1391")]);
+    const union = new Set([...bk1301, ...bk1391]);
     for (const id of ids) assert.ok(union.has(id), id);
 
     const oracle = oracleLandIds(catalogRows, {
@@ -202,11 +215,13 @@ describe("land NTA geography filter parity", () => {
   it("A1 cross-facet AND keeps only projects that satisfy geography and borough together", () => {
     const route = `#land?status=all&stage=any&boro=Manhattan&geo=${encodeURIComponent(NTA.MN0401)}`;
     const { ids } = runLandQuery(route);
-    assert.ok(ids.includes("2023M0213"));
+    const members = ntaMembers("MN0401");
+    assert.ok(members.length >= 1, "MN0401 membership must stay populated");
+    assert.ok(ids.length >= 1, "Manhattan∩MN0401 must stay non-empty while membership is populated");
     for (const id of ids) {
       const row = catalogRows.find((item) => item.project_id === id);
       assert.equal(row?.borough, "Manhattan");
-      assert.ok(ntaMembers("MN0401").includes(id));
+      assert.ok(members.includes(id));
     }
     const brooklynOnly = runLandQuery(
       `#land?status=all&stage=any&boro=Brooklyn&geo=${encodeURIComponent(NTA.MN0401)}`,
@@ -470,6 +485,10 @@ describe("land NTA geography filter parity", () => {
   });
 
   it("A1/A4 ordinary, lexical, and address branches all thread geographies through landSnapshotQueryFromState", () => {
+    const mn0401 = ntaMembers("MN0401");
+    const mn0402 = ntaMembers("MN0402");
+    assert.ok(mn0401.length >= 1 && mn0402.length >= 1, "MN0401/MN0402 membership must stay populated");
+
     const state = landFilterStateFromRouteParams({
       status: "all",
       stage: "any",
@@ -481,20 +500,26 @@ describe("land NTA geography filter parity", () => {
       placeMembership: membership,
       limit: LAND_DEFAULT_RESULT_LIMIT,
     });
+    assert.deepEqual(ordinary.geographies, [NTA.MN0401, NTA.MN0402].sort());
+    assert.equal(ordinary.limit, LAND_DEFAULT_RESULT_LIMIT);
+
+    const ordinaryIds = landCanonicalIds(filterLandSnapshot(catalogRows, ordinary));
+    assert.ok(ordinaryIds.length >= 1, "ordinary MN0401/MN0402 query must stay non-empty");
+    for (const id of ordinaryIds) {
+      assert.ok(mn0401.includes(id) || mn0402.includes(id), `${id} must stay inside MN0401∪MN0402`);
+    }
+
+    // Address branch reuses a keyword-surviving membership id so the pin tracks refresh.
+    const target = ordinaryIds[0];
     const address = landSnapshotQueryFromState(state, {
       today: TODAY,
       placeMembership: membership,
-      projectIds: ["2023M0213", "nope"],
+      projectIds: [target, "nope"],
       limit: LAND_ADDRESS_RESULT_LIMIT,
     });
-    assert.deepEqual(ordinary.geographies, [NTA.MN0401, NTA.MN0402].sort());
     assert.deepEqual(address.geographies, ordinary.geographies);
-    assert.equal(ordinary.limit, LAND_DEFAULT_RESULT_LIMIT);
     assert.equal(address.limit, LAND_ADDRESS_RESULT_LIMIT);
-
-    const ordinaryIds = landCanonicalIds(filterLandSnapshot(catalogRows, ordinary));
     const addressIds = landCanonicalIds(filterLandSnapshot(catalogRows, address));
-    assert.ok(ordinaryIds.includes("2023M0213"));
-    assert.deepEqual(addressIds, ["2023M0213"]);
+    assert.deepEqual(addressIds, [target]);
   });
 });

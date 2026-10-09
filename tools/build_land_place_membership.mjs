@@ -21,6 +21,7 @@ import { fileURLToPath } from "node:url";
 
 import { LAND_PROJECT_CATALOG_PATH } from "../site/land_project_catalog.mjs";
 import {
+  assertLandPlaceMembershipPopulation,
   LAND_PLACE_BBL_INDEX_PATH,
   LAND_PLACE_EVIDENCE_DIR,
   LAND_PLACE_EVIDENCE_SHARD_COUNT,
@@ -129,6 +130,7 @@ export function writeLandPlaceMembership({ check = false, root = ROOT } = {}) {
     if (!existsSync(indexPath)) {
       throw new Error(`${LAND_PLACE_MEMBERSHIP_PATH} missing; rerun without --check`);
     }
+    assertLandPlaceMembershipPopulation(JSON.parse(readFileSync(indexPath, "utf8")));
     const committedIndex = readFileSync(indexPath, "utf8");
     if (committedIndex !== built.indexText) {
       throw new Error(`${LAND_PLACE_MEMBERSHIP_PATH} drifted; rerun without --check`);
@@ -156,6 +158,10 @@ export function writeLandPlaceMembership({ check = false, root = ROOT } = {}) {
     }
     return built;
   }
+
+  // Refuse to publish a collapsed membership (e.g. after a verified_seed ZAP BBL
+  // rematerialization) that would empty NTA geography watches.
+  assertLandPlaceMembershipPopulation(built.index);
 
   mkdirSync(evidenceDir, { recursive: true });
   // Remove stale shard names outside the 00..ff set before rewriting.

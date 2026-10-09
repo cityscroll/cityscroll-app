@@ -29,12 +29,15 @@ import {
   assertDoingBusinessServeGate,
   buildMaterializationDoc,
   DOING_BUSINESS_PUBLISHER_ROW_COUNT,
+  doingBusinessServeGateFindings,
   exportDoingBusinessRowsFromWarehouse,
+  isDoingBusinessFullCatalog,
   loadProductSeedRows,
   rowToSodaShape,
 } from "../warehouse/lib/doing_business_lookup.mjs";
 import {
   assertServePublishTwins,
+  decideWarehouseServePublish,
   SERVE_LOOKUP_CONTRACTS,
 } from "../warehouse/lib/serve_publish_contract.mjs";
 import {
@@ -386,9 +389,7 @@ async function main() {
     [],
     "Doing Business public materialization contains test-only records",
   );
-  if (!args.check && (mode === "bulk_warehouse" || mode === "bulk_soda")) {
-    assertDoingBusinessServeGate(doc);
-  }
+
   // Byte-stable rebuild check only when the local catalog (or --from-soda) can
   // reproduce a full snapshot; fixture-sized rebuilds would false-fail against
   // the committed bulk serve.
@@ -399,17 +400,51 @@ async function main() {
     console.log(
       "ok skip byte-stable rebuild (no full catalog in this environment; serve-gate already checked)",
     );
-  } else {
+  } else if (args.check) {
     const outs = [
-      writeOrCheck(OUT_SITE, doc, args.check && canByteCheck),
-      writeOrCheck(OUT_WORKER, doc, args.check && canByteCheck),
+      writeOrCheck(OUT_SITE, doc, true),
+      writeOrCheck(OUT_WORKER, doc, true),
     ];
     for (const row of outs) {
+      console.log(`ok ${path.relative(ROOT, row.path)}`);
+    }
+  } else {
+    // Never freeze an empty live_fallback over a committed full catalog. When
+    // the warehouse/SODA acquisition cannot produce a bulk serve, retain the
+    // last-good twin so Land/vendor attach keep working across refresh.
+    const existing = existsSync(OUT_WORKER)
+      ? readCommittedDoc(OUT_WORKER)
+      : (existsSync(OUT_SITE) ? readCommittedDoc(OUT_SITE) : null);
+    const decision = args.fixture
+      ? { action: "publish", reason: "fixture_allow_degraded", document: doc }
+      : decideWarehouseServePublish(existing, doc, {
+        isFullCatalog: isDoingBusinessFullCatalog,
+        label: "Doing Business",
+      });
+    if (decision.action === "reject") {
+      throw new Error(decision.reason);
+    }
+    if (decision.action === "retain") {
       console.log(
-        args.check
-          ? `ok ${path.relative(ROOT, row.path)}`
-          : `wrote ${path.relative(ROOT, row.path)} (${row.bytes} bytes, ${doc.row_count} rows, mode=${mode})`,
+        JSON.stringify({
+          status: "retained",
+          reason: decision.reason,
+          candidate_findings: doingBusinessServeGateFindings(doc),
+          row_count: existing?.row_count ?? null,
+          mode: existing?.mode ?? null,
+        }),
       );
+    } else {
+      assertDoingBusinessServeGate(doc);
+      const outs = [
+        writeOrCheck(OUT_SITE, doc, false),
+        writeOrCheck(OUT_WORKER, doc, false),
+      ];
+      for (const row of outs) {
+        console.log(
+          `wrote ${path.relative(ROOT, row.path)} (${row.bytes} bytes, ${doc.row_count} rows, mode=${mode})`,
+        );
+      }
     }
   }
   if (args.bench) {

@@ -170,6 +170,17 @@ export function assertDoingBusinessServeGate(doc, opts = {}) {
 }
 
 /**
+ * True when a Doing Business serve is a full catalog (bulk warehouse/SODA).
+ * Empty live_fallback rematerializations must retain the last-good bulk twin.
+ */
+export function isDoingBusinessFullCatalog(doc) {
+  const mode = String(doc?.mode || "");
+  const rows = Array.isArray(doc?.rows) ? doc.rows : [];
+  const rowCount = Number.isFinite(Number(doc?.row_count)) ? Number(doc.row_count) : rows.length;
+  return DOING_BUSINESS_FULL_CATALOG_MODES.includes(mode) && rowCount >= DOING_BUSINESS_MIN_ROW_COUNT;
+}
+
+/**
  * Build the committed materialization document (full entity rows for stem index).
  */
 export function buildMaterializationDoc(rows, opts = {}) {

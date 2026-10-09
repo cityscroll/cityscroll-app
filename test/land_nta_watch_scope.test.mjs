@@ -179,7 +179,7 @@ describe("land NTA watch scope aliases and roundtrip", () => {
 });
 
 describe("land NTA watch matching against retained catalog evidence", () => {
-  it("A1/A5 SI0105 geography-only matching equals browse pre-limit IDs and includes 2026R0127", () => {
+  it("A1/A5 SI0105 geography-only matching equals browse pre-limit IDs and stays inside membership", () => {
     const filter = { status: "all", stage: "any", geographies: [NTA.SI0105] };
     const browseState = landFilterStateFromRouteParams(
       `#land?status=all&stage=any&geo=${encodeURIComponent(NTA.SI0105)}`,
@@ -200,7 +200,12 @@ describe("land NTA watch matching against retained catalog evidence", () => {
     });
     assert.equal(match.status, "ready");
     assert.deepEqual([...match.ids], browseIds);
-    assert.ok(match.ids.includes("2026R0127"));
+    const members = membership?.by_geography?.nta2020?.SI0105 || [];
+    assert.ok(members.length >= 1, "SI0105 membership must stay populated");
+    assert.ok(match.ids.length >= 1, "SI0105 watch match must stay non-empty while membership is populated");
+    for (const id of match.ids) {
+      assert.ok(members.includes(id), `SI0105 watch id ${id} must stay inside membership`);
+    }
     assert.equal(match.ids.includes("2025M0252"), false);
     assert.equal(match.ids.includes("2022Y0395"), false);
   });

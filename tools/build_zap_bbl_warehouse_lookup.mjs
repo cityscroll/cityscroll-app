@@ -24,17 +24,21 @@ import { performance } from "node:perf_hooks";
 
 import { catalogExists, WAREHOUSE_DIR, REPO_ROOT } from "../warehouse/lib/catalog.mjs";
 import {
+  assertZapBblServeGate,
   buildBblMaterializationDoc,
   buildZapBblLookupIndex,
   exportZapBblRowsFromWarehouse,
   groupBblRowsByProject,
+  isZapBblFullCatalog,
   loadBblProductSeedRows,
   loadBblSampleRows,
   lookupZapBblsFromWarehouse,
   lookupZapBblsInIndex,
+  zapBblServeGateFindings,
 } from "../warehouse/lib/zap_bbl_lookup.mjs";
 import {
   assertServePublishTwins,
+  decideWarehouseServePublish,
   SERVE_LOOKUP_CONTRACTS,
 } from "../warehouse/lib/serve_publish_contract.mjs";
 import {
@@ -262,8 +266,16 @@ async function bench(projectRows) {
   };
 }
 
-function writeOutputs(doc, check) {
-  const rendered = stableStringify(doc);
+function readOptionalDoc(filePath) {
+  if (!existsSync(filePath)) return null;
+  try {
+    return JSON.parse(readFileSync(filePath, "utf8"));
+  } catch {
+    return null;
+  }
+}
+
+function writeOutputs(doc, check, { allowDegraded = false } = {}) {
   const targets = [OUT_SITE, OUT_WORKER];
   if (check) {
     for (const filePath of targets) {
@@ -281,6 +293,32 @@ function writeOutputs(doc, check) {
     }
     return { status: "ok", targets };
   }
+
+  const existing = readOptionalDoc(OUT_WORKER) || readOptionalDoc(OUT_SITE);
+  const decision = allowDegraded
+    ? { action: "publish", reason: "allow_degraded", document: doc }
+    : decideWarehouseServePublish(existing, doc, {
+      isFullCatalog: isZapBblFullCatalog,
+      label: "ZAP BBL",
+    });
+  if (decision.action === "reject") {
+    throw new Error(decision.reason);
+  }
+  if (decision.action === "retain") {
+    const findings = zapBblServeGateFindings(doc);
+    return {
+      status: "retained",
+      reason: decision.reason,
+      candidate_findings: findings,
+      targets: targets.map((t) => path.relative(ROOT, t)),
+      project_count: existing?.project_count ?? null,
+      bbl_row_count: existing?.bbl_row_count ?? null,
+      mode: existing?.mode ?? null,
+    };
+  }
+
+  assertZapBblServeGate(doc);
+  const rendered = stableStringify(doc);
   for (const filePath of targets) {
     mkdirSync(path.dirname(filePath), { recursive: true });
     writeFileSync(filePath, rendered);
@@ -344,7 +382,9 @@ async function main() {
     "ZAP BBL public materialization contains test-only records",
   );
 
-  const written = writeOutputs(doc, args.check);
+  // --fixture may write a seed-sized twin into a throwaway tree; production
+  // rematerialization retains the last-good bulk catalog instead.
+  const written = writeOutputs(doc, args.check, { allowDegraded: Boolean(args.fixture) });
   console.log(JSON.stringify(written, null, 2));
 
   if (args.bench) {
