@@ -69,7 +69,10 @@ function wrapStatement(statement, sql, counters, suppressWrites) {
       }
       if (property === "first") {
         return async (columnName) => {
-          if (suppressWrites && isWriteSql(sql)) return null;
+          if (isWriteSql(sql)) {
+            counters.attempted.d1_writes += 1;
+            if (suppressWrites) return null;
+          }
           const result = resultMeta(await current.all(), counters);
           const row = result?.results?.[0] ?? null;
           return columnName && row ? row[columnName] : row;
@@ -77,7 +80,10 @@ function wrapStatement(statement, sql, counters, suppressWrites) {
       }
       if (["all", "raw", "run"].includes(property)) {
         return async (...args) => {
-          if (suppressWrites && isWriteSql(sql)) return suppressedD1Result();
+          if (isWriteSql(sql)) {
+            counters.attempted.d1_writes += 1;
+            if (suppressWrites) return suppressedD1Result();
+          }
           return resultMeta(await current[property](...args), counters);
         };
       }
@@ -98,7 +104,10 @@ function wrapD1(database, counters, suppressWrites) {
       }
       if (property === "exec") {
         return async (sql) => {
-          if (suppressWrites && isWriteSql(sql)) return suppressedD1Result();
+          if (isWriteSql(sql)) {
+            counters.attempted.d1_writes += 1;
+            if (suppressWrites) return suppressedD1Result();
+          }
           return resultMeta(await target.exec(sql), counters);
         };
       }
@@ -107,11 +116,17 @@ function wrapD1(database, counters, suppressWrites) {
           if (suppressWrites) {
             const results = [];
             for (const statement of statements) {
-              results.push(isWriteSql(statementSql.get(statement))
-                ? suppressedD1Result()
-                : await statement.all());
+              if (isWriteSql(statementSql.get(statement))) {
+                counters.attempted.d1_writes += 1;
+                results.push(suppressedD1Result());
+              } else {
+                results.push(await statement.all());
+              }
             }
             return results;
+          }
+          for (const statement of statements) {
+            if (isWriteSql(statementSql.get(statement))) counters.attempted.d1_writes += 1;
           }
           const results = await target.batch(statements.map((statement) => statementTargets.get(statement) || statement));
           for (const result of results || []) resultMeta(result, counters);
@@ -135,9 +150,11 @@ function wrapKv(namespace, counters, suppressWrites) {
       }
       if (["put", "delete"].includes(property)) {
         return async (...args) => {
-          counters.kv_writes += 1;
+          counters.attempted.kv_writes += 1;
           if (suppressWrites) return undefined;
-          return target[property](...args);
+          const result = await target[property](...args);
+          counters.kv_writes += 1;
+          return result;
         };
       }
       const value = target[property];
@@ -151,9 +168,12 @@ function wrapQueue(queue, counters, suppressWrites) {
     get(target, property) {
       if (property === "send" || property === "sendBatch") {
         return async (...args) => {
-          counters.queue_writes += property === "sendBatch" ? (args[0]?.length || 0) : 1;
+          const count = property === "sendBatch" ? (args[0]?.length || 0) : 1;
+          counters.attempted.queue_writes += count;
           if (suppressWrites) return undefined;
-          return target[property](...args);
+          const result = await target[property](...args);
+          counters.queue_writes += count;
+          return result;
         };
       }
       const value = target[property];
@@ -184,8 +204,11 @@ function instrumentEnvironment(env, counters, suppressWrites) {
           ? new Proxy(value, {
             get(target, property) {
               if (property === "writeDataPoint") return (...args) => {
+                counters.attempted.analytics_points += 1;
+                if (suppressWrites) return undefined;
+                const result = target.writeDataPoint(...args);
                 counters.analytics_points += 1;
-                return target.writeDataPoint(...args);
+                return result;
               };
               const child = target[property];
               return typeof child === "function" ? child.bind(target) : child;
@@ -230,6 +253,12 @@ export function beginCostControlProbe(request, env, { suppressWrites = false, wo
     d1_rows_written: 0,
     queue_writes: 0,
     analytics_points: 0,
+    attempted: {
+      kv_writes: 0,
+      d1_writes: 0,
+      queue_writes: 0,
+      analytics_points: 0,
+    },
   };
   const startedAt = Date.now();
   const mode = suppressWrites ? "production-read-only-rehearsal" : "production-request";
@@ -252,7 +281,15 @@ export function beginCostControlProbe(request, env, { suppressWrites = false, wo
         workload_hash: expectedWorkloadHash,
         execution_mode: mode,
         elapsed_ms: Math.max(0, Date.now() - startedAt),
-        operations: { ...counters },
+        operations: {
+          kv_reads: counters.kv_reads,
+          kv_writes: counters.kv_writes,
+          d1_rows_read: counters.d1_rows_read,
+          d1_rows_written: counters.d1_rows_written,
+          queue_writes: counters.queue_writes,
+          analytics_points: counters.analytics_points,
+        },
+        attempted_writes: { ...counters.attempted },
         ...extra,
       };
     },

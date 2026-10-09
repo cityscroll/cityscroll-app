@@ -96,7 +96,12 @@ test("probe rejects missing operator authorization without exposing the route", 
 
 test("probe counts real KV operations and suppresses rehearsal writes", async () => {
   const namespace = kv();
-  const probe = beginCostControlProbe(request(), { ADMIN_KEY, STORE: namespace }, {
+  const analyticsPoints = [];
+  const probe = beginCostControlProbe(request(), {
+    ADMIN_KEY,
+    STORE: namespace,
+    ANALYTICS: { writeDataPoint(point) { analyticsPoints.push(point); } },
+  }, {
     suppressWrites: true,
     workloadHash: WORKLOAD,
   });
@@ -104,15 +109,23 @@ test("probe counts real KV operations and suppresses rehearsal writes", async ()
   assert.equal(await probe.env.STORE.get("present"), "yes");
   await probe.env.STORE.put("blocked", "value");
   await probe.env.STORE.delete("present");
+  probe.env.ANALYTICS.writeDataPoint({ indexes: ["blocked"] });
   assert.equal(namespace.store.has("blocked"), false);
   assert.equal(namespace.store.has("present"), true);
+  assert.equal(analyticsPoints.length, 0);
   assert.deepEqual(probe.snapshot().operations, {
     kv_reads: 1,
-    kv_writes: 2,
+    kv_writes: 0,
     d1_rows_read: 0,
     d1_rows_written: 0,
     queue_writes: 0,
     analytics_points: 0,
+  });
+  assert.deepEqual(probe.snapshot().attempted_writes, {
+    kv_writes: 2,
+    d1_writes: 0,
+    queue_writes: 0,
+    analytics_points: 1,
   });
   assert.equal(probe.snapshot().execution_mode, "production-read-only-rehearsal");
 });
@@ -168,7 +181,7 @@ test("probe rejects a cohort that does not match the validated workload", async 
   assert.equal(response.status, 404);
 });
 
-test("probe rejects the events workload instead of contaminating resident usage", async () => {
+test("probe executes the real events path as excluded traffic without persisting writes", async () => {
   const analyticsPoints = [];
   const state = kv();
   const response = await worker.fetch(request({
@@ -181,16 +194,44 @@ test("probe rejects the events workload instead of contaminating resident usage"
       method: "POST",
       url: "https://api.cityscroll.org/events",
       origin: "https://cityscroll.org",
-      body: { event: "page_view", surface: "home" },
+      body: { event: "page_view", surface: "home", traffic_class: "developer" },
     },
   }), {
     ADMIN_KEY,
+    ANALYTICS_DEV_KEY: "probe-events-developer-secret-long-enough",
     ANALYTICS_ENVIRONMENT: "production",
     ALERT_STATE: state,
     USAGE_ANALYTICS: { writeDataPoint(point) { analyticsPoints.push(point); } },
   }, { waitUntil() {} });
-  assert.equal(response.status, 404);
+  assert.equal(response.status, 200);
+  const observation = await response.json();
+  assert.equal(observation.result.status, 204);
+  assert.equal(observation.execution_mode, "production-read-only-rehearsal");
+  assert.equal(observation.operations.kv_writes, 0);
+  assert.equal(observation.operations.analytics_points, 0);
+  assert.equal(observation.attempted_writes.kv_writes, 0);
+  assert.equal(observation.attempted_writes.analytics_points, 0);
   assert.equal(analyticsPoints.length, 0);
+  assert.deepEqual([...state.store.keys()], ["present"]);
+});
+
+test("events probe fails closed when its developer-exclusion capability is absent", async () => {
+  const state = kv();
+  const body = {
+    kind: "http",
+    route: "events",
+    method: "POST",
+    url: "https://api.cityscroll.org/events",
+    origin: "https://cityscroll.org",
+    body: { event: "page_view", surface: "home", traffic_class: "developer" },
+  };
+  const response = await worker.fetch(request({
+    tag: "probe-events-no-key",
+    series: "series-events-no-key",
+    cohort: "events",
+    body,
+  }), { ADMIN_KEY, ANALYTICS_ENVIRONMENT: "production", ALERT_STATE: state }, { waitUntil() {} });
+  assert.equal(response.status, 404);
   assert.deepEqual([...state.store.keys()], ["present"]);
 });
 

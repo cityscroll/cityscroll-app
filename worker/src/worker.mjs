@@ -56,7 +56,7 @@ import { handleInv } from "./inv.mjs";
 import { handleStats, countActiveSubs, prewarmStats } from "./stats.mjs";
 import { refreshPublicSearchUsageSnapshot } from "./lib/public_search_usage.mjs";
 import { handleSourceHealth } from "./source_health.mjs";
-import { handleEvent } from "./events.mjs";
+import { ANALYTICS_DEV_HEADER, createDeveloperExclusionToken, handleEvent } from "./events.mjs";
 import { handleSearchActivity } from "./search_activity.mjs";
 import { handleSearchHistory } from "./search_history.mjs";
 import { handlePerformanceEvents, normalizeRumBatch } from "./performance_events.mjs";
@@ -162,6 +162,17 @@ async function withWorkerAcquisitionReceipt(env, sourceContractId, runId, work) 
 const COST_PROBE_HTTP_WORKLOADS = Object.freeze({
   health: { path: "/health", method: "GET" },
   "unknown-route": { path: "/__cost-probe-not-found", method: "GET" },
+  events: {
+    path: "/events",
+    method: "POST",
+    validate: (input) => (
+      isRumProductionOrigin(input.origin)
+      && input.body?.event === "page_view"
+      && input.body?.surface === "home"
+      && input.body?.traffic_class === "developer"
+      && Object.keys(input.body || {}).sort().join(",") === "event,surface,traffic_class"
+    ),
+  },
   "rum-16": {
     path: "/performance-events",
     method: "POST",
@@ -255,7 +266,7 @@ async function handleCostControlProbe(request, env) {
   try { input = await readCostProbeInput(request); }
   catch { return new Response("Not found", { status: 404 }); }
   const kind = input?.kind;
-  const suppressWrites = kind === "scheduled" || kind === "queue" || kind === "collector-overhead";
+  const suppressWrites = kind === "scheduled" || kind === "queue" || kind === "collector-overhead" || input?.route === "events";
   const workloadHash = await sha256Text(canonicalCostProbeWorkload(input));
   const probe = beginCostControlProbe(request, env, { suppressWrites, workloadHash });
   if (!probe || probe.denied) return probe?.denied || new Response("Not found", { status: 404 });
@@ -279,6 +290,11 @@ async function handleCostControlProbe(request, env) {
       const headers = new Headers({ "Accept": "application/json", "User-Agent": "CityScrollCostControl/1.0" });
       if (input.origin) headers.set("Origin", String(input.origin));
       if (input.method === "POST") headers.set("Content-Type", "application/json");
+      if (route === "events") {
+        const developerToken = await createDeveloperExclusionToken(env.ANALYTICS_DEV_KEY);
+        if (!developerToken) return new Response("Not found", { status: 404 });
+        headers.set(ANALYTICS_DEV_HEADER, developerToken);
+      }
       childRequest = new Request(target, {
         method: input.method,
         headers,
