@@ -1497,7 +1497,11 @@ export function renderBrowseView(view) {
         className: ["rules", "meetings"].includes(view.facet)
           ? "ui-object-card-title"
           : "browse-record-link ui-object-card-title",
-        labelMarkup: `<span lang="en" dir="ltr">${esc(headingLabel)}</span>`,
+        // Only override label markup when the visible heading must diverge
+        // from the publisher title for uniqueness; keep canonical HTML otherwise.
+        ...(headingLabel !== title
+          ? { labelMarkup: `<span lang="en" dir="ltr">${esc(headingLabel)}</span>` }
+          : {}),
         escape: esc,
       })
       : `<span lang="en" dir="ltr">${esc(headingLabel)}</span>`;

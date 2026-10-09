@@ -8,14 +8,14 @@
       "viewport": "1440x1000",
       "data_vintage": "site build",
       "assertion": "Browse keeps one Subscribe to calendar control and adds Get email updates plus feed-reader disclosure for the exact agency scope",
-      "sha256": "5d64fae0133103be83517b1defe4da720e598fc5b0f1aaa773121c39d4bac079"
+      "sha256": "26208d9c1dbbbd16a50acf20fb1e8d3ad5ad0215dab2db8bddeb1b22740fdb21"
     },
     {
       "route": "/browse/meetings/?agency=City%20Planning",
       "viewport": "390x844",
       "data_vintage": "site build",
       "assertion": "Phone Browse keeps the same Subscribe to calendar control with Get email updates and no duplicate calendar subscription",
-      "sha256": "5d64fae0133103be83517b1defe4da720e598fc5b0f1aaa773121c39d4bac079"
+      "sha256": "26208d9c1dbbbd16a50acf20fb1e8d3ad5ad0215dab2db8bddeb1b22740fdb21"
     },
     {
       "route": "/now/",
@@ -50,7 +50,7 @@
       "viewport": "1440x1000",
       "data_vintage": "production",
       "assertion": "Completed Browse meetings navigation opens the calendar subscription handoff and copying the feed enrolls no recipient",
-      "sha256": "714014c46f031f104fd2759d42bcdc79b9da67b61c995206b9523777fc057bf1",
+      "sha256": "26208d9c1dbbbd16a50acf20fb1e8d3ad5ad0215dab2db8bddeb1b22740fdb21",
       "condition": "production-subscription-handoff",
       "observed": {
         "inner_width": 1440,
@@ -74,7 +74,7 @@
       "viewport": "390x844",
       "data_vintage": "production",
       "assertion": "Completed Browse meetings navigation opens the calendar subscription handoff and copying the feed enrolls no recipient",
-      "sha256": "bafdf502dee39130f7854f00b1bf948cdd028d993989e8905516a899c9642957",
+      "sha256": "26208d9c1dbbbd16a50acf20fb1e8d3ad5ad0215dab2db8bddeb1b22740fdb21",
       "condition": "production-subscription-handoff",
       "observed": {
         "inner_width": 390,

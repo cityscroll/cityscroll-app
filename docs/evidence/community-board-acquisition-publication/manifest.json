@@ -16,7 +16,7 @@
       "revision": "3929e7a3a206990ddb2b8c77c69c3cca602ddba4",
       "data_vintage": "2026-09-14T12:00:00.000Z deterministic publication fixture",
       "assertion": "Rendered meetings view contains the admitted board record and its working source handoff.",
-      "render_sha256": "dcaf48c4c995e7861341357baa2943d5830acb42fcc600039ea4b1faf35ec059"
+      "render_sha256": "6dc222392097abb788589b615c941ca5bcea8a22552a556026d5aec3ec0af338"
     },
     {
       "route": "/browse/meetings/",
@@ -27,7 +27,7 @@
       "revision": "3929e7a3a206990ddb2b8c77c69c3cca602ddba4",
       "data_vintage": "2026-09-14T12:00:00.000Z deterministic publication fixture",
       "assertion": "Rendered meetings view retains the last-good board record after the failed refresh.",
-      "render_sha256": "dcaf48c4c995e7861341357baa2943d5830acb42fcc600039ea4b1faf35ec059"
+      "render_sha256": "6dc222392097abb788589b615c941ca5bcea8a22552a556026d5aec3ec0af338"
     },
     {
       "route": "/browse/meetings/",
