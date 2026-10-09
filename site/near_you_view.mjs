@@ -517,10 +517,37 @@ function withRecordsSurface(href) {
 
 const INITIAL_RECORD_LIMIT = 30;
 
-function viewBoardCoverage(scope, geography) {
-  const community = first(scope.place.community_districts);
+function boardPresentationForCommunityDistrict(community, geography) {
+  if (!community) return { boardLabel: null, boardRef: null, boardHref: null };
+  const edge = (geography.public_edges || []).find((candidate) => candidate?.type === "covers"
+    && candidate.to === `community-district:${community}`);
+  const board = (geography.nodes || []).find((candidate) => candidate?.id === edge?.from);
+  return {
+    boardLabel: board?.name || null,
+    boardRef: board?.properties?.body_id ? `community-board:${board.properties.body_id}` : null,
+    boardHref: board?.properties?.body_id ? communityBoardPageHref(board.properties.body_id) : null,
+  };
+}
+
+/**
+ * Covering community district for an NTA overview, from material broader
+ * relations only. Never written into scope.place, so the selected neighborhood
+ * stays exact.
+ */
+function coveringCommunityDistrictFromBroader(broaderDistricts) {
+  const relation = first(broaderDistricts?.relations || []);
+  return relation?.id ? String(relation.id) : null;
+}
+
+function viewBoardCoverage(scope, geography, { coveringCommunityDistrict = null } = {}) {
+  const community = first(scope.place.community_districts) || coveringCommunityDistrict;
   if (!community) return "This place is not a Community Board district, so board activity is not applicable here.";
-  const presentation = selectedPlacePresentation(scope, geography);
+  const presentation = boardPresentationForCommunityDistrict(community, geography);
+  if (coveringCommunityDistrict && !first(scope.place.community_districts)) {
+    return presentation.boardHref
+      ? "Open the named Community Board for the overlapping community district. That board covers a wider area than this neighborhood alone. District membership does not imply board action."
+      : "The Community Board for the overlapping community district is not identified in the retained geography sources.";
+  }
   return presentation.boardHref
     ? "Open the named Community Board to see its published meetings and actions. District membership does not imply board action."
     : "The Community Board covering this district is not identified in the retained geography sources.";
@@ -528,13 +555,15 @@ function viewBoardCoverage(scope, geography) {
 
 export function buildNearYouViewModel(inputScope, activity, boundaries, options = {}) {
   const scope = scopeWithCanonicalGeography(inputScope);
-  const isOverview = scope.facets.domains.length === 0
-    && !geographyKeysFromScope(scope).some((key) => key.startsWith("geography:nta2020:"));
+  // No explicit category means the place overview, including selected neighborhoods.
+  const isOverview = scope.facets.domains.length === 0;
   const requestedLens = first(scope.facets.domains) || "meetings";
   const lens = requestedLens;
   const dataState = normalizeNearYouDataState(options.dataState ?? (activity ? "ready" : "error"));
   // Record timing and preview order read this clock; unset, they read the current time.
   const now = options.now instanceof Date ? options.now.toISOString() : options.now || null;
+  // Upcoming / recent classification uses the resident clock, not artifact built_at.
+  const clockTime = Date.parse(now || "") || Date.now();
   const geometryState = normalizeNearYouGeometryState(options.geometryState, {
     navigationLayerDoc: options.navigationLayerDoc || null,
     boundaries,
@@ -594,19 +623,24 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     : [];
   const resultCount = localMembershipAvailable ? resultIds.length : null;
   // Records-loading state governs only records. Geometry health owns mapState.
+  // Overview with a ready place boundary stays map-ready instead of inventing a
+  // meetings-unsupported state. Citywide / unscoped overview still uses the
+  // membership projection, so the map does not claim a place outline it lacks.
   const mapState = geometryState === "pending"
     ? "pending"
     : geometryState === "missing"
       ? "missing"
       : geometryState === "error"
         ? "error"
-        : dataState === "ready"
-          ? (!mapped || !localMembershipAvailable
-            ? "unsupported"
-            : resultCount > 0 ? "populated" : "empty")
-          : geometryState === "ready"
-            ? "ready"
-            : "unsupported";
+        : isOverview && geometryState === "ready"
+          ? "ready"
+          : dataState === "ready"
+            ? (!mapped || !localMembershipAvailable
+              ? "unsupported"
+              : resultCount > 0 ? "populated" : "empty")
+            : geometryState === "ready"
+              ? "ready"
+              : "unsupported";
   const hasPlace = !!(scope.place.boroughs.length || scope.place.community_districts.length
     || scope.place.council_districts.length || (scope.place.geographies || []).length || scope.place.neighborhood
     || scope.place.location_scope);
@@ -712,6 +746,8 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       || (geometryState === "ready" ? (boundaries?.boundary_vintage || null) : null)
       || null;
   const overlapBase = nearYouUrlFromScope(scope, {base:canonicalBase});
+  // Overview keeps no-lens intent on map→records continuation; an explicit
+  // category still carries its lens into the records surface.
   const selectedRecordsHref = selectedGeographyKey
     ? geographyNavigationUrlWithFilters({
       ok: true,
@@ -723,7 +759,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       surface: GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
       drawer: geographyState?.drawer || GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
       focus: geographyState?.focus || null,
-      lens,
+      ...(isOverview ? {} : { lens }),
     }, { base: overlapBase })
     : null;
   const crosswalkRowsProvided = Array.isArray(options.crosswalkRows);
@@ -805,32 +841,96 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     });
   };
   const overviewAll = Object.fromEntries(["meetings", "land", "property", "rules", "money", "consultations"].map((name) => [name, overviewRecords(name)]));
-  const builtTime = Date.parse(activityRoot?.built_at || "");
+  const coveringCommunityDistrict = coveringCommunityDistrictFromBroader(options.broaderDistricts);
   const upcoming = overviewAll.meetings.filter((record) => {
     const date = Date.parse(record.date || "");
-    return Number.isFinite(date) && (!Number.isFinite(builtTime) || date >= builtTime);
+    return Number.isFinite(date) && date >= clockTime;
   }).sort((a, b) => {
     const dateA = Date.parse(a.date || "") || Number.POSITIVE_INFINITY;
     const dateB = Date.parse(b.date || "") || Number.POSITIVE_INFINITY;
     return dateA - dateB || String(a.title).localeCompare(String(b.title));
   });
-  const recent = ["land", "property", "rules"].flatMap((name) => overviewAll[name])
+  const recentLensNames = ["land", "property", "rules"];
+  const recent = recentLensNames.flatMap((name) => overviewAll[name])
     .filter((record) => {
       const date = Date.parse(record.date || "");
-      const recentStart = Number.isFinite(builtTime) ? builtTime - (180 * 24 * 60 * 60 * 1000) : Number.NEGATIVE_INFINITY;
-      return Number.isFinite(date) && date <= builtTime && date >= recentStart;
+      const recentStart = clockTime - (180 * 24 * 60 * 60 * 1000);
+      return Number.isFinite(date) && date <= clockTime && date >= recentStart;
     })
     .sort(recordSort);
   const projects = overviewAll.land;
+  // Per-lens membership state decides known count vs unknown. A ready activity
+  // root with an absent/unfilterable lens must not render as measured zero.
+  const overviewLensMeasurable = (lensName) => {
+    if (dataState !== "ready" || !activityRoot) return false;
+    const lensScope = scopeWithGeographies({ ...scope, facets: { ...scope.facets, domains: [lensName] } });
+    const projection = recordIdsForScope(activityRoot, lensName, lensScope);
+    return projection.state === "ready" || projection.state === "zero";
+  };
+  const overviewUnknownCoverage = (lensName) => {
+    const noun = LOCAL_RECOVERY_NOUNS[lensName] || "records";
+    const keyType = String(geographyKeyForScope(scope) || "").split(":")[1];
+    const place = scope.place || {};
+    const placeNoun = LOCAL_RECOVERY_PLACE_NOUNS[keyType]
+      || (place.council_districts?.length ? "council district"
+        : place.community_districts?.length ? "community district"
+          : place.boroughs?.length ? "borough" : "place");
+    return `We can’t filter these ${noun} to this ${placeNoun} yet.`;
+  };
+  const overviewCountedSection = ({ key, title, lens, records, emptyCoverage, measurable }) => {
+    if (dataState !== "ready") {
+      return { key, title, lens, count: null, records: [], coverage: emptyCoverage };
+    }
+    if (!measurable) {
+      return { key, title, lens, count: null, records: [], coverage: overviewUnknownCoverage(lens) };
+    }
+    return {
+      key,
+      title,
+      lens,
+      count: records.length,
+      records: records.slice(0, 3),
+      coverage: records.length ? null : emptyCoverage,
+    };
+  };
+  const recentMeasurable = recentLensNames.some((name) => overviewLensMeasurable(name));
   const overview = {
     state: isOverview ? dataState : "not_requested",
     sections: [
-      { key: "upcoming", title: "Upcoming", count: dataState === "ready" ? upcoming.length : null, records: upcoming.slice(0, 3), coverage: upcoming.length ? null : "No upcoming activity is recorded for this district in the retained sources.", lens: "meetings" },
-      { key: "recent-changes", title: "Recent changes", count: dataState === "ready" ? recent.length : null, records: recent.slice(0, 3), coverage: recent.length ? null : "No recent changes are recorded for this district in the retained sources.", lens: "land" },
-      { key: "board-activity", title: "Board activity", count: null, records: [], coverage: viewBoardCoverage(scope, options.communityGeography || {}), lens: "meetings" },
-      { key: "projects", title: "Projects", count: dataState === "ready" ? projects.length : null, records: projects.slice(0, 3), coverage: projects.length ? null : "No district projects are published in this digest.", lens: "land" },
+      overviewCountedSection({
+        key: "upcoming",
+        title: "Upcoming",
+        lens: "meetings",
+        records: upcoming,
+        emptyCoverage: "No upcoming activity is recorded for this district in the retained sources.",
+        measurable: overviewLensMeasurable("meetings"),
+      }),
+      overviewCountedSection({
+        key: "recent-changes",
+        title: "Recent changes",
+        lens: "land",
+        records: recent,
+        emptyCoverage: "No recent changes are recorded for this district in the retained sources.",
+        measurable: recentMeasurable,
+      }),
+      { key: "board-activity", title: "Board activity", count: null, records: [], coverage: viewBoardCoverage(scope, options.communityGeography || {}, { coveringCommunityDistrict }), lens: "meetings" },
+      overviewCountedSection({
+        key: "projects",
+        title: "Projects",
+        lens: "land",
+        records: projects,
+        emptyCoverage: "No district projects are published in this digest.",
+        measurable: overviewLensMeasurable("land"),
+      }),
       { key: "district-priorities", title: "District priorities", count: null, records: [], coverage: "District priorities are not published in this digest.", lens: "meetings" },
-      { key: "consultations", title: "Consultations", count: dataState === "ready" ? overviewAll.consultations.length : null, records: overviewAll.consultations.slice(0, 3), coverage: overviewAll.consultations.length ? null : "No consultations are recorded for this district in the retained sources.", lens: "consultations" },
+      overviewCountedSection({
+        key: "consultations",
+        title: "Consultations",
+        lens: "consultations",
+        records: overviewAll.consultations,
+        emptyCoverage: "No consultations are recorded for this district in the retained sources.",
+        measurable: overviewLensMeasurable("consultations"),
+      }),
     ],
   };
   const localFollowBundle = isOverview && scope.place.community_districts.length
@@ -875,8 +975,10 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
   // Wider-district previews are meetings-only enrichment from the overlapping
   // districts' own published slices. They stay a separate labeled section and
   // never enter the exact membership projection, exact ids, or exact count.
+  // Overview (no lens) also shows them so neighborhood entry keeps labeled
+  // broader board activity without inventing exact NTA meetings.
   let broaderDistrictSection = null;
-  if (lens === "meetings" && dataState === "ready" && options.broaderDistricts?.relations?.length) {
+  if ((lens === "meetings" || isOverview) && dataState === "ready" && options.broaderDistricts?.relations?.length) {
     const exactIdSet = new Set(resultIds.map(String));
     const relationsWithRecords = [];
     for (const relation of options.broaderDistricts.relations) {
@@ -892,11 +994,13 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       const candidateIds = Array.isArray(memberIds) && memberIds.length
         ? memberIds
         : Object.keys(lensRecords);
-      const rows = candidateIds
-        .map((id) => lensRecords[id])
-        .filter(Boolean)
-        .filter((record) => recordMatches(record, scope, activityRoot?.built_at))
-        .sort(recordSort)
+      const rows = orderNearYouSpecialPreview(
+        candidateIds
+          .map((id) => lensRecords[id])
+          .filter(Boolean)
+          .filter((record) => recordMatches(record, scope, activityRoot?.built_at)),
+        { now },
+      )
         .slice(0, BROADER_DISTRICT_PREVIEW_LIMIT)
         .map((record) => {
           // Broader previews are not exact for the selected neighborhood, so
@@ -951,17 +1055,35 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     basis,
     basisLabel: basisLayer?.basis_label || "Affected area or place of performance",
     hasPlace,
-    placePresentation: selectedPlacePresentation(scope, options.communityGeography || {}, {
-      geographyState,
-      geographyDefinitions: activity?.geography_items?.definitions || null,
-      geographyLabelIndex: options.geographyLabelIndex || null,
-      navigationLayerDoc: options.navigationLayerDoc || null,
-    }),
+    placePresentation: (() => {
+      const presentation = selectedPlacePresentation(scope, options.communityGeography || {}, {
+        geographyState,
+        geographyDefinitions: activity?.geography_items?.definitions || null,
+        geographyLabelIndex: options.geographyLabelIndex || null,
+        navigationLayerDoc: options.navigationLayerDoc || null,
+      });
+      // NTA overview may link the covering board without widening scope.place.
+      if (presentation.boardHref || !coveringCommunityDistrict) return presentation;
+      const board = boardPresentationForCommunityDistrict(
+        coveringCommunityDistrict,
+        options.communityGeography || {},
+      );
+      if (!board.boardHref) return presentation;
+      return {
+        ...presentation,
+        boardLabel: board.boardLabel,
+        boardRef: board.boardRef,
+        boardHref: board.boardHref,
+        coveringDistrictLabel: formatCommunityDistrict(coveringCommunityDistrict),
+      };
+    })(),
     isOverview,
     overview,
     localFollowBundle,
     lensLabel: LENS_LABELS[lens] || lens,
-    scopeSummary: scopeSummary(scope, lens, activity?.geography_items?.definitions),
+    scopeSummary: isOverview
+      ? scopeSummary(scope, lens, activity?.geography_items?.definitions).filter((chip) => chip.axis !== "lens")
+      : scopeSummary(scope, lens, activity?.geography_items?.definitions),
     geographyOptions: Object.values(activity?.geography_items?.definitions || {})
       .filter((definition) => ["nta2020", "police_precinct"].includes(definition.type))
       .filter((definition) => (activity?.geography_items?.by_key?.[definition.key]?.[lens] || []).length > 0)
@@ -1014,7 +1136,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
         surface: geographyState.surface || shellSurface,
         drawer: geographyState.drawer || null,
         focus: geographyState.focus || null,
-        lens,
+        ...(isOverview ? {} : { lens }),
       }, { base: scopeUrl });
     })(),
     canonicalBase,
@@ -1030,8 +1152,9 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       scope,
     ),
   };
-  view.allNyc = buildNearYouAllNycLink(view, { migratedSiteHref });
-  view.localRecovery = buildNearYouLocalRecovery(view, { membershipProjection });
+  view.allNyc = isOverview ? null : buildNearYouAllNycLink(view, { migratedSiteHref });
+  // Overview is the no-category summary; do not invent a meetings-unsupported recovery.
+  view.localRecovery = isOverview ? null : buildNearYouLocalRecovery(view, { membershipProjection });
   return view;
 }
 
@@ -1411,7 +1534,7 @@ function renderNearYouPlaceSuggestions(view) {
 /** Render the lower-priority record lists for the deferred Near-you artifact. */
 export function renderNearYouDeferredParts(view) {
   const resultCount = knownCount(view.results.count);
-  const localRecoveryHtml = renderNearYouLocalRecovery(view, "records");
+  const localRecoveryHtml = view.isOverview ? "" : renderNearYouLocalRecovery(view, "records");
   const visibleResults = view.results.records.slice(0, INITIAL_RECORD_LIMIT);
   const moreResults = view.results.records.length > INITIAL_RECORD_LIMIT && resultCount != null
     ? `<p class="near-results-more"><a href="${esc(view.browseHref)}">Open all ${resultCount} matching records</a></p>`
@@ -1419,18 +1542,32 @@ export function renderNearYouDeferredParts(view) {
   // The wider-district block renders first so its scope label is read before
   // any exact result, including the honest unavailable exact-coverage copy.
   const broaderHtml = renderNearYouBroaderDistrictsHtml(view.broader_districts);
+  const overviewHtml = renderNearYouOverview(view);
   // The requested scope failed while other sections loaded: its section is an
   // explicit failure with the scoped recovery, never an empty or zero result.
   const requestedFailed = view.dataState === "error";
+  const resultsHeading = view.isOverview
+    ? "Records for this place"
+    : resultCount == null
+      ? `Matching ${view.lensLabel} records`
+      : `${resultCount} ${view.lensLabel} records for these filters`;
+  // Overview still lists exact membership when it exists (community districts).
+  // Unfilterable neighborhood meetings stay out of the list; broader + overview
+  // sections carry the useful local activity instead.
+  const showOverviewExactResults = !view.isOverview || resultCount != null;
   const resultsHtml = `<section class="near-results" aria-labelledby="${broaderHtml ? "near-broader-districts-heading" : "near-results-heading"}"${resultCount == null ? "" : ` data-results-count="${resultCount}"`}${requestedFailed ? ` data-near-section-state="unavailable"` : ""}>
-      ${broaderHtml}<div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">${resultCount == null ? `Matching ${esc(view.lensLabel)} records` : `${resultCount} ${esc(view.lensLabel)} records for these filters`}</h2></div></div>
-      ${requestedFailed ? renderNearYouRecordsRecovery(view) : localRecoveryHtml || recordList(visibleResults, view.mapState === "unsupported"
-        ? `${view.lensLabel} records are not mapped here.`
-        : resultCount == null ? "Matching records are not available right now." : undefined, { now: view.now })}
-      ${moreResults}
+      ${broaderHtml}<div class="near-section-heading"><div><p class="near-kicker">${view.isOverview ? "Place activity" : "Matching records"}</p><h2 id="near-results-heading" tabindex="-1">${esc(resultsHeading)}</h2></div></div>
+      ${requestedFailed ? renderNearYouRecordsRecovery(view) : localRecoveryHtml || (showOverviewExactResults
+        ? recordList(visibleResults, view.mapState === "unsupported"
+          ? `${view.lensLabel} records are not mapped here.`
+          : resultCount == null ? "Matching records are not available right now." : undefined, { now: view.now })
+        : "")}
+      ${showOverviewExactResults ? moreResults : ""}
     </section>`;
   const bagsHtml = renderNearYouSpecialRecords(view, { position: view.hasPlace ? "after-results" : "entry" });
-  return { resultsHtml, bagsHtml };
+  // overviewHtml stays a sibling of results in the document; deferred payloads
+  // carry it so soft scope adoption can refresh the summary without About.
+  return { resultsHtml, bagsHtml, overviewHtml };
 }
 
 export function renderNearYouDeferredBody(view) {
@@ -1440,20 +1577,32 @@ export function renderNearYouDeferredBody(view) {
 }
 
 function renderNearYouDeferredResultsShell(view) {
+  const kicker = view.isOverview ? "Place activity" : "Matching records";
+  const heading = view.isOverview ? "Records for this place" : `Matching ${view.lensLabel} records`;
   if (view.dataState === "error") {
     return `<section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-near-deferred="results" data-near-deferred-state="error" aria-busy="false">
-      <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">Matching ${esc(view.lensLabel)} records</h2></div></div>
+      <div class="near-section-heading"><div><p class="near-kicker">${esc(kicker)}</p><h2 id="near-results-heading" tabindex="-1">${esc(heading)}</h2></div></div>
       ${renderNearYouRecordsRecovery(view)}
     </section>`;
   }
   return `<section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-near-deferred="results" data-near-deferred-state="pending" aria-busy="true">
-      <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">Matching ${esc(view.lensLabel)} records</h2></div></div>${renderNearYouLocalRecovery(view, "records")}
-      <p class="near-deferred-status" role="status" aria-live="polite">Loading matching records…</p>
+      <div class="near-section-heading"><div><p class="near-kicker">${esc(kicker)}</p><h2 id="near-results-heading" tabindex="-1">${esc(heading)}</h2></div></div>${view.isOverview ? "" : renderNearYouLocalRecovery(view, "records")}
+      <p class="near-deferred-status" role="status" aria-live="polite">${view.isOverview ? "Loading place activity…" : "Loading matching records…"}</p>
     </section>`;
 }
 
 function renderNearYouOverview(view) {
   if (!view.isOverview || !view.hasPlace) return "";
+  // Citywide / virtual / unlocated are collections. They keep no-lens records
+  // lists, but they are not a selected-neighborhood district overview — rendering
+  // overview cards there duplicates result rows and steals Back focus.
+  const place = view.scope?.place || {};
+  const hasNamedPlace = !!(place.boroughs?.length
+    || place.community_districts?.length
+    || place.council_districts?.length
+    || (place.geographies || []).length
+    || place.neighborhood);
+  if (!hasNamedPlace) return "";
   const lensScopeHref = (lens) => {
     const scope = normalizeScope({ ...view.scope, facets: { ...view.scope.facets, domains: [lens] } });
     return nearYouUrlFromScope(scope, { base: view.canonicalBase });
@@ -1727,7 +1876,7 @@ export function renderNearYouBody(view) {
   const selectedSecondary = view.hasPlace ? `<details class="near-selected-context">
       <summary>About this place</summary>
       <p>${view.isOverview ? "See this place summary. Then choose records to explore." : `${esc(view.lensLabel)} and public records linked to this place.`}</p>
-      <ul class="near-scope" aria-label="Active filters"><li data-scope-axis="topic"><span>Topic: ${esc(view.lensLabel)}</span></li>${scopeChips}</ul>
+      <ul class="near-scope" aria-label="Active filters">${view.isOverview ? "" : `<li data-scope-axis="topic"><span>Topic: ${esc(view.lensLabel)}</span></li>`}${scopeChips}</ul>
       <div class="near-map-secondary" role="group" aria-label="Follow or share">
       <span class="near-map-secondary-label">Follow or share</span>
       <nav class="near-actions" aria-label="Map actions">
@@ -1737,10 +1886,11 @@ export function renderNearYouBody(view) {
       </nav>
       ${renderFollowDiscoveryForNearYou(view)}
       </div>
-      ${renderNearYouOverview(view)}
       <details class="near-explore"><summary>Explore related records</summary>${walkEntry}</details>
       ${renderLocalConstellationHTML(view.local_constellation, { heading: "Nearby place records", id: "place-local-constellation-heading" })}
     </details>` : "";
+  // Overview is a direct child so flex order and no-JS both expose it; About stays secondary.
+  const overviewBlock = renderNearYouOverview(view);
   const unselectedEntry = view.hasPlace ? "" : renderGeographyShellEntry({
     canonicalBase: view.shareHref || view.canonicalBase || "/near-you/",
     surface: shellSurface,
@@ -1761,13 +1911,13 @@ export function renderNearYouBody(view) {
       recordsCount: knownCount(view.results.count),
       geo: view.geographyState?.geo || view.overlapModel?.selected?.key?.replace(/^geography:/, "") || null,
       compare: view.geographyState?.compare || null,
-      lens: view.lens,
+      lens: view.isOverview ? null : view.lens,
       drawer: view.geographyState?.drawer || null,
       focus: view.geographyState?.focus || null,
     })
     : "";
   // Unselected entry already includes the surface switch; selected routes add one here.
-  return `<main id="main" data-near-you-root data-geography-shell="map-first" data-near-surface="${esc(shellSurface)}" data-geography-layer="${esc(view.activeGeographyLayer || "nta2020")}" data-lens="${esc(view.lens)}" data-level="${esc(view.level)}"
+  return `<main id="main" data-near-you-root data-geography-shell="map-first" data-near-surface="${esc(shellSurface)}" data-geography-layer="${esc(view.activeGeographyLayer || "nta2020")}" data-lens="${esc(view.isOverview ? "" : view.lens)}" data-level="${esc(view.level)}"
     data-near-data-state="${esc(view.dataState)}" data-near-geometry-state="${esc(view.geometryState || "missing")}" data-near-map-state="${esc(view.mapState)}" data-near-recovery-href="${esc(view.recoveryHref)}"
     data-near-deferred-href="${esc(view.deferredDataHref || "")}" data-near-deferred-state="${esc(view.dataState === "error" ? "error" : "pending")}"
     data-message-updating="Updating the map…"
@@ -1791,6 +1941,7 @@ export function renderNearYouBody(view) {
     ${unselectedEntry}
     ${view.hasPlace ? "" : `${renderNearYouSpecialRecords(view, { position: "entry", shell: true })}${renderNearYouPlaceSuggestions(view)}`}
     ${surfaceSwitch}
+    ${overviewBlock}
     ${renderNearYouGeoWorkspace(view)}
     ${selectedSecondary}
     ${recordsBlock}

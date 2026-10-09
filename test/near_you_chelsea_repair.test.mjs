@@ -1,11 +1,15 @@
 /**
- * Neighborhood category coverage from each lens's own evidence (cd64c975cc55e).
+ * Neighborhood category coverage (cd64c975cc55e) and no-lens overview
+ * (c90e4a1c5038a) for Chelsea-Hudson Yards.
  *
- * Chelsea-Hudson Yards (MN0401) previously looked "unsupported" for meetings
- * because Land-only NTA bags omitted every empty non-Land key, while a sibling
- * NTA that had any non-Land hit received fabricated empty arrays. Coverage must
- * stay independent per lens: measured membership, measured empty, and absent
- * coverage remain distinct, and an unrelated lens must not change another.
+ * Coverage: Chelsea previously looked "unsupported" for meetings because
+ * Land-only NTA bags omitted every empty non-Land key, while a sibling NTA that
+ * had any non-Land hit received fabricated empty arrays. Coverage must stay
+ * independent per lens.
+ *
+ * Overview: a no-lens NTA selection must open a useful place summary with local
+ * Zoning, labeled broader district meetings or the board calendar, current-clock
+ * upcoming prioritization, and map/records links that keep overview intent.
  *
  * Verifier: node --test test/near_you_chelsea_repair.test.mjs
  */
@@ -21,9 +25,11 @@ import { scopeFromNearYouUrl } from "../site/near_you_scope_runtime.mjs";
 import {
   buildNearYouViewModel,
   renderNearYouDeferredParts,
+  renderNearYouDocument,
 } from "../site/near_you_view.mjs";
 import {
   buildNearYou,
+  broaderDistrictsFromCommittedArtifacts,
   placeCoverageState,
   residentialPlacesFromNtaLayer,
 } from "../tools/build_worker_route_read_models.mjs";
@@ -35,6 +41,7 @@ import {
   nearYouLensesForRequest,
   NEAR_YOU_ACTIVITY_LENSES,
 } from "../worker/src/lib/route_read_model_kv.mjs";
+import { MILLISECONDS_PER_DAY, withPinnedClock } from "./helpers/test_clock.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const readJson = (rel) => JSON.parse(readFileSync(join(ROOT, rel), "utf8"));
@@ -57,8 +64,48 @@ function boundaries() {
   return readJson("site/data/district_boundaries.json");
 }
 
+function communityGeography() {
+  return readJson("site/data/community_board_geography_lookup.json");
+}
+
 function nearYouScope(query) {
   return scopeFromNearYouUrl(`https://cityscroll.org/near-you/?${query}`);
+}
+
+function chelseaBroaderDistricts(activity = committedActivity()) {
+  const relations = broaderDistrictsFromCommittedArtifacts()[CHELSEA] || [];
+  const slices = {};
+  for (const relation of relations) {
+    const memberIds = activity.district_items?.by_level?.community_district?.[relation.id]?.meetings || [];
+    slices[relation.key] = {
+      records: {
+        meetings: Object.fromEntries(
+          memberIds.map((id) => [id, activity.records.meetings[id]]).filter(([, row]) => row),
+        ),
+      },
+      district_items: {
+        by_level: {
+          community_district: {
+            [relation.id]: { meetings: memberIds },
+          },
+        },
+      },
+    };
+  }
+  return { relations, slices };
+}
+
+function chelseaOverviewView(query, options = {}) {
+  const activity = options.activity || committedActivity();
+  return buildNearYouViewModel(nearYouScope(query), activity, boundaries(), {
+    canonicalBase: "https://cityscroll.org/near-you",
+    communityGeography: communityGeography(),
+    broaderDistricts: options.broaderDistricts === undefined
+      ? chelseaBroaderDistricts(activity)
+      : options.broaderDistricts,
+    now: options.now,
+    dataState: options.dataState,
+  });
 }
 
 function lensBag(activity, key) {
@@ -389,4 +436,221 @@ test("A3 failure-3: multi-lens coverage merge keeps Zoning when Meetings metadat
   assert.equal(poisoned.by_lens.land.status, "unavailable");
   assert.equal(poisoned.by_lens.land.reason, "slice_coverage_conflict");
   assert.deepEqual(poisoned.by_lens.meetings, meetings.geography_items.coverage.by_lens.meetings);
+});
+
+test("overview A1: no-lens Chelsea exposes Zoning, broader M04, and the board calendar", () => {
+  const view = chelseaOverviewView("geo=nta2020:MN0401&surface=records", {
+    now: "2026-09-01T12:00:00.000Z",
+  });
+  assert.equal(view.isOverview, true);
+  assert.equal(view.overview.state, "ready");
+  assert.equal(view.localRecovery, null);
+  assert.equal(view.scope.place.geographies[0], CHELSEA);
+  assert.deepEqual(view.scope.place.community_districts, [], "selected place must stay exact NTA");
+
+  const projects = view.overview.sections.find((section) => section.key === "projects");
+  assert.ok(projects.count > 0, "local Zoning / projects must be discoverable");
+  assert.ok(projects.records.length > 0);
+
+  const board = view.overview.sections.find((section) => section.key === "board-activity");
+  assert.match(board.coverage, /overlapping community district|named Community Board/i);
+  assert.ok(view.placePresentation.boardHref, "covering board calendar link");
+  assert.match(view.placePresentation.boardHref, /manhattan-cb-04/);
+
+  assert.ok(view.broader_districts?.districts?.some((row) => row.id === "M04"));
+  assert.ok((view.broader_districts.districts.find((row) => row.id === "M04").records || []).length > 0);
+
+  const html = renderNearYouDocument(view);
+  assert.match(html, /data-near-overview="true"/);
+  assert.doesNotMatch(html, /<details class="near-selected-context">[\s\S]*data-near-overview="true"/);
+  assert.match(html, /Chelsea-Hudson Yards/);
+  assert.match(html, /Open Zoning|Projects/i);
+  // Meetings stay unknown in the overview section; that is not a local-recovery banner.
+  assert.match(html, /id="near-overview-upcoming"[\s\S]*We can’t filter these meetings to this neighborhood yet/);
+  assert.doesNotMatch(html, /data-near-local-recovery=/);
+  assert.doesNotMatch(html, /All NYC meetings/);
+
+  const continuation = view.overlapModel?.continuation?.href || "";
+  assert.match(continuation, /surface=records/);
+  assert.doesNotMatch(continuation, /lens=meetings/);
+  assert.doesNotMatch(view.shareHref, /lens=/);
+});
+
+test("overview review-1: absent Meetings stay unknown while ready Land stays positive; measured empty is zero", () => {
+  const view = chelseaOverviewView("geo=nta2020:MN0401&surface=records", {
+    now: "2026-09-01T12:00:00.000Z",
+  });
+  const upcoming = view.overview.sections.find((section) => section.key === "upcoming");
+  const projects = view.overview.sections.find((section) => section.key === "projects");
+  const consultations = view.overview.sections.find((section) => section.key === "consultations");
+
+  assert.equal(
+    geographyRecordProjection(committedActivity(), { key: CHELSEA, lens: "meetings" }).state,
+    "unfilterable",
+  );
+  assert.equal(upcoming.count, null, "unfilterable Meetings must not become overview zero");
+  assert.equal(upcoming.records.length, 0);
+  assert.match(upcoming.coverage || "", /can’t filter these meetings/i);
+  assert.doesNotMatch(upcoming.coverage || "", /No upcoming activity/);
+
+  assert.ok(projects.count > 0, "ready Land / projects must stay positive");
+  assert.ok(projects.records.length > 0);
+
+  assert.equal(consultations.count, null, "absent consultations stay unknown");
+  assert.match(consultations.coverage || "", /can’t filter these consultations/i);
+  assert.doesNotMatch(consultations.coverage || "", /No consultations are recorded/);
+
+  // Measured-empty control: an explicit empty meetings array remains zero.
+  const measured = structuredClone(committedActivity());
+  measured.geography_items.by_key[CHELSEA] = {
+    ...measured.geography_items.by_key[CHELSEA],
+    meetings: [],
+  };
+  const zeroView = chelseaOverviewView("geo=nta2020:MN0401&surface=records", {
+    activity: measured,
+    now: "2026-09-01T12:00:00.000Z",
+    broaderDistricts: chelseaBroaderDistricts(measured),
+  });
+  const zeroUpcoming = zeroView.overview.sections.find((section) => section.key === "upcoming");
+  assert.equal(
+    geographyRecordProjection(measured, { key: CHELSEA, lens: "meetings" }).state,
+    "zero",
+  );
+  assert.equal(zeroUpcoming.count, 0);
+  assert.match(zeroUpcoming.coverage || "", /No upcoming activity/);
+  assert.doesNotMatch(zeroUpcoming.coverage || "", /can’t filter these meetings/i);
+});
+
+test("overview A2: explicit meetings stays meetings; another NTA and zero stay scoped", () => {
+  const meetings = chelseaOverviewView("geo=nta2020:MN0401&lens=meetings&surface=records");
+  assert.equal(meetings.isOverview, false);
+  assert.equal(meetings.lens, "meetings");
+  assert.equal(meetings.overview.state, "not_requested");
+  assert.equal(meetings.localRecovery?.state, "unsupported");
+
+  const hk = chelseaOverviewView("geo=nta2020:MN0402&surface=records", {
+    broaderDistricts: {
+      relations: broaderDistrictsFromCommittedArtifacts()[HELLS_KITCHEN] || [],
+      slices: {},
+    },
+  });
+  assert.equal(hk.isOverview, true);
+  assert.equal(hk.scope.place.geographies[0], HELLS_KITCHEN);
+  assert.deepEqual(hk.scope.place.community_districts, []);
+  assert.doesNotMatch(hk.placePresentation.label || "", /Chelsea/);
+  // Hell's Kitchen exact meetings stay available; Chelsea unfilterable copy does not appear.
+  assert.equal(hk.localRecovery, null);
+  const hkHtml = renderNearYouDocument(hk);
+  assert.doesNotMatch(hkHtml, /We can’t filter these meetings to this neighborhood yet/);
+
+  const zeroActivity = structuredClone(committedActivity());
+  zeroActivity.geography_items.by_key[CHELSEA] = {
+    ...zeroActivity.geography_items.by_key[CHELSEA],
+    land: [],
+  };
+  const zeroView = chelseaOverviewView("geo=nta2020:MN0401&lens=land&surface=records", {
+    activity: zeroActivity,
+  });
+  assert.equal(zeroView.isOverview, false);
+  assert.equal(zeroView.results.count, 0);
+  assert.equal(zeroView.localRecovery?.state, "zero");
+});
+
+test("overview A3: upcoming uses the resident clock, not artifact built_at", async () => {
+  const activity = committedActivity();
+  const builtAt = Date.parse(activity.built_at);
+  assert.ok(Number.isFinite(builtAt));
+
+  // Clock after built_at; seed a meeting strictly between them so built_at would
+  // still call it upcoming while the resident clock marks it past. Add two
+  // later meetings to prove ascending order and the three-record preview cap.
+  const betweenId = "meeting:chelsea-overview-between-control";
+  const futureA = "meeting:chelsea-overview-future-a";
+  const futureB = "meeting:chelsea-overview-future-b";
+  const futureC = "meeting:chelsea-overview-future-c";
+  const futureD = "meeting:chelsea-overview-future-d";
+  const clockMs = builtAt + (12 * MILLISECONDS_PER_DAY);
+  const clock = new Date(clockMs).toISOString();
+  const betweenDate = new Date(builtAt + (5 * MILLISECONDS_PER_DAY)).toISOString();
+  const futureDates = [1, 2, 3, 4].map((n) => new Date(clockMs + n * MILLISECONDS_PER_DAY).toISOString());
+  activity.geography_items.by_key[CHELSEA] = {
+    ...activity.geography_items.by_key[CHELSEA],
+    meetings: [betweenId, futureA, futureB, futureC, futureD],
+  };
+  const meeting = (id, title, date) => ({
+    id,
+    title,
+    date,
+    agency: "Manhattan Community Board 4",
+    type: "Meeting",
+    route: `/meetings/${id.replace(/^meeting:/, "")}/`,
+  });
+  activity.records.meetings[betweenId] = meeting(betweenId, "Between built_at and clock", betweenDate);
+  activity.records.meetings[futureA] = meeting(futureA, "Future Chelsea A", futureDates[0]);
+  activity.records.meetings[futureB] = meeting(futureB, "Future Chelsea B", futureDates[1]);
+  activity.records.meetings[futureC] = meeting(futureC, "Future Chelsea C", futureDates[2]);
+  activity.records.meetings[futureD] = meeting(futureD, "Future Chelsea D", futureDates[3]);
+
+  assert.ok(Date.parse(betweenDate) > builtAt, "control date must be after built_at");
+  assert.ok(Date.parse(betweenDate) < clockMs, "control date must be before resident clock");
+
+  await withPinnedClock(clock, () => {
+    const view = chelseaOverviewView("geo=nta2020:MN0401&surface=records", {
+      activity,
+      now: clock,
+      broaderDistricts: chelseaBroaderDistricts(activity),
+    });
+    const upcoming = view.overview.sections.find((section) => section.key === "upcoming");
+    assert.equal(upcoming.records.some((row) => row.id === betweenId), false,
+      "resident clock must drop the between-built_at meeting");
+    assert.equal(upcoming.count, 4);
+    assert.equal(upcoming.records.length, 3, "overview upcoming preview stays capped at 3");
+    assert.deepEqual(
+      upcoming.records.map((row) => row.id),
+      [futureA, futureB, futureC],
+      "upcoming preview keeps ascending date order and drops the 4th future",
+    );
+  });
+
+  // Positive control: the same fixture under artifact built_at keeps the between
+  // meeting as upcoming — proving the old clock would have failed this case.
+  await withPinnedClock(activity.built_at, () => {
+    const builtAtView = chelseaOverviewView("geo=nta2020:MN0401&surface=records", {
+      activity,
+      now: activity.built_at,
+      broaderDistricts: chelseaBroaderDistricts(activity),
+    });
+    const builtAtUpcoming = builtAtView.overview.sections.find((section) => section.key === "upcoming");
+    assert.equal(
+      builtAtUpcoming.records.some((row) => row.id === betweenId),
+      true,
+      "built_at clock must still treat the between meeting as upcoming",
+    );
+    assert.equal(
+      builtAtUpcoming.records.some((row) => row.id === futureA),
+      true,
+    );
+  });
+
+  // Broader M04 previews also prioritize current-clock upcoming first.
+  const broaderView = chelseaOverviewView("geo=nta2020:MN0401&surface=records", {
+    now: "2026-09-01T12:00:00.000Z",
+  });
+  const m04 = broaderView.broader_districts?.districts?.find((row) => row.id === "M04");
+  assert.ok(m04?.records?.length);
+  const dates = m04.records.map((row) => Date.parse(row.date || ""));
+  assert.ok(dates.every(Number.isFinite));
+});
+
+test("overview A3: deferred parts carry overview HTML and scoped category links", () => {
+  const view = chelseaOverviewView("geo=nta2020:MN0401&surface=records", {
+    now: "2026-09-01T12:00:00.000Z",
+  });
+  const parts = renderNearYouDeferredParts(view);
+  assert.match(parts.overviewHtml, /data-near-overview="true"/);
+  assert.match(parts.overviewHtml, /lens=land/);
+  assert.match(parts.resultsHtml, /data-broader-district="M04"|Wider district activity/);
+  assert.doesNotMatch(parts.resultsHtml, /We can’t filter these meetings/);
+  // Explicit section drill-downs may add a lens; the no-lens continuation must not.
+  assert.doesNotMatch(view.overlapModel.continuation.href, /lens=/);
 });

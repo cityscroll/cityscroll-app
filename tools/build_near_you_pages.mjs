@@ -111,6 +111,9 @@ function buildDocuments() {
         href: `${publicPath}deferred.json`,
         results_html: deferredParts.resultsHtml,
         bags_html: deferredParts.bagsHtml,
+        // Always emit overview_html (including "") so soft overview→lens
+        // transitions remove a stale .near-overview instead of leaving it.
+        overview_html: deferredParts.overviewHtml || "",
       })}\n`,
     };
   });

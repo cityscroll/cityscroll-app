@@ -3446,11 +3446,11 @@
       },
       {
         "path": "worker/src/near_you.mjs",
-        "sha256": "e87b322b835d377a9bebb31d819855afe98d8c7985ed288882fa1567fef9dc11"
+        "sha256": "37239fae176463de3e71ab7c644d22ba1467e2aaba1871f3b53e4723ccc16d73"
       },
       {
         "path": "site/near_you_view.mjs",
-        "sha256": "cddfb80e81b4295d2108b912cb7ff1f387555875de6ba78b0e2462825473a819"
+        "sha256": "b932cc0ef8b8a9f5ed0fee5f984700c563a2acbc836eae71b66cecc459762e00"
       },
       {
         "path": "site/app/map.mjs",

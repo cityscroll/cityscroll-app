@@ -434,7 +434,10 @@ def check_typed_entries(browser: Browser, base: str, viewport: tuple[str, int, i
         assert after["heading"] == "Midwood", after
         assert "drawer" not in query(after["url"]) and "focus" not in query(after["url"]), after["url"]
         results_heading = page.locator("#near-results-heading")
-        assert results_heading.is_visible() and "Meetings" in results_heading.inner_text()
+        # No-lens typed place opens the overview; Meetings stay reachable as records.
+        assert results_heading.is_visible() and "Records for this place" in results_heading.inner_text()
+        assert page.locator('[data-near-overview="true"]').count() == 1
+        assert page.locator('[data-near-you-root]').get_attribute("data-lens") == ""
         switch = page.locator("[data-near-surface-switch]").first
         assert switch.locator('[data-near-surface="map"]').is_visible(), "Map switch hidden"
         assert switch.locator('[data-near-surface="records"]').get_attribute("aria-current") == "true"
@@ -492,8 +495,8 @@ def check_record_return(journey: Journey, *, name: str) -> dict:
         timeout=15_000,
     )
     returned = page.evaluate(RETURN_STATE_JS, SEPT23_CARD)
-    assert returned["heading"] == "Midwood" and "Meetings" in returned["results_heading"], returned
-    assert returned["surface"] == "records" and returned["lens"] == "meetings", returned
+    assert returned["heading"] == "Midwood" and "Records for this place" in returned["results_heading"], returned
+    assert returned["surface"] == "records" and not returned["lens"], returned
     assert "near-record-full-record" in returned["focus_class"], returned
     # Positive control: the same checker refuses the page once focus leaves the card.
     page.evaluate("() => document.activeElement?.blur()")

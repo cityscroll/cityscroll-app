@@ -329,15 +329,21 @@ test("A1 [outcome] typed Midwood and subject addresses open their Records; Septe
     const html = await response.text();
     assert.match(html, /data-near-you-root[^>]*data-near-surface="records"/);
     assert.match(html, /<h1>Midwood<\/h1>/);
-    assert.match(html, /data-lens="meetings"/);
+    // No category means the place overview: keep the lens empty instead of
+    // injecting meetings.
+    assert.match(html, /data-lens=""/);
+    assert.match(html, /data-near-overview="true"/);
     assert.match(html, /data-near-surface="map"[^>]*>Map<\/a>/);
 
     const deferredUrl = new URL(href);
     deferredUrl.pathname = "/near-you/deferred.json";
     const deferred = await (await handleNearYou(new Request(deferredUrl), env)).json();
-    assert.match(deferred.results_html, /Meetings records/);
-    const card = recordCard(deferred.results_html, SEPT23_ID);
-    assert.ok(card, "September 23 meeting is in Midwood's Records");
+    assert.match(deferred.overview_html || "", /data-near-overview="true"/);
+    const card = recordCard(
+      `${deferred.overview_html || ""}${deferred.results_html || ""}`,
+      SEPT23_ID,
+    );
+    assert.ok(card, "September 23 meeting is in Midwood's place overview or records");
     assert.match(card, /data-record-timing="past"/);
     assert.match(card, /810 East 16th Street, Brooklyn, NY 11230/);
     assert.match(card, new RegExp(`href="[^"]*${escapeRegExp(SEPT23_DETAIL)}"`));

@@ -126,10 +126,36 @@ test("A4: explicit lens, place, role, time, list, map, share, and watch URLs ret
 test("A5: overview previews link to records, and board membership is not board action", () => {
   const view = buildNearYouViewModel(scope, activity, boundaries, { communityGeography: geography });
   const html = renderNearYouDocument(view);
-  const overview = html.match(/<section class="near-overview"[\s\S]*?<\/section>\s*<details/)?.[0] || "";
+  const overviewAttr = html.indexOf('data-near-overview="true"');
+  assert.ok(overviewAttr > 0);
+  // Overview nests per-section <section> children; balance tags from the outer open.
+  const overviewOpen = html.lastIndexOf("<section", overviewAttr);
+  let depth = 0;
+  let cursor = overviewOpen;
+  let overviewClose = -1;
+  while (cursor < html.length) {
+    if (html.startsWith("<section", cursor)) {
+      depth += 1;
+      cursor += 8;
+      continue;
+    }
+    if (html.startsWith("</section>", cursor)) {
+      depth -= 1;
+      if (depth === 0) {
+        overviewClose = cursor + "</section>".length;
+        break;
+      }
+      cursor += "</section>".length;
+      continue;
+    }
+    cursor += 1;
+  }
+  assert.ok(overviewClose > overviewOpen, "overview section must close");
+  const overview = html.slice(overviewOpen, overviewClose);
   assert.doesNotMatch(overview, /href="\/projects\//);
   assert.match(overview, /Open the named Community Board/);
   assert.match(overview, /District membership does not imply board action/);
+  assert.doesNotMatch(html, /<details class="near-selected-context">[\s\S]*data-near-overview="true"/);
 });
 
 test("A6: desktop, 390px, keyboard, focus, no-JavaScript, and translated fixtures keep both destinations", () => {

@@ -217,6 +217,9 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
       ...(routeReadModel.sections ? { sections: sectionEnvelope(routeReadModel.sections, view) } : {}),
       results_html: deferredParts.resultsHtml,
       bags_html: deferredParts.bagsHtml,
+      // Always emit overview_html (including "") so soft overview→lens
+      // transitions remove a stale .near-overview instead of leaving it.
+      overview_html: deferredParts.overviewHtml || "",
     })
     : renderNearYouDocument(view, {
       canonicalBase: CANONICAL_BASE,
