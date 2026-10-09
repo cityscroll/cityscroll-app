@@ -20,3 +20,4 @@ docs/evidence/near-you-shell-readback/delivery.json
 # Twitter/X profile links. These files are publisher civic notice material.
 site/data/meeting_notice_materialization.json
 site/data/shared_meeting_read_model.json
+site/data/shared_meeting_read_model/**
