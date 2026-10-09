@@ -1,5 +1,5 @@
 import { matterPermalink } from "../matter_permalink.mjs";
-import { loadSharedMeetingReadModelDocument } from "../shared_meeting_read_model_shards.mjs";
+import { loadMeetingSnapshotOrNull } from "../meeting_snapshot_client.mjs";
 
 // Initialize direct-manipulation controls.
 $("#nlgo").addEventListener("click", nlTranslate);
@@ -292,10 +292,7 @@ async function residentNoticeById(noticeId){
       fetch("data/money_resident_snapshot.json",{cache:"force-cache",credentials:"omit"}).then(r=>r.ok?r.json():null),
       fetch("data/rules_domain_observations.json",{cache:"force-cache",credentials:"omit"}).then(r=>r.ok?r.json():null),
       fetch("data/property_domain_observations.json",{cache:"force-cache",credentials:"omit"}).then(r=>r.ok?r.json():null),
-      loadSharedMeetingReadModelDocument("data/shared_meeting_read_model.json",async(u)=>{
-        const r=await fetch(u,{cache:"force-cache",credentials:"omit"});
-        return r.ok?r.json():null;
-      }),
+      loadMeetingSnapshotOrNull("data/shared_meeting_read_model.json"),
       fetch("data/staffing_default_hires.json",{cache:"force-cache",credentials:"omit"}).then(r=>r.ok?r.json():null),
     ]);
     const [moneySnapshot,rulesSnapshot,propertySnapshot,meetingSnapshot,staffingSnapshot]=payloads;

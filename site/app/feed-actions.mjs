@@ -38,7 +38,7 @@ import {
   landParticipationStepsMissingKey,
   normalizeLandUseActionType,
 } from "../land_use_action_type.mjs";
-import { loadSharedMeetingReadModelDocument } from "../shared_meeting_read_model_shards.mjs";
+import { loadMeetingSnapshot } from "../meeting_snapshot_client.mjs";
 import {
   buildMeetingGroupingReportTarget,
   renderReportIssueAffordance,
@@ -139,13 +139,7 @@ function loadPropertyView(){
 }
 function loadMeetingView(){
   if(!meetingViewPromise){
-    meetingViewPromise=loadSharedMeetingReadModelDocument(MEETINGS_SNAPSHOT_URL,async(u)=>{
-      const r=await fetch(u,{credentials:"omit"});
-      return r.ok?r.json():null;
-    }).then(payload=>{
-      if(!payload) return Promise.reject(new Error("snapshot-unavailable"));
-      return payload;
-    });
+    meetingViewPromise=loadMeetingSnapshot(MEETINGS_SNAPSHOT_URL);
   }
   return meetingViewPromise;
 }

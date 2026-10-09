@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, readFileSync, rmSync, statSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import test from "node:test";
 
 import {
@@ -13,7 +13,7 @@ import {
 } from "../site/shared_meeting_read_model_shards.mjs";
 import {
   readSharedMeetingReadModelDocument,
-  writeSharedMeetingReadModelDocument,
+  sharedMeetingReadModelOutputPairs,
 } from "../tools/lib/shared_meeting_read_model_io.mjs";
 import { PAGES_FILE_HEADROOM_BYTES } from "../tools/check_pages_bundle_sizes.mjs";
 
@@ -72,9 +72,13 @@ test("disk write and read round-trip through the index", () => {
       rows: Array.from({ length: 8 }, (_, index) => meetingRow(`meeting:${index}`, 2048)),
       hearings: Array.from({ length: 8 }, (_, index) => meetingRow(`meeting:${index}`, 2048)),
     };
-    const artifacts = writeSharedMeetingReadModelDocument(indexPath, model, {
+    const { artifacts, outputs } = sharedMeetingReadModelOutputPairs(indexPath, model, {
       maxShardBytes: 16 * 1024,
     });
+    for (const [path, body] of outputs) {
+      mkdirSync(dirname(path), { recursive: true });
+      writeFileSync(path, body);
+    }
     assert.ok(artifacts.manifest.shards.length > 1);
     assert.ok(isShardedSharedMeetingReadModel(JSON.parse(readFileSync(indexPath, "utf8"))));
     assert.ok(statSync(indexPath).size < 8 * 1024);

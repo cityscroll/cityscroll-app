@@ -67,12 +67,12 @@
       "unit_id": "public-meetings",
       "first_class_artifact_id": "shared-meetings",
       "artifact_path": "site/data/shared_meeting_read_model.json",
-      "population_field": "rows",
+      "population_field": null,
       "vintage_field": "sources.city_record.generated_at",
       "vintage_basis": "single",
-      "state": "measured",
+      "state": "retained",
       "value": 840,
-      "reason": null
+      "reason": "population_unresolved"
     },
     {
       "unit_id": "oath-trial-sessions",
@@ -630,12 +630,6 @@
       "reason": "Declared source of a counted served population.",
       "evidence": {
         "units": [
-          {
-            "unit_id": "public-meetings",
-            "route": "/browse/meetings/",
-            "served_records": 840,
-            "evidence_vintage": "2026-10-05T17:33:11.875Z"
-          },
           {
             "unit_id": "properties",
             "route": "/browse/property/",
