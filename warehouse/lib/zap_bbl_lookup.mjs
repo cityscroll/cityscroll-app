@@ -13,9 +13,21 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { catalogExists, getDataset, WAREHOUSE_DIR } from "./catalog.mjs";
 import { queryWarehouse } from "./query.mjs";
+import {
+  SERVE_LOOKUP_CONTRACTS,
+  servePublishFindings,
+} from "./serve_publish_contract.mjs";
 import { ZAP_SELL_FACING_STATUSES } from "./zap_lookup.mjs";
 
 export const ZAP_BBL_DATASET_KEY = "zap-bbl";
+/** Refuse seed-sized snapshots that would collapse Land place membership. */
+export const ZAP_BBL_MIN_PROJECT_COUNT = 1000;
+/** Refuse tiny BBL tables that cannot cover the admitted Land catalog. */
+export const ZAP_BBL_MIN_BBL_ROW_COUNT = 5000;
+export const ZAP_BBL_FULL_CATALOG_MODES = Object.freeze(["bulk_warehouse"]);
+export const ZAP_BBL_CANARIES = Object.freeze(
+  SERVE_LOOKUP_CONTRACTS.zap_bbl.canaries.map((canary) => canary.value),
+);
 
 /** Columns used by fetchBbls / land tax-lot side path. */
 export const ZAP_BBL_SELECT_COLS = [
@@ -331,6 +343,79 @@ export function buildBblMaterializationDoc(projectRows, opts = {}) {
     },
     rows: list,
   };
+}
+
+/**
+ * True when a ZAP BBL serve is a full warehouse catalog, not a verified seed.
+ * Seed-sized rematerializations (mode=verified_seed, ~9 projects) must never
+ * replace a committed bulk catalog: Land place membership joins through this
+ * index and collapses to absent_from_index when the seed wins.
+ */
+export function isZapBblFullCatalog(doc) {
+  const mode = String(doc?.mode || "");
+  const projectCount = Number.isFinite(Number(doc?.project_count))
+    ? Number(doc.project_count)
+    : Array.isArray(doc?.rows)
+      ? doc.rows.length
+      : 0;
+  const bblRowCount = Number.isFinite(Number(doc?.bbl_row_count))
+    ? Number(doc.bbl_row_count)
+    : Array.isArray(doc?.rows)
+      ? doc.rows.reduce((n, row) => n + (Array.isArray(row?.bbls) ? row.bbls.length : 0), 0)
+      : 0;
+  return (
+    ZAP_BBL_FULL_CATALOG_MODES.includes(mode)
+    && projectCount >= ZAP_BBL_MIN_PROJECT_COUNT
+    && bblRowCount >= ZAP_BBL_MIN_BBL_ROW_COUNT
+  );
+}
+
+/**
+ * Age/population/canary gate for the committed WH-06 ZAP BBL serve lookup.
+ * Blocks verified_seed and other sub-floor rematerializations from publishing.
+ *
+ * @param {object} doc
+ * @param {{ now?: Date|string|number }} [opts]
+ * @returns {string[]}
+ */
+export function zapBblServeGateFindings(doc, opts = {}) {
+  const findings = servePublishFindings(doc, SERVE_LOOKUP_CONTRACTS.zap_bbl, opts);
+  const rows = Array.isArray(doc?.rows) ? doc.rows : [];
+  const projectCount = Number.isFinite(Number(doc?.project_count))
+    ? Number(doc.project_count)
+    : rows.length;
+  const bblRowCount = Number.isFinite(Number(doc?.bbl_row_count))
+    ? Number(doc.bbl_row_count)
+    : rows.reduce((n, row) => n + (Array.isArray(row?.bbls) ? row.bbls.length : 0), 0);
+  const mode = String(doc?.mode || "");
+
+  if (mode === "verified_seed" || projectCount === 0) {
+    findings.push(
+      `ZAP BBL serve is verified_seed/empty (project_count=${projectCount}); rebuild via warehouse catalog or --all`,
+    );
+  }
+  if (projectCount < ZAP_BBL_MIN_PROJECT_COUNT) {
+    findings.push(
+      `ZAP BBL serve project_count ${projectCount} below floor ${ZAP_BBL_MIN_PROJECT_COUNT}`,
+    );
+  }
+  if (bblRowCount < ZAP_BBL_MIN_BBL_ROW_COUNT) {
+    findings.push(
+      `ZAP BBL serve bbl_row_count ${bblRowCount} below floor ${ZAP_BBL_MIN_BBL_ROW_COUNT}`,
+    );
+  }
+  if (!ZAP_BBL_FULL_CATALOG_MODES.includes(mode) && projectCount >= ZAP_BBL_MIN_PROJECT_COUNT) {
+    findings.push(
+      `ZAP BBL serve mode ${JSON.stringify(mode)} is not a full-catalog mode (${ZAP_BBL_FULL_CATALOG_MODES.join("|")})`,
+    );
+  }
+  return findings;
+}
+
+export function assertZapBblServeGate(doc, opts = {}) {
+  const findings = zapBblServeGateFindings(doc, opts);
+  if (findings.length) throw new Error(findings.join("; "));
+  return true;
 }
 
 /** Load product seed CSV (public field-case BBL rows) without DuckDB — offline CI. */

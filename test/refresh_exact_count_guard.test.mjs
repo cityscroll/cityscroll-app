@@ -138,6 +138,42 @@ assert.equal(count, Object.keys(snapshot.by_notice).length);
   assert.deepEqual(findings, []);
 });
 
+test("exact live record-id pins against land membership fail; membership invariants pass", () => {
+  const pinned = `
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+const membership = JSON.parse(readFileSync(new URL("../site/data/land_place_membership.json", import.meta.url), "utf8"));
+const delivered = membership.by_geography.nta2020.SI0105 || [];
+assert.ok(delivered.includes("2026R0127"));
+assert.deepEqual(delivered, ["2026R0127"]);
+`;
+  const pinnedFindings = scanSource(pinned, {
+    relativePath: "test/mutation_live_record_id.test.mjs",
+    refreshedArtifacts: REFRESHED,
+    countPropertyPattern: COUNT_RE,
+  });
+  assert.ok(pinnedFindings.length >= 2, `expected exact-record-id findings, got ${pinnedFindings.length}`);
+  assert.ok(pinnedFindings.every((row) => row.kind === "exact-record-id"));
+  assert.ok(pinnedFindings.some((row) => row.literal === "2026R0127"));
+
+  const invariant = `
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+const membership = JSON.parse(readFileSync(new URL("../site/data/land_place_membership.json", import.meta.url), "utf8"));
+const members = membership.by_geography.nta2020.SI0105 || [];
+assert.ok(members.length >= 1);
+const delivered = [...members];
+assert.deepEqual(delivered, members);
+for (const id of delivered) assert.ok(members.includes(id));
+`;
+  const invariantFindings = scanSource(invariant, {
+    relativePath: "test/mutation_membership_invariant.test.mjs",
+    refreshedArtifacts: REFRESHED,
+    countPropertyPattern: COUNT_RE,
+  });
+  assert.deepEqual(invariantFindings, []);
+});
+
 test("exact-count asserts on committed fixtures pass unflagged", () => {
   const source = `
 import assert from "node:assert/strict";

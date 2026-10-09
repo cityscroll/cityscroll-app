@@ -29,12 +29,15 @@ import {
   assertDoingBusinessServeGate,
   buildMaterializationDoc,
   DOING_BUSINESS_PUBLISHER_ROW_COUNT,
+  doingBusinessServeGateFindings,
   exportDoingBusinessRowsFromWarehouse,
+  isDoingBusinessFullCatalog,
   loadProductSeedRows,
   rowToSodaShape,
 } from "../warehouse/lib/doing_business_lookup.mjs";
 import {
   assertServePublishTwins,
+  decideWarehouseServePublish,
   SERVE_LOOKUP_CONTRACTS,
 } from "../warehouse/lib/serve_publish_contract.mjs";
 import {
@@ -76,6 +79,7 @@ function parseArgs(argv) {
     if (argv[i] === "--fixture") out.fixture = true;
     else if (argv[i] === "--check") out.check = true;
     else if (argv[i] === "--bench") out.bench = true;
+    // determinism-lint: allow external-data opt-in SODA acquisition flag; --check never sets it
     else if (argv[i] === "--from-soda") out.fromSoda = true;
     else if (argv[i] === "--limit") out.limit = Number(argv[++i]);
   }
@@ -172,6 +176,7 @@ async function fetchDoingBusinessFromSoda({ limit = null, fetchImpl = fetch } = 
     });
     const res = await fetchImpl(`${DOING_BUSINESS_SODA}?${params}`);
     if (!res.ok) {
+      // determinism-lint: allow external-data live SODA path only for --from-soda rematerialization
       throw new Error(`Doing Business SODA ${res.status} during --from-soda materialization`);
     }
     const pageRows = await res.json();
@@ -195,6 +200,7 @@ async function collectRows({ fixture, fromSoda, limit }) {
       "Doing Business SODA materialization",
     );
     const rows = dedupeRows(sodaRows);
+    // determinism-lint: allow clock acquisition receipt timestamp only on --from-soda path
     const observedAt = new Date().toISOString();
     return {
       rows,
@@ -292,6 +298,7 @@ async function bench(rows, acquisitionReceipt = null) {
   const receipt = {
     ...acquisitionReceipt,
     phase: "WH-05",
+    // determinism-lint: allow clock benchmark receipt timestamp only outside --check
     measured_at: new Date().toISOString(),
     replaces_live_fetch: {
       function: "attachDoingBusiness",
@@ -317,7 +324,9 @@ async function bench(rows, acquisitionReceipt = null) {
       `Doing Business attach p50: live multi-page SODA floor ${sodaCatalogMsFloor}ms → ` +
       `warehouse materialization ${indexMs.p50_ms}ms (sub-ms; removes catalog SODA RTTs)`,
   };
+  // determinism-lint: allow write benchmark receipt outside --check
   mkdirSync(path.dirname(BENCH_RECEIPT), { recursive: true });
+  // determinism-lint: allow write benchmark receipt outside --check
   writeFileSync(BENCH_RECEIPT, stableStringify(receipt));
   return receipt;
 }
@@ -338,7 +347,9 @@ function writeOrCheck(filePath, doc, check) {
     );
     return { path: filePath, status: "ok" };
   }
+  // determinism-lint: allow write non-check materialization output
   mkdirSync(path.dirname(filePath), { recursive: true });
+  // determinism-lint: allow write non-check materialization output
   writeFileSync(filePath, rendered);
   return { path: filePath, status: "wrote", bytes: Buffer.byteLength(rendered) };
 }
@@ -368,6 +379,7 @@ async function main() {
   }
 
   const { rows, mode, publisherRowCount, acquisitionReceipt } = await collectRows(args);
+  // determinism-lint: allow clock fixture/benchmark materialization timestamp
   let now = new Date().toISOString();
   if (args.check && existsSync(OUT_WORKER)) {
     try {
@@ -386,9 +398,7 @@ async function main() {
     [],
     "Doing Business public materialization contains test-only records",
   );
-  if (!args.check && (mode === "bulk_warehouse" || mode === "bulk_soda")) {
-    assertDoingBusinessServeGate(doc);
-  }
+
   // Byte-stable rebuild check only when the local catalog (or --from-soda) can
   // reproduce a full snapshot; fixture-sized rebuilds would false-fail against
   // the committed bulk serve.
@@ -399,17 +409,51 @@ async function main() {
     console.log(
       "ok skip byte-stable rebuild (no full catalog in this environment; serve-gate already checked)",
     );
-  } else {
+  } else if (args.check) {
     const outs = [
-      writeOrCheck(OUT_SITE, doc, args.check && canByteCheck),
-      writeOrCheck(OUT_WORKER, doc, args.check && canByteCheck),
+      writeOrCheck(OUT_SITE, doc, true),
+      writeOrCheck(OUT_WORKER, doc, true),
     ];
     for (const row of outs) {
+      console.log(`ok ${path.relative(ROOT, row.path)}`);
+    }
+  } else {
+    // Never freeze an empty live_fallback over a committed full catalog. When
+    // the warehouse/SODA acquisition cannot produce a bulk serve, retain the
+    // last-good twin so Land/vendor attach keep working across refresh.
+    const existing = existsSync(OUT_WORKER)
+      ? readCommittedDoc(OUT_WORKER)
+      : (existsSync(OUT_SITE) ? readCommittedDoc(OUT_SITE) : null);
+    const decision = args.fixture
+      ? { action: "publish", reason: "fixture_allow_degraded", document: doc }
+      : decideWarehouseServePublish(existing, doc, {
+        isFullCatalog: isDoingBusinessFullCatalog,
+        label: "Doing Business",
+      });
+    if (decision.action === "reject") {
+      throw new Error(decision.reason);
+    }
+    if (decision.action === "retain") {
       console.log(
-        args.check
-          ? `ok ${path.relative(ROOT, row.path)}`
-          : `wrote ${path.relative(ROOT, row.path)} (${row.bytes} bytes, ${doc.row_count} rows, mode=${mode})`,
+        JSON.stringify({
+          status: "retained",
+          reason: decision.reason,
+          candidate_findings: doingBusinessServeGateFindings(doc),
+          row_count: existing?.row_count ?? null,
+          mode: existing?.mode ?? null,
+        }),
       );
+    } else {
+      assertDoingBusinessServeGate(doc);
+      const outs = [
+        writeOrCheck(OUT_SITE, doc, false),
+        writeOrCheck(OUT_WORKER, doc, false),
+      ];
+      for (const row of outs) {
+        console.log(
+          `wrote ${path.relative(ROOT, row.path)} (${row.bytes} bytes, ${doc.row_count} rows, mode=${mode})`,
+        );
+      }
     }
   }
   if (args.bench) {
@@ -417,7 +461,9 @@ async function main() {
     console.log(receipt.summary);
     console.log("receipt:", path.relative(ROOT, BENCH_RECEIPT));
   } else if (!args.check && acquisitionReceipt) {
+    // determinism-lint: allow write acquisition receipt outside --check
     mkdirSync(path.dirname(BENCH_RECEIPT), { recursive: true });
+    // determinism-lint: allow write acquisition receipt outside --check
     writeFileSync(BENCH_RECEIPT, stableStringify(acquisitionReceipt));
     console.log("receipt:", path.relative(ROOT, BENCH_RECEIPT));
   }

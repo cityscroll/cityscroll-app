@@ -33,6 +33,25 @@ const POLICY_PATH = "architecture/refresh-exact-count-guard.json";
 const ASSERT_EQUAL_RE =
   /\bassert\.(?:equal|strictEqual)\s*\(\s*([^,]+?)\s*,\s*(\d[\d_]*)\s*(?:,|\))/g;
 
+// Exact publisher record ids (ULURP-like YYYYLnnnn) pinned against live refreshed
+// populations. Includes assert.deepEqual(..., ["2026R0127"]), includes("…"),
+// and assert.match(/…"2026R0127"…/) forms that break whenever membership rolls.
+const RECORD_ID_RE = String.raw`\d{4}[A-Z]\d{4}`;
+const ASSERT_EXACT_ID_DEEP_EQUAL_RE = new RegExp(
+  String.raw`\bassert\.deep(?:Strict)?Equal\s*\(\s*([^,]+?)\s*,\s*\[\s*(['"\`])(${RECORD_ID_RE})\2\s*\]`,
+  "g",
+);
+// Presence pins only: assert.ok(ids.includes("YYYYLnnnn")) on a simple receiver.
+// Do not match finding-message checks such as line.includes("…") inside .some().
+const ASSERT_EXACT_ID_INCLUDES_RE = new RegExp(
+  String.raw`\bassert\.ok\s*\(\s*([A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*)*)\.includes\(\s*(['"\`])(${RECORD_ID_RE})\2\s*\)\s*\)`,
+  "g",
+);
+const ASSERT_EXACT_ID_MATCH_RE = new RegExp(
+  String.raw`\bassert\.match\s*\(\s*([^,]+?)\s*,\s*\/(?:[^\/\\]|\\.)*?['"]?(${RECORD_ID_RE})['"]?(?:[^\/\\]|\\.)*?\/`,
+  "g",
+);
+
 // Discovery matches load idioms, including helpers whose names look like
 // readers/loaders with a bare governed path argument
 // (loadJsonFile("site/data/...")), JSON module imports, and join/URL path
@@ -281,8 +300,50 @@ export function scanSource(source, {
       line: lineNumberAt(source, match.index),
       expression: expr.replace(/\s+/g, " "),
       literal,
+      kind: "exact-count",
       loaded_artifacts: loaded,
     });
+  }
+
+  // Exact record-id pins against refreshed membership/catalog/activity loads.
+  // These suites load live geography populations; pinning a named ULURP id is
+  // the self-defeating class that breaks on every first-class refresh.
+  const geographySensitive = loaded.some((path) =>
+    /land_place_membership|district_activity|land_project_catalog/.test(path));
+  if (geographySensitive) {
+    ASSERT_EXACT_ID_DEEP_EQUAL_RE.lastIndex = 0;
+    while ((match = ASSERT_EXACT_ID_DEEP_EQUAL_RE.exec(scanText))) {
+      findings.push({
+        file: relativePath,
+        line: lineNumberAt(source, match.index),
+        expression: match[1].trim().replace(/\s+/g, " "),
+        literal: match[3],
+        kind: "exact-record-id",
+        loaded_artifacts: loaded,
+      });
+    }
+    ASSERT_EXACT_ID_INCLUDES_RE.lastIndex = 0;
+    while ((match = ASSERT_EXACT_ID_INCLUDES_RE.exec(scanText))) {
+      findings.push({
+        file: relativePath,
+        line: lineNumberAt(source, match.index),
+        expression: `${match[1]}.includes(${JSON.stringify(match[3])})`,
+        literal: match[3],
+        kind: "exact-record-id",
+        loaded_artifacts: loaded,
+      });
+    }
+    ASSERT_EXACT_ID_MATCH_RE.lastIndex = 0;
+    while ((match = ASSERT_EXACT_ID_MATCH_RE.exec(scanText))) {
+      findings.push({
+        file: relativePath,
+        line: lineNumberAt(source, match.index),
+        expression: match[1].trim().replace(/\s+/g, " "),
+        literal: match[2],
+        kind: "exact-record-id",
+        loaded_artifacts: loaded,
+      });
+    }
   }
   return findings;
 }
@@ -430,7 +491,8 @@ export function formatFinding(finding, policy = null) {
   const permitted = shapes.length
     ? shapes.join(" | ")
     : "fixture-pin (load test/fixtures/) | refresh-invariant (property that survives refresh)";
-  return `${finding.file}:${finding.line}: exact-count assertion ${finding.expression} == ${finding.literal} reads refreshed artifact (${finding.loaded_artifacts.join(", ")}). `
+  const kind = finding.kind === "exact-record-id" ? "exact-record-id" : "exact-count";
+  return `${finding.file}:${finding.line}: ${kind} assertion ${finding.expression} == ${finding.literal} reads refreshed artifact (${finding.loaded_artifacts.join(", ")}). `
     + `Replace it with one of the two permitted shapes — ${permitted}`;
 }
 

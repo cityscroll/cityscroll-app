@@ -223,15 +223,22 @@ describe("land catalog map parity", { concurrency: 1 }, () => {
   });
 
   it("A1 positive control: dropping an unmapped id fails the parity checker", () => {
+    const members = membership?.by_geography?.nta2020?.SI0105 || [];
+    assert.ok(members.length >= 1, "SI0105 membership must stay populated for the parity control");
+    const mappedId = members.find((id) => id in committedPoints.points) || members[0];
+    const unmappedId =
+      warehouseOnlyIds.find((id) => id in committedPoints.unmapped)
+      || Object.keys(committedPoints.unmapped || {}).find(Boolean);
+    assert.ok(unmappedId, "compact projection must expose at least one unmapped id");
     const { receipt } = parityForQuery({
       status: "all",
-      projectIds: ["2026R0127", "2025M0252"],
+      projectIds: [mappedId, unmappedId],
       limit: 10,
     });
-    assert.ok(receipt.unmapped_ids.includes("2025M0252"));
+    assert.ok(receipt.unmapped_ids.includes(unmappedId));
     const broken = {
       ...receipt,
-      unmapped_ids: receipt.unmapped_ids.filter((id) => id !== "2025M0252"),
+      unmapped_ids: receipt.unmapped_ids.filter((id) => id !== unmappedId),
       counts: {
         ...receipt.counts,
         unmapped: Math.max(0, receipt.counts.unmapped - 1),

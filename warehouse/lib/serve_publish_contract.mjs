@@ -157,3 +157,41 @@ export function assertServePublishTwins(siteDoc, workerDoc, contract, opts = {})
   if (findings.length) throw new Error(findings.join("; "));
   return true;
 }
+
+/**
+ * Decide whether a rematerialized serve lookup may replace the committed twin.
+ *
+ * Full-catalog candidates always publish. When the candidate is degraded
+ * (empty, seed-sized, or otherwise below the caller's isFullCatalog predicate)
+ * and a full catalog is already committed, retain that last-good document
+ * instead of freezing the degraded snapshot into git. When neither side is a
+ * full catalog, reject so the refresh fails closed rather than publishing an
+ * empty live_fallback or verified_seed over nothing.
+ *
+ * @param {object|null|undefined} existing committed serve document, if any
+ * @param {object} candidate freshly built serve document
+ * @param {{ isFullCatalog: (doc: object) => boolean, label?: string }} opts
+ * @returns {{ action: "publish"|"retain"|"reject", reason: string, document: object|null }}
+ */
+export function decideWarehouseServePublish(existing, candidate, opts) {
+  const label = opts?.label || "warehouse serve lookup";
+  const isFullCatalog = opts?.isFullCatalog;
+  if (typeof isFullCatalog !== "function") {
+    throw new Error(`${label} decideWarehouseServePublish requires isFullCatalog`);
+  }
+  if (candidate && isFullCatalog(candidate)) {
+    return { action: "publish", reason: "full_catalog_candidate", document: candidate };
+  }
+  if (existing && isFullCatalog(existing)) {
+    return {
+      action: "retain",
+      reason: "retained_last_good_full_catalog; refused degraded rematerialization",
+      document: existing,
+    };
+  }
+  return {
+    action: "reject",
+    reason: `${label} rematerialization is degraded and no full-catalog last-good serve is committed`,
+    document: null,
+  };
+}

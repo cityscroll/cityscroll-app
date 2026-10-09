@@ -203,7 +203,16 @@ test("A1: Kensington two-board path, FDNY SI0105/R01 path, Westshore and Manhatt
 
   const journey = placeNavigationSi0105BoardJourney({ view: "map" });
   assert.match(journey.near_you_href, /geography%3Anta2020%3ASI0105|geography:nta2020:SI0105/);
-  assert.match(journey.land_detail_href, /#land\/2026R0127/);
+  const siMembers = shared.membership?.by_geography?.nta2020?.SI0105 || [];
+  assert.ok(siMembers.length >= 1, "SI0105 membership must stay populated");
+  assert.match(journey.land_detail_href, /#land\/([^/?#]+)/);
+  const journeyProjectId = decodeURIComponent(
+    journey.land_detail_href.match(/#land\/([^/?#]+)/)[1],
+  );
+  assert.ok(
+    siMembers.includes(journeyProjectId),
+    `journey land detail ${journeyProjectId} must stay inside SI0105 membership`,
+  );
   assert.match(journey.board_href, /staten-island-cb-01/);
 });
 
@@ -238,9 +247,18 @@ test("A2: Queens/Bronx holdouts share general paths; no-BBL, citywide, special d
   const captureSource = readFileSync(CAPTURE_TOOL, "utf8");
   assert.match(captureSource, /queens-holdout|QN0402/);
   assert.match(captureSource, /bronx-holdout|BX0902/);
-  assert.match(captureSource, /2025Q0142/);
-  assert.match(captureSource, /2019X0255/);
-  assert.doesNotMatch(captureSource, /if\s*\(.*2025Q0142.*\)\s*\{[^}]*override/s);
+  assert.ok(
+    captureSource.includes(ANCHORS.queensHoldoutProject),
+    "capture tool must name the Queens holdout project id",
+  );
+  assert.ok(
+    captureSource.includes(ANCHORS.bronxHoldoutProject),
+    "capture tool must name the Bronx holdout project id",
+  );
+  assert.doesNotMatch(
+    captureSource,
+    new RegExp(String.raw`if\s*\(.*${ANCHORS.queensHoldoutProject}.*\)\s*\{[^}]*override`, "s"),
+  );
 
   const noBbl = landDetailPlaceMembershipForProject(
     shared.membership,
@@ -305,11 +323,14 @@ test("A3: capture contract measures 390 and 1440 with real stylesheet, keyboard,
   assert.doesNotMatch(captureSource, /pytest\.skip|unittest\.skip|optional browser/i);
 
   const shared = loadShared();
+  const siMembers = shared.membership?.by_geography?.nta2020?.SI0105 || [];
+  assert.ok(siMembers.length >= 1, "SI0105 membership must stay populated");
+  const continuityProjectId = siMembers.includes(ANCHORS.fdny) ? ANCHORS.fdny : siMembers[0];
   for (const width of [390, 1440]) {
     assert.equal(width === 390 || width === 1440, true);
     const state = placeNavigationStateFromParts({
       geographies: [ANCHORS.si0105Full],
-      projectId: ANCHORS.fdny,
+      projectId: continuityProjectId,
       lens: "land",
       view: "map",
     });
@@ -317,7 +338,10 @@ test("A3: capture contract measures 390 and 1440 with real stylesheet, keyboard,
     assert.match(nearYou, /near-you/);
     assert.match(nearYou, /SI0105/);
     const land = placeNavigationLandDetailHref(state);
-    assert.match(land, /#land\/2026R0127/);
+    assert.match(land, /#land\/([^/?#]+)/);
+    const landProjectId = decodeURIComponent(land.match(/#land\/([^/?#]+)/)[1]);
+    assert.equal(landProjectId, continuityProjectId);
+    assert.ok(siMembers.includes(landProjectId));
     const boardDir = placeNavigationBoardDirectoryHref(ANCHORS.kensington);
     assert.match(boardDir, /community-boards/);
     assert.match(boardDir, /BK1203/);

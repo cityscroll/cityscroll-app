@@ -135,10 +135,17 @@ describe("land_detail_place_links", () => {
     // material NTA overlaps (which also touch R02).
     assert.equal(view.districts.some((item) => item.community_district_id === "R02"), false);
 
+    const siMembers = shared.index?.by_geography?.nta2020?.SI0105 || [];
+    assert.ok(siMembers.length >= 1, "SI0105 membership must stay populated");
+    assert.ok(siMembers.includes(ANCHORS.fdny), "FDNY anchor must remain inside SI0105 membership");
+
     const html = renderLandDetailPlaceLinksSection(view);
     assert.match(html, /Westerleigh-Castleton Corners/);
     assert.match(html, /Staten Island Community Board 1/);
-    assert.match(html, /data-project-path="\/browse\/zoning\/#land\/2026R0127"/);
+    assert.ok(
+      html.includes(`data-project-path="${view.project_path}"`),
+      "place-links markup must carry the rendered project path",
+    );
     assert.doesNotMatch(html, /\brezoning of\b/i);
     assert.deepEqual(landDetailPlaceLinksFindings(view, { html }), []);
   });

@@ -615,3 +615,56 @@ export function projectsForGeography(index, layerType, placeId) {
   const list = places[placeId];
   return Array.isArray(list) ? [...list] : [];
 }
+
+/**
+ * Floor for nonempty NTA place buckets. A full Land catalog join produces on
+ * the order of 100 NTAs; a verified_seed ZAP BBL collapse leaves ~8 and must
+ * never publish.
+ */
+export const LAND_PLACE_MIN_NTA_PLACE_COUNT = 50;
+/** Refuse publication when more than half of projects are absent from the BBL index. */
+export const LAND_PLACE_MAX_ABSENT_FROM_INDEX_SHARE = 0.5;
+
+/**
+ * Population findings for a committed or freshly built Land place membership
+ * index. Catches the ZAP BBL seed-collapse failure mode where nearly every
+ * project becomes absent_from_index and nta2020 shrinks to a handful of places.
+ *
+ * @param {object} index land_place_membership document
+ * @returns {string[]}
+ */
+export function landPlaceMembershipPopulationFindings(index) {
+  const findings = [];
+  if (!index || typeof index !== "object") {
+    return ["land place membership index missing"];
+  }
+  const nta = index?.by_geography?.nta2020 || {};
+  const ntaPlaceCount = Object.values(nta).filter(
+    (ids) => Array.isArray(ids) && ids.length > 0,
+  ).length;
+  if (ntaPlaceCount < LAND_PLACE_MIN_NTA_PLACE_COUNT) {
+    findings.push(
+      `nta2020 nonempty place count ${ntaPlaceCount} below floor ${LAND_PLACE_MIN_NTA_PLACE_COUNT}`,
+    );
+  }
+
+  const projects = Object.values(index?.by_project || {});
+  if (projects.length > 0) {
+    const absent = projects.filter(
+      (entry) => entry?.bbl_association_state === LAND_PLACE_BBL_ASSOCIATION_STATES.ABSENT_FROM_INDEX,
+    ).length;
+    const share = absent / projects.length;
+    if (share > LAND_PLACE_MAX_ABSENT_FROM_INDEX_SHARE) {
+      findings.push(
+        `absent_from_index share ${absent}/${projects.length} exceeds ${LAND_PLACE_MAX_ABSENT_FROM_INDEX_SHARE}`,
+      );
+    }
+  }
+  return findings;
+}
+
+export function assertLandPlaceMembershipPopulation(index) {
+  const findings = landPlaceMembershipPopulationFindings(index);
+  if (findings.length) throw new Error(findings.join("; "));
+  return true;
+}
