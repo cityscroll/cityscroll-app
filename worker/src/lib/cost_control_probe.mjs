@@ -209,11 +209,9 @@ export function beginCostControlProbe(request, env, { suppressWrites = false } =
 
   const route = cohort.replace(/:(?:cold|warm)$/, "");
   const marker = `${route}:${series}`;
-  const isolateCondition = isolateMarkers.has(marker) ? "warm" : "cold";
-  if (!isolateMarkers.has(marker)) {
-    if (isolateMarkers.size >= MAX_ISOLATE_MARKERS) isolateMarkers.delete(isolateMarkers.values().next().value);
-    isolateMarkers.add(marker);
-  }
+  const claimedCondition = cohort.match(/:(cold|warm)$/)?.[1] || null;
+  let isolateCondition = null;
+  let accepted = false;
   const counters = {
     kv_reads: 0,
     kv_writes: 0,
@@ -224,11 +222,22 @@ export function beginCostControlProbe(request, env, { suppressWrites = false } =
   };
   const startedAt = Date.now();
   const mode = suppressWrites ? "production-read-only-rehearsal" : "production-request";
-  const claimedCondition = cohort.match(/:(cold|warm)$/)?.[1] || null;
-  if (claimedCondition && claimedCondition !== isolateCondition) {
-    return { denied: Response.json({ error: "isolate-condition-mismatch", observed: isolateCondition }, { status: 409 }) };
-  }
   return {
+    accept() {
+      if (accepted) return null;
+      const observed = isolateMarkers.has(marker) ? "warm" : "cold";
+      if (claimedCondition && claimedCondition !== observed) {
+        return Response.json({ error: "isolate-condition-mismatch", observed }, { status: 409 });
+      }
+      if (observed === "cold") {
+        if (isolateMarkers.size >= MAX_ISOLATE_MARKERS) isolateMarkers.delete(isolateMarkers.values().next().value);
+        isolateMarkers.add(marker);
+      }
+      isolateCondition = observed;
+      accepted = true;
+      return null;
+    },
+    get accepted() { return accepted; },
     cohort,
     counters,
     denied: null,
@@ -253,6 +262,6 @@ export function beginCostControlProbe(request, env, { suppressWrites = false } =
 }
 
 export function logCostControlProbe(probe, extra = {}) {
-  if (!probe || probe.denied) return;
+  if (!probe || probe.denied || !probe.accepted) return;
   console.log(JSON.stringify(probe.snapshot(extra)));
 }

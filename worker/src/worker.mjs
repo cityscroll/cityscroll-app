@@ -170,6 +170,7 @@ const COST_PROBE_HTTP_PATHS = Object.freeze({
   "doing-business": "/vendor-profile",
 });
 const COST_PROBE_CRONS = new Set(["0 8 * * *", "0 10 * * *", "0 13 * * *"]);
+const COST_PROBE_MAX_BODY_BYTES = 16 * 1024;
 
 function costProbeContext() {
   const pending = [];
@@ -185,24 +186,67 @@ async function sha256Text(value) {
   return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
+async function readCostProbeInput(request) {
+  const contentLength = request.headers.get("content-length");
+  if (contentLength && (!/^\d+$/.test(contentLength) || Number(contentLength) > COST_PROBE_MAX_BODY_BYTES)) {
+    throw new Error("invalid probe body length");
+  }
+  const reader = request.body?.getReader();
+  if (!reader) throw new Error("missing probe body");
+  const chunks = [];
+  let total = 0;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > COST_PROBE_MAX_BODY_BYTES) {
+      await reader.cancel();
+      throw new Error("probe body too large");
+    }
+    chunks.push(value);
+  }
+  const bytes = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
+
 async function handleCostControlProbe(request, env) {
   let input;
-  try { input = await request.json(); }
+  try { input = await readCostProbeInput(request); }
   catch { return new Response("Not found", { status: 404 }); }
   const kind = input?.kind;
   const suppressWrites = kind === "scheduled" || kind === "queue" || kind === "collector-overhead";
   const probe = beginCostControlProbe(request, env, { suppressWrites });
   if (!probe || probe.denied) return probe?.denied || new Response("Not found", { status: 404 });
 
-  let result = { status: 204, body_sha256: await sha256Text("") };
-  try {
-    if (kind === "http") {
+  let target = null;
+  if (kind === "http") {
+    try {
       const route = String(input.route || "");
       const expectedPath = COST_PROBE_HTTP_PATHS[route];
-      const target = new URL(String(input.url || ""), request.url);
+      target = new URL(String(input.url || ""), request.url);
       if (!expectedPath || target.pathname !== expectedPath || !["GET", "POST"].includes(input.method)) {
         return new Response("Not found", { status: 404 });
       }
+    } catch {
+      return new Response("Not found", { status: 404 });
+    }
+  } else if (kind === "scheduled") {
+    if (!COST_PROBE_CRONS.has(input.cron)) return new Response("Not found", { status: 404 });
+  } else if (kind !== "queue" && kind !== "collector-overhead") {
+    return new Response("Not found", { status: 404 });
+  }
+
+  const conditionDenied = probe.accept();
+  if (conditionDenied) return conditionDenied;
+
+  let result = { status: 204, body_sha256: await sha256Text("") };
+  try {
+    if (kind === "http") {
       const headers = new Headers({ "Accept": "application/json", "User-Agent": "CityScrollCostControl/1.0" });
       if (input.origin) headers.set("Origin", String(input.origin));
       if (input.method === "POST") headers.set("Content-Type", "application/json");
@@ -215,9 +259,9 @@ async function handleCostControlProbe(request, env) {
       const response = await worker.fetch(childRequest, probe.env, childContext);
       await childContext.settle();
       result = { status: response.status, body_sha256: await sha256Text(await response.text()) };
-    } else if (kind === "scheduled" && COST_PROBE_CRONS.has(input.cron)) {
+    } else if (kind === "scheduled") {
       const childContext = costProbeContext();
-      await worker.scheduled({ cron: input.cron, scheduledTime: Date.now(), type: "scheduled" }, probe.env, childContext);
+      await worker.scheduled({ cron: input.cron, scheduledTime: Date.now(), type: "scheduled", costProbe: true }, probe.env, childContext);
       await childContext.settle();
     } else if (kind === "queue") {
       const message = {
@@ -226,8 +270,6 @@ async function handleCostControlProbe(request, env) {
         retry() {},
       };
       await worker.queue({ queue: "crol-digests", messages: [message] }, probe.env);
-    } else if (kind !== "collector-overhead") {
-      return new Response("Not found", { status: 404 });
     }
     const snapshot = probe.snapshot({ result });
     return Response.json(snapshot, { headers: { "Cache-Control": "no-store" } });
@@ -487,7 +529,7 @@ const worker = {
     // refreshes so a slow or failing upstream cannot prevent queue fan-out and its receipt.
     console.log("digest delivery: starting");
     try {
-      const summary = await runAlerts(env);
+      const summary = await runAlerts(env, undefined, { suppressDryRunLogs: event.costProbe === true });
       await recordDigestDeliveryReceipt(env, summary?.receipt || summary);
     } catch (error) {
       await recordDigestDeliveryReceipt(env, null, new Date(), error);

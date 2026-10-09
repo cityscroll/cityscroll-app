@@ -18,7 +18,7 @@ function request(overrides = {}) {
       "x-cityscroll-cost-series": overrides.series || overrides.tag || "series-test-0001",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(overrides.body || { kind: "collector-overhead" }),
+    body: overrides.rawBody ?? JSON.stringify(overrides.body || { kind: "collector-overhead" }),
   });
 }
 
@@ -64,6 +64,7 @@ test("probe rejects missing operator authorization without exposing the route", 
 test("probe counts real KV operations and suppresses rehearsal writes", async () => {
   const namespace = kv();
   const probe = beginCostControlProbe(request(), { ADMIN_KEY, STORE: namespace }, { suppressWrites: true });
+  assert.equal(probe.accept(), null);
   assert.equal(await probe.env.STORE.get("present"), "yes");
   await probe.env.STORE.put("blocked", "value");
   await probe.env.STORE.delete("present");
@@ -85,11 +86,38 @@ test("probe derives D1 row counts and converts first to a metered all query", as
     ADMIN_KEY,
     DB: d1(),
   });
+  assert.equal(probe.accept(), null);
   const row = await probe.env.DB.prepare("SELECT value FROM sample LIMIT 1").first();
   await probe.env.DB.prepare("UPDATE sample SET value = 8").run();
   assert.deepEqual(row, { value: 7 });
   assert.equal(probe.snapshot().operations.d1_rows_read, 3);
   assert.equal(probe.snapshot().operations.d1_rows_written, 2);
+});
+
+test("probe rejects bodies beyond its explicit byte bound", async () => {
+  const response = await worker.fetch(request({
+    tag: "probe-test-large",
+    series: "series-test-large",
+    rawBody: JSON.stringify({ kind: "collector-overhead", padding: "x".repeat(17 * 1024) }),
+  }), { ADMIN_KEY }, { waitUntil() {} });
+  assert.equal(response.status, 404);
+});
+
+test("invalid requests do not consume their series condition", async () => {
+  const series = "series-test-retry";
+  const invalid = await worker.fetch(request({
+    tag: "probe-test-invalid",
+    series,
+    body: { kind: "http", route: "health", method: "GET", url: "https://api.cityscroll.org/not-health" },
+  }), { ADMIN_KEY }, { waitUntil() {} });
+  const valid = await worker.fetch(request({
+    tag: "probe-test-retry",
+    series,
+    body: { kind: "collector-overhead" },
+  }), { ADMIN_KEY }, { waitUntil() {} });
+  assert.equal(invalid.status, 404);
+  assert.equal(valid.status, 200);
+  assert.equal((await valid.json()).isolate_condition, "cold");
 });
 
 test("collector-overhead endpoint returns a bounded no-store observation", async () => {
