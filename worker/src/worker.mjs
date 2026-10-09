@@ -169,6 +169,7 @@ const COST_PROBE_HTTP_PATHS = Object.freeze({
   "zap-project": "/land-project",
   "doing-business": "/vendor-profile",
 });
+const COST_PROBE_HTTP_ORIGIN = "https://api.cityscroll.org";
 const COST_PROBE_CRONS = new Map([
   ["0 8 * * *", "scheduled-08"],
   ["0 10 * * *", "scheduled-10"],
@@ -234,7 +235,12 @@ async function handleCostControlProbe(request, env) {
       const route = String(input.route || "");
       const expectedPath = COST_PROBE_HTTP_PATHS[route];
       const target = new URL(String(input.url || ""), request.url);
-      if (!expectedPath || target.pathname !== expectedPath || !["GET", "POST"].includes(input.method)) {
+      if (
+        !expectedPath
+        || target.origin !== COST_PROBE_HTTP_ORIGIN
+        || target.pathname !== expectedPath
+        || !["GET", "POST"].includes(input.method)
+      ) {
         return new Response("Not found", { status: 404 });
       }
       const headers = new Headers({ "Accept": "application/json", "User-Agent": "CityScrollCostControl/1.0" });
@@ -262,29 +268,26 @@ async function handleCostControlProbe(request, env) {
   probe.accept();
 
   let result = { status: 204, body_sha256: await sha256Text("") };
-  try {
-    if (kind === "http") {
-      const childContext = costProbeContext();
-      const response = await worker.fetch(childRequest, probe.env, childContext);
-      await childContext.settle();
-      result = { status: response.status, body_sha256: await sha256Text(await response.text()) };
-    } else if (kind === "scheduled") {
-      const childContext = costProbeContext();
-      await worker.scheduled({ cron: input.cron, scheduledTime: Date.now(), type: "scheduled", costProbe: true }, probe.env, childContext);
-      await childContext.settle();
-    } else if (kind === "queue") {
-      const message = {
-        body: { type: "single", key: "cost-probe-nonexistent" },
-        ack() {},
-        retry() {},
-      };
-      await worker.queue({ queue: "crol-digests", messages: [message] }, probe.env);
-    }
-    const snapshot = probe.snapshot({ result });
-    return Response.json(snapshot, { headers: { "Cache-Control": "no-store" } });
-  } finally {
-    logCostControlProbe(probe, { result });
+  if (kind === "http") {
+    const childContext = costProbeContext();
+    const response = await worker.fetch(childRequest, probe.env, childContext);
+    await childContext.settle();
+    result = { status: response.status, body_sha256: await sha256Text(await response.text()) };
+  } else if (kind === "scheduled") {
+    const childContext = costProbeContext();
+    await worker.scheduled({ cron: input.cron, scheduledTime: Date.now(), type: "scheduled", costProbe: true }, probe.env, childContext);
+    await childContext.settle();
+  } else if (kind === "queue") {
+    const message = {
+      body: { type: "single", key: "cost-probe-nonexistent" },
+      ack() {},
+      retry() {},
+    };
+    await worker.queue({ queue: "crol-digests", messages: [message] }, probe.env);
   }
+  const snapshot = probe.snapshot({ result });
+  logCostControlProbe(probe, { result });
+  return Response.json(snapshot, { headers: { "Cache-Control": "no-store" } });
 }
 
 const worker = {

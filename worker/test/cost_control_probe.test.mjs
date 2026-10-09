@@ -131,6 +131,16 @@ test("probe rejects a cohort that does not match the validated workload", async 
   assert.equal(response.status, 404);
 });
 
+test("probe rejects a supported path on the wrong production host", async () => {
+  const response = await worker.fetch(request({
+    tag: "probe-test-host",
+    series: "series-test-host",
+    cohort: "health",
+    body: { kind: "http", route: "health", method: "GET", url: "https://cityscroll.org/health" },
+  }), { ADMIN_KEY }, { waitUntil() {} });
+  assert.equal(response.status, 404);
+});
+
 test("unconstructable requests do not prevent a corrected retry", async () => {
   const series = "series-test-construct";
   const invalid = await worker.fetch(request({
@@ -178,4 +188,30 @@ test("authenticated HTTP probe runs the real route without synthetic isolate lab
   assert.equal("isolate_condition" in second, false);
   assert.equal(first.result.status, 200);
   assert.equal(first.result.body_sha256, second.result.body_sha256);
+});
+
+test("probe does not log a successful observation when response hashing fails", async () => {
+  const logs = [];
+  const originalLog = console.log;
+  const originalDigest = crypto.subtle.digest.bind(crypto.subtle);
+  let digestCalls = 0;
+  console.log = (...args) => logs.push(args);
+  crypto.subtle.digest = async (...args) => {
+    digestCalls += 1;
+    if (digestCalls === 2) throw new Error("digest unavailable");
+    return originalDigest(...args);
+  };
+  try {
+    const response = worker.fetch(request({
+      tag: "probe-test-failure",
+      series: "series-test-failure",
+      cohort: "health",
+      body: { kind: "http", route: "health", method: "GET", url: "https://api.cityscroll.org/health" },
+    }), { ADMIN_KEY, GIT_COMMIT_SHA: "a".repeat(40), WRANGLER_ENV: "production" }, { waitUntil() {} });
+    await assert.rejects(response, /digest unavailable/);
+    assert.equal(logs.length, 0);
+  } finally {
+    crypto.subtle.digest = originalDigest;
+    console.log = originalLog;
+  }
 });
