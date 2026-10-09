@@ -1059,12 +1059,14 @@ def check_geolocation_entry(browser: Browser, base: str, viewport: tuple[str, in
     try:
         journey.open_entry(base)
         journey.use_location()
-        journey.wait_records(ASTORIA_GEO, allow_unavailable=True)
+        # Map-first: location entry fits the place on Map; Records is explicit.
+        journey.wait_map(ASTORIA_GEO)
         state = journey.entry_state()
         assert state["heading"] == "Astoria (Central)", state
+        assert state["surface"] == "map", state
         assert journey.requests == [{"enableHighAccuracy": False, "timeout": 10000}], journey.requests
         assert_no_leak(journey, COORDINATE_NEEDLES, label=f"geolocation-{name}")
-        return {"case": f"geolocation-records-{name}", "geo": ASTORIA_GEO, "requests": len(journey.requests)}
+        return {"case": f"geolocation-map-{name}", "geo": ASTORIA_GEO, "requests": len(journey.requests)}
     finally:
         journey.close()
 
@@ -1092,9 +1094,9 @@ def check_location_failures(browser: Browser, base: str, viewport: tuple[str, in
             assert_recovery(state, label=label, status=status, actions=actions, touch=touch)
             assert journey.page.url == before, f"{label}: scope changed to {journey.page.url}"
             if case == "timeout":
-                # Retry is a second explicit request, and this time it answers.
+                # Retry is a second explicit request, and this time it answers on Map.
                 journey.activate(journey.page.locator('[data-near-entry-recovery-action="retry"]'))
-                journey.wait_records(ASTORIA_GEO, allow_unavailable=True)
+                journey.wait_map(ASTORIA_GEO)
                 assert len(journey.requests) == 2, journey.requests
             else:
                 check_enter_address_focuses_input(journey, label=label)
