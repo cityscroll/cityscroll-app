@@ -4,6 +4,7 @@ import test from "node:test";
 import {
   COST_METERS,
   WAREHOUSE_EXPERIMENT_COHORTS,
+  WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
   evaluateWarehouseExperiment,
 } from "./lib/worker_cost_control.mjs";
 
@@ -16,7 +17,7 @@ function run(overrides = {}) {
     workload_id: "fixed-zap-bbl-zap-project-doing-business-v1",
     workload_count: 10,
     cohorts: Object.fromEntries(WAREHOUSE_EXPERIMENT_COHORTS.map((name) => [name, {
-      sample_count: 2, cpu_source: "provider-native-invocation",
+      sample_count: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT, cpu_source: "provider-native-invocation",
       condition: {
         mode: "provider-observed", source: "$metadata.coldStart", cold_start: name.endsWith(":cold"),
       },
@@ -91,7 +92,7 @@ test("experiment evidence must be actual, ordered, matched, integral, and privac
   assert.throws(() => evaluateWarehouseExperiment({ baseline, candidate: run({ ...validCandidate, correctness: { ...baseline.correctness, request_url: "private" } }) }), /forbidden/);
 });
 
-test("experiment cohorts require equal positive integer sample counts", () => {
+test("experiment cohorts require the fixed matched 100-sample count", () => {
   const baseline = run();
   const validCandidate = { deployed_revision: "b".repeat(40), observed_at: "2026-10-08T23:10:00Z" };
   for (const count of [-1, 1.5]) {
@@ -100,6 +101,6 @@ test("experiment cohorts require equal positive integer sample counts", () => {
     assert.throws(() => evaluateWarehouseExperiment({ baseline, candidate }), /sample_count|sample counts/);
   }
   const candidate = run(validCandidate);
-  candidate.cohorts["zap-bbl:cold"].sample_count = 1;
-  assert.throws(() => evaluateWarehouseExperiment({ baseline, candidate }), /sample counts are not matched/);
+  candidate.cohorts["zap-bbl:cold"].sample_count = 99;
+  assert.throws(() => evaluateWarehouseExperiment({ baseline, candidate }), /fixed 100-sample cohort/);
 });

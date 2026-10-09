@@ -49,8 +49,10 @@ isolate state from request order.
 
 The fixed warehouse experiment compares the current static ZAP BBL, ZAP
 project, and Doing Business lookups with the route-scoped candidate under the
-same inputs and workload. Joins, provenance, miss behavior, freshness, and
-cohort sizes must match. The candidate is retained only when no CPU, KV, D1,
+same inputs and workload. Each valid lookup plus the unrelated health and
+browse controls uses exactly 100 cold and 100 warm provider-observed samples.
+Joins, provenance, miss behavior, freshness, and cohort sizes must match. The
+candidate is retained only when no CPU, KV, D1,
 storage, collector, or error meter regresses and at least one meter improves;
 otherwise the baseline stays active. The experiment records an operational
 retention recommendation, never a financial-savings claim.

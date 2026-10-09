@@ -263,6 +263,7 @@ export const WAREHOUSE_EXPERIMENT_COHORTS = Object.freeze([
   "health:cold", "health:warm",
   "browse:cold", "browse:warm",
 ]);
+export const WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT = 100;
 
 function normalizedMeters(run) {
   const workload = finiteNonNegativeInteger(run?.workload_count, "workload_count");
@@ -285,7 +286,9 @@ export function evaluateWarehouseExperiment({ baseline, candidate } = {}) {
       const evidence = run.cohorts?.[cohort];
       if (!evidence) fail(`${label} is missing ${cohort}`);
       finiteNonNegativeInteger(evidence.sample_count, `${label}.${cohort}.sample_count`);
-      if (evidence.sample_count < 1) fail(`${label}.${cohort}.sample_count must be positive`);
+      if (evidence.sample_count !== WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT) {
+        fail(`${label}.${cohort}.sample_count must equal the fixed ${WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT}-sample cohort`);
+      }
       if (label === "candidate" && evidence.sample_count !== baseline.cohorts?.[cohort]?.sample_count) {
         fail(`experiment cohort ${cohort} sample counts are not matched`);
       }
