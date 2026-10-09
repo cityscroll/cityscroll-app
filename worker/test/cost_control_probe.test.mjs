@@ -535,6 +535,10 @@ test("authenticated HTTP probe runs the real route without synthetic isolate lab
   assert.equal("isolate_condition" in second, false);
   assert.equal(first.result.status, 200);
   assert.equal(first.result.body_sha256, second.result.body_sha256);
+  assert.deepEqual(Object.keys(first.result.correctness).sort(), [
+    "freshness_digest", "input_digest", "joins_digest", "miss_digest", "provenance_digest",
+  ]);
+  assert.deepEqual(first.result.correctness, second.result.correctness);
 });
 
 test("probe does not log a successful observation when response hashing fails", async () => {

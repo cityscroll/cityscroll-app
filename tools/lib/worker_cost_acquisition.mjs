@@ -19,6 +19,14 @@ function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
 }
 
+function canonicalJson(value) {
+  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(",")}]`;
+  if (value && typeof value === "object") {
+    return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${canonicalJson(value[key])}`).join(",")}}`;
+  }
+  return JSON.stringify(value);
+}
+
 function applicationRecords(event, schema) {
   const found = [];
   const visit = (value) => {
@@ -36,10 +44,27 @@ function applicationRecords(event, schema) {
   return found;
 }
 
-export function httpOperationsFromProviderEvent(event) {
+function matchingHttpReceipts(event, expectation) {
   const records = applicationRecords(event, "cityscroll.worker_cost_probe.v1");
-  if (records.length !== 1) throw new Error("exactly one structured HTTP cost receipt is required");
-  const operations = records[0].operation_counts;
+  return records.filter((record) => (
+    record.tag === expectation.header
+    && record.series === expectation.series
+    && record.cohort === expectation.probeCohort
+    && record.workload_hash === expectation.workloadHash
+    && record.result?.status === expectation.receipt.result?.status
+    && record.result?.body_sha256 === expectation.receipt.result?.body_sha256
+    && canonicalJson(record.result?.correctness) === canonicalJson(expectation.receipt.result?.correctness)
+  ));
+}
+
+export function httpReceiptFromProviderEvent(event, expectation) {
+  const records = matchingHttpReceipts(event, expectation);
+  if (records.length !== 1) throw new Error("exactly one owned structured HTTP cost receipt is required");
+  return records[0];
+}
+
+export function httpOperationsFromProviderEvent(event, expectation) {
+  const operations = httpReceiptFromProviderEvent(event, expectation).operation_counts;
   if (!operations || Object.keys(operations).length !== OPERATION_METERS.length) {
     throw new Error("HTTP cost receipt does not contain the complete operation vector");
   }
@@ -87,12 +112,20 @@ function httpRequest(event) {
   return event?.event?.request || event?.request;
 }
 
-function expectedHttpEvent(events, expectation, cohort) {
+export function selectOwnedHttpEvent(events, expectation, cohort) {
+  const coldStart = cohort.endsWith(":cold") ? 1 : cohort.endsWith(":warm") ? 0 : null;
   const matches = events.filter((event) => {
     const request = httpRequest(event);
     const header = request?.headers?.["x-cityscroll-cost-probe"] || request?.headers?.["X-Cityscroll-Cost-Probe"];
-    return header === expectation.header && request?.url === expectation.url && request?.method === expectation.method
-      && event?.$metadata?.coldStart === (cohort.endsWith(":cold") ? 1 : 0);
+    if (
+      header !== expectation.header
+      || request?.url !== expectation.outerUrl
+      || request?.method !== "POST"
+      || event?.$workers?.scriptVersion?.id !== expectation.providerVersionId
+      || (coldStart !== null && event?.$metadata?.coldStart !== coldStart)
+    ) return false;
+    try { return Boolean(httpReceiptFromProviderEvent(event, expectation)); }
+    catch { return false; }
   });
   if (matches.length !== 1) throw new Error(`${cohort} requires exactly one owned provider event`);
   return matches[0];
@@ -105,10 +138,17 @@ export async function acquireWorkerCostProfile({ revision, window, transport } =
   const bounds = { from: windows[0].from, to: windows.at(-1).to };
   const deployment = await transport.acquireDeployment(revision);
   const plan = await transport.measurementPlan({ revision, window: bounds });
-  const httpExpectations = await transport.executeFixedHttpWorkloads({ revision, window: bounds, plan });
-  const collections = await Promise.all(windows.map((entry) => transport.collectProviderEvents({
-    revision, from: entry.from, to: entry.to, limit: MAX_COLLECTOR_EVENTS,
-  })));
+  let httpExpectations = {};
+  const collections = [];
+  for (let index = 0; index < windows.length; index += 1) {
+    const entry = windows[index];
+    collections.push(await transport.collectProviderEvents({
+      revision, from: entry.from, to: entry.to, limit: MAX_COLLECTOR_EVENTS,
+      execute: index === 0 ? async () => {
+        httpExpectations = await transport.executeFixedHttpWorkloads({ revision, window: bounds, plan, deployment });
+      } : undefined,
+    }));
+  }
   if (collections.some((events) => !Array.isArray(events))) throw new Error("provider event collection is unavailable");
   if (collections.some((events) => events.length > MAX_COLLECTOR_EVENTS)) throw new Error("provider collector run exceeds 10000 events");
   const events = collections.flat();
@@ -139,11 +179,11 @@ export async function acquireWorkerCostProfile({ revision, window, transport } =
       } else {
         const expectation = httpExpectations?.[cohort];
         if (!expectation) throw new Error("owned HTTP workload was not executed");
-        const event = expectedHttpEvent(events, expectation, cohort);
+        const event = selectOwnedHttpEvent(events, expectation, cohort);
         samples.push(sanitizeNativeInvocation(event, {
           cohort, revision, providerDeployment: deployment,
-          expectedHeaderValue: expectation.header, expectedUrl: expectation.url,
-          expectedMethod: expectation.method, operations: httpOperationsFromProviderEvent(event),
+          expectedHeaderValue: expectation.header, expectedUrl: expectation.outerUrl,
+          expectedMethod: "POST", operations: httpOperationsFromProviderEvent(event, expectation),
           condition: { mode: "bounded-production-execution" },
         }));
       }
@@ -154,7 +194,7 @@ export async function acquireWorkerCostProfile({ revision, window, transport } =
   const profile = buildWorkerCostProfile(samples, {
     revision, observedAt: new Date(bounds.to).toISOString(),
     durationSeconds: (bounds.to - bounds.from) / 1000, eventCount: events.length,
-    providerDeployment: deployment, correctness: plan.correctness || {},
+    providerDeployment: deployment, correctness: aggregateObservedCorrectness(httpExpectations),
   });
   return {
     schema: "cityscroll.worker_cost_acquisition.v1",
@@ -162,6 +202,23 @@ export async function acquireWorkerCostProfile({ revision, window, transport } =
     reasons,
     profile,
   };
+}
+
+export function aggregateObservedCorrectness(expectations) {
+  const entries = Object.entries(expectations || {})
+    .filter(([, expectation]) => expectation?.receipt?.result?.correctness)
+    .sort(([left], [right]) => left.localeCompare(right));
+  if (!entries.length) return {};
+  const result = {};
+  for (const field of ["input_digest", "joins_digest", "provenance_digest", "miss_digest", "freshness_digest"]) {
+    const values = entries.map(([cohort, expectation]) => {
+      const value = expectation?.receipt?.result?.correctness?.[field];
+      if (!/^[a-f0-9]{64}$/.test(String(value || ""))) throw new Error(`${cohort} is missing observed ${field}`);
+      return [cohort, value];
+    });
+    result[field] = sha256(canonicalJson(values));
+  }
+  return result;
 }
 
 function warehouseRun({ revision, deployment, observedAt, workloadId, cohorts, correctness }) {

@@ -5,3 +5,4 @@ import "../tools/test_worker_route_slice_reuse.mjs";
 import "../tools/test_worker_cost_attribution.mjs";
 import "../tools/test_worker_warehouse_cost_experiment.mjs";
 import "../tools/test_worker_all_meter_release_gate.mjs";
+import "../tools/test_worker_cost_acquisition.mjs";

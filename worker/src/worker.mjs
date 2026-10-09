@@ -266,6 +266,46 @@ async function readCostProbeInput(request) {
   return JSON.parse(new TextDecoder().decode(bytes));
 }
 
+function collectCostProbeSemantics(value, pattern, path = "$", output = []) {
+  if (Array.isArray(value)) {
+    value.forEach((item, index) => collectCostProbeSemantics(item, pattern, `${path}[${index}]`, output));
+  } else if (value && typeof value === "object") {
+    for (const [key, child] of Object.entries(value)) {
+      const childPath = `${path}.${key}`;
+      if (pattern.test(key)) output.push([childPath, child]);
+      else collectCostProbeSemantics(child, pattern, childPath, output);
+    }
+  }
+  return output;
+}
+
+function normalizeCostProbeResponse(value) {
+  if (Array.isArray(value)) return value.map(normalizeCostProbeResponse);
+  if (!value || typeof value !== "object") return value;
+  return Object.fromEntries(Object.entries(value)
+    .filter(([key]) => !/^(?:commit|revision|request_?id)$/i.test(key))
+    .map(([key, child]) => [key, normalizeCostProbeResponse(child)]));
+}
+
+async function costProbeCorrectness(workloadHash, status, responseText) {
+  let value;
+  try { value = JSON.parse(responseText); }
+  catch { value = responseText; }
+  const responseDigest = await sha256Text(canonicalCostProbeWorkload(normalizeCostProbeResponse(value)));
+  const digest = async (pattern, includeResponse = false) => sha256Text(canonicalCostProbeWorkload({
+    status,
+    fields: collectCostProbeSemantics(value, pattern),
+    ...(includeResponse ? { response_digest: responseDigest } : {}),
+  }));
+  return {
+    input_digest: workloadHash,
+    joins_digest: await digest(/join|match|relation|link/i, true),
+    provenance_digest: await digest(/source|provenance|citation|publisher/i),
+    miss_digest: await digest(/miss|missing|not.?found|empty|status/i),
+    freshness_digest: await digest(/fresh|stale|updated|observed|published|as.?of/i),
+  };
+}
+
 async function handleCostControlProbe(request, env) {
   let input;
   try { input = await readCostProbeInput(request); }
@@ -326,7 +366,12 @@ async function handleCostControlProbe(request, env) {
     const childContext = costProbeContext();
     const response = await worker.fetch(childRequest, probe.env, childContext);
     await childContext.settle();
-    result = { status: response.status, body_sha256: await sha256Text(await response.text()) };
+    const responseText = await response.text();
+    result = {
+      status: response.status,
+      body_sha256: await sha256Text(responseText),
+      correctness: await costProbeCorrectness(workloadHash, response.status, responseText),
+    };
   } else if (kind === "scheduled") {
     const childContext = costProbeContext();
     await worker.scheduled({ cron: input.cron, scheduledTime: Date.now(), type: "scheduled", costProbe: true }, probe.env, childContext);

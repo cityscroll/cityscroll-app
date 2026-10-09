@@ -69,12 +69,16 @@ separate, and collector overhead is a required cohort.
 `tools/worker_cost_acquisition.mjs profile` owns live acquisition. It reads
 credentials only from the environment or a mode-0600 file, authenticates
 deployment/version state and version-specific health, executes the fixed owned
-HTTP workloads, and queries Workers Observability directly. Multiple collection
-windows may cover the natural cron schedule, but every individual query is
-limited to 30 minutes and 10,000 events and the combined profile remains within
-24 hours. Raw provider events stay in memory; only sanitized samples are
-returned. Missing access, cold-start metadata, native events, or provider batch
-messages yields a partial result rather than a zero or complete profile.
+HTTP workloads with an exact Worker-version override, and opens a short-lived
+Workers Observability live tail before the workload begins. The telemetry token
+is separate from the existing authenticated Wrangler deployment session and is
+never reused for deployment reads. Retained Logs and Traces remain disabled.
+Multiple collection windows may cover the natural cron schedule, but every
+individual live tail is limited to 30 minutes and 10,000 events and the combined
+profile remains within 24 hours. Raw provider events stay in memory; only
+sanitized samples are returned. Missing access, cold-start metadata, native
+events, or provider batch messages yields a partial result rather than a zero or
+complete profile.
 
 The fixed profile covers cold and warm health, unknown-route, events, full RUM,
 search, Near You, Browse, ZAP BBL, ZAP project, and Doing Business requests;
@@ -97,6 +101,9 @@ retention recommendation, never a financial-savings claim.
 calls the evaluator only after both authenticated versions have the fixed
 100-sample cold and warm cohorts, correctness/freshness/miss digests, and the
 complete CPU, collector, KV, D1, storage, Queue, and Analytics Engine vector.
+Correctness, join, provenance, miss, and freshness digests are derived from each
+version's observed child responses and structured receipts; measurement-plan
+assertions cannot substitute for observed results.
 Both warehouse runs must also match independently acquired deployment bindings;
 the receipts embedded in the runs cannot authenticate themselves. The warehouse
 command reads authenticated deployment status and version metadata itself, then
