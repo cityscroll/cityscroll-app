@@ -140,15 +140,21 @@ def newer_document(route: Route) -> None:
 
 
 def select_in_page(page: Page) -> None:
-    """Typed entry opens the place's Records in the same document; the Map switch returns to the map."""
+    """Typed entry keeps the place on Map in the same document (map-first)."""
     page.evaluate("window.__sameDocument = true")
     search = page.locator('[data-geography-search] input[name="neighborhood"]')
     search.fill(PLACE_NAME)
     search.press("Enter")
-    page.wait_for_url(f"**geo={PLACE_GEO}**surface=records**", timeout=30_000)
-    page.locator('[data-near-surface-switch] [data-near-surface="map"]').first.click()
+    page.wait_for_url(f"**geo={PLACE_GEO}**", timeout=30_000)
     page.wait_for_function(
-        "() => document.querySelector('[data-near-you-root]')?.dataset.nearSurface === 'map'",
+        """(geo) => {
+          const root = document.querySelector('[data-near-you-root]');
+          const url = new URL(location.href);
+          return root?.dataset.nearSurface === 'map'
+            && (url.searchParams.get('surface') || 'map') === 'map'
+            && url.searchParams.get('geo') === geo;
+        }""",
+        arg=PLACE_GEO.replace("%3A", ":"),
         timeout=30_000,
     )
     wait_for_map(page)
@@ -160,7 +166,7 @@ def check_viewport(browser, base: str, width: int, height: int) -> list[str]:
     results = []
     context = browser.new_context(viewport={"width": width, "height": height})
     try:
-        # Composition: all entry content that precedes the map, then an in-page selection.
+        # Composition: entry still carries collection/citywide/suggestions, then an in-page Map selection.
         page = context.new_page()
         page.goto(f"{base}/near-you/", wait_until="domcontentloaded")
         wait_for_map(page)
