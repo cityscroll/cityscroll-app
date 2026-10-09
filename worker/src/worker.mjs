@@ -581,7 +581,9 @@ const worker = {
     // refreshes so a slow or failing upstream cannot prevent queue fan-out and its receipt.
     console.log("digest delivery: starting");
     try {
-      const summary = await runAlerts(env, undefined, { suppressDryRunLogs: event.costProbe === true });
+      const summary = event.costProbe === true
+        ? await runAlerts(env, undefined, { suppressDryRunLogs: true })
+        : await runAlerts(env);
       await recordDigestDeliveryReceipt(env, summary?.receipt || summary);
     } catch (error) {
       await recordDigestDeliveryReceipt(env, null, new Date(), error);
