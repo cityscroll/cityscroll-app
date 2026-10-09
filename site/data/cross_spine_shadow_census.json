@@ -1150,8 +1150,8 @@
       },
       "denominators": {
         "eligible_left_rows": 21,
-        "source_rows": 223,
-        "pre_route_pairs": 100
+        "source_rows": 216,
+        "pre_route_pairs": 94
       },
       "by_tier": {
         "public_inferred": 3
@@ -1243,7 +1243,7 @@
         "city-council": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 2,
+            "source_rows": 1,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1273,7 +1273,7 @@
         "civilian-complaint-review-board": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 2,
+            "source_rows": 1,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1303,8 +1303,8 @@
         "comptroller": {
           "denominators": {
             "eligible_left_rows": 2,
-            "source_rows": 6,
-            "pre_route_pairs": 12
+            "source_rows": 3,
+            "pre_route_pairs": 6
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1333,7 +1333,7 @@
         "criminal-justice-coordinator": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 2,
+            "source_rows": 0,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
