@@ -968,7 +968,23 @@ export function meetingRejectsPhysicalVenue(row = {}) {
   return false;
 }
 
-function placementSlotFromLocationMembership(membership) {
+/** Map assertion_id → original address from meeting assertions / agenda subjects. */
+function originalAddressLookupForMeetingRow(row = {}) {
+  const byId = new Map();
+  for (const assertion of Array.isArray(row.location_assertions) ? row.location_assertions : []) {
+    const id = assertion?.assertion_id != null ? String(assertion.assertion_id) : "";
+    const address = compactText(assertion?.original_address || "", 240);
+    if (id && address) byId.set(id, address);
+  }
+  for (const place of Array.isArray(row.agenda_subject_places) ? row.agenda_subject_places : []) {
+    const id = place?.assertion_id != null ? String(place.assertion_id) : "";
+    const address = compactText(place?.original_address || "", 240);
+    if (id && address && !byId.has(id)) byId.set(id, address);
+  }
+  return byId;
+}
+
+function placementSlotFromLocationMembership(membership, addressByAssertionId = null) {
   if (!membership || typeof membership !== "object") return null;
   const layers = membership.memberships || {};
   const community = normalizeCommunityDistrictId(layers.community_district);
@@ -1007,9 +1023,11 @@ function placementSlotFromLocationMembership(membership) {
     ? String(membership.provenance.source_method)
     : "parcel_membership";
 
+  const assertionId = membership.assertion_id != null ? String(membership.assertion_id) : "";
   const originalAddress = compactText(
     membership.provenance?.source_path?.original_address
       || membership.original_address
+      || (assertionId && addressByAssertionId?.get?.(assertionId))
       || "",
     240,
   );
@@ -1028,7 +1046,7 @@ function placementSlotFromLocationMembership(membership) {
     confidence_tier: membership.confidence_tier || "strong",
     ...(originalAddress ? { original_address: originalAddress } : {}),
     ...(membership.bbl ? { bbl: String(membership.bbl) } : {}),
-    ...(membership.assertion_id ? { assertion_id: String(membership.assertion_id) } : {}),
+    ...(assertionId ? { assertion_id: assertionId } : {}),
   };
 }
 
@@ -1096,9 +1114,10 @@ export function meetingPlacementsFromRow(row, boundaries, opts = {}) {
   }
 
   const rejectPhysicalVenue = meetingRejectsPhysicalVenue(row);
+  const addressByAssertionId = originalAddressLookupForMeetingRow(row);
   for (const membership of locationMembershipsForMeetingRow(row, opts)) {
     if (rejectPhysicalVenue && membership?.role === "venue") continue;
-    const slot = placementSlotFromLocationMembership(membership);
+    const slot = placementSlotFromLocationMembership(membership, addressByAssertionId);
     if (slot) additive.push(slot);
   }
 
@@ -2324,23 +2343,18 @@ export function buildDistrictActivity(opts = {}) {
     by_key: Object.fromEntries([...geographyItemSets.entries()]
       .sort(([left], [right]) => left.localeCompare(right))
       .map(([key, lenses]) => {
-        // Observed membership only. A missing lens key stays source_unavailable
-        // for Near You residential fixtures. Do not fabricate empty meetings /
-        // property / money arrays just because Land NTA membership admitted the
-        // place. When a non-land lens already admitted the key, keep the prior
-        // all-lens empty arrays so existing numeric-zero cases remain distinct.
-        const nonLandObserved = LENSES.some((lens) => (
-          lens !== "land" && (lenses[lens]?.size || 0) > 0
-        ));
+        // Per-lens observed membership only. A missing lens key stays
+        // unfilterable / source_unavailable for that category alone. Never fill
+        // empty sibling-lens arrays because another category admitted the place:
+        // that incidental cross-category completeness made Chelsea meetings flip
+        // between unsupported and numeric zero when an unrelated property row
+        // appeared. Land still publishes an explicit [] under a ready place-
+        // membership index so Land numeric zero remains distinct in by_key.
         const bag = Object.create(null);
         for (const lens of LENSES) {
           const ids = sortedIds(lenses[lens]);
           if (ids.length > 0) {
             bag[lens] = ids;
-            continue;
-          }
-          if (nonLandObserved) {
-            bag[lens] = [];
             continue;
           }
           if (lens === "land" && landNtaCoverageStatus === "ready") {
@@ -2378,9 +2392,26 @@ export function buildDistrictActivity(opts = {}) {
             },
           },
         },
+        // Point/venue-mapped lenses publish corpus readiness without claiming a
+        // closed NTA census. Missing by_key lens entries stay unfilterable;
+        // measured zero requires an explicit empty array from that lens alone.
+        ...Object.fromEntries(["property", "rules", "meetings", "money"].map((lens) => [lens, {
+          status: "ready",
+          source: sources[lens]?.corpus || opts.districtCorpora?.[lens]?.corpus || null,
+          counted: sources[lens]?.counted ?? null,
+          located: sources[lens]?.located ?? null,
+          match_bound: "observed_nta_membership_only",
+          types: {
+            nta2020: {
+              status: "observed_only",
+              reason: "nta_membership_is_observed_hit_only",
+              match_bound: "observed_nta_membership_only",
+            },
+          },
+        }])),
       },
     },
-    note: "Public typed geography membership from the same role- and basis-preserving placement pass as Near You. Sanitation districts and BIDs remain ingestion-only. Land NTA slots come from land_place_membership only.",
+    note: "Public typed geography membership from the same role- and basis-preserving placement pass as Near You. Sanitation districts and BIDs remain ingestion-only. Land NTA slots come from land_place_membership only. Non-land NTA slots are observed hits only: a missing lens key is unfilterable, never a sibling-fabricated zero.",
   };
 
   // For indexed lenses, the set cardinality is the authoritative count. This

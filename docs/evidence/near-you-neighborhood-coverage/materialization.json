@@ -1,0 +1,102 @@
+{
+  "schema": "cityscroll.near_you_neighborhood_coverage_materialization.v1",
+  "public_alias": "cd64c975cc55e",
+  "grounded_at": "a522e9dc31d68e0e0c487f6dfbcc0a5e30045295",
+  "observed_at": "2026-10-08T23:51:43Z",
+  "activity_built_at": "2026-10-08T23:51:25.374Z",
+  "activity_sha256": "e4845ec902dd4b6aa7506f84f703d601cf7b191a8b6a9a1dbd5eb75bea87a96f",
+  "assertions": [
+    {
+      "id": "chelsea-land-positive",
+      "result": "accepted",
+      "key": "geography:nta2020:MN0401",
+      "lens": "land",
+      "count": 11,
+      "ids": [
+        "2019M0059",
+        "2019M0107",
+        "2020M0325",
+        "2020M0375",
+        "2023M0213",
+        "2023M0309",
+        "2024M0244",
+        "2026M0445",
+        "P2014M0309",
+        "P2015M0247",
+        "P2016M0148"
+      ]
+    },
+    {
+      "id": "chelsea-meetings-absent-not-fabricated-zero",
+      "result": "accepted",
+      "key": "geography:nta2020:MN0401",
+      "lens": "meetings",
+      "has_meetings_key": false,
+      "bag": {
+        "land": 11
+      }
+    },
+    {
+      "id": "hells-kitchen-meetings-ready",
+      "result": "accepted",
+      "key": "geography:nta2020:MN0402",
+      "lens": "meetings",
+      "count": 12,
+      "ids": [
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-24/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-67/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-61/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-58/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-3/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-52/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-25/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/waterfront-parks-environment-committee-wpe-59/"
+      ]
+    },
+    {
+      "id": "no-cross-neighborhood-leak",
+      "result": "accepted",
+      "chelsea_meetings_ids": [],
+      "hells_kitchen_meetings_ids": [
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-24/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-67/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-61/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-58/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-3/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-52/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-25/",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/waterfront-parks-environment-committee-wpe-59/"
+      ],
+      "m04_meetings_count": 14,
+      "intersection_with_hk": [],
+      "intersection_with_m04": []
+    },
+    {
+      "id": "meetings-coverage-observed-only",
+      "result": "accepted",
+      "coverage": {
+        "status": "ready",
+        "source": "shared_meeting_read_model",
+        "counted": 840,
+        "located": 607,
+        "match_bound": "observed_nta_membership_only",
+        "types": {
+          "nta2020": {
+            "status": "observed_only",
+            "reason": "nta_membership_is_observed_hit_only",
+            "match_bound": "observed_nta_membership_only"
+          }
+        }
+      }
+    }
+  ],
+  "note": "Materialization evidence for per-lens neighborhood coverage. Production Chromium read-back of the Chelsea route is retained after the change reaches the served site. Overview and upcoming-date seams belong to the sibling neighborhood-overview card."
+}
