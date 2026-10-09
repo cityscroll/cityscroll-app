@@ -13,27 +13,30 @@ import {
 
 const revision = "b".repeat(40);
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-function profile(profileRevision = revision, totals = {}) {
+function profile(profileRevision = revision, totals = {}, samplesPerCohort = 1) {
   const routeCohortCount = REQUIRED_COST_COHORTS.length - 1;
-  const samples = REQUIRED_COST_COHORTS.map((cohort, index) => ({
+  const samples = REQUIRED_COST_COHORTS.flatMap((cohort, cohortIndex) => Array.from({ length: samplesPerCohort }, (_, sampleIndex) => ({
     cohort,
     condition: cohort.endsWith(":cold") || cohort.endsWith(":warm")
       ? { mode: "provider-observed", source: "$metadata.coldStart", cold_start: cohort.endsWith(":cold") }
       : { mode: "bounded-production-execution" },
     revision: profileRevision,
     native_cpu_ms: cohort === "collector-overhead"
-      ? (totals.collector_cpu_ms ?? 1)
-      : (totals.native_cpu_ms ?? routeCohortCount) / routeCohortCount,
+      ? (totals.collector_cpu_ms ?? 1) / samplesPerCohort
+      : (totals.native_cpu_ms ?? routeCohortCount) / routeCohortCount / samplesPerCohort,
     native_cpu_source: { field: "cpuTime", unit: "milliseconds", precision: "integer" },
     outcome: "ok", script_version_id: "v",
-    operations: index === 0 ? Object.fromEntries(
-      ["kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written"].map((meter) => [
+    operations: Object.fromEntries(
+      ["kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes"].map((meter) => [
         meter,
-        { attempted: totals[meter] ?? 0, confirmed: totals[meter] ?? 0 },
+        {
+          attempted: cohortIndex === 0 && sampleIndex === 0 ? (totals[meter] ?? 0) : 0,
+          confirmed: cohortIndex === 0 && sampleIndex === 0 ? (totals[meter] ?? 0) : 0,
+        },
       ]),
-    ) : {},
-    error_count: index === 0 ? (totals.errors ?? 0) : 0,
-  }));
+    ),
+    error_count: cohortIndex === 0 && sampleIndex === 0 ? (totals.errors ?? 0) : 0,
+  })));
   return buildWorkerCostProfile(samples, {
     revision: profileRevision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 30, eventCount: samples.length,
   });
@@ -117,6 +120,15 @@ test("release meters cannot contradict provider-native samples", () => {
   const evidence = pair();
   evidence.candidate.meters.native_cpu_ms -= 1;
   assert.throws(() => evaluateAllMeterRelease(evidence), /does not match provider profile samples/);
+  const storageEvidence = pair();
+  storageEvidence.candidate.meters.storage_bytes -= 1;
+  assert.throws(() => evaluateAllMeterRelease(storageEvidence), /storage_bytes does not match provider profile samples/);
+});
+
+test("release profiles require matched cohort sample counts", () => {
+  const evidence = pair();
+  evidence.candidate.profile = profile(evidence.candidate.deployed_revision, evidence.candidate.meters, 2);
+  assert.throws(() => evaluateAllMeterRelease(evidence), /sample counts are not matched/);
 });
 
 test("the independent D1 control cannot be silently collapsed", () => {

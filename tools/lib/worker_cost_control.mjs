@@ -17,7 +17,7 @@ export const COST_METERS = Object.freeze([
   "d1_rows_read", "d1_rows_written", "storage_bytes",
 ]);
 
-const OPERATION_METERS = new Set(["kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes"]);
+const OPERATION_METERS = Object.freeze(["kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes"]);
 
 const FORBIDDEN_RETAINED_KEYS = /(?:^|_)(?:url|query|headers?|body|token|credential|email|ip|account_id|user_agent|identifier)(?:_|$)/i;
 
@@ -109,12 +109,16 @@ export function sanitizeNativeInvocation(event, {
 }
 
 function validateOperationCounts(operations, path) {
-  for (const [name, count] of Object.entries(operations || {})) {
-    if (!OPERATION_METERS.has(name)) fail(`${path}.${name} is not a supported operation meter`);
+  if (!operations || typeof operations !== "object") fail(`${path} is required`);
+  for (const name of OPERATION_METERS) {
+    const count = operations[name];
     if (!count || typeof count !== "object") fail(`${path}.${name} must separate attempted and confirmed`);
     finiteNonNegativeInteger(count.attempted, `${path}.${name}.attempted`);
     finiteNonNegativeInteger(count.confirmed, `${path}.${name}.confirmed`);
     if (count.confirmed > count.attempted) fail(`${path}.${name} confirmed exceeds attempted`);
+  }
+  for (const name of Object.keys(operations)) {
+    if (!OPERATION_METERS.includes(name)) fail(`${path}.${name} is not a supported operation meter`);
   }
 }
 
@@ -151,7 +155,7 @@ export function buildWorkerCostProfile(samples, {
 } = {}) {
   if (!/^[a-f0-9]{40}$/.test(String(revision || ""))) fail("profile revision must be a full commit SHA");
   finiteNonNegative(durationSeconds, "duration_seconds");
-  finiteNonNegative(eventCount, "event_count");
+  finiteNonNegativeInteger(eventCount, "event_count");
   if (durationSeconds > 30 * 60) fail("collection exceeded the 30 minute bound");
   if (eventCount > 10_000) fail("collection exceeded the 10000 event bound");
   const cohorts = {};
@@ -175,6 +179,7 @@ export function buildWorkerCostProfile(samples, {
       }
       : { status: "unknown", sample_count: null, native_cpu_ms: null, reason: "missing-provider-sample" };
   }
+  if (eventCount < samples.length) fail("event_count cannot be less than retained sample count");
   const profile = {
     schema: "cityscroll.worker_cost_profile.v1",
     kind: "provider-native-bounded",
@@ -196,9 +201,10 @@ export function validateWorkerCostProfile(profile, { requireComplete = true } = 
   if (!/^[a-f0-9]{40}$/.test(String(profile.revision || ""))) fail("profile revision must be a full commit SHA");
   if (!Number.isFinite(Date.parse(profile.observed_at))) fail("profile observed_at is invalid");
   finiteNonNegative(profile.window?.duration_seconds, "profile.window.duration_seconds");
-  finiteNonNegative(profile.window?.event_count, "profile.window.event_count");
+  finiteNonNegativeInteger(profile.window?.event_count, "profile.window.event_count");
   if (profile.window?.duration_seconds > profile.window?.max_seconds || profile.window?.max_seconds !== 1800) fail("profile exceeds duration bound");
   if (profile.window?.event_count > profile.window?.max_events || profile.window?.max_events !== 10_000) fail("profile exceeds event bound");
+  let retainedSampleCount = 0;
   for (const name of REQUIRED_COST_COHORTS) {
     const cohort = profile.cohorts?.[name];
     if (!cohort) fail(`profile is missing cohort ${name}`);
@@ -208,6 +214,7 @@ export function validateWorkerCostProfile(profile, { requireComplete = true } = 
       continue;
     }
     if (cohort.status !== "measured" || !Number.isInteger(cohort.sample_count) || cohort.sample_count < 1) fail(`${name} has invalid samples`);
+    retainedSampleCount += cohort.sample_count;
     if (cohort.revision !== profile.revision) fail(`${name} revision does not match profile revision`);
     if (!Array.isArray(cohort.native_cpu_ms) || cohort.native_cpu_ms.length !== cohort.sample_count) fail(`${name} CPU samples do not match sample_count`);
     if (!Array.isArray(cohort.samples) || cohort.samples.length !== cohort.sample_count) fail(`${name} retained samples do not match sample_count`);
@@ -220,6 +227,7 @@ export function validateWorkerCostProfile(profile, { requireComplete = true } = 
     validateCondition(name, cohort.condition, `${name}.condition`);
     (cohort.operations || []).forEach((operations, index) => validateOperationCounts(operations, `${name}.operations[${index}]`));
   }
+  if (profile.window.event_count < retainedSampleCount) fail("profile event_count cannot be less than retained sample count");
   return { ok: true, complete: profile.complete === true };
 }
 
@@ -232,6 +240,7 @@ export function profileMeterTotals(profile) {
     kv_writes: 0,
     d1_rows_read: 0,
     d1_rows_written: 0,
+    storage_bytes: 0,
     errors: 0,
   };
   for (const [cohortName, cohort] of Object.entries(profile.cohorts)) {
@@ -239,8 +248,8 @@ export function profileMeterTotals(profile) {
       if (cohortName === "collector-overhead") totals.collector_cpu_ms += sample.native_cpu_ms;
       else totals.native_cpu_ms += sample.native_cpu_ms;
       totals.errors += sample.error_count;
-      for (const meter of ["kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written"]) {
-        totals[meter] += sample.operations?.[meter]?.confirmed || 0;
+      for (const meter of OPERATION_METERS) {
+        totals[meter] += sample.operations[meter].confirmed;
       }
     }
   }
@@ -323,12 +332,17 @@ export function evaluateAllMeterRelease({ baseline, candidate } = {}) {
     finiteNonNegativeInteger(receipt.errors, `${label}.errors`);
     normalizedMeters(receipt);
     const profileTotals = profileMeterTotals(receipt.profile);
-    for (const meter of ["native_cpu_ms", "collector_cpu_ms", "kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written"]) {
+    for (const meter of COST_METERS) {
       if (receipt.meters?.[meter] !== profileTotals[meter]) fail(`${label}.${meter} does not match provider profile samples`);
     }
     if (receipt.errors !== profileTotals.errors) fail(`${label}.errors does not match provider profile samples`);
   }
   if (baseline.workload_id !== candidate.workload_id || baseline.workload_count !== candidate.workload_count) fail("all-meter workloads are not equivalent");
+  for (const cohort of REQUIRED_COST_COHORTS) {
+    if (baseline.profile.cohorts[cohort].sample_count !== candidate.profile.cohorts[cohort].sample_count) {
+      fail(`all-meter cohort ${cohort} sample counts are not matched`);
+    }
+  }
   if (baseline.deployed_revision === candidate.deployed_revision) fail("all-meter revisions must be distinct");
   if (Date.parse(candidate.observed_at) <= Date.parse(baseline.observed_at)) fail("candidate observation must follow baseline");
   if (candidate.publication?.unchanged?.route_key_puts !== 0 || candidate.publication?.unchanged?.manifest_puts !== 0) fail("candidate unchanged publication is not a zero-write control");

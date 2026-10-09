@@ -9,6 +9,9 @@ import {
 } from "./lib/worker_cost_control.mjs";
 
 const revision = "a".repeat(40);
+const emptyOperations = () => Object.fromEntries([
+  "kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes",
+].map((meter) => [meter, { attempted: 0, confirmed: 0 }]));
 function event(cpuTime = 4) {
   return {
     cpuTime,
@@ -36,7 +39,7 @@ function sample(cohort, cpu = 4) {
         cold_start: cohort.endsWith(":cold"),
       }
       : { mode: "bounded-production-execution" },
-    operations: { kv_writes: { attempted: 1, confirmed: 1 } },
+    operations: { ...emptyOperations(), kv_writes: { attempted: 1, confirmed: 1 } },
   });
 }
 
@@ -139,10 +142,28 @@ test("cold and warm labels require matching provider coldStart evidence", () => 
 
 test("attempted writes cannot be represented as confirmed", () => {
   const bad = sample("health:cold");
-  bad.operations = { kv_writes: { attempted: 0, confirmed: 1 } };
+  bad.operations = { ...emptyOperations(), kv_writes: { attempted: 0, confirmed: 1 } };
   const samples = REQUIRED_COST_COHORTS.map((cohort) => sample(cohort));
   samples[0] = bad;
   assert.throws(() => buildWorkerCostProfile(samples, {
     revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 1, eventCount: samples.length,
   }), /confirmed exceeds attempted/);
+});
+
+test("profiles require explicit operation evidence and honest event counts", () => {
+  const samples = REQUIRED_COST_COHORTS.map((cohort) => sample(cohort));
+  delete samples[0].operations.storage_bytes;
+  assert.throws(() => buildWorkerCostProfile(samples, {
+    revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 1, eventCount: samples.length,
+  }), /storage_bytes must separate attempted and confirmed/);
+  assert.throws(() => buildWorkerCostProfile(REQUIRED_COST_COHORTS.map((cohort) => sample(cohort)), {
+    revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 1,
+    eventCount: REQUIRED_COST_COHORTS.length - 1,
+  }), /less than retained sample count/);
+  const profile = buildWorkerCostProfile(REQUIRED_COST_COHORTS.map((cohort) => sample(cohort)), {
+    revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 1,
+    eventCount: REQUIRED_COST_COHORTS.length,
+  });
+  profile.window.event_count -= 1;
+  assert.throws(() => validateWorkerCostProfile(profile), /less than retained sample count/);
 });
