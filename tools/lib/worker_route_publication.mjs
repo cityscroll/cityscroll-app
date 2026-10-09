@@ -144,6 +144,11 @@ function parseState(raw) {
   return text ? JSON.parse(text) : null;
 }
 
+function isMissingPublicationState(error) {
+  const providerText = `${error?.stdout || ""}\n${error?.stderr || ""}\n${error?.message || ""}`;
+  return error?.status === 1 && /\b404\b/.test(providerText) && /\bNot Found\b/i.test(providerText);
+}
+
 /**
  * Publish immutable payloads first, then the two independently readable
  * manifests, and advance state only after every prior write succeeds. KV does
@@ -160,11 +165,18 @@ export async function publishRouteReadModels({
   if (typeof invoke !== "function") throw new Error("publishRouteReadModels requires a Wrangler invoker");
   let prior = previousState;
   if (prior === undefined) {
-    const result = await invoke([
-      "kv", "key", "get", ROUTE_PUBLICATION_STATE_KEY,
-      ...kvArgs(configPath), "--text",
-    ]);
-    prior = parseState(result?.stdout);
+    try {
+      const result = await invoke([
+        "kv", "key", "get", ROUTE_PUBLICATION_STATE_KEY,
+        ...kvArgs(configPath), "--text",
+      ]);
+      prior = parseState(result?.stdout);
+    } catch (error) {
+      // Wrangler reports a genuinely absent remote KV value as a provider 404.
+      // Only that exact read is absence; auth, transport, and other failures stay fatal.
+      if (!isMissingPublicationState(error)) throw error;
+      prior = null;
+    }
   }
   const candidate = loadRoutePublicationCandidate(routeDir);
   const plan = planRoutePublication(candidate, prior || null);

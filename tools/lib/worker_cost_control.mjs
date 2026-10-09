@@ -1,16 +1,23 @@
 export const REQUIRED_COST_COHORTS = Object.freeze([
-  "http.health.cold", "http.health.warm",
-  "http.unknown-route.cold", "http.unknown-route.warm",
-  "http.events.cold", "http.events.warm",
-  "http.rum-full.cold", "http.rum-full.warm",
-  "http.search.cold", "http.search.warm",
-  "http.nearby.cold", "http.nearby.warm",
-  "cron.0-8", "cron.0-10", "cron.0-13", "queue.digest", "collector.overhead",
+  "health:cold", "health:warm",
+  "unknown-route:cold", "unknown-route:warm",
+  "events:cold", "events:warm",
+  "rum-16:cold", "rum-16:warm",
+  "search:cold", "search:warm",
+  "nearby:cold", "nearby:warm",
+  "browse:cold", "browse:warm",
+  "zap-bbl:cold", "zap-bbl:warm",
+  "zap-project:cold", "zap-project:warm",
+  "doing-business:cold", "doing-business:warm",
+  "cron:0 8 * * *", "cron:0 10 * * *", "cron:0 13 * * *", "queue", "collector-overhead",
 ]);
 
 export const COST_METERS = Object.freeze([
-  "native_cpu_ms", "kv_reads", "kv_writes", "d1_rows_written", "storage_bytes", "collector_cpu_ms",
+  "native_cpu_ms", "collector_cpu_ms", "kv_reads", "kv_writes",
+  "d1_rows_read", "d1_rows_written", "storage_bytes",
 ]);
+
+const OPERATION_METERS = new Set(["kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes"]);
 
 const FORBIDDEN_RETAINED_KEYS = /(?:^|_)(?:url|query|headers?|body|token|credential|email|ip|account_id|user_agent|identifier)(?:_|$)/i;
 
@@ -21,6 +28,21 @@ function fail(message) {
 function finiteNonNegative(value, name) {
   if (!Number.isFinite(value) || value < 0) fail(`${name} must be a finite non-negative number`);
   return value;
+}
+
+function finiteNonNegativeInteger(value, name) {
+  finiteNonNegative(value, name);
+  if (!Number.isInteger(value)) fail(`${name} must be an integer`);
+  return value;
+}
+
+function requireActualWindow(value, label) {
+  if (value?.evidence_mode !== "actual-production") fail(`${label} must be actual production evidence`);
+  if (!/^[a-f0-9]{40}$/.test(String(value?.deployed_revision || ""))) fail(`${label} deployed_revision must be a full commit SHA`);
+  if (!Number.isFinite(Date.parse(value?.observed_at))) fail(`${label} observed_at is invalid`);
+  if (typeof value?.workload_id !== "string" || !value.workload_id.trim()) fail(`${label} workload_id is required`);
+  finiteNonNegativeInteger(value?.workload_count, `${label}.workload_count`);
+  if (value.workload_count < 1) fail(`${label}.workload_count must be positive`);
 }
 
 function assertSanitized(value, path = "receipt") {
@@ -34,6 +56,16 @@ function assertSanitized(value, path = "receipt") {
 
 function requestFromTailEvent(event) {
   return event?.event?.request || event?.request || null;
+}
+
+function validateCondition(cohort, condition, path) {
+  if (!condition || typeof condition !== "object" || !condition.mode) fail(`${path} controlled condition evidence is required`);
+  if (cohort.endsWith(":cold") || cohort.endsWith(":warm")) {
+    if (condition.source !== "$metadata.coldStart" || typeof condition.cold_start !== "boolean") {
+      fail(`${path} must use provider $metadata.coldStart evidence`);
+    }
+    if (condition.cold_start !== cohort.endsWith(":cold")) fail(`${path} coldStart does not match cohort`);
+  }
 }
 
 /**
@@ -59,7 +91,7 @@ export function sanitizeNativeInvocation(event, {
   const cpu = event?.cpuTime ?? event?.$workers?.cpuTimeMs;
   const sourceField = event?.cpuTime !== undefined ? "cpuTime" : "$workers.cpuTimeMs";
   finiteNonNegative(cpu, "provider-native CPU");
-  if (!condition || typeof condition !== "object" || !condition.mode) fail("controlled condition evidence is required");
+  validateCondition(cohort, condition, "condition");
   if (!/^[a-f0-9]{40}$/.test(String(revision || ""))) fail("revision must be a full commit SHA");
   const sample = {
     cohort,
@@ -78,9 +110,10 @@ export function sanitizeNativeInvocation(event, {
 
 function validateOperationCounts(operations, path) {
   for (const [name, count] of Object.entries(operations || {})) {
+    if (!OPERATION_METERS.has(name)) fail(`${path}.${name} is not a supported operation meter`);
     if (!count || typeof count !== "object") fail(`${path}.${name} must separate attempted and confirmed`);
-    finiteNonNegative(count.attempted, `${path}.${name}.attempted`);
-    finiteNonNegative(count.confirmed, `${path}.${name}.confirmed`);
+    finiteNonNegativeInteger(count.attempted, `${path}.${name}.attempted`);
+    finiteNonNegativeInteger(count.confirmed, `${path}.${name}.confirmed`);
     if (count.confirmed > count.attempted) fail(`${path}.${name} confirmed exceeds attempted`);
   }
 }
@@ -128,6 +161,7 @@ export function buildWorkerCostProfile(samples, {
 }
 
 export function validateWorkerCostProfile(profile, { requireComplete = true } = {}) {
+  assertSanitized(profile);
   if (profile?.schema !== "cityscroll.worker_cost_profile.v1" || profile.kind !== "provider-native-bounded") fail("unsupported worker cost profile");
   if (!/^[a-f0-9]{40}$/.test(String(profile.revision || ""))) fail("profile revision must be a full commit SHA");
   if (!Number.isFinite(Date.parse(profile.observed_at))) fail("profile observed_at is invalid");
@@ -145,40 +179,50 @@ export function validateWorkerCostProfile(profile, { requireComplete = true } = 
     if (!Array.isArray(cohort.native_cpu_ms) || cohort.native_cpu_ms.length !== cohort.sample_count) fail(`${name} CPU samples do not match sample_count`);
     cohort.native_cpu_ms.forEach((value) => finiteNonNegative(value, `${name}.native_cpu_ms`));
     if (!["cpuTime", "$workers.cpuTimeMs"].includes(cohort.native_cpu_source?.field)) fail(`${name} does not use provider-native invocation CPU`);
-    if (!cohort.condition?.mode) fail(`${name} lacks controlled condition evidence`);
+    validateCondition(name, cohort.condition, `${name}.condition`);
     (cohort.operations || []).forEach((operations, index) => validateOperationCounts(operations, `${name}.operations[${index}]`));
   }
-  assertSanitized(profile);
   return { ok: true, complete: profile.complete === true };
 }
 
 export const WAREHOUSE_EXPERIMENT_COHORTS = Object.freeze([
-  "lookup.zap-bbl.cold", "lookup.zap-bbl.warm",
-  "lookup.zap-project.cold", "lookup.zap-project.warm",
-  "lookup.doing-business.cold", "lookup.doing-business.warm",
-  "control.health.cold", "control.health.warm",
-  "control.browse.cold", "control.browse.warm",
+  "zap-bbl:cold", "zap-bbl:warm",
+  "zap-project:cold", "zap-project:warm",
+  "doing-business:cold", "doing-business:warm",
+  "health:cold", "health:warm",
+  "browse:cold", "browse:warm",
 ]);
 
 function normalizedMeters(run) {
-  const workload = finiteNonNegative(run?.workload_count, "workload_count");
+  const workload = finiteNonNegativeInteger(run?.workload_count, "workload_count");
   if (workload < 1) fail("workload_count must be positive");
-  return Object.fromEntries(COST_METERS.map((meter) => [meter, finiteNonNegative(run?.meters?.[meter], meter) / workload]));
+  return Object.fromEntries(COST_METERS.map((meter) => {
+    const value = meter.endsWith("_ms")
+      ? finiteNonNegative(run?.meters?.[meter], meter)
+      : finiteNonNegativeInteger(run?.meters?.[meter], meter);
+    return [meter, value / workload];
+  }));
 }
 
 export function evaluateWarehouseExperiment({ baseline, candidate } = {}) {
+  assertSanitized({ baseline, candidate });
   for (const [label, run] of Object.entries({ baseline, candidate })) {
     if (!run || run.schema !== "cityscroll.warehouse_cost_experiment_run.v1") fail(`invalid ${label} experiment run`);
-    if (run.workload_count !== baseline.workload_count) fail("experiment workloads are not matched");
+    requireActualWindow(run, label);
+    if (run.workload_id !== baseline.workload_id || run.workload_count !== baseline.workload_count) fail("experiment workloads are not matched");
     for (const cohort of WAREHOUSE_EXPERIMENT_COHORTS) {
       if (!run.cohorts?.[cohort]?.sample_count) fail(`${label} is missing ${cohort}`);
       if (run.cohorts[cohort].cpu_source !== "provider-native-invocation") fail(`${label} ${cohort} does not use invocation CPU`);
+      validateCondition(cohort, run.cohorts[cohort].condition, `${label}.${cohort}.condition`);
     }
+    finiteNonNegativeInteger(run.error_count, `${label}.error_count`);
     for (const field of ["input_digest", "joins_digest", "provenance_digest", "miss_digest", "freshness_digest"]) {
       if (!run.correctness?.[field]) fail(`${label} is missing ${field}`);
       if (run.correctness[field] !== baseline.correctness[field]) fail(`candidate changed ${field}`);
     }
   }
+  if (baseline.deployed_revision === candidate.deployed_revision) fail("experiment revisions must be distinct");
+  if (Date.parse(candidate.observed_at) <= Date.parse(baseline.observed_at)) fail("candidate observation must follow baseline");
   const baselineMeters = normalizedMeters(baseline);
   const candidateMeters = normalizedMeters(candidate);
   const regressions = COST_METERS.filter((meter) => candidateMeters[meter] > baselineMeters[meter]);
@@ -189,7 +233,8 @@ export function evaluateWarehouseExperiment({ baseline, candidate } = {}) {
     schema: "cityscroll.warehouse_cost_experiment.v1",
     decision: accepted ? "candidate-retained" : "candidate-rejected",
     retained: accepted ? "candidate" : "baseline",
-    shipped_savings: accepted,
+    operation_recommendation: accepted ? "retain-candidate" : "retain-baseline",
+    financial_savings_confirmed: false,
     matched_workload_count: baseline.workload_count,
     baseline_normalized: baselineMeters,
     candidate_normalized: candidateMeters,
@@ -200,21 +245,31 @@ export function evaluateWarehouseExperiment({ baseline, candidate } = {}) {
 
 export function evaluateAllMeterRelease({ baseline, candidate } = {}) {
   if (!baseline || !candidate) fail("baseline and candidate release evidence are required");
+  assertSanitized({ baseline, candidate });
   for (const [label, receipt] of Object.entries({ baseline, candidate })) {
     if (receipt.schema !== "cityscroll.all_meter_release.v1") fail(`invalid ${label} all-meter receipt`);
-    if (receipt.publication?.unchanged?.route_key_puts !== 0 || receipt.publication?.unchanged?.manifest_puts !== 0) fail(`${label} unchanged publication is not a zero-write control`);
-    if (receipt.rum?.full_batch?.accepted !== 16 || receipt.rum?.full_batch?.kv_puts > 3) fail(`${label} weighted RUM control is incomplete`);
+    requireActualWindow(receipt, label);
     if (receipt.d1?.authority !== "independent" || receipt.d1?.complete !== true) fail(`${label} collapses independent D1 authority`);
     validateWorkerCostProfile(receipt.profile);
-    for (const meter of COST_METERS) finiteNonNegative(receipt.meters?.[meter], `${label}.${meter}`);
+    if (receipt.profile.revision !== receipt.deployed_revision) fail(`${label} profile revision does not match deployment`);
+    finiteNonNegativeInteger(receipt.errors, `${label}.errors`);
+    normalizedMeters(receipt);
   }
-  if (baseline.workload_id !== candidate.workload_id) fail("all-meter workloads are not equivalent");
-  const regressions = COST_METERS.filter((meter) => candidate.meters[meter] > baseline.meters[meter]);
+  if (baseline.workload_id !== candidate.workload_id || baseline.workload_count !== candidate.workload_count) fail("all-meter workloads are not equivalent");
+  if (baseline.deployed_revision === candidate.deployed_revision) fail("all-meter revisions must be distinct");
+  if (Date.parse(candidate.observed_at) <= Date.parse(baseline.observed_at)) fail("candidate observation must follow baseline");
+  if (candidate.publication?.unchanged?.route_key_puts !== 0 || candidate.publication?.unchanged?.manifest_puts !== 0) fail("candidate unchanged publication is not a zero-write control");
+  if (candidate.rum?.full_batch?.accepted !== 16 || candidate.rum?.full_batch?.kv_puts > 3) fail("candidate weighted RUM control is incomplete");
+  const baselineNormalized = normalizedMeters(baseline);
+  const candidateNormalized = normalizedMeters(candidate);
+  const regressions = COST_METERS.filter((meter) => candidateNormalized[meter] > baselineNormalized[meter]);
   if (candidate.errors > baseline.errors) regressions.push("errors");
   return {
     schema: "cityscroll.all_meter_release_decision.v1",
     pass: regressions.length === 0,
     regressions,
     tariff_free: true,
+    baseline_normalized: baselineNormalized,
+    candidate_normalized: candidateNormalized,
   };
 }

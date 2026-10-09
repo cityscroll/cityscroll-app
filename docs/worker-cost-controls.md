@@ -36,9 +36,10 @@ never become zero-valued samples. Attempted and confirmed operations are kept
 separate, and collector overhead is a required cohort.
 
 The fixed profile covers cold and warm health, unknown-route, events, full RUM,
-search, and Near You requests; all three configured cron windows; the digest
-queue; and collector overhead. Each cold or warm label requires explicit
-condition evidence rather than inferring isolate state from request order.
+search, Near You, Browse, ZAP BBL, ZAP project, and Doing Business requests;
+all three configured cron windows; the queue; and collector overhead. Each cold
+or warm label requires provider condition evidence rather than inferring
+isolate state from request order.
 
 ## Warehouse experiment and release gate
 
@@ -47,11 +48,15 @@ project, and Doing Business lookups with the route-scoped candidate under the
 same inputs and workload. Joins, provenance, miss behavior, freshness, and
 cohort sizes must match. The candidate is retained only when no CPU, KV,
 storage, collector, or error meter regresses and at least one meter improves;
-otherwise the baseline stays active and the result records no shipped saving.
+otherwise the baseline stays active. The experiment records an operational
+retention recommendation, never a financial-savings claim.
 
 The all-meter gate applies the same tariff-free, per-meter ratchet to an
-equivalent workload. It separately requires zero-write unchanged route
-publication, at most three KV puts for a sixteen-observation RUM batch, complete
+equivalent numeric workload, including D1 reads and writes as independent
+meters. The pre-control baseline may retain the old publication and RUM write
+counts; the candidate must demonstrate zero-write unchanged route publication
+and at most three KV puts for a sixteen-observation RUM batch. Both sides require
+ordered actual-production windows, distinct deployed revisions, complete
 provider-native profiles, and the existing D1 delta control under its own
 authority. Provider prices and account bills are not CI inputs.
 
