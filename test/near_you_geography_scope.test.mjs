@@ -113,11 +113,37 @@ test("A2: positive membership, published zero, unknown place, and activation fai
     "ready",
   );
 
+  // Mott Haven has property membership but no meetings hits. Observed-only
+  // serialization keeps meetings absent (source_unavailable) instead of a
+  // sibling-fabricated empty array.
   const mottHaven = readSlice("geography:nta2020:BX0101:meetings");
-  assert.equal(mottHaven.coverage.state, "zero");
-  assert.deepEqual(mottHaven.activity.geography_items.by_key["geography:nta2020:BX0101"].meetings, []);
+  assert.equal(mottHaven.coverage.state, "source_unavailable");
+  assert.equal(
+    Object.prototype.hasOwnProperty.call(
+      mottHaven.activity.geography_items.by_key["geography:nta2020:BX0101"] || {},
+      "meetings",
+    ),
+    false,
+  );
   assert.equal(
     geographyRecordProjection(mottHaven.activity, { key: "geography:nta2020:BX0101", lens: "meetings" }).state,
+    "unfilterable",
+  );
+
+  // Explicit measured zero remains distinct when the meetings lens itself publishes [].
+  const zeroSource = structuredClone(activity);
+  zeroSource.geography_items.by_key["geography:nta2020:BX0101"] = {
+    ...zeroSource.geography_items.by_key["geography:nta2020:BX0101"],
+    meetings: [],
+  };
+  const zeroBuilt = buildNearYou(zeroSource, {}, "distinct-zero", { residentialPlaces });
+  const zeroSlice = JSON.parse(
+    zeroBuilt.entries.find((row) => row.key === zeroBuilt.manifest.slices["geography:nta2020:BX0101:meetings"]).value,
+  );
+  assert.equal(zeroSlice.coverage.state, "zero");
+  assert.deepEqual(zeroSlice.activity.geography_items.by_key["geography:nta2020:BX0101"].meetings, []);
+  assert.equal(
+    geographyRecordProjection(zeroSlice.activity, { key: "geography:nta2020:BX0101", lens: "meetings" }).state,
     "zero",
   );
 
@@ -127,11 +153,11 @@ test("A2: positive membership, published zero, unknown place, and activation fai
   const neighborhood = readSlice("geography:nta2020:BX0101:meetings");
   const cdMembers = communityDistrict.activity.district_items?.by_level?.community_district?.X01?.meetings || [];
   assert.ok(Array.isArray(cdMembers));
-  assert.deepEqual(neighborhood.activity.geography_items.by_key["geography:nta2020:BX0101"].meetings, []);
+  const neighborhoodBag = neighborhood.activity.geography_items.by_key["geography:nta2020:BX0101"] || {};
+  assert.equal(Object.prototype.hasOwnProperty.call(neighborhoodBag, "meetings"), false);
   assert.equal(
-    JSON.stringify(neighborhood.activity.geography_items.by_key["geography:nta2020:BX0101"].meetings)
-      === JSON.stringify(cdMembers) && cdMembers.length > 0,
-    false,
+    cdMembers.length > 0 && neighborhoodBag.meetings === undefined,
+    true,
     "neighborhood slice must not inherit broader district membership",
   );
 
@@ -201,19 +227,31 @@ test("A3: live read-back receipt retains the five borough fixtures and activatio
   assert.equal(receipt.grounded_at, "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c");
   assert.ok(["awaiting_production_readback", "recorded"].includes(receipt.status));
   assert.deepEqual(receipt.fixtures.map((row) => row.id), ["BK0101", "QN0103", "SI0101", "MN0102", "BX0101"]);
+  // Current observed-only semantics: Mott Haven property membership no longer
+  // fabricates an empty meetings array, so BX0101 meetings is source_unavailable.
+  // The receipt keeps its capture-time expectation for audit.
+  const currentCoverageByFixture = {
+    BK0101: "source_unavailable",
+    QN0103: "source_unavailable",
+    SI0101: "source_unavailable",
+    MN0102: "ready",
+    BX0101: "source_unavailable",
+  };
   const built = buildNearYou(activity, {}, "receipt-check", { residentialPlaces });
   for (const fixture of receipt.fixtures) {
     const sliceId = `geography:nta2020:${fixture.id}:meetings`;
     const slice = JSON.parse(built.entries.find((row) => row.key === built.manifest.slices[sliceId]).value);
-    assert.equal(slice.coverage.state, fixture.expected_local_coverage, fixture.id);
+    assert.equal(slice.coverage.state, currentCoverageByFixture[fixture.id], fixture.id);
+    assert.ok(
+      ["ready", "zero", "source_unavailable"].includes(fixture.expected_local_coverage),
+      fixture.id,
+    );
     const key = `geography:nta2020:${fixture.id}`;
     const projection = geographyRecordProjection(slice.activity, { key, lens: "meetings" });
-    if (fixture.expected_projection_state === "ready" || fixture.expected_projection_state === "zero") {
-      assert.equal(projection.state, fixture.expected_projection_state, fixture.id);
+    if (currentCoverageByFixture[fixture.id] === "ready") {
+      assert.equal(projection.state, "ready", fixture.id);
+      assert.ok(projection.count > 0, fixture.id);
     } else {
-      // The receipt's capture revision collapsed every non-exact slice state
-      // into "unavailable". Its resident-facing claim (no exact membership, no
-      // count) must still hold; the state name now matches the full artifact.
       assert.equal(projection.exact, false, fixture.id);
       assert.equal(projection.count, null, fixture.id);
       assert.equal(projection.state, geographyRecordProjection(activity, { key, lens: "meetings" }).state, fixture.id);

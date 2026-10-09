@@ -95,9 +95,26 @@ test("A2: ready, zero, unknown geography, and transient failure remain distinct 
   assert.match(readyBody.results_html, /data-record-id=/);
   assert.match(readyBody.results_html, /data-results-count="[1-9]/);
 
-  const zero = await handleNearYou(new Request(
+  // Observed-only: Mott Haven property membership no longer fabricates meetings [].
+  const mottHaven = await handleNearYou(new Request(
     "https://cityscroll.org/near-you/deferred.json?geo=nta2020:BX0101&lens=meetings",
   ), { ALERT_STATE: kv(values) });
+  assert.equal(mottHaven.status, 200);
+  const mottHavenBody = await mottHaven.json();
+  assert.equal(mottHavenBody.schema, "cityscroll.near_you_deferred.v1");
+  assert.doesNotMatch(mottHavenBody.results_html, /data-results-count="0"/);
+  assert.match(mottHavenBody.results_html, /data-near-local-recovery="unsupported"/);
+
+  // Explicit measured zero remains distinct when the meetings lens publishes [].
+  const zeroActivity = structuredClone(committedActivity);
+  zeroActivity.geography_items.by_key["geography:nta2020:BX0101"] = {
+    ...zeroActivity.geography_items.by_key["geography:nta2020:BX0101"],
+    meetings: [],
+  };
+  const { values: zeroValues } = materialize(zeroActivity, "distinct-states-zero");
+  const zero = await handleNearYou(new Request(
+    "https://cityscroll.org/near-you/deferred.json?geo=nta2020:BX0101&lens=meetings",
+  ), { ALERT_STATE: kv(zeroValues) });
   assert.equal(zero.status, 200);
   const zeroBody = await zero.json();
   assert.equal(zeroBody.schema, "cityscroll.near_you_deferred.v1");

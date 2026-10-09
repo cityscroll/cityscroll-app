@@ -154,27 +154,100 @@ function canonicalJson(value) {
 
 export const COVERAGE_CONFLICT_REASON = "slice_coverage_conflict";
 
+/** Lenses the Near You route read model publishes as independent keyed slices. */
+export const NEAR_YOU_ACTIVITY_LENSES = Object.freeze([
+  "land",
+  "property",
+  "rules",
+  "meetings",
+  "money",
+]);
+
 /**
- * Coverage metadata for one same-lens request. Equal metadata is shared, never
- * added. Slices that disagree (a different generation, source date, or status)
- * cannot be combined, so the merged index is typed unavailable for the lenses
- * involved rather than inheriting whichever slice happened to load first. A
- * legacy slice that published no coverage contributes none; when no slice
- * carries coverage the result has none, preserving legacy membership semantics.
+ * Coverage metadata across loaded slices, merged per lens.
+ *
+ * Equal whole documents stay shared. Same-lens rows that disagree (generation,
+ * source date, or status) mark only that lens unavailable rather than poisoning
+ * every other category. Distinct lenses from a multi-lens load stay independent
+ * so Zoning can remain ready when Meetings coverage differs. A legacy slice that
+ * published no coverage contributes none; when no slice carries coverage the
+ * result has none, preserving legacy membership semantics.
  */
-function mergeCoverage(slices) {
+export function mergeCoverage(slices) {
   const published = slices
     .map((slice) => slice?.geography_items?.coverage)
     .filter((coverage) => coverage && typeof coverage === "object");
   if (!published.length) return undefined;
   const distinct = new Set(published.map(canonicalJson));
   if (distinct.size === 1) return published[0];
-  const lenses = [...new Set(published.flatMap((coverage) => Object.keys(coverage.by_lens || {})))].sort();
+
   const unavailable = { status: "unavailable", reason: COVERAGE_CONFLICT_REASON };
-  return {
-    ...unavailable,
-    by_lens: Object.fromEntries(lenses.map((lens) => [lens, { ...unavailable }])),
-  };
+  const lenses = [...new Set(published.flatMap((coverage) => Object.keys(coverage.by_lens || {})))].sort();
+  const by_lens = {};
+  let anyLensConflict = false;
+  for (const lens of lenses) {
+    const rows = published.map((coverage) => coverage.by_lens?.[lens]).filter(Boolean);
+    if (!rows.length) continue;
+    const lensDistinct = new Set(rows.map(canonicalJson));
+    if (lensDistinct.size === 1) {
+      by_lens[lens] = rows[0];
+      continue;
+    }
+    by_lens[lens] = { ...unavailable };
+    anyLensConflict = true;
+  }
+
+  // Preserve the prior whole-index unavailable reading when every published
+  // document was same-lens and those rows conflicted (the land pair canaries).
+  const publishedLensSets = published.map((coverage) => Object.keys(coverage.by_lens || {}).sort().join(","));
+  const singleLensConflict = anyLensConflict
+    && publishedLensSets.every((set) => set && set === publishedLensSets[0] && !set.includes(","));
+  if (singleLensConflict) {
+    return { ...unavailable, by_lens };
+  }
+
+  const topDistinct = new Set(published.map((coverage) => canonicalJson({
+    status: coverage.status ?? null,
+    reason: coverage.reason ?? null,
+  })));
+  const top = topDistinct.size === 1
+    ? { status: published[0].status, ...(published[0].reason != null ? { reason: published[0].reason } : {}) }
+    : { status: "ready" };
+  return { ...top, by_lens };
+}
+
+function scopeSelectsGeography(scope) {
+  const place = scope?.place || {};
+  return Boolean(
+    (Array.isArray(place.geographies) && place.geographies.length)
+    || place.location_scope
+    || place.council_districts?.length
+    || place.community_districts?.length
+    || place.boroughs?.length
+    || place.neighborhood,
+  );
+}
+
+/** Resolve which Near You lenses a request should load. */
+export function nearYouLensesForRequest(scope, lensArg = undefined) {
+  if (typeof lensArg === "string" && NEAR_YOU_ACTIVITY_LENSES.includes(lensArg)) {
+    return [lensArg];
+  }
+  if (Array.isArray(lensArg) && lensArg.length) {
+    const requested = [...new Set(lensArg.filter((lens) => NEAR_YOU_ACTIVITY_LENSES.includes(lens)))];
+    if (requested.length) return requested;
+  }
+  const domains = [...new Set(
+    (Array.isArray(scope?.facets?.domains) ? scope.facets.domains : [])
+      .filter((lens) => NEAR_YOU_ACTIVITY_LENSES.includes(lens)),
+  )];
+  if (domains.length) return domains;
+  // No category selected. A selected place loads every lens so each category's
+  // coverage stays independently available (Chelsea Zoning remains readable
+  // when Meetings is unfilterable). The unscoped root keeps the meetings
+  // default so borough suggestions do not fan out five lenses per borough.
+  if (scopeSelectsGeography(scope)) return NEAR_YOU_ACTIVITY_LENSES.slice();
+  return ["meetings"];
 }
 
 function mergeActivity(slices) {
@@ -291,7 +364,7 @@ export function clearRouteReadModelCache() {
  * Returns `sections`, one `{ state: "ready" | "unavailable", cause }` entry per
  * section, and `partial` when any section is unavailable.
  */
-export async function loadNearYouActivity(env, scope, lens = scope?.facets?.domains?.[0] || "meetings") {
+export async function loadNearYouActivity(env, scope, lens = undefined) {
   if (missingBinding(env)) {
     return {
       activity: NEAR_YOU_FLOOR,
@@ -312,13 +385,13 @@ export async function loadNearYouActivity(env, scope, lens = scope?.facets?.doma
     throw new RouteReadModelUnavailable("near-you route read-model manifest read failed", ROUTE_READ_MODEL_CAUSES.readFailed);
   });
   const plan = nearYouSectionPlan(scope);
-  const sliceLens = ["land", "property", "rules", "meetings", "money"].includes(lens) ? lens : "meetings";
+  const lenses = nearYouLensesForRequest(scope, lens);
   const state = stateFor(kv);
   // One read per distinct slice key within this request, never shared with
   // another request's active I/O. An id the manifest does not publish starts
   // no read and is an unknown geography, not an empty result.
   const reads = new Map();
-  const readFor = (id) => {
+  const readFor = (id, sliceLens) => {
     const key = sliceKey(manifest, id, sliceLens);
     if (!key) {
       return Promise.resolve({ ok: false, cause: ROUTE_READ_MODEL_CAUSES.unknownGeography });
@@ -335,11 +408,29 @@ export async function loadNearYouActivity(env, scope, lens = scope?.facets?.doma
     return reads.get(key);
   };
   const settled = await Promise.all(Object.entries(plan).map(async ([section, ids]) => {
-    const outcomes = await Promise.all(ids.map(readFor));
-    const failed = outcomes.find((outcome) => !outcome.ok);
-    return [section, failed
-      ? { state: "unavailable", cause: failed.cause, slices: [] }
-      : { state: "ready", cause: null, slices: outcomes.map((outcome) => outcome.slice) }];
+    const outcomes = await Promise.all(ids.flatMap((id) => lenses.map(async (sliceLens) => {
+      const outcome = await readFor(id, sliceLens);
+      return { id, lens: sliceLens, ...outcome };
+    })));
+    // An id is satisfied when at least one requested lens loads. Meetings can
+    // fail while Land still contributes exact membership for the same place.
+    // unknown_geography stays distinct from read_failed / missing / malformed.
+    const succeeded = outcomes.filter((outcome) => outcome.ok);
+    const idsWithSuccess = new Set(succeeded.map((outcome) => outcome.id));
+    const failedId = ids.find((id) => !idsWithSuccess.has(id));
+    if (failedId) {
+      const failure = outcomes.find((outcome) => outcome.id === failedId && !outcome.ok);
+      return [section, {
+        state: "unavailable",
+        cause: failure?.cause || ROUTE_READ_MODEL_CAUSES.readFailed,
+        slices: [],
+      }];
+    }
+    return [section, {
+      state: "ready",
+      cause: null,
+      slices: succeeded.map((outcome) => outcome.slice),
+    }];
   }));
   const sections = Object.fromEntries(settled.map(([section, { state: sectionState, cause }]) => [
     section, { state: sectionState, cause },
@@ -355,6 +446,7 @@ export async function loadNearYouActivity(env, scope, lens = scope?.facets?.doma
     communityGeography: loaded.find((slice) => slice.community_geography)?.community_geography || {},
     version: manifest.version,
     sections,
+    lenses,
     partial: Object.values(sections).some((section) => section.state !== "ready"),
   };
 }

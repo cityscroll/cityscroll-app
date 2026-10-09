@@ -62,3 +62,22 @@ Full-corpus acquisition requires `LEGISTAR_API_TOKEN`; the token is passed only
 to the existing authenticated client and is never written to cache or logs.
 The retained-law retry needs no API credential because it uses the public,
 source-linked Legistar detail pages already named by the comparison snapshot.
+
+`backfill.mjs --reference` is optional. When a private comparison corpus is
+absent, extraction still completes and writes
+`differential_self_check_receipt.json` with `status: "not_run"` and
+`reason: "private_reference_unavailable"`. That receipt is never treated as a
+passing self-check.
+
+Default extraction concurrency is 6 (`--concurrency`) with exponential backoff
+on provider 429 / rate-limit errors. Per-law extract failures stay quarantined
+so one bad law does not abort the corpus run. Attachment text that stays below
+the substantive-length floor after a timed decode is quarantined as
+`short_text_pending_timed_attachment_decode` and skipped for extraction.
+
+Operator-retained backfill payloads (`our.json` and per-law envelopes under
+`output/`) stay gitignored. After a successful corpus run, copy `our.json` into
+`tools/law_mandates/private/retained-backfill/` with a `MANIFEST.json` that
+records `sha256`, byte length, model, prompt version, and law/mandate counts so
+the next refresh can resume from retained per-law outputs instead of
+re-extracting the full corpus.

@@ -17,9 +17,9 @@
     "provision_count": 8598,
     "provisions_with_history_note": 2156,
     "cited_provision_count": 2314,
-    "mandate_joined_provision_count": 619,
+    "mandate_joined_provision_count": 660,
     "ranking_candidate_count": 8542,
-    "ranking_fingerprint": "sha256:6000ab43f8fac3c58a6682dc132d544eacbd485c23ea80b0bfcc7eaa457bfeaf"
+    "ranking_fingerprint": "sha256:cdaf32f7d06cb1a5dff0ea08670b9e62ba98bf5c308c02cad33dbdb2b9dc44d1"
   },
   "unavailable_inputs": [
     {
@@ -81,11 +81,11 @@
       "rule": "highest measured score first among recoverable sections, bounded by limit and minimum score",
       "limit": 24,
       "minimum_score": 60,
-      "lowest_selected_score": 99,
+      "lowest_selected_score": 103,
       "next_excluded": {
-        "provision_id": "nyc-administrative-code:14-155",
-        "citation": "§ 14-155",
-        "score": 99
+        "provision_id": "nyc-administrative-code:20-1208",
+        "citation": "§ 20-1208",
+        "score": 102
       }
     },
     "weights": {
@@ -154,6 +154,20 @@
       },
       {
         "rank": 7,
+        "provision_id": "nyc-administrative-code:14-150",
+        "citation": "§ 14-150",
+        "heading": "Police department reporting requirements.",
+        "score": 203,
+        "inputs": {
+          "inbound_reference_count": 1,
+          "retained_change_count": 7,
+          "distinct_instrument_count": 7,
+          "mandate_join_count": 22,
+          "authority_citation_count": 0
+        }
+      },
+      {
+        "rank": 8,
         "provision_id": "nyc-administrative-code:13-638.2",
         "citation": "§ 13-638.2",
         "heading": "Supplementary provisions regarding employer contributions to retirement systems for fiscal years beginning on or after July first, nineteen hundred eighty-nine, for amortization of consolidated unfunded accrued liabilities and balance sheet liabilities for the nineteen hundred ninety – nineteen hundred ninety-one, nineteen hundred ninety-one – nineteen hundred ninety-two and nineteen hundred ninety-two – nineteen hundred ninety-three fiscal years, and for amortization of such liabilities and certain other unfunded accrued liabilities pursuant to the level percentage of payroll method in certain fiscal years thereafter; rates of interest.",
@@ -167,49 +181,49 @@
         }
       },
       {
-        "rank": 8,
+        "rank": 9,
         "provision_id": "nyc-administrative-code:9-163",
         "citation": "§ 9-163",
         "heading": "Medical care and outcomes for incarcerated pregnant persons.",
-        "score": 180,
+        "score": 172,
         "inputs": {
           "inbound_reference_count": 0,
           "retained_change_count": 1,
           "distinct_instrument_count": 1,
-          "mandate_join_count": 41,
-          "authority_citation_count": 0
-        }
-      },
-      {
-        "rank": 9,
-        "provision_id": "nyc-administrative-code:21-955",
-        "citation": "§ 21-955",
-        "heading": "Reporting on special education services.",
-        "score": 164,
-        "inputs": {
-          "inbound_reference_count": 0,
-          "retained_change_count": 8,
-          "distinct_instrument_count": 8,
-          "mandate_join_count": 9,
+          "mandate_join_count": 39,
           "authority_citation_count": 0
         }
       },
       {
         "rank": 10,
-        "provision_id": "nyc-administrative-code:21-145",
-        "citation": "§ 21-145",
-        "heading": "Use of rental assistance vouchers.",
-        "score": 160,
+        "provision_id": "nyc-administrative-code:27-2093.1",
+        "citation": "§ 27-2093.1",
+        "heading": "Certification of no harassment with respect to pilot program buildings.",
+        "score": 169,
         "inputs": {
-          "inbound_reference_count": 0,
-          "retained_change_count": 6,
-          "distinct_instrument_count": 6,
-          "mandate_join_count": 16,
+          "inbound_reference_count": 7,
+          "retained_change_count": 3,
+          "distinct_instrument_count": 3,
+          "mandate_join_count": 25,
           "authority_citation_count": 0
         }
       },
       {
         "rank": 11,
+        "provision_id": "nyc-administrative-code:21-955",
+        "citation": "§ 21-955",
+        "heading": "Reporting on special education services.",
+        "score": 168,
+        "inputs": {
+          "inbound_reference_count": 0,
+          "retained_change_count": 8,
+          "distinct_instrument_count": 8,
+          "mandate_join_count": 10,
+          "authority_citation_count": 0
+        }
+      },
+      {
+        "rank": 12,
         "provision_id": "nyc-administrative-code:11-652",
         "citation": "§ 11-652",
         "heading": "Definitions.",
@@ -223,21 +237,21 @@
         }
       },
       {
-        "rank": 12,
-        "provision_id": "nyc-administrative-code:14-150",
-        "citation": "§ 14-150",
-        "heading": "Police department reporting requirements.",
-        "score": 147,
+        "rank": 13,
+        "provision_id": "nyc-administrative-code:9-156",
+        "citation": "§ 9-156",
+        "heading": "Sexual abuse reporting.",
+        "score": 148,
         "inputs": {
-          "inbound_reference_count": 1,
-          "retained_change_count": 7,
-          "distinct_instrument_count": 7,
-          "mandate_join_count": 8,
+          "inbound_reference_count": 0,
+          "retained_change_count": 4,
+          "distinct_instrument_count": 4,
+          "mandate_join_count": 21,
           "authority_citation_count": 0
         }
       },
       {
-        "rank": 13,
+        "rank": 14,
         "provision_id": "nyc-administrative-code:11-602",
         "citation": "§ 11-602",
         "heading": "Definitions.",
@@ -251,21 +265,21 @@
         }
       },
       {
-        "rank": 14,
+        "rank": 15,
         "provision_id": "nyc-administrative-code:22-1002",
         "citation": "§ 22-1002",
         "heading": "Online business supports.",
-        "score": 142,
+        "score": 146,
         "inputs": {
           "inbound_reference_count": 2,
           "retained_change_count": 6,
           "distinct_instrument_count": 6,
-          "mandate_join_count": 10,
+          "mandate_join_count": 11,
           "authority_citation_count": 0
         }
       },
       {
-        "rank": 15,
+        "rank": 16,
         "provision_id": "nyc-administrative-code:11-654",
         "citation": "§ 11-654",
         "heading": "Computation of tax.",
@@ -279,7 +293,35 @@
         }
       },
       {
-        "rank": 16,
+        "rank": 17,
+        "provision_id": "nyc-administrative-code:21-922",
+        "citation": "§ 21-922",
+        "heading": "Juvenile justice advisory board.*",
+        "score": 132,
+        "inputs": {
+          "inbound_reference_count": 0,
+          "retained_change_count": 1,
+          "distinct_instrument_count": 1,
+          "mandate_join_count": 29,
+          "authority_citation_count": 0
+        }
+      },
+      {
+        "rank": 18,
+        "provision_id": "nyc-administrative-code:19-101.2",
+        "citation": "§ 19-101.2",
+        "heading": "Review of major transportation projects.",
+        "score": 126,
+        "inputs": {
+          "inbound_reference_count": 6,
+          "retained_change_count": 4,
+          "distinct_instrument_count": 4,
+          "mandate_join_count": 11,
+          "authority_citation_count": 0
+        }
+      },
+      {
+        "rank": 19,
         "provision_id": "nyc-administrative-code:26-405",
         "citation": "§ 26-405",
         "heading": "General powers and duties of the city rent agency.",
@@ -293,7 +335,7 @@
         }
       },
       {
-        "rank": 17,
+        "rank": 20,
         "provision_id": "nyc-administrative-code:11-1706",
         "citation": "§ 11-1706",
         "heading": "Credits against tax.",
@@ -307,7 +349,7 @@
         }
       },
       {
-        "rank": 18,
+        "rank": 21,
         "provision_id": "nyc-administrative-code:11-1701",
         "citation": "§ 11-1701",
         "heading": "Imposition of tax.",
@@ -321,21 +363,35 @@
         }
       },
       {
-        "rank": 19,
-        "provision_id": "nyc-administrative-code:19-101.2",
-        "citation": "§ 19-101.2",
-        "heading": "Review of major transportation projects.",
-        "score": 114,
+        "rank": 22,
+        "provision_id": "nyc-administrative-code:9-140",
+        "citation": "§ 9-140",
+        "heading": "Jail visitation statistics.",
+        "score": 116,
         "inputs": {
-          "inbound_reference_count": 6,
+          "inbound_reference_count": 0,
           "retained_change_count": 4,
           "distinct_instrument_count": 4,
-          "mandate_join_count": 8,
+          "mandate_join_count": 13,
           "authority_citation_count": 0
         }
       },
       {
-        "rank": 20,
+        "rank": 23,
+        "provision_id": "nyc-administrative-code:12-212",
+        "citation": "§ 12-212",
+        "heading": "Public service corps program.",
+        "score": 116,
+        "inputs": {
+          "inbound_reference_count": 0,
+          "retained_change_count": 1,
+          "distinct_instrument_count": 1,
+          "mandate_join_count": 25,
+          "authority_citation_count": 0
+        }
+      },
+      {
+        "rank": 24,
         "provision_id": "nyc-administrative-code:13-101",
         "citation": "§ 13-101",
         "heading": "Definitions.",
@@ -349,35 +405,21 @@
         }
       },
       {
-        "rank": 21,
-        "provision_id": "nyc-administrative-code:9-156",
-        "citation": "§ 9-156",
-        "heading": "Sexual abuse reporting.",
-        "score": 112,
+        "rank": 25,
+        "provision_id": "nyc-administrative-code:7-628",
+        "citation": "§ 7-628",
+        "heading": "Notification of recording of real estate instruments.",
+        "score": 111,
         "inputs": {
-          "inbound_reference_count": 0,
+          "inbound_reference_count": 1,
           "retained_change_count": 4,
           "distinct_instrument_count": 4,
-          "mandate_join_count": 12,
+          "mandate_join_count": 11,
           "authority_citation_count": 0
         }
       },
       {
-        "rank": 22,
-        "provision_id": "nyc-administrative-code:20-1208",
-        "citation": "§ 20-1208",
-        "heading": "Specific administrative remedies.",
-        "score": 110,
-        "inputs": {
-          "inbound_reference_count": 2,
-          "retained_change_count": 5,
-          "distinct_instrument_count": 5,
-          "mandate_join_count": 6,
-          "authority_citation_count": 0
-        }
-      },
-      {
-        "rank": 24,
+        "rank": 28,
         "provision_id": "nyc-administrative-code:20-1522",
         "citation": "§ 20-1522",
         "heading": "Minimum payment.",
@@ -391,7 +433,7 @@
         }
       },
       {
-        "rank": 25,
+        "rank": 29,
         "provision_id": "nyc-administrative-code:26-511",
         "citation": "§ 26-511",
         "heading": "Real estate industry stabilization association.",
@@ -405,72 +447,30 @@
         }
       },
       {
-        "rank": 26,
-        "provision_id": "nyc-administrative-code:9-140",
-        "citation": "§ 9-140",
-        "heading": "Jail visitation statistics.",
+        "rank": 31,
+        "provision_id": "nyc-administrative-code:21-145",
+        "citation": "§ 21-145",
+        "heading": "Use of rental assistance vouchers.",
         "score": 104,
         "inputs": {
           "inbound_reference_count": 0,
-          "retained_change_count": 4,
-          "distinct_instrument_count": 4,
-          "mandate_join_count": 10,
+          "retained_change_count": 6,
+          "distinct_instrument_count": 6,
+          "mandate_join_count": 2,
           "authority_citation_count": 0
         }
       },
       {
-        "rank": 27,
-        "provision_id": "nyc-administrative-code:9-141",
-        "citation": "§ 9-141",
-        "heading": "Menstrual products.",
-        "score": 104,
-        "inputs": {
-          "inbound_reference_count": 0,
-          "retained_change_count": 4,
-          "distinct_instrument_count": 4,
-          "mandate_join_count": 10,
-          "authority_citation_count": 0
-        }
-      },
-      {
-        "rank": 28,
-        "provision_id": "nyc-administrative-code:12-212",
-        "citation": "§ 12-212",
-        "heading": "Public service corps program.",
-        "score": 104,
-        "inputs": {
-          "inbound_reference_count": 0,
-          "retained_change_count": 1,
-          "distinct_instrument_count": 1,
-          "mandate_join_count": 22,
-          "authority_citation_count": 0
-        }
-      },
-      {
-        "rank": 29,
-        "provision_id": "nyc-administrative-code:18-150",
-        "citation": "§ 18-150",
-        "heading": "Defibrillators at youth baseball games and youth softball games and practices in parks.",
-        "score": 100,
-        "inputs": {
-          "inbound_reference_count": 0,
-          "retained_change_count": 5,
-          "distinct_instrument_count": 5,
-          "mandate_join_count": 5,
-          "authority_citation_count": 0
-        }
-      },
-      {
-        "rank": 30,
+        "rank": 32,
         "provision_id": "nyc-administrative-code:17-911",
         "citation": "§ 17-911",
         "heading": "Required investigation.",
-        "score": 99,
+        "score": 103,
         "inputs": {
           "inbound_reference_count": 1,
           "retained_change_count": 3,
           "distinct_instrument_count": 3,
-          "mandate_join_count": 12,
+          "mandate_join_count": 13,
           "authority_citation_count": 0
         }
       }
@@ -538,11 +538,235 @@
     },
     {
       "schema": "cityscroll.code_history_backfill_coverage.v1",
+      "provision_id": "nyc-administrative-code:14-150",
+      "citation": "§ 14-150",
+      "heading": "Police department reporting requirements.",
+      "batch_id": "batch-1",
+      "rank": 7,
+      "corpus_id": "nyc-administrative-code",
+      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-25085",
+      "observed_at": "2026-08-24T08:25:03.900Z",
+      "retained_change_count": 7,
+      "unresolved_observation_count": 0,
+      "instruments": [
+        {
+          "instrument_ref": "ny-laws:2015:ch-565",
+          "instrument_kind": "state_law",
+          "instrument_label": "2015 New York Laws chapter 565",
+          "operations": [
+            "amend"
+          ],
+          "effective_at": "2015-12-21",
+          "effective_basis": "stated"
+        },
+        {
+          "instrument_ref": "local-law:71-2016",
+          "instrument_kind": "local_law",
+          "instrument_label": "Local Law 71 of 2016",
+          "operations": [
+            "amend"
+          ],
+          "effective_at": "2016-06-13",
+          "effective_basis": "stated"
+        },
+        {
+          "instrument_ref": "local-law:108-2016",
+          "instrument_kind": "local_law",
+          "instrument_label": "Local Law 108 of 2016",
+          "operations": [
+            "amend"
+          ],
+          "effective_at": "2016-10-28",
+          "effective_basis": "stated"
+        },
+        {
+          "instrument_ref": "local-law:129-2016",
+          "instrument_kind": "local_law",
+          "instrument_label": "Local Law 129 of 2016",
+          "operations": [
+            "amend"
+          ],
+          "effective_at": "2017-01-29",
+          "effective_basis": "stated"
+        },
+        {
+          "instrument_ref": "local-law:38-2019",
+          "instrument_kind": "local_law",
+          "instrument_label": "Local Law 38 of 2019",
+          "operations": [
+            "amend"
+          ],
+          "effective_at": "2019-02-24",
+          "effective_basis": "stated"
+        },
+        {
+          "instrument_ref": "local-law:186-2019",
+          "instrument_kind": "local_law",
+          "instrument_label": "Local Law 186 of 2019",
+          "operations": [
+            "amend"
+          ],
+          "effective_at": "2019-10-26",
+          "effective_basis": "stated"
+        },
+        {
+          "instrument_ref": "local-law:29-2024",
+          "instrument_kind": "local_law",
+          "instrument_label": "Local Law 29 of 2024",
+          "operations": [
+            "amend"
+          ],
+          "effective_at": "2024-07-01",
+          "effective_basis": "stated"
+        }
+      ],
+      "instrument_refs": [
+        "ny-laws:2015:ch-565",
+        "local-law:71-2016",
+        "local-law:108-2016",
+        "local-law:129-2016",
+        "local-law:38-2019",
+        "local-law:186-2019",
+        "local-law:29-2024"
+      ],
+      "local_law_refs": [
+        "local-law:71-2016",
+        "local-law:108-2016",
+        "local-law:129-2016",
+        "local-law:38-2019",
+        "local-law:186-2019",
+        "local-law:29-2024"
+      ],
+      "state_law_refs": [
+        "ny-laws:2015:ch-565"
+      ],
+      "earliest_recorded_change": "2015-12-21",
+      "latest_recorded_change": "2024-07-01",
+      "historical_version_count": 0,
+      "materialization": {
+        "materialized": 0,
+        "partially_materialized": 0,
+        "unresolved": 7
+      },
+      "intervals": [
+        {
+          "from": null,
+          "to": "2015-12-21",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "no retained evidence before the earliest recorded change"
+        },
+        {
+          "from": "2015-12-21",
+          "to": "2016-06-13",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        },
+        {
+          "from": "2016-06-13",
+          "to": "2016-10-28",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        },
+        {
+          "from": "2016-10-28",
+          "to": "2017-01-29",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        },
+        {
+          "from": "2017-01-29",
+          "to": "2019-02-24",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        },
+        {
+          "from": "2019-02-24",
+          "to": "2019-10-26",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        },
+        {
+          "from": "2019-10-26",
+          "to": "2024-07-01",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        },
+        {
+          "from": "2024-07-01",
+          "to": "2026-08-24",
+          "status": "covered_by_current_snapshot",
+          "basis": "derived",
+          "reason": "the retained current text applies from the last change the publisher records"
+        }
+      ],
+      "unknown_intervals": [
+        {
+          "from": null,
+          "to": "2015-12-21",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "no retained evidence before the earliest recorded change"
+        },
+        {
+          "from": "2015-12-21",
+          "to": "2016-06-13",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        },
+        {
+          "from": "2016-06-13",
+          "to": "2016-10-28",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        },
+        {
+          "from": "2016-10-28",
+          "to": "2017-01-29",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        },
+        {
+          "from": "2017-01-29",
+          "to": "2019-02-24",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        },
+        {
+          "from": "2019-02-24",
+          "to": "2019-10-26",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        },
+        {
+          "from": "2019-10-26",
+          "to": "2024-07-01",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        }
+      ],
+      "conflicts": [],
+      "complete_history": false
+    },
+    {
+      "schema": "cityscroll.code_history_backfill_coverage.v1",
       "provision_id": "nyc-administrative-code:13-638.2",
       "citation": "§ 13-638.2",
       "heading": "Supplementary provisions regarding employer contributions to retirement systems for fiscal years beginning on or after July first, nineteen hundred eighty-nine, for amortization of consolidated unfunded accrued liabilities and balance sheet liabilities for the nineteen hundred ninety – nineteen hundred ninety-one, nineteen hundred ninety-one – nineteen hundred ninety-two and nineteen hundred ninety-two – nineteen hundred ninety-three fiscal years, and for amortization of such liabilities and certain other unfunded accrued liabilities pursuant to the level percentage of payroll method in certain fiscal years thereafter; rates of interest.",
       "batch_id": "batch-1",
-      "rank": 7,
+      "rank": 8,
       "corpus_id": "nyc-administrative-code",
       "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-23725",
       "observed_at": "2026-08-24T08:25:03.900Z",
@@ -777,7 +1001,7 @@
       "citation": "§ 9-163",
       "heading": "Medical care and outcomes for incarcerated pregnant persons.",
       "batch_id": "batch-1",
-      "rank": 8,
+      "rank": 9,
       "corpus_id": "nyc-administrative-code",
       "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-223981",
       "observed_at": "2026-08-24T08:25:03.900Z",
@@ -832,11 +1056,123 @@
     },
     {
       "schema": "cityscroll.code_history_backfill_coverage.v1",
+      "provision_id": "nyc-administrative-code:27-2093.1",
+      "citation": "§ 27-2093.1",
+      "heading": "Certification of no harassment with respect to pilot program buildings.",
+      "batch_id": "batch-1",
+      "rank": 10,
+      "corpus_id": "nyc-administrative-code",
+      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-61039",
+      "observed_at": "2026-08-24T08:25:03.900Z",
+      "retained_change_count": 3,
+      "unresolved_observation_count": 0,
+      "instruments": [
+        {
+          "instrument_ref": "local-law:1-2018",
+          "instrument_kind": "local_law",
+          "instrument_label": "Local Law 1 of 2018",
+          "operations": [
+            "add"
+          ],
+          "effective_at": "2018-09-27",
+          "effective_basis": "stated"
+        },
+        {
+          "instrument_ref": "local-law:119-2021",
+          "instrument_kind": "local_law",
+          "instrument_label": "Local Law 119 of 2021",
+          "operations": [
+            "amend"
+          ],
+          "effective_at": "2021-09-27",
+          "effective_basis": "stated"
+        },
+        {
+          "instrument_ref": "local-law:140-2021",
+          "instrument_kind": "local_law",
+          "instrument_label": "Local Law 140 of 2021",
+          "operations": [
+            "amend"
+          ],
+          "effective_at": "2021-10-31",
+          "effective_basis": "stated"
+        }
+      ],
+      "instrument_refs": [
+        "local-law:1-2018",
+        "local-law:119-2021",
+        "local-law:140-2021"
+      ],
+      "local_law_refs": [
+        "local-law:1-2018",
+        "local-law:119-2021",
+        "local-law:140-2021"
+      ],
+      "state_law_refs": [],
+      "earliest_recorded_change": "2018-09-27",
+      "latest_recorded_change": "2021-10-31",
+      "historical_version_count": 0,
+      "materialization": {
+        "materialized": 0,
+        "partially_materialized": 0,
+        "unresolved": 3
+      },
+      "intervals": [
+        {
+          "from": null,
+          "to": "2018-09-27",
+          "status": "before_enactment",
+          "basis": "source_stated",
+          "reason": "the publisher records this section as added on this date"
+        },
+        {
+          "from": "2018-09-27",
+          "to": "2021-09-27",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        },
+        {
+          "from": "2021-09-27",
+          "to": "2021-10-31",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        },
+        {
+          "from": "2021-10-31",
+          "to": "2026-08-24",
+          "status": "covered_by_current_snapshot",
+          "basis": "derived",
+          "reason": "the retained current text applies from the last change the publisher records"
+        }
+      ],
+      "unknown_intervals": [
+        {
+          "from": "2018-09-27",
+          "to": "2021-09-27",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        },
+        {
+          "from": "2021-09-27",
+          "to": "2021-10-31",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        }
+      ],
+      "conflicts": [],
+      "complete_history": false
+    },
+    {
+      "schema": "cityscroll.code_history_backfill_coverage.v1",
       "provision_id": "nyc-administrative-code:21-955",
       "citation": "§ 21-955",
       "heading": "Reporting on special education services.",
       "batch_id": "batch-1",
-      "rank": 9,
+      "rank": 11,
       "corpus_id": "nyc-administrative-code",
       "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-38527",
       "observed_at": "2026-08-24T08:25:03.900Z",
@@ -1046,159 +1382,11 @@
     },
     {
       "schema": "cityscroll.code_history_backfill_coverage.v1",
-      "provision_id": "nyc-administrative-code:21-145",
-      "citation": "§ 21-145",
-      "heading": "Use of rental assistance vouchers.",
-      "batch_id": "batch-1",
-      "rank": 10,
-      "corpus_id": "nyc-administrative-code",
-      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-133658",
-      "observed_at": "2026-08-24T08:25:03.900Z",
-      "retained_change_count": 6,
-      "unresolved_observation_count": 0,
-      "instruments": [
-        {
-          "instrument_ref": "local-law:71-2021",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 71 of 2021",
-          "operations": [
-            "add"
-          ],
-          "effective_at": "2021-12-24",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:100-2023",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 100 of 2023",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2024-01-09",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:101-2023",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 101 of 2023",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2024-01-09",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:102-2023",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 102 of 2023",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2024-01-09",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:99-2023",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 99 of 2023",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2024-01-09",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:176-2025",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 176 of 2025",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2026-03-04",
-          "effective_basis": "stated"
-        }
-      ],
-      "instrument_refs": [
-        "local-law:71-2021",
-        "local-law:100-2023",
-        "local-law:101-2023",
-        "local-law:102-2023",
-        "local-law:99-2023",
-        "local-law:176-2025"
-      ],
-      "local_law_refs": [
-        "local-law:71-2021",
-        "local-law:100-2023",
-        "local-law:101-2023",
-        "local-law:102-2023",
-        "local-law:99-2023",
-        "local-law:176-2025"
-      ],
-      "state_law_refs": [],
-      "earliest_recorded_change": "2021-12-24",
-      "latest_recorded_change": "2026-03-04",
-      "historical_version_count": 0,
-      "materialization": {
-        "materialized": 0,
-        "partially_materialized": 0,
-        "unresolved": 6
-      },
-      "intervals": [
-        {
-          "from": null,
-          "to": "2021-12-24",
-          "status": "before_enactment",
-          "basis": "source_stated",
-          "reason": "the publisher records this section as added on this date"
-        },
-        {
-          "from": "2021-12-24",
-          "to": "2024-01-09",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2024-01-09",
-          "to": "2026-03-04",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2026-03-04",
-          "to": "2026-08-24",
-          "status": "covered_by_current_snapshot",
-          "basis": "derived",
-          "reason": "the retained current text applies from the last change the publisher records"
-        }
-      ],
-      "unknown_intervals": [
-        {
-          "from": "2021-12-24",
-          "to": "2024-01-09",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2024-01-09",
-          "to": "2026-03-04",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        }
-      ],
-      "conflicts": [],
-      "complete_history": false
-    },
-    {
-      "schema": "cityscroll.code_history_backfill_coverage.v1",
       "provision_id": "nyc-administrative-code:11-652",
       "citation": "§ 11-652",
       "heading": "Definitions.",
       "batch_id": "batch-1",
-      "rank": 11,
+      "rank": 12,
       "corpus_id": "nyc-administrative-code",
       "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-11203",
       "observed_at": "2026-08-24T08:25:03.900Z",
@@ -1443,168 +1631,111 @@
     },
     {
       "schema": "cityscroll.code_history_backfill_coverage.v1",
-      "provision_id": "nyc-administrative-code:14-150",
-      "citation": "§ 14-150",
-      "heading": "Police department reporting requirements.",
+      "provision_id": "nyc-administrative-code:9-156",
+      "citation": "§ 9-156",
+      "heading": "Sexual abuse reporting.",
       "batch_id": "batch-1",
-      "rank": 12,
+      "rank": 13,
       "corpus_id": "nyc-administrative-code",
-      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-25085",
+      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-128991",
       "observed_at": "2026-08-24T08:25:03.900Z",
-      "retained_change_count": 7,
+      "retained_change_count": 4,
       "unresolved_observation_count": 0,
       "instruments": [
         {
-          "instrument_ref": "ny-laws:2015:ch-565",
+          "instrument_ref": "local-law:21-2019",
+          "instrument_kind": "local_law",
+          "instrument_label": "Local Law 21 of 2019",
+          "operations": [
+            "add"
+          ],
+          "effective_at": "2019-01-20",
+          "effective_basis": "stated"
+        },
+        {
+          "instrument_ref": "ny-laws:2022:ch-486",
           "instrument_kind": "state_law",
-          "instrument_label": "2015 New York Laws chapter 565",
+          "instrument_label": "2022 New York Laws chapter 486",
           "operations": [
             "amend"
           ],
-          "effective_at": "2015-12-21",
+          "effective_at": "2022-08-08",
           "effective_basis": "stated"
         },
         {
-          "instrument_ref": "local-law:71-2016",
+          "instrument_ref": "local-law:33-2025",
           "instrument_kind": "local_law",
-          "instrument_label": "Local Law 71 of 2016",
+          "instrument_label": "Local Law 33 of 2025",
           "operations": [
             "amend"
           ],
-          "effective_at": "2016-06-13",
+          "effective_at": "2025-03-29",
           "effective_basis": "stated"
         },
         {
-          "instrument_ref": "local-law:108-2016",
+          "instrument_ref": "local-law:24-2025",
           "instrument_kind": "local_law",
-          "instrument_label": "Local Law 108 of 2016",
+          "instrument_label": "Local Law 24 of 2025",
           "operations": [
             "amend"
           ],
-          "effective_at": "2016-10-28",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:129-2016",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 129 of 2016",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2017-01-29",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:38-2019",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 38 of 2019",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2019-02-24",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:186-2019",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 186 of 2019",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2019-10-26",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:29-2024",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 29 of 2024",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2024-07-01",
+          "effective_at": "2025-07-13",
           "effective_basis": "stated"
         }
       ],
       "instrument_refs": [
-        "ny-laws:2015:ch-565",
-        "local-law:71-2016",
-        "local-law:108-2016",
-        "local-law:129-2016",
-        "local-law:38-2019",
-        "local-law:186-2019",
-        "local-law:29-2024"
+        "local-law:21-2019",
+        "ny-laws:2022:ch-486",
+        "local-law:33-2025",
+        "local-law:24-2025"
       ],
       "local_law_refs": [
-        "local-law:71-2016",
-        "local-law:108-2016",
-        "local-law:129-2016",
-        "local-law:38-2019",
-        "local-law:186-2019",
-        "local-law:29-2024"
+        "local-law:21-2019",
+        "local-law:33-2025",
+        "local-law:24-2025"
       ],
       "state_law_refs": [
-        "ny-laws:2015:ch-565"
+        "ny-laws:2022:ch-486"
       ],
-      "earliest_recorded_change": "2015-12-21",
-      "latest_recorded_change": "2024-07-01",
+      "earliest_recorded_change": "2019-01-20",
+      "latest_recorded_change": "2025-07-13",
       "historical_version_count": 0,
       "materialization": {
         "materialized": 0,
         "partially_materialized": 0,
-        "unresolved": 7
+        "unresolved": 4
       },
       "intervals": [
         {
           "from": null,
-          "to": "2015-12-21",
-          "status": "unknown",
+          "to": "2019-01-20",
+          "status": "before_enactment",
           "basis": "source_stated",
-          "reason": "no retained evidence before the earliest recorded change"
+          "reason": "the publisher records this section as added on this date"
         },
         {
-          "from": "2015-12-21",
-          "to": "2016-06-13",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2016-06-13",
-          "to": "2016-10-28",
+          "from": "2019-01-20",
+          "to": "2022-08-08",
           "status": "unknown",
           "basis": "source_stated",
           "reason": "change recorded from the publisher note, historical text not acquired"
         },
         {
-          "from": "2016-10-28",
-          "to": "2017-01-29",
+          "from": "2022-08-08",
+          "to": "2025-03-29",
           "status": "unknown",
           "basis": "source_stated",
           "reason": "change recorded from the publisher note, historical text not acquired"
         },
         {
-          "from": "2017-01-29",
-          "to": "2019-02-24",
+          "from": "2025-03-29",
+          "to": "2025-07-13",
           "status": "unknown",
           "basis": "source_stated",
           "reason": "change recorded from the publisher note, historical text not acquired"
         },
         {
-          "from": "2019-02-24",
-          "to": "2019-10-26",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2019-10-26",
-          "to": "2024-07-01",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2024-07-01",
+          "from": "2025-07-13",
           "to": "2026-08-24",
           "status": "covered_by_current_snapshot",
           "basis": "derived",
@@ -1613,50 +1744,22 @@
       ],
       "unknown_intervals": [
         {
-          "from": null,
-          "to": "2015-12-21",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "no retained evidence before the earliest recorded change"
-        },
-        {
-          "from": "2015-12-21",
-          "to": "2016-06-13",
+          "from": "2019-01-20",
+          "to": "2022-08-08",
           "status": "unknown",
           "basis": "source_stated",
           "reason": "change recorded from the publisher note, historical text not acquired"
         },
         {
-          "from": "2016-06-13",
-          "to": "2016-10-28",
+          "from": "2022-08-08",
+          "to": "2025-03-29",
           "status": "unknown",
           "basis": "source_stated",
           "reason": "change recorded from the publisher note, historical text not acquired"
         },
         {
-          "from": "2016-10-28",
-          "to": "2017-01-29",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2017-01-29",
-          "to": "2019-02-24",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2019-02-24",
-          "to": "2019-10-26",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2019-10-26",
-          "to": "2024-07-01",
+          "from": "2025-03-29",
+          "to": "2025-07-13",
           "status": "unknown",
           "basis": "source_stated",
           "reason": "change recorded from the publisher note, historical text not acquired"
@@ -1671,7 +1774,7 @@
       "citation": "§ 11-602",
       "heading": "Definitions.",
       "batch_id": "batch-1",
-      "rank": 13,
+      "rank": 14,
       "corpus_id": "nyc-administrative-code",
       "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-10082",
       "observed_at": "2026-08-24T08:25:03.900Z",
@@ -1920,7 +2023,7 @@
       "citation": "§ 22-1002",
       "heading": "Online business supports.",
       "batch_id": "batch-1",
-      "rank": 14,
+      "rank": 15,
       "corpus_id": "nyc-administrative-code",
       "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-128540",
       "observed_at": "2026-08-24T08:25:03.900Z",
@@ -2096,7 +2199,7 @@
       "citation": "§ 11-654",
       "heading": "Computation of tax.",
       "batch_id": "batch-1",
-      "rank": 15,
+      "rank": 16,
       "corpus_id": "nyc-administrative-code",
       "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-11428",
       "observed_at": "2026-08-24T08:25:03.900Z",
@@ -2316,11 +2419,230 @@
     },
     {
       "schema": "cityscroll.code_history_backfill_coverage.v1",
+      "provision_id": "nyc-administrative-code:21-922",
+      "citation": "§ 21-922",
+      "heading": "Juvenile justice advisory board.*",
+      "batch_id": "batch-1",
+      "rank": 17,
+      "corpus_id": "nyc-administrative-code",
+      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-135644",
+      "observed_at": "2026-08-24T08:25:03.900Z",
+      "retained_change_count": 1,
+      "unresolved_observation_count": 0,
+      "instruments": [
+        {
+          "instrument_ref": "local-law:33-2023",
+          "instrument_kind": "local_law",
+          "instrument_label": "Local Law 33 of 2023",
+          "operations": [
+            "add"
+          ],
+          "effective_at": "2023-09-10",
+          "effective_basis": "stated"
+        }
+      ],
+      "instrument_refs": [
+        "local-law:33-2023"
+      ],
+      "local_law_refs": [
+        "local-law:33-2023"
+      ],
+      "state_law_refs": [],
+      "earliest_recorded_change": "2023-09-10",
+      "latest_recorded_change": "2023-09-10",
+      "historical_version_count": 0,
+      "materialization": {
+        "materialized": 0,
+        "partially_materialized": 0,
+        "unresolved": 1
+      },
+      "intervals": [
+        {
+          "from": null,
+          "to": "2023-09-10",
+          "status": "before_enactment",
+          "basis": "source_stated",
+          "reason": "the publisher records this section as added on this date"
+        },
+        {
+          "from": "2023-09-10",
+          "to": "2026-08-24",
+          "status": "covered_by_current_snapshot",
+          "basis": "derived",
+          "reason": "the retained current text applies from the last change the publisher records"
+        }
+      ],
+      "unknown_intervals": [],
+      "conflicts": [
+        {
+          "schema": "cityscroll.code_history_conflict.v1",
+          "kind": "duplicate_publisher_record",
+          "provision_id": "nyc-administrative-code:21-922",
+          "instrument_ref": null,
+          "key": "nyc-administrative-code:21-922|duplicate-record",
+          "stated_effective_dates": [],
+          "resolution": "unresolved",
+          "observations": [
+            "shards/0-0-0-209312.json#american_legal_publishing:admin-xml:0-0-0-209312.xml:0-0-0-135644",
+            "shards/0-0-0-209312.json#american_legal_publishing:admin-xml:0-0-0-209312.xml:0-0-0-229308"
+          ]
+        }
+      ],
+      "complete_history": false
+    },
+    {
+      "schema": "cityscroll.code_history_backfill_coverage.v1",
+      "provision_id": "nyc-administrative-code:19-101.2",
+      "citation": "§ 19-101.2",
+      "heading": "Review of major transportation projects.",
+      "batch_id": "batch-1",
+      "rank": 18,
+      "corpus_id": "nyc-administrative-code",
+      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216664",
+      "observed_at": "2026-08-24T08:25:03.900Z",
+      "retained_change_count": 4,
+      "unresolved_observation_count": 0,
+      "instruments": [
+        {
+          "instrument_ref": "ny-laws:2023:ch-98",
+          "instrument_kind": "state_law",
+          "instrument_label": "2023 New York Laws chapter 98",
+          "operations": [
+            "amend"
+          ],
+          "effective_at": "2023-03-03",
+          "effective_basis": "stated"
+        },
+        {
+          "instrument_ref": "ny-laws:2022:ch-790",
+          "instrument_kind": "state_law",
+          "instrument_label": "2022 New York Laws chapter 790",
+          "operations": [
+            "amend"
+          ],
+          "effective_at": "2023-06-26",
+          "effective_basis": "stated"
+        },
+        {
+          "instrument_ref": "local-law:3-2024",
+          "instrument_kind": "local_law",
+          "instrument_label": "Local Law 3 of 2024",
+          "operations": [
+            "amend"
+          ],
+          "effective_at": "2024-01-06",
+          "effective_basis": "stated"
+        },
+        {
+          "instrument_ref": "local-law:6-2025",
+          "instrument_kind": "local_law",
+          "instrument_label": "Local Law 6 of 2025",
+          "operations": [
+            "amend"
+          ],
+          "effective_at": "2025-03-19",
+          "effective_basis": "stated"
+        }
+      ],
+      "instrument_refs": [
+        "ny-laws:2023:ch-98",
+        "ny-laws:2022:ch-790",
+        "local-law:3-2024",
+        "local-law:6-2025"
+      ],
+      "local_law_refs": [
+        "local-law:3-2024",
+        "local-law:6-2025"
+      ],
+      "state_law_refs": [
+        "ny-laws:2023:ch-98",
+        "ny-laws:2022:ch-790"
+      ],
+      "earliest_recorded_change": "2023-03-03",
+      "latest_recorded_change": "2025-03-19",
+      "historical_version_count": 0,
+      "materialization": {
+        "materialized": 0,
+        "partially_materialized": 0,
+        "unresolved": 4
+      },
+      "intervals": [
+        {
+          "from": null,
+          "to": "2023-03-03",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "no retained evidence before the earliest recorded change"
+        },
+        {
+          "from": "2023-03-03",
+          "to": "2023-06-26",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        },
+        {
+          "from": "2023-06-26",
+          "to": "2024-01-06",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        },
+        {
+          "from": "2024-01-06",
+          "to": "2025-03-19",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        },
+        {
+          "from": "2025-03-19",
+          "to": "2026-08-24",
+          "status": "covered_by_current_snapshot",
+          "basis": "derived",
+          "reason": "the retained current text applies from the last change the publisher records"
+        }
+      ],
+      "unknown_intervals": [
+        {
+          "from": null,
+          "to": "2023-03-03",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "no retained evidence before the earliest recorded change"
+        },
+        {
+          "from": "2023-03-03",
+          "to": "2023-06-26",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        },
+        {
+          "from": "2023-06-26",
+          "to": "2024-01-06",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        },
+        {
+          "from": "2024-01-06",
+          "to": "2025-03-19",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        }
+      ],
+      "conflicts": [],
+      "complete_history": false
+    },
+    {
+      "schema": "cityscroll.code_history_backfill_coverage.v1",
       "provision_id": "nyc-administrative-code:26-405",
       "citation": "§ 26-405",
       "heading": "General powers and duties of the city rent agency.",
       "batch_id": "batch-1",
-      "rank": 16,
+      "rank": 19,
       "corpus_id": "nyc-administrative-code",
       "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-206052",
       "observed_at": "2026-08-24T08:25:03.900Z",
@@ -2503,7 +2825,7 @@
       "citation": "§ 11-1706",
       "heading": "Credits against tax.",
       "batch_id": "batch-1",
-      "rank": 17,
+      "rank": 20,
       "corpus_id": "nyc-administrative-code",
       "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-13608",
       "observed_at": "2026-08-24T08:25:03.900Z",
@@ -2727,7 +3049,7 @@
       "citation": "§ 11-1701",
       "heading": "Imposition of tax.",
       "batch_id": "batch-1",
-      "rank": 18,
+      "rank": 21,
       "corpus_id": "nyc-administrative-code",
       "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-13463",
       "observed_at": "2026-08-24T08:25:03.900Z",
@@ -2920,74 +3242,74 @@
     },
     {
       "schema": "cityscroll.code_history_backfill_coverage.v1",
-      "provision_id": "nyc-administrative-code:19-101.2",
-      "citation": "§ 19-101.2",
-      "heading": "Review of major transportation projects.",
+      "provision_id": "nyc-administrative-code:9-140",
+      "citation": "§ 9-140",
+      "heading": "Jail visitation statistics.",
       "batch_id": "batch-1",
-      "rank": 19,
+      "rank": 22,
       "corpus_id": "nyc-administrative-code",
-      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216664",
+      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-5551",
       "observed_at": "2026-08-24T08:25:03.900Z",
       "retained_change_count": 4,
       "unresolved_observation_count": 0,
       "instruments": [
         {
-          "instrument_ref": "ny-laws:2023:ch-98",
-          "instrument_kind": "state_law",
-          "instrument_label": "2023 New York Laws chapter 98",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2023-03-03",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "ny-laws:2022:ch-790",
-          "instrument_kind": "state_law",
-          "instrument_label": "2022 New York Laws chapter 790",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2023-06-26",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:3-2024",
+          "instrument_ref": "local-law:85-2015",
           "instrument_kind": "local_law",
-          "instrument_label": "Local Law 3 of 2024",
+          "instrument_label": "Local Law 85 of 2015",
           "operations": [
-            "amend"
+            "add"
           ],
-          "effective_at": "2024-01-06",
+          "effective_at": "2016-01-01",
           "effective_basis": "stated"
         },
         {
-          "instrument_ref": "local-law:6-2025",
+          "instrument_ref": "local-law:23-2019",
           "instrument_kind": "local_law",
-          "instrument_label": "Local Law 6 of 2025",
+          "instrument_label": "Local Law 23 of 2019",
           "operations": [
             "amend"
           ],
-          "effective_at": "2025-03-19",
+          "effective_at": "2019-01-20",
+          "effective_basis": "stated"
+        },
+        {
+          "instrument_ref": "ny-laws:2021:ch-322",
+          "instrument_kind": "state_law",
+          "instrument_label": "2021 New York Laws chapter 322",
+          "operations": [
+            "amend"
+          ],
+          "effective_at": "2021-08-02",
+          "effective_basis": "stated"
+        },
+        {
+          "instrument_ref": "local-law:44-2025",
+          "instrument_kind": "local_law",
+          "instrument_label": "Local Law 44 of 2025",
+          "operations": [
+            "amend"
+          ],
+          "effective_at": "2026-01-06",
           "effective_basis": "stated"
         }
       ],
       "instrument_refs": [
-        "ny-laws:2023:ch-98",
-        "ny-laws:2022:ch-790",
-        "local-law:3-2024",
-        "local-law:6-2025"
+        "local-law:85-2015",
+        "local-law:23-2019",
+        "ny-laws:2021:ch-322",
+        "local-law:44-2025"
       ],
       "local_law_refs": [
-        "local-law:3-2024",
-        "local-law:6-2025"
+        "local-law:85-2015",
+        "local-law:23-2019",
+        "local-law:44-2025"
       ],
       "state_law_refs": [
-        "ny-laws:2023:ch-98",
-        "ny-laws:2022:ch-790"
+        "ny-laws:2021:ch-322"
       ],
-      "earliest_recorded_change": "2023-03-03",
-      "latest_recorded_change": "2025-03-19",
+      "earliest_recorded_change": "2016-01-01",
+      "latest_recorded_change": "2026-01-06",
       "historical_version_count": 0,
       "materialization": {
         "materialized": 0,
@@ -2997,34 +3319,34 @@
       "intervals": [
         {
           "from": null,
-          "to": "2023-03-03",
-          "status": "unknown",
+          "to": "2016-01-01",
+          "status": "before_enactment",
           "basis": "source_stated",
-          "reason": "no retained evidence before the earliest recorded change"
+          "reason": "the publisher records this section as added on this date"
         },
         {
-          "from": "2023-03-03",
-          "to": "2023-06-26",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2023-06-26",
-          "to": "2024-01-06",
+          "from": "2016-01-01",
+          "to": "2019-01-20",
           "status": "unknown",
           "basis": "source_stated",
           "reason": "change recorded from the publisher note, historical text not acquired"
         },
         {
-          "from": "2024-01-06",
-          "to": "2025-03-19",
+          "from": "2019-01-20",
+          "to": "2021-08-02",
           "status": "unknown",
           "basis": "source_stated",
           "reason": "change recorded from the publisher note, historical text not acquired"
         },
         {
-          "from": "2025-03-19",
+          "from": "2021-08-02",
+          "to": "2026-01-06",
+          "status": "unknown",
+          "basis": "source_stated",
+          "reason": "change recorded from the publisher note, historical text not acquired"
+        },
+        {
+          "from": "2026-01-06",
           "to": "2026-08-24",
           "status": "covered_by_current_snapshot",
           "basis": "derived",
@@ -3033,29 +3355,22 @@
       ],
       "unknown_intervals": [
         {
-          "from": null,
-          "to": "2023-03-03",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "no retained evidence before the earliest recorded change"
-        },
-        {
-          "from": "2023-03-03",
-          "to": "2023-06-26",
+          "from": "2016-01-01",
+          "to": "2019-01-20",
           "status": "unknown",
           "basis": "source_stated",
           "reason": "change recorded from the publisher note, historical text not acquired"
         },
         {
-          "from": "2023-06-26",
-          "to": "2024-01-06",
+          "from": "2019-01-20",
+          "to": "2021-08-02",
           "status": "unknown",
           "basis": "source_stated",
           "reason": "change recorded from the publisher note, historical text not acquired"
         },
         {
-          "from": "2024-01-06",
-          "to": "2025-03-19",
+          "from": "2021-08-02",
+          "to": "2026-01-06",
           "status": "unknown",
           "basis": "source_stated",
           "reason": "change recorded from the publisher note, historical text not acquired"
@@ -3066,11 +3381,70 @@
     },
     {
       "schema": "cityscroll.code_history_backfill_coverage.v1",
+      "provision_id": "nyc-administrative-code:12-212",
+      "citation": "§ 12-212",
+      "heading": "Public service corps program.",
+      "batch_id": "batch-1",
+      "rank": 23,
+      "corpus_id": "nyc-administrative-code",
+      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-137205",
+      "observed_at": "2026-08-24T08:25:03.900Z",
+      "retained_change_count": 1,
+      "unresolved_observation_count": 0,
+      "instruments": [
+        {
+          "instrument_ref": "local-law:4-2023",
+          "instrument_kind": "local_law",
+          "instrument_label": "Local Law 4 of 2023",
+          "operations": [
+            "add"
+          ],
+          "effective_at": "2023-04-07",
+          "effective_basis": "stated"
+        }
+      ],
+      "instrument_refs": [
+        "local-law:4-2023"
+      ],
+      "local_law_refs": [
+        "local-law:4-2023"
+      ],
+      "state_law_refs": [],
+      "earliest_recorded_change": "2023-04-07",
+      "latest_recorded_change": "2023-04-07",
+      "historical_version_count": 0,
+      "materialization": {
+        "materialized": 0,
+        "partially_materialized": 0,
+        "unresolved": 1
+      },
+      "intervals": [
+        {
+          "from": null,
+          "to": "2023-04-07",
+          "status": "before_enactment",
+          "basis": "source_stated",
+          "reason": "the publisher records this section as added on this date"
+        },
+        {
+          "from": "2023-04-07",
+          "to": "2026-08-24",
+          "status": "covered_by_current_snapshot",
+          "basis": "derived",
+          "reason": "the retained current text applies from the last change the publisher records"
+        }
+      ],
+      "unknown_intervals": [],
+      "conflicts": [],
+      "complete_history": false
+    },
+    {
+      "schema": "cityscroll.code_history_backfill_coverage.v1",
       "provision_id": "nyc-administrative-code:13-101",
       "citation": "§ 13-101",
       "heading": "Definitions.",
       "batch_id": "batch-1",
-      "rank": 20,
+      "rank": 24,
       "corpus_id": "nyc-administrative-code",
       "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-16519",
       "observed_at": "2026-08-24T08:25:03.900Z",
@@ -3133,74 +3507,73 @@
     },
     {
       "schema": "cityscroll.code_history_backfill_coverage.v1",
-      "provision_id": "nyc-administrative-code:9-156",
-      "citation": "§ 9-156",
-      "heading": "Sexual abuse reporting.",
+      "provision_id": "nyc-administrative-code:7-628",
+      "citation": "§ 7-628",
+      "heading": "Notification of recording of real estate instruments.",
       "batch_id": "batch-1",
-      "rank": 21,
+      "rank": 25,
       "corpus_id": "nyc-administrative-code",
-      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-128991",
+      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-4341",
       "observed_at": "2026-08-24T08:25:03.900Z",
       "retained_change_count": 4,
       "unresolved_observation_count": 0,
       "instruments": [
         {
-          "instrument_ref": "local-law:21-2019",
+          "instrument_ref": "local-law:249-2017",
           "instrument_kind": "local_law",
-          "instrument_label": "Local Law 21 of 2019",
+          "instrument_label": "Local Law 249 of 2017",
           "operations": [
             "add"
           ],
-          "effective_at": "2019-01-20",
+          "effective_at": "2018-07-01",
           "effective_basis": "stated"
         },
         {
-          "instrument_ref": "ny-laws:2022:ch-486",
-          "instrument_kind": "state_law",
-          "instrument_label": "2022 New York Laws chapter 486",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2022-08-08",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:33-2025",
+          "instrument_ref": "local-law:136-2021",
           "instrument_kind": "local_law",
-          "instrument_label": "Local Law 33 of 2025",
+          "instrument_label": "Local Law 136 of 2021",
           "operations": [
             "amend"
           ],
-          "effective_at": "2025-03-29",
+          "effective_at": "2021-11-21",
           "effective_basis": "stated"
         },
         {
-          "instrument_ref": "local-law:24-2025",
+          "instrument_ref": "local-law:69-2025",
           "instrument_kind": "local_law",
-          "instrument_label": "Local Law 24 of 2025",
+          "instrument_label": "Local Law 69 of 2025",
           "operations": [
             "amend"
           ],
-          "effective_at": "2025-07-13",
+          "effective_at": "2025-06-23",
+          "effective_basis": "stated"
+        },
+        {
+          "instrument_ref": "local-law:68-2025",
+          "instrument_kind": "local_law",
+          "instrument_label": "Local Law 68 of 2025",
+          "operations": [
+            "amend"
+          ],
+          "effective_at": "2025-09-21",
           "effective_basis": "stated"
         }
       ],
       "instrument_refs": [
-        "local-law:21-2019",
-        "ny-laws:2022:ch-486",
-        "local-law:33-2025",
-        "local-law:24-2025"
+        "local-law:249-2017",
+        "local-law:136-2021",
+        "local-law:69-2025",
+        "local-law:68-2025"
       ],
       "local_law_refs": [
-        "local-law:21-2019",
-        "local-law:33-2025",
-        "local-law:24-2025"
+        "local-law:249-2017",
+        "local-law:136-2021",
+        "local-law:69-2025",
+        "local-law:68-2025"
       ],
-      "state_law_refs": [
-        "ny-laws:2022:ch-486"
-      ],
-      "earliest_recorded_change": "2019-01-20",
-      "latest_recorded_change": "2025-07-13",
+      "state_law_refs": [],
+      "earliest_recorded_change": "2018-07-01",
+      "latest_recorded_change": "2025-09-21",
       "historical_version_count": 0,
       "materialization": {
         "materialized": 0,
@@ -3210,34 +3583,34 @@
       "intervals": [
         {
           "from": null,
-          "to": "2019-01-20",
+          "to": "2018-07-01",
           "status": "before_enactment",
           "basis": "source_stated",
           "reason": "the publisher records this section as added on this date"
         },
         {
-          "from": "2019-01-20",
-          "to": "2022-08-08",
+          "from": "2018-07-01",
+          "to": "2021-11-21",
           "status": "unknown",
           "basis": "source_stated",
           "reason": "change recorded from the publisher note, historical text not acquired"
         },
         {
-          "from": "2022-08-08",
-          "to": "2025-03-29",
+          "from": "2021-11-21",
+          "to": "2025-06-23",
           "status": "unknown",
           "basis": "source_stated",
           "reason": "change recorded from the publisher note, historical text not acquired"
         },
         {
-          "from": "2025-03-29",
-          "to": "2025-07-13",
+          "from": "2025-06-23",
+          "to": "2025-09-21",
           "status": "unknown",
           "basis": "source_stated",
           "reason": "change recorded from the publisher note, historical text not acquired"
         },
         {
-          "from": "2025-07-13",
+          "from": "2025-09-21",
           "to": "2026-08-24",
           "status": "covered_by_current_snapshot",
           "basis": "derived",
@@ -3246,186 +3619,22 @@
       ],
       "unknown_intervals": [
         {
-          "from": "2019-01-20",
-          "to": "2022-08-08",
+          "from": "2018-07-01",
+          "to": "2021-11-21",
           "status": "unknown",
           "basis": "source_stated",
           "reason": "change recorded from the publisher note, historical text not acquired"
         },
         {
-          "from": "2022-08-08",
-          "to": "2025-03-29",
+          "from": "2021-11-21",
+          "to": "2025-06-23",
           "status": "unknown",
           "basis": "source_stated",
           "reason": "change recorded from the publisher note, historical text not acquired"
         },
         {
-          "from": "2025-03-29",
-          "to": "2025-07-13",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        }
-      ],
-      "conflicts": [],
-      "complete_history": false
-    },
-    {
-      "schema": "cityscroll.code_history_backfill_coverage.v1",
-      "provision_id": "nyc-administrative-code:20-1208",
-      "citation": "§ 20-1208",
-      "heading": "Specific administrative remedies.",
-      "batch_id": "batch-1",
-      "rank": 22,
-      "corpus_id": "nyc-administrative-code",
-      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-128204",
-      "observed_at": "2026-08-24T08:25:03.900Z",
-      "retained_change_count": 5,
-      "unresolved_observation_count": 0,
-      "instruments": [
-        {
-          "instrument_ref": "local-law:107-2017",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 107 of 2017",
-          "operations": [
-            "add"
-          ],
-          "effective_at": "2017-11-26",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:69-2018",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 69 of 2018",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2018-07-18",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:80-2020",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 80 of 2020",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2020-08-28",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:2-2021",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 2 of 2021",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2021-09-02",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:52-2026",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 52 of 2026",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2026-07-28",
-          "effective_basis": "stated"
-        }
-      ],
-      "instrument_refs": [
-        "local-law:107-2017",
-        "local-law:69-2018",
-        "local-law:80-2020",
-        "local-law:2-2021",
-        "local-law:52-2026"
-      ],
-      "local_law_refs": [
-        "local-law:107-2017",
-        "local-law:69-2018",
-        "local-law:80-2020",
-        "local-law:2-2021",
-        "local-law:52-2026"
-      ],
-      "state_law_refs": [],
-      "earliest_recorded_change": "2017-11-26",
-      "latest_recorded_change": "2026-07-28",
-      "historical_version_count": 0,
-      "materialization": {
-        "materialized": 0,
-        "partially_materialized": 0,
-        "unresolved": 5
-      },
-      "intervals": [
-        {
-          "from": null,
-          "to": "2017-11-26",
-          "status": "before_enactment",
-          "basis": "source_stated",
-          "reason": "the publisher records this section as added on this date"
-        },
-        {
-          "from": "2017-11-26",
-          "to": "2018-07-18",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2018-07-18",
-          "to": "2020-08-28",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2020-08-28",
-          "to": "2021-09-02",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2021-09-02",
-          "to": "2026-07-28",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2026-07-28",
-          "to": "2026-08-24",
-          "status": "covered_by_current_snapshot",
-          "basis": "derived",
-          "reason": "the retained current text applies from the last change the publisher records"
-        }
-      ],
-      "unknown_intervals": [
-        {
-          "from": "2017-11-26",
-          "to": "2018-07-18",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2018-07-18",
-          "to": "2020-08-28",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2020-08-28",
-          "to": "2021-09-02",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2021-09-02",
-          "to": "2026-07-28",
+          "from": "2025-06-23",
+          "to": "2025-09-21",
           "status": "unknown",
           "basis": "source_stated",
           "reason": "change recorded from the publisher note, historical text not acquired"
@@ -3440,7 +3649,7 @@
       "citation": "§ 20-1522",
       "heading": "Minimum payment.",
       "batch_id": "batch-1",
-      "rank": 24,
+      "rank": 28,
       "corpus_id": "nyc-administrative-code",
       "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-237244",
       "observed_at": "2026-08-24T08:25:03.900Z",
@@ -3588,7 +3797,7 @@
       "citation": "§ 26-511",
       "heading": "Real estate industry stabilization association.",
       "batch_id": "batch-1",
-      "rank": 25,
+      "rank": 29,
       "corpus_id": "nyc-administrative-code",
       "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-47394",
       "observed_at": "2026-08-24T08:25:03.900Z",
@@ -3753,445 +3962,127 @@
     },
     {
       "schema": "cityscroll.code_history_backfill_coverage.v1",
-      "provision_id": "nyc-administrative-code:9-140",
-      "citation": "§ 9-140",
-      "heading": "Jail visitation statistics.",
+      "provision_id": "nyc-administrative-code:21-145",
+      "citation": "§ 21-145",
+      "heading": "Use of rental assistance vouchers.",
       "batch_id": "batch-1",
-      "rank": 26,
+      "rank": 31,
       "corpus_id": "nyc-administrative-code",
-      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-5551",
+      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-133658",
       "observed_at": "2026-08-24T08:25:03.900Z",
-      "retained_change_count": 4,
+      "retained_change_count": 6,
       "unresolved_observation_count": 0,
       "instruments": [
         {
-          "instrument_ref": "local-law:85-2015",
+          "instrument_ref": "local-law:71-2021",
           "instrument_kind": "local_law",
-          "instrument_label": "Local Law 85 of 2015",
+          "instrument_label": "Local Law 71 of 2021",
           "operations": [
             "add"
           ],
-          "effective_at": "2016-01-01",
+          "effective_at": "2021-12-24",
           "effective_basis": "stated"
         },
         {
-          "instrument_ref": "local-law:23-2019",
+          "instrument_ref": "local-law:100-2023",
           "instrument_kind": "local_law",
-          "instrument_label": "Local Law 23 of 2019",
+          "instrument_label": "Local Law 100 of 2023",
           "operations": [
             "amend"
           ],
-          "effective_at": "2019-01-20",
+          "effective_at": "2024-01-09",
           "effective_basis": "stated"
         },
         {
-          "instrument_ref": "ny-laws:2021:ch-322",
-          "instrument_kind": "state_law",
-          "instrument_label": "2021 New York Laws chapter 322",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2021-08-02",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:44-2025",
+          "instrument_ref": "local-law:101-2023",
           "instrument_kind": "local_law",
-          "instrument_label": "Local Law 44 of 2025",
+          "instrument_label": "Local Law 101 of 2023",
           "operations": [
             "amend"
           ],
-          "effective_at": "2026-01-06",
+          "effective_at": "2024-01-09",
+          "effective_basis": "stated"
+        },
+        {
+          "instrument_ref": "local-law:102-2023",
+          "instrument_kind": "local_law",
+          "instrument_label": "Local Law 102 of 2023",
+          "operations": [
+            "amend"
+          ],
+          "effective_at": "2024-01-09",
+          "effective_basis": "stated"
+        },
+        {
+          "instrument_ref": "local-law:99-2023",
+          "instrument_kind": "local_law",
+          "instrument_label": "Local Law 99 of 2023",
+          "operations": [
+            "amend"
+          ],
+          "effective_at": "2024-01-09",
+          "effective_basis": "stated"
+        },
+        {
+          "instrument_ref": "local-law:176-2025",
+          "instrument_kind": "local_law",
+          "instrument_label": "Local Law 176 of 2025",
+          "operations": [
+            "amend"
+          ],
+          "effective_at": "2026-03-04",
           "effective_basis": "stated"
         }
       ],
       "instrument_refs": [
-        "local-law:85-2015",
-        "local-law:23-2019",
-        "ny-laws:2021:ch-322",
-        "local-law:44-2025"
+        "local-law:71-2021",
+        "local-law:100-2023",
+        "local-law:101-2023",
+        "local-law:102-2023",
+        "local-law:99-2023",
+        "local-law:176-2025"
       ],
       "local_law_refs": [
-        "local-law:85-2015",
-        "local-law:23-2019",
-        "local-law:44-2025"
-      ],
-      "state_law_refs": [
-        "ny-laws:2021:ch-322"
-      ],
-      "earliest_recorded_change": "2016-01-01",
-      "latest_recorded_change": "2026-01-06",
-      "historical_version_count": 0,
-      "materialization": {
-        "materialized": 0,
-        "partially_materialized": 0,
-        "unresolved": 4
-      },
-      "intervals": [
-        {
-          "from": null,
-          "to": "2016-01-01",
-          "status": "before_enactment",
-          "basis": "source_stated",
-          "reason": "the publisher records this section as added on this date"
-        },
-        {
-          "from": "2016-01-01",
-          "to": "2019-01-20",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2019-01-20",
-          "to": "2021-08-02",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2021-08-02",
-          "to": "2026-01-06",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2026-01-06",
-          "to": "2026-08-24",
-          "status": "covered_by_current_snapshot",
-          "basis": "derived",
-          "reason": "the retained current text applies from the last change the publisher records"
-        }
-      ],
-      "unknown_intervals": [
-        {
-          "from": "2016-01-01",
-          "to": "2019-01-20",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2019-01-20",
-          "to": "2021-08-02",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2021-08-02",
-          "to": "2026-01-06",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        }
-      ],
-      "conflicts": [],
-      "complete_history": false
-    },
-    {
-      "schema": "cityscroll.code_history_backfill_coverage.v1",
-      "provision_id": "nyc-administrative-code:9-141",
-      "citation": "§ 9-141",
-      "heading": "Menstrual products.",
-      "batch_id": "batch-1",
-      "rank": 27,
-      "corpus_id": "nyc-administrative-code",
-      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-130463",
-      "observed_at": "2026-08-24T08:25:03.900Z",
-      "retained_change_count": 4,
-      "unresolved_observation_count": 0,
-      "instruments": [
-        {
-          "instrument_ref": "local-law:82-2016",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 82 of 2016",
-          "operations": [
-            "add"
-          ],
-          "effective_at": "2016-07-13",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "ny-laws:2021:ch-322",
-          "instrument_kind": "state_law",
-          "instrument_label": "2021 New York Laws chapter 322",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2021-08-02",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:10-2024",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 10 of 2024",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2024-10-02",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:12-2024",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 12 of 2024",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2024-10-02",
-          "effective_basis": "stated"
-        }
-      ],
-      "instrument_refs": [
-        "local-law:82-2016",
-        "ny-laws:2021:ch-322",
-        "local-law:10-2024",
-        "local-law:12-2024"
-      ],
-      "local_law_refs": [
-        "local-law:82-2016",
-        "local-law:10-2024",
-        "local-law:12-2024"
-      ],
-      "state_law_refs": [
-        "ny-laws:2021:ch-322"
-      ],
-      "earliest_recorded_change": "2016-07-13",
-      "latest_recorded_change": "2024-10-02",
-      "historical_version_count": 0,
-      "materialization": {
-        "materialized": 0,
-        "partially_materialized": 0,
-        "unresolved": 4
-      },
-      "intervals": [
-        {
-          "from": null,
-          "to": "2016-07-13",
-          "status": "before_enactment",
-          "basis": "source_stated",
-          "reason": "the publisher records this section as added on this date"
-        },
-        {
-          "from": "2016-07-13",
-          "to": "2021-08-02",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2021-08-02",
-          "to": "2024-10-02",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2024-10-02",
-          "to": "2026-08-24",
-          "status": "covered_by_current_snapshot",
-          "basis": "derived",
-          "reason": "the retained current text applies from the last change the publisher records"
-        }
-      ],
-      "unknown_intervals": [
-        {
-          "from": "2016-07-13",
-          "to": "2021-08-02",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2021-08-02",
-          "to": "2024-10-02",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        }
-      ],
-      "conflicts": [],
-      "complete_history": false
-    },
-    {
-      "schema": "cityscroll.code_history_backfill_coverage.v1",
-      "provision_id": "nyc-administrative-code:12-212",
-      "citation": "§ 12-212",
-      "heading": "Public service corps program.",
-      "batch_id": "batch-1",
-      "rank": 28,
-      "corpus_id": "nyc-administrative-code",
-      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-137205",
-      "observed_at": "2026-08-24T08:25:03.900Z",
-      "retained_change_count": 1,
-      "unresolved_observation_count": 0,
-      "instruments": [
-        {
-          "instrument_ref": "local-law:4-2023",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 4 of 2023",
-          "operations": [
-            "add"
-          ],
-          "effective_at": "2023-04-07",
-          "effective_basis": "stated"
-        }
-      ],
-      "instrument_refs": [
-        "local-law:4-2023"
-      ],
-      "local_law_refs": [
-        "local-law:4-2023"
+        "local-law:71-2021",
+        "local-law:100-2023",
+        "local-law:101-2023",
+        "local-law:102-2023",
+        "local-law:99-2023",
+        "local-law:176-2025"
       ],
       "state_law_refs": [],
-      "earliest_recorded_change": "2023-04-07",
-      "latest_recorded_change": "2023-04-07",
+      "earliest_recorded_change": "2021-12-24",
+      "latest_recorded_change": "2026-03-04",
       "historical_version_count": 0,
       "materialization": {
         "materialized": 0,
         "partially_materialized": 0,
-        "unresolved": 1
+        "unresolved": 6
       },
       "intervals": [
         {
           "from": null,
-          "to": "2023-04-07",
+          "to": "2021-12-24",
           "status": "before_enactment",
           "basis": "source_stated",
           "reason": "the publisher records this section as added on this date"
         },
         {
-          "from": "2023-04-07",
-          "to": "2026-08-24",
-          "status": "covered_by_current_snapshot",
-          "basis": "derived",
-          "reason": "the retained current text applies from the last change the publisher records"
-        }
-      ],
-      "unknown_intervals": [],
-      "conflicts": [],
-      "complete_history": false
-    },
-    {
-      "schema": "cityscroll.code_history_backfill_coverage.v1",
-      "provision_id": "nyc-administrative-code:18-150",
-      "citation": "§ 18-150",
-      "heading": "Defibrillators at youth baseball games and youth softball games and practices in parks.",
-      "batch_id": "batch-1",
-      "rank": 29,
-      "corpus_id": "nyc-administrative-code",
-      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-30338",
-      "observed_at": "2026-08-24T08:25:03.900Z",
-      "retained_change_count": 5,
-      "unresolved_observation_count": 0,
-      "instruments": [
-        {
-          "instrument_ref": "local-law:104-2016",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 104 of 2016",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2017-01-01",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:57-2016",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 57 of 2016",
-          "operations": [
-            "add"
-          ],
-          "effective_at": "2017-01-01",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:133-2017",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 133 of 2017",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2018-08-08",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:119-2018",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 119 of 2018",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2019-01-01",
-          "effective_basis": "stated"
-        },
-        {
-          "instrument_ref": "local-law:140-2019",
-          "instrument_kind": "local_law",
-          "instrument_label": "Local Law 140 of 2019",
-          "operations": [
-            "amend"
-          ],
-          "effective_at": "2020-01-01",
-          "effective_basis": "stated"
-        }
-      ],
-      "instrument_refs": [
-        "local-law:104-2016",
-        "local-law:57-2016",
-        "local-law:133-2017",
-        "local-law:119-2018",
-        "local-law:140-2019"
-      ],
-      "local_law_refs": [
-        "local-law:104-2016",
-        "local-law:57-2016",
-        "local-law:133-2017",
-        "local-law:119-2018",
-        "local-law:140-2019"
-      ],
-      "state_law_refs": [],
-      "earliest_recorded_change": "2017-01-01",
-      "latest_recorded_change": "2020-01-01",
-      "historical_version_count": 0,
-      "materialization": {
-        "materialized": 0,
-        "partially_materialized": 0,
-        "unresolved": 5
-      },
-      "intervals": [
-        {
-          "from": null,
-          "to": "2017-01-01",
-          "status": "before_enactment",
-          "basis": "source_stated",
-          "reason": "the publisher records this section as added on this date"
-        },
-        {
-          "from": "2017-01-01",
-          "to": "2018-08-08",
+          "from": "2021-12-24",
+          "to": "2024-01-09",
           "status": "unknown",
           "basis": "source_stated",
           "reason": "change recorded from the publisher note, historical text not acquired"
         },
         {
-          "from": "2018-08-08",
-          "to": "2019-01-01",
+          "from": "2024-01-09",
+          "to": "2026-03-04",
           "status": "unknown",
           "basis": "source_stated",
           "reason": "change recorded from the publisher note, historical text not acquired"
         },
         {
-          "from": "2019-01-01",
-          "to": "2020-01-01",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2020-01-01",
+          "from": "2026-03-04",
           "to": "2026-08-24",
           "status": "covered_by_current_snapshot",
           "basis": "derived",
@@ -4200,22 +4091,15 @@
       ],
       "unknown_intervals": [
         {
-          "from": "2017-01-01",
-          "to": "2018-08-08",
+          "from": "2021-12-24",
+          "to": "2024-01-09",
           "status": "unknown",
           "basis": "source_stated",
           "reason": "change recorded from the publisher note, historical text not acquired"
         },
         {
-          "from": "2018-08-08",
-          "to": "2019-01-01",
-          "status": "unknown",
-          "basis": "source_stated",
-          "reason": "change recorded from the publisher note, historical text not acquired"
-        },
-        {
-          "from": "2019-01-01",
-          "to": "2020-01-01",
+          "from": "2024-01-09",
+          "to": "2026-03-04",
           "status": "unknown",
           "basis": "source_stated",
           "reason": "change recorded from the publisher note, historical text not acquired"
@@ -4230,7 +4114,7 @@
       "citation": "§ 17-911",
       "heading": "Required investigation.",
       "batch_id": "batch-1",
-      "rank": 30,
+      "rank": 32,
       "corpus_id": "nyc-administrative-code",
       "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-128358",
       "observed_at": "2026-08-24T08:25:03.900Z",
@@ -4372,6 +4256,246 @@
         "change_basis": "source_stated",
         "materialization_status": "unresolved",
         "materialization_confidence": "medium"
+      }
+    ],
+    "nyc-administrative-code:14-150": [
+      {
+        "schema": "cityscroll.code_change.v1",
+        "id": "ny-laws:2015:ch-565:amend:nyc-administrative-code:14-150:note-0",
+        "operation": "amend",
+        "matter_id": null,
+        "legal_instrument_id": "ny-laws:2015:ch-565",
+        "state": "enacted",
+        "effective_at": "2015-12-21",
+        "effective_date_text": null,
+        "effective_date_clauses": [],
+        "target": {
+          "corpus_id": "nyc-administrative-code",
+          "citation": "§ 14-150",
+          "provision_id": "nyc-administrative-code:14-150",
+          "resolution": "exact_citation",
+          "heading": "Police department reporting requirements."
+        },
+        "source": {
+          "instruction_text": "Am. 2015 N.Y. Laws Ch. 565, 12/21/2015, eff. 12/21/2015",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-25085",
+          "source_system": "american_legal_publishing",
+          "observed_at": "2026-08-24T08:25:03.900Z",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
+          "locator": "publisher amendment note, entry 1",
+          "start": null,
+          "end": null
+        },
+        "patch": null,
+        "redesignation": null,
+        "change_basis": "source_stated",
+        "materialization_status": "unresolved",
+        "materialization_confidence": "high"
+      },
+      {
+        "schema": "cityscroll.code_change.v1",
+        "id": "local-law:71-2016:amend:nyc-administrative-code:14-150:note-1",
+        "operation": "amend",
+        "matter_id": null,
+        "legal_instrument_id": "local-law:71-2016",
+        "state": "enacted",
+        "effective_at": "2016-06-13",
+        "effective_date_text": null,
+        "effective_date_clauses": [],
+        "target": {
+          "corpus_id": "nyc-administrative-code",
+          "citation": "§ 14-150",
+          "provision_id": "nyc-administrative-code:14-150",
+          "resolution": "exact_citation",
+          "heading": "Police department reporting requirements."
+        },
+        "source": {
+          "instruction_text": "Am. L.L. 2016/071, 6/13/2017, eff. 6/13/2016 and 6/13/2017",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-25085",
+          "source_system": "american_legal_publishing",
+          "observed_at": "2026-08-24T08:25:03.900Z",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
+          "locator": "publisher amendment note, entry 2",
+          "start": null,
+          "end": null
+        },
+        "patch": null,
+        "redesignation": null,
+        "change_basis": "source_stated",
+        "materialization_status": "unresolved",
+        "materialization_confidence": "high"
+      },
+      {
+        "schema": "cityscroll.code_change.v1",
+        "id": "local-law:108-2016:amend:nyc-administrative-code:14-150:note-2",
+        "operation": "amend",
+        "matter_id": null,
+        "legal_instrument_id": "local-law:108-2016",
+        "state": "enacted",
+        "effective_at": "2016-10-28",
+        "effective_date_text": null,
+        "effective_date_clauses": [],
+        "target": {
+          "corpus_id": "nyc-administrative-code",
+          "citation": "§ 14-150",
+          "provision_id": "nyc-administrative-code:14-150",
+          "resolution": "exact_citation",
+          "heading": "Police department reporting requirements."
+        },
+        "source": {
+          "instruction_text": "Am. L.L. 2016/108, 9/28/2016, eff. 10/28/2016",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-25085",
+          "source_system": "american_legal_publishing",
+          "observed_at": "2026-08-24T08:25:03.900Z",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
+          "locator": "publisher amendment note, entry 3",
+          "start": null,
+          "end": null
+        },
+        "patch": null,
+        "redesignation": null,
+        "change_basis": "source_stated",
+        "materialization_status": "unresolved",
+        "materialization_confidence": "high"
+      },
+      {
+        "schema": "cityscroll.code_change.v1",
+        "id": "local-law:129-2016:amend:nyc-administrative-code:14-150:note-3",
+        "operation": "amend",
+        "matter_id": null,
+        "legal_instrument_id": "local-law:129-2016",
+        "state": "enacted",
+        "effective_at": "2017-01-29",
+        "effective_date_text": null,
+        "effective_date_clauses": [],
+        "target": {
+          "corpus_id": "nyc-administrative-code",
+          "citation": "§ 14-150",
+          "provision_id": "nyc-administrative-code:14-150",
+          "resolution": "exact_citation",
+          "heading": "Police department reporting requirements."
+        },
+        "source": {
+          "instruction_text": "Am. L.L. 2016/129, 10/31/2016, eff. 1/29/2017",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-25085",
+          "source_system": "american_legal_publishing",
+          "observed_at": "2026-08-24T08:25:03.900Z",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
+          "locator": "publisher amendment note, entry 4",
+          "start": null,
+          "end": null
+        },
+        "patch": null,
+        "redesignation": null,
+        "change_basis": "source_stated",
+        "materialization_status": "unresolved",
+        "materialization_confidence": "high"
+      },
+      {
+        "schema": "cityscroll.code_change.v1",
+        "id": "local-law:38-2019:amend:nyc-administrative-code:14-150:note-4",
+        "operation": "amend",
+        "matter_id": null,
+        "legal_instrument_id": "local-law:38-2019",
+        "state": "enacted",
+        "effective_at": "2019-02-24",
+        "effective_date_text": null,
+        "effective_date_clauses": [],
+        "target": {
+          "corpus_id": "nyc-administrative-code",
+          "citation": "§ 14-150",
+          "provision_id": "nyc-administrative-code:14-150",
+          "resolution": "exact_citation",
+          "heading": "Police department reporting requirements."
+        },
+        "source": {
+          "instruction_text": "Am. L.L. 2019/038, 2/24/2019, eff. 2/24/2019",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-25085",
+          "source_system": "american_legal_publishing",
+          "observed_at": "2026-08-24T08:25:03.900Z",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
+          "locator": "publisher amendment note, entry 5",
+          "start": null,
+          "end": null
+        },
+        "patch": null,
+        "redesignation": null,
+        "change_basis": "source_stated",
+        "materialization_status": "unresolved",
+        "materialization_confidence": "high"
+      },
+      {
+        "schema": "cityscroll.code_change.v1",
+        "id": "local-law:186-2019:amend:nyc-administrative-code:14-150:note-5",
+        "operation": "amend",
+        "matter_id": null,
+        "legal_instrument_id": "local-law:186-2019",
+        "state": "enacted",
+        "effective_at": "2019-10-26",
+        "effective_date_text": null,
+        "effective_date_clauses": [],
+        "target": {
+          "corpus_id": "nyc-administrative-code",
+          "citation": "§ 14-150",
+          "provision_id": "nyc-administrative-code:14-150",
+          "resolution": "exact_citation",
+          "heading": "Police department reporting requirements."
+        },
+        "source": {
+          "instruction_text": "Am. L.L. 2019/186, 10/26/2019, eff. 10/26/2019",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-25085",
+          "source_system": "american_legal_publishing",
+          "observed_at": "2026-08-24T08:25:03.900Z",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
+          "locator": "publisher amendment note, entry 6",
+          "start": null,
+          "end": null
+        },
+        "patch": null,
+        "redesignation": null,
+        "change_basis": "source_stated",
+        "materialization_status": "unresolved",
+        "materialization_confidence": "high"
+      },
+      {
+        "schema": "cityscroll.code_change.v1",
+        "id": "local-law:29-2024:amend:nyc-administrative-code:14-150:note-6",
+        "operation": "amend",
+        "matter_id": null,
+        "legal_instrument_id": "local-law:29-2024",
+        "state": "enacted",
+        "effective_at": "2024-07-01",
+        "effective_date_text": null,
+        "effective_date_clauses": [],
+        "target": {
+          "corpus_id": "nyc-administrative-code",
+          "citation": "§ 14-150",
+          "provision_id": "nyc-administrative-code:14-150",
+          "resolution": "exact_citation",
+          "heading": "Police department reporting requirements."
+        },
+        "source": {
+          "instruction_text": "Am. L.L. 2024/029, 1/20/2024, eff. 7/1/2024",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-25085",
+          "source_system": "american_legal_publishing",
+          "observed_at": "2026-08-24T08:25:03.900Z",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
+          "locator": "publisher amendment note, entry 7",
+          "start": null,
+          "end": null
+        },
+        "patch": null,
+        "redesignation": null,
+        "change_basis": "source_stated",
+        "materialization_status": "unresolved",
+        "materialization_confidence": "high"
       }
     ],
     "nyc-administrative-code:13-638.2": [
@@ -4684,6 +4808,110 @@
         "materialization_confidence": "medium"
       }
     ],
+    "nyc-administrative-code:27-2093.1": [
+      {
+        "schema": "cityscroll.code_change.v1",
+        "id": "local-law:1-2018:add:nyc-administrative-code:27-2093.1:note-0",
+        "operation": "add",
+        "matter_id": null,
+        "legal_instrument_id": "local-law:1-2018",
+        "state": "enacted",
+        "effective_at": "2018-09-27",
+        "effective_date_text": null,
+        "effective_date_clauses": [],
+        "target": {
+          "corpus_id": "nyc-administrative-code",
+          "citation": "§ 27-2093.1",
+          "provision_id": "nyc-administrative-code:27-2093.1",
+          "resolution": "exact_citation",
+          "heading": "Certification of no harassment with respect to pilot program buildings."
+        },
+        "source": {
+          "instruction_text": "L.L. 2018/001, 12/31/2017, eff. 9/27/2018",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-60027.xml:0-0-0-61039",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-61039",
+          "source_system": "american_legal_publishing",
+          "observed_at": "2026-08-24T08:25:03.900Z",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-60027.xml:0-0-0-61039",
+          "locator": "publisher amendment note, entry 1",
+          "start": null,
+          "end": null
+        },
+        "patch": null,
+        "redesignation": null,
+        "change_basis": "source_stated",
+        "materialization_status": "unresolved",
+        "materialization_confidence": "medium"
+      },
+      {
+        "schema": "cityscroll.code_change.v1",
+        "id": "local-law:119-2021:amend:nyc-administrative-code:27-2093.1:note-1",
+        "operation": "amend",
+        "matter_id": null,
+        "legal_instrument_id": "local-law:119-2021",
+        "state": "enacted",
+        "effective_at": "2021-09-27",
+        "effective_date_text": null,
+        "effective_date_clauses": [],
+        "target": {
+          "corpus_id": "nyc-administrative-code",
+          "citation": "§ 27-2093.1",
+          "provision_id": "nyc-administrative-code:27-2093.1",
+          "resolution": "exact_citation",
+          "heading": "Certification of no harassment with respect to pilot program buildings."
+        },
+        "source": {
+          "instruction_text": "Am. L.L. 2021/119, 10/25/2021, eff. 9/27/2021",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-60027.xml:0-0-0-61039",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-61039",
+          "source_system": "american_legal_publishing",
+          "observed_at": "2026-08-24T08:25:03.900Z",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-60027.xml:0-0-0-61039",
+          "locator": "publisher amendment note, entry 2",
+          "start": null,
+          "end": null
+        },
+        "patch": null,
+        "redesignation": null,
+        "change_basis": "source_stated",
+        "materialization_status": "unresolved",
+        "materialization_confidence": "high"
+      },
+      {
+        "schema": "cityscroll.code_change.v1",
+        "id": "local-law:140-2021:amend:nyc-administrative-code:27-2093.1:note-2",
+        "operation": "amend",
+        "matter_id": null,
+        "legal_instrument_id": "local-law:140-2021",
+        "state": "enacted",
+        "effective_at": "2021-10-31",
+        "effective_date_text": null,
+        "effective_date_clauses": [],
+        "target": {
+          "corpus_id": "nyc-administrative-code",
+          "citation": "§ 27-2093.1",
+          "provision_id": "nyc-administrative-code:27-2093.1",
+          "resolution": "exact_citation",
+          "heading": "Certification of no harassment with respect to pilot program buildings."
+        },
+        "source": {
+          "instruction_text": "Am. L.L. 2021/140, 11/21/2021, retro eff. 10/31/2021",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-60027.xml:0-0-0-61039",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-61039",
+          "source_system": "american_legal_publishing",
+          "observed_at": "2026-08-24T08:25:03.900Z",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-60027.xml:0-0-0-61039",
+          "locator": "publisher amendment note, entry 3",
+          "start": null,
+          "end": null
+        },
+        "patch": null,
+        "redesignation": null,
+        "change_basis": "source_stated",
+        "materialization_status": "unresolved",
+        "materialization_confidence": "high"
+      }
+    ],
     "nyc-administrative-code:21-955": [
       {
         "schema": "cityscroll.code_change.v1",
@@ -4948,212 +5176,6 @@
           "observed_at": "2026-08-24T08:25:03.900Z",
           "document_id": "american_legal_publishing:admin-xml:0-0-0-130193.xml:0-0-0-38527",
           "locator": "publisher amendment note, entry 8",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "high"
-      }
-    ],
-    "nyc-administrative-code:21-145": [
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:71-2021:add:nyc-administrative-code:21-145:note-0",
-        "operation": "add",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:71-2021",
-        "state": "enacted",
-        "effective_at": "2021-12-24",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 21-145",
-          "provision_id": "nyc-administrative-code:21-145",
-          "resolution": "exact_citation",
-          "heading": "Use of rental assistance vouchers."
-        },
-        "source": {
-          "instruction_text": "L.L. 2021/071, 6/27/2021, eff. 12/24/2021",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-133658",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
-          "locator": "publisher amendment note, entry 1",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "medium"
-      },
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:99-2023:amend:nyc-administrative-code:21-145:note-1",
-        "operation": "amend",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:99-2023",
-        "state": "enacted",
-        "effective_at": "2024-01-09",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 21-145",
-          "provision_id": "nyc-administrative-code:21-145",
-          "resolution": "exact_citation",
-          "heading": "Use of rental assistance vouchers."
-        },
-        "source": {
-          "instruction_text": "Am. L.L. 2023/099, 7/13/2023, eff. 1/9/2024",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-133658",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
-          "locator": "publisher amendment note, entry 2",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "high"
-      },
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:100-2023:amend:nyc-administrative-code:21-145:note-2",
-        "operation": "amend",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:100-2023",
-        "state": "enacted",
-        "effective_at": "2024-01-09",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 21-145",
-          "provision_id": "nyc-administrative-code:21-145",
-          "resolution": "exact_citation",
-          "heading": "Use of rental assistance vouchers."
-        },
-        "source": {
-          "instruction_text": "Am. L.L. 2023/100, 7/13/2023, eff. 1/9/2024",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-133658",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
-          "locator": "publisher amendment note, entry 3",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "high"
-      },
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:101-2023:amend:nyc-administrative-code:21-145:note-3",
-        "operation": "amend",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:101-2023",
-        "state": "enacted",
-        "effective_at": "2024-01-09",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 21-145",
-          "provision_id": "nyc-administrative-code:21-145",
-          "resolution": "exact_citation",
-          "heading": "Use of rental assistance vouchers."
-        },
-        "source": {
-          "instruction_text": "Am. L.L. 2023/101, 7/13/2023, eff. 1/9/2024",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-133658",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
-          "locator": "publisher amendment note, entry 4",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "high"
-      },
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:102-2023:amend:nyc-administrative-code:21-145:note-4",
-        "operation": "amend",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:102-2023",
-        "state": "enacted",
-        "effective_at": "2024-01-09",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 21-145",
-          "provision_id": "nyc-administrative-code:21-145",
-          "resolution": "exact_citation",
-          "heading": "Use of rental assistance vouchers."
-        },
-        "source": {
-          "instruction_text": "Am. L.L. 2023/102, 7/13/2023, eff. 1/9/2024",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-133658",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
-          "locator": "publisher amendment note, entry 5",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "high"
-      },
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:176-2025:amend:nyc-administrative-code:21-145:note-5",
-        "operation": "amend",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:176-2025",
-        "state": "enacted",
-        "effective_at": "2026-03-04",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 21-145",
-          "provision_id": "nyc-administrative-code:21-145",
-          "resolution": "exact_citation",
-          "heading": "Use of rental assistance vouchers."
-        },
-        "source": {
-          "instruction_text": "Am. L.L. 2025/176, 12/4/2025, eff. 3/4/2026",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-133658",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
-          "locator": "publisher amendment note, entry 6",
           "start": null,
           "end": null
         },
@@ -5438,31 +5460,31 @@
         "materialization_confidence": "high"
       }
     ],
-    "nyc-administrative-code:14-150": [
+    "nyc-administrative-code:9-156": [
       {
         "schema": "cityscroll.code_change.v1",
-        "id": "ny-laws:2015:ch-565:amend:nyc-administrative-code:14-150:note-0",
-        "operation": "amend",
+        "id": "local-law:21-2019:add:nyc-administrative-code:9-156:note-0",
+        "operation": "add",
         "matter_id": null,
-        "legal_instrument_id": "ny-laws:2015:ch-565",
+        "legal_instrument_id": "local-law:21-2019",
         "state": "enacted",
-        "effective_at": "2015-12-21",
+        "effective_at": "2019-01-20",
         "effective_date_text": null,
         "effective_date_clauses": [],
         "target": {
           "corpus_id": "nyc-administrative-code",
-          "citation": "§ 14-150",
-          "provision_id": "nyc-administrative-code:14-150",
+          "citation": "§ 9-156",
+          "provision_id": "nyc-administrative-code:9-156",
           "resolution": "exact_citation",
-          "heading": "Police department reporting requirements."
+          "heading": "Sexual abuse reporting."
         },
         "source": {
-          "instruction_text": "Am. 2015 N.Y. Laws Ch. 565, 12/21/2015, eff. 12/21/2015",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-25085",
+          "instruction_text": "L.L. 2019/021, 1/20/2019, eff. 1/20/2019",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-128991",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-128991",
           "source_system": "american_legal_publishing",
           "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-128991",
           "locator": "publisher amendment note, entry 1",
           "start": null,
           "end": null
@@ -5471,32 +5493,32 @@
         "redesignation": null,
         "change_basis": "source_stated",
         "materialization_status": "unresolved",
-        "materialization_confidence": "high"
+        "materialization_confidence": "medium"
       },
       {
         "schema": "cityscroll.code_change.v1",
-        "id": "local-law:71-2016:amend:nyc-administrative-code:14-150:note-1",
+        "id": "ny-laws:2022:ch-486:amend:nyc-administrative-code:9-156:note-1",
         "operation": "amend",
         "matter_id": null,
-        "legal_instrument_id": "local-law:71-2016",
+        "legal_instrument_id": "ny-laws:2022:ch-486",
         "state": "enacted",
-        "effective_at": "2016-06-13",
+        "effective_at": "2022-08-08",
         "effective_date_text": null,
         "effective_date_clauses": [],
         "target": {
           "corpus_id": "nyc-administrative-code",
-          "citation": "§ 14-150",
-          "provision_id": "nyc-administrative-code:14-150",
+          "citation": "§ 9-156",
+          "provision_id": "nyc-administrative-code:9-156",
           "resolution": "exact_citation",
-          "heading": "Police department reporting requirements."
+          "heading": "Sexual abuse reporting."
         },
         "source": {
-          "instruction_text": "Am. L.L. 2016/071, 6/13/2017, eff. 6/13/2016 and 6/13/2017",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-25085",
+          "instruction_text": "Am. 2022 N.Y. Laws Ch. 486, 8/8/2022, eff. 8/8/2022",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-128991",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-128991",
           "source_system": "american_legal_publishing",
           "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-128991",
           "locator": "publisher amendment note, entry 2",
           "start": null,
           "end": null
@@ -5509,28 +5531,28 @@
       },
       {
         "schema": "cityscroll.code_change.v1",
-        "id": "local-law:108-2016:amend:nyc-administrative-code:14-150:note-2",
+        "id": "local-law:24-2025:amend:nyc-administrative-code:9-156:note-2",
         "operation": "amend",
         "matter_id": null,
-        "legal_instrument_id": "local-law:108-2016",
+        "legal_instrument_id": "local-law:24-2025",
         "state": "enacted",
-        "effective_at": "2016-10-28",
+        "effective_at": "2025-07-13",
         "effective_date_text": null,
         "effective_date_clauses": [],
         "target": {
           "corpus_id": "nyc-administrative-code",
-          "citation": "§ 14-150",
-          "provision_id": "nyc-administrative-code:14-150",
+          "citation": "§ 9-156",
+          "provision_id": "nyc-administrative-code:9-156",
           "resolution": "exact_citation",
-          "heading": "Police department reporting requirements."
+          "heading": "Sexual abuse reporting."
         },
         "source": {
-          "instruction_text": "Am. L.L. 2016/108, 9/28/2016, eff. 10/28/2016",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-25085",
+          "instruction_text": "Am. L.L. 2025/024, 3/15/2025, eff. 7/13/2025",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-128991",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-128991",
           "source_system": "american_legal_publishing",
           "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-128991",
           "locator": "publisher amendment note, entry 3",
           "start": null,
           "end": null
@@ -5543,131 +5565,29 @@
       },
       {
         "schema": "cityscroll.code_change.v1",
-        "id": "local-law:129-2016:amend:nyc-administrative-code:14-150:note-3",
+        "id": "local-law:33-2025:amend:nyc-administrative-code:9-156:note-3",
         "operation": "amend",
         "matter_id": null,
-        "legal_instrument_id": "local-law:129-2016",
+        "legal_instrument_id": "local-law:33-2025",
         "state": "enacted",
-        "effective_at": "2017-01-29",
+        "effective_at": "2025-03-29",
         "effective_date_text": null,
         "effective_date_clauses": [],
         "target": {
           "corpus_id": "nyc-administrative-code",
-          "citation": "§ 14-150",
-          "provision_id": "nyc-administrative-code:14-150",
+          "citation": "§ 9-156",
+          "provision_id": "nyc-administrative-code:9-156",
           "resolution": "exact_citation",
-          "heading": "Police department reporting requirements."
+          "heading": "Sexual abuse reporting."
         },
         "source": {
-          "instruction_text": "Am. L.L. 2016/129, 10/31/2016, eff. 1/29/2017",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-25085",
+          "instruction_text": "Am. L.L. 2025/033, 3/29/2025, eff. 3/29/2025",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-128991",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-128991",
           "source_system": "american_legal_publishing",
           "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-128991",
           "locator": "publisher amendment note, entry 4",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "high"
-      },
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:38-2019:amend:nyc-administrative-code:14-150:note-4",
-        "operation": "amend",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:38-2019",
-        "state": "enacted",
-        "effective_at": "2019-02-24",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 14-150",
-          "provision_id": "nyc-administrative-code:14-150",
-          "resolution": "exact_citation",
-          "heading": "Police department reporting requirements."
-        },
-        "source": {
-          "instruction_text": "Am. L.L. 2019/038, 2/24/2019, eff. 2/24/2019",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-25085",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
-          "locator": "publisher amendment note, entry 5",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "high"
-      },
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:186-2019:amend:nyc-administrative-code:14-150:note-5",
-        "operation": "amend",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:186-2019",
-        "state": "enacted",
-        "effective_at": "2019-10-26",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 14-150",
-          "provision_id": "nyc-administrative-code:14-150",
-          "resolution": "exact_citation",
-          "heading": "Police department reporting requirements."
-        },
-        "source": {
-          "instruction_text": "Am. L.L. 2019/186, 10/26/2019, eff. 10/26/2019",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-25085",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
-          "locator": "publisher amendment note, entry 6",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "high"
-      },
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:29-2024:amend:nyc-administrative-code:14-150:note-6",
-        "operation": "amend",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:29-2024",
-        "state": "enacted",
-        "effective_at": "2024-07-01",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 14-150",
-          "provision_id": "nyc-administrative-code:14-150",
-          "resolution": "exact_citation",
-          "heading": "Police department reporting requirements."
-        },
-        "source": {
-          "instruction_text": "Am. L.L. 2024/029, 1/20/2024, eff. 7/1/2024",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-25085",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-24870.xml:0-0-0-25085",
-          "locator": "publisher amendment note, entry 7",
           "start": null,
           "end": null
         },
@@ -6398,6 +6318,180 @@
         "materialization_confidence": "high"
       }
     ],
+    "nyc-administrative-code:21-922": [
+      {
+        "schema": "cityscroll.code_change.v1",
+        "id": "local-law:33-2023:add:nyc-administrative-code:21-922:note-0",
+        "operation": "add",
+        "matter_id": null,
+        "legal_instrument_id": "local-law:33-2023",
+        "state": "enacted",
+        "effective_at": "2023-09-10",
+        "effective_date_text": null,
+        "effective_date_clauses": [],
+        "target": {
+          "corpus_id": "nyc-administrative-code",
+          "citation": "§ 21-922",
+          "provision_id": "nyc-administrative-code:21-922",
+          "resolution": "exact_citation",
+          "heading": "Juvenile justice advisory board.*"
+        },
+        "source": {
+          "instruction_text": "L.L. 2023/033, 3/14/2023, eff. 9/10/2023",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-209312.xml:0-0-0-135644",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-135644",
+          "source_system": "american_legal_publishing",
+          "observed_at": "2026-08-24T08:25:03.900Z",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-209312.xml:0-0-0-135644",
+          "locator": "publisher amendment note, entry 1",
+          "start": null,
+          "end": null
+        },
+        "patch": null,
+        "redesignation": null,
+        "change_basis": "source_stated",
+        "materialization_status": "unresolved",
+        "materialization_confidence": "medium"
+      }
+    ],
+    "nyc-administrative-code:19-101.2": [
+      {
+        "schema": "cityscroll.code_change.v1",
+        "id": "ny-laws:2022:ch-790:amend:nyc-administrative-code:19-101.2:note-0",
+        "operation": "amend",
+        "matter_id": null,
+        "legal_instrument_id": "ny-laws:2022:ch-790",
+        "state": "enacted",
+        "effective_at": "2023-06-26",
+        "effective_date_text": null,
+        "effective_date_clauses": [],
+        "target": {
+          "corpus_id": "nyc-administrative-code",
+          "citation": "§ 19-101.2",
+          "provision_id": "nyc-administrative-code:19-101.2",
+          "resolution": "exact_citation",
+          "heading": "Review of major transportation projects."
+        },
+        "source": {
+          "instruction_text": "Am. 2022 N.Y. Laws Ch. 790, 12/28/2022, eff. 6/26/2023",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-30397.xml:0-0-0-216664",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216664",
+          "source_system": "american_legal_publishing",
+          "observed_at": "2026-08-24T08:25:03.900Z",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-30397.xml:0-0-0-216664",
+          "locator": "publisher amendment note, entry 1",
+          "start": null,
+          "end": null
+        },
+        "patch": null,
+        "redesignation": null,
+        "change_basis": "source_stated",
+        "materialization_status": "unresolved",
+        "materialization_confidence": "high"
+      },
+      {
+        "schema": "cityscroll.code_change.v1",
+        "id": "ny-laws:2023:ch-98:amend:nyc-administrative-code:19-101.2:note-1",
+        "operation": "amend",
+        "matter_id": null,
+        "legal_instrument_id": "ny-laws:2023:ch-98",
+        "state": "enacted",
+        "effective_at": "2023-03-03",
+        "effective_date_text": null,
+        "effective_date_clauses": [],
+        "target": {
+          "corpus_id": "nyc-administrative-code",
+          "citation": "§ 19-101.2",
+          "provision_id": "nyc-administrative-code:19-101.2",
+          "resolution": "exact_citation",
+          "heading": "Review of major transportation projects."
+        },
+        "source": {
+          "instruction_text": "Am. 2023 N.Y. Laws Ch. 98, 3/3/2023, eff. 3/3/2023",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-30397.xml:0-0-0-216664",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216664",
+          "source_system": "american_legal_publishing",
+          "observed_at": "2026-08-24T08:25:03.900Z",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-30397.xml:0-0-0-216664",
+          "locator": "publisher amendment note, entry 2",
+          "start": null,
+          "end": null
+        },
+        "patch": null,
+        "redesignation": null,
+        "change_basis": "source_stated",
+        "materialization_status": "unresolved",
+        "materialization_confidence": "high"
+      },
+      {
+        "schema": "cityscroll.code_change.v1",
+        "id": "local-law:3-2024:amend:nyc-administrative-code:19-101.2:note-2",
+        "operation": "amend",
+        "matter_id": null,
+        "legal_instrument_id": "local-law:3-2024",
+        "state": "enacted",
+        "effective_at": "2024-01-06",
+        "effective_date_text": null,
+        "effective_date_clauses": [],
+        "target": {
+          "corpus_id": "nyc-administrative-code",
+          "citation": "§ 19-101.2",
+          "provision_id": "nyc-administrative-code:19-101.2",
+          "resolution": "exact_citation",
+          "heading": "Review of major transportation projects."
+        },
+        "source": {
+          "instruction_text": "Am. L.L. 2024/003, 1/6/2024, eff. 1/6/2024",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-30397.xml:0-0-0-216664",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216664",
+          "source_system": "american_legal_publishing",
+          "observed_at": "2026-08-24T08:25:03.900Z",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-30397.xml:0-0-0-216664",
+          "locator": "publisher amendment note, entry 3",
+          "start": null,
+          "end": null
+        },
+        "patch": null,
+        "redesignation": null,
+        "change_basis": "source_stated",
+        "materialization_status": "unresolved",
+        "materialization_confidence": "high"
+      },
+      {
+        "schema": "cityscroll.code_change.v1",
+        "id": "local-law:6-2025:amend:nyc-administrative-code:19-101.2:note-3",
+        "operation": "amend",
+        "matter_id": null,
+        "legal_instrument_id": "local-law:6-2025",
+        "state": "enacted",
+        "effective_at": "2025-03-19",
+        "effective_date_text": null,
+        "effective_date_clauses": [],
+        "target": {
+          "corpus_id": "nyc-administrative-code",
+          "citation": "§ 19-101.2",
+          "provision_id": "nyc-administrative-code:19-101.2",
+          "resolution": "exact_citation",
+          "heading": "Review of major transportation projects."
+        },
+        "source": {
+          "instruction_text": "Am. L.L. 2025/006, 1/18/2025, eff. 3/19/2025",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-30397.xml:0-0-0-216664",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216664",
+          "source_system": "american_legal_publishing",
+          "observed_at": "2026-08-24T08:25:03.900Z",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-30397.xml:0-0-0-216664",
+          "locator": "publisher amendment note, entry 4",
+          "start": null,
+          "end": null
+        },
+        "patch": null,
+        "redesignation": null,
+        "change_basis": "source_stated",
+        "materialization_status": "unresolved",
+        "materialization_confidence": "high"
+      }
+    ],
     "nyc-administrative-code:26-405": [
       {
         "schema": "cityscroll.code_change.v1",
@@ -7050,31 +7144,31 @@
         "materialization_confidence": "high"
       }
     ],
-    "nyc-administrative-code:19-101.2": [
+    "nyc-administrative-code:9-140": [
       {
         "schema": "cityscroll.code_change.v1",
-        "id": "ny-laws:2022:ch-790:amend:nyc-administrative-code:19-101.2:note-0",
-        "operation": "amend",
+        "id": "local-law:85-2015:add:nyc-administrative-code:9-140:note-0",
+        "operation": "add",
         "matter_id": null,
-        "legal_instrument_id": "ny-laws:2022:ch-790",
+        "legal_instrument_id": "local-law:85-2015",
         "state": "enacted",
-        "effective_at": "2023-06-26",
+        "effective_at": "2016-01-01",
         "effective_date_text": null,
         "effective_date_clauses": [],
         "target": {
           "corpus_id": "nyc-administrative-code",
-          "citation": "§ 19-101.2",
-          "provision_id": "nyc-administrative-code:19-101.2",
+          "citation": "§ 9-140",
+          "provision_id": "nyc-administrative-code:9-140",
           "resolution": "exact_citation",
-          "heading": "Review of major transportation projects."
+          "heading": "Jail visitation statistics."
         },
         "source": {
-          "instruction_text": "Am. 2022 N.Y. Laws Ch. 790, 12/28/2022, eff. 6/26/2023",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-30397.xml:0-0-0-216664",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216664",
+          "instruction_text": "L.L. 2015/085, 10/7/2015, eff. 1/1/2016",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-5551",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-5551",
           "source_system": "american_legal_publishing",
           "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-30397.xml:0-0-0-216664",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-5551",
           "locator": "publisher amendment note, entry 1",
           "start": null,
           "end": null
@@ -7083,32 +7177,32 @@
         "redesignation": null,
         "change_basis": "source_stated",
         "materialization_status": "unresolved",
-        "materialization_confidence": "high"
+        "materialization_confidence": "medium"
       },
       {
         "schema": "cityscroll.code_change.v1",
-        "id": "ny-laws:2023:ch-98:amend:nyc-administrative-code:19-101.2:note-1",
+        "id": "local-law:23-2019:amend:nyc-administrative-code:9-140:note-1",
         "operation": "amend",
         "matter_id": null,
-        "legal_instrument_id": "ny-laws:2023:ch-98",
+        "legal_instrument_id": "local-law:23-2019",
         "state": "enacted",
-        "effective_at": "2023-03-03",
+        "effective_at": "2019-01-20",
         "effective_date_text": null,
         "effective_date_clauses": [],
         "target": {
           "corpus_id": "nyc-administrative-code",
-          "citation": "§ 19-101.2",
-          "provision_id": "nyc-administrative-code:19-101.2",
+          "citation": "§ 9-140",
+          "provision_id": "nyc-administrative-code:9-140",
           "resolution": "exact_citation",
-          "heading": "Review of major transportation projects."
+          "heading": "Jail visitation statistics."
         },
         "source": {
-          "instruction_text": "Am. 2023 N.Y. Laws Ch. 98, 3/3/2023, eff. 3/3/2023",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-30397.xml:0-0-0-216664",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216664",
+          "instruction_text": "Am. L.L. 2019/023, 1/20/2019, eff. 1/20/2019",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-5551",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-5551",
           "source_system": "american_legal_publishing",
           "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-30397.xml:0-0-0-216664",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-5551",
           "locator": "publisher amendment note, entry 2",
           "start": null,
           "end": null
@@ -7121,28 +7215,28 @@
       },
       {
         "schema": "cityscroll.code_change.v1",
-        "id": "local-law:3-2024:amend:nyc-administrative-code:19-101.2:note-2",
+        "id": "ny-laws:2021:ch-322:amend:nyc-administrative-code:9-140:note-2",
         "operation": "amend",
         "matter_id": null,
-        "legal_instrument_id": "local-law:3-2024",
+        "legal_instrument_id": "ny-laws:2021:ch-322",
         "state": "enacted",
-        "effective_at": "2024-01-06",
+        "effective_at": "2021-08-02",
         "effective_date_text": null,
         "effective_date_clauses": [],
         "target": {
           "corpus_id": "nyc-administrative-code",
-          "citation": "§ 19-101.2",
-          "provision_id": "nyc-administrative-code:19-101.2",
+          "citation": "§ 9-140",
+          "provision_id": "nyc-administrative-code:9-140",
           "resolution": "exact_citation",
-          "heading": "Review of major transportation projects."
+          "heading": "Jail visitation statistics."
         },
         "source": {
-          "instruction_text": "Am. L.L. 2024/003, 1/6/2024, eff. 1/6/2024",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-30397.xml:0-0-0-216664",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216664",
+          "instruction_text": "Am. 2021 N.Y. Laws Ch. 322, 8/2/2021, eff. 8/2/2021",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-5551",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-5551",
           "source_system": "american_legal_publishing",
           "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-30397.xml:0-0-0-216664",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-5551",
           "locator": "publisher amendment note, entry 3",
           "start": null,
           "end": null
@@ -7155,28 +7249,28 @@
       },
       {
         "schema": "cityscroll.code_change.v1",
-        "id": "local-law:6-2025:amend:nyc-administrative-code:19-101.2:note-3",
+        "id": "local-law:44-2025:amend:nyc-administrative-code:9-140:note-3",
         "operation": "amend",
         "matter_id": null,
-        "legal_instrument_id": "local-law:6-2025",
+        "legal_instrument_id": "local-law:44-2025",
         "state": "enacted",
-        "effective_at": "2025-03-19",
+        "effective_at": "2026-01-06",
         "effective_date_text": null,
         "effective_date_clauses": [],
         "target": {
           "corpus_id": "nyc-administrative-code",
-          "citation": "§ 19-101.2",
-          "provision_id": "nyc-administrative-code:19-101.2",
+          "citation": "§ 9-140",
+          "provision_id": "nyc-administrative-code:9-140",
           "resolution": "exact_citation",
-          "heading": "Review of major transportation projects."
+          "heading": "Jail visitation statistics."
         },
         "source": {
-          "instruction_text": "Am. L.L. 2025/006, 1/18/2025, eff. 3/19/2025",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-30397.xml:0-0-0-216664",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216664",
+          "instruction_text": "Am. L.L. 2025/044, 4/11/2025, eff. 1/6/2026",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-5551",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-5551",
           "source_system": "american_legal_publishing",
           "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-30397.xml:0-0-0-216664",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-5551",
           "locator": "publisher amendment note, entry 4",
           "start": null,
           "end": null
@@ -7186,6 +7280,42 @@
         "change_basis": "source_stated",
         "materialization_status": "unresolved",
         "materialization_confidence": "high"
+      }
+    ],
+    "nyc-administrative-code:12-212": [
+      {
+        "schema": "cityscroll.code_change.v1",
+        "id": "local-law:4-2023:add:nyc-administrative-code:12-212:note-0",
+        "operation": "add",
+        "matter_id": null,
+        "legal_instrument_id": "local-law:4-2023",
+        "state": "enacted",
+        "effective_at": "2023-04-07",
+        "effective_date_text": null,
+        "effective_date_clauses": [],
+        "target": {
+          "corpus_id": "nyc-administrative-code",
+          "citation": "§ 12-212",
+          "provision_id": "nyc-administrative-code:12-212",
+          "resolution": "exact_citation",
+          "heading": "Public service corps program."
+        },
+        "source": {
+          "instruction_text": "L.L. 2023/004, 1/7/2023, eff. 4/7/2023",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-228049.xml:0-0-0-137205",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-137205",
+          "source_system": "american_legal_publishing",
+          "observed_at": "2026-08-24T08:25:03.900Z",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-228049.xml:0-0-0-137205",
+          "locator": "publisher amendment note, entry 1",
+          "start": null,
+          "end": null
+        },
+        "patch": null,
+        "redesignation": null,
+        "change_basis": "source_stated",
+        "materialization_status": "unresolved",
+        "materialization_confidence": "medium"
       }
     ],
     "nyc-administrative-code:13-101": [
@@ -7224,31 +7354,31 @@
         "materialization_confidence": "high"
       }
     ],
-    "nyc-administrative-code:9-156": [
+    "nyc-administrative-code:7-628": [
       {
         "schema": "cityscroll.code_change.v1",
-        "id": "local-law:21-2019:add:nyc-administrative-code:9-156:note-0",
+        "id": "local-law:249-2017:add:nyc-administrative-code:7-628:note-0",
         "operation": "add",
         "matter_id": null,
-        "legal_instrument_id": "local-law:21-2019",
+        "legal_instrument_id": "local-law:249-2017",
         "state": "enacted",
-        "effective_at": "2019-01-20",
+        "effective_at": "2018-07-01",
         "effective_date_text": null,
         "effective_date_clauses": [],
         "target": {
           "corpus_id": "nyc-administrative-code",
-          "citation": "§ 9-156",
-          "provision_id": "nyc-administrative-code:9-156",
+          "citation": "§ 7-628",
+          "provision_id": "nyc-administrative-code:7-628",
           "resolution": "exact_citation",
-          "heading": "Sexual abuse reporting."
+          "heading": "Notification of recording of real estate instruments."
         },
         "source": {
-          "instruction_text": "L.L. 2019/021, 1/20/2019, eff. 1/20/2019",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-128991",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-128991",
+          "instruction_text": "L.L. 2017/249, 12/17/2017, eff. 7/1/2018",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-227680.xml:0-0-0-4341",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-4341",
           "source_system": "american_legal_publishing",
           "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-128991",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-227680.xml:0-0-0-4341",
           "locator": "publisher amendment note, entry 1",
           "start": null,
           "end": null
@@ -7261,28 +7391,28 @@
       },
       {
         "schema": "cityscroll.code_change.v1",
-        "id": "ny-laws:2022:ch-486:amend:nyc-administrative-code:9-156:note-1",
+        "id": "local-law:136-2021:amend:nyc-administrative-code:7-628:note-1",
         "operation": "amend",
         "matter_id": null,
-        "legal_instrument_id": "ny-laws:2022:ch-486",
+        "legal_instrument_id": "local-law:136-2021",
         "state": "enacted",
-        "effective_at": "2022-08-08",
+        "effective_at": "2021-11-21",
         "effective_date_text": null,
         "effective_date_clauses": [],
         "target": {
           "corpus_id": "nyc-administrative-code",
-          "citation": "§ 9-156",
-          "provision_id": "nyc-administrative-code:9-156",
+          "citation": "§ 7-628",
+          "provision_id": "nyc-administrative-code:7-628",
           "resolution": "exact_citation",
-          "heading": "Sexual abuse reporting."
+          "heading": "Notification of recording of real estate instruments."
         },
         "source": {
-          "instruction_text": "Am. 2022 N.Y. Laws Ch. 486, 8/8/2022, eff. 8/8/2022",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-128991",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-128991",
+          "instruction_text": "Am. L.L. 2021/136, 11/21/2021, eff. 11/21/2021 and 1/20/2022",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-227680.xml:0-0-0-4341",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-4341",
           "source_system": "american_legal_publishing",
           "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-128991",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-227680.xml:0-0-0-4341",
           "locator": "publisher amendment note, entry 2",
           "start": null,
           "end": null
@@ -7295,28 +7425,28 @@
       },
       {
         "schema": "cityscroll.code_change.v1",
-        "id": "local-law:24-2025:amend:nyc-administrative-code:9-156:note-2",
+        "id": "local-law:69-2025:amend:nyc-administrative-code:7-628:note-2",
         "operation": "amend",
         "matter_id": null,
-        "legal_instrument_id": "local-law:24-2025",
+        "legal_instrument_id": "local-law:69-2025",
         "state": "enacted",
-        "effective_at": "2025-07-13",
+        "effective_at": "2025-06-23",
         "effective_date_text": null,
         "effective_date_clauses": [],
         "target": {
           "corpus_id": "nyc-administrative-code",
-          "citation": "§ 9-156",
-          "provision_id": "nyc-administrative-code:9-156",
+          "citation": "§ 7-628",
+          "provision_id": "nyc-administrative-code:7-628",
           "resolution": "exact_citation",
-          "heading": "Sexual abuse reporting."
+          "heading": "Notification of recording of real estate instruments."
         },
         "source": {
-          "instruction_text": "Am. L.L. 2025/024, 3/15/2025, eff. 7/13/2025",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-128991",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-128991",
+          "instruction_text": "Am. L.L. 2025/069, 5/24/2025, eff. 6/23/2025",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-227680.xml:0-0-0-4341",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-4341",
           "source_system": "american_legal_publishing",
           "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-128991",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-227680.xml:0-0-0-4341",
           "locator": "publisher amendment note, entry 3",
           "start": null,
           "end": null
@@ -7329,201 +7459,29 @@
       },
       {
         "schema": "cityscroll.code_change.v1",
-        "id": "local-law:33-2025:amend:nyc-administrative-code:9-156:note-3",
+        "id": "local-law:68-2025:amend:nyc-administrative-code:7-628:note-3",
         "operation": "amend",
         "matter_id": null,
-        "legal_instrument_id": "local-law:33-2025",
+        "legal_instrument_id": "local-law:68-2025",
         "state": "enacted",
-        "effective_at": "2025-03-29",
+        "effective_at": "2025-09-21",
         "effective_date_text": null,
         "effective_date_clauses": [],
         "target": {
           "corpus_id": "nyc-administrative-code",
-          "citation": "§ 9-156",
-          "provision_id": "nyc-administrative-code:9-156",
+          "citation": "§ 7-628",
+          "provision_id": "nyc-administrative-code:7-628",
           "resolution": "exact_citation",
-          "heading": "Sexual abuse reporting."
+          "heading": "Notification of recording of real estate instruments."
         },
         "source": {
-          "instruction_text": "Am. L.L. 2025/033, 3/29/2025, eff. 3/29/2025",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-128991",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-128991",
+          "instruction_text": "Am. L.L. 2025/068, 5/24/2025, eff. 9/21/2025",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-227680.xml:0-0-0-4341",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-4341",
           "source_system": "american_legal_publishing",
           "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-128991",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-227680.xml:0-0-0-4341",
           "locator": "publisher amendment note, entry 4",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "high"
-      }
-    ],
-    "nyc-administrative-code:20-1208": [
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:107-2017:add:nyc-administrative-code:20-1208:note-0",
-        "operation": "add",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:107-2017",
-        "state": "enacted",
-        "effective_at": "2017-11-26",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 20-1208",
-          "provision_id": "nyc-administrative-code:20-1208",
-          "resolution": "exact_citation",
-          "heading": "Specific administrative remedies."
-        },
-        "source": {
-          "instruction_text": "L.L. 2017/107, 5/30/2017, eff. 11/26/2017",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-245232.xml:0-0-0-128204",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-128204",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-245232.xml:0-0-0-128204",
-          "locator": "publisher amendment note, entry 1",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "medium"
-      },
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:69-2018:amend:nyc-administrative-code:20-1208:note-1",
-        "operation": "amend",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:69-2018",
-        "state": "enacted",
-        "effective_at": "2018-07-18",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 20-1208",
-          "provision_id": "nyc-administrative-code:20-1208",
-          "resolution": "exact_citation",
-          "heading": "Specific administrative remedies."
-        },
-        "source": {
-          "instruction_text": "Am. L.L. 2018/069, 1/19/2018, eff. 7/18/2018",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-245232.xml:0-0-0-128204",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-128204",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-245232.xml:0-0-0-128204",
-          "locator": "publisher amendment note, entry 2",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "high"
-      },
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:80-2020:amend:nyc-administrative-code:20-1208:note-2",
-        "operation": "amend",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:80-2020",
-        "state": "enacted",
-        "effective_at": "2020-08-28",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 20-1208",
-          "provision_id": "nyc-administrative-code:20-1208",
-          "resolution": "exact_citation",
-          "heading": "Specific administrative remedies."
-        },
-        "source": {
-          "instruction_text": "Am. L.L. 2020/080, 8/28/2020, eff. 8/28/2020",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-245232.xml:0-0-0-128204",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-128204",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-245232.xml:0-0-0-128204",
-          "locator": "publisher amendment note, entry 3",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "high"
-      },
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:2-2021:amend:nyc-administrative-code:20-1208:note-3",
-        "operation": "amend",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:2-2021",
-        "state": "enacted",
-        "effective_at": "2021-09-02",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 20-1208",
-          "provision_id": "nyc-administrative-code:20-1208",
-          "resolution": "exact_citation",
-          "heading": "Specific administrative remedies."
-        },
-        "source": {
-          "instruction_text": "Am. L.L. 2021/002, 1/5/2021, eff. 9/2/2021",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-245232.xml:0-0-0-128204",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-128204",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-245232.xml:0-0-0-128204",
-          "locator": "publisher amendment note, entry 4",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "high"
-      },
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:52-2026:amend:nyc-administrative-code:20-1208:note-4",
-        "operation": "amend",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:52-2026",
-        "state": "enacted",
-        "effective_at": "2026-07-28",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 20-1208",
-          "provision_id": "nyc-administrative-code:20-1208",
-          "resolution": "exact_citation",
-          "heading": "Specific administrative remedies."
-        },
-        "source": {
-          "instruction_text": "Am. L.L. 2026/052, 1/29/2026, eff. 7/28/2026",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-245232.xml:0-0-0-128204",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-128204",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-245232.xml:0-0-0-128204",
-          "locator": "publisher amendment note, entry 5",
           "start": null,
           "end": null
         },
@@ -7946,31 +7904,31 @@
         "materialization_confidence": "high"
       }
     ],
-    "nyc-administrative-code:9-140": [
+    "nyc-administrative-code:21-145": [
       {
         "schema": "cityscroll.code_change.v1",
-        "id": "local-law:85-2015:add:nyc-administrative-code:9-140:note-0",
+        "id": "local-law:71-2021:add:nyc-administrative-code:21-145:note-0",
         "operation": "add",
         "matter_id": null,
-        "legal_instrument_id": "local-law:85-2015",
+        "legal_instrument_id": "local-law:71-2021",
         "state": "enacted",
-        "effective_at": "2016-01-01",
+        "effective_at": "2021-12-24",
         "effective_date_text": null,
         "effective_date_clauses": [],
         "target": {
           "corpus_id": "nyc-administrative-code",
-          "citation": "§ 9-140",
-          "provision_id": "nyc-administrative-code:9-140",
+          "citation": "§ 21-145",
+          "provision_id": "nyc-administrative-code:21-145",
           "resolution": "exact_citation",
-          "heading": "Jail visitation statistics."
+          "heading": "Use of rental assistance vouchers."
         },
         "source": {
-          "instruction_text": "L.L. 2015/085, 10/7/2015, eff. 1/1/2016",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-5551",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-5551",
+          "instruction_text": "L.L. 2021/071, 6/27/2021, eff. 12/24/2021",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-133658",
           "source_system": "american_legal_publishing",
           "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-5551",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
           "locator": "publisher amendment note, entry 1",
           "start": null,
           "end": null
@@ -7983,28 +7941,28 @@
       },
       {
         "schema": "cityscroll.code_change.v1",
-        "id": "local-law:23-2019:amend:nyc-administrative-code:9-140:note-1",
+        "id": "local-law:99-2023:amend:nyc-administrative-code:21-145:note-1",
         "operation": "amend",
         "matter_id": null,
-        "legal_instrument_id": "local-law:23-2019",
+        "legal_instrument_id": "local-law:99-2023",
         "state": "enacted",
-        "effective_at": "2019-01-20",
+        "effective_at": "2024-01-09",
         "effective_date_text": null,
         "effective_date_clauses": [],
         "target": {
           "corpus_id": "nyc-administrative-code",
-          "citation": "§ 9-140",
-          "provision_id": "nyc-administrative-code:9-140",
+          "citation": "§ 21-145",
+          "provision_id": "nyc-administrative-code:21-145",
           "resolution": "exact_citation",
-          "heading": "Jail visitation statistics."
+          "heading": "Use of rental assistance vouchers."
         },
         "source": {
-          "instruction_text": "Am. L.L. 2019/023, 1/20/2019, eff. 1/20/2019",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-5551",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-5551",
+          "instruction_text": "Am. L.L. 2023/099, 7/13/2023, eff. 1/9/2024",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-133658",
           "source_system": "american_legal_publishing",
           "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-5551",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
           "locator": "publisher amendment note, entry 2",
           "start": null,
           "end": null
@@ -8017,28 +7975,28 @@
       },
       {
         "schema": "cityscroll.code_change.v1",
-        "id": "ny-laws:2021:ch-322:amend:nyc-administrative-code:9-140:note-2",
+        "id": "local-law:100-2023:amend:nyc-administrative-code:21-145:note-2",
         "operation": "amend",
         "matter_id": null,
-        "legal_instrument_id": "ny-laws:2021:ch-322",
+        "legal_instrument_id": "local-law:100-2023",
         "state": "enacted",
-        "effective_at": "2021-08-02",
+        "effective_at": "2024-01-09",
         "effective_date_text": null,
         "effective_date_clauses": [],
         "target": {
           "corpus_id": "nyc-administrative-code",
-          "citation": "§ 9-140",
-          "provision_id": "nyc-administrative-code:9-140",
+          "citation": "§ 21-145",
+          "provision_id": "nyc-administrative-code:21-145",
           "resolution": "exact_citation",
-          "heading": "Jail visitation statistics."
+          "heading": "Use of rental assistance vouchers."
         },
         "source": {
-          "instruction_text": "Am. 2021 N.Y. Laws Ch. 322, 8/2/2021, eff. 8/2/2021",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-5551",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-5551",
+          "instruction_text": "Am. L.L. 2023/100, 7/13/2023, eff. 1/9/2024",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-133658",
           "source_system": "american_legal_publishing",
           "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-5551",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
           "locator": "publisher amendment note, entry 3",
           "start": null,
           "end": null
@@ -8051,340 +8009,28 @@
       },
       {
         "schema": "cityscroll.code_change.v1",
-        "id": "local-law:44-2025:amend:nyc-administrative-code:9-140:note-3",
+        "id": "local-law:101-2023:amend:nyc-administrative-code:21-145:note-3",
         "operation": "amend",
         "matter_id": null,
-        "legal_instrument_id": "local-law:44-2025",
+        "legal_instrument_id": "local-law:101-2023",
         "state": "enacted",
-        "effective_at": "2026-01-06",
+        "effective_at": "2024-01-09",
         "effective_date_text": null,
         "effective_date_clauses": [],
         "target": {
           "corpus_id": "nyc-administrative-code",
-          "citation": "§ 9-140",
-          "provision_id": "nyc-administrative-code:9-140",
+          "citation": "§ 21-145",
+          "provision_id": "nyc-administrative-code:21-145",
           "resolution": "exact_citation",
-          "heading": "Jail visitation statistics."
+          "heading": "Use of rental assistance vouchers."
         },
         "source": {
-          "instruction_text": "Am. L.L. 2025/044, 4/11/2025, eff. 1/6/2026",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-5551",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-5551",
+          "instruction_text": "Am. L.L. 2023/101, 7/13/2023, eff. 1/9/2024",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-133658",
           "source_system": "american_legal_publishing",
           "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-5551",
-          "locator": "publisher amendment note, entry 4",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "high"
-      }
-    ],
-    "nyc-administrative-code:9-141": [
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:82-2016:add:nyc-administrative-code:9-141:note-0",
-        "operation": "add",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:82-2016",
-        "state": "enacted",
-        "effective_at": "2016-07-13",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 9-141",
-          "provision_id": "nyc-administrative-code:9-141",
-          "resolution": "exact_citation",
-          "heading": "Menstrual products."
-        },
-        "source": {
-          "instruction_text": "L.L. 2016/082, 7/13/2016, eff. 7/13/2016",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-130463",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-130463",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-130463",
-          "locator": "publisher amendment note, entry 1",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "medium"
-      },
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "ny-laws:2021:ch-322:amend:nyc-administrative-code:9-141:note-1",
-        "operation": "amend",
-        "matter_id": null,
-        "legal_instrument_id": "ny-laws:2021:ch-322",
-        "state": "enacted",
-        "effective_at": "2021-08-02",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 9-141",
-          "provision_id": "nyc-administrative-code:9-141",
-          "resolution": "exact_citation",
-          "heading": "Menstrual products."
-        },
-        "source": {
-          "instruction_text": "Am. 2021 N.Y. Laws Ch. 322, 8/2/2021, eff. 8/2/2021",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-130463",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-130463",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-130463",
-          "locator": "publisher amendment note, entry 2",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "high"
-      },
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:10-2024:amend:nyc-administrative-code:9-141:note-2",
-        "operation": "amend",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:10-2024",
-        "state": "enacted",
-        "effective_at": "2024-10-02",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 9-141",
-          "provision_id": "nyc-administrative-code:9-141",
-          "resolution": "exact_citation",
-          "heading": "Menstrual products."
-        },
-        "source": {
-          "instruction_text": "Am. L.L. 2024/010, 1/6/2024, eff. 10/2/2024",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-130463",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-130463",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-130463",
-          "locator": "publisher amendment note, entry 3",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "high"
-      },
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:12-2024:amend:nyc-administrative-code:9-141:note-3",
-        "operation": "amend",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:12-2024",
-        "state": "enacted",
-        "effective_at": "2024-10-02",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 9-141",
-          "provision_id": "nyc-administrative-code:9-141",
-          "resolution": "exact_citation",
-          "heading": "Menstrual products."
-        },
-        "source": {
-          "instruction_text": "Am. L.L. 2024/012, 1/6/2024, eff. 10/2/2024",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-130463",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-130463",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-5271.xml:0-0-0-130463",
-          "locator": "publisher amendment note, entry 4",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "high"
-      }
-    ],
-    "nyc-administrative-code:12-212": [
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:4-2023:add:nyc-administrative-code:12-212:note-0",
-        "operation": "add",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:4-2023",
-        "state": "enacted",
-        "effective_at": "2023-04-07",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 12-212",
-          "provision_id": "nyc-administrative-code:12-212",
-          "resolution": "exact_citation",
-          "heading": "Public service corps program."
-        },
-        "source": {
-          "instruction_text": "L.L. 2023/004, 1/7/2023, eff. 4/7/2023",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-228049.xml:0-0-0-137205",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-137205",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-228049.xml:0-0-0-137205",
-          "locator": "publisher amendment note, entry 1",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "medium"
-      }
-    ],
-    "nyc-administrative-code:18-150": [
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:57-2016:add:nyc-administrative-code:18-150:note-0",
-        "operation": "add",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:57-2016",
-        "state": "enacted",
-        "effective_at": "2017-01-01",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 18-150",
-          "provision_id": "nyc-administrative-code:18-150",
-          "resolution": "exact_citation",
-          "heading": "Defibrillators at youth baseball games and youth softball games and practices in parks."
-        },
-        "source": {
-          "instruction_text": "L.L. 2016/057, 5/10/2016, eff. 1/1/2017",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-29901.xml:0-0-0-30338",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-30338",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-29901.xml:0-0-0-30338",
-          "locator": "publisher amendment note, entry 1",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "medium"
-      },
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:104-2016:amend:nyc-administrative-code:18-150:note-1",
-        "operation": "amend",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:104-2016",
-        "state": "enacted",
-        "effective_at": "2017-01-01",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 18-150",
-          "provision_id": "nyc-administrative-code:18-150",
-          "resolution": "exact_citation",
-          "heading": "Defibrillators at youth baseball games and youth softball games and practices in parks."
-        },
-        "source": {
-          "instruction_text": "Am. L.L. 2016/104, 8/31/2016, eff. 1/1/2017",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-29901.xml:0-0-0-30338",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-30338",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-29901.xml:0-0-0-30338",
-          "locator": "publisher amendment note, entry 2",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "high"
-      },
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:133-2017:amend:nyc-administrative-code:18-150:note-2",
-        "operation": "amend",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:133-2017",
-        "state": "enacted",
-        "effective_at": "2018-08-08",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 18-150",
-          "provision_id": "nyc-administrative-code:18-150",
-          "resolution": "exact_citation",
-          "heading": "Defibrillators at youth baseball games and youth softball games and practices in parks."
-        },
-        "source": {
-          "instruction_text": "Am. L.L. 2017/133, 8/8/2017, eff. 8/8/2018",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-29901.xml:0-0-0-30338",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-30338",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-29901.xml:0-0-0-30338",
-          "locator": "publisher amendment note, entry 3",
-          "start": null,
-          "end": null
-        },
-        "patch": null,
-        "redesignation": null,
-        "change_basis": "source_stated",
-        "materialization_status": "unresolved",
-        "materialization_confidence": "high"
-      },
-      {
-        "schema": "cityscroll.code_change.v1",
-        "id": "local-law:119-2018:amend:nyc-administrative-code:18-150:note-3",
-        "operation": "amend",
-        "matter_id": null,
-        "legal_instrument_id": "local-law:119-2018",
-        "state": "enacted",
-        "effective_at": "2019-01-01",
-        "effective_date_text": null,
-        "effective_date_clauses": [],
-        "target": {
-          "corpus_id": "nyc-administrative-code",
-          "citation": "§ 18-150",
-          "provision_id": "nyc-administrative-code:18-150",
-          "resolution": "exact_citation",
-          "heading": "Defibrillators at youth baseball games and youth softball games and practices in parks."
-        },
-        "source": {
-          "instruction_text": "Am. L.L. 2018/119, 6/23/2018, eff. 1/1/2019",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-29901.xml:0-0-0-30338",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-30338",
-          "source_system": "american_legal_publishing",
-          "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-29901.xml:0-0-0-30338",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
           "locator": "publisher amendment note, entry 4",
           "start": null,
           "end": null
@@ -8397,29 +8043,63 @@
       },
       {
         "schema": "cityscroll.code_change.v1",
-        "id": "local-law:140-2019:amend:nyc-administrative-code:18-150:note-4",
+        "id": "local-law:102-2023:amend:nyc-administrative-code:21-145:note-4",
         "operation": "amend",
         "matter_id": null,
-        "legal_instrument_id": "local-law:140-2019",
+        "legal_instrument_id": "local-law:102-2023",
         "state": "enacted",
-        "effective_at": "2020-01-01",
+        "effective_at": "2024-01-09",
         "effective_date_text": null,
         "effective_date_clauses": [],
         "target": {
           "corpus_id": "nyc-administrative-code",
-          "citation": "§ 18-150",
-          "provision_id": "nyc-administrative-code:18-150",
+          "citation": "§ 21-145",
+          "provision_id": "nyc-administrative-code:21-145",
           "resolution": "exact_citation",
-          "heading": "Defibrillators at youth baseball games and youth softball games and practices in parks."
+          "heading": "Use of rental assistance vouchers."
         },
         "source": {
-          "instruction_text": "Am. L.L. 2019/140, 7/27/2019, eff. 1/1/2020",
-          "source_ref": "american_legal_publishing:admin-xml:0-0-0-29901.xml:0-0-0-30338",
-          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-30338",
+          "instruction_text": "Am. L.L. 2023/102, 7/13/2023, eff. 1/9/2024",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-133658",
           "source_system": "american_legal_publishing",
           "observed_at": "2026-08-24T08:25:03.900Z",
-          "document_id": "american_legal_publishing:admin-xml:0-0-0-29901.xml:0-0-0-30338",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
           "locator": "publisher amendment note, entry 5",
+          "start": null,
+          "end": null
+        },
+        "patch": null,
+        "redesignation": null,
+        "change_basis": "source_stated",
+        "materialization_status": "unresolved",
+        "materialization_confidence": "high"
+      },
+      {
+        "schema": "cityscroll.code_change.v1",
+        "id": "local-law:176-2025:amend:nyc-administrative-code:21-145:note-5",
+        "operation": "amend",
+        "matter_id": null,
+        "legal_instrument_id": "local-law:176-2025",
+        "state": "enacted",
+        "effective_at": "2026-03-04",
+        "effective_date_text": null,
+        "effective_date_clauses": [],
+        "target": {
+          "corpus_id": "nyc-administrative-code",
+          "citation": "§ 21-145",
+          "provision_id": "nyc-administrative-code:21-145",
+          "resolution": "exact_citation",
+          "heading": "Use of rental assistance vouchers."
+        },
+        "source": {
+          "instruction_text": "Am. L.L. 2025/176, 12/4/2025, eff. 3/4/2026",
+          "source_ref": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
+          "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-133658",
+          "source_system": "american_legal_publishing",
+          "observed_at": "2026-08-24T08:25:03.900Z",
+          "document_id": "american_legal_publishing:admin-xml:0-0-0-36823.xml:0-0-0-133658",
+          "locator": "publisher amendment note, entry 6",
           "start": null,
           "end": null
         },
@@ -8536,7 +8216,21 @@
     ]
   },
   "conflicts": {
-    "in_batch": [],
+    "in_batch": [
+      {
+        "schema": "cityscroll.code_history_conflict.v1",
+        "kind": "duplicate_publisher_record",
+        "provision_id": "nyc-administrative-code:21-922",
+        "instrument_ref": null,
+        "key": "nyc-administrative-code:21-922|duplicate-record",
+        "stated_effective_dates": [],
+        "resolution": "unresolved",
+        "observations": [
+          "shards/0-0-0-209312.json#american_legal_publishing:admin-xml:0-0-0-209312.xml:0-0-0-135644",
+          "shards/0-0-0-209312.json#american_legal_publishing:admin-xml:0-0-0-209312.xml:0-0-0-229308"
+        ]
+      }
+    ],
     "corpus_summary": {
       "total": 54,
       "duplicate_publisher_record": 54,
@@ -8611,5 +8305,5 @@
       }
     ]
   },
-  "fingerprint": "sha256:5bb0722b2f8e2350938df98363ceb62659fb460f0cdb0b8b15d7135b26f6f2e5"
+  "fingerprint": "sha256:9c89e2180491b7bf71bce7f3271b11cda60e76be92b50fbaa73f347d9a90258e"
 }

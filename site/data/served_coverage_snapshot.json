@@ -53,7 +53,7 @@
   ],
   "evidence_vintage": {
     "oldest": "2026-05-26T00:00:00.000Z",
-    "newest": "2026-10-05T17:33:11.875Z"
+    "newest": "2026-10-06T00:00:00.000Z"
   },
   "domains": [
     {
@@ -292,7 +292,7 @@
           "source_id": "nyc-agencies",
           "source_name": "NYC Agencies and Governance Organizations",
           "state": "measured",
-          "value": 86,
+          "value": 87,
           "evidence_vintage": "2026-08-06T00:00:00.000Z",
           "vintage_field": "generated_at",
           "vintage_basis": "composite_oldest"
@@ -426,8 +426,8 @@
           "source_id": "nyc-administrative-code",
           "source_name": "NYC Administrative Code (American Legal Publishing bulk XML)",
           "state": "measured",
-          "value": 6683,
-          "evidence_vintage": "2026-08-07T00:00:00.000Z",
+          "value": 10220,
+          "evidence_vintage": "2026-10-06T00:00:00.000Z",
           "vintage_field": "as_of",
           "vintage_basis": "single"
         },

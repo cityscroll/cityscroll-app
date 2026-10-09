@@ -122,9 +122,9 @@
       "name_mentions"
     ],
     "agency_mandates": {
-      "corpus_rows": 2931,
-      "verified_links": 2657,
-      "provisional_rows_excluded": 274,
+      "corpus_rows": 3703,
+      "verified_links": 3522,
+      "provisional_rows_excluded": 181,
       "source": "site/data/agency_obligations_lookup.json"
     },
     "vendor_footprints": {
@@ -145,9 +145,9 @@
     ],
     "provisional_cross_spine_candidates": {
       "public_inferred": 16,
-      "evidence_only": 65,
+      "evidence_only": 74,
       "evidence_only_by_relation": {
-        "mandate_meeting": 61,
+        "mandate_meeting": 70,
         "mandate_land_use": 4
       },
       "source": "site/data/cross_spine_shadow_census.json"
@@ -159,8 +159,8 @@
     "Vendor footprint totals and Browse pivots now share the confirmed-link denominator while name mentions remain separately labeled."
   ],
   "stayed_provisional": [
-    "274 quote-miss mandate extractions remain excluded from public edge totals.",
-    "65 evidence-only cross-spine candidates remain off public inferred-edge totals.",
+    "181 quote-miss mandate extractions remain excluded from public edge totals.",
+    "74 evidence-only cross-spine candidates remain off public inferred-edge totals.",
     "Vendor name mentions remain discovery scope, not reviewed identity links."
   ],
   "verification": [

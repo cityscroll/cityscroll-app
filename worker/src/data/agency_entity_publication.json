@@ -49,9 +49,9 @@
     "published_agency_count": 116,
     "crosswalk_agency_count": 116,
     "graph_contract_limit": 12,
-    "officer_statement_count": 124,
+    "officer_statement_count": 125,
     "officers_published_count": 107,
-    "officers_not_recorded_count": 17,
+    "officers_not_recorded_count": 18,
     "basis": "agency identity crosswalk rows with at least one dataset observation",
     "officer_basis": "the officer each registered dataset publishes for that agency's own row, or an explicit not-recorded answer when none does",
     "absence_note": "An agency id absent from this publication is not covered by it. Absence here is not evidence that the agency does not exist or that no public record names it."
@@ -21953,6 +21953,27 @@
         "status": "strong",
         "basis": "publisher_record"
       }
+    },
+    "agency:id:mayors-office-to-end-domestic-and-gender-based-violence": {
+      "entity_id": "agency:id:mayors-office-to-end-domestic-and-gender-based-violence",
+      "agency_id": "mayors-office-to-end-domestic-and-gender-based-violence",
+      "agency_name": "Mayor's Office to End Domestic and Gender-Based Violence",
+      "status": "not_recorded",
+      "person": null,
+      "title": null,
+      "consulted_sources": [
+        {
+          "system": "nyc_open_data",
+          "id": "t3jq-9nkf",
+          "url": "https://data.cityofnewyork.us/d/t3jq-9nkf",
+          "source_fields": [
+            "head_name",
+            "head_title"
+          ],
+          "observed_at": "2026-08-09"
+        }
+      ],
+      "note": "The datasets this publication reads carry no officer for this agency. The record was read and it names nobody. Another public source may still name an officer for this agency."
     },
     "agency:id:metropolitan-transportation-authority": {
       "entity_id": "agency:id:metropolitan-transportation-authority",
