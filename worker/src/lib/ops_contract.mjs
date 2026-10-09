@@ -430,6 +430,12 @@ export const PERFORMANCE_CONTRACT = Object.freeze({
 /** Admin and operator-auth routes. */
 export const ADMIN_ROUTES = Object.freeze([
   {
+    path: "/admin/cost-control-probe",
+    methods: ["POST"],
+    auth: "ADMIN_KEY",
+    description: "Bounded private production-cost rehearsal with workload-bound inputs and no retained observations.",
+  },
+  {
     path: "/admin/ops-contract",
     methods: ["GET"],
     auth: "ADMIN_KEY",

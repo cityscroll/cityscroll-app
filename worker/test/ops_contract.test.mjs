@@ -45,6 +45,11 @@ test("buildOpsContract: stable id/version and required sections", () => {
   assert.ok(doc.daylog.actions.length >= 5);
   assert.ok(doc.stats_metrics.some((m) => m.exclude_developer_traffic === true));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/ops-contract"));
+  assert.ok(doc.admin_routes.some((r) => (
+    r.path === "/admin/cost-control-probe"
+    && r.methods.includes("POST")
+    && r.auth === "ADMIN_KEY"
+  )));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/performance"));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/stats"));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/pin-family-verify"));
