@@ -528,3 +528,95 @@ test("a named region that also matches a listed selector is adopted once", () =>
   adoptNearYouDocumentScope(root, namedRegionRoot(""));
   assert.equal(root.querySelector(".near-place-suggestions"), null);
 });
+
+function installInsertAdjacent(node) {
+  if (!node || typeof node.insertAdjacentElement === "function") return;
+  node.insertAdjacentElement = function insertAdjacentElement(position, element) {
+    const parent = this.parentNode;
+    if (position === "beforebegin") {
+      if (!parent || !Array.isArray(parent.children)) return element;
+      const index = parent.children.indexOf(this);
+      element.parentNode = parent;
+      parent.children.splice(index, 0, element);
+    } else if (position === "afterbegin") {
+      element.parentNode = this;
+      this.children.unshift(element);
+    } else if (position === "beforeend") {
+      this.append(element);
+    } else if (position === "afterend") {
+      if (!parent || !Array.isArray(parent.children)) return element;
+      const index = parent.children.indexOf(this);
+      element.parentNode = parent;
+      parent.children.splice(index + 1, 0, element);
+    }
+    return element;
+  };
+  for (const child of node.children || []) installInsertAdjacent(child);
+}
+
+test("soft overview→lens deferred payload clears .near-overview via explicit empty overview_html; Back restores it", () => {
+  // Worker/static emitters must always include overview_html, including "".
+  assert.match(
+    readFileSync(join(ROOT, "worker/src/near_you.mjs"), "utf8"),
+    /overview_html:\s*deferredParts\.overviewHtml\s*\|\|\s*""/,
+  );
+  assert.match(
+    readFileSync(join(ROOT, "tools/build_near_you_pages.mjs"), "utf8"),
+    /overview_html:\s*deferredParts\.overviewHtml\s*\|\|\s*""/,
+  );
+
+  const resultsHtml = `<section class="near-results" data-near-deferred="results" aria-labelledby="near-results-heading"><h2 id="near-results-heading">Zoning records</h2></section>`;
+  const bagsHtml = `<section class="near-bags" data-near-deferred="bags" aria-labelledby="near-bags-heading"><h2 id="near-bags-heading">Other records</h2></section>`;
+  const overviewHtml = `<section class="near-overview" data-near-overview="true" aria-labelledby="near-overview-heading"><h2 id="near-overview-heading">What is happening here</h2></section>`;
+
+  const { doc } = mountDocument(`<main id="main" data-near-you-root data-lens="" data-near-deferred-state="pending">
+  <nav class="near-surface-switch" data-near-surface-switch><a data-near-surface="records">Records</a></nav>
+  <section class="near-overview" data-near-overview="true" aria-labelledby="near-overview-heading">
+    <h2 id="near-overview-heading">What is happening here</h2>
+  </section>
+  <section class="near-results near-results-shell" data-near-deferred="results" data-near-deferred-state="pending" aria-labelledby="near-results-heading">
+    <h2 id="near-results-heading">Records for this place</h2>
+  </section>
+  <section class="near-bags near-bags-shell" data-near-deferred="bags" data-near-deferred-state="pending" aria-labelledby="near-bags-heading">
+    <h2 id="near-bags-heading">Other records</h2>
+  </section>
+</main>`, { containerClass: "near-overview-soft" });
+  const root = doc.querySelector("[data-near-you-root]");
+  assert.ok(root);
+  installInsertAdjacent(root);
+  const parse = (html) => {
+    const next = parseHtml(doc, html);
+    installInsertAdjacent(next);
+    return next;
+  };
+  assert.ok(root.querySelector(".near-overview"), "overview starts with the place summary");
+
+  // Omitting overview_html leaves the stale summary — the soft-transition bug.
+  const omitGeneration = beginNearYouDeferredGeneration(root);
+  applyNearYouDeferredPayload(root, {
+    schema: "cityscroll.near_you_deferred.v1",
+    results_html: resultsHtml,
+    bags_html: bagsHtml,
+  }, { generation: omitGeneration, parseHtml: parse });
+  assert.ok(root.querySelector(".near-overview"), "omitted overview_html retains the stale summary");
+
+  const clearGeneration = beginNearYouDeferredGeneration(root);
+  applyNearYouDeferredPayload(root, {
+    schema: "cityscroll.near_you_deferred.v1",
+    results_html: resultsHtml,
+    bags_html: bagsHtml,
+    overview_html: "",
+  }, { generation: clearGeneration, parseHtml: parse });
+  assert.equal(root.querySelector(".near-overview"), null, "explicit empty overview_html removes the summary");
+
+  const restoreGeneration = beginNearYouDeferredGeneration(root);
+  applyNearYouDeferredPayload(root, {
+    schema: "cityscroll.near_you_deferred.v1",
+    results_html: `<section class="near-results" data-near-deferred="results" aria-labelledby="near-results-heading"><h2 id="near-results-heading">Records for this place</h2></section>`,
+    bags_html: bagsHtml,
+    overview_html: overviewHtml,
+  }, { generation: restoreGeneration, parseHtml: parse });
+  const restored = root.querySelector(".near-overview");
+  assert.ok(restored, "Back to overview restores the place summary");
+  assert.equal(restored.getAttribute("data-near-overview"), "true");
+});

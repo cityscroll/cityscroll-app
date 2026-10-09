@@ -23,10 +23,6 @@ import { test } from "node:test";
 import { geographyRecordProjection } from "../site/geography_navigation_records.mjs";
 import { scopeFromNearYouUrl } from "../site/near_you_scope_runtime.mjs";
 import {
-  applyNearYouDeferredPayload,
-  beginNearYouDeferredGeneration,
-} from "../site/near_you_scope_adoption.mjs";
-import {
   buildNearYouViewModel,
   renderNearYouDeferredParts,
   renderNearYouDocument,
@@ -45,7 +41,6 @@ import {
   nearYouLensesForRequest,
   NEAR_YOU_ACTIVITY_LENSES,
 } from "../worker/src/lib/route_read_model_kv.mjs";
-import { mountDocument } from "./helpers/preview_dom.mjs";
 import { MILLISECONDS_PER_DAY, withPinnedClock } from "./helpers/test_clock.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -615,8 +610,26 @@ test("overview A3: upcoming uses the resident clock, not artifact built_at", asy
       [futureA, futureB, futureC],
       "upcoming preview keeps ascending date order and drops the 4th future",
     );
-    // Positive control: a built_at clock would still treat the between meeting as upcoming.
-    assert.ok(Date.parse(betweenDate) >= builtAt);
+  });
+
+  // Positive control: the same fixture under artifact built_at keeps the between
+  // meeting as upcoming — proving the old clock would have failed this case.
+  await withPinnedClock(activity.built_at, () => {
+    const builtAtView = chelseaOverviewView("geo=nta2020:MN0401&surface=records", {
+      activity,
+      now: activity.built_at,
+      broaderDistricts: chelseaBroaderDistricts(activity),
+    });
+    const builtAtUpcoming = builtAtView.overview.sections.find((section) => section.key === "upcoming");
+    assert.equal(
+      builtAtUpcoming.records.some((row) => row.id === betweenId),
+      true,
+      "built_at clock must still treat the between meeting as upcoming",
+    );
+    assert.equal(
+      builtAtUpcoming.records.some((row) => row.id === futureA),
+      true,
+    );
   });
 
   // Broader M04 previews also prioritize current-clock upcoming first.
@@ -640,103 +653,4 @@ test("overview A3: deferred parts carry overview HTML and scoped category links"
   assert.doesNotMatch(parts.resultsHtml, /We can’t filter these meetings/);
   // Explicit section drill-downs may add a lens; the no-lens continuation must not.
   assert.doesNotMatch(view.overlapModel.continuation.href, /lens=/);
-});
-
-test("overview review-2: soft lens transition clears overview via explicit empty overview_html; Back restores it", () => {
-  const overviewView = chelseaOverviewView("geo=nta2020:MN0401&surface=records", {
-    now: "2026-09-01T12:00:00.000Z",
-  });
-  const landView = chelseaOverviewView("geo=nta2020:MN0401&lens=land&surface=records", {
-    now: "2026-09-01T12:00:00.000Z",
-  });
-  assert.equal(overviewView.isOverview, true);
-  assert.equal(landView.isOverview, false);
-
-  const overviewParts = renderNearYouDeferredParts(overviewView);
-  const landParts = renderNearYouDeferredParts(landView);
-  assert.match(overviewParts.overviewHtml, /data-near-overview="true"/);
-  assert.equal(landParts.overviewHtml, "", "explicit lens deferred overview markup is empty");
-
-  // Worker/static emitters must always include overview_html, including "".
-  const landDeferred = {
-    schema: "cityscroll.near_you_deferred.v1",
-    results_html: `<section class="near-results" data-near-deferred="results" aria-labelledby="near-results-heading"><h2 id="near-results-heading">Zoning records</h2></section>`,
-    bags_html: `<section class="near-bags" data-near-deferred="bags" aria-labelledby="near-bags-heading"><h2 id="near-bags-heading">Other records</h2></section>`,
-    overview_html: landParts.overviewHtml,
-  };
-  assert.equal(Object.prototype.hasOwnProperty.call(landDeferred, "overview_html"), true);
-  assert.equal(landDeferred.overview_html, "");
-  // Worker and static builders always emit the key, including the empty string.
-  assert.match(
-    readFileSync(join(ROOT, "worker/src/near_you.mjs"), "utf8"),
-    /overview_html:\s*deferredParts\.overviewHtml\s*\|\|\s*""/,
-  );
-  assert.match(
-    readFileSync(join(ROOT, "tools/build_near_you_pages.mjs"), "utf8"),
-    /overview_html:\s*deferredParts\.overviewHtml\s*\|\|\s*""/,
-  );
-
-  // Minimal soft-nav shell: overview summary beside deferred hosts (avoid full SSR DOM cost).
-  const { doc } = mountDocument(`<main id="main" data-near-you-root data-lens="" data-near-deferred-state="pending">
-  <nav class="near-surface-switch" data-near-surface-switch><a data-near-surface="records">Records</a></nav>
-  <section class="near-overview" data-near-overview="true" aria-labelledby="near-overview-heading">
-    <h2 id="near-overview-heading">What is happening here</h2>
-  </section>
-  <section class="near-results near-results-shell" data-near-deferred="results" data-near-deferred-state="pending" aria-labelledby="near-results-heading">
-    <h2 id="near-results-heading">Records for this place</h2>
-  </section>
-  <section class="near-bags near-bags-shell" data-near-deferred="bags" data-near-deferred-state="pending" aria-labelledby="near-bags-heading">
-    <h2 id="near-bags-heading">Other records</h2>
-  </section>
-</main>`);
-  const root = doc.querySelector("[data-near-you-root]");
-  assert.ok(root);
-  const installInsertAdjacent = (node) => {
-    if (!node || typeof node.insertAdjacentElement === "function") return;
-    node.insertAdjacentElement = function insertAdjacentElement(position, element) {
-      const parent = this.parentNode;
-      if (position === "beforebegin") parent?.insertBefore(element, this);
-      else if (position === "afterbegin") this.insertBefore(element, this.firstChild);
-      else if (position === "beforeend") this.append(element);
-      else if (position === "afterend") {
-        if (this.nextSibling) parent?.insertBefore(element, this.nextSibling);
-        else parent?.append(element);
-      }
-      return element;
-    };
-    for (const child of node.children || []) installInsertAdjacent(child);
-  };
-  installInsertAdjacent(root);
-  const parseHtml = (html) => {
-    const wrap = doc.createElement("div");
-    wrap.innerHTML = html;
-    const next = wrap.children[0] || null;
-    installInsertAdjacent(next);
-    return next;
-  };
-  assert.ok(root.querySelector(".near-overview"), "overview starts with the place summary");
-
-  // Omitting overview_html leaves the stale summary — the bug soft transitions hit.
-  const omitGeneration = beginNearYouDeferredGeneration(root);
-  applyNearYouDeferredPayload(root, {
-    schema: "cityscroll.near_you_deferred.v1",
-    results_html: landDeferred.results_html,
-    bags_html: landDeferred.bags_html,
-  }, { generation: omitGeneration, parseHtml });
-  assert.ok(root.querySelector(".near-overview"), "omitted overview_html retains the stale summary");
-
-  const clearGeneration = beginNearYouDeferredGeneration(root);
-  applyNearYouDeferredPayload(root, landDeferred, { generation: clearGeneration, parseHtml });
-  assert.equal(root.querySelector(".near-overview"), null, "explicit empty overview_html removes the summary");
-
-  const restoreGeneration = beginNearYouDeferredGeneration(root);
-  applyNearYouDeferredPayload(root, {
-    schema: "cityscroll.near_you_deferred.v1",
-    results_html: `<section class="near-results" data-near-deferred="results" aria-labelledby="near-results-heading"><h2 id="near-results-heading">Records for this place</h2></section>`,
-    bags_html: landDeferred.bags_html,
-    overview_html: `<section class="near-overview" data-near-overview="true" aria-labelledby="near-overview-heading"><h2 id="near-overview-heading">What is happening here</h2></section>`,
-  }, { generation: restoreGeneration, parseHtml });
-  const restored = root.querySelector(".near-overview");
-  assert.ok(restored, "Back to overview restores the place summary");
-  assert.equal(restored.getAttribute("data-near-overview"), "true");
 });
