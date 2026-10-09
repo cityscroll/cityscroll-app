@@ -509,6 +509,26 @@ test("prewarmStats writes the public edge cache key (or reports no_cache_api off
   assert.match(key.url, /\/stats\?edge=search-usage-v4$/);
 });
 
+test("read-only stats prewarm builds the response without writing cache", async () => {
+  const previousCaches = globalThis.caches;
+  const puts = [];
+  globalThis.caches = {
+    default: {
+      match: async () => null,
+      put: async (request, response) => puts.push({ request, response }),
+    },
+  };
+  try {
+    const env = { ALERT_STATE: fakeKV(), NL_METER: fakeKV(), SUBS: fakeKV() };
+    const result = await prewarmStats(env, { skipCacheWrite: true });
+    assert.deepEqual(result, { warmed: false, skipped: "cache-write-suppressed", status: 200 });
+    assert.equal(puts.length, 0);
+  } finally {
+    if (previousCaches === undefined) delete globalThis.caches;
+    else globalThis.caches = previousCaches;
+  }
+});
+
 test("public stats projects served coverage and no usage-class fields", async () => {
   const response = await handleStats(
     new Request("https://api.cityscroll.org/stats"),

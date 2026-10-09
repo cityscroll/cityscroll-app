@@ -8,8 +8,6 @@ const WORKLOAD_HEADER = "x-cityscroll-cost-workload";
 const SERIES_HEADER = "x-cityscroll-cost-series";
 const PROBE_TAG = /^[a-z0-9][a-z0-9-]{7,95}$/;
 const WORKLOAD_HASH = /^[a-f0-9]{64}$/;
-const MAX_ISOLATE_MARKERS = 256;
-const isolateMarkers = new Set();
 const statementTargets = new WeakMap();
 const statementSql = new WeakMap();
 
@@ -207,10 +205,6 @@ export function beginCostControlProbe(request, env, { suppressWrites = false } =
     return { denied: new Response("Not found", { status: 404 }) };
   }
 
-  const route = cohort.replace(/:(?:cold|warm)$/, "");
-  const marker = `${route}:${series}`;
-  const claimedCondition = cohort.match(/:(cold|warm)$/)?.[1] || null;
-  let isolateCondition = null;
   let accepted = false;
   const counters = {
     kv_reads: 0,
@@ -224,25 +218,13 @@ export function beginCostControlProbe(request, env, { suppressWrites = false } =
   const mode = suppressWrites ? "production-read-only-rehearsal" : "production-request";
   return {
     accept() {
-      if (accepted) return null;
-      const observed = isolateMarkers.has(marker) ? "warm" : "cold";
-      if (claimedCondition && claimedCondition !== observed) {
-        return Response.json({ error: "isolate-condition-mismatch", observed }, { status: 409 });
-      }
-      if (observed === "cold") {
-        if (isolateMarkers.size >= MAX_ISOLATE_MARKERS) isolateMarkers.delete(isolateMarkers.values().next().value);
-        isolateMarkers.add(marker);
-      }
-      isolateCondition = observed;
       accepted = true;
-      return null;
     },
     get accepted() { return accepted; },
     cohort,
     counters,
     denied: null,
     env: instrumentEnvironment(env, counters, suppressWrites),
-    isolateCondition,
     mode,
     snapshot(extra = {}) {
       return {
@@ -251,7 +233,6 @@ export function beginCostControlProbe(request, env, { suppressWrites = false } =
         series,
         cohort,
         workload_hash: workloadHash,
-        isolate_condition: isolateCondition,
         execution_mode: mode,
         elapsed_ms: Math.max(0, Date.now() - startedAt),
         operations: { ...counters },

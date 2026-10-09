@@ -285,6 +285,7 @@ export async function prewarmStats(env, options = {}) {
   if (!res || !res.ok) {
     return { warmed: false, status: res?.status || 0 };
   }
+  if (options.skipCacheWrite) return { warmed: false, skipped: "cache-write-suppressed", status: res.status };
   const cacheKey = statsEdgeCacheKey(baseUrl);
   await cache.put(cacheKey, res.clone()).catch(() => {});
   return { warmed: true, status: res.status, bytes: Number(res.headers.get("content-length") || 0) };
@@ -314,7 +315,7 @@ export async function handleStats(req, env, ctx, options = {}) {
       "Access-Control-Allow-Origin": "*",
     },
   });
-  if (cache) {
+  if (cache && !options.skipCacheWrite) {
     const put = cache.put(cacheKey, res.clone());
     if (ctx && ctx.waitUntil) ctx.waitUntil(put); else await put.catch(() => {});
   }

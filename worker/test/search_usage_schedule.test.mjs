@@ -38,7 +38,7 @@ function scheduledWorker({ now = NOW, overrides = {} } = {}) {
   vm.runInNewContext(source.replace(/^import[\s\S]*?;\s*/gm, "")
     .replace("export default", "globalThis.worker ="), context);
   const ctx = { waitUntil(promise) { pending.push(promise); } };
-  return { calls, errors, pending, run: (cron, env) => context.worker.scheduled({ cron }, env, ctx) };
+  return { calls, errors, pending, run: (cron, env, event = {}) => context.worker.scheduled({ cron, ...event }, env, ctx) };
 }
 
 function fixtureStore() {
@@ -133,6 +133,17 @@ test("a publication exception does not stop the other scheduled jobs", async () 
   assert.ok(worker.calls.includes("runAlerts"));
   assert.ok(worker.calls.includes("prewarmStats"));
   assert.ok(worker.errors.some((args) => args.join(" ").includes("publication unavailable")));
+});
+
+test("cost probe schedule suppresses edge-cache writes", async () => {
+  const received = [];
+  const worker = scheduledWorker({ overrides: {
+    prewarmNotices(...args) { received.push(["notices", ...args]); return {}; },
+    prewarmStats(...args) { received.push(["stats", ...args]); return {}; },
+  } });
+  await worker.run("0 13 * * *", productionEnv(), { costProbe: true });
+  assert.equal(received.find(([name]) => name === "notices")[3].skipEdgeCacheWrite, true);
+  assert.equal(received.find(([name]) => name === "stats")[2].skipCacheWrite, true);
 });
 
 test("57 retained executions publish unchanged counts when their period is established", async () => {

@@ -311,3 +311,26 @@ test("prewarm writes a materialized row to the edge cache", async () => {
     else globalThis.caches = previousCaches;
   }
 });
+
+test("read-only prewarm computes without writing the edge cache", async () => {
+  const previousCaches = globalThis.caches;
+  const puts = [];
+  globalThis.caches = {
+    default: {
+      match: async () => null,
+      put: async (request, response) => puts.push({ request, response }),
+    },
+  };
+  try {
+    const result = await prewarmNotices(
+      { DB: dbFor(d1Record()) },
+      [notice.request_id],
+      { skipEdgeCacheWrite: true },
+    );
+    assert.deepEqual(result, { requested: 1, warmed: 1, failed: 0 });
+    assert.equal(puts.length, 0);
+  } finally {
+    if (previousCaches === undefined) delete globalThis.caches;
+    else globalThis.caches = previousCaches;
+  }
+});

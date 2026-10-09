@@ -169,7 +169,11 @@ const COST_PROBE_HTTP_PATHS = Object.freeze({
   "zap-project": "/land-project",
   "doing-business": "/vendor-profile",
 });
-const COST_PROBE_CRONS = new Set(["0 8 * * *", "0 10 * * *", "0 13 * * *"]);
+const COST_PROBE_CRONS = new Map([
+  ["0 8 * * *", "scheduled-08"],
+  ["0 10 * * *", "scheduled-10"],
+  ["0 13 * * *", "scheduled-13"],
+]);
 const COST_PROBE_MAX_BODY_BYTES = 16 * 1024;
 
 function costProbeContext() {
@@ -223,38 +227,43 @@ async function handleCostControlProbe(request, env) {
   const probe = beginCostControlProbe(request, env, { suppressWrites });
   if (!probe || probe.denied) return probe?.denied || new Response("Not found", { status: 404 });
 
-  let target = null;
+  let childRequest = null;
+  let expectedCohort = null;
   if (kind === "http") {
     try {
       const route = String(input.route || "");
       const expectedPath = COST_PROBE_HTTP_PATHS[route];
-      target = new URL(String(input.url || ""), request.url);
+      const target = new URL(String(input.url || ""), request.url);
       if (!expectedPath || target.pathname !== expectedPath || !["GET", "POST"].includes(input.method)) {
         return new Response("Not found", { status: 404 });
       }
-    } catch {
-      return new Response("Not found", { status: 404 });
-    }
-  } else if (kind === "scheduled") {
-    if (!COST_PROBE_CRONS.has(input.cron)) return new Response("Not found", { status: 404 });
-  } else if (kind !== "queue" && kind !== "collector-overhead") {
-    return new Response("Not found", { status: 404 });
-  }
-
-  const conditionDenied = probe.accept();
-  if (conditionDenied) return conditionDenied;
-
-  let result = { status: 204, body_sha256: await sha256Text("") };
-  try {
-    if (kind === "http") {
       const headers = new Headers({ "Accept": "application/json", "User-Agent": "CityScrollCostControl/1.0" });
       if (input.origin) headers.set("Origin", String(input.origin));
       if (input.method === "POST") headers.set("Content-Type", "application/json");
-      const childRequest = new Request(target, {
+      childRequest = new Request(target, {
         method: input.method,
         headers,
         body: input.method === "POST" ? JSON.stringify(input.body ?? {}) : undefined,
       });
+      expectedCohort = route;
+    } catch {
+      return new Response("Not found", { status: 404 });
+    }
+  } else if (kind === "scheduled") {
+    expectedCohort = COST_PROBE_CRONS.get(input.cron) || null;
+    if (!expectedCohort) return new Response("Not found", { status: 404 });
+  } else if (kind === "queue" || kind === "collector-overhead") {
+    expectedCohort = kind;
+  } else {
+    return new Response("Not found", { status: 404 });
+  }
+  if (probe.cohort !== expectedCohort) return new Response("Not found", { status: 404 });
+
+  probe.accept();
+
+  let result = { status: 204, body_sha256: await sha256Text("") };
+  try {
+    if (kind === "http") {
       const childContext = costProbeContext();
       const response = await worker.fetch(childRequest, probe.env, childContext);
       await childContext.settle();
@@ -473,7 +482,9 @@ const worker = {
           acquisitionFn: withWorkerAcquisitionReceipt,
           runId,
           ingestFn: ingestNotices,
-          prewarmFn: prewarmNotices,
+          prewarmFn: (probeEnv, requestIds) => prewarmNotices(probeEnv, requestIds, {
+            skipEdgeCacheWrite: event.costProbe === true,
+          }),
         });
         if (freshness.degraded) {
           console.error("digest shadow freshness degraded (rehearsal continues):", JSON.stringify({
@@ -563,7 +574,9 @@ const worker = {
     // Notice documents are ordinary reads, so the daily D1 snapshot is pushed to the edge
     // immediately after ingestion. A failed prewarm cannot erase the last-known-good D1 row.
     try {
-      const r = await prewarmNotices(env, ingestResult?.noticeRequestIds);
+      const r = await prewarmNotices(env, ingestResult?.noticeRequestIds, {
+        skipEdgeCacheWrite: event.costProbe === true,
+      });
       console.log("notice read-model prewarm:", JSON.stringify(r));
     } catch (e) {
       console.error("notice read-model prewarm failed (digest continues):", String(e?.message || e));
@@ -731,7 +744,7 @@ const worker = {
     }
     // Public /stats: refresh and edge-cache the official corpus aggregate. Fail-soft.
     try {
-      const r = await prewarmStats(env);
+      const r = await prewarmStats(env, { skipCacheWrite: event.costProbe === true });
       console.log("stats prewarm:", JSON.stringify(r));
     } catch (e) {
       console.error("stats prewarm failed (digest already ran):", String(e?.message || e));
