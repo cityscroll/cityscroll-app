@@ -131,6 +131,41 @@ test("probe rejects a cohort that does not match the validated workload", async 
   assert.equal(response.status, 404);
 });
 
+test("probe rejects malformed cohort payloads before accepting their series", async () => {
+  const series = "series-test-shape";
+  const invalid = await worker.fetch(request({
+    tag: "probe-test-shape-bad",
+    series,
+    cohort: "rum-16",
+    body: {
+      kind: "http",
+      route: "rum-16",
+      method: "POST",
+      url: "https://api.cityscroll.org/performance-events",
+      origin: "https://cityscroll.org",
+      body: {},
+    },
+  }), { ADMIN_KEY }, { waitUntil() {} });
+  const corrected = await worker.fetch(request({
+    tag: "probe-test-shape-ok",
+    series,
+    cohort: "collector-overhead",
+    body: { kind: "collector-overhead" },
+  }), { ADMIN_KEY }, { waitUntil() {} });
+  assert.equal(invalid.status, 404);
+  assert.equal(corrected.status, 200);
+});
+
+test("probe binds each route to its supported method", async () => {
+  const response = await worker.fetch(request({
+    tag: "probe-test-method",
+    series: "series-test-method",
+    cohort: "health",
+    body: { kind: "http", route: "health", method: "POST", url: "https://api.cityscroll.org/health" },
+  }), { ADMIN_KEY }, { waitUntil() {} });
+  assert.equal(response.status, 404);
+});
+
 test("probe rejects a supported path on the wrong production host", async () => {
   const response = await worker.fetch(request({
     tag: "probe-test-host",

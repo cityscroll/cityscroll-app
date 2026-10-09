@@ -324,6 +324,7 @@ test("shadow invocation uses the shared runAlerts path inline and cannot deliver
     DIGEST_QUEUE: { send: async () => { throw new Error("queue must not be used"); } },
   }, {
     now: NOW,
+    suppressPersonalizedLogs: true,
     runAlertsFn: async (...args) => {
       calls.push(args);
       return { results: [result()] };
@@ -346,6 +347,7 @@ test("shadow invocation uses the shared runAlerts path inline and cannot deliver
     advanceState: false,
     persist: false,
     simulateDryRunCounters: true,
+    suppressDryRunLogs: true,
   });
   assert.equal(DB.batches.length, 2);
   assert.equal(DB.runs.length, 2);

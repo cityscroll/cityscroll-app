@@ -746,10 +746,12 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
   const logSummary = options.capturePreviews
     ? { ...summary, results: results.map(({ preview: _preview, ...result }) => result) }
     : summary;
-  console.log("alerts run:", JSON.stringify({
-    ...logSummary,
-    results: (logSummary.results || []).map(maskDigestResultForLog),
-  }));
+  if (!options.suppressDryRunLogs) {
+    console.log("alerts run:", JSON.stringify({
+      ...logSummary,
+      results: (logSummary.results || []).map(maskDigestResultForLog),
+    }));
+  }
   return summary;
 }
 

@@ -31,6 +31,7 @@ const freshRow = {
 async function runMoneySub({ live, replyTo, suppressDryRunLogs = false }) {
   const sentEmails = [];
   const dryLogs = [];
+  const allLogs = [];
   const today = new Date().toISOString().slice(0, 10);
   const subKey = "sub:reply-to-test@example.com:aabbccdd";
   const env = {
@@ -62,6 +63,7 @@ async function runMoneySub({ live, replyTo, suppressDryRunLogs = false }) {
   };
   console.log = (...args) => {
     const s = args.map(String).join(" ");
+    allLogs.push(s);
     if (s.startsWith("alerts dry-run (no send):")) {
       dryLogs.push(JSON.parse(s.slice("alerts dry-run (no send):".length).trim()));
     }
@@ -72,7 +74,7 @@ async function runMoneySub({ live, replyTo, suppressDryRunLogs = false }) {
     globalThis.fetch = originalFetch;
     console.log = originalLog;
   }
-  return { sentEmails, dryLogs };
+  return { sentEmails, dryLogs, allLogs };
 }
 
 test("live digest carries From alerts@cityscroll.org and Reply-To alerts@crol-list.org", async () => {
@@ -98,11 +100,12 @@ test("ALERTS_LIVE dry-run still renders today's digest HTML without calling Rese
 });
 
 test("cost-probe dry-run suppresses personalized digest logs", async () => {
-  const { sentEmails, dryLogs } = await runMoneySub({
+  const { sentEmails, dryLogs, allLogs } = await runMoneySub({
     live: "false",
     replyTo: "alerts@crol-list.org",
     suppressDryRunLogs: true,
   });
   assert.equal(sentEmails.length, 0);
   assert.equal(dryLogs.length, 0);
+  assert.equal(allLogs.length, 0);
 });

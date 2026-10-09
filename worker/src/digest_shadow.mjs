@@ -970,6 +970,7 @@ export async function runDigestShadow(env, {
   now = new Date(),
   runAlertsFn = null,
   ontologyDeltaCandidates = null,
+  suppressPersonalizedLogs = false,
 } = {}) {
   if (!env.DB) throw new Error("digest shadow requires DB");
   const [{ runAlerts }, { recordDigestShadowHoldState }, ontology] = await Promise.all([
@@ -989,6 +990,7 @@ export async function runDigestShadow(env, {
     advanceState: false,
     persist: false,
     simulateDryRunCounters: true,
+    suppressDryRunLogs: suppressPersonalizedLogs,
   });
   const day = at.toISOString().slice(0, 10);
   const history = await readHistory(env, day);

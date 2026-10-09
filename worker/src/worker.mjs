@@ -59,7 +59,7 @@ import { handleSourceHealth } from "./source_health.mjs";
 import { handleEvent } from "./events.mjs";
 import { handleSearchActivity } from "./search_activity.mjs";
 import { handleSearchHistory } from "./search_history.mjs";
-import { handlePerformanceEvents } from "./performance_events.mjs";
+import { handlePerformanceEvents, normalizeRumBatch } from "./performance_events.mjs";
 import { handleWorkerHealth } from "./lib/worker_health.mjs";
 import { snapshotHistDay, ensureHistEra } from "./lib/stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
@@ -121,6 +121,8 @@ import { handleContract, handleContractsAnalysis, handleContractsBrowse } from "
 import { handleLandDecisionPath, handleLandProject, handleLandProjectsBrowse } from "./land_projects.mjs";
 import { recordSourceAcquisitionReceipt } from "./lib/source_acquisition_receipt.mjs";
 import { beginCostControlProbe, logCostControlProbe } from "./lib/cost_control_probe.mjs";
+import { normalizeUsageEvent } from "./lib/analytics.mjs";
+import { LAND_PROJECT_ID_PATTERN } from "../../capabilities/land_projects.mjs";
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
 
@@ -157,17 +159,48 @@ async function withWorkerAcquisitionReceipt(env, sourceContractId, runId, work) 
   }
 }
 
-const COST_PROBE_HTTP_PATHS = Object.freeze({
-  health: "/health",
-  "unknown-route": "/__cost-probe-not-found",
-  events: "/events",
-  "rum-16": "/performance-events",
-  search: "/search",
-  nearby: "/near-you",
-  browse: "/contracts",
-  "zap-bbl": "/land-project",
-  "zap-project": "/land-project",
-  "doing-business": "/vendor-profile",
+const COST_PROBE_HTTP_WORKLOADS = Object.freeze({
+  health: { path: "/health", method: "GET" },
+  "unknown-route": { path: "/__cost-probe-not-found", method: "GET" },
+  events: {
+    path: "/events",
+    method: "POST",
+    validate: (input) => normalizeUsageEvent(input.body) !== null,
+  },
+  "rum-16": {
+    path: "/performance-events",
+    method: "POST",
+    validate: (input) => {
+      const normalized = normalizeRumBatch(input.body);
+      return normalized.ok && normalized.observations.length === 16;
+    },
+  },
+  search: {
+    path: "/search",
+    method: "GET",
+    validate: (_input, target) => String(target.searchParams.get("q") || "").trim().length > 0,
+  },
+  nearby: { path: "/near-you", method: "GET" },
+  browse: { path: "/contracts", method: "GET" },
+  "zap-bbl": {
+    path: "/land-project",
+    method: "GET",
+    validate: (_input, target) => LAND_PROJECT_ID_PATTERN.test(String(
+      target.searchParams.get("id") || target.searchParams.get("project_id") || "",
+    ).trim()),
+  },
+  "zap-project": {
+    path: "/land-project",
+    method: "GET",
+    validate: (_input, target) => LAND_PROJECT_ID_PATTERN.test(String(
+      target.searchParams.get("id") || target.searchParams.get("project_id") || "",
+    ).trim()),
+  },
+  "doing-business": {
+    path: "/vendor-profile",
+    method: "GET",
+    validate: (_input, target) => String(target.searchParams.get("name") || "").trim().length >= 3,
+  },
 });
 const COST_PROBE_HTTP_ORIGIN = "https://api.cityscroll.org";
 const COST_PROBE_CRONS = new Map([
@@ -233,13 +266,14 @@ async function handleCostControlProbe(request, env) {
   if (kind === "http") {
     try {
       const route = String(input.route || "");
-      const expectedPath = COST_PROBE_HTTP_PATHS[route];
+      const workload = COST_PROBE_HTTP_WORKLOADS[route];
       const target = new URL(String(input.url || ""), request.url);
       if (
-        !expectedPath
+        !workload
         || target.origin !== COST_PROBE_HTTP_ORIGIN
-        || target.pathname !== expectedPath
-        || !["GET", "POST"].includes(input.method)
+        || target.pathname !== workload.path
+        || input.method !== workload.method
+        || (workload.validate && !workload.validate(input, target))
       ) {
         return new Response("Not found", { status: 404 });
       }
@@ -512,16 +546,21 @@ const worker = {
       }
 
       try {
-        let summary = await runDigestShadow(env, { now: shadowNow });
+        let summary = await runDigestShadow(env, {
+          now: shadowNow,
+          suppressPersonalizedLogs: event.costProbe === true,
+        });
         // Await so schedule-harness stubs (async wrappers) and a future async helper both land.
         if (freshness.degraded) summary = await applyFreshnessDegradation(summary, freshness);
         await finalizeDigestShadowRun(env, summary, { now: shadowNow });
-        console.log("digest shadow:", JSON.stringify(summary, (key, value) => {
-          if (typeof value !== "string") return value;
-          if (key === "recipient") return redactEmail(value);
-          if (key === "recipient_redacted" && value.includes("@") && !value.includes("***")) return redactEmail(value);
-          return value;
-        }));
+        if (event.costProbe !== true) {
+          console.log("digest shadow:", JSON.stringify(summary, (key, value) => {
+            if (typeof value !== "string") return value;
+            if (key === "recipient") return redactEmail(value);
+            if (key === "recipient_redacted" && value.includes("@") && !value.includes("***")) return redactEmail(value);
+            return value;
+          }));
+        }
       } catch (error) {
         console.error("digest shadow failed:", String(error?.message || error));
         try {
