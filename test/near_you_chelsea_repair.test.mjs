@@ -439,24 +439,52 @@ test("A3 failure-3: multi-lens coverage merge keeps Zoning when Meetings metadat
   assert.deepEqual(poisoned.by_lens.meetings, meetings.geography_items.coverage.by_lens.meetings);
 });
 
-test("overview category links retain Chelsea and the selected browsing surface", () => {
-  for (const surface of ["records", "map"]) {
-    const view = chelseaOverviewView(`geo=nta2020:MN0401&surface=${surface}`, {
-      now: "2026-09-01T12:00:00.000Z",
-    });
-    const html = renderNearYouDocument(view);
-    const links = [...html.matchAll(/<a href="([^"]+)">Open (meetings|Zoning)<\/a>/g)]
-      .filter(([, href]) => new URL(href.replaceAll("&amp;", "&"), "https://cityscroll.org").pathname.startsWith("/near-you"));
-    assert.ok(links.length >= 2, "both local category destinations must render");
-    for (const [, href, label] of links) {
-      const url = new URL(href.replaceAll("&amp;", "&"), "https://cityscroll.org");
-      assert.equal(url.searchParams.get("geo"), "nta2020:MN0401", label);
-      assert.equal(url.searchParams.get("surface"), surface, label);
-      assert.equal(url.searchParams.get("lens"), label === "Zoning" ? "land" : "meetings");
-      const destination = chelseaOverviewView(url.search.slice(1));
-      assert.equal(destination.scope.place.geographies[0], CHELSEA);
-      assert.equal(destination.shellSurface, surface);
-      assert.equal(destination.isOverview, false);
+test("overview category links retain enhanced and legacy place scopes with active filters", () => {
+  const places = [
+    {
+      name: "Chelsea NTA",
+      query: "geo=nta2020:MN0401",
+      assertPlace(url, destination) {
+        assert.equal(url.searchParams.get("geo"), "nta2020:MN0401");
+        assert.equal(destination.scope.place.geographies[0], CHELSEA);
+      },
+    },
+    {
+      name: "Queens community district 4",
+      query: "boro=Queens&cd=Q04",
+      assertPlace(url, destination) {
+        assert.equal(url.searchParams.get("boro"), "Queens");
+        assert.equal(url.searchParams.get("cd"), "Q04");
+        assert.deepEqual(destination.scope.place.boroughs, ["Queens"]);
+        assert.deepEqual(destination.scope.place.community_districts, ["Q04"]);
+      },
+    },
+  ];
+  for (const place of places) {
+    for (const surface of ["records", "map"]) {
+      const query = `${place.query}&surface=${surface}&q=curb&agency=Transportation&when=month`;
+      const view = chelseaOverviewView(query, { now: "2026-09-01T12:00:00.000Z" });
+      const html = renderNearYouDocument(view);
+      const links = [...html.matchAll(/<a href="([^"]+)">Open (meetings|Zoning)<\/a>/g)]
+        .filter(([, href]) => new URL(href.replaceAll("&amp;", "&"), "https://cityscroll.org").pathname.startsWith("/near-you"));
+      assert.ok(links.length >= 2, `${place.name} renders both local category destinations`);
+      for (const [, href, label] of links) {
+        const url = new URL(href.replaceAll("&amp;", "&"), "https://cityscroll.org");
+        const destination = chelseaOverviewView(url.search.slice(1));
+        place.assertPlace(url, destination);
+        assert.equal(url.searchParams.get("surface"), surface, label);
+        assert.equal(url.searchParams.get("lens"), label === "Zoning" ? "land" : "meetings");
+        assert.equal(url.searchParams.get("q"), "curb", label);
+        assert.equal(url.searchParams.get("agency"), "Transportation", label);
+        assert.equal(url.searchParams.get("when"), "month", label);
+        assert.equal(destination.shellSurface, surface);
+        assert.equal(destination.isOverview, false);
+      }
+      assert.ok(view.placePresentation.boardHref, `${place.name} has a wider-board destination`);
+      const boardUrl = new URL(view.placePresentation.boardHref, "https://cityscroll.org");
+      assert.equal(boardUrl.pathname.startsWith("/near-you"), false);
+      assert.equal(boardUrl.search, "");
+      assert.match(html, new RegExp(`href="${view.placePresentation.boardHref}"`));
     }
   }
 });

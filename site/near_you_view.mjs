@@ -1606,9 +1606,16 @@ function renderNearYouOverview(view) {
   const lensScopeHref = (lens) => {
     const scope = scopeWithGeographies({ ...view.scope, facets: { ...view.scope.facets, domains: [lens] } });
     const base = nearYouUrlFromScope(scope, { base: view.canonicalBase });
+    const geo = view.geographyState?.geo;
+    if (!geo) {
+      const absolute = /^[a-z][a-z\d+.-]*:\/\//i.test(base);
+      const url = new URL(base, "https://cityscroll.invalid");
+      url.searchParams.set("surface", view.shellSurface);
+      return absolute ? url.toString() : `${url.pathname}${url.search}`;
+    }
     return geographyNavigationUrlWithFilters({
       ...(view.geographyState?.ok ? view.geographyState : parseGeographyNavigationState(base)),
-      geo: view.geographyState?.geo || scope.place.geographies?.[0]?.replace(/^geography:/, ""),
+      geo,
       surface: view.shellSurface,
       lens,
     }, { base });
