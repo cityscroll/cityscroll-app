@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.source_vintage_observations.v1",
-  "generated_at": "2026-10-05T17:35:26.970Z",
+  "generated_at": "2026-10-09T14:15:05.584Z",
   "contract_count": 67,
   "observations": [
     {
@@ -329,7 +329,7 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-09-09T06:33:01.880Z",
+        "retrieved_at": "2026-10-09T14:15:05.584Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
         "run_id": "warehouse/receipts/proof/checkbook_contracts_population_latest.json"
@@ -980,10 +980,10 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-09-28T15:56:30.870Z",
+        "retrieved_at": "2026-10-05T16:22:36.637Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "doing-business-entities:2026-09-28T15:56:30.870Z"
+        "run_id": "doing-business-entities:2026-10-05T16:22:36.637Z"
       },
       "expected_cadence": "Irregular Open Data refresh (resource Last-Modified 2025-11-21 at recon; metadata updates more often)",
       "expected_lag_tolerance_days": 400,
@@ -1423,11 +1423,11 @@
       "publisher_last_updated_at": null,
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
-        "status": "succeeded",
-        "retrieved_at": "2026-09-14T03:54:01.287Z",
+        "status": "failed",
+        "retrieved_at": "2026-10-09T13:51:33.015Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "warehouse-priority-source-observer:nyc-council-legistar:2026-09-14T03:54:01.287Z"
+        "run_id": "warehouse-priority-source-observer:nyc-council-legistar:2026-10-09T13:51:33.015Z"
       },
       "expected_cadence": "Updated as meetings, agenda items, and votes change",
       "expected_lag_tolerance_days": 7,
@@ -1579,10 +1579,10 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-09-14T03:54:01.554Z",
+        "retrieved_at": "2026-10-09T13:51:33.219Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "warehouse-priority-source-observer:nyc-rules-rss:2026-09-14T03:54:01.554Z"
+        "run_id": "warehouse-priority-source-observer:nyc-rules-rss:2026-10-09T13:51:33.219Z"
       },
       "expected_cadence": "Updated as rules are proposed, heard, adopted, or made effective",
       "expected_lag_tolerance_days": 45,

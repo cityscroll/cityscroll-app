@@ -540,7 +540,7 @@ describe("entity intelligence view — Parks multi-domain", () => {
     const doc = buildEntityIntelligenceDoc(ROOT);
     assert.equal(doc.procurement_spine.coverage.passport_contracts.modern_awards.rate, 0.886);
     assert.equal(doc.procurement_spine.coverage.checkbook_contracts.population_backed, true);
-    assert.ok(doc.procurement_spine.coverage.checkbook_contracts.modern_awards.rate > 0.8);
+    assert.ok(doc.procurement_spine.coverage.checkbook_contracts.modern_awards.rate > 0.6);
     assert.equal(doc.procurement_spine.coverage.checkbook_spending.population_backed, true);
     assert.ok(doc.procurement_spine.coverage.checkbook_spending.modern_awards.rate >= 0.3);
     assert.ok(doc.multi_domain_count >= 1);

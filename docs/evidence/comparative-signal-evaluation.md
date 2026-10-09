@@ -14,7 +14,7 @@ This is a recommendation for the captain, not an admission decision. No addition
 
 | Dimension | Numerator / denominator | Result | Reading |
 | --- | ---: | ---: | --- |
-| Precision | 2 / 3 | 66.67% | Every frozen inspection supports the exact output, but three cases are too few to justify expansion. |
+| Precision | 3 / 3 | 100.00% | Every frozen inspection supports the exact output, but three cases are too few to justify expansion. |
 | Yield | 3 / 9489 | 0.03% | This is an output-per-eligible-input rate, not a signal count. Award rank is 1/1 within its committed allowlist; amount change is 2/9488 positive amount pairs. |
 | Diversity | 2 families, 2 sources, 2 object types, 3 agencies | dominant family 66.67% | The sample is not all large contracts, but it remains procurement-only and tiny. |
 | Redundancy | 0 / 3 duplicates | 0.00% | No civic event produces cosmetic duplicate outputs in the frozen cases. |

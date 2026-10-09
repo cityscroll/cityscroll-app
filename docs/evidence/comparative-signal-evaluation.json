@@ -25,18 +25,18 @@
   "input_fingerprints": {
     "awards": "35e73eb57176f9ffa67ad3ea35cb460a0a90f6408bda8d5c16da190503c8091c",
     "source_contracts": "87e96d53fe6ede9f4daeee8c7543bece186fb90ef815374c38ef82f017fe1242",
-    "award_receipts": "73e400d6728b08ffc2da49fdb7597149a07b70fc8d69dfa4379b562bca26b125",
-    "story_signals": "c37558db67b58169d71853b4ca482805cf28af8e20655721184f72022dd3f508",
+    "award_receipts": "e61568ccd2ac23acafe7d594694df2fe8bf93e36aca338c46db1c11816bc9a7d",
+    "story_signals": "d73f29eca642408849c6c8960af6f2d5170547e799c6e02514581c96987e21c3",
     "procurement": "777ed21d512da6831b5c92cfcca127e566994701838c92556ca19818a8b2586d",
     "negative_control": "977d6ba5b8c45ea784a965b21b8fa7a9b142de401e14451d88873cbc6da5b8de",
-    "frozen_cases": "fd8774d5a192997764ffd7fc016df34e3a902da70951ecc951d6733e36680804"
+    "frozen_cases": "7baa52830327168cb0d2f0b0b6def1af45e2b48c699c1a2c278ca234f2847aff"
   },
   "dimensions": {
     "precision": {
       "definition": "Frozen inspections that support the exact shown measurement / shown outputs inspected",
-      "numerator": 2,
+      "numerator": 3,
       "denominator": 3,
-      "rate": 0.666667,
+      "rate": 1,
       "review_coverage": {
         "numerator": 3,
         "denominator": 3,
@@ -54,8 +54,8 @@
           "case_id": "registered_amount_change:CT110220271400286",
           "metric_family": "within_contract_registered_amount_change",
           "inspection_verdict": "supported",
-          "measurement_matches": false,
-          "supported": false
+          "measurement_matches": true,
+          "supported": true
         },
         {
           "case_id": "registered_amount_change:CT183620278801170",

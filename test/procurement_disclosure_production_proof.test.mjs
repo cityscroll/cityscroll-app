@@ -741,7 +741,7 @@ test("A4: real canonical routes credit source handoffs and refuse misleading rev
   assert.ok(cityRecord, "S&P retains a City Record coverage row");
   assert.equal(cityRecord[1], "checked-no-match");
   assert.match(cityRecord[0], /City Record/);
-  assert.match(cityRecord[0], /Checked 2026-09-09/);
+  assert.match(cityRecord[0], /Checked 2026-10-09/);
   assert.match(cityRecord[0], /data-coverage-state="checked-no-match"/);
   assert.doesNotMatch(cityRecord[0], /lookup as of|exact_pin|Importer coverage:/);
   assert.match(sp, /10220272001881/, "City Record absence stays bound to the PIN that was checked");

@@ -23,11 +23,11 @@
       "expected": {
         "subject_id": "CT110220271400286",
         "original_amount": 76476,
-        "current_amount": 82191,
-        "delta": 5715,
+        "current_amount": 93520,
+        "delta": 17044,
         "agency": "City Council"
       },
-      "basis": "The committed Checkbook observation contains two positive amounts on the same exact contract and the lifecycle detector reproduces their difference."
+      "basis": "The committed Checkbook observation contains two positive amounts on the same exact contract and the lifecycle detector reproduces their difference. Re-inspected after the 2026-10-09 Checkbook rematerialization: original $76,476 to current $93,520 (delta $17,044)."
     },
     {
       "case_id": "registered_amount_change:CT183620278801170",

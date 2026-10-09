@@ -2,21 +2,21 @@
   "schema_version": 1,
   "version": "pin_family_mismatch_review_v1",
   "title": "PIN-family Checkbook ↔ PASSPort contract-id mismatches",
-  "observed_on": "2026-09-09",
-  "generated_at": "2026-09-09T06:33:01.880Z",
+  "observed_on": "2026-10-09",
+  "generated_at": "2026-10-09T14:15:05.584Z",
   "sources": {
     "crosswalk": "site/data/passport_checkbook_crosswalk.json",
     "spine": "site/data/procurement_spine_sources.json"
   },
   "metrics": {
-    "pin_family_id_mismatches": 129,
-    "auto_related_instrument": 117,
-    "needs_review": 12,
+    "pin_family_id_mismatches": 144,
+    "auto_related_instrument": 134,
+    "needs_review": 10,
     "auto_same_contract": 0,
     "by_rule": {
-      "successor_term": 39,
-      "later_term_renewal": 8,
-      "fms_document_type_mismatch": 70
+      "successor_term": 60,
+      "later_term_renewal": 12,
+      "fms_document_type_mismatch": 62
     },
     "public_same_contract_rule": "contract_id_exact only; PIN-family id mismatches are not sold as the same contract"
   },
@@ -140,6 +140,242 @@
       }
     },
     {
+      "pair_id": "pf:CT101720278801488::CT1-017-20248800979",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "01723X8002KXLR002",
+        "epin": "01723X8002KXLR001",
+        "join_method": "pin_prefix_of_epin",
+        "checkbook": {
+          "contract_id": "CT101720278801488",
+          "subject_ref": "contract:CT101720278801488",
+          "source_record_id": "checkbook:contract:CT101720278801488",
+          "vendor": "AVI-SPL LLC",
+          "agency": "Department of Emergency Management",
+          "current_amount": 1385145,
+          "original_amount": 1385145,
+          "spent_amount": 0,
+          "start": "2026-07-01",
+          "end": "2029-06-30",
+          "registered": "2026-09-25",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "017",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-017-20248800979",
+          "subject_ref": "contract:CT1-017-20248800979",
+          "source_record_id": "passport:contract:CT1-017-20248800979",
+          "vendor": "AVI-SPL LLC",
+          "agency": "OFFICE OF EMERGENCY MANAGEMENT",
+          "current_amount": 1385145,
+          "award_amount": 416880,
+          "paid_amount": 416880,
+          "start": "2023-07-01",
+          "end": "2026-06-30",
+          "registered": "2023-08-16",
+          "status": "Registered",
+          "title": "Audio-Visual Software Equipment Maintenance Renewal #1",
+          "procurement_method": "Renewal",
+          "fms": {
+            "type": "CT1",
+            "agency": "017",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "AVI-SPL",
+          "passport": "AVI-SPL"
+        },
+        "amount_ratio": 1,
+        "term_gap_days": 1
+      }
+    },
+    {
+      "pair_id": "pf:CT104020279759030::CT1-040-20238804196",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "04022P0673040",
+        "epin": "04022P0673040",
+        "join_method": "pin_epin_exact",
+        "checkbook": {
+          "contract_id": "CT104020279759030",
+          "subject_ref": "contract:CT104020279759030",
+          "source_record_id": "checkbook:contract:CT104020279759030",
+          "vendor": "LUCYS LITTLE ANGELS LLC",
+          "agency": "Department of Education",
+          "current_amount": 484272,
+          "original_amount": 484272,
+          "spent_amount": 78350.55,
+          "start": "2026-07-01",
+          "end": "2028-06-30",
+          "registered": "2026-09-18",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "040",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-040-20238804196",
+          "subject_ref": "contract:CT1-040-20238804196",
+          "source_record_id": "passport:contract:CT1-040-20238804196",
+          "vendor": "LUCYS LITTLE ANGELS LLC",
+          "agency": "DEPARTMENT OF EDUCATION",
+          "current_amount": 995544,
+          "award_amount": 995544,
+          "paid_amount": 993699.93,
+          "start": "2022-07-01",
+          "end": "2026-06-30",
+          "registered": "2022-10-31",
+          "status": "Registered",
+          "title": null,
+          "procurement_method": "Competitive Sealed Proposal",
+          "fms": {
+            "type": "CT1",
+            "agency": "040",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "LUCYS LITTLE ANGELS",
+          "passport": "LUCYS LITTLE ANGELS"
+        },
+        "amount_ratio": 0.486439574745064,
+        "term_gap_days": 1
+      }
+    },
+    {
+      "pair_id": "pf:CT104020279760157::CT1-040-20238803957",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "04022P0673125",
+        "epin": "04022P0673125",
+        "join_method": "pin_epin_exact",
+        "checkbook": {
+          "contract_id": "CT104020279760157",
+          "subject_ref": "contract:CT104020279760157",
+          "source_record_id": "checkbook:contract:CT104020279760157",
+          "vendor": "BRIGHT START CHILD LEARNING CENTER INC",
+          "agency": "Department of Education",
+          "current_amount": 2228048,
+          "original_amount": 2228048,
+          "spent_amount": 0,
+          "start": "2026-07-01",
+          "end": "2028-06-30",
+          "registered": "2026-10-01",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "040",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-040-20238803957",
+          "subject_ref": "contract:CT1-040-20238803957",
+          "source_record_id": "passport:contract:CT1-040-20238803957",
+          "vendor": "BRIGHT START CHILD LEARNING CENTER INC",
+          "agency": "DEPARTMENT OF EDUCATION",
+          "current_amount": 4528096,
+          "award_amount": 4528096,
+          "paid_amount": 2883860.28,
+          "start": "2022-07-01",
+          "end": "2026-06-30",
+          "registered": "2022-10-19",
+          "status": "Registered",
+          "title": "R1395 - 3K and Pre-K for All Services 2022-2026",
+          "procurement_method": "Competitive Sealed Proposal",
+          "fms": {
+            "type": "CT1",
+            "agency": "040",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "BRIGHT START CHILD LEARNING CENTER",
+          "passport": "BRIGHT START CHILD LEARNING CENTER"
+        },
+        "amount_ratio": 0.49204963852356487,
+        "term_gap_days": 1
+      }
+    },
+    {
+      "pair_id": "pf:CT104020279760235::CT1-040-20238803888",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "04022P0673092",
+        "epin": "04022P0673092",
+        "join_method": "pin_epin_exact",
+        "checkbook": {
+          "contract_id": "CT104020279760235",
+          "subject_ref": "contract:CT104020279760235",
+          "source_record_id": "checkbook:contract:CT104020279760235",
+          "vendor": "CHILDCARE LLC",
+          "agency": "Department of Education",
+          "current_amount": 4754736,
+          "original_amount": 4754736,
+          "spent_amount": 0,
+          "start": "2026-07-01",
+          "end": "2028-06-30",
+          "registered": "2026-10-02",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "040",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-040-20238803888",
+          "subject_ref": "contract:CT1-040-20238803888",
+          "source_record_id": "passport:contract:CT1-040-20238803888",
+          "vendor": "CHILDCARE LLC",
+          "agency": "DEPARTMENT OF EDUCATION",
+          "current_amount": 9447048,
+          "award_amount": 7044480,
+          "paid_amount": 7748239.17,
+          "start": "2022-07-01",
+          "end": "2026-06-30",
+          "registered": "2023-01-31",
+          "status": "Registered",
+          "title": null,
+          "procurement_method": "Competitive Sealed Proposal",
+          "fms": {
+            "type": "CT1",
+            "agency": "040",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "CHILDCARE",
+          "passport": "CHILDCARE"
+        },
+        "amount_ratio": 0.5033038892149166,
+        "term_gap_days": 1
+      }
+    },
+    {
       "pair_id": "pf:CT105620278800862::CT1-056-20238800566",
       "identity_class": "related_instrument",
       "label_source": "rule",
@@ -157,7 +393,7 @@
           "agency": "Police Department",
           "current_amount": 3600000,
           "original_amount": 3600000,
-          "spent_amount": 0,
+          "spent_amount": 97500,
           "start": "2026-06-06",
           "end": "2029-06-05",
           "registered": "2026-08-12",
@@ -275,7 +511,7 @@
           "agency": "Police Department",
           "current_amount": 1972371,
           "original_amount": 1972371,
-          "spent_amount": 0,
+          "spent_amount": 773636.44,
           "start": "2025-12-04",
           "end": "2027-12-03",
           "registered": "2026-08-21",
@@ -317,61 +553,120 @@
       }
     },
     {
-      "pair_id": "pf:CT106820268801222::CT1-068-20238803339",
+      "pair_id": "pf:CT105620278802278::CT1-056-20268802092",
       "identity_class": "related_instrument",
       "label_source": "rule",
       "rule": "successor_term",
       "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
       "evidence": {
-        "pin": "06822P0007002R001",
-        "epin": "06822P0007002",
+        "pin": "05625U0007001R001",
+        "epin": "05625U0007001",
         "join_method": "pin_strip_suffix",
         "checkbook": {
-          "contract_id": "CT106820268801222",
-          "subject_ref": "contract:CT106820268801222",
-          "source_record_id": "checkbook:contract:CT106820268801222",
-          "vendor": "RISING GROUND INC",
-          "agency": "Administration for Children's Services",
-          "current_amount": 4144335,
-          "original_amount": 4144335,
-          "spent_amount": 1138474.28,
-          "start": "2025-10-01",
-          "end": "2028-09-30",
-          "registered": "2025-08-27",
+          "contract_id": "CT105620278802278",
+          "subject_ref": "contract:CT105620278802278",
+          "source_record_id": "checkbook:contract:CT105620278802278",
+          "vendor": "NATIONAL CHILDREN'S ADVOCACY CENTER",
+          "agency": "Police Department",
+          "current_amount": 213940,
+          "original_amount": 213940,
+          "spent_amount": 0,
+          "start": "2026-07-01",
+          "end": "2028-06-30",
+          "registered": "2026-10-02",
           "status": "registered",
           "fms": {
             "type": "CT1",
-            "agency": "068",
+            "agency": "056",
             "form": "compact"
           }
         },
         "passport": {
-          "contract_id": "CT1-068-20238803339",
-          "subject_ref": "contract:CT1-068-20238803339",
-          "source_record_id": "passport:contract:CT1-068-20238803339",
-          "vendor": "RISING GROUND INC",
-          "agency": "ADMINISTRATION FOR CHILDREN'S SERVICES",
-          "current_amount": 4144335,
-          "award_amount": 3315468,
-          "paid_amount": 2466296.25,
-          "start": "2022-10-01",
-          "end": "2025-09-30",
-          "registered": "2022-09-28",
+          "contract_id": "CT1-056-20268802092",
+          "subject_ref": "contract:CT1-056-20268802092",
+          "source_record_id": "passport:contract:CT1-056-20268802092",
+          "vendor": "NATIONAL CHILDREN'S ADVOCACY CENTER",
+          "agency": "NEW YORK CITY POLICE DEPARTMENT",
+          "current_amount": 62290,
+          "award_amount": 62290,
+          "paid_amount": 62290,
+          "start": "2025-07-01",
+          "end": "2026-06-30",
+          "registered": "2025-09-22",
           "status": "Registered",
-          "title": "Parent Advocate/Initial Child Safety Conference Services",
-          "procurement_method": "Competitive Sealed Proposal",
+          "title": "Training for Forensic Interviewing",
+          "procurement_method": "Subscription",
           "fms": {
             "type": "CT1",
-            "agency": "068",
+            "agency": "056",
             "form": "hyphen"
           }
         },
         "vendor_same": true,
         "vendor_stems": {
-          "checkbook": "RISING GROUND",
-          "passport": "RISING GROUND"
+          "checkbook": "NATIONAL CHILDREN S ADVOCACY CENTER",
+          "passport": "NATIONAL CHILDREN S ADVOCACY CENTER"
         },
-        "amount_ratio": 1,
+        "amount_ratio": 0.29115639899037116,
+        "term_gap_days": 1
+      }
+    },
+    {
+      "pair_id": "pf:CT105720278801633::CT1-057-20258800642",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "05723S0004001R001",
+        "epin": "05723S0004001",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "CT105720278801633",
+          "subject_ref": "contract:CT105720278801633",
+          "source_record_id": "checkbook:contract:CT105720278801633",
+          "vendor": "ACCENTURE LLP",
+          "agency": "Fire Department",
+          "current_amount": 3850639,
+          "original_amount": 3850639,
+          "spent_amount": 0,
+          "start": "2026-10-01",
+          "end": "2027-09-30",
+          "registered": "2026-07-30",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "057",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-057-20258800642",
+          "subject_ref": "contract:CT1-057-20258800642",
+          "source_record_id": "passport:contract:CT1-057-20258800642",
+          "vendor": "ACCENTURE LLP",
+          "agency": "FIRE DEPARTMENT",
+          "current_amount": 13575200,
+          "award_amount": 8675000,
+          "paid_amount": 8951274,
+          "start": "2024-07-01",
+          "end": "2026-09-30",
+          "registered": "2024-09-12",
+          "status": "Registered",
+          "title": "FireCAD Systems Maintenance and Enhancements",
+          "procurement_method": "Sole Source",
+          "fms": {
+            "type": "CT1",
+            "agency": "057",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "ACCENTURE",
+          "passport": "ACCENTURE"
+        },
+        "amount_ratio": 0.2836524692085568,
         "term_gap_days": 1
       }
     },
@@ -435,6 +730,65 @@
       }
     },
     {
+      "pair_id": "pf:CT106820278802064::CT1-068-20248802990",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "06823P0006002R001",
+        "epin": "06823P0006002",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "CT106820278802064",
+          "subject_ref": "contract:CT106820278802064",
+          "source_record_id": "checkbook:contract:CT106820278802064",
+          "vendor": "BRIASON ASSOCIATES LLC",
+          "agency": "Administration for Children's Services",
+          "current_amount": 1798402.5,
+          "original_amount": 1798402.5,
+          "spent_amount": 0,
+          "start": "2026-10-01",
+          "end": "2029-09-30",
+          "registered": "2026-10-02",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "068",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-068-20248802990",
+          "subject_ref": "contract:CT1-068-20248802990",
+          "source_record_id": "passport:contract:CT1-068-20248802990",
+          "vendor": "BRIASON ASSOCIATES LLC",
+          "agency": "ADMINISTRATION FOR CHILDREN'S SERVICES",
+          "current_amount": 1198935,
+          "award_amount": 1198935,
+          "paid_amount": 1057456.5,
+          "start": "2023-10-01",
+          "end": "2026-09-30",
+          "registered": "2023-09-25",
+          "status": "Registered",
+          "title": "Essential Parenting Supports-Parenting Skills Training Prog",
+          "procurement_method": "Competitive Sealed Proposal",
+          "fms": {
+            "type": "CT1",
+            "agency": "068",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "BRIASON ASSOCIATES",
+          "passport": "BRIASON ASSOCIATES"
+        },
+        "amount_ratio": 0.6666666666666666,
+        "term_gap_days": 1
+      }
+    },
+    {
       "pair_id": "pf:CT106820278802246::CT1-068-20228805266",
       "identity_class": "related_instrument",
       "label_source": "rule",
@@ -452,7 +806,7 @@
           "agency": "Administration for Children's Services",
           "current_amount": 506138,
           "original_amount": 506138,
-          "spent_amount": 0,
+          "spent_amount": 108279.27,
           "start": "2026-07-01",
           "end": "2026-11-30",
           "registered": "2026-08-25",
@@ -629,7 +983,7 @@
           "agency": "Department of Homeless Services",
           "current_amount": 199375864,
           "original_amount": 199375864,
-          "spent_amount": 0,
+          "spent_amount": 19535582.5,
           "start": "2026-07-01",
           "end": "2030-06-30",
           "registered": "2026-09-02",
@@ -806,7 +1160,7 @@
           "agency": "Department of Homeless Services",
           "current_amount": 51623138,
           "original_amount": 51623138,
-          "spent_amount": 4833627,
+          "spent_amount": 5194010.79,
           "start": "2026-07-01",
           "end": "2030-06-30",
           "registered": "2026-08-17",
@@ -924,7 +1278,7 @@
           "agency": "Department of Homeless Services",
           "current_amount": 70999010,
           "original_amount": 70999010,
-          "spent_amount": 5318278,
+          "spent_amount": 6595508.1,
           "start": "2026-07-01",
           "end": "2031-06-30",
           "registered": "2026-08-04",
@@ -1022,6 +1376,65 @@
         },
         "amount_ratio": 0.0011141559957170198,
         "term_gap_days": 0
+      }
+    },
+    {
+      "pair_id": "pf:CT107120278802155::CT1-071-20228805989",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "07121P0107001R001",
+        "epin": "07121P0107001",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "CT107120278802155",
+          "subject_ref": "contract:CT107120278802155",
+          "source_record_id": "checkbook:contract:CT107120278802155",
+          "vendor": "ACACIA NETWORK HOUSING INC",
+          "agency": "Department of Homeless Services",
+          "current_amount": 53778766,
+          "original_amount": 53778766,
+          "spent_amount": 5023433.5,
+          "start": "2026-07-01",
+          "end": "2030-06-30",
+          "registered": "2026-10-01",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "071",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-071-20228805989",
+          "subject_ref": "contract:CT1-071-20228805989",
+          "source_record_id": "passport:contract:CT1-071-20228805989",
+          "vendor": "ACACIA NETWORK HOUSING INC",
+          "agency": "DEPARTMENT OF HOMELESS SERVICES",
+          "current_amount": 224809760,
+          "award_amount": 131605667,
+          "paid_amount": 155799610.1,
+          "start": "2021-07-01",
+          "end": "2026-06-30",
+          "registered": "2022-04-27",
+          "status": "Registered",
+          "title": "FY22-26 Holiday Inn JFK + Best Western + Allowance - 378 bed",
+          "procurement_method": "Competitive Sealed Proposal",
+          "fms": {
+            "type": "CT1",
+            "agency": "071",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "ACACIA NETWORK HOUSING",
+          "passport": "ACACIA NETWORK HOUSING"
+        },
+        "amount_ratio": 0.23921900010035152,
+        "term_gap_days": 1
       }
     },
     {
@@ -1160,7 +1573,7 @@
           "agency": "Department for the Aging",
           "current_amount": 3071819,
           "original_amount": 3071819,
-          "spent_amount": 1339453.18,
+          "spent_amount": 1343268.56,
           "start": "2026-07-01",
           "end": "2027-06-30",
           "registered": "2026-06-16",
@@ -1219,7 +1632,7 @@
           "agency": "Department for the Aging",
           "current_amount": 2509844,
           "original_amount": 2509844,
-          "spent_amount": 998715,
+          "spent_amount": 1293102.34,
           "start": "2026-07-01",
           "end": "2027-06-30",
           "registered": "2026-06-04",
@@ -1278,7 +1691,7 @@
           "agency": "Department for the Aging",
           "current_amount": 2291048,
           "original_amount": 2291048,
-          "spent_amount": 835117,
+          "spent_amount": 1099707.32,
           "start": "2026-07-01",
           "end": "2027-06-30",
           "registered": "2026-06-18",
@@ -1396,7 +1809,7 @@
           "agency": "Department for the Aging",
           "current_amount": 1243370,
           "original_amount": 1243370,
-          "spent_amount": 497348,
+          "spent_amount": 568986.71,
           "start": "2026-07-01",
           "end": "2027-06-30",
           "registered": "2026-06-12",
@@ -1497,65 +1910,6 @@
       }
     },
     {
-      "pair_id": "pf:CT112520278801241::CT1-125-20228804019",
-      "identity_class": "needs_review",
-      "label_source": "human",
-      "rule": null,
-      "rationale": "The two publishers name different vendors on the same PIN. That can be a multi-award sibling, a firm rename, or a PIN collision; it is not mechanically the same contract.",
-      "evidence": {
-        "pin": "12521P0019036X001",
-        "epin": "12521P0019036",
-        "join_method": "pin_strip_suffix",
-        "checkbook": {
-          "contract_id": "CT112520278801241",
-          "subject_ref": "contract:CT112520278801241",
-          "source_record_id": "checkbook:contract:CT112520278801241",
-          "vendor": "GODDARD RIVERSIDE COMMUNITY CENTER",
-          "agency": "Department for the Aging",
-          "current_amount": 851646,
-          "original_amount": 851646,
-          "spent_amount": 0,
-          "start": "2026-07-01",
-          "end": "2027-06-30",
-          "registered": "2026-07-28",
-          "status": "registered",
-          "fms": {
-            "type": "CT1",
-            "agency": "125",
-            "form": "compact"
-          }
-        },
-        "passport": {
-          "contract_id": "CT1-125-20228804019",
-          "subject_ref": "contract:CT1-125-20228804019",
-          "source_record_id": "passport:contract:CT1-125-20228804019",
-          "vendor": "STANLEY M ISAACS NEIGHBORHOOD CENTER INC",
-          "agency": "DEPARTMENT FOR THE AGING",
-          "current_amount": 2186114,
-          "award_amount": 1307108,
-          "paid_amount": 1471693.72,
-          "start": "2021-12-01",
-          "end": "2024-11-30",
-          "registered": "2021-12-30",
-          "status": "Registered",
-          "title": "12522NORCN65 - NORC Services",
-          "procurement_method": "Competitive Sealed Proposal",
-          "fms": {
-            "type": "CT1",
-            "agency": "125",
-            "form": "hyphen"
-          }
-        },
-        "vendor_same": false,
-        "vendor_stems": {
-          "checkbook": "GODDARD RIVERSIDE COMMUNITY CENTER",
-          "passport": "STANLEY M ISAACS NEIGHBORHOOD CENTER"
-        },
-        "amount_ratio": 0.38957071772103374,
-        "term_gap_days": 578
-      }
-    },
-    {
       "pair_id": "pf:CT112520278801295::CT1-125-20228804009",
       "identity_class": "needs_review",
       "label_source": "human",
@@ -1615,6 +1969,242 @@
       }
     },
     {
+      "pair_id": "pf:CT112520278802204::CT1-125-20258801508",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "later_term_renewal",
+      "rationale": "Same vendor and same FMS document type, with Checkbook starting 366 days after the PASSPort end date. Distinct FMS serials make this a later-term renewal, not the same contract.",
+      "evidence": {
+        "pin": "12524P0002014R002",
+        "epin": "12524P0002014",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "CT112520278802204",
+          "subject_ref": "contract:CT112520278802204",
+          "source_record_id": "checkbook:contract:CT112520278802204",
+          "vendor": "KOREAN COMMUNITY SERVICES OF METROPOLITAN NEW YORK INC",
+          "agency": "Department for the Aging",
+          "current_amount": 3482774,
+          "original_amount": 3482774,
+          "spent_amount": 0,
+          "start": "2026-10-01",
+          "end": "2027-09-30",
+          "registered": "2026-08-25",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "125",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-125-20258801508",
+          "subject_ref": "contract:CT1-125-20258801508",
+          "source_record_id": "passport:contract:CT1-125-20258801508",
+          "vendor": "KOREAN COMMUNITY SERVICES OF METROPOLITAN NEW YORK INC",
+          "agency": "DEPARTMENT FOR THE AGING",
+          "current_amount": 2529961,
+          "award_amount": 2529961,
+          "paid_amount": 1930223.72,
+          "start": "2024-10-01",
+          "end": "2025-09-30",
+          "registered": "2024-08-01",
+          "status": "Registered",
+          "title": "12525HMNA45Q - Home Delivered Meals",
+          "procurement_method": "Competitive Sealed Proposal",
+          "fms": {
+            "type": "CT1",
+            "agency": "125",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "KOREAN COMMUNITY SERVICES OF METROPOLITAN NEW YORK",
+          "passport": "KOREAN COMMUNITY SERVICES OF METROPOLITAN NEW YORK"
+        },
+        "amount_ratio": 0.726421237783445,
+        "term_gap_days": 366
+      }
+    },
+    {
+      "pair_id": "pf:CT112520278802206::CT1-125-20258803240",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "later_term_renewal",
+      "rationale": "Same vendor and same FMS document type, with Checkbook starting 366 days after the PASSPort end date. Distinct FMS serials make this a later-term renewal, not the same contract.",
+      "evidence": {
+        "pin": "12524P0002012R002",
+        "epin": "12524P0002012",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "CT112520278802206",
+          "subject_ref": "contract:CT112520278802206",
+          "source_record_id": "checkbook:contract:CT112520278802206",
+          "vendor": "RC STILLWELL LLC",
+          "agency": "Department for the Aging",
+          "current_amount": 2552287,
+          "original_amount": 2552287,
+          "spent_amount": 0,
+          "start": "2026-10-01",
+          "end": "2027-09-30",
+          "registered": "2026-08-25",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "125",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-125-20258803240",
+          "subject_ref": "contract:CT1-125-20258803240",
+          "source_record_id": "passport:contract:CT1-125-20258803240",
+          "vendor": "RC STILLWELL LLC",
+          "agency": "DEPARTMENT FOR THE AGING",
+          "current_amount": 2151066,
+          "award_amount": 2151066,
+          "paid_amount": 1657527.22,
+          "start": "2024-10-01",
+          "end": "2025-09-30",
+          "registered": "2024-10-28",
+          "status": "Registered",
+          "title": "12525HMNA45S - Home Delivered Meals",
+          "procurement_method": "Competitive Sealed Proposal",
+          "fms": {
+            "type": "CT1",
+            "agency": "125",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "RC STILLWELL",
+          "passport": "RC STILLWELL"
+        },
+        "amount_ratio": 0.8427994187174092,
+        "term_gap_days": 366
+      }
+    },
+    {
+      "pair_id": "pf:CT112520278802207::CT1-125-20268801660",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "12524P0002002R002",
+        "epin": "12524P0002002R001",
+        "join_method": "pin_prefix_of_epin",
+        "checkbook": {
+          "contract_id": "CT112520278802207",
+          "subject_ref": "contract:CT112520278802207",
+          "source_record_id": "checkbook:contract:CT112520278802207",
+          "vendor": "GREAT PERFORMANCES ARTISTS AS WAITRESSES INC",
+          "agency": "Department for the Aging",
+          "current_amount": 4746425,
+          "original_amount": 4746425,
+          "spent_amount": 0,
+          "start": "2026-10-01",
+          "end": "2027-09-30",
+          "registered": "2026-09-04",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "125",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-125-20268801660",
+          "subject_ref": "contract:CT1-125-20268801660",
+          "source_record_id": "passport:contract:CT1-125-20268801660",
+          "vendor": "GREAT PERFORMANCES ARTISTS AS WAITRESSES INC",
+          "agency": "DEPARTMENT FOR THE AGING",
+          "current_amount": 4412503,
+          "award_amount": 4412503,
+          "paid_amount": 2085620.58,
+          "start": "2025-10-01",
+          "end": "2026-09-30",
+          "registered": "2025-08-14",
+          "status": "Registered",
+          "title": "FY26 Renewal - 12526HMNA51W",
+          "procurement_method": "Renewal",
+          "fms": {
+            "type": "CT1",
+            "agency": "125",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "GREAT PERFORMANCES ARTISTS AS WAITRESSES",
+          "passport": "GREAT PERFORMANCES ARTISTS AS WAITRESSES"
+        },
+        "amount_ratio": 0.9296476822029212,
+        "term_gap_days": 1
+      }
+    },
+    {
+      "pair_id": "pf:CT112520278802258::CT1-125-20258802689",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "later_term_renewal",
+      "rationale": "Same vendor and same FMS document type, with Checkbook starting 366 days after the PASSPort end date. Distinct FMS serials make this a later-term renewal, not the same contract.",
+      "evidence": {
+        "pin": "12524P0002004R002",
+        "epin": "12524P0002004",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "CT112520278802258",
+          "subject_ref": "contract:CT112520278802258",
+          "source_record_id": "checkbook:contract:CT112520278802258",
+          "vendor": "NYFTA INC",
+          "agency": "Department for the Aging",
+          "current_amount": 7033402,
+          "original_amount": 7033402,
+          "spent_amount": 0,
+          "start": "2026-10-01",
+          "end": "2027-09-30",
+          "registered": "2026-08-22",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "125",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-125-20258802689",
+          "subject_ref": "contract:CT1-125-20258802689",
+          "source_record_id": "passport:contract:CT1-125-20258802689",
+          "vendor": "NYFTA INC",
+          "agency": "DEPARTMENT FOR THE AGING",
+          "current_amount": 5927779,
+          "award_amount": 5927779,
+          "paid_amount": 3654608.24,
+          "start": "2024-10-01",
+          "end": "2025-09-30",
+          "registered": "2024-10-11",
+          "status": "Registered",
+          "title": "12525HMNA28Y - Home Delivered Meals",
+          "procurement_method": "Competitive Sealed Proposal",
+          "fms": {
+            "type": "CT1",
+            "agency": "125",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "NYFTA",
+          "passport": "NYFTA"
+        },
+        "amount_ratio": 0.8428039517718453,
+        "term_gap_days": 366
+      }
+    },
+    {
       "pair_id": "pf:CT112620278801921::CT1-126-20238807660",
       "identity_class": "related_instrument",
       "label_source": "rule",
@@ -1670,6 +2260,65 @@
           "passport": "LOWER MANHATTAN CULTURAL COUNCIL"
         },
         "amount_ratio": 0.00002,
+        "term_gap_days": 1
+      }
+    },
+    {
+      "pair_id": "pf:CT115620278801952::CT1-156-20268804431",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "15626W0004001R001",
+        "epin": "15626W0004001",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "CT115620278801952",
+          "subject_ref": "contract:CT115620278801952",
+          "source_record_id": "checkbook:contract:CT115620278801952",
+          "vendor": "QUALITY AND ASSURANCE TECHNOLOGY CORP",
+          "agency": "NYC Taxi and Limousine Commission",
+          "current_amount": 313740,
+          "original_amount": 313740,
+          "spent_amount": 0,
+          "start": "2026-07-01",
+          "end": "2027-06-30",
+          "registered": "2026-09-28",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "156",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-156-20268804431",
+          "subject_ref": "contract:CT1-156-20268804431",
+          "source_record_id": "passport:contract:CT1-156-20268804431",
+          "vendor": "QUALITY AND ASSURANCE TECHNOLOGY CORP",
+          "agency": "NYC TAXI AND LIMOUSINE COMMISSION",
+          "current_amount": 394380,
+          "award_amount": 394380,
+          "paid_amount": 390600,
+          "start": "2025-03-29",
+          "end": "2026-06-30",
+          "registered": "2025-12-29",
+          "status": "Registered",
+          "title": "Technical Project Manager - Consulting Services",
+          "procurement_method": "MWBE Non Competitive Small Purchase",
+          "fms": {
+            "type": "CT1",
+            "agency": "156",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "QUALITY AND ASSURANCE TECHNOLOGY",
+          "passport": "QUALITY AND ASSURANCE TECHNOLOGY"
+        },
+        "amount_ratio": 0.7955271565495208,
         "term_gap_days": 1
       }
     },
@@ -1733,6 +2382,65 @@
       }
     },
     {
+      "pair_id": "pf:CT126020278800769::CT1-260-20248807847",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "26024W0006001R001",
+        "epin": "26024W0006001",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "CT126020278800769",
+          "subject_ref": "contract:CT126020278800769",
+          "source_record_id": "checkbook:contract:CT126020278800769",
+          "vendor": "J Jackson Consulting LLC",
+          "agency": "Department of Youth and Community Development",
+          "current_amount": 300000,
+          "original_amount": 300000,
+          "spent_amount": 16390,
+          "start": "2026-07-01",
+          "end": "2029-06-30",
+          "registered": "2026-09-09",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "260",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-260-20248807847",
+          "subject_ref": "contract:CT1-260-20248807847",
+          "source_record_id": "passport:contract:CT1-260-20248807847",
+          "vendor": "J Jackson Consulting LLC",
+          "agency": "DEPARTMENT OF YOUTH AND COMMUNITY DEVELOPMENT",
+          "current_amount": 457778,
+          "award_amount": 300000,
+          "paid_amount": 457776.51,
+          "start": "2024-04-01",
+          "end": "2026-06-30",
+          "registered": "2024-07-11",
+          "status": "Registered",
+          "title": "88512 - Capacity Building MWBE for Cultivating Partnerships",
+          "procurement_method": "MWBE Non Competitive Small Purchase",
+          "fms": {
+            "type": "CT1",
+            "agency": "260",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "J JACKSON CONSULTING",
+          "passport": "J JACKSON CONSULTING"
+        },
+        "amount_ratio": 0.6553394876992779,
+        "term_gap_days": 1
+      }
+    },
+    {
       "pair_id": "pf:CT126020278801800::CT1-260-20248806254",
       "identity_class": "related_instrument",
       "label_source": "rule",
@@ -1750,7 +2458,7 @@
           "agency": "Department of Youth and Community Development",
           "current_amount": 1070400,
           "original_amount": 1070400,
-          "spent_amount": 0,
+          "spent_amount": 9000.8,
           "start": "2026-07-01",
           "end": "2029-06-30",
           "registered": "2026-08-21",
@@ -1847,6 +2555,183 @@
           "passport": "RAMAPO FOR CHILDREN"
         },
         "amount_ratio": 0.8842495385429926,
+        "term_gap_days": 1
+      }
+    },
+    {
+      "pair_id": "pf:CT126020278802162::CT1-260-20258802103",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "26023P0007002R001",
+        "epin": "26023P0007002",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "CT126020278802162",
+          "subject_ref": "contract:CT126020278802162",
+          "source_record_id": "checkbook:contract:CT126020278802162",
+          "vendor": "THE MENTAL HEALTH ASSOCIATION OF NEW YORK CITY INC",
+          "agency": "Department of Youth and Community Development",
+          "current_amount": 601497,
+          "original_amount": 601497,
+          "spent_amount": 0,
+          "start": "2026-07-01",
+          "end": "2029-06-30",
+          "registered": "2026-09-28",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "260",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-260-20258802103",
+          "subject_ref": "contract:CT1-260-20258802103",
+          "source_record_id": "passport:contract:CT1-260-20258802103",
+          "vendor": "THE MENTAL HEALTH ASSOCIATION OF NEW YORK CITY INC",
+          "agency": "DEPARTMENT OF YOUTH AND COMMUNITY DEVELOPMENT",
+          "current_amount": 601497,
+          "award_amount": 601497,
+          "paid_amount": 505494.95,
+          "start": "2023-12-01",
+          "end": "2026-06-30",
+          "registered": "2024-09-13",
+          "status": "Registered",
+          "title": "88004 _ 26023P0007-TECHNICAL ASSISTANCE SERVICES RFP",
+          "procurement_method": "Competitive Sealed Proposal",
+          "fms": {
+            "type": "CT1",
+            "agency": "260",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "THE MENTAL HEALTH ASSOCIATION OF NEW YORK CITY",
+          "passport": "THE MENTAL HEALTH ASSOCIATION OF NEW YORK CITY"
+        },
+        "amount_ratio": 1,
+        "term_gap_days": 1
+      }
+    },
+    {
+      "pair_id": "pf:CT126020278802262::CT1-260-20248806060",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "26023P0006001R001",
+        "epin": "26023P0006001",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "CT126020278802262",
+          "subject_ref": "contract:CT126020278802262",
+          "source_record_id": "checkbook:contract:CT126020278802262",
+          "vendor": "LIC COM LLC",
+          "agency": "Department of Youth and Community Development",
+          "current_amount": 5500000,
+          "original_amount": 5500000,
+          "spent_amount": 1054343.9,
+          "start": "2026-07-01",
+          "end": "2027-06-30",
+          "registered": "2026-09-14",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "260",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-260-20248806060",
+          "subject_ref": "contract:CT1-260-20248806060",
+          "source_record_id": "passport:contract:CT1-260-20248806060",
+          "vendor": "LIC COM LLC",
+          "agency": "DEPARTMENT OF YOUTH AND COMMUNITY DEVELOPMENT",
+          "current_amount": 22795991,
+          "award_amount": 22795991,
+          "paid_amount": 12264412.35,
+          "start": "2023-09-01",
+          "end": "2026-06-30",
+          "registered": "2024-04-05",
+          "status": "Registered",
+          "title": "Child Adult Care Food Program",
+          "procurement_method": "Competitive Sealed Proposal",
+          "fms": {
+            "type": "CT1",
+            "agency": "260",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "LIC COM",
+          "passport": "LIC COM"
+        },
+        "amount_ratio": 0.24127049357055808,
+        "term_gap_days": 1
+      }
+    },
+    {
+      "pair_id": "pf:CT126020278802440::CT1-260-20248805902",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "26023P0007005R001",
+        "epin": "26023P0007005",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "CT126020278802440",
+          "subject_ref": "contract:CT126020278802440",
+          "source_record_id": "checkbook:contract:CT126020278802440",
+          "vendor": "LITERACY ASSISTANCE CENTER",
+          "agency": "Department of Youth and Community Development",
+          "current_amount": 1711779,
+          "original_amount": 1711779,
+          "spent_amount": 0,
+          "start": "2026-07-01",
+          "end": "2029-06-30",
+          "registered": "2026-09-22",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "260",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-260-20248805902",
+          "subject_ref": "contract:CT1-260-20248805902",
+          "source_record_id": "passport:contract:CT1-260-20248805902",
+          "vendor": "LITERACY ASSISTANCE CENTER",
+          "agency": "DEPARTMENT OF YOUTH AND COMMUNITY DEVELOPMENT",
+          "current_amount": 1586464,
+          "award_amount": 1510886,
+          "paid_amount": 1586342.46,
+          "start": "2023-12-01",
+          "end": "2026-06-30",
+          "registered": "2024-04-09",
+          "status": "Registered",
+          "title": "TECHNICAL ASSISTANCE SERVICES RFP",
+          "procurement_method": "Competitive Sealed Proposal",
+          "fms": {
+            "type": "CT1",
+            "agency": "260",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "LITERACY ASSISTANCE CENTER",
+          "passport": "LITERACY ASSISTANCE CENTER"
+        },
+        "amount_ratio": 0.926792535718688,
         "term_gap_days": 1
       }
     },
@@ -2087,6 +2972,65 @@
       }
     },
     {
+      "pair_id": "pf:CT182620278802934::CT1-826-20238806763",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "82622B0001001R001",
+        "epin": "82622B0001001",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "CT182620278802934",
+          "subject_ref": "contract:CT182620278802934",
+          "source_record_id": "checkbook:contract:CT182620278802934",
+          "vendor": "LONGO ELECTRICAL-MECHANICAL INC",
+          "agency": "Department of Environmental Protection",
+          "current_amount": 2130399,
+          "original_amount": 2130399,
+          "spent_amount": 0,
+          "start": "2026-05-08",
+          "end": "2028-05-06",
+          "registered": "2026-10-06",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "826",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-826-20238806763",
+          "subject_ref": "contract:CT1-826-20238806763",
+          "source_record_id": "passport:contract:CT1-826-20238806763",
+          "vendor": "LONGO ELECTRICAL-MECHANICAL INC",
+          "agency": "DEPARTMENT OF ENVIRONMENTAL PROTECTION",
+          "current_amount": 3195598,
+          "award_amount": 3195598,
+          "paid_amount": 2749356.82,
+          "start": "2023-05-08",
+          "end": "2026-05-07",
+          "registered": "2023-04-13",
+          "status": "Registered",
+          "title": null,
+          "procurement_method": "Competitive Sealed Bid",
+          "fms": {
+            "type": "CT1",
+            "agency": "826",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "LONGO ELECTRICAL-MECHANICAL",
+          "passport": "LONGO ELECTRICAL-MECHANICAL"
+        },
+        "amount_ratio": 0.666666770976825,
+        "term_gap_days": 1
+      }
+    },
+    {
       "pair_id": "pf:CT182720278801617::CT1-827-20228803780",
       "identity_class": "related_instrument",
       "label_source": "rule",
@@ -2142,6 +3086,65 @@
           "passport": "RICHMOND ELEVATOR"
         },
         "amount_ratio": 0.42414696975266575,
+        "term_gap_days": 1
+      }
+    },
+    {
+      "pair_id": "pf:CT182720278802366::CT1-827-20228801663",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "82722B0002001R001",
+        "epin": "82722B0002001",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "CT182720278802366",
+          "subject_ref": "contract:CT182720278802366",
+          "source_record_id": "checkbook:contract:CT182720278802366",
+          "vendor": "EH FIRE SUPPRESSION COMPANY INC",
+          "agency": "Department of Sanitation",
+          "current_amount": 600000,
+          "original_amount": 600000,
+          "spent_amount": 0,
+          "start": "2026-10-01",
+          "end": "2028-09-30",
+          "registered": "2026-09-10",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "827",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-827-20228801663",
+          "subject_ref": "contract:CT1-827-20228801663",
+          "source_record_id": "passport:contract:CT1-827-20228801663",
+          "vendor": "EH FIRE SUPPRESSION COMPANY INC",
+          "agency": "DEPARTMENT OF SANITATION",
+          "current_amount": 2277188.37,
+          "award_amount": 2277188.37,
+          "paid_amount": 969994.32,
+          "start": "2021-10-01",
+          "end": "2026-09-30",
+          "registered": "2021-12-28",
+          "status": "Registered",
+          "title": "EH Fire Suppression",
+          "procurement_method": "Competitive Sealed Bid",
+          "fms": {
+            "type": "CT1",
+            "agency": "827",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "EH FIRE SUPPRESSION",
+          "passport": "EH FIRE SUPPRESSION"
+        },
+        "amount_ratio": 0.26348281411607594,
         "term_gap_days": 1
       }
     },
@@ -2202,6 +3205,124 @@
         },
         "amount_ratio": 1,
         "term_gap_days": 1
+      }
+    },
+    {
+      "pair_id": "pf:CT184120278801753::CT1-841-20238808623",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "84123B0016001R001",
+        "epin": "84123B0016001",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "CT184120278801753",
+          "subject_ref": "contract:CT184120278801753",
+          "source_record_id": "checkbook:contract:CT184120278801753",
+          "vendor": "FAZTEC INDUSTRIES INC",
+          "agency": "Department of Transportation",
+          "current_amount": 3500000,
+          "original_amount": 3500000,
+          "spent_amount": 0,
+          "start": "2026-07-25",
+          "end": "2027-07-24",
+          "registered": "2026-10-01",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "841",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-841-20238808623",
+          "subject_ref": "contract:CT1-841-20238808623",
+          "source_record_id": "passport:contract:CT1-841-20238808623",
+          "vendor": "FAZTEC INDUSTRIES INC",
+          "agency": "DEPARTMENT OF TRANSPORTATION",
+          "current_amount": 8996200,
+          "award_amount": 4996200,
+          "paid_amount": 7752800,
+          "start": "2023-07-25",
+          "end": "2026-07-24",
+          "registered": "2023-07-13",
+          "status": "Registered",
+          "title": "Containers to Remove Construction Waste Materials",
+          "procurement_method": "Competitive Sealed Bid",
+          "fms": {
+            "type": "CT1",
+            "agency": "841",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "FAZTEC INDUSTRIES",
+          "passport": "FAZTEC INDUSTRIES"
+        },
+        "amount_ratio": 0.3890531557768836,
+        "term_gap_days": 1
+      }
+    },
+    {
+      "pair_id": "pf:CT184620278801861::CT1-846-20248809683",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "later_term_renewal",
+      "rationale": "Same vendor and same FMS document type, with Checkbook starting 44 days after the PASSPort end date. Distinct FMS serials make this a later-term renewal, not the same contract.",
+      "evidence": {
+        "pin": "84624B0022001R001",
+        "epin": "84624B0022001",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "CT184620278801861",
+          "subject_ref": "contract:CT184620278801861",
+          "source_record_id": "checkbook:contract:CT184620278801861",
+          "vendor": "D&G Elite Construction",
+          "agency": "Department of Parks and Recreation",
+          "current_amount": 6159108.56,
+          "original_amount": 6159108.56,
+          "spent_amount": 0,
+          "start": "2026-08-12",
+          "end": "2028-08-10",
+          "registered": "2026-09-08",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "846",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-846-20248809683",
+          "subject_ref": "contract:CT1-846-20248809683",
+          "source_record_id": "passport:contract:CT1-846-20248809683",
+          "vendor": "D&G Elite Construction",
+          "agency": "DEPARTMENT OF PARKS AND RECREATION",
+          "current_amount": 5684923,
+          "award_amount": 5684923,
+          "paid_amount": 5607036.83,
+          "start": "2024-06-30",
+          "end": "2026-06-29",
+          "registered": "2024-07-23",
+          "status": "Registered",
+          "title": "QG-1523M: Queens Tree-Damaged Sidewalk Reconstruction",
+          "procurement_method": "Competitive Sealed Bid",
+          "fms": {
+            "type": "CT1",
+            "agency": "846",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "D G ELITE CONSTRUCTION",
+          "passport": "D G ELITE CONSTRUCTION"
+        },
+        "amount_ratio": 0.9230106832213395,
+        "term_gap_days": 44
       }
     },
     {
@@ -2500,6 +3621,65 @@
       }
     },
     {
+      "pair_id": "pf:CT185620278802409::CT1-856-20268802064",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "85626U0006001R001",
+        "epin": "85626U0006001",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "CT185620278802409",
+          "subject_ref": "contract:CT185620278802409",
+          "source_record_id": "checkbook:contract:CT185620278802409",
+          "vendor": "COSTAR REALTY INFORMATION, INC",
+          "agency": "Department of Citywide Administrative Services",
+          "current_amount": 124075.08,
+          "original_amount": 124075.08,
+          "spent_amount": 0,
+          "start": "2026-09-07",
+          "end": "2027-09-06",
+          "registered": "2026-10-07",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "856",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-856-20268802064",
+          "subject_ref": "contract:CT1-856-20268802064",
+          "source_record_id": "passport:contract:CT1-856-20268802064",
+          "vendor": "COSTAR REALTY INFORMATION, INC",
+          "agency": "DEPARTMENT OF CITYWIDE ADMINISTRATIVE SERVICES",
+          "current_amount": 118279.44,
+          "award_amount": 118279.44,
+          "paid_amount": 118279.44,
+          "start": "2025-09-07",
+          "end": "2026-09-06",
+          "registered": "2025-11-25",
+          "status": "Registered",
+          "title": "102(f) Subscription for Costar",
+          "procurement_method": "Subscription",
+          "fms": {
+            "type": "CT1",
+            "agency": "856",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "COSTAR REALTY INFORMATION",
+          "passport": "COSTAR REALTY INFORMATION"
+        },
+        "amount_ratio": 0.9532892503474509,
+        "term_gap_days": 1
+      }
+    },
+    {
       "pair_id": "pf:CT185820268805642::CT1-858-20248808358",
       "identity_class": "related_instrument",
       "label_source": "rule",
@@ -2517,7 +3697,7 @@
           "agency": "Department of Information Technology and Telecommunications",
           "current_amount": 2404200,
           "original_amount": 2404200,
-          "spent_amount": 211082,
+          "spent_amount": 411217,
           "start": "2026-04-13",
           "end": "2028-04-12",
           "registered": "2026-03-13",
@@ -2576,7 +3756,7 @@
           "agency": "Department of Information Technology and Telecommunications",
           "current_amount": 32745510,
           "original_amount": 32745510,
-          "spent_amount": 6911065.06,
+          "spent_amount": 8240965.02,
           "start": "2026-01-01",
           "end": "2027-12-31",
           "registered": "2026-06-30",
@@ -2635,7 +3815,7 @@
           "agency": "Department of Information Technology and Telecommunications",
           "current_amount": 57928898,
           "original_amount": 57928898,
-          "spent_amount": 23964547.14,
+          "spent_amount": 24176928.24,
           "start": "2026-01-01",
           "end": "2029-12-31",
           "registered": "2026-07-15",
@@ -2673,6 +3853,65 @@
           "passport": "T-MOBILE"
         },
         "amount_ratio": 0.3780700955160583,
+        "term_gap_days": 1
+      }
+    },
+    {
+      "pair_id": "pf:CT185820278801335::CT1-858-20238800184",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "85818P8211KXLR002",
+        "epin": "85818P8211KXLR001",
+        "join_method": "pin_prefix_of_epin",
+        "checkbook": {
+          "contract_id": "CT185820278801335",
+          "subject_ref": "contract:CT185820278801335",
+          "source_record_id": "checkbook:contract:CT185820278801335",
+          "vendor": "TIME WARNER CABLE NEW YORK CITY LLC",
+          "agency": "Department of Information Technology and Telecommunications",
+          "current_amount": 96500000,
+          "original_amount": 96500000,
+          "spent_amount": 6004201.75,
+          "start": "2026-07-01",
+          "end": "2030-06-30",
+          "registered": "2026-09-18",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "858",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-858-20238800184",
+          "subject_ref": "contract:CT1-858-20238800184",
+          "source_record_id": "passport:contract:CT1-858-20238800184",
+          "vendor": "TIME WARNER CABLE NEW YORK CITY LLC",
+          "agency": "DEPARTMENT OF INFORMATION TECHNOLOGY AND TELECOMMUNICATIONS",
+          "current_amount": 86602772.2,
+          "award_amount": 10371384.23,
+          "paid_amount": 84497383.17,
+          "start": "2022-07-01",
+          "end": "2026-06-30",
+          "registered": "2022-06-13",
+          "status": "Registered",
+          "title": "Citywide Voice and Data (TWC/Spectrum) - Renewal #1",
+          "procurement_method": "Renewal",
+          "fms": {
+            "type": "CT1",
+            "agency": "858",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "TIME WARNER CABLE NEW YORK CITY",
+          "passport": "TIME WARNER CABLE NEW YORK CITY"
+        },
+        "amount_ratio": 0.8974380538860104,
         "term_gap_days": 1
       }
     },
@@ -2795,65 +4034,6 @@
       }
     },
     {
-      "pair_id": "pf:CTA100220267201606::MMA1-002-20268801642",
-      "identity_class": "related_instrument",
-      "label_source": "rule",
-      "rule": "fms_document_type_mismatch",
-      "rationale": "Checkbook CTA1 and PASSPort MMA1 are different FMS document types sharing a PIN (requirement contract / task order vs master agreement, or another instrument pair). They are related, not the same registered contract.",
-      "evidence": {
-        "pin": "00221P0023001R001",
-        "epin": "00221P0023001R001",
-        "join_method": "pin_epin_exact",
-        "checkbook": {
-          "contract_id": "CTA100220267201606",
-          "subject_ref": "contract:CTA100220267201606",
-          "source_record_id": "checkbook:contract:CTA100220267201606",
-          "vendor": "Jacobs Civil Consultants",
-          "agency": "Mayoralty",
-          "current_amount": 215071.62,
-          "original_amount": 215071.62,
-          "spent_amount": 165262.56,
-          "start": "2025-09-11",
-          "end": "2027-09-10",
-          "registered": "2025-10-16",
-          "status": "registered",
-          "fms": {
-            "type": "CTA1",
-            "agency": "002",
-            "form": "compact"
-          }
-        },
-        "passport": {
-          "contract_id": "MMA1-002-20268801642",
-          "subject_ref": "contract:MMA1-002-20268801642",
-          "source_record_id": "passport:contract:MMA1-002-20268801642",
-          "vendor": "Jacobs Civil Consultants",
-          "agency": "MAYORALTY",
-          "current_amount": 1000000,
-          "award_amount": 1000000,
-          "paid_amount": 0,
-          "start": "2025-09-01",
-          "end": "2026-08-31",
-          "registered": "2025-08-14",
-          "status": "Registered",
-          "title": "Value Engineering Services (Jacobs) Renewal #1",
-          "procurement_method": "Renewal",
-          "fms": {
-            "type": "MMA1",
-            "agency": "002",
-            "form": "hyphen"
-          }
-        },
-        "vendor_same": true,
-        "vendor_stems": {
-          "checkbook": "JACOBS CIVIL CONSULTANTS",
-          "passport": "JACOBS CIVIL CONSULTANTS"
-        },
-        "amount_ratio": 0.21507162,
-        "term_gap_days": -354
-      }
-    },
-    {
       "pair_id": "pf:CTA100220267204051::MMA1-827-20268802706",
       "identity_class": "related_instrument",
       "label_source": "rule",
@@ -2930,7 +4110,7 @@
           "agency": "Mayoralty",
           "current_amount": 250000,
           "original_amount": 250000,
-          "spent_amount": 194162.07,
+          "spent_amount": 213578.27,
           "start": "2026-01-27",
           "end": "2028-01-26",
           "registered": "2026-03-20",
@@ -3048,7 +4228,7 @@
           "agency": "Mayoralty",
           "current_amount": 188964.55,
           "original_amount": 188964.55,
-          "spent_amount": 116684.71,
+          "spent_amount": 148454.73,
           "start": "2026-03-24",
           "end": "2028-03-23",
           "registered": "2026-05-27",
@@ -3166,7 +4346,7 @@
           "agency": "Police Department",
           "current_amount": 360000,
           "original_amount": 360000,
-          "spent_amount": 54660.38,
+          "spent_amount": 71033.28,
           "start": "2025-12-01",
           "end": "2030-11-30",
           "registered": "2025-12-22",
@@ -3205,65 +4385,6 @@
         },
         "amount_ratio": 0.019889502762430938,
         "term_gap_days": -1825
-      }
-    },
-    {
-      "pair_id": "pf:CTA105620267204111::MMA1-827-20268802706",
-      "identity_class": "related_instrument",
-      "label_source": "rule",
-      "rule": "fms_document_type_mismatch",
-      "rationale": "Checkbook CTA1 and PASSPort MMA1 are different FMS document types sharing a PIN (requirement contract / task order vs master agreement, or another instrument pair). They are related, not the same registered contract.",
-      "evidence": {
-        "pin": "82711B8272KXLR002",
-        "epin": "82711B8272KXLR002",
-        "join_method": "pin_epin_exact",
-        "checkbook": {
-          "contract_id": "CTA105620267204111",
-          "subject_ref": "contract:CTA105620267204111",
-          "source_record_id": "checkbook:contract:CTA105620267204111",
-          "vendor": "VEOLIA ES TECHNICAL SOLUTIONS LLC",
-          "agency": "Police Department",
-          "current_amount": 8246072.99,
-          "original_amount": 8246072.99,
-          "spent_amount": 306183,
-          "start": "2026-01-01",
-          "end": "2030-11-30",
-          "registered": "2026-03-06",
-          "status": "registered",
-          "fms": {
-            "type": "CTA1",
-            "agency": "056",
-            "form": "compact"
-          }
-        },
-        "passport": {
-          "contract_id": "MMA1-827-20268802706",
-          "subject_ref": "contract:MMA1-827-20268802706",
-          "source_record_id": "passport:contract:MMA1-827-20268802706",
-          "vendor": "VEOLIA ES TECHNICAL SOLUTIONS LLC",
-          "agency": "DEPARTMENT OF SANITATION",
-          "current_amount": 18100000,
-          "award_amount": 18100000,
-          "paid_amount": 0,
-          "start": "2025-12-01",
-          "end": "2030-11-30",
-          "registered": "2025-11-06",
-          "status": "Registered",
-          "title": "VEOLIA ES TECHINAL SOLUTIONS Renewal #2",
-          "procurement_method": "Renewal",
-          "fms": {
-            "type": "MMA1",
-            "agency": "827",
-            "form": "hyphen"
-          }
-        },
-        "vendor_same": true,
-        "vendor_stems": {
-          "checkbook": "VEOLIA ES TECHNICAL SOLUTIONS",
-          "passport": "VEOLIA ES TECHNICAL SOLUTIONS"
-        },
-        "amount_ratio": 0.45558414309392264,
-        "term_gap_days": -1794
       }
     },
     {
@@ -3343,7 +4464,7 @@
           "agency": "Fire Department",
           "current_amount": 400000,
           "original_amount": 400000,
-          "spent_amount": 384.33,
+          "spent_amount": 517.38,
           "start": "2025-12-01",
           "end": "2030-11-30",
           "registered": "2026-04-30",
@@ -3441,6 +4562,65 @@
         },
         "amount_ratio": 0.3708843139328882,
         "term_gap_days": -950
+      }
+    },
+    {
+      "pair_id": "pf:CTA107120277201127::MMA1-827-20268802706",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "fms_document_type_mismatch",
+      "rationale": "Checkbook CTA1 and PASSPort MMA1 are different FMS document types sharing a PIN (requirement contract / task order vs master agreement, or another instrument pair). They are related, not the same registered contract.",
+      "evidence": {
+        "pin": "82711B8272KXLR002",
+        "epin": "82711B8272KXLR002",
+        "join_method": "pin_epin_exact",
+        "checkbook": {
+          "contract_id": "CTA107120277201127",
+          "subject_ref": "contract:CTA107120277201127",
+          "source_record_id": "checkbook:contract:CTA107120277201127",
+          "vendor": "VEOLIA ES TECHNICAL SOLUTIONS LLC",
+          "agency": "Department of Homeless Services",
+          "current_amount": 200000,
+          "original_amount": 200000,
+          "spent_amount": 0,
+          "start": "2026-03-01",
+          "end": "2030-11-30",
+          "registered": "2026-09-30",
+          "status": "registered",
+          "fms": {
+            "type": "CTA1",
+            "agency": "071",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "MMA1-827-20268802706",
+          "subject_ref": "contract:MMA1-827-20268802706",
+          "source_record_id": "passport:contract:MMA1-827-20268802706",
+          "vendor": "VEOLIA ES TECHNICAL SOLUTIONS LLC",
+          "agency": "DEPARTMENT OF SANITATION",
+          "current_amount": 18100000,
+          "award_amount": 18100000,
+          "paid_amount": 0,
+          "start": "2025-12-01",
+          "end": "2030-11-30",
+          "registered": "2025-11-06",
+          "status": "Registered",
+          "title": "VEOLIA ES TECHINAL SOLUTIONS Renewal #2",
+          "procurement_method": "Renewal",
+          "fms": {
+            "type": "MMA1",
+            "agency": "827",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "VEOLIA ES TECHNICAL SOLUTIONS",
+          "passport": "VEOLIA ES TECHNICAL SOLUTIONS"
+        },
+        "amount_ratio": 0.011049723756906077,
+        "term_gap_days": -1735
       }
     },
     {
@@ -3638,7 +4818,7 @@
           "agency": "Department of Correction",
           "current_amount": 2000000,
           "original_amount": 2000000,
-          "spent_amount": 0,
+          "spent_amount": 1402903.87,
           "start": "2025-10-14",
           "end": "2026-10-13",
           "registered": "2026-06-29",
@@ -3874,7 +5054,7 @@
           "agency": "Department of Health and Mental Hygiene",
           "current_amount": 50000,
           "original_amount": 50000,
-          "spent_amount": 1883.67,
+          "spent_amount": 2593.46,
           "start": "2025-12-01",
           "end": "2030-11-30",
           "registered": "2026-04-22",
@@ -3933,7 +5113,7 @@
           "agency": "Office of Administrative Trials and Hearings",
           "current_amount": 150000,
           "original_amount": 150000,
-          "spent_amount": 764.38,
+          "spent_amount": 1064.67,
           "start": "2025-12-01",
           "end": "2030-11-30",
           "registered": "2026-03-13",
@@ -4110,7 +5290,7 @@
           "agency": "Department of Transportation",
           "current_amount": 194077.38,
           "original_amount": 194077.38,
-          "spent_amount": 0,
+          "spent_amount": 160519.05,
           "start": "2026-04-01",
           "end": "2026-06-01",
           "registered": "2026-06-29",
@@ -4170,8 +5350,8 @@
           "current_amount": 3744130.46,
           "original_amount": 3744130.46,
           "spent_amount": 0,
-          "start": "2025-10-24",
-          "end": "2028-10-10",
+          "start": "2026-08-24",
+          "end": "2029-08-10",
           "registered": "2026-08-12",
           "status": "registered",
           "fms": {
@@ -4207,7 +5387,66 @@
           "passport": "WSP"
         },
         "amount_ratio": 0.37441304599999997,
-        "term_gap_days": -768
+        "term_gap_days": -464
+      }
+    },
+    {
+      "pair_id": "pf:CTA184120277200736::MMA1-841-20228807741",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "fms_document_type_mismatch",
+      "rationale": "Checkbook CTA1 and PASSPort MMA1 are different FMS document types sharing a PIN (requirement contract / task order vs master agreement, or another instrument pair). They are related, not the same registered contract.",
+      "evidence": {
+        "pin": "84119P8219KXLA001",
+        "epin": "84119P8219KXLR001",
+        "join_method": "pin_prefix_of_epin",
+        "checkbook": {
+          "contract_id": "CTA184120277200736",
+          "subject_ref": "contract:CTA184120277200736",
+          "source_record_id": "checkbook:contract:CTA184120277200736",
+          "vendor": "HENNINGSON DURHAM & RICHARDSON PC",
+          "agency": "Department of Transportation",
+          "current_amount": 100398,
+          "original_amount": 100398,
+          "spent_amount": 0,
+          "start": "2026-10-01",
+          "end": "2027-10-01",
+          "registered": "2026-09-04",
+          "status": "registered",
+          "fms": {
+            "type": "CTA1",
+            "agency": "841",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "MMA1-841-20228807741",
+          "subject_ref": "contract:MMA1-841-20228807741",
+          "source_record_id": "passport:contract:MMA1-841-20228807741",
+          "vendor": "JHK ENGINEERING, P.C.",
+          "agency": "DEPARTMENT OF TRANSPORTATION",
+          "current_amount": 5000000,
+          "award_amount": 5000000,
+          "paid_amount": 0,
+          "start": "2022-05-06",
+          "end": "2026-05-15",
+          "registered": "2022-05-04",
+          "status": "Registered",
+          "title": "ESA: TF01ESA5 Renewal #1",
+          "procurement_method": "Renewal",
+          "fms": {
+            "type": "MMA1",
+            "agency": "841",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": false,
+        "vendor_stems": {
+          "checkbook": "HENNINGSON DURHAM RICHARDSON",
+          "passport": "JHK ENGINEERING P C"
+        },
+        "amount_ratio": 0.0200796,
+        "term_gap_days": 139
       }
     },
     {
@@ -4228,7 +5467,7 @@
           "agency": "Department of Parks and Recreation",
           "current_amount": 1418126.4,
           "original_amount": 1418126.4,
-          "spent_amount": 250570.21,
+          "spent_amount": 299663.88,
           "start": "2025-11-10",
           "end": "2028-02-08",
           "registered": "2025-09-18",
@@ -4270,124 +5509,6 @@
       }
     },
     {
-      "pair_id": "pf:CTA184620267200886::MMA1-846-20258806996",
-      "identity_class": "related_instrument",
-      "label_source": "rule",
-      "rule": "fms_document_type_mismatch",
-      "rationale": "Checkbook CTA1 and PASSPort MMA1 are different FMS document types sharing a PIN (requirement contract / task order vs master agreement, or another instrument pair). They are related, not the same registered contract.",
-      "evidence": {
-        "pin": "84622P0006004R001",
-        "epin": "84622P0006004R001",
-        "join_method": "pin_epin_exact",
-        "checkbook": {
-          "contract_id": "CTA184620267200886",
-          "subject_ref": "contract:CTA184620267200886",
-          "source_record_id": "checkbook:contract:CTA184620267200886",
-          "vendor": "M&J ENGINEERING DPC",
-          "agency": "Department of Parks and Recreation",
-          "current_amount": 398048,
-          "original_amount": 398048,
-          "spent_amount": 141575.5,
-          "start": "2025-10-03",
-          "end": "2028-02-10",
-          "registered": "2025-09-19",
-          "status": "registered",
-          "fms": {
-            "type": "CTA1",
-            "agency": "846",
-            "form": "compact"
-          }
-        },
-        "passport": {
-          "contract_id": "MMA1-846-20258806996",
-          "subject_ref": "contract:MMA1-846-20258806996",
-          "source_record_id": "passport:contract:MMA1-846-20258806996",
-          "vendor": "M&J ENGINEERING DPC",
-          "agency": "DEPARTMENT OF PARKS AND RECREATION",
-          "current_amount": 15000000,
-          "award_amount": 15000000,
-          "paid_amount": 0,
-          "start": "2025-04-26",
-          "end": "2027-04-25",
-          "registered": "2025-05-12",
-          "status": "Registered",
-          "title": "CNYG-2722MR -Construction Management Services Renewal",
-          "procurement_method": "Renewal",
-          "fms": {
-            "type": "MMA1",
-            "agency": "846",
-            "form": "hyphen"
-          }
-        },
-        "vendor_same": true,
-        "vendor_stems": {
-          "checkbook": "M J ENGINEERING DPC",
-          "passport": "M J ENGINEERING DPC"
-        },
-        "amount_ratio": 0.026536533333333334,
-        "term_gap_days": -569
-      }
-    },
-    {
-      "pair_id": "pf:CTA184620267200976::MMA1-846-20258801160",
-      "identity_class": "related_instrument",
-      "label_source": "rule",
-      "rule": "fms_document_type_mismatch",
-      "rationale": "Checkbook CTA1 and PASSPort MMA1 are different FMS document types sharing a PIN (requirement contract / task order vs master agreement, or another instrument pair). They are related, not the same registered contract.",
-      "evidence": {
-        "pin": "84622P8003KXLR001",
-        "epin": "84622P8003KXLR001",
-        "join_method": "pin_epin_exact",
-        "checkbook": {
-          "contract_id": "CTA184620267200976",
-          "subject_ref": "contract:CTA184620267200976",
-          "source_record_id": "checkbook:contract:CTA184620267200976",
-          "vendor": "TWIN PEAKS INC",
-          "agency": "Department of Parks and Recreation",
-          "current_amount": 63620,
-          "original_amount": 63620,
-          "spent_amount": 0,
-          "start": "2025-09-26",
-          "end": "2027-03-28",
-          "registered": "2025-09-24",
-          "status": "registered",
-          "fms": {
-            "type": "CTA1",
-            "agency": "846",
-            "form": "compact"
-          }
-        },
-        "passport": {
-          "contract_id": "MMA1-846-20258801160",
-          "subject_ref": "contract:MMA1-846-20258801160",
-          "source_record_id": "passport:contract:MMA1-846-20258801160",
-          "vendor": "TWIN PEAKS INC",
-          "agency": "DEPARTMENT OF PARKS AND RECREATION",
-          "current_amount": 625000,
-          "award_amount": 625000,
-          "paid_amount": 0,
-          "start": "2024-08-30",
-          "end": "2027-08-29",
-          "registered": "2024-07-31",
-          "status": "Registered",
-          "title": "CNYG-222MR Special Inspections & Laboratory Testing Renewal",
-          "procurement_method": "Renewal",
-          "fms": {
-            "type": "MMA1",
-            "agency": "846",
-            "form": "hyphen"
-          }
-        },
-        "vendor_same": true,
-        "vendor_stems": {
-          "checkbook": "TWIN PEAKS",
-          "passport": "TWIN PEAKS"
-        },
-        "amount_ratio": 0.101792,
-        "term_gap_days": -702
-      }
-    },
-    {
       "pair_id": "pf:CTA184620267201231::MMA1-846-20258806886",
       "identity_class": "related_instrument",
       "label_source": "rule",
@@ -4405,7 +5526,7 @@
           "agency": "Department of Parks and Recreation",
           "current_amount": 1068275,
           "original_amount": 1068275,
-          "spent_amount": 46114.75,
+          "spent_amount": 60385.5,
           "start": "2025-10-15",
           "end": "2028-04-12",
           "registered": "2025-10-29",
@@ -4464,7 +5585,7 @@
           "agency": "Department of Parks and Recreation",
           "current_amount": 994160,
           "original_amount": 994160,
-          "spent_amount": 201330,
+          "spent_amount": 234620,
           "start": "2025-10-22",
           "end": "2027-07-24",
           "registered": "2025-10-17",
@@ -4506,65 +5627,6 @@
       }
     },
     {
-      "pair_id": "pf:CTA184620267201306::MMA1-846-20258806887",
-      "identity_class": "related_instrument",
-      "label_source": "rule",
-      "rule": "fms_document_type_mismatch",
-      "rationale": "Checkbook CTA1 and PASSPort MMA1 are different FMS document types sharing a PIN (requirement contract / task order vs master agreement, or another instrument pair). They are related, not the same registered contract.",
-      "evidence": {
-        "pin": "84622P0006006R001",
-        "epin": "84622P0006006R001",
-        "join_method": "pin_epin_exact",
-        "checkbook": {
-          "contract_id": "CTA184620267201306",
-          "subject_ref": "contract:CTA184620267201306",
-          "source_record_id": "checkbook:contract:CTA184620267201306",
-          "vendor": "ENTECH ENGINEERING PC",
-          "agency": "Department of Parks and Recreation",
-          "current_amount": 335528,
-          "original_amount": 335528,
-          "spent_amount": 286477,
-          "start": "2025-10-06",
-          "end": "2026-12-05",
-          "registered": "2025-10-17",
-          "status": "registered",
-          "fms": {
-            "type": "CTA1",
-            "agency": "846",
-            "form": "compact"
-          }
-        },
-        "passport": {
-          "contract_id": "MMA1-846-20258806887",
-          "subject_ref": "contract:MMA1-846-20258806887",
-          "source_record_id": "passport:contract:MMA1-846-20258806887",
-          "vendor": "ENTECH ENGINEERING PC",
-          "agency": "DEPARTMENT OF PARKS AND RECREATION",
-          "current_amount": 15000000,
-          "award_amount": 15000000,
-          "paid_amount": 0,
-          "start": "2025-04-26",
-          "end": "2027-04-25",
-          "registered": "2025-05-08",
-          "status": "Registered",
-          "title": "CNYG-2922MR -Construction Management Services Renewal",
-          "procurement_method": "Renewal",
-          "fms": {
-            "type": "MMA1",
-            "agency": "846",
-            "form": "hyphen"
-          }
-        },
-        "vendor_same": true,
-        "vendor_stems": {
-          "checkbook": "ENTECH ENGINEERING",
-          "passport": "ENTECH ENGINEERING"
-        },
-        "amount_ratio": 0.022368533333333333,
-        "term_gap_days": -566
-      }
-    },
-    {
       "pair_id": "pf:CTA184620267201546::MMA1-846-20268802214",
       "identity_class": "related_instrument",
       "label_source": "rule",
@@ -4582,7 +5644,7 @@
           "agency": "Department of Parks and Recreation",
           "current_amount": 713579.66,
           "original_amount": 713579.66,
-          "spent_amount": 65323.75,
+          "spent_amount": 106453.11,
           "start": "2025-11-03",
           "end": "2029-08-03",
           "registered": "2025-11-21",
@@ -5290,7 +6352,7 @@
           "agency": "Department of Parks and Recreation",
           "current_amount": 340790,
           "original_amount": 340790,
-          "spent_amount": 49961,
+          "spent_amount": 76011,
           "start": "2026-05-18",
           "end": "2027-08-01",
           "registered": "2026-04-23",
@@ -5863,360 +6925,6 @@
       }
     },
     {
-      "pair_id": "pf:CTA185020267202401::MMA1-850-20228807825",
-      "identity_class": "related_instrument",
-      "label_source": "rule",
-      "rule": "fms_document_type_mismatch",
-      "rationale": "Checkbook CTA1 and PASSPort MMA1 are different FMS document types sharing a PIN (requirement contract / task order vs master agreement, or another instrument pair). They are related, not the same registered contract.",
-      "evidence": {
-        "pin": "85022P0008002",
-        "epin": "85022P0008002",
-        "join_method": "pin_epin_exact",
-        "checkbook": {
-          "contract_id": "CTA185020267202401",
-          "subject_ref": "contract:CTA185020267202401",
-          "source_record_id": "checkbook:contract:CTA185020267202401",
-          "vendor": "WSP USA BUILDINGS INC",
-          "agency": "Department of Design and Construction",
-          "current_amount": 45974.29,
-          "original_amount": 45974.29,
-          "spent_amount": 0,
-          "start": "2025-09-13",
-          "end": "2034-06-10",
-          "registered": "2025-12-16",
-          "status": "registered",
-          "fms": {
-            "type": "CTA1",
-            "agency": "850",
-            "form": "compact"
-          }
-        },
-        "passport": {
-          "contract_id": "MMA1-850-20228807825",
-          "subject_ref": "contract:MMA1-850-20228807825",
-          "source_record_id": "passport:contract:MMA1-850-20228807825",
-          "vendor": "AKF ENGINEERS LLP",
-          "agency": "DEPARTMENT OF DESIGN AND CONSTRUCTION",
-          "current_amount": 0,
-          "award_amount": 10000000,
-          "paid_amount": 0,
-          "start": "2022-08-12",
-          "end": "2025-09-12",
-          "registered": "2022-06-24",
-          "status": "Registered",
-          "title": "RQ_A&E, RC for Comm. & Related Svcs for Var. Proj., Citywide",
-          "procurement_method": "Competitive Sealed Proposal",
-          "fms": {
-            "type": "MMA1",
-            "agency": "850",
-            "form": "hyphen"
-          }
-        },
-        "vendor_same": false,
-        "vendor_stems": {
-          "checkbook": "WSP USA BUILDINGS",
-          "passport": "AKF ENGINEERS"
-        },
-        "amount_ratio": 0,
-        "term_gap_days": 1
-      }
-    },
-    {
-      "pair_id": "pf:CTA185020267202402::MMA1-850-20228807825",
-      "identity_class": "related_instrument",
-      "label_source": "rule",
-      "rule": "fms_document_type_mismatch",
-      "rationale": "Checkbook CTA1 and PASSPort MMA1 are different FMS document types sharing a PIN (requirement contract / task order vs master agreement, or another instrument pair). They are related, not the same registered contract.",
-      "evidence": {
-        "pin": "85022P0008002",
-        "epin": "85022P0008002",
-        "join_method": "pin_epin_exact",
-        "checkbook": {
-          "contract_id": "CTA185020267202402",
-          "subject_ref": "contract:CTA185020267202402",
-          "source_record_id": "checkbook:contract:CTA185020267202402",
-          "vendor": "WSP USA BUILDINGS INC",
-          "agency": "Department of Design and Construction",
-          "current_amount": 123343.3,
-          "original_amount": 123343.3,
-          "spent_amount": 0,
-          "start": "2025-09-13",
-          "end": "2034-06-30",
-          "registered": "2025-12-16",
-          "status": "registered",
-          "fms": {
-            "type": "CTA1",
-            "agency": "850",
-            "form": "compact"
-          }
-        },
-        "passport": {
-          "contract_id": "MMA1-850-20228807825",
-          "subject_ref": "contract:MMA1-850-20228807825",
-          "source_record_id": "passport:contract:MMA1-850-20228807825",
-          "vendor": "AKF ENGINEERS LLP",
-          "agency": "DEPARTMENT OF DESIGN AND CONSTRUCTION",
-          "current_amount": 0,
-          "award_amount": 10000000,
-          "paid_amount": 0,
-          "start": "2022-08-12",
-          "end": "2025-09-12",
-          "registered": "2022-06-24",
-          "status": "Registered",
-          "title": "RQ_A&E, RC for Comm. & Related Svcs for Var. Proj., Citywide",
-          "procurement_method": "Competitive Sealed Proposal",
-          "fms": {
-            "type": "MMA1",
-            "agency": "850",
-            "form": "hyphen"
-          }
-        },
-        "vendor_same": false,
-        "vendor_stems": {
-          "checkbook": "WSP USA BUILDINGS",
-          "passport": "AKF ENGINEERS"
-        },
-        "amount_ratio": 0,
-        "term_gap_days": 1
-      }
-    },
-    {
-      "pair_id": "pf:CTA185020267202403::MMA1-850-20228807825",
-      "identity_class": "related_instrument",
-      "label_source": "rule",
-      "rule": "fms_document_type_mismatch",
-      "rationale": "Checkbook CTA1 and PASSPort MMA1 are different FMS document types sharing a PIN (requirement contract / task order vs master agreement, or another instrument pair). They are related, not the same registered contract.",
-      "evidence": {
-        "pin": "85022P0008002",
-        "epin": "85022P0008002",
-        "join_method": "pin_epin_exact",
-        "checkbook": {
-          "contract_id": "CTA185020267202403",
-          "subject_ref": "contract:CTA185020267202403",
-          "source_record_id": "checkbook:contract:CTA185020267202403",
-          "vendor": "WSP USA BUILDINGS INC",
-          "agency": "Department of Design and Construction",
-          "current_amount": 66034.56,
-          "original_amount": 66034.56,
-          "spent_amount": 0,
-          "start": "2025-09-13",
-          "end": "2027-12-28",
-          "registered": "2025-12-16",
-          "status": "registered",
-          "fms": {
-            "type": "CTA1",
-            "agency": "850",
-            "form": "compact"
-          }
-        },
-        "passport": {
-          "contract_id": "MMA1-850-20228807825",
-          "subject_ref": "contract:MMA1-850-20228807825",
-          "source_record_id": "passport:contract:MMA1-850-20228807825",
-          "vendor": "AKF ENGINEERS LLP",
-          "agency": "DEPARTMENT OF DESIGN AND CONSTRUCTION",
-          "current_amount": 0,
-          "award_amount": 10000000,
-          "paid_amount": 0,
-          "start": "2022-08-12",
-          "end": "2025-09-12",
-          "registered": "2022-06-24",
-          "status": "Registered",
-          "title": "RQ_A&E, RC for Comm. & Related Svcs for Var. Proj., Citywide",
-          "procurement_method": "Competitive Sealed Proposal",
-          "fms": {
-            "type": "MMA1",
-            "agency": "850",
-            "form": "hyphen"
-          }
-        },
-        "vendor_same": false,
-        "vendor_stems": {
-          "checkbook": "WSP USA BUILDINGS",
-          "passport": "AKF ENGINEERS"
-        },
-        "amount_ratio": 0,
-        "term_gap_days": 1
-      }
-    },
-    {
-      "pair_id": "pf:CTA185020267202431::MMA1-850-20228807825",
-      "identity_class": "related_instrument",
-      "label_source": "rule",
-      "rule": "fms_document_type_mismatch",
-      "rationale": "Checkbook CTA1 and PASSPort MMA1 are different FMS document types sharing a PIN (requirement contract / task order vs master agreement, or another instrument pair). They are related, not the same registered contract.",
-      "evidence": {
-        "pin": "85022P0008002",
-        "epin": "85022P0008002",
-        "join_method": "pin_epin_exact",
-        "checkbook": {
-          "contract_id": "CTA185020267202431",
-          "subject_ref": "contract:CTA185020267202431",
-          "source_record_id": "checkbook:contract:CTA185020267202431",
-          "vendor": "WSP USA BUILDINGS INC",
-          "agency": "Department of Design and Construction",
-          "current_amount": 62620,
-          "original_amount": 62620,
-          "spent_amount": 0,
-          "start": "2025-09-13",
-          "end": "2029-10-12",
-          "registered": "2025-12-10",
-          "status": "registered",
-          "fms": {
-            "type": "CTA1",
-            "agency": "850",
-            "form": "compact"
-          }
-        },
-        "passport": {
-          "contract_id": "MMA1-850-20228807825",
-          "subject_ref": "contract:MMA1-850-20228807825",
-          "source_record_id": "passport:contract:MMA1-850-20228807825",
-          "vendor": "AKF ENGINEERS LLP",
-          "agency": "DEPARTMENT OF DESIGN AND CONSTRUCTION",
-          "current_amount": 0,
-          "award_amount": 10000000,
-          "paid_amount": 0,
-          "start": "2022-08-12",
-          "end": "2025-09-12",
-          "registered": "2022-06-24",
-          "status": "Registered",
-          "title": "RQ_A&E, RC for Comm. & Related Svcs for Var. Proj., Citywide",
-          "procurement_method": "Competitive Sealed Proposal",
-          "fms": {
-            "type": "MMA1",
-            "agency": "850",
-            "form": "hyphen"
-          }
-        },
-        "vendor_same": false,
-        "vendor_stems": {
-          "checkbook": "WSP USA BUILDINGS",
-          "passport": "AKF ENGINEERS"
-        },
-        "amount_ratio": 0,
-        "term_gap_days": 1
-      }
-    },
-    {
-      "pair_id": "pf:CTA185020267202581::MMA1-850-20228807825",
-      "identity_class": "related_instrument",
-      "label_source": "rule",
-      "rule": "fms_document_type_mismatch",
-      "rationale": "Checkbook CTA1 and PASSPort MMA1 are different FMS document types sharing a PIN (requirement contract / task order vs master agreement, or another instrument pair). They are related, not the same registered contract.",
-      "evidence": {
-        "pin": "85022P0008002",
-        "epin": "85022P0008002",
-        "join_method": "pin_epin_exact",
-        "checkbook": {
-          "contract_id": "CTA185020267202581",
-          "subject_ref": "contract:CTA185020267202581",
-          "source_record_id": "checkbook:contract:CTA185020267202581",
-          "vendor": "WSP USA BUILDINGS INC",
-          "agency": "Department of Design and Construction",
-          "current_amount": 213433.33,
-          "original_amount": 213433.33,
-          "spent_amount": 0,
-          "start": "2025-09-13",
-          "end": "2030-09-25",
-          "registered": "2025-12-29",
-          "status": "registered",
-          "fms": {
-            "type": "CTA1",
-            "agency": "850",
-            "form": "compact"
-          }
-        },
-        "passport": {
-          "contract_id": "MMA1-850-20228807825",
-          "subject_ref": "contract:MMA1-850-20228807825",
-          "source_record_id": "passport:contract:MMA1-850-20228807825",
-          "vendor": "AKF ENGINEERS LLP",
-          "agency": "DEPARTMENT OF DESIGN AND CONSTRUCTION",
-          "current_amount": 0,
-          "award_amount": 10000000,
-          "paid_amount": 0,
-          "start": "2022-08-12",
-          "end": "2025-09-12",
-          "registered": "2022-06-24",
-          "status": "Registered",
-          "title": "RQ_A&E, RC for Comm. & Related Svcs for Var. Proj., Citywide",
-          "procurement_method": "Competitive Sealed Proposal",
-          "fms": {
-            "type": "MMA1",
-            "agency": "850",
-            "form": "hyphen"
-          }
-        },
-        "vendor_same": false,
-        "vendor_stems": {
-          "checkbook": "WSP USA BUILDINGS",
-          "passport": "AKF ENGINEERS"
-        },
-        "amount_ratio": 0,
-        "term_gap_days": 1
-      }
-    },
-    {
-      "pair_id": "pf:CTA185020267202791::MMA1-850-20228807825",
-      "identity_class": "related_instrument",
-      "label_source": "rule",
-      "rule": "fms_document_type_mismatch",
-      "rationale": "Checkbook CTA1 and PASSPort MMA1 are different FMS document types sharing a PIN (requirement contract / task order vs master agreement, or another instrument pair). They are related, not the same registered contract.",
-      "evidence": {
-        "pin": "85022P0008002",
-        "epin": "85022P0008002",
-        "join_method": "pin_epin_exact",
-        "checkbook": {
-          "contract_id": "CTA185020267202791",
-          "subject_ref": "contract:CTA185020267202791",
-          "source_record_id": "checkbook:contract:CTA185020267202791",
-          "vendor": "WSP USA BUILDINGS INC",
-          "agency": "Department of Design and Construction",
-          "current_amount": 145563.56,
-          "original_amount": 145563.56,
-          "spent_amount": 1500,
-          "start": "2025-09-13",
-          "end": "2030-01-04",
-          "registered": "2025-12-30",
-          "status": "registered",
-          "fms": {
-            "type": "CTA1",
-            "agency": "850",
-            "form": "compact"
-          }
-        },
-        "passport": {
-          "contract_id": "MMA1-850-20228807825",
-          "subject_ref": "contract:MMA1-850-20228807825",
-          "source_record_id": "passport:contract:MMA1-850-20228807825",
-          "vendor": "AKF ENGINEERS LLP",
-          "agency": "DEPARTMENT OF DESIGN AND CONSTRUCTION",
-          "current_amount": 0,
-          "award_amount": 10000000,
-          "paid_amount": 0,
-          "start": "2022-08-12",
-          "end": "2025-09-12",
-          "registered": "2022-06-24",
-          "status": "Registered",
-          "title": "RQ_A&E, RC for Comm. & Related Svcs for Var. Proj., Citywide",
-          "procurement_method": "Competitive Sealed Proposal",
-          "fms": {
-            "type": "MMA1",
-            "agency": "850",
-            "form": "hyphen"
-          }
-        },
-        "vendor_same": false,
-        "vendor_stems": {
-          "checkbook": "WSP USA BUILDINGS",
-          "passport": "AKF ENGINEERS"
-        },
-        "amount_ratio": 0,
-        "term_gap_days": 1
-      }
-    },
-    {
       "pair_id": "pf:CTA185020267203556::MMA1-850-20228807825",
       "identity_class": "related_instrument",
       "label_source": "rule",
@@ -6293,7 +7001,7 @@
           "agency": "Department of Design and Construction",
           "current_amount": 2983922.54,
           "original_amount": 2983922.54,
-          "spent_amount": 0,
+          "spent_amount": 142851.97,
           "start": "2026-03-26",
           "end": "2028-03-14",
           "registered": "2026-03-13",
@@ -6332,6 +7040,65 @@
         },
         "amount_ratio": 0.11823016809802582,
         "term_gap_days": 481
+      }
+    },
+    {
+      "pair_id": "pf:CTA185020277200256::MMA1-827-20268802706",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "fms_document_type_mismatch",
+      "rationale": "Checkbook CTA1 and PASSPort MMA1 are different FMS document types sharing a PIN (requirement contract / task order vs master agreement, or another instrument pair). They are related, not the same registered contract.",
+      "evidence": {
+        "pin": "82711B8272KXLR002",
+        "epin": "82711B8272KXLR002",
+        "join_method": "pin_epin_exact",
+        "checkbook": {
+          "contract_id": "CTA185020277200256",
+          "subject_ref": "contract:CTA185020277200256",
+          "source_record_id": "checkbook:contract:CTA185020277200256",
+          "vendor": "VEOLIA ES TECHNICAL SOLUTIONS LLC",
+          "agency": "Department of Design and Construction",
+          "current_amount": 6000,
+          "original_amount": 6000,
+          "spent_amount": 245.7,
+          "start": "2026-07-01",
+          "end": "2027-06-30",
+          "registered": "2026-09-10",
+          "status": "registered",
+          "fms": {
+            "type": "CTA1",
+            "agency": "850",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "MMA1-827-20268802706",
+          "subject_ref": "contract:MMA1-827-20268802706",
+          "source_record_id": "passport:contract:MMA1-827-20268802706",
+          "vendor": "VEOLIA ES TECHNICAL SOLUTIONS LLC",
+          "agency": "DEPARTMENT OF SANITATION",
+          "current_amount": 18100000,
+          "award_amount": 18100000,
+          "paid_amount": 0,
+          "start": "2025-12-01",
+          "end": "2030-11-30",
+          "registered": "2025-11-06",
+          "status": "Registered",
+          "title": "VEOLIA ES TECHINAL SOLUTIONS Renewal #2",
+          "procurement_method": "Renewal",
+          "fms": {
+            "type": "MMA1",
+            "agency": "827",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "VEOLIA ES TECHNICAL SOLUTIONS",
+          "passport": "VEOLIA ES TECHNICAL SOLUTIONS"
+        },
+        "amount_ratio": 0.00033149171270718233,
+        "term_gap_days": -1613
       }
     },
     {
@@ -6883,7 +7650,7 @@
           "agency": "Department of Information Technology and Telecommunications",
           "current_amount": 15109099.13,
           "original_amount": 15109099.13,
-          "spent_amount": 1032391.64,
+          "spent_amount": 2064783.28,
           "start": "2026-05-01",
           "end": "2029-04-30",
           "registered": "2026-06-11",
@@ -6942,7 +7709,7 @@
           "agency": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
           "current_amount": 37720544.89,
           "original_amount": 37720544.89,
-          "spent_amount": 6147700.07,
+          "spent_amount": 7798323.01,
           "start": "2026-05-01",
           "end": "2028-04-30",
           "registered": "2026-03-09",
@@ -7001,7 +7768,7 @@
           "agency": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
           "current_amount": 15934967.31,
           "original_amount": 15934967.31,
-          "spent_amount": 1780850.07,
+          "spent_amount": 2503099.3,
           "start": "2026-06-01",
           "end": "2028-05-31",
           "registered": "2026-03-09",
@@ -7060,7 +7827,7 @@
           "agency": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
           "current_amount": 66867092.43,
           "original_amount": 66867092.43,
-          "spent_amount": 150895.59,
+          "spent_amount": 825532.9,
           "start": "2026-08-01",
           "end": "2027-07-31",
           "registered": "2026-07-28",
@@ -7099,6 +7866,183 @@
         },
         "amount_ratio": 0.7306441621320396,
         "term_gap_days": 366
+      }
+    },
+    {
+      "pair_id": "pf:MA185820278802612::MA1-858-20258800267",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "85823X8001KXLR002",
+        "epin": "85823X8001KXLR001",
+        "join_method": "pin_prefix_of_epin",
+        "checkbook": {
+          "contract_id": "MA185820278802612",
+          "subject_ref": "contract:MA185820278802612",
+          "source_record_id": "checkbook:contract:MA185820278802612",
+          "vendor": "MASON TECHNOLOGIES INC",
+          "agency": "Department of Information Technology and Telecommunications",
+          "current_amount": 42000000,
+          "original_amount": 42000000,
+          "spent_amount": 0,
+          "start": "2026-10-01",
+          "end": "2028-09-30",
+          "registered": "2026-09-23",
+          "status": "registered",
+          "fms": {
+            "type": "MA1",
+            "agency": "858",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "MA1-858-20258800267",
+          "subject_ref": "contract:MA1-858-20258800267",
+          "source_record_id": "passport:contract:MA1-858-20258800267",
+          "vendor": "MASON TECHNOLOGIES INC",
+          "agency": "DEPARTMENT OF INFORMATION TECHNOLOGY AND TELECOMMUNICATIONS",
+          "current_amount": 42000000,
+          "award_amount": 42000000,
+          "paid_amount": 0,
+          "start": "2024-10-01",
+          "end": "2026-09-30",
+          "registered": "2024-06-04",
+          "status": "Registered",
+          "title": "CITYWIDE CABLING SERVICES CONTRACT RENEWAL #1",
+          "procurement_method": "Renewal",
+          "fms": {
+            "type": "MA1",
+            "agency": "858",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "MASON TECHNOLOGIES",
+          "passport": "MASON TECHNOLOGIES"
+        },
+        "amount_ratio": 1,
+        "term_gap_days": 1
+      }
+    },
+    {
+      "pair_id": "pf:MMA103020278802897::MMA1-030-20238800751",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "03021P0004001R001",
+        "epin": "03021P0004001",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "MMA103020278802897",
+          "subject_ref": "contract:MMA103020278802897",
+          "source_record_id": "checkbook:contract:MMA103020278802897",
+          "vendor": "STV INC.",
+          "agency": "Department of City Planning",
+          "current_amount": 2280000,
+          "original_amount": 2280000,
+          "spent_amount": 0,
+          "start": "2026-08-01",
+          "end": "2029-07-31",
+          "registered": "2026-09-24",
+          "status": "registered",
+          "fms": {
+            "type": "MMA1",
+            "agency": "030",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "MMA1-030-20238800751",
+          "subject_ref": "contract:MMA1-030-20238800751",
+          "source_record_id": "passport:contract:MMA1-030-20238800751",
+          "vendor": "STV INC.",
+          "agency": "DEPARTMENT OF CITY PLANNING",
+          "current_amount": 2832891,
+          "award_amount": 1590818,
+          "paid_amount": 0,
+          "start": "2022-08-01",
+          "end": "2026-07-31",
+          "registered": "2022-07-29",
+          "status": "Registered",
+          "title": "On-Call Contract for Enviromental Consulting & Engineering",
+          "procurement_method": "Competitive Sealed Proposal",
+          "fms": {
+            "type": "MMA1",
+            "agency": "030",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "STV",
+          "passport": "STV"
+        },
+        "amount_ratio": 0.8048315307578018,
+        "term_gap_days": 1
+      }
+    },
+    {
+      "pair_id": "pf:MMA103020278802899::MMA1-030-20238800750",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "03021P0005001R001",
+        "epin": "03021P0005001",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "MMA103020278802899",
+          "subject_ref": "contract:MMA103020278802899",
+          "source_record_id": "checkbook:contract:MMA103020278802899",
+          "vendor": "WSP USA INC",
+          "agency": "Department of City Planning",
+          "current_amount": 2280000,
+          "original_amount": 2280000,
+          "spent_amount": 0,
+          "start": "2026-08-01",
+          "end": "2029-07-31",
+          "registered": "2026-09-24",
+          "status": "registered",
+          "fms": {
+            "type": "MMA1",
+            "agency": "030",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "MMA1-030-20238800750",
+          "subject_ref": "contract:MMA1-030-20238800750",
+          "source_record_id": "passport:contract:MMA1-030-20238800750",
+          "vendor": "WSP USA INC",
+          "agency": "DEPARTMENT OF CITY PLANNING",
+          "current_amount": 2535387,
+          "award_amount": 1399538,
+          "paid_amount": 0,
+          "start": "2022-08-01",
+          "end": "2026-07-31",
+          "registered": "2022-07-29",
+          "status": "Registered",
+          "title": "On-Call Contract for Enviromental Consulting & Engineering",
+          "procurement_method": "Competitive Sealed Proposal",
+          "fms": {
+            "type": "MMA1",
+            "agency": "030",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "WSP",
+          "passport": "WSP"
+        },
+        "amount_ratio": 0.899270998865262,
+        "term_gap_days": 1
       }
     },
     {
@@ -7335,65 +8279,6 @@
         },
         "amount_ratio": 1,
         "term_gap_days": -811
-      }
-    },
-    {
-      "pair_id": "pf:MMA185020266200511::MMA1-850-20228807825",
-      "identity_class": "needs_review",
-      "label_source": "human",
-      "rule": null,
-      "rationale": "The two publishers name different vendors on the same PIN. That can be a multi-award sibling, a firm rename, or a PIN collision; it is not mechanically the same contract.",
-      "evidence": {
-        "pin": "85022P0008002",
-        "epin": "85022P0008002",
-        "join_method": "pin_epin_exact",
-        "checkbook": {
-          "contract_id": "MMA185020266200511",
-          "subject_ref": "contract:MMA185020266200511",
-          "source_record_id": "checkbook:contract:MMA185020266200511",
-          "vendor": "WSP USA BUILDINGS INC",
-          "agency": "Department of Design and Construction",
-          "current_amount": 10000000,
-          "original_amount": 10000000,
-          "spent_amount": 80621.85,
-          "start": "2025-09-13",
-          "end": "2025-09-13",
-          "registered": "2025-10-21",
-          "status": "registered",
-          "fms": {
-            "type": "MMA1",
-            "agency": "850",
-            "form": "compact"
-          }
-        },
-        "passport": {
-          "contract_id": "MMA1-850-20228807825",
-          "subject_ref": "contract:MMA1-850-20228807825",
-          "source_record_id": "passport:contract:MMA1-850-20228807825",
-          "vendor": "AKF ENGINEERS LLP",
-          "agency": "DEPARTMENT OF DESIGN AND CONSTRUCTION",
-          "current_amount": 0,
-          "award_amount": 10000000,
-          "paid_amount": 0,
-          "start": "2022-08-12",
-          "end": "2025-09-12",
-          "registered": "2022-06-24",
-          "status": "Registered",
-          "title": "RQ_A&E, RC for Comm. & Related Svcs for Var. Proj., Citywide",
-          "procurement_method": "Competitive Sealed Proposal",
-          "fms": {
-            "type": "MMA1",
-            "agency": "850",
-            "form": "hyphen"
-          }
-        },
-        "vendor_same": false,
-        "vendor_stems": {
-          "checkbook": "WSP USA BUILDINGS",
-          "passport": "AKF ENGINEERS"
-        },
-        "amount_ratio": 0,
-        "term_gap_days": 1
       }
     },
     {

@@ -1,15 +1,15 @@
 {
   "schema": "cityscroll.keyword_search_index.v1",
   "version": 1,
-  "generated_at": "2026-10-09T14:15:05.584Z",
+  "generated_at": "2026-10-09T19:09:02.329Z",
   "match_mode": "keyword",
   "representation": "family-sharded-compressed",
   "shard_schema": "cityscroll.keyword_search_index_shard.v1",
   "logical_index": {
-    "sha256": "2f2710bfd9d2ba1baa9f9b364e73afe49a46b95ff22aa4bbcd71fe4fd4b15b4f",
-    "bytes": 83514166,
+    "sha256": "5cfee179babbc1245fdaafad4b280dfd23a3ef329c8294b2c8b355819b99cad9",
+    "bytes": 83513700,
     "family_count": 12,
-    "document_count": 22795
+    "document_count": 22794
   },
   "build_receipt": {
     "source_artifacts": {
@@ -36,8 +36,8 @@
     ],
     "excluded_vendor_roots": [],
     "vendor_root_counts": {
-      "source_roots": 134,
-      "eligible_indexed": 134,
+      "source_roots": 131,
+      "eligible_indexed": 131,
       "excluded": 0
     }
   },
@@ -69,40 +69,40 @@
       "family": "agencies",
       "path": "agencies.json.br",
       "gzip_path": "agencies.json.gz",
-      "document_count": 87,
-      "uncompressed_bytes": 209783,
-      "gzip_bytes": 10622,
-      "brotli_bytes": 8851,
-      "sha256": "8389db2961663c1e9f6ad02caa22e5f0cae92e257d9c206796dd4c70f19c8592",
-      "gzip_sha256": "4296149cf8ccad9bafdcb75ac6fa6487ba592151eec17475b39aca3d7603929a",
-      "brotli_sha256": "8138319ad358aee4d576d3c60ad3cbdf75a01ae75a3bd3440cda959a694c9d21",
-      "receipt_sha256": "bcca7b7b9dbb708ab6f6ee9ec9705f239f3204b043b5bc1fb7c99c062ca97465"
+      "document_count": 88,
+      "uncompressed_bytes": 212218,
+      "gzip_bytes": 10802,
+      "brotli_bytes": 9030,
+      "sha256": "3f099c82904bd3e44d2fa49b78771c2284ff7ffdb0b9fbb54844e4d301787cc6",
+      "gzip_sha256": "bcb752e827a6265db23f4ffa09ef86a3ad1384ad3ea64b7b6808325caa8360b7",
+      "brotli_sha256": "4c35dd79f42f28b3bbe83856c0b94be20f19cb3c6d3cc6b2824458228dbdb469",
+      "receipt_sha256": "2c7bfd65ddd53734fa67e31329ec027e3d73af57ff41c7e3cad6abc0f91b335c"
     },
     {
       "family": "people-organizations",
       "path": "people-organizations.json.br",
       "gzip_path": "people-organizations.json.gz",
-      "document_count": 87,
-      "uncompressed_bytes": 209807,
-      "gzip_bytes": 10642,
-      "brotli_bytes": 8862,
-      "sha256": "f8ee80a78a73fafcbbc38113a84d523a96927582075e3cbf3db3155c1ffaef02",
-      "gzip_sha256": "a73db571bfcd680e15010ab1ca89515b8c619bc0b938fbb7bd7ca7ee2ccbc033",
-      "brotli_sha256": "2bf37d5f53003f30f8207e49b5dbe5465e4ec650a4be185a5db5e53b56ad2abc",
-      "receipt_sha256": "f31f8cf1f84853da89a6d698e6bc0dcd7dd3e7f0b140106abfc2804d284b7601"
+      "document_count": 88,
+      "uncompressed_bytes": 212242,
+      "gzip_bytes": 10823,
+      "brotli_bytes": 9038,
+      "sha256": "e83b94e9bd1a5bf07b30bf39e70a863cadb82feb71ddea2e7304d15ab03b6069",
+      "gzip_sha256": "9932ca8cebe6d615a588016749506106b5d6751a98e6f421561cc54535b0fc61",
+      "brotli_sha256": "11fb9c785d5af48e504ba8f38242d0be800bd5d570490b9b45807a79ab6f2f29",
+      "receipt_sha256": "8c88bda2adc06bb89221d71a052d4bdd2550a4829beadc9ccc74f2e27d2a4351"
     },
     {
       "family": "vendors",
       "path": "vendors.json.br",
       "gzip_path": "vendors.json.gz",
-      "document_count": 134,
-      "uncompressed_bytes": 195994,
-      "gzip_bytes": 12733,
-      "brotli_bytes": 11091,
-      "sha256": "1ba7a027d195231d9403f66734dd6afcda237e42d81275663eef3a26b36a0766",
-      "gzip_sha256": "f1f0fe24760448149e176a802a33500abd7b629b74d071569ad02a8d7563df89",
-      "brotli_sha256": "ac51ba366d7688e2b9f833e04395274aca476abea71e85f1cc4dcbff8c09436e",
-      "receipt_sha256": "8954423579fceae757f491ac641c8c1426a868d568d700aeb1fbcac2b9a95a7b"
+      "document_count": 131,
+      "uncompressed_bytes": 190830,
+      "gzip_bytes": 12461,
+      "brotli_bytes": 10890,
+      "sha256": "dca2ba21e3815b7c0d31052cf7c0b267fcbdc1d1fa859ab5407ed964c72eb0e0",
+      "gzip_sha256": "3c55a65c054b3c7dc068ab20d720221326e0ea0532bc058dfb99446e75a325b0",
+      "brotli_sha256": "4a0e5a3b0cb7f7ba74d12ff28971e52356947b2c5bf505e1a3af3af0347b2bce",
+      "receipt_sha256": "fb7bce6b80bc3a7a07ecea3b7805fe1f38211eb8ec74a24b5e8f3dfca731dbb7"
     },
     {
       "family": "community_boards",

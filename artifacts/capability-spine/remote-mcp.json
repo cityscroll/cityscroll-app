@@ -297,7 +297,7 @@
     },
     {
       "adapter_id": "mcp.browse_organizations@1",
-      "adapter_semantic_sha256": "e4b4e9f81d732a5f3ce155306ca8f946f4345a3fd864792e4ba5023e163f6390",
+      "adapter_semantic_sha256": "5314549e19b72d55415323c8097b6bae47681774393a0a65f7ae71c1068b7904",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -315,7 +315,7 @@
       },
       "calls": 1,
       "capability_reference": "organizations.browse@1",
-      "direct_semantic_sha256": "e4b4e9f81d732a5f3ce155306ca8f946f4345a3fd864792e4ba5023e163f6390",
+      "direct_semantic_sha256": "5314549e19b72d55415323c8097b6bae47681774393a0a65f7ae71c1068b7904",
       "name": "browse_organizations",
       "operation_class": "read",
       "parity": "pass",
