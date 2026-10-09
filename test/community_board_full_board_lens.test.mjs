@@ -13,8 +13,11 @@ import {
   readRetainedCommunityBoardSnapshots,
 } from "../tools/acquire_community_board_retained_snapshot.mjs";
 import { buildCommunityBoardFullBoardMeetings } from "../tools/build_community_board_full_board_meetings.mjs";
+import { readSharedMeetingReadModelDocument } from "../tools/lib/shared_meeting_read_model_io.mjs";
 
-const readModel = JSON.parse(readFileSync(new URL("../site/data/shared_meeting_read_model.json", import.meta.url)));
+const readModel = readSharedMeetingReadModelDocument(
+  new URL("../site/data/shared_meeting_read_model.json", import.meta.url),
+);
 const inventory = JSON.parse(readFileSync(
   new URL("../site/data/non_council_outcome_sources/board_source_inventory.json", import.meta.url),
 ));

@@ -34,6 +34,7 @@ import {
 } from "../site/agency_constellation.mjs";
 import { relatedCivicEdgesForMandate } from "../site/mandate_document.mjs";
 import { DEFAULT_CROSS_SPINE_EDGE_POLICY } from "../entity_resolution/cross_domain/edge_policy.mjs";
+import { readSharedMeetingReadModelDocument } from "../tools/lib/shared_meeting_read_model_io.mjs";
 import {
   PROCUREMENT_DEVIATION_CLASS,
   PROCUREMENT_EVENT_LOG_SCHEMA,
@@ -969,10 +970,9 @@ test("production snapshot exposes only provenance-complete standable mandate con
   assert.ok(all.filter((edge) => edge.kind === "procurement").every((edge) => edge.verified));
   assert.ok(all.filter((edge) => edge.kind !== "procurement").every((edge) => !edge.verified));
 
-  const meetings = JSON.parse(readFileSync(
+  const meetings = readSharedMeetingReadModelDocument(
     join(ROOT, "site/data/shared_meeting_read_model.json"),
-    "utf8",
-  ));
+  );
   const meetingIds = new Set((meetings.rows || []).map((row) => row.meeting_id));
   assert.ok(all.filter((edge) => edge.kind === "meeting").every((edge) => meetingIds.has(edge.id)));
 });

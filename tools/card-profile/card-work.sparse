@@ -659,6 +659,7 @@
 /site/meeting_purpose_authority.mjs
 /site/meeting_same_proceeding.mjs
 /site/meeting_search_producer.mjs
+/site/meeting_snapshot_client.mjs
 /site/meeting_source_completeness.mjs
 /site/meeting_temporal_evidence.mjs
 /site/meeting_venue_street_span.mjs
@@ -901,7 +902,9 @@
 /site/search_render_plan.mjs
 /site/search_result_inspection.mjs
 /site/semantic_topic_search.mjs
+/site/shared_meeting_edge_load.mjs
 /site/shared_meeting_read_model.mjs
+/site/shared_meeting_read_model_shards.mjs
 /site/shared_procurement_read_model.mjs
 /site/site.webmanifest
 /site/site_lifecycle_artifacts.mjs

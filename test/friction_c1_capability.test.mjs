@@ -25,6 +25,7 @@ import edgeWorker, {
 } from "../site/pages_edge.mjs";
 import { buildConsequenceProjection } from "../site/consequence_projection.mjs";
 import { participationActionVerbs } from "../site/participation_action_verbs.mjs";
+import { readSharedMeetingReadModelDocument } from "../tools/lib/shared_meeting_read_model_io.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (rel) => JSON.parse(readFileSync(join(ROOT, rel), "utf8"));
@@ -34,7 +35,7 @@ const read = (rel) => JSON.parse(readFileSync(join(ROOT, rel), "utf8"));
 process.env.CROL_BUILD_DAY = "2026-09-25";
 
 const ARTIFACT = read("site/data/community_board_hearing_context.json");
-const SHARED = read("site/data/shared_meeting_read_model.json");
+const SHARED = readSharedMeetingReadModelDocument(join(ROOT, "site/data/shared_meeting_read_model.json"));
 const CB5 = read("site/data/non_council_outcome_sources/retained_snapshots/manhattan-cb-05.upcoming_meetings.json");
 const CAPTURE_MANIFEST = join(ROOT, "docs/evidence/segmented-meeting-detail/capture-manifest.json");
 

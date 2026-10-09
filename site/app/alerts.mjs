@@ -182,9 +182,8 @@ async function aFetch(){
   if(w==="communityboard"){
     const ref=communityBoardIdFromSelection($("#acommunityboardboro").value,$("#acommunityboardnumber").value);
     if(!ref) return {kind:"notice",rows:[]};
-    const response=await fetch("data/shared_meeting_read_model.json",{cache:"no-cache"});
-    if(!response.ok) throw new Error(String(response.status));
-    const payload=await response.json();
+    const { loadMeetingSnapshot }=await import("../meeting_snapshot_client.mjs");
+    const payload=await loadMeetingSnapshot("data/shared_meeting_read_model.json",{cache:"no-cache",credentials:"omit"});
     const end=hearingDateWindowEnd(todayISO(),meetingWatchExtra.dateWindow);
     const rows=(payload.rows||[]).filter(row=>normalizeCommunityBoardRef(
       row?.institution_refs?.board_ref || (row?.board_id ? `community-board:${row.board_id}` : ""),

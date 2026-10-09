@@ -14,10 +14,13 @@ import { resolveMeetingRoute } from "../site/meeting_object_contract.mjs";
 import { materializeCommunityBoardMeetingRow } from "../tools/build_community_board_meeting_index.mjs";
 import { normalizeHearing } from "../worker/src/lib/hearings.mjs";
 import { readCommunityBoardMeetingIndex } from "../tools/lib/community_board_meeting_index_io.mjs";
+import { readSharedMeetingReadModelDocument } from "../tools/lib/shared_meeting_read_model_io.mjs";
 
 const meetings = JSON.parse(readFileSync(new URL("../site/data/meetings_domain_observations.json", import.meta.url)));
 const boardIndex = readCommunityBoardMeetingIndex(new URL("../site/data/community_board_meeting_index.json", import.meta.url));
-const sharedSnapshot = JSON.parse(readFileSync(new URL("../site/data/shared_meeting_read_model.json", import.meta.url)));
+const sharedSnapshot = readSharedMeetingReadModelDocument(
+  new URL("../site/data/shared_meeting_read_model.json", import.meta.url),
+);
 const cityRecordParity = JSON.parse(readFileSync(new URL("./fixtures/city_record_meeting_parity.json", import.meta.url)));
 const upcomingFixture = JSON.parse(readFileSync(new URL("./fixtures/legistar/upcoming_contracts_22691.json", import.meta.url)));
 const peerIdentityFixture = JSON.parse(readFileSync(new URL("./fixtures/legistar/peer_meeting_identity.json", import.meta.url)));

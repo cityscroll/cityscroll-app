@@ -22,13 +22,12 @@ import {
   COMMUNITY_BOARD_FULL_BOARD_ANSWER_STATES,
   communityBoardFullBoardMeetingAnswer,
 } from "../site/community_board_full_board_lens.mjs";
+import { readSharedMeetingReadModelDocument } from "./lib/shared_meeting_read_model_io.mjs";
 
 const ROOT = join(import.meta.dirname, "..");
 const READ_MODEL = join(ROOT, "site/data/shared_meeting_read_model.json");
 const OUTPUT = join(ROOT, "site/data/community_board_full_board_meetings.json");
 export const COMMUNITY_BOARD_FULL_BOARD_MEETINGS_SCHEMA = "cityscroll.community_board_full_board_meetings.v1";
-
-function readJson(path) { return JSON.parse(readFileSync(path, "utf8")); }
 
 export function buildCommunityBoardFullBoardMeetings(readModel) {
   const coverage = readModel?.sources?.community_board?.board_coverage || [];
@@ -65,7 +64,7 @@ export function buildCommunityBoardFullBoardMeetings(readModel) {
 }
 
 function currentDocument() {
-  return `${JSON.stringify(buildCommunityBoardFullBoardMeetings(readJson(READ_MODEL)), null, 2)}\n`;
+  return `${JSON.stringify(buildCommunityBoardFullBoardMeetings(readSharedMeetingReadModelDocument(READ_MODEL)), null, 2)}\n`;
 }
 
 if (process.argv[1] && import.meta.url === `file://${process.argv[1]}`) {

@@ -9,9 +9,12 @@ import {
   projectCouncilHearingMatterContinuation,
   renderCouncilHearingMatterContinuation,
 } from "../site/council_hearing_matter_continuation.mjs";
+import { readSharedMeetingReadModelDocument } from "../tools/lib/shared_meeting_read_model_io.mjs";
 
 const snapshot = JSON.parse(readFileSync(new URL("../site/data/meeting_outcomes_snapshot.json", import.meta.url), "utf8"));
-const sharedModel = JSON.parse(readFileSync(new URL("../site/data/shared_meeting_read_model.json", import.meta.url), "utf8"));
+const sharedModel = readSharedMeetingReadModelDocument(
+  new URL("../site/data/shared_meeting_read_model.json", import.meta.url),
+);
 
 function meeting(requestId, outcome) {
   return {

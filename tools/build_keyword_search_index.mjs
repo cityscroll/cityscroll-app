@@ -19,6 +19,7 @@ import { buildVendorSearchDocuments } from "../site/vendor_search_producer.mjs";
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
 import { buildConsultationSearchDocuments } from "../site/consultation_search_producer.mjs";
 import { readSharedProcurementReadModel } from "./lib/procurement_read_model_io.mjs";
+import { readSharedMeetingReadModelDocument } from "./lib/shared_meeting_read_model_io.mjs";
 import {
   attachKeywordCoherenceReceipt,
   checkProcurementIndexCoherence,
@@ -136,7 +137,7 @@ const communityBoards = json("site/data/community_board_constellation_lookup.jso
 const agencyIdentityReport = json("site/data/agency_route_identity_report.json");
 const agencyPublisherCrosswalk = json("worker/src/data/agency_crosswalk.json");
 const land = json("site/data/zap_projects_warehouse_lookup.json");
-const meetings = json("site/data/shared_meeting_read_model.json");
+const meetings = readSharedMeetingReadModelDocument(new URL("site/data/shared_meeting_read_model.json", ROOT));
 const councilLandMatterLinks = json("site/data/council_land_matter_links.json");
 const exams = json("site/data/staffing_exams.json");
 const parcels = json("site/data/property_cross_domain_lookup.json");

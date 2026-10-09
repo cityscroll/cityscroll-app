@@ -291,7 +291,7 @@ async function residentNoticeById(noticeId){
       fetch("data/money_resident_snapshot.json",{cache:"force-cache",credentials:"omit"}).then(r=>r.ok?r.json():null),
       fetch("data/rules_domain_observations.json",{cache:"force-cache",credentials:"omit"}).then(r=>r.ok?r.json():null),
       fetch("data/property_domain_observations.json",{cache:"force-cache",credentials:"omit"}).then(r=>r.ok?r.json():null),
-      fetch("data/shared_meeting_read_model.json",{cache:"force-cache",credentials:"omit"}).then(r=>r.ok?r.json():null),
+      import("../meeting_snapshot_client.mjs").then((m)=>m.loadMeetingSnapshotOrNull("data/shared_meeting_read_model.json")),
       fetch("data/staffing_default_hires.json",{cache:"force-cache",credentials:"omit"}).then(r=>r.ok?r.json():null),
     ]);
     const [moneySnapshot,rulesSnapshot,propertySnapshot,meetingSnapshot,staffingSnapshot]=payloads;

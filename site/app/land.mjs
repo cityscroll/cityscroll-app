@@ -226,8 +226,8 @@ function hideLandMap(selection, reason){
 }
 function loadLandMeetingsSnapshot(){
   if(!landMeetingsSnapshotPromise){
-    landMeetingsSnapshotPromise=fetch(LAND_MEETINGS_SNAPSHOT_URL,{cache:"force-cache",credentials:"omit"})
-      .then(r=>r.ok?r.json():null).catch(()=>null);
+    landMeetingsSnapshotPromise=import("../meeting_snapshot_client.mjs")
+      .then((m)=>m.loadMeetingSnapshotOrNull(LAND_MEETINGS_SNAPSHOT_URL));
   }
   return landMeetingsSnapshotPromise;
 }

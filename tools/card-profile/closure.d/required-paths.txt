@@ -1854,6 +1854,7 @@ tools/lib/procurement_index_coherence.mjs
 tools/lib/procurement_read_model_io.mjs
 tools/lib/property_disposition_cohort.mjs
 tools/lib/public_payload_integrity.mjs
+tools/lib/shared_meeting_read_model_io.mjs
 tools/lib/wave4-build.mjs
 tools/lib/zap_hearing_logistics_coverage.mjs
 tools/live_url_smoke.mjs

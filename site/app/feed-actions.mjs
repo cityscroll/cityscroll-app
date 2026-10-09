@@ -138,8 +138,8 @@ function loadPropertyView(){
 }
 function loadMeetingView(){
   if(!meetingViewPromise){
-    meetingViewPromise=fetch(MEETINGS_SNAPSHOT_URL,{credentials:"omit"})
-      .then(r=>r.ok?r.json():Promise.reject(new Error("snapshot-unavailable")));
+    meetingViewPromise=import("../meeting_snapshot_client.mjs")
+      .then((m)=>m.loadMeetingSnapshot(MEETINGS_SNAPSHOT_URL));
   }
   return meetingViewPromise;
 }

@@ -186,11 +186,12 @@
           "route": "/browse/meetings/",
           "source_id": "city-record",
           "source_name": "City Record Online",
-          "state": "measured",
+          "state": "retained",
           "value": 840,
           "evidence_vintage": "2026-10-05T17:33:11.875Z",
           "vintage_field": "sources.city_record.generated_at",
-          "vintage_basis": "single"
+          "vintage_basis": "single",
+          "reason": "population_unresolved"
         },
         {
           "unit_id": "oath-trial-sessions",

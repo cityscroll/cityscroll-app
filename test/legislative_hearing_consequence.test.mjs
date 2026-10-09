@@ -15,12 +15,15 @@ import {
   renderLegislativeHearingConsequence,
 } from "../site/legislative_hearing_consequence.mjs";
 import { renderMeetingDocument } from "../site/meeting_document.mjs";
+import { readSharedMeetingReadModelDocument } from "../tools/lib/shared_meeting_read_model_io.mjs";
 
 const goldFixtures = JSON.parse(
   readFileSync(new URL("fixtures/consequence_projection/gold_fixtures.v0.json", import.meta.url), "utf8"),
 );
 const goldCase = (id) => goldFixtures.cases.find((c) => c.id === id);
-const sharedModel = JSON.parse(readFileSync(new URL("../site/data/shared_meeting_read_model.json", import.meta.url), "utf8"));
+const sharedModel = readSharedMeetingReadModelDocument(
+  new URL("../site/data/shared_meeting_read_model.json", import.meta.url),
+);
 
 // The Council-hearing/land-use gold fixture: exact single-matter join on
 // matter 79200, hearing outcome "Laid Over by Subcommittee". This matter has

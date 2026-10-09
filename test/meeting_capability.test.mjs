@@ -16,6 +16,7 @@ import {
   buildSharedMeetingReadModel,
   meetingCollectionRows,
 } from "../site/shared_meeting_read_model.mjs";
+import { readSharedMeetingReadModelDocument } from "../tools/lib/shared_meeting_read_model_io.mjs";
 
 const upcomingFixture = JSON.parse(
   readFileSync(new URL("./fixtures/legistar/upcoming_contracts_22691.json", import.meta.url), "utf8"),
@@ -133,8 +134,8 @@ test("the Worker provider returns the capability's unavailable state without a l
 // capability to the coverage the repository committed, not to the view's age.
 
 const MEETING_MANIFEST_KEY = "route-read-model:meetings:manifest:v1";
-const COMMITTED_READ_MODEL = JSON.parse(
-  readFileSync(new URL("../site/data/shared_meeting_read_model.json", import.meta.url), "utf8"),
+const COMMITTED_READ_MODEL = readSharedMeetingReadModelDocument(
+  new URL("../site/data/shared_meeting_read_model.json", import.meta.url),
 );
 
 function publishedKv(model, extra = {}) {

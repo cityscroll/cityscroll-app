@@ -18,6 +18,7 @@ import edgeWorker, { edgeRequestKind, isMeetingDocumentHtml, renderEdgeNotice, b
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
 import { encodeTraversalPath } from "../site/traversal_path.mjs";
 import { primaryDocumentOutputs, sharedMeetingOutputs } from "../tools/build_primary_documents.mjs";
+import { combineSharedMeetingReadModel } from "../site/shared_meeting_read_model_shards.mjs";
 import { buildExamsDocument } from "../site/exams_surface.mjs";
 import { EXAMS_SURFACE } from "../site/browse_surface_contracts.mjs";
 import { handleStats } from "../worker/src/stats.mjs";
@@ -828,11 +829,34 @@ test("payment and place materializations retain acquisition and payment vintages
   assert.equal(procurementPlaceFactsMaterialization.rows[0].units, 60);
 });
 
+function builtSharedMeetingCatalog() {
+  const outputs = sharedMeetingOutputs();
+  const indexEntry = outputs.find(([path]) => {
+    const normalized = path.replace(/\\/g, "/");
+    return normalized.endsWith("/data/shared_meeting_read_model.json");
+  });
+  assert.ok(indexEntry, "the build must emit the shared meeting read model index");
+  const manifest = JSON.parse(indexEntry[1]);
+  const bySuffix = new Map(outputs.map(([path, body]) => [path.replace(/\\/g, "/"), body]));
+  const shards = (manifest.shards || []).map((descriptor) => {
+    const entry = [...bySuffix.entries()].find(([path]) => path.endsWith(`/data/${descriptor.path}`) || path.endsWith(descriptor.path));
+    assert.ok(entry, `missing shard output for ${descriptor.path}`);
+    return JSON.parse(entry[1]);
+  });
+  const readModel = combineSharedMeetingReadModel(manifest, shards);
+  const assetBodies = new Map([
+    ["/data/shared_meeting_read_model.json", indexEntry[1]],
+    ...((manifest.shards || []).map((descriptor, index) => [
+      `/data/${descriptor.path}`,
+      `${JSON.stringify(shards[index], null, 2)}\n`,
+    ])),
+  ]);
+  return { manifest, readModel, assetBodies };
+}
+
 test("canonical meeting routes resolve exact read-model rows and reject unknown ids", async () => {
   const cityRecordId = "meeting:city_record:20260713006";
-  const readModelOutput = sharedMeetingOutputs().find(([path]) => path.endsWith("shared_meeting_read_model.json"));
-  assert.ok(readModelOutput, "the build must emit the shared meeting read model");
-  const readModel = JSON.parse(readModelOutput[1]);
+  const { readModel, assetBodies } = builtSharedMeetingCatalog();
   const communityBoardId = readModel.rows.find((row) => row.meeting_id.startsWith("meeting:community_board:"))?.meeting_id;
   assert.ok(communityBoardId, "the shared model must retain community-board coverage");
   assert.ok(readModel.rows.some((row) => row.meeting_id === cityRecordId), "City Record smoke meeting must be in the built read model");
@@ -845,8 +869,8 @@ test("canonical meeting routes resolve exact read-model rows and reject unknown 
       fetch: async (request) => {
         const path = new URL(request.url).pathname;
         requestedPaths.push(path);
-        if (path === "/data/shared_meeting_read_model.json") {
-          return new Response(JSON.stringify(readModel), { status: 200, headers: { "Content-Type": "application/json" } });
+        if (assetBodies.has(path)) {
+          return new Response(assetBodies.get(path), { status: 200, headers: { "Content-Type": "application/json" } });
         }
         return new Response(spaShell, { status: 200, headers: { "Content-Type": "text/html" } });
       },
@@ -909,7 +933,7 @@ test("canonical meeting routes resolve exact read-model rows and reject unknown 
 test("the built Meetings listing is covered by the shared read model", () => {
   const outputs = new Map(primaryDocumentOutputs());
   const listing = outputs.get([...outputs.keys()].find((path) => path.endsWith("site/browse/meetings/index.html")));
-  const readModel = JSON.parse(sharedMeetingOutputs().find(([path]) => path.endsWith("site/data/shared_meeting_read_model.json"))[1]);
+  const { readModel } = builtSharedMeetingCatalog();
   const listedIds = [...listing.matchAll(/data-record-id="([^"]+)"/g)].map((match) => match[1]);
   const readableIds = new Set(readModel.rows.map((row) => row.meeting_id));
   const missing = listedIds.filter((id) => !readableIds.has(id));
@@ -918,7 +942,7 @@ test("the built Meetings listing is covered by the shared read model", () => {
 });
 
 test("materialized City Record meetings resolve with notice richness and no request-time source fetch", async () => {
-  const readModel = JSON.parse(sharedMeetingOutputs().find(([path]) => path.endsWith("shared_meeting_read_model.json"))[1]);
+  const { readModel, assetBodies } = builtSharedMeetingCatalog();
   const originalFetch = globalThis.fetch;
   const calls = [];
   globalThis.fetch = async (request) => {
@@ -931,8 +955,8 @@ test("materialized City Record meetings resolve with notice richness and no requ
       ASSETS: {
         fetch: async (request) => {
           const path = new URL(request.url).pathname;
-          if (path === "/data/shared_meeting_read_model.json") {
-            return new Response(JSON.stringify(readModel), { status: 200 });
+          if (assetBodies.has(path)) {
+            return new Response(assetBodies.get(path), { status: 200 });
           }
           return new Response("shell", { status: 200 });
         },

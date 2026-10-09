@@ -425,17 +425,16 @@ async function handleMeeting(request, env, meetingId) {
     return new Response("Invalid meeting link", { status: 400 });
   }
   const snapshotRequest = request.method === "HEAD" ? new Request(request, { method: "GET" }) : request;
-  const snapshot = await staticAsset(env, snapshotRequest, "/data/shared_meeting_read_model.json");
   let record = null;
   let payload = null;
-  if (snapshot.ok) {
-    try {
-      payload = await snapshot.json();
-      const rows = Array.isArray(payload?.rows) ? payload.rows : Array.isArray(payload?.hearings) ? payload.hearings : [];
-      record = rows.find((row) => row?.meeting_id === decoded) || null;
-    } catch (_error) {
-      record = null;
-    }
+  try {
+    const { loadSharedMeetingReadModelFromAssets } = await import("./shared_meeting_edge_load.mjs");
+    payload = await loadSharedMeetingReadModelFromAssets(staticAsset, env, snapshotRequest);
+    const rows = Array.isArray(payload?.rows) ? payload.rows : Array.isArray(payload?.hearings) ? payload.hearings : [];
+    record = rows.find((row) => row?.meeting_id === decoded) || null;
+  } catch (_error) {
+    record = null;
+    payload = null;
   }
   if (record) {
     record = attachHearingContextAgendaSegments(
@@ -541,15 +540,16 @@ async function handleMeetingICS(request, env) {
 
   // Load the shared meeting projection from published ASSETS only. Bundling the
   // multi-megabyte JSON into the Pages Function exceeds Cloudflare's 25 MiB
-  // uncompressed Function limit once the retained meeting corpus grows.
-  const asset = await staticAsset(env, request, "/data/shared_meeting_read_model.json");
-  if (!asset.ok) return new Response("meeting projection unavailable", { status: 503 });
+  // uncompressed Function limit once the retained meeting corpus grows. The
+  // published document is the index; rows live in bounded shards beside it.
   let snapshot;
   try {
-    snapshot = await asset.json();
+    const { loadSharedMeetingReadModelFromAssets } = await import("./shared_meeting_edge_load.mjs");
+    snapshot = await loadSharedMeetingReadModelFromAssets(staticAsset, env, request);
   } catch (_error) {
     return new Response("meeting projection unavailable", { status: 503 });
   }
+  if (!snapshot) return new Response("meeting projection unavailable", { status: 503 });
   const record = meetingForCalendar(snapshot, id);
   if (!record) return new Response("meeting not found", { status: 404 });
   const ics = meetingCalendarICS(record);
