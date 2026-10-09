@@ -99,6 +99,15 @@ jobs:
           node ../tools/worker_startup_budget.mjs --metafile "$bundle_dir/meta.json"
       - name: Validate D1 release policy
         run: node tools/d1_release_policy.mjs --check
+      - name: Enforce the all-meter Worker release gate
+        env:
+          WORKER_COST_BASELINE_EVIDENCE: ${{ vars.WORKER_COST_BASELINE_EVIDENCE }}
+          WORKER_COST_CANDIDATE_EVIDENCE: ${{ vars.WORKER_COST_CANDIDATE_EVIDENCE }}
+        run: |
+          node tools/worker_cost_control.mjs release-evaluate \
+            --baseline-env WORKER_COST_BASELINE_EVIDENCE \
+            --candidate-env WORKER_COST_CANDIDATE_EVIDENCE \
+            --expected-candidate-revision "$GITHUB_SHA"
       # Apply pending D1 migrations on every Deploy worker run, before fingerprint
       # gating, snapshot reads, or generation fencing. CREATE TABLE IF NOT EXISTS
       # migrations are idempotent. Gating migrations on prior-snapshot availability

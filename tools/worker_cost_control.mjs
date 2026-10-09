@@ -12,6 +12,19 @@ function read(path) {
   return JSON.parse(readFileSync(path, "utf8"));
 }
 
+function evidence(pathFlag, envFlag) {
+  const path = arg(pathFlag);
+  const envName = arg(envFlag);
+  if (path && envName) throw new Error(`${pathFlag} and ${envFlag} are mutually exclusive`);
+  if (path) return read(path);
+  if (envName) {
+    const value = process.env[envName];
+    if (!value) throw new Error(`${envName} is required`);
+    return JSON.parse(value);
+  }
+  throw new Error(`one of ${pathFlag} or ${envFlag} is required`);
+}
+
 function arg(name) {
   const index = process.argv.indexOf(name);
   return index >= 0 ? process.argv[index + 1] : null;
@@ -29,10 +42,13 @@ if (command === "profile-check") {
   if (!baseline || !candidate) throw new Error("warehouse-evaluate requires --baseline and --candidate");
   result = evaluateWarehouseExperiment({ baseline: read(baseline), candidate: read(candidate) });
 } else if (command === "release-evaluate") {
-  const baseline = arg("--baseline");
-  const candidate = arg("--candidate");
-  if (!baseline || !candidate) throw new Error("release-evaluate requires --baseline and --candidate");
-  result = evaluateAllMeterRelease({ baseline: read(baseline), candidate: read(candidate) });
+  const baseline = evidence("--baseline", "--baseline-env");
+  const candidate = evidence("--candidate", "--candidate-env");
+  const expectedCandidateRevision = arg("--expected-candidate-revision");
+  if (expectedCandidateRevision && candidate.deployed_revision !== expectedCandidateRevision) {
+    throw new Error("candidate evidence revision does not match the release revision");
+  }
+  result = evaluateAllMeterRelease({ baseline, candidate });
   if (!result.pass) process.exitCode = 1;
 } else {
   throw new Error("usage: worker_cost_control.mjs <profile-check|warehouse-evaluate|release-evaluate> [options]");

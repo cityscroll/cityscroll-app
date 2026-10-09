@@ -90,3 +90,16 @@ test("experiment evidence must be actual, ordered, matched, integral, and privac
   assert.throws(() => evaluateWarehouseExperiment({ baseline, candidate: run({ ...validCandidate, meters: { ...baseline.meters, kv_reads: 1.5 } }) }), /integer/);
   assert.throws(() => evaluateWarehouseExperiment({ baseline, candidate: run({ ...validCandidate, correctness: { ...baseline.correctness, request_url: "private" } }) }), /forbidden/);
 });
+
+test("experiment cohorts require equal positive integer sample counts", () => {
+  const baseline = run();
+  const validCandidate = { deployed_revision: "b".repeat(40), observed_at: "2026-10-08T23:10:00Z" };
+  for (const count of [-1, 1.5]) {
+    const candidate = run(validCandidate);
+    candidate.cohorts["zap-bbl:cold"].sample_count = count;
+    assert.throws(() => evaluateWarehouseExperiment({ baseline, candidate }), /sample_count|sample counts/);
+  }
+  const candidate = run(validCandidate);
+  candidate.cohorts["zap-bbl:cold"].sample_count = 1;
+  assert.throws(() => evaluateWarehouseExperiment({ baseline, candidate }), /sample counts are not matched/);
+});

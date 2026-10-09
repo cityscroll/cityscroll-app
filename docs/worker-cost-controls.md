@@ -60,6 +60,12 @@ ordered actual-production windows, distinct deployed revisions, complete
 provider-native profiles, and the existing D1 delta control under its own
 authority. Provider prices and account bills are not CI inputs.
 
+The Worker deployment workflow fails closed before it mutates production by
+evaluating the sanitized JSON receipts in the `WORKER_COST_BASELINE_EVIDENCE`
+and `WORKER_COST_CANDIDATE_EVIDENCE` repository variables. Candidate evidence
+must name the exact commit being released, allowing a measured candidate from a
+provider-native deployment to advance only after every meter passes.
+
 The current provider references are the [Workers Observability telemetry query
 API](https://developers.cloudflare.com/api/resources/workers/subresources/observability/subresources/telemetry/methods/query/),
 [real-time logs](https://developers.cloudflare.com/workers/observability/logs/real-time-logs/),

@@ -81,6 +81,20 @@ test("an identical code-only release performs no route or manifest puts", async 
   }
 });
 
+test("every provider operation uses the configured ALERT_STATE binding", async () => {
+  const dir = fixture();
+  const remote = fakeWrangler();
+  try {
+    await publishRouteReadModels({ routeDir: dir, invoke: remote.invoke, configPath: "worker/custom.toml" });
+    for (const args of remote.calls) {
+      const binding = args.indexOf("--binding");
+      assert.deepEqual(args.slice(binding, binding + 5), ["--binding", "ALERT_STATE", "--remote", "--config", "worker/custom.toml"]);
+    }
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("Wrangler's provider 404 for the new state key is first-publication absence", async () => {
   const dir = fixture();
   let first = true;

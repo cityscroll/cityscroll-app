@@ -6,6 +6,7 @@ import {
   digestDeployDelayMs,
   waitForDigestCronWindow,
 } from "../tools/wait_for_digest_cron_window.mjs";
+import { parseWorkflowText } from "../tools/check_github_workflows_yaml.mjs";
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 
@@ -38,28 +39,24 @@ test("Worker deploys when shared Following source changes and smokes the canonic
 
 test("Worker deploy uses the pinned dry-run budget and read-model canary guard", () => {
   const workflow = read(".github/workflows/deploy-worker.yml");
-  const publication = read("tools/lib/worker_route_publication.mjs");
   assert.match(workflow, /npx wrangler@4\.126\.0 deploy --dry-run/);
   assert.match(workflow, /tools\/worker_deploy_guard\.mjs/);
   assert.match(workflow, /--read-model-dir/);
   assert.match(workflow, /64 MiB/);
-  assert.match(workflow, /tools\/worker_route_publication\.mjs publish/);
-  assert.match(publication, /route-read-model:near-you:manifest:v1/);
-  assert.match(publication, /route-read-model:meetings:manifest:v1/);
 });
 
-test("route read-model publishing resolves ALERT_STATE through the Worker Wrangler config", () => {
-  const workflow = read(".github/workflows/deploy-worker.yml");
-  const publication = read("tools/lib/worker_route_publication.mjs");
-  const config = read("worker/wrangler.toml");
-  const start = workflow.indexOf("- name: Publish Near You and meeting route read models");
-  const end = workflow.indexOf("# Wrangler rewrites Cron Trigger configuration", start);
-  assert.ok(start >= 0 && end > start);
-  const publish = workflow.slice(start, end);
-  assert.match(publish, /node tools\/worker_route_publication\.mjs publish/);
-  assert.match(publication, /\["--binding", "ALERT_STATE", "--remote", "--config", configPath\]/);
-  assert.match(publication, /configPath = "worker\/wrangler\.toml"/);
-  assert.match(config, /\[\[kv_namespaces\]\]\s+binding = "ALERT_STATE"/);
+test("deploy workflow executes route publication and the all-meter gate", () => {
+  const workflow = parseWorkflowText(read(".github/workflows/deploy-worker.yml"), {
+    filename: "deploy-worker.yml",
+  })[0];
+  const steps = workflow.jobs.deploy.steps;
+  const publication = steps.find((step) => step.name === "Publish Near You and meeting route read models");
+  assert.equal(publication.run, "node tools/worker_route_publication.mjs publish --route-dir \"$RUNNER_TEMP/cityscroll-worker-route-read-models\"");
+  const gate = steps.find((step) => step.name === "Enforce the all-meter Worker release gate");
+  assert.equal(gate.env.WORKER_COST_BASELINE_EVIDENCE, "${{ vars.WORKER_COST_BASELINE_EVIDENCE }}");
+  assert.equal(gate.env.WORKER_COST_CANDIDATE_EVIDENCE, "${{ vars.WORKER_COST_CANDIDATE_EVIDENCE }}");
+  assert.match(gate.run, /release-evaluate/);
+  assert.match(gate.run, /--expected-candidate-revision "\$GITHUB_SHA"/);
 });
 
 test("digest deploy guard covers trigger propagation before the cron", () => {

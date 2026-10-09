@@ -126,6 +126,7 @@ export function buildWorkerCostProfile(samples, {
   trafficMix = "fixed-controlled-v1",
   correctness = {},
 } = {}) {
+  if (!/^[a-f0-9]{40}$/.test(String(revision || ""))) fail("profile revision must be a full commit SHA");
   finiteNonNegative(durationSeconds, "duration_seconds");
   finiteNonNegative(eventCount, "event_count");
   if (durationSeconds > 30 * 60) fail("collection exceeded the 30 minute bound");
@@ -133,9 +134,13 @@ export function buildWorkerCostProfile(samples, {
   const cohorts = {};
   for (const name of REQUIRED_COST_COHORTS) {
     const owned = samples.filter((sample) => sample.cohort === name);
+    for (const sample of owned) {
+      if (sample.revision !== revision) fail(`${name} sample revision does not match profile revision`);
+    }
     cohorts[name] = owned.length
       ? {
         status: "measured",
+        revision,
         sample_count: owned.length,
         native_cpu_ms: owned.map((sample) => sample.native_cpu_ms),
         native_cpu_source: owned[0].native_cpu_source,
@@ -165,6 +170,8 @@ export function validateWorkerCostProfile(profile, { requireComplete = true } = 
   if (profile?.schema !== "cityscroll.worker_cost_profile.v1" || profile.kind !== "provider-native-bounded") fail("unsupported worker cost profile");
   if (!/^[a-f0-9]{40}$/.test(String(profile.revision || ""))) fail("profile revision must be a full commit SHA");
   if (!Number.isFinite(Date.parse(profile.observed_at))) fail("profile observed_at is invalid");
+  finiteNonNegative(profile.window?.duration_seconds, "profile.window.duration_seconds");
+  finiteNonNegative(profile.window?.event_count, "profile.window.event_count");
   if (profile.window?.duration_seconds > profile.window?.max_seconds || profile.window?.max_seconds !== 1800) fail("profile exceeds duration bound");
   if (profile.window?.event_count > profile.window?.max_events || profile.window?.max_events !== 10_000) fail("profile exceeds event bound");
   for (const name of REQUIRED_COST_COHORTS) {
@@ -176,6 +183,7 @@ export function validateWorkerCostProfile(profile, { requireComplete = true } = 
       continue;
     }
     if (cohort.status !== "measured" || !Number.isInteger(cohort.sample_count) || cohort.sample_count < 1) fail(`${name} has invalid samples`);
+    if (cohort.revision !== profile.revision) fail(`${name} revision does not match profile revision`);
     if (!Array.isArray(cohort.native_cpu_ms) || cohort.native_cpu_ms.length !== cohort.sample_count) fail(`${name} CPU samples do not match sample_count`);
     cohort.native_cpu_ms.forEach((value) => finiteNonNegative(value, `${name}.native_cpu_ms`));
     if (!["cpuTime", "$workers.cpuTimeMs"].includes(cohort.native_cpu_source?.field)) fail(`${name} does not use provider-native invocation CPU`);
@@ -211,9 +219,15 @@ export function evaluateWarehouseExperiment({ baseline, candidate } = {}) {
     requireActualWindow(run, label);
     if (run.workload_id !== baseline.workload_id || run.workload_count !== baseline.workload_count) fail("experiment workloads are not matched");
     for (const cohort of WAREHOUSE_EXPERIMENT_COHORTS) {
-      if (!run.cohorts?.[cohort]?.sample_count) fail(`${label} is missing ${cohort}`);
-      if (run.cohorts[cohort].cpu_source !== "provider-native-invocation") fail(`${label} ${cohort} does not use invocation CPU`);
-      validateCondition(cohort, run.cohorts[cohort].condition, `${label}.${cohort}.condition`);
+      const evidence = run.cohorts?.[cohort];
+      if (!evidence) fail(`${label} is missing ${cohort}`);
+      finiteNonNegativeInteger(evidence.sample_count, `${label}.${cohort}.sample_count`);
+      if (evidence.sample_count < 1) fail(`${label}.${cohort}.sample_count must be positive`);
+      if (label === "candidate" && evidence.sample_count !== baseline.cohorts?.[cohort]?.sample_count) {
+        fail(`experiment cohort ${cohort} sample counts are not matched`);
+      }
+      if (evidence.cpu_source !== "provider-native-invocation") fail(`${label} ${cohort} does not use invocation CPU`);
+      validateCondition(cohort, evidence.condition, `${label}.${cohort}.condition`);
     }
     finiteNonNegativeInteger(run.error_count, `${label}.error_count`);
     for (const field of ["input_digest", "joins_digest", "provenance_digest", "miss_digest", "freshness_digest"]) {

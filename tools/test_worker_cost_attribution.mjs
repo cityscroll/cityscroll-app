@@ -69,6 +69,30 @@ test("complete bounded profiles cover routes, three crons, queue and collector o
   assert.deepEqual(validateWorkerCostProfile(profile), { ok: true, complete: true });
 });
 
+test("profiles retain and enforce every sample revision", () => {
+  const samples = REQUIRED_COST_COHORTS.map((cohort) => sample(cohort));
+  samples[0].revision = "b".repeat(40);
+  assert.throws(() => buildWorkerCostProfile(samples, {
+    revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 120, eventCount: samples.length,
+  }), /sample revision/);
+  const profile = buildWorkerCostProfile(REQUIRED_COST_COHORTS.map((cohort) => sample(cohort)), {
+    revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 120, eventCount: samples.length,
+  });
+  profile.cohorts["health:cold"].revision = "b".repeat(40);
+  assert.throws(() => validateWorkerCostProfile(profile), /revision does not match/);
+});
+
+test("imported profile windows fail closed on invalid bounds", () => {
+  const profile = buildWorkerCostProfile(REQUIRED_COST_COHORTS.map((cohort) => sample(cohort)), {
+    revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 120, eventCount: REQUIRED_COST_COHORTS.length,
+  });
+  for (const [field, value] of [["duration_seconds", undefined], ["duration_seconds", -1], ["event_count", "25"]]) {
+    const invalid = structuredClone(profile);
+    invalid.window[field] = value;
+    assert.throws(() => validateWorkerCostProfile(invalid), /finite non-negative/);
+  }
+});
+
 test("missing samples stay unknown and cannot masquerade as zero", () => {
   const profile = buildWorkerCostProfile([sample("health:cold", 0)], {
     revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 1, eventCount: 1,

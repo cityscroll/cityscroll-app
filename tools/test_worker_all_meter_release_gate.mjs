@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
+import { dirname, join } from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
 import {
   COST_METERS,
@@ -9,6 +12,7 @@ import {
 } from "./lib/worker_cost_control.mjs";
 
 const revision = "b".repeat(40);
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 function profile(profileRevision = revision) {
   const samples = REQUIRED_COST_COHORTS.map((cohort) => ({
     cohort,
@@ -96,4 +100,26 @@ test("baseline may expose the old write behavior but evidence must stay actual a
   const invalid = pair();
   invalid.candidate.evidence_mode = "fixture";
   assert.throws(() => evaluateAllMeterRelease(invalid), /actual production/);
+});
+
+test("release CLI gates the exact candidate revision from configured evidence", () => {
+  const { baseline, candidate } = pair({ native_cpu_ms: 9 });
+  const run = (expected) => spawnSync(process.execPath, [
+    "tools/worker_cost_control.mjs", "release-evaluate",
+    "--baseline-env", "TEST_WORKER_COST_BASELINE",
+    "--candidate-env", "TEST_WORKER_COST_CANDIDATE",
+    "--expected-candidate-revision", expected,
+  ], {
+    cwd: ROOT,
+    encoding: "utf8",
+    env: {
+      ...process.env,
+      TEST_WORKER_COST_BASELINE: JSON.stringify(baseline),
+      TEST_WORKER_COST_CANDIDATE: JSON.stringify(candidate),
+    },
+  });
+  assert.equal(run(candidate.deployed_revision).status, 0);
+  const mismatch = run("c".repeat(40));
+  assert.notEqual(mismatch.status, 0);
+  assert.match(mismatch.stderr, /does not match the release revision/);
 });
