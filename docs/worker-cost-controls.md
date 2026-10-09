@@ -39,9 +39,20 @@ revision. Pure evaluator calls prove matching and internal consistency only;
 they do not authenticate a caller-supplied receipt. Authentication belongs to
 the command boundary that acquires provider state and health itself.
 
-Collection is capped at 30 minutes and 10,000 events. Before persistence, an
-event must match the probe's literal header value and exact URL and method. The
-retained shape omits URLs, query strings, headers, bodies, credentials, account
+HTTP and collector-overhead cohorts require the exact owned probe header, URL,
+and method. Native scheduled cohorts instead require the provider event type,
+configured cron, exact scheduled timestamp, provider request ID, and structured
+instrumentation metadata matching an independently supplied run marker and
+workload digest. Native queue cohorts require the provider queue trigger,
+request ID, run marker, workload digest, and bounded batch marker. Retained
+conditions hash run and batch markers and omit requests, headers, URLs, and
+queue bodies. An HTTP rehearsal, arbitrary log text, cross-run marker, wrong
+trigger, or mismatched provider version is rejected. No resident-delivering
+cron or queue job is run merely to complete a profile; absent native evidence
+remains unknown.
+
+Collection is capped at 30 minutes and 10,000 events. The retained shape omits
+URLs, query strings, headers, bodies, credentials, account
 identifiers, and resident identifiers. Missing cohorts remain `unknown`; they
 never become zero-valued samples. Attempted and confirmed operations are kept
 separate, and collector overhead is a required cohort.
@@ -109,14 +120,14 @@ already-staged or already-promoted state is the only no-op retry.
 
 The activated promotion path fails closed before it mutates production by
 evaluating the sanitized JSON receipts in the `WORKER_COST_BASELINE_EVIDENCE`
-and `WORKER_COST_CANDIDATE_EVIDENCE` repository variables. The separately
-retained baseline deployment binding is supplied through
-`WORKER_COST_BASELINE_DEPLOYMENT`. For the candidate, the workflow obtains the
-active deployment and tagged versions through authenticated Wrangler JSON,
-rejects any unrelated or ambiguous split, and targets the staged version's
-production `/health` handler with a provider version override. The ordinary
-production health response is not required to select the canary before
-promotion.
+and `WORKER_COST_CANDIDATE_EVIDENCE` repository variables. The workflow obtains
+the active deployment and tagged versions through authenticated Wrangler JSON,
+rejects any unrelated or ambiguous split, and targets both the live 95 percent
+rollback version and staged candidate with provider version overrides. The
+configured baseline must match the rollback's exact provider version and
+production-health revision, so historical unrelated evidence cannot authorize
+replacing the current baseline. The ordinary production health response is not
+required to select either cohort.
 The evidence-embedded bindings must byte-match those independently supplied
 receipts and their canonical SHA-256 digests. Candidate health must name the
 exact commit, every retained cohort sample must name the exact staged provider

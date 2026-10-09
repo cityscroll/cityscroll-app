@@ -4,6 +4,7 @@ import test from "node:test";
 import {
   acquireActiveDeploymentBinding,
   acquireDeploymentBinding,
+  acquireSplitDeploymentBindings,
   canaryVersionTag,
   planCanaryPromotion,
   planCanaryStage,
@@ -232,4 +233,53 @@ test("active binding acquires an untagged full-traffic baseline", async () => {
     expectedRevision: revision,
     fetchImpl: async () => ({ ok: true }),
   }), /one full-traffic version/);
+});
+
+test("split acquisition binds the baseline to the live rollback version", async () => {
+  const baselineRevision = "a".repeat(40);
+  const seen = [];
+  const bindings = await acquireSplitDeploymentBindings({
+    providerStatus: stagedStatus,
+    providerVersions: versions,
+    healthUrl: "https://example.test/health",
+    workerName: "cityscroll-worker",
+    baselineRevision,
+    candidateRevision: revision,
+    fetchImpl: async (_url, init) => {
+      const override = init.headers["Cloudflare-Workers-Version-Overrides"];
+      seen.push(override);
+      return {
+        ok: true,
+        json: async () => ({
+          status: "cityscroll-worker ok",
+          environment: "production",
+          commit: override.includes(rollback) ? baselineRevision : revision,
+        }),
+      };
+    },
+  });
+  assert.equal(bindings.baseline.receipt.cloudflare_version.id, rollback);
+  assert.equal(bindings.candidate.receipt.cloudflare_version.id, candidate);
+  assert.deepEqual(seen.sort(), [
+    `cityscroll-worker="${candidate}"`,
+    `cityscroll-worker="${rollback}"`,
+  ].sort());
+  await assert.rejects(() => acquireSplitDeploymentBindings({
+    providerStatus: stagedStatus,
+    providerVersions: versions,
+    healthUrl: "https://example.test/health",
+    workerName: "cityscroll-worker",
+    baselineRevision: "c".repeat(40),
+    candidateRevision: revision,
+    fetchImpl: async (_url, init) => ({
+      ok: true,
+      json: async () => ({
+        status: "cityscroll-worker ok",
+        environment: "production",
+        commit: init.headers["Cloudflare-Workers-Version-Overrides"].includes(rollback)
+          ? baselineRevision
+          : revision,
+      }),
+    }),
+  }), /revision does not match/);
 });

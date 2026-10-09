@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -46,7 +48,19 @@ function profile(profileRevision = revision, totals = {}, samplesPerCohort = 1) 
     cohort,
     condition: cohort.endsWith(":cold") || cohort.endsWith(":warm")
       ? { mode: "provider-observed", source: "$metadata.coldStart", cold_start: cohort.endsWith(":cold") }
-      : { mode: "bounded-production-execution" },
+      : cohort.startsWith("cron:")
+        ? {
+          mode: "provider-native-scheduled", source: "$workers.event",
+          cron: cohort.slice("cron:".length), scheduled_time: 1_760_000_000_000,
+          run_marker_sha256: "c".repeat(64), workload_digest: "d".repeat(64),
+        }
+        : cohort === "queue"
+          ? {
+            mode: "provider-native-queue", source: "$workers.event", queue: "crol-cost-probe", batch_size: 1,
+            run_marker_sha256: "c".repeat(64), workload_digest: "d".repeat(64),
+            batch_marker_sha256: "e".repeat(64),
+          }
+          : { mode: "bounded-production-execution" },
     revision: profileRevision,
     native_cpu_ms: cohort === "collector-overhead"
       ? (totals.collector_cpu_ms ?? 1) / samplesPerCohort
@@ -112,7 +126,7 @@ function pair(candidateMeters = {}, candidateOverrides = {}) {
   return {
     baseline,
     candidate,
-    trustedDeployments: {
+    acquiredDeployments: {
       baseline: baseline.profile.provider_deployment,
       candidate: candidate.profile.provider_deployment,
     },
@@ -198,35 +212,46 @@ test("release evidence cannot authenticate its own provider deployment binding",
   const independentlyDifferent = providerDeployment(evidence.candidate.deployed_revision);
   independentlyDifferent.receipt.cloudflare_version.id = "independently-observed-version";
   independentlyDifferent.provider_receipt_sha256 = providerDeploymentReceiptSha256(independentlyDifferent.receipt);
-  evidence.trustedDeployments.candidate = independentlyDifferent;
+  evidence.acquiredDeployments.candidate = independentlyDifferent;
   assert.throws(() => evaluateAllMeterRelease(evidence), /supplied deployment evidence/);
   const missing = pair();
-  delete missing.trustedDeployments;
+  delete missing.acquiredDeployments;
   assert.throws(() => evaluateAllMeterRelease(missing), /separately acquired deployment evidence/);
 });
 
 test("release CLI gates the exact candidate revision from configured evidence", () => {
-  const { baseline, candidate, trustedDeployments } = pair({ native_cpu_ms: 9 });
-  const run = (expected) => spawnSync(process.execPath, [
-    "tools/worker_cost_control.mjs", "release-evaluate",
-    "--baseline-env", "TEST_WORKER_COST_BASELINE",
-    "--candidate-env", "TEST_WORKER_COST_CANDIDATE",
-    "--trusted-baseline-deployment-env", "TEST_WORKER_COST_BASELINE_DEPLOYMENT",
-    "--trusted-candidate-deployment-env", "TEST_WORKER_COST_CANDIDATE_DEPLOYMENT",
-    "--expected-candidate-revision", expected,
-  ], {
-    cwd: ROOT,
-    encoding: "utf8",
-    env: {
-      ...process.env,
-      TEST_WORKER_COST_BASELINE: JSON.stringify(baseline),
-      TEST_WORKER_COST_CANDIDATE: JSON.stringify(candidate),
-      TEST_WORKER_COST_BASELINE_DEPLOYMENT: JSON.stringify(trustedDeployments.baseline),
-      TEST_WORKER_COST_CANDIDATE_DEPLOYMENT: JSON.stringify(trustedDeployments.candidate),
-    },
-  });
-  assert.equal(run(candidate.deployed_revision).status, 0);
-  const mismatch = run("c".repeat(40));
-  assert.notEqual(mismatch.status, 0);
-  assert.match(mismatch.stderr, /does not match the release revision/);
+  const { baseline, candidate, acquiredDeployments } = pair({ native_cpu_ms: 9 });
+  const dir = mkdtempSync(join(tmpdir(), "cityscroll-release-bindings-"));
+  const acquiredPath = join(dir, "split.json");
+  try {
+    writeFileSync(acquiredPath, JSON.stringify(acquiredDeployments));
+    const run = (expected) => spawnSync(process.execPath, [
+      "tools/worker_cost_control.mjs", "release-evaluate",
+      "--baseline-env", "TEST_WORKER_COST_BASELINE",
+      "--candidate-env", "TEST_WORKER_COST_CANDIDATE",
+      "--acquired-split-deployments", acquiredPath,
+      "--expected-candidate-revision", expected,
+    ], {
+      cwd: ROOT,
+      encoding: "utf8",
+      env: {
+        ...process.env,
+        TEST_WORKER_COST_BASELINE: JSON.stringify(baseline),
+        TEST_WORKER_COST_CANDIDATE: JSON.stringify(candidate),
+      },
+    });
+    assert.equal(run(candidate.deployed_revision).status, 0);
+    const mismatch = run("c".repeat(40));
+    assert.notEqual(mismatch.status, 0);
+    assert.match(mismatch.stderr, /does not match the release revision/);
+    const unrelated = structuredClone(acquiredDeployments);
+    unrelated.baseline.receipt.cloudflare_version.id = "historical-unrelated-version";
+    unrelated.baseline.provider_receipt_sha256 = providerDeploymentReceiptSha256(unrelated.baseline.receipt);
+    writeFileSync(acquiredPath, JSON.stringify(unrelated));
+    const wrongRollback = run(candidate.deployed_revision);
+    assert.notEqual(wrongRollback.status, 0);
+    assert.match(wrongRollback.stderr, /supplied deployment evidence/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });

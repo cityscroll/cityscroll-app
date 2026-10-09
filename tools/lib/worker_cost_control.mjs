@@ -67,6 +67,92 @@ function requestFromTailEvent(event) {
   return event?.event?.request || event?.request || null;
 }
 
+function providerInvocation(event) {
+  return event?.$workers || event || {};
+}
+
+function requireMarker(value, label) {
+  if (typeof value !== "string" || !value || value.length > 256) fail(`${label} is invalid`);
+  return value;
+}
+
+function markerSha256(value) {
+  return createHash("sha256").update(value).digest("hex");
+}
+
+function nativeOwnership(event, {
+  kind,
+  expectedRunMarker,
+  expectedWorkloadDigest,
+  expectedBatchMarker,
+} = {}) {
+  const provider = providerInvocation(event);
+  const ownership = event?.cost_control;
+  const expectedKeys = kind === "queue"
+    ? ["schema", "kind", "event_request_id", "run_marker", "workload_digest", "batch_marker"]
+    : ["schema", "kind", "event_request_id", "run_marker", "workload_digest"];
+  if (!ownership || typeof ownership !== "object") fail("structured provider-event ownership metadata is required");
+  requireExactKeys(ownership, expectedKeys, "cost_control");
+  if (ownership.schema !== "cityscroll.worker_cost_probe.v1" || ownership.kind !== kind) {
+    fail("structured provider-event ownership metadata is invalid");
+  }
+  const requestId = requireMarker(provider.requestId, "provider event request ID");
+  if (ownership.event_request_id !== requestId) fail("ownership metadata is not bound to the provider event");
+  const runMarker = requireMarker(expectedRunMarker, "expected run marker");
+  if (ownership.run_marker !== runMarker) fail("provider event run marker does not match the independently expected run");
+  if (!SHA256.test(String(expectedWorkloadDigest || ""))) fail("expected workload digest is invalid");
+  if (ownership.workload_digest !== expectedWorkloadDigest) fail("provider event workload digest does not match");
+  if (kind === "queue") {
+    const batchMarker = requireMarker(expectedBatchMarker, "expected batch marker");
+    if (ownership.batch_marker !== batchMarker) fail("provider event batch marker does not match");
+  }
+  return {
+    provider,
+    run_marker_sha256: markerSha256(runMarker),
+    workload_digest: expectedWorkloadDigest,
+    ...(kind === "queue" ? { batch_marker_sha256: markerSha256(expectedBatchMarker) } : {}),
+  };
+}
+
+function scheduledCondition(event, cohort, options) {
+  const cron = cohort.slice("cron:".length);
+  if (options.expectedCron !== cron) fail("scheduled cohort does not match the independently expected cron");
+  finiteNonNegativeInteger(options.expectedScheduledTime, "expected scheduled timestamp");
+  const ownership = nativeOwnership(event, { kind: "scheduled", ...options });
+  const details = ownership.provider.event;
+  if (!["scheduled", "cron"].includes(ownership.provider.eventType)) fail("provider event is not a native scheduled invocation");
+  if (event?.trigger !== cron || details?.cron !== cron) fail("provider scheduled trigger does not match the expected cron");
+  if (details?.scheduledTime !== options.expectedScheduledTime) fail("provider scheduled timestamp does not match");
+  return {
+    mode: "provider-native-scheduled",
+    source: "$workers.event",
+    cron,
+    scheduled_time: options.expectedScheduledTime,
+    run_marker_sha256: ownership.run_marker_sha256,
+    workload_digest: ownership.workload_digest,
+  };
+}
+
+function queueCondition(event, options) {
+  const queue = requireMarker(options.expectedQueue, "expected queue trigger");
+  finiteNonNegativeInteger(options.expectedBatchSize, "expected queue batch size");
+  if (options.expectedBatchSize < 1 || options.expectedBatchSize > 100) fail("expected queue batch size is outside the bounded probe limit");
+  const ownership = nativeOwnership(event, { kind: "queue", ...options });
+  const details = ownership.provider.event;
+  if (ownership.provider.eventType !== "queue") fail("provider event is not a native queue invocation");
+  if (event?.trigger !== queue || details?.queue !== queue) fail("provider queue trigger does not match");
+  if (details?.batchSize !== options.expectedBatchSize) fail("provider queue batch size does not match");
+  return {
+    mode: "provider-native-queue",
+    source: "$workers.event",
+    queue,
+    batch_size: options.expectedBatchSize,
+    run_marker_sha256: ownership.run_marker_sha256,
+    workload_digest: ownership.workload_digest,
+    batch_marker_sha256: ownership.batch_marker_sha256,
+  };
+}
+
 function validateCondition(cohort, condition, path) {
   if (!condition || typeof condition !== "object" || !condition.mode) fail(`${path} controlled condition evidence is required`);
   if (cohort.endsWith(":cold") || cohort.endsWith(":warm")) {
@@ -74,6 +160,31 @@ function validateCondition(cohort, condition, path) {
       fail(`${path} must use provider $metadata.coldStart evidence`);
     }
     if (condition.cold_start !== cohort.endsWith(":cold")) fail(`${path} coldStart does not match cohort`);
+  } else if (cohort.startsWith("cron:")) {
+    requireExactKeys(condition, [
+      "mode", "source", "cron", "scheduled_time", "run_marker_sha256", "workload_digest",
+    ], path);
+    if (condition.mode !== "provider-native-scheduled" || condition.source !== "$workers.event") {
+      fail(`${path} must use a provider-native scheduled event`);
+    }
+    if (condition.cron !== cohort.slice("cron:".length)) fail(`${path} cron does not match cohort`);
+    finiteNonNegativeInteger(condition.scheduled_time, `${path}.scheduled_time`);
+    if (!SHA256.test(condition.run_marker_sha256) || !SHA256.test(condition.workload_digest)) {
+      fail(`${path} ownership digests are invalid`);
+    }
+  } else if (cohort === "queue") {
+    requireExactKeys(condition, [
+      "mode", "source", "queue", "batch_size", "run_marker_sha256", "workload_digest", "batch_marker_sha256",
+    ], path);
+    if (condition.mode !== "provider-native-queue" || condition.source !== "$workers.event") {
+      fail(`${path} must use a provider-native queue event`);
+    }
+    if (!condition.queue) fail(`${path}.queue is required`);
+    finiteNonNegativeInteger(condition.batch_size, `${path}.batch_size`);
+    if (condition.batch_size < 1 || condition.batch_size > 100) fail(`${path}.batch_size exceeds the bounded probe limit`);
+    for (const field of ["run_marker_sha256", "workload_digest", "batch_marker_sha256"]) {
+      if (!SHA256.test(condition[field])) fail(`${path}.${field} is invalid`);
+    }
   }
 }
 
@@ -123,24 +234,19 @@ function validateProviderDeployment(deployment, revision, path) {
   return receipt.cloudflare_version.id;
 }
 
-export function validateTrustedProviderDeployment(deployment, trustedDeployment, revision, path = "provider_deployment") {
+export function validateMatchingProviderDeployment(deployment, acquiredDeployment, revision, path = "provider_deployment") {
   const providerVersionId = validateProviderDeployment(deployment, revision, path);
-  const trustedVersionId = validateProviderDeployment(trustedDeployment, revision, `${path}.trusted`);
-  if (providerVersionId !== trustedVersionId) fail(`${path} provider version does not match supplied deployment evidence`);
-  if (deployment.provider_receipt_sha256 !== trustedDeployment.provider_receipt_sha256) {
+  const acquiredVersionId = validateProviderDeployment(acquiredDeployment, revision, `${path}.acquired`);
+  if (providerVersionId !== acquiredVersionId) fail(`${path} provider version does not match supplied deployment evidence`);
+  if (deployment.provider_receipt_sha256 !== acquiredDeployment.provider_receipt_sha256) {
     fail(`${path} receipt digest does not match supplied deployment evidence`);
   }
-  if (canonicalJson(deployment.receipt) !== canonicalJson(trustedDeployment.receipt)) {
+  if (canonicalJson(deployment.receipt) !== canonicalJson(acquiredDeployment.receipt)) {
     fail(`${path} receipt does not match supplied deployment evidence`);
   }
   return providerVersionId;
 }
 
-/**
- * Convert one owned provider event into the narrow retained shape. Ownership is
- * checked against the literal probe header and exact URL/method before any raw
- * request material crosses the persistence boundary.
- */
 export function sanitizeNativeInvocation(event, {
   cohort,
   condition,
@@ -150,31 +256,52 @@ export function sanitizeNativeInvocation(event, {
   expectedMethod = "GET",
   operations,
   providerDeployment,
+  expectedCron,
+  expectedScheduledTime,
+  expectedRunMarker,
+  expectedWorkloadDigest,
+  expectedQueue,
+  expectedBatchMarker,
+  expectedBatchSize,
 } = {}) {
   if (!REQUIRED_COST_COHORTS.includes(cohort)) fail(`unknown cost cohort ${cohort}`);
-  const request = requestFromTailEvent(event);
-  const headers = request?.headers || {};
-  const ownedHeader = headers["x-cityscroll-cost-probe"] || headers["X-Cityscroll-Cost-Probe"];
-  if (!expectedHeaderValue || ownedHeader !== expectedHeaderValue) fail("provider event is not owned by the literal probe header");
-  if (request?.url !== expectedUrl || request?.method !== expectedMethod) fail("provider event does not match the expected URL and method");
-  const cpu = event?.cpuTime ?? event?.$workers?.cpuTimeMs;
+  let retainedCondition = condition;
+  if (cohort.startsWith("cron:")) {
+    retainedCondition = scheduledCondition(event, cohort, {
+      expectedCron, expectedScheduledTime, expectedRunMarker, expectedWorkloadDigest,
+    });
+  } else if (cohort === "queue") {
+    retainedCondition = queueCondition(event, {
+      expectedQueue, expectedRunMarker, expectedWorkloadDigest, expectedBatchMarker,
+      expectedBatchSize,
+    });
+  } else {
+    const request = requestFromTailEvent(event);
+    const headers = request?.headers || {};
+    const ownedHeader = headers["x-cityscroll-cost-probe"] || headers["X-Cityscroll-Cost-Probe"];
+    if (!expectedHeaderValue || ownedHeader !== expectedHeaderValue) fail("provider event is not owned by the literal probe header");
+    if (request?.url !== expectedUrl || request?.method !== expectedMethod) fail("provider event does not match the expected URL and method");
+  }
+  const provider = providerInvocation(event);
+  const cpu = event?.cpuTime ?? provider.cpuTimeMs;
   const sourceField = event?.cpuTime !== undefined ? "cpuTime" : "$workers.cpuTimeMs";
-  const outcome = String(event?.outcome || "unknown");
+  const outcome = String(event?.outcome || provider.outcome || "unknown");
   const exceptionCount = Array.isArray(event?.exceptions) ? event.exceptions.length : Number(event?.exception_count || 0);
   finiteNonNegative(cpu, "provider-native CPU");
   finiteNonNegativeInteger(exceptionCount, "provider exception count");
-  validateCondition(cohort, condition, "condition");
+  validateCondition(cohort, retainedCondition, "condition");
   if (!/^[a-f0-9]{40}$/.test(String(revision || ""))) fail("revision must be a full commit SHA");
   const providerVersionId = validateProviderDeployment(providerDeployment, revision, "provider_deployment");
-  if (event?.scriptVersion?.id !== providerVersionId) fail("provider sample script version does not match the deployed revision binding");
+  const scriptVersionId = event?.scriptVersion?.id || provider.scriptVersion?.id;
+  if (scriptVersionId !== providerVersionId) fail("provider sample script version does not match the deployed revision binding");
   const sample = {
     cohort,
-    condition,
+    condition: retainedCondition,
     revision,
     native_cpu_ms: cpu,
     native_cpu_source: { field: sourceField, unit: "milliseconds", precision: Number.isInteger(cpu) ? "integer" : "provider" },
     outcome,
-    script_version_id: event?.scriptVersion?.id || null,
+    script_version_id: scriptVersionId || null,
     operations: operations || {},
     error_count: Math.max(exceptionCount, outcome === "ok" ? 0 : 1),
   };
@@ -407,17 +534,17 @@ function normalizedMeters(run) {
   }));
 }
 
-export function evaluateWarehouseExperiment({ baseline, candidate, trustedDeployments } = {}) {
+export function evaluateWarehouseExperiment({ baseline, candidate, acquiredDeployments } = {}) {
   assertSanitized({ baseline, candidate });
-  if (!trustedDeployments?.baseline || !trustedDeployments?.candidate) {
+  if (!acquiredDeployments?.baseline || !acquiredDeployments?.candidate) {
     fail("separately acquired deployment evidence is required for baseline and candidate");
   }
   for (const [label, run] of Object.entries({ baseline, candidate })) {
     if (!run || run.schema !== "cityscroll.warehouse_cost_experiment_run.v1") fail(`invalid ${label} experiment run`);
     requireActualWindow(run, label);
-    validateTrustedProviderDeployment(
+    validateMatchingProviderDeployment(
       run.provider_deployment,
-      trustedDeployments[label],
+      acquiredDeployments[label],
       run.deployed_revision,
       `${label}.provider_deployment`,
     );
@@ -467,7 +594,7 @@ export function evaluateWarehouseExperiment({ baseline, candidate, trustedDeploy
   };
 }
 
-export function evaluateAllMeterRelease({ baseline, candidate, trustedDeployments } = {}) {
+export function evaluateAllMeterRelease({ baseline, candidate, acquiredDeployments } = {}) {
   if (!baseline || !candidate) fail("baseline and candidate release evidence are required");
   assertSanitized({ baseline, candidate });
   const evidenceByLabel = {};
@@ -500,18 +627,18 @@ export function evaluateAllMeterRelease({ baseline, candidate, trustedDeployment
       fail(`all-meter ${meter} provider-sample populations are not matched`);
     }
   }
-  if (!trustedDeployments?.baseline || !trustedDeployments?.candidate) {
+  if (!acquiredDeployments?.baseline || !acquiredDeployments?.candidate) {
     fail("separately acquired deployment evidence is required for baseline and candidate");
   }
-  validateTrustedProviderDeployment(
+  validateMatchingProviderDeployment(
     baseline.profile.provider_deployment,
-    trustedDeployments.baseline,
+    acquiredDeployments.baseline,
     baseline.deployed_revision,
     "baseline.profile.provider_deployment",
   );
-  validateTrustedProviderDeployment(
+  validateMatchingProviderDeployment(
     candidate.profile.provider_deployment,
-    trustedDeployments.candidate,
+    acquiredDeployments.candidate,
     candidate.deployed_revision,
     "candidate.profile.provider_deployment",
   );

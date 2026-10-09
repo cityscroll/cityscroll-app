@@ -263,7 +263,7 @@ export async function acquireActiveDeploymentBinding({
   });
 }
 
-export async function acquireWarehouseDeploymentBindings({
+export async function acquireSplitDeploymentBindings({
   providerStatus,
   providerVersions: versions,
   healthUrl,
@@ -359,8 +359,18 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
       workerName: arg("--worker-name"),
       expectedRevision,
     });
+  } else if (command === "acquire-split") {
+    const versions = readJson(arg("--provider-versions"), "provider versions");
+    result = await acquireSplitDeploymentBindings({
+      providerStatus,
+      providerVersions: versions,
+      healthUrl: arg("--health-url"),
+      workerName: arg("--worker-name"),
+      baselineRevision: arg("--baseline-revision"),
+      candidateRevision: expectedRevision,
+    });
   } else {
-    fail("usage: cloudflare_deployment_binding.mjs <stage-plan|stage-recheck|promotion-plan|promotion-recheck|acquire|acquire-active> [options]");
+    fail("usage: cloudflare_deployment_binding.mjs <stage-plan|stage-recheck|promotion-plan|promotion-recheck|acquire|acquire-active|acquire-split> [options]");
   }
   writePrivateJson(out, result);
   const state = result.action || result.state || "acquired";

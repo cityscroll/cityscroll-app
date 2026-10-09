@@ -71,7 +71,7 @@ function run(overrides = {}) {
   return result;
 }
 
-function trustedDeployments(baseline, candidate) {
+function acquiredDeployments(baseline, candidate) {
   return {
     baseline: structuredClone(baseline.provider_deployment),
     candidate: structuredClone(candidate.provider_deployment),
@@ -79,7 +79,7 @@ function trustedDeployments(baseline, candidate) {
 }
 
 function evaluate(baseline, candidate) {
-  return evaluateWarehouseExperiment({ baseline, candidate, trustedDeployments: trustedDeployments(baseline, candidate) });
+  return evaluateWarehouseExperiment({ baseline, candidate, acquiredDeployments: acquiredDeployments(baseline, candidate) });
 }
 
 test("the fixed three-lookup experiment retains a Pareto-improving candidate", () => {
@@ -191,11 +191,11 @@ test("warehouse evaluation requires independent deployment bindings", () => {
     meters: { ...baseline.meters, native_cpu_ms: 80 },
   });
   assert.throws(() => evaluateWarehouseExperiment({ baseline, candidate }), /separately acquired deployment evidence/);
-  const trusted = trustedDeployments(baseline, candidate);
-  trusted.candidate.receipt.cloudflare_version.id = "different-provider-version";
-  trusted.candidate.provider_receipt_sha256 = providerDeploymentReceiptSha256(trusted.candidate.receipt);
+  const acquired = acquiredDeployments(baseline, candidate);
+  acquired.candidate.receipt.cloudflare_version.id = "different-provider-version";
+  acquired.candidate.provider_receipt_sha256 = providerDeploymentReceiptSha256(acquired.candidate.receipt);
   assert.throws(() => evaluateWarehouseExperiment({
-    baseline, candidate, trustedDeployments: trusted,
+    baseline, candidate, acquiredDeployments: acquired,
   }), /supplied deployment evidence/);
 });
 

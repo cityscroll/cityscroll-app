@@ -10,6 +10,9 @@ import {
 } from "./lib/worker_cost_control.mjs";
 
 const revision = "a".repeat(40);
+const WORKLOAD_DIGEST = "d".repeat(64);
+const RUN_MARKER = "cost-run-2026-10-09";
+const BATCH_MARKER = "queue-batch-1";
 const PROVIDER_RECEIPT = Object.freeze({
   schema: "cityscroll.cloudflare_deployment_binding.v1",
   evidence_mode: "actual-production",
@@ -47,8 +50,42 @@ function event(cpuTime = 4) {
     } },
   };
 }
+function nativeEvent(kind, trigger, cpuTime = 4) {
+  const requestId = `${kind}-provider-event`;
+  const eventDetails = kind === "scheduled"
+    ? { cron: trigger, scheduledTime: 1_760_000_000_000 }
+    : { queue: trigger, batchSize: 1 };
+  return {
+    trigger,
+    cost_control: {
+      schema: "cityscroll.worker_cost_probe.v1",
+      kind,
+      event_request_id: requestId,
+      run_marker: RUN_MARKER,
+      workload_digest: WORKLOAD_DIGEST,
+      ...(kind === "queue" ? { batch_marker: BATCH_MARKER } : {}),
+    },
+    $workers: {
+      cpuTimeMs: cpuTime,
+      eventType: kind,
+      outcome: "ok",
+      requestId,
+      scriptVersion: { id: "provider-version" },
+      event: eventDetails,
+    },
+    exceptions: [],
+  };
+}
 function sample(cohort, cpu = 4) {
-  return sanitizeNativeInvocation(event(cpu), {
+  const isScheduled = cohort.startsWith("cron:");
+  const isQueue = cohort === "queue";
+  const cron = isScheduled ? cohort.slice("cron:".length) : null;
+  const raw = isScheduled
+    ? nativeEvent("scheduled", cron, cpu)
+    : isQueue
+      ? nativeEvent("queue", "crol-cost-probe", cpu)
+      : event(cpu);
+  return sanitizeNativeInvocation(raw, {
     cohort,
     revision,
     expectedHeaderValue: "owned",
@@ -60,6 +97,13 @@ function sample(cohort, cpu = 4) {
         cold_start: cohort.endsWith(":cold"),
       }
       : { mode: "bounded-production-execution" },
+    expectedCron: cron,
+    expectedScheduledTime: isScheduled ? 1_760_000_000_000 : undefined,
+    expectedRunMarker: isScheduled || isQueue ? RUN_MARKER : undefined,
+    expectedWorkloadDigest: isScheduled || isQueue ? WORKLOAD_DIGEST : undefined,
+    expectedQueue: isQueue ? "crol-cost-probe" : undefined,
+    expectedBatchMarker: isQueue ? BATCH_MARKER : undefined,
+    expectedBatchSize: isQueue ? 1 : undefined,
     operations: { ...emptyOperations(), kv_writes: { attempted: 1, confirmed: 1 } },
   });
 }
@@ -102,7 +146,7 @@ test("provider samples must match the receipt-bound version for the health revis
   assert.throws(() => validateWorkerCostProfile(profile), /production health revision does not match/);
 });
 
-test("provider deployment digest authenticates the retained binding receipt", () => {
+test("provider deployment digest detects retained receipt mutation", () => {
   const profile = buildWorkerCostProfile(REQUIRED_COST_COHORTS.map((cohort) => sample(cohort)), {
     revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 1,
     eventCount: REQUIRED_COST_COHORTS.length,
@@ -121,6 +165,63 @@ test("literal header, URL and method ownership are all required before persisten
     condition: { mode: "provider-observed", source: "$metadata.coldStart", cold_start: true },
     expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health", ...override,
   }));
+});
+
+test("native scheduled ownership binds cron, timestamp, run and workload", () => {
+  const retained = sample("cron:0 8 * * *", 3);
+  assert.equal(retained.condition.mode, "provider-native-scheduled");
+  assert.equal(retained.condition.cron, "0 8 * * *");
+  assert.equal(retained.condition.scheduled_time, 1_760_000_000_000);
+  assert.equal("run_marker" in retained.condition, false);
+  for (const mutate of [
+    (raw) => { raw.$workers.eventType = "fetch"; },
+    (raw) => { raw.trigger = "0 10 * * *"; },
+    (raw) => { raw.$workers.event.scheduledTime += 1; },
+    (raw) => { raw.cost_control.run_marker = "other-run"; },
+    (raw) => { raw.cost_control.workload_digest = "e".repeat(64); },
+    (raw) => { raw.cost_control.event_request_id = "other-event"; },
+    (raw) => { raw.$workers.scriptVersion.id = "older-provider-version"; },
+  ]) {
+    const raw = nativeEvent("scheduled", "0 8 * * *");
+    mutate(raw);
+    assert.throws(() => sanitizeNativeInvocation(raw, {
+      cohort: "cron:0 8 * * *", revision,
+      expectedCron: "0 8 * * *", expectedScheduledTime: 1_760_000_000_000,
+      expectedRunMarker: RUN_MARKER, expectedWorkloadDigest: WORKLOAD_DIGEST,
+      operations: emptyOperations(),
+    }), /provider|ownership|scheduled|workload/);
+  }
+});
+
+test("native queue ownership rejects HTTP rehearsal and cross-batch evidence", () => {
+  const retained = sample("queue", 5);
+  assert.equal(retained.condition.mode, "provider-native-queue");
+  assert.equal(retained.condition.queue, "crol-cost-probe");
+  assert.equal("batch_marker" in retained.condition, false);
+  assert.throws(() => sanitizeNativeInvocation(event(), {
+    cohort: "queue", revision,
+    expectedRunMarker: RUN_MARKER, expectedWorkloadDigest: WORKLOAD_DIGEST,
+    expectedQueue: "crol-cost-probe", expectedBatchMarker: BATCH_MARKER,
+    expectedBatchSize: 1,
+    operations: emptyOperations(),
+  }), /structured provider-event ownership/);
+  const wrongBatch = nativeEvent("queue", "crol-cost-probe");
+  wrongBatch.cost_control.batch_marker = "other-batch";
+  assert.throws(() => sanitizeNativeInvocation(wrongBatch, {
+    cohort: "queue", revision,
+    expectedRunMarker: RUN_MARKER, expectedWorkloadDigest: WORKLOAD_DIGEST,
+    expectedQueue: "crol-cost-probe", expectedBatchMarker: BATCH_MARKER,
+    expectedBatchSize: 1,
+    operations: emptyOperations(),
+  }), /batch marker/);
+  const wrongTrigger = nativeEvent("queue", "other-queue");
+  assert.throws(() => sanitizeNativeInvocation(wrongTrigger, {
+    cohort: "queue", revision,
+    expectedRunMarker: RUN_MARKER, expectedWorkloadDigest: WORKLOAD_DIGEST,
+    expectedQueue: "crol-cost-probe", expectedBatchMarker: BATCH_MARKER,
+    expectedBatchSize: 1,
+    operations: emptyOperations(),
+  }), /queue trigger/);
 });
 
 test("complete bounded profiles cover routes, three crons, queue and collector overhead", () => {

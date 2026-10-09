@@ -403,17 +403,20 @@ that matches its path filter — `worker/**`, `capabilities/**`, `entity_resolut
 also runs by hand via `workflow_dispatch`. Its explicit `stage` mode uploads the exact
 revision as a tagged Worker Version and assigns a bounded 5 percent canary without D1/KV
 publication or trigger updates; the default `promote` mode and `main` pushes only promote a
-previously staged and measured revision. Both traffic changes recheck authenticated provider
-state immediately before mutation and fail if candidate or rollback identity moved. The trigger,
+previously staged and measured revision only after `WORKER_COST_ENFORCEMENT` is explicitly set to
+`enabled`. Until activation, the default mode and `main` pushes retain the ordinary direct
+`wrangler deploy` path and report cost protection and CPU measurement as incomplete. Activated
+promotion binds evidence to both versions in the current split. Both traffic changes recheck
+authenticated provider state immediately before mutation and fail if candidate or rollback identity moved. The trigger,
 schedule and binding inventory this section summarizes is owned by
 [`docs/release/cloudflare-native-builds.md`](../docs/release/cloudflare-native-builds.md); read
 the exact `paths:` list there or in the workflow rather than from prose. Its post-deploy smoke includes the
-Following create-first contract on the canonical site route. Before any production mutation, the
-workflow enforces the provider-native, all-meter release gate documented in
+Following create-first contract on the canonical site route. Before an activated promotion mutates
+production, the workflow enforces the provider-native, all-meter release gate documented in
 [`docs/worker-cost-controls.md`](../docs/worker-cost-controls.md); that document also owns the
-content-addressed route-publication and evidence-variable contracts. Each deploy **applies pending D1
+content-addressed route-publication and evidence-variable contracts. Each default deploy **applies pending D1
 migrations** (`wrangler d1 migrations apply
-crol-notices --remote`) before promoting the staged Worker Version, so schema changes under `migrations/` land
+crol-notices --remote`) before direct deployment or promotion, so schema changes under `migrations/` land
 with the code that needs them. Skipping that step left the PASSPort tables uncreated and every
 lifecycle PASSPort lookup returning `lookup_status=error`. The deploy is still **code-only**
 for secrets — no `secrets:` or bulk `vars:` inputs — because Cloudflare will silently

@@ -11,7 +11,7 @@ import {
   validateWorkerCostProfile,
   workerCostEnforcementMode,
 } from "./lib/worker_cost_control.mjs";
-import { acquireWarehouseDeploymentBindings } from "./cloudflare_deployment_binding.mjs";
+import { acquireSplitDeploymentBindings } from "./cloudflare_deployment_binding.mjs";
 
 const WORKER_DIRECTORY = join(dirname(fileURLToPath(import.meta.url)), "..", "worker");
 const PRODUCTION_HEALTH_URL = "https://cityscroll-worker.crol-worker.workers.dev/health";
@@ -76,7 +76,7 @@ export async function runWorkerCostControl(argv, {
     }
     const providerStatus = await invokeWrangler(["deployments", "status", "--json"]);
     const providerVersions = await invokeWrangler(["versions", "list", "--json"]);
-    const trustedDeployments = await acquireWarehouseDeploymentBindings({
+    const acquiredDeployments = await acquireSplitDeploymentBindings({
       providerStatus,
       providerVersions,
       healthUrl: PRODUCTION_HEALTH_URL,
@@ -85,12 +85,16 @@ export async function runWorkerCostControl(argv, {
       candidateRevision: candidate.deployed_revision,
       fetchImpl,
     });
-    result = evaluateWarehouseExperiment({ baseline, candidate, trustedDeployments });
+    result = evaluateWarehouseExperiment({ baseline, candidate, acquiredDeployments });
   } else if (command === "release-evaluate") {
     const baseline = evidence(argv, env, "--baseline", "--baseline-env");
     const candidate = evidence(argv, env, "--candidate", "--candidate-env");
-    const trustedBaseline = evidence(argv, env, "--trusted-baseline-deployment", "--trusted-baseline-deployment-env");
-    const trustedCandidate = evidence(argv, env, "--trusted-candidate-deployment", "--trusted-candidate-deployment-env");
+    const acquiredPath = arg(argv, "--acquired-split-deployments");
+    if (!acquiredPath) throw new Error("release-evaluate requires --acquired-split-deployments");
+    const acquired = read(acquiredPath);
+    if (!acquired?.baseline || !acquired?.candidate) {
+      throw new Error("release-evaluate requires both acquired split deployment bindings");
+    }
     const expectedCandidateRevision = arg(argv, "--expected-candidate-revision");
     if (expectedCandidateRevision && candidate.deployed_revision !== expectedCandidateRevision) {
       throw new Error("candidate evidence revision does not match the release revision");
@@ -98,7 +102,7 @@ export async function runWorkerCostControl(argv, {
     result = evaluateAllMeterRelease({
       baseline,
       candidate,
-      trustedDeployments: { baseline: trustedBaseline, candidate: trustedCandidate },
+      acquiredDeployments: acquired,
     });
   } else if (command === "enforcement-mode") {
     const valueEnv = arg(argv, "--value-env");
