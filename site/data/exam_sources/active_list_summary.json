@@ -4,16 +4,16 @@
     "name": "Civil Service List (Active)",
     "dataset_id": "vx8i-nprf",
     "url": "https://data.cityofnewyork.us/resource/vx8i-nprf.json",
-    "fetched_at": "2026-09-30",
+    "fetched_at": "2026-10-09",
     "refresh_cadence": "Daily",
     "stale_after_days": 3,
     "privacy": "Only aggregate counts are retained; candidate records and names are not copied."
   },
   "summary": {
-    "candidate_rows": "406880",
-    "distinct_exams": "872",
-    "distinct_titles": "440",
-    "latest_established": "2026-09-30T00:00:00.000",
+    "candidate_rows": "406955",
+    "distinct_exams": "874",
+    "distinct_titles": "441",
+    "latest_established": "2026-10-07T00:00:00.000",
     "latest_extension": "2027-10-02T00:00:00.000"
   }
 }
