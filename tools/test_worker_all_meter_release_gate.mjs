@@ -90,7 +90,11 @@ test("a complete tariff-free cost vector passes when no meter regresses", () => 
   assert.equal(result.pass, true);
   assert.deepEqual(result.regressions, []);
   assert.equal(result.tariff_free, true);
-  assert.equal(result.candidate_normalized.native_cpu_ms, 0.36);
+  assert.equal(result.candidate_normalized.native_cpu_ms, 0.375);
+  assert.equal(result.candidate_normalized.collector_cpu_ms, 1);
+  assert.equal(result.candidate_populations.native_cpu_ms, REQUIRED_COST_COHORTS.length - 1);
+  assert.equal(result.candidate_populations.collector_cpu_ms, 1);
+  assert.equal(result.candidate_populations.kv_reads, REQUIRED_COST_COHORTS.length);
 });
 
 test("D1 savings cannot hide redundant KV writes", () => {

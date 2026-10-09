@@ -237,7 +237,7 @@ export function validateWorkerCostProfile(profile, { requireComplete = true } = 
   return { ok: true, complete: profile.complete === true };
 }
 
-export function profileMeterTotals(profile) {
+function profileMeterEvidence(profile) {
   validateWorkerCostProfile(profile);
   const totals = {
     native_cpu_ms: 0,
@@ -249,17 +249,39 @@ export function profileMeterTotals(profile) {
     storage_bytes: 0,
     errors: 0,
   };
+  const populations = Object.fromEntries([...COST_METERS, "errors"].map((meter) => [meter, 0]));
   for (const [cohortName, cohort] of Object.entries(profile.cohorts)) {
     for (const sample of cohort.samples) {
-      if (cohortName === "collector-overhead") totals.collector_cpu_ms += sample.native_cpu_ms;
-      else totals.native_cpu_ms += sample.native_cpu_ms;
+      if (cohortName === "collector-overhead") {
+        totals.collector_cpu_ms += sample.native_cpu_ms;
+        populations.collector_cpu_ms += 1;
+      } else {
+        totals.native_cpu_ms += sample.native_cpu_ms;
+        populations.native_cpu_ms += 1;
+      }
       totals.errors += sample.error_count;
+      populations.errors += 1;
       for (const meter of OPERATION_METERS) {
         totals[meter] += sample.operations[meter].confirmed;
+        populations[meter] += 1;
       }
     }
   }
-  return totals;
+  return { totals, populations };
+}
+
+export function profileMeterTotals(profile) {
+  return profileMeterEvidence(profile).totals;
+}
+
+function normalizeProfileEvidence(evidence, label) {
+  const normalized = {};
+  for (const meter of [...COST_METERS, "errors"]) {
+    const population = finiteNonNegativeInteger(evidence.populations[meter], `${label}.${meter} population`);
+    if (population < 1) fail(`${label}.${meter} population must be positive`);
+    normalized[meter] = evidence.totals[meter] / population;
+  }
+  return normalized;
 }
 
 export const WAREHOUSE_EXPERIMENT_COHORTS = Object.freeze([
@@ -361,6 +383,7 @@ export function evaluateWarehouseExperiment({ baseline, candidate } = {}) {
 export function evaluateAllMeterRelease({ baseline, candidate } = {}) {
   if (!baseline || !candidate) fail("baseline and candidate release evidence are required");
   assertSanitized({ baseline, candidate });
+  const evidenceByLabel = {};
   for (const [label, receipt] of Object.entries({ baseline, candidate })) {
     if (receipt.schema !== "cityscroll.all_meter_release.v1") fail(`invalid ${label} all-meter receipt`);
     requireActualWindow(receipt, label);
@@ -368,8 +391,8 @@ export function evaluateAllMeterRelease({ baseline, candidate } = {}) {
     validateWorkerCostProfile(receipt.profile);
     if (receipt.profile.revision !== receipt.deployed_revision) fail(`${label} profile revision does not match deployment`);
     finiteNonNegativeInteger(receipt.errors, `${label}.errors`);
-    normalizedMeters(receipt);
-    const profileTotals = profileMeterTotals(receipt.profile);
+    const profileEvidence = profileMeterEvidence(receipt.profile);
+    const profileTotals = profileEvidence.totals;
     const retainedSampleCount = Object.values(receipt.profile.cohorts)
       .reduce((sum, cohort) => sum + cohort.sample_count, 0);
     if (receipt.workload_count !== retainedSampleCount) fail(`${label}.workload_count does not match retained profile samples`);
@@ -377,11 +400,17 @@ export function evaluateAllMeterRelease({ baseline, candidate } = {}) {
       if (receipt.meters?.[meter] !== profileTotals[meter]) fail(`${label}.${meter} does not match provider profile samples`);
     }
     if (receipt.errors !== profileTotals.errors) fail(`${label}.errors does not match provider profile samples`);
+    evidenceByLabel[label] = profileEvidence;
   }
   if (baseline.workload_id !== candidate.workload_id || baseline.workload_count !== candidate.workload_count) fail("all-meter workloads are not equivalent");
   for (const cohort of REQUIRED_COST_COHORTS) {
     if (baseline.profile.cohorts[cohort].sample_count !== candidate.profile.cohorts[cohort].sample_count) {
       fail(`all-meter cohort ${cohort} sample counts are not matched`);
+    }
+  }
+  for (const meter of [...COST_METERS, "errors"]) {
+    if (evidenceByLabel.baseline.populations[meter] !== evidenceByLabel.candidate.populations[meter]) {
+      fail(`all-meter ${meter} provider-sample populations are not matched`);
     }
   }
   if (baseline.deployed_revision === candidate.deployed_revision) fail("all-meter revisions must be distinct");
@@ -394,10 +423,10 @@ export function evaluateAllMeterRelease({ baseline, candidate } = {}) {
     || rumPuts < 0
     || rumPuts > 3
   ) fail("candidate weighted RUM control is incomplete");
-  const baselineNormalized = normalizedMeters(baseline);
-  const candidateNormalized = normalizedMeters(candidate);
+  const baselineNormalized = normalizeProfileEvidence(evidenceByLabel.baseline, "baseline");
+  const candidateNormalized = normalizeProfileEvidence(evidenceByLabel.candidate, "candidate");
   const regressions = COST_METERS.filter((meter) => candidateNormalized[meter] > baselineNormalized[meter]);
-  if (candidate.errors > baseline.errors) regressions.push("errors");
+  if (candidateNormalized.errors > baselineNormalized.errors) regressions.push("errors");
   return {
     schema: "cityscroll.all_meter_release_decision.v1",
     pass: regressions.length === 0,
@@ -405,5 +434,7 @@ export function evaluateAllMeterRelease({ baseline, candidate } = {}) {
     tariff_free: true,
     baseline_normalized: baselineNormalized,
     candidate_normalized: candidateNormalized,
+    baseline_populations: evidenceByLabel.baseline.populations,
+    candidate_populations: evidenceByLabel.candidate.populations,
   };
 }

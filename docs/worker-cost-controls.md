@@ -65,9 +65,12 @@ and at most three KV puts for a sixteen-observation RUM batch. Both sides requir
 ordered actual-production windows, distinct deployed revisions, complete
 provider-native profiles, and the existing D1 delta control under its own
 authority. Provider prices and account bills are not CI inputs.
-Normalization is population-bound: each receipt's `workload_count` must equal
-the number of retained provider samples, so an independently supplied divisor
-cannot make a regressed total look neutral.
+Normalization is population-bound: native CPU uses the non-collector samples,
+collector CPU uses the collector cohort, and operation and error meters use
+every sample carrying their explicit evidence. Baseline and candidate
+populations must match for each meter. Each receipt's `workload_count` must also
+equal the full number of retained provider samples, so an independently
+supplied divisor cannot make a regressed total look neutral.
 
 The Worker deployment workflow fails closed before it mutates production by
 evaluating the sanitized JSON receipts in the `WORKER_COST_BASELINE_EVIDENCE`
