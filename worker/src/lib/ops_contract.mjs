@@ -39,7 +39,7 @@ import {
   COUNCIL_DISCOVERY_HEALTH_SCHEMA,
 } from "./council_discovery_health.mjs";
 
-export const OPS_CONTRACT_VERSION = "1.21.0";
+export const OPS_CONTRACT_VERSION = "1.22.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
