@@ -148,7 +148,7 @@ function parseState(raw) {
 function isMissingPublicationState(error) {
   const providerText = `${error?.stdout || ""}\n${error?.stderr || ""}\n${error?.message || ""}`;
   if (error?.status !== 1) return false;
-  return /\b404 Not Found\b/.test(providerText)
+  return /\b404:?\s+Not Found\b/.test(providerText)
     || /\b(?:code|error)(?::)?\s*10009\b/i.test(providerText);
 }
 

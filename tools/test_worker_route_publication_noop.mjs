@@ -95,29 +95,34 @@ test("every provider operation uses the configured ALERT_STATE binding", async (
   }
 });
 
-test("Wrangler's provider 404 for the new state key is first-publication absence", async () => {
-  const dir = fixture();
-  let first = true;
-  const remote = fakeWrangler();
-  const invoke = async (args) => {
-    if (first && args.slice(0, 4).join(" ") === `kv key get ${ROUTE_PUBLICATION_STATE_KEY}`) {
-      first = false;
-      const error = new Error("wrangler exited 1: API request failed: 404 Not Found");
-      error.status = 1;
-      error.stdout = "";
-      error.stderr = "GET /values/route-read-model%3Apublication-state%3Av1: 404 Not Found";
-      throw error;
+for (const [label, response] of [
+  ["plain 404", "404 Not Found"],
+  ["colored provider 404", "\u001b[31mERROR\u001b[0m Failed to fetch /values/route-read-model%3Apublication-state%3Av1 - 404: Not Found\u001b[0m"],
+]) {
+  test(`Wrangler's ${label} for the new state key is first-publication absence`, async () => {
+    const dir = fixture();
+    let first = true;
+    const remote = fakeWrangler();
+    const invoke = async (args) => {
+      if (first && args.slice(0, 4).join(" ") === `kv key get ${ROUTE_PUBLICATION_STATE_KEY}`) {
+        first = false;
+        const error = new Error(`wrangler exited 1: ${response}`);
+        error.status = 1;
+        error.stdout = "";
+        error.stderr = response;
+        throw error;
+      }
+      return remote.invoke(args);
+    };
+    try {
+      const result = await publishRouteReadModels({ routeDir: dir, invoke });
+      assert.equal(result.decision, "state-missing-republish");
+      assert.equal(result.confirmed.state_puts, 1);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
     }
-    return remote.invoke(args);
-  };
-  try {
-    const result = await publishRouteReadModels({ routeDir: dir, invoke });
-    assert.equal(result.decision, "state-missing-republish");
-    assert.equal(result.confirmed.state_puts, 1);
-  } finally {
-    rmSync(dir, { recursive: true, force: true });
-  }
-});
+  });
+}
 
 test("Wrangler's exact missing-value outputs start the first publication", async () => {
   for (const missing of [
@@ -153,7 +158,7 @@ test("Wrangler's exact missing-value outputs start the first publication", async
 test("state reads preserve authentication and non-404 provider failures", async () => {
   const dir = fixture();
   try {
-    for (const [status, message] of [[1, "401 Unauthorized"], [2, "network timeout"]]) {
+    for (const [status, message] of [[1, "401 Unauthorized"], [1, "403 Forbidden"], [2, "network timeout"], [2, "404: Not Found"]]) {
       await assert.rejects(
         () => publishRouteReadModels({
           routeDir: dir,
@@ -175,7 +180,7 @@ test("state reads preserve authentication and non-404 provider failures", async 
 test("missing-state detection rejects nearby provider failures", async () => {
   const dir = fixture();
   try {
-    for (const message of ["namespace not found [code: 10009x]", "API request failed: 404 Unauthorized"]) {
+    for (const message of ["namespace not found [code: 10009x]", "API request failed: 404 Unauthorized", "API request failed: 404: Unauthorized"]) {
       await assert.rejects(() => publishRouteReadModels({
         routeDir: dir,
         invoke: async () => {
