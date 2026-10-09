@@ -53,9 +53,12 @@ test("distinct meetings that share a publisher title get unique visible headings
   assert.equal(labels.get("meeting:community_board:unique"), "Unique Hearing Title");
 
   const html = renderBrowseView(buildBrowseView("meetings", { rows }));
-  const headingTexts = [...html.matchAll(/<h3>([\s\S]*?)<\/h3>/g)].map((match) =>
+  // Headings carry data-source-title (and may carry other attributes); a bare
+  // <h3>…</h3> match returns zero texts and lets uniqueness pass vacuously.
+  const headingTexts = [...html.matchAll(/<h3\b[^>]*>([\s\S]*?)<\/h3>/g)].map((match) =>
     match[1].replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim()
   );
+  assert.equal(headingTexts.length, 4, headingTexts);
   assert.equal(new Set(headingTexts).size, headingTexts.length, headingTexts);
   assert.ok(headingTexts.every((text) => text.includes("Transportation Committee Meeting") || text.includes("Unique Hearing Title")));
   assert.match(html, /data-source-title="Transportation Committee Meeting"/);
