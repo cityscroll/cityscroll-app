@@ -8,6 +8,8 @@ const WORKLOAD_HEADER = "x-cityscroll-cost-workload";
 const SERIES_HEADER = "x-cityscroll-cost-series";
 const PROBE_TAG = /^[a-z0-9][a-z0-9-]{7,95}$/;
 const WORKLOAD_HASH = /^[a-f0-9]{64}$/;
+const NATIVE_PROBE_SCHEMA = "cityscroll.worker_native_cost_probe.v1";
+const MAX_NATIVE_PROBE_WINDOW_MS = 30 * 60 * 1000;
 const statementTargets = new WeakMap();
 const statementSql = new WeakMap();
 
@@ -38,6 +40,87 @@ export function canonicalCostProbeWorkload(value) {
     )).join(",")}}`;
   }
   throw new TypeError("unsupported cost probe workload value");
+}
+
+function exactObjectKeys(value, keys) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  const actual = Object.keys(value).sort();
+  const expected = [...keys].sort();
+  return actual.length === expected.length && actual.every((key, index) => key === expected[index]);
+}
+
+function nativeProbeConfig(env, now) {
+  if (!env?.WORKER_COST_NATIVE_PROBE) return null;
+  let config;
+  try { config = JSON.parse(env.WORKER_COST_NATIVE_PROBE); }
+  catch { return null; }
+  if (!exactObjectKeys(config, [
+    "schema", "enabled", "starts_at", "expires_at", "run_marker_sha256", "workload_digest",
+    "scheduled_crons", "queue", "batch_marker_sha256", "max_queue_batch",
+  ])) return null;
+  const startsAt = Date.parse(config.starts_at);
+  const expiresAt = Date.parse(config.expires_at);
+  if (
+    config.schema !== NATIVE_PROBE_SCHEMA
+    || config.enabled !== true
+    || !Number.isFinite(startsAt)
+    || !Number.isFinite(expiresAt)
+    || expiresAt <= startsAt
+    || expiresAt - startsAt > MAX_NATIVE_PROBE_WINDOW_MS
+    || now < startsAt
+    || now > expiresAt
+    || !WORKLOAD_HASH.test(config.run_marker_sha256)
+    || !WORKLOAD_HASH.test(config.workload_digest)
+    || !WORKLOAD_HASH.test(config.batch_marker_sha256)
+    || !Array.isArray(config.scheduled_crons)
+    || config.scheduled_crons.length < 1
+    || config.scheduled_crons.length > 3
+    || config.scheduled_crons.some((cron) => typeof cron !== "string" || !cron || cron.length > 64)
+    || typeof config.queue !== "string"
+    || !config.queue
+    || config.queue.length > 128
+    || !Number.isInteger(config.max_queue_batch)
+    || config.max_queue_batch < 1
+    || config.max_queue_batch > 100
+  ) return null;
+  return config;
+}
+
+export function createNativeCostControlProbeRecord(env, invocation, now = Date.now()) {
+  const config = nativeProbeConfig(env, now);
+  if (!config || !invocation || typeof invocation !== "object") return null;
+  const shared = {
+    schema: NATIVE_PROBE_SCHEMA,
+    kind: invocation.kind,
+    run_marker_sha256: config.run_marker_sha256,
+    workload_digest: config.workload_digest,
+    instrumentation_log_count: 1,
+  };
+  if (invocation.kind === "scheduled") {
+    if (!config.scheduled_crons.includes(invocation.trigger) || !Number.isInteger(invocation.scheduledTime)) return null;
+    return { ...shared, trigger: invocation.trigger, scheduled_time: invocation.scheduledTime };
+  }
+  if (invocation.kind === "queue") {
+    if (
+      invocation.queue !== config.queue
+      || !Number.isInteger(invocation.batchSize)
+      || invocation.batchSize < 1
+      || invocation.batchSize > config.max_queue_batch
+    ) return null;
+    return {
+      ...shared,
+      queue: invocation.queue,
+      batch_size: invocation.batchSize,
+      batch_marker_sha256: config.batch_marker_sha256,
+    };
+  }
+  return null;
+}
+
+export function logNativeCostControlProbe(env, invocation, now = Date.now()) {
+  const record = createNativeCostControlProbeRecord(env, invocation, now);
+  if (record) console.log(record);
+  return record;
 }
 
 function resultMeta(result, counters) {

@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import test from "node:test";
+
+import { createNativeCostControlProbeRecord } from "../worker/src/lib/cost_control_probe.mjs";
 
 import {
   REQUIRED_COST_COHORTS,
@@ -36,13 +39,14 @@ const sanitizeNativeInvocation = (rawEvent, options) => sanitizeNativeInvocation
 const emptyOperations = () => Object.fromEntries([
   "kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes",
 ].map((meter) => [meter, { attempted: 0, confirmed: 0 }]));
-function event(cpuTime = 4) {
+function event(cpuTime = 4, coldStart = 1) {
   return {
     cpuTime,
     wallTime: 999,
     outcome: "ok",
     scriptVersion: { id: "provider-version" },
     exceptions: [],
+    $metadata: { coldStart },
     event: { request: {
       url: "https://example.invalid/health",
       method: "GET",
@@ -55,16 +59,26 @@ function nativeEvent(kind, trigger, cpuTime = 4) {
   const eventDetails = kind === "scheduled"
     ? { cron: trigger, scheduledTime: 1_760_000_000_000 }
     : { queue: trigger, batchSize: 1 };
-  return {
-    trigger,
-    cost_control: {
-      schema: "cityscroll.worker_cost_probe.v1",
-      kind,
-      event_request_id: requestId,
-      run_marker: RUN_MARKER,
+  const now = Date.parse("2026-10-09T01:05:00Z");
+  const source = createNativeCostControlProbeRecord({
+    WORKER_COST_NATIVE_PROBE: JSON.stringify({
+      schema: "cityscroll.worker_native_cost_probe.v1",
+      enabled: true,
+      starts_at: "2026-10-09T01:00:00Z",
+      expires_at: "2026-10-09T01:10:00Z",
+      run_marker_sha256: createHash("sha256").update(RUN_MARKER).digest("hex"),
       workload_digest: WORKLOAD_DIGEST,
-      ...(kind === "queue" ? { batch_marker: BATCH_MARKER } : {}),
-    },
+      scheduled_crons: ["0 8 * * *", "0 10 * * *", "0 13 * * *"],
+      queue: "crol-cost-probe",
+      batch_marker_sha256: createHash("sha256").update(BATCH_MARKER).digest("hex"),
+      max_queue_batch: 1,
+    }),
+  }, kind === "scheduled"
+    ? { kind, trigger, scheduledTime: 1_760_000_000_000 }
+    : { kind, queue: trigger, batchSize: 1 }, now);
+  return {
+    source,
+    $metadata: { requestId, trigger },
     $workers: {
       cpuTimeMs: cpuTime,
       eventType: kind,
@@ -84,19 +98,13 @@ function sample(cohort, cpu = 4) {
     ? nativeEvent("scheduled", cron, cpu)
     : isQueue
       ? nativeEvent("queue", "crol-cost-probe", cpu)
-      : event(cpu);
+      : event(cpu, cohort.endsWith(":warm") ? 0 : 1);
   return sanitizeNativeInvocation(raw, {
     cohort,
     revision,
     expectedHeaderValue: "owned",
     expectedUrl: "https://example.invalid/health",
-    condition: cohort.endsWith(":cold") || cohort.endsWith(":warm")
-      ? {
-        mode: "provider-observed",
-        source: "$metadata.coldStart",
-        cold_start: cohort.endsWith(":cold"),
-      }
-      : { mode: "bounded-production-execution" },
+    condition: { mode: "bounded-production-execution" },
     expectedCron: cron,
     expectedScheduledTime: isScheduled ? 1_760_000_000_000 : undefined,
     expectedRunMarker: isScheduled || isQueue ? RUN_MARKER : undefined,
@@ -175,11 +183,11 @@ test("native scheduled ownership binds cron, timestamp, run and workload", () =>
   assert.equal("run_marker" in retained.condition, false);
   for (const mutate of [
     (raw) => { raw.$workers.eventType = "fetch"; },
-    (raw) => { raw.trigger = "0 10 * * *"; },
+    (raw) => { raw.$metadata.trigger = "0 10 * * *"; },
     (raw) => { raw.$workers.event.scheduledTime += 1; },
-    (raw) => { raw.cost_control.run_marker = "other-run"; },
-    (raw) => { raw.cost_control.workload_digest = "e".repeat(64); },
-    (raw) => { raw.cost_control.event_request_id = "other-event"; },
+    (raw) => { raw.source.run_marker_sha256 = "e".repeat(64); },
+    (raw) => { raw.source.workload_digest = "e".repeat(64); },
+    (raw) => { delete raw.$workers.requestId; delete raw.$metadata.requestId; },
     (raw) => { raw.$workers.scriptVersion.id = "older-provider-version"; },
   ]) {
     const raw = nativeEvent("scheduled", "0 8 * * *");
@@ -204,9 +212,9 @@ test("native queue ownership rejects HTTP rehearsal and cross-batch evidence", (
     expectedQueue: "crol-cost-probe", expectedBatchMarker: BATCH_MARKER,
     expectedBatchSize: 1,
     operations: emptyOperations(),
-  }), /structured provider-event ownership/);
+  }), /native invocation|structured native probe/);
   const wrongBatch = nativeEvent("queue", "crol-cost-probe");
-  wrongBatch.cost_control.batch_marker = "other-batch";
+  wrongBatch.source.batch_marker_sha256 = "e".repeat(64);
   assert.throws(() => sanitizeNativeInvocation(wrongBatch, {
     cohort: "queue", revision,
     expectedRunMarker: RUN_MARKER, expectedWorkloadDigest: WORKLOAD_DIGEST,
@@ -214,7 +222,8 @@ test("native queue ownership rejects HTTP rehearsal and cross-batch evidence", (
     expectedBatchSize: 1,
     operations: emptyOperations(),
   }), /batch marker/);
-  const wrongTrigger = nativeEvent("queue", "other-queue");
+  const wrongTrigger = nativeEvent("queue", "crol-cost-probe");
+  wrongTrigger.$metadata.trigger = "other-queue";
   assert.throws(() => sanitizeNativeInvocation(wrongTrigger, {
     cohort: "queue", revision,
     expectedRunMarker: RUN_MARKER, expectedWorkloadDigest: WORKLOAD_DIGEST,
@@ -289,16 +298,29 @@ test("wall time without a native CPU field is rejected", () => {
 });
 
 test("cold and warm labels require matching provider coldStart evidence", () => {
-  assert.throws(() => sanitizeNativeInvocation(event(), {
+  const derived = sanitizeNativeInvocation(event(4, 1), {
     cohort: "health:cold", revision,
-    condition: { mode: "provider-observed", source: "$metadata.coldStart", cold_start: false },
+    condition: { mode: "caller-invented", source: "$metadata.coldStart", cold_start: false },
+    expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
+    operations: emptyOperations(),
+  });
+  assert.deepEqual(derived.condition, {
+    mode: "provider-observed", source: "$metadata.coldStart", cold_start: true,
+  });
+  assert.throws(() => sanitizeNativeInvocation(event(4, 0), {
+    cohort: "health:cold", revision,
     expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
   }), /does not match cohort/);
-  assert.throws(() => sanitizeNativeInvocation(event(), {
+  const missing = event();
+  delete missing.$metadata.coldStart;
+  assert.throws(() => sanitizeNativeInvocation(missing, {
     cohort: "health:warm", revision,
-    condition: { mode: "request-order", cold_start: false },
     expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
-  }), /provider \$metadata\.coldStart/);
+  }), /numeric 0 or 1/);
+  assert.throws(() => sanitizeNativeInvocation(event(4, true), {
+    cohort: "health:cold", revision,
+    expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
+  }), /numeric 0 or 1/);
 });
 
 test("attempted writes cannot be represented as confirmed", () => {

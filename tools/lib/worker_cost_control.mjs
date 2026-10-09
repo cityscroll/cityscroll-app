@@ -80,34 +80,64 @@ function markerSha256(value) {
   return createHash("sha256").update(value).digest("hex");
 }
 
+function structuredApplicationRecords(event) {
+  const records = [];
+  if (event?.source && typeof event.source === "object" && !Array.isArray(event.source)) {
+    records.push(event.source);
+  }
+  const logs = event?.logs || event?.Logs;
+  if (Array.isArray(logs)) {
+    for (const log of logs) {
+      const payload = log?.message ?? log?.Message;
+      if (payload && typeof payload === "object" && !Array.isArray(payload)) {
+        records.push(payload);
+      } else if (typeof payload === "string") {
+        try {
+          const parsed = JSON.parse(payload);
+          if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) records.push(parsed);
+        } catch {}
+      }
+    }
+  }
+  return records.filter((record) => record.schema === "cityscroll.worker_native_cost_probe.v1");
+}
+
+function providerRequestId(event, provider) {
+  return requireMarker(provider?.requestId || event?.$metadata?.requestId, "provider event request ID");
+}
+
 function nativeOwnership(event, {
   kind,
   expectedRunMarker,
   expectedWorkloadDigest,
   expectedBatchMarker,
 } = {}) {
-  const provider = providerInvocation(event);
-  const ownership = event?.cost_control;
+  const provider = event?.$workers;
+  if (!provider || typeof provider !== "object") fail("native invocation requires Cloudflare Workers telemetry metadata");
+  const matches = structuredApplicationRecords(event);
+  if (matches.length !== 1) fail("exactly one structured native probe record is required");
+  const ownership = matches[0];
   const expectedKeys = kind === "queue"
-    ? ["schema", "kind", "event_request_id", "run_marker", "workload_digest", "batch_marker"]
-    : ["schema", "kind", "event_request_id", "run_marker", "workload_digest"];
-  if (!ownership || typeof ownership !== "object") fail("structured provider-event ownership metadata is required");
+    ? ["schema", "kind", "run_marker_sha256", "workload_digest", "instrumentation_log_count", "queue", "batch_size", "batch_marker_sha256"]
+    : ["schema", "kind", "run_marker_sha256", "workload_digest", "instrumentation_log_count", "trigger", "scheduled_time"];
   requireExactKeys(ownership, expectedKeys, "cost_control");
-  if (ownership.schema !== "cityscroll.worker_cost_probe.v1" || ownership.kind !== kind) {
+  if (ownership.schema !== "cityscroll.worker_native_cost_probe.v1" || ownership.kind !== kind) {
     fail("structured provider-event ownership metadata is invalid");
   }
-  const requestId = requireMarker(provider.requestId, "provider event request ID");
-  if (ownership.event_request_id !== requestId) fail("ownership metadata is not bound to the provider event");
+  const requestId = providerRequestId(event, provider);
   const runMarker = requireMarker(expectedRunMarker, "expected run marker");
-  if (ownership.run_marker !== runMarker) fail("provider event run marker does not match the independently expected run");
+  if (ownership.run_marker_sha256 !== markerSha256(runMarker)) fail("provider event run marker does not match the independently expected run");
   if (!SHA256.test(String(expectedWorkloadDigest || ""))) fail("expected workload digest is invalid");
   if (ownership.workload_digest !== expectedWorkloadDigest) fail("provider event workload digest does not match");
+  if (ownership.instrumentation_log_count !== 1) fail("provider event instrumentation count is invalid");
   if (kind === "queue") {
     const batchMarker = requireMarker(expectedBatchMarker, "expected batch marker");
-    if (ownership.batch_marker !== batchMarker) fail("provider event batch marker does not match");
+    if (ownership.batch_marker_sha256 !== markerSha256(batchMarker)) fail("provider event batch marker does not match");
   }
   return {
     provider,
+    ownership,
+    provider_request_id_sha256: markerSha256(requestId),
     run_marker_sha256: markerSha256(runMarker),
     workload_digest: expectedWorkloadDigest,
     ...(kind === "queue" ? { batch_marker_sha256: markerSha256(expectedBatchMarker) } : {}),
@@ -121,15 +151,18 @@ function scheduledCondition(event, cohort, options) {
   const ownership = nativeOwnership(event, { kind: "scheduled", ...options });
   const details = ownership.provider.event;
   if (!["scheduled", "cron"].includes(ownership.provider.eventType)) fail("provider event is not a native scheduled invocation");
-  if (event?.trigger !== cron || details?.cron !== cron) fail("provider scheduled trigger does not match the expected cron");
+  if (event?.$metadata?.trigger !== cron || details?.cron !== cron || ownership.ownership.trigger !== cron) fail("provider scheduled trigger does not match the expected cron");
   if (details?.scheduledTime !== options.expectedScheduledTime) fail("provider scheduled timestamp does not match");
+  if (ownership.ownership.scheduled_time !== options.expectedScheduledTime) fail("probe scheduled timestamp does not match");
   return {
     mode: "provider-native-scheduled",
     source: "$workers.event",
     cron,
     scheduled_time: options.expectedScheduledTime,
+    provider_request_id_sha256: ownership.provider_request_id_sha256,
     run_marker_sha256: ownership.run_marker_sha256,
     workload_digest: ownership.workload_digest,
+    instrumentation_log_count: 1,
   };
 }
 
@@ -140,17 +173,28 @@ function queueCondition(event, options) {
   const ownership = nativeOwnership(event, { kind: "queue", ...options });
   const details = ownership.provider.event;
   if (ownership.provider.eventType !== "queue") fail("provider event is not a native queue invocation");
-  if (event?.trigger !== queue || details?.queue !== queue) fail("provider queue trigger does not match");
+  if (event?.$metadata?.trigger !== queue || details?.queue !== queue || ownership.ownership.queue !== queue) fail("provider queue trigger does not match");
   if (details?.batchSize !== options.expectedBatchSize) fail("provider queue batch size does not match");
+  if (ownership.ownership.batch_size !== options.expectedBatchSize) fail("probe queue batch size does not match");
   return {
     mode: "provider-native-queue",
     source: "$workers.event",
     queue,
     batch_size: options.expectedBatchSize,
+    provider_request_id_sha256: ownership.provider_request_id_sha256,
     run_marker_sha256: ownership.run_marker_sha256,
     workload_digest: ownership.workload_digest,
     batch_marker_sha256: ownership.batch_marker_sha256,
+    instrumentation_log_count: 1,
   };
+}
+
+function providerColdCondition(event, cohort) {
+  const coldStart = event?.$metadata?.coldStart;
+  if (coldStart !== 0 && coldStart !== 1) fail("provider $metadata.coldStart must be the numeric 0 or 1 flag");
+  const cold = coldStart === 1;
+  if (cold !== cohort.endsWith(":cold")) fail("provider $metadata.coldStart does not match cohort");
+  return { mode: "provider-observed", source: "$metadata.coldStart", cold_start: cold };
 }
 
 function validateCondition(cohort, condition, path) {
@@ -162,7 +206,7 @@ function validateCondition(cohort, condition, path) {
     if (condition.cold_start !== cohort.endsWith(":cold")) fail(`${path} coldStart does not match cohort`);
   } else if (cohort.startsWith("cron:")) {
     requireExactKeys(condition, [
-      "mode", "source", "cron", "scheduled_time", "run_marker_sha256", "workload_digest",
+      "mode", "source", "cron", "scheduled_time", "provider_request_id_sha256", "run_marker_sha256", "workload_digest", "instrumentation_log_count",
     ], path);
     if (condition.mode !== "provider-native-scheduled" || condition.source !== "$workers.event") {
       fail(`${path} must use a provider-native scheduled event`);
@@ -172,9 +216,10 @@ function validateCondition(cohort, condition, path) {
     if (!SHA256.test(condition.run_marker_sha256) || !SHA256.test(condition.workload_digest)) {
       fail(`${path} ownership digests are invalid`);
     }
+    if (!SHA256.test(condition.provider_request_id_sha256) || condition.instrumentation_log_count !== 1) fail(`${path} provider correlation is invalid`);
   } else if (cohort === "queue") {
     requireExactKeys(condition, [
-      "mode", "source", "queue", "batch_size", "run_marker_sha256", "workload_digest", "batch_marker_sha256",
+      "mode", "source", "queue", "batch_size", "provider_request_id_sha256", "run_marker_sha256", "workload_digest", "batch_marker_sha256", "instrumentation_log_count",
     ], path);
     if (condition.mode !== "provider-native-queue" || condition.source !== "$workers.event") {
       fail(`${path} must use a provider-native queue event`);
@@ -185,6 +230,7 @@ function validateCondition(cohort, condition, path) {
     for (const field of ["run_marker_sha256", "workload_digest", "batch_marker_sha256"]) {
       if (!SHA256.test(condition[field])) fail(`${path}.${field} is invalid`);
     }
+    if (!SHA256.test(condition.provider_request_id_sha256) || condition.instrumentation_log_count !== 1) fail(`${path} provider correlation is invalid`);
   }
 }
 
@@ -281,6 +327,7 @@ export function sanitizeNativeInvocation(event, {
     const ownedHeader = headers["x-cityscroll-cost-probe"] || headers["X-Cityscroll-Cost-Probe"];
     if (!expectedHeaderValue || ownedHeader !== expectedHeaderValue) fail("provider event is not owned by the literal probe header");
     if (request?.url !== expectedUrl || request?.method !== expectedMethod) fail("provider event does not match the expected URL and method");
+    if (cohort.endsWith(":cold") || cohort.endsWith(":warm")) retainedCondition = providerColdCondition(event, cohort);
   }
   const provider = providerInvocation(event);
   const cpu = event?.cpuTime ?? provider.cpuTimeMs;

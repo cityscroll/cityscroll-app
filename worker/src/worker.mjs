@@ -120,7 +120,12 @@ import { handleCitedPassages } from "./cited_retrieval.mjs";
 import { handleContract, handleContractsAnalysis, handleContractsBrowse } from "./contracts.mjs";
 import { handleLandDecisionPath, handleLandProject, handleLandProjectsBrowse } from "./land_projects.mjs";
 import { recordSourceAcquisitionReceipt } from "./lib/source_acquisition_receipt.mjs";
-import { beginCostControlProbe, canonicalCostProbeWorkload, logCostControlProbe } from "./lib/cost_control_probe.mjs";
+import {
+  beginCostControlProbe,
+  canonicalCostProbeWorkload,
+  logCostControlProbe,
+  logNativeCostControlProbe,
+} from "./lib/cost_control_probe.mjs";
 import { LAND_PROJECT_ID_PATTERN } from "../../capabilities/land_projects.mjs";
 import { RUM_MARKED_TRAFFIC_CLASSES, isRumProductionOrigin } from "../../site/rum_production.mjs";
 
@@ -466,6 +471,11 @@ const worker = {
   },
 
   async scheduled(event, env, ctx) {
+    logNativeCostControlProbe(env, {
+      kind: "scheduled",
+      trigger: event.cron,
+      scheduledTime: event.scheduledTime,
+    });
     const runId = `worker:${event.cron}:${new Date().toISOString()}`;
     // Each scheduled window starts the receipt-only public summary independently.
     // Early-return branches, delivery errors, and slow publisher refreshes must not
@@ -821,6 +831,11 @@ const worker = {
 
   // Digest queue consumer: one account job per message (single watch or rollup; see alerts.mjs).
   async queue(batch, env) {
+    logNativeCostControlProbe(env, {
+      kind: "queue",
+      queue: batch.queue,
+      batchSize: batch.messages.length,
+    });
     if (batch.queue === "crol-digest-shadow-rebuild") {
       for (const msg of batch.messages) {
         try {

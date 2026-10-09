@@ -65,7 +65,7 @@ test("deploy workflow preserves ordinary deploys and gates only activated promot
     "--github-output", "$GITHUB_OUTPUT",
   ]]);
   const gate = steps.find((step) => step.name === "Enforce the all-meter Worker release gate");
-  assert.equal(gate.if, "${{ steps.cost_enforcement.outputs.mode == 'active' }}");
+  assert.equal(gate.if, "${{ steps.cost_enforcement.outputs.mode == 'active' && steps.cost_binding.outputs.promotion-state == 'staged' }}");
   assert.equal(gate.env.WORKER_COST_BASELINE_EVIDENCE, "${{ vars.WORKER_COST_BASELINE_EVIDENCE }}");
   assert.equal(gate.env.WORKER_COST_CANDIDATE_EVIDENCE, "${{ vars.WORKER_COST_CANDIDATE_EVIDENCE }}");
   assert.deepEqual(shellArgv(gate.run), [
@@ -76,6 +76,7 @@ test("deploy workflow preserves ordinary deploys and gates only activated promot
     "--expected-candidate-revision", "$GITHUB_SHA",
   ]);
   const acquisition = steps.find((step) => step.name === "Acquire staged candidate and rollback bindings");
+  assert.equal(acquisition.id, "cost_binding");
   assert.equal(acquisition.if, "${{ steps.cost_enforcement.outputs.mode == 'active' }}");
   const acquisitionCommands = normalizedRunCommands(acquisition.run);
   assert.deepEqual(acquisitionCommands.find((argv) => argv[0] === "npx" && argv[2] === "deployments"), [
@@ -98,6 +99,15 @@ test("deploy workflow preserves ordinary deploys and gates only activated promot
     "--expected-revision", "$GITHUB_SHA",
     "--out", "$state_dir/split-deployments.json",
   ]);
+  assert.deepEqual(acquisitionCommands.find((argv) => argv.includes("acquire") && !argv.includes("acquire-split")), [
+    "node", "tools/cloudflare_deployment_binding.mjs", "acquire",
+    "--provider-status", "$state_dir/provider-status.json",
+    "--provider-versions", "$state_dir/provider-versions.json",
+    "--health-url", "https://cityscroll-worker.crol-worker.workers.dev/health",
+    "--worker-name", "cityscroll-worker",
+    "--expected-revision", "$GITHUB_SHA",
+    "--out", "$state_dir/retry-deployment.json",
+  ]);
   const promotion = steps.find((step) => step.name === "Deploy");
   const promotionCommands = normalizedExecutables(promotion.run);
   assert.deepEqual(promotionCommands.find((argv) => argv.includes("promotion-recheck")), [
@@ -107,6 +117,15 @@ test("deploy workflow preserves ordinary deploys and gates only activated promot
     "--provider-versions", "$state_dir/provider-versions.json",
     "--expected-revision", "$GITHUB_SHA",
     "--out", "$state_dir/promotion-plan.json",
+  ]);
+  assert.deepEqual(promotionCommands.find((argv) => argv.includes("acquire")), [
+    "node", "tools/cloudflare_deployment_binding.mjs", "acquire",
+    "--provider-status", "$state_dir/provider-status.json",
+    "--provider-versions", "$state_dir/provider-versions.json",
+    "--health-url", "https://cityscroll-worker.crol-worker.workers.dev/health",
+    "--worker-name", "cityscroll-worker",
+    "--expected-revision", "$GITHUB_SHA",
+    "--out", "$state_dir/retry-deployment.json",
   ]);
   assert.deepEqual(promotionCommands
     .filter((argv) => argv[0] === "npx" && argv[1] === "wrangler@4.126.0")

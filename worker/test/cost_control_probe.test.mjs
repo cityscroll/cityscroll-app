@@ -3,7 +3,11 @@ import { createHash } from "node:crypto";
 import test from "node:test";
 
 import worker from "../src/worker.mjs";
-import { beginCostControlProbe, canonicalCostProbeWorkload } from "../src/lib/cost_control_probe.mjs";
+import {
+  beginCostControlProbe,
+  canonicalCostProbeWorkload,
+  createNativeCostControlProbeRecord,
+} from "../src/lib/cost_control_probe.mjs";
 import { RUM_BATCH_SCHEMA, RUM_OBSERVATION_SCHEMA } from "../src/performance_events.mjs";
 
 const ADMIN_KEY = "probe-test-admin-key";
@@ -92,6 +96,42 @@ test("probe rejects missing operator authorization without exposing the route", 
     },
   }), { ADMIN_KEY }, { workloadHash: WORKLOAD });
   assert.equal(denied.denied.status, 404);
+});
+
+test("native probe records are opt-in, bounded, self-expiring and payload-free", () => {
+  const now = Date.parse("2026-10-09T01:05:00Z");
+  const config = {
+    schema: "cityscroll.worker_native_cost_probe.v1",
+    enabled: true,
+    starts_at: "2026-10-09T01:00:00Z",
+    expires_at: "2026-10-09T01:10:00Z",
+    run_marker_sha256: "a".repeat(64),
+    workload_digest: "b".repeat(64),
+    scheduled_crons: ["0 8 * * *"],
+    queue: "crol-cost-probe",
+    batch_marker_sha256: "c".repeat(64),
+    max_queue_batch: 2,
+  };
+  const env = { WORKER_COST_NATIVE_PROBE: JSON.stringify(config) };
+  assert.equal(createNativeCostControlProbeRecord({}, { kind: "scheduled" }, now), null);
+  assert.equal(createNativeCostControlProbeRecord(env, {
+    kind: "scheduled", trigger: "0 8 * * *", scheduledTime: 1_760_000_000_000,
+  }, Date.parse("2026-10-09T01:11:00Z")), null);
+  assert.deepEqual(createNativeCostControlProbeRecord(env, {
+    kind: "queue", queue: "crol-cost-probe", batchSize: 2,
+  }, now), {
+    schema: "cityscroll.worker_native_cost_probe.v1",
+    kind: "queue",
+    run_marker_sha256: "a".repeat(64),
+    workload_digest: "b".repeat(64),
+    instrumentation_log_count: 1,
+    queue: "crol-cost-probe",
+    batch_size: 2,
+    batch_marker_sha256: "c".repeat(64),
+  });
+  assert.equal(createNativeCostControlProbeRecord(env, {
+    kind: "queue", queue: "crol-cost-probe", batchSize: 3,
+  }, now), null);
 });
 
 test("probe counts real KV operations and suppresses rehearsal writes", async () => {

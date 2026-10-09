@@ -214,6 +214,7 @@ jobs:
       - name: Validate D1 release policy
         run: node tools/d1_release_policy.mjs --check
       - name: Acquire staged candidate and rollback bindings
+        id: cost_binding
         if: ${{ steps.cost_enforcement.outputs.mode == 'active' }}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -229,17 +230,29 @@ jobs:
             --provider-versions "$state_dir/provider-versions.json" \
             --expected-revision "$GITHUB_SHA" \
             --out "$state_dir/promotion-plan.json"
-          baseline_revision=$(node -e 'const value=JSON.parse(process.env.WORKER_COST_BASELINE_EVIDENCE||"null");if(!/^[a-f0-9]{40}$/.test(value?.deployed_revision||""))process.exit(1);process.stdout.write(value.deployed_revision)')
-          node tools/cloudflare_deployment_binding.mjs acquire-split \
-            --provider-status "$state_dir/provider-status.json" \
-            --provider-versions "$state_dir/provider-versions.json" \
-            --health-url https://cityscroll-worker.crol-worker.workers.dev/health \
-            --worker-name cityscroll-worker \
-            --baseline-revision "$baseline_revision" \
-            --expected-revision "$GITHUB_SHA" \
-            --out "$state_dir/split-deployments.json"
+          state=$(node -p "require('$state_dir/promotion-plan.json').state")
+          echo "promotion-state=$state" >> "$GITHUB_OUTPUT"
+          if [ "$state" = "already-promoted" ]; then
+            node tools/cloudflare_deployment_binding.mjs acquire \
+              --provider-status "$state_dir/provider-status.json" \
+              --provider-versions "$state_dir/provider-versions.json" \
+              --health-url https://cityscroll-worker.crol-worker.workers.dev/health \
+              --worker-name cityscroll-worker \
+              --expected-revision "$GITHUB_SHA" \
+              --out "$state_dir/retry-deployment.json"
+          else
+            baseline_revision=$(node -e 'const value=JSON.parse(process.env.WORKER_COST_BASELINE_EVIDENCE||"null");if(!/^[a-f0-9]{40}$/.test(value?.deployed_revision||""))process.exit(1);process.stdout.write(value.deployed_revision)')
+            node tools/cloudflare_deployment_binding.mjs acquire-split \
+              --provider-status "$state_dir/provider-status.json" \
+              --provider-versions "$state_dir/provider-versions.json" \
+              --health-url https://cityscroll-worker.crol-worker.workers.dev/health \
+              --worker-name cityscroll-worker \
+              --baseline-revision "$baseline_revision" \
+              --expected-revision "$GITHUB_SHA" \
+              --out "$state_dir/split-deployments.json"
+          fi
       - name: Enforce the all-meter Worker release gate
-        if: ${{ steps.cost_enforcement.outputs.mode == 'active' }}
+        if: ${{ steps.cost_enforcement.outputs.mode == 'active' && steps.cost_binding.outputs.promotion-state == 'staged' }}
         env:
           WORKER_COST_BASELINE_EVIDENCE: ${{ vars.WORKER_COST_BASELINE_EVIDENCE }}
           WORKER_COST_CANDIDATE_EVIDENCE: ${{ vars.WORKER_COST_CANDIDATE_EVIDENCE }}
@@ -735,6 +748,13 @@ jobs:
             --out "$state_dir/promotion-plan.json"
           state=$(node -p "require('$state_dir/promotion-plan.json').state")
           if [ "$state" = "already-promoted" ]; then
+            node tools/cloudflare_deployment_binding.mjs acquire \
+              --provider-status "$state_dir/provider-status.json" \
+              --provider-versions "$state_dir/provider-versions.json" \
+              --health-url https://cityscroll-worker.crol-worker.workers.dev/health \
+              --worker-name cityscroll-worker \
+              --expected-revision "$GITHUB_SHA" \
+              --out "$state_dir/retry-deployment.json"
             echo "The exact measured Worker version is already promoted; retaining it for this retry."
             exit 0
           fi
