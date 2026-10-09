@@ -39,6 +39,25 @@ function normalizedRunCommands(run) {
   });
 }
 
+function normalizedExecutables(run) {
+  return normalizedRunCommands(run).flatMap((rawArgv) => {
+    let argv = rawArgv;
+    const assignmentCommand = argv[0]?.match(/^[^=]+=\$\(([^)]+)$/);
+    if (assignmentCommand) argv = [assignmentCommand[1], ...argv.slice(1)];
+    const indexes = [argv.indexOf("npx"), argv.indexOf("node")].filter((index) => index >= 0);
+    if (!indexes.length) {
+      if (!argv.length || ["set", "mkdir", "echo", "exit", "if", "then", "fi"].includes(argv[0])) return [];
+      if (argv[0].includes("=")) return [];
+      return [argv];
+    }
+    const start = Math.min(...indexes);
+    const redirected = argv.findIndex((word, index) => index > start && (word === ">" || word.startsWith(">")));
+    const command = argv.slice(start, redirected >= 0 ? redirected : undefined);
+    command[command.length - 1] = command.at(-1).replace(/\)$/, "");
+    return [command];
+  });
+}
+
 test("Worker routes retain API domains and claim only canonical dynamic-document paths", () => {
   const config = read("worker/wrangler.toml");
   const start = config.indexOf("routes = [");
@@ -114,6 +133,23 @@ test("deploy workflow executes route publication and the all-meter gate", () => 
     "--expected-revision", "$GITHUB_SHA",
     "--out", ".artifacts/cost-control/candidate-deployment.json",
   ]);
+  const promotion = steps.find((step) => step.name === "Deploy");
+  const promotionCommands = normalizedExecutables(promotion.run);
+  assert.deepEqual(promotionCommands.find((argv) => argv.includes("promotion-recheck")), [
+    "node", "tools/cloudflare_deployment_binding.mjs", "promotion-recheck",
+    "--initial-plan", ".artifacts/cost-control/promotion-plan.json",
+    "--provider-status", "$state_dir/provider-status.json",
+    "--provider-versions", "$state_dir/provider-versions.json",
+    "--expected-revision", "$GITHUB_SHA",
+    "--out", "$state_dir/promotion-plan.json",
+  ]);
+  assert.deepEqual(promotionCommands
+    .filter((argv) => argv[0] === "npx" && argv[1] === "wrangler@4.126.0")
+    .map((argv) => argv.slice(2, 5)), [
+    ["deployments", "status", "--json"],
+    ["versions", "list", "--json"],
+    ["versions", "deploy", "${candidate}@100%"],
+  ]);
 });
 
 test("canary stage is manual-only and isolated from publication jobs", () => {
@@ -143,8 +179,33 @@ test("canary stage is manual-only and isolated from publication jobs", () => {
     "--event-name", "$GITHUB_EVENT_NAME",
     "--release-mode", "stage",
     "--expected-revision", "$GITHUB_SHA",
-    "--out", "$state_dir/stage-plan.json",
+    "--out", "$state_dir/initial-stage-plan.json",
   ]);
+  const commands = workflow.jobs.stage.steps.flatMap((step) => normalizedExecutables(step.run || ""));
+  const wranglerCommands = commands
+    .filter((argv) => argv[0] === "npx" && argv[1] === "wrangler@4.126.0")
+    .map((argv) => argv.slice(2, 5));
+  assert.deepEqual(wranglerCommands, [
+    ["deployments", "status", "--json"],
+    ["versions", "list", "--json"],
+    ["versions", "upload", "--tag"],
+    ["deployments", "status", "--json"],
+    ["versions", "list", "--json"],
+    ["versions", "deploy", "${rollback}@95%"],
+    ["deployments", "status", "--json"],
+    ["versions", "list", "--json"],
+  ]);
+  assert.deepEqual(commands
+    .filter((argv) => argv[0] === "node" && argv[1] === "tools/cloudflare_deployment_binding.mjs")
+    .map((argv) => argv[2]), ["stage-plan", "stage-recheck", "promotion-plan"]);
+  for (const argv of commands) {
+    assert.ok(
+      argv[0] === "tools/install_worker_dependencies.sh"
+      || (argv[0] === "npx" && argv[1] === "wrangler@4.126.0")
+      || (argv[0] === "node" && ["-p", "tools/cloudflare_deployment_binding.mjs"].includes(argv[1])),
+      `unexpected executable in stage job: ${argv.join(" ")}`,
+    );
+  }
 });
 
 test("digest deploy guard covers trigger propagation before the cron", () => {

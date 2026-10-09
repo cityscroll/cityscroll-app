@@ -91,8 +91,8 @@ jobs:
             --event-name "$GITHUB_EVENT_NAME" \
             --release-mode stage \
             --expected-revision "$GITHUB_SHA" \
-            --out "$state_dir/stage-plan.json"
-          action=$(node -p "require('$state_dir/stage-plan.json').action")
+            --out "$state_dir/initial-stage-plan.json"
+          action=$(node -p "require('$state_dir/initial-stage-plan.json').action")
           echo "action=$action" >> "$GITHUB_OUTPUT"
       - name: Upload exact tagged canary version
         if: ${{ steps.stage_plan.outputs.action == 'upload' }}
@@ -117,16 +117,21 @@ jobs:
         run: |
           set -euo pipefail
           state_dir="$RUNNER_TEMP/cityscroll-worker-canary"
-          (cd worker && npx wrangler@4.126.0 versions list --json) > "$state_dir/provider-versions.json"
-          node tools/cloudflare_deployment_binding.mjs stage-plan \
-            --provider-status "$state_dir/provider-status.json" \
-            --provider-versions "$state_dir/provider-versions.json" \
-            --event-name "$GITHUB_EVENT_NAME" \
-            --release-mode stage \
+          (cd worker && npx wrangler@4.126.0 deployments status --json) > "$state_dir/mutation-provider-status.json"
+          (cd worker && npx wrangler@4.126.0 versions list --json) > "$state_dir/mutation-provider-versions.json"
+          node tools/cloudflare_deployment_binding.mjs stage-recheck \
+            --initial-plan "$state_dir/initial-stage-plan.json" \
+            --provider-status "$state_dir/mutation-provider-status.json" \
+            --provider-versions "$state_dir/mutation-provider-versions.json" \
             --expected-revision "$GITHUB_SHA" \
-            --out "$state_dir/stage-plan.json"
-          candidate=$(node -p "require('$state_dir/stage-plan.json').candidate_version_id")
-          rollback=$(node -p "require('$state_dir/stage-plan.json').rollback_version_id")
+            --out "$state_dir/mutation-stage-plan.json"
+          action=$(node -p "require('$state_dir/mutation-stage-plan.json').action")
+          if [ "$action" = "already-staged" ]; then
+            echo "The exact bounded canary split is already active; retaining it for this retry."
+            exit 0
+          fi
+          candidate=$(node -p "require('$state_dir/mutation-stage-plan.json').candidate_version_id")
+          rollback=$(node -p "require('$state_dir/mutation-stage-plan.json').rollback_version_id")
           log="$state_dir/deploy.log"
           if ! (cd worker && npx wrangler@4.126.0 versions deploy \
             "${rollback}@95%" "${candidate}@5%" --yes \
@@ -201,7 +206,6 @@ jobs:
       - name: Validate D1 release policy
         run: node tools/d1_release_policy.mjs --check
       - name: Acquire trusted staged Worker deployment binding
-        id: candidate_binding
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
@@ -221,8 +225,6 @@ jobs:
             --worker-name cityscroll-worker \
             --expected-revision "$GITHUB_SHA" \
             --out .artifacts/cost-control/candidate-deployment.json
-          state=$(node -p "require('./.artifacts/cost-control/promotion-plan.json').state")
-          echo "state=$state" >> "$GITHUB_OUTPUT"
       - name: Enforce the all-meter Worker release gate
         env:
           WORKER_COST_BASELINE_EVIDENCE: ${{ vars.WORKER_COST_BASELINE_EVIDENCE }}
@@ -698,11 +700,22 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           set -euo pipefail
-          if [ "${{ steps.candidate_binding.outputs.state }}" = "already-promoted" ]; then
+          state_dir="$RUNNER_TEMP/cityscroll-worker-promotion"
+          mkdir -p "$state_dir"
+          (cd worker && npx wrangler@4.126.0 deployments status --json) > "$state_dir/provider-status.json"
+          (cd worker && npx wrangler@4.126.0 versions list --json) > "$state_dir/provider-versions.json"
+          node tools/cloudflare_deployment_binding.mjs promotion-recheck \
+            --initial-plan .artifacts/cost-control/promotion-plan.json \
+            --provider-status "$state_dir/provider-status.json" \
+            --provider-versions "$state_dir/provider-versions.json" \
+            --expected-revision "$GITHUB_SHA" \
+            --out "$state_dir/promotion-plan.json"
+          state=$(node -p "require('$state_dir/promotion-plan.json').state")
+          if [ "$state" = "already-promoted" ]; then
             echo "The exact measured Worker version is already promoted; retaining it for this retry."
             exit 0
           fi
-          candidate=$(node -p "require('./.artifacts/cost-control/promotion-plan.json').candidate_version_id")
+          candidate=$(node -p "require('$state_dir/promotion-plan.json').candidate_version_id")
           log="$RUNNER_TEMP/cityscroll-worker-promotion.log"
           if ! (cd worker && npx wrangler@4.126.0 versions deploy \
             "${candidate}@100%" --yes \

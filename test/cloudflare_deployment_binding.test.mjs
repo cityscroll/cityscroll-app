@@ -2,10 +2,13 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  acquireActiveDeploymentBinding,
   acquireDeploymentBinding,
   canaryVersionTag,
   planCanaryPromotion,
   planCanaryStage,
+  recheckCanaryPromotion,
+  recheckCanaryStage,
 } from "../tools/cloudflare_deployment_binding.mjs";
 
 const revision = "b".repeat(40);
@@ -114,6 +117,55 @@ test("promotion accepts only the exact staged version and its safe retry", () =>
   }), /unrelated version/);
 });
 
+test("stage recheck preserves candidate and rollback identity", () => {
+  const initial = planCanaryStage({
+    eventName: "workflow_dispatch",
+    releaseMode: "stage",
+    status: { versions: [{ version_id: rollback, percentage: 100 }] },
+    versions,
+    revision,
+  });
+  assert.equal(recheckCanaryStage({
+    initialPlan: initial,
+    status: { versions: [{ version_id: rollback, percentage: 100 }] },
+    versions,
+    revision,
+  }).action, "deploy-existing");
+  assert.throws(() => recheckCanaryStage({
+    initialPlan: initial,
+    status: { versions: [{ version_id: "changed-rollback", percentage: 100 }] },
+    versions,
+    revision,
+  }), /rollback identity changed/);
+});
+
+test("promotion recheck rejects intervening provider changes", () => {
+  const initial = planCanaryPromotion({ status: stagedStatus, versions, revision });
+  assert.equal(recheckCanaryPromotion({
+    initialPlan: initial,
+    status: stagedStatus,
+    versions,
+    revision,
+  }).state, "staged");
+  assert.equal(recheckCanaryPromotion({
+    initialPlan: initial,
+    status: { versions: [{ version_id: candidate, percentage: 100 }] },
+    versions,
+    revision,
+  }).state, "already-promoted");
+  assert.throws(() => recheckCanaryPromotion({
+    initialPlan: initial,
+    status: {
+      versions: [
+        { version_id: "changed-rollback", percentage: 95 },
+        { version_id: candidate, percentage: 5 },
+      ],
+    },
+    versions,
+    revision,
+  }), /rollback identity changed/);
+});
+
 test("deployment binding targets candidate health and joins exact provider identity", async () => {
   const binding = await acquireDeploymentBinding({
     providerStatus: stagedStatus,
@@ -152,4 +204,32 @@ test("deployment binding rejects mismatched candidate health", async () => {
       }),
     }),
   }), /does not match expected revision/);
+});
+
+test("active binding acquires an untagged full-traffic baseline", async () => {
+  const providerStatus = {
+    created_on: "2026-10-08T22:00:00.000Z",
+    versions: [{ version_id: rollback, percentage: 100 }],
+  };
+  const binding = await acquireActiveDeploymentBinding({
+    providerStatus,
+    healthUrl: "https://example.test/health",
+    workerName: "cityscroll-worker",
+    expectedRevision: revision,
+    fetchImpl: async (_url, init) => {
+      assert.equal(init.headers["Cloudflare-Workers-Version-Overrides"], undefined);
+      return {
+        ok: true,
+        json: async () => ({ status: "cityscroll-worker ok", environment: "production", commit: revision }),
+      };
+    },
+  });
+  assert.equal(binding.receipt.cloudflare_version.id, rollback);
+  await assert.rejects(() => acquireActiveDeploymentBinding({
+    providerStatus: stagedStatus,
+    healthUrl: "https://example.test/health",
+    workerName: "cityscroll-worker",
+    expectedRevision: revision,
+    fetchImpl: async () => ({ ok: true }),
+  }), /one full-traffic version/);
 });

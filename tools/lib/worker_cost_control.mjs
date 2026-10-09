@@ -401,12 +401,20 @@ function normalizedMeters(run) {
   }));
 }
 
-export function evaluateWarehouseExperiment({ baseline, candidate } = {}) {
+export function evaluateWarehouseExperiment({ baseline, candidate, trustedDeployments } = {}) {
   assertSanitized({ baseline, candidate });
+  if (!trustedDeployments?.baseline || !trustedDeployments?.candidate) {
+    fail("independent trusted deployment evidence is required for baseline and candidate");
+  }
   for (const [label, run] of Object.entries({ baseline, candidate })) {
     if (!run || run.schema !== "cityscroll.warehouse_cost_experiment_run.v1") fail(`invalid ${label} experiment run`);
     requireActualWindow(run, label);
-    validateProviderDeployment(run.provider_deployment, run.deployed_revision, `${label}.provider_deployment`);
+    validateTrustedProviderDeployment(
+      run.provider_deployment,
+      trustedDeployments[label],
+      run.deployed_revision,
+      `${label}.provider_deployment`,
+    );
     if (run.workload_id !== baseline.workload_id || run.workload_count !== baseline.workload_count) fail("experiment workloads are not matched");
     for (const cohort of WAREHOUSE_EXPERIMENT_COHORTS) {
       const evidence = run.cohorts?.[cohort];

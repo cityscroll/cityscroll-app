@@ -38,6 +38,9 @@ bounded 5 percent canary; it does not run D1/KV publication or trigger updates.
 The default manual `promote` mode supports a re-run without a new commit and the
 two D1 publication inputs (`force_d1_publication`,
 `disable_incremental_publication`).
+Both stage and promotion re-read provider deployment and version state directly
+before changing traffic and refuse the mutation if candidate or rollback
+identity changed after the initial plan.
 
 Before either trigger mutates production, the Worker workflow evaluates the
 provider-native all-meter release gate. Its evidence variables, normalization

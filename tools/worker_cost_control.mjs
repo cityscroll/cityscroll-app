@@ -37,10 +37,15 @@ if (command === "profile-check") {
   if (!input) throw new Error("profile-check requires --input");
   result = validateWorkerCostProfile(read(input));
 } else if (command === "warehouse-evaluate") {
-  const baseline = arg("--baseline");
-  const candidate = arg("--candidate");
-  if (!baseline || !candidate) throw new Error("warehouse-evaluate requires --baseline and --candidate");
-  result = evaluateWarehouseExperiment({ baseline: read(baseline), candidate: read(candidate) });
+  const baseline = evidence("--baseline", "--baseline-env");
+  const candidate = evidence("--candidate", "--candidate-env");
+  const trustedBaseline = evidence("--trusted-baseline-deployment", "--trusted-baseline-deployment-env");
+  const trustedCandidate = evidence("--trusted-candidate-deployment", "--trusted-candidate-deployment-env");
+  result = evaluateWarehouseExperiment({
+    baseline,
+    candidate,
+    trustedDeployments: { baseline: trustedBaseline, candidate: trustedCandidate },
+  });
 } else if (command === "release-evaluate") {
   const baseline = evidence("--baseline", "--baseline-env");
   const candidate = evidence("--candidate", "--candidate-env");

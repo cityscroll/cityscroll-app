@@ -63,6 +63,11 @@ candidate is retained only when no CPU, KV, D1,
 storage, collector, or error meter regresses and at least one meter improves;
 otherwise the baseline stays active. The experiment records an operational
 retention recommendation, never a financial-savings claim.
+Both warehouse runs must also match independently acquired deployment bindings;
+the receipts embedded in the runs cannot authenticate themselves. A historical
+baseline may be acquired from its untagged, single full-traffic provider version
+and plain production health response. The candidate binding still requires the
+exact tagged staged revision and its version-targeted health response.
 
 The all-meter gate applies the same tariff-free, per-meter ratchet to an
 equivalent numeric workload, including D1 reads and writes as independent
@@ -85,6 +90,10 @@ Worker Version and assigns it 5 percent of HTTP traffic while retaining the
 current version at 95 percent as the rollback identity. Staging never runs the
 D1 or KV publication path, trigger updates, or scheduled and queue sampling.
 Pushes and ordinary manual promotions never stage a revision automatically.
+Immediately before either traffic mutation, the workflow re-reads authenticated
+deployment status and version metadata and compares candidate and rollback IDs
+with the initial plan. An intervening provider change fails closed; an exact
+already-staged or already-promoted state is the only no-op retry.
 
 The promotion path fails closed before it mutates production by
 evaluating the sanitized JSON receipts in the `WORKER_COST_BASELINE_EVIDENCE`

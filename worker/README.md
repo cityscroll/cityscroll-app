@@ -403,7 +403,8 @@ that matches its path filter — `worker/**`, `capabilities/**`, `entity_resolut
 also runs by hand via `workflow_dispatch`. Its explicit `stage` mode uploads the exact
 revision as a tagged Worker Version and assigns a bounded 5 percent canary without D1/KV
 publication or trigger updates; the default `promote` mode and `main` pushes only promote a
-previously staged and measured revision. The trigger,
+previously staged and measured revision. Both traffic changes recheck authenticated provider
+state immediately before mutation and fail if candidate or rollback identity moved. The trigger,
 schedule and binding inventory this section summarizes is owned by
 [`docs/release/cloudflare-native-builds.md`](../docs/release/cloudflare-native-builds.md); read
 the exact `paths:` list there or in the workflow rather than from prose. Its post-deploy smoke includes the

@@ -138,6 +138,93 @@ export function planCanaryPromotion({ status, versions, revision } = {}) {
   };
 }
 
+export function recheckCanaryStage({ initialPlan, status, versions, revision } = {}) {
+  if (!initialPlan || !["upload", "deploy-existing"].includes(initialPlan.action)) {
+    fail("initial stage plan does not authorize a traffic mutation");
+  }
+  const current = planCanaryStage({
+    eventName: "workflow_dispatch",
+    releaseMode: "stage",
+    status,
+    versions,
+    revision,
+  });
+  if (current.action === "upload") fail("tagged candidate version is still unavailable");
+  if (current.tag !== initialPlan.tag) fail("candidate tag changed after initial stage planning");
+  if (current.rollback_version_id !== initialPlan.rollback_version_id) {
+    fail("rollback identity changed after initial stage planning");
+  }
+  if (initialPlan.candidate_version_id && current.candidate_version_id !== initialPlan.candidate_version_id) {
+    fail("candidate identity changed after initial stage planning");
+  }
+  return current;
+}
+
+export function recheckCanaryPromotion({ initialPlan, status, versions, revision } = {}) {
+  if (!initialPlan || !["staged", "already-promoted"].includes(initialPlan.state)) {
+    fail("initial promotion plan is invalid");
+  }
+  const current = planCanaryPromotion({ status, versions, revision });
+  if (current.tag !== initialPlan.tag || current.candidate_version_id !== initialPlan.candidate_version_id) {
+    fail("candidate identity changed after initial promotion planning");
+  }
+  if (initialPlan.state === "already-promoted" && current.state !== "already-promoted") {
+    fail("promoted candidate changed after initial promotion planning");
+  }
+  if (
+    current.state === "staged"
+    && current.rollback_version_id !== initialPlan.rollback_version_id
+  ) fail("rollback identity changed after initial promotion planning");
+  return current;
+}
+
+function activeFullTrafficVersion(status) {
+  const active = activeVersions(status);
+  if (active.length !== 1 || active[0].percentage !== 100) {
+    fail("baseline provider status must contain one full-traffic version");
+  }
+  return active[0].id;
+}
+
+async function acquireHealthBinding({
+  providerStatus,
+  healthUrl,
+  workerName,
+  expectedRevision,
+  providerVersionId,
+  overrideVersion,
+  fetchImpl,
+}) {
+  if (!/^https:\/\//.test(String(healthUrl || ""))) fail("health URL must use HTTPS");
+  if (!/^[a-z0-9-]+$/.test(String(workerName || ""))) fail("worker name is invalid");
+  requireRevision(expectedRevision);
+  const headers = { Accept: "application/json", "User-Agent": IDENTIFIED_USER_AGENT };
+  if (overrideVersion) {
+    headers["Cloudflare-Workers-Version-Overrides"] = `${workerName}="${providerVersionId}"`;
+  }
+  const response = await fetchImpl(healthUrl, { headers, redirect: "error" });
+  if (!response.ok) fail(`production health returned HTTP ${response.status}`);
+  const health = await response.json();
+  if (health?.status !== "cityscroll-worker ok" || health?.environment !== "production") {
+    fail("production health identity is invalid");
+  }
+  if (health?.commit !== expectedRevision) fail("production health revision does not match expected revision");
+  const deployedAt = new Date(providerStatus?.created_on);
+  if (!Number.isFinite(deployedAt.getTime())) fail("provider status created_on is invalid");
+  const receipt = {
+    schema: "cityscroll.cloudflare_deployment_binding.v1",
+    evidence_mode: "actual-production",
+    observed_at: deployedAt.toISOString(),
+    production_health: { source: "cityscroll-production-health", revision: health.commit },
+    cloudflare_version: { source: "cloudflare-versions-api", id: providerVersionId },
+  };
+  return {
+    source: "cloudflare-deployment-receipt+health",
+    receipt,
+    provider_receipt_sha256: providerDeploymentReceiptSha256(receipt),
+  };
+}
+
 export async function acquireDeploymentBinding({
   providerStatus,
   providerVersions: versions,
@@ -146,37 +233,34 @@ export async function acquireDeploymentBinding({
   expectedRevision,
   fetchImpl = fetch,
 }) {
-  if (!/^https:\/\//.test(String(healthUrl || ""))) fail("health URL must use HTTPS");
-  if (!/^[a-z0-9-]+$/.test(String(workerName || ""))) fail("worker name is invalid");
   const plan = planCanaryPromotion({ status: providerStatus, versions, revision: expectedRevision });
-  const response = await fetchImpl(healthUrl, {
-    headers: {
-      Accept: "application/json",
-      "User-Agent": IDENTIFIED_USER_AGENT,
-      "Cloudflare-Workers-Version-Overrides": `${workerName}="${plan.candidate_version_id}"`,
-    },
-    redirect: "error",
+  return acquireHealthBinding({
+    providerStatus,
+    healthUrl,
+    workerName,
+    expectedRevision,
+    providerVersionId: plan.candidate_version_id,
+    overrideVersion: true,
+    fetchImpl,
   });
-  if (!response.ok) fail(`candidate health returned HTTP ${response.status}`);
-  const health = await response.json();
-  if (health?.status !== "cityscroll-worker ok" || health?.environment !== "production") {
-    fail("candidate health identity is invalid");
-  }
-  if (health?.commit !== expectedRevision) fail("candidate health revision does not match expected revision");
-  const deployedAt = new Date(providerStatus?.created_on);
-  if (!Number.isFinite(deployedAt.getTime())) fail("provider status created_on is invalid");
-  const receipt = {
-    schema: "cityscroll.cloudflare_deployment_binding.v1",
-    evidence_mode: "actual-production",
-    observed_at: deployedAt.toISOString(),
-    production_health: { source: "cityscroll-production-health", revision: health.commit },
-    cloudflare_version: { source: "cloudflare-versions-api", id: plan.candidate_version_id },
-  };
-  return {
-    source: "cloudflare-deployment-receipt+health",
-    receipt,
-    provider_receipt_sha256: providerDeploymentReceiptSha256(receipt),
-  };
+}
+
+export async function acquireActiveDeploymentBinding({
+  providerStatus,
+  healthUrl,
+  workerName,
+  expectedRevision,
+  fetchImpl = fetch,
+}) {
+  return acquireHealthBinding({
+    providerStatus,
+    healthUrl,
+    workerName,
+    expectedRevision,
+    providerVersionId: activeFullTrafficVersion(providerStatus),
+    overrideVersion: false,
+    fetchImpl,
+  });
 }
 
 function readJson(path, label) {
@@ -192,11 +276,11 @@ function writePrivateJson(path, value) {
 if (process.argv[1] === new URL(import.meta.url).pathname) {
   const command = process.argv[2];
   const providerStatus = readJson(arg("--provider-status"), "provider status");
-  const versions = readJson(arg("--provider-versions"), "provider versions");
   const expectedRevision = arg("--expected-revision");
   const out = arg("--out");
   let result;
   if (command === "stage-plan") {
+    const versions = readJson(arg("--provider-versions"), "provider versions");
     result = planCanaryStage({
       eventName: arg("--event-name"),
       releaseMode: arg("--release-mode"),
@@ -204,9 +288,27 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
       versions,
       revision: expectedRevision,
     });
+  } else if (command === "stage-recheck") {
+    const versions = readJson(arg("--provider-versions"), "provider versions");
+    result = recheckCanaryStage({
+      initialPlan: readJson(arg("--initial-plan"), "initial plan"),
+      status: providerStatus,
+      versions,
+      revision: expectedRevision,
+    });
   } else if (command === "promotion-plan") {
+    const versions = readJson(arg("--provider-versions"), "provider versions");
     result = planCanaryPromotion({ status: providerStatus, versions, revision: expectedRevision });
+  } else if (command === "promotion-recheck") {
+    const versions = readJson(arg("--provider-versions"), "provider versions");
+    result = recheckCanaryPromotion({
+      initialPlan: readJson(arg("--initial-plan"), "initial plan"),
+      status: providerStatus,
+      versions,
+      revision: expectedRevision,
+    });
   } else if (command === "acquire") {
+    const versions = readJson(arg("--provider-versions"), "provider versions");
     result = await acquireDeploymentBinding({
       providerStatus,
       providerVersions: versions,
@@ -214,8 +316,15 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
       workerName: arg("--worker-name"),
       expectedRevision,
     });
+  } else if (command === "acquire-active") {
+    result = await acquireActiveDeploymentBinding({
+      providerStatus,
+      healthUrl: arg("--health-url"),
+      workerName: arg("--worker-name"),
+      expectedRevision,
+    });
   } else {
-    fail("usage: cloudflare_deployment_binding.mjs <stage-plan|promotion-plan|acquire> [options]");
+    fail("usage: cloudflare_deployment_binding.mjs <stage-plan|stage-recheck|promotion-plan|promotion-recheck|acquire|acquire-active> [options]");
   }
   writePrivateJson(out, result);
   const state = result.action || result.state || "acquired";
