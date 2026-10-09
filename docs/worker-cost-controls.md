@@ -32,11 +32,12 @@ operation counts, and error count. Release-level CPU, KV, D1, stored-byte, and
 error totals must equal the sums of those samples; an independent top-level
 meter cannot override contradictory provider evidence.
 The profile also retains and hashes a structured Cloudflare deployment-binding
-receipt. That receipt records the version returned by the Cloudflare Versions
-API and the revision returned by production health as one actual-production
-observation. Its digest is recomputed from canonical receipt contents, and every
-sample must match the receipt's provider version; a caller-supplied Git SHA or
-digest cannot relabel telemetry from an older deployment.
+receipt. The validator requires that receipt to identify the Cloudflare Versions
+API and production health as its sources, recomputes its digest from canonical
+contents, and requires every sample to match its declared provider version and
+revision. This proves internal consistency only: the current command does not
+acquire either source independently, so a caller can still construct a
+self-consistent receipt that does not describe the actual deployment.
 
 Collection is capped at 30 minutes and 10,000 events. Before persistence, an
 event must match the probe's literal header value and exact URL and method. The
@@ -81,8 +82,10 @@ supplied divisor cannot make a regressed total look neutral.
 The Worker deployment workflow fails closed before it mutates production by
 evaluating the sanitized JSON receipts in the `WORKER_COST_BASELINE_EVIDENCE`
 and `WORKER_COST_CANDIDATE_EVIDENCE` repository variables. Candidate evidence
-must name the exact commit being released, allowing a measured candidate from a
-provider-native deployment to advance only after every meter passes.
+must name the exact commit being released and every meter must pass. The
+workflow currently trusts the repository-variable receipt rather than obtaining
+the Cloudflare version and production-health revision through an independent
+acquisition boundary.
 
 The current provider references are the [Workers Observability telemetry query
 API](https://developers.cloudflare.com/api/resources/workers/subresources/observability/subresources/telemetry/methods/query/),
