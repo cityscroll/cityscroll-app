@@ -111,9 +111,9 @@ test("owner extraction preserves representative Browse HTML byte for byte", () =
   }));
 
   assert.equal(Buffer.byteLength(examsHtml), 3767);
-  assert.equal(digest(examsHtml), "08ec509a1c087486967b379a6c04203b0356dbe163533de5d6ad58e923b552bf");
+  assert.equal(digest(examsHtml), "6204b3cb0cd398e54a283f705206aa1656d36b5bc7221c4e8267b5edcbe7acc7");
   assert.equal(Buffer.byteLength(peopleHtml), 1878);
-  assert.equal(digest(peopleHtml), "68c989e679b078a9b61eab1993b59fc58d80d4e94b909155b9c4251d7aff8ff7");
+  assert.equal(digest(peopleHtml), "2e068d6946e7a99831337abc49694fc21cad5119acc94377677496d1ff21852c");
 });
 
 test("visible Exams and People first paint both contain the shared Browse view", () => {

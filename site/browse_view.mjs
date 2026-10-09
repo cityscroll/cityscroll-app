@@ -1596,9 +1596,9 @@ export function renderBrowseView(view) {
     const peopleListAttributes = view.facet === "people-list"
       ? ` id="people-row-${esc(String(civicObject?.id || "").replace(/[^A-Za-z0-9_-]/g, "-"))}" data-people-organization-row data-row-kind="${esc(civicObject?.kind || "")}" data-institution="${esc(row.institution || "")}" data-relation-state="${esc(row.relation_state || "unknown")}" data-search-text="${esc(row.search_text || "")}"${row.body_id ? ` data-board-projection="organization" data-body-id="${esc(row.body_id)}"` : ""}`
       : "";
-    return `<article class="browse-static-record${view.facet === "people-list" ? " people-org-row" : ""}"${peopleListAttributes} data-record-id="${esc(rowId(view.facet, row) || "")}" data-source-title="${esc(title)}"${civicObjectAttributes} data-meeting-origin="${esc(row.meeting_origin || "")}"${boardId ? ` data-community-board-id="${esc(boardId)}"` : ""}>
+    return `<article class="browse-static-record${view.facet === "people-list" ? " people-org-row" : ""}"${peopleListAttributes} data-record-id="${esc(rowId(view.facet, row) || "")}"${civicObjectAttributes} data-meeting-origin="${esc(row.meeting_origin || "")}"${boardId ? ` data-community-board-id="${esc(boardId)}"` : ""}>
       ${actionMarkup}
-      ${interaction.target ? `<div class="ui-object-card-primary"><h3>${titleMarkup}</h3>${copyMarkup}${reportMarkup}</div>` : `<h3>${titleMarkup}</h3>`}
+      ${interaction.target ? `<div class="ui-object-card-primary"><h3 data-source-title="${esc(title)}">${titleMarkup}</h3>${copyMarkup}${reportMarkup}</div>` : `<h3 data-source-title="${esc(title)}">${titleMarkup}</h3>`}
       <p class="browse-static-meta">${[typedMetadata, peopleInstitutionMarkup, agencyMarkup, boardMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc }), sourceMarkup].filter(Boolean).join(" · ")}${peopleCommunityBoardDetail}</p>
       ${detailMarkup}${view.facet === "contracts" ? renderProcurementRowCoverageHtml(row) : ""}
       ${assertionMarkup}

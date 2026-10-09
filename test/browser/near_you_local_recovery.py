@@ -670,8 +670,9 @@ def check_record_journeys(browser, base: str, expected: list[dict]) -> list[dict
             # preserving the publisher title on data-source-title.
             source_title = record_link.evaluate(
                 """(el) => {
-                  const article = el.closest('article[data-source-title], article.browse-static-record');
-                  return (article?.getAttribute('data-source-title') || '').trim();
+                  const root = el.closest('article.browse-static-record, article') || el.parentElement;
+                  const titled = root?.querySelector?.('[data-source-title]') || el.closest('[data-source-title]');
+                  return (titled?.getAttribute('data-source-title') || '').trim();
                 }"""
             )
             listed = " ".join((record_link.inner_text() or "").replace("◆", " ").split())
