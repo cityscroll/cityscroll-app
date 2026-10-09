@@ -15,28 +15,28 @@
         "metric_family": "within_contract_registered_amount_change",
         "basis": "frozen_inspection_receipt",
         "rule": "a detected change is shown only where the frozen receipt carries an inspection verdict for it",
-        "detected": 117,
+        "detected": 109,
         "shown": 2,
-        "admitted_unshown": 115,
+        "admitted_unshown": 107,
         "unshown_reason": "awaiting_extended_inspection_sample"
       }
     ]
   },
   "input_fingerprints": {
-    "awards": "16108c3f90e2d2c68dc7c93969dce73a778ee9fc740d1fae65050641d3c63419",
-    "source_contracts": "2b36e61b9e2c2284761019157d9b05d13cd267131d1c917dbcba2c0d23b71035",
+    "awards": "35e73eb57176f9ffa67ad3ea35cb460a0a90f6408bda8d5c16da190503c8091c",
+    "source_contracts": "87e96d53fe6ede9f4daeee8c7543bece186fb90ef815374c38ef82f017fe1242",
     "award_receipts": "73e400d6728b08ffc2da49fdb7597149a07b70fc8d69dfa4379b562bca26b125",
     "story_signals": "c37558db67b58169d71853b4ca482805cf28af8e20655721184f72022dd3f508",
-    "procurement": "2dee821627b2f9ebaab7b69433456c566caaac87250bda09359e968be79b8992",
+    "procurement": "777ed21d512da6831b5c92cfcca127e566994701838c92556ca19818a8b2586d",
     "negative_control": "977d6ba5b8c45ea784a965b21b8fa7a9b142de401e14451d88873cbc6da5b8de",
     "frozen_cases": "fd8774d5a192997764ffd7fc016df34e3a902da70951ecc951d6733e36680804"
   },
   "dimensions": {
     "precision": {
       "definition": "Frozen inspections that support the exact shown measurement / shown outputs inspected",
-      "numerator": 3,
+      "numerator": 2,
       "denominator": 3,
-      "rate": 1,
+      "rate": 0.666667,
       "review_coverage": {
         "numerator": 3,
         "denominator": 3,
@@ -54,8 +54,8 @@
           "case_id": "registered_amount_change:CT110220271400286",
           "metric_family": "within_contract_registered_amount_change",
           "inspection_verdict": "supported",
-          "measurement_matches": true,
-          "supported": true
+          "measurement_matches": false,
+          "supported": false
         },
         {
           "case_id": "registered_amount_change:CT183620278801170",
@@ -70,8 +70,8 @@
       "definition": "Outputs supported for inspection / eligible inputs actually evaluated by each shipped pilot",
       "aggregate": {
         "numerator": 3,
-        "denominator": 9058,
-        "rate": 0.000331
+        "denominator": 9489,
+        "rate": 0.000316
       },
       "families": {
         "source_bounded_award_rank": {
@@ -84,11 +84,11 @@
         "within_contract_registered_amount_change": {
           "denominator_basis": "unique committed Checkbook observations with two positive registered amounts",
           "numerator": 2,
-          "denominator": 9057,
-          "rate": 0.000221,
-          "source_observation_context": 9060,
-          "detected_changes": 117,
-          "admitted_unshown": 115
+          "denominator": 9488,
+          "rate": 0.000211,
+          "source_observation_context": 9490,
+          "detected_changes": 109,
+          "admitted_unshown": 107
         }
       }
     },

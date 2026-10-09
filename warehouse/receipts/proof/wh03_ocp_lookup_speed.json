@@ -1,6 +1,6 @@
 {
   "phase": "WH-03",
-  "measured_at": "2026-10-05T17:33:58.719Z",
+  "measured_at": "2026-10-09T13:51:45.485Z",
   "replaced_fetch": {
     "function": "fetchOcpAwardRows",
     "file": "worker/src/checkbook_lifecycle.mjs",
@@ -13,19 +13,19 @@
   "row_count": 53817,
   "excluded_row_count": 6,
   "excluded_reason": "public payload integrity filter rejected test-only rows",
-  "p50_ms": 58.04,
-  "p95_ms": 60.21,
+  "p50_ms": 57.44,
+  "p95_ms": 58.44,
   "warehouse_duckdb_build_path": {
     "samples_ms": [
-      59.32,
-      58.04,
-      57.14,
-      57.58,
-      60.21
+      58.44,
+      57.89,
+      57.44,
+      56.85,
+      56.18
     ],
-    "p50_ms": 58.04,
-    "p95_ms": 60.21,
-    "mean_ms": 58.46,
+    "p50_ms": 57.44,
+    "p95_ms": 58.44,
+    "mean_ms": 57.36,
     "n": 5,
     "path": "warehouse",
     "rows": 1,
@@ -37,10 +37,10 @@
   },
   "materialized_index_edge_path": {
     "samples_ms": [
-      0.0011,
-      0.0009,
+      0.001,
       0.0005,
-      0.0005,
+      0.0004,
+      0.0004,
       0.0004
     ],
     "p50_ms": 0.0002,
@@ -54,13 +54,13 @@
   },
   "soda_live_previous_path": {
     "samples_ms": [
-      418.45,
-      163.46,
-      153.98
+      248.81,
+      225.48,
+      195.49
     ],
-    "p50_ms": 163.46,
-    "p95_ms": 418.45,
-    "mean_ms": 245.3,
+    "p50_ms": 225.48,
+    "p95_ms": 248.81,
+    "mean_ms": 223.26,
     "n": 3,
     "path": "soda_live",
     "rows": 1,
@@ -69,10 +69,10 @@
     "note": "Previous live path in fetchOcpAwardRows"
   },
   "speedup": {
-    "soda_p50_ms": 163.46,
+    "soda_p50_ms": 225.48,
     "warehouse_materialized_p50_ms": 0.0002,
-    "ratio_vs_0_01ms_floor": 16346,
-    "summary": "OCP side-car lookup p50: live SODA 163.46ms → warehouse materialization 0.0002ms (sub-ms; removes a SODA RTT)",
+    "ratio_vs_0_01ms_floor": 22548,
+    "summary": "OCP side-car lookup p50: live SODA 225.48ms → warehouse materialization 0.0002ms (sub-ms; removes a SODA RTT)",
     "note": "Edge path is the materialized index; DuckDB spawn is build-time only"
   }
 }

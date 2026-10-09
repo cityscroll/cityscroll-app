@@ -1,0 +1,69 @@
+{
+  "schema": "cityscroll.priority_source_bounded_acquisition.v1",
+  "generated_at": "2026-10-09T13:51:32.961Z",
+  "families": [
+    "city-record",
+    "passport",
+    "checkbook",
+    "legistar",
+    "rules-rss",
+    "zap-projects",
+    "community-board-minutes"
+  ],
+  "commands": [
+    {
+      "family_id": "legistar",
+      "source_contract_id": "nyc-council-legistar",
+      "command": [
+        "node",
+        "tools/priority_source_observation_producers.mjs",
+        "--bounded",
+        "--source",
+        "nyc-council-legistar"
+      ],
+      "status": "failed",
+      "exit_code": 1
+    },
+    {
+      "family_id": "rules-rss",
+      "source_contract_id": "nyc-rules-rss",
+      "command": [
+        "node",
+        "tools/priority_source_observation_producers.mjs",
+        "--bounded",
+        "--source",
+        "nyc-rules-rss"
+      ],
+      "status": "succeeded",
+      "exit_code": 0
+    },
+    {
+      "family_id": "zap-projects",
+      "source_contract_id": "zap-projects",
+      "command": [
+        "warehouse/.venv/bin/python",
+        "warehouse/scripts/ingest.py",
+        "--dataset",
+        "zap-projects",
+        "--limit",
+        "50"
+      ],
+      "status": "failed",
+      "exit_code": 1
+    },
+    {
+      "family_id": "community-board-minutes",
+      "source_contract_id": "non-council-board-minutes",
+      "command": [
+        "node",
+        "warehouse/scripts/non_council_outcomes.mjs",
+        "--limit",
+        "1",
+        "--max-docs",
+        "1"
+      ],
+      "status": "succeeded",
+      "exit_code": 0
+    }
+  ]
+}

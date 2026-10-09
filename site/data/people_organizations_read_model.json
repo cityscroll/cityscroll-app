@@ -2469,9 +2469,9 @@
           "status": "matched",
           "provenance": {
             "source_system": "community_board_publisher",
-            "source_record_id": "cb6-board-members-and-staff-2026-08-25",
+            "source_record_id": "cb6-board-members-and-staff-2026-10-09",
             "source_url": "https://cbsix.org/about-us/board-members-and-staff/",
-            "observed_at": "2026-08-25T12:00:00Z",
+            "observed_at": "2026-10-09T04:37:39.027Z",
             "join_method": "exact_publisher_identity_date_document",
             "basis": "source-qualified, temporal board-local person relationship; it does not imply a Council official identity or voting power",
             "source_fields": [
@@ -2510,9 +2510,9 @@
         "provenance": {
           "source_identity": "community-board-person:manhattan-cb-06:jason-froimowitz",
           "source_observation_refs": [
-            "cb6-board-members-and-staff-2026-08-25"
+            "cb6-board-members-and-staff-2026-10-09"
           ],
-          "observed_at": "2026-08-25",
+          "observed_at": "2026-10-09",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -2556,9 +2556,9 @@
             "hold_reason": "This relation has no verified published destination.",
             "provenance": {
               "source_system": "community_board_publisher",
-              "source_record_id": "cb6-board-members-and-staff-2026-08-25",
+              "source_record_id": "cb6-board-members-and-staff-2026-10-09",
               "source_url": "https://cbsix.org/about-us/board-members-and-staff/",
-              "observed_at": "2026-08-25T12:00:00Z",
+              "observed_at": "2026-10-09T04:37:39.027Z",
               "join_method": "exact_publisher_identity_date_document",
               "basis": "source-qualified, temporal board-local person relationship; it does not imply a Council official identity or voting power",
               "source_fields": [
@@ -2672,7 +2672,7 @@
               },
               "provenance": {
                 "source_system": "community_board_publisher",
-                "source_record_id": "cb6-board-members-and-staff-2026-08-25",
+                "source_record_id": "cb6-board-members-and-staff-2026-10-09",
                 "source_fields": [
                   "board_id",
                   "committee_ref",
@@ -2685,7 +2685,7 @@
                 ],
                 "join_method": "exact_publisher_identity_date_document",
                 "source_href": "https://cbsix.org/about-us/board-members-and-staff/",
-                "observed_at": "2026-08-25T12:00:00Z",
+                "observed_at": "2026-10-09T04:37:39.027Z",
                 "cross_spine_confidence": "unmatched",
                 "cross_spine_explicit": false
               },
@@ -2736,9 +2736,9 @@
           "status": "matched",
           "provenance": {
             "source_system": "community_board_publisher",
-            "source_record_id": "cb6-board-members-and-staff-2026-08-25",
+            "source_record_id": "cb6-board-members-and-staff-2026-10-09",
             "source_url": "https://cbsix.org/about-us/board-members-and-staff/",
-            "observed_at": "2026-08-25T12:00:00Z",
+            "observed_at": "2026-10-09T04:37:39.027Z",
             "join_method": "exact_publisher_identity_date_document",
             "basis": "source-qualified, temporal board-local person relationship; it does not imply a Council official identity or voting power",
             "source_fields": [
@@ -2776,9 +2776,9 @@
         "provenance": {
           "source_identity": "community-board-person:manhattan-cb-06:jesus-perez",
           "source_observation_refs": [
-            "cb6-board-members-and-staff-2026-08-25"
+            "cb6-board-members-and-staff-2026-10-09"
           ],
-          "observed_at": "2026-08-25",
+          "observed_at": "2026-10-09",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -2822,9 +2822,9 @@
             "hold_reason": null,
             "provenance": {
               "source_system": "community_board_publisher",
-              "source_record_id": "cb6-board-members-and-staff-2026-08-25",
+              "source_record_id": "cb6-board-members-and-staff-2026-10-09",
               "source_url": "https://cbsix.org/about-us/board-members-and-staff/",
-              "observed_at": "2026-08-25T12:00:00Z",
+              "observed_at": "2026-10-09T04:37:39.027Z",
               "join_method": "exact_publisher_identity_date_document",
               "basis": "source-qualified, temporal board-local person relationship; it does not imply a Council official identity or voting power",
               "source_fields": [
@@ -2937,7 +2937,7 @@
               },
               "provenance": {
                 "source_system": "community_board_publisher",
-                "source_record_id": "cb6-board-members-and-staff-2026-08-25",
+                "source_record_id": "cb6-board-members-and-staff-2026-10-09",
                 "source_fields": [
                   "board_id",
                   "person_name",
@@ -2949,7 +2949,7 @@
                 ],
                 "join_method": "exact_publisher_identity_date_document",
                 "source_href": "https://cbsix.org/about-us/board-members-and-staff/",
-                "observed_at": "2026-08-25T12:00:00Z",
+                "observed_at": "2026-10-09T04:37:39.027Z",
                 "cross_spine_confidence": "unmatched",
                 "cross_spine_explicit": false
               },
@@ -3004,9 +3004,9 @@
           "status": "matched",
           "provenance": {
             "source_system": "community_board_publisher",
-            "source_record_id": "cb6-board-members-and-staff-2026-08-25",
+            "source_record_id": "cb6-board-members-and-staff-2026-10-09",
             "source_url": "https://cbsix.org/about-us/board-members-and-staff/",
-            "observed_at": "2026-08-25T12:00:00Z",
+            "observed_at": "2026-10-09T04:37:39.027Z",
             "join_method": "exact_publisher_identity_date_document",
             "basis": "source-qualified, temporal board-local person relationship; it does not imply a Council official identity or voting power",
             "source_fields": [
@@ -3045,9 +3045,9 @@
         "provenance": {
           "source_identity": "community-board-person:manhattan-cb-06:michael-cohen",
           "source_observation_refs": [
-            "cb6-board-members-and-staff-2026-08-25"
+            "cb6-board-members-and-staff-2026-10-09"
           ],
-          "observed_at": "2026-08-25",
+          "observed_at": "2026-10-09",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -3091,9 +3091,9 @@
             "hold_reason": "This relation has no verified published destination.",
             "provenance": {
               "source_system": "community_board_publisher",
-              "source_record_id": "cb6-board-members-and-staff-2026-08-25",
+              "source_record_id": "cb6-board-members-and-staff-2026-10-09",
               "source_url": "https://cbsix.org/about-us/board-members-and-staff/",
-              "observed_at": "2026-08-25T12:00:00Z",
+              "observed_at": "2026-10-09T04:37:39.027Z",
               "join_method": "exact_publisher_identity_date_document",
               "basis": "source-qualified, temporal board-local person relationship; it does not imply a Council official identity or voting power",
               "source_fields": [
@@ -3207,7 +3207,7 @@
               },
               "provenance": {
                 "source_system": "community_board_publisher",
-                "source_record_id": "cb6-board-members-and-staff-2026-08-25",
+                "source_record_id": "cb6-board-members-and-staff-2026-10-09",
                 "source_fields": [
                   "board_id",
                   "committee_ref",
@@ -3220,7 +3220,7 @@
                 ],
                 "join_method": "exact_publisher_identity_date_document",
                 "source_href": "https://cbsix.org/about-us/board-members-and-staff/",
-                "observed_at": "2026-08-25T12:00:00Z",
+                "observed_at": "2026-10-09T04:37:39.027Z",
                 "cross_spine_confidence": "unmatched",
                 "cross_spine_explicit": false
               },
@@ -3271,9 +3271,9 @@
           "status": "matched",
           "provenance": {
             "source_system": "community_board_publisher",
-            "source_record_id": "cb6-board-members-and-staff-2026-08-25",
+            "source_record_id": "cb6-board-members-and-staff-2026-10-09",
             "source_url": "https://cbsix.org/about-us/board-members-and-staff/",
-            "observed_at": "2026-08-25T12:00:00Z",
+            "observed_at": "2026-10-09T04:37:39.027Z",
             "join_method": "exact_publisher_identity_date_document",
             "basis": "source-qualified, temporal board-local person relationship; it does not imply a Council official identity or voting power",
             "source_fields": [
@@ -3298,9 +3298,9 @@
           "status": "matched",
           "provenance": {
             "source_system": "community_board_publisher",
-            "source_record_id": "cb6-board-members-and-staff-2026-08-25",
+            "source_record_id": "cb6-board-members-and-staff-2026-10-09",
             "source_url": "https://cbsix.org/about-us/board-members-and-staff/",
-            "observed_at": "2026-08-25T12:00:00Z",
+            "observed_at": "2026-10-09T04:37:39.027Z",
             "join_method": "exact_publisher_identity_date_document",
             "basis": "source-qualified, temporal board-local person relationship; it does not imply a Council official identity or voting power",
             "source_fields": [
@@ -3338,9 +3338,9 @@
         "provenance": {
           "source_identity": "community-board-person:manhattan-cb-06:sandra-mckee",
           "source_observation_refs": [
-            "cb6-board-members-and-staff-2026-08-25"
+            "cb6-board-members-and-staff-2026-10-09"
           ],
-          "observed_at": "2026-08-25",
+          "observed_at": "2026-10-09",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -3384,9 +3384,9 @@
             "hold_reason": null,
             "provenance": {
               "source_system": "community_board_publisher",
-              "source_record_id": "cb6-board-members-and-staff-2026-08-25",
+              "source_record_id": "cb6-board-members-and-staff-2026-10-09",
               "source_url": "https://cbsix.org/about-us/board-members-and-staff/",
-              "observed_at": "2026-08-25T12:00:00Z",
+              "observed_at": "2026-10-09T04:37:39.027Z",
               "join_method": "exact_publisher_identity_date_document",
               "basis": "source-qualified, temporal board-local person relationship; it does not imply a Council official identity or voting power",
               "source_fields": [
@@ -3411,9 +3411,9 @@
             "hold_reason": null,
             "provenance": {
               "source_system": "community_board_publisher",
-              "source_record_id": "cb6-board-members-and-staff-2026-08-25",
+              "source_record_id": "cb6-board-members-and-staff-2026-10-09",
               "source_url": "https://cbsix.org/about-us/board-members-and-staff/",
-              "observed_at": "2026-08-25T12:00:00Z",
+              "observed_at": "2026-10-09T04:37:39.027Z",
               "join_method": "exact_publisher_identity_date_document",
               "basis": "source-qualified, temporal board-local person relationship; it does not imply a Council official identity or voting power",
               "source_fields": [
@@ -3526,7 +3526,7 @@
               },
               "provenance": {
                 "source_system": "community_board_publisher",
-                "source_record_id": "cb6-board-members-and-staff-2026-08-25",
+                "source_record_id": "cb6-board-members-and-staff-2026-10-09",
                 "source_fields": [
                   "board_id",
                   "person_name",
@@ -3538,7 +3538,7 @@
                 ],
                 "join_method": "exact_publisher_identity_date_document",
                 "source_href": "https://cbsix.org/about-us/board-members-and-staff/",
-                "observed_at": "2026-08-25T12:00:00Z",
+                "observed_at": "2026-10-09T04:37:39.027Z",
                 "cross_spine_confidence": "unmatched",
                 "cross_spine_explicit": false
               },
@@ -3572,7 +3572,7 @@
       "board_href": "/community-boards/brooklyn-cb-01/",
       "committee_id": "transportation",
       "publisher_identifier": null,
-      "source_url": "https://www.nyc.gov/site/brooklyncb1/calendar/calendar.page",
+      "source_url": "https://www.nyc.gov/site/brooklyncb1/committees/committees.page",
       "topic_facets": [
         "transportation"
       ],
@@ -3597,7 +3597,7 @@
       "board_href": "/community-boards/manhattan-cb-06/",
       "committee_id": "transportation",
       "publisher_identifier": null,
-      "source_url": "https://cbsix.org/meetings-calendar/",
+      "source_url": "https://cbsix.org/committees/",
       "topic_facets": [
         "transportation"
       ],
@@ -50653,7 +50653,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 65,
+          "count": 88,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -50745,7 +50745,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 14,
+          "count": 20,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -50791,7 +50791,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 57,
+          "count": 62,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -50975,7 +50975,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 7,
+          "count": 10,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -50992,7 +50992,7 @@
       "href": "/agencies/campaign-finance-board/",
       "entity_ref": "agency:id:campaign-finance-board",
       "relation_state": "published",
-      "detail": "3 linked record categories",
+      "detail": "2 linked record categories",
       "institution": "agency",
       "institution_label": "",
       "institution_context": "",
@@ -51000,8 +51000,8 @@
       "search_text": "Campaign Finance Board Campaign Finance Board CFB",
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -51021,7 +51021,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 62,
+          "count": 66,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -51113,7 +51113,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 36,
+          "count": 59,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -51205,7 +51205,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 3,
+          "count": 4,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -51251,7 +51251,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 16,
+          "count": 11,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -51343,7 +51343,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 7,
+          "count": 16,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -51389,7 +51389,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 25,
+          "count": 36,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -51435,7 +51435,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 221,
+          "count": 314,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -51481,7 +51481,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 8,
+          "count": 14,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -51527,7 +51527,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 64,
+          "count": 91,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -51573,7 +51573,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 149,
+          "count": 132,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -51619,7 +51619,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 196,
+          "count": 203,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -51650,7 +51650,7 @@
         },
         "vendors": {
           "status": "matched",
-          "count": 7,
+          "count": 6,
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
@@ -51665,7 +51665,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 6,
+          "count": 34,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -51757,7 +51757,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 112,
+          "count": 141,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -51803,7 +51803,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 131,
+          "count": 159,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -51849,7 +51849,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 232,
+          "count": 294,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -51895,7 +51895,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 42,
+          "count": 58,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -51941,7 +51941,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 132,
+          "count": 219,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -51987,7 +51987,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 19,
+          "count": 24,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -52033,7 +52033,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 53,
+          "count": 78,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -52079,7 +52079,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 13,
+          "count": 17,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -52125,7 +52125,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 1,
+          "count": 2,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -52171,7 +52171,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 54,
+          "count": 80,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -52188,7 +52188,7 @@
       "href": "/agencies/department-of-social-services/",
       "entity_ref": "agency:id:department-of-social-services",
       "relation_state": "published",
-      "detail": "1 linked record categories",
+      "detail": "2 linked record categories",
       "institution": "agency",
       "institution_label": "",
       "institution_context": "",
@@ -52216,8 +52216,8 @@
           "method": "agency_canonical_v1"
         },
         "obligations": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 50,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -52263,7 +52263,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 10,
+          "count": 11,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -52309,7 +52309,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 10,
+          "count": 12,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -52539,7 +52539,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 50,
+          "count": 62,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -52585,7 +52585,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 94,
+          "count": 68,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -52677,7 +52677,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 6,
+          "count": 7,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -52815,7 +52815,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 6,
+          "count": 7,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -52832,7 +52832,7 @@
       "href": "/agencies/mayors-office-of-criminal-justice/",
       "entity_ref": "agency:id:mayors-office-of-criminal-justice",
       "relation_state": "published",
-      "detail": "1 linked record categories",
+      "detail": "2 linked record categories",
       "institution": "agency",
       "institution_label": "",
       "institution_context": "",
@@ -52860,8 +52860,8 @@
           "method": "agency_canonical_v1"
         },
         "obligations": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 5,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -52908,6 +52908,52 @@
         "obligations": {
           "status": "matched",
           "count": 2,
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "staffing": {
+          "status": "empty",
+          "count": 0,
+          "method": "publisher_certification_record_v1"
+        }
+      }
+    },
+    {
+      "kind": "agency",
+      "id": "agency:id:mayors-office-to-end-domestic-and-gender-based-violence",
+      "label": "Mayor's Office to End Domestic and Gender-Based Violence",
+      "href": "/agencies/mayors-office-to-end-domestic-and-gender-based-violence/",
+      "entity_ref": "agency:id:mayors-office-to-end-domestic-and-gender-based-violence",
+      "relation_state": "published",
+      "detail": "1 linked record categories",
+      "institution": "agency",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Mayor's Office to End Domestic and Gender-Based Violence Mayor's Office to End Domestic and Gender-Based Violence Mayor's Office to Combat Domestic Violence MOCDV MOEDGBV MOTCDV MOTEDAGBV MTCDV MTEDGBV",
+      "categories": {
+        "contracts": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        "meetings": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "rules": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "obligations": {
+          "status": "matched",
+          "count": 1,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -53091,7 +53137,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 23,
+          "count": 30,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -53137,7 +53183,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 46,
+          "count": 54,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -53183,7 +53229,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 116,
+          "count": 155,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -53229,7 +53275,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 12,
+          "count": 4,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -53246,7 +53292,7 @@
       "href": "/agencies/housing-authority/",
       "entity_ref": "agency:id:housing-authority",
       "relation_state": "published",
-      "detail": "4 linked record categories",
+      "detail": "5 linked record categories",
       "institution": "agency",
       "institution_label": "Public housing authority",
       "institution_context": "A body corporate and politic established by state law to provide public housing in the city.",
@@ -53255,7 +53301,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 7,
+          "count": 11,
           "method": "checkbook_nycha_contracts_adapter_v1"
         },
         "vendors": {
@@ -53274,8 +53320,8 @@
           "method": "agency_canonical_v1"
         },
         "obligations": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 1,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -53321,7 +53367,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 20,
+          "count": 44,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -53367,7 +53413,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 124,
+          "count": 169,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -53459,7 +53505,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 107,
+          "count": 193,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -53551,7 +53597,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 61,
+          "count": 69,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -53577,7 +53623,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 3,
+          "count": 4,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -53660,7 +53706,7 @@
       "href": "/agencies/office-of-collective-bargaining/",
       "entity_ref": "agency:id:office-of-collective-bargaining",
       "relation_state": "published",
-      "detail": "1 linked record categories",
+      "detail": "0 linked record categories",
       "institution": "agency",
       "institution_label": "",
       "institution_context": "",
@@ -53688,8 +53734,8 @@
           "method": "agency_canonical_v1"
         },
         "obligations": {
-          "status": "matched",
-          "count": 2,
+          "status": "empty",
+          "count": 0,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -53873,7 +53919,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 24,
+          "count": 32,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -54149,7 +54195,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 174,
+          "count": 240,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -54180,7 +54226,7 @@
         },
         "vendors": {
           "status": "matched",
-          "count": 8,
+          "count": 7,
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
@@ -54195,7 +54241,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 32,
+          "count": 49,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -54241,7 +54287,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 5,
+          "count": 9,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -54304,7 +54350,7 @@
       "href": "/agencies/public-design-commission/",
       "entity_ref": "agency:id:public-design-commission",
       "relation_state": "published",
-      "detail": "1 linked record categories",
+      "detail": "2 linked record categories",
       "institution": "agency",
       "institution_label": "",
       "institution_context": "",
@@ -54332,8 +54378,8 @@
           "method": "agency_canonical_v1"
         },
         "obligations": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 8,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -56242,24 +56288,6 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:GIOIA%20P%20AMBRETTE%20INC%20DBA%20NEWCASTLE%20COMMUNICATIONS",
-      "label": "Gioia P Ambrette Inc DBA Newcastle Communications",
-      "href": "/vendors/GIOIA%20P%20AMBRETTE%20INC%20DBA%20NEWCASTLE%20COMMUNICATIONS/",
-      "entity_ref": "vendor:stem:GIOIA%20P%20AMBRETTE%20INC%20DBA%20NEWCASTLE%20COMMUNICATIONS",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:comptroller"
-      ],
-      "award_count": 1,
-      "search_text": "Gioia P Ambrette Inc DBA Newcastle Communications vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:GLOCK",
       "label": "Glock Inc",
       "href": "/vendors/GLOCK/",
@@ -57073,24 +57101,6 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:METROEXPRESS%20SERVICES",
-      "label": "MetroExpress Services Inc.",
-      "href": "/vendors/METROEXPRESS%20SERVICES/",
-      "entity_ref": "vendor:stem:METROEXPRESS%20SERVICES",
-      "relation_state": "published",
-      "detail": "3 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:transportation"
-      ],
-      "award_count": 3,
-      "search_text": "MetroExpress Services Inc. vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:MICHAEL%20STAPLETON%20ASSOCIATES",
       "label": "Michael Stapleton Associates, Ltd.",
       "href": "/vendors/MICHAEL%20STAPLETON%20ASSOCIATES/",
@@ -57564,6 +57574,24 @@
     },
     {
       "kind": "vendor",
+      "id": "vendor:stem:OLYMPIC%20PLUMBING%20HEATING%20SERVICES",
+      "label": "Olympic Plumbing & Heating Services, Inc.",
+      "href": "/vendors/OLYMPIC%20PLUMBING%20HEATING%20SERVICES/",
+      "entity_ref": "vendor:stem:OLYMPIC%20PLUMBING%20HEATING%20SERVICES",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:chief-medical-examiner"
+      ],
+      "award_count": 1,
+      "search_text": "Olympic Plumbing & Heating Services, Inc. vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
       "id": "vendor:stem:P%20T%20II%20CONTRACTING",
       "label": "P&T II Contracting Corp",
       "href": "/vendors/P%20T%20II%20CONTRACTING/",
@@ -57578,24 +57606,6 @@
       ],
       "award_count": 2,
       "search_text": "P&T II Contracting Corp vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:PATCHAMP",
-      "label": "Patchamp Inc.",
-      "href": "/vendors/PATCHAMP/",
-      "entity_ref": "vendor:stem:PATCHAMP",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:cultural-affairs"
-      ],
-      "award_count": 1,
-      "search_text": "Patchamp Inc. vendor organization",
       "agency_count": 1
     },
     {
@@ -58343,21 +58353,20 @@
     {
       "kind": "vendor",
       "id": "vendor:stem:SPRUCE%20TECHNOLOGY",
-      "label": "Spruce Technology Inc.",
+      "label": "Spruce Technology Inc",
       "href": "/vendors/SPRUCE%20TECHNOLOGY/",
       "entity_ref": "vendor:stem:SPRUCE%20TECHNOLOGY",
       "relation_state": "published",
-      "detail": "4 linked awards across 2 agencies",
+      "detail": "3 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
-        "agency:id:chief-medical-examiner",
         "agency:id:information-technology-and-telecommunications"
       ],
-      "award_count": 4,
-      "search_text": "Spruce Technology Inc. vendor organization",
-      "agency_count": 2
+      "award_count": 3,
+      "search_text": "Spruce Technology Inc vendor organization",
+      "agency_count": 1
     },
     {
       "kind": "vendor",
@@ -59208,6 +59217,24 @@
       ],
       "award_count": 1,
       "search_text": "Welkin Mechanical vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
+      "id": "vendor:stem:WELSBACH%20ELECTRIC",
+      "label": "Welsbach Electric Corp",
+      "href": "/vendors/WELSBACH%20ELECTRIC/",
+      "entity_ref": "vendor:stem:WELSBACH%20ELECTRIC",
+      "relation_state": "published",
+      "detail": "2 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:transportation"
+      ],
+      "award_count": 2,
+      "search_text": "Welsbach Electric Corp vendor organization",
       "agency_count": 1
     },
     {
@@ -62105,12 +62132,6 @@
       "kind": "official"
     },
     {
-      "entity_id": "vendor:stem:GIOIA%20P%20AMBRETTE%20INC%20DBA%20NEWCASTLE%20COMMUNICATIONS",
-      "label": "Gioia P Ambrette Inc DBA Newcastle Communications",
-      "href": "/vendors/GIOIA%20P%20AMBRETTE%20INC%20DBA%20NEWCASTLE%20COMMUNICATIONS/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "vendor:stem:GLOCK",
       "label": "Glock Inc",
       "href": "/vendors/GLOCK/",
@@ -62885,6 +62906,12 @@
       "kind": "agency"
     },
     {
+      "entity_id": "agency:id:mayors-office-to-end-domestic-and-gender-based-violence",
+      "label": "Mayor's Office to End Domestic and Gender-Based Violence",
+      "href": "/agencies/mayors-office-to-end-domestic-and-gender-based-violence/",
+      "kind": "agency"
+    },
+    {
       "entity_id": "entity:official:5278",
       "label": "Melinda R. Katz",
       "href": "/officials/5278/",
@@ -62901,12 +62928,6 @@
       "label": "Mercedes Narcisse",
       "href": "/officials/7829/",
       "kind": "official"
-    },
-    {
-      "entity_id": "vendor:stem:METROEXPRESS%20SERVICES",
-      "label": "MetroExpress Services Inc.",
-      "href": "/vendors/METROEXPRESS%20SERVICES/",
-      "kind": "vendor"
     },
     {
       "entity_id": "agency:id:metropolitan-transportation-authority",
@@ -63287,6 +63308,12 @@
       "kind": "agency"
     },
     {
+      "entity_id": "vendor:stem:OLYMPIC%20PLUMBING%20HEATING%20SERVICES",
+      "label": "Olympic Plumbing & Heating Services, Inc.",
+      "href": "/vendors/OLYMPIC%20PLUMBING%20HEATING%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
       "entity_id": "entity:official:7798",
       "label": "Oswald J. Feliz",
       "href": "/officials/7798/",
@@ -63296,12 +63323,6 @@
       "entity_id": "vendor:stem:P%20T%20II%20CONTRACTING",
       "label": "P&T II Contracting Corp",
       "href": "/vendors/P%20T%20II%20CONTRACTING/",
-      "kind": "vendor"
-    },
-    {
-      "entity_id": "vendor:stem:PATCHAMP",
-      "label": "Patchamp Inc.",
-      "href": "/vendors/PATCHAMP/",
       "kind": "vendor"
     },
     {
@@ -63774,7 +63795,7 @@
     },
     {
       "entity_id": "vendor:stem:SPRUCE%20TECHNOLOGY",
-      "label": "Spruce Technology Inc.",
+      "label": "Spruce Technology Inc",
       "href": "/vendors/SPRUCE%20TECHNOLOGY/",
       "kind": "vendor"
     },
@@ -64205,6 +64226,12 @@
       "kind": "vendor"
     },
     {
+      "entity_id": "vendor:stem:WELSBACH%20ELECTRIC",
+      "label": "Welsbach Electric Corp",
+      "href": "/vendors/WELSBACH%20ELECTRIC/",
+      "kind": "vendor"
+    },
+    {
       "entity_id": "entity:official:15",
       "label": "Wendell Foster",
       "href": "/officials/15/",
@@ -64314,8 +64341,8 @@
     "official": 215,
     "exact-person-appointment": 558,
     "committee": 96,
-    "agency": 86,
-    "vendor": 269,
+    "agency": 87,
+    "vendor": 268,
     "notice-only-hire": 80
   },
   "relation_states": [

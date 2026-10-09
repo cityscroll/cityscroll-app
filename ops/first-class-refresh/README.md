@@ -49,8 +49,8 @@ These datasets refresh on the machine that holds the warehouse:
 | --- | --- |
 | `site/data/ocp_awards_warehouse_lookup.json` | `tools/build_ocp_warehouse_lookup.mjs` |
 | `site/data/money_resident_snapshot.json` | `tools/build_ocp_warehouse_lookup.mjs` |
-| `site/data/procurement_browse_rows.json` | `tools/build_ocp_warehouse_lookup.mjs` |
-| `site/data/procurement_browse_query.json` | `tools/build_ocp_warehouse_lookup.mjs` |
+| `site/data/procurement_browse_rows.json` | `tools/build_shared_procurement_read_model.mjs` (rematerializes from retained spine + OCP awards; warehouse half refreshes those inputs) |
+| `site/data/procurement_browse_query.json` | `tools/build_shared_procurement_read_model.mjs` (rematerializes from retained spine + OCP awards; warehouse half refreshes those inputs) |
 | `site/data/analytics_registered_contracts.json` | `tools/build_analytical_registered_contracts.mjs` |
 | `site/data/analytics_payments.json` | `tools/build_analytical_payments.mjs` |
 | `site/data/analytics_performance_evidence.json` | `tools/build_analytical_performance_evidence.mjs` |

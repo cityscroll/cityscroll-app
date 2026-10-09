@@ -27,7 +27,7 @@
       "vintage_field": "generated_at",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 19872,
+      "value": 20426,
       "reason": null
     },
     {
@@ -245,8 +245,8 @@
       "source_system": "checkbook_contracts",
       "source_contract_id": "checkbook-contracts",
       "registered": true,
-      "served_observations": 9060,
-      "declared_input_rows": 9060,
+      "served_observations": 9490,
+      "declared_input_rows": 9490,
       "specimen": {
         "source_observation_ref": "checkbook_contracts:contract:registered:CT100220261405927:SELECTIVE INSURANCE COMPANY OF AMERICA:prime-vendor:2025-11-12",
         "procurement_id": "procurement:contract:CT100220261405927",
@@ -277,8 +277,8 @@
       "source_system": "city_record",
       "source_contract_id": "city-record",
       "registered": true,
-      "served_observations": 12729,
-      "declared_input_rows": 13031,
+      "served_observations": 12689,
+      "declared_input_rows": 12991,
       "specimen": {
         "source_observation_ref": "city_record:20210621107",
         "procurement_id": "procurement:contract:20211201861",

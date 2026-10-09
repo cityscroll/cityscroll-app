@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "delivery_tier": "resident-snapshot",
-  "generated_at": "2026-10-05T17:33:57.544Z",
+  "generated_at": "2026-10-09T13:51:44.371Z",
   "source_vintages": {
     "default_open": "2026-10-05T17:33:01.337Z",
     "domain_observations": "2026-08-03T22:31:10.617Z",
-    "award_warehouse": "2026-10-05T17:33:57.544Z"
+    "award_warehouse": "2026-10-09T13:51:44.371Z"
   },
   "count": 380,
   "rows": [
