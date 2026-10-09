@@ -404,7 +404,10 @@ also runs by hand via `workflow_dispatch` for a re-run without a new commit. The
 schedule and binding inventory this section summarizes is owned by
 [`docs/release/cloudflare-native-builds.md`](../docs/release/cloudflare-native-builds.md); read
 the exact `paths:` list there or in the workflow rather than from prose. Its post-deploy smoke includes the
-Following create-first contract on the canonical site route. Each deploy **applies pending D1
+Following create-first contract on the canonical site route. Before any production mutation, the
+workflow enforces the provider-native, all-meter release gate documented in
+[`docs/worker-cost-controls.md`](../docs/worker-cost-controls.md); that document also owns the
+content-addressed route-publication and evidence-variable contracts. Each deploy **applies pending D1
 migrations** (`wrangler d1 migrations apply
 crol-notices --remote`) before `wrangler deploy`, so schema changes under `migrations/` land
 with the code that needs them. Skipping that step left the PASSPort tables uncreated and every
