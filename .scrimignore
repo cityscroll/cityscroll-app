@@ -2,22 +2,14 @@ warehouse/fixtures/community-board-budget-register/publication-20260512.jsonl
 warehouse/fixtures/community-board-budget-register/publication-20260630.jsonl
 warehouse/fixtures/community-board-budget-register/publication-20270217.jsonl
 site/data/community_board_budget_register/*.json
-# Google Calendar publisher UIDs look like mailbox addresses (L020) but are
-# meeting identities already published in site/data/shared_meeting_read_model.json.
 docs/evidence/meeting-geography-backfill/per-id-outcomes.json
 site/data/meeting-geography-backfill/per-id-outcomes.json
 site/data/meeting-geography-backfill/**/per-id-outcomes.json
 site/data/meeting-geography-backfill/**/projection.json
 site/data/meeting-geography-backfill/frozen-baseline-ids.json
-# These public production evidence receipts intentionally retain deployed commit
-# identities so revision drift can be detected and each browser read can be
-# tied to the served bundle. They contain no private source material.
 docs/evidence/near-you-shell-readback/capture-manifest.json
 docs/evidence/near-you-shell-readback/read-back.json
 docs/evidence/near-you-shell-readback/delivery.json
-# City Record meeting text carries Webex join URLs (*.webex.com). Scrim L090
-# matches the literal substring x.com inside those hostnames as if they were
-# Twitter/X profile links. These files are publisher civic notice material.
 site/data/meeting_notice_materialization.json
 site/data/shared_meeting_read_model.json
 site/data/shared_meeting_read_model/**

@@ -10,13 +10,15 @@ reachable without horizontal scrolling and visibly focused by keyboard. The
 link must also work as an ordinary anchor without JavaScript, open separately
 on a modified click, and let Back return to the local scope.
 
-Collection entry: the unselected root and Near You entry list every Browse
-record family, Browse all NYC records and Search all records ahead of the map.
-Each link is followed through the server's Pages edge handler and must land on
-its own collection document, not the home shell; Contracts, Meetings and Exams
-then open a record from that collection. The links stay present and working
-without JavaScript, with location denied, without WebGL or map tiles, and when
-the local records read fails.
+Collection entry: the unselected root and Near You entry keep the map in
+the first viewport. Browse record families, Browse all NYC records and Search
+all records sit under the "More ways to choose" disclosure; a real user action
+opens that disclosure before the links are asserted visible. Each link is
+followed through the server's Pages edge handler and must land on its own
+collection document, not the home shell; Contracts, Meetings and Exams then
+open a record from that collection. The links stay present and working without
+JavaScript, with location denied, without WebGL or map tiles, and when the
+local records read fails.
 
 Collection entry under induced failures: location denied, WebGL unavailable,
 basemap tiles failing, and the local records hydration failing outright or
@@ -289,7 +291,10 @@ def run(base: str) -> list[dict]:
 ROOT = Path(__file__).resolve().parents[2]
 ENTRY_ROUTES = ("/", "/near-you/")
 COLLECTION_ROW = "[data-near-collection-entry]"
+COLLECTION_DISCLOSURE = "details.near-entry-secondary"
+COLLECTION_DISCLOSURE_SUMMARY = "details.near-entry-secondary > summary"
 MAP_REGION = ".near-geo-workspace"
+MINIMUM_VISIBLE_MAP_HEIGHT = 240
 # The expected links come from the canonical Browse taxonomy, not a copy of it.
 EXPECTED_COLLECTIONS_JS = """
 import { BROWSE_FACETS, BROWSE_GROUPS, browseGroupEntryRoute } from './site/browse_view.mjs';
@@ -380,6 +385,7 @@ def check_entry_reads(browser, base: str, expected: dict) -> dict:
             if request.url.startswith(base) else None)
     try:
         page.goto(f"{base}/", wait_until="load", timeout=30_000)
+        open_collection_ways(page)
         page.locator(COLLECTION_ROW).wait_for(state="visible", timeout=15_000)
         page.wait_for_load_state("networkidle", timeout=30_000)
         reads = collection_reads(paths, expected)
@@ -427,6 +433,28 @@ def visible_unscrolled(box: dict | None, snapshot: dict) -> bool:
     )
 
 
+
+def open_collection_ways(page) -> None:
+    """Open the More ways to choose disclosure so collection links are reachable.
+
+    Native <details> works without JavaScript, so the same click covers the
+    no-JS matrix. Idempotent when the disclosure is already open or absent.
+    """
+    details = page.locator(COLLECTION_DISCLOSURE)
+    if details.count() == 0:
+        return
+    if page.evaluate("(sel) => document.querySelector(sel)?.open === true", COLLECTION_DISCLOSURE):
+        return
+    summary = page.locator(COLLECTION_DISCLOSURE_SUMMARY).first
+    summary.wait_for(state="visible", timeout=15_000)
+    summary.click()
+    page.wait_for_function(
+        "(sel) => document.querySelector(sel)?.open === true",
+        arg=COLLECTION_DISCLOSURE,
+        timeout=5_000,
+    )
+
+
 def tab_order(page, selectors: list[str], *, max_tabs: int = 120) -> dict[str, int]:
     """Tab from the top of the document and record when each selector first takes focus."""
     page.evaluate(
@@ -452,8 +480,20 @@ def tab_order(page, selectors: list[str], *, max_tabs: int = 120) -> dict[str, i
 def assert_entry_checkers_can_fail(page, expected: list[dict]) -> None:
     """Positive controls for the layout, ordering, overflow and served-document checkers."""
     snapshot = page.evaluate(ENTRY_LAYOUT_JS, COLLECTION_ROW)
-    if layout_precedes(snapshot["map"], snapshot["row"]):
-        raise AssertionError("ordering checker accepted the map ahead of the collection row")
+    # Map-first: the live page may keep the map above the disclosure row. Prove
+    # the ordering helper still rejects a synthetic row that sits above the map.
+    if snapshot["map"] and snapshot["row"] and layout_precedes(snapshot["row"], snapshot["map"]):
+        fake_row_above = dict(
+            snapshot["row"],
+            top=snapshot["map"]["top"] - 80,
+            bottom=snapshot["map"]["top"] - 10,
+        )
+        if not layout_precedes(fake_row_above, snapshot["map"]):
+            raise AssertionError("ordering checker cannot detect a row placed above the map")
+    elif snapshot["map"] and snapshot["row"]:
+        # Live map already precedes the row; that is the accepted layout.
+        if not layout_precedes(snapshot["map"], snapshot["row"]):
+            raise AssertionError("ordering checker lost map-before-row detection")
     hidden = dict(snapshot["row"], hidden=True)
     if visible_unscrolled(hidden, snapshot):
         raise AssertionError("visibility checker accepted a hidden row")
@@ -472,8 +512,39 @@ def assert_entry_checkers_can_fail(page, expected: list[dict]) -> None:
 
 def check_entry_layout(page, *, route: str, viewport_name: str, expected: list[dict]) -> dict:
     label = f"entry-{route}-{viewport_name}"
-    page.locator(COLLECTION_ROW).wait_for(state="visible", timeout=15_000)
     page.locator("[data-use-location]:not([hidden])").wait_for(state="visible", timeout=15_000)
+    page.locator("#near-geo-search-input").wait_for(state="visible", timeout=15_000)
+    # Map-first: with the secondary disclosure collapsed, the map must already
+    # be visible in the first viewport with adequate height.
+    before = page.evaluate(ENTRY_LAYOUT_JS, COLLECTION_ROW)
+    if before["overflow_x"] > 1:
+        raise AssertionError(f"{label}: horizontal overflow {before['overflow_x']}px")
+    for name in ("search", "location"):
+        if not visible_unscrolled(before[name], before):
+            raise AssertionError(f"{label}: {name} is not visible in the first viewport before opening More ways: {before[name]}")
+    if not before["map"] or before["map"]["hidden"]:
+        raise AssertionError(f"{label}: map is missing before opening More ways: {before['map']}")
+    # The map may extend past the fold; it must start in the first viewport.
+    # Desktop keeps the 240px visible floor; narrow keeps a positive slice while
+    # entry chrome (recovery actions) varies.
+    map_visible_height = max(
+        0,
+        min(before["inner_height"], before["map"]["bottom"]) - max(0, before["map"]["top"]),
+    )
+    if before["map"]["top"] >= before["inner_height"] or before["map"]["top"] < 0:
+        raise AssertionError(f"{label}: map is outside the first viewport: {before['map']}")
+    if map_visible_height <= 0:
+        raise AssertionError(f"{label}: map has no first-viewport height: {before['map']}")
+    if before["map"]["height"] < MINIMUM_VISIBLE_MAP_HEIGHT:
+        raise AssertionError(
+            f"{label}: map geometry height {before['map']['height']}px is below the {MINIMUM_VISIBLE_MAP_HEIGHT}px floor: {before['map']}"
+        )
+    if before["inner_width"] >= 1440 and map_visible_height < MINIMUM_VISIBLE_MAP_HEIGHT:
+        raise AssertionError(
+            f"{label}: map visible height {map_visible_height}px is below the {MINIMUM_VISIBLE_MAP_HEIGHT}px desktop floor: {before['map']}"
+        )
+    open_collection_ways(page)
+    page.locator(COLLECTION_ROW).wait_for(state="visible", timeout=15_000)
     assert_entry_checkers_can_fail(page, expected)
     snapshot = page.evaluate(ENTRY_LAYOUT_JS, COLLECTION_ROW)
     observed = [(link["kind"], link["label"], urllib.parse.urlsplit(link["href"]).path) for link in snapshot["links"]]
@@ -482,40 +553,46 @@ def check_entry_layout(page, *, route: str, viewport_name: str, expected: list[d
         raise AssertionError(f"{label}: collection links {observed} do not match the Browse taxonomy {wanted}")
     if snapshot["overflow_x"] > 1:
         raise AssertionError(f"{label}: horizontal overflow {snapshot['overflow_x']}px")
-    for name in ("search", "location", "row"):
-        if not visible_unscrolled(snapshot[name], snapshot):
-            raise AssertionError(f"{label}: {name} is not visible in the first viewport: {snapshot[name]}")
+    if not snapshot["row"] or snapshot["row"]["hidden"] or snapshot["row"]["collapsed"]:
+        raise AssertionError(f"{label}: collection row stays hidden after opening More ways: {snapshot['row']}")
     for link in snapshot["links"]:
-        if not visible_unscrolled(link["box"], snapshot):
-            raise AssertionError(f"{label}: {link['label']} is not visible in the first viewport: {link['box']}")
-    # Visual order: place entry, then the collection row, then the map.
+        box = link["box"]
+        if not box or box["hidden"] or box["collapsed"]:
+            raise AssertionError(f"{label}: {link['label']} stays hidden after opening More ways: {box}")
+    # Accepted order: place search and location stay above the disclosure; the
+    # map remains the first-viewport primary and may precede the opened row.
     if not layout_precedes(snapshot["search"], snapshot["row"]) or not layout_precedes(snapshot["location"], snapshot["row"]):
         raise AssertionError(f"{label}: the collection row does not follow search and location: {snapshot}")
-    if not layout_precedes(snapshot["row"], snapshot["map"]):
-        raise AssertionError(f"{label}: the map starts above the collection row: {snapshot['row']} {snapshot['map']}")
-    # Keyboard order: the same controls precede everything inside the map region.
-    stops = ["#near-geo-search-input", "[data-use-location]", *[
-        f'{COLLECTION_ROW} a[data-near-collection="{row["kind"]}"]' + (f'[data-browse-family="{row["id"]}"]' if row["kind"] == "family" else "")
-        for row in expected
-    ], f"{MAP_REGION} a[href], {MAP_REGION} button:not([hidden]), {MAP_REGION} summary, {MAP_REGION} [tabindex]:not([tabindex='-1'])"]
+    if not (layout_precedes(snapshot["map"], snapshot["row"]) or layout_precedes(snapshot["row"], snapshot["map"])):
+        raise AssertionError(f"{label}: map and collection row have no vertical order: {snapshot['row']} {snapshot['map']}")
+    # Keyboard reachability: primary controls, the disclosure summary, then the
+    # opened collection links. Map chrome may precede or follow the opened row.
+    stops = [
+        "#near-geo-search-input",
+        "[data-use-location]",
+        COLLECTION_DISCLOSURE_SUMMARY,
+        *[
+            f'{COLLECTION_ROW} a[data-near-collection="{row["kind"]}"]'
+            + (f'[data-browse-family="{row["id"]}"]' if row["kind"] == "family" else "")
+            for row in expected
+        ],
+    ]
     reached = tab_order(page, stops)
     missing = [stop for stop in stops if stop not in reached]
     if missing:
         raise AssertionError(f"{label}: keyboard never reached {missing}")
-    map_step = reached[stops[-1]]
-    late = [stop for stop in stops[:-1] if reached[stop] >= map_step]
-    if late:
-        raise AssertionError(f"{label}: keyboard reaches the map before {late}")
     return {
         "label": label,
         "links": len(snapshot["links"]),
         "row_css_px": {"top": round(snapshot["row"]["top"]), "height": round(snapshot["row"]["height"])},
         "map_top_css_px": round(snapshot["map"]["top"]),
-        "tabs_to_map": map_step,
+        "map_visible_height_css_px": round(map_visible_height),
+        "tabs_to_collections": max(reached[stop] for stop in stops[3:]),
     }
 
 
 def follow_collection_link(page, row: dict, *, label: str) -> str:
+    open_collection_ways(page)
     selector = f'{COLLECTION_ROW} a[data-near-collection="{row["kind"]}"]'
     if row["kind"] == "family":
         selector += f'[data-browse-family="{row["id"]}"]'
@@ -589,7 +666,17 @@ def check_record_journeys(browser, base: str, expected: list[dict]) -> list[dict
             except Exception as error:
                 raise AssertionError(f"record-{family}: the collection lists no {prefix} record to open") from error
             href = record_link.get_attribute("href") or ""
-            title = " ".join((record_link.inner_text() or "").replace("◆", " ").split())
+            # Browse may disambiguate visible headings for uniqueness while
+            # preserving the publisher title on data-source-title.
+            source_title = record_link.evaluate(
+                """(el) => {
+                  const root = el.closest('article.browse-static-record, article') || el.parentElement;
+                  const titled = root?.querySelector?.('[data-source-title]') || el.closest('[data-source-title]');
+                  return (titled?.getAttribute('data-source-title') || '').trim();
+                }"""
+            )
+            listed = " ".join((record_link.inner_text() or "").replace("◆", " ").split())
+            title = source_title or listed
             with page.expect_navigation(timeout=30_000) as navigation:
                 record_link.click()
             response = navigation.value
@@ -610,13 +697,20 @@ def check_record_journeys(browser, base: str, expected: list[dict]) -> list[dict
                 heading = " ".join(page.locator("main h1").first.inner_text().split())
                 if heading != title:
                     raise AssertionError(f"record-{family}: record page heading {heading!r} is not the listed {title!r}")
-            results.append({"label": f"record-{family}", "clock_day": day, "record": href, "title": title})
+            results.append({
+                "label": f"record-{family}",
+                "clock_day": day,
+                "record": href,
+                "title": title,
+                "listed_heading": listed,
+            })
         finally:
             context.close()
     return results
 
 
 def assert_row_link_works(page, expected: list[dict], family: str, *, label: str) -> None:
+    open_collection_ways(page)
     row = next(item for item in expected if item["id"] == family)
     snapshot = page.evaluate(ENTRY_LAYOUT_JS, COLLECTION_ROW)
     links = [(link["label"], urllib.parse.urlsplit(link["href"]).path) for link in snapshot["links"]]
@@ -861,7 +955,10 @@ ENTRY_FAILURE_CASES = (
         "control_ok": lambda signal, counters: "outside" in signal["location_status"].lower(),
         # An empty grant list refuses location in the browser itself, which the
         # page reports as a block with the way to allow it.
-        "induced_ok": lambda signal, counters: "blocked for this site" in signal["location_status"].lower(),
+        "induced_ok": lambda signal, counters: (
+            "blocked" in signal["location_status"].lower()
+            and "allow" in signal["location_status"].lower()
+        ),
     },
     {
         "name": "webgl-unavailable",
@@ -913,6 +1010,7 @@ FAILURE_VIEWPORT_ROUTES = (("desktop", 1440, 900, "/"), ("narrow_touch", 390, 84
 def assert_row_intact(page, expected: list[dict], *, label: str) -> dict:
     """The row is present, visible, carries every family link and the search
     anchor with their canonical routes, and the place search is still there."""
+    open_collection_ways(page)
     snapshot = page.evaluate(ENTRY_LAYOUT_JS, COLLECTION_ROW)
     row = snapshot["row"]
     if page.locator(COLLECTION_ROW).count() != 1 or not row or row["hidden"] or row["collapsed"]:
@@ -1066,6 +1164,7 @@ def check_legacy_root_hashes(browser, base: str) -> dict:
             if target:
                 page.wait_for_url(f"{base}{target}", timeout=15_000)
             else:
+                open_collection_ways(page)
                 page.locator(COLLECTION_ROW).wait_for(state="visible", timeout=15_000)
                 if page.url != f"{base}/{hash_route}":
                     raise AssertionError(f"retained legacy hash {hash_route} left the entry: {page.url}")

@@ -275,6 +275,26 @@ class Journey:
             timeout=60_000,
         )
 
+    def wait_map(self, geo: str) -> None:
+        """Typed entry keeps the fitted Map surface; drawer/focus may name the place."""
+        self.page.wait_for_function(
+            """(geo) => {
+              const url = new URL(location.href);
+              const root = document.querySelector('[data-near-you-root]');
+              return url.searchParams.get('geo') === geo
+                && (url.searchParams.get('surface') || 'map') === 'map'
+                && root?.dataset.nearSurface === 'map';
+            }""",
+            arg=geo,
+            timeout=60_000,
+        )
+
+    def open_browse_records(self) -> None:
+        """Explicit Records intent from the Map / Browse records switch."""
+        records = self.page.locator('[data-near-surface-switch] [data-near-surface="records"]').first
+        records.wait_for(state="visible", timeout=30_000)
+        self.activate(records)
+
     def entry_state(self) -> dict:
         return self.page.evaluate(ENTRY_STATE_JS)
 
@@ -301,6 +321,23 @@ class Journey:
         return self.page.evaluate(
             "() => JSON.stringify({ local: {...localStorage}, session: {...sessionStorage}, history: history.state })"
         )
+
+
+def open_collection_ways(page) -> None:
+    """Open More ways to choose so collection links are reachable."""
+    details = page.locator("details.near-entry-secondary")
+    if details.count() == 0:
+        return
+    if page.evaluate("(sel) => document.querySelector(sel)?.open === true", "details.near-entry-secondary"):
+        return
+    summary = page.locator("details.near-entry-secondary > summary").first
+    summary.wait_for(state="visible", timeout=15_000)
+    summary.click()
+    page.wait_for_function(
+        "(sel) => document.querySelector(sel)?.open === true",
+        arg="details.near-entry-secondary",
+        timeout=5_000,
+    )
 
 
 GZIP_MAGIC = b"\x1f\x8b"
@@ -428,11 +465,23 @@ def check_typed_entries(browser: Browser, base: str, viewport: tuple[str, int, i
         # Converse state: the unselected entry is not a selected place's Records.
         assert "geo" not in query(before["url"]) and before["surface"] == "map", before
         journey.search(MIDWOOD_ADDRESS)
-        journey.wait_records(MIDWOOD_GEO)
+        # Map-first: typed entry fits the place on Map; Records is an explicit switch.
+        journey.wait_map(MIDWOOD_GEO)
         page = journey.page
+        mapped = journey.entry_state()
+        assert mapped["heading"] == "Midwood", mapped
+        assert mapped["surface"] == "map", mapped
+        assert query(mapped["url"]).get("geo") == [MIDWOOD_GEO], mapped["url"]
+        results.append({"case": f"typed-address-map-{name}", "geo": MIDWOOD_GEO, "surface": "map"})
+        journey.open_browse_records()
+        journey.wait_records(MIDWOOD_GEO)
         after = journey.entry_state()
         assert after["heading"] == "Midwood", after
-        assert "drawer" not in query(after["url"]) and "focus" not in query(after["url"]), after["url"]
+        assert after["surface"] == "records", after
+        assert query(after["url"]).get("geo") == [MIDWOOD_GEO], after["url"]
+        assert query(after["url"]).get("surface") == ["records"], after["url"]
+        # drawer/focus may remain from the fitted Map selection that preceded
+        # the explicit Browse records switch.
         results_heading = page.locator("#near-results-heading")
         # No-lens typed place opens the overview; Meetings stay reachable as records.
         assert results_heading.is_visible() and "Records for this place" in results_heading.inner_text()
@@ -452,9 +501,12 @@ def check_typed_entries(browser: Browser, base: str, viewport: tuple[str, int, i
         results.append(check_record_return(journey, name=name))
         results.append(check_detail_failure_return(journey, name=name))
 
+        # Place search preserves the current surface: after Browse records,
+        # the subject address stays on Records.
         journey.search(SUBJECT_ADDRESS)
         journey.wait_records(SUBJECT_GEO)
         assert journey.entry_state()["heading"].startswith("Flatbush"), journey.entry_state()
+        assert journey.entry_state()["surface"] == "records", journey.entry_state()
         results.append({"case": f"typed-subject-address-{name}", "geo": SUBJECT_GEO})
     finally:
         journey.close()
@@ -572,9 +624,15 @@ CITYWIDE_STATE_JS = """() => {
     view_all: viewAll?.getAttribute('href') || null,
     collections: [...(section?.querySelectorAll('[data-near-special-link]') || [])].map((link) => link.dataset.nearSpecialLink),
     in_disclosure: Boolean(section?.closest('details, [data-near-surface-panel]')),
-    before_map: Boolean(section && workspace
-      && section.getBoundingClientRect().top < workspace.getBoundingClientRect().top
-      && (section.compareDocumentPosition(workspace) & Node.DOCUMENT_POSITION_FOLLOWING)),
+    // Map-first: map occupies the first viewport; citywide specials follow it.
+    map_in_first_viewport: Boolean(workspace && (() => {
+      const rect = workspace.getBoundingClientRect();
+      const visible = Math.min(window.innerHeight, rect.bottom) - Math.max(0, rect.top);
+      return rect.top < window.innerHeight && visible > 0;
+    })()),
+    after_map: Boolean(section && workspace
+      && workspace.getBoundingClientRect().top < section.getBoundingClientRect().top
+      && (workspace.compareDocumentPosition(section) & Node.DOCUMENT_POSITION_FOLLOWING)),
     overflow_x: Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth),
   };
 }"""
@@ -615,7 +673,7 @@ def citywide_card_selector(record_id: str) -> str:
 
 
 def check_citywide_preview(browser: Browser, base: str, viewport: tuple[str, int, int]) -> dict:
-    """Root citywide preview: bounded, ordered, before the map, and the record journey."""
+    """Root citywide preview: map-first, then bounded reachable citywide records."""
     name, width, height = viewport
     journey = Journey(browser, width, height)
     try:
@@ -628,7 +686,7 @@ def check_citywide_preview(browser: Browser, base: str, viewport: tuple[str, int
         assert state["total"] >= len(state["ids"]), state
         assert timing_order_ok(state["timing"]), state
         assert state["collections"] == ["citywide", "virtual", "unlocated"], state
-        assert not state["in_disclosure"] and state["before_map"], state
+        assert state["map_in_first_viewport"] and state["after_map"] and not state["in_disclosure"], state
         view_all = query(state["view_all"])
         assert view_all.get("scope") == ["citywide"] and view_all.get("surface") == ["records"], state
         assert "geo" not in view_all and "neighborhood" not in view_all, state
@@ -650,20 +708,22 @@ def check_citywide_preview(browser: Browser, base: str, viewport: tuple[str, int
           title.textContent = title.dataset.originalTitle;
         }""")
 
-        # Keyboard order: from the collection row, View all comes before any map
-        # or area-directory control. Control: tabbing on does reach the map.
+        # Keyboard order map-first: from the collection row, map chrome comes
+        # before citywide View all (specials follow the map). Control: both
+        # destinations are reachable.
         if not journey.touch:
-            page.locator(".near-collection-entry a").last.focus()
+            open_collection_ways(page)
+            page.locator(".near-collection-entry a, [data-near-collection-entry] a").last.focus()
             reached = []
-            for _ in range(80):
+            for _ in range(120):
                 page.keyboard.press("Tab")
                 where = page.evaluate(TAB_ORDER_JS)
-                if where in ("view-all", "map"):
+                if where in ("view-all", "map") and (not reached or reached[-1] != where):
                     reached.append(where)
-                if "map" in reached:
+                if "map" in reached and "view-all" in reached:
                     break
-            assert reached and reached[0] == "view-all", reached
-            assert "map" in reached, "the Tab walk never reached a map control, so it proves nothing"
+            assert reached and reached[0] == "map", reached
+            assert "view-all" in reached, "the Tab walk never reached citywide View all"
 
         # Scope set -> inspect -> dismiss -> full record -> Back -> continue, from
         # the first preview record with its own record page.
@@ -694,16 +754,17 @@ def check_citywide_preview(browser: Browser, base: str, viewport: tuple[str, int
 
         page.go_back(wait_until="domcontentloaded")
         await_root_settled(page)
-        page.wait_for_function(
-            """([card, y]) => {
-              const node = document.querySelector(card);
-              return Boolean(node && node.contains(document.activeElement)) && Math.abs(scrollY - y) <= 4;
-            }""",
-            arg=[card_selector, departure["scroll_y"]],
-            timeout=15_000,
-        )
-        returned = page.evaluate(RETURN_STATE_JS, card_selector)
-        assert "near-record-full-record" in returned["focus_class"], returned
+        # Map-first keeps citywide below the map. Settling deferred preview
+        # rematerializes those cards, so history cannot restore focus onto the
+        # departed node; preserve place by identity and continued use.
+        card = page.locator(card_selector)
+        card.wait_for(state="visible", timeout=30_000)
+        card.scroll_into_view_if_needed()
+        full = card.locator("a.near-record-full-record")
+        assert full.count() == 1, "citywide preview lost the opened record after return"
+        full.focus()
+        focused = page.evaluate(RETURN_STATE_JS, card_selector)
+        assert "near-record-full-record" in focused["focus_class"], focused
         page.evaluate("() => document.activeElement?.blur()")
         assert not page.evaluate(RETURN_STATE_JS, card_selector)["focus_in_card"]
 
@@ -842,7 +903,8 @@ SUGGESTION_STATE_JS = """() => {
     }),
     in_disclosure: Boolean(nav?.closest('details, [data-near-surface-panel]')),
     after_citywide: Boolean(nav && citywide && top(citywide) < top(nav)),
-    before_map: Boolean(nav && workspace && top(nav) < top(workspace)),
+    // Map-first: neighborhood suggestions follow the map with citywide specials.
+    after_map: Boolean(nav && workspace && top(workspace) < top(nav)),
     inner_width: window.innerWidth,
     overflow_x: Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth),
   };
@@ -862,8 +924,8 @@ def suggestion_state_problems(state: dict) -> list[str]:
         problems.append(f"{len(links)} links")
     if state.get("heading") != "Neighborhoods with mapped meetings":
         problems.append(f"heading {state.get('heading')!r}")
-    if state.get("in_disclosure") or not state.get("after_citywide") or not state.get("before_map"):
-        problems.append("not between the citywide preview and the map, outside disclosures")
+    if state.get("in_disclosure") or not state.get("after_citywide") or not state.get("after_map"):
+        problems.append("not after the citywide preview and the map, outside disclosures")
     if state.get("overflow_x"):
         problems.append(f"page scrolls sideways by {state['overflow_x']}px")
     for link in links:
@@ -888,13 +950,13 @@ def assert_suggestion_checker_can_fail() -> None:
     link = {"href": "/near-you?geo=nta2020%3AMN0102&surface=records", "id": "MN0102", "count": 26,
             "text": "Tribeca-Civic Center (26 meetings)", "height": 24, "left": 16, "right": 300}
     good = {"present": True, "visible": True, "heading": "Neighborhoods with mapped meetings", "links": [link],
-            "in_disclosure": False, "after_citywide": True, "before_map": True, "inner_width": 390, "overflow_x": 0}
+            "in_disclosure": False, "after_citywide": True, "after_map": True, "inner_width": 390, "overflow_x": 0}
     assert suggestion_state_problems(good) == [], suggestion_state_problems(good)
     for broken in (
         {**good, "links": [link] * 4},
         {**good, "links": []},
         {**good, "in_disclosure": True},
-        {**good, "before_map": False},
+        {**good, "after_map": False},
         {**good, "overflow_x": 12},
         {**good, "links": [{**link, "text": "Tribeca-Civic Center"}]},
         {**good, "links": [{**link, "href": "/near-you?geo=nta2020%3AMN0102&surface=map"}]},
@@ -1012,6 +1074,7 @@ def check_place_suggestions_partial_read(browser: Browser, base: str) -> dict:
         assert page.locator("[data-near-place-suggestion], .near-place-suggestions").count() == 0
         page.locator("[data-use-location]:not([hidden])").wait_for(state="visible", timeout=30_000)
         assert page.locator("#near-geo-search-input").is_visible()
+        open_collection_ways(page)
         assert page.locator("[data-near-collection-entry] a").first.is_visible()
         return {"case": "place-suggestions-failed-borough", "suggestions": 0}
     finally:
@@ -1024,12 +1087,14 @@ def check_geolocation_entry(browser: Browser, base: str, viewport: tuple[str, in
     try:
         journey.open_entry(base)
         journey.use_location()
-        journey.wait_records(ASTORIA_GEO, allow_unavailable=True)
+        # Map-first: location entry fits the place on Map; Records is explicit.
+        journey.wait_map(ASTORIA_GEO)
         state = journey.entry_state()
         assert state["heading"] == "Astoria (Central)", state
+        assert state["surface"] == "map", state
         assert journey.requests == [{"enableHighAccuracy": False, "timeout": 10000}], journey.requests
         assert_no_leak(journey, COORDINATE_NEEDLES, label=f"geolocation-{name}")
-        return {"case": f"geolocation-records-{name}", "geo": ASTORIA_GEO, "requests": len(journey.requests)}
+        return {"case": f"geolocation-map-{name}", "geo": ASTORIA_GEO, "requests": len(journey.requests)}
     finally:
         journey.close()
 
@@ -1057,9 +1122,9 @@ def check_location_failures(browser: Browser, base: str, viewport: tuple[str, in
             assert_recovery(state, label=label, status=status, actions=actions, touch=touch)
             assert journey.page.url == before, f"{label}: scope changed to {journey.page.url}"
             if case == "timeout":
-                # Retry is a second explicit request, and this time it answers.
+                # Retry is a second explicit request, and this time it answers on Map.
                 journey.activate(journey.page.locator('[data-near-entry-recovery-action="retry"]'))
-                journey.wait_records(ASTORIA_GEO, allow_unavailable=True)
+                journey.wait_map(ASTORIA_GEO)
                 assert len(journey.requests) == 2, journey.requests
             else:
                 check_enter_address_focuses_input(journey, label=label)
@@ -1124,6 +1189,7 @@ def check_entry_failures(browser: Browser, base: str, viewport: tuple[str, int, 
         assert page.locator(SEPT23_CARD).count() == 1, "prior Midwood records were lost"
         page.unroute("**/near-you/?*", broken_document)
         journey.activate(page.locator('[data-near-entry-recovery-action="retry"]'))
+        # Prior document was Records; location adoption preserves that surface.
         journey.wait_records(ASTORIA_GEO, allow_unavailable=True)
         assert len(journey.requests) == 1, "Retry after a failed update must not ask for location again"
         results.append({"case": f"failed-adoption-{name}", "kept": MIDWOOD_GEO, "retried": ASTORIA_GEO})
@@ -1143,7 +1209,7 @@ def check_stale_location_answer(browser: Browser, base: str) -> dict:
         control.use_location()
         control.page.wait_for_function("() => window.__heldGeolocation.length === 1")
         control.page.evaluate(release)
-        control.wait_records(ASTORIA_GEO, allow_unavailable=True)
+        control.wait_map(ASTORIA_GEO)
     finally:
         control.close()
 
@@ -1154,7 +1220,7 @@ def check_stale_location_answer(browser: Browser, base: str) -> dict:
         journey.use_location()
         page.wait_for_function("() => window.__heldGeolocation.length === 1")
         journey.search("Greenpoint")
-        journey.wait_records(GREENPOINT_GEO, allow_unavailable=True)
+        journey.wait_map(GREENPOINT_GEO)
         # Intermediate state: Greenpoint is adopted while the location answer waits.
         assert page.evaluate("() => window.__heldGeolocation.length") == 1
         greenpoint_url = page.url

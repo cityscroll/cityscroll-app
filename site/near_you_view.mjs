@@ -1939,12 +1939,12 @@ export function renderNearYouBody(view) {
     data-translation-context-strip-label="Context">
     ${selectedHero}
     ${unselectedEntry}
-    ${view.hasPlace ? "" : `${renderNearYouSpecialRecords(view, { position: "entry", shell: true })}${renderNearYouPlaceSuggestions(view)}`}
     ${surfaceSwitch}
     ${overviewBlock}
     ${renderNearYouGeoWorkspace(view)}
     ${selectedSecondary}
     ${recordsBlock}
+    ${view.hasPlace ? "" : `${renderNearYouSpecialRecords(view, { position: "entry", shell: true })}${renderNearYouPlaceSuggestions(view)}`}
     ${view.hasPlace ? renderNearYouSpecialRecords(view, { position: "after-results", shell: true }) : ""}
   </main>`;
 }

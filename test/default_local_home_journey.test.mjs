@@ -298,9 +298,9 @@ const ENTRY_CLOCK = "2026-09-28T16:00:00.000Z";
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 // The destination a typed entry adopts, built the way the map island builds it.
-function typedEntryDestination(entry) {
-  const state = geographyEntrySelectionState(parseGeographyNavigationState(""), entry);
-  return geographyNavigationUrlWithFilters(state, { base: "https://cityscroll.org/near-you/" });
+function typedEntryDestination(entry, search = "") {
+  const state = geographyEntrySelectionState(parseGeographyNavigationState(search), entry);
+  return geographyNavigationUrlWithFilters(state, { base: `https://cityscroll.org/near-you/${search}` });
 }
 
 function recordCard(html, id) {
@@ -311,7 +311,7 @@ function recordCard(html, id) {
   return html.slice(open, close);
 }
 
-test("A1 [outcome] typed Midwood and subject addresses open their Records; September 23 is past at the pinned clock", async () => {
+test("A1 [outcome] typed Midwood and subject addresses open Map; September 23 is past at the pinned clock", async () => {
   const env = publicationEnv();
   const resolve = productionAddressResolver();
   await withPinnedClock(ENTRY_CLOCK, async () => {
@@ -320,14 +320,14 @@ test("A1 [outcome] typed Midwood and subject addresses open their Records; Septe
     assert.equal(midwood.entry.selection.geo, MIDWOOD_GEO);
     const href = typedEntryDestination(midwood.entry);
     const url = new URL(href);
-    assert.equal(url.searchParams.get("surface"), "records");
-    assert.equal(url.searchParams.has("drawer"), false);
+    assert.equal(url.searchParams.get("surface"), "map");
+    assert.equal(url.searchParams.get("drawer"), "open");
     assert.doesNotMatch(href, /810|East|16th/i, "typed text stays out of the destination");
 
     const response = await handleNearYou(new Request(href), env);
     assert.equal(response.status, 200);
     const html = await response.text();
-    assert.match(html, /data-near-you-root[^>]*data-near-surface="records"/);
+    assert.match(html, /data-near-you-root[^>]*data-near-surface="map"/);
     assert.match(html, /<h1>Midwood<\/h1>/);
     // No category means the place overview: keep the lens empty instead of
     // injecting meetings.
@@ -351,11 +351,24 @@ test("A1 [outcome] typed Midwood and subject addresses open their Records; Septe
     const subject = await resolve("461 Coney Island Avenue", { layerData: LAYER_DATA });
     assert.equal(subject.entry.ok, true);
     assert.equal(subject.entry.selection.geo, SUBJECT_GEO);
-    assert.equal(new URL(typedEntryDestination(subject.entry)).searchParams.get("surface"), "records");
+    assert.equal(new URL(typedEntryDestination(subject.entry)).searchParams.get("surface"), "map");
   });
   // Converse control: the same row is upcoming before its date, so "past" is the clock's reading.
   const before = await viewForGeo(MIDWOOD_GEO, "2026-09-23T14:00:00.000Z");
   assert.match(recordCard(before.html, SEPT23_ID), /data-record-timing="upcoming"/);
+});
+
+test("A1 [control] explicit Records keeps query, agency, and date filters", () => {
+  const entry = resolveGeographyEntryFromPlaceLabel("Midwood", { layerData: LAYER_DATA });
+  assert.equal(entry.ok, true);
+  const url = new URL(typedEntryDestination(
+    entry,
+    "?surface=records&q=rezoning&agency=Planning&when=month",
+  ));
+  assert.equal(url.searchParams.get("surface"), "records");
+  assert.equal(url.searchParams.get("q"), "rezoning");
+  assert.equal(url.searchParams.get("agency"), "Planning");
+  assert.equal(url.searchParams.get("when"), "month");
 });
 
 // Each collection the unselected entry offers, from the canonical Browse

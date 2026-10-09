@@ -65,6 +65,7 @@ import {
   geographyEntryRecoveryActions,
   geographyEntryRecoveryResult,
   geographyEntrySelectionState,
+  geographyPlaceAliasIndexFromGazetteer,
   geographyEntryUnavailableApiResult,
   resolveGeographyEntryFromGeolocation,
   resolveGeographyEntryFromGeolocationError,
@@ -577,10 +578,9 @@ function geographySelectionHref(state) {
   // root selection onto the canonical Near You document before adopting it;
   // an existing /near-you/ route can continue preserving its current path.
   const rootPath = String(location.pathname || "").replace(/\/+$/, "") || "/";
-  const base = rootPath === "/" || rootPath === "/index.html"
-    ? new URL("/near-you/", location.href).toString()
-    : location.href;
-  return geographyNavigationUrlWithFilters(state, {base});
+  const base = new URL(location.href);
+  if (rootPath === "/" || rootPath === "/index.html") base.pathname = "/near-you/";
+  return geographyNavigationUrlWithFilters(state, {base: base.toString()});
 }
 
 async function adoptGeographyEntrySelection(entry, {
@@ -593,7 +593,7 @@ async function adoptGeographyEntrySelection(entry, {
     showGeographyEntryFailure(entry, { retry });
     return false;
   }
-  // Search and location open the place's Records; a map click keeps the Map.
+  // Keep the resident's chosen surface when resolving a place.
   const nextState = geographyEntrySelectionState(parseGeographyNavigationState(location.search), entry);
   const adoption = adoptDocument(geographySelectionHref(nextState));
   const adoptionGeneration = documentAdoptionGeneration;
@@ -801,7 +801,9 @@ function wireForms() {
         try {
           const layerData = await loadGeographyEntryLayers();
           if (!isGeographyEntryCurrent(generation)) return;
-          let entry = resolveGeographyEntryFromPlaceLabel(query, { layerData });
+          let entry = resolveGeographyEntryFromPlaceLabel(query, {
+            layerData, aliasIndex: geographyPlaceAliasIndexFromGazetteer(neighborhoodGazetteer),
+          });
           let ephemeralPoint = null;
           if (!entry.ok) {
             // PAD BBL + one parcel-geography shard → shared entry result.

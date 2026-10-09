@@ -539,6 +539,80 @@ function rowTitle(facet, row) {
   return row.short_title || row.title || row.label || row.request_id;
 }
 
+/**
+ * Visible Browse card headings must be unique within a page (heading-uniqueness
+ * gate). Distinct records often share a publisher title; keep the source title
+ * intact and append date, board, then a stable id fragment until the visible
+ * heading text is unique among the rendered rows.
+ */
+export function disambiguateBrowseCardHeadings(facet, rows = []) {
+  const list = Array.isArray(rows) ? rows.filter(Boolean) : [];
+  const byTitle = new Map();
+  for (const row of list) {
+    const title = String(rowTitle(facet, row) || "Untitled record").trim() || "Untitled record";
+    if (!byTitle.has(title)) byTitle.set(title, []);
+    byTitle.get(title).push(row);
+  }
+  const labels = new Map();
+  const assign = (row, label) => {
+    const id = rowId(facet, row) || JSON.stringify([
+      row?.meeting_id,
+      row?.request_id,
+      row?.project_id,
+      row?.event_date,
+      row?.board_id,
+    ]);
+    labels.set(id, label);
+  };
+  for (const [title, peers] of byTitle) {
+    if (peers.length === 1) {
+      assign(peers[0], title);
+      continue;
+    }
+    const dated = peers.map((row) => {
+      const day = isoDay(rowDate(facet, row));
+      return { row, label: day ? `${title} · ${day}` : title };
+    });
+    const byDateLabel = new Map();
+    for (const item of dated) {
+      if (!byDateLabel.has(item.label)) byDateLabel.set(item.label, []);
+      byDateLabel.get(item.label).push(item);
+    }
+    for (const [dateLabel, datePeers] of byDateLabel) {
+      if (datePeers.length === 1) {
+        assign(datePeers[0].row, dateLabel);
+        continue;
+      }
+      const boarded = datePeers.map(({ row }) => {
+        const boardId = facet === "meetings"
+          ? communityBoardMeetingEdgeFromRow(row)?.from?.replace(/^community-board:/, "")
+            || row.board_id
+            || communityBoardIdFromRow(row)
+          : row.board_id || null;
+        const board = row.board_name || communityBoardShortLabel(boardId);
+        return { row, label: board ? `${dateLabel} · ${board}` : dateLabel };
+      });
+      const byBoardLabel = new Map();
+      for (const item of boarded) {
+        if (!byBoardLabel.has(item.label)) byBoardLabel.set(item.label, []);
+        byBoardLabel.get(item.label).push(item);
+      }
+      for (const [boardLabel, boardPeers] of byBoardLabel) {
+        if (boardPeers.length === 1) {
+          assign(boardPeers[0].row, boardLabel);
+          continue;
+        }
+        for (const { row } of boardPeers) {
+          const id = String(rowId(facet, row) || "").replace(/^meeting:/, "");
+          const shortId = id.slice(-12) || "record";
+          assign(row, `${boardLabel} · ${shortId}`);
+        }
+      }
+    }
+  }
+  return labels;
+}
+
 function rowAgency(facet, row) {
   if (row?.civic_object) return row.browse_agency_name || null;
   if (facet === "zoning") return row.primary_applicant || null;
@@ -1388,9 +1462,14 @@ export function renderBrowseView(view) {
     : "";
   const browseRoute = `${view.config.route}${view.scopeSearch ? `?${view.scopeSearch}` : ""}`;
   const traversal = renderTraversalPath(traversalFromHref(browseRoute), { currentHref: browseRoute });
+  const headingRows = boardSearch?.ambiguous && view.communityBoardGroups?.length
+    ? view.communityBoardGroups.flatMap((group) => group.rows || [])
+    : (view.rows || []);
+  const headingLabels = disambiguateBrowseCardHeadings(view.facet, headingRows);
   const renderCard = (row) => {
     const href = rowHref(view.facet, row);
     const title = rowTitle(view.facet, row) || "Untitled record";
+    const headingLabel = headingLabels.get(rowId(view.facet, row)) || title;
     const agency = rowAgency(view.facet, row);
     const date = renderedDate(rowDate(view.facet, row));
     const actionTime = browseActionTime(view.facet, row);
@@ -1418,9 +1497,14 @@ export function renderBrowseView(view) {
         className: ["rules", "meetings"].includes(view.facet)
           ? "ui-object-card-title"
           : "browse-record-link ui-object-card-title",
+        // Only override label markup when the visible heading must diverge
+        // from the publisher title for uniqueness; keep canonical HTML otherwise.
+        ...(headingLabel !== title
+          ? { labelMarkup: `<span lang="en" dir="ltr">${esc(headingLabel)}</span>` }
+          : {}),
         escape: esc,
       })
-      : `<span lang="en" dir="ltr">${esc(title)}</span>`;
+      : `<span lang="en" dir="ltr">${esc(headingLabel)}</span>`;
     const copyMarkup = renderObjectCardCopy(interaction, { label: "Copy link", escape: esc });
     const reportMarkup = view.facet === "contracts" && (row.procurement_id || row.canonical_href)
       ? renderReportIssueAffordance(buildContractReportTarget(row), { escape: esc })
@@ -1514,7 +1598,7 @@ export function renderBrowseView(view) {
       : "";
     return `<article class="browse-static-record${view.facet === "people-list" ? " people-org-row" : ""}"${peopleListAttributes} data-record-id="${esc(rowId(view.facet, row) || "")}"${civicObjectAttributes} data-meeting-origin="${esc(row.meeting_origin || "")}"${boardId ? ` data-community-board-id="${esc(boardId)}"` : ""}>
       ${actionMarkup}
-      ${interaction.target ? `<div class="ui-object-card-primary"><h3>${titleMarkup}</h3>${copyMarkup}${reportMarkup}</div>` : `<h3>${titleMarkup}</h3>`}
+      ${interaction.target ? `<div class="ui-object-card-primary"><h3 data-source-title="${esc(title)}">${titleMarkup}</h3>${copyMarkup}${reportMarkup}</div>` : `<h3 data-source-title="${esc(title)}">${titleMarkup}</h3>`}
       <p class="browse-static-meta">${[typedMetadata, peopleInstitutionMarkup, agencyMarkup, boardMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc }), sourceMarkup].filter(Boolean).join(" · ")}${peopleCommunityBoardDetail}</p>
       ${detailMarkup}${view.facet === "contracts" ? renderProcurementRowCoverageHtml(row) : ""}
       ${assertionMarkup}

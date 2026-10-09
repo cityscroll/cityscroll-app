@@ -320,10 +320,10 @@ test("A6: raw coordinates and address query text never persist, serialize, or re
   assert.doesNotMatch(JSON.stringify(geographyEntryPublicProjection(failed)), /1508|provider down/);
 });
 
-test("entry action: search and location open Records; a map click keeps the Map and its drawer", () => {
-  assert.equal(geographyEntryDestinationSurface(GEOGRAPHY_ENTRY_SOURCES.ADDRESS), "records");
-  assert.equal(geographyEntryDestinationSurface(GEOGRAPHY_ENTRY_SOURCES.PLACE_LABEL), "records");
-  assert.equal(geographyEntryDestinationSurface(GEOGRAPHY_ENTRY_SOURCES.GEOLOCATION), "records");
+test("entry action: search and location preserve the chosen surface; a map click opens Map", () => {
+  assert.equal(geographyEntryDestinationSurface(GEOGRAPHY_ENTRY_SOURCES.ADDRESS), "map");
+  assert.equal(geographyEntryDestinationSurface(GEOGRAPHY_ENTRY_SOURCES.PLACE_LABEL), "map");
+  assert.equal(geographyEntryDestinationSurface(GEOGRAPHY_ENTRY_SOURCES.GEOLOCATION), "map");
   assert.equal(geographyEntryDestinationSurface(GEOGRAPHY_ENTRY_SOURCES.MAP_CLICK), "map");
   assert.equal(geographyEntryDestinationSurface(GEOGRAPHY_ENTRY_SOURCES.POINT), "map");
   assert.equal(geographyEntryDestinationSurface(undefined), "map");
@@ -335,7 +335,10 @@ test("entry action: search and location open Records; a map click keeps the Map 
   const [lon, lat] = [-73.9235, 40.7644];
   const located = resolveGeographyEntryFromGeolocation(lon, lat, { layerData: LAYER_DATA });
   assert.equal(located.ok, true);
-  const records = geographyEntrySelectionState(current, located);
+  const selected = geographyEntrySelectionState(current, located);
+  assert.equal(selected.surface, "map");
+  assert.equal(selected.drawer, "open");
+  const records = geographyEntrySelectionState({ ...current, surface: "records" }, located);
   assert.equal(records.surface, "records");
   assert.equal(records.drawer, null);
   assert.equal(records.focus, null);

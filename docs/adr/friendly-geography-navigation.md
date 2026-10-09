@@ -101,6 +101,11 @@ record scope. Both short map tokens (`nta2020:BK0101`) and canonical record keys
 (`geography:nta2020:BK0101`) resolve to the same scope. History updates must not
 assign browser Location properties or discard unrelated record filters.
 
+The homepage and an unselected Near You route start on Map. Address search,
+named-place search, and explicit location preserve the resident's current Map
+or Records choice; map clicks open Map. Every entry path preserves keyword,
+agency, topic, and date filters already present in the URL.
+
 Native area links, overlap continuations, surface switches, and search forms
 preserve topic, agency, keyword, and time filters too. Named-place GET searches
 resolve against retained geography definitions and redirect to the canonical
@@ -121,3 +126,10 @@ record inspection, new-tab links, and native search submission. Local runs use
 the production slice builder with retained data; `CROL_BASE` selects a deployed
 origin. The production canary makes no assumption that a named upstream record
 or a fixed record count remains present.
+
+`test/functional/60_near_you_visible_map.py` is the production homepage canary
+for the first viewport. At desktop and phone widths it requires a visible map,
+a visibly rendered fitted boundary for a Chelsea search, retained Map/Records
+and record-filter state, and a selected map that survives unavailable records.
+Its below-viewport and hidden-layer controls prove those visibility assertions
+can fail.
