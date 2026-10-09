@@ -10,6 +10,24 @@ import { parseWorkflowText } from "../tools/check_github_workflows_yaml.mjs";
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 
+function shellArgv(command) {
+  const words = [];
+  let word = "";
+  let quote = null;
+  for (const character of command.replace(/\\\r?\n/g, " ").trim()) {
+    if (quote) {
+      if (character === quote) quote = null;
+      else word += character;
+    } else if (character === '"' || character === "'") quote = character;
+    else if (/\s/.test(character)) {
+      if (word) words.push(word), word = "";
+    } else word += character;
+  }
+  if (quote) throw new Error("unterminated shell quote");
+  if (word) words.push(word);
+  return words;
+}
+
 test("Worker routes retain API domains and claim only canonical dynamic-document paths", () => {
   const config = read("worker/wrangler.toml");
   const start = config.indexOf("routes = [");
@@ -55,8 +73,12 @@ test("deploy workflow executes route publication and the all-meter gate", () => 
   const gate = steps.find((step) => step.name === "Enforce the all-meter Worker release gate");
   assert.equal(gate.env.WORKER_COST_BASELINE_EVIDENCE, "${{ vars.WORKER_COST_BASELINE_EVIDENCE }}");
   assert.equal(gate.env.WORKER_COST_CANDIDATE_EVIDENCE, "${{ vars.WORKER_COST_CANDIDATE_EVIDENCE }}");
-  assert.match(gate.run, /release-evaluate/);
-  assert.match(gate.run, /--expected-candidate-revision "\$GITHUB_SHA"/);
+  assert.deepEqual(shellArgv(gate.run), [
+    "node", "tools/worker_cost_control.mjs", "release-evaluate",
+    "--baseline-env", "WORKER_COST_BASELINE_EVIDENCE",
+    "--candidate-env", "WORKER_COST_CANDIDATE_EVIDENCE",
+    "--expected-candidate-revision", "$GITHUB_SHA",
+  ]);
 });
 
 test("digest deploy guard covers trigger propagation before the cron", () => {

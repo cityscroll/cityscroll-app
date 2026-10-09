@@ -9,19 +9,13 @@ import {
 } from "./lib/worker_cost_control.mjs";
 
 function run(overrides = {}) {
-  return {
+  const result = {
     schema: "cityscroll.warehouse_cost_experiment_run.v1",
     evidence_mode: "actual-production",
     deployed_revision: "a".repeat(40),
     observed_at: "2026-10-08T23:00:00Z",
     workload_id: "fixed-zap-bbl-zap-project-doing-business-v1",
     workload_count: 10,
-    cohorts: Object.fromEntries(WAREHOUSE_EXPERIMENT_COHORTS.map((name) => [name, {
-      sample_count: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT, cpu_source: "provider-native-invocation",
-      condition: {
-        mode: "provider-observed", source: "$metadata.coldStart", cold_start: name.endsWith(":cold"),
-      },
-    }])),
     correctness: {
       input_digest: "inputs", joins_digest: "joins", provenance_digest: "provenance",
       miss_digest: "miss", freshness_digest: "freshness",
@@ -30,6 +24,30 @@ function run(overrides = {}) {
     error_count: 0,
     ...overrides,
   };
+  result.cohorts ||= Object.fromEntries(WAREHOUSE_EXPERIMENT_COHORTS.map((name, cohortIndex) => [name, {
+    sample_count: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+    samples: Array.from({ length: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT }, (_, sampleIndex) => {
+      const carriesTotals = cohortIndex === 0 && sampleIndex === 0;
+      return {
+        revision: result.deployed_revision,
+        native_cpu_ms: carriesTotals ? result.meters.native_cpu_ms : 0,
+        collector_cpu_ms: carriesTotals ? result.meters.collector_cpu_ms : 0,
+        native_cpu_source: { field: "cpuTime", unit: "milliseconds", precision: "provider" },
+        condition: {
+          mode: "provider-observed", source: "$metadata.coldStart", cold_start: name.endsWith(":cold"),
+        },
+        outcome: carriesTotals && result.error_count > 0 ? "exception" : "ok",
+        operations: Object.fromEntries(
+          ["kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes"].map((meter) => [
+            meter,
+            { attempted: carriesTotals ? result.meters[meter] : 0, confirmed: carriesTotals ? result.meters[meter] : 0 },
+          ]),
+        ),
+        error_count: carriesTotals ? result.error_count : 0,
+      };
+    }),
+  }]));
+  return result;
 }
 
 test("the fixed three-lookup experiment retains a Pareto-improving candidate", () => {
@@ -103,4 +121,18 @@ test("experiment cohorts require the fixed matched 100-sample count", () => {
   const candidate = run(validCandidate);
   candidate.cohorts["zap-bbl:cold"].sample_count = 99;
   assert.throws(() => evaluateWarehouseExperiment({ baseline, candidate }), /fixed 100-sample cohort/);
+});
+
+test("experiment totals and errors are derived from retained provider samples", () => {
+  const baseline = run();
+  const candidate = run({
+    deployed_revision: "b".repeat(40), observed_at: "2026-10-08T23:10:00Z",
+    meters: { ...baseline.meters, native_cpu_ms: 80 },
+  });
+  candidate.meters.native_cpu_ms = 79;
+  assert.throws(() => evaluateWarehouseExperiment({ baseline, candidate }), /does not match retained warehouse samples/);
+  candidate.meters.native_cpu_ms = 80;
+  candidate.cohorts["zap-bbl:cold"].samples[0].outcome = "exception";
+  candidate.cohorts["zap-bbl:cold"].samples[0].error_count = 0;
+  assert.throws(() => evaluateWarehouseExperiment({ baseline, candidate }), /failed provider outcome/);
 });

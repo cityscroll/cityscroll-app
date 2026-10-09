@@ -125,6 +125,14 @@ test("release meters cannot contradict provider-native samples", () => {
   assert.throws(() => evaluateAllMeterRelease(storageEvidence), /storage_bytes does not match provider profile samples/);
 });
 
+test("failed provider outcomes cannot be retained as zero errors", () => {
+  const evidence = pair();
+  const sample = evidence.candidate.profile.cohorts["health:cold"].samples[0];
+  sample.outcome = "exception";
+  sample.error_count = 0;
+  assert.throws(() => evaluateAllMeterRelease(evidence), /failed provider outcome/);
+});
+
 test("release profiles require matched cohort sample counts", () => {
   const evidence = pair();
   evidence.candidate.profile = profile(evidence.candidate.deployed_revision, evidence.candidate.meters, 2);

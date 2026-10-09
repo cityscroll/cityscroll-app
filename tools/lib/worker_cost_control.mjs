@@ -90,7 +90,10 @@ export function sanitizeNativeInvocation(event, {
   if (request?.url !== expectedUrl || request?.method !== expectedMethod) fail("provider event does not match the expected URL and method");
   const cpu = event?.cpuTime ?? event?.$workers?.cpuTimeMs;
   const sourceField = event?.cpuTime !== undefined ? "cpuTime" : "$workers.cpuTimeMs";
+  const outcome = String(event?.outcome || "unknown");
+  const exceptionCount = Array.isArray(event?.exceptions) ? event.exceptions.length : Number(event?.exception_count || 0);
   finiteNonNegative(cpu, "provider-native CPU");
+  finiteNonNegativeInteger(exceptionCount, "provider exception count");
   validateCondition(cohort, condition, "condition");
   if (!/^[a-f0-9]{40}$/.test(String(revision || ""))) fail("revision must be a full commit SHA");
   const sample = {
@@ -99,10 +102,10 @@ export function sanitizeNativeInvocation(event, {
     revision,
     native_cpu_ms: cpu,
     native_cpu_source: { field: sourceField, unit: "milliseconds", precision: Number.isInteger(cpu) ? "integer" : "provider" },
-    outcome: String(event?.outcome || "unknown"),
+    outcome,
     script_version_id: event?.scriptVersion?.id || null,
     operations: operations || {},
-    error_count: Array.isArray(event?.exceptions) ? event.exceptions.length : Number(event?.exception_count || 0),
+    error_count: exceptionCount + (outcome === "ok" ? 0 : 1),
   };
   assertSanitized(sample);
   return sample;
@@ -128,6 +131,7 @@ function retainedSample(sample) {
     native_cpu_ms: sample.native_cpu_ms,
     native_cpu_source: sample.native_cpu_source,
     condition: sample.condition,
+    outcome: sample.outcome,
     operations: sample.operations || {},
     error_count: sample.error_count,
   };
@@ -141,8 +145,10 @@ function validateRetainedSample(sample, cohort, revision, path) {
     fail(`${path} does not use provider-native invocation CPU`);
   }
   validateCondition(cohort, sample.condition, `${path}.condition`);
+  if (typeof sample.outcome !== "string" || !sample.outcome) fail(`${path}.outcome is required`);
   validateOperationCounts(sample.operations, `${path}.operations`);
   finiteNonNegativeInteger(sample.error_count, `${path}.error_count`);
+  if (sample.outcome !== "ok" && sample.error_count < 1) fail(`${path}.error_count must include the failed provider outcome`);
 }
 
 export function buildWorkerCostProfile(samples, {
@@ -265,6 +271,29 @@ export const WAREHOUSE_EXPERIMENT_COHORTS = Object.freeze([
 ]);
 export const WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT = 100;
 
+function warehouseMeterTotals(run, label) {
+  const totals = Object.fromEntries(COST_METERS.map((meter) => [meter, 0]));
+  let errors = 0;
+  for (const cohortName of WAREHOUSE_EXPERIMENT_COHORTS) {
+    const cohort = run.cohorts?.[cohortName];
+    if (!cohort) fail(`${label} is missing ${cohortName}`);
+    if (!Array.isArray(cohort.samples) || cohort.samples.length !== WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT) {
+      fail(`${label}.${cohortName}.samples must contain the fixed ${WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT}-sample cohort`);
+    }
+    if (cohort.sample_count !== cohort.samples.length) fail(`${label}.${cohortName}.sample_count does not match retained samples`);
+    cohort.samples.forEach((sample, index) => {
+      const path = `${label}.${cohortName}.samples[${index}]`;
+      validateRetainedSample(sample, cohortName, run.deployed_revision, path);
+      finiteNonNegative(sample.collector_cpu_ms, `${path}.collector_cpu_ms`);
+      totals.native_cpu_ms += sample.native_cpu_ms;
+      totals.collector_cpu_ms += sample.collector_cpu_ms;
+      for (const meter of OPERATION_METERS) totals[meter] += sample.operations[meter].confirmed;
+      errors += sample.error_count;
+    });
+  }
+  return { meters: totals, errors };
+}
+
 function normalizedMeters(run) {
   const workload = finiteNonNegativeInteger(run?.workload_count, "workload_count");
   if (workload < 1) fail("workload_count must be positive");
@@ -292,10 +321,13 @@ export function evaluateWarehouseExperiment({ baseline, candidate } = {}) {
       if (label === "candidate" && evidence.sample_count !== baseline.cohorts?.[cohort]?.sample_count) {
         fail(`experiment cohort ${cohort} sample counts are not matched`);
       }
-      if (evidence.cpu_source !== "provider-native-invocation") fail(`${label} ${cohort} does not use invocation CPU`);
-      validateCondition(cohort, evidence.condition, `${label}.${cohort}.condition`);
     }
     finiteNonNegativeInteger(run.error_count, `${label}.error_count`);
+    const observed = warehouseMeterTotals(run, label);
+    for (const meter of COST_METERS) {
+      if (run.meters?.[meter] !== observed.meters[meter]) fail(`${label}.${meter} does not match retained warehouse samples`);
+    }
+    if (run.error_count !== observed.errors) fail(`${label}.error_count does not match retained warehouse samples`);
     for (const field of ["input_digest", "joins_digest", "provenance_digest", "miss_digest", "freshness_digest"]) {
       if (!run.correctness?.[field]) fail(`${label} is missing ${field}`);
       if (run.correctness[field] !== baseline.correctness[field]) fail(`candidate changed ${field}`);
