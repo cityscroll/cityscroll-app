@@ -82,6 +82,18 @@ test("profiles retain and enforce every sample revision", () => {
   assert.throws(() => validateWorkerCostProfile(profile), /revision does not match/);
 });
 
+test("imported profiles validate every retained sample's source and condition", () => {
+  const makeProfile = () => buildWorkerCostProfile(REQUIRED_COST_COHORTS.map((cohort) => sample(cohort)), {
+    revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 120, eventCount: REQUIRED_COST_COHORTS.length,
+  });
+  const badSource = makeProfile();
+  badSource.cohorts["health:cold"].samples[0].native_cpu_source.field = "wallTime";
+  assert.throws(() => validateWorkerCostProfile(badSource), /provider-native invocation CPU/);
+  const badCondition = makeProfile();
+  badCondition.cohorts["health:cold"].samples[0].condition.cold_start = false;
+  assert.throws(() => validateWorkerCostProfile(badCondition), /does not match cohort/);
+});
+
 test("imported profile windows fail closed on invalid bounds", () => {
   const profile = buildWorkerCostProfile(REQUIRED_COST_COHORTS.map((cohort) => sample(cohort)), {
     revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 120, eventCount: REQUIRED_COST_COHORTS.length,
@@ -130,8 +142,7 @@ test("attempted writes cannot be represented as confirmed", () => {
   bad.operations = { kv_writes: { attempted: 0, confirmed: 1 } };
   const samples = REQUIRED_COST_COHORTS.map((cohort) => sample(cohort));
   samples[0] = bad;
-  const profile = buildWorkerCostProfile(samples, {
+  assert.throws(() => buildWorkerCostProfile(samples, {
     revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 1, eventCount: samples.length,
-  });
-  assert.throws(() => validateWorkerCostProfile(profile), /confirmed exceeds attempted/);
+  }), /confirmed exceeds attempted/);
 });

@@ -13,15 +13,26 @@ import {
 
 const revision = "b".repeat(40);
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-function profile(profileRevision = revision) {
-  const samples = REQUIRED_COST_COHORTS.map((cohort) => ({
+function profile(profileRevision = revision, totals = {}) {
+  const routeCohortCount = REQUIRED_COST_COHORTS.length - 1;
+  const samples = REQUIRED_COST_COHORTS.map((cohort, index) => ({
     cohort,
     condition: cohort.endsWith(":cold") || cohort.endsWith(":warm")
       ? { mode: "provider-observed", source: "$metadata.coldStart", cold_start: cohort.endsWith(":cold") }
       : { mode: "bounded-production-execution" },
-    revision: profileRevision, native_cpu_ms: 1,
+    revision: profileRevision,
+    native_cpu_ms: cohort === "collector-overhead"
+      ? (totals.collector_cpu_ms ?? 1)
+      : (totals.native_cpu_ms ?? routeCohortCount) / routeCohortCount,
     native_cpu_source: { field: "cpuTime", unit: "milliseconds", precision: "integer" },
-    outcome: "ok", script_version_id: "v", operations: {}, error_count: 0,
+    outcome: "ok", script_version_id: "v",
+    operations: index === 0 ? Object.fromEntries(
+      ["kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written"].map((meter) => [
+        meter,
+        { attempted: totals[meter] ?? 0, confirmed: totals[meter] ?? 0 },
+      ]),
+    ) : {},
+    error_count: index === 0 ? (totals.errors ?? 0) : 0,
   }));
   return buildWorkerCostProfile(samples, {
     revision: profileRevision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 30, eventCount: samples.length,
@@ -29,6 +40,17 @@ function profile(profileRevision = revision) {
 }
 function receipt(meters = {}, overrides = {}) {
   const deployedRevision = overrides.deployed_revision || revision;
+  const measuredMeters = {
+    native_cpu_ms: 24,
+    collector_cpu_ms: 1,
+    kv_reads: 0,
+    kv_writes: 0,
+    d1_rows_read: 0,
+    d1_rows_written: 0,
+    storage_bytes: 10,
+    ...meters,
+  };
+  const errors = overrides.errors ?? 0;
   return {
     schema: "cityscroll.all_meter_release.v1",
     evidence_mode: "actual-production",
@@ -39,9 +61,9 @@ function receipt(meters = {}, overrides = {}) {
     publication: { unchanged: { route_key_puts: 0, manifest_puts: 0 } },
     rum: { full_batch: { accepted: 16, kv_puts: 3 } },
     d1: { authority: "independent", complete: true },
-    profile: profile(deployedRevision),
-    meters: Object.fromEntries(COST_METERS.map((meter) => [meter, meters[meter] ?? 10])),
-    errors: 0,
+    profile: profile(deployedRevision, { ...measuredMeters, errors }),
+    meters: Object.fromEntries(COST_METERS.map((meter) => [meter, measuredMeters[meter]])),
+    errors,
     ...overrides,
   };
 }
@@ -84,6 +106,17 @@ test("incomplete profiles, nonzero unchanged publication and broadened RUM budge
   const { candidate: rum } = pair();
   rum.rum.full_batch.kv_puts = 4;
   assert.throws(() => evaluateAllMeterRelease({ baseline, candidate: rum }), /weighted RUM/);
+  for (const malformed of [undefined, -1, 1.5, "3"]) {
+    const pairWithMalformedRum = pair();
+    pairWithMalformedRum.candidate.rum.full_batch.kv_puts = malformed;
+    assert.throws(() => evaluateAllMeterRelease(pairWithMalformedRum), /weighted RUM/);
+  }
+});
+
+test("release meters cannot contradict provider-native samples", () => {
+  const evidence = pair();
+  evidence.candidate.meters.native_cpu_ms -= 1;
+  assert.throws(() => evaluateAllMeterRelease(evidence), /does not match provider profile samples/);
 });
 
 test("the independent D1 control cannot be silently collapsed", () => {

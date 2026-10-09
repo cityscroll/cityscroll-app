@@ -27,6 +27,10 @@ deployment before reporting a route-data publication failure.
 Retained CPU must come from the native Wrangler-tail `cpuTime` field or the
 Workers Observability telemetry `$workers.cpuTimeMs` field. Wall time, startup
 time, and JavaScript elapsed timers are not accepted as invocation CPU.
+Every retained sample keeps its own revision, source field, provider condition,
+operation counts, and error count. Release-level CPU, KV, D1, and error totals
+must equal the sums of those samples; an independent top-level meter cannot
+override contradictory provider evidence.
 
 Collection is capped at 30 minutes and 10,000 events. Before persistence, an
 event must match the probe's literal header value and exact URL and method. The

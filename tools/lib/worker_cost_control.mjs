@@ -118,6 +118,29 @@ function validateOperationCounts(operations, path) {
   }
 }
 
+function retainedSample(sample) {
+  return {
+    revision: sample.revision,
+    native_cpu_ms: sample.native_cpu_ms,
+    native_cpu_source: sample.native_cpu_source,
+    condition: sample.condition,
+    operations: sample.operations || {},
+    error_count: sample.error_count,
+  };
+}
+
+function validateRetainedSample(sample, cohort, revision, path) {
+  if (!sample || typeof sample !== "object") fail(`${path} is required`);
+  if (sample.revision !== revision) fail(`${path}.revision does not match profile revision`);
+  finiteNonNegative(sample.native_cpu_ms, `${path}.native_cpu_ms`);
+  if (!["cpuTime", "$workers.cpuTimeMs"].includes(sample.native_cpu_source?.field)) {
+    fail(`${path} does not use provider-native invocation CPU`);
+  }
+  validateCondition(cohort, sample.condition, `${path}.condition`);
+  validateOperationCounts(sample.operations, `${path}.operations`);
+  finiteNonNegativeInteger(sample.error_count, `${path}.error_count`);
+}
+
 export function buildWorkerCostProfile(samples, {
   revision,
   observedAt,
@@ -136,6 +159,7 @@ export function buildWorkerCostProfile(samples, {
     const owned = samples.filter((sample) => sample.cohort === name);
     for (const sample of owned) {
       if (sample.revision !== revision) fail(`${name} sample revision does not match profile revision`);
+      validateRetainedSample(sample, name, revision, `${name}.sample`);
     }
     cohorts[name] = owned.length
       ? {
@@ -147,6 +171,7 @@ export function buildWorkerCostProfile(samples, {
         condition: owned[0].condition,
         operations: owned.map((sample) => sample.operations),
         error_count: owned.reduce((sum, sample) => sum + sample.error_count, 0),
+        samples: owned.map(retainedSample),
       }
       : { status: "unknown", sample_count: null, native_cpu_ms: null, reason: "missing-provider-sample" };
   }
@@ -185,12 +210,41 @@ export function validateWorkerCostProfile(profile, { requireComplete = true } = 
     if (cohort.status !== "measured" || !Number.isInteger(cohort.sample_count) || cohort.sample_count < 1) fail(`${name} has invalid samples`);
     if (cohort.revision !== profile.revision) fail(`${name} revision does not match profile revision`);
     if (!Array.isArray(cohort.native_cpu_ms) || cohort.native_cpu_ms.length !== cohort.sample_count) fail(`${name} CPU samples do not match sample_count`);
-    cohort.native_cpu_ms.forEach((value) => finiteNonNegative(value, `${name}.native_cpu_ms`));
+    if (!Array.isArray(cohort.samples) || cohort.samples.length !== cohort.sample_count) fail(`${name} retained samples do not match sample_count`);
+    cohort.native_cpu_ms.forEach((value, index) => {
+      finiteNonNegative(value, `${name}.native_cpu_ms`);
+      validateRetainedSample(cohort.samples[index], name, profile.revision, `${name}.samples[${index}]`);
+      if (cohort.samples[index].native_cpu_ms !== value) fail(`${name}.samples[${index}] CPU does not match aggregate`);
+    });
     if (!["cpuTime", "$workers.cpuTimeMs"].includes(cohort.native_cpu_source?.field)) fail(`${name} does not use provider-native invocation CPU`);
     validateCondition(name, cohort.condition, `${name}.condition`);
     (cohort.operations || []).forEach((operations, index) => validateOperationCounts(operations, `${name}.operations[${index}]`));
   }
   return { ok: true, complete: profile.complete === true };
+}
+
+export function profileMeterTotals(profile) {
+  validateWorkerCostProfile(profile);
+  const totals = {
+    native_cpu_ms: 0,
+    collector_cpu_ms: 0,
+    kv_reads: 0,
+    kv_writes: 0,
+    d1_rows_read: 0,
+    d1_rows_written: 0,
+    errors: 0,
+  };
+  for (const [cohortName, cohort] of Object.entries(profile.cohorts)) {
+    for (const sample of cohort.samples) {
+      if (cohortName === "collector-overhead") totals.collector_cpu_ms += sample.native_cpu_ms;
+      else totals.native_cpu_ms += sample.native_cpu_ms;
+      totals.errors += sample.error_count;
+      for (const meter of ["kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written"]) {
+        totals[meter] += sample.operations?.[meter]?.confirmed || 0;
+      }
+    }
+  }
+  return totals;
 }
 
 export const WAREHOUSE_EXPERIMENT_COHORTS = Object.freeze([
@@ -268,12 +322,23 @@ export function evaluateAllMeterRelease({ baseline, candidate } = {}) {
     if (receipt.profile.revision !== receipt.deployed_revision) fail(`${label} profile revision does not match deployment`);
     finiteNonNegativeInteger(receipt.errors, `${label}.errors`);
     normalizedMeters(receipt);
+    const profileTotals = profileMeterTotals(receipt.profile);
+    for (const meter of ["native_cpu_ms", "collector_cpu_ms", "kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written"]) {
+      if (receipt.meters?.[meter] !== profileTotals[meter]) fail(`${label}.${meter} does not match provider profile samples`);
+    }
+    if (receipt.errors !== profileTotals.errors) fail(`${label}.errors does not match provider profile samples`);
   }
   if (baseline.workload_id !== candidate.workload_id || baseline.workload_count !== candidate.workload_count) fail("all-meter workloads are not equivalent");
   if (baseline.deployed_revision === candidate.deployed_revision) fail("all-meter revisions must be distinct");
   if (Date.parse(candidate.observed_at) <= Date.parse(baseline.observed_at)) fail("candidate observation must follow baseline");
   if (candidate.publication?.unchanged?.route_key_puts !== 0 || candidate.publication?.unchanged?.manifest_puts !== 0) fail("candidate unchanged publication is not a zero-write control");
-  if (candidate.rum?.full_batch?.accepted !== 16 || candidate.rum?.full_batch?.kv_puts > 3) fail("candidate weighted RUM control is incomplete");
+  const rumPuts = candidate.rum?.full_batch?.kv_puts;
+  if (
+    candidate.rum?.full_batch?.accepted !== 16
+    || !Number.isInteger(rumPuts)
+    || rumPuts < 0
+    || rumPuts > 3
+  ) fail("candidate weighted RUM control is incomplete");
   const baselineNormalized = normalizedMeters(baseline);
   const candidateNormalized = normalizedMeters(candidate);
   const regressions = COST_METERS.filter((meter) => candidateNormalized[meter] > baselineNormalized[meter]);
