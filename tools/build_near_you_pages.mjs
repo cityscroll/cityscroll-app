@@ -111,6 +111,7 @@ function buildDocuments() {
         href: `${publicPath}deferred.json`,
         results_html: deferredParts.resultsHtml,
         bags_html: deferredParts.bagsHtml,
+        ...(deferredParts.overviewHtml ? { overview_html: deferredParts.overviewHtml } : {}),
       })}\n`,
     };
   });

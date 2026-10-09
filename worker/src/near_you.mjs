@@ -217,6 +217,7 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
       ...(routeReadModel.sections ? { sections: sectionEnvelope(routeReadModel.sections, view) } : {}),
       results_html: deferredParts.resultsHtml,
       bags_html: deferredParts.bagsHtml,
+      ...(deferredParts.overviewHtml ? { overview_html: deferredParts.overviewHtml } : {}),
     })
     : renderNearYouDocument(view, {
       canonicalBase: CANONICAL_BASE,

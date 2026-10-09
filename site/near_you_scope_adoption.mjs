@@ -240,6 +240,28 @@ export function applyNearYouDeferredPayload(root, payload, {
     if (!next) throw new Error("near-you-deferred-html-invalid");
     host.replaceWith(next);
   }
+  // Optional overview summary refreshes beside results when the payload carries it.
+  if (typeof payload.overview_html === "string") {
+    const currentOverview = root.querySelector(".near-overview");
+    if (payload.overview_html === "") {
+      currentOverview?.remove();
+    } else {
+      const nextOverview = parseHtml(payload.overview_html);
+      if (nextOverview) {
+        if (currentOverview) currentOverview.replaceWith(nextOverview);
+        else {
+          // Match SSR order: after the surface switch, before the geo workspace.
+          const surface = root.querySelector(".near-surface-switch");
+          const geo = root.querySelector(".near-geo-workspace");
+          const records = root.querySelector(".near-records-surface");
+          if (surface) surface.insertAdjacentElement("afterend", nextOverview);
+          else if (geo) geo.insertAdjacentElement("beforebegin", nextOverview);
+          else if (records) records.insertAdjacentElement("beforebegin", nextOverview);
+          else root.append(nextOverview);
+        }
+      }
+    }
+  }
   if (!isNearYouDeferredGenerationCurrent(root, generation)) {
     return { applied: false, reason: "stale_generation" };
   }
