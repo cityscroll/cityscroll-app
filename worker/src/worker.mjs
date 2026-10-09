@@ -56,10 +56,10 @@ import { handleInv } from "./inv.mjs";
 import { handleStats, countActiveSubs, prewarmStats } from "./stats.mjs";
 import { refreshPublicSearchUsageSnapshot } from "./lib/public_search_usage.mjs";
 import { handleSourceHealth } from "./source_health.mjs";
-import { handleEvent } from "./events.mjs";
+import { ANALYTICS_DEV_HEADER, createDeveloperExclusionToken, handleEvent } from "./events.mjs";
 import { handleSearchActivity } from "./search_activity.mjs";
 import { handleSearchHistory } from "./search_history.mjs";
-import { handlePerformanceEvents } from "./performance_events.mjs";
+import { handlePerformanceEvents, normalizeRumBatch } from "./performance_events.mjs";
 import { handleWorkerHealth } from "./lib/worker_health.mjs";
 import { snapshotHistDay, ensureHistEra } from "./lib/stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
@@ -120,6 +120,9 @@ import { handleCitedPassages } from "./cited_retrieval.mjs";
 import { handleContract, handleContractsAnalysis, handleContractsBrowse } from "./contracts.mjs";
 import { handleLandDecisionPath, handleLandProject, handleLandProjectsBrowse } from "./land_projects.mjs";
 import { recordSourceAcquisitionReceipt } from "./lib/source_acquisition_receipt.mjs";
+import { beginCostControlProbe, canonicalCostProbeWorkload, logCostControlProbe } from "./lib/cost_control_probe.mjs";
+import { LAND_PROJECT_ID_PATTERN } from "../../capabilities/land_projects.mjs";
+import { RUM_MARKED_TRAFFIC_CLASSES, isRumProductionOrigin } from "../../site/rum_production.mjs";
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
 
@@ -156,9 +159,192 @@ async function withWorkerAcquisitionReceipt(env, sourceContractId, runId, work) 
   }
 }
 
-export default {
+const COST_PROBE_HTTP_WORKLOADS = Object.freeze({
+  health: { path: "/health", method: "GET" },
+  "unknown-route": { path: "/__cost-probe-not-found", method: "GET" },
+  events: {
+    path: "/events",
+    method: "POST",
+    validate: (input) => (
+      isRumProductionOrigin(input.origin)
+      && input.body?.event === "page_view"
+      && input.body?.surface === "home"
+      && input.body?.traffic_class === "developer"
+      && Object.keys(input.body || {}).sort().join(",") === "event,surface,traffic_class"
+    ),
+  },
+  "rum-16": {
+    path: "/performance-events",
+    method: "POST",
+    validate: (input, target) => {
+      const normalized = normalizeRumBatch(input.body);
+      return normalized.ok
+        && normalized.observations.length === 16
+        && isRumProductionOrigin(input.origin)
+        && RUM_MARKED_TRAFFIC_CLASSES.includes(target.searchParams.get("traffic_class"));
+    },
+  },
+  search: {
+    path: "/search",
+    method: "GET",
+    validate: (_input, target) => String(target.searchParams.get("q") || "").trim().length > 0,
+  },
+  nearby: { path: "/near-you", method: "GET" },
+  browse: { path: "/contracts", method: "GET" },
+  "zap-bbl": {
+    path: "/land-project",
+    method: "GET",
+    validate: (_input, target) => LAND_PROJECT_ID_PATTERN.test(String(
+      target.searchParams.get("id") || target.searchParams.get("project_id") || "",
+    ).trim()),
+  },
+  "zap-project": {
+    path: "/land-project",
+    method: "GET",
+    validate: (_input, target) => LAND_PROJECT_ID_PATTERN.test(String(
+      target.searchParams.get("id") || target.searchParams.get("project_id") || "",
+    ).trim()),
+  },
+  "doing-business": {
+    path: "/vendor-profile",
+    method: "GET",
+    validate: (_input, target) => String(target.searchParams.get("name") || "").trim().length >= 3,
+  },
+});
+const COST_PROBE_HTTP_ORIGIN = "https://api.cityscroll.org";
+const COST_PROBE_CRONS = new Map([
+  ["0 8 * * *", "scheduled-08"],
+  ["0 10 * * *", "scheduled-10"],
+  ["0 13 * * *", "scheduled-13"],
+]);
+const COST_PROBE_MAX_BODY_BYTES = 16 * 1024;
+
+function costProbeContext() {
+  const pending = [];
+  return {
+    passThroughOnException() {},
+    waitUntil(promise) { pending.push(Promise.resolve(promise)); },
+    async settle() { await Promise.allSettled(pending); },
+  };
+}
+
+async function sha256Text(value) {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
+  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+async function readCostProbeInput(request) {
+  const contentLength = request.headers.get("content-length");
+  if (contentLength && (!/^\d+$/.test(contentLength) || Number(contentLength) > COST_PROBE_MAX_BODY_BYTES)) {
+    throw new Error("invalid probe body length");
+  }
+  const reader = request.body?.getReader();
+  if (!reader) throw new Error("missing probe body");
+  const chunks = [];
+  let total = 0;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > COST_PROBE_MAX_BODY_BYTES) {
+      await reader.cancel();
+      throw new Error("probe body too large");
+    }
+    chunks.push(value);
+  }
+  const bytes = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
+
+async function handleCostControlProbe(request, env) {
+  let input;
+  try { input = await readCostProbeInput(request); }
+  catch { return new Response("Not found", { status: 404 }); }
+  const kind = input?.kind;
+  const suppressWrites = kind === "scheduled" || kind === "queue" || kind === "collector-overhead" || input?.route === "events";
+  const workloadHash = await sha256Text(canonicalCostProbeWorkload(input));
+  const probe = beginCostControlProbe(request, env, { suppressWrites, workloadHash });
+  if (!probe || probe.denied) return probe?.denied || new Response("Not found", { status: 404 });
+
+  let childRequest = null;
+  let expectedCohort = null;
+  if (kind === "http") {
+    try {
+      const route = String(input.route || "");
+      const workload = COST_PROBE_HTTP_WORKLOADS[route];
+      const target = new URL(String(input.url || ""), request.url);
+      if (
+        !workload
+        || target.origin !== COST_PROBE_HTTP_ORIGIN
+        || target.pathname !== workload.path
+        || input.method !== workload.method
+        || (workload.validate && !workload.validate(input, target))
+      ) {
+        return new Response("Not found", { status: 404 });
+      }
+      const headers = new Headers({ "Accept": "application/json", "User-Agent": "CityScrollCostControl/1.0" });
+      if (input.origin) headers.set("Origin", String(input.origin));
+      if (input.method === "POST") headers.set("Content-Type", "application/json");
+      if (route === "events") {
+        const developerToken = await createDeveloperExclusionToken(env.ANALYTICS_DEV_KEY);
+        if (!developerToken) return new Response("Not found", { status: 404 });
+        headers.set(ANALYTICS_DEV_HEADER, developerToken);
+      }
+      childRequest = new Request(target, {
+        method: input.method,
+        headers,
+        body: input.method === "POST" ? JSON.stringify(input.body ?? {}) : undefined,
+      });
+      expectedCohort = route;
+    } catch {
+      return new Response("Not found", { status: 404 });
+    }
+  } else if (kind === "scheduled") {
+    expectedCohort = COST_PROBE_CRONS.get(input.cron) || null;
+    if (!expectedCohort) return new Response("Not found", { status: 404 });
+  } else if (kind === "queue" || kind === "collector-overhead") {
+    expectedCohort = kind;
+  } else {
+    return new Response("Not found", { status: 404 });
+  }
+  if (probe.cohort !== expectedCohort) return new Response("Not found", { status: 404 });
+
+  probe.accept();
+
+  let result = { status: 204, body_sha256: await sha256Text("") };
+  if (kind === "http") {
+    const childContext = costProbeContext();
+    const response = await worker.fetch(childRequest, probe.env, childContext);
+    await childContext.settle();
+    result = { status: response.status, body_sha256: await sha256Text(await response.text()) };
+  } else if (kind === "scheduled") {
+    const childContext = costProbeContext();
+    await worker.scheduled({ cron: input.cron, scheduledTime: Date.now(), type: "scheduled", costProbe: true }, probe.env, childContext);
+    await childContext.settle();
+  } else if (kind === "queue") {
+    const message = {
+      body: { type: "single", key: "cost-probe-nonexistent" },
+      ack() {},
+      retry() {},
+    };
+    await worker.queue({ queue: "crol-digests", messages: [message] }, probe.env);
+  }
+  const snapshot = probe.snapshot({ result });
+  logCostControlProbe(probe, { result });
+  return Response.json(snapshot, { headers: { "Cache-Control": "no-store" } });
+}
+
+const worker = {
   async fetch(request, env, ctx) {
     const { pathname, hostname } = new URL(request.url);
+    if (pathname === "/admin/cost-control-probe" && request.method === "POST") {
+      return handleCostControlProbe(request, env);
+    }
     if (MIRROR_HOSTS.has(hostname)) {
       // Site root `/` and `/near-you` share the local discovery shell; deferred
       // JSON remains under `/near-you/deferred.json`.
@@ -348,7 +534,9 @@ export default {
           acquisitionFn: withWorkerAcquisitionReceipt,
           runId,
           ingestFn: ingestNotices,
-          prewarmFn: prewarmNotices,
+          prewarmFn: (probeEnv, requestIds) => prewarmNotices(probeEnv, requestIds, {
+            skipEdgeCacheWrite: event.costProbe === true,
+          }),
         });
         if (freshness.degraded) {
           console.error("digest shadow freshness degraded (rehearsal continues):", JSON.stringify({
@@ -373,16 +561,21 @@ export default {
       }
 
       try {
-        let summary = await runDigestShadow(env, { now: shadowNow });
+        let summary = await runDigestShadow(env, {
+          now: shadowNow,
+          suppressPersonalizedLogs: event.costProbe === true,
+        });
         // Await so schedule-harness stubs (async wrappers) and a future async helper both land.
         if (freshness.degraded) summary = await applyFreshnessDegradation(summary, freshness);
         await finalizeDigestShadowRun(env, summary, { now: shadowNow });
-        console.log("digest shadow:", JSON.stringify(summary, (key, value) => {
-          if (typeof value !== "string") return value;
-          if (key === "recipient") return redactEmail(value);
-          if (key === "recipient_redacted" && value.includes("@") && !value.includes("***")) return redactEmail(value);
-          return value;
-        }));
+        if (event.costProbe !== true) {
+          console.log("digest shadow:", JSON.stringify(summary, (key, value) => {
+            if (typeof value !== "string") return value;
+            if (key === "recipient") return redactEmail(value);
+            if (key === "recipient_redacted" && value.includes("@") && !value.includes("***")) return redactEmail(value);
+            return value;
+          }));
+        }
       } catch (error) {
         console.error("digest shadow failed:", String(error?.message || error));
         try {
@@ -404,7 +597,9 @@ export default {
     // refreshes so a slow or failing upstream cannot prevent queue fan-out and its receipt.
     console.log("digest delivery: starting");
     try {
-      const summary = await runAlerts(env);
+      const summary = event.costProbe === true
+        ? await runAlerts(env, undefined, { suppressDryRunLogs: true })
+        : await runAlerts(env);
       await recordDigestDeliveryReceipt(env, summary?.receipt || summary);
     } catch (error) {
       await recordDigestDeliveryReceipt(env, null, new Date(), error);
@@ -438,7 +633,9 @@ export default {
     // Notice documents are ordinary reads, so the daily D1 snapshot is pushed to the edge
     // immediately after ingestion. A failed prewarm cannot erase the last-known-good D1 row.
     try {
-      const r = await prewarmNotices(env, ingestResult?.noticeRequestIds);
+      const r = await prewarmNotices(env, ingestResult?.noticeRequestIds, {
+        skipEdgeCacheWrite: event.costProbe === true,
+      });
       console.log("notice read-model prewarm:", JSON.stringify(r));
     } catch (e) {
       console.error("notice read-model prewarm failed (digest continues):", String(e?.message || e));
@@ -606,7 +803,7 @@ export default {
     }
     // Public /stats: refresh and edge-cache the official corpus aggregate. Fail-soft.
     try {
-      const r = await prewarmStats(env);
+      const r = await prewarmStats(env, { skipCacheWrite: event.costProbe === true });
       console.log("stats prewarm:", JSON.stringify(r));
     } catch (e) {
       console.error("stats prewarm failed (digest already ran):", String(e?.message || e));
@@ -654,3 +851,5 @@ export default {
     }
   },
 };
+
+export default worker;

@@ -584,7 +584,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
           emitUsageEvent(env, { event: "digest_sent", lens: w.type, surface: "email" });
         } else {
           // ALERTS_LIVE dry-run: render full payload, never call Resend / never bump counters.
-          logDryRunEmail(payload);
+          if (!options.suppressDryRunLogs) logDryRunEmail(payload);
           if (options.simulateDryRunCounters) { sentThisRun++; sentToday++; }
         }
       }
@@ -635,6 +635,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
     onDryRun: options.simulateDryRunCounters ? async () => { sentThisRun++; sentToday++; } : null,
     capturePreviews: options.capturePreviews === true,
     previewOnly: options.previewOnly === true,
+    suppressDryRunLogs: options.suppressDryRunLogs === true,
     advanceState: options.advanceState,
     heldDigestIds,
     holdAllDigests,
@@ -745,10 +746,12 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
   const logSummary = options.capturePreviews
     ? { ...summary, results: results.map(({ preview: _preview, ...result }) => result) }
     : summary;
-  console.log("alerts run:", JSON.stringify({
-    ...logSummary,
-    results: (logSummary.results || []).map(maskDigestResultForLog),
-  }));
+  if (!options.suppressDryRunLogs) {
+    console.log("alerts run:", JSON.stringify({
+      ...logSummary,
+      results: (logSummary.results || []).map(maskDigestResultForLog),
+    }));
+  }
   return summary;
 }
 
@@ -1193,7 +1196,7 @@ export async function processOneSub(env, s, ctx) {
         }
       } else {
         // ALERTS_LIVE dry-run: render full payload, never call Resend / never bump counters.
-        if (!ctx.previewOnly) logDryRunEmail(payload);
+        if (!ctx.previewOnly && !ctx.suppressDryRunLogs) logDryRunEmail(payload);
         if (ctx.onDryRun) await ctx.onDryRun();
       }
     }
@@ -1450,7 +1453,7 @@ export async function processAccountRollup(env, subs, ctx) {
           emitUsageEvent(env, { event: "digest_sent", lens: "account", surface: "email" });
         }
       } else {
-        if (!ctx.previewOnly) logDryRunEmail(payload);
+        if (!ctx.previewOnly && !ctx.suppressDryRunLogs) logDryRunEmail(payload);
         if (ctx.onDryRun) await ctx.onDryRun();
       }
     }
@@ -1759,7 +1762,7 @@ export async function processAwardSub(env, s, ctx) {
         await bumpCategoryStat(env.ALERT_STATE, "digest", "award-watch");
         emitUsageEvent(env, { event: "digest_sent", surface: "email" });
       } else {
-        if (!ctx.previewOnly) logDryRunEmail(payload);
+        if (!ctx.previewOnly && !ctx.suppressDryRunLogs) logDryRunEmail(payload);
         if (ctx.onDryRun) await ctx.onDryRun();
       }
     }

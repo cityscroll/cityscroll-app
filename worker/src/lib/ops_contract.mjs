@@ -39,7 +39,7 @@ import {
   COUNCIL_DISCOVERY_HEALTH_SCHEMA,
 } from "./council_discovery_health.mjs";
 
-export const OPS_CONTRACT_VERSION = "1.21.0";
+export const OPS_CONTRACT_VERSION = "1.22.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -430,6 +430,12 @@ export const PERFORMANCE_CONTRACT = Object.freeze({
 /** Admin and operator-auth routes. */
 export const ADMIN_ROUTES = Object.freeze([
   {
+    path: "/admin/cost-control-probe",
+    methods: ["POST"],
+    auth: "COST_CONTROL_PROBE",
+    description: "Bounded private production-cost rehearsal with workload-bound inputs and no retained observations.",
+  },
+  {
     path: "/admin/ops-contract",
     methods: ["GET"],
     auth: "ADMIN_KEY",
@@ -635,6 +641,12 @@ export const AUTH_CLASSES = Object.freeze([
     presentation: ["?key=", "Authorization: Bearer"],
     fail_closed: "404 until secret is configured; 401 on wrong key",
     description: "Shared operator secret for /admin/* read and recovery routes.",
+  },
+  {
+    id: "COST_CONTROL_PROBE",
+    presentation: ["Authorization: Bearer"],
+    fail_closed: "404 when ADMIN_KEY is absent or credentials are invalid",
+    description: "ADMIN_KEY bearer authentication for the private production-cost rehearsal.",
   },
   {
     id: "OPERATOR_PROBE",

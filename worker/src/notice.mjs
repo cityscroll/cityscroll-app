@@ -224,7 +224,11 @@ export function workerNoticeGet(env, { nowMs = Date.now() } = {}) {
   });
 }
 
-export async function handleNotice(request, env, { skipCache = false, nowMs = Date.now() } = {}) {
+export async function handleNotice(request, env, {
+  skipCache = false,
+  skipEdgeCacheWrite = false,
+  nowMs = Date.now(),
+} = {}) {
   if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders() });
   if (request.method !== "GET") return json({ ok: false, reason: "method" }, 405);
 
@@ -255,11 +259,11 @@ export async function handleNotice(request, env, { skipCache = false, nowMs = Da
   }, 200, isMaterialized
     ? `public, max-age=60, s-maxage=${EDGE_MAX_AGE}, stale-while-revalidate=${EDGE_STALE}, stale-if-error=${EDGE_STALE}`
     : "public, max-age=30, s-maxage=300, stale-while-revalidate=3600, stale-if-error=86400");
-  await putEdgeCache(key, response);
+  if (!skipEdgeCacheWrite) await putEdgeCache(key, response);
   return response;
 }
 
-export async function prewarmNotices(env, requestIds) {
+export async function prewarmNotices(env, requestIds, { skipEdgeCacheWrite = false } = {}) {
   const ids = [...new Set((Array.isArray(requestIds) ? requestIds : [])
     .map((id) => String(id || "").trim()).filter((id) => NOTICE_ID_RE.test(id)))].slice(0, 200);
   if (!ids.length) return { requested: 0, warmed: 0, skipped: "empty" };
@@ -270,7 +274,7 @@ export async function prewarmNotices(env, requestIds) {
   let failed = 0;
   for (const id of ids) {
     try {
-      const response = await handleNotice(cacheKey(id), env, { skipCache: true });
+      const response = await handleNotice(cacheKey(id), env, { skipCache: true, skipEdgeCacheWrite });
       if (response.ok) {
         const body = await response.clone().json();
         if (body.source === "materialized") warmed += 1;

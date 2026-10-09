@@ -28,10 +28,12 @@ const freshRow = {
   section_name: "Procurement",
 };
 
-async function runMoneySub({ live, replyTo }) {
+async function runMoneySub({ live, replyTo, suppressDryRunLogs = false }) {
   const sentEmails = [];
   const dryLogs = [];
-  const today = new Date().toISOString().slice(0, 10);
+  const allLogs = [];
+  const now = new Date("2026-08-04T13:00:00.000Z");
+  const today = now.toISOString().slice(0, 10);
   const subKey = "sub:reply-to-test@example.com:aabbccdd";
   const env = {
     ALERT_STATE: kv({}),
@@ -62,17 +64,18 @@ async function runMoneySub({ live, replyTo }) {
   };
   console.log = (...args) => {
     const s = args.map(String).join(" ");
+    allLogs.push(s);
     if (s.startsWith("alerts dry-run (no send):")) {
       dryLogs.push(JSON.parse(s.slice("alerts dry-run (no send):".length).trim()));
     }
   };
   try {
-    await runAlerts(env, []);
+    await runAlerts(env, [], { now, suppressDryRunLogs });
   } finally {
     globalThis.fetch = originalFetch;
     console.log = originalLog;
   }
-  return { sentEmails, dryLogs };
+  return { sentEmails, dryLogs, allLogs };
 }
 
 test("live digest carries From alerts@cityscroll.org and Reply-To alerts@crol-list.org", async () => {
@@ -95,4 +98,15 @@ test("ALERTS_LIVE dry-run still renders today's digest HTML without calling Rese
   assert.match(dryLogs[0].html, /Classroom technology services/);
   assert.match(dryLogs[0].html, /api\.cityscroll\.org\/r\//);
   assert.doesNotMatch(dryLogs[0].html, /crol-list\.org/);
+});
+
+test("cost-probe dry-run suppresses personalized digest logs", async () => {
+  const { sentEmails, dryLogs, allLogs } = await runMoneySub({
+    live: "false",
+    replyTo: "replies@example.com",
+    suppressDryRunLogs: true,
+  });
+  assert.equal(sentEmails.length, 0);
+  assert.equal(dryLogs.length, 0);
+  assert.equal(allLogs.length, 0);
 });

@@ -45,6 +45,11 @@ test("buildOpsContract: stable id/version and required sections", () => {
   assert.ok(doc.daylog.actions.length >= 5);
   assert.ok(doc.stats_metrics.some((m) => m.exclude_developer_traffic === true));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/ops-contract"));
+  assert.ok(doc.admin_routes.some((r) => (
+    r.path === "/admin/cost-control-probe"
+    && r.methods.includes("POST")
+    && r.auth === "COST_CONTROL_PROBE"
+  )));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/performance"));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/stats"));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/pin-family-verify"));
@@ -69,6 +74,12 @@ test("buildOpsContract: stable id/version and required sections", () => {
   assert.ok(doc.daylog.skip_reasons.includes("shadow-hold"));
   assert.deepEqual(doc.digest_shadow.redline_fields, ["code", "digest_id", "watch_id", "reason", "evidence"]);
   assert.ok(doc.auth_classes.some((a) => a.id === "ADMIN_KEY"));
+  assert.deepEqual(doc.auth_classes.find((a) => a.id === "COST_CONTROL_PROBE"), {
+    id: "COST_CONTROL_PROBE",
+    presentation: ["Authorization: Bearer"],
+    fail_closed: "404 when ADMIN_KEY is absent or credentials are invalid",
+    description: "ADMIN_KEY bearer authentication for the private production-cost rehearsal.",
+  });
   assert.ok(doc.auth_classes.some((a) => a.id === "USAGE_KEY"));
   assert.ok(doc.auth_classes.some((a) => a.id === "ANALYTICS_DEV_KEY"));
   assert.ok(doc.auth_classes.some((a) => a.id === "Access"));
@@ -97,7 +108,7 @@ test("committed fixture matches builder (desk CI pin)", () => {
 
 test("performance discovery advertises the cross-repository Desk consumer handoff", () => {
   const doc = buildOpsContract({ generated_at: "2026-08-01T00:00:00.000Z" });
-  assert.equal(doc.version, "1.21.0");
+  assert.equal(doc.version, "1.22.0");
   assert.equal(doc.signup_lifecycle.contract, "cityscroll.signup_lifecycle.v1");
   assert.equal(doc.signup_lifecycle.endpoint, "/admin/subs");
   assert.deepEqual(doc.signup_lifecycle.states.map((state) => state.id), [

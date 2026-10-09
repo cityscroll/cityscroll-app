@@ -2133,6 +2133,7 @@ worker/src/lib/confirm_email.mjs
 worker/src/lib/continuation_replay.mjs
 worker/src/lib/contract_forecast_predictions.mjs
 worker/src/lib/cors.mjs
+worker/src/lib/cost_control_probe.mjs
 worker/src/lib/council_discovery_health.mjs
 worker/src/lib/council_district.mjs
 worker/src/lib/council_matter_watch_activation.mjs
