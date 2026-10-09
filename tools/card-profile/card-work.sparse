@@ -902,6 +902,7 @@
 /site/search_render_plan.mjs
 /site/search_result_inspection.mjs
 /site/semantic_topic_search.mjs
+/site/shared_meeting_edge_load.mjs
 /site/shared_meeting_read_model.mjs
 /site/shared_meeting_read_model_shards.mjs
 /site/shared_procurement_read_model.mjs
