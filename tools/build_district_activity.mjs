@@ -333,7 +333,10 @@ function check(doc) {
     if (!corpus?.path || !corpus?.collection || !corpus?.stamp_field || !corpus?.stamp_value) {
       throw new Error(`${lens} district item corpus descriptor missing`);
     }
-    const sourceDoc = loadJson(join(ROOT, "site", corpus.path));
+    const sourcePath = join(ROOT, "site", corpus.path);
+    const sourceDoc = corpus.path === "data/shared_meeting_read_model.json"
+      ? readSharedMeetingReadModelDocument(sourcePath)
+      : loadJson(sourcePath);
     if (sourceDoc?.[corpus.stamp_field] !== corpus.stamp_value) {
       throw new Error(`${lens} district item corpus stamp mismatch`);
     }
