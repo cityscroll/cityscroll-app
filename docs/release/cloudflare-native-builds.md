@@ -36,6 +36,11 @@ in its filter deploys the Worker, and `workflow_dispatch` exists on top of that
 for a re-run without a new commit and for the two D1 publication inputs
 (`force_d1_publication`, `disable_incremental_publication`).
 
+Before either trigger mutates production, the Worker workflow evaluates the
+provider-native all-meter release gate. Its evidence variables, normalization
+contract, and failure conditions are owned by
+[`docs/worker-cost-controls.md`](../worker-cost-controls.md).
+
 The Worker path filter is wide — `worker/**`, `capabilities/**`,
 `entity_resolution/**`, `ontology/**`, `site/**`, `tools/**`, `warehouse/**`,
 the shared Following renderer and its data, several named builders, and the
