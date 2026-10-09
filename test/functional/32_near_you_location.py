@@ -624,7 +624,12 @@ CITYWIDE_STATE_JS = """() => {
     view_all: viewAll?.getAttribute('href') || null,
     collections: [...(section?.querySelectorAll('[data-near-special-link]') || [])].map((link) => link.dataset.nearSpecialLink),
     in_disclosure: Boolean(section?.closest('details, [data-near-surface-panel]')),
-    // Map-first: citywide specials follow the map workspace (flex order 8).
+    // Map-first: map occupies the first viewport; citywide specials follow it.
+    map_in_first_viewport: Boolean(workspace && (() => {
+      const rect = workspace.getBoundingClientRect();
+      const visible = Math.min(window.innerHeight, rect.bottom) - Math.max(0, rect.top);
+      return rect.top < window.innerHeight && visible > 0;
+    })()),
     after_map: Boolean(section && workspace
       && workspace.getBoundingClientRect().top < section.getBoundingClientRect().top
       && (workspace.compareDocumentPosition(section) & Node.DOCUMENT_POSITION_FOLLOWING)),
@@ -668,7 +673,7 @@ def citywide_card_selector(record_id: str) -> str:
 
 
 def check_citywide_preview(browser: Browser, base: str, viewport: tuple[str, int, int]) -> dict:
-    """Root citywide preview: bounded, ordered, after the map, and the record journey."""
+    """Root citywide preview: map-first, then bounded reachable citywide records."""
     name, width, height = viewport
     journey = Journey(browser, width, height)
     try:
@@ -681,7 +686,7 @@ def check_citywide_preview(browser: Browser, base: str, viewport: tuple[str, int
         assert state["total"] >= len(state["ids"]), state
         assert timing_order_ok(state["timing"]), state
         assert state["collections"] == ["citywide", "virtual", "unlocated"], state
-        assert not state["in_disclosure"] and state["after_map"], state
+        assert state["map_in_first_viewport"] and state["after_map"] and not state["in_disclosure"], state
         view_all = query(state["view_all"])
         assert view_all.get("scope") == ["citywide"] and view_all.get("surface") == ["records"], state
         assert "geo" not in view_all and "neighborhood" not in view_all, state
