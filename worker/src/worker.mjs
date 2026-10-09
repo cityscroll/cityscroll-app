@@ -124,7 +124,7 @@ import {
   beginCostControlProbe,
   canonicalCostProbeWorkload,
   logCostControlProbe,
-  logNativeCostControlProbe,
+  runNativeCostControlProbe,
 } from "./lib/cost_control_probe.mjs";
 import { LAND_PROJECT_ID_PATTERN } from "../../capabilities/land_projects.mjs";
 import { RUM_MARKED_TRAFFIC_CLASSES, isRumProductionOrigin } from "../../site/rum_production.mjs";
@@ -471,11 +471,14 @@ const worker = {
   },
 
   async scheduled(event, env, ctx) {
-    logNativeCostControlProbe(env, {
+    return runNativeCostControlProbe(env, ctx, {
       kind: "scheduled",
       trigger: event.cron,
       scheduledTime: event.scheduledTime,
-    });
+    }, (measuredEnv, measuredCtx) => worker.runScheduled(event, measuredEnv, measuredCtx));
+  },
+
+  async runScheduled(event, env, ctx) {
     const runId = `worker:${event.cron}:${new Date().toISOString()}`;
     // Each scheduled window starts the receipt-only public summary independently.
     // Early-return branches, delivery errors, and slow publisher refreshes must not
@@ -830,12 +833,16 @@ const worker = {
   },
 
   // Digest queue consumer: one account job per message (single watch or rollup; see alerts.mjs).
-  async queue(batch, env) {
-    logNativeCostControlProbe(env, {
+  async queue(batch, env, ctx) {
+    return runNativeCostControlProbe(env, ctx, {
       kind: "queue",
       queue: batch.queue,
       batchSize: batch.messages.length,
-    });
+      messages: batch.messages,
+    }, (measuredEnv) => worker.runQueue(batch, measuredEnv));
+  },
+
+  async runQueue(batch, env) {
     if (batch.queue === "crol-digest-shadow-rebuild") {
       for (const msg of batch.messages) {
         try {

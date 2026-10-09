@@ -44,14 +44,22 @@ and method. Native scheduled cohorts instead require the provider event type,
 configured cron, exact scheduled timestamp, provider request ID, and structured
 instrumentation metadata matching an independently supplied run marker and
 workload digest. Native queue cohorts require the provider queue trigger,
-request ID, run marker, workload digest, and bounded batch marker. Retained
-conditions hash run and batch markers and omit requests, headers, URLs, and
-queue bodies. An HTTP rehearsal, arbitrary log text, cross-run marker, wrong
-trigger, or mismatched provider version is rejected. No resident-delivering
-cron or queue job is run merely to complete a profile; absent native evidence
-remains unknown.
+request ID, run marker, workload digest, and a bounded fingerprint derived from
+the actual provider message IDs, timestamps, attempts, and body structure. The
+Worker emits only that one-way fingerprint, never the message IDs or bodies,
+and accepts it only when it was independently allowlisted for the measurement
+run. Native binding operations are counted in memory and emitted in the same
+final structured receipt after the handler and its `waitUntil` work finish;
+acquisition callers cannot supply replacement operation totals. An HTTP
+rehearsal, arbitrary log text, cross-run fingerprint, wrong trigger, or
+mismatched provider version is rejected. No resident-delivering cron or queue
+job is run merely to complete a profile; absent native evidence remains
+unknown.
 
-Collection is capped at 30 minutes and 10,000 events. The retained shape omits
+Collection is capped at 24 hours and 10,000 events. Each scheduled cohort has
+its own exact timestamp and at-most-30-minute acceptance window within that
+day, allowing one immutable version to observe the existing 08:00, 10:00, and
+13:00 UTC triggers without firing them artificially. The retained shape omits
 URLs, query strings, headers, bodies, credentials, account
 identifiers, and resident identifiers. Missing cohorts remain `unknown`; they
 never become zero-valued samples. Attempted and confirmed operations are kept

@@ -52,13 +52,16 @@ function profile(profileRevision = revision, totals = {}, samplesPerCohort = 1) 
         ? {
           mode: "provider-native-scheduled", source: "$workers.event",
           cron: cohort.slice("cron:".length), scheduled_time: 1_760_000_000_000,
+          provider_request_id_sha256: "b".repeat(64),
           run_marker_sha256: "c".repeat(64), workload_digest: "d".repeat(64),
+          instrumentation_log_count: 1,
         }
         : cohort === "queue"
           ? {
             mode: "provider-native-queue", source: "$workers.event", queue: "crol-cost-probe", batch_size: 1,
+            provider_request_id_sha256: "b".repeat(64),
             run_marker_sha256: "c".repeat(64), workload_digest: "d".repeat(64),
-            batch_marker_sha256: "e".repeat(64),
+            batch_fingerprint_sha256: "e".repeat(64), instrumentation_log_count: 1,
           }
           : { mode: "bounded-production-execution" },
     revision: profileRevision,

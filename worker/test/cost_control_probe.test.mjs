@@ -7,6 +7,8 @@ import {
   beginCostControlProbe,
   canonicalCostProbeWorkload,
   createNativeCostControlProbeRecord,
+  queueBatchFingerprint,
+  runNativeCostControlProbe,
 } from "../src/lib/cost_control_probe.mjs";
 import { RUM_BATCH_SCHEMA, RUM_OBSERVATION_SCHEMA } from "../src/performance_events.mjs";
 
@@ -98,40 +100,123 @@ test("probe rejects missing operator authorization without exposing the route", 
   assert.equal(denied.denied.status, 404);
 });
 
-test("native probe records are opt-in, bounded, self-expiring and payload-free", () => {
-  const now = Date.parse("2026-10-09T01:05:00Z");
+test("native probe records use bounded scheduled windows and owned queue batches", async () => {
+  const now = Date.parse("2026-10-09T08:00:00Z");
+  const batch = {
+    queue: "crol-cost-probe",
+    messages: [{
+      id: "provider-message-1",
+      timestamp: new Date("2026-10-09T07:59:59Z"),
+      attempts: 1,
+      body: { type: "single", key: "resident-id-not-retained" },
+    }, {
+      id: "provider-message-2",
+      timestamp: new Date("2026-10-09T07:59:58Z"),
+      attempts: 1,
+      body: { type: "rollup", keys: ["resident-id-not-retained"] },
+    }],
+  };
+  const batchFingerprint = await queueBatchFingerprint(batch);
+  const operations = Object.fromEntries([
+    "kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes",
+  ].map((meter) => [meter, { attempted: 0, confirmed: 0 }]));
   const config = {
     schema: "cityscroll.worker_native_cost_probe.v1",
     enabled: true,
-    starts_at: "2026-10-09T01:00:00Z",
-    expires_at: "2026-10-09T01:10:00Z",
+    starts_at: "2026-10-09T07:55:00Z",
+    expires_at: "2026-10-09T13:05:00Z",
     run_marker_sha256: "a".repeat(64),
     workload_digest: "b".repeat(64),
-    scheduled_crons: ["0 8 * * *"],
+    scheduled_windows: [
+      { trigger: "0 8 * * *", scheduled_time: now, starts_at: "2026-10-09T07:55:00Z", expires_at: "2026-10-09T08:05:00Z" },
+      { trigger: "0 10 * * *", scheduled_time: Date.parse("2026-10-09T10:00:00Z"), starts_at: "2026-10-09T09:55:00Z", expires_at: "2026-10-09T10:05:00Z" },
+      { trigger: "0 13 * * *", scheduled_time: Date.parse("2026-10-09T13:00:00Z"), starts_at: "2026-10-09T12:55:00Z", expires_at: "2026-10-09T13:05:00Z" },
+    ],
     queue: "crol-cost-probe",
-    batch_marker_sha256: "c".repeat(64),
+    queue_batch_fingerprints: [batchFingerprint],
     max_queue_batch: 2,
   };
   const env = { WORKER_COST_NATIVE_PROBE: JSON.stringify(config) };
   assert.equal(createNativeCostControlProbeRecord({}, { kind: "scheduled" }, now), null);
   assert.equal(createNativeCostControlProbeRecord(env, {
-    kind: "scheduled", trigger: "0 8 * * *", scheduledTime: 1_760_000_000_000,
-  }, Date.parse("2026-10-09T01:11:00Z")), null);
+    kind: "scheduled", trigger: "0 8 * * *", scheduledTime: now,
+    operations, operationMeterComplete: true,
+  }, Date.parse("2026-10-09T08:06:00Z")), null);
   assert.deepEqual(createNativeCostControlProbeRecord(env, {
     kind: "queue", queue: "crol-cost-probe", batchSize: 2,
+    batchFingerprint, operations, operationMeterComplete: true,
   }, now), {
     schema: "cityscroll.worker_native_cost_probe.v1",
     kind: "queue",
     run_marker_sha256: "a".repeat(64),
     workload_digest: "b".repeat(64),
     instrumentation_log_count: 1,
+    operations,
     queue: "crol-cost-probe",
     batch_size: 2,
-    batch_marker_sha256: "c".repeat(64),
+    batch_fingerprint_sha256: batchFingerprint,
   });
   assert.equal(createNativeCostControlProbeRecord(env, {
-    kind: "queue", queue: "crol-cost-probe", batchSize: 3,
+    kind: "queue", queue: "crol-cost-probe", batchSize: 1,
+    batchFingerprint: "c".repeat(64), operations, operationMeterComplete: true,
   }, now), null);
+  assert.notEqual(batchFingerprint, await queueBatchFingerprint({
+    ...batch,
+    messages: [{ ...batch.messages[0], id: "provider-message-3" }, batch.messages[1]],
+  }));
+  assert.notEqual(batchFingerprint, await queueBatchFingerprint({
+    ...batch,
+    messages: [{ ...batch.messages[0], body: { type: "single", keys: [] } }, batch.messages[1]],
+  }));
+  assert.equal(batchFingerprint, await queueBatchFingerprint({ ...batch, messages: [...batch.messages].reverse() }));
+});
+
+test("native receipts measure real binding work after waitUntil completion", async () => {
+  const now = Date.parse("2026-10-09T08:00:00Z");
+  const namespace = kv();
+  const pending = [];
+  const logs = [];
+  const originalLog = console.log;
+  console.log = (record) => logs.push(record);
+  try {
+    await runNativeCostControlProbe({
+      STORE: namespace,
+      WORKER_COST_NATIVE_PROBE: JSON.stringify({
+        schema: "cityscroll.worker_native_cost_probe.v1",
+        enabled: true,
+        starts_at: "2026-10-09T07:55:00Z",
+        expires_at: "2026-10-09T08:05:00Z",
+        run_marker_sha256: "a".repeat(64),
+        workload_digest: "b".repeat(64),
+        scheduled_windows: [{
+          trigger: "0 8 * * *", scheduled_time: now,
+          starts_at: "2026-10-09T07:55:00Z", expires_at: "2026-10-09T08:05:00Z",
+        }],
+        queue: "crol-cost-probe",
+        queue_batch_fingerprints: ["c".repeat(64)],
+        max_queue_batch: 1,
+      }),
+    }, {
+      waitUntil(promise) { pending.push(promise); },
+    }, {
+      kind: "scheduled", trigger: "0 8 * * *", scheduledTime: now,
+    }, async (measuredEnv, ctx) => {
+      await measuredEnv.STORE.get("present");
+      ctx.waitUntil(measuredEnv.STORE.get("present"));
+      await measuredEnv.STORE.put("measured", "x");
+    }, now);
+  } finally {
+    console.log = originalLog;
+  }
+  assert.equal(pending.length, 1);
+  assert.equal(logs.length, 1);
+  assert.deepEqual(logs[0].operations, {
+    kv_reads: { attempted: 2, confirmed: 2 },
+    kv_writes: { attempted: 1, confirmed: 1 },
+    d1_rows_read: { attempted: 0, confirmed: 0 },
+    d1_rows_written: { attempted: 0, confirmed: 0 },
+    storage_bytes: { attempted: 1, confirmed: 1 },
+  });
 });
 
 test("probe counts real KV operations and suppresses rehearsal writes", async () => {

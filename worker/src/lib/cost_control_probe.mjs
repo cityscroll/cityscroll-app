@@ -9,7 +9,8 @@ const SERIES_HEADER = "x-cityscroll-cost-series";
 const PROBE_TAG = /^[a-z0-9][a-z0-9-]{7,95}$/;
 const WORKLOAD_HASH = /^[a-f0-9]{64}$/;
 const NATIVE_PROBE_SCHEMA = "cityscroll.worker_native_cost_probe.v1";
-const MAX_NATIVE_PROBE_WINDOW_MS = 30 * 60 * 1000;
+const MAX_NATIVE_PROBE_WINDOW_MS = 24 * 60 * 60 * 1000;
+const MAX_NATIVE_SCHEDULED_WINDOW_MS = 30 * 60 * 1000;
 const statementTargets = new WeakMap();
 const statementSql = new WeakMap();
 
@@ -49,6 +50,50 @@ function exactObjectKeys(value, keys) {
   return actual.length === expected.length && actual.every((key, index) => key === expected[index]);
 }
 
+function canonicalJson(value) {
+  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(",")}]`;
+  if (value && typeof value === "object") {
+    return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${canonicalJson(value[key])}`).join(",")}}`;
+  }
+  return JSON.stringify(value);
+}
+
+async function sha256(value) {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
+  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function workloadShape(value, depth = 0) {
+  if (depth > 8) throw new TypeError("queue workload structure is too deep");
+  if (value === null) return "null";
+  if (Array.isArray(value)) return { array: value.map((item) => workloadShape(item, depth + 1)) };
+  if (value instanceof ArrayBuffer || ArrayBuffer.isView(value)) return "bytes";
+  if (typeof value === "object") {
+    const prototype = Object.getPrototypeOf(value);
+    if (prototype !== Object.prototype && prototype !== null) throw new TypeError("unsupported queue workload structure");
+    return Object.fromEntries(Object.keys(value).sort().map((key) => [key, workloadShape(value[key], depth + 1)]));
+  }
+  if (["boolean", "number", "string", "undefined", "bigint"].includes(typeof value)) return typeof value;
+  throw new TypeError("unsupported queue workload structure");
+}
+
+export async function queueBatchFingerprint(batch) {
+  if (!batch || typeof batch.queue !== "string" || !batch.queue || !Array.isArray(batch.messages) || !batch.messages.length) return null;
+  const identities = [];
+  for (const message of batch.messages) {
+    if (typeof message?.id !== "string" || !message.id || message.id.length > 256) return null;
+    const timestamp = message.timestamp instanceof Date ? message.timestamp.getTime() : Date.parse(message.timestamp);
+    if (!Number.isFinite(timestamp) || !Number.isInteger(message.attempts) || message.attempts < 1) return null;
+    let shape;
+    try { shape = workloadShape(message.body); }
+    catch { return null; }
+    identities.push({ id: message.id, timestamp, attempts: message.attempts, shape });
+  }
+  identities.sort((left, right) => left.id.localeCompare(right.id));
+  if (identities.some((message, index) => index > 0 && message.id === identities[index - 1].id)) return null;
+  return sha256(canonicalJson({ queue: batch.queue, messages: identities }));
+}
+
 function nativeProbeConfig(env, now) {
   if (!env?.WORKER_COST_NATIVE_PROBE) return null;
   let config;
@@ -56,7 +101,7 @@ function nativeProbeConfig(env, now) {
   catch { return null; }
   if (!exactObjectKeys(config, [
     "schema", "enabled", "starts_at", "expires_at", "run_marker_sha256", "workload_digest",
-    "scheduled_crons", "queue", "batch_marker_sha256", "max_queue_batch",
+    "scheduled_windows", "queue", "queue_batch_fingerprints", "max_queue_batch",
   ])) return null;
   const startsAt = Date.parse(config.starts_at);
   const expiresAt = Date.parse(config.expires_at);
@@ -71,14 +116,31 @@ function nativeProbeConfig(env, now) {
     || now > expiresAt
     || !WORKLOAD_HASH.test(config.run_marker_sha256)
     || !WORKLOAD_HASH.test(config.workload_digest)
-    || !WORKLOAD_HASH.test(config.batch_marker_sha256)
-    || !Array.isArray(config.scheduled_crons)
-    || config.scheduled_crons.length < 1
-    || config.scheduled_crons.length > 3
-    || config.scheduled_crons.some((cron) => typeof cron !== "string" || !cron || cron.length > 64)
+    || !Array.isArray(config.scheduled_windows)
+    || config.scheduled_windows.length < 1
+    || config.scheduled_windows.length > 3
+    || config.scheduled_windows.some((window) => {
+      if (!exactObjectKeys(window, ["trigger", "scheduled_time", "starts_at", "expires_at"])) return true;
+      const windowStartsAt = Date.parse(window.starts_at);
+      const windowExpiresAt = Date.parse(window.expires_at);
+      return typeof window.trigger !== "string"
+        || !window.trigger
+        || window.trigger.length > 64
+        || !Number.isInteger(window.scheduled_time)
+        || !Number.isFinite(windowStartsAt)
+        || !Number.isFinite(windowExpiresAt)
+        || windowExpiresAt <= windowStartsAt
+        || windowExpiresAt - windowStartsAt > MAX_NATIVE_SCHEDULED_WINDOW_MS
+        || windowStartsAt < startsAt
+        || windowExpiresAt > expiresAt;
+    })
     || typeof config.queue !== "string"
     || !config.queue
     || config.queue.length > 128
+    || !Array.isArray(config.queue_batch_fingerprints)
+    || config.queue_batch_fingerprints.length < 1
+    || config.queue_batch_fingerprints.length > 100
+    || config.queue_batch_fingerprints.some((fingerprint) => !WORKLOAD_HASH.test(fingerprint))
     || !Number.isInteger(config.max_queue_batch)
     || config.max_queue_batch < 1
     || config.max_queue_batch > 100
@@ -89,15 +151,24 @@ function nativeProbeConfig(env, now) {
 export function createNativeCostControlProbeRecord(env, invocation, now = Date.now()) {
   const config = nativeProbeConfig(env, now);
   if (!config || !invocation || typeof invocation !== "object") return null;
+  const operations = invocation.operations;
+  if (!operations || invocation.operationMeterComplete !== true) return null;
   const shared = {
     schema: NATIVE_PROBE_SCHEMA,
     kind: invocation.kind,
     run_marker_sha256: config.run_marker_sha256,
     workload_digest: config.workload_digest,
     instrumentation_log_count: 1,
+    operations,
   };
   if (invocation.kind === "scheduled") {
-    if (!config.scheduled_crons.includes(invocation.trigger) || !Number.isInteger(invocation.scheduledTime)) return null;
+    const window = config.scheduled_windows.find((candidate) => (
+      candidate.trigger === invocation.trigger
+      && candidate.scheduled_time === invocation.scheduledTime
+      && now >= Date.parse(candidate.starts_at)
+      && now <= Date.parse(candidate.expires_at)
+    ));
+    if (!window) return null;
     return { ...shared, trigger: invocation.trigger, scheduled_time: invocation.scheduledTime };
   }
   if (invocation.kind === "queue") {
@@ -106,29 +177,31 @@ export function createNativeCostControlProbeRecord(env, invocation, now = Date.n
       || !Number.isInteger(invocation.batchSize)
       || invocation.batchSize < 1
       || invocation.batchSize > config.max_queue_batch
+      || !WORKLOAD_HASH.test(invocation.batchFingerprint)
+      || !config.queue_batch_fingerprints.includes(invocation.batchFingerprint)
     ) return null;
     return {
       ...shared,
       queue: invocation.queue,
       batch_size: invocation.batchSize,
-      batch_marker_sha256: config.batch_marker_sha256,
+      batch_fingerprint_sha256: invocation.batchFingerprint,
     };
   }
   return null;
-}
-
-export function logNativeCostControlProbe(env, invocation, now = Date.now()) {
-  const record = createNativeCostControlProbeRecord(env, invocation, now);
-  if (record) console.log(record);
-  return record;
 }
 
 function resultMeta(result, counters) {
   const meta = result?.meta || {};
   const rowsRead = Number(meta.rows_read);
   const rowsWritten = Number(meta.rows_written ?? meta.changes);
-  if (Number.isFinite(rowsRead) && rowsRead > 0) counters.d1_rows_read += rowsRead;
-  if (Number.isFinite(rowsWritten) && rowsWritten > 0) counters.d1_rows_written += rowsWritten;
+  if (Number.isFinite(rowsRead) && rowsRead > 0) {
+    counters.attempted.d1_rows_read += rowsRead;
+    counters.d1_rows_read += rowsRead;
+  }
+  if (Number.isFinite(rowsWritten) && rowsWritten > 0) {
+    counters.attempted.d1_rows_written += rowsWritten;
+    counters.d1_rows_written += rowsWritten;
+  }
   return result;
 }
 
@@ -227,17 +300,57 @@ function wrapKv(namespace, counters, suppressWrites) {
     get(target, property) {
       if (["get", "getWithMetadata", "list"].includes(property)) {
         return async (...args) => {
+          counters.attempted.kv_reads += 1;
+          const result = await target[property](...args);
           counters.kv_reads += 1;
-          return target[property](...args);
+          return result;
         };
       }
       if (["put", "delete"].includes(property)) {
         return async (...args) => {
           counters.attempted.kv_writes += 1;
           if (suppressWrites) return undefined;
+          const bytes = property === "put" ? storageByteLength(args[1]) : 0;
+          if (bytes === null) counters.operation_meter_complete = false;
+          else counters.attempted.storage_bytes += bytes;
           const result = await target[property](...args);
           counters.kv_writes += 1;
+          if (bytes !== null) counters.storage_bytes += bytes;
           return result;
+        };
+      }
+      const value = target[property];
+      return typeof value === "function" ? value.bind(target) : value;
+    },
+  });
+}
+
+function storageByteLength(value) {
+  if (typeof value === "string") return new TextEncoder().encode(value).byteLength;
+  if (value instanceof ArrayBuffer) return value.byteLength;
+  if (ArrayBuffer.isView(value)) return value.byteLength;
+  if (value instanceof Blob) return value.size;
+  return null;
+}
+
+function wrapR2(bucket, counters, suppressWrites) {
+  return new Proxy(bucket, {
+    get(target, property) {
+      if (property === "put") {
+        return async (...args) => {
+          const bytes = storageByteLength(args[1]);
+          if (bytes === null) counters.operation_meter_complete = false;
+          else counters.attempted.storage_bytes += bytes;
+          if (suppressWrites) return null;
+          const result = await target.put(...args);
+          if (bytes !== null) counters.storage_bytes += bytes;
+          return result;
+        };
+      }
+      if (["createMultipartUpload", "resumeMultipartUpload"].includes(property)) {
+        return (...args) => {
+          counters.operation_meter_complete = false;
+          return target[property](...args);
         };
       }
       const value = target[property];
@@ -299,6 +412,8 @@ function instrumentEnvironment(env, counters, suppressWrites) {
           })
         : kind === "queue"
           ? wrapQueue(value, counters, suppressWrites)
+          : kind === "r2"
+            ? wrapR2(value, counters, suppressWrites)
           : value;
   }
   if (suppressWrites) {
@@ -307,6 +422,83 @@ function instrumentEnvironment(env, counters, suppressWrites) {
     measured.RESEND_API_KEY = "";
   }
   return measured;
+}
+
+function costCounters() {
+  return {
+    kv_reads: 0,
+    kv_writes: 0,
+    d1_rows_read: 0,
+    d1_rows_written: 0,
+    storage_bytes: 0,
+    queue_writes: 0,
+    analytics_points: 0,
+    operation_meter_complete: true,
+    attempted: {
+      kv_reads: 0,
+      kv_writes: 0,
+      d1_rows_read: 0,
+      d1_rows_written: 0,
+      storage_bytes: 0,
+      d1_writes: 0,
+      queue_writes: 0,
+      analytics_points: 0,
+    },
+  };
+}
+
+function nativeOperationSnapshot(counters) {
+  return Object.fromEntries([
+    ["kv_reads", [counters.attempted.kv_reads, counters.kv_reads]],
+    ["kv_writes", [counters.attempted.kv_writes, counters.kv_writes]],
+    ["d1_rows_read", [counters.attempted.d1_rows_read, counters.d1_rows_read]],
+    ["d1_rows_written", [counters.attempted.d1_rows_written, counters.d1_rows_written]],
+    ["storage_bytes", [counters.attempted.storage_bytes, counters.storage_bytes]],
+  ].map(([meter, [attempted, confirmed]]) => [meter, { attempted, confirmed }]));
+}
+
+function measuredContext(ctx, pending) {
+  if (!ctx || typeof ctx.waitUntil !== "function") return ctx;
+  return new Proxy(ctx, {
+    get(target, property) {
+      if (property === "waitUntil") return (promise) => {
+        const tracked = Promise.resolve(promise);
+        pending.push(tracked);
+        return target.waitUntil(tracked);
+      };
+      const value = target[property];
+      return typeof value === "function" ? value.bind(target) : value;
+    },
+  });
+}
+
+export async function runNativeCostControlProbe(env, ctx, invocation, handler, now = Date.now()) {
+  if (!nativeProbeConfig(env, now)) return handler(env, ctx);
+  const batchFingerprint = invocation.kind === "queue"
+    ? await queueBatchFingerprint({ queue: invocation.queue, messages: invocation.messages })
+    : undefined;
+  const counters = costCounters();
+  const candidate = {
+    ...invocation,
+    batchFingerprint,
+    operations: nativeOperationSnapshot(counters),
+    operationMeterComplete: counters.operation_meter_complete,
+  };
+  if (!createNativeCostControlProbeRecord(env, candidate, now)) return handler(env, ctx);
+  const pending = [];
+  const measuredEnv = instrumentEnvironment(env, counters, false);
+  const context = measuredContext(ctx, pending);
+  try {
+    return await handler(measuredEnv, context);
+  } finally {
+    await Promise.allSettled(pending);
+    const record = createNativeCostControlProbeRecord(env, {
+      ...candidate,
+      operations: nativeOperationSnapshot(counters),
+      operationMeterComplete: counters.operation_meter_complete,
+    }, now);
+    if (record) console.log(record);
+  }
 }
 
 export function beginCostControlProbe(request, env, { suppressWrites = false, workloadHash: expectedWorkloadHash = "" } = {}) {
@@ -329,20 +521,7 @@ export function beginCostControlProbe(request, env, { suppressWrites = false, wo
   }
 
   let accepted = false;
-  const counters = {
-    kv_reads: 0,
-    kv_writes: 0,
-    d1_rows_read: 0,
-    d1_rows_written: 0,
-    queue_writes: 0,
-    analytics_points: 0,
-    attempted: {
-      kv_writes: 0,
-      d1_writes: 0,
-      queue_writes: 0,
-      analytics_points: 0,
-    },
-  };
+  const counters = costCounters();
   const startedAt = Date.now();
   const mode = suppressWrites ? "production-read-only-rehearsal" : "production-request";
   return {
@@ -372,7 +551,12 @@ export function beginCostControlProbe(request, env, { suppressWrites = false, wo
           queue_writes: counters.queue_writes,
           analytics_points: counters.analytics_points,
         },
-        attempted_writes: { ...counters.attempted },
+        attempted_writes: {
+          kv_writes: counters.attempted.kv_writes,
+          d1_writes: counters.attempted.d1_writes,
+          queue_writes: counters.attempted.queue_writes,
+          analytics_points: counters.attempted.analytics_points,
+        },
         ...extra,
       };
     },

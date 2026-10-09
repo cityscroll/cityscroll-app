@@ -15,7 +15,7 @@ import {
 const revision = "a".repeat(40);
 const WORKLOAD_DIGEST = "d".repeat(64);
 const RUN_MARKER = "cost-run-2026-10-09";
-const BATCH_MARKER = "queue-batch-1";
+const BATCH_FINGERPRINT = "f".repeat(64);
 const PROVIDER_RECEIPT = Object.freeze({
   schema: "cityscroll.cloudflare_deployment_binding.v1",
   evidence_mode: "actual-production",
@@ -54,28 +54,39 @@ function event(cpuTime = 4, coldStart = 1) {
     } },
   };
 }
+function scheduledTime(trigger) {
+  return Date.parse(`2026-10-09T${trigger === "0 8 * * *" ? "08" : trigger === "0 10 * * *" ? "10" : "13"}:00:00Z`);
+}
 function nativeEvent(kind, trigger, cpuTime = 4) {
   const requestId = `${kind}-provider-event`;
+  const invocationTime = kind === "scheduled" ? scheduledTime(trigger) : Date.parse("2026-10-09T09:00:00Z");
   const eventDetails = kind === "scheduled"
-    ? { cron: trigger, scheduledTime: 1_760_000_000_000 }
+    ? { cron: trigger, scheduledTime: invocationTime }
     : { queue: trigger, batchSize: 1 };
-  const now = Date.parse("2026-10-09T01:05:00Z");
   const source = createNativeCostControlProbeRecord({
     WORKER_COST_NATIVE_PROBE: JSON.stringify({
       schema: "cityscroll.worker_native_cost_probe.v1",
       enabled: true,
-      starts_at: "2026-10-09T01:00:00Z",
-      expires_at: "2026-10-09T01:10:00Z",
+      starts_at: "2026-10-09T07:55:00Z",
+      expires_at: "2026-10-09T13:05:00Z",
       run_marker_sha256: createHash("sha256").update(RUN_MARKER).digest("hex"),
       workload_digest: WORKLOAD_DIGEST,
-      scheduled_crons: ["0 8 * * *", "0 10 * * *", "0 13 * * *"],
+      scheduled_windows: ["0 8 * * *", "0 10 * * *", "0 13 * * *"].map((cron) => ({
+        trigger: cron,
+        scheduled_time: scheduledTime(cron),
+        starts_at: new Date(scheduledTime(cron) - 5 * 60_000).toISOString(),
+        expires_at: new Date(scheduledTime(cron) + 5 * 60_000).toISOString(),
+      })),
       queue: "crol-cost-probe",
-      batch_marker_sha256: createHash("sha256").update(BATCH_MARKER).digest("hex"),
+      queue_batch_fingerprints: [BATCH_FINGERPRINT],
       max_queue_batch: 1,
     }),
   }, kind === "scheduled"
-    ? { kind, trigger, scheduledTime: 1_760_000_000_000 }
-    : { kind, queue: trigger, batchSize: 1 }, now);
+    ? { kind, trigger, scheduledTime: invocationTime, operations: emptyOperations(), operationMeterComplete: true }
+    : {
+      kind, queue: trigger, batchSize: 1, batchFingerprint: BATCH_FINGERPRINT,
+      operations: emptyOperations(), operationMeterComplete: true,
+    }, invocationTime);
   return {
     source,
     $metadata: { requestId, trigger },
@@ -106,13 +117,15 @@ function sample(cohort, cpu = 4) {
     expectedUrl: "https://example.invalid/health",
     condition: { mode: "bounded-production-execution" },
     expectedCron: cron,
-    expectedScheduledTime: isScheduled ? 1_760_000_000_000 : undefined,
+    expectedScheduledTime: isScheduled ? scheduledTime(cron) : undefined,
     expectedRunMarker: isScheduled || isQueue ? RUN_MARKER : undefined,
     expectedWorkloadDigest: isScheduled || isQueue ? WORKLOAD_DIGEST : undefined,
     expectedQueue: isQueue ? "crol-cost-probe" : undefined,
-    expectedBatchMarker: isQueue ? BATCH_MARKER : undefined,
+    expectedBatchFingerprint: isQueue ? BATCH_FINGERPRINT : undefined,
     expectedBatchSize: isQueue ? 1 : undefined,
-    operations: { ...emptyOperations(), kv_writes: { attempted: 1, confirmed: 1 } },
+    operations: isScheduled || isQueue
+      ? undefined
+      : { ...emptyOperations(), kv_writes: { attempted: 1, confirmed: 1 } },
   });
 }
 
@@ -179,7 +192,7 @@ test("native scheduled ownership binds cron, timestamp, run and workload", () =>
   const retained = sample("cron:0 8 * * *", 3);
   assert.equal(retained.condition.mode, "provider-native-scheduled");
   assert.equal(retained.condition.cron, "0 8 * * *");
-  assert.equal(retained.condition.scheduled_time, 1_760_000_000_000);
+  assert.equal(retained.condition.scheduled_time, scheduledTime("0 8 * * *"));
   assert.equal("run_marker" in retained.condition, false);
   for (const mutate of [
     (raw) => { raw.$workers.eventType = "fetch"; },
@@ -194,52 +207,71 @@ test("native scheduled ownership binds cron, timestamp, run and workload", () =>
     mutate(raw);
     assert.throws(() => sanitizeNativeInvocation(raw, {
       cohort: "cron:0 8 * * *", revision,
-      expectedCron: "0 8 * * *", expectedScheduledTime: 1_760_000_000_000,
+      expectedCron: "0 8 * * *", expectedScheduledTime: scheduledTime("0 8 * * *"),
       expectedRunMarker: RUN_MARKER, expectedWorkloadDigest: WORKLOAD_DIGEST,
-      operations: emptyOperations(),
     }), /provider|ownership|scheduled|workload/);
   }
+});
+
+test("native acquisition consumes the Worker receipt from provider message arrays", () => {
+  const raw = nativeEvent("scheduled", "0 10 * * *");
+  const source = raw.source;
+  delete raw.source;
+  raw.Logs = [{ Message: ["unrelated", JSON.stringify(source)] }];
+  const retained = sanitizeNativeInvocation(raw, {
+    cohort: "cron:0 10 * * *", revision,
+    expectedCron: "0 10 * * *", expectedScheduledTime: scheduledTime("0 10 * * *"),
+    expectedRunMarker: RUN_MARKER, expectedWorkloadDigest: WORKLOAD_DIGEST,
+  });
+  assert.deepEqual(retained.operations, emptyOperations());
 });
 
 test("native queue ownership rejects HTTP rehearsal and cross-batch evidence", () => {
   const retained = sample("queue", 5);
   assert.equal(retained.condition.mode, "provider-native-queue");
   assert.equal(retained.condition.queue, "crol-cost-probe");
-  assert.equal("batch_marker" in retained.condition, false);
+  assert.equal(retained.condition.batch_fingerprint_sha256, BATCH_FINGERPRINT);
   assert.throws(() => sanitizeNativeInvocation(event(), {
     cohort: "queue", revision,
     expectedRunMarker: RUN_MARKER, expectedWorkloadDigest: WORKLOAD_DIGEST,
-    expectedQueue: "crol-cost-probe", expectedBatchMarker: BATCH_MARKER,
+    expectedQueue: "crol-cost-probe", expectedBatchFingerprint: BATCH_FINGERPRINT,
     expectedBatchSize: 1,
-    operations: emptyOperations(),
   }), /native invocation|structured native probe/);
   const wrongBatch = nativeEvent("queue", "crol-cost-probe");
-  wrongBatch.source.batch_marker_sha256 = "e".repeat(64);
+  wrongBatch.source.batch_fingerprint_sha256 = "e".repeat(64);
   assert.throws(() => sanitizeNativeInvocation(wrongBatch, {
     cohort: "queue", revision,
     expectedRunMarker: RUN_MARKER, expectedWorkloadDigest: WORKLOAD_DIGEST,
-    expectedQueue: "crol-cost-probe", expectedBatchMarker: BATCH_MARKER,
+    expectedQueue: "crol-cost-probe", expectedBatchFingerprint: BATCH_FINGERPRINT,
     expectedBatchSize: 1,
-    operations: emptyOperations(),
-  }), /batch marker/);
+  }), /batch fingerprint/);
   const wrongTrigger = nativeEvent("queue", "crol-cost-probe");
   wrongTrigger.$metadata.trigger = "other-queue";
   assert.throws(() => sanitizeNativeInvocation(wrongTrigger, {
     cohort: "queue", revision,
     expectedRunMarker: RUN_MARKER, expectedWorkloadDigest: WORKLOAD_DIGEST,
-    expectedQueue: "crol-cost-probe", expectedBatchMarker: BATCH_MARKER,
+    expectedQueue: "crol-cost-probe", expectedBatchFingerprint: BATCH_FINGERPRINT,
     expectedBatchSize: 1,
-    operations: emptyOperations(),
   }), /queue trigger/);
+  assert.throws(() => sanitizeNativeInvocation(nativeEvent("queue", "crol-cost-probe"), {
+    cohort: "queue", revision,
+    expectedRunMarker: RUN_MARKER, expectedWorkloadDigest: WORKLOAD_DIGEST,
+    expectedQueue: "crol-cost-probe", expectedBatchFingerprint: BATCH_FINGERPRINT,
+    expectedBatchSize: 1, operations: emptyOperations(),
+  }), /must come from the Worker receipt/);
 });
 
 test("complete bounded profiles cover routes, three crons, queue and collector overhead", () => {
   const samples = REQUIRED_COST_COHORTS.map((cohort, index) => sample(cohort, index));
   const profile = buildWorkerCostProfile(samples, {
-    revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 120, eventCount: samples.length,
+    revision, observedAt: "2026-10-09T13:05:00Z", durationSeconds: 6 * 60 * 60, eventCount: samples.length,
   });
   assert.equal(profile.complete, true);
   assert.deepEqual(validateWorkerCostProfile(profile), { ok: true, complete: true });
+  assert.throws(() => buildWorkerCostProfile(samples, {
+    revision, observedAt: "2026-10-10T08:00:01Z", durationSeconds: 24 * 60 * 60 + 1,
+    eventCount: samples.length,
+  }), /24 hour bound/);
 });
 
 test("profiles retain and enforce every sample revision", () => {
