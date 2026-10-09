@@ -430,6 +430,68 @@ test("unreadable models use documented fallbacks with the failed source and reso
   }
 });
 
+
+function shardedFixture(items = rows, shardResponse) {
+  const paths = ["shared_meeting_read_model/shard-000.json", "shared_meeting_read_model/shard-001.json"];
+  const chunks = [items.slice(0, 2), items.slice(2)];
+  const requests = [];
+  const signals = [];
+  const fetchImpl = async (url, options) => {
+    requests.push(String(url));
+    signals.push(options.signal);
+    const clean = cleanUrl(url);
+    if (clean === `${BASE}${MEETING_READ_MODEL_PATH}`) return response(200, JSON.stringify({
+      schema: "cityscroll.shared_meeting_read_model.v1", representation: "sharded",
+      shards: paths.map((path) => ({ path })),
+    }));
+    const index = paths.findIndex((path) => clean === `${BASE}/data/${path}`);
+    assert.ok(index >= 0, `unexpected shard URL: ${url}`);
+    return shardResponse?.(index, options) ?? response(200, JSON.stringify({ rows: chunks[index] }));
+  };
+  return { fetchImpl, requests, signals };
+}
+
+test("sharded publication resolves current meetings in catalog order with bounded cache-busted reads", async () => {
+  const fixture = shardedFixture();
+  const targets = await resolvePublishedMeetingTargets(BASE, { fetchImpl: fixture.fetchImpl, now: 123 });
+  assert.deepEqual(targets.map((item) => item.meetingId), [rows[2].meeting_id, rows[1].meeting_id]);
+  assert.ok(targets.every((item) => !item.resolutionWarning));
+  assert.equal(fixture.requests.length, 3);
+  assert.ok(fixture.requests.every((url) => new URL(url).searchParams.get("_smoke") === "123"));
+  assert.ok(fixture.signals.every((signal) => signal === fixture.signals[0]));
+  assert.equal(targets[1].url, `${BASE}/meetings/${encodeURIComponent(rows[1].meeting_id)}/`);
+});
+
+test("unreadable shards retain documented fallback behavior", async () => {
+  for (const shardResponse of [
+    () => response(503, "unavailable"),
+    () => response(200, "not JSON"),
+    () => response(200, JSON.stringify({ rows: null })),
+    () => { throw new Error("shard network unavailable"); },
+  ]) {
+    const targets = await resolvePublishedMeetingTargets(BASE, { fetchImpl: shardedFixture(rows, shardResponse).fetchImpl });
+    assert.deepEqual(targets.map((item) => item.meetingId), CANONICAL_MEETING_TARGETS.map((item) => item.meetingId));
+    assert.ok(targets.every((item) => item.resolutionWarning));
+  }
+});
+
+test("readable shards preserve missing-family and invalid-first-record failures", async () => {
+  await assert.rejects(resolvePublishedMeetingTargets(BASE, {
+    fetchImpl: shardedFixture(rows.filter((row) => row.source_system !== "city_record")).fetchImpl,
+  }), /no published city_record meeting/);
+  await assert.rejects(resolvePublishedMeetingTargets(BASE, {
+    fetchImpl: shardedFixture([{ ...rows[1], title: "" }, ...rows]).fetchImpl,
+  }), /invalid first published community_board meeting/);
+});
+
+test("shard reads share the manifest request timeout", async () => {
+  const fixture = shardedFixture(rows, (_index, { signal }) => new Promise((_resolve, reject) => {
+    signal.addEventListener("abort", () => reject(new Error("shard request timed out")), { once: true });
+  }));
+  const targets = await resolvePublishedMeetingTargets(BASE, { fetchImpl: fixture.fetchImpl, requestTimeoutMs: 10 });
+  assert.match(targets[0].resolutionWarning, /shard request timed out/);
+});
+
 test("model reads respect the existing request timeout", async () => {
   const targets = await resolvePublishedMeetingTargets(BASE, {
     requestTimeoutMs: 5,
