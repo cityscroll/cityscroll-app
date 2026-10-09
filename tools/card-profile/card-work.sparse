@@ -335,6 +335,7 @@
 /site/community_board_budget_requests_boot.mjs
 /site/community_board_bylaws.mjs
 /site/community_board_committees.mjs
+/site/community_board_committees_refresh.mjs
 /site/community_board_constellation.mjs
 /site/community_board_decision_search_producer.mjs
 /site/community_board_district_projects.mjs
@@ -356,6 +357,7 @@
 /site/community_board_payroll_context.mjs
 /site/community_board_payroll_identity.mjs
 /site/community_board_people.mjs
+/site/community_board_people_refresh.mjs
 /site/community_board_people_search_producer.mjs
 /site/community_board_proceeding_hosts.mjs
 /site/community_board_relations.mjs

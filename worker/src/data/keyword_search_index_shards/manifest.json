@@ -1,13 +1,13 @@
 {
   "schema": "cityscroll.keyword_search_index.v1",
   "version": 1,
-  "generated_at": "2026-10-06T13:48:38.716Z",
+  "generated_at": "2026-10-09",
   "match_mode": "keyword",
   "representation": "family-sharded-compressed",
   "shard_schema": "cityscroll.keyword_search_index_shard.v1",
   "logical_index": {
-    "sha256": "4cc806d52543ebca9ee035a86a987e07fa4631f3ec12d8a2d03b4df250514112",
-    "bytes": 81944263,
+    "sha256": "34662d64906f57402bac703deae0bf96ef9d8eed16eca7ea1f850b32e2e837e7",
+    "bytes": 81944225,
     "family_count": 12,
     "document_count": 22241
   },
@@ -57,13 +57,13 @@
       "path": "people.json.br",
       "gzip_path": "people.json.gz",
       "document_count": 219,
-      "uncompressed_bytes": 277844,
-      "gzip_bytes": 13797,
-      "brotli_bytes": 11359,
-      "sha256": "86db79e646a3ff06c5459287f2b5fbbdc5499d2b6ba3f5dff448f6cbc2326554",
-      "gzip_sha256": "7668110c9d3595eec4baa7d57030a0a42fedd2ad99c2901cec8eb58f5d66cbae",
-      "brotli_sha256": "95d3d94ef61cbf38777122a5c66e1d57bc69d0c32c70132cb8d6203ff1bb7a60",
-      "receipt_sha256": "59f1cd239e91f04ab56632b3a930cb24ff916899408400576516d9cee4b782fd"
+      "uncompressed_bytes": 277830,
+      "gzip_bytes": 13801,
+      "brotli_bytes": 11370,
+      "sha256": "13cceef7246b177ef59192a0248b290c5435be1c475d6c4b44ee24909c60ff8c",
+      "gzip_sha256": "5d3f305d1a58dcfbcb6c50bb3cd4be4e4bf40b496b6e0e349d2e3fa7081f2a3e",
+      "brotli_sha256": "76ea3b2e1851846f3ce68f8c20e31e6ff8c4313fab1911b07a3db07f07d69343",
+      "receipt_sha256": "79f36c1df9876e3e71c6bd0e039e154a6110c22a330da1a5b369553d41b8f256"
     },
     {
       "family": "agencies",
@@ -174,13 +174,13 @@
       "path": "committees.json.br",
       "gzip_path": "committees.json.gz",
       "document_count": 98,
-      "uncompressed_bytes": 242915,
-      "gzip_bytes": 50755,
-      "brotli_bytes": 49916,
-      "sha256": "a70004524f277a3d5cb6fc8d9e34764c89e05f8439bedc587c8a6f18cc75ef95",
-      "gzip_sha256": "a4c5db1b8619a39143a9e90d0bd1fa235c99d2802e103ccb3d24bfc3ccf07d7a",
-      "brotli_sha256": "7c082de5991d729db90e4808d230b3ec02e434eaaf449fc1bfff8170c4cff2c3",
-      "receipt_sha256": "78adcb7328f592e1954549b8eebbe5426505ab46f062296d1a378d01a531d2db"
+      "uncompressed_bytes": 242905,
+      "gzip_bytes": 50760,
+      "brotli_bytes": 49920,
+      "sha256": "07c192ad4bf04db01878b33f3334dcb573d710537b612644f68b0c25ba5f092f",
+      "gzip_sha256": "ff83ce340e28dce9db199a541ee829b20ad927903ff93666dd3d3cc0eb6623d6",
+      "brotli_sha256": "3896228407a767689a3cb01bd1f1c6419db249ac56b38733b43e1d337f0b3316",
+      "receipt_sha256": "de6d348167b331a93a2fc3dc198d147bc85b656fc862b0ec42ce0b6c546a2b0f"
     },
     {
       "family": "procurements",
