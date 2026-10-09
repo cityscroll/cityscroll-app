@@ -1666,7 +1666,7 @@
   "shards": [
     {
       "path": "shared_meeting_read_model/shard-000.json",
-      "bytes": 9292298,
+      "bytes": 9637662,
       "row_count": 840
     }
   ]
