@@ -99,14 +99,29 @@ jobs:
           node ../tools/worker_startup_budget.mjs --metafile "$bundle_dir/meta.json"
       - name: Validate D1 release policy
         run: node tools/d1_release_policy.mjs --check
+      - name: Acquire trusted active Worker deployment binding
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/cost-control
+          (cd worker && npx wrangler@4.126.0 deployments status --json) > .artifacts/cost-control/provider-status.json
+          node tools/cloudflare_deployment_binding.mjs acquire \
+            --provider-status .artifacts/cost-control/provider-status.json \
+            --health-url https://cityscroll-worker.crol-worker.workers.dev/health \
+            --expected-revision "$GITHUB_SHA" \
+            --out .artifacts/cost-control/candidate-deployment.json
       - name: Enforce the all-meter Worker release gate
         env:
           WORKER_COST_BASELINE_EVIDENCE: ${{ vars.WORKER_COST_BASELINE_EVIDENCE }}
           WORKER_COST_CANDIDATE_EVIDENCE: ${{ vars.WORKER_COST_CANDIDATE_EVIDENCE }}
+          WORKER_COST_BASELINE_DEPLOYMENT: ${{ vars.WORKER_COST_BASELINE_DEPLOYMENT }}
         run: |
           node tools/worker_cost_control.mjs release-evaluate \
             --baseline-env WORKER_COST_BASELINE_EVIDENCE \
             --candidate-env WORKER_COST_CANDIDATE_EVIDENCE \
+            --trusted-baseline-deployment-env WORKER_COST_BASELINE_DEPLOYMENT \
+            --trusted-candidate-deployment .artifacts/cost-control/candidate-deployment.json \
             --expected-candidate-revision "$GITHUB_SHA"
       # Apply pending D1 migrations on every Deploy worker run, before fingerprint
       # gating, snapshot reads, or generation fencing. CREATE TABLE IF NOT EXISTS

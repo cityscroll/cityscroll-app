@@ -88,16 +88,22 @@ function receipt(meters = {}, overrides = {}) {
 }
 
 function pair(candidateMeters = {}, candidateOverrides = {}) {
-  return {
-    baseline: receipt({}, {
+  const baseline = receipt({}, {
       deployed_revision: "a".repeat(40), observed_at: "2026-10-08T23:00:00Z",
       publication: { unchanged: { route_key_puts: 400, manifest_puts: 2 } },
       rum: { full_batch: { accepted: 16, kv_puts: 18 } },
-    }),
-    candidate: receipt(candidateMeters, {
+    });
+  const candidate = receipt(candidateMeters, {
       deployed_revision: "b".repeat(40), observed_at: "2026-10-08T23:10:00Z",
       ...candidateOverrides,
-    }),
+    });
+  return {
+    baseline,
+    candidate,
+    trustedDeployments: {
+      baseline: baseline.profile.provider_deployment,
+      candidate: candidate.profile.provider_deployment,
+    },
   };
 }
 
@@ -120,15 +126,15 @@ test("D1 savings cannot hide redundant KV writes", () => {
 });
 
 test("incomplete profiles, nonzero unchanged publication and broadened RUM budgets fail", () => {
-  const { baseline, candidate: missing } = pair();
-  missing.profile.cohorts.queue = { status: "unknown", sample_count: null, native_cpu_ms: null };
-  assert.throws(() => evaluateAllMeterRelease({ baseline, candidate: missing }), /unknown/);
-  const { candidate: publication } = pair();
-  publication.publication.unchanged.route_key_puts = 1;
-  assert.throws(() => evaluateAllMeterRelease({ baseline, candidate: publication }), /zero-write/);
-  const { candidate: rum } = pair();
-  rum.rum.full_batch.kv_puts = 4;
-  assert.throws(() => evaluateAllMeterRelease({ baseline, candidate: rum }), /weighted RUM/);
+  const missing = pair();
+  missing.candidate.profile.cohorts.queue = { status: "unknown", sample_count: null, native_cpu_ms: null };
+  assert.throws(() => evaluateAllMeterRelease(missing), /unknown/);
+  const publication = pair();
+  publication.candidate.publication.unchanged.route_key_puts = 1;
+  assert.throws(() => evaluateAllMeterRelease(publication), /zero-write/);
+  const rum = pair();
+  rum.candidate.rum.full_batch.kv_puts = 4;
+  assert.throws(() => evaluateAllMeterRelease(rum), /weighted RUM/);
   for (const malformed of [undefined, -1, 1.5, "3"]) {
     const pairWithMalformedRum = pair();
     pairWithMalformedRum.candidate.rum.full_batch.kv_puts = malformed;
@@ -175,12 +181,26 @@ test("baseline may expose the old write behavior but evidence must stay actual a
   assert.throws(() => evaluateAllMeterRelease(invalid), /actual production/);
 });
 
+test("release evidence cannot authenticate its own provider deployment binding", () => {
+  const evidence = pair();
+  const independentlyDifferent = providerDeployment(evidence.candidate.deployed_revision);
+  independentlyDifferent.receipt.cloudflare_version.id = "independently-observed-version";
+  independentlyDifferent.provider_receipt_sha256 = providerDeploymentReceiptSha256(independentlyDifferent.receipt);
+  evidence.trustedDeployments.candidate = independentlyDifferent;
+  assert.throws(() => evaluateAllMeterRelease(evidence), /trusted deployment evidence/);
+  const missing = pair();
+  delete missing.trustedDeployments;
+  assert.throws(() => evaluateAllMeterRelease(missing), /independent trusted deployment evidence/);
+});
+
 test("release CLI gates the exact candidate revision from configured evidence", () => {
-  const { baseline, candidate } = pair({ native_cpu_ms: 9 });
+  const { baseline, candidate, trustedDeployments } = pair({ native_cpu_ms: 9 });
   const run = (expected) => spawnSync(process.execPath, [
     "tools/worker_cost_control.mjs", "release-evaluate",
     "--baseline-env", "TEST_WORKER_COST_BASELINE",
     "--candidate-env", "TEST_WORKER_COST_CANDIDATE",
+    "--trusted-baseline-deployment-env", "TEST_WORKER_COST_BASELINE_DEPLOYMENT",
+    "--trusted-candidate-deployment-env", "TEST_WORKER_COST_CANDIDATE_DEPLOYMENT",
     "--expected-candidate-revision", expected,
   ], {
     cwd: ROOT,
@@ -189,6 +209,8 @@ test("release CLI gates the exact candidate revision from configured evidence", 
       ...process.env,
       TEST_WORKER_COST_BASELINE: JSON.stringify(baseline),
       TEST_WORKER_COST_CANDIDATE: JSON.stringify(candidate),
+      TEST_WORKER_COST_BASELINE_DEPLOYMENT: JSON.stringify(trustedDeployments.baseline),
+      TEST_WORKER_COST_CANDIDATE_DEPLOYMENT: JSON.stringify(trustedDeployments.candidate),
     },
   });
   assert.equal(run(candidate.deployed_revision).status, 0);

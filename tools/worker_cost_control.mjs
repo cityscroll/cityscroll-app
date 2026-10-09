@@ -44,11 +44,17 @@ if (command === "profile-check") {
 } else if (command === "release-evaluate") {
   const baseline = evidence("--baseline", "--baseline-env");
   const candidate = evidence("--candidate", "--candidate-env");
+  const trustedBaseline = evidence("--trusted-baseline-deployment", "--trusted-baseline-deployment-env");
+  const trustedCandidate = evidence("--trusted-candidate-deployment", "--trusted-candidate-deployment-env");
   const expectedCandidateRevision = arg("--expected-candidate-revision");
   if (expectedCandidateRevision && candidate.deployed_revision !== expectedCandidateRevision) {
     throw new Error("candidate evidence revision does not match the release revision");
   }
-  result = evaluateAllMeterRelease({ baseline, candidate });
+  result = evaluateAllMeterRelease({
+    baseline,
+    candidate,
+    trustedDeployments: { baseline: trustedBaseline, candidate: trustedCandidate },
+  });
   if (!result.pass) process.exitCode = 1;
 } else {
   throw new Error("usage: worker_cost_control.mjs <profile-check|warehouse-evaluate|release-evaluate> [options]");

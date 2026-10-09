@@ -73,12 +73,19 @@ test("deploy workflow executes route publication and the all-meter gate", () => 
   const gate = steps.find((step) => step.name === "Enforce the all-meter Worker release gate");
   assert.equal(gate.env.WORKER_COST_BASELINE_EVIDENCE, "${{ vars.WORKER_COST_BASELINE_EVIDENCE }}");
   assert.equal(gate.env.WORKER_COST_CANDIDATE_EVIDENCE, "${{ vars.WORKER_COST_CANDIDATE_EVIDENCE }}");
+  assert.equal(gate.env.WORKER_COST_BASELINE_DEPLOYMENT, "${{ vars.WORKER_COST_BASELINE_DEPLOYMENT }}");
   assert.deepEqual(shellArgv(gate.run), [
     "node", "tools/worker_cost_control.mjs", "release-evaluate",
     "--baseline-env", "WORKER_COST_BASELINE_EVIDENCE",
     "--candidate-env", "WORKER_COST_CANDIDATE_EVIDENCE",
+    "--trusted-baseline-deployment-env", "WORKER_COST_BASELINE_DEPLOYMENT",
+    "--trusted-candidate-deployment", ".artifacts/cost-control/candidate-deployment.json",
     "--expected-candidate-revision", "$GITHUB_SHA",
   ]);
+  const acquisition = steps.find((step) => step.name === "Acquire trusted active Worker deployment binding");
+  assert.match(acquisition.run, /wrangler@4\.126\.0 deployments status --json/);
+  assert.match(acquisition.run, /cloudflare_deployment_binding\.mjs acquire/);
+  assert.match(acquisition.run, /--expected-revision "\$GITHUB_SHA"/);
 });
 
 test("digest deploy guard covers trigger propagation before the cron", () => {

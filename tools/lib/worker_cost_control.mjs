@@ -117,6 +117,19 @@ function validateProviderDeployment(deployment, revision, path) {
   return receipt.cloudflare_version.id;
 }
 
+export function validateTrustedProviderDeployment(deployment, trustedDeployment, revision, path = "provider_deployment") {
+  const providerVersionId = validateProviderDeployment(deployment, revision, path);
+  const trustedVersionId = validateProviderDeployment(trustedDeployment, revision, `${path}.trusted`);
+  if (providerVersionId !== trustedVersionId) fail(`${path} provider version does not match trusted deployment evidence`);
+  if (deployment.provider_receipt_sha256 !== trustedDeployment.provider_receipt_sha256) {
+    fail(`${path} receipt digest does not match trusted deployment evidence`);
+  }
+  if (canonicalJson(deployment.receipt) !== canonicalJson(trustedDeployment.receipt)) {
+    fail(`${path} receipt does not match trusted deployment evidence`);
+  }
+  return providerVersionId;
+}
+
 /**
  * Convert one owned provider event into the narrow retained shape. Ownership is
  * checked against the literal probe header and exact URL/method before any raw
@@ -440,7 +453,7 @@ export function evaluateWarehouseExperiment({ baseline, candidate } = {}) {
   };
 }
 
-export function evaluateAllMeterRelease({ baseline, candidate } = {}) {
+export function evaluateAllMeterRelease({ baseline, candidate, trustedDeployments } = {}) {
   if (!baseline || !candidate) fail("baseline and candidate release evidence are required");
   assertSanitized({ baseline, candidate });
   const evidenceByLabel = {};
@@ -473,6 +486,21 @@ export function evaluateAllMeterRelease({ baseline, candidate } = {}) {
       fail(`all-meter ${meter} provider-sample populations are not matched`);
     }
   }
+  if (!trustedDeployments?.baseline || !trustedDeployments?.candidate) {
+    fail("independent trusted deployment evidence is required for baseline and candidate");
+  }
+  validateTrustedProviderDeployment(
+    baseline.profile.provider_deployment,
+    trustedDeployments.baseline,
+    baseline.deployed_revision,
+    "baseline.profile.provider_deployment",
+  );
+  validateTrustedProviderDeployment(
+    candidate.profile.provider_deployment,
+    trustedDeployments.candidate,
+    candidate.deployed_revision,
+    "candidate.profile.provider_deployment",
+  );
   if (baseline.deployed_revision === candidate.deployed_revision) fail("all-meter revisions must be distinct");
   if (Date.parse(candidate.observed_at) <= Date.parse(baseline.observed_at)) fail("candidate observation must follow baseline");
   if (candidate.publication?.unchanged?.route_key_puts !== 0 || candidate.publication?.unchanged?.manifest_puts !== 0) fail("candidate unchanged publication is not a zero-write control");

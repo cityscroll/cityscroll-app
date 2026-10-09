@@ -81,11 +81,18 @@ supplied divisor cannot make a regressed total look neutral.
 
 The Worker deployment workflow fails closed before it mutates production by
 evaluating the sanitized JSON receipts in the `WORKER_COST_BASELINE_EVIDENCE`
-and `WORKER_COST_CANDIDATE_EVIDENCE` repository variables. Candidate evidence
-must name the exact commit being released and every meter must pass. The
-workflow currently trusts the repository-variable receipt rather than obtaining
-the Cloudflare version and production-health revision through an independent
-acquisition boundary.
+and `WORKER_COST_CANDIDATE_EVIDENCE` repository variables. The separately
+retained baseline deployment binding is supplied through
+`WORKER_COST_BASELINE_DEPLOYMENT`. For the candidate, the workflow obtains the
+active version with authenticated `wrangler deployments status --json`, probes
+the identified production `/health` endpoint, and builds the binding itself.
+The evidence-embedded bindings must byte-match those independently supplied
+receipts and their canonical SHA-256 digests. The active version must receive
+100 percent of traffic, production health must name the exact commit being
+released, and every meter must pass. A candidate therefore enters this workflow
+only after its bounded production experiment has established the active
+provider version; a caller-authored checksum or mixed rollout cannot authorize
+release.
 
 The current provider references are the [Workers Observability telemetry query
 API](https://developers.cloudflare.com/api/resources/workers/subresources/observability/subresources/telemetry/methods/query/),
