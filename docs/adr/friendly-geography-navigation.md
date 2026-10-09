@@ -112,6 +112,11 @@ resolve against retained geography definitions and redirect to the canonical
 selection; unresolved text never falls through to citywide record membership.
 Deferred requests preserve their JSON endpoint when canonicalized.
 
+Category links in a selected-place overview preserve that exact place, the
+current Map or Records surface, and the same active filters. A separately
+labelled community-board destination remains a wider-area link rather than
+silently replacing the selected neighborhood scope.
+
 Map labels use bundled, OFL-licensed Noto Sans glyphs from the application
 origin. The navigator remains available when local record coverage is unavailable;
 an unavailable membership is not a citywide result and an observed empty slice
