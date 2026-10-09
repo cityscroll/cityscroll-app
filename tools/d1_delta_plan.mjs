@@ -10,8 +10,10 @@
  * Contract (fail closed):
  *   - no prior snapshot, or a prior built from a different manifest fingerprint, is not
  *     an implicit full rebuild: `plan` refuses unless `--rebuild <reason>` names one;
- *   - a partition whose watermark is missing, unparsable, or older than the prior
- *     snapshot's refuses the plan naming the model and partition;
+ *   - a partition whose watermark is missing or unparsable refuses the plan naming the
+ *     model and partition; a shared named source that moves earlier also refuses;
+ *   - an added or removed contributing source is a recorded source-set change when every
+ *     shared source is still at least its prior value (see tools/lib/keyed_watermark.mjs);
  *   - a rebuild is a separate operation ("rebuild") with its reason recorded in the plan.
  *
  * Keyed rows come from tools/d1_stable_keys.mjs, shared with the SQL builder; that
@@ -38,6 +40,10 @@ import {
   readKeywordSearchIndexShard,
   readKeywordSearchIndexShardManifest,
 } from "../site/keyword_search_index_shards.mjs";
+import {
+  compareWatermarks,
+  parseWatermarkComponents,
+} from "./lib/keyed_watermark.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export const SNAPSHOT_SCHEMA = "cityscroll.d1-partition-snapshot.v2";
@@ -154,17 +160,16 @@ export function snapshotFor(manifest, sourceDocuments) {
 
 /**
  * Watermark tokens are the manifest's source snapshot field values as published. Some
- * sources emit a single ISO timestamp; the keyword search corpora emit a `|`-joined
- * token mixing counts and timestamps. Ordering therefore uses the timestamp components
- * only: a token must carry at least one parsable timestamp, and a partition regresses
- * when any timestamp component moves earlier or a timestamp component disappears.
+ * sources emit a single ISO timestamp; keyword-search agency families emit a `|`-joined
+ * composite. The preferred form names each contributing source (`name=vintage`); the
+ * legacy form is an anonymous mix of counts and timestamps. A token must carry at
+ * least one parsable timestamp. Regression is judged per named source: a shared
+ * source that moves earlier refuses the plan, while an added or removed source is a
+ * recorded source-set change when every shared source is still >= its prior value.
  */
 export function watermarkInstants(value) {
-  if (typeof value !== "string" || value.trim() === "") return null;
-  const instants = value.split("|").map((part) => part.trim())
-    .filter((part) => /^\d{4}-\d{2}-\d{2}/.test(part))
-    .map((part) => Date.parse(part)).filter((ms) => !Number.isNaN(ms));
-  return instants.length === 0 ? null : instants;
+  const parsed = parseWatermarkComponents(value);
+  return parsed.instants.length === 0 ? null : parsed.instants;
 }
 
 function requireWatermark(modelId, partition, value, role) {
@@ -176,10 +181,39 @@ function requireWatermark(modelId, partition, value, role) {
   return instants;
 }
 
-export function watermarkRegressed(priorInstants, currentInstants) {
-  if (currentInstants.length < priorInstants.length) return true;
-  return priorInstants.some((before, index) => currentInstants[index] < before);
+/**
+ * True when current regresses relative to prior. Accepts either the published
+ * watermark strings (preferred) or legacy instant-ms arrays from older callers.
+ */
+export function watermarkRegressed(prior, current) {
+  if (typeof prior === "string" && typeof current === "string") {
+    return compareWatermarks(prior, current).regressed;
+  }
+  if (Array.isArray(prior) && Array.isArray(current)) {
+    if (prior.length === 0 || current.length === 0) return true;
+    if (prior.length === 1 && current.length === 1) return current[0] < prior[0];
+    // Legacy multi-instant arrays cannot name sources; disappearance is a
+    // source-set change, not a regression (same rule as unkeyed strings).
+    return false;
+  }
+  return true;
 }
+
+function watermarkChangeReceipt(priorWatermark, currentWatermark) {
+  if (priorWatermark == null || currentWatermark == null) return null;
+  const change = compareWatermarks(priorWatermark, currentWatermark);
+  if (!change.source_set_changed && !change.format_changed) return null;
+  return {
+    source_set_changed: change.source_set_changed,
+    format_changed: change.format_changed,
+    added: change.added,
+    removed: change.removed,
+    prior_keyed: change.prior_keyed,
+    current_keyed: change.current_keyed,
+  };
+}
+
+export { compareWatermarks, parseWatermarkComponents };
 
 function rowRef(key, record) {
   const [table, ...rest] = key.split("|");
@@ -244,11 +278,24 @@ export function planDelta({ prior, current, rebuild = null }) {
     for (const partition of new Set([...Object.keys(beforePartitions), ...Object.keys(afterPartitions)])) {
       const before = beforePartitions[partition];
       const after = afterPartitions[partition];
-      const priorAt = before ? requireWatermark(modelId, partition, before.watermark, "prior") : null;
-      const currentAt = after ? requireWatermark(modelId, partition, after.watermark, "current") : null;
-      if (priorAt && currentAt && watermarkRegressed(priorAt, currentAt)) {
-        fail("watermark_regressed", `models[${modelId}] partition ${partition} watermark regressed ${before.watermark} -> ${after.watermark}`,
-          { model_id: modelId, partition, prior: before.watermark, current: after.watermark });
+      if (before) requireWatermark(modelId, partition, before.watermark, "prior");
+      if (after) requireWatermark(modelId, partition, after.watermark, "current");
+      if (before && after) {
+        const change = compareWatermarks(before.watermark, after.watermark);
+        if (change.regressed) {
+          fail("watermark_regressed", `models[${modelId}] partition ${partition} watermark regressed ${before.watermark} -> ${after.watermark}`,
+            {
+              model_id: modelId,
+              partition,
+              prior: before.watermark,
+              current: after.watermark,
+              shared_regressed: change.shared_regressed,
+              added: change.added,
+              removed: change.removed,
+              source_set_changed: change.source_set_changed,
+              format_changed: change.format_changed,
+            });
+        }
       }
     }
   }
@@ -293,8 +340,17 @@ export function planDelta({ prior, current, rebuild = null }) {
       if (before && after) {
         const { ops, unchanged } = diffRows(before.rows, after.rows);
         const total = ops.insert.length + ops.update.length + ops.delete.length;
-        partitions.push({ partition, status: total === 0 ? "unchanged" : "changed",
-          prior_watermark: before.watermark, current_watermark: after.watermark, ops, counts: counts(ops, unchanged) });
+        const entry = {
+          partition,
+          status: total === 0 ? "unchanged" : "changed",
+          prior_watermark: before.watermark,
+          current_watermark: after.watermark,
+          ops,
+          counts: counts(ops, unchanged),
+        };
+        const watermarkChange = watermarkChangeReceipt(before.watermark, after.watermark);
+        if (watermarkChange) entry.watermark_change = watermarkChange;
+        partitions.push(entry);
       } else if (after) {
         const { ops, unchanged } = diffRows({}, after.rows);
         partitions.push({ partition, status: "added", prior_watermark: null, current_watermark: after.watermark, ops, counts: counts(ops, unchanged) });
