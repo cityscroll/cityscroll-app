@@ -120,6 +120,7 @@ import { handleCitedPassages } from "./cited_retrieval.mjs";
 import { handleContract, handleContractsAnalysis, handleContractsBrowse } from "./contracts.mjs";
 import { handleLandDecisionPath, handleLandProject, handleLandProjectsBrowse } from "./land_projects.mjs";
 import { recordSourceAcquisitionReceipt } from "./lib/source_acquisition_receipt.mjs";
+import { beginCostControlProbe, logCostControlProbe } from "./lib/cost_control_probe.mjs";
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
 
@@ -156,9 +157,91 @@ async function withWorkerAcquisitionReceipt(env, sourceContractId, runId, work) 
   }
 }
 
-export default {
+const COST_PROBE_HTTP_PATHS = Object.freeze({
+  health: "/health",
+  "unknown-route": "/__cost-probe-not-found",
+  events: "/events",
+  "rum-16": "/performance-events",
+  search: "/search",
+  nearby: "/near-you",
+  browse: "/contracts",
+  "zap-bbl": "/land-project",
+  "zap-project": "/land-project",
+  "doing-business": "/vendor-profile",
+});
+const COST_PROBE_CRONS = new Set(["0 8 * * *", "0 10 * * *", "0 13 * * *"]);
+
+function costProbeContext() {
+  const pending = [];
+  return {
+    passThroughOnException() {},
+    waitUntil(promise) { pending.push(Promise.resolve(promise)); },
+    async settle() { await Promise.allSettled(pending); },
+  };
+}
+
+async function sha256Text(value) {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
+  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+async function handleCostControlProbe(request, env) {
+  let input;
+  try { input = await request.json(); }
+  catch { return new Response("Not found", { status: 404 }); }
+  const kind = input?.kind;
+  const suppressWrites = kind === "scheduled" || kind === "queue" || kind === "collector-overhead";
+  const probe = beginCostControlProbe(request, env, { suppressWrites });
+  if (!probe || probe.denied) return probe?.denied || new Response("Not found", { status: 404 });
+
+  let result = { status: 204, body_sha256: await sha256Text("") };
+  try {
+    if (kind === "http") {
+      const route = String(input.route || "");
+      const expectedPath = COST_PROBE_HTTP_PATHS[route];
+      const target = new URL(String(input.url || ""), request.url);
+      if (!expectedPath || target.pathname !== expectedPath || !["GET", "POST"].includes(input.method)) {
+        return new Response("Not found", { status: 404 });
+      }
+      const headers = new Headers({ "Accept": "application/json", "User-Agent": "CityScrollCostControl/1.0" });
+      if (input.origin) headers.set("Origin", String(input.origin));
+      if (input.method === "POST") headers.set("Content-Type", "application/json");
+      const childRequest = new Request(target, {
+        method: input.method,
+        headers,
+        body: input.method === "POST" ? JSON.stringify(input.body ?? {}) : undefined,
+      });
+      const childContext = costProbeContext();
+      const response = await worker.fetch(childRequest, probe.env, childContext);
+      await childContext.settle();
+      result = { status: response.status, body_sha256: await sha256Text(await response.text()) };
+    } else if (kind === "scheduled" && COST_PROBE_CRONS.has(input.cron)) {
+      const childContext = costProbeContext();
+      await worker.scheduled({ cron: input.cron, scheduledTime: Date.now(), type: "scheduled" }, probe.env, childContext);
+      await childContext.settle();
+    } else if (kind === "queue") {
+      const message = {
+        body: { type: "single", key: "cost-probe-nonexistent" },
+        ack() {},
+        retry() {},
+      };
+      await worker.queue({ queue: "crol-digests", messages: [message] }, probe.env);
+    } else if (kind !== "collector-overhead") {
+      return new Response("Not found", { status: 404 });
+    }
+    const snapshot = probe.snapshot({ result });
+    return Response.json(snapshot, { headers: { "Cache-Control": "no-store" } });
+  } finally {
+    logCostControlProbe(probe, { result });
+  }
+}
+
+const worker = {
   async fetch(request, env, ctx) {
     const { pathname, hostname } = new URL(request.url);
+    if (pathname === "/admin/cost-control-probe" && request.method === "POST") {
+      return handleCostControlProbe(request, env);
+    }
     if (MIRROR_HOSTS.has(hostname)) {
       // Site root `/` and `/near-you` share the local discovery shell; deferred
       // JSON remains under `/near-you/deferred.json`.
@@ -654,3 +737,5 @@ export default {
     }
   },
 };
+
+export default worker;
