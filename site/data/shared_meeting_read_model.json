@@ -1,10 +1,10 @@
 {
   "schema": "cityscroll.shared_meeting_read_model.v1",
   "version": 1,
-  "generated_at": "2026-10-05T17:33:11.875Z",
+  "generated_at": "2026-10-10T13:12:22.794Z",
   "freshness": {
-    "generated_at": "2026-10-05T17:33:11.875Z",
-    "checked_at": "2026-09-30T12:59:02.901Z",
+    "generated_at": "2026-10-10T13:12:22.794Z",
+    "checked_at": "2026-10-10T13:01:01.019Z",
     "sources": {
       "city_record": "available",
       "community_board": "available",
@@ -18,9 +18,9 @@
       "source_system": "city_record",
       "status": "available",
       "available": true,
-      "generated_at": "2026-10-05T17:33:11.875Z",
+      "generated_at": "2026-10-10T13:12:22.794Z",
       "max_age_ms": null,
-      "row_count": 129,
+      "row_count": 119,
       "reason": null,
       "coverage": null,
       "contract_coverage": null,
@@ -30,31 +30,31 @@
       "source_system": "community_board",
       "status": "available",
       "available": true,
-      "generated_at": "2026-09-30T12:59:02.901Z",
+      "generated_at": "2026-10-10T13:01:01.019Z",
       "max_age_ms": 129600000,
-      "row_count": 500,
+      "row_count": 589,
       "reason": null,
       "coverage": {
         "source_urls_checked": 95,
-        "event_details_checked": 144,
-        "boards_indexed": 28,
-        "records_indexed": 500,
-        "minutes_documents_indexed": 4252,
+        "event_details_checked": 213,
+        "boards_indexed": 30,
+        "records_indexed": 589,
+        "minutes_documents_indexed": 4269,
         "minutes_documents_attached": 0,
-        "minutes_documents_unlinked": 4252,
-        "event_documents_indexed": 102,
-        "event_documents_attached": 102,
-        "meeting_documents_indexed": 4354,
-        "meeting_documents_attached": 102,
-        "meeting_documents_unlinked": 4252,
+        "minutes_documents_unlinked": 4269,
+        "event_documents_indexed": 164,
+        "event_documents_attached": 164,
+        "meeting_documents_indexed": 4433,
+        "meeting_documents_attached": 164,
+        "meeting_documents_unlinked": 4269,
         "minutes_documents_ambiguous": 0,
-        "institution_edges_materialized": 545,
+        "institution_edges_materialized": 634,
         "boards_in_inventory": 59,
         "source_roles_total": 118,
-        "source_roles_indexed": 64,
-        "source_roles_checked_empty": 28,
+        "source_roles_indexed": 68,
+        "source_roles_checked_empty": 26,
         "source_roles_unsupported_format": 0,
-        "source_roles_unavailable": 11,
+        "source_roles_unavailable": 9,
         "source_roles_stale": 0,
         "source_roles_not_yet_checked": 15
       },
@@ -65,14 +65,14 @@
           "board_name": "Bronx Community Board 1",
           "borough": "Bronx",
           "community_district": "X01",
-          "meeting_record_count": 2,
+          "meeting_record_count": 3,
           "meetings": {
             "state": "indexed",
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/bronxcb1/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 2,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 3,
             "retained_snapshot": null
           },
           "minutes": {
@@ -80,7 +80,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/bronxcb1/calendar/board-meeting-minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 91,
             "retained_snapshot": null
           }
@@ -96,7 +96,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/bronxcb2/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -105,7 +105,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/bronxcb2/meetings/minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 8,
             "retained_snapshot": null
           }
@@ -121,7 +121,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/bronxcb3/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -130,7 +130,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/bronxcb3/minutes/board-meeting-minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 61,
             "retained_snapshot": null
           }
@@ -146,7 +146,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/bronxcb4/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -155,7 +155,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/bronxcb4/meetings/board-meeting-minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 56,
             "retained_snapshot": null
           }
@@ -165,14 +165,14 @@
           "board_name": "Bronx Community Board 5",
           "borough": "Bronx",
           "community_district": "X05",
-          "meeting_record_count": 0,
+          "meeting_record_count": 2,
           "meetings": {
-            "state": "checked-empty",
-            "source_role_state": "checked-empty",
-            "reason": "no_explicit_records",
+            "state": "indexed",
+            "source_role_state": "indexed",
+            "reason": null,
             "source_url": "https://www.nyc.gov/site/bronxcb5/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 0,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 2,
             "retained_snapshot": null
           },
           "minutes": {
@@ -180,8 +180,8 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/bronxcb5/minutes/general-board-meeting-minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 38,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 39,
             "retained_snapshot": null
           }
         },
@@ -190,14 +190,14 @@
           "board_name": "Bronx Community Board 6",
           "borough": "Bronx",
           "community_district": "X06",
-          "meeting_record_count": 13,
+          "meeting_record_count": 14,
           "meetings": {
             "state": "indexed",
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://cbbronx.cityofnewyork.us/cb6/calendar/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 13,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 14,
             "retained_snapshot": null
           },
           "minutes": {
@@ -205,7 +205,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://cbbronx.cityofnewyork.us/cb6/minutes/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 75,
             "retained_snapshot": null
           }
@@ -221,7 +221,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/bronxcb7/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -230,7 +230,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/bronxcb7/committees/general-board.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 81,
             "retained_snapshot": null
           }
@@ -246,7 +246,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://cbbronx.cityofnewyork.us/cb8/events/list/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 8,
             "retained_snapshot": null
           },
@@ -255,7 +255,7 @@
             "source_role_state": "not-yet-checked",
             "reason": "no_explicit_source_observed",
             "source_url": null,
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           }
@@ -271,7 +271,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/bronxcb9/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -280,7 +280,7 @@
             "source_role_state": "not-yet-checked",
             "reason": "no_explicit_source_observed",
             "source_url": null,
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           }
@@ -296,7 +296,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/bronxcb10/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 4,
             "retained_snapshot": null
           },
@@ -305,7 +305,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/bronxcb10/minutes/minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           }
@@ -321,7 +321,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/bronxcb11/meetings/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 3,
             "retained_snapshot": null
           },
@@ -330,7 +330,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/bronxcb11/meetings/minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 541,
             "retained_snapshot": null
           }
@@ -346,7 +346,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/bronxcb12/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -355,7 +355,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/bronxcb12/minutes/minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 61,
             "retained_snapshot": null
           }
@@ -371,7 +371,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/brooklyncb1/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -380,7 +380,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/brooklyncb1/meetings/minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 109,
             "retained_snapshot": null
           }
@@ -396,7 +396,7 @@
             "source_role_state": "not-yet-checked",
             "reason": "no_explicit_source_observed",
             "source_url": null,
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -405,7 +405,7 @@
             "source_role_state": "not-yet-checked",
             "reason": "no_explicit_source_observed",
             "source_url": null,
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           }
@@ -421,7 +421,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/brooklyncb3/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -430,7 +430,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/brooklyncb3/meetings/minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 6,
             "retained_snapshot": null
           }
@@ -446,7 +446,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/brooklyncb4/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -455,7 +455,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/brooklyncb4/calendar/minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 158,
             "retained_snapshot": null
           }
@@ -465,14 +465,14 @@
           "board_name": "Brooklyn Community Board 5",
           "borough": "Brooklyn",
           "community_district": "K05",
-          "meeting_record_count": 9,
+          "meeting_record_count": 13,
           "meetings": {
             "state": "indexed",
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://calendar.google.com/calendar/ical/bkcb5cc%40gmail.com/public/basic.ics",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 9,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 13,
             "retained_snapshot": null
           },
           "minutes": {
@@ -480,7 +480,7 @@
             "source_role_state": "not-yet-checked",
             "reason": "no_explicit_source_observed",
             "source_url": null,
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           }
@@ -496,7 +496,7 @@
             "source_role_state": "not-yet-checked",
             "reason": "no_explicit_source_observed",
             "source_url": null,
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -505,7 +505,7 @@
             "source_role_state": "not-yet-checked",
             "reason": "no_explicit_source_observed",
             "source_url": null,
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           }
@@ -515,14 +515,14 @@
           "board_name": "Brooklyn Community Board 7",
           "borough": "Brooklyn",
           "community_district": "K07",
-          "meeting_record_count": 4,
+          "meeting_record_count": 5,
           "meetings": {
             "state": "indexed",
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://cbbrooklyn.cityofnewyork.us/cb7/events/list/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 4,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 5,
             "retained_snapshot": null
           },
           "minutes": {
@@ -530,7 +530,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://cbbrooklyn.cityofnewyork.us/cb7/meetings/board-meeting-minutes/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 52,
             "retained_snapshot": null
           }
@@ -546,7 +546,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.brooklyncb8.org/meetings/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -555,7 +555,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.brooklyncb8.org/downloads/minutes/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 83,
             "retained_snapshot": null
           }
@@ -571,7 +571,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/brooklyncb9/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -580,8 +580,8 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/brooklyncb9/about/agendas.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 687,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 695,
             "retained_snapshot": null
           }
         },
@@ -590,14 +590,14 @@
           "board_name": "Brooklyn Community Board 10",
           "borough": "Brooklyn",
           "community_district": "K10",
-          "meeting_record_count": 13,
+          "meeting_record_count": 14,
           "meetings": {
             "state": "indexed",
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://cbbrooklyn.cityofnewyork.us/cb10/events/list/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 13,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 14,
             "retained_snapshot": null
           },
           "minutes": {
@@ -605,7 +605,7 @@
             "source_role_state": "not-yet-checked",
             "reason": "no_explicit_source_observed",
             "source_url": null,
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           }
@@ -615,22 +615,22 @@
           "board_name": "Brooklyn Community Board 11",
           "borough": "Brooklyn",
           "community_district": "K11",
-          "meeting_record_count": 1,
+          "meeting_record_count": 2,
           "meetings": {
-            "state": "unreadable",
-            "source_role_state": "unavailable",
-            "reason": "http_error",
+            "state": "indexed",
+            "source_role_state": "indexed",
+            "reason": null,
             "source_url": "https://www.brooklyncb11.org/calendar/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 1,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 2,
             "retained_snapshot": null
           },
           "minutes": {
-            "state": "unreadable",
-            "source_role_state": "unavailable",
-            "reason": "http_error",
+            "state": "indexed",
+            "source_role_state": "indexed",
+            "reason": null,
             "source_url": "https://www.brooklyncb11.org/minutes/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 67,
             "retained_snapshot": null
           }
@@ -646,7 +646,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/brooklyncb12/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -655,7 +655,7 @@
             "source_role_state": "not-yet-checked",
             "reason": "no_explicit_source_observed",
             "source_url": null,
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           }
@@ -671,7 +671,7 @@
             "source_role_state": "not-yet-checked",
             "reason": "no_explicit_source_observed",
             "source_url": null,
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -680,7 +680,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/brooklyncb13/minutes/minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 10,
             "retained_snapshot": null
           }
@@ -696,7 +696,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://cb14brooklyn.com/meetings/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 9,
             "retained_snapshot": null
           },
@@ -705,7 +705,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://cb14brooklyn.com/board-meeting-minutes/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           }
@@ -715,14 +715,14 @@
           "board_name": "Brooklyn Community Board 15",
           "borough": "Brooklyn",
           "community_district": "K15",
-          "meeting_record_count": 35,
+          "meeting_record_count": 36,
           "meetings": {
             "state": "indexed",
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 35,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 36,
             "retained_snapshot": null
           },
           "minutes": {
@@ -730,8 +730,8 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/board-meeting-minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 67,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 68,
             "retained_snapshot": null
           }
         },
@@ -746,7 +746,7 @@
             "source_role_state": "not-yet-checked",
             "reason": "no_explicit_source_observed",
             "source_url": null,
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -755,7 +755,7 @@
             "source_role_state": "not-yet-checked",
             "reason": "no_explicit_source_observed",
             "source_url": null,
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           }
@@ -765,14 +765,14 @@
           "board_name": "Brooklyn Community Board 17",
           "borough": "Brooklyn",
           "community_district": "K17",
-          "meeting_record_count": 14,
+          "meeting_record_count": 21,
           "meetings": {
             "state": "indexed",
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://cbbrooklyn.cityofnewyork.us/cb17/calendar/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 14,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 21,
             "retained_snapshot": null
           },
           "minutes": {
@@ -780,7 +780,7 @@
             "source_role_state": "not-yet-checked",
             "reason": "no_explicit_source_observed",
             "source_url": null,
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           }
@@ -796,7 +796,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/brooklyncb18/meetings/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 1,
             "retained_snapshot": null
           },
@@ -805,7 +805,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/brooklyncb18/meetings/minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 63,
             "retained_snapshot": null
           }
@@ -815,14 +815,14 @@
           "board_name": "Manhattan Community Board 1",
           "borough": "Manhattan",
           "community_district": "M01",
-          "meeting_record_count": 13,
+          "meeting_record_count": 24,
           "meetings": {
             "state": "indexed",
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://manhattancb1.cityofnewyork.us/meetings/calendar/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 13,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 24,
             "retained_snapshot": null
           },
           "minutes": {
@@ -830,7 +830,7 @@
             "source_role_state": "not-yet-checked",
             "reason": "no_explicit_source_observed",
             "source_url": null,
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           }
@@ -840,14 +840,14 @@
           "board_name": "Manhattan Community Board 2",
           "borough": "Manhattan",
           "community_district": "M02",
-          "meeting_record_count": 10,
+          "meeting_record_count": 24,
           "meetings": {
             "state": "indexed",
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/calendar/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 10,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 24,
             "retained_snapshot": null
           },
           "minutes": {
@@ -855,8 +855,8 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/minutes/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 17,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 18,
             "retained_snapshot": null
           }
         },
@@ -865,14 +865,14 @@
           "board_name": "Manhattan Community Board 3",
           "borough": "Manhattan",
           "community_district": "M03",
-          "meeting_record_count": 9,
+          "meeting_record_count": 16,
           "meetings": {
             "state": "indexed",
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 9,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 16,
             "retained_snapshot": null
           },
           "minutes": {
@@ -880,8 +880,8 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/manhattancb3/minutes/meeting-vote-records.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 272,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 273,
             "retained_snapshot": null
           }
         },
@@ -890,14 +890,14 @@
           "board_name": "Manhattan Community Board 4",
           "borough": "Manhattan",
           "community_district": "M04",
-          "meeting_record_count": 13,
+          "meeting_record_count": 25,
           "meetings": {
             "state": "indexed",
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/calendar/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 13,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 25,
             "retained_snapshot": null
           },
           "minutes": {
@@ -905,7 +905,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/archives/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           }
@@ -937,7 +937,7 @@
             "source_role_state": "unavailable",
             "reason": "source_serves_browsers_only",
             "source_url": "https://cb5.org/board-actions/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           }
@@ -947,14 +947,14 @@
           "board_name": "Manhattan Community Board 6",
           "borough": "Manhattan",
           "community_district": "M06",
-          "meeting_record_count": 75,
+          "meeting_record_count": 76,
           "meetings": {
             "state": "indexed",
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://cbsix.org/meetings-calendar/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 75,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 76,
             "retained_snapshot": null
           },
           "minutes": {
@@ -962,7 +962,7 @@
             "source_role_state": "unavailable",
             "reason": "source_serves_browsers_only",
             "source_url": "https://airtable.com/appgK5bKw7rWMRJEh/shrBzfHDWat4YMTHL/tblpioBcj0BVp5hBw",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           }
@@ -972,14 +972,14 @@
           "board_name": "Manhattan Community Board 7",
           "borough": "Manhattan",
           "community_district": "M07",
-          "meeting_record_count": 27,
+          "meeting_record_count": 28,
           "meetings": {
             "state": "indexed",
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 27,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 28,
             "retained_snapshot": null
           },
           "minutes": {
@@ -987,7 +987,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.mcb7.org/minutes",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           }
@@ -1003,7 +1003,7 @@
             "source_role_state": "unavailable",
             "reason": "source_serves_browsers_only",
             "source_url": "https://www.cb8m.com/calendar/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -1012,7 +1012,7 @@
             "source_role_state": "unavailable",
             "reason": "source_serves_browsers_only",
             "source_url": "https://www.cb8m.com/full-board-archive/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           }
@@ -1028,7 +1028,7 @@
             "source_role_state": "unavailable",
             "reason": "challenge_html",
             "source_url": "https://www.cb9m.org/cal_events",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -1037,7 +1037,7 @@
             "source_role_state": "unavailable",
             "reason": "challenge_html",
             "source_url": "https://www.cb9m.org/archives",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 1,
             "retained_snapshot": null
           }
@@ -1047,14 +1047,14 @@
           "board_name": "Manhattan Community Board 10",
           "borough": "Manhattan",
           "community_district": "M10",
-          "meeting_record_count": 21,
+          "meeting_record_count": 30,
           "meetings": {
             "state": "indexed",
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://cbmanhattan.cityofnewyork.us/cb10/events/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 21,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 30,
             "retained_snapshot": null
           },
           "minutes": {
@@ -1062,7 +1062,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://cbmanhattan.cityofnewyork.us/cb10/meetings/minutes/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 37,
             "retained_snapshot": null
           }
@@ -1078,7 +1078,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.cb11m.org/calendar/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 125,
             "retained_snapshot": null
           },
@@ -1087,7 +1087,7 @@
             "source_role_state": "unavailable",
             "reason": "source_serves_browsers_only",
             "source_url": "https://airtable.com/appedcOCWGdk7kppK/shrJ150rk13A8HfPK/tblNt0o4xr7gTHHoY",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           }
@@ -1097,14 +1097,14 @@
           "board_name": "Manhattan Community Board 12",
           "borough": "Manhattan",
           "community_district": "M12",
-          "meeting_record_count": 30,
+          "meeting_record_count": 32,
           "meetings": {
             "state": "indexed",
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://cb12m.org/en/calendar",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 30,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 32,
             "retained_snapshot": null
           },
           "minutes": {
@@ -1112,7 +1112,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://cbmanhattan.cityofnewyork.us/cb12/meetings/minutes/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 18,
             "retained_snapshot": null
           }
@@ -1128,7 +1128,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/queenscb1/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 1,
             "retained_snapshot": null
           },
@@ -1137,7 +1137,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/queenscb1/calendar/board-meeting-agendas-minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 48,
             "retained_snapshot": null
           }
@@ -1147,14 +1147,14 @@
           "board_name": "Queens Community Board 2",
           "borough": "Queens",
           "community_district": "Q02",
-          "meeting_record_count": 30,
+          "meeting_record_count": 37,
           "meetings": {
             "state": "indexed",
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/queenscb2/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 30,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 37,
             "retained_snapshot": null
           },
           "minutes": {
@@ -1162,8 +1162,8 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/queenscb2/meetings/meeting-agendas-minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 172,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 173,
             "retained_snapshot": null
           }
         },
@@ -1178,7 +1178,7 @@
             "source_role_state": "unavailable",
             "reason": "source_serves_browsers_only",
             "source_url": "https://queenscb3.cityofnewyork.us/calendar/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -1187,7 +1187,7 @@
             "source_role_state": "unavailable",
             "reason": "source_serves_browsers_only",
             "source_url": "https://queenscb3.cityofnewyork.us/board-meeting-minutes/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           }
@@ -1203,7 +1203,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/queenscb4/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -1212,7 +1212,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/queenscb4/meetings/minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 89,
             "retained_snapshot": null
           }
@@ -1228,7 +1228,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/queenscb5/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -1237,7 +1237,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/queenscb5/meetings/minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 128,
             "retained_snapshot": null
           }
@@ -1247,14 +1247,14 @@
           "board_name": "Queens Community Board 6",
           "borough": "Queens",
           "community_district": "Q06",
-          "meeting_record_count": 20,
+          "meeting_record_count": 23,
           "meetings": {
             "state": "indexed",
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/queenscb6/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 20,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 23,
             "retained_snapshot": null
           },
           "minutes": {
@@ -1262,8 +1262,8 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/queenscb6/meetings/meeting-minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 75,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 76,
             "retained_snapshot": null
           }
         },
@@ -1272,14 +1272,14 @@
           "board_name": "Queens Community Board 7",
           "borough": "Queens",
           "community_district": "Q07",
-          "meeting_record_count": 1,
+          "meeting_record_count": 3,
           "meetings": {
             "state": "indexed",
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/queenscb7/meetings/meetings.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 1,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 3,
             "retained_snapshot": null
           },
           "minutes": {
@@ -1287,7 +1287,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/queenscb7/meetings/minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 88,
             "retained_snapshot": null
           }
@@ -1303,7 +1303,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/queenscb8/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -1312,7 +1312,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/queenscb8/meetings/board-meeting-minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 136,
             "retained_snapshot": null
           }
@@ -1328,7 +1328,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/queenscb9/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -1337,7 +1337,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/queenscb9/meetings/minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 135,
             "retained_snapshot": null
           }
@@ -1353,7 +1353,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/queenscb10/meetings/agendas-minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -1362,8 +1362,8 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/queenscb10/meetings/agendas-minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 147,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 148,
             "retained_snapshot": null
           }
         },
@@ -1378,7 +1378,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/queenscb11/meetings/meetings.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -1387,7 +1387,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/queenscb11/meetings/meeting-minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 72,
             "retained_snapshot": null
           }
@@ -1403,7 +1403,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/queenscb12/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -1412,7 +1412,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/queenscb12/meetings/minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 54,
             "retained_snapshot": null
           }
@@ -1428,7 +1428,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/queenscb13/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -1437,7 +1437,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/queenscb13/meetings/minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 38,
             "retained_snapshot": null
           }
@@ -1447,14 +1447,14 @@
           "board_name": "Queens Community Board 14",
           "borough": "Queens",
           "community_district": "Q14",
-          "meeting_record_count": 0,
+          "meeting_record_count": 1,
           "meetings": {
-            "state": "checked-empty",
-            "source_role_state": "checked-empty",
-            "reason": "no_explicit_records",
+            "state": "indexed",
+            "source_role_state": "indexed",
+            "reason": null,
             "source_url": "https://www.nyc.gov/site/queenscb14/calendar/calendar.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 0,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 1,
             "retained_snapshot": null
           },
           "minutes": {
@@ -1462,7 +1462,7 @@
             "source_role_state": "not-yet-checked",
             "reason": "no_explicit_source_observed",
             "source_url": null,
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           }
@@ -1478,7 +1478,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/statenislandcb1/meetings/meetings.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -1487,7 +1487,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/statenislandcb1/meetings/minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 305,
             "retained_snapshot": null
           }
@@ -1503,7 +1503,7 @@
             "source_role_state": "checked-empty",
             "reason": "no_explicit_records",
             "source_url": "https://www.nyc.gov/site/statenislandcb2/meetings/full-board-agendas.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 0,
             "retained_snapshot": null
           },
@@ -1512,8 +1512,8 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/statenislandcb2/meetings/full-board-minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 72,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 73,
             "retained_snapshot": null
           }
         },
@@ -1528,7 +1528,7 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/statenislandcb3/meetings/meetings.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
+            "observed_at": "2026-10-10T13:01:01.019Z",
             "record_count": 1,
             "retained_snapshot": null
           },
@@ -1537,8 +1537,8 @@
             "source_role_state": "indexed",
             "reason": null,
             "source_url": "https://www.nyc.gov/site/statenislandcb3/meetings/general-board-minutes.page",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "record_count": 34,
+            "observed_at": "2026-10-10T13:01:01.019Z",
+            "record_count": 35,
             "retained_snapshot": null
           }
         }
@@ -1548,29 +1548,29 @@
       "source_system": "nyc_legistar_events",
       "status": "available",
       "available": true,
-      "generated_at": "2026-09-30T13:14:31.873Z",
+      "generated_at": "2026-10-10T13:23:08.929Z",
       "max_age_ms": 129600000,
-      "row_count": 54,
+      "row_count": 55,
       "reason": null,
       "coverage": {
-        "eligible_events": 54,
-        "meetings": 54,
-        "agenda_items": 206,
-        "events_with_items": 54,
+        "eligible_events": 55,
+        "meetings": 55,
+        "agenda_items": 184,
+        "events_with_items": 55,
         "events_no_published_items": 0,
         "events_items_deferred": 0,
         "events_items_unavailable": 0,
         "events_items_truncated": 0,
-        "standalone": 54,
+        "standalone": 55,
         "exactly_joined": 0,
         "source_health": {
           "status": "healthy",
           "basis": "authenticated-events-acquisition",
-          "observed_at": "2026-09-30T13:14:31.873Z",
-          "events_observed": 392,
-          "last_successful_observation": "2026-09-30T13:14:31.873Z",
-          "upcoming": 54,
-          "standalone": 54,
+          "observed_at": "2026-10-10T13:23:08.929Z",
+          "events_observed": 410,
+          "last_successful_observation": "2026-10-10T13:23:08.929Z",
+          "upcoming": 55,
+          "standalone": 55,
           "exactly_joined": 0,
           "collection_suppressed": 0,
           "truncated": 0
@@ -1583,7 +1583,7 @@
       "source_system": "pdc_calendar",
       "status": "available",
       "available": true,
-      "generated_at": "2026-09-30T13:14:27.547Z",
+      "generated_at": "2026-10-10T13:12:30.327Z",
       "max_age_ms": 604800000,
       "row_count": 12,
       "reason": null,
@@ -1595,9 +1595,9 @@
       "source_system": "oath_trial_calendar",
       "status": "available",
       "available": true,
-      "generated_at": "2026-09-30T13:14:27.219Z",
+      "generated_at": "2026-10-10T13:12:29.955Z",
       "max_age_ms": 604800000,
-      "row_count": 145,
+      "row_count": 178,
       "reason": null,
       "coverage": null,
       "contract_coverage": null,
@@ -1605,69 +1605,27 @@
     }
   },
   "counts": {
-    "total": 840,
-    "city_record": 129,
-    "community_board": 500,
-    "oath_trial_calendar": 145,
-    "meeting_documents": 4417,
-    "attached_meeting_documents": 102,
+    "total": 953,
+    "city_record": 119,
+    "community_board": 589,
+    "oath_trial_calendar": 178,
+    "meeting_documents": 4497,
+    "attached_meeting_documents": 164,
     "pdc_calendar": 12,
-    "nyc_legistar_events": 54,
-    "collection": 811,
-    "suppressed": 29,
-    "same_proceeding": 1
+    "nyc_legistar_events": 55,
+    "collection": 853,
+    "suppressed": 100,
+    "same_proceeding": 0
   },
-  "same_proceeding": [
-    {
-      "schema": "cityscroll.meeting_same_proceeding.v1",
-      "method": "exact_date_body_tokens",
-      "meeting_ids": [
-        "meeting:city_record:20260922023",
-        "meeting:nyc_legistar_events:22615"
-      ],
-      "city_record_meeting_id": "meeting:city_record:20260922023",
-      "nyc_legistar_events_meeting_id": "meeting:nyc_legistar_events:22615",
-      "date": "2026-10-06",
-      "body": "Subcommittee on Zoning and Franchises",
-      "permalinks": {
-        "city_record": "/meetings/meeting%3Acity_record%3A20260922023",
-        "nyc_legistar_events": "/meetings/meeting%3Anyc_legistar_events%3A22615"
-      }
-    }
-  ],
-  "geography_backfill": {
-    "generation": "gen-688f479a297c-2026-10-05",
-    "built_at": "2026-10-05T20:21:40.442Z",
-    "counts": {
-      "input_rows": 840,
-      "processed_rows": 840,
-      "newly_processed": 840,
-      "resumed_unchanged": 0,
-      "address_bearing_rows": 363,
-      "distinct_address_strings": 166,
-      "by_outcome": {
-        "physical_venue": 119,
-        "subject": 0,
-        "broad_jurisdiction": 255,
-        "virtual": 76,
-        "no_source_address": 200,
-        "unresolved_evidence": 190
-      }
-    },
-    "candidate_input": {
-      "canonical_meeting_count": 840,
-      "address_bearing_rows": 363,
-      "distinct_address_strings": 166
-    }
-  },
+  "same_proceeding": [],
   "representation": "sharded",
   "shard_schema": "cityscroll.shared_meeting_read_model_shard.v1",
-  "row_count": 840,
+  "row_count": 953,
   "shards": [
     {
       "path": "shared_meeting_read_model/shard-000.json",
-      "bytes": 9637662,
-      "row_count": 840
+      "bytes": 10808374,
+      "row_count": 953
     }
   ]
 }

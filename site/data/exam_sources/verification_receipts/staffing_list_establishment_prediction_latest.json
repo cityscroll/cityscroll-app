@@ -4,17 +4,17 @@
     "annual-examination-schedule",
     "active-civil-service-list"
   ],
-  "verified_at": "2026-09-30",
+  "verified_at": "2026-10-10",
   "join": {
     "method": "exact_exam_number_zero_pad",
     "schedule_rows": 1271,
     "distinct_schedule_exams": 1271,
-    "distinct_list_aggregate_exams": 872,
-    "matched_pairs": 452,
+    "distinct_list_aggregate_exams": 874,
+    "matched_pairs": 453,
     "misses": {
       "no_list_aggregate": 761,
-      "missing_application_close": 7,
-      "missing_established_date": 51,
+      "missing_application_close": 8,
+      "missing_established_date": 49,
       "established_before_application_close": 0
     },
     "privacy": "Exam-level aggregates only; no applicant rows, names, scores, or ranks."
@@ -27,45 +27,45 @@
       "citywide": {
         "key": "citywide",
         "label": "citywide",
-        "n": 452,
+        "n": 453,
         "eligible": true,
         "p10_days": 99,
         "p50_days": 274,
-        "p90_days": 722,
+        "p90_days": 736,
         "median_months": 9,
         "train_from": "2021-05-05",
-        "train_to": "2026-09-23"
+        "train_to": "2026-10-07"
       },
       "open_competitive": {
         "key": "open_competitive",
         "label": "open competitive",
-        "n": 312,
+        "n": 313,
         "eligible": true,
         "p10_days": 92,
         "p50_days": 239,
-        "p90_days": 744,
+        "p90_days": 834,
         "median_months": 8,
         "train_from": "2021-05-05",
-        "train_to": "2026-09-23"
+        "train_to": "2026-10-07"
       },
       "promotion": {
         "key": "promotion",
         "label": "promotion",
         "n": 140,
         "eligible": true,
-        "p10_days": 127,
+        "p10_days": 119,
         "p50_days": 351,
         "p90_days": 610,
         "median_months": 12,
         "train_from": "2021-05-26",
-        "train_to": "2026-09-23"
+        "train_to": "2026-09-30"
       }
     }
   },
   "backtest": {
     "protocol": "train establishment events through 2024; score lists established in 2025–2026 for exams already open at 2025-01-01",
-    "training_pairs": 271,
-    "scoring_pairs": 87,
+    "training_pairs": 268,
+    "scoring_pairs": 90,
     "scorecard": {
       "metric": "prediction_calibration",
       "version": "prediction_calibration_v1",
@@ -78,22 +78,22 @@
         "from": "2021-05-05",
         "to": "2024-12-18"
       },
-      "prediction_count": 87,
-      "resolved_backtest_predictions": 87,
+      "prediction_count": 90,
+      "resolved_backtest_predictions": 90,
       "resolution_rate": 1,
       "resolution_counts": {
         "resolved_hit": 52,
-        "resolved_miss": 35,
+        "resolved_miss": 38,
         "open": 0
       },
-      "timing_prediction_count": 87,
-      "timing_realized_count": 87,
+      "timing_prediction_count": 90,
+      "timing_realized_count": 90,
       "timing_resolution_hits": 52,
       "interval_nominal": 0.8,
-      "interval_coverage": 0.5977,
+      "interval_coverage": 0.5778,
       "interval_coverage_hits": 52,
-      "interval_coverage_count": 87,
-      "median_absolute_error_p50_days": 237,
+      "interval_coverage_count": 90,
+      "median_absolute_error_p50_days": 255.5,
       "occurrence_prediction_count": 0,
       "occurrence_resolved_count": 0,
       "occurrence_calibration": [

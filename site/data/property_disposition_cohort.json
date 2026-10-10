@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
   "version": "property_disposition_exact_bbl_v1",
-  "generated_at": "2026-09-30T13:14:30.802Z",
+  "generated_at": "2026-10-10T13:23:07.838Z",
   "sources": {
     "observations": {
       "artifact": "site/data/property_domain_observations.json",
       "version": "property_domain_observations_v1",
-      "generated_at": "2026-09-30T13:14:29.762Z",
+      "generated_at": "2026-10-10T13:23:06.535Z",
       "property_count": 133
     },
     "cross_domain": {
       "artifact": "site/data/property_cross_domain_lookup.json",
       "version": "property_cross_domain_v1",
-      "generated_at": "2026-09-30T13:14:30.802Z"
+      "generated_at": "2026-10-10T13:23:07.838Z"
     }
   },
   "cohort": {
