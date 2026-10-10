@@ -34,7 +34,7 @@
   "coverage": {
     "census_share": 1.0000781555295037,
     "population_share": 0.20958495757853704,
-    "age_days": 0
+    "age_days": 1
   },
   "by_agency": {
     "department-of-social-services": {

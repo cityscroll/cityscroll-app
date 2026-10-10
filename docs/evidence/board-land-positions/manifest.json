@@ -1,19 +1,19 @@
 {
   "schema": "cityscroll.board_land_position_capture.v1",
-  "captured_at": "2026-09-09T12:00:52.278398+00:00",
-  "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+  "captured_at": "2026-10-10T13:38:37.582121+00:00",
+  "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
   "data_vintage": {
-    "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+    "community_board_land_positions": "2026-10-10T13:07:00.192Z",
     "community_board_geography_lookup": "2026-05-26",
     "community_board_minutes_scorecard": "2026-09-06"
   },
   "counts": {
     "retained_projects": 40,
-    "projects_with_observed_recommendations": 22,
-    "board_recommendations": 20,
-    "board_positions": 20,
+    "projects_with_observed_recommendations": 23,
+    "board_recommendations": 21,
+    "board_positions": 21,
     "boards_with_positions": 16,
-    "projects_with_board_positions": 20,
+    "projects_with_board_positions": 21,
     "undated_board_recommendations": 0,
     "unsubmitted_board_recommendations": 0,
     "unresolved_board_recommendations": 0,
@@ -32,9 +32,9 @@
         "width": 390,
         "height": 844
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -53,6 +53,8 @@
         ],
         "project_hrefs": [
           "/browse/zoning/#land/2023M0213",
+          "/browse/zoning/#land/2023M0213",
+          "/browse/zoning/#land/2024M0244",
           "/browse/zoning/#land/2024M0244"
         ],
         "distinct_project_hrefs": 2,
@@ -74,7 +76,7 @@
           "labelled": true,
           "nested_in_link": 0
         },
-        "smallest_target_px": 24
+        "smallest_target_px": 19
       },
       "axe": {
         "scope": "#board-land-positions",
@@ -93,8 +95,8 @@
       },
       "assertion": "/community-boards/manhattan-cb-04/ at 390x844: Two applications this board recorded on one date with one identical tally render as two rows with two project destinations and two source records, and the copy states that they are two applications rather than two meetings.",
       "screenshot": ".artifacts/board-land-positions/board-land-positions-shared-date-390x844.png",
-      "screenshot_sha256": "8e0d6f5ffda2faa4e7c8682a003af5feece693feaea01d9d7882098532268dd5",
-      "render_sha256": "969b0a1d80ce54960d3d2f6b7e851225d6a666b8b8cdb0e582cee2a0c93ad725"
+      "screenshot_sha256": "8ced1648162d0e1d056e5b9794fe697ca2d3f7c22e2a0c78bd6e8b5f3cd5ff8a",
+      "render_sha256": "4e213685398667821204244ab6d0bfa36862b73550b736378e6c1854cde11234"
     },
     {
       "surface": "community_board_document",
@@ -104,9 +106,9 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -125,6 +127,8 @@
         ],
         "project_hrefs": [
           "/browse/zoning/#land/2023M0213",
+          "/browse/zoning/#land/2023M0213",
+          "/browse/zoning/#land/2024M0244",
           "/browse/zoning/#land/2024M0244"
         ],
         "distinct_project_hrefs": 2,
@@ -146,7 +150,7 @@
           "labelled": true,
           "nested_in_link": 0
         },
-        "smallest_target_px": 24
+        "smallest_target_px": 19
       },
       "axe": {
         "scope": "#board-land-positions",
@@ -165,8 +169,8 @@
       },
       "assertion": "/community-boards/manhattan-cb-04/ at 1440x900: Two applications this board recorded on one date with one identical tally render as two rows with two project destinations and two source records, and the copy states that they are two applications rather than two meetings.",
       "screenshot": ".artifacts/board-land-positions/board-land-positions-shared-date-1440x900.png",
-      "screenshot_sha256": "fc5f895e8aefdb51ef423510df448286f9a68160a9c76082f836e5e92dc59131",
-      "render_sha256": "969b0a1d80ce54960d3d2f6b7e851225d6a666b8b8cdb0e582cee2a0c93ad725"
+      "screenshot_sha256": "08707ae930a84325e2381991c9ab1159c898eba568cc381ecd8b0a37b8d654b2",
+      "render_sha256": "4e213685398667821204244ab6d0bfa36862b73550b736378e6c1854cde11234"
     },
     {
       "surface": "community_board_document",
@@ -176,9 +180,9 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -197,6 +201,8 @@
         ],
         "project_hrefs": [
           "/browse/zoning/#land/2023M0213",
+          "/browse/zoning/#land/2023M0213",
+          "/browse/zoning/#land/2024M0244",
           "/browse/zoning/#land/2024M0244"
         ],
         "distinct_project_hrefs": 2,
@@ -220,7 +226,7 @@
         }
       },
       "assertion": "/community-boards/manhattan-cb-04/ with scripting disabled: every project link works and every recorded fact is already in the row, while the inspect control is not offered at all",
-      "render_sha256": "c04e2ebfc42bcc8c06105de4069ca014c72501926d46c5e40469075866758f16"
+      "render_sha256": "4e213685398667821204244ab6d0bfa36862b73550b736378e6c1854cde11234"
     },
     {
       "surface": "community_board_document",
@@ -230,9 +236,9 @@
         "width": 390,
         "height": 844
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -252,6 +258,8 @@
         ],
         "project_hrefs": [
           "/browse/zoning/#land/2026R0127",
+          "/browse/zoning/#land/2026R0127",
+          "/browse/zoning/#land/2025R0137",
           "/browse/zoning/#land/2025R0137"
         ],
         "distinct_project_hrefs": 2,
@@ -273,7 +281,7 @@
           "labelled": true,
           "nested_in_link": 0
         },
-        "smallest_target_px": 24
+        "smallest_target_px": 19
       },
       "axe": {
         "scope": "#board-land-positions",
@@ -292,8 +300,8 @@
       },
       "assertion": "/community-boards/staten-island-cb-01/ at 390x844: A waiver of recommendation keeps its own published label and its absent tally, and the copy says it is neither support nor opposition.",
       "screenshot": ".artifacts/board-land-positions/board-land-positions-waiver-390x844.png",
-      "screenshot_sha256": "6728362e60b7278d41fdbb9fc74edba6453e525c8837328b7283a4d44de91ad1",
-      "render_sha256": "f1ca03bb836c983a18bb395e9bce2a592be7eb4109ab6985981a165b20c36cae"
+      "screenshot_sha256": "f035a10a63f34f54e3c14e9f359759c98c32e1e7cc41f436df6217a7b1f93274",
+      "render_sha256": "97a4f01605acb7d005c75d2c2214305b9702e760606b93c6273c164fe9f12533"
     },
     {
       "surface": "community_board_document",
@@ -303,9 +311,9 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -325,6 +333,8 @@
         ],
         "project_hrefs": [
           "/browse/zoning/#land/2026R0127",
+          "/browse/zoning/#land/2026R0127",
+          "/browse/zoning/#land/2025R0137",
           "/browse/zoning/#land/2025R0137"
         ],
         "distinct_project_hrefs": 2,
@@ -346,7 +356,7 @@
           "labelled": true,
           "nested_in_link": 0
         },
-        "smallest_target_px": 24
+        "smallest_target_px": 19
       },
       "axe": {
         "scope": "#board-land-positions",
@@ -365,8 +375,8 @@
       },
       "assertion": "/community-boards/staten-island-cb-01/ at 1440x900: A waiver of recommendation keeps its own published label and its absent tally, and the copy says it is neither support nor opposition.",
       "screenshot": ".artifacts/board-land-positions/board-land-positions-waiver-1440x900.png",
-      "screenshot_sha256": "522a37a8d241009ad28b0b080f93d7b6187446159d0725323c9c9ef77ce0bccc",
-      "render_sha256": "f1ca03bb836c983a18bb395e9bce2a592be7eb4109ab6985981a165b20c36cae"
+      "screenshot_sha256": "cbb5c27b4b9c6ecdd5a534dd6d47235491dccf31094ce27bf2e86fe6d6ec06ec",
+      "render_sha256": "97a4f01605acb7d005c75d2c2214305b9702e760606b93c6273c164fe9f12533"
     },
     {
       "surface": "community_board_document",
@@ -376,9 +386,9 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -398,6 +408,8 @@
         ],
         "project_hrefs": [
           "/browse/zoning/#land/2026R0127",
+          "/browse/zoning/#land/2026R0127",
+          "/browse/zoning/#land/2025R0137",
           "/browse/zoning/#land/2025R0137"
         ],
         "distinct_project_hrefs": 2,
@@ -421,7 +433,7 @@
         }
       },
       "assertion": "/community-boards/staten-island-cb-01/ with scripting disabled: every project link works and every recorded fact is already in the row, while the inspect control is not offered at all",
-      "render_sha256": "8460bf664cdf03b8d2645ce09b732bc67d447dc092a7347edfc345423419d770"
+      "render_sha256": "97a4f01605acb7d005c75d2c2214305b9702e760606b93c6273c164fe9f12533"
     },
     {
       "surface": "journey",
@@ -431,9 +443,9 @@
         "width": 390,
         "height": 844
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -443,7 +455,7 @@
         "dialog_labelled_by": "board-land-position-inspect-title",
         "dialog_title": "Dewitt Clinton Park North (801 Eleventh Avenue)",
         "focus_inside_dialog": true,
-        "scroll_while_open": 1859,
+        "scroll_while_open": 12605,
         "url_unchanged_by_inspection": true,
         "dialog_states_advisory": true,
         "dialog_states_tally_meaning": true,
@@ -452,14 +464,14 @@
         "dialog_open_href": "/browse/zoning/#land/2024M0244",
         "dialog_closed_by_escape": true,
         "focus_returned_to_control": true,
-        "scroll_after_dismiss": 1859,
+        "scroll_after_dismiss": 12605,
         "rows_after_dismiss": 2,
-        "scrolled_to": 1859,
-        "scroll_before_leaving": 1859,
+        "scrolled_to": 12605,
+        "scroll_before_leaving": 12605,
         "left_for_path": "/browse/zoning/",
         "left_for_hash": "land/2024M0244",
         "returned_path": "/community-boards/manhattan-cb-04/",
-        "scroll_on_return": 1859,
+        "scroll_on_return": 12605,
         "rows_on_return": 2,
         "rows_before": 2,
         "calendar_panels_before": 1,
@@ -472,8 +484,8 @@
       },
       "assertion": "/community-boards/manhattan-cb-04/ at 390x844: a reader inspects one recorded position in place, dismisses it with Escape and gets focus back on the control, then opens the project and returns with the browser's own Back to the board with their scroll position, the list and the board calendar as they left them",
       "screenshot": ".artifacts/board-land-positions/board-position-inspect-journey-390x844.png",
-      "screenshot_sha256": "ea1e00fe790ec1631ade754444c7af0a44259494ea1f5a5906bf00113d6bc6d7",
-      "render_sha256": "969b0a1d80ce54960d3d2f6b7e851225d6a666b8b8cdb0e582cee2a0c93ad725"
+      "screenshot_sha256": "a9dd9b59b0129fe16ef417e863f8a4294264434ed6787271662534ae9f086be2",
+      "render_sha256": "4e213685398667821204244ab6d0bfa36862b73550b736378e6c1854cde11234"
     },
     {
       "surface": "journey",
@@ -483,9 +495,9 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -495,7 +507,7 @@
         "dialog_labelled_by": "board-land-position-inspect-title",
         "dialog_title": "Dewitt Clinton Park North (801 Eleventh Avenue)",
         "focus_inside_dialog": true,
-        "scroll_while_open": 1329,
+        "scroll_while_open": 9499,
         "url_unchanged_by_inspection": true,
         "dialog_states_advisory": true,
         "dialog_states_tally_meaning": true,
@@ -504,14 +516,14 @@
         "dialog_open_href": "/browse/zoning/#land/2024M0244",
         "dialog_closed_by_escape": true,
         "focus_returned_to_control": true,
-        "scroll_after_dismiss": 1329,
+        "scroll_after_dismiss": 9499,
         "rows_after_dismiss": 2,
-        "scrolled_to": 1329,
-        "scroll_before_leaving": 1329,
+        "scrolled_to": 9499,
+        "scroll_before_leaving": 9499,
         "left_for_path": "/browse/zoning/",
         "left_for_hash": "land/2024M0244",
         "returned_path": "/community-boards/manhattan-cb-04/",
-        "scroll_on_return": 1329,
+        "scroll_on_return": 9499,
         "rows_on_return": 2,
         "rows_before": 2,
         "calendar_panels_before": 1,
@@ -524,8 +536,8 @@
       },
       "assertion": "/community-boards/manhattan-cb-04/ at 1440x900: a reader inspects one recorded position in place, dismisses it with Escape and gets focus back on the control, then opens the project and returns with the browser's own Back to the board with their scroll position, the list and the board calendar as they left them",
       "screenshot": ".artifacts/board-land-positions/board-position-inspect-journey-1440x900.png",
-      "screenshot_sha256": "eccca9a988e2e6e2a14d18a1e8550cc8738fdb04897f4aa5fe6a8095c2510f32",
-      "render_sha256": "969b0a1d80ce54960d3d2f6b7e851225d6a666b8b8cdb0e582cee2a0c93ad725"
+      "screenshot_sha256": "41dcb8116a8e696ad2608e3f879f35073b2d9f66785d148ef60c972c3286b268",
+      "render_sha256": "4e213685398667821204244ab6d0bfa36862b73550b736378e6c1854cde11234"
     },
     {
       "surface": "keyboard",
@@ -535,9 +547,9 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -567,8 +579,8 @@
       },
       "assertion": "/community-boards/manhattan-cb-04/ by keyboard alone: Tab reaches the inspect control, Enter opens the record with focus inside it, Tab stays inside, and Escape dismisses it and returns focus to the control it was opened from",
       "screenshot": ".artifacts/board-land-positions/board-position-keyboard-1440x900.png",
-      "screenshot_sha256": "3a14d5b18c5943a00475960decd60a02cef9cf3ff1828e733f66c6c7ef71130b",
-      "render_sha256": "969b0a1d80ce54960d3d2f6b7e851225d6a666b8b8cdb0e582cee2a0c93ad725"
+      "screenshot_sha256": "8a3a87aa92bda8d264011fdd758e6b145408fc07130d265d8c3130235351a718",
+      "render_sha256": "4e213685398667821204244ab6d0bfa36862b73550b736378e6c1854cde11234"
     },
     {
       "surface": "community_board_document",
@@ -578,9 +590,9 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -605,7 +617,7 @@
         "page_passes": true
       },
       "assertion": "the section renders in en with the publisher's own project names and recorded position labels left in the source language",
-      "render_sha256": "969b0a1d80ce54960d3d2f6b7e851225d6a666b8b8cdb0e582cee2a0c93ad725"
+      "render_sha256": "4e213685398667821204244ab6d0bfa36862b73550b736378e6c1854cde11234"
     },
     {
       "surface": "community_board_document",
@@ -615,9 +627,9 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -642,7 +654,7 @@
         "page_passes": true
       },
       "assertion": "the section renders in es with the publisher's own project names and recorded position labels left in the source language",
-      "render_sha256": "f2740dfc11bab0db4d8a3feaf8ae538ed328922143e802e26b535cc6c489783a"
+      "render_sha256": "011c4708b9c3a8910b5c67927e05cef59acb047b26a4372400e4177a563ece39"
     },
     {
       "surface": "community_board_document",
@@ -652,9 +664,9 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -679,7 +691,7 @@
         "page_passes": true
       },
       "assertion": "the section renders in zh-Hans with the publisher's own project names and recorded position labels left in the source language",
-      "render_sha256": "31b9ed1dce6ce7f7fa6225f0ae9eb4e43d2de71820bdc359e5c59f9072b91441"
+      "render_sha256": "5dc52e0f5f0a60e925d814dae84afdcebc853e36af0b73ace1459bf9d5a2341d"
     },
     {
       "surface": "community_board_document",
@@ -689,9 +701,9 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -716,7 +728,7 @@
         "page_passes": true
       },
       "assertion": "the section renders in ru with the publisher's own project names and recorded position labels left in the source language",
-      "render_sha256": "e970c1d27ac3302dea74d675b318bf771b5b17d851f9712e1e5b4635df1b1690"
+      "render_sha256": "cae3b681f50e643c342fae671f91a67bc185a5fd6817c3e2d8589247a13009cb"
     },
     {
       "surface": "community_board_document",
@@ -726,9 +738,9 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -753,7 +765,7 @@
         "page_passes": true
       },
       "assertion": "the section renders in bn with the publisher's own project names and recorded position labels left in the source language",
-      "render_sha256": "96fa1d2448bb04126c31c8cce99c233018d1768b18868962278477b50fe0354f"
+      "render_sha256": "c0231497e9935f1483416128c55a4474a8222b46be0ec7fd4020d3dfa497373c"
     },
     {
       "surface": "community_board_document",
@@ -763,9 +775,9 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -790,7 +802,7 @@
         "page_passes": true
       },
       "assertion": "the section renders in ht with the publisher's own project names and recorded position labels left in the source language",
-      "render_sha256": "a4ccb7267873bf6be9d5e9eba767e28d531dd46fe8992a5e1c81741adc4cd3e6"
+      "render_sha256": "a4ba35f40abd1a802eb5a575002c673495d43bb290a581d4fddf2f4b36e26c06"
     },
     {
       "surface": "community_board_document",
@@ -800,9 +812,9 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -827,7 +839,7 @@
         "page_passes": true
       },
       "assertion": "the section renders in ko with the publisher's own project names and recorded position labels left in the source language",
-      "render_sha256": "8697a867642a5ae5e31bf22d2073c04e32a44b3ed62c788aa414635c2ac45e05"
+      "render_sha256": "1356b6aa1bed76c18c727a611e4877ff6051151347fda7709e65159b5545b602"
     },
     {
       "surface": "community_board_document",
@@ -837,9 +849,9 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -864,7 +876,7 @@
         "page_passes": true
       },
       "assertion": "the section renders in fr with the publisher's own project names and recorded position labels left in the source language",
-      "render_sha256": "2757b51f61e962579787a7fc01d1df6f7acd9f870496e1bf0d3decb97a182f59"
+      "render_sha256": "d058b746d25c0660e80fa4dfef77cfa599ee5f1b2d30b06e345f69e36d087c91"
     },
     {
       "surface": "community_board_document",
@@ -874,9 +886,9 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -901,7 +913,7 @@
         "page_passes": true
       },
       "assertion": "the section renders in pl with the publisher's own project names and recorded position labels left in the source language",
-      "render_sha256": "1c4e10bc40ef3dc41400211bc7a25eef5d027a18c6006125ec4299a88b40aa7e"
+      "render_sha256": "bae1ce39cbae7caff79e06878b3eb8dff2d2ebc53e4946eeab11b9246101220b"
     },
     {
       "surface": "community_board_document",
@@ -911,9 +923,9 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -938,7 +950,7 @@
         "page_passes": true
       },
       "assertion": "the section renders in ar with the publisher's own project names and recorded position labels left in the source language",
-      "render_sha256": "22a7375c0acb4b882d138875bdebf7ed0e9aae43955215f4653327edd16e1698"
+      "render_sha256": "c71e2d9c97df5ed669646b421df7ed7d0091b63d0ead2b12992b2e338c657eb1"
     },
     {
       "surface": "community_board_document",
@@ -948,9 +960,9 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -975,7 +987,7 @@
         "page_passes": true
       },
       "assertion": "the section renders in ur with the publisher's own project names and recorded position labels left in the source language",
-      "render_sha256": "2e4d46cea42e03480c2ede7ffbbfe12a9189925ac20f6877f6e78550126d5221"
+      "render_sha256": "237083943354dc5ac6c2e5b37ed7824dafaf9ce3db4d516066f0fa2dfcc8726f"
     },
     {
       "surface": "community_board_document",
@@ -985,9 +997,9 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -1011,7 +1023,7 @@
         "page_passes": true
       },
       "assertion": "this source records no position for this board: the section says so about the source and names the population it was measured over, rather than rendering nothing or claiming the board has never voted",
-      "render_sha256": "dd997342654cfd9dc3112292d1ae3c271b56d13a915f740c525c2cf9c3b02901"
+      "render_sha256": "e97882a46e15c4017d21918221a026187784e28c14df12c19666d44b6a7a7d3d"
     },
     {
       "surface": "community_board_document",
@@ -1021,9 +1033,9 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4",
       "data_vintage": {
-        "community_board_land_positions": "2026-09-09T06:46:42.537Z",
+        "community_board_land_positions": "2026-10-10T13:07:00.192Z",
         "community_board_geography_lookup": "2026-05-26",
         "community_board_minutes_scorecard": "2026-09-06"
       },
@@ -1047,7 +1059,7 @@
         "page_passes": true
       },
       "assertion": "the recorded positions could not be read: the section says so, offers a retry, keeps its published source reachable, and lists no position",
-      "render_sha256": "ac3325faef77321eb5ae65fca1fca827415355560a7dbb3d7346d15afa41fff1"
+      "render_sha256": "12f7da680bd9cb27bc0c6bdbacbb4a2d23f567cd73afe1c2dce8c309c233fa01"
     }
   ],
   "axe_all_pass": true

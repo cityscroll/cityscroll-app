@@ -4,7 +4,7 @@
   "domain": "rules",
   "title": "Rules domain observations for entity intelligence",
   "description": "City Record Agency Rules rows (dg92-zbpx) for offline entity-intelligence materialization. Source prose is reduced to bounded rule-evidence stamps and discarded; no invented contract/vendor joins.",
-  "retrieved_at": "2026-09-30T13:15:43.197Z",
+  "retrieved_at": "2026-10-10T13:24:40.155Z",
   "window_days": 180,
   "source": {
     "system": "city_record",
@@ -14,8 +14,1176 @@
     "read_model": "rules:materialized:v2"
   },
   "row_count": 100,
-  "agency_count": 32,
+  "agency_count": 29,
   "rows": [
+    {
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20261006029",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20261006029"
+        }
+      ],
+      "publisher_identifier": "20261006029",
+      "title": "Notice of Public Hearing and Opportunity to Comment on Proposed Rules relating to amendments for the Dining Out NYC program",
+      "event_date": null,
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-10-09T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261006029",
+        "observed_at": null,
+        "raw_date": "2026-10-09",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "location_assertions": [
+        {
+          "schema": "cityscroll.meeting_location_assertion.v1",
+          "assertion_id": "location_assertion:meeting:city_record:20261006029::venue::venue::1",
+          "meeting_id": "meeting:city_record:20261006029",
+          "record_id": null,
+          "role": "venue",
+          "validity": "unlocated",
+          "attendance_meaning": "not_stated",
+          "original_address": null,
+          "venue_name": null,
+          "components": null,
+          "wrapper": null,
+          "source_field": "venue",
+          "source_passage": null,
+          "passage_locator": null,
+          "passage_text_sha256": null,
+          "source_receipt": null
+        }
+      ],
+      "participation": null,
+      "committee": null,
+      "agency": "Transportation",
+      "board_name": null,
+      "description": null,
+      "search_text": "Notice of Public Hearing and Opportunity to Comment on Proposed Rules relating to amendments for the Dining Out NYC program Transportation",
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "meeting_documents": [],
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261006029",
+      "source_system": "city_record",
+      "meeting_origin": "unknown",
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20261006029",
+        "legacy_fragment_href": "#notice/20261006029",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20261006029"
+      },
+      "request_id": "20261006029",
+      "source_record_id": null,
+      "board_id": null,
+      "agency_name": "Transportation",
+      "short_title": "Notice of Public Hearing and Opportunity to Comment on Proposed Rules relating to amendments for the Dining Out NYC program",
+      "start_date": "2026-10-09T00:00:00.000",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "opportunity",
+          "dining"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "hearing",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20261005002",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20261005002"
+        }
+      ],
+      "publisher_identifier": "20261005002",
+      "title": "Notice of Adoption DSNY Amendment of Penalty for Improper Disposal of Regulated Household Waste",
+      "event_date": null,
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-10-09T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261005002",
+        "observed_at": null,
+        "raw_date": "2026-10-09",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "location_assertions": [
+        {
+          "schema": "cityscroll.meeting_location_assertion.v1",
+          "assertion_id": "location_assertion:meeting:city_record:20261005002::venue::venue::1",
+          "meeting_id": "meeting:city_record:20261005002",
+          "record_id": null,
+          "role": "venue",
+          "validity": "unlocated",
+          "attendance_meaning": "not_stated",
+          "original_address": null,
+          "venue_name": null,
+          "components": null,
+          "wrapper": null,
+          "source_field": "venue",
+          "source_passage": null,
+          "passage_locator": null,
+          "passage_text_sha256": null,
+          "source_receipt": null
+        }
+      ],
+      "participation": null,
+      "committee": null,
+      "agency": "Sanitation",
+      "board_name": null,
+      "description": null,
+      "search_text": "Notice of Adoption DSNY Amendment of Penalty for Improper Disposal of Regulated Household Waste Sanitation",
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "meeting_documents": [],
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261005002",
+      "source_system": "city_record",
+      "meeting_origin": "unknown",
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20261005002",
+        "legacy_fragment_href": "#notice/20261005002",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20261005002"
+      },
+      "request_id": "20261005002",
+      "source_record_id": null,
+      "board_id": null,
+      "agency_name": "Sanitation",
+      "short_title": "Notice of Adoption DSNY Amendment of Penalty for Improper Disposal of Regulated Household Waste",
+      "start_date": "2026-10-09T00:00:00.000",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dsny",
+          "penalty",
+          "improper",
+          "disposal",
+          "regulated",
+          "household",
+          "waste"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260924006",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260924006"
+        }
+      ],
+      "publisher_identifier": "20260924006",
+      "title": "Amendment of Rules Relating to Syndromic Surveillance",
+      "event_date": null,
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-10-05T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260924006",
+        "observed_at": null,
+        "raw_date": "2026-10-05",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "location_assertions": [
+        {
+          "schema": "cityscroll.meeting_location_assertion.v1",
+          "assertion_id": "location_assertion:meeting:city_record:20260924006::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260924006",
+          "record_id": null,
+          "role": "venue",
+          "validity": "unlocated",
+          "attendance_meaning": "not_stated",
+          "original_address": null,
+          "venue_name": null,
+          "components": null,
+          "wrapper": null,
+          "source_field": "venue",
+          "source_passage": null,
+          "passage_locator": null,
+          "passage_text_sha256": null,
+          "source_receipt": null
+        }
+      ],
+      "participation": null,
+      "committee": null,
+      "agency": "Health and Mental Hygiene",
+      "board_name": null,
+      "description": null,
+      "search_text": "Amendment of Rules Relating to Syndromic Surveillance Health and Mental Hygiene",
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "meeting_documents": [],
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260924006",
+      "source_system": "city_record",
+      "meeting_origin": "unknown",
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260924006",
+        "legacy_fragment_href": "#notice/20260924006",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260924006"
+      },
+      "request_id": "20260924006",
+      "source_record_id": null,
+      "board_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Amendment of Rules Relating to Syndromic Surveillance",
+      "start_date": "2026-10-05T00:00:00.000",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "syndromic",
+          "surveillance"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "unknown",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260929001",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260929001"
+        }
+      ],
+      "publisher_identifier": "20260929001",
+      "title": "Amendment of Rules Relating to Lead Dust",
+      "event_date": null,
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-10-05T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260929001",
+        "observed_at": null,
+        "raw_date": "2026-10-05",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "location_assertions": [
+        {
+          "schema": "cityscroll.meeting_location_assertion.v1",
+          "assertion_id": "location_assertion:meeting:city_record:20260929001::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260929001",
+          "record_id": null,
+          "role": "venue",
+          "validity": "unlocated",
+          "attendance_meaning": "not_stated",
+          "original_address": null,
+          "venue_name": null,
+          "components": null,
+          "wrapper": null,
+          "source_field": "venue",
+          "source_passage": null,
+          "passage_locator": null,
+          "passage_text_sha256": null,
+          "source_receipt": null
+        }
+      ],
+      "participation": null,
+      "committee": null,
+      "agency": "Health and Mental Hygiene",
+      "board_name": null,
+      "description": null,
+      "search_text": "Amendment of Rules Relating to Lead Dust Health and Mental Hygiene",
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "meeting_documents": [],
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260929001",
+      "source_system": "city_record",
+      "meeting_origin": "unknown",
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260929001",
+        "legacy_fragment_href": "#notice/20260929001",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260929001"
+      },
+      "request_id": "20260929001",
+      "source_record_id": null,
+      "board_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Amendment of Rules Relating to Lead Dust",
+      "start_date": "2026-10-05T00:00:00.000",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "lead",
+          "dust"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260924007",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260924007"
+        }
+      ],
+      "publisher_identifier": "20260924007",
+      "title": "Amendment of Rules Relating to Medical Room Standards in Schools",
+      "event_date": null,
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-10-02T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260924007",
+        "observed_at": null,
+        "raw_date": "2026-10-02",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "location_assertions": [
+        {
+          "schema": "cityscroll.meeting_location_assertion.v1",
+          "assertion_id": "location_assertion:meeting:city_record:20260924007::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260924007",
+          "record_id": null,
+          "role": "venue",
+          "validity": "unlocated",
+          "attendance_meaning": "not_stated",
+          "original_address": null,
+          "venue_name": null,
+          "components": null,
+          "wrapper": null,
+          "source_field": "venue",
+          "source_passage": null,
+          "passage_locator": null,
+          "passage_text_sha256": null,
+          "source_receipt": null
+        }
+      ],
+      "participation": null,
+      "committee": null,
+      "agency": "Health and Mental Hygiene",
+      "board_name": null,
+      "description": null,
+      "search_text": "Amendment of Rules Relating to Medical Room Standards in Schools Health and Mental Hygiene",
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "meeting_documents": [],
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260924007",
+      "source_system": "city_record",
+      "meeting_origin": "unknown",
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260924007",
+        "legacy_fragment_href": "#notice/20260924007",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260924007"
+      },
+      "request_id": "20260924007",
+      "source_record_id": null,
+      "board_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Amendment of Rules Relating to Medical Room Standards in Schools",
+      "start_date": "2026-10-02T00:00:00.000",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "medical",
+          "room",
+          "standards",
+          "schools"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "unknown",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260925024",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260925024"
+        }
+      ],
+      "publisher_identifier": "20260925024",
+      "title": "Proposed Rule - Amendment of Rules relating to Ancillary Dwelling Units",
+      "event_date": null,
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-10-02T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260925024",
+        "observed_at": null,
+        "raw_date": "2026-10-02",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "location_assertions": [
+        {
+          "schema": "cityscroll.meeting_location_assertion.v1",
+          "assertion_id": "location_assertion:meeting:city_record:20260925024::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260925024",
+          "record_id": null,
+          "role": "venue",
+          "validity": "unlocated",
+          "attendance_meaning": "not_stated",
+          "original_address": null,
+          "venue_name": null,
+          "components": null,
+          "wrapper": null,
+          "source_field": "venue",
+          "source_passage": null,
+          "passage_locator": null,
+          "passage_text_sha256": null,
+          "source_receipt": null
+        }
+      ],
+      "participation": null,
+      "committee": null,
+      "agency": "Buildings",
+      "board_name": null,
+      "description": null,
+      "search_text": "Proposed Rule - Amendment of Rules relating to Ancillary Dwelling Units Buildings",
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "meeting_documents": [],
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260925024",
+      "source_system": "city_record",
+      "meeting_origin": "unknown",
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260925024",
+        "legacy_fragment_href": "#notice/20260925024",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260925024"
+      },
+      "request_id": "20260925024",
+      "source_record_id": null,
+      "board_id": null,
+      "agency_name": "Buildings",
+      "short_title": "Proposed Rule - Amendment of Rules relating to Ancillary Dwelling Units",
+      "start_date": "2026-10-02T00:00:00.000",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "ancillary",
+          "dwelling",
+          "units"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260922022",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260922022"
+        }
+      ],
+      "publisher_identifier": "20260922022",
+      "title": "The Landmarks Preservation Commission is proposing to amend the various rules relating to staff approval for work on designated properties.",
+      "event_date": null,
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-10-01T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260922022",
+        "observed_at": null,
+        "raw_date": "2026-10-01",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "location_assertions": [
+        {
+          "schema": "cityscroll.meeting_location_assertion.v1",
+          "assertion_id": "location_assertion:meeting:city_record:20260922022::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260922022",
+          "record_id": null,
+          "role": "venue",
+          "validity": "unlocated",
+          "attendance_meaning": "not_stated",
+          "original_address": null,
+          "venue_name": null,
+          "components": null,
+          "wrapper": null,
+          "source_field": "venue",
+          "source_passage": null,
+          "passage_locator": null,
+          "passage_text_sha256": null,
+          "source_receipt": null
+        }
+      ],
+      "participation": null,
+      "committee": null,
+      "agency": "Landmarks Preservation Commission",
+      "board_name": null,
+      "description": null,
+      "search_text": "The Landmarks Preservation Commission is proposing to amend the various rules relating to staff approval for work on designated properties. Landmarks Preservation Commission",
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "meeting_documents": [],
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260922022",
+      "source_system": "city_record",
+      "meeting_origin": "unknown",
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260922022",
+        "legacy_fragment_href": "#notice/20260922022",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260922022"
+      },
+      "request_id": "20260922022",
+      "source_record_id": null,
+      "board_id": null,
+      "agency_name": "Landmarks Preservation Commission",
+      "short_title": "The Landmarks Preservation Commission is proposing to amend the various rules relating to staff approval for work on designated properties.",
+      "start_date": "2026-10-01T00:00:00.000",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "landmarks",
+          "preservation",
+          "commission",
+          "proposing",
+          "amend",
+          "various",
+          "staff",
+          "approval",
+          "work",
+          "designated",
+          "properties"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "unknown",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260929011",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260929011"
+        }
+      ],
+      "publisher_identifier": "20260929011",
+      "title": "Extension of Time to File and Expansion of Processes \u001a Permanent Rule Amendment of Rule Relating to Surcharge on Certain Non-Primary Residences",
+      "event_date": null,
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-10-01T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260929011",
+        "observed_at": null,
+        "raw_date": "2026-10-01",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "location_assertions": [
+        {
+          "schema": "cityscroll.meeting_location_assertion.v1",
+          "assertion_id": "location_assertion:meeting:city_record:20260929011::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260929011",
+          "record_id": null,
+          "role": "venue",
+          "validity": "unlocated",
+          "attendance_meaning": "not_stated",
+          "original_address": null,
+          "venue_name": null,
+          "components": null,
+          "wrapper": null,
+          "source_field": "venue",
+          "source_passage": null,
+          "passage_locator": null,
+          "passage_text_sha256": null,
+          "source_receipt": null
+        }
+      ],
+      "participation": null,
+      "committee": null,
+      "agency": "Finance",
+      "board_name": null,
+      "description": null,
+      "search_text": "Extension of Time to File and Expansion of Processes \u001a Permanent Rule Amendment of Rule Relating to Surcharge on Certain Non-Primary Residences Finance",
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "meeting_documents": [],
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260929011",
+      "source_system": "city_record",
+      "meeting_origin": "unknown",
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260929011",
+        "legacy_fragment_href": "#notice/20260929011",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260929011"
+      },
+      "request_id": "20260929011",
+      "source_record_id": null,
+      "board_id": null,
+      "agency_name": "Finance",
+      "short_title": "Extension of Time to File and Expansion of Processes \u001a Permanent Rule Amendment of Rule Relating to Surcharge on Certain Non-Primary Residences",
+      "start_date": "2026-10-01T00:00:00.000",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "extension",
+          "time",
+          "file",
+          "expansion",
+          "processes",
+          "permanent",
+          "surcharge",
+          "certain",
+          "primary",
+          "residences"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "unknown",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260929023",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260929023"
+        }
+      ],
+      "publisher_identifier": "20260929023",
+      "title": "Proposed Rule - City Housing Assistance Program",
+      "event_date": null,
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-10-01T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260929023",
+        "observed_at": null,
+        "raw_date": "2026-10-01",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "location_assertions": [
+        {
+          "schema": "cityscroll.meeting_location_assertion.v1",
+          "assertion_id": "location_assertion:meeting:city_record:20260929023::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260929023",
+          "record_id": null,
+          "role": "venue",
+          "validity": "unlocated",
+          "attendance_meaning": "not_stated",
+          "original_address": null,
+          "venue_name": null,
+          "components": null,
+          "wrapper": null,
+          "source_field": "venue",
+          "source_passage": null,
+          "passage_locator": null,
+          "passage_text_sha256": null,
+          "source_receipt": null
+        }
+      ],
+      "participation": null,
+      "committee": null,
+      "agency": "Housing Preservation and Development",
+      "board_name": null,
+      "description": null,
+      "search_text": "Proposed Rule - City Housing Assistance Program Housing Preservation and Development",
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "meeting_documents": [],
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260929023",
+      "source_system": "city_record",
+      "meeting_origin": "unknown",
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260929023",
+        "legacy_fragment_href": "#notice/20260929023",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260929023"
+      },
+      "request_id": "20260929023",
+      "source_record_id": null,
+      "board_id": null,
+      "agency_name": "Housing Preservation and Development",
+      "short_title": "Proposed Rule - City Housing Assistance Program",
+      "start_date": "2026-10-01T00:00:00.000",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "housing",
+          "assistance"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
     {
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
@@ -163,133 +1331,6 @@
       "section_name": "Agency Rules",
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260923003",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260923003"
-        }
-      ],
-      "publisher_identifier": "20260923003",
-      "title": "Amendment of Rules Relating to Vital Records",
-      "event_date": null,
-      "event_end": null,
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-09-29T00:00:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260923003",
-        "observed_at": null,
-        "raw_date": "2026-09-29",
-        "raw_time": "00:00:00",
-        "status": "resolved"
-      },
-      "meeting_family": "descriptive_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": null,
-      "location_assertions": [
-        {
-          "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260923003::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260923003",
-          "record_id": null,
-          "role": "venue",
-          "validity": "unlocated",
-          "attendance_meaning": "not_stated",
-          "original_address": null,
-          "venue_name": null,
-          "components": null,
-          "wrapper": null,
-          "source_field": "venue",
-          "source_passage": null,
-          "passage_locator": null,
-          "passage_text_sha256": null,
-          "source_receipt": null
-        }
-      ],
-      "participation": null,
-      "committee": null,
-      "agency": "Health and Mental Hygiene",
-      "board_name": null,
-      "description": null,
-      "search_text": "Amendment of Rules Relating to Vital Records Health and Mental Hygiene",
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260923003",
-      "source_system": "city_record",
-      "meeting_origin": "unknown",
-      "source_receipt": null,
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260923003",
-        "legacy_fragment_href": "#notice/20260923003",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260923003"
-      },
-      "request_id": "20260923003",
-      "source_record_id": null,
-      "board_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Amendment of Rules Relating to Vital Records",
-      "start_date": "2026-09-29T00:00:00.000",
-      "rule_evidence": {
-        "schema": "cityscroll.rule_evidence_stamp.v1",
-        "topic_keys": [
-          "vital",
-          "records"
-        ],
-        "body_topic_keys": [],
-        "citation_keys": [],
-        "lifecycle_status": "notice",
-        "effective_date": null,
-        "adoption_date": null,
-        "negative_evidence": []
-      },
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
       "meeting_id": "meeting:city_record:20260922027",
       "source_keys": [
         {
@@ -390,6 +1431,133 @@
           "general",
           "vending",
           "waitlist"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260923003",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260923003"
+        }
+      ],
+      "publisher_identifier": "20260923003",
+      "title": "Amendment of Rules Relating to Vital Records",
+      "event_date": null,
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-09-29T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260923003",
+        "observed_at": null,
+        "raw_date": "2026-09-29",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "location_assertions": [
+        {
+          "schema": "cityscroll.meeting_location_assertion.v1",
+          "assertion_id": "location_assertion:meeting:city_record:20260923003::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260923003",
+          "record_id": null,
+          "role": "venue",
+          "validity": "unlocated",
+          "attendance_meaning": "not_stated",
+          "original_address": null,
+          "venue_name": null,
+          "components": null,
+          "wrapper": null,
+          "source_field": "venue",
+          "source_passage": null,
+          "passage_locator": null,
+          "passage_text_sha256": null,
+          "source_receipt": null
+        }
+      ],
+      "participation": null,
+      "committee": null,
+      "agency": "Health and Mental Hygiene",
+      "board_name": null,
+      "description": null,
+      "search_text": "Amendment of Rules Relating to Vital Records Health and Mental Hygiene",
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "meeting_documents": [],
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260923003",
+      "source_system": "city_record",
+      "meeting_origin": "unknown",
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260923003",
+        "legacy_fragment_href": "#notice/20260923003",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260923003"
+      },
+      "request_id": "20260923003",
+      "source_record_id": null,
+      "board_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Amendment of Rules Relating to Vital Records",
+      "start_date": "2026-09-29T00:00:00.000",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "vital",
+          "records"
         ],
         "body_topic_keys": [],
         "citation_keys": [],
@@ -3654,6 +4822,134 @@
       }
     },
     {
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260714024",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260714024"
+        }
+      ],
+      "publisher_identifier": "20260714024",
+      "title": "Notice of Adoption of Amendment of Rules Relating to Utility Company Properties",
+      "event_date": null,
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-07-22T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714024",
+        "observed_at": null,
+        "raw_date": "2026-07-22",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "location_assertions": [
+        {
+          "schema": "cityscroll.meeting_location_assertion.v1",
+          "assertion_id": "location_assertion:meeting:city_record:20260714024::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260714024",
+          "record_id": null,
+          "role": "venue",
+          "validity": "unlocated",
+          "attendance_meaning": "not_stated",
+          "original_address": null,
+          "venue_name": null,
+          "components": null,
+          "wrapper": null,
+          "source_field": "venue",
+          "source_passage": null,
+          "passage_locator": null,
+          "passage_text_sha256": null,
+          "source_receipt": null
+        }
+      ],
+      "participation": null,
+      "committee": null,
+      "agency": "Finance",
+      "board_name": null,
+      "description": null,
+      "search_text": "Notice of Adoption of Amendment of Rules Relating to Utility Company Properties Finance",
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "meeting_documents": [],
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714024",
+      "source_system": "city_record",
+      "meeting_origin": "unknown",
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260714024",
+        "legacy_fragment_href": "#notice/20260714024",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714024"
+      },
+      "request_id": "20260714024",
+      "source_record_id": null,
+      "board_id": null,
+      "agency_name": "Finance",
+      "short_title": "Notice of Adoption of Amendment of Rules Relating to Utility Company Properties",
+      "start_date": "2026-07-22T00:00:00.000",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "utility",
+          "company",
+          "properties"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "object_type": "meeting",
@@ -3914,31 +5210,31 @@
       }
     },
     {
-      "type_of_notice_description": "Notice",
+      "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260714024",
+      "meeting_id": "meeting:city_record:20260713006",
       "source_keys": [
         {
           "source_system": "city_record",
           "key_type": "request_id",
-          "value": "20260714024"
+          "value": "20260713006"
         }
       ],
-      "publisher_identifier": "20260714024",
-      "title": "Notice of Adoption of Amendment of Rules Relating to Utility Company Properties",
+      "publisher_identifier": "20260713006",
+      "title": "DCWP NOH Rules Relating to Waitlist for GV Licenses",
       "event_date": null,
       "event_end": null,
       "schedule": {
         "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-07-22T00:00:00",
+        "starts_at": "2026-07-20T00:00:00",
         "timezone": "America/New_York",
         "precision": "exact_time",
         "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714024",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260713006",
         "observed_at": null,
-        "raw_date": "2026-07-22",
+        "raw_date": "2026-07-20",
         "raw_time": "00:00:00",
         "status": "resolved"
       },
@@ -3952,8 +5248,8 @@
       "location_assertions": [
         {
           "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260714024::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260714024",
+          "assertion_id": "location_assertion:meeting:city_record:20260713006::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260713006",
           "record_id": null,
           "role": "venue",
           "validity": "unlocated",
@@ -3971,10 +5267,10 @@
       ],
       "participation": null,
       "committee": null,
-      "agency": "Finance",
+      "agency": "Consumer and Worker Protection",
       "board_name": null,
       "description": null,
-      "search_text": "Notice of Adoption of Amendment of Rules Relating to Utility Company Properties Finance",
+      "search_text": "DCWP NOH Rules Relating to Waitlist for GV Licenses Consumer and Worker Protection",
       "affected_area": {
         "scope": "citywide",
         "derivation": {
@@ -3991,7 +5287,7 @@
         "source": "rule-scope"
       },
       "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714024",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260713006",
       "source_system": "city_record",
       "meeting_origin": "unknown",
       "source_receipt": null,
@@ -4001,26 +5297,26 @@
         "board_ref": null
       },
       "compatibility": {
-        "legacy_notice_href": "/notices/20260714024",
-        "legacy_fragment_href": "#notice/20260714024",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714024"
+        "legacy_notice_href": "/notices/20260713006",
+        "legacy_fragment_href": "#notice/20260713006",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260713006"
       },
-      "request_id": "20260714024",
+      "request_id": "20260713006",
       "source_record_id": null,
       "board_id": null,
-      "agency_name": "Finance",
-      "short_title": "Notice of Adoption of Amendment of Rules Relating to Utility Company Properties",
-      "start_date": "2026-07-22T00:00:00.000",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOH Rules Relating to Waitlist for GV Licenses",
+      "start_date": "2026-07-20T00:00:00.000",
       "rule_evidence": {
         "schema": "cityscroll.rule_evidence_stamp.v1",
         "topic_keys": [
-          "utility",
-          "company",
-          "properties"
+          "dcwp",
+          "waitlist",
+          "licenses"
         ],
         "body_topic_keys": [],
         "citation_keys": [],
-        "lifecycle_status": "adopted",
+        "lifecycle_status": "unknown",
         "effective_date": null,
         "adoption_date": null,
         "negative_evidence": []
@@ -4175,31 +5471,31 @@
       }
     },
     {
-      "type_of_notice_description": "Public Hearings",
+      "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260713006",
+      "meeting_id": "meeting:city_record:20260708018",
       "source_keys": [
         {
           "source_system": "city_record",
           "key_type": "request_id",
-          "value": "20260713006"
+          "value": "20260708018"
         }
       ],
-      "publisher_identifier": "20260713006",
-      "title": "DCWP NOH Rules Relating to Waitlist for GV Licenses",
+      "publisher_identifier": "20260708018",
+      "title": "NOTICE OF REOPENING OF PUBLIC COMMENT PERIOD ON PROPOSED RULES",
       "event_date": null,
       "event_end": null,
       "schedule": {
         "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-07-20T00:00:00",
+        "starts_at": "2026-07-15T00:00:00",
         "timezone": "America/New_York",
         "precision": "exact_time",
         "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260713006",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708018",
         "observed_at": null,
-        "raw_date": "2026-07-20",
+        "raw_date": "2026-07-15",
         "raw_time": "00:00:00",
         "status": "resolved"
       },
@@ -4209,16 +5505,18 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": null,
+      "venue": {
+        "mode": "virtual"
+      },
       "location_assertions": [
         {
           "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260713006::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260713006",
+          "assertion_id": "location_assertion:meeting:city_record:20260708018::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260708018",
           "record_id": null,
           "role": "venue",
           "validity": "unlocated",
-          "attendance_meaning": "not_stated",
+          "attendance_meaning": "remote",
           "original_address": null,
           "venue_name": null,
           "components": null,
@@ -4232,10 +5530,10 @@
       ],
       "participation": null,
       "committee": null,
-      "agency": "Consumer and Worker Protection",
+      "agency": "Board of Correction",
       "board_name": null,
       "description": null,
-      "search_text": "DCWP NOH Rules Relating to Waitlist for GV Licenses Consumer and Worker Protection",
+      "search_text": "NOTICE OF REOPENING OF PUBLIC COMMENT PERIOD ON PROPOSED RULES Board of Correction",
       "affected_area": {
         "scope": "citywide",
         "derivation": {
@@ -4252,7 +5550,7 @@
         "source": "rule-scope"
       },
       "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260713006",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708018",
       "source_system": "city_record",
       "meeting_origin": "unknown",
       "source_receipt": null,
@@ -4262,26 +5560,78 @@
         "board_ref": null
       },
       "compatibility": {
-        "legacy_notice_href": "/notices/20260713006",
-        "legacy_fragment_href": "#notice/20260713006",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260713006"
+        "legacy_notice_href": "/notices/20260708018",
+        "legacy_fragment_href": "#notice/20260708018",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708018"
       },
-      "request_id": "20260713006",
+      "request_id": "20260708018",
       "source_record_id": null,
       "board_id": null,
-      "agency_name": "Consumer and Worker Protection",
-      "short_title": "DCWP NOH Rules Relating to Waitlist for GV Licenses",
-      "start_date": "2026-07-20T00:00:00.000",
+      "agency_name": "Board of Correction",
+      "short_title": "NOTICE OF REOPENING OF PUBLIC COMMENT PERIOD ON PROPOSED RULES",
+      "start_date": "2026-07-15T00:00:00.000",
       "rule_evidence": {
         "schema": "cityscroll.rule_evidence_stamp.v1",
         "topic_keys": [
-          "dcwp",
-          "waitlist",
-          "licenses"
+          "reopening",
+          "period",
+          "board",
+          "correction",
+          "concerning",
+          "minimum",
+          "standards",
+          "related",
+          "mental",
+          "health",
+          "care",
+          "proposals",
+          "first",
+          "published",
+          "record",
+          "january",
+          "anyone",
+          "through",
+          "there",
+          "deadline",
+          "august",
+          "review",
+          "made",
+          "online",
+          "going",
+          "received",
+          "available"
         ],
-        "body_topic_keys": [],
+        "body_topic_keys": [
+          "reopening",
+          "period",
+          "board",
+          "correction",
+          "concerning",
+          "minimum",
+          "standards",
+          "related",
+          "mental",
+          "health",
+          "care",
+          "proposals",
+          "first",
+          "published",
+          "record",
+          "january",
+          "anyone",
+          "through",
+          "there",
+          "deadline",
+          "august",
+          "review",
+          "made",
+          "online",
+          "going",
+          "received",
+          "available"
+        ],
         "citation_keys": [],
-        "lifecycle_status": "unknown",
+        "lifecycle_status": "proposal",
         "effective_date": null,
         "adoption_date": null,
         "negative_evidence": []
@@ -4529,27 +5879,27 @@
       "section_name": "Agency Rules",
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260708018",
+      "meeting_id": "meeting:city_record:20260706041",
       "source_keys": [
         {
           "source_system": "city_record",
           "key_type": "request_id",
-          "value": "20260708018"
+          "value": "20260706041"
         }
       ],
-      "publisher_identifier": "20260708018",
-      "title": "NOTICE OF REOPENING OF PUBLIC COMMENT PERIOD ON PROPOSED RULES",
+      "publisher_identifier": "20260706041",
+      "title": "Notice of Adoption: City-Owned Bicycle Racks",
       "event_date": null,
       "event_end": null,
       "schedule": {
         "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-07-15T00:00:00",
+        "starts_at": "2026-07-14T00:00:00",
         "timezone": "America/New_York",
         "precision": "exact_time",
         "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708018",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706041",
         "observed_at": null,
-        "raw_date": "2026-07-15",
+        "raw_date": "2026-07-14",
         "raw_time": "00:00:00",
         "status": "resolved"
       },
@@ -4563,8 +5913,8 @@
       "location_assertions": [
         {
           "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260708018::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260708018",
+          "assertion_id": "location_assertion:meeting:city_record:20260706041::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260706041",
           "record_id": null,
           "role": "venue",
           "validity": "unlocated",
@@ -4582,10 +5932,10 @@
       ],
       "participation": null,
       "committee": null,
-      "agency": "Board of Correction",
+      "agency": "Transportation",
       "board_name": null,
       "description": null,
-      "search_text": "NOTICE OF REOPENING OF PUBLIC COMMENT PERIOD ON PROPOSED RULES Board of Correction",
+      "search_text": "Notice of Adoption: City-Owned Bicycle Racks Transportation",
       "affected_area": {
         "scope": "citywide",
         "derivation": {
@@ -4602,7 +5952,7 @@
         "source": "rule-scope"
       },
       "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708018",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706041",
       "source_system": "city_record",
       "meeting_origin": "unknown",
       "source_receipt": null,
@@ -4612,78 +5962,26 @@
         "board_ref": null
       },
       "compatibility": {
-        "legacy_notice_href": "/notices/20260708018",
-        "legacy_fragment_href": "#notice/20260708018",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708018"
+        "legacy_notice_href": "/notices/20260706041",
+        "legacy_fragment_href": "#notice/20260706041",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706041"
       },
-      "request_id": "20260708018",
+      "request_id": "20260706041",
       "source_record_id": null,
       "board_id": null,
-      "agency_name": "Board of Correction",
-      "short_title": "NOTICE OF REOPENING OF PUBLIC COMMENT PERIOD ON PROPOSED RULES",
-      "start_date": "2026-07-15T00:00:00.000",
+      "agency_name": "Transportation",
+      "short_title": "Notice of Adoption: City-Owned Bicycle Racks",
+      "start_date": "2026-07-14T00:00:00.000",
       "rule_evidence": {
         "schema": "cityscroll.rule_evidence_stamp.v1",
         "topic_keys": [
-          "reopening",
-          "period",
-          "board",
-          "correction",
-          "concerning",
-          "minimum",
-          "standards",
-          "related",
-          "mental",
-          "health",
-          "care",
-          "proposals",
-          "first",
-          "published",
-          "record",
-          "january",
-          "anyone",
-          "through",
-          "there",
-          "deadline",
-          "august",
-          "review",
-          "made",
-          "online",
-          "going",
-          "received",
-          "available"
+          "owned",
+          "bicycle",
+          "racks"
         ],
-        "body_topic_keys": [
-          "reopening",
-          "period",
-          "board",
-          "correction",
-          "concerning",
-          "minimum",
-          "standards",
-          "related",
-          "mental",
-          "health",
-          "care",
-          "proposals",
-          "first",
-          "published",
-          "record",
-          "january",
-          "anyone",
-          "through",
-          "there",
-          "deadline",
-          "august",
-          "review",
-          "made",
-          "online",
-          "going",
-          "received",
-          "available"
-        ],
+        "body_topic_keys": [],
         "citation_keys": [],
-        "lifecycle_status": "proposal",
+        "lifecycle_status": "adopted",
         "effective_date": null,
         "adoption_date": null,
         "negative_evidence": []
@@ -4808,134 +6106,6 @@
           "final",
           "sidewalk",
           "sheds"
-        ],
-        "body_topic_keys": [],
-        "citation_keys": [],
-        "lifecycle_status": "adopted",
-        "effective_date": null,
-        "adoption_date": null,
-        "negative_evidence": []
-      },
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260706041",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260706041"
-        }
-      ],
-      "publisher_identifier": "20260706041",
-      "title": "Notice of Adoption: City-Owned Bicycle Racks",
-      "event_date": null,
-      "event_end": null,
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-07-14T00:00:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706041",
-        "observed_at": null,
-        "raw_date": "2026-07-14",
-        "raw_time": "00:00:00",
-        "status": "resolved"
-      },
-      "meeting_family": "descriptive_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": null,
-      "location_assertions": [
-        {
-          "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260706041::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260706041",
-          "record_id": null,
-          "role": "venue",
-          "validity": "unlocated",
-          "attendance_meaning": "not_stated",
-          "original_address": null,
-          "venue_name": null,
-          "components": null,
-          "wrapper": null,
-          "source_field": "venue",
-          "source_passage": null,
-          "passage_locator": null,
-          "passage_text_sha256": null,
-          "source_receipt": null
-        }
-      ],
-      "participation": null,
-      "committee": null,
-      "agency": "Transportation",
-      "board_name": null,
-      "description": null,
-      "search_text": "Notice of Adoption: City-Owned Bicycle Racks Transportation",
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706041",
-      "source_system": "city_record",
-      "meeting_origin": "unknown",
-      "source_receipt": null,
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260706041",
-        "legacy_fragment_href": "#notice/20260706041",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706041"
-      },
-      "request_id": "20260706041",
-      "source_record_id": null,
-      "board_id": null,
-      "agency_name": "Transportation",
-      "short_title": "Notice of Adoption: City-Owned Bicycle Racks",
-      "start_date": "2026-07-14T00:00:00.000",
-      "rule_evidence": {
-        "schema": "cityscroll.rule_evidence_stamp.v1",
-        "topic_keys": [
-          "owned",
-          "bicycle",
-          "racks"
         ],
         "body_topic_keys": [],
         "citation_keys": [],
@@ -7125,20 +8295,20 @@
       }
     },
     {
-      "type_of_notice_description": "Public Hearings",
+      "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260605058",
+      "meeting_id": "meeting:city_record:20260602045",
       "source_keys": [
         {
           "source_system": "city_record",
           "key_type": "request_id",
-          "value": "20260605058"
+          "value": "20260602045"
         }
       ],
-      "publisher_identifier": "20260605058",
-      "title": "Proposed Rule for Surcharge on Property That Does Not Serve as a Primary Residence",
+      "publisher_identifier": "20260602045",
+      "title": "NOTICE OF ADOPTION OF FINAL RULE REGARDING PETITIONS FOR AGENCY RULEMAKING",
       "event_date": null,
       "event_end": null,
       "schedule": {
@@ -7147,7 +8317,7 @@
         "timezone": "America/New_York",
         "precision": "exact_time",
         "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605058",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602045",
         "observed_at": null,
         "raw_date": "2026-06-09",
         "raw_time": "00:00:00",
@@ -7163,8 +8333,8 @@
       "location_assertions": [
         {
           "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260605058::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260605058",
+          "assertion_id": "location_assertion:meeting:city_record:20260602045::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260602045",
           "record_id": null,
           "role": "venue",
           "validity": "unlocated",
@@ -7182,10 +8352,10 @@
       ],
       "participation": null,
       "committee": null,
-      "agency": "Finance",
+      "agency": "Small Business Services",
       "board_name": null,
       "description": null,
-      "search_text": "Proposed Rule for Surcharge on Property That Does Not Serve as a Primary Residence Finance",
+      "search_text": "NOTICE OF ADOPTION OF FINAL RULE REGARDING PETITIONS FOR AGENCY RULEMAKING Small Business Services",
       "affected_area": {
         "scope": "citywide",
         "derivation": {
@@ -7202,7 +8372,7 @@
         "source": "rule-scope"
       },
       "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605058",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602045",
       "source_system": "city_record",
       "meeting_origin": "unknown",
       "source_receipt": null,
@@ -7212,29 +8382,26 @@
         "board_ref": null
       },
       "compatibility": {
-        "legacy_notice_href": "/notices/20260605058",
-        "legacy_fragment_href": "#notice/20260605058",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605058"
+        "legacy_notice_href": "/notices/20260602045",
+        "legacy_fragment_href": "#notice/20260602045",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602045"
       },
-      "request_id": "20260605058",
+      "request_id": "20260602045",
       "source_record_id": null,
       "board_id": null,
-      "agency_name": "Finance",
-      "short_title": "Proposed Rule for Surcharge on Property That Does Not Serve as a Primary Residence",
+      "agency_name": "Small Business Services",
+      "short_title": "NOTICE OF ADOPTION OF FINAL RULE REGARDING PETITIONS FOR AGENCY RULEMAKING",
       "start_date": "2026-06-09T00:00:00.000",
       "rule_evidence": {
         "schema": "cityscroll.rule_evidence_stamp.v1",
         "topic_keys": [
-          "surcharge",
-          "property",
-          "does",
-          "serve",
-          "primary",
-          "residence"
+          "final",
+          "petitions",
+          "rulemaking"
         ],
         "body_topic_keys": [],
         "citation_keys": [],
-        "lifecycle_status": "proposal",
+        "lifecycle_status": "adopted",
         "effective_date": null,
         "adoption_date": null,
         "negative_evidence": []
@@ -7385,20 +8552,20 @@
       }
     },
     {
-      "type_of_notice_description": "Notice",
+      "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260602045",
+      "meeting_id": "meeting:city_record:20260605058",
       "source_keys": [
         {
           "source_system": "city_record",
           "key_type": "request_id",
-          "value": "20260602045"
+          "value": "20260605058"
         }
       ],
-      "publisher_identifier": "20260602045",
-      "title": "NOTICE OF ADOPTION OF FINAL RULE REGARDING PETITIONS FOR AGENCY RULEMAKING",
+      "publisher_identifier": "20260605058",
+      "title": "Proposed Rule for Surcharge on Property That Does Not Serve as a Primary Residence",
       "event_date": null,
       "event_end": null,
       "schedule": {
@@ -7407,7 +8574,7 @@
         "timezone": "America/New_York",
         "precision": "exact_time",
         "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602045",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605058",
         "observed_at": null,
         "raw_date": "2026-06-09",
         "raw_time": "00:00:00",
@@ -7423,8 +8590,8 @@
       "location_assertions": [
         {
           "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260602045::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260602045",
+          "assertion_id": "location_assertion:meeting:city_record:20260605058::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260605058",
           "record_id": null,
           "role": "venue",
           "validity": "unlocated",
@@ -7442,10 +8609,10 @@
       ],
       "participation": null,
       "committee": null,
-      "agency": "Small Business Services",
+      "agency": "Finance",
       "board_name": null,
       "description": null,
-      "search_text": "NOTICE OF ADOPTION OF FINAL RULE REGARDING PETITIONS FOR AGENCY RULEMAKING Small Business Services",
+      "search_text": "Proposed Rule for Surcharge on Property That Does Not Serve as a Primary Residence Finance",
       "affected_area": {
         "scope": "citywide",
         "derivation": {
@@ -7462,7 +8629,7 @@
         "source": "rule-scope"
       },
       "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602045",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605058",
       "source_system": "city_record",
       "meeting_origin": "unknown",
       "source_receipt": null,
@@ -7472,26 +8639,29 @@
         "board_ref": null
       },
       "compatibility": {
-        "legacy_notice_href": "/notices/20260602045",
-        "legacy_fragment_href": "#notice/20260602045",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602045"
+        "legacy_notice_href": "/notices/20260605058",
+        "legacy_fragment_href": "#notice/20260605058",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605058"
       },
-      "request_id": "20260602045",
+      "request_id": "20260605058",
       "source_record_id": null,
       "board_id": null,
-      "agency_name": "Small Business Services",
-      "short_title": "NOTICE OF ADOPTION OF FINAL RULE REGARDING PETITIONS FOR AGENCY RULEMAKING",
+      "agency_name": "Finance",
+      "short_title": "Proposed Rule for Surcharge on Property That Does Not Serve as a Primary Residence",
       "start_date": "2026-06-09T00:00:00.000",
       "rule_evidence": {
         "schema": "cityscroll.rule_evidence_stamp.v1",
         "topic_keys": [
-          "final",
-          "petitions",
-          "rulemaking"
+          "surcharge",
+          "property",
+          "does",
+          "serve",
+          "primary",
+          "residence"
         ],
         "body_topic_keys": [],
         "citation_keys": [],
-        "lifecycle_status": "adopted",
+        "lifecycle_status": "proposal",
         "effective_date": null,
         "adoption_date": null,
         "negative_evidence": []
@@ -7905,134 +9075,6 @@
       }
     },
     {
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260522007",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260522007"
-        }
-      ],
-      "publisher_identifier": "20260522007",
-      "title": "Further Amendment of Rules Relating to Vital Records",
-      "event_date": null,
-      "event_end": null,
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-05-29T00:00:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522007",
-        "observed_at": null,
-        "raw_date": "2026-05-29",
-        "raw_time": "00:00:00",
-        "status": "resolved"
-      },
-      "meeting_family": "descriptive_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": null,
-      "location_assertions": [
-        {
-          "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260522007::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260522007",
-          "record_id": null,
-          "role": "venue",
-          "validity": "unlocated",
-          "attendance_meaning": "not_stated",
-          "original_address": null,
-          "venue_name": null,
-          "components": null,
-          "wrapper": null,
-          "source_field": "venue",
-          "source_passage": null,
-          "passage_locator": null,
-          "passage_text_sha256": null,
-          "source_receipt": null
-        }
-      ],
-      "participation": null,
-      "committee": null,
-      "agency": "Health and Mental Hygiene",
-      "board_name": null,
-      "description": null,
-      "search_text": "Further Amendment of Rules Relating to Vital Records Health and Mental Hygiene",
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522007",
-      "source_system": "city_record",
-      "meeting_origin": "unknown",
-      "source_receipt": null,
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260522007",
-        "legacy_fragment_href": "#notice/20260522007",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522007"
-      },
-      "request_id": "20260522007",
-      "source_record_id": null,
-      "board_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Further Amendment of Rules Relating to Vital Records",
-      "start_date": "2026-05-29T00:00:00.000",
-      "rule_evidence": {
-        "schema": "cityscroll.rule_evidence_stamp.v1",
-        "topic_keys": [
-          "further",
-          "vital",
-          "records"
-        ],
-        "body_topic_keys": [],
-        "citation_keys": [],
-        "lifecycle_status": "unknown",
-        "effective_date": null,
-        "adoption_date": null,
-        "negative_evidence": []
-      },
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "object_type": "meeting",
@@ -8288,31 +9330,31 @@
       }
     },
     {
-      "type_of_notice_description": "Notice",
+      "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260519037",
+      "meeting_id": "meeting:city_record:20260522007",
       "source_keys": [
         {
           "source_system": "city_record",
           "key_type": "request_id",
-          "value": "20260519037"
+          "value": "20260522007"
         }
       ],
-      "publisher_identifier": "20260519037",
-      "title": "DCP FY2027 Regulatory Agenda",
+      "publisher_identifier": "20260522007",
+      "title": "Further Amendment of Rules Relating to Vital Records",
       "event_date": null,
       "event_end": null,
       "schedule": {
         "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-05-27T00:00:00",
+        "starts_at": "2026-05-29T00:00:00",
         "timezone": "America/New_York",
         "precision": "exact_time",
         "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260519037",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522007",
         "observed_at": null,
-        "raw_date": "2026-05-27",
+        "raw_date": "2026-05-29",
         "raw_time": "00:00:00",
         "status": "resolved"
       },
@@ -8326,8 +9368,8 @@
       "location_assertions": [
         {
           "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260519037::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260519037",
+          "assertion_id": "location_assertion:meeting:city_record:20260522007::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260522007",
           "record_id": null,
           "role": "venue",
           "validity": "unlocated",
@@ -8345,10 +9387,10 @@
       ],
       "participation": null,
       "committee": null,
-      "agency": "City Planning",
+      "agency": "Health and Mental Hygiene",
       "board_name": null,
       "description": null,
-      "search_text": "DCP FY2027 Regulatory Agenda City Planning",
+      "search_text": "Further Amendment of Rules Relating to Vital Records Health and Mental Hygiene",
       "affected_area": {
         "scope": "citywide",
         "derivation": {
@@ -8365,7 +9407,7 @@
         "source": "rule-scope"
       },
       "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260519037",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522007",
       "source_system": "city_record",
       "meeting_origin": "unknown",
       "source_receipt": null,
@@ -8375,26 +9417,26 @@
         "board_ref": null
       },
       "compatibility": {
-        "legacy_notice_href": "/notices/20260519037",
-        "legacy_fragment_href": "#notice/20260519037",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260519037"
+        "legacy_notice_href": "/notices/20260522007",
+        "legacy_fragment_href": "#notice/20260522007",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522007"
       },
-      "request_id": "20260519037",
+      "request_id": "20260522007",
       "source_record_id": null,
       "board_id": null,
-      "agency_name": "City Planning",
-      "short_title": "DCP FY2027 Regulatory Agenda",
-      "start_date": "2026-05-27T00:00:00.000",
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Further Amendment of Rules Relating to Vital Records",
+      "start_date": "2026-05-29T00:00:00.000",
       "rule_evidence": {
         "schema": "cityscroll.rule_evidence_stamp.v1",
         "topic_keys": [
-          "fy2027",
-          "regulatory",
-          "agenda"
+          "further",
+          "vital",
+          "records"
         ],
         "body_topic_keys": [],
         "citation_keys": [],
-        "lifecycle_status": "notice",
+        "lifecycle_status": "unknown",
         "effective_date": null,
         "adoption_date": null,
         "negative_evidence": []
@@ -8518,6 +9560,134 @@
         "topic_keys": [
           "termination",
           "pregnancy"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260519037",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260519037"
+        }
+      ],
+      "publisher_identifier": "20260519037",
+      "title": "DCP FY2027 Regulatory Agenda",
+      "event_date": null,
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-05-27T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260519037",
+        "observed_at": null,
+        "raw_date": "2026-05-27",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "location_assertions": [
+        {
+          "schema": "cityscroll.meeting_location_assertion.v1",
+          "assertion_id": "location_assertion:meeting:city_record:20260519037::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260519037",
+          "record_id": null,
+          "role": "venue",
+          "validity": "unlocated",
+          "attendance_meaning": "not_stated",
+          "original_address": null,
+          "venue_name": null,
+          "components": null,
+          "wrapper": null,
+          "source_field": "venue",
+          "source_passage": null,
+          "passage_locator": null,
+          "passage_text_sha256": null,
+          "source_receipt": null
+        }
+      ],
+      "participation": null,
+      "committee": null,
+      "agency": "City Planning",
+      "board_name": null,
+      "description": null,
+      "search_text": "DCP FY2027 Regulatory Agenda City Planning",
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "meeting_documents": [],
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260519037",
+      "source_system": "city_record",
+      "meeting_origin": "unknown",
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260519037",
+        "legacy_fragment_href": "#notice/20260519037",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260519037"
+      },
+      "request_id": "20260519037",
+      "source_record_id": null,
+      "board_id": null,
+      "agency_name": "City Planning",
+      "short_title": "DCP FY2027 Regulatory Agenda",
+      "start_date": "2026-05-27T00:00:00.000",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "fy2027",
+          "regulatory",
+          "agenda"
         ],
         "body_topic_keys": [],
         "citation_keys": [],
@@ -8773,135 +9943,6 @@
           "resolution",
           "board",
           "health"
-        ],
-        "body_topic_keys": [],
-        "citation_keys": [],
-        "lifecycle_status": "notice",
-        "effective_date": null,
-        "adoption_date": null,
-        "negative_evidence": []
-      },
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260515003",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260515003"
-        }
-      ],
-      "publisher_identifier": "20260515003",
-      "title": "MOCS FY27 Regulatory Agenda",
-      "event_date": null,
-      "event_end": null,
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-05-20T00:00:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260515003",
-        "observed_at": null,
-        "raw_date": "2026-05-20",
-        "raw_time": "00:00:00",
-        "status": "resolved"
-      },
-      "meeting_family": "descriptive_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": null,
-      "location_assertions": [
-        {
-          "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260515003::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260515003",
-          "record_id": null,
-          "role": "venue",
-          "validity": "unlocated",
-          "attendance_meaning": "not_stated",
-          "original_address": null,
-          "venue_name": null,
-          "components": null,
-          "wrapper": null,
-          "source_field": "venue",
-          "source_passage": null,
-          "passage_locator": null,
-          "passage_text_sha256": null,
-          "source_receipt": null
-        }
-      ],
-      "participation": null,
-      "committee": null,
-      "agency": "Mayor's Office of Contract Services",
-      "board_name": null,
-      "description": null,
-      "search_text": "MOCS FY27 Regulatory Agenda Mayor's Office of Contract Services",
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260515003",
-      "source_system": "city_record",
-      "meeting_origin": "unknown",
-      "source_receipt": null,
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260515003",
-        "legacy_fragment_href": "#notice/20260515003",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260515003"
-      },
-      "request_id": "20260515003",
-      "source_record_id": null,
-      "board_id": null,
-      "agency_name": "Mayor's Office of Contract Services",
-      "short_title": "MOCS FY27 Regulatory Agenda",
-      "start_date": "2026-05-20T00:00:00.000",
-      "rule_evidence": {
-        "schema": "cityscroll.rule_evidence_stamp.v1",
-        "topic_keys": [
-          "mocs",
-          "fy27",
-          "regulatory",
-          "agenda"
         ],
         "body_topic_keys": [],
         "citation_keys": [],
@@ -9189,6 +10230,135 @@
       "section_name": "Agency Rules",
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260515003",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260515003"
+        }
+      ],
+      "publisher_identifier": "20260515003",
+      "title": "MOCS FY27 Regulatory Agenda",
+      "event_date": null,
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-05-20T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260515003",
+        "observed_at": null,
+        "raw_date": "2026-05-20",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "location_assertions": [
+        {
+          "schema": "cityscroll.meeting_location_assertion.v1",
+          "assertion_id": "location_assertion:meeting:city_record:20260515003::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260515003",
+          "record_id": null,
+          "role": "venue",
+          "validity": "unlocated",
+          "attendance_meaning": "not_stated",
+          "original_address": null,
+          "venue_name": null,
+          "components": null,
+          "wrapper": null,
+          "source_field": "venue",
+          "source_passage": null,
+          "passage_locator": null,
+          "passage_text_sha256": null,
+          "source_receipt": null
+        }
+      ],
+      "participation": null,
+      "committee": null,
+      "agency": "Mayor's Office of Contract Services",
+      "board_name": null,
+      "description": null,
+      "search_text": "MOCS FY27 Regulatory Agenda Mayor's Office of Contract Services",
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "meeting_documents": [],
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260515003",
+      "source_system": "city_record",
+      "meeting_origin": "unknown",
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260515003",
+        "legacy_fragment_href": "#notice/20260515003",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260515003"
+      },
+      "request_id": "20260515003",
+      "source_record_id": null,
+      "board_id": null,
+      "agency_name": "Mayor's Office of Contract Services",
+      "short_title": "MOCS FY27 Regulatory Agenda",
+      "start_date": "2026-05-20T00:00:00.000",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "mocs",
+          "fy27",
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
       "meeting_id": "meeting:city_record:20260512047",
       "source_keys": [
         {
@@ -9417,261 +10587,6 @@
           "agenda",
           "procedure",
           "capa"
-        ],
-        "body_topic_keys": [],
-        "citation_keys": [],
-        "lifecycle_status": "notice",
-        "effective_date": null,
-        "adoption_date": null,
-        "negative_evidence": []
-      },
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260514002",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260514002"
-        }
-      ],
-      "publisher_identifier": "20260514002",
-      "title": "DPR Proposed Amendment of Rules Relating to Special Event Permits",
-      "event_date": null,
-      "event_end": null,
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-05-18T00:00:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260514002",
-        "observed_at": null,
-        "raw_date": "2026-05-18",
-        "raw_time": "00:00:00",
-        "status": "resolved"
-      },
-      "meeting_family": "descriptive_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": null,
-      "location_assertions": [
-        {
-          "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260514002::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260514002",
-          "record_id": null,
-          "role": "venue",
-          "validity": "unlocated",
-          "attendance_meaning": "not_stated",
-          "original_address": null,
-          "venue_name": null,
-          "components": null,
-          "wrapper": null,
-          "source_field": "venue",
-          "source_passage": null,
-          "passage_locator": null,
-          "passage_text_sha256": null,
-          "source_receipt": null
-        }
-      ],
-      "participation": null,
-      "committee": null,
-      "agency": "Parks and Recreation",
-      "board_name": null,
-      "description": null,
-      "search_text": "DPR Proposed Amendment of Rules Relating to Special Event Permits Parks and Recreation",
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260514002",
-      "source_system": "city_record",
-      "meeting_origin": "unknown",
-      "source_receipt": null,
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260514002",
-        "legacy_fragment_href": "#notice/20260514002",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260514002"
-      },
-      "request_id": "20260514002",
-      "source_record_id": null,
-      "board_id": null,
-      "agency_name": "Parks and Recreation",
-      "short_title": "DPR Proposed Amendment of Rules Relating to Special Event Permits",
-      "start_date": "2026-05-18T00:00:00.000",
-      "rule_evidence": {
-        "schema": "cityscroll.rule_evidence_stamp.v1",
-        "topic_keys": [
-          "special",
-          "event",
-          "permits"
-        ],
-        "body_topic_keys": [],
-        "citation_keys": [],
-        "lifecycle_status": "proposal",
-        "effective_date": null,
-        "adoption_date": null,
-        "negative_evidence": []
-      },
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260512003",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260512003"
-        }
-      ],
-      "publisher_identifier": "20260512003",
-      "title": "SBS Regulatory Agenda FY 2027",
-      "event_date": null,
-      "event_end": null,
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-05-18T00:00:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512003",
-        "observed_at": null,
-        "raw_date": "2026-05-18",
-        "raw_time": "00:00:00",
-        "status": "resolved"
-      },
-      "meeting_family": "descriptive_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": null,
-      "location_assertions": [
-        {
-          "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260512003::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260512003",
-          "record_id": null,
-          "role": "venue",
-          "validity": "unlocated",
-          "attendance_meaning": "not_stated",
-          "original_address": null,
-          "venue_name": null,
-          "components": null,
-          "wrapper": null,
-          "source_field": "venue",
-          "source_passage": null,
-          "passage_locator": null,
-          "passage_text_sha256": null,
-          "source_receipt": null
-        }
-      ],
-      "participation": null,
-      "committee": null,
-      "agency": "Small Business Services",
-      "board_name": null,
-      "description": null,
-      "search_text": "SBS Regulatory Agenda FY 2027 Small Business Services",
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512003",
-      "source_system": "city_record",
-      "meeting_origin": "unknown",
-      "source_receipt": null,
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260512003",
-        "legacy_fragment_href": "#notice/20260512003",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512003"
-      },
-      "request_id": "20260512003",
-      "source_record_id": null,
-      "board_id": null,
-      "agency_name": "Small Business Services",
-      "short_title": "SBS Regulatory Agenda FY 2027",
-      "start_date": "2026-05-18T00:00:00.000",
-      "rule_evidence": {
-        "schema": "cityscroll.rule_evidence_stamp.v1",
-        "topic_keys": [
-          "regulatory",
-          "agenda"
         ],
         "body_topic_keys": [],
         "citation_keys": [],
@@ -9956,6 +10871,261 @@
       }
     },
     {
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260512003",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260512003"
+        }
+      ],
+      "publisher_identifier": "20260512003",
+      "title": "SBS Regulatory Agenda FY 2027",
+      "event_date": null,
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-05-18T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512003",
+        "observed_at": null,
+        "raw_date": "2026-05-18",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "location_assertions": [
+        {
+          "schema": "cityscroll.meeting_location_assertion.v1",
+          "assertion_id": "location_assertion:meeting:city_record:20260512003::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260512003",
+          "record_id": null,
+          "role": "venue",
+          "validity": "unlocated",
+          "attendance_meaning": "not_stated",
+          "original_address": null,
+          "venue_name": null,
+          "components": null,
+          "wrapper": null,
+          "source_field": "venue",
+          "source_passage": null,
+          "passage_locator": null,
+          "passage_text_sha256": null,
+          "source_receipt": null
+        }
+      ],
+      "participation": null,
+      "committee": null,
+      "agency": "Small Business Services",
+      "board_name": null,
+      "description": null,
+      "search_text": "SBS Regulatory Agenda FY 2027 Small Business Services",
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "meeting_documents": [],
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512003",
+      "source_system": "city_record",
+      "meeting_origin": "unknown",
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260512003",
+        "legacy_fragment_href": "#notice/20260512003",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512003"
+      },
+      "request_id": "20260512003",
+      "source_record_id": null,
+      "board_id": null,
+      "agency_name": "Small Business Services",
+      "short_title": "SBS Regulatory Agenda FY 2027",
+      "start_date": "2026-05-18T00:00:00.000",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260514002",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260514002"
+        }
+      ],
+      "publisher_identifier": "20260514002",
+      "title": "DPR Proposed Amendment of Rules Relating to Special Event Permits",
+      "event_date": null,
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-05-18T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260514002",
+        "observed_at": null,
+        "raw_date": "2026-05-18",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "location_assertions": [
+        {
+          "schema": "cityscroll.meeting_location_assertion.v1",
+          "assertion_id": "location_assertion:meeting:city_record:20260514002::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260514002",
+          "record_id": null,
+          "role": "venue",
+          "validity": "unlocated",
+          "attendance_meaning": "not_stated",
+          "original_address": null,
+          "venue_name": null,
+          "components": null,
+          "wrapper": null,
+          "source_field": "venue",
+          "source_passage": null,
+          "passage_locator": null,
+          "passage_text_sha256": null,
+          "source_receipt": null
+        }
+      ],
+      "participation": null,
+      "committee": null,
+      "agency": "Parks and Recreation",
+      "board_name": null,
+      "description": null,
+      "search_text": "DPR Proposed Amendment of Rules Relating to Special Event Permits Parks and Recreation",
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "meeting_documents": [],
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260514002",
+      "source_system": "city_record",
+      "meeting_origin": "unknown",
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260514002",
+        "legacy_fragment_href": "#notice/20260514002",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260514002"
+      },
+      "request_id": "20260514002",
+      "source_record_id": null,
+      "board_id": null,
+      "agency_name": "Parks and Recreation",
+      "short_title": "DPR Proposed Amendment of Rules Relating to Special Event Permits",
+      "start_date": "2026-05-18T00:00:00.000",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "special",
+          "event",
+          "permits"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "object_type": "meeting",
@@ -10067,138 +11237,6 @@
         "body_topic_keys": [],
         "citation_keys": [],
         "lifecycle_status": "proposal",
-        "effective_date": null,
-        "adoption_date": null,
-        "negative_evidence": []
-      },
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260506027",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260506027"
-        }
-      ],
-      "publisher_identifier": "20260506027",
-      "title": "Notice of Adoption of Rules Relating to Speed Cameras and the Weigh-in-Motion Violation Monitoring System",
-      "event_date": null,
-      "event_end": null,
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-05-14T00:00:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260506027",
-        "observed_at": null,
-        "raw_date": "2026-05-14",
-        "raw_time": "00:00:00",
-        "status": "resolved"
-      },
-      "meeting_family": "descriptive_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": null,
-      "location_assertions": [
-        {
-          "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260506027::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260506027",
-          "record_id": null,
-          "role": "venue",
-          "validity": "unlocated",
-          "attendance_meaning": "not_stated",
-          "original_address": null,
-          "venue_name": null,
-          "components": null,
-          "wrapper": null,
-          "source_field": "venue",
-          "source_passage": null,
-          "passage_locator": null,
-          "passage_text_sha256": null,
-          "source_receipt": null
-        }
-      ],
-      "participation": null,
-      "committee": null,
-      "agency": "Finance",
-      "board_name": null,
-      "description": null,
-      "search_text": "Notice of Adoption of Rules Relating to Speed Cameras and the Weigh-in-Motion Violation Monitoring System Finance",
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260506027",
-      "source_system": "city_record",
-      "meeting_origin": "unknown",
-      "source_receipt": null,
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260506027",
-        "legacy_fragment_href": "#notice/20260506027",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260506027"
-      },
-      "request_id": "20260506027",
-      "source_record_id": null,
-      "board_id": null,
-      "agency_name": "Finance",
-      "short_title": "Notice of Adoption of Rules Relating to Speed Cameras and the Weigh-in-Motion Violation Monitoring System",
-      "start_date": "2026-05-14T00:00:00.000",
-      "rule_evidence": {
-        "schema": "cityscroll.rule_evidence_stamp.v1",
-        "topic_keys": [
-          "speed",
-          "cameras",
-          "weigh",
-          "motion",
-          "violation",
-          "monitoring",
-          "system"
-        ],
-        "body_topic_keys": [],
-        "citation_keys": [],
-        "lifecycle_status": "adopted",
         "effective_date": null,
         "adoption_date": null,
         "negative_evidence": []
@@ -10482,6 +11520,138 @@
       "section_name": "Agency Rules",
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260506027",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260506027"
+        }
+      ],
+      "publisher_identifier": "20260506027",
+      "title": "Notice of Adoption of Rules Relating to Speed Cameras and the Weigh-in-Motion Violation Monitoring System",
+      "event_date": null,
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-05-14T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260506027",
+        "observed_at": null,
+        "raw_date": "2026-05-14",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "location_assertions": [
+        {
+          "schema": "cityscroll.meeting_location_assertion.v1",
+          "assertion_id": "location_assertion:meeting:city_record:20260506027::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260506027",
+          "record_id": null,
+          "role": "venue",
+          "validity": "unlocated",
+          "attendance_meaning": "not_stated",
+          "original_address": null,
+          "venue_name": null,
+          "components": null,
+          "wrapper": null,
+          "source_field": "venue",
+          "source_passage": null,
+          "passage_locator": null,
+          "passage_text_sha256": null,
+          "source_receipt": null
+        }
+      ],
+      "participation": null,
+      "committee": null,
+      "agency": "Finance",
+      "board_name": null,
+      "description": null,
+      "search_text": "Notice of Adoption of Rules Relating to Speed Cameras and the Weigh-in-Motion Violation Monitoring System Finance",
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "meeting_documents": [],
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260506027",
+      "source_system": "city_record",
+      "meeting_origin": "unknown",
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260506027",
+        "legacy_fragment_href": "#notice/20260506027",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260506027"
+      },
+      "request_id": "20260506027",
+      "source_record_id": null,
+      "board_id": null,
+      "agency_name": "Finance",
+      "short_title": "Notice of Adoption of Rules Relating to Speed Cameras and the Weigh-in-Motion Violation Monitoring System",
+      "start_date": "2026-05-14T00:00:00.000",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "speed",
+          "cameras",
+          "weigh",
+          "motion",
+          "violation",
+          "monitoring",
+          "system"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
       "meeting_id": "meeting:city_record:20260506005",
       "source_keys": [
         {
@@ -10580,137 +11750,6 @@
         "topic_keys": [
           "regulatory",
           "agenda"
-        ],
-        "body_topic_keys": [],
-        "citation_keys": [],
-        "lifecycle_status": "notice",
-        "effective_date": null,
-        "adoption_date": null,
-        "negative_evidence": []
-      },
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260506019",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260506019"
-        }
-      ],
-      "publisher_identifier": "20260506019",
-      "title": "Amendment of Rules relating to Elevators, Escalators, Personnel Hoists and Moving Walks",
-      "event_date": null,
-      "event_end": null,
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-05-12T00:00:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260506019",
-        "observed_at": null,
-        "raw_date": "2026-05-12",
-        "raw_time": "00:00:00",
-        "status": "resolved"
-      },
-      "meeting_family": "descriptive_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": null,
-      "location_assertions": [
-        {
-          "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260506019::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260506019",
-          "record_id": null,
-          "role": "venue",
-          "validity": "unlocated",
-          "attendance_meaning": "not_stated",
-          "original_address": null,
-          "venue_name": null,
-          "components": null,
-          "wrapper": null,
-          "source_field": "venue",
-          "source_passage": null,
-          "passage_locator": null,
-          "passage_text_sha256": null,
-          "source_receipt": null
-        }
-      ],
-      "participation": null,
-      "committee": null,
-      "agency": "Buildings",
-      "board_name": null,
-      "description": null,
-      "search_text": "Amendment of Rules relating to Elevators, Escalators, Personnel Hoists and Moving Walks Buildings",
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260506019",
-      "source_system": "city_record",
-      "meeting_origin": "unknown",
-      "source_receipt": null,
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260506019",
-        "legacy_fragment_href": "#notice/20260506019",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260506019"
-      },
-      "request_id": "20260506019",
-      "source_record_id": null,
-      "board_id": null,
-      "agency_name": "Buildings",
-      "short_title": "Amendment of Rules relating to Elevators, Escalators, Personnel Hoists and Moving Walks",
-      "start_date": "2026-05-12T00:00:00.000",
-      "rule_evidence": {
-        "schema": "cityscroll.rule_evidence_stamp.v1",
-        "topic_keys": [
-          "elevators",
-          "escalators",
-          "personnel",
-          "hoists",
-          "moving",
-          "walks"
         ],
         "body_topic_keys": [],
         "citation_keys": [],
@@ -10845,6 +11884,137 @@
           "section:485"
         ],
         "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260506019",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260506019"
+        }
+      ],
+      "publisher_identifier": "20260506019",
+      "title": "Amendment of Rules relating to Elevators, Escalators, Personnel Hoists and Moving Walks",
+      "event_date": null,
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-05-12T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260506019",
+        "observed_at": null,
+        "raw_date": "2026-05-12",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "location_assertions": [
+        {
+          "schema": "cityscroll.meeting_location_assertion.v1",
+          "assertion_id": "location_assertion:meeting:city_record:20260506019::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260506019",
+          "record_id": null,
+          "role": "venue",
+          "validity": "unlocated",
+          "attendance_meaning": "not_stated",
+          "original_address": null,
+          "venue_name": null,
+          "components": null,
+          "wrapper": null,
+          "source_field": "venue",
+          "source_passage": null,
+          "passage_locator": null,
+          "passage_text_sha256": null,
+          "source_receipt": null
+        }
+      ],
+      "participation": null,
+      "committee": null,
+      "agency": "Buildings",
+      "board_name": null,
+      "description": null,
+      "search_text": "Amendment of Rules relating to Elevators, Escalators, Personnel Hoists and Moving Walks Buildings",
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "meeting_documents": [],
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260506019",
+      "source_system": "city_record",
+      "meeting_origin": "unknown",
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260506019",
+        "legacy_fragment_href": "#notice/20260506019",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260506019"
+      },
+      "request_id": "20260506019",
+      "source_record_id": null,
+      "board_id": null,
+      "agency_name": "Buildings",
+      "short_title": "Amendment of Rules relating to Elevators, Escalators, Personnel Hoists and Moving Walks",
+      "start_date": "2026-05-12T00:00:00.000",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "elevators",
+          "escalators",
+          "personnel",
+          "hoists",
+          "moving",
+          "walks"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
         "effective_date": null,
         "adoption_date": null,
         "negative_evidence": []
@@ -11251,133 +12421,6 @@
       }
     },
     {
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260428027",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260428027"
-        }
-      ],
-      "publisher_identifier": "20260428027",
-      "title": "CAPA Agenda FY'27",
-      "event_date": null,
-      "event_end": null,
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-05-04T00:00:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260428027",
-        "observed_at": null,
-        "raw_date": "2026-05-04",
-        "raw_time": "00:00:00",
-        "status": "resolved"
-      },
-      "meeting_family": "descriptive_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": null,
-      "location_assertions": [
-        {
-          "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260428027::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260428027",
-          "record_id": null,
-          "role": "venue",
-          "validity": "unlocated",
-          "attendance_meaning": "not_stated",
-          "original_address": null,
-          "venue_name": null,
-          "components": null,
-          "wrapper": null,
-          "source_field": "venue",
-          "source_passage": null,
-          "passage_locator": null,
-          "passage_text_sha256": null,
-          "source_receipt": null
-        }
-      ],
-      "participation": null,
-      "committee": null,
-      "agency": "Buildings",
-      "board_name": null,
-      "description": null,
-      "search_text": "CAPA Agenda FY'27 Buildings",
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260428027",
-      "source_system": "city_record",
-      "meeting_origin": "unknown",
-      "source_receipt": null,
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260428027",
-        "legacy_fragment_href": "#notice/20260428027",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260428027"
-      },
-      "request_id": "20260428027",
-      "source_record_id": null,
-      "board_id": null,
-      "agency_name": "Buildings",
-      "short_title": "CAPA Agenda FY'27",
-      "start_date": "2026-05-04T00:00:00.000",
-      "rule_evidence": {
-        "schema": "cityscroll.rule_evidence_stamp.v1",
-        "topic_keys": [
-          "capa",
-          "agenda"
-        ],
-        "body_topic_keys": [],
-        "citation_keys": [],
-        "lifecycle_status": "notice",
-        "effective_date": null,
-        "adoption_date": null,
-        "negative_evidence": []
-      },
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "object_type": "meeting",
@@ -11485,6 +12528,133 @@
         "body_topic_keys": [],
         "citation_keys": [],
         "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260428027",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260428027"
+        }
+      ],
+      "publisher_identifier": "20260428027",
+      "title": "CAPA Agenda FY'27",
+      "event_date": null,
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-05-04T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260428027",
+        "observed_at": null,
+        "raw_date": "2026-05-04",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "location_assertions": [
+        {
+          "schema": "cityscroll.meeting_location_assertion.v1",
+          "assertion_id": "location_assertion:meeting:city_record:20260428027::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260428027",
+          "record_id": null,
+          "role": "venue",
+          "validity": "unlocated",
+          "attendance_meaning": "not_stated",
+          "original_address": null,
+          "venue_name": null,
+          "components": null,
+          "wrapper": null,
+          "source_field": "venue",
+          "source_passage": null,
+          "passage_locator": null,
+          "passage_text_sha256": null,
+          "source_receipt": null
+        }
+      ],
+      "participation": null,
+      "committee": null,
+      "agency": "Buildings",
+      "board_name": null,
+      "description": null,
+      "search_text": "CAPA Agenda FY'27 Buildings",
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "meeting_documents": [],
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260428027",
+      "source_system": "city_record",
+      "meeting_origin": "unknown",
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260428027",
+        "legacy_fragment_href": "#notice/20260428027",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260428027"
+      },
+      "request_id": "20260428027",
+      "source_record_id": null,
+      "board_id": null,
+      "agency_name": "Buildings",
+      "short_title": "CAPA Agenda FY'27",
+      "start_date": "2026-05-04T00:00:00.000",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "capa",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
         "effective_date": null,
         "adoption_date": null,
         "negative_evidence": []
@@ -11639,16 +12809,16 @@
       "section_name": "Agency Rules",
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260428036",
+      "meeting_id": "meeting:city_record:20260323029",
       "source_keys": [
         {
           "source_system": "city_record",
           "key_type": "request_id",
-          "value": "20260428036"
+          "value": "20260323029"
         }
       ],
-      "publisher_identifier": "20260428036",
-      "title": "Real Property Tax Law Section 485-x (Affordable Neighborhoods for New Yorkers Tax Incentive Program) Rules Comment Deadline Extended",
+      "publisher_identifier": "20260323029",
+      "title": "FY 2027 Regulatory Agenda",
       "event_date": null,
       "event_end": null,
       "schedule": {
@@ -11657,7 +12827,7 @@
         "timezone": "America/New_York",
         "precision": "exact_time",
         "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260428036",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260323029",
         "observed_at": null,
         "raw_date": "2026-05-01",
         "raw_time": "00:00:00",
@@ -11673,8 +12843,8 @@
       "location_assertions": [
         {
           "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260428036::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260428036",
+          "assertion_id": "location_assertion:meeting:city_record:20260323029::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260323029",
           "record_id": null,
           "role": "venue",
           "validity": "unlocated",
@@ -11692,10 +12862,10 @@
       ],
       "participation": null,
       "committee": null,
-      "agency": "Comptroller",
+      "agency": "Transportation",
       "board_name": null,
       "description": null,
-      "search_text": "Real Property Tax Law Section 485-x (Affordable Neighborhoods for New Yorkers Tax Incentive Program) Rules Comment Deadline Extended Comptroller",
+      "search_text": "FY 2027 Regulatory Agenda Transportation",
       "affected_area": {
         "scope": "citywide",
         "derivation": {
@@ -11712,7 +12882,7 @@
         "source": "rule-scope"
       },
       "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260428036",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260323029",
       "source_system": "city_record",
       "meeting_origin": "unknown",
       "source_receipt": null,
@@ -11722,159 +12892,21 @@
         "board_ref": null
       },
       "compatibility": {
-        "legacy_notice_href": "/notices/20260428036",
-        "legacy_fragment_href": "#notice/20260428036",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260428036"
+        "legacy_notice_href": "/notices/20260323029",
+        "legacy_fragment_href": "#notice/20260323029",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260323029"
       },
-      "request_id": "20260428036",
+      "request_id": "20260323029",
       "source_record_id": null,
       "board_id": null,
-      "agency_name": "Comptroller",
-      "short_title": "Real Property Tax Law Section 485-x (Affordable Neighborhoods for New Yorkers Tax Incentive Program) Rules Comment Deadline Extended",
+      "agency_name": "Transportation",
+      "short_title": "FY 2027 Regulatory Agenda",
       "start_date": "2026-05-01T00:00:00.000",
       "rule_evidence": {
         "schema": "cityscroll.rule_evidence_stamp.v1",
         "topic_keys": [
-          "real",
-          "property",
-          "affordable",
-          "neighborhoods",
-          "yorkers",
-          "incentive",
-          "deadline",
-          "extended"
-        ],
-        "body_topic_keys": [],
-        "citation_keys": [
-          "section:485-x",
-          "section:485"
-        ],
-        "lifecycle_status": "notice",
-        "effective_date": null,
-        "adoption_date": null,
-        "negative_evidence": []
-      },
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260423016",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260423016"
-        }
-      ],
-      "publisher_identifier": "20260423016",
-      "title": "Construction Noise Monitoring Penalty Rule",
-      "event_date": null,
-      "event_end": null,
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-05-01T00:00:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260423016",
-        "observed_at": null,
-        "raw_date": "2026-05-01",
-        "raw_time": "00:00:00",
-        "status": "resolved"
-      },
-      "meeting_family": "descriptive_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": null,
-      "location_assertions": [
-        {
-          "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260423016::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260423016",
-          "record_id": null,
-          "role": "venue",
-          "validity": "unlocated",
-          "attendance_meaning": "not_stated",
-          "original_address": null,
-          "venue_name": null,
-          "components": null,
-          "wrapper": null,
-          "source_field": "venue",
-          "source_passage": null,
-          "passage_locator": null,
-          "passage_text_sha256": null,
-          "source_receipt": null
-        }
-      ],
-      "participation": null,
-      "committee": null,
-      "agency": "Environmental Protection",
-      "board_name": null,
-      "description": null,
-      "search_text": "Construction Noise Monitoring Penalty Rule Environmental Protection",
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260423016",
-      "source_system": "city_record",
-      "meeting_origin": "unknown",
-      "source_receipt": null,
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260423016",
-        "legacy_fragment_href": "#notice/20260423016",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260423016"
-      },
-      "request_id": "20260423016",
-      "source_record_id": null,
-      "board_id": null,
-      "agency_name": "Environmental Protection",
-      "short_title": "Construction Noise Monitoring Penalty Rule",
-      "start_date": "2026-05-01T00:00:00.000",
-      "rule_evidence": {
-        "schema": "cityscroll.rule_evidence_stamp.v1",
-        "topic_keys": [
-          "construction",
-          "noise",
-          "monitoring",
-          "penalty"
+          "regulatory",
+          "agenda"
         ],
         "body_topic_keys": [],
         "citation_keys": [],
@@ -12032,16 +13064,16 @@
       "section_name": "Agency Rules",
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260323029",
+      "meeting_id": "meeting:city_record:20260423016",
       "source_keys": [
         {
           "source_system": "city_record",
           "key_type": "request_id",
-          "value": "20260323029"
+          "value": "20260423016"
         }
       ],
-      "publisher_identifier": "20260323029",
-      "title": "FY 2027 Regulatory Agenda",
+      "publisher_identifier": "20260423016",
+      "title": "Construction Noise Monitoring Penalty Rule",
       "event_date": null,
       "event_end": null,
       "schedule": {
@@ -12050,7 +13082,7 @@
         "timezone": "America/New_York",
         "precision": "exact_time",
         "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260323029",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260423016",
         "observed_at": null,
         "raw_date": "2026-05-01",
         "raw_time": "00:00:00",
@@ -12066,8 +13098,8 @@
       "location_assertions": [
         {
           "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260323029::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260323029",
+          "assertion_id": "location_assertion:meeting:city_record:20260423016::venue::venue::1",
+          "meeting_id": "meeting:city_record:20260423016",
           "record_id": null,
           "role": "venue",
           "validity": "unlocated",
@@ -12085,10 +13117,10 @@
       ],
       "participation": null,
       "committee": null,
-      "agency": "Transportation",
+      "agency": "Environmental Protection",
       "board_name": null,
       "description": null,
-      "search_text": "FY 2027 Regulatory Agenda Transportation",
+      "search_text": "Construction Noise Monitoring Penalty Rule Environmental Protection",
       "affected_area": {
         "scope": "citywide",
         "derivation": {
@@ -12105,7 +13137,7 @@
         "source": "rule-scope"
       },
       "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260323029",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260423016",
       "source_system": "city_record",
       "meeting_origin": "unknown",
       "source_receipt": null,
@@ -12115,1062 +13147,27 @@
         "board_ref": null
       },
       "compatibility": {
-        "legacy_notice_href": "/notices/20260323029",
-        "legacy_fragment_href": "#notice/20260323029",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260323029"
+        "legacy_notice_href": "/notices/20260423016",
+        "legacy_fragment_href": "#notice/20260423016",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260423016"
       },
-      "request_id": "20260323029",
+      "request_id": "20260423016",
       "source_record_id": null,
       "board_id": null,
-      "agency_name": "Transportation",
-      "short_title": "FY 2027 Regulatory Agenda",
+      "agency_name": "Environmental Protection",
+      "short_title": "Construction Noise Monitoring Penalty Rule",
       "start_date": "2026-05-01T00:00:00.000",
       "rule_evidence": {
         "schema": "cityscroll.rule_evidence_stamp.v1",
         "topic_keys": [
-          "regulatory",
-          "agenda"
+          "construction",
+          "noise",
+          "monitoring",
+          "penalty"
         ],
         "body_topic_keys": [],
         "citation_keys": [],
         "lifecycle_status": "notice",
-        "effective_date": null,
-        "adoption_date": null,
-        "negative_evidence": []
-      },
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260427026",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260427026"
-        }
-      ],
-      "publisher_identifier": "20260427026",
-      "title": "DPR - Regulatory Agenda FY 2027",
-      "event_date": null,
-      "event_end": null,
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-04-30T00:00:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260427026",
-        "observed_at": null,
-        "raw_date": "2026-04-30",
-        "raw_time": "00:00:00",
-        "status": "resolved"
-      },
-      "meeting_family": "descriptive_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": null,
-      "location_assertions": [
-        {
-          "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260427026::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260427026",
-          "record_id": null,
-          "role": "venue",
-          "validity": "unlocated",
-          "attendance_meaning": "not_stated",
-          "original_address": null,
-          "venue_name": null,
-          "components": null,
-          "wrapper": null,
-          "source_field": "venue",
-          "source_passage": null,
-          "passage_locator": null,
-          "passage_text_sha256": null,
-          "source_receipt": null
-        }
-      ],
-      "participation": null,
-      "committee": null,
-      "agency": "Parks and Recreation",
-      "board_name": null,
-      "description": null,
-      "search_text": "DPR - Regulatory Agenda FY 2027 Parks and Recreation",
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260427026",
-      "source_system": "city_record",
-      "meeting_origin": "unknown",
-      "source_receipt": null,
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260427026",
-        "legacy_fragment_href": "#notice/20260427026",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260427026"
-      },
-      "request_id": "20260427026",
-      "source_record_id": null,
-      "board_id": null,
-      "agency_name": "Parks and Recreation",
-      "short_title": "DPR - Regulatory Agenda FY 2027",
-      "start_date": "2026-04-30T00:00:00.000",
-      "rule_evidence": {
-        "schema": "cityscroll.rule_evidence_stamp.v1",
-        "topic_keys": [
-          "regulatory",
-          "agenda"
-        ],
-        "body_topic_keys": [],
-        "citation_keys": [],
-        "lifecycle_status": "notice",
-        "effective_date": null,
-        "adoption_date": null,
-        "negative_evidence": []
-      },
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260422018",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260422018"
-        }
-      ],
-      "publisher_identifier": "20260422018",
-      "title": "DCWP NOH Debt Collector Penalty Schedule",
-      "event_date": null,
-      "event_end": null,
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-04-30T00:00:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260422018",
-        "observed_at": null,
-        "raw_date": "2026-04-30",
-        "raw_time": "00:00:00",
-        "status": "resolved"
-      },
-      "meeting_family": "descriptive_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": null,
-      "location_assertions": [
-        {
-          "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260422018::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260422018",
-          "record_id": null,
-          "role": "venue",
-          "validity": "unlocated",
-          "attendance_meaning": "not_stated",
-          "original_address": null,
-          "venue_name": null,
-          "components": null,
-          "wrapper": null,
-          "source_field": "venue",
-          "source_passage": null,
-          "passage_locator": null,
-          "passage_text_sha256": null,
-          "source_receipt": null
-        }
-      ],
-      "participation": null,
-      "committee": null,
-      "agency": "Consumer and Worker Protection",
-      "board_name": null,
-      "description": null,
-      "search_text": "DCWP NOH Debt Collector Penalty Schedule Consumer and Worker Protection",
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260422018",
-      "source_system": "city_record",
-      "meeting_origin": "unknown",
-      "source_receipt": null,
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260422018",
-        "legacy_fragment_href": "#notice/20260422018",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260422018"
-      },
-      "request_id": "20260422018",
-      "source_record_id": null,
-      "board_id": null,
-      "agency_name": "Consumer and Worker Protection",
-      "short_title": "DCWP NOH Debt Collector Penalty Schedule",
-      "start_date": "2026-04-30T00:00:00.000",
-      "rule_evidence": {
-        "schema": "cityscroll.rule_evidence_stamp.v1",
-        "topic_keys": [
-          "dcwp",
-          "debt",
-          "collector",
-          "penalty",
-          "schedule"
-        ],
-        "body_topic_keys": [],
-        "citation_keys": [],
-        "lifecycle_status": "unknown",
-        "effective_date": null,
-        "adoption_date": null,
-        "negative_evidence": []
-      },
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260421022",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260421022"
-        }
-      ],
-      "publisher_identifier": "20260421022",
-      "title": "Regulatory Agenda",
-      "event_date": null,
-      "event_end": null,
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-04-29T00:00:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260421022",
-        "observed_at": null,
-        "raw_date": "2026-04-29",
-        "raw_time": "00:00:00",
-        "status": "resolved"
-      },
-      "meeting_family": "descriptive_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": null,
-      "location_assertions": [
-        {
-          "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260421022::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260421022",
-          "record_id": null,
-          "role": "venue",
-          "validity": "unlocated",
-          "attendance_meaning": "not_stated",
-          "original_address": null,
-          "venue_name": null,
-          "components": null,
-          "wrapper": null,
-          "source_field": "venue",
-          "source_passage": null,
-          "passage_locator": null,
-          "passage_text_sha256": null,
-          "source_receipt": null
-        }
-      ],
-      "participation": null,
-      "committee": null,
-      "agency": "Conflicts of Interest Board",
-      "board_name": null,
-      "description": null,
-      "search_text": "Regulatory Agenda Conflicts of Interest Board",
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260421022",
-      "source_system": "city_record",
-      "meeting_origin": "unknown",
-      "source_receipt": null,
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260421022",
-        "legacy_fragment_href": "#notice/20260421022",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260421022"
-      },
-      "request_id": "20260421022",
-      "source_record_id": null,
-      "board_id": null,
-      "agency_name": "Conflicts of Interest Board",
-      "short_title": "Regulatory Agenda",
-      "start_date": "2026-04-29T00:00:00.000",
-      "rule_evidence": {
-        "schema": "cityscroll.rule_evidence_stamp.v1",
-        "topic_keys": [
-          "regulatory",
-          "agenda"
-        ],
-        "body_topic_keys": [],
-        "citation_keys": [],
-        "lifecycle_status": "notice",
-        "effective_date": null,
-        "adoption_date": null,
-        "negative_evidence": []
-      },
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260421020",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260421020"
-        }
-      ],
-      "publisher_identifier": "20260421020",
-      "title": "LOCAL LAW 43 OF 2026 OF THE CITY OF NEW YORK IN RELATION TO THE ESTABLISHMENT OF THE CONEY ISLAND BUSINESS IMPROVEMENT DISTRICT",
-      "event_date": null,
-      "event_end": null,
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-04-28T00:00:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260421020",
-        "observed_at": null,
-        "raw_date": "2026-04-28",
-        "raw_time": "00:00:00",
-        "status": "resolved"
-      },
-      "meeting_family": "descriptive_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": null,
-      "location_assertions": [
-        {
-          "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260421020::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260421020",
-          "record_id": null,
-          "role": "venue",
-          "validity": "unlocated",
-          "attendance_meaning": "not_stated",
-          "original_address": null,
-          "venue_name": null,
-          "components": null,
-          "wrapper": null,
-          "source_field": "venue",
-          "source_passage": null,
-          "passage_locator": null,
-          "passage_text_sha256": null,
-          "source_receipt": null
-        }
-      ],
-      "participation": null,
-      "committee": null,
-      "agency": "City Clerk",
-      "board_name": null,
-      "description": null,
-      "search_text": "LOCAL LAW 43 OF 2026 OF THE CITY OF NEW YORK IN RELATION TO THE ESTABLISHMENT OF THE CONEY ISLAND BUSINESS IMPROVEMENT DISTRICT City Clerk",
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260421020",
-      "source_system": "city_record",
-      "meeting_origin": "unknown",
-      "source_receipt": null,
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260421020",
-        "legacy_fragment_href": "#notice/20260421020",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260421020"
-      },
-      "request_id": "20260421020",
-      "source_record_id": null,
-      "board_id": null,
-      "agency_name": "City Clerk",
-      "short_title": "LOCAL LAW 43 OF 2026 OF THE CITY OF NEW YORK IN RELATION TO THE ESTABLISHMENT OF THE CONEY ISLAND BUSINESS IMPROVEMENT DISTRICT",
-      "start_date": "2026-04-28T00:00:00.000",
-      "rule_evidence": {
-        "schema": "cityscroll.rule_evidence_stamp.v1",
-        "topic_keys": [
-          "relation",
-          "establishment",
-          "coney",
-          "island",
-          "business",
-          "improvement",
-          "district"
-        ],
-        "body_topic_keys": [],
-        "citation_keys": [
-          "local-law:2026:43"
-        ],
-        "lifecycle_status": "notice",
-        "effective_date": null,
-        "adoption_date": null,
-        "negative_evidence": []
-      },
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260421036",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260421036"
-        }
-      ],
-      "publisher_identifier": "20260421036",
-      "title": "New York Department of Finance  FY-2027 Regulatory Agenda",
-      "event_date": null,
-      "event_end": null,
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-04-28T00:00:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260421036",
-        "observed_at": null,
-        "raw_date": "2026-04-28",
-        "raw_time": "00:00:00",
-        "status": "resolved"
-      },
-      "meeting_family": "descriptive_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": null,
-      "location_assertions": [
-        {
-          "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260421036::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260421036",
-          "record_id": null,
-          "role": "venue",
-          "validity": "unlocated",
-          "attendance_meaning": "not_stated",
-          "original_address": null,
-          "venue_name": null,
-          "components": null,
-          "wrapper": null,
-          "source_field": "venue",
-          "source_passage": null,
-          "passage_locator": null,
-          "passage_text_sha256": null,
-          "source_receipt": null
-        }
-      ],
-      "participation": null,
-      "committee": null,
-      "agency": "Finance",
-      "board_name": null,
-      "description": null,
-      "search_text": "New York Department of Finance  FY-2027 Regulatory Agenda Finance",
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260421036",
-      "source_system": "city_record",
-      "meeting_origin": "unknown",
-      "source_receipt": null,
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260421036",
-        "legacy_fragment_href": "#notice/20260421036",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260421036"
-      },
-      "request_id": "20260421036",
-      "source_record_id": null,
-      "board_id": null,
-      "agency_name": "Finance",
-      "short_title": "New York Department of Finance  FY-2027 Regulatory Agenda",
-      "start_date": "2026-04-28T00:00:00.000",
-      "rule_evidence": {
-        "schema": "cityscroll.rule_evidence_stamp.v1",
-        "topic_keys": [
-          "finance",
-          "regulatory",
-          "agenda"
-        ],
-        "body_topic_keys": [],
-        "citation_keys": [],
-        "lifecycle_status": "notice",
-        "effective_date": null,
-        "adoption_date": null,
-        "negative_evidence": []
-      },
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260421004",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260421004"
-        }
-      ],
-      "publisher_identifier": "20260421004",
-      "title": "CAPA REGULATORY AGENDA FY 2027 BUSINESS INTEGRITY COMMISSION",
-      "event_date": null,
-      "event_end": null,
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-04-27T00:00:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260421004",
-        "observed_at": null,
-        "raw_date": "2026-04-27",
-        "raw_time": "00:00:00",
-        "status": "resolved"
-      },
-      "meeting_family": "descriptive_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": null,
-      "location_assertions": [
-        {
-          "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260421004::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260421004",
-          "record_id": null,
-          "role": "venue",
-          "validity": "unlocated",
-          "attendance_meaning": "not_stated",
-          "original_address": null,
-          "venue_name": null,
-          "components": null,
-          "wrapper": null,
-          "source_field": "venue",
-          "source_passage": null,
-          "passage_locator": null,
-          "passage_text_sha256": null,
-          "source_receipt": null
-        }
-      ],
-      "participation": null,
-      "committee": null,
-      "agency": "Business Integrity Commission",
-      "board_name": null,
-      "description": null,
-      "search_text": "CAPA REGULATORY AGENDA FY 2027 BUSINESS INTEGRITY COMMISSION Business Integrity Commission",
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260421004",
-      "source_system": "city_record",
-      "meeting_origin": "unknown",
-      "source_receipt": null,
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260421004",
-        "legacy_fragment_href": "#notice/20260421004",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260421004"
-      },
-      "request_id": "20260421004",
-      "source_record_id": null,
-      "board_id": null,
-      "agency_name": "Business Integrity Commission",
-      "short_title": "CAPA REGULATORY AGENDA FY 2027 BUSINESS INTEGRITY COMMISSION",
-      "start_date": "2026-04-27T00:00:00.000",
-      "rule_evidence": {
-        "schema": "cityscroll.rule_evidence_stamp.v1",
-        "topic_keys": [
-          "capa",
-          "regulatory",
-          "agenda",
-          "business",
-          "integrity",
-          "commission"
-        ],
-        "body_topic_keys": [],
-        "citation_keys": [],
-        "lifecycle_status": "notice",
-        "effective_date": null,
-        "adoption_date": null,
-        "negative_evidence": []
-      },
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260415033",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260415033"
-        }
-      ],
-      "publisher_identifier": "20260415033",
-      "title": "Extension of Public Comment Period and Second Public Hearing on Proposed Rules Regarding Donations and Gifts to the City",
-      "event_date": null,
-      "event_end": null,
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-04-22T00:00:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260415033",
-        "observed_at": null,
-        "raw_date": "2026-04-22",
-        "raw_time": "00:00:00",
-        "status": "resolved"
-      },
-      "meeting_family": "descriptive_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": null,
-      "location_assertions": [
-        {
-          "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260415033::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260415033",
-          "record_id": null,
-          "role": "venue",
-          "validity": "unlocated",
-          "attendance_meaning": "not_stated",
-          "original_address": null,
-          "venue_name": null,
-          "components": null,
-          "wrapper": null,
-          "source_field": "venue",
-          "source_passage": null,
-          "passage_locator": null,
-          "passage_text_sha256": null,
-          "source_receipt": null
-        }
-      ],
-      "participation": null,
-      "committee": null,
-      "agency": "Conflicts of Interest Board",
-      "board_name": null,
-      "description": null,
-      "search_text": "Extension of Public Comment Period and Second Public Hearing on Proposed Rules Regarding Donations and Gifts to the City Conflicts of Interest Board",
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260415033",
-      "source_system": "city_record",
-      "meeting_origin": "unknown",
-      "source_receipt": null,
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260415033",
-        "legacy_fragment_href": "#notice/20260415033",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260415033"
-      },
-      "request_id": "20260415033",
-      "source_record_id": null,
-      "board_id": null,
-      "agency_name": "Conflicts of Interest Board",
-      "short_title": "Extension of Public Comment Period and Second Public Hearing on Proposed Rules Regarding Donations and Gifts to the City",
-      "start_date": "2026-04-22T00:00:00.000",
-      "rule_evidence": {
-        "schema": "cityscroll.rule_evidence_stamp.v1",
-        "topic_keys": [
-          "extension",
-          "period",
-          "second",
-          "donations",
-          "gifts"
-        ],
-        "body_topic_keys": [],
-        "citation_keys": [],
-        "lifecycle_status": "hearing",
-        "effective_date": null,
-        "adoption_date": null,
-        "negative_evidence": []
-      },
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260414010",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260414010"
-        }
-      ],
-      "publisher_identifier": "20260414010",
-      "title": "Notice of Adoption of Affordable Housing Fast Track Methodology Rules",
-      "event_date": null,
-      "event_end": null,
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-04-20T00:00:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260414010",
-        "observed_at": null,
-        "raw_date": "2026-04-20",
-        "raw_time": "00:00:00",
-        "status": "resolved"
-      },
-      "meeting_family": "descriptive_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": null,
-      "location_assertions": [
-        {
-          "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:city_record:20260414010::venue::venue::1",
-          "meeting_id": "meeting:city_record:20260414010",
-          "record_id": null,
-          "role": "venue",
-          "validity": "unlocated",
-          "attendance_meaning": "not_stated",
-          "original_address": null,
-          "venue_name": null,
-          "components": null,
-          "wrapper": null,
-          "source_field": "venue",
-          "source_passage": null,
-          "passage_locator": null,
-          "passage_text_sha256": null,
-          "source_receipt": null
-        }
-      ],
-      "participation": null,
-      "committee": null,
-      "agency": "City Planning Commission",
-      "board_name": null,
-      "description": null,
-      "search_text": "Notice of Adoption of Affordable Housing Fast Track Methodology Rules City Planning Commission",
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260414010",
-      "source_system": "city_record",
-      "meeting_origin": "unknown",
-      "source_receipt": null,
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260414010",
-        "legacy_fragment_href": "#notice/20260414010",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260414010"
-      },
-      "request_id": "20260414010",
-      "source_record_id": null,
-      "board_id": null,
-      "agency_name": "City Planning Commission",
-      "short_title": "Notice of Adoption of Affordable Housing Fast Track Methodology Rules",
-      "start_date": "2026-04-20T00:00:00.000",
-      "rule_evidence": {
-        "schema": "cityscroll.rule_evidence_stamp.v1",
-        "topic_keys": [
-          "affordable",
-          "housing",
-          "fast",
-          "track",
-          "methodology"
-        ],
-        "body_topic_keys": [],
-        "citation_keys": [],
-        "lifecycle_status": "adopted",
         "effective_date": null,
         "adoption_date": null,
         "negative_evidence": []

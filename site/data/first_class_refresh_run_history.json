@@ -1,18 +1,18 @@
 {
   "schema": "cityscroll.first_class_refresh_run_history.v1",
-  "generated_at": "2026-09-30T13:39:28.466Z",
+  "generated_at": "2026-10-10T13:54:27.063Z",
   "run": {
-    "run_id": "github-actions:36718192869:1",
-    "github_run_id": 36718192869,
-    "run_url": "https://github.com/cityscroll/cityscroll-app/actions/runs/36718192869",
+    "run_id": "github-actions:38053999663:1",
+    "github_run_id": 38053999663,
+    "run_url": "https://github.com/cityscroll/cityscroll-app/actions/runs/38053999663",
     "trigger": "schedule",
-    "started_at": "2026-09-30T12:57:20Z",
-    "finished_at": "2026-09-30T13:39:28.466Z",
-    "code_revision": "c9381ab637d8970e8653a0e7616d76f5faa45653"
+    "started_at": "2026-10-10T13:00:51Z",
+    "finished_at": "2026-10-10T13:54:27.063Z",
+    "code_revision": "1ad48cc1b0735a805e5d3624d187bcf7e3fd0fa4"
   },
-  "total": 39,
-  "due_count": 35,
-  "published_count": 26,
+  "total": 42,
+  "due_count": 33,
+  "published_count": 28,
   "datasets": [
     {
       "id": "agency-constellation",
@@ -26,9 +26,9 @@
     {
       "id": "agency-obligations",
       "public_artifact_path": "site/data/agency_obligations_lookup.json",
-      "due": true,
-      "acquisition_status": "failed",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
       "published": false
     },
@@ -69,6 +69,15 @@
       "published": true
     },
     {
+      "id": "city-record-pin-chain",
+      "public_artifact_path": "site/data/city_record_pin_chain_warehouse_lookup.json",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
+      "rebuild_status": "succeeded",
+      "published": false
+    },
+    {
       "id": "committee-graph",
       "public_artifact_path": "site/data/committee_graph_lookup.json",
       "due": true,
@@ -80,11 +89,11 @@
     {
       "id": "community-board-budget-register",
       "public_artifact_path": "site/data/community_board_budget_register.json",
-      "due": false,
-      "acquisition_status": "not_due",
-      "builder_status": "not_due",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "succeeded",
       "rebuild_status": "succeeded",
-      "published": false
+      "published": true
     },
     {
       "id": "community-board-geography",
@@ -107,15 +116,24 @@
     {
       "id": "community-board-people",
       "public_artifact_path": "site/data/community_board_people.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
       "published": false
     },
     {
       "id": "public-consultations",
       "public_artifact_path": "site/data/consultations.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": true
+    },
+    {
+      "id": "doing-business",
+      "public_artifact_path": "site/data/doing_business_warehouse_lookup.json",
       "due": false,
       "acquisition_status": "not_due",
       "builder_status": "not_due",
@@ -197,18 +215,18 @@
     {
       "id": "contracts-resident-snapshot",
       "public_artifact_path": "site/data/money_resident_snapshot.json",
-      "due": true,
-      "acquisition_status": "failed",
-      "builder_status": "skipped",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
       "published": true
     },
     {
       "id": "community-board-committees",
       "public_artifact_path": "site/data/non_council_outcome_sources/community_board_committees.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
       "published": false
     },
@@ -270,17 +288,17 @@
       "id": "contracts-procurement-query",
       "public_artifact_path": "site/data/procurement_browse_query.json",
       "due": true,
-      "acquisition_status": "failed",
-      "builder_status": "skipped",
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
       "rebuild_status": "succeeded",
       "published": false
     },
     {
       "id": "contracts-procurement-rows",
       "public_artifact_path": "site/data/procurement_browse_rows.json",
-      "due": true,
-      "acquisition_status": "failed",
-      "builder_status": "skipped",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
       "published": false
     },
@@ -357,6 +375,15 @@
       "published": true
     },
     {
+      "id": "zap-bbl",
+      "public_artifact_path": "site/data/zap_bbl_warehouse_lookup.json",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
+      "rebuild_status": "succeeded",
+      "published": false
+    },
+    {
       "id": "zap-projects",
       "public_artifact_path": "site/data/zap_projects_warehouse_lookup.json",
       "due": true,
@@ -366,5 +393,42 @@
       "published": true
     }
   ],
-  "prior_runs": []
+  "prior_runs": [
+    {
+      "run_id": "github-actions:37938592714:1",
+      "trigger": "schedule",
+      "started_at": "2026-10-09T13:42:00Z",
+      "finished_at": "2026-10-09T14:12:58.477Z",
+      "due_count": 38,
+      "published_count": 28,
+      "receipt_sha256": "sha256:74d3704f6557a669f8d454e26011cd33d53fb881f5df6e4bf33019663347f78f"
+    },
+    {
+      "run_id": "github-actions:37631638881:1",
+      "trigger": "schedule",
+      "started_at": "2026-10-07T13:51:13Z",
+      "finished_at": "2026-10-07T14:20:25.823Z",
+      "due_count": 40,
+      "published_count": 30,
+      "receipt_sha256": "sha256:46c89e7fd92eeb686f99fcf6f8b8680f84c555d6279fe6e949bfa09caf96f27c"
+    },
+    {
+      "run_id": "github-actions:37203405869:1",
+      "trigger": "schedule",
+      "started_at": "2026-10-04T12:50:04Z",
+      "finished_at": "2026-10-04T13:14:27.636Z",
+      "due_count": 35,
+      "published_count": 25,
+      "receipt_sha256": "sha256:c161c46ea2b28c2207538966a41a146e91edfd56372b1ca30677702096967718"
+    },
+    {
+      "run_id": "github-actions:36718192869:1",
+      "trigger": "schedule",
+      "started_at": "2026-09-30T12:57:20Z",
+      "finished_at": "2026-09-30T13:39:28.466Z",
+      "due_count": 35,
+      "published_count": 26,
+      "receipt_sha256": "sha256:d2ab4acd98adb9f515839d8f88d0c7c0a8645542706d87097bfb1a51e6cdf47d"
+    }
+  ]
 }

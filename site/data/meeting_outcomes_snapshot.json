@@ -1,10 +1,10 @@
 {
   "schema": "cityscroll.meeting_outcomes_snapshot.v1",
-  "generated_at": "2026-09-30T13:12:58.771Z",
+  "generated_at": "2026-10-10T13:11:39.905Z",
   "delivery_tier": "inline-at-build",
-  "record_count": 305,
+  "record_count": 313,
   "present_count": 18,
-  "absent_count": 287,
+  "absent_count": 295,
   "by_notice": {
     "20260922023": {
       "request_id": "20260922023",
@@ -18,10 +18,1444 @@
           {
             "name": "Agenda",
             "url": "https://nyc.legistar1.com/nyc/meetings/2026/10/22615_A_Subcommittee_on_Zoning_and_Franchises_26-10-06_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/10/22615_M_Subcommittee_on_Zoning_and_Franchises_26-10-06_Meeting_Minutes.pdf"
           }
         ]
       },
-      "matters": []
+      "matters": [
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442611",
+              "action": "Hearing on P-C Item by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "442988",
+              "action": "P-C Item Laid Over by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79573",
+          "matter_file": "LU 0148-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79573",
+          "title": "Zoning, 108-05 68th Road Rezoning, Queens (C 260234 ZMQ).",
+          "outcome": "P-C Item Laid Over by Comm",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442612",
+              "action": "Hearing on P-C Item by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "442987",
+              "action": "P-C Item Laid Over by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79574",
+          "matter_file": "LU 0149-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79574",
+          "title": "Zoning, 108-05 68th Road Rezoning, Queens (N 260235 ZRQ).",
+          "outcome": "P-C Item Laid Over by Comm",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442613",
+              "action": "Hearing on P-C Item by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "442986",
+              "action": "P-C Item Laid Over by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79575",
+          "matter_file": "LU 0150-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79575",
+          "title": "Zoning, 100-12 Queens Boulevard Rezoning, Queens (C 260184 ZMQ).",
+          "outcome": "P-C Item Laid Over by Comm",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442614",
+              "action": "Hearing on P-C Item by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "442985",
+              "action": "P-C Item Laid Over by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79576",
+          "matter_file": "LU 0151-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79576",
+          "title": "Zoning, 100-12 Queens Boulevard Rezoning, Queens (N 260185 ZRQ).",
+          "outcome": "P-C Item Laid Over by Comm",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442615",
+              "action": "Hearing on P-C Item by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "442984",
+              "action": "P-C Item Laid Over by Comm",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79577",
+          "matter_file": "LU 0152-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79577",
+          "title": "Zoning, South Richmond Designated Open Space Amendment, Staten Island (N 260362 ZRR).",
+          "outcome": "P-C Item Laid Over by Comm",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee with Modifications and Referred to CPC"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442616",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "442989",
+              "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+              "vote_state": "roll_call_recorded",
+              "votes": {
+                "result": "Passed",
+                "yes": 9,
+                "no": 0,
+                "abstain": 0,
+                "absent": 0,
+                "recused": 0,
+                "non_voting": 0,
+                "unknown": 0,
+                "published_vote_values": [
+                  {
+                    "vote_value": "Affirmative",
+                    "rows": 9
+                  }
+                ],
+                "event_id": "22615",
+                "event_item_id": "442989",
+                "vote_identity": "roll_call",
+                "person_count": 9,
+                "by_person": [
+                  {
+                    "person_id": "7785",
+                    "person_name": "Farah N. Louis",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7833",
+                    "person_name": "David M. Carr",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7895",
+                    "person_name": "Elsie Encarnación",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7810",
+                    "person_name": "Amanda C. Farías",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "5289",
+                    "person_name": "Simcha Felder",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7866",
+                    "person_name": "Yusef Salaam",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7897",
+                    "person_name": "Justin E. Sanchez",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7818",
+                    "person_name": "Lynn C. Schulman",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7898",
+                    "person_name": "Shanel Thomas-Henry",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  }
+                ]
+              }
+            }
+          ],
+          "matter_id": "79452",
+          "matter_file": "LU 0131-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79452",
+          "title": "Zoning, Fort Hamilton Mews Rezoning, Brooklyn (C 260238 ZMK).",
+          "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
+          "votes": {
+            "result": "Passed",
+            "yes": 9,
+            "no": 0,
+            "abstain": 0,
+            "absent": 0,
+            "recused": 0,
+            "non_voting": 0,
+            "unknown": 0,
+            "published_vote_values": [
+              {
+                "vote_value": "Affirmative",
+                "rows": 9
+              }
+            ],
+            "event_id": "22615",
+            "event_item_id": "442989",
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              }
+            ]
+          }
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee with Modifications and Referred to CPC"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442617",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "442990",
+              "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+              "vote_state": "roll_call_recorded",
+              "votes": {
+                "result": "Passed",
+                "yes": 9,
+                "no": 0,
+                "abstain": 0,
+                "absent": 0,
+                "recused": 0,
+                "non_voting": 0,
+                "unknown": 0,
+                "published_vote_values": [
+                  {
+                    "vote_value": "Affirmative",
+                    "rows": 9
+                  }
+                ],
+                "event_id": "22615",
+                "event_item_id": "442990",
+                "vote_identity": "roll_call",
+                "person_count": 9,
+                "by_person": [
+                  {
+                    "person_id": "7785",
+                    "person_name": "Farah N. Louis",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7833",
+                    "person_name": "David M. Carr",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7895",
+                    "person_name": "Elsie Encarnación",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7810",
+                    "person_name": "Amanda C. Farías",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "5289",
+                    "person_name": "Simcha Felder",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7866",
+                    "person_name": "Yusef Salaam",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7897",
+                    "person_name": "Justin E. Sanchez",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7818",
+                    "person_name": "Lynn C. Schulman",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7898",
+                    "person_name": "Shanel Thomas-Henry",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  }
+                ]
+              }
+            }
+          ],
+          "matter_id": "79453",
+          "matter_file": "LU 0132-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79453",
+          "title": "Zoning, Fort Hamilton Mews Rezoning, Brooklyn (N 260239 ZRK).",
+          "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
+          "votes": {
+            "result": "Passed",
+            "yes": 9,
+            "no": 0,
+            "abstain": 0,
+            "absent": 0,
+            "recused": 0,
+            "non_voting": 0,
+            "unknown": 0,
+            "published_vote_values": [
+              {
+                "vote_value": "Affirmative",
+                "rows": 9
+              }
+            ],
+            "event_id": "22615",
+            "event_item_id": "442990",
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              }
+            ]
+          }
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee with Modifications and Referred to CPC"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442618",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "442991",
+              "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+              "vote_state": "roll_call_recorded",
+              "votes": {
+                "result": "Passed",
+                "yes": 9,
+                "no": 0,
+                "abstain": 0,
+                "absent": 0,
+                "recused": 0,
+                "non_voting": 0,
+                "unknown": 0,
+                "published_vote_values": [
+                  {
+                    "vote_value": "Affirmative",
+                    "rows": 9
+                  }
+                ],
+                "event_id": "22615",
+                "event_item_id": "442991",
+                "vote_identity": "roll_call",
+                "person_count": 9,
+                "by_person": [
+                  {
+                    "person_id": "7785",
+                    "person_name": "Farah N. Louis",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7833",
+                    "person_name": "David M. Carr",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7895",
+                    "person_name": "Elsie Encarnación",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7810",
+                    "person_name": "Amanda C. Farías",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "5289",
+                    "person_name": "Simcha Felder",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7866",
+                    "person_name": "Yusef Salaam",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7897",
+                    "person_name": "Justin E. Sanchez",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7818",
+                    "person_name": "Lynn C. Schulman",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7898",
+                    "person_name": "Shanel Thomas-Henry",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  }
+                ]
+              }
+            }
+          ],
+          "matter_id": "79454",
+          "matter_file": "LU 0133-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79454",
+          "title": "Zoning, Park Avenue Brooklyn Rezoning, Brooklyn (C 240218 ZMK).",
+          "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
+          "votes": {
+            "result": "Passed",
+            "yes": 9,
+            "no": 0,
+            "abstain": 0,
+            "absent": 0,
+            "recused": 0,
+            "non_voting": 0,
+            "unknown": 0,
+            "published_vote_values": [
+              {
+                "vote_value": "Affirmative",
+                "rows": 9
+              }
+            ],
+            "event_id": "22615",
+            "event_item_id": "442991",
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              }
+            ]
+          }
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee with Modifications and Referred to CPC"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442619",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "442992",
+              "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+              "vote_state": "roll_call_recorded",
+              "votes": {
+                "result": "Passed",
+                "yes": 9,
+                "no": 0,
+                "abstain": 0,
+                "absent": 0,
+                "recused": 0,
+                "non_voting": 0,
+                "unknown": 0,
+                "published_vote_values": [
+                  {
+                    "vote_value": "Affirmative",
+                    "rows": 9
+                  }
+                ],
+                "event_id": "22615",
+                "event_item_id": "442992",
+                "vote_identity": "roll_call",
+                "person_count": 9,
+                "by_person": [
+                  {
+                    "person_id": "7785",
+                    "person_name": "Farah N. Louis",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7833",
+                    "person_name": "David M. Carr",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7895",
+                    "person_name": "Elsie Encarnación",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7810",
+                    "person_name": "Amanda C. Farías",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "5289",
+                    "person_name": "Simcha Felder",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7866",
+                    "person_name": "Yusef Salaam",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7897",
+                    "person_name": "Justin E. Sanchez",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7818",
+                    "person_name": "Lynn C. Schulman",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7898",
+                    "person_name": "Shanel Thomas-Henry",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  }
+                ]
+              }
+            }
+          ],
+          "matter_id": "79455",
+          "matter_file": "LU 0134-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79455",
+          "title": "Zoning, Park Avenue Brooklyn Rezoning, Brooklyn (N 240219 ZRK).",
+          "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
+          "votes": {
+            "result": "Passed",
+            "yes": 9,
+            "no": 0,
+            "abstain": 0,
+            "absent": 0,
+            "recused": 0,
+            "non_voting": 0,
+            "unknown": 0,
+            "published_vote_values": [
+              {
+                "vote_value": "Affirmative",
+                "rows": 9
+              }
+            ],
+            "event_id": "22615",
+            "event_item_id": "442992",
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              }
+            ]
+          }
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442620",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "442993",
+              "action": "Approved by Subcommittee",
+              "vote_state": "roll_call_recorded",
+              "votes": {
+                "result": "Passed",
+                "yes": 8,
+                "no": 1,
+                "abstain": 0,
+                "absent": 0,
+                "recused": 0,
+                "non_voting": 0,
+                "unknown": 0,
+                "published_vote_values": [
+                  {
+                    "vote_value": "Affirmative",
+                    "rows": 8
+                  },
+                  {
+                    "vote_value": "Negative",
+                    "rows": 1
+                  }
+                ],
+                "event_id": "22615",
+                "event_item_id": "442993",
+                "vote_identity": "roll_call",
+                "person_count": 9,
+                "by_person": [
+                  {
+                    "person_id": "7785",
+                    "person_name": "Farah N. Louis",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7833",
+                    "person_name": "David M. Carr",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7895",
+                    "person_name": "Elsie Encarnación",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7810",
+                    "person_name": "Amanda C. Farías",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "5289",
+                    "person_name": "Simcha Felder",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7866",
+                    "person_name": "Yusef Salaam",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7897",
+                    "person_name": "Justin E. Sanchez",
+                    "vote_bucket": "nay",
+                    "vote_value": "Negative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7818",
+                    "person_name": "Lynn C. Schulman",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7898",
+                    "person_name": "Shanel Thomas-Henry",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  }
+                ]
+              }
+            }
+          ],
+          "matter_id": "79456",
+          "matter_file": "LU 0135-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79456",
+          "title": "Zoning, Sojourner Truth – Mapes Rezoning, Bronx (C 240206 ZMX).",
+          "outcome": "Approved by Subcommittee",
+          "votes": {
+            "result": "Passed",
+            "yes": 8,
+            "no": 1,
+            "abstain": 0,
+            "absent": 0,
+            "recused": 0,
+            "non_voting": 0,
+            "unknown": 0,
+            "published_vote_values": [
+              {
+                "vote_value": "Affirmative",
+                "rows": 8
+              },
+              {
+                "vote_value": "Negative",
+                "rows": 1
+              }
+            ],
+            "event_id": "22615",
+            "event_item_id": "442993",
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "nay",
+                "vote_value": "Negative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              }
+            ]
+          }
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442621",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "442994",
+              "action": "Approved by Subcommittee",
+              "vote_state": "roll_call_recorded",
+              "votes": {
+                "result": "Passed",
+                "yes": 8,
+                "no": 1,
+                "abstain": 0,
+                "absent": 0,
+                "recused": 0,
+                "non_voting": 0,
+                "unknown": 0,
+                "published_vote_values": [
+                  {
+                    "vote_value": "Affirmative",
+                    "rows": 8
+                  },
+                  {
+                    "vote_value": "Negative",
+                    "rows": 1
+                  }
+                ],
+                "event_id": "22615",
+                "event_item_id": "442994",
+                "vote_identity": "roll_call",
+                "person_count": 9,
+                "by_person": [
+                  {
+                    "person_id": "7785",
+                    "person_name": "Farah N. Louis",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7833",
+                    "person_name": "David M. Carr",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7895",
+                    "person_name": "Elsie Encarnación",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7810",
+                    "person_name": "Amanda C. Farías",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "5289",
+                    "person_name": "Simcha Felder",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7866",
+                    "person_name": "Yusef Salaam",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7897",
+                    "person_name": "Justin E. Sanchez",
+                    "vote_bucket": "nay",
+                    "vote_value": "Negative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7818",
+                    "person_name": "Lynn C. Schulman",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  },
+                  {
+                    "person_id": "7898",
+                    "person_name": "Shanel Thomas-Henry",
+                    "vote_bucket": "aye",
+                    "vote_value": "Affirmative",
+                    "vote_participation": "voted"
+                  }
+                ]
+              }
+            }
+          ],
+          "matter_id": "79457",
+          "matter_file": "LU 0136-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79457",
+          "title": "Zoning, Sojourner Truth – Mapes Rezoning, Bronx (N 240207 ZRX).",
+          "outcome": "Approved by Subcommittee",
+          "votes": {
+            "result": "Passed",
+            "yes": 8,
+            "no": 1,
+            "abstain": 0,
+            "absent": 0,
+            "recused": 0,
+            "non_voting": 0,
+            "unknown": 0,
+            "published_vote_values": [
+              {
+                "vote_value": "Affirmative",
+                "rows": 8
+              },
+              {
+                "vote_value": "Negative",
+                "rows": 1
+              }
+            ],
+            "event_id": "22615",
+            "event_item_id": "442994",
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "nay",
+                "vote_value": "Negative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye",
+                "vote_value": "Affirmative",
+                "vote_participation": "voted"
+              }
+            ]
+          }
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee with Modifications and Referred to CPC"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442622",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "442995",
+              "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79458",
+          "matter_file": "LU 0137-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79458",
+          "title": "Zoning, 69-67 108th Street Rezoning, Queens (C 260186 ZMQ).",
+          "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee with Modifications and Referred to CPC"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442623",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "442996",
+              "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79459",
+          "matter_file": "LU 0138-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79459",
+          "title": "Zoning, 69-67 108th Street Rezoning, Queens (N 260187 ZRQ).",
+          "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee with Modifications and Referred to CPC"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442624",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "442997",
+              "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79460",
+          "matter_file": "LU 0139-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79460",
+          "title": "Zoning, 289 Kent Avenue Rezoning, Brooklyn (C 260087 ZMK).",
+          "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee with Modifications and Referred to CPC"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "442625",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "442998",
+              "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79461",
+          "matter_file": "LU 0140-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79461",
+          "title": "Zoning, 289 Kent Avenue Rezoning, Brooklyn (N 260088 ZRK).",
+          "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
+          "votes": null
+        }
+      ]
     },
     "20260909019": {
       "request_id": "20260909019",
@@ -6150,8 +7584,8 @@
         }
       ]
     },
-    "20260430007": {
-      "request_id": "20260430007",
+    "20260422047": {
+      "request_id": "20260422047",
       "snapshot_state": "present",
       "event": {
         "event_id": "22396",
@@ -6226,8 +7660,8 @@
         }
       ]
     },
-    "20260422047": {
-      "request_id": "20260422047",
+    "20260430007": {
+      "request_id": "20260430007",
       "snapshot_state": "present",
       "event": {
         "event_id": "22396",
@@ -7374,8 +8808,44 @@
         }
       ]
     },
+    "20260922022": {
+      "request_id": "20260922022",
+      "snapshot_state": "absent"
+    },
+    "20261001007": {
+      "request_id": "20261001007",
+      "snapshot_state": "absent"
+    },
+    "20261002028": {
+      "request_id": "20261002028",
+      "snapshot_state": "absent"
+    },
+    "20261006029": {
+      "request_id": "20261006029",
+      "snapshot_state": "absent"
+    },
+    "20260929011": {
+      "request_id": "20260929011",
+      "snapshot_state": "absent"
+    },
+    "20260924006": {
+      "request_id": "20260924006",
+      "snapshot_state": "absent"
+    },
+    "20260925024": {
+      "request_id": "20260925024",
+      "snapshot_state": "absent"
+    },
     "20260923020": {
       "request_id": "20260923020",
+      "snapshot_state": "absent"
+    },
+    "20260929023": {
+      "request_id": "20260929023",
+      "snapshot_state": "absent"
+    },
+    "20260924007": {
+      "request_id": "20260924007",
       "snapshot_state": "absent"
     },
     "20260915032": {
@@ -7390,12 +8860,28 @@
       "request_id": "20260916036",
       "snapshot_state": "absent"
     },
+    "20260929022": {
+      "request_id": "20260929022",
+      "snapshot_state": "absent"
+    },
     "20260918021": {
       "request_id": "20260918021",
       "snapshot_state": "absent"
     },
+    "20260923002": {
+      "request_id": "20260923002",
+      "snapshot_state": "absent"
+    },
     "20260922032": {
       "request_id": "20260922032",
+      "snapshot_state": "absent"
+    },
+    "20260921022": {
+      "request_id": "20260921022",
+      "snapshot_state": "absent"
+    },
+    "20260929002": {
+      "request_id": "20260929002",
       "snapshot_state": "absent"
     },
     "20260911005": {
@@ -7404,6 +8890,10 @@
     },
     "20260921008": {
       "request_id": "20260921008",
+      "snapshot_state": "absent"
+    },
+    "20260925019": {
+      "request_id": "20260925019",
       "snapshot_state": "absent"
     },
     "20260827020": {
@@ -7416,6 +8906,22 @@
     },
     "20260915022": {
       "request_id": "20260915022",
+      "snapshot_state": "absent"
+    },
+    "20261005013": {
+      "request_id": "20261005013",
+      "snapshot_state": "absent"
+    },
+    "20261001008": {
+      "request_id": "20261001008",
+      "snapshot_state": "absent"
+    },
+    "20260924023": {
+      "request_id": "20260924023",
+      "snapshot_state": "absent"
+    },
+    "20260106035": {
+      "request_id": "20260106035",
       "snapshot_state": "absent"
     },
     "20260827021": {
@@ -7478,12 +8984,12 @@
       "request_id": "20260909002",
       "snapshot_state": "absent"
     },
-    "20260826006": {
-      "request_id": "20260826006",
-      "snapshot_state": "absent"
-    },
     "20260817025": {
       "request_id": "20260817025",
+      "snapshot_state": "absent"
+    },
+    "20260826006": {
+      "request_id": "20260826006",
       "snapshot_state": "absent"
     },
     "20260911022": {
@@ -7494,16 +9000,16 @@
       "request_id": "20260814012",
       "snapshot_state": "absent"
     },
-    "20260819033": {
-      "request_id": "20260819033",
-      "snapshot_state": "absent"
-    },
     "20260902022": {
       "request_id": "20260902022",
       "snapshot_state": "absent"
     },
     "20260817001": {
       "request_id": "20260817001",
+      "snapshot_state": "absent"
+    },
+    "20260819033": {
+      "request_id": "20260819033",
       "snapshot_state": "absent"
     },
     "20260828012": {
@@ -7530,12 +9036,12 @@
       "request_id": "20260903021",
       "snapshot_state": "absent"
     },
-    "20260818004": {
-      "request_id": "20260818004",
-      "snapshot_state": "absent"
-    },
     "20260910007": {
       "request_id": "20260910007",
+      "snapshot_state": "absent"
+    },
+    "20260818004": {
+      "request_id": "20260818004",
       "snapshot_state": "absent"
     },
     "20260810007": {
@@ -7586,16 +9092,20 @@
       "request_id": "20260819025",
       "snapshot_state": "absent"
     },
-    "20260803009": {
-      "request_id": "20260803009",
-      "snapshot_state": "absent"
-    },
     "20260817015": {
       "request_id": "20260817015",
       "snapshot_state": "absent"
     },
+    "20260803009": {
+      "request_id": "20260803009",
+      "snapshot_state": "absent"
+    },
     "20260901022": {
       "request_id": "20260901022",
+      "snapshot_state": "absent"
+    },
+    "20260826043": {
+      "request_id": "20260826043",
       "snapshot_state": "absent"
     },
     "20260810025": {
@@ -7604,10 +9114,6 @@
     },
     "20260810024": {
       "request_id": "20260810024",
-      "snapshot_state": "absent"
-    },
-    "20260826043": {
-      "request_id": "20260826043",
       "snapshot_state": "absent"
     },
     "20260901021": {
@@ -7630,6 +9136,18 @@
       "request_id": "20260709020",
       "snapshot_state": "absent"
     },
+    "20260810050": {
+      "request_id": "20260810050",
+      "snapshot_state": "absent"
+    },
+    "20260714002": {
+      "request_id": "20260714002",
+      "snapshot_state": "absent"
+    },
+    "20260811001": {
+      "request_id": "20260811001",
+      "snapshot_state": "absent"
+    },
     "20260818027": {
       "request_id": "20260818027",
       "snapshot_state": "absent"
@@ -7644,18 +9162,6 @@
     },
     "20260723022": {
       "request_id": "20260723022",
-      "snapshot_state": "absent"
-    },
-    "20260811001": {
-      "request_id": "20260811001",
-      "snapshot_state": "absent"
-    },
-    "20260714002": {
-      "request_id": "20260714002",
-      "snapshot_state": "absent"
-    },
-    "20260810050": {
-      "request_id": "20260810050",
       "snapshot_state": "absent"
     },
     "20260805006": {
@@ -7886,12 +9392,12 @@
       "request_id": "20260609065",
       "snapshot_state": "absent"
     },
-    "20260522008": {
-      "request_id": "20260522008",
-      "snapshot_state": "absent"
-    },
     "20260610012": {
       "request_id": "20260610012",
+      "snapshot_state": "absent"
+    },
+    "20260522008": {
+      "request_id": "20260522008",
       "snapshot_state": "absent"
     },
     "20260506007": {
@@ -8098,16 +9604,16 @@
       "request_id": "20260518031",
       "snapshot_state": "absent"
     },
+    "20260515001": {
+      "request_id": "20260515001",
+      "snapshot_state": "absent"
+    },
     "20260512013": {
       "request_id": "20260512013",
       "snapshot_state": "absent"
     },
     "20260521019": {
       "request_id": "20260521019",
-      "snapshot_state": "absent"
-    },
-    "20260515001": {
-      "request_id": "20260515001",
       "snapshot_state": "absent"
     },
     "20260512014": {
@@ -8230,16 +9736,16 @@
       "request_id": "20260414033",
       "snapshot_state": "absent"
     },
+    "20260422037": {
+      "request_id": "20260422037",
+      "snapshot_state": "absent"
+    },
     "20260424018": {
       "request_id": "20260424018",
       "snapshot_state": "absent"
     },
     "20260407014": {
       "request_id": "20260407014",
-      "snapshot_state": "absent"
-    },
-    "20260422037": {
-      "request_id": "20260422037",
       "snapshot_state": "absent"
     },
     "20260428004": {
@@ -8334,16 +9840,16 @@
       "request_id": "20260323027",
       "snapshot_state": "absent"
     },
-    "20260408026": {
-      "request_id": "20260408026",
-      "snapshot_state": "absent"
-    },
     "20260331010": {
       "request_id": "20260331010",
       "snapshot_state": "absent"
     },
     "20260408001": {
       "request_id": "20260408001",
+      "snapshot_state": "absent"
+    },
+    "20260408026": {
+      "request_id": "20260408026",
       "snapshot_state": "absent"
     },
     "20260303009": {
@@ -8480,46 +9986,6 @@
     },
     "20260303021": {
       "request_id": "20260303021",
-      "snapshot_state": "absent"
-    },
-    "20260302018": {
-      "request_id": "20260302018",
-      "snapshot_state": "absent"
-    },
-    "20260320012": {
-      "request_id": "20260320012",
-      "snapshot_state": "absent"
-    },
-    "20260325031": {
-      "request_id": "20260325031",
-      "snapshot_state": "absent"
-    },
-    "20260318017": {
-      "request_id": "20260318017",
-      "snapshot_state": "absent"
-    },
-    "20260316027": {
-      "request_id": "20260316027",
-      "snapshot_state": "absent"
-    },
-    "20260317002": {
-      "request_id": "20260317002",
-      "snapshot_state": "absent"
-    },
-    "20260311002": {
-      "request_id": "20260311002",
-      "snapshot_state": "absent"
-    },
-    "20260226021": {
-      "request_id": "20260226021",
-      "snapshot_state": "absent"
-    },
-    "20260317001": {
-      "request_id": "20260317001",
-      "snapshot_state": "absent"
-    },
-    "20260225026": {
-      "request_id": "20260225026",
       "snapshot_state": "absent"
     }
   }

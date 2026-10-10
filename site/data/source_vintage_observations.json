@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.source_vintage_observations.v1",
-  "generated_at": "2026-10-09T14:15:05.584Z",
+  "generated_at": "2026-10-10T13:23:51.995Z",
   "contract_count": 67,
   "observations": [
     {
@@ -328,11 +328,11 @@
       "publisher_last_updated_at": null,
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
-        "status": "succeeded",
-        "retrieved_at": "2026-10-09T14:15:05.584Z",
+        "status": "unknown",
+        "retrieved_at": null,
         "receipt_ref": null,
-        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "warehouse/receipts/proof/checkbook_contracts_population_latest.json"
+        "receipt_schema": null,
+        "run_id": null
       },
       "expected_cadence": "Registration-driven ongoing updates; no fixed daily publication promise (Checkbook API)",
       "expected_lag_tolerance_days": 45,
@@ -1765,10 +1765,10 @@
       "publisher_last_update_basis": "warehouse_source_summary",
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-09-07T11:54:00.629Z",
+        "retrieved_at": "2026-10-10T13:23:51.995Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "omb-community-board-budget-requests:2026-09-07T11:54:00.629Z"
+        "run_id": "omb-community-board-budget-requests:2026-10-10T13:23:51.995Z"
       },
       "expected_cadence": "Two or three budget publications a fiscal year",
       "expected_lag_tolerance_days": 240,

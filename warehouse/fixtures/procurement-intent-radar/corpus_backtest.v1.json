@@ -1379,22 +1379,22 @@
     "retained_app_corpus": {
       "artifact": "site/data/shared_meeting_read_model.json",
       "schema": "cityscroll.shared_meeting_read_model.v1",
-      "generated_at": "2026-10-05T17:33:11.875Z",
-      "checked_at": "2026-09-30T12:59:02.901Z",
-      "row_count": 840,
+      "generated_at": "2026-10-10T13:12:22.794Z",
+      "checked_at": "2026-10-10T13:01:01.019Z",
+      "row_count": 953,
       "event_dates_in_corpus_window": 28,
-      "event_dates_outside_corpus_window": 812,
+      "event_dates_outside_corpus_window": 925,
       "year_coverage": {
         "2022": 0,
         "2023": 8,
         "2024": 10,
         "2025": 10
       },
-      "city_council_agency_rows": 7,
+      "city_council_agency_rows": 6,
       "pir_eligible_source_type_rows": 0,
       "text_bearing_council_rows": 0,
       "note": "The retained meeting read model is a current/upcoming meeting snapshot. It does not retain 2022–2025 Council transcripts, agency testimony, or Finance Division briefing papers.",
-      "sha256": "f45fb7f34cc33dc4ad57ab99ea4c8db46102037d289ecccc066a632e02c82338"
+      "sha256": "e29b0dfedc3dc86ee912b16f1d770ca4022aa5bac3d04abfa4ee36462d4c3363"
     },
     "sufficient_for_recurrent_corpus_claim": false,
     "limitation": "Labeled gold cases are fixture controls spanning 2022–2025. They are not a recurrent estimate of all Council material. The retained app meeting corpus currently contributes zero PIR-eligible 2022–2025 source spans."
