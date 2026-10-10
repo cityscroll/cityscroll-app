@@ -1,0 +1,1274 @@
+{
+  "api_origin": "https://api.cityscroll.org",
+  "capture": {
+    "browser": "chromium 151.0.7922.34",
+    "scratch_dir_policy": "Screenshots may exist under FM_TASK_SCRATCH; never commit image binaries.",
+    "screenshot_binaries_committed": false,
+    "tool": "tools/capture_chelsea_served_surface_production_read.py",
+    "viewports": [
+      {
+        "height": 900,
+        "name": "desktop",
+        "width": 1440
+      },
+      {
+        "height": 844,
+        "name": "narrow",
+        "width": 390
+      }
+    ]
+  },
+  "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+  "copy_distinction": {
+    "unsupported_meetings_copy": "We can’t filter these meetings to this neighborhood yet.",
+    "verified_empty_copy": "No mapped zoning records match these filters."
+  },
+  "deployment": {
+    "pages": {
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "generated_at": "2026-10-09T22:10:34.791Z",
+      "manifest_sha256": "8af64662b2645a9a3cdd0ecb8c8f59f163096aa652547bbd7dd6f6e153f2d1ad",
+      "served_half": "pages",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483"
+    },
+    "worker": {
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "deploy_run_id": "37988021332",
+      "deploy_run_url": "https://github.com/cityscroll/cityscroll-app/actions/runs/37988021332",
+      "live_smoke_conclusion": "success",
+      "served_half": "worker",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483"
+    }
+  },
+  "evidence_class": "deployed-production-read-back",
+  "feature": "chelsea-served-surface",
+  "grounded_at": "b150a8489485c08d75566536b380ce3f9af7a483",
+  "identity_compare": {
+    "canonical_count": 11,
+    "canonical_only": [],
+    "intersection_count": 11,
+    "note": "Rolling publisher windows can drop named land ids; compare against committed district_activity geography_items and freshness receipts rather than assuming an empty future calendar.",
+    "population_floor_met": true,
+    "served_count": 11,
+    "served_only": []
+  },
+  "m04_freshness_diagnosis": {
+    "activity_built_at": "2026-10-08T23:51:25.374Z",
+    "agenda_admission_receipt": {
+      "observed_at": "2026-09-24T16:00:00.000Z",
+      "path": "warehouse/receipts/proof/community_board_agenda_m3_data_only_admission.json",
+      "sha256": "ee9ed8ba4c2229b5d18d9fb95fffa9b51fee7236f272c63292aff1752d827baf"
+    },
+    "boundary_vintage": "2026-05-26",
+    "canonical_meetings_count": 14,
+    "canonical_only_sample": [
+      "20260723030",
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-24/",
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-67/",
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-61/",
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-58/",
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-3/",
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/",
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-52/",
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/office-closed-labor-day-7/",
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-25/",
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/waterfront-parks-environment-committee-wpe-59/"
+    ],
+    "diagnosis": "Served broader M04 preview is a population slice of committed district_activity meetings; canonical-only ids are diagnosed against activity built_at / meetings coverage source_dates and community-board agenda admission receipts rather than treated as proof of an empty future calendar.",
+    "district": "M04",
+    "intersection_count": 3,
+    "meetings_coverage_status": "ready",
+    "meetings_source_dates": null,
+    "old_only_count": 11,
+    "origin_checked": "https://cityscroll.org",
+    "served_broader_count": 3,
+    "served_only_sample": []
+  },
+  "observations": [
+    {
+      "assertion": "No-lens Chelsea overview at desktop shows selected neighborhood, local Zoning/projects, broader M04 or board calendar, and no All NYC detour; records map laid_out=False; check_result=pass",
+      "assertions_derived": true,
+      "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "data_vintage": "2026-10-09T22:10:34.791Z",
+      "deploy_run_id": "37988021332",
+      "file": null,
+      "live_smoke_conclusion": "success",
+      "name": "no-lens-overview-desktop",
+      "render_content_sha256": "1a980309ae1d28bbaef049ee45c21c54b6b627dbccbd8a8c8a1e8f6ab0f53a17",
+      "route": "/near-you/?geo=nta2020%3AMN0401&surface=records",
+      "served_half": "worker",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483",
+      "served_values": {
+        "all_nyc_meetings_present": false,
+        "applied_viewport": {
+          "configured_height": 900,
+          "configured_width": 1440,
+          "height": 900,
+          "width": 1440
+        },
+        "board_calendar_href": "https://cityscroll.org/community-boards/manhattan-cb-04/",
+        "broader_m04": {
+          "ids": [
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/"
+          ],
+          "labeled": true,
+          "texts": [
+            "broader",
+            "Wider district activity Meetings in districts that overlap this neighborhood These community districts overlap this neighborhood, so their boards can act on it. The records below cover a whole district, not this exact neighborhood, and are not counted as exact neighborhood records. Manhattan Community District 4 broader 3 records in this district Housing, Health & Human Services Committee (HHHS)Housing, Health & Human Services Committee (HHHS) Community board meeting Oct 1, 2026 · 18:30 Official source Held in Hell's Kitchen 630 9th Avenue, Ste. 208, New York, 10036 Past event · Oct 1, 2026 View the full record Executive Committee (EXEC)Executive Committee (EXEC) Community board meeting Sep 28, 2026 · 18:30 Official source Held in Hell's Kitchen 630 9th Avenue, Ste. 208, New York, 10036 Past event · Sep 28, 2026 View the full record Budget Task ForceBudget Task Force Community board meeting Sep 28, 2026 · 17:00 Official source Held in Hell's Kitchen 630 9th Avenue, Ste. 208, New York, 10036 Past event · Sep 28, 2026 View the full record Open district records",
+            "Manhattan Community District 4 broader 3 records in this district Housing, Health & Human Services Committee (HHHS)Housing, Health & Human Services Committee (HHHS) Community board meeting Oct 1, 2026 · 18:30 Official source Held in Hell's Kitchen 630 9th Avenue, Ste. 208, New York, 10036 Past event · Oct 1, 2026 View the full record Executive Committee (EXEC)Executive Committee (EXEC) Community board meeting Sep 28, 2026 · 18:30 Official source Held in Hell's Kitchen 630 9th Avenue, Ste. 208, New York, 10036 Past event · Sep 28, 2026 View the full record Budget Task ForceBudget Task Force Community board meeting Sep 28, 2026 · 17:00 Official source Held in Hell's Kitchen 630 9th Avenue, Ste. 208, New York, 10036 Past event · Sep 28, 2026 View the full record Open district records",
+            "broader"
+          ]
+        },
+        "broader_or_calendar_present": true,
+        "check_result": "pass",
+        "citywide_detour_absent": true,
+        "heading": "Chelsea-Hudson Yards",
+        "map_on_records_surface": {
+          "boundary_fits_first_viewport": false,
+          "boundary_height_ratio": null,
+          "check_result": "fail",
+          "map_box": {
+            "display": "block",
+            "height": 0,
+            "opacity": "1",
+            "present": true,
+            "visibility": "visible",
+            "width": 0,
+            "x": 0,
+            "y": 0
+          },
+          "map_canvas_laid_out": false,
+          "note": "Map canvas is present but not laid out in this surface/viewport; first-viewport boundary fit is measured on surface=map.",
+          "selected_boundary_pixels": null,
+          "visible_height_in_first_viewport": 0
+        },
+        "note": "surface=records overview claims (neighborhood, Zoning, broader M04 / board calendar, no All NYC detour). Map first-viewport boundary fit is measured on surface=map because records collapses the map canvas.",
+        "observation_status": "closed",
+        "overview_marker_present": true,
+        "page_html_sha256": "1a980309ae1d28bbaef049ee45c21c54b6b627dbccbd8a8c8a1e8f6ab0f53a17",
+        "project_count_observed": 6,
+        "project_sample": [
+          {
+            "id": "2023M0213",
+            "text": "Dewitt Clinton Park North (629 West 54th Street)Dewitt Clinton Park North (629 West 54th Street) 760 12th LLC In Public Review Jul 1, 2026 · 20:00 Affected area"
+          },
+          {
+            "id": "2024M0244",
+            "text": "Dewitt Clinton Park North (801 Eleventh Avenue)Dewitt Clinton Park North (801 Eleventh Avenue) 801 11th Avenue LLC In Public Review Jul 1, 2026 · 20:00 Affected"
+          },
+          {
+            "id": "2026M0445",
+            "text": "Lithuanian Alliance Building (LP-2695)Lithuanian Alliance Building (LP-2695) LPC - NYC Landmarks Preservation Commission In Public Review Jun 6, 2026 · 20:00 Af"
+          },
+          {
+            "id": "2023M0213",
+            "text": "Dewitt Clinton Park North (629 West 54th Street)Dewitt Clinton Park North (629 West 54th Street) 760 12th LLC In Public Review Jul 1, 2026 · 20:00 Affected area"
+          },
+          {
+            "id": "2024M0244",
+            "text": "Dewitt Clinton Park North (801 Eleventh Avenue)Dewitt Clinton Park North (801 Eleventh Avenue) 801 11th Avenue LLC In Public Review Jul 1, 2026 · 20:00 Affected"
+          },
+          {
+            "id": "2026M0445",
+            "text": "Lithuanian Alliance Building (LP-2695)Lithuanian Alliance Building (LP-2695) LPC - NYC Landmarks Preservation Commission In Public Review Jun 6, 2026 · 20:00 Af"
+          }
+        ],
+        "section_headings": [
+          "What is happening here",
+          "UpcomingOpen meetings We can’t filter these meetings to this neighborhood yet.",
+          "Upcoming",
+          "Recent changes 3",
+          "Board activity",
+          "Projects 11",
+          "District priorities",
+          "Consultations"
+        ],
+        "selected_neighborhood_visible": true,
+        "unsupported_meetings_copy": null,
+        "zoning_or_projects_exposed": true
+      },
+      "sha256": "1a980309ae1d28bbaef049ee45c21c54b6b627dbccbd8a8c8a1e8f6ab0f53a17",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "configured_height": 900,
+        "configured_width": 1440,
+        "height": 900,
+        "width": 1440
+      },
+      "viewport_name": "desktop"
+    },
+    {
+      "assertion": "No-lens Chelsea overview at narrow shows selected neighborhood, local Zoning/projects, broader M04 or board calendar, and no All NYC detour; records map laid_out=False; check_result=pass",
+      "assertions_derived": true,
+      "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "data_vintage": "2026-10-09T22:10:34.791Z",
+      "deploy_run_id": "37988021332",
+      "file": null,
+      "live_smoke_conclusion": "success",
+      "name": "no-lens-overview-narrow",
+      "render_content_sha256": "058293115cc7d4c16a09a91ddd8734d05a98a46f5ffd374710098639a4c31546",
+      "route": "/near-you/?geo=nta2020%3AMN0401&surface=records",
+      "served_half": "worker",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483",
+      "served_values": {
+        "all_nyc_meetings_present": false,
+        "applied_viewport": {
+          "configured_height": 844,
+          "configured_width": 390,
+          "height": 844,
+          "width": 390
+        },
+        "board_calendar_href": "https://cityscroll.org/community-boards/manhattan-cb-04/",
+        "broader_m04": {
+          "ids": [
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/"
+          ],
+          "labeled": true,
+          "texts": [
+            "broader",
+            "Wider district activity Meetings in districts that overlap this neighborhood These community districts overlap this neighborhood, so their boards can act on it. The records below cover a whole district, not this exact neighborhood, and are not counted as exact neighborhood records. Manhattan Community District 4 broader 3 records in this district Housing, Health & Human Services Committee (HHHS)Housing, Health & Human Services Committee (HHHS) Community board meeting Oct 1, 2026 · 18:30 Official source Held in Hell's Kitchen 630 9th Avenue, Ste. 208, New York, 10036 Past event · Oct 1, 2026 View the full record Executive Committee (EXEC)Executive Committee (EXEC) Community board meeting Sep 28, 2026 · 18:30 Official source Held in Hell's Kitchen 630 9th Avenue, Ste. 208, New York, 10036 Past event · Sep 28, 2026 View the full record Budget Task ForceBudget Task Force Community board meeting Sep 28, 2026 · 17:00 Official source Held in Hell's Kitchen 630 9th Avenue, Ste. 208, New York, 10036 Past event · Sep 28, 2026 View the full record Open district records",
+            "Manhattan Community District 4 broader 3 records in this district Housing, Health & Human Services Committee (HHHS)Housing, Health & Human Services Committee (HHHS) Community board meeting Oct 1, 2026 · 18:30 Official source Held in Hell's Kitchen 630 9th Avenue, Ste. 208, New York, 10036 Past event · Oct 1, 2026 View the full record Executive Committee (EXEC)Executive Committee (EXEC) Community board meeting Sep 28, 2026 · 18:30 Official source Held in Hell's Kitchen 630 9th Avenue, Ste. 208, New York, 10036 Past event · Sep 28, 2026 View the full record Budget Task ForceBudget Task Force Community board meeting Sep 28, 2026 · 17:00 Official source Held in Hell's Kitchen 630 9th Avenue, Ste. 208, New York, 10036 Past event · Sep 28, 2026 View the full record Open district records",
+            "broader"
+          ]
+        },
+        "broader_or_calendar_present": true,
+        "check_result": "pass",
+        "citywide_detour_absent": true,
+        "heading": "Chelsea-Hudson Yards",
+        "map_on_records_surface": {
+          "boundary_fits_first_viewport": false,
+          "boundary_height_ratio": null,
+          "check_result": "fail",
+          "map_box": {
+            "display": "block",
+            "height": 0,
+            "opacity": "1",
+            "present": true,
+            "visibility": "visible",
+            "width": 0,
+            "x": 0,
+            "y": 0
+          },
+          "map_canvas_laid_out": false,
+          "note": "Map canvas is present but not laid out in this surface/viewport; first-viewport boundary fit is measured on surface=map.",
+          "selected_boundary_pixels": null,
+          "visible_height_in_first_viewport": 0
+        },
+        "note": "surface=records overview claims (neighborhood, Zoning, broader M04 / board calendar, no All NYC detour). Map first-viewport boundary fit is measured on surface=map because records collapses the map canvas.",
+        "observation_status": "closed",
+        "overview_marker_present": true,
+        "page_html_sha256": "058293115cc7d4c16a09a91ddd8734d05a98a46f5ffd374710098639a4c31546",
+        "project_count_observed": 6,
+        "project_sample": [
+          {
+            "id": "2023M0213",
+            "text": "Dewitt Clinton Park North (629 West 54th Street)Dewitt Clinton Park North (629 West 54th Street) 760 12th LLC In Public Review Jul 1, 2026 · 20:00 Affected area"
+          },
+          {
+            "id": "2024M0244",
+            "text": "Dewitt Clinton Park North (801 Eleventh Avenue)Dewitt Clinton Park North (801 Eleventh Avenue) 801 11th Avenue LLC In Public Review Jul 1, 2026 · 20:00 Affected"
+          },
+          {
+            "id": "2026M0445",
+            "text": "Lithuanian Alliance Building (LP-2695)Lithuanian Alliance Building (LP-2695) LPC - NYC Landmarks Preservation Commission In Public Review Jun 6, 2026 · 20:00 Af"
+          },
+          {
+            "id": "2023M0213",
+            "text": "Dewitt Clinton Park North (629 West 54th Street)Dewitt Clinton Park North (629 West 54th Street) 760 12th LLC In Public Review Jul 1, 2026 · 20:00 Affected area"
+          },
+          {
+            "id": "2024M0244",
+            "text": "Dewitt Clinton Park North (801 Eleventh Avenue)Dewitt Clinton Park North (801 Eleventh Avenue) 801 11th Avenue LLC In Public Review Jul 1, 2026 · 20:00 Affected"
+          },
+          {
+            "id": "2026M0445",
+            "text": "Lithuanian Alliance Building (LP-2695)Lithuanian Alliance Building (LP-2695) LPC - NYC Landmarks Preservation Commission In Public Review Jun 6, 2026 · 20:00 Af"
+          }
+        ],
+        "section_headings": [
+          "What is happening here",
+          "UpcomingOpen meetings We can’t filter these meetings to this neighborhood yet.",
+          "Upcoming",
+          "Recent changes 3",
+          "Board activity",
+          "Projects 11",
+          "District priorities",
+          "Consultations"
+        ],
+        "selected_neighborhood_visible": true,
+        "unsupported_meetings_copy": null,
+        "zoning_or_projects_exposed": true
+      },
+      "sha256": "058293115cc7d4c16a09a91ddd8734d05a98a46f5ffd374710098639a4c31546",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "configured_height": 844,
+        "configured_width": 390,
+        "height": 844,
+        "width": 390
+      },
+      "viewport_name": "narrow"
+    },
+    {
+      "assertion": "Chelsea surface=map at desktop first-viewport boundary fit=True visible_height=517.609375 ratio=0.873015873015072 check_result=pass",
+      "assertions_derived": true,
+      "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "data_vintage": "2026-10-09T22:10:34.791Z",
+      "deploy_run_id": "37988021332",
+      "file": null,
+      "live_smoke_conclusion": "success",
+      "name": "map-first-viewport-fit-desktop",
+      "render_content_sha256": "b8d083135ae9ba09d500a09a74f9f48e36fb1194069b9feb8c41c5e526f4a850",
+      "route": "/near-you/?geo=nta2020%3AMN0401&surface=map",
+      "served_half": "worker",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483",
+      "served_values": {
+        "applied_viewport": {
+          "configured_height": 900,
+          "configured_width": 1440,
+          "height": 900,
+          "width": 1440
+        },
+        "check_result": "pass",
+        "heading": "Chelsea-Hudson Yards",
+        "map": {
+          "boundary_fits_first_viewport": true,
+          "boundary_height_ratio": 0.873015873015072,
+          "check_result": "pass",
+          "map_box": {
+            "height": 630,
+            "width": 994,
+            "x": 381,
+            "y": 382.390625
+          },
+          "map_canvas_laid_out": true,
+          "selected_boundary_pixels": {
+            "height": 549.9999999994953,
+            "max_x": 667.6991244303487,
+            "max_y": 590.0000000005045,
+            "min_x": 326.30087557166974,
+            "min_y": 40.00000000100918,
+            "width": 341.3982488586789
+          },
+          "visible_height_in_first_viewport": 517.609375
+        },
+        "observation_status": "closed",
+        "selected_neighborhood_visible": true
+      },
+      "sha256": "b8d083135ae9ba09d500a09a74f9f48e36fb1194069b9feb8c41c5e526f4a850",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "configured_height": 900,
+        "configured_width": 1440,
+        "height": 900,
+        "width": 1440
+      },
+      "viewport_name": "desktop"
+    },
+    {
+      "assertion": "Chelsea surface=map at narrow first-viewport boundary fit=True visible_height=391.765625 ratio=0.70874052742305 check_result=pass",
+      "assertions_derived": true,
+      "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "data_vintage": "2026-10-09T22:10:34.791Z",
+      "deploy_run_id": "37988021332",
+      "file": null,
+      "live_smoke_conclusion": "success",
+      "name": "map-first-viewport-fit-narrow",
+      "render_content_sha256": "2d61726aa9b26ba5f7e63b80e0c5e09f3415b53006d628c85fff963e2c38d637",
+      "route": "/near-you/?geo=nta2020%3AMN0401&surface=map",
+      "served_half": "worker",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483",
+      "served_values": {
+        "applied_viewport": {
+          "configured_height": 844,
+          "configured_width": 390,
+          "height": 844,
+          "width": 390
+        },
+        "check_result": "pass",
+        "heading": "Chelsea-Hudson Yards",
+        "map": {
+          "boundary_fits_first_viewport": true,
+          "boundary_height_ratio": 0.70874052742305,
+          "check_result": "pass",
+          "map_box": {
+            "height": 591,
+            "width": 340,
+            "x": 25,
+            "y": 452.234375
+          },
+          "map_canvas_laid_out": true,
+          "selected_boundary_pixels": {
+            "height": 418.8656517070226,
+            "max_x": 300.0000000005379,
+            "max_y": 504.9328258539147,
+            "min_x": 40.00000000053789,
+            "min_y": 86.06717414689211,
+            "width": 260
+          },
+          "visible_height_in_first_viewport": 391.765625
+        },
+        "observation_status": "closed",
+        "selected_neighborhood_visible": true
+      },
+      "sha256": "2d61726aa9b26ba5f7e63b80e0c5e09f3415b53006d628c85fff963e2c38d637",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "configured_height": 844,
+        "configured_width": 390,
+        "height": 844,
+        "width": 390
+      },
+      "viewport_name": "narrow"
+    },
+    {
+      "assertion": "Overview Open meetings / Open Zoning place-scope continuity check_result=fail observation_status=open failing_labels=['Open meetings', 'Open Zoning'] hrefs=['https://cityscroll.org/near-you?v=0&lens=meetings', 'https://cityscroll.org/near-you?v=0&lens=land'] result_h1s=[\"What's near you?\", \"What's near you?\"]",
+      "assertions_derived": true,
+      "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "data_vintage": "2026-10-09T22:10:34.791Z",
+      "deploy_run_id": "37988021332",
+      "file": null,
+      "live_smoke_conclusion": "success",
+      "name": "overview-open-lens-links-place-scope",
+      "render_content_sha256": "40c165c6f8e13716bb9ddbb111e420db98a2a7bf29f3478e21e8ee225ad59ea7",
+      "route": "/near-you/?geo=nta2020%3AMN0401&surface=records",
+      "served_half": "worker",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483",
+      "served_values": {
+        "check_result": "fail",
+        "expected_geo": "nta2020:MN0401",
+        "failing_labels": [
+          "Open meetings",
+          "Open Zoning"
+        ],
+        "links": [
+          {
+            "abs_href": "https://cityscroll.org/near-you?v=0&lens=meetings",
+            "check_result": "fail",
+            "clicked": true,
+            "found": true,
+            "href": "https://cityscroll.org/near-you?v=0&lens=meetings",
+            "href_retains_geo": false,
+            "label": "Open meetings",
+            "result_geo": null,
+            "result_h1": "What's near you?",
+            "result_retains_chelsea_label": false,
+            "result_url": "https://cityscroll.org/near-you?v=0&lens=meetings",
+            "widened_to_citywide": true
+          },
+          {
+            "abs_href": "https://cityscroll.org/near-you?v=0&lens=land",
+            "check_result": "fail",
+            "clicked": true,
+            "found": true,
+            "href": "https://cityscroll.org/near-you?v=0&lens=land",
+            "href_retains_geo": false,
+            "label": "Open Zoning",
+            "result_geo": null,
+            "result_h1": "What's near you?",
+            "result_retains_chelsea_label": false,
+            "result_url": "https://cityscroll.org/near-you?v=0&lens=land",
+            "widened_to_citywide": true
+          }
+        ],
+        "observation_status": "open",
+        "regression_note": "Overview Open meetings / Open Zoning links must retain the selected neighborhood geo (and surface) so the resident stays on Chelsea. A failing observation keeps the related continuity observations open until a later deploy that retains place scope is re-observed.",
+        "start_heading": "Chelsea-Hudson Yards",
+        "start_url": "https://cityscroll.org/near-you/?geo=nta2020%3AMN0401&surface=records&_cityscroll_evidence=69e44821c6a9d9fc9cf8b07d"
+      },
+      "sha256": "40c165c6f8e13716bb9ddbb111e420db98a2a7bf29f3478e21e8ee225ad59ea7",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "configured_height": 900,
+        "configured_width": 1440,
+        "height": 900,
+        "width": 1440
+      },
+      "viewport_name": "desktop"
+    },
+    {
+      "assertion": "MN0401 lens=meetings coverage=unsupported copy='We can’t filter these meetings to this neighborhood yet.' exact=0 broader=3",
+      "assertions_derived": true,
+      "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "data_vintage": "2026-10-09T22:10:34.791Z",
+      "deploy_run_id": "37988021332",
+      "file": null,
+      "live_smoke_conclusion": "success",
+      "name": "lens-MN0401-meetings-desktop",
+      "render_content_sha256": "27a8295aedcad0bc987310983c770ae6f8eee9c8fb186ff852e3bbbbfc9941af",
+      "route": "/near-you/?geo=nta2020%3AMN0401&lens=meetings&surface=records",
+      "served_half": "worker",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483",
+      "served_values": {
+        "citywide_bag_ids": [
+          "20260911005",
+          "meeting:nyc_legistar_events:22568",
+          "20260921011"
+        ],
+        "citywide_bags_separately_scoped": true,
+        "heading": "Chelsea-Hudson Yards",
+        "is_overview": false,
+        "lens_attr": {
+          "geo": "nta2020:MN0401",
+          "lens": null,
+          "surface": "records"
+        },
+        "page_html_sha256": "27a8295aedcad0bc987310983c770ae6f8eee9c8fb186ff852e3bbbbfc9941af",
+        "record_ids": {
+          "broader_ids": [
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/"
+          ],
+          "exact_ids": []
+        },
+        "recovery": {
+          "coverage": "unsupported",
+          "recovery_state": "unsupported",
+          "resident_copy": "We can’t filter these meetings to this neighborhood yet.",
+          "results_count": null
+        },
+        "requested_geo": "nta2020:MN0401",
+        "requested_lens": "meetings",
+        "stayed_on_lens": true,
+        "url": "https://cityscroll.org/near-you/?geo=nta2020%3AMN0401&lens=meetings&surface=records&_cityscroll_evidence=a7d4443160172522bcaeebeb"
+      },
+      "sha256": "27a8295aedcad0bc987310983c770ae6f8eee9c8fb186ff852e3bbbbfc9941af",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "configured_height": 900,
+        "configured_width": 1440,
+        "height": 900,
+        "width": 1440
+      },
+      "viewport_name": "desktop"
+    },
+    {
+      "assertion": "MN0401 lens=land coverage=supported copy=None exact=11 broader=0",
+      "assertions_derived": true,
+      "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "data_vintage": "2026-10-09T22:10:34.791Z",
+      "deploy_run_id": "37988021332",
+      "file": null,
+      "live_smoke_conclusion": "success",
+      "name": "lens-MN0401-land-desktop",
+      "render_content_sha256": "3760c437e0e51e55a65274b8f0fc2f50f175286e39e9f9a7ef4782abc574c70d",
+      "route": "/near-you/?geo=nta2020%3AMN0401&lens=land&surface=records",
+      "served_half": "worker",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483",
+      "served_values": {
+        "citywide_bag_ids": [
+          "2025Y0279",
+          "2022Y0395",
+          "2026Y0360"
+        ],
+        "citywide_bags_separately_scoped": true,
+        "heading": "Chelsea-Hudson Yards",
+        "is_overview": false,
+        "lens_attr": {
+          "geo": "nta2020:MN0401",
+          "lens": null,
+          "surface": "records"
+        },
+        "page_html_sha256": "3760c437e0e51e55a65274b8f0fc2f50f175286e39e9f9a7ef4782abc574c70d",
+        "record_ids": {
+          "broader_ids": [],
+          "exact_ids": [
+            "2023M0213",
+            "2024M0244",
+            "2026M0445",
+            "P2016M0148",
+            "2023M0309",
+            "2019M0059",
+            "2020M0325",
+            "P2014M0309",
+            "2020M0375",
+            "P2015M0247",
+            "2019M0107"
+          ]
+        },
+        "recovery": {
+          "coverage": "supported",
+          "recovery_state": "ready",
+          "resident_copy": null,
+          "results_count": 11
+        },
+        "requested_geo": "nta2020:MN0401",
+        "requested_lens": "land",
+        "stayed_on_lens": true,
+        "url": "https://cityscroll.org/near-you/?geo=nta2020%3AMN0401&lens=land&surface=records&_cityscroll_evidence=bcee770a525ba89b3521d78a"
+      },
+      "sha256": "3760c437e0e51e55a65274b8f0fc2f50f175286e39e9f9a7ef4782abc574c70d",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "configured_height": 900,
+        "configured_width": 1440,
+        "height": 900,
+        "width": 1440
+      },
+      "viewport_name": "desktop"
+    },
+    {
+      "assertion": "MN0402 lens=meetings coverage=supported copy=None exact=12 broader=0",
+      "assertions_derived": true,
+      "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "data_vintage": "2026-10-09T22:10:34.791Z",
+      "deploy_run_id": "37988021332",
+      "file": null,
+      "live_smoke_conclusion": "success",
+      "name": "lens-MN0402-meetings-desktop",
+      "render_content_sha256": "da6b76daff598530c4b9362d064d9f076a5f210d10279d6ab92fbb9afe141af4",
+      "route": "/near-you/?geo=nta2020%3AMN0402&lens=meetings&surface=records",
+      "served_half": "worker",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483",
+      "served_values": {
+        "citywide_bag_ids": [
+          "20260911005",
+          "meeting:nyc_legistar_events:22568",
+          "20260921011"
+        ],
+        "citywide_bags_separately_scoped": true,
+        "heading": "Hell's Kitchen",
+        "is_overview": false,
+        "lens_attr": {
+          "geo": "nta2020:MN0402",
+          "lens": null,
+          "surface": "records"
+        },
+        "page_html_sha256": "da6b76daff598530c4b9362d064d9f076a5f210d10279d6ab92fbb9afe141af4",
+        "record_ids": {
+          "broader_ids": [],
+          "exact_ids": [
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-52/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-61/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-3/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-25/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-24/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/waterfront-parks-environment-committee-wpe-59/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-58/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-67/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/"
+          ]
+        },
+        "recovery": {
+          "coverage": "supported",
+          "recovery_state": "ready",
+          "resident_copy": null,
+          "results_count": 12
+        },
+        "requested_geo": "nta2020:MN0402",
+        "requested_lens": "meetings",
+        "stayed_on_lens": true,
+        "url": "https://cityscroll.org/near-you/?geo=nta2020%3AMN0402&lens=meetings&surface=records&_cityscroll_evidence=e297209a84cedc9d736104a9"
+      },
+      "sha256": "da6b76daff598530c4b9362d064d9f076a5f210d10279d6ab92fbb9afe141af4",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "configured_height": 900,
+        "configured_width": 1440,
+        "height": 900,
+        "width": 1440
+      },
+      "viewport_name": "desktop"
+    },
+    {
+      "assertion": "MN0402 lens=land coverage=supported copy=None exact=4 broader=0",
+      "assertions_derived": true,
+      "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "data_vintage": "2026-10-09T22:10:34.791Z",
+      "deploy_run_id": "37988021332",
+      "file": null,
+      "live_smoke_conclusion": "success",
+      "name": "lens-MN0402-land-desktop",
+      "render_content_sha256": "dba8a5cbc460fc87b4365af155cd0e95ad117e77ca892e33d90a2d1b09c1445c",
+      "route": "/near-you/?geo=nta2020%3AMN0402&lens=land&surface=records",
+      "served_half": "worker",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483",
+      "served_values": {
+        "citywide_bag_ids": [
+          "2025Y0279",
+          "2022Y0395",
+          "2026Y0360"
+        ],
+        "citywide_bags_separately_scoped": true,
+        "heading": "Hell's Kitchen",
+        "is_overview": false,
+        "lens_attr": {
+          "geo": "nta2020:MN0402",
+          "lens": null,
+          "surface": "records"
+        },
+        "page_html_sha256": "dba8a5cbc460fc87b4365af155cd0e95ad117e77ca892e33d90a2d1b09c1445c",
+        "record_ids": {
+          "broader_ids": [],
+          "exact_ids": [
+            "2023M0213",
+            "2024M0244",
+            "2025M0360",
+            "2025M0332"
+          ]
+        },
+        "recovery": {
+          "coverage": "supported",
+          "recovery_state": "ready",
+          "resident_copy": null,
+          "results_count": 4
+        },
+        "requested_geo": "nta2020:MN0402",
+        "requested_lens": "land",
+        "stayed_on_lens": true,
+        "url": "https://cityscroll.org/near-you/?geo=nta2020%3AMN0402&lens=land&surface=records&_cityscroll_evidence=45de4bbf8df5a5435434b2c7"
+      },
+      "sha256": "dba8a5cbc460fc87b4365af155cd0e95ad117e77ca892e33d90a2d1b09c1445c",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "configured_height": 900,
+        "configured_width": 1440,
+        "height": 900,
+        "width": 1440
+      },
+      "viewport_name": "desktop"
+    },
+    {
+      "assertion": "Explicit lens=meetings stays meetings view (overview=False, lens=None)",
+      "assertions_derived": true,
+      "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "data_vintage": "2026-10-09T22:10:34.791Z",
+      "deploy_run_id": "37988021332",
+      "file": null,
+      "live_smoke_conclusion": "success",
+      "name": "negative-explicit-meetings-lens",
+      "render_content_sha256": "27a8295aedcad0bc987310983c770ae6f8eee9c8fb186ff852e3bbbbfc9941af",
+      "route": "/near-you/?geo=nta2020%3AMN0401&lens=meetings&surface=records",
+      "served_half": "worker",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483",
+      "served_values": {
+        "is_overview": false,
+        "lens": null,
+        "recovery": {
+          "coverage": "unsupported",
+          "recovery_state": "unsupported",
+          "resident_copy": "We can’t filter these meetings to this neighborhood yet.",
+          "results_count": null
+        },
+        "stayed_meetings_view": true
+      },
+      "sha256": "27a8295aedcad0bc987310983c770ae6f8eee9c8fb186ff852e3bbbbfc9941af",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "configured_height": 900,
+        "configured_width": 1440,
+        "height": 900,
+        "width": 1440
+      },
+      "viewport_name": "desktop"
+    },
+    {
+      "assertion": "Hell's Kitchen meetings keep MN0402 scope; cross exact ids with Chelsea=[]",
+      "assertions_derived": true,
+      "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "data_vintage": "2026-10-09T22:10:34.791Z",
+      "deploy_run_id": "37988021332",
+      "file": null,
+      "live_smoke_conclusion": "success",
+      "name": "negative-switch-neighborhood-mn0402",
+      "render_content_sha256": "da6b76daff598530c4b9362d064d9f076a5f210d10279d6ab92fbb9afe141af4",
+      "route": "/near-you/?geo=nta2020%3AMN0402&lens=meetings&surface=records",
+      "served_half": "worker",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483",
+      "served_values": {
+        "chelsea_label_absent": true,
+        "cross_exact_with_chelsea": [],
+        "exact_ids_sample": [
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-52/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-61/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-3/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-25/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-24/"
+        ],
+        "geo": "nta2020:MN0402",
+        "heading": "Hell's Kitchen"
+      },
+      "sha256": "da6b76daff598530c4b9362d064d9f076a5f210d10279d6ab92fbb9afe141af4",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "configured_height": 900,
+        "configured_width": 1440,
+        "height": 900,
+        "width": 1440
+      },
+      "viewport_name": "desktop"
+    },
+    {
+      "assertion": "Aborted deferred.json keeps Chelsea scope / shows failure recovery (error_marker=True)",
+      "assertions_derived": true,
+      "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "data_vintage": "2026-10-09T22:10:34.791Z",
+      "deploy_run_id": "37988021332",
+      "file": null,
+      "live_smoke_conclusion": "success",
+      "name": "negative-failed-deferred-load",
+      "render_content_sha256": "7a42e9b219512824d2af6280e796831dfcff6efe5de8566a38c7249aa393526f",
+      "route": "/near-you/?geo=nta2020%3AMN0401&lens=land&surface=records",
+      "served_half": "worker",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483",
+      "served_values": {
+        "deferred_error_marker": true,
+        "geo": "nta2020:MN0401",
+        "heading": "Chelsea-Hudson Yards",
+        "scope_retained": true,
+        "selected_label_retained": true
+      },
+      "sha256": "7a42e9b219512824d2af6280e796831dfcff6efe5de8566a38c7249aa393526f",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "configured_height": 900,
+        "configured_width": 1440,
+        "height": 900,
+        "width": 1440
+      },
+      "viewport_name": "desktop"
+    },
+    {
+      "assertion": "Unsupported vs verified-empty resident copy distinction unsupported='We can’t filter these meetings to this neighborhood yet.' zero='No mapped zoning records match these filters.'; cross_exact_hk=[]; membership_check=pass; observation_status=closed",
+      "assertions_derived": true,
+      "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "data_vintage": "2026-10-09T22:10:34.791Z",
+      "deploy_run_id": "37988021332",
+      "file": null,
+      "live_smoke_conclusion": "success",
+      "name": "negative-unsupported-vs-zero-copy",
+      "render_content_sha256": "aaae15fbb85948853e327046653d79260665c3839742632380ea0508b47350d5",
+      "route": "/near-you/?geo=nta2020%3ABK1402&lens=land&surface=records",
+      "served_half": "worker",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483",
+      "served_values": {
+        "check_result": "pass",
+        "chelsea_meetings_coverage": "unsupported",
+        "chelsea_meetings_resident_copy": "We can’t filter these meetings to this neighborhood yet.",
+        "citywide_scope": {
+          "check_result": "pass",
+          "chelsea_exact_membership_ids": [],
+          "chelsea_meetings_all_nyc_present": true,
+          "citywide_bag_ids_sample": [
+            "20260911005",
+            "20260921011",
+            "meeting:nyc_legistar_events:22568"
+          ],
+          "citywide_bags_separately_scoped": true,
+          "cross_exact_hk_in_chelsea": [],
+          "hells_kitchen_exact_sample": [
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-24/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-67/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-61/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-58/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-3/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/"
+          ],
+          "m04_broader_not_exact_chelsea": [
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/"
+          ]
+        },
+        "copies_are_distinct": true,
+        "note": "Chelsea meetings are unsupported (absent key), not measured-zero. Verified-empty copy is read from a published land-zero place (BK1402). Exact membership is parsed only from section.near-results so citywide bag rows stay separately scoped.",
+        "observation_status": "closed",
+        "observed_verified_empty_copy": "No mapped zoning records match these filters.",
+        "verified_empty_coverage": "verified-empty",
+        "verified_empty_lens": "land",
+        "verified_empty_place": "nta2020:BK1402"
+      },
+      "sha256": "aaae15fbb85948853e327046653d79260665c3839742632380ea0508b47350d5",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "configured_height": 900,
+        "configured_width": 1440,
+        "height": 900,
+        "width": 1440
+      },
+      "viewport_name": "desktop"
+    },
+    {
+      "assertion": "Full-record detail open + failed-detail recovery + Back retains geo (nta2020:MN0401); detail_h1='CityScroll'; check_result=pass",
+      "assertions_derived": true,
+      "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "data_vintage": "2026-10-09T22:10:34.791Z",
+      "file": null,
+      "name": "interaction-detail-desktop",
+      "render_content_sha256": "1797173620a0f9e7ff8ca1d397e5603a0253236438fb7f9d6d5b14639f2650e4",
+      "route": "/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3AMN0401",
+      "served_half": "pages",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483",
+      "served_values": {
+        "check_result": "pass",
+        "detail_heading": "CityScroll",
+        "detail_html_sha256": "1797173620a0f9e7ff8ca1d397e5603a0253236438fb7f9d6d5b14639f2650e4",
+        "inspection": {
+          "back_heading": "Chelsea-Hudson Yards",
+          "back_retained_geo": "nta2020:MN0401",
+          "detail_href": "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3AMN0401#land/2023M0213",
+          "detail_served_half": "pages",
+          "detail_url": "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3AMN0401#land/2023M0213",
+          "dismiss_intermediate": {
+            "inspect_still_open": false
+          },
+          "dismissed": true,
+          "failed_detail": {
+            "http_ok": false,
+            "http_status": 404,
+            "status_heading": "Meeting",
+            "url": "https://cityscroll.org/meetings/meeting%3Amissing-chelsea-control/"
+          },
+          "opened": true
+        },
+        "observation_status": "closed"
+      },
+      "sha256": "1797173620a0f9e7ff8ca1d397e5603a0253236438fb7f9d6d5b14639f2650e4",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "configured_height": 900,
+        "configured_width": 1440,
+        "height": 900,
+        "width": 1440
+      },
+      "viewport_name": "desktop"
+    },
+    {
+      "assertion": "Interaction continuity at desktop: lens/refresh retain geo; keyboard focusable=52; no-js label=True; check_result=pass",
+      "assertions_derived": true,
+      "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "data_vintage": "2026-10-09T22:10:34.791Z",
+      "deploy_run_id": "37988021332",
+      "file": null,
+      "live_smoke_conclusion": "success",
+      "name": "interaction-continuity-desktop",
+      "render_content_sha256": "71210004c530624d43e670bc69fbc99b38ad5d711b9b9e79a417b2984bef276c",
+      "route": "/near-you/?geo=nta2020%3AMN0401&surface=records",
+      "served_half": "worker",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483",
+      "served_values": {
+        "after_lens": "land",
+        "after_lens_geo": "nta2020:MN0401",
+        "after_refresh_geo": "nta2020:MN0401",
+        "before_geo": "nta2020:MN0401",
+        "check_result": "pass",
+        "inspection": {
+          "back_heading": "Chelsea-Hudson Yards",
+          "back_retained_geo": "nta2020:MN0401",
+          "detail_href": "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3AMN0401#land/2023M0213",
+          "detail_served_half": "pages",
+          "detail_url": "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3AMN0401#land/2023M0213",
+          "dismiss_intermediate": {
+            "inspect_still_open": false
+          },
+          "dismissed": true,
+          "failed_detail": {
+            "http_ok": false,
+            "http_status": 404,
+            "status_heading": "Meeting",
+            "url": "https://cityscroll.org/meetings/meeting%3Amissing-chelsea-control/"
+          },
+          "opened": true
+        },
+        "keyboard_focusable_count": 52,
+        "keyboard_focused_tag": "A",
+        "lens_change_retained_geo": true,
+        "no_javascript": {
+          "all_nyc_absent": true,
+          "chelsea_label_present": true,
+          "has_title_or_source_link": true,
+          "html_sha256": "c9e820ba99dc98fe47f28ae4488e1f1b69a7c49fac78f7c2f114dad0a76bcdac",
+          "served_half": "worker"
+        },
+        "observation_status": "closed",
+        "refresh_retained_geo": true
+      },
+      "sha256": "71210004c530624d43e670bc69fbc99b38ad5d711b9b9e79a417b2984bef276c",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "configured_height": 900,
+        "configured_width": 1440,
+        "height": 900,
+        "width": 1440
+      },
+      "viewport_name": "desktop"
+    },
+    {
+      "assertion": "No-JS Near You document fetch retains Chelsea neighborhood label and omits All NYC default detour",
+      "assertions_derived": true,
+      "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "data_vintage": "2026-10-09T22:10:34.791Z",
+      "deploy_run_id": "37988021332",
+      "file": null,
+      "live_smoke_conclusion": "success",
+      "name": "no-js-near-you-document-desktop",
+      "render_content_sha256": "c9e820ba99dc98fe47f28ae4488e1f1b69a7c49fac78f7c2f114dad0a76bcdac",
+      "route": "/near-you/?geo=nta2020%3AMN0401&surface=records",
+      "served_half": "worker",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483",
+      "served_values": {
+        "all_nyc_absent": true,
+        "chelsea_label_present": true,
+        "has_title_or_source_link": true,
+        "html_sha256": "c9e820ba99dc98fe47f28ae4488e1f1b69a7c49fac78f7c2f114dad0a76bcdac",
+        "served_half": "worker"
+      },
+      "sha256": "c9e820ba99dc98fe47f28ae4488e1f1b69a7c49fac78f7c2f114dad0a76bcdac",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "configured_height": 900,
+        "configured_width": 1440,
+        "height": 900,
+        "width": 1440
+      },
+      "viewport_name": "desktop"
+    },
+    {
+      "assertion": "Full-record detail open + failed-detail recovery + Back retains geo (nta2020:MN0401); detail_h1='CityScroll'; check_result=pass",
+      "assertions_derived": true,
+      "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "data_vintage": "2026-10-09T22:10:34.791Z",
+      "file": null,
+      "name": "interaction-detail-narrow",
+      "render_content_sha256": "d3378a1b27e52be39dd302d7a195b6234b19401272715ca9c3f672200a4be987",
+      "route": "/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3AMN0401",
+      "served_half": "pages",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483",
+      "served_values": {
+        "check_result": "pass",
+        "detail_heading": "CityScroll",
+        "detail_html_sha256": "d3378a1b27e52be39dd302d7a195b6234b19401272715ca9c3f672200a4be987",
+        "inspection": {
+          "back_heading": "Chelsea-Hudson Yards",
+          "back_retained_geo": "nta2020:MN0401",
+          "detail_href": "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3AMN0401#land/2023M0213",
+          "detail_served_half": "pages",
+          "detail_url": "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3AMN0401#land/2023M0213",
+          "dismiss_intermediate": {
+            "inspect_still_open": false
+          },
+          "dismissed": true,
+          "failed_detail": {
+            "http_ok": false,
+            "http_status": 404,
+            "status_heading": "Meeting",
+            "url": "https://cityscroll.org/meetings/meeting%3Amissing-chelsea-control/"
+          },
+          "opened": true
+        },
+        "observation_status": "closed"
+      },
+      "sha256": "d3378a1b27e52be39dd302d7a195b6234b19401272715ca9c3f672200a4be987",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "configured_height": 844,
+        "configured_width": 390,
+        "height": 844,
+        "width": 390
+      },
+      "viewport_name": "narrow"
+    },
+    {
+      "assertion": "Interaction continuity at narrow: lens/refresh retain geo; keyboard focusable=53; no-js label=True; check_result=pass",
+      "assertions_derived": true,
+      "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "data_vintage": "2026-10-09T22:10:34.791Z",
+      "deploy_run_id": "37988021332",
+      "file": null,
+      "live_smoke_conclusion": "success",
+      "name": "interaction-continuity-narrow",
+      "render_content_sha256": "4aa48fc71cc236663d566dd184286b59d6611a01ca5f60fa0d7497b5b96e5ec0",
+      "route": "/near-you/?geo=nta2020%3AMN0401&surface=records",
+      "served_half": "worker",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483",
+      "served_values": {
+        "after_lens": "land",
+        "after_lens_geo": "nta2020:MN0401",
+        "after_refresh_geo": "nta2020:MN0401",
+        "before_geo": "nta2020:MN0401",
+        "check_result": "pass",
+        "inspection": {
+          "back_heading": "Chelsea-Hudson Yards",
+          "back_retained_geo": "nta2020:MN0401",
+          "detail_href": "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3AMN0401#land/2023M0213",
+          "detail_served_half": "pages",
+          "detail_url": "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3AMN0401#land/2023M0213",
+          "dismiss_intermediate": {
+            "inspect_still_open": false
+          },
+          "dismissed": true,
+          "failed_detail": {
+            "http_ok": false,
+            "http_status": 404,
+            "status_heading": "Meeting",
+            "url": "https://cityscroll.org/meetings/meeting%3Amissing-chelsea-control/"
+          },
+          "opened": true
+        },
+        "keyboard_focusable_count": 53,
+        "keyboard_focused_tag": "A",
+        "lens_change_retained_geo": true,
+        "no_javascript": {
+          "all_nyc_absent": true,
+          "chelsea_label_present": true,
+          "has_title_or_source_link": true,
+          "html_sha256": "75e8838dc1fb2805217501d9db11e29a8df5f360f39710cca655b62713dd89a5",
+          "served_half": "worker"
+        },
+        "observation_status": "closed",
+        "refresh_retained_geo": true
+      },
+      "sha256": "4aa48fc71cc236663d566dd184286b59d6611a01ca5f60fa0d7497b5b96e5ec0",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "configured_height": 844,
+        "configured_width": 390,
+        "height": 844,
+        "width": 390
+      },
+      "viewport_name": "narrow"
+    },
+    {
+      "assertion": "No-JS Near You document fetch retains Chelsea neighborhood label and omits All NYC default detour",
+      "assertions_derived": true,
+      "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "data_vintage": "2026-10-09T22:10:34.791Z",
+      "deploy_run_id": "37988021332",
+      "file": null,
+      "live_smoke_conclusion": "success",
+      "name": "no-js-near-you-document-narrow",
+      "render_content_sha256": "75e8838dc1fb2805217501d9db11e29a8df5f360f39710cca655b62713dd89a5",
+      "route": "/near-you/?geo=nta2020%3AMN0401&surface=records",
+      "served_half": "worker",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483",
+      "served_values": {
+        "all_nyc_absent": true,
+        "chelsea_label_present": true,
+        "has_title_or_source_link": true,
+        "html_sha256": "75e8838dc1fb2805217501d9db11e29a8df5f360f39710cca655b62713dd89a5",
+        "served_half": "worker"
+      },
+      "sha256": "75e8838dc1fb2805217501d9db11e29a8df5f360f39710cca655b62713dd89a5",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "configured_height": 844,
+        "configured_width": 390,
+        "height": 844,
+        "width": 390
+      },
+      "viewport_name": "narrow"
+    },
+    {
+      "assertion": "No-JS fetch of a Pages-served detail route returns document markup",
+      "assertions_derived": true,
+      "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+      "contains_map_fix_ancestor": true,
+      "contains_overview_ancestor": true,
+      "data_vintage": "2026-10-09T22:10:34.791Z",
+      "file": null,
+      "name": "no-js-meeting-or-land-detail",
+      "render_content_sha256": "e430350fb9b5e24698d2d948e1197b0b60b2f0f7ca9eecc7f2a2fe76592869c2",
+      "route": "/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3AMN0401",
+      "served_half": "pages",
+      "served_revision": "b150a8489485c08d75566536b380ce3f9af7a483",
+      "served_values": {
+        "detail_url": "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3AMN0401#land/2023M0213",
+        "has_heading": true,
+        "html_sha256": "e430350fb9b5e24698d2d948e1197b0b60b2f0f7ca9eecc7f2a2fe76592869c2",
+        "served_half": "pages"
+      },
+      "sha256": "e430350fb9b5e24698d2d948e1197b0b60b2f0f7ca9eecc7f2a2fe76592869c2",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "configured_height": 900,
+        "configured_width": 1440,
+        "height": 900,
+        "width": 1440
+      },
+      "viewport_name": "desktop"
+    }
+  ],
+  "observed_at": "2026-10-09T23:08:10Z",
+  "open_observations": [
+    {
+      "check_result": "fail",
+      "failing_labels": [
+        "Open meetings",
+        "Open Zoning"
+      ],
+      "observation": "overview-open-lens-links-place-scope",
+      "observation_status": "open"
+    }
+  ],
+  "origin": "https://cityscroll.org",
+  "producer": {
+    "feature": "chelsea-served-surface",
+    "path": "docs/evidence/chelsea-served-surface/production-read.json",
+    "schema": "cityscroll.chelsea_served_surface_production_read.v1"
+  },
+  "required_ancestors": {
+    "map_fix": "62220ddcf225e4a4b51fa4159e030e8925cef0ff",
+    "overview": "964dff5f0bbc0d69d6c3bdba22d9b1c0791d870e"
+  },
+  "schema": "cityscroll.chelsea_served_surface_production_read.v1",
+  "summary": {
+    "capture_run_id": "0bb15649-d9f6-4ff5-a369-aff4fd1cde01",
+    "observation_count": 20,
+    "open_observation_count": 1,
+    "pages_observation_count": 3,
+    "worker_observation_count": 17
+  }
+}
