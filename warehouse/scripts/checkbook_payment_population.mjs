@@ -134,7 +134,7 @@ function fixtureFetcher(args) {
   return async ({ year, offset }) => {
     const xml = fixture.pages[`fy${year}:${offset}`];
     if (!xml) throw new Error(`fixture has no page fy${year}:${offset}`);
-    return { xml, fetchedAt: fixture.observed_at || new Date().toISOString(), httpStatus: 200 };
+    return { xml, fetchedAt: fixture.observed_at || null, httpStatus: 200 };
   };
 }
 
@@ -298,6 +298,12 @@ function csvCell(value) {
 }
 
 async function buildReceipt(args, collection, csv) {
+  // Use the oldest page observation: a fresh last page cannot renew older
+  // portions of the population. Undated reused pages keep freshness unknown.
+  const pageDates = collection.pageManifest.map((page) =>
+    typeof page.fetched_at === "string" ? Date.parse(page.fetched_at) : NaN);
+  const pulledAt = pageDates.length && pageDates.every(Number.isFinite)
+    ? new Date(Math.min(...pageDates)).toISOString() : null;
   const partitions = collection.partitions.map((partition) => ({
     ...partition,
     reconciled: partition.source_record_count === partition.source_xml_rows
@@ -334,6 +340,7 @@ async function buildReceipt(args, collection, csv) {
     },
     source: {
       publisher: "Office of the New York City Comptroller",
+      pulled_at: pulledAt,
       landing_page: LANDING_PAGE,
       endpoint: ENDPOINT,
       type_of_data: "Spending",

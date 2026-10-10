@@ -62,11 +62,20 @@ function groupKey(agency, vendor, fiscalYear) {
   return JSON.stringify([agency || null, vendor || null, fiscalYear || null]);
 }
 
-async function build({ input, receipt, generatedAt = "2026-08-26T00:00:00.000Z" } = {}) {
+async function build({ input, receipt, generatedAt } = {}) {
   const shared = resolveSharedPaymentInput({ input, receipt });
   input = input || shared?.input || DEFAULT_INPUT;
   receipt = receipt || shared?.receipt || DEFAULT_RECEIPT;
   const receiptPayload = JSON.parse(readFileSync(receipt, "utf8"));
+  if (receiptPayload.status !== "complete" || receiptPayload.reconciliation?.reconciled !== true) {
+    throw new Error("payment projection requires a complete, reconciled source receipt");
+  }
+  const pulledAt = receiptPayload.source?.pulled_at;
+  if (typeof pulledAt !== "string" || !/^\d{4}-\d{2}-\d{2}T/.test(pulledAt)
+    || !Number.isFinite(Date.parse(pulledAt))) {
+    throw new Error("payment projection requires a dated source acquisition; refresh undated retained inputs");
+  }
+  const sourceDate = new Date(pulledAt).toISOString();
   const headerLine = await new Promise((resolveHeader, reject) => {
     const stream = createReadStream(input, { encoding: "utf8" });
     const rl = createInterface({ input: stream, crlfDelay: Infinity });
@@ -132,8 +141,8 @@ async function build({ input, receipt, generatedAt = "2026-08-26T00:00:00.000Z" 
     schema: "cityscroll.analytics_payments.v1",
     projection_contract: "cityscroll.analytical_projection.v1",
     fact: "payment",
-    generated_at: generatedAt,
-    snapshot_date: receiptPayload.source?.pulled_at || receiptPayload.population_contract?.fiscal_years?.join(",") || null,
+    generated_at: generatedAt || sourceDate,
+    snapshot_date: sourceDate,
     population_definition: "AP-08 independent Checkbook Spending contract-payment population; grouped by agency, payee, and payment fiscal year.",
     dimensions: ["agency", "payee_name", "fiscal_year", "contract_id"],
     measures: ["payment_transaction_count", "sum_actual_payment_amount"],

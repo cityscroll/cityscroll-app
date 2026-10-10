@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import { describe, it } from "node:test";
@@ -93,6 +93,38 @@ describe("payment population fixture acquisition", () => {
       assert.equal(body.reconciliation.source_net_check_amount, 500);
       assert.ok(existsSync(output));
       assert.equal(readFileSync(output, "utf8").trim().split("\n").length, 5);
+      assert.equal(body.source.pulled_at, "2026-08-26T12:00:00.000Z");
+      const projection = join(stage, "projection.json");
+      const project = () => spawnSync(process.execPath, [
+        "tools/build_analytical_payments.mjs", "--input", output,
+        "--receipt", receipt, "--output", projection,
+      ], { cwd: ROOT, encoding: "utf8" });
+      assert.equal(project().status, 0);
+      const projected = readFileSync(projection, "utf8");
+      const payload = JSON.parse(projected);
+      assert.equal(payload.snapshot_date, body.source.pulled_at);
+      assert.equal(payload.generated_at, body.source.pulled_at);
+      assert.equal(payload.population.source_rows, 4);
+      // Rebuilding a retained population must not make its source date newer.
+      assert.equal(project().status, 0);
+      assert.equal(readFileSync(projection, "utf8"), projected);
+      for (const invalid of [
+        { ...body, status: "failed" },
+        { ...body, source: { ...body.source, pulled_at: null } },
+      ]) {
+        writeFileSync(receipt, JSON.stringify(invalid));
+        assert.notEqual(project().status, 0);
+        assert.equal(readFileSync(projection, "utf8"), projected);
+      }
+      const reused = spawnSync(process.execPath, [
+        "warehouse/scripts/checkbook_payment_population.mjs", "--from-fixture",
+        "--reuse-pages", "--fiscal-years", "2026", "--page-size", "2",
+        "--stage-dir", stage, "--receipt", receipt, "--output", output,
+      ], { cwd: ROOT, encoding: "utf8" });
+      assert.equal(reused.status, 0, reused.stderr);
+      assert.equal(JSON.parse(readFileSync(receipt, "utf8")).source.pulled_at, null);
+      assert.notEqual(project().status, 0, "undated reused pages must not become fresh");
+      assert.equal(readFileSync(projection, "utf8"), projected);
     });
   });
 });
