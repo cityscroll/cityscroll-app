@@ -185,7 +185,9 @@ function liveFetcher(args) {
     const elapsed = Date.now() - lastRequestAt;
     if (lastRequestAt && elapsed < args.delayMs) await wait(args.delayMs - elapsed);
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 60_000);
+    // Checkbook NYC often needs >60s on large fiscal-year pages; aborting mid-page
+    // left procurement spine/browse stuck behind a failed population pull.
+    const timeout = setTimeout(() => controller.abort(), 180_000);
     try {
       const response = await fetch(ENDPOINT, {
         method: "POST",

@@ -44,7 +44,7 @@ Projects with no retained WH-06 BBL: 2025M0252.
 | --- | --- | --- |
 | `site/data/land_default_ulurp.json` | 2026-09-30T13:04:22.921Z | `64b3e82f8d6adca6e277a6aa6557262d0605e1870e2e622c9347588604b1a2da` |
 | `site/data/zap_bbl_warehouse_lookup.json` | 2026-10-05T17:35:26.970Z (WH-06, 2iga-a6mk) | `86d7a10e1c00935ae172780f4f25c1c447c0b48ce49b1614be7b2acc15c0257e` |
-| `site/data/bbl_mappluto_centroids_lookup.json` | 2026-09-04T11:44:37.763Z (mappluto_pluto_csv) | `52af674f4abe6cbd3c8c8aa3cfba289daa75d9428f215162c62681636a6d1e11` |
+| `site/data/bbl_mappluto_centroids_lookup.json` | 2026-10-09T18:54:04.150Z (mappluto_pluto_csv) | `d81945e19d2549be8ff619912c1c051238ee50ad6da4df677c93875dc35781c5` |
 
 Join version: `exact_project_id_wh06_bbl_mappluto_centroid_v1`. Rebuild with `node tools/build_land_mapability_census.mjs` or check the committed bytes with `node tools/build_land_mapability_census.mjs --check`.
 

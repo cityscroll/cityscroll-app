@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.neighborhood_publication_receipt.v1",
-  "built_at": "2026-10-05T20:21:40.442Z",
+  "built_at": "2026-10-09T19:06:30.887Z",
   "frozen_baseline": {
     "canonical_meeting_count": 792,
     "broad_jurisdiction": 281,
@@ -24,9 +24,9 @@
     "generation": "gen-688f479a297c-2026-10-05",
     "canonical_meeting_count": 840,
     "by_outcome": {
-      "physical_venue": 115,
+      "physical_venue": 119,
       "subject": 0,
-      "broad_jurisdiction": 259,
+      "broad_jurisdiction": 255,
       "virtual": 76,
       "no_source_address": 200,
       "unresolved_evidence": 190
@@ -77,15 +77,15 @@
     }
   },
   "after": {
-    "generation": "gen-688f479a297c-2026-10-05",
+    "generation": "gen-688f479a297c-2026-10-09",
     "canonical_meeting_count": 840,
     "by_outcome": {
       "physical_venue": 119,
       "subject": 0,
       "broad_jurisdiction": 255,
-      "virtual": 76,
-      "no_source_address": 200,
-      "unresolved_evidence": 190
+      "virtual": 69,
+      "no_source_address": 203,
+      "unresolved_evidence": 194
     },
     "address_candidate_classes": null,
     "anchors": {
@@ -128,11 +128,11 @@
     }
   },
   "deltas": {
-    "physical_venue": 4,
-    "broad_jurisdiction": -4,
+    "physical_venue": 0,
+    "broad_jurisdiction": 0,
     "subject": 0,
-    "virtual": 0,
-    "no_source_address": 0,
-    "unresolved_evidence": 0
+    "virtual": -7,
+    "no_source_address": 3,
+    "unresolved_evidence": 4
   }
 }

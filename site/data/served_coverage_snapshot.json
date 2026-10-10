@@ -53,7 +53,7 @@
   ],
   "evidence_vintage": {
     "oldest": "2026-05-26T00:00:00.000Z",
-    "newest": "2026-10-06T00:00:00.000Z"
+    "newest": "2026-10-09T14:15:05.584Z"
   },
   "domains": [
     {
@@ -69,15 +69,15 @@
           "source_id": null,
           "source_name": null,
           "state": "measured",
-          "value": 19872,
-          "evidence_vintage": "2026-09-09T06:33:01.880Z",
+          "value": 20426,
+          "evidence_vintage": "2026-10-09T14:15:05.584Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single",
           "sources": [
             {
               "source_id": "checkbook-contracts",
               "source_name": "Checkbook NYC registered contracts",
-              "served_records": 9060,
+              "served_records": 9490,
               "state": "measured"
             },
             {
@@ -95,7 +95,7 @@
             {
               "source_id": "city-record",
               "source_name": "City Record Online",
-              "served_records": 12729,
+              "served_records": 12689,
               "state": "measured"
             },
             {
@@ -293,7 +293,7 @@
           "source_id": "nyc-agencies",
           "source_name": "NYC Agencies and Governance Organizations",
           "state": "measured",
-          "value": 87,
+          "value": 88,
           "evidence_vintage": "2026-08-06T00:00:00.000Z",
           "vintage_field": "generated_at",
           "vintage_basis": "composite_oldest"

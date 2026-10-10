@@ -101,11 +101,13 @@ test("geography acquisition receipts feed backstage source health", () => {
     new URL("../site/data/source_health_observations.json", import.meta.url),
     "utf8",
   ));
+  // BID publisher_updated 2024-10-08 with max_stale_days 730 is Delayed once
+  // evaluation asOf advances past 2026-10-08 (triggered here by Checkbook rematerialize).
   const expected = new Map([
     ["dcp-nta2020-boundaries", "Healthy"],
     ["dcp-police-precinct-boundaries", "Healthy"],
     ["dsny-district-boundaries", "Healthy"],
-    ["business-improvement-district-boundaries", "Healthy"],
+    ["business-improvement-district-boundaries", "Delayed"],
   ]);
   for (const [sourceId, status] of expected) {
     const observation = projection.observations.find((row) => row.source_id === sourceId);

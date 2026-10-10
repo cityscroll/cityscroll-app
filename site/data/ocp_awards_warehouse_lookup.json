@@ -5,7 +5,7 @@
   "dataset_id": "qyyg-4tf5",
   "table_name": "ocp_recent_contract_awards",
   "mode": "bulk_warehouse",
-  "materialized_at": "2026-10-05T17:33:57.544Z",
+  "materialized_at": "2026-10-09T13:51:44.371Z",
   "row_count": 53817,
   "replaces_live_fetch": {
     "worker": "worker/src/checkbook_lifecycle.mjs#fetchOcpAwardRows",

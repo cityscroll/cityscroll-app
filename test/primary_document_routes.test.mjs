@@ -623,7 +623,7 @@ test("canonical procurement route shows exact-contract payments and notice place
     assert.doesNotMatch(html, /Paid amount<\/dt><dd>\$7,319,455\.51/);
     assert.match(html, /data-retained-paid-amount="7385672\.19"/);
     assert.match(html, /data-retained-paid-source="passport_public_contracts"/);
-    assert.match(html, /data-retained-paid-vintage="2026-09-09T06:33:01\.880Z"/);
+    assert.match(html, /data-retained-paid-vintage="2026-10-09T14:15:05\.584Z"/);
     const spendingCoverage = html.match(/data-source-system="checkbook_spending"[\s\S]*?<\/li>/)?.[0] || "";
     assert.match(spendingCoverage, /data-coverage-state="checked-no-match"/);
     assert.match(spendingCoverage, /No exact match in analytics spending lookup/);
@@ -710,7 +710,7 @@ test("notice and canonical routes show consistent payment summary and scope", as
       assert.match(canonicalHtml, /Encumbered amount<\/dt><dd>\$7,385,672\.52/);
       assert.doesNotMatch(canonicalHtml, /Paid amount<\/dt><dd>\$7,319,455\.51/);
       assert.match(canonicalHtml, /data-retained-paid-amount="7385672\.19"/);
-      assert.match(canonicalHtml, /data-retained-paid-vintage="2026-09-09T06:33:01\.880Z"/);
+      assert.match(canonicalHtml, /data-retained-paid-vintage="2026-10-09T14:15:05\.584Z"/);
       const canonicalSpending = canonicalHtml.match(/data-source-system="checkbook_spending"[\s\S]*?<\/li>/)?.[0] || "";
       assert.match(canonicalSpending, /No exact match in analytics spending lookup/);
       assert.match(canonicalSpending, /Checked 2026-08-26/);

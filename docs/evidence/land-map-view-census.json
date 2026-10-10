@@ -28,9 +28,9 @@
       "path": "site/data/bbl_mappluto_centroids_lookup.json",
       "source": "mappluto",
       "mode": "mappluto_pluto_csv",
-      "materialized_at": "2026-09-04T11:44:37.763Z",
+      "materialized_at": "2026-10-09T18:54:04.150Z",
       "bbl_count": 1203,
-      "sha256": "52af674f4abe6cbd3c8c8aa3cfba289daa75d9428f215162c62681636a6d1e11"
+      "sha256": "d81945e19d2549be8ff619912c1c051238ee50ad6da4df677c93875dc35781c5"
     },
     "property_observations": {
       "path": "site/data/property_domain_observations.json",
