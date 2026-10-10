@@ -59,6 +59,7 @@ export function beginSharedPaymentRefresh(cacheRoot, { maxBytes = DEFAULT_LIMIT 
       if (published) throw new Error('refresh already published');
       const receipt = JSON.parse(readFileSync(join(stage, 'receipt.json'), 'utf8'));
       if (receipt.status !== 'complete' || !receipt.reconciliation?.reconciled) throw new Error('only reconciled complete payment populations may be published');
+      if (receipt.source?.acquisition_mode !== 'live-publisher') throw new Error('shared payment cache requires live-publisher acquisition provenance');
       if (receipt.checksums?.normalized_csv_sha256 !== await digest(join(stage, 'payments.csv'))) throw new Error('payment CSV checksum does not match receipt');
       const manifest = [];
       for (const file of inventory(stage)) manifest.push({ path: file.rel, bytes: file.bytes, sha256: await digest(file.path) });

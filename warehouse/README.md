@@ -232,6 +232,7 @@ node warehouse/scripts/checkbook_contracts.mjs --from-fixture \
 node warehouse/scripts/checkbook_contracts.mjs --publish \
   --refresh --fiscal-years 2025,2026,2027 --page-size 999
 node warehouse/scripts/checkbook_contracts.mjs --check
+```
 
 ## AP-08: independent Checkbook payment population
 
@@ -241,9 +242,12 @@ citywide Checkbook Spending `c` (contract spending) category as complete
 fiscal-year partitions, retains the publisher fields and every transaction,
 and records negative check amounts as reversals. The receipt's publisher
 `record_count`, XML row count, normalized row count, and net amount must all
-reconcile before the run is complete. The source population is not a contract
-ID sample and must not be used to imply coverage for other fiscal years or
-spending categories.
+reconcile before the run is complete. Its `source.acquisition_mode` distinguishes
+live publisher acquisition, retained pages, and fixture proof. `source.pulled_at`
+is the oldest dated page observation in the complete population; if any reused
+page is undated, the population remains honestly undated. The source population
+is not a contract ID sample and must not be used to imply coverage for other
+fiscal years or spending categories.
 
 Offline proof:
 
@@ -268,7 +272,11 @@ warehouse/.venv/bin/python warehouse/scripts/convert_checkbook_payment_populatio
 
 The agency query proof is
 `warehouse/sql/examples/checkbook_payment_population_by_agency.sql`.
-```
+
+`tools/build_analytical_payments.mjs` replaces the public analytical projection
+only from a dated, complete, reconciled live-publisher receipt whose normalized
+row counts and CSV checksum match the input. Fixture receipts remain usable with
+an explicitly isolated output path, but cannot replace the public default.
 
 The committed denominator and overlap receipt is
 `warehouse/receipts/proof/checkbook_contracts_population_latest.json`.
@@ -748,7 +756,8 @@ worker or symlink a writable raw directory. Explicit `--input` or `--receipt`
 arguments keep using caller-owned files. Routine tests use `--from-fixture`, which
 never publishes to the shared cache or acquires live data.
 
-Before enabling the variable for readers, seed a completed population:
+Before enabling the variable for readers, seed a completed live-publisher
+population:
 
 ```sh
 node warehouse/scripts/publish_payment_input.mjs "$CITYSCROLL_WAREHOUSE_CACHE" \
@@ -757,9 +766,11 @@ node warehouse/scripts/publish_payment_input.mjs "$CITYSCROLL_WAREHOUSE_CACHE" \
 ```
 
 The importer copies only the normalized CSV and matching receipt, then verifies
-its checksum and successful reconciliation before publication. It never moves or
-edits the source, so existing workers retain their own inputs. Source XML pages
-are acquisition evidence rather than required reader inputs.
+its live-publisher provenance, checksum, and successful reconciliation before
+publication. Fixture and retained-page receipts cannot enter the shared
+production cache. It never moves or edits the source, so existing workers retain
+their own inputs. Source XML pages are acquisition evidence rather than required
+reader inputs.
 
 With this variable set, the default collector reuses the current complete version
 when its fiscal-year selection matches. It makes no publisher request. A different

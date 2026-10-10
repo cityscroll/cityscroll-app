@@ -5,6 +5,7 @@
  * projection. This is an aggregation pass over the existing population; it
  * never reacquires or loads payment rows into an in-memory array.
  */
+import { createHash } from "node:crypto";
 import { createReadStream, readFileSync, writeFileSync } from "node:fs";
 import { createInterface } from "node:readline";
 import { basename, resolve } from "node:path";
@@ -62,27 +63,36 @@ function groupKey(agency, vendor, fiscalYear) {
   return JSON.stringify([agency || null, vendor || null, fiscalYear || null]);
 }
 
-async function build({ input, receipt, generatedAt = "2026-08-26T00:00:00.000Z" } = {}) {
+async function build({ input, receipt, generatedAt, output = DEFAULT_OUTPUT } = {}) {
   const shared = resolveSharedPaymentInput({ input, receipt });
   input = input || shared?.input || DEFAULT_INPUT;
   receipt = receipt || shared?.receipt || DEFAULT_RECEIPT;
   const receiptPayload = JSON.parse(readFileSync(receipt, "utf8"));
-  const headerLine = await new Promise((resolveHeader, reject) => {
-    const stream = createReadStream(input, { encoding: "utf8" });
-    const rl = createInterface({ input: stream, crlfDelay: Infinity });
-    rl.once("line", (line) => { rl.close(); stream.destroy(); resolveHeader(line); });
-    rl.once("error", reject);
-  });
-  const header = csvLine(headerLine);
-  const index = new Map(header.map((name, i) => [name, i]));
+  if (receiptPayload.status !== "complete" || receiptPayload.reconciliation?.reconciled !== true) {
+    throw new Error("payment projection requires a complete, reconciled source receipt");
+  }
+  if (receiptPayload.source?.acquisition_mode !== "live-publisher" && resolve(output) === DEFAULT_OUTPUT) {
+    throw new Error("public analytical projection requires live-publisher acquisition provenance");
+  }
+  const pulledAt = receiptPayload.source?.pulled_at;
+  if (typeof pulledAt !== "string" || !/^\d{4}-\d{2}-\d{2}T/.test(pulledAt)
+    || !Number.isFinite(Date.parse(pulledAt))) {
+    throw new Error("payment projection requires a dated source acquisition; refresh undated retained inputs");
+  }
+  const sourceDate = new Date(pulledAt).toISOString();
   const groups = new Map();
   let sourceRows = 0;
   let invalidRows = 0;
-  const stream = createReadStream(input, { encoding: "utf8" });
+  let index;
+  const checksum = createHash("sha256");
+  const stream = createReadStream(input);
+  stream.on("data", (chunk) => checksum.update(chunk));
   const lines = createInterface({ input: stream, crlfDelay: Infinity });
-  let first = true;
   for await (const line of lines) {
-    if (first) { first = false; continue; }
+    if (!index) {
+      index = new Map(csvLine(line).map((name, i) => [name, i]));
+      continue;
+    }
     if (!line.trim()) continue;
     sourceRows += 1;
     const cells = csvLine(line);
@@ -109,6 +119,20 @@ async function build({ input, receipt, generatedAt = "2026-08-26T00:00:00.000Z" 
     const contractId = clean(cells[index.get("contract_id")]);
     if (contractId) group.contract_ids.add(contractId);
   }
+  if (!index) throw new Error("payment projection requires a CSV header");
+  const actualChecksum = checksum.digest("hex");
+  const expectedRowCounts = [
+    receiptPayload.conversion?.csv?.row_count,
+    receiptPayload.population?.normalized_rows,
+    receiptPayload.reconciliation?.normalized_rows,
+  ];
+  if (expectedRowCounts.some((count) => !Number.isSafeInteger(count) || count < 0)
+    || expectedRowCounts.some((count) => count !== sourceRows)) {
+    throw new Error("payment projection input row count does not match its source receipt");
+  }
+  if (actualChecksum !== receiptPayload.checksums?.normalized_csv_sha256) {
+    throw new Error("payment projection input checksum does not match its source receipt");
+  }
   if (invalidRows) throw new Error(`AP-08 payment projection encountered ${invalidRows} invalid rows`);
   const rows = [...groups.values()]
     .map((group) => ({
@@ -132,8 +156,8 @@ async function build({ input, receipt, generatedAt = "2026-08-26T00:00:00.000Z" 
     schema: "cityscroll.analytics_payments.v1",
     projection_contract: "cityscroll.analytical_projection.v1",
     fact: "payment",
-    generated_at: generatedAt,
-    snapshot_date: receiptPayload.source?.pulled_at || receiptPayload.population_contract?.fiscal_years?.join(",") || null,
+    generated_at: generatedAt || sourceDate,
+    snapshot_date: sourceDate,
     population_definition: "AP-08 independent Checkbook Spending contract-payment population; grouped by agency, payee, and payment fiscal year.",
     dimensions: ["agency", "payee_name", "fiscal_year", "contract_id"],
     measures: ["payment_transaction_count", "sum_actual_payment_amount"],
@@ -163,7 +187,7 @@ async function build({ input, receipt, generatedAt = "2026-08-26T00:00:00.000Z" 
 async function main() {
   const parsed = args(process.argv.slice(2));
   const output = resolve(ROOT, parsed.output || DEFAULT_OUTPUT);
-  const payload = await build(parsed);
+  const payload = await build({ ...parsed, output });
   const serialized = `${JSON.stringify(payload, null, 2)}\n`;
   if (parsed.check) {
     const current = readFileSync(output, "utf8");

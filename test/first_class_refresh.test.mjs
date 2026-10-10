@@ -150,6 +150,20 @@ test("refresh execution completes acquisitions before rebuilding affected artifa
   ]);
 });
 
+test("scheduled payment acquisition requests a new population instead of reusing the shared cache", () => {
+  const payment = canonical().first_class_artifacts.find((row) => row.id === "contracts-payments");
+  const calls = [];
+  const receipt = runRefreshCommands({ first_class_artifacts: [payment] }, {
+    root: "/fixture",
+    now: "2026-10-10T12:00:00.000Z",
+    all: true,
+    stdio: "pipe",
+    spawn(command, args) { calls.push([command, ...args]); return { status: 0 }; },
+  });
+  assert.equal(receipt.status, "succeeded");
+  assert.deepEqual(calls[0], [process.execPath, "/fixture/warehouse/scripts/checkbook_payment_population.mjs", "--refresh"]);
+});
+
 test("failed acquisition preserves last-known-good output and does not block unrelated builders", () => {
   const calls = [];
   const registry = {
