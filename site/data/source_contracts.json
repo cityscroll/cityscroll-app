@@ -4666,7 +4666,8 @@
       "source_contract_id": "checkbook-spending",
       "acquisition_command": [
         "node",
-        "warehouse/scripts/checkbook_payment_population.mjs"
+        "warehouse/scripts/checkbook_payment_population.mjs",
+        "--refresh"
       ],
       "owning_builder": "tools/build_analytical_payments.mjs",
       "builder_command": [
