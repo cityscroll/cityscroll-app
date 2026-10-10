@@ -63,13 +63,16 @@ function groupKey(agency, vendor, fiscalYear) {
   return JSON.stringify([agency || null, vendor || null, fiscalYear || null]);
 }
 
-async function build({ input, receipt, generatedAt } = {}) {
+async function build({ input, receipt, generatedAt, output = DEFAULT_OUTPUT } = {}) {
   const shared = resolveSharedPaymentInput({ input, receipt });
   input = input || shared?.input || DEFAULT_INPUT;
   receipt = receipt || shared?.receipt || DEFAULT_RECEIPT;
   const receiptPayload = JSON.parse(readFileSync(receipt, "utf8"));
   if (receiptPayload.status !== "complete" || receiptPayload.reconciliation?.reconciled !== true) {
     throw new Error("payment projection requires a complete, reconciled source receipt");
+  }
+  if (receiptPayload.source?.acquisition_mode !== "live-publisher" && resolve(output) === DEFAULT_OUTPUT) {
+    throw new Error("public analytical projection requires live-publisher acquisition provenance");
   }
   const pulledAt = receiptPayload.source?.pulled_at;
   if (typeof pulledAt !== "string" || !/^\d{4}-\d{2}-\d{2}T/.test(pulledAt)
@@ -184,7 +187,7 @@ async function build({ input, receipt, generatedAt } = {}) {
 async function main() {
   const parsed = args(process.argv.slice(2));
   const output = resolve(ROOT, parsed.output || DEFAULT_OUTPUT);
-  const payload = await build(parsed);
+  const payload = await build({ ...parsed, output });
   const serialized = `${JSON.stringify(payload, null, 2)}\n`;
   if (parsed.check) {
     const current = readFileSync(output, "utf8");

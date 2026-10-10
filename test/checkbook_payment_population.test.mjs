@@ -101,9 +101,25 @@ describe("payment population fixture acquisition", () => {
       assert.equal(body.reconciliation.reconciled, true);
       assert.equal(body.population.reversal_rows, 1);
       assert.equal(body.reconciliation.source_net_check_amount, 500);
+      assert.equal(body.source.acquisition_mode, "fixture");
       assert.ok(existsSync(output));
       assert.equal(readFileSync(output, "utf8").trim().split("\n").length, 5);
       assert.equal(body.source.pulled_at, "2026-08-26T12:00:00.000Z");
+      const publicProjection = join(ROOT, "site/data/analytics_payments.json");
+      const lastGoodPublicProjection = readFileSync(publicProjection, "utf8");
+      const publicResult = spawnSync(process.execPath, [
+        "tools/build_analytical_payments.mjs", "--input", output, "--receipt", receipt,
+      ], { cwd: ROOT, encoding: "utf8" });
+      assert.notEqual(publicResult.status, 0);
+      assert.match(publicResult.stderr, /public .* requires live-publisher .* provenance/i);
+      assert.equal(readFileSync(publicProjection, "utf8"), lastGoodPublicProjection);
+      const cache = join(stage, "cache");
+      const cacheResult = spawnSync(process.execPath, [
+        "warehouse/scripts/publish_payment_input.mjs", cache, output, receipt,
+      ], { cwd: ROOT, encoding: "utf8" });
+      assert.notEqual(cacheResult.status, 0);
+      assert.match(cacheResult.stderr, /shared .* cache requires live-publisher .* provenance/i);
+      assert.equal(existsSync(join(cache, "checkbook-payment-population", "current.json")), false);
       const projection = join(stage, "projection.json");
       const project = () => spawnSync(process.execPath, [
         "tools/build_analytical_payments.mjs", "--input", output,

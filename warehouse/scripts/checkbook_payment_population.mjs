@@ -344,6 +344,7 @@ async function buildReceipt(args, collection, csv) {
     },
     source: {
       publisher: "Office of the New York City Comptroller",
+      acquisition_mode: args.fromFixture ? "fixture" : args.reusePages ? "retained-pages" : "live-publisher",
       pulled_at: pulledAt,
       landing_page: LANDING_PAGE,
       endpoint: ENDPOINT,

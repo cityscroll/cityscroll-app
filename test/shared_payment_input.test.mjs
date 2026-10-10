@@ -20,7 +20,7 @@ function fixture(t) {
 }
 function fill(tx, csv = 'id,amount\na,1\n') {
   writeFileSync(join(tx.stage, 'payments.csv'), csv);
-  writeFileSync(join(tx.stage, 'receipt.json'), JSON.stringify({ status: 'complete', reconciliation: { reconciled: true }, checksums: { normalized_csv_sha256: createHash('sha256').update(csv).digest('hex') } }));
+  writeFileSync(join(tx.stage, 'receipt.json'), JSON.stringify({ status: 'complete', source: { acquisition_mode: 'live-publisher' }, reconciliation: { reconciled: true }, checksums: { normalized_csv_sha256: createHash('sha256').update(csv).digest('hex') } }));
 }
 test('refresh publishes atomically and existing reader keeps its immutable snapshot', async t => {
   const root = fixture(t);
@@ -63,27 +63,4 @@ test('caller-supplied fixture paths never borrow a shared receipt', t => {
   const root = fixture(t);
   assert.equal(resolveSharedPaymentInput({ cacheRoot: root, input: 'fixture.csv' }), null);
   assert.equal(resolveSharedPaymentInput({ cacheRoot: root, receipt: 'fixture.json' }), null);
-});
-
-test('existing completed fixture can seed cache and real analytical builder reads it', async t => {
-  const { spawnSync } = await import('node:child_process');
-  const root = fixture(t);
-  const stage = join(root, 'fixture');
-  const { mkdirSync } = await import('node:fs');
-  mkdirSync(stage);
-  const csv = join(stage, 'payments.csv');
-  const receipt = join(stage, 'receipt.json');
-  const cache = join(root, 'cache');
-  for (const args of [
-    ['warehouse/scripts/checkbook_payment_population.mjs', '--from-fixture', '--page-size', '2', '--stage-dir', stage, '--output', csv, '--receipt', receipt],
-    ['warehouse/scripts/publish_payment_input.mjs', cache, csv, receipt],
-    ['warehouse/scripts/checkbook_payment_population.mjs'],
-    ['tools/build_analytical_payments.mjs', '--output', join(root, 'projection.json')],
-  ]) {
-    const result = spawnSync(process.execPath, args, { encoding: 'utf8', env: { ...process.env, CITYSCROLL_WAREHOUSE_CACHE: cache } });
-    assert.equal(result.status, 0, result.stderr);
-  }
-  const projection = JSON.parse(readFileSync(join(root, 'projection.json'), 'utf8'));
-  assert.ok(JSON.stringify(projection).includes('2026'));
-  assert.equal(readFileSync(csv, 'utf8'), readFileSync(resolveSharedPaymentInput({ cacheRoot: cache }).input, 'utf8'));
 });
