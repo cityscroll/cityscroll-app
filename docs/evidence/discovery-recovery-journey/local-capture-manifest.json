@@ -3,7 +3,7 @@
   "scenario": "discovery-recovery",
   "public_alias": "c94563a6bbaf3",
   "capture_mode": "headless-playwright-local-fixture-server",
-  "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+  "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
   "base": "local-fixture-server",
   "viewports": [
     {
@@ -18,8 +18,8 @@
     }
   ],
   "run_receipt": {
-    "started_at": "2026-10-09T16:07:23Z",
-    "finished_at": "2026-10-09T16:08:20Z"
+    "started_at": "2026-10-10T00:00:46Z",
+    "finished_at": "2026-10-10T00:01:47Z"
   },
   "identity": {
     "before": {
@@ -40,7 +40,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/",
         "viewport": {
@@ -66,7 +66,7 @@
       "render": {
         "sha256": "b63f8c036ccfad3eeb7afb7cecefb4dc9fe5ce66b5a1f0aeac503c8361bee0f7",
         "bytes": 50585,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/root-category-record-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/root-category-record-phone.png",
         "url": "/",
         "viewport": {
           "width": 390,
@@ -202,7 +202,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&drawer=open&focus=geography%3Anta2020%3ABK1403",
         "viewport": {
@@ -228,7 +228,7 @@
       "render": {
         "sha256": "126e10e1536da5f6f22c183e771cc4e75963c94cec764d9e36515a4ee4fa2405",
         "bytes": 46031,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/typed-place-record-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/typed-place-record-phone.png",
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&drawer=open&focus=geography%3Anta2020%3ABK1403",
         "viewport": {
           "width": 390,
@@ -376,7 +376,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
         "viewport": {
@@ -401,7 +401,7 @@
       "render": {
         "sha256": "a48b2de064c88100a94405ac28663e7a6fd5d6daa95f8091952b21b20d482a87",
         "bytes": 54512,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/unsupported-place-escape-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/unsupported-place-escape-phone.png",
         "url": "/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
         "viewport": {
           "width": 390,
@@ -510,7 +510,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/near-you?v=0&scope=citywide&surface=records",
         "viewport": {
@@ -535,7 +535,7 @@
       "render": {
         "sha256": "7476466f2bc302913a002d513a48cb4b5b24fd4b5f5dc95e9b24eb337f6bcda5",
         "bytes": 41382,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/citywide-bucket-record-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/citywide-bucket-record-phone.png",
         "url": "/near-you?v=0&scope=citywide&surface=records",
         "viewport": {
           "width": 390,
@@ -707,7 +707,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/",
         "viewport": {
@@ -731,9 +731,9 @@
         "scroll_y": 0
       },
       "render": {
-        "sha256": "b63f8c036ccfad3eeb7afb7cecefb4dc9fe5ce66b5a1f0aeac503c8361bee0f7",
-        "bytes": 50585,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/suggested-place-record-phone.png",
+        "sha256": "3c81b27059500c9d39d0d5c751249bfe10129a426a8aed1b418a8d17c07773f5",
+        "bytes": 95195,
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/suggested-place-record-phone.png",
         "url": "/",
         "viewport": {
           "width": 390,
@@ -1054,7 +1054,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/near-you/",
         "viewport": {
@@ -1078,9 +1078,9 @@
         "scroll_y": 0
       },
       "render": {
-        "sha256": "b831cf8d2d35e942624a2bc579b28dc3ece264a11d09dd98d9b61aacd35c3578",
-        "bytes": 60818,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/location-denied-phone.png",
+        "sha256": "df52fc1e11102acff242f0891fad185539f338a099be0b0b9d924e06bc8b2c1d",
+        "bytes": 60762,
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/location-denied-phone.png",
         "url": "/near-you/",
         "viewport": {
           "width": 390,
@@ -1158,7 +1158,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/near-you/",
         "viewport": {
@@ -1182,9 +1182,9 @@
         "scroll_y": 0
       },
       "render": {
-        "sha256": "bad2eabf368fd1f6d9d20f08c269a58fba31ef8f27213f5f449677500d3974f4",
-        "bytes": 58513,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/location-timeout-phone.png",
+        "sha256": "49bf84f313196a7944bab1fd5b0b4490900344dd680dcf76d42b7ec1617089ca",
+        "bytes": 53846,
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/location-timeout-phone.png",
         "url": "/near-you/",
         "viewport": {
           "width": 390,
@@ -1265,7 +1265,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABX0101&surface=records&lens=meetings",
         "viewport": {
@@ -1290,7 +1290,7 @@
       "render": {
         "sha256": "1be0f736aed7aa3b35d93612351c73b61db4953fae68b947d6048356a8ef668f",
         "bytes": 51213,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/explicit-zero-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/explicit-zero-phone.png",
         "url": "/near-you/?geo=nta2020%3ABX0101&surface=records&lens=meetings",
         "viewport": {
           "width": 390,
@@ -1383,7 +1383,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
@@ -1408,7 +1408,7 @@
       "render": {
         "sha256": "40dd839540722a14e0d64a3ee4a489a2a9d5c40ee8426eba12ba3bc1cb10abc3",
         "bytes": 47381,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/failed-section-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/failed-section-phone.png",
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
           "width": 390,
@@ -1488,7 +1488,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/near-you/?geo=nta2020%3AQN0103&surface=records&lens=meetings",
         "viewport": {
@@ -1513,7 +1513,7 @@
       "render": {
         "sha256": "392d763f55d8a82031f2d3eee143700f354ae8084b0275ff5f42da24643f96bd",
         "bytes": 50236,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/missing-coverage-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/missing-coverage-phone.png",
         "url": "/near-you/?geo=nta2020%3AQN0103&surface=records&lens=meetings",
         "viewport": {
           "width": 390,
@@ -1607,7 +1607,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
@@ -1633,7 +1633,7 @@
       "render": {
         "sha256": "a1305a874324a0b1b7201110463aaa51065b5d8639bad9d3cf0e1fa3d26f6ed3",
         "bytes": 56943,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/detail-failure-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/detail-failure-phone.png",
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
           "width": 390,
@@ -1734,7 +1734,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/",
         "viewport": {
@@ -1758,9 +1758,9 @@
         "scroll_y": 0
       },
       "render": {
-        "sha256": "0a89dd616262ae61ebff93997a6e7b8eb1a2fe0c2dace7d36ce5f76af1fb7847",
-        "bytes": 116342,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/root-category-record-desktop.png",
+        "sha256": "ab0a015044e35e4d01d9f56e716040b21ec9c2817d92ded4d294b33a31bc0c51",
+        "bytes": 250308,
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/root-category-record-desktop.png",
         "url": "/",
         "viewport": {
           "width": 1440,
@@ -1896,7 +1896,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&drawer=open&focus=geography%3Anta2020%3ABK1403",
         "viewport": {
@@ -1922,7 +1922,7 @@
       "render": {
         "sha256": "a5f787c802db4cf554433a843fa4146aacb2e215a58e3830e2a99127eacf0620",
         "bytes": 69371,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/typed-place-record-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/typed-place-record-desktop.png",
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&drawer=open&focus=geography%3Anta2020%3ABK1403",
         "viewport": {
           "width": 1440,
@@ -2070,7 +2070,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
         "viewport": {
@@ -2095,7 +2095,7 @@
       "render": {
         "sha256": "bccda2e37f04433d11a2ed4c43b45b01c95cf7d44601a53a9c02cdad5a43c9dd",
         "bytes": 82550,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/unsupported-place-escape-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/unsupported-place-escape-desktop.png",
         "url": "/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
         "viewport": {
           "width": 1440,
@@ -2204,7 +2204,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/near-you?v=0&scope=citywide&surface=records",
         "viewport": {
@@ -2229,7 +2229,7 @@
       "render": {
         "sha256": "71db258ea5635d0e9626b932d9fd5a4c628119a3ba240f22b393bd408e2cba12",
         "bytes": 61473,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/citywide-bucket-record-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/citywide-bucket-record-desktop.png",
         "url": "/near-you?v=0&scope=citywide&surface=records",
         "viewport": {
           "width": 1440,
@@ -2401,7 +2401,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/",
         "viewport": {
@@ -2425,9 +2425,9 @@
         "scroll_y": 0
       },
       "render": {
-        "sha256": "2f2bf7e455ffc6626c1402588b42e2793c6c425c1766fa2c5567e25b17f0e26b",
-        "bytes": 116345,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/suggested-place-record-desktop.png",
+        "sha256": "ab0a015044e35e4d01d9f56e716040b21ec9c2817d92ded4d294b33a31bc0c51",
+        "bytes": 250308,
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/suggested-place-record-desktop.png",
         "url": "/",
         "viewport": {
           "width": 1440,
@@ -2748,7 +2748,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/near-you/",
         "viewport": {
@@ -2772,9 +2772,9 @@
         "scroll_y": 0
       },
       "render": {
-        "sha256": "a4024fb0f0469148f2749a31f433812ef5bf2596dc1c6d2bf91f75bb5203ba3f",
-        "bytes": 111399,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/location-denied-desktop.png",
+        "sha256": "3cd5620cc6810e2748c11c2972cdf024ff8dd1d5d5b7c70a0f813edf8b717a5e",
+        "bytes": 213444,
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/location-denied-desktop.png",
         "url": "/near-you/",
         "viewport": {
           "width": 1440,
@@ -2852,7 +2852,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/near-you/",
         "viewport": {
@@ -2876,9 +2876,9 @@
         "scroll_y": 0
       },
       "render": {
-        "sha256": "dabc9c00b9da3bb0b0b0b9744c8ac218c26ec85602853467144bfd0c986f0ab0",
-        "bytes": 211101,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/location-timeout-desktop.png",
+        "sha256": "17344770f240e62cd902cf7cc625e27a54c17f2989b5a686b0d315bf32d16507",
+        "bytes": 109009,
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/location-timeout-desktop.png",
         "url": "/near-you/",
         "viewport": {
           "width": 1440,
@@ -2959,7 +2959,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABX0101&surface=records&lens=meetings",
         "viewport": {
@@ -2984,7 +2984,7 @@
       "render": {
         "sha256": "74bd375813a0e4f2dd0e85a2f63f50faedb71dedd3a59040cef932192e239e53",
         "bytes": 71602,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/explicit-zero-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/explicit-zero-desktop.png",
         "url": "/near-you/?geo=nta2020%3ABX0101&surface=records&lens=meetings",
         "viewport": {
           "width": 1440,
@@ -3077,7 +3077,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
@@ -3102,7 +3102,7 @@
       "render": {
         "sha256": "0929d3f60f5e885c02a023b372fef9dc13618da9293aed5654406eb18ff88460",
         "bytes": 67484,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/failed-section-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/failed-section-desktop.png",
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
           "width": 1440,
@@ -3182,7 +3182,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/near-you/?geo=nta2020%3AQN0103&surface=records&lens=meetings",
         "viewport": {
@@ -3207,7 +3207,7 @@
       "render": {
         "sha256": "d713defc4170bc4164b65882552df7ee75b01eb0fd854de0b470f4bd05f9c9e4",
         "bytes": 71216,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/missing-coverage-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/missing-coverage-desktop.png",
         "url": "/near-you/?geo=nta2020%3AQN0103&surface=records&lens=meetings",
         "viewport": {
           "width": 1440,
@@ -3301,7 +3301,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "38d27750-17fb-4b71-9497-78e41c1e559d",
+      "capture_run_id": "e093f89d-9b6f-40b6-90d0-18a972e3d332",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
@@ -3327,7 +3327,7 @@
       "render": {
         "sha256": "5a496c5dbb08404f9b366b874daca5ae0668bf81e3b8f916b93d06f049d9f00c",
         "bytes": 87689,
-        "local_image": ".artifacts/discovery-recovery-journey/38d27750-17fb-4b71-9497-78e41c1e559d/detail-failure-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e093f89d-9b6f-40b6-90d0-18a972e3d332/detail-failure-desktop.png",
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
           "width": 1440,
@@ -3422,7 +3422,7 @@
     }
   ],
   "provenance": {
-    "capture_revision": "076ed4015cfa19b43f19139c9ca45d9d7e0c2ee5",
+    "capture_revision": "b150a8489485c08d75566536b380ce3f9af7a483",
     "capture_revision_rule": "merge base of the capture checkout with origin/main",
     "frozen_activity": {
       "path": "site/data/district_activity.json",
@@ -3450,7 +3450,7 @@
       },
       {
         "path": "site/near_you_view.mjs",
-        "sha256": "63c4b6b2d7079987b87f0388748489d04c4c4f0fa07712c45f9c69bb45633a7c"
+        "sha256": "4c47507c724fa1466d728a815cb2c92a40bbab0c770fc0f2ba8d3ebe3f9008fe"
       },
       {
         "path": "site/app/map.mjs",
