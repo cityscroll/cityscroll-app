@@ -111,6 +111,7 @@ describe("payment population fixture acquisition", () => {
       ], { cwd: ROOT, encoding: "utf8" });
       assert.equal(project().status, 0);
       const projected = readFileSync(projection, "utf8");
+      const completeCsv = readFileSync(output, "utf8");
       const payload = JSON.parse(projected);
       assert.equal(payload.snapshot_date, body.source.pulled_at);
       assert.equal(payload.generated_at, body.source.pulled_at);
@@ -118,6 +119,20 @@ describe("payment population fixture acquisition", () => {
       // Rebuilding a retained population must not make its source date newer.
       assert.equal(project().status, 0);
       assert.equal(readFileSync(projection, "utf8"), projected);
+      const truncated = `${completeCsv.trimEnd().split("\n").slice(0, -1).join("\n")}\n`;
+      const tampered = completeCsv.replace("Department of Alpha", "Department of Omega");
+      assert.notEqual(tampered, completeCsv);
+      for (const [invalidCsv, expectedError] of [
+        [truncated, /row count/i],
+        [tampered, /checksum/i],
+      ]) {
+        writeFileSync(output, invalidCsv);
+        const rejected = project();
+        assert.notEqual(rejected.status, 0);
+        assert.match(rejected.stderr, expectedError);
+        assert.equal(readFileSync(projection, "utf8"), projected);
+      }
+      writeFileSync(output, completeCsv);
       for (const invalid of [
         { ...body, status: "failed" },
         { ...body, source: { ...body.source, pulled_at: null } },
@@ -136,6 +151,14 @@ describe("payment population fixture acquisition", () => {
       assert.notEqual(project().status, 0, "undated reused pages must not become fresh");
       assert.equal(readFileSync(projection, "utf8"), projected);
     });
+  });
+
+  it("rejects fixture acquisition through production output defaults", () => {
+    const result = spawnSync(process.execPath, [
+      "warehouse/scripts/checkbook_payment_population.mjs", "--from-fixture",
+    ], { cwd: ROOT, encoding: "utf8" });
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /requires isolated .* paths/i);
   });
 
   it("refreshes a configured shared cache atomically and preserves its last good version", async () => {

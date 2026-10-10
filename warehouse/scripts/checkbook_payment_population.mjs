@@ -78,6 +78,10 @@ function parseArgs(argv) {
   if (!args.fromFixture && args.delayMs < MIN_DELAY_MS) {
     throw new Error(`live collection delay must be at least ${MIN_DELAY_MS} ms`);
   }
+  if (args.fromFixture && (args.stageDir === DEFAULT_STAGE
+    || args.output === DEFAULT_OUTPUT || args.receipt === DEFAULT_RECEIPT)) {
+    throw new Error("--from-fixture requires isolated --stage-dir, --output, and --receipt paths");
+  }
   return args;
 }
 

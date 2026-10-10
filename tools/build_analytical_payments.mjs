@@ -5,6 +5,7 @@
  * projection. This is an aggregation pass over the existing population; it
  * never reacquires or loads payment rows into an in-memory array.
  */
+import { createHash } from "node:crypto";
 import { createReadStream, readFileSync, writeFileSync } from "node:fs";
 import { createInterface } from "node:readline";
 import { basename, resolve } from "node:path";
@@ -76,22 +77,19 @@ async function build({ input, receipt, generatedAt } = {}) {
     throw new Error("payment projection requires a dated source acquisition; refresh undated retained inputs");
   }
   const sourceDate = new Date(pulledAt).toISOString();
-  const headerLine = await new Promise((resolveHeader, reject) => {
-    const stream = createReadStream(input, { encoding: "utf8" });
-    const rl = createInterface({ input: stream, crlfDelay: Infinity });
-    rl.once("line", (line) => { rl.close(); stream.destroy(); resolveHeader(line); });
-    rl.once("error", reject);
-  });
-  const header = csvLine(headerLine);
-  const index = new Map(header.map((name, i) => [name, i]));
   const groups = new Map();
   let sourceRows = 0;
   let invalidRows = 0;
-  const stream = createReadStream(input, { encoding: "utf8" });
+  let index;
+  const checksum = createHash("sha256");
+  const stream = createReadStream(input);
+  stream.on("data", (chunk) => checksum.update(chunk));
   const lines = createInterface({ input: stream, crlfDelay: Infinity });
-  let first = true;
   for await (const line of lines) {
-    if (first) { first = false; continue; }
+    if (!index) {
+      index = new Map(csvLine(line).map((name, i) => [name, i]));
+      continue;
+    }
     if (!line.trim()) continue;
     sourceRows += 1;
     const cells = csvLine(line);
@@ -117,6 +115,20 @@ async function build({ input, receipt, generatedAt } = {}) {
     group.actual_payment_amount = Math.round((group.actual_payment_amount + amount) * 100) / 100;
     const contractId = clean(cells[index.get("contract_id")]);
     if (contractId) group.contract_ids.add(contractId);
+  }
+  if (!index) throw new Error("payment projection requires a CSV header");
+  const actualChecksum = checksum.digest("hex");
+  const expectedRowCounts = [
+    receiptPayload.conversion?.csv?.row_count,
+    receiptPayload.population?.normalized_rows,
+    receiptPayload.reconciliation?.normalized_rows,
+  ];
+  if (expectedRowCounts.some((count) => !Number.isSafeInteger(count) || count < 0)
+    || expectedRowCounts.some((count) => count !== sourceRows)) {
+    throw new Error("payment projection input row count does not match its source receipt");
+  }
+  if (actualChecksum !== receiptPayload.checksums?.normalized_csv_sha256) {
+    throw new Error("payment projection input checksum does not match its source receipt");
   }
   if (invalidRows) throw new Error(`AP-08 payment projection encountered ${invalidRows} invalid rows`);
   const rows = [...groups.values()]
