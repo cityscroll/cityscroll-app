@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { chmodSync, existsSync, lstatSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import { describe, it } from "node:test";
@@ -21,6 +21,16 @@ const FIXTURE = join(ROOT, "warehouse/fixtures/checkbook-payment-population/coll
 function fixtureRows() {
   const fixture = JSON.parse(readFileSync(FIXTURE, "utf8"));
   return Object.values(fixture.pages).flatMap(parseCheckbookPaymentTransactions);
+}
+
+function makeWritable(path) {
+  if (!existsSync(path)) return;
+  chmodSync(path, 0o755);
+  for (const name of readdirSync(path)) {
+    const child = join(path, name);
+    if (lstatSync(child).isDirectory()) makeWritable(child);
+    else chmodSync(child, 0o644);
+  }
 }
 
 describe("independent Checkbook payment population", () => {
@@ -125,6 +135,90 @@ describe("payment population fixture acquisition", () => {
       assert.equal(JSON.parse(readFileSync(receipt, "utf8")).source.pulled_at, null);
       assert.notEqual(project().status, 0, "undated reused pages must not become fresh");
       assert.equal(readFileSync(projection, "utf8"), projected);
+    });
+  });
+
+  it("refreshes a configured shared cache atomically and preserves its last good version", async () => {
+    await withTempDir("checkbook-payment-shared-refresh", async (stage) => {
+      const cache = join(stage, "cache");
+      const projection = join(stage, "projection.json");
+      const mockPublisher = join(stage, "mock-publisher.mjs");
+      try {
+        writeFileSync(mockPublisher, `
+        import { readFileSync } from "node:fs";
+        const fixture = JSON.parse(readFileSync(process.env.MOCK_PAYMENT_FIXTURE, "utf8"));
+        const transactions = Object.values(fixture.pages)
+          .flatMap((xml) => xml.match(/<transaction>[\\s\\S]*?<\\/transaction>/g) || [])
+          .join("");
+        const first = Object.values(fixture.pages)[0];
+        let xml = first.replace(
+          /<spending_transactions>[\\s\\S]*?<\\/spending_transactions>/,
+          \`<spending_transactions>\${transactions}</spending_transactions>\`,
+        );
+        xml = xml.replace("<check_amount>125.50</check_amount>",
+          \`<check_amount>\${process.env.MOCK_PAYMENT_AMOUNT}</check_amount>\`);
+        if (process.env.MOCK_PAYMENT_FAILURE === "count-drift") {
+          xml = xml.replace("<record_count>4</record_count>", "<record_count>5</record_count>");
+        }
+        const NativeDate = Date;
+        globalThis.Date = class extends NativeDate {
+          constructor(...args) { super(...(args.length ? args : [process.env.MOCK_PAYMENT_OBSERVED_AT])); }
+          static now() { return NativeDate.now(); }
+        };
+        globalThis.fetch = async () => ({ ok: true, status: 200, text: async () => xml });
+      `);
+        const environment = (overrides = {}) => ({
+        ...process.env,
+        CITYSCROLL_WAREHOUSE_CACHE: cache,
+        MOCK_PAYMENT_FIXTURE: FIXTURE,
+        MOCK_PAYMENT_AMOUNT: "125.50",
+        MOCK_PAYMENT_OBSERVED_AT: "2026-08-26T12:00:00.000Z",
+        ...overrides,
+      });
+        const refresh = (overrides) => spawnSync(process.execPath, [
+        "--import", mockPublisher,
+        "warehouse/scripts/checkbook_payment_population.mjs", "--refresh",
+      ], { cwd: ROOT, encoding: "utf8", env: environment(overrides) });
+        const project = () => spawnSync(process.execPath, [
+        "tools/build_analytical_payments.mjs", "--output", projection,
+      ], { cwd: ROOT, encoding: "utf8", env: environment() });
+        const pointer = () => JSON.parse(readFileSync(join(
+        cache, "checkbook-payment-population", "current.json",
+      ), "utf8")).version;
+        const currentReceipt = () => JSON.parse(readFileSync(join(
+        cache, "checkbook-payment-population", "versions", pointer(), "receipt.json",
+      ), "utf8"));
+
+        const first = refresh();
+        assert.equal(first.status, 0, first.stderr || first.stdout);
+        const firstVersion = pointer();
+        assert.equal(currentReceipt().status, "complete");
+        assert.equal(currentReceipt().reconciliation.reconciled, true);
+
+        const second = refresh({
+          MOCK_PAYMENT_AMOUNT: "150.50",
+          MOCK_PAYMENT_OBSERVED_AT: "2026-08-27T12:00:00.000Z",
+        });
+        assert.equal(second.status, 0, second.stderr || second.stdout);
+        const secondVersion = pointer();
+        assert.notEqual(secondVersion, firstVersion);
+        assert.equal(currentReceipt().source.pulled_at, "2026-08-27T12:00:00.000Z");
+        assert.equal(project().status, 0);
+        const lastGoodProjection = readFileSync(projection, "utf8");
+        assert.equal(JSON.parse(lastGoodProjection).population.actual_payment_amount, 525);
+
+        const failed = refresh({
+          MOCK_PAYMENT_AMOUNT: "175.50",
+          MOCK_PAYMENT_OBSERVED_AT: "2026-08-28T12:00:00.000Z",
+          MOCK_PAYMENT_FAILURE: "count-drift",
+        });
+        assert.notEqual(failed.status, 0);
+        assert.equal(pointer(), secondVersion);
+        assert.equal(project().status, 0);
+        assert.equal(readFileSync(projection, "utf8"), lastGoodProjection);
+      } finally {
+        makeWritable(cache);
+      }
     });
   });
 });
