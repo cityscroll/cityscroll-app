@@ -15,8 +15,8 @@
   "relations": {
     "mandate_meeting": {
       "totals": {
-        "public_inferred": 3,
-        "evidence_only": 70
+        "public_inferred": 2,
+        "evidence_only": 75
       },
       "denominators": {
         "eligible_left_rows": 19,
@@ -24,13 +24,13 @@
         "pre_route_pairs": 2261
       },
       "by_tier": {
-        "evidence_only": 70,
-        "public_inferred": 3
+        "evidence_only": 75,
+        "public_inferred": 2
       },
       "by_reason": {
-        "held_out_precision_gate_passed": 3,
-        "matter_body_subject": 70,
-        "temporal": 49
+        "held_out_precision_gate_passed": 2,
+        "matter_body_subject": 75,
+        "temporal": 50
       },
       "by_agency": {
         "administration-for-childrens-services": {
@@ -120,10 +120,10 @@
             "pre_route_pairs": 476
           },
           "public_inferred": 0,
-          "evidence_only": 28,
+          "evidence_only": 24,
           "reason_counts": {
-            "matter_body_subject": 28,
-            "temporal": 28
+            "matter_body_subject": 24,
+            "temporal": 24
           }
         },
         "city-planning": {
@@ -193,9 +193,9 @@
             "pre_route_pairs": 119
           },
           "public_inferred": 0,
-          "evidence_only": 3,
+          "evidence_only": 2,
           "reason_counts": {
-            "matter_body_subject": 3
+            "matter_body_subject": 2
           }
         },
         "correction": {
@@ -295,10 +295,10 @@
             "pre_route_pairs": 238
           },
           "public_inferred": 0,
-          "evidence_only": 6,
+          "evidence_only": 10,
           "reason_counts": {
-            "matter_body_subject": 6,
-            "temporal": 3
+            "matter_body_subject": 10,
+            "temporal": 5
           }
         },
         "homeless-services": {
@@ -328,10 +328,10 @@
             "pre_route_pairs": 119
           },
           "public_inferred": 0,
-          "evidence_only": 7,
+          "evidence_only": 8,
           "reason_counts": {
-            "matter_body_subject": 7,
-            "temporal": 6
+            "matter_body_subject": 8,
+            "temporal": 7
           }
         },
         "human-resources-administration": {
@@ -381,10 +381,10 @@
             "pre_route_pairs": 238
           },
           "public_inferred": 0,
-          "evidence_only": 12,
+          "evidence_only": 14,
           "reason_counts": {
-            "matter_body_subject": 12,
-            "temporal": 12
+            "matter_body_subject": 14,
+            "temporal": 14
           }
         },
         "law-department": {
@@ -563,11 +563,11 @@
             "source_rows": 119,
             "pre_route_pairs": 119
           },
-          "public_inferred": 3,
-          "evidence_only": 14,
+          "public_inferred": 2,
+          "evidence_only": 17,
           "reason_counts": {
-            "held_out_precision_gate_passed": 3,
-            "matter_body_subject": 14
+            "held_out_precision_gate_passed": 2,
+            "matter_body_subject": 17
           }
         },
         "youth-and-community-development": {
@@ -582,7 +582,7 @@
         }
       },
       "by_source_system": {
-        "city_record": 73
+        "city_record": 77
       }
     },
     "mandate_land_use": {
