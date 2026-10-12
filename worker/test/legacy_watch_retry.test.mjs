@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { fetchSodaRowsWithRetry } from "../src/alerts.mjs";
+import { fetchSodaRowsWithRetry, runAlerts } from "../src/alerts.mjs";
 
 test("legacy watch fetch retries a transient SODA 524 once", async () => {
   const responses = [
@@ -58,3 +58,34 @@ for (const phase of ["headers", "body"]) {
     assert.equal(signal?.aborted, true);
   });
 }
+
+test("static-watch progress checkpoints every success and error", async () => {
+  const originalFetch = globalThis.fetch;
+  const progress = [];
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls += 1;
+    return calls === 1
+      ? Response.json([{ request_id: "20261012001", start_date: "2026-10-12" }])
+      : new Response(null, { status: 400 });
+  };
+  try {
+    await runAlerts({}, [
+      { id: "first", label: "First", where: "agency_name='First'" },
+      { id: "second", label: "Second", where: "agency_name='Second'" },
+    ], {
+      capturePreviews: true,
+      persist: false,
+      skipSubscriptions: true,
+      skipForecastingPipelines: true,
+      suppressDryRunLogs: true,
+      onProgress: async (entry) => { progress.push(entry); },
+    });
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+  assert.deepEqual(
+    progress.filter((entry) => entry.phase === "static_watches").map((entry) => entry.evaluated_count),
+    [0, 1, 2],
+  );
+});

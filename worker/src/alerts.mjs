@@ -544,6 +544,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
         sent: false,
         holdContract: shadowHold.contract,
       });
+      await options.onProgress?.({ phase: "static_watches", evaluated_count: results.length });
       continue;
     }
     try {
@@ -615,6 +616,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
         ...upstreamResultFields(e),
       });
     }
+    await options.onProgress?.({ phase: "static_watches", evaluated_count: results.length });
   }
 
   // ---- replay confirmed subscriptions from SUBS KV (the self-serve path) ----

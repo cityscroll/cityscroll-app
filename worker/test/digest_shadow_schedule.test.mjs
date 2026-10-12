@@ -18,6 +18,7 @@ import {
   runBudgetedNoticeFreshness,
   recordDigestShadowProgress,
 } from "../src/digest_shadow.mjs";
+import { ingestNotices } from "../src/ingest.mjs";
 import { buildDigestShadowHoldState } from "../src/digest_shadow_hold.mjs";
 import {
   DIGEST_SHADOW_LEDGER_PREFIX,
@@ -199,10 +200,10 @@ test("freshness subrequest budget exhaustion returns degraded", async () => {
   const out = await runBudgetedNoticeFreshness({}, {
     budgetMs: 5_000,
     maxSubrequests: 2,
-    ingestFn: async () => {
-      await globalThis.fetch("https://example.test/1");
-      await globalThis.fetch("https://example.test/2");
-      await globalThis.fetch("https://example.test/3");
+    ingestFn: async (_env, { fetchFn }) => {
+      await fetchFn("https://example.test/1");
+      await fetchFn("https://example.test/2");
+      await fetchFn("https://example.test/3");
       return { noticeRequestIds: [] };
     },
     prewarmFn: async () => ({ warmed: 0 }),
@@ -212,6 +213,62 @@ test("freshness subrequest budget exhaustion returns degraded", async () => {
   assert.match(out.reason, /subrequest budget exhausted/);
   assert.equal(out.code, "FRESHNESS_SUBREQUEST_BUDGET");
   assert.ok(out.subrequests > DIGEST_SHADOW_FRESHNESS_SUBREQUEST_BUDGET || out.subrequests > 2);
+});
+
+test("freshness cancellation is invocation-local and prevents late success or prewarm", async () => {
+  const originalFetch = globalThis.fetch;
+  const receipts = [];
+  let timedOutSignal;
+  let timedOutPrewarm = false;
+  const db = {
+    prepare(sql) {
+      return {
+        bind() { return this; },
+        async first() { return sql.includes("SELECT v FROM ingest_state") ? { v: "2026-10-01" } : null; },
+        async run() { return { success: true }; },
+      };
+    },
+    async batch() { return []; },
+  };
+  const acquisitionFn = async (_env, _source, _runId, work) => {
+    try {
+      const result = await work();
+      receipts.push("succeeded");
+      return result;
+    } catch (error) {
+      receipts.push("failed");
+      throw error;
+    }
+  };
+  const stalledTransport = async (_url, { signal }) => {
+    timedOutSignal = signal;
+    assert.equal(globalThis.fetch, originalFetch);
+    return new Promise((resolve, reject) => {
+      signal.addEventListener("abort", () => reject(signal.reason), { once: true });
+    });
+  };
+  const timedOut = runBudgetedNoticeFreshness({ DB: db }, {
+    budgetMs: 15,
+    ingestFn: ingestNotices,
+    acquisitionFn,
+    fetchImpl: stalledTransport,
+    prewarmFn: async () => { timedOutPrewarm = true; },
+  });
+  const overlapping = runBudgetedNoticeFreshness({ DB: db }, {
+    budgetMs: 1_000,
+    ingestFn: ingestNotices,
+    fetchImpl: async () => Response.json([]),
+    prewarmFn: async () => ({ warmed: 0 }),
+  });
+  assert.equal(globalThis.fetch, originalFetch);
+  const [timedOutResult, overlappingResult] = await Promise.all([timedOut, overlapping]);
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(timedOutResult.code, "FRESHNESS_TIME_BUDGET");
+  assert.equal(overlappingResult.ok, true);
+  assert.equal(timedOutSignal.aborted, true);
+  assert.equal(timedOutPrewarm, false);
+  assert.deepEqual(receipts, ["failed"]);
+  assert.equal(globalThis.fetch, originalFetch);
 });
 
 test("applyFreshnessDegradation promotes READY to DEGRADED_UPSTREAM without naming a held digest", () => {
@@ -356,6 +413,8 @@ test("progress survives interruption and cannot overwrite finalized evidence", a
     await recordDigestShadowProgress(db, DAY, { phase: "account_builds", evaluated_count: 20 }, NOW);
     const read = () => JSON.parse(sqlite.prepare("SELECT summary_json FROM digest_shadow_runs").get().summary_json);
     assert.deepEqual(read(), { status: "STARTED", phase: "account_builds", evaluated_count: 20, progress_at: NOW });
+    await recordDigestShadowProgress(db, DAY, { phase: "stale_static_writer", evaluated_count: 1 }, NOW);
+    assert.equal(read().evaluated_count, 20);
     sqlite.exec("UPDATE digest_shadow_runs SET status = 'READY'");
     await recordDigestShadowProgress(db, DAY, { phase: "late_writer", evaluated_count: 1 }, NOW);
     assert.equal(read().phase, "account_builds");

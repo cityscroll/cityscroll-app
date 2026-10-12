@@ -55,15 +55,16 @@ class Statement {
     if (this.sql.includes("UPDATE digest_shadow_rebuild_items")) {
       const item = this.db.items.get(`${this.args.at(-2)}:${this.args.at(-1)}`);
       if (!item) return { success: true };
-      if (this.sql.includes("status = 'running'")) {
+      if (this.sql.includes("SET status = 'running'")) {
         item.status = "running";
         item.attempt_count += 1;
         item.started_at = this.args[0];
-      } else if (this.sql.includes("status = 'complete'")) {
+      } else if (this.sql.includes("SET status = 'complete'")) {
         item.status = "complete";
         item.result_json = this.args[0];
         item.completed_at = this.args[1];
       } else {
+        if (item.status !== "running") return { success: true };
         item.status = "queued";
         item.error = this.args[0];
       }
@@ -72,6 +73,17 @@ class Statement {
     if (this.sql.includes("UPDATE digest_shadow_rebuild_runs")) {
       const run = this.db.runs.get(this.args.at(-1));
       if (!run) return { success: true };
+      if (this.sql.includes("MAX(completed_count")) {
+        const [completed, failed, updatedAt, status, receiptJson] = this.args;
+        run.completed_count = Math.max(run.completed_count, completed);
+        run.failed_count = Math.max(run.failed_count, failed);
+        run.updated_at = updatedAt;
+        if (!new Set(["complete", "failed"]).has(run.status)) {
+          run.status = status;
+          run.receipt_json = receiptJson;
+        }
+        return { success: true };
+      }
       const fields = this.sql.match(/SET ([\s\S]+?)\s+WHERE/)[1].split(", ").map((field) => field.split(" = ")[0]);
       fields.forEach((field, index) => { run[field] = this.args[index]; });
       return { success: true };
@@ -225,4 +237,54 @@ test("replayed completed item repairs interrupted finalization", async () => {
   assert.equal(finished.status, "complete");
   assert.equal(finished.receipt.status, "READY");
   assert.equal(DB.items.get(`${created.run_id}:digest:one`).attempt_count, 1);
+});
+
+test("a failed duplicate cannot revert a concurrently completed rebuild item", async () => {
+  const DB = new FakeD1();
+  const env = { DB, ALERT_STATE: kv(), DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, { affectedDigestIds: ["digest:one"], now: NOW });
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.total_count = 1;
+  DB.items.set(`${created.run_id}:digest:one`, {
+    run_id: created.run_id, digest_id: "digest:one",
+    job_json: JSON.stringify({ type: "sub", key: "sub:one" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  let finishSuccess;
+  let finishFailure;
+  let entered = 0;
+  let bothEntered;
+  const enteredGate = new Promise((resolve) => { bothEntered = resolve; });
+  const markEntered = () => {
+    entered += 1;
+    if (entered === 2) bothEntered();
+  };
+  const successGate = new Promise((resolve) => { finishSuccess = resolve; });
+  const failureGate = new Promise((_, reject) => { finishFailure = reject; });
+  const message = { type: "digest", run_id: created.run_id, digest_id: "digest:one" };
+  const succeeds = handleDigestShadowRebuildQueueMessage(env, message, {
+    now: NOW,
+    runTargetFn: async () => {
+      markEntered();
+      await successGate;
+      return { previews: [], redlines: [], upstream_incidents: [], _rendered_previews: [] };
+    },
+  });
+  const fails = handleDigestShadowRebuildQueueMessage(env, message, {
+    now: NOW,
+    runTargetFn: async () => {
+      markEntered();
+      return failureGate;
+    },
+  });
+  await enteredGate;
+  finishSuccess();
+  const completed = await succeeds;
+  finishFailure(new Error("duplicate failed late"));
+  await assert.rejects(fails, /duplicate failed late/);
+  assert.equal(completed.status, "complete");
+  assert.equal(DB.items.get(`${created.run_id}:digest:one`).status, "complete");
+  assert.equal(DB.runs.get(created.run_id).completed_count, 1);
+  assert.equal(DB.runs.get(created.run_id).status, "complete");
 });

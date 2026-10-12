@@ -131,9 +131,10 @@ import { RUM_MARKED_TRAFFIC_CLASSES, isRumProductionOrigin } from "../../site/ru
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
 
-async function withWorkerAcquisitionReceipt(env, sourceContractId, runId, work) {
+async function withWorkerAcquisitionReceipt(env, sourceContractId, runId, work, { signal } = {}) {
   try {
     const result = await work();
+    signal?.throwIfAborted();
     const status = result?.status === "failed" || result?.status === "error" || result?.ok === false
       ? "failed"
       : "succeeded";
@@ -592,7 +593,8 @@ const worker = {
           acquisitionFn: withWorkerAcquisitionReceipt,
           runId,
           ingestFn: ingestNotices,
-          prewarmFn: (probeEnv, requestIds) => prewarmNotices(probeEnv, requestIds, {
+          prewarmFn: (probeEnv, requestIds, options = {}) => prewarmNotices(probeEnv, requestIds, {
+            ...options,
             skipEdgeCacheWrite: event.costProbe === true,
           }),
         });

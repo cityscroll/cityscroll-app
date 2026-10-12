@@ -293,7 +293,7 @@ async function expandRun(env, runId, now) {
   return readRun(env.DB, runId);
 }
 
-async function processItem(env, runId, digestId, now) {
+async function processItem(env, runId, digestId, now, runTargetFn = runTarget) {
   const run = await readRun(env.DB, runId);
   if (!run) throw new Error("digest shadow rebuild run not found");
   const item = (await readItems(env.DB, runId)).find((candidate) => candidate.digest_id === digestId);
@@ -304,14 +304,14 @@ async function processItem(env, runId, digestId, now) {
     WHERE run_id = ? AND digest_id = ? AND status IN ('queued', 'running')`)
     .bind(iso(now), runId, digestId).run();
   try {
-    const summary = await runTarget(env, item.job, now);
+    const summary = await runTargetFn(env, item.job, now);
     await env.DB.prepare(`UPDATE ${DIGEST_SHADOW_REBUILD_ITEM_TABLE}
       SET status = 'complete', result_json = ?, completed_at = ?, error = NULL
       WHERE run_id = ? AND digest_id = ?`)
       .bind(json(summary), iso(now), runId, digestId).run();
   } catch (error) {
     await env.DB.prepare(`UPDATE ${DIGEST_SHADOW_REBUILD_ITEM_TABLE}
-      SET status = 'queued', error = ? WHERE run_id = ? AND digest_id = ?`)
+      SET status = 'queued', error = ? WHERE run_id = ? AND digest_id = ? AND status = 'running'`)
       .bind(String(error?.message || error), runId, digestId).run();
     throw error;
   }
@@ -336,15 +336,23 @@ async function finalizeProgress(env, run, now) {
       rebuild_complete: false,
     }, new Date(now)));
   }
-  await updateRun(env.DB, runId, updated);
+  await env.DB.prepare(`UPDATE ${DIGEST_SHADOW_REBUILD_RUN_TABLE} SET
+    completed_count = MAX(completed_count, ?), failed_count = MAX(failed_count, ?),
+    updated_at = ?, status = CASE WHEN status IN ('complete', 'failed') THEN status ELSE ? END,
+    receipt_json = CASE WHEN status IN ('complete', 'failed') THEN receipt_json ELSE ? END
+    WHERE run_id = ?`)
+    .bind(complete, failed, updated.updated_at, updated.status, updated.receipt_json, runId).run();
   return readRun(env.DB, runId);
 }
 
-export async function handleDigestShadowRebuildQueueMessage(env, message, { now = new Date() } = {}) {
+export async function handleDigestShadowRebuildQueueMessage(env, message, {
+  now = new Date(),
+  runTargetFn = runTarget,
+} = {}) {
   const body = message?.body || message || {};
   if (!body.run_id) throw new Error("digest shadow rebuild message missing run_id");
   if (body.type === "expand") return expandRun(env, body.run_id, now);
-  if (body.type === "digest") return processItem(env, body.run_id, body.digest_id, now);
+  if (body.type === "digest") return processItem(env, body.run_id, body.digest_id, now, runTargetFn);
   throw new Error("unknown digest shadow rebuild message");
 }
 

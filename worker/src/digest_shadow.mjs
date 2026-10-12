@@ -910,7 +910,7 @@ export async function runBudgetedNoticeFreshness(env, {
     subrequests: 0,
     elapsed_ms: 0,
   };
-  const originalFetch = fetchImpl;
+  const controller = new AbortController();
   const countingFetch = (...args) => {
     budget.subrequests += 1;
     if (budget.subrequests > maxSubrequests) {
@@ -920,32 +920,37 @@ export async function runBudgetedNoticeFreshness(env, {
       error.code = "FRESHNESS_SUBREQUEST_BUDGET";
       return Promise.reject(error);
     }
-    return originalFetch(...args);
+    const [input, init = {}] = args;
+    return fetchImpl(input, { ...init, signal: controller.signal });
   };
   let timer;
   const timeout = new Promise((_, reject) => {
     timer = setTimeout(() => {
       const error = new Error(`digest shadow freshness time budget exhausted (${budgetMs}ms)`);
       error.code = "FRESHNESS_TIME_BUDGET";
+      controller.abort(error);
       reject(error);
     }, budgetMs);
     timer.unref?.();
   });
   const work = async () => {
-    const priorFetch = globalThis.fetch;
-    globalThis.fetch = countingFetch;
-    try {
-      const ingest = ingestFn || (await import("./ingest.mjs")).ingestNotices;
-      const prewarm = prewarmFn || (await import("./notice.mjs")).prewarmNotices;
-      const runIngest = acquisitionFn
-        ? () => acquisitionFn(env, "city-record", runId, () => ingest(env))
-        : () => ingest(env);
-      const result = await runIngest();
-      const prewarmResult = await prewarm(env, result?.noticeRequestIds);
-      return { result, prewarm: prewarmResult };
-    } finally {
-      globalThis.fetch = priorFetch;
-    }
+    const ingest = ingestFn || (await import("./ingest.mjs")).ingestNotices;
+    const prewarm = prewarmFn || (await import("./notice.mjs")).prewarmNotices;
+    const ingestOptions = { fetchFn: countingFetch, signal: controller.signal };
+    const ingestWork = async () => {
+      const result = await ingest(env, ingestOptions);
+      controller.signal.throwIfAborted();
+      return result;
+    };
+    const result = acquisitionFn
+      ? await acquisitionFn(env, "city-record", runId, ingestWork, { signal: controller.signal })
+      : await ingestWork();
+    controller.signal.throwIfAborted();
+    const prewarmResult = await prewarm(env, result?.noticeRequestIds, {
+      signal: controller.signal,
+    });
+    controller.signal.throwIfAborted();
+    return { result, prewarm: prewarmResult };
   };
   try {
     const result = await Promise.race([work(), timeout]);
@@ -965,16 +970,18 @@ export async function runBudgetedNoticeFreshness(env, {
   }
 }
 
-/** Run the real digest builders with delivery, queue fan-out, and state advancement disabled. */
 // Update only an in-flight marker. Never replace a completed summary or its previews.
 // Progress contains stage/count/time only, so it is safe for operator diagnostics.
 export async function recordDigestShadowProgress(db, day, progress, now = new Date()) {
   await db.prepare(`UPDATE digest_shadow_runs SET summary_json = json_set(summary_json,
     '$.phase', ?, '$.evaluated_count', ?, '$.progress_at', ?)
-    WHERE run_day = ? AND status = 'STARTED'`)
-    .bind(progress.phase, progress.evaluated_count, new Date(now).toISOString(), day).run();
+    WHERE run_day = ? AND status = 'STARTED'
+    AND COALESCE(json_extract(summary_json, '$.evaluated_count'), 0) <= ?`)
+    .bind(progress.phase, progress.evaluated_count, new Date(now).toISOString(), day,
+      progress.evaluated_count).run();
 }
 
+/** Run the real digest builders with delivery, queue fan-out, and state advancement disabled. */
 export async function runDigestShadow(env, {
   now = new Date(),
   runAlertsFn = null,
