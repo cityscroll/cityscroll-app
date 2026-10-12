@@ -382,7 +382,14 @@ export async function scanTableForPartition({
     }
     if (throughKeyValues) {
       const upper = keysetAtOrBeforePredicate(keyCols, throughKeyValues);
-      where = `(${where}) AND ${upper.clause}`;
+      // SQLite comparisons against NULL are neither true nor false. The first
+      // bounded range therefore owns every corrupt row with a NULL logical-key
+      // component explicitly; otherwise `key <= upper` would silently omit it.
+      const nullKeys = keyCols.map((column) => `${column} IS NULL`).join(" OR ");
+      const boundedUpper = afterKeyValues
+        ? upper.clause
+        : `((${nullKeys}) OR ${upper.clause})`;
+      where = `(${where}) AND ${boundedUpper}`;
       params.push(...upper.params);
     }
     const sql = `SELECT rowid AS __cityscroll_scan_rowid, ${columns.join(", ")} FROM ${table} WHERE ${where} ORDER BY ${orderBy} LIMIT ${requestLimit}`;

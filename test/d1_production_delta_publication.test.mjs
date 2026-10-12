@@ -404,6 +404,42 @@ test("later reconciliation windows detect missing, stale, and unexpected rows", 
   )));
 });
 
+test("oversized reconciliation cannot omit an unexpected NULL logical key", { skip: !DatabaseSync }, async () => {
+  const sources = oversizedOcpSources();
+  const priorSnapshot = snapshotFor(manifest, sources.prior);
+  const currentSnapshot = snapshotFor(manifest, sources.current);
+  const { fenceStore, generation, holder } = await claimed(currentSnapshot, "null-key-corruption");
+  const db = openDatabase(sources.prior);
+  let corrupted = false;
+  const adapter = databaseAdapter(db, {
+    generation,
+    holder,
+    beforeSelect: ({ db: target, sql }) => {
+      if (!corrupted && sql.includes("FROM ocp_awards_warehouse")) {
+        target.prepare("INSERT INTO ocp_awards_warehouse (row_key, request_id, vendor_name) VALUES (NULL, ?, ?)")
+          .run("null-key", "Unexpected NULL-key vendor");
+        corrupted = true;
+      }
+    },
+  });
+
+  const result = await runProductionDelta({
+    priorSnapshot, currentSnapshot, manifest, sourceDocuments: sources.current,
+    generation, fingerprint, holder, fenceStore, adapter, appliedBatchStore: adapter,
+    policy, maxOpsPerBatch: 500, now: clock,
+  });
+
+  assert.equal(corrupted, true);
+  assert.equal(result.outcome, "failed_permanent");
+  assert.equal(result.reconcileReport.consistent, false);
+  assert.equal(result.reconcileReport.truncated, true, "the extra NULL row exceeds the bounded chunk and fails closed");
+  assert.ok(result.reconcileReport.findings.some((finding) => (
+    finding.classification === "unexpected"
+    && finding.table === "ocp_awards_warehouse"
+    && finding.key === ""
+  )));
+});
+
 test("an FTS duplicate split across a scan-page boundary cannot pass reconciliation", { skip: !DatabaseSync }, async () => {
   const sources = oversizedKeywordSources(policy.reconcile.max_rows + 1_000);
   const priorSnapshot = snapshotFor(manifest, sources.prior);
