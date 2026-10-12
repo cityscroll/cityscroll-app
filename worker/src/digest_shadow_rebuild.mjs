@@ -4,6 +4,7 @@ import {
   DIGEST_SHADOW_READY,
   buildDigestShadowSummary,
   readDigestShadow,
+  validateDigestShadowRun,
 } from "./digest_shadow.mjs";
 import {
   loadDigestSubscription,
@@ -109,15 +110,11 @@ async function runTarget(env, job, now) {
       ? await processOneSub(env, sub, ctx)
       : { sub: job.key || "?", kind: "subscription", skipped: "gone" };
   }
-  return buildDigestShadowSummary({
-    run: { results: [result] },
-    history: [],
-    now,
-  });
+  return result;
 }
 
 async function readRun(db, runId) {
-  const row = await db.prepare(`SELECT run_id, run_day, requested_digest_ids_json, status,
+  const row = await db.prepare(`SELECT run_id, run_day, requested_digest_ids_json, base_summary_json, status,
       total_count, completed_count, failed_count, receipt_json, error, created_at, updated_at
       FROM ${DIGEST_SHADOW_REBUILD_RUN_TABLE} WHERE run_id = ?`).bind(runId).first();
   if (!row) return null;
@@ -125,6 +122,7 @@ async function readRun(db, runId) {
     ...row,
     complete: row.status === "complete",
     requested_digest_ids: JSON.parse(row.requested_digest_ids_json || "null"),
+    base_summary: JSON.parse(row.base_summary_json || "null"),
     receipt: JSON.parse(row.receipt_json || "null"),
   };
 }
@@ -162,7 +160,7 @@ async function mergeCompletedSummary(env, run, items, now) {
   if (currentSummary?.rebuild_run_id === run.run_id && currentSummary?.rebuild_complete === true) {
     return persistMergedSideEffects(env, run, { ...currentSummary }, now);
   }
-  const base = currentSummary || {
+  const base = run.base_summary || {
     run_day: run.run_day,
     ran_at: iso(now),
     evaluated_count: 0,
@@ -173,7 +171,62 @@ async function mergeCompletedSummary(env, run, items, now) {
     ontology_delta: null,
   };
   const touched = new Set(items.map((item) => item.digest_id));
-  const targetSummaries = items.map((item) => item.result).filter(Boolean);
+  const rawResults = items.map((item) => item.result).filter(Boolean);
+  const fullRebuild = run.requested_digest_ids == null;
+  if (fullRebuild && rawResults.length === items.length && items.every((item) => item.status === "complete")) {
+    const validated = await validateDigestShadowRun(env, { results: rawResults }, { now });
+    const finalizationId = crypto.randomUUID();
+    const merged = {
+      ...validated,
+      phase: "finalized",
+      complete: true,
+      rebuild_complete: true,
+      rebuild_run_id: run.run_id,
+      rebuild_finalization_id: finalizationId,
+      repair: {
+        ...(validated.repair || {}),
+        rerun_scope: "checkpointed_digest_queue",
+      },
+    };
+    const publicSummary = { ...merged };
+    delete publicSummary._rendered_previews;
+    const statements = [env.DB.prepare(`INSERT INTO digest_shadow_runs
+      (run_day, ran_at, status, digest_count, total_items, summary_json)
+      VALUES (?, ?, ?, ?, ?, ?)
+      ON CONFLICT(run_day) DO UPDATE SET ran_at = excluded.ran_at, status = excluded.status,
+      digest_count = excluded.digest_count, total_items = excluded.total_items,
+      summary_json = excluded.summary_json
+      WHERE ? IS NOT NULL AND digest_shadow_runs.summary_json = ?`)
+      .bind(run.run_day, merged.ran_at, merged.status, merged.digest_count, merged.total_items,
+        json(publicSummary), run.base_summary_json, run.base_summary_json)];
+    statements.push(env.DB.prepare(`DELETE FROM digest_shadow_previews WHERE run_day = ?
+      AND EXISTS (SELECT 1 FROM digest_shadow_runs WHERE run_day = ?
+        AND json_extract(summary_json, '$.rebuild_finalization_id') = ?)`)
+      .bind(run.run_day, run.run_day, finalizationId));
+    for (const preview of merged._rendered_previews || []) {
+      statements.push(env.DB.prepare(`INSERT INTO digest_shadow_previews
+        (run_day, digest_id, recipient_redacted, subject, html, item_count, watch_counts_json)
+        SELECT ?, ?, ?, ?, ?, ?, ? WHERE EXISTS (
+          SELECT 1 FROM digest_shadow_runs WHERE run_day = ?
+            AND json_extract(summary_json, '$.rebuild_finalization_id') = ?)`)
+        .bind(run.run_day, preview.digest_id, preview.recipient_redacted, preview.subject,
+          preview.html, preview.item_count, json(preview.watch_counts), run.run_day, finalizationId));
+    }
+    await env.DB.batch(statements);
+    const storedRow = await env.DB.prepare(
+      "SELECT summary_json FROM digest_shadow_runs WHERE run_day = ?",
+    ).bind(run.run_day).first();
+    const stored = storedRow?.summary_json ? JSON.parse(storedRow.summary_json) : null;
+    if (stored?.rebuild_finalization_id !== finalizationId) {
+      return { accepted: false, merged: stored, receipt: null };
+    }
+    return persistMergedSideEffects(env, run, merged, now);
+  }
+  const targetSummaries = rawResults.map((result) => buildDigestShadowSummary({
+    run: { results: [result] },
+    history: [],
+    now,
+  }));
   const targetRedlines = [
     ...targetSummaries.flatMap((summary) => summary.redlines || []),
     ...items.filter((item) => item.status !== "complete" || !item.result).map((item) => ({
@@ -202,6 +255,16 @@ async function mergeCompletedSummary(env, run, items, now) {
     ...(base.upstream_incidents || []).filter((incident) => !touched.has(incident.digest_id)),
     ...targetIncidents,
   ];
+  const incompleteBase = !fullRebuild && base.complete !== true;
+  if (incompleteBase) {
+    redlines.push({
+      code: "rebuild_partial_incomplete_base",
+      digest_id: "run",
+      watch_id: null,
+      reason: "A scoped repair cannot certify an incomplete full-day rehearsal.",
+      evidence: { base_status: base.status || null, requested_count: touched.size },
+    });
+  }
   const status = redlines.length
     ? DIGEST_SHADOW_ATTENTION
     : upstreamIncidents.length
@@ -214,9 +277,9 @@ async function mergeCompletedSummary(env, run, items, now) {
     ran_at: iso(now),
     ok: redlines.length === 0,
     status,
-    phase: "finalized",
-    complete: true,
-    rebuild_complete: true,
+    phase: incompleteBase ? "partial_rebuild" : "finalized",
+    complete: !incompleteBase,
+    rebuild_complete: !incompleteBase,
     digest_count: [...previewById.values()].length,
     total_items: [...previewById.values()].reduce((sum, preview) => sum + (Number(preview.item_count) || 0), 0),
     redlines,
@@ -247,7 +310,7 @@ async function mergeCompletedSummary(env, run, items, now) {
       summary_json = excluded.summary_json
       WHERE digest_shadow_runs.summary_json = ?`)
       .bind(run.run_day, merged.ran_at, merged.status, merged.digest_count, merged.total_items,
-        json(publicSummary), currentRow?.summary_json ?? null),
+        json(publicSummary), run.base_summary_json),
   ];
   for (const digestId of touched) {
     statements.push(env.DB.prepare(`DELETE FROM digest_shadow_previews WHERE run_day = ? AND digest_id = ?
@@ -283,11 +346,15 @@ export async function createDigestShadowRebuild(env, { affectedDigestIds = null,
   const requested = normalizeDigestShadowRebuildScope(affectedDigestIds);
   const at = iso(now);
   const runId = `digest-shadow-rebuild:${at}:${crypto.randomUUID()}`;
+  const baseRow = await env.DB.prepare(
+    "SELECT summary_json FROM digest_shadow_runs WHERE run_day = ?",
+  ).bind(day(now)).first();
+  const baseSummaryJson = baseRow?.summary_json || null;
   await env.DB.prepare(`INSERT INTO ${DIGEST_SHADOW_REBUILD_RUN_TABLE}
-    (run_id, run_day, requested_digest_ids_json, status, total_count, completed_count,
+    (run_id, run_day, requested_digest_ids_json, base_summary_json, status, total_count, completed_count,
      failed_count, receipt_json, error, created_at, updated_at)
-    VALUES (?, ?, ?, 'queued', 0, 0, 0, NULL, NULL, ?, ?)`)
-    .bind(runId, day(now), json(requested), at, at).run();
+    VALUES (?, ?, ?, ?, 'queued', 0, 0, 0, NULL, NULL, ?, ?)`)
+    .bind(runId, day(now), json(requested), baseSummaryJson, at, at).run();
   try {
     await env.DIGEST_SHADOW_QUEUE.send({ type: "expand", run_id: runId });
   } catch (error) {
@@ -423,5 +490,10 @@ export async function readDigestShadowRebuildStatus(db, runId) {
   if (!db?.prepare || !runId) return null;
   const run = await readRun(db, runId);
   if (!run) return null;
-  return { ...run, items: await readItems(db, runId) };
+  const items = (await readItems(db, runId)).map(({ result, result_json, ...item }) => ({
+    ...item,
+    result_available: Boolean(result_json),
+  }));
+  const { base_summary, base_summary_json, ...publicRun } = run;
+  return { ...publicRun, items };
 }

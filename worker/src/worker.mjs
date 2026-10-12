@@ -580,14 +580,15 @@ const worker = {
     // isolate after STARTED reads as STARTED_NOT_FINISHED, never MISSING_RUN. Freshness has a
     // hard time/subrequest budget; exhaustion records DEGRADED_UPSTREAM and the rehearsal still runs.
     if (event.cron === "0 10 * * *") {
-      const shadowNow = new Date();
-      const shadowInvocationId = crypto.randomUUID();
+      const shadowNow = new Date(event.scheduledTime ?? Date.now());
+      const shadowInvocationId = `digest-shadow:${event.cron}:${shadowNow.toISOString()}`;
       try {
         const started = await persistDigestShadowStarted(env, {
           now: shadowNow,
           invocationId: shadowInvocationId,
         });
         if (started?.write_accepted === false) return;
+        if (started?.status !== "STARTED") return;
       } catch (error) {
         console.error("digest shadow start receipt failed:", String(error?.message || error));
         return;
@@ -640,7 +641,9 @@ const worker = {
         });
         if (finalized?.write_accepted === false) return;
         if (event.costProbe !== true) {
-          console.log("digest shadow:", JSON.stringify(summary, (key, value) => {
+          const publicSummary = { ...summary };
+          delete publicSummary._rendered_previews;
+          console.log("digest shadow:", JSON.stringify(publicSummary, (key, value) => {
             if (typeof value !== "string") return value;
             if (key === "recipient") return redactEmail(value);
             if (key === "recipient_redacted" && value.includes("@") && !value.includes("***")) return redactEmail(value);

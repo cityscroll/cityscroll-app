@@ -46,9 +46,9 @@ class Statement {
 
   async run() {
     if (this.sql.startsWith("INSERT INTO digest_shadow_rebuild_runs")) {
-      const [run_id, run_day, requested_digest_ids_json, created_at, updated_at] = this.args;
+      const [run_id, run_day, requested_digest_ids_json, base_summary_json, created_at, updated_at] = this.args;
       this.db.runs.set(run_id, {
-        run_id, run_day, requested_digest_ids_json, status: "queued", total_count: 0,
+        run_id, run_day, requested_digest_ids_json, base_summary_json, status: "queued", total_count: 0,
         completed_count: 0, failed_count: 0, receipt_json: null, error: null, created_at, updated_at,
       });
       return { success: true, meta: { changes: 1 } };
@@ -64,7 +64,8 @@ class Statement {
       return { success: true, meta: { changes: 1 } };
     }
     if (this.sql.includes("INSERT INTO digest_shadow_runs")) {
-      const [run_day, ran_at, status, digest_count, total_items, summary_json, expectedSummary] = this.args;
+      const [run_day, ran_at, status, digest_count, total_items, summary_json] = this.args;
+      const expectedSummary = this.args.at(-1);
       const current = this.db.mainRuns.get(run_day);
       if (!current || current.summary_json === expectedSummary) {
         this.db.mainRuns.set(run_day, { run_day, ran_at, status, digest_count, total_items, summary_json });
@@ -198,7 +199,7 @@ test("queue messages checkpoint one digest and complete the run with a receipt",
   assert.equal(status.status, "complete");
   assert.equal(status.completed_count, 1);
   assert.equal(DB.items.get(`${created.run_id}:digest:one`).status, "complete");
-  assert.equal(status.receipt.status, "READY");
+  assert.equal(status.receipt.status, "PARTIAL");
   assert.equal(status.receipt.rebuild_run_id, created.run_id);
 });
 
@@ -253,8 +254,8 @@ test("an interrupted scoped rebuild resumes after its checkpoint without retryin
   assert.equal(finished.status, "complete");
   assert.equal(finished.complete, true);
   assert.equal(finished.completed_count, 3);
-  assert.equal(finished.receipt.complete, true);
-  assert.equal(finished.receipt.status, "READY");
+  assert.equal(finished.receipt.complete, false);
+  assert.equal(finished.receipt.status, "PARTIAL");
 });
 
 // The result checkpoint and final aggregate are separate writes. A retry must complete
@@ -282,7 +283,7 @@ test("replayed completed item repairs interrupted finalization", async () => {
   assert.equal(DB.items.get(`${created.run_id}:digest:one`).status, "complete");
   const finished = await handleDigestShadowRebuildQueueMessage(env, message, { now: NOW });
   assert.equal(finished.status, "complete");
-  assert.equal(finished.receipt.status, "READY");
+  assert.equal(finished.receipt.status, "PARTIAL");
   assert.equal(DB.items.get(`${created.run_id}:digest:one`).attempt_count, 1);
 });
 
@@ -450,18 +451,14 @@ test("rebuild aggregate CAS rejects a newer scheduled result without side effect
   assert.equal(ALERT_STATE.values.size, 0);
 });
 
-test("rebuild finalizes a STARTED base as terminal READY evidence", async () => {
+test("scoped rebuild cannot certify an incomplete STARTED base", async () => {
   const DB = new FakeD1();
   const env = { DB, ALERT_STATE: kv(), DIGEST_SHADOW_QUEUE: { async send() {} } };
-  const created = await createDigestShadowRebuild(env, { affectedDigestIds: ["digest:one"], now: NOW });
-  const run = DB.runs.get(created.run_id);
-  run.status = "running";
-  run.total_count = 1;
-  DB.mainRuns.set(run.run_day, {
-    run_day: run.run_day,
+  DB.mainRuns.set("2026-09-21", {
+    run_day: "2026-09-21",
     status: "STARTED",
     summary_json: JSON.stringify({
-      run_day: run.run_day,
+      run_day: "2026-09-21",
       status: "STARTED",
       phase: "started",
       complete: false,
@@ -470,30 +467,6 @@ test("rebuild finalizes a STARTED base as terminal READY evidence", async () => 
       upstream_incidents: [],
     }),
   });
-  DB.items.set(`${created.run_id}:digest:one`, {
-    run_id: created.run_id, digest_id: "digest:one",
-    job_json: JSON.stringify({ type: "sub", key: "sub:one" }),
-    status: "queued", attempt_count: 0, result_json: null, error: null,
-  });
-  const finished = await handleDigestShadowRebuildQueueMessage(env, {
-    type: "digest", run_id: created.run_id, digest_id: "digest:one",
-  }, {
-    now: NOW,
-    runTargetFn: async () => ({
-      status: "READY", ok: true, previews: [], redlines: [], upstream_incidents: [], _rendered_previews: [],
-    }),
-  });
-  const summary = JSON.parse(DB.mainRuns.get(run.run_day).summary_json);
-  assert.equal(finished.receipt.status, "READY");
-  assert.equal(summary.status, "READY");
-  assert.equal(summary.phase, "finalized");
-  assert.equal(summary.complete, true);
-  assert.equal(summary.rebuild_complete, true);
-});
-
-test("rebuild preserves upstream degradation in terminal evidence", async () => {
-  const DB = new FakeD1();
-  const env = { DB, ALERT_STATE: kv(), DIGEST_SHADOW_QUEUE: { async send() {} } };
   const created = await createDigestShadowRebuild(env, { affectedDigestIds: ["digest:one"], now: NOW });
   const run = DB.runs.get(created.run_id);
   run.status = "running";
@@ -508,22 +481,104 @@ test("rebuild preserves upstream degradation in terminal evidence", async () => 
   }, {
     now: NOW,
     runTargetFn: async () => ({
-      status: "DEGRADED_UPSTREAM",
-      ok: true,
-      previews: [],
-      redlines: [],
-      upstream_incidents: [{
-        code: "upstream_unavailable",
-        digest_id: "digest:one",
-        evidence: { source: "soda" },
-      }],
-      _rendered_previews: [],
+      previewId: "digest:one", skipped: "no-new",
+    }),
+  });
+  const summary = JSON.parse(DB.mainRuns.get(run.run_day).summary_json);
+  assert.equal(finished.receipt.status, "PARTIAL");
+  assert.equal(summary.status, "NEEDS_ATTENTION");
+  assert.equal(summary.phase, "partial_rebuild");
+  assert.equal(summary.complete, false);
+  assert.equal(summary.rebuild_complete, false);
+  assert.equal(summary.redlines.at(-1).code, "rebuild_partial_incomplete_base");
+});
+
+test("rebuild preserves upstream degradation in terminal evidence", async () => {
+  const DB = new FakeD1();
+  const env = { DB, ALERT_STATE: kv(), DIGEST_SHADOW_QUEUE: { async send() {} } };
+  DB.mainRuns.set("2026-09-21", {
+    run_day: "2026-09-21",
+    status: "READY",
+    summary_json: JSON.stringify({
+      run_day: "2026-09-21", status: "READY", phase: "finalized", complete: true,
+      previews: [], redlines: [], upstream_incidents: [],
+    }),
+  });
+  const created = await createDigestShadowRebuild(env, { affectedDigestIds: ["digest:one"], now: NOW });
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.total_count = 1;
+  DB.items.set(`${created.run_id}:digest:one`, {
+    run_id: created.run_id, digest_id: "digest:one",
+    job_json: JSON.stringify({ type: "sub", key: "sub:one" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  const finished = await handleDigestShadowRebuildQueueMessage(env, {
+    type: "digest", run_id: created.run_id, digest_id: "digest:one",
+  }, {
+    now: NOW,
+    runTargetFn: async () => ({
+      previewId: "digest:one",
+      error: "SODA 524 after retry budget",
     }),
   });
   const summary = JSON.parse(DB.mainRuns.get(run.run_day).summary_json);
   assert.equal(finished.receipt.status, "DEGRADED");
   assert.equal(summary.status, "DEGRADED_UPSTREAM");
   assert.deepEqual(summary.upstream_sources_unavailable, ["soda"]);
+});
+
+test("full rebuild reuses scheduled history validation and evaluated count", async () => {
+  const DB = new FakeD1();
+  const ALERT_STATE = kv();
+  ALERT_STATE.values.set("digest:daylog:2026-09-20", JSON.stringify({
+    day: "2026-09-20",
+    entries: [{ day: "2026-09-20", id: "sub:quiet", noticeCount: 3, forecasts: 0 }],
+  }));
+  DB.mainRuns.set("2026-09-21", {
+    run_day: "2026-09-21",
+    status: "STARTED",
+    summary_json: JSON.stringify({
+      run_day: "2026-09-21", status: "STARTED", phase: "started", complete: false,
+      previews: [], redlines: [], upstream_incidents: [],
+    }),
+  });
+  const env = { DB, ALERT_STATE, DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, { now: NOW });
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.total_count = 1;
+  DB.items.set(`${created.run_id}:digest:quiet`, {
+    run_id: created.run_id, digest_id: "digest:quiet",
+    job_json: JSON.stringify({ type: "sub", key: "sub:quiet" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  const finished = await handleDigestShadowRebuildQueueMessage(env, {
+    type: "digest", run_id: created.run_id, digest_id: "digest:quiet",
+  }, {
+    now: NOW,
+    runTargetFn: async () => ({
+      sub: "sub:quiet",
+      previewId: "digest:quiet",
+      kind: "subscription",
+      found: 0,
+      new: 0,
+      forecasts: 0,
+      action: "heartbeat",
+      emailRedacted: "qu***@example.test",
+      preview: {
+        subject: "Quiet",
+        html: '<a href="https://cityscroll.org/context">Context</a><a href="https://cityscroll.org/unsubscribe">Unsubscribe</a>',
+        listUnsubscribe: "<https://cityscroll.org/unsubscribe>",
+      },
+    }),
+  });
+  const summary = JSON.parse(DB.mainRuns.get(run.run_day).summary_json);
+  assert.equal(finished.receipt.status, "DEGRADED");
+  assert.equal(summary.evaluated_count, 1);
+  assert.equal(summary.complete, true);
+  assert.equal(summary.rebuild_complete, true);
+  assert.ok(summary.redlines.some((finding) => finding.code === "historical_watch_zero"));
 });
 
 test("rebuild failed targets cannot produce READY evidence", async () => {
@@ -551,7 +606,7 @@ test("rebuild failed targets cannot produce READY evidence", async () => {
   }, {
     now: NOW,
     runTargetFn: async () => ({
-      status: "READY", ok: true, previews: [], redlines: [], upstream_incidents: [], _rendered_previews: [],
+      previewId: "digest:one", skipped: "no-new",
     }),
   });
   const summary = JSON.parse(DB.mainRuns.get(run.run_day).summary_json);

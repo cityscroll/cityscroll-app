@@ -17,6 +17,7 @@ import {
   persistDigestShadowStarted,
   runBudgetedNoticeFreshness,
   recordDigestShadowProgress,
+  runDigestShadow,
 } from "../src/digest_shadow.mjs";
 import { ingestNotices } from "../src/ingest.mjs";
 import { buildDigestShadowHoldState } from "../src/digest_shadow_hold.mjs";
@@ -53,7 +54,7 @@ function scheduledWorker({ now = NOW, overrides = {} } = {}) {
     calls,
     errors,
     pending,
-    run: (cron, env) => context.worker.runScheduled({ cron }, env, ctx),
+    run: (cron, env, scheduledTime = new Date(now).getTime()) => context.worker.runScheduled({ cron, scheduledTime }, env, ctx),
   };
 }
 
@@ -396,6 +397,66 @@ test("same scheduled owner resumes terminal side effects without replacing its r
   const preview = await DB.prepare("SELECT digest_id FROM digest_shadow_previews WHERE run_day = ?")
     .bind(DAY).first();
   assert.equal(preview.digest_id, "digest:ready");
+});
+
+test("runDigestShadow retains rendered previews for its private finalizer", async () => {
+  const DB = shadowDb();
+  const summary = await runDigestShadow({ DB, ALERT_STATE: kv() }, {
+    now: NOW,
+    ontologyDeltaCandidates: [],
+    runAlertsFn: async () => ({
+      results: [{
+        previewId: "digest:preview",
+        emailRedacted: "pr***@example.test",
+        new: 1,
+        forecasts: 0,
+        preview: {
+          subject: "Preview",
+          html: '<p data-digest-item="1"><a href="https://cityscroll.org/item">Item</a></p><a href="https://cityscroll.org/unsubscribe">Unsubscribe</a><a href="https://cityscroll.org/context">Context</a>',
+        },
+      }],
+    }),
+  });
+  assert.equal(summary._rendered_previews[0].digest_id, "digest:preview");
+});
+
+test("scheduled retry reuses event identity and resumes terminal side effects only", async () => {
+  const DB = shadowDb();
+  const ALERT_STATE = kv();
+  const env = { DB, ALERT_STATE };
+  const calls = { freshness: 0, shadow: 0 };
+  let interrupt = true;
+  const worker = scheduledWorker({
+    overrides: {
+      async persistDigestShadowStarted(_env, options) {
+        return persistDigestShadowStarted(env, options);
+      },
+      async runBudgetedNoticeFreshness() {
+        calls.freshness += 1;
+        return { ok: true, degraded: false, result: {}, prewarm: {} };
+      },
+      async runDigestShadow() {
+        calls.shadow += 1;
+        return readySummary();
+      },
+      async finalizeDigestShadowRun(_env, summary, options) {
+        return finalizeDigestShadowRun(env, summary, {
+          ...options,
+          recordReceiptFn: interrupt
+            ? async () => { interrupt = false; throw new Error("isolate interrupted"); }
+            : null,
+        });
+      },
+      async persistDigestShadowFailure() { throw new Error("isolate stopped"); },
+      refreshPublicSearchUsageSnapshot: async () => ({}),
+    },
+  });
+  const scheduledTime = Date.parse(NOW);
+  await worker.run("0 10 * * *", env, scheduledTime);
+  assert.equal(JSON.parse(DB.runs.get(DAY).summary_json).status, "READY");
+  await worker.run("0 10 * * *", env, scheduledTime);
+  assert.deepEqual(calls, { freshness: 1, shadow: 1 });
+  assert.equal(JSON.parse(ALERT_STATE.store.get(`${DIGEST_SHADOW_LEDGER_PREFIX}${DAY}`)).status, "READY");
 });
 
 test("0 10 cron writes STARTED before freshness, still runs shadow when freshness degrades", async () => {

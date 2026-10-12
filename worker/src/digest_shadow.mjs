@@ -674,6 +674,27 @@ async function readHistory(env, day, count = HISTORY_DAYS) {
   return logs;
 }
 
+export async function validateDigestShadowRun(env, run, {
+  now = new Date(),
+  ontologyDeltaCandidates = null,
+} = {}) {
+  const ontology = await import("./lib/ontology_delta_alert.mjs");
+  const at = new Date(now);
+  const day = at.toISOString().slice(0, 10);
+  const history = await readHistory(env, day);
+  const candidates = ontologyDeltaCandidates == null
+    ? await ontology.buildDefaultOntologyDeltaCandidates(env.DB)
+    : ontologyDeltaCandidates;
+  const ontologyDelta = await ontology.reconcileOntologyDeltaCandidates(env.DB, candidates, {
+    observedAt: at,
+  });
+  const failedDigestIds = (Array.isArray(run?.results) ? run.results : [])
+    .filter((result) => result?.error)
+    .map((result) => result.previewId || result.sub || result.watch);
+  const lastGoodPreviews = await readLastGoodPreviews(env.DB, failedDigestIds, day);
+  return buildDigestShadowSummary({ run, history, now: at, ontologyDelta, lastGoodPreviews });
+}
+
 export async function persistDigestShadow(db, summary, { invocationId, mode } = {}) {
   if (!db) throw new Error("digest shadow requires DB");
   if (!invocationId || !new Set(["claim", "finalize"]).has(mode)) {
@@ -729,7 +750,7 @@ export async function persistDigestShadow(db, summary, { invocationId, mode } = 
   const stored = row?.summary_json ? JSON.parse(row.summary_json) : null;
   const sameOwner = stored?.invocation_id === invocationId;
   const accepted = sameOwner && (row?.status === summary.status
-    || (mode === "finalize" && row?.status !== DIGEST_SHADOW_STARTED));
+    || row?.status !== DIGEST_SHADOW_STARTED);
   return { accepted, summary: sameOwner ? stored : null };
 }
 
@@ -1075,10 +1096,9 @@ export async function runDigestShadow(env, {
   invocationId = null,
 } = {}) {
   if (!env.DB) throw new Error("digest shadow requires DB");
-  const [{ runAlerts }, ontology] = await Promise.all([
-    runAlertsFn ? Promise.resolve({ runAlerts: runAlertsFn }) : import("./alerts.mjs"),
-    import("./lib/ontology_delta_alert.mjs"),
-  ]);
+  const { runAlerts } = runAlertsFn
+    ? { runAlerts: runAlertsFn }
+    : await import("./alerts.mjs");
   const at = new Date(now);
   const day = at.toISOString().slice(0, 10);
   const onProgress = (progress) => recordDigestShadowProgress(env.DB, day, progress, new Date(), invocationId);
@@ -1100,21 +1120,7 @@ export async function runDigestShadow(env, {
     suppressDryRunLogs: suppressPersonalizedLogs,
   });
   await onProgress({ phase: "history_and_ontology", evaluated_count: run?.results?.length || 0 });
-  const history = await readHistory(env, day);
-  const candidates = ontologyDeltaCandidates == null
-    ? await ontology.buildDefaultOntologyDeltaCandidates(env.DB)
-    : ontologyDeltaCandidates;
-  const ontologyDelta = await ontology.reconcileOntologyDeltaCandidates(env.DB, candidates, {
-    observedAt: at,
-  });
-  const failedDigestIds = (Array.isArray(run?.results) ? run.results : [])
-    .filter((result) => result?.error)
-    .map((result) => result.previewId || result.sub || result.watch);
-  const lastGoodPreviews = await readLastGoodPreviews(env.DB, failedDigestIds, day);
-  const summary = buildDigestShadowSummary({ run, history, now: at, ontologyDelta, lastGoodPreviews });
-  const out = { ...summary };
-  delete out._rendered_previews;
-  return out;
+  return validateDigestShadowRun(env, run, { now: at, ontologyDeltaCandidates });
 }
 
 export async function readDigestShadow(db, { day = null, digestId = null } = {}) {
