@@ -8,8 +8,9 @@
 //         fb:<ts>:<rand> → { category, message, email, ip, ua, at }
 //       so there's a reviewable record (read it back via /admin/feedback), and
 //   (2) NOTIFY the operator by email via Resend — To FEEDBACK_TO (default
-//       feedback@cityscroll.org), From alerts@crol-list.org, Reply-To the submitter IF they
-//       left an address so the operator can just hit Reply.
+//       feedback@cityscroll.org), From ALERTS_FROM (or the established compatibility
+//       fallback), Reply-To the submitter IF they left an address so the operator can just
+//       hit Reply.
 // It deliberately does NOT auto-file GitHub issues (a public form that opens issues is a spam
 // vector); the operator triages the archive and files real issues by hand.
 
