@@ -873,6 +873,9 @@ async function persistShadowState(env, summary, {
     now: at,
     receiptStore: env.ALERT_STATE,
   });
+  if (effectiveSummary.hold?.write_accepted === false) {
+    return { ...effectiveSummary, write_accepted: false };
+  }
   if (!(await updateOwnedShadowSummary(env.DB, effectiveSummary, invocationId))) {
     return { ...effectiveSummary, write_accepted: false };
   }

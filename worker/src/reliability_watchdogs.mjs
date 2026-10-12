@@ -44,6 +44,8 @@ export const OPS_ALERT_HISTORY_LIMIT = 50;
 
 const day = (value) => new Date(value).toISOString().slice(0, 10);
 const key = (prefix, value) => `${prefix}${day(value)}`;
+const shadowOwner = (summary) => summary?.rebuild_finalization_id || summary?.invocation_id || null;
+const shadowOwnerKey = (value, owner) => `${DIGEST_SHADOW_LEDGER_PREFIX}${day(value)}:${owner}`;
 
 async function readJson(kv, name) {
   if (!kv?.get) return null;
@@ -98,9 +100,28 @@ export async function recordDigestShadowReceipt(env, summary, now = new Date(), 
     selection_funnel: summary?.selection_funnel || null,
     error: failed ? String(error?.message || error) : null,
     ...(summary?.rebuild_run_id ? { rebuild_run_id: summary.rebuild_run_id } : {}),
+    ...(shadowOwner(summary) ? { owner: shadowOwner(summary) } : {}),
   };
+  const owner = shadowOwner(summary);
+  if (owner) await putJson(env?.ALERT_STATE, shadowOwnerKey(now, owner), receipt);
   await putJson(env?.ALERT_STATE, key(DIGEST_SHADOW_LEDGER_PREFIX, now), receipt);
   return receipt;
+}
+
+async function readCurrentDigestShadowReceipt(env, today) {
+  let owner = null;
+  if (env?.DB?.prepare) {
+    try {
+      const row = await env.DB.prepare(
+        "SELECT summary_json FROM digest_shadow_runs WHERE run_day = ?",
+      ).bind(today).first();
+      owner = shadowOwner(row?.summary_json ? JSON.parse(row.summary_json) : null);
+    } catch {
+      owner = null;
+    }
+  }
+  if (owner) return readJson(env?.ALERT_STATE, `${DIGEST_SHADOW_LEDGER_PREFIX}${today}:${owner}`);
+  return readJson(env?.ALERT_STATE, `${DIGEST_SHADOW_LEDGER_PREFIX}${today}`);
 }
 
 /**
@@ -486,7 +507,7 @@ export async function mailWatchdogSnapshot(env, { now = new Date() } = {}) {
 
 export async function digestWatchdogSnapshot(env, { now = new Date(), deadlineHour = 14 } = {}) {
   const today = day(now);
-  const shadow = await readJson(env?.ALERT_STATE, `${DIGEST_SHADOW_LEDGER_PREFIX}${today}`);
+  const shadow = await readCurrentDigestShadowReceipt(env, today);
   const delivery = await readJson(env?.ALERT_STATE, `${DIGEST_DELIVERY_LEDGER_PREFIX}${today}`);
   const dlq = Number(await env?.ALERT_STATE?.get?.(`digest:dlq:${today}`)) || 0;
   const mail = await mailWatchdogSnapshot(env, { now });

@@ -532,6 +532,43 @@ async function persistState(db, state) {
     ).run();
 }
 
+async function persistOwnedState(db, state, owner) {
+  const result = await db.prepare(`INSERT INTO digest_shadow_hold_states
+    (run_day, contract, evaluated_at, source_status, delivery_policy, cutoff_at,
+      delivery_boundary_at, expires_at, state_json)
+    SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?
+    WHERE EXISTS (SELECT 1 FROM digest_shadow_runs WHERE run_day = ?
+      AND COALESCE(json_extract(summary_json, '$.rebuild_finalization_id'),
+        json_extract(summary_json, '$.invocation_id')) = ?)
+    ON CONFLICT(run_day) DO UPDATE SET
+      contract = excluded.contract,
+      evaluated_at = excluded.evaluated_at,
+      source_status = excluded.source_status,
+      delivery_policy = excluded.delivery_policy,
+      cutoff_at = excluded.cutoff_at,
+      delivery_boundary_at = excluded.delivery_boundary_at,
+      expires_at = excluded.expires_at,
+      state_json = excluded.state_json
+    WHERE EXISTS (SELECT 1 FROM digest_shadow_runs WHERE run_day = excluded.run_day
+      AND COALESCE(json_extract(summary_json, '$.rebuild_finalization_id'),
+        json_extract(summary_json, '$.invocation_id')) = ?)`)
+    .bind(
+      state.run_day,
+      state.contract,
+      state.evaluated_at,
+      state.source_status,
+      state.delivery_policy,
+      state.cutoff_at,
+      state.delivery_boundary_at,
+      state.expires_at,
+      JSON.stringify(state),
+      state.run_day,
+      owner,
+      owner,
+    ).run();
+  return Number(result?.meta?.changes ?? result?.changes) > 0;
+}
+
 async function persistLastKnownState(store, state) {
   if (!store?.put || !state?.run_day || state.degraded_receipt) return;
   await store.put(`${LAST_KNOWN_STATE_PREFIX}${state.run_day}`, JSON.stringify(state));
@@ -655,17 +692,24 @@ export async function resolveDigestShadowHold(db, {
 /** Shadow-run write. A READY rerun replaces any active state with an eligible receipt. */
 export async function recordDigestShadowHoldState(db, summary, { now = new Date(), receiptStore = null } = {}) {
   const day = summary?.run_day || iso(now).slice(0, 10);
+  const owner = summary?.rebuild_finalization_id || summary?.invocation_id || null;
+  if (!owner) throw new Error("digest shadow hold owner required");
   let overriddenDigestIds = [];
   if (summary?.status === "READY" && summary?.ok !== false) {
-    await db.prepare("DELETE FROM digest_shadow_hold_overrides WHERE run_day = ?").bind(day).run();
+    await db.prepare(`DELETE FROM digest_shadow_hold_overrides WHERE run_day = ?
+      AND EXISTS (SELECT 1 FROM digest_shadow_runs WHERE run_day = ?
+        AND COALESCE(json_extract(summary_json, '$.rebuild_finalization_id'),
+          json_extract(summary_json, '$.invocation_id')) = ?)`)
+      .bind(day, day, owner).run();
   } else {
     overriddenDigestIds = await readOverrides(db, day);
   }
   const lastReadyRunDay = summary?.status === "STARTED" ? await readLastReadyRunDay(db, day) : undefined;
-  const state = buildDigestShadowHoldState({ summary, overriddenDigestIds, now, lastReadyRunDay });
-  await persistState(db, state);
+  const state = { ...buildDigestShadowHoldState({ summary, overriddenDigestIds, now, lastReadyRunDay }), owner };
+  const writeAccepted = await persistOwnedState(db, state, owner);
+  if (!writeAccepted) return { ...state, write_accepted: false };
   await persistLastKnownState(receiptStore, state);
-  return state;
+  return { ...state, write_accepted: true };
 }
 
 export async function overrideDigestShadowHold(db, {

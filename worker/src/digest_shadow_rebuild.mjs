@@ -147,22 +147,24 @@ async function updateRun(db, runId, values) {
 
 async function persistMergedSideEffects(env, run, merged, now) {
   merged.hold = await recordDigestShadowHoldState(env.DB, merged, { now, receiptStore: env.ALERT_STATE });
+  if (merged.hold?.write_accepted === false) return { accepted: false, merged, receipt: null };
   const receipt = await recordDigestShadowReceipt(env, merged, new Date(now));
   await updateRun(env.DB, run.run_id, { receipt_json: json(receipt), updated_at: iso(now) });
   return { accepted: true, merged, receipt };
 }
 
 async function mergeCompletedSummary(env, run, items, now) {
+  const evaluationNow = new Date(run.created_at);
   const currentRow = await env.DB.prepare(
     "SELECT summary_json FROM digest_shadow_runs WHERE run_day = ?",
   ).bind(run.run_day).first();
   const currentSummary = currentRow?.summary_json ? JSON.parse(currentRow.summary_json) : null;
-  if (currentSummary?.rebuild_run_id === run.run_id && currentSummary?.rebuild_complete === true) {
-    return persistMergedSideEffects(env, run, { ...currentSummary }, now);
+  if (currentSummary?.rebuild_run_id === run.run_id && currentSummary?.rebuild_finalization_id) {
+    return persistMergedSideEffects(env, run, { ...currentSummary }, evaluationNow);
   }
   const base = run.base_summary || {
     run_day: run.run_day,
-    ran_at: iso(now),
+    ran_at: iso(evaluationNow),
     evaluated_count: 0,
     previews: [],
     redlines: [],
@@ -174,7 +176,7 @@ async function mergeCompletedSummary(env, run, items, now) {
   const rawResults = items.map((item) => item.result).filter(Boolean);
   const fullRebuild = run.requested_digest_ids == null;
   if (fullRebuild && rawResults.length === items.length && items.every((item) => item.status === "complete")) {
-    const validated = await validateDigestShadowRun(env, { results: rawResults }, { now });
+    const validated = await validateDigestShadowRun(env, { results: rawResults }, { now: evaluationNow });
     const finalizationId = crypto.randomUUID();
     const merged = {
       ...validated,
@@ -218,14 +220,17 @@ async function mergeCompletedSummary(env, run, items, now) {
     ).bind(run.run_day).first();
     const stored = storedRow?.summary_json ? JSON.parse(storedRow.summary_json) : null;
     if (stored?.rebuild_finalization_id !== finalizationId) {
+      if (stored?.rebuild_run_id === run.run_id && stored?.rebuild_finalization_id) {
+        return persistMergedSideEffects(env, run, { ...stored }, evaluationNow);
+      }
       return { accepted: false, merged: stored, receipt: null };
     }
-    return persistMergedSideEffects(env, run, merged, now);
+    return persistMergedSideEffects(env, run, merged, evaluationNow);
   }
   const targetSummaries = rawResults.map((result) => buildDigestShadowSummary({
     run: { results: [result] },
     history: [],
-    now,
+    now: evaluationNow,
   }));
   const targetRedlines = [
     ...targetSummaries.flatMap((summary) => summary.redlines || []),
@@ -274,7 +279,7 @@ async function mergeCompletedSummary(env, run, items, now) {
   const merged = {
     ...base,
     run_day: run.run_day,
-    ran_at: iso(now),
+    ran_at: iso(evaluationNow),
     ok: redlines.length === 0,
     status,
     phase: incompleteBase ? "partial_rebuild" : "finalized",
@@ -333,12 +338,12 @@ async function mergeCompletedSummary(env, run, items, now) {
   ).bind(run.run_day).first();
   const stored = storedRow?.summary_json ? JSON.parse(storedRow.summary_json) : null;
   if (stored?.rebuild_finalization_id !== finalizationId) {
-    if (stored?.rebuild_run_id === run.run_id && stored?.rebuild_complete === true) {
-      return persistMergedSideEffects(env, run, { ...stored }, now);
+    if (stored?.rebuild_run_id === run.run_id && stored?.rebuild_finalization_id) {
+      return persistMergedSideEffects(env, run, { ...stored }, evaluationNow);
     }
     return { accepted: false, merged: stored, receipt: null };
   }
-  return persistMergedSideEffects(env, run, merged, now);
+  return persistMergedSideEffects(env, run, merged, evaluationNow);
 }
 
 export async function createDigestShadowRebuild(env, { affectedDigestIds = null, now = new Date() } = {}) {
@@ -429,7 +434,7 @@ async function processItem(env, runId, digestId, now, runTargetFn = runTarget) {
   if (!claim) return readRun(env.DB, runId);
   const attemptCount = claim.attempt_count;
   try {
-    const summary = await runTargetFn(env, item.job, now);
+    const summary = await runTargetFn(env, item.job, new Date(run.created_at));
     const completed = await env.DB.prepare(`UPDATE ${DIGEST_SHADOW_REBUILD_ITEM_TABLE}
       SET status = 'complete', result_json = ?, completed_at = ?, error = NULL
       WHERE run_id = ? AND digest_id = ? AND status = 'running' AND attempt_count = ?`)

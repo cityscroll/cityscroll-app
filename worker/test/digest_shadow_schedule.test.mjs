@@ -23,6 +23,7 @@ import { ingestNotices } from "../src/ingest.mjs";
 import { buildDigestShadowHoldState } from "../src/digest_shadow_hold.mjs";
 import {
   DIGEST_SHADOW_LEDGER_PREFIX,
+  digestWatchdogSnapshot,
   recordDigestShadowReceipt,
 } from "../src/reliability_watchdogs.mjs";
 
@@ -457,6 +458,68 @@ test("scheduled retry reuses event identity and resumes terminal side effects on
   await worker.run("0 10 * * *", env, scheduledTime);
   assert.deepEqual(calls, { freshness: 1, shadow: 1 });
   assert.equal(JSON.parse(ALERT_STATE.store.get(`${DIGEST_SHADOW_LEDGER_PREFIX}${DAY}`)).status, "READY");
+});
+
+test("stale scheduled finalizer cannot publish hold or receipt after owner replacement", async () => {
+  const DB = shadowDb();
+  const ALERT_STATE = kv();
+  const invocationId = "shadow:stale";
+  await persistDigestShadowStarted({ DB, ALERT_STATE }, { now: NOW, invocationId });
+  const originalPrepare = DB.prepare.bind(DB);
+  let releaseHold;
+  let holdEntered;
+  const holdGate = new Promise((resolve) => { releaseHold = resolve; });
+  const entered = new Promise((resolve) => { holdEntered = resolve; });
+  DB.prepare = (sql) => {
+    const statement = originalPrepare(sql);
+    if (!sql.includes("INSERT INTO digest_shadow_hold_states")) return statement;
+    return {
+      bind(...args) {
+        const bound = statement.bind(...args);
+        return {
+          async run() {
+            holdEntered();
+            await holdGate;
+            return bound.run();
+          },
+        };
+      },
+    };
+  };
+  const stale = finalizeDigestShadowRun({ DB, ALERT_STATE }, readySummary(), {
+    now: NOW,
+    invocationId,
+  });
+  await entered;
+  const newer = {
+    ...readySummary(),
+    rebuild_run_id: "rebuild:new",
+    rebuild_finalization_id: "rebuild-final:new",
+  };
+  await originalPrepare(`UPDATE digest_shadow_runs SET status = ?, summary_json = ? WHERE run_day = ?`)
+    .bind("READY", JSON.stringify(newer), DAY).run();
+  releaseHold();
+  const result = await stale;
+  assert.equal(result.write_accepted, false);
+  assert.equal(JSON.parse(ALERT_STATE.store.get(`${DIGEST_SHADOW_LEDGER_PREFIX}${DAY}:${invocationId}`)).status, "STARTED");
+});
+
+test("watchdog selects the receipt owned by the current D1 summary", async () => {
+  const DB = shadowDb();
+  const ALERT_STATE = kv();
+  const current = { ...readySummary(), invocation_id: "shadow:current" };
+  await DB.prepare(`INSERT INTO digest_shadow_runs
+    (run_day, ran_at, status, digest_count, total_items, summary_json) VALUES (?, ?, ?, ?, ?, ?)`)
+    .bind(DAY, NOW, "READY", 1, 0, JSON.stringify(current)).run();
+  await ALERT_STATE.put(`${DIGEST_SHADOW_LEDGER_PREFIX}${DAY}`, JSON.stringify({ status: "FAILED" }));
+  await recordDigestShadowReceipt({ ALERT_STATE }, current, new Date(NOW));
+  await ALERT_STATE.put(`${DIGEST_SHADOW_LEDGER_PREFIX}${DAY}`, JSON.stringify({ status: "FAILED" }));
+  const snapshot = await digestWatchdogSnapshot({ DB, ALERT_STATE }, {
+    now: new Date(NOW),
+    deadlineHour: 24,
+  });
+  assert.equal(snapshot.shadow.status, "READY");
+  assert.equal(snapshot.shadow.owner, "shadow:current");
 });
 
 test("0 10 cron writes STARTED before freshness, still runs shadow when freshness degrades", async () => {
