@@ -321,6 +321,13 @@ test("technical notices stay separate from user feedback and preserve feedback r
     assert.equal(sent[1].reply_to, "resident@example.com");
     assert.equal(sent[0].from, env.ALERTS_FROM);
     assert.equal(sent[1].from, env.ALERTS_FROM);
+    delete env.ALERTS_FROM;
+    await notifyOperator(env, { subject: "Fallback sender test", text: "Operator-only notice" });
+    assert.equal((await handleFeedback(post(good()), env)).status, 200);
+    assert.equal(sent[2].from, sent[3].from, "technical notices retain the established feedback sender fallback");
+    assert.equal(sent[2].to, "alerts@cityscroll.org");
+    assert.equal(sent[3].to, "feedback@cityscroll.org");
+
   } finally {
     globalThis.fetch = previous;
   }

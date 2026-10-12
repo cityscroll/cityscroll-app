@@ -1,9 +1,11 @@
+import { feedbackNotificationSender } from "./feedback.mjs";
+
 // Technical notices use a dedicated mailbox, independent of user feedback routing.
 export const OPS_ALERT_TO = "alerts@cityscroll.org";
 
 export async function notifyOperator(env, { subject, text, html }) {
   const payload = {
-    from: env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>",
+    from: feedbackNotificationSender(env),
     to: OPS_ALERT_TO,
     subject,
     text,

@@ -72,9 +72,15 @@ function rand() {
   return [...crypto.getRandomValues(new Uint8Array(6))].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+// Preserve the established notification sender independently of recipient routing.
+export function feedbackNotificationSender(env) {
+  const from = env.ALERTS_FROM || "CityScroll <alerts@crol-list.org>";
+  return from;
+}
+
 // User-submitted feedback stays on the shared feedback route.
 async function notifyFeedback(env, r) {
-  const from = env.ALERTS_FROM || "CityScroll <alerts@crol-list.org>";
+  const from = feedbackNotificationSender(env);
   const to = env.FEEDBACK_TO || DEFAULT_TO;
   const label = {
     bug: "Bug",
