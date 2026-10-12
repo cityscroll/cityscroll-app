@@ -225,6 +225,7 @@ test("the retry budget bounds how long one unwell source can stall a run", async
       fetchFn: async () => { calls++; clock += 3000; return new Response(null, { status: 503 }); },
       waitFn: async () => {},
       nowFn: () => clock,
+      budgetMs: 4000,
     }),
     /SODA 503/,
   );
