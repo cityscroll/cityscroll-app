@@ -35,6 +35,7 @@ import {
   scopedDeltaPlan,
   selectCanaryScope,
   verifyPartitionScope,
+  verifyPartitionScopeCompletely,
 } from "./d1_canary.mjs";
 import { PLAN_SCHEMA, SNAPSHOT_SCHEMA, planDelta } from "./d1_delta_plan.mjs";
 import { D1_GENERATION_FENCE_SCHEMA, createFileLedger, createWranglerKvStore } from "./d1_generation_fence.mjs";
@@ -277,19 +278,27 @@ export async function runProductionDelta({
       .filter((partition) => partition.counts.total_ops > 0)
       .map((partition) => ({ model_id: model.model_id, partition: partition.partition, rows: partition.counts.total_ops })))
     .sort((left, right) => compareText(left.model_id, right.model_id) || compareText(left.partition, right.partition));
+  // The policy bounds one verification window/chunk, not the cumulative size
+  // of a valid generation. Walk every changed partition through a finite
+  // sequence of bounded key ranges so a large delta receives complete proof
+  // instead of being fully written and then rejected solely for its size.
+  const reconcileVerification = await verifyPartitionScopeCompletely({
+    manifest,
+    sourceDocuments,
+    adapter,
+    selection: selected,
+    maxPartitions: policy.reconcile.max_partitions,
+    maxRows: policy.reconcile.max_rows,
+    maxFindings: policy.abort_threshold.max_findings,
+  });
   const reconcileScope = {
     candidate_count: selected.length,
-    selected: selected.map(({ model_id, partition }) => ({ model_id, partition })),
-    rows: selected.reduce((sum, item) => sum + item.rows, 0),
+    selected: reconcileVerification.coverage.partitions,
+    rows: reconcileVerification.coverage.expected_rows,
   };
-  const reconcileOverBound = selected.length > policy.reconcile.max_partitions
-    || reconcileScope.rows > policy.reconcile.max_rows;
-  const reconcileVerification = reconcileOverBound
-    ? { findings: [], watermarks: [], representativeQueries: [] }
-    : await verifyPartitionScope({ manifest, sourceDocuments, adapter, selection: reconcileScope.selected });
   const reconcileReport = buildReconcileReport({
     generation, policy, scope: reconcileScope, verification: reconcileVerification,
-    truncated: reconcileOverBound, recordedAt,
+    truncated: !reconcileVerification.coverage.complete, recordedAt,
   });
   if (!reconcileReport.consistent) {
     return terminalResult({
