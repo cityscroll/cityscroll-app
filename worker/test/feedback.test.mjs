@@ -1,3 +1,4 @@
+import { notifyOperator } from "../src/operator_notification.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { validateFeedback, FEEDBACK_CATEGORIES, REPORT_CATEGORIES, MSG_MIN, MSG_MAX } from "../src/lib/feedback.mjs";
@@ -300,4 +301,27 @@ test("rate-limited (429) once the per-IP daily counter is exceeded", async () =>
   assert.equal(keys.length, 1);
   assert.match(keys[0], /^rl:ip:a:[0-9a-f]{64}:\d{4}-\d{2}-\d{2}$/);
   assert.ok(!keys[0].includes(ip));
+});
+
+
+test("technical notices stay separate from user feedback and preserve feedback replies", async () => {
+  const previous = globalThis.fetch;
+  const sent = [];
+  globalThis.fetch = async (_url, options) => {
+    sent.push(JSON.parse(options.body));
+    return new Response(JSON.stringify({ id: "routing-test" }), { status: 200 });
+  };
+  try {
+    const env = { RESEND_API_KEY: "test-key", FEEDBACK: kv(), FEEDBACK_TO: "feedback@cityscroll.org", ALERTS_FROM: "CityScroll <alerts@cityscroll.org>" };
+    await notifyOperator(env, { subject: "Technical routing test", text: "Operator-only notice" });
+    const response = await handleFeedback(post(good({ email: "resident@example.com" })), env);
+    assert.equal(response.status, 200);
+    assert.equal(sent[0].to, "alerts@cityscroll.org");
+    assert.equal(sent[1].to, "feedback@cityscroll.org");
+    assert.equal(sent[1].reply_to, "resident@example.com");
+    assert.equal(sent[0].from, env.ALERTS_FROM);
+    assert.equal(sent[1].from, env.ALERTS_FROM);
+  } finally {
+    globalThis.fetch = previous;
+  }
 });

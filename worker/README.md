@@ -200,8 +200,8 @@ Schedule-skipped sections remain visible in watch counts through `evaluation_sta
 The scheduled `digest-shadow-monitor.yml` polls after both rehearsal and delivery, and opens or
 updates a repair issue when the run is redlined, missing, stale, or has an open degraded-path
 receipt. A degraded delivery decision also sends one deduplicated operator signal through the
-existing `FEEDBACK_TO`/Resend notification route; it never addresses a subscriber. The
-authenticated admin endpoint remains the canonical machine-readable status surface.
+dedicated `alerts@cityscroll.org`/Resend notification route (`OPS_ALERT_TO`); it never addresses a subscriber. The
+`FEEDBACK_TO` remains exclusively for user-submitted feedback, including the submitter Reply-To. Both technical notification helpers share `OPS_ALERT_TO`. The authenticated admin endpoint remains the canonical machine-readable status surface.
 The repair protocol is to diagnose the listed `affected_digest_ids`, apply the repair, then use
 authenticated `POST /admin/digest-shadow` to queue a checkpointed rebuild before 09:00. The POST
 returns immediately; `GET /admin/digest-shadow?run_id=…` reports expansion, per-digest progress,

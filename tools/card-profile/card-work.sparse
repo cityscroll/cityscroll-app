@@ -1123,6 +1123,7 @@
 /worker/src/near_you.mjs
 /worker/src/nl.mjs
 /worker/src/notice.mjs
+/worker/src/operator_notification.mjs
 /worker/src/owed_backlog.mjs
 /worker/src/passport.mjs
 /worker/src/people_organizations.mjs

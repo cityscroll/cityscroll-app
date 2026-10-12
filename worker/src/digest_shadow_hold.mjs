@@ -1,7 +1,7 @@
 // Digest-shadow delivery lease. The 06:00 rehearsal remains delivery-free; this module
 // turns only its named affected_digest_ids into short-lived 09:00 delivery holds.
 
-import { notifyOperator } from "./feedback.mjs";
+import { notifyOperator } from "./operator_notification.mjs";
 
 import { DIGEST_SHADOW_DEGRADED_UPSTREAM } from "./lib/upstream_failure.mjs";
 

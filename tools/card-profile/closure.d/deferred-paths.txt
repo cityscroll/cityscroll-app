@@ -313,6 +313,7 @@ warehouse/scripts/convert_parquet.py
 warehouse/scripts/materialize_er_batch.py
 warehouse/scripts/non_council_outcomes_run.py
 warehouse/scripts/nycedc_project_documents_run.py
+warehouse/scripts/publish_payment_input.mjs
 warehouse/scripts/register_duckdb.py
 warehouse/sources/ibo-fiscal-history/materialized/observations.jsonl
 warehouse/sources/ibo-fiscal-history/materialized/receipt.json
