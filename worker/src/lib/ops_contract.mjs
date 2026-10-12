@@ -146,6 +146,7 @@ export const DIGEST_SHADOW = Object.freeze({
     "preview_promotion": "D1 SQL copy under summary finalization ownership fence",
     "dead_letter_queue": "crol-digest-shadow-rebuild-dlq",
     "active_claim_grace_minutes": 20,
+    "dead_letter_retry_delay_seconds": 600,
     "stale_run_hours": 2,
     "stale_runs_per_scheduled_window": 2,
     "receipt_retry_authority": "D1 nonterminal runs, retried by scheduled reconciliation",

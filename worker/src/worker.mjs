@@ -921,7 +921,7 @@ const worker = {
           msg.ack();
         } catch (error) {
           console.error("digest shadow rebuild job failed", String(error?.message || error));
-          msg.retry(batch.queue === "crol-digest-shadow-rebuild-dlq" ? { delaySeconds: 60 } : undefined);
+          msg.retry(batch.queue === "crol-digest-shadow-rebuild-dlq" ? { delaySeconds: 600 } : undefined);
         }
       }
       return;

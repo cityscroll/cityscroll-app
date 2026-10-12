@@ -769,7 +769,7 @@ test("shadow dead-letter routing retries failed durable receipts without deliver
   }] };
   await harness.queue(batch, {});
   assert.equal(acked, 0);
-  assert.equal(retries[0].delaySeconds, 60);
+  assert.equal(retries[0].delaySeconds, 600);
   fail = false;
   await harness.queue(batch, {});
   assert.equal(acked, 1);

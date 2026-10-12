@@ -226,7 +226,8 @@ suppresses personalized dry-run logs and never sends or advances delivery state.
 
 The dedicated `crol-digest-shadow-rebuild-dlq` consumer records exhausted work separately from
 subscriber delivery failures. It preserves completed checkpoints, retries failed durable
-finalization, and refuses to cancel a claim started within the last 20 minutes. Each scheduled
+finalization, and refuses to cancel a claim started within the last 20 minutes. Dead-letter
+retries wait ten minutes so the fourth delivery can outlive that guard. Each scheduled
 window also reconciles at most two runs inactive for two hours, provided no recent item claim
 exists. This D1 backstop survives exhaustion of the dead-letter consumer itself. Expansion has
 separate discovery and dispatch states; exhaustion before dispatch completion records an
