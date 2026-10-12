@@ -48,6 +48,38 @@ test("digest watchdog fires when the expected receipt is missing", async () => {
   assert.match(result.findings.join("; "), /terminal delivery receipt missing/);
 });
 
+test("digest watchdog rejects revisioned daily cache when D1 cannot verify it", async () => {
+  const ALERT_STATE = kv();
+  const now = new Date("2026-10-12T10:00:00Z");
+  await recordDigestShadowReceipt({ ALERT_STATE }, {
+    ok: true, status: "READY", result_revision: "old-result",
+  }, now);
+  const DB = { prepare() { throw new Error("D1 unavailable"); } };
+  const result = await digestWatchdogSnapshot({ ALERT_STATE, DB }, { now });
+  assert.equal(result.shadow, null);
+  assert.ok(result.findings.includes("shadow READY receipt missing"));
+});
+
+test("digest watchdog accepts only the receipt matching the authoritative revision", async () => {
+  const ALERT_STATE = kv();
+  const now = new Date("2026-10-12T10:00:00Z");
+  const DB = { prepare() { return { bind() { return this; }, async first() {
+    return { summary_json: JSON.stringify({ result_revision: "current-result" }) };
+  } }; } };
+  await recordDigestShadowReceipt({ ALERT_STATE }, {
+    ok: true, status: "READY", result_revision: "current-result",
+  }, now);
+  const good = await digestWatchdogSnapshot({ ALERT_STATE, DB }, { now });
+  assert.equal(good.shadow.result_revision, "current-result");
+  assert.equal(good.shadow.status, "READY");
+
+  const versionedKey = [...ALERT_STATE.store.keys()].find((key) => key.endsWith(":current-result"));
+  ALERT_STATE.store.set(versionedKey, JSON.stringify({ status: "READY", result_revision: "other-result" }));
+  const mismatched = await digestWatchdogSnapshot({ ALERT_STATE, DB }, { now });
+  assert.equal(mismatched.shadow, null);
+  assert.ok(mismatched.findings.includes("shadow READY receipt missing"));
+});
+
 // The alert the site owner received said only "shadow receipt is DEGRADED".
 // The rehearsal knew the reason, the receipt dropped it, and the reader was
 // left with a count of one redline and nowhere to go.

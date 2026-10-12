@@ -455,7 +455,9 @@ const REQ_URL = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeU
 // clock so one unwell source can never stall the whole digest run behind it.
 const RETRYABLE_SODA_STATUSES = TRANSIENT_UPSTREAM_STATUSES;
 const SODA_RETRY_DELAYS_MS = Object.freeze([250, 1000]);
-const SODA_RETRY_BUDGET_MS = 4000;
+// Static source-wide watches can take tens of seconds even when the source is healthy.
+// Keep their complete read bounded without treating the short retry backoff as a read limit.
+const SODA_RETRY_BUDGET_MS = 60_000;
 
 export async function runDigestShadowRecoveryCatchUp(env, shadowHold, {
   now = new Date(),
@@ -532,6 +534,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
   }
 
 
+  await options.onProgress?.({ phase: "static_watches", evaluated_count: 0 });
   for (const w of watches) {
     const watchDigestId = `watch:${w.id}`;
     if (isDigestHeld(shadowHold, watchDigestId)) {
@@ -543,6 +546,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
         sent: false,
         holdContract: shadowHold.contract,
       });
+      await options.onProgress?.({ phase: "static_watches", evaluated_count: results.length });
       continue;
     }
     try {
@@ -614,6 +618,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
         ...upstreamResultFields(e),
       });
     }
+    await options.onProgress?.({ phase: "static_watches", evaluated_count: results.length });
   }
 
   // ---- replay confirmed subscriptions from SUBS KV (the self-serve path) ----
@@ -643,7 +648,9 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
   };
   let mode = "inline";
   let enqueued = 0;
-  const allSubs = options.skipSubscriptions ? [] : await listDigestSubscriptions(env);
+  await options.onProgress?.({ phase: "subscription_inventory", evaluated_count: results.length });
+  const allSubs = options.skipSubscriptions ? [] : await listDigestSubscriptions(env, { readOnly: options.capturePreviews === true });
+  await options.onProgress?.({ phase: "account_builds", evaluated_count: results.length });
   if (!options.skipSubscriptions && !options.forceInline && env.QUEUE_DIGESTS === "true" && env.DIGEST_QUEUE) {
     mode = "queue";
     const jobs = buildDigestJobs(allSubs);
@@ -673,9 +680,11 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
       } else {
         results.push(await processOneSub(env, active[0], ctx));
       }
+      if (results.length % 10 === 0) await options.onProgress?.({ phase: "account_builds", evaluated_count: results.length });
     }
   }
 
+  await options.onProgress?.({ phase: "builders_complete", evaluated_count: results.length });
   const deferred = results.filter((r) => r.capped).length;
   if (deferred) console.warn(`alerts: ${deferred} watch(es) deferred by send caps (perRun=${maxPerRun}, perDay=${maxPerDay})`);
   const ranAt = now.toISOString();
@@ -2508,37 +2517,58 @@ export async function fetchSodaRowsWithRetry(url, {
 } = {}) {
   const attempts = delaysMs.length + 1;
   const startedAt = nowFn();
-  let lastError = null;
+  const controller = new AbortController();
   let made = 0;
-  for (let attempt = 0; attempt < attempts; attempt++) {
-    made = attempt + 1;
-    let response;
-    try {
-      response = await fetchFn(url);
-    } catch (error) {
-      lastError = markUpstreamFailure(error, { source: "soda", httpStatus: null, attempts: made });
-      if (!(await pauseWithinBudget(attempt))) throw lastError;
-      continue;
-    }
-    if (response.ok) return response.json();
-    const transient = RETRYABLE_SODA_STATUSES.has(response.status);
-    // The exhausted budget is part of the evidence: a reader of the run has to be able to see
-    // that the source was asked more than once before the read was given up on.
-    lastError = new Error(transient
-      ? `SODA ${response.status} (source unavailable after ${made} attempt${made === 1 ? "" : "s"})`
-      : `SODA ${response.status}`);
-    if (transient) markUpstreamFailure(lastError, { source: "soda", httpStatus: response.status, attempts: made });
-    if (!transient || !(await pauseWithinBudget(attempt))) throw lastError;
+  let timer;
+  const timeout = new Promise((_, reject) => {
+    timer = setTimeout(() => {
+      const error = markUpstreamFailure(new Error("SODA read timed out at retry deadline"), {
+        source: "soda", httpStatus: null, attempts: made,
+      });
+      controller.abort(error);
+      reject(error);
+    }, budgetMs);
+  });
+  try {
+    // The deadline covers headers, body consumption and retry waits. A budget checked only
+    // between attempts cannot interrupt the stalled read that needs it most.
+    return await Promise.race([read(), timeout]);
+  } finally {
+    clearTimeout(timer);
   }
-  throw lastError;
 
-  // True when another attempt is both configured and still inside the wall-clock budget.
+  async function read() {
+    let lastError = null;
+    for (let attempt = 0; attempt < attempts; attempt++) {
+      controller.signal.throwIfAborted();
+      made = attempt + 1;
+      let response;
+      try {
+        response = await fetchFn(url, { signal: controller.signal });
+      } catch (error) {
+        lastError = markUpstreamFailure(error, { source: "soda", httpStatus: null, attempts: made });
+        if (!(await pauseWithinBudget(attempt))) throw lastError;
+        continue;
+      }
+      if (response.ok) return await response.json();
+      const transient = RETRYABLE_SODA_STATUSES.has(response.status);
+      // Release the body before retrying rather than consuming another connection slot.
+      await response.body?.cancel();
+      lastError = new Error(transient
+        ? `SODA ${response.status} (source unavailable after ${made} attempt${made === 1 ? "" : "s"})`
+        : `SODA ${response.status}`);
+      if (transient) markUpstreamFailure(lastError, { source: "soda", httpStatus: response.status, attempts: made });
+      if (!transient || !(await pauseWithinBudget(attempt))) throw lastError;
+    }
+    throw lastError;
+  }
+
   async function pauseWithinBudget(attempt) {
+    if (controller.signal.aborted) return false;
     const delay = delaysMs[attempt];
-    if (delay == null) return false;
-    if (nowFn() - startedAt + delay > budgetMs) return false;
+    if (delay == null || nowFn() - startedAt + delay >= budgetMs) return false;
     await waitFn(delay);
-    return true;
+    return !controller.signal.aborted;
   }
 }
 

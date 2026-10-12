@@ -147,18 +147,24 @@ test("cost probe schedule suppresses edge-cache writes", async () => {
   assert.equal(received.find(([name]) => name === "stats")[2].skipCacheWrite, true);
 });
 
-test("cost probe schedule suppresses personalized digest shadow logs", async () => {
+test("digest shadow logs exclude rendered previews and cost probes suppress the summary", async () => {
   const privateSubject = "CityScroll: still watching — tenant coalition";
-  const normal = scheduledWorker({ overrides: {
-    runDigestShadow: () => ({ previews: [{ subject: privateSubject }] }),
-  } });
+  const overrides = {
+    persistDigestShadowStarted: () => ({ status: "STARTED", write_accepted: true }),
+    runDigestShadow: () => ({ status: "READY", _rendered_previews: [{ subject: privateSubject }] }),
+  };
+  const normal = scheduledWorker({ overrides });
   await normal.run("0 10 * * *", productionEnv());
-  assert.ok(normal.logs.some((args) => args.join(" ").includes(privateSubject)));
+  assert.ok(normal.calls.includes("runDigestShadow"));
+  const summaries = normal.logs.filter(([label]) => label === "digest shadow:");
+  assert.equal(summaries.length, 1);
+  assert.equal(JSON.parse(summaries[0][1]).status, "READY");
+  assert.equal(normal.logs.some((args) => args.join(" ").includes(privateSubject)), false);
 
-  const probe = scheduledWorker({ overrides: {
-    runDigestShadow: () => ({ previews: [{ subject: privateSubject }] }),
-  } });
+  const probe = scheduledWorker({ overrides });
   await probe.run("0 10 * * *", productionEnv(), { costProbe: true });
+  assert.ok(probe.calls.includes("runDigestShadow"));
+  assert.equal(probe.logs.some(([label]) => label === "digest shadow:"), false);
   assert.equal(probe.logs.some((args) => args.join(" ").includes(privateSubject)), false);
 });
 

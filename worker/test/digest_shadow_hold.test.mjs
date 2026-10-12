@@ -185,7 +185,7 @@ test("store outage uses today's persisted redline state and emits a degraded rec
   assert.equal(db.writes.length, 0, "degraded receipt must not overwrite the usable canonical state");
 });
 
-test("store outage can read the last-known state from alert-state KV when D1 is down", async () => {
+test("store outage does not trust unverified last-known alert-state KV", async () => {
   const receipts = new MockKV();
   await receipts.put("digest:shadow:hold:last-known:2026-08-04", JSON.stringify(persistedState({
     source_status: "READY",
@@ -197,12 +197,12 @@ test("store outage can read the last-known state from alert-state KV when D1 is 
     receiptStore: receipts,
     retryDelaysMs: [0, 0],
   });
-  assert.equal(state.source_status, "LAST_KNOWN_READY");
-  assert.equal(state.delivery_policy, "ALL_DIGESTS_ELIGIBLE");
-  assert.equal(state.degraded_receipt.decision, "SEND_ON_LAST_KNOWN_STATE");
+  assert.equal(state.source_status, "DARK_PERIOD");
+  assert.equal(state.delivery_policy, "ALL_DIGESTS_HELD");
+  assert.equal(state.degraded_receipt.decision, "HOLD_ALL_DARK_PERIOD");
 });
 
-test("missing D1 binding also uses today's last-known state from alert-state KV", async () => {
+test("missing D1 binding does not trust unverified last-known alert-state KV", async () => {
   const receipts = new MockKV();
   await receipts.put("digest:shadow:hold:last-known:2026-08-04", JSON.stringify(persistedState({
     source_status: "READY",
@@ -214,9 +214,9 @@ test("missing D1 binding also uses today's last-known state from alert-state KV"
     persist: true,
     receiptStore: receipts,
   });
-  assert.equal(state.source_status, "LAST_KNOWN_READY");
+  assert.equal(state.source_status, "HOLD_STORE_UNAVAILABLE");
   assert.equal(state.delivery_policy, "ALL_DIGESTS_ELIGIBLE");
-  assert.equal(state.degraded_receipt.decision, "SEND_ON_LAST_KNOWN_STATE");
+  assert.equal(state.degraded_receipt.decision, "SEND_FAIL_OPEN");
 });
 
 test("store outage sends on today's persisted READY state", async () => {
@@ -423,3 +423,17 @@ test("dark-period policy partitions every queued digest into the recovery hold",
   assert.deepEqual(partition.eligible, []);
   assert.deepEqual(partition.held.map((item) => item.job), jobs);
 });
+
+for (const [lastReadyRunDay, policy, age] of [
+  ["2026-08-03", "ALL_DIGESTS_ELIGIBLE", 1],
+  ["2026-08-01", "ALL_DIGESTS_HELD", 3],
+  [null, "ALL_DIGESTS_HELD", null],
+]) {
+  test(`unfinished rehearsal consults READY history (${lastReadyRunDay})`, async () => {
+    const db = graduatedDb({ summary: { ...ready(), status: "STARTED", ok: false }, lastReadyRunDay });
+    const state = await resolveDigestShadowHold(db, { now: `${DAY}T13:00:00.000Z` });
+    assert.equal(state.delivery_policy, policy);
+    assert.equal(state.degraded_receipt.last_ready_run_day, lastReadyRunDay);
+    assert.equal(state.degraded_receipt.ready_age_days, age);
+  });
+}

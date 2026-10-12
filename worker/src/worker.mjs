@@ -131,9 +131,10 @@ import { RUM_MARKED_TRAFFIC_CLASSES, isRumProductionOrigin } from "../../site/ru
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
 
-async function withWorkerAcquisitionReceipt(env, sourceContractId, runId, work) {
+async function withWorkerAcquisitionReceipt(env, sourceContractId, runId, work, { signal } = {}) {
   try {
     const result = await work();
+    signal?.throwIfAborted();
     const status = result?.status === "failed" || result?.status === "error" || result?.ok === false
       ? "failed"
       : "succeeded";
@@ -579,11 +580,18 @@ const worker = {
     // isolate after STARTED reads as STARTED_NOT_FINISHED, never MISSING_RUN. Freshness has a
     // hard time/subrequest budget; exhaustion records DEGRADED_UPSTREAM and the rehearsal still runs.
     if (event.cron === "0 10 * * *") {
-      const shadowNow = new Date();
+      const shadowNow = new Date(event.scheduledTime ?? Date.now());
+      const shadowInvocationId = `digest-shadow:${event.cron}:${shadowNow.toISOString()}`;
       try {
-        await persistDigestShadowStarted(env, { now: shadowNow });
+        const started = await persistDigestShadowStarted(env, {
+          now: shadowNow,
+          invocationId: shadowInvocationId,
+        });
+        if (started?.write_accepted === false) return;
+        if (started?.status !== "STARTED") return;
       } catch (error) {
         console.error("digest shadow start receipt failed:", String(error?.message || error));
+        return;
       }
 
       let freshness = { ok: true, degraded: false };
@@ -592,7 +600,8 @@ const worker = {
           acquisitionFn: withWorkerAcquisitionReceipt,
           runId,
           ingestFn: ingestNotices,
-          prewarmFn: (probeEnv, requestIds) => prewarmNotices(probeEnv, requestIds, {
+          prewarmFn: (probeEnv, requestIds, options = {}) => prewarmNotices(probeEnv, requestIds, {
+            ...options,
             skipEdgeCacheWrite: event.costProbe === true,
           }),
         });
@@ -621,13 +630,20 @@ const worker = {
       try {
         let summary = await runDigestShadow(env, {
           now: shadowNow,
+          invocationId: shadowInvocationId,
           suppressPersonalizedLogs: event.costProbe === true,
         });
         // Await so schedule-harness stubs (async wrappers) and a future async helper both land.
         if (freshness.degraded) summary = await applyFreshnessDegradation(summary, freshness);
-        await finalizeDigestShadowRun(env, summary, { now: shadowNow });
+        const finalized = await finalizeDigestShadowRun(env, summary, {
+          now: shadowNow,
+          invocationId: shadowInvocationId,
+        });
+        if (finalized?.write_accepted === false) return;
         if (event.costProbe !== true) {
-          console.log("digest shadow:", JSON.stringify(summary, (key, value) => {
+          const publicSummary = { ...summary };
+          delete publicSummary._rendered_previews;
+          console.log("digest shadow:", JSON.stringify(publicSummary, (key, value) => {
             if (typeof value !== "string") return value;
             if (key === "recipient") return redactEmail(value);
             if (key === "recipient_redacted" && value.includes("@") && !value.includes("***")) return redactEmail(value);
@@ -637,7 +653,11 @@ const worker = {
       } catch (error) {
         console.error("digest shadow failed:", String(error?.message || error));
         try {
-          const failed = await persistDigestShadowFailure(env, error, { now: shadowNow });
+          const failed = await persistDigestShadowFailure(env, error, {
+            now: shadowNow,
+            invocationId: shadowInvocationId,
+          });
+          if (failed?.write_accepted === false) return;
           console.error("digest shadow failure receipt:", JSON.stringify({
             run_day: failed?.run_day,
             status: failed?.status,

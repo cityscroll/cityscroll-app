@@ -263,7 +263,8 @@ export async function handleNotice(request, env, {
   return response;
 }
 
-export async function prewarmNotices(env, requestIds, { skipEdgeCacheWrite = false } = {}) {
+export async function prewarmNotices(env, requestIds, { skipEdgeCacheWrite = false, signal } = {}) {
+  signal?.throwIfAborted();
   const ids = [...new Set((Array.isArray(requestIds) ? requestIds : [])
     .map((id) => String(id || "").trim()).filter((id) => NOTICE_ID_RE.test(id)))].slice(0, 200);
   if (!ids.length) return { requested: 0, warmed: 0, skipped: "empty" };
@@ -273,10 +274,13 @@ export async function prewarmNotices(env, requestIds, { skipEdgeCacheWrite = fal
   let warmed = 0;
   let failed = 0;
   for (const id of ids) {
+    signal?.throwIfAborted();
     try {
       const response = await handleNotice(cacheKey(id), env, { skipCache: true, skipEdgeCacheWrite });
+      signal?.throwIfAborted();
       if (response.ok) {
         const body = await response.clone().json();
+        signal?.throwIfAborted();
         if (body.source === "materialized") warmed += 1;
         else failed += 1;
       } else failed += 1;

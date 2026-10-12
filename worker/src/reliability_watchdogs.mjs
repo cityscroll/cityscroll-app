@@ -44,6 +44,9 @@ export const OPS_ALERT_HISTORY_LIMIT = 50;
 
 const day = (value) => new Date(value).toISOString().slice(0, 10);
 const key = (prefix, value) => `${prefix}${day(value)}`;
+const shadowOwner = (summary) => summary?.rebuild_finalization_id || summary?.invocation_id || null;
+const shadowRevision = (summary) => summary?.result_revision || shadowOwner(summary);
+const shadowRevisionKey = (value, revision) => `${DIGEST_SHADOW_LEDGER_PREFIX}${day(value)}:${revision}`;
 
 async function readJson(kv, name) {
   if (!kv?.get) return null;
@@ -98,9 +101,35 @@ export async function recordDigestShadowReceipt(env, summary, now = new Date(), 
     selection_funnel: summary?.selection_funnel || null,
     error: failed ? String(error?.message || error) : null,
     ...(summary?.rebuild_run_id ? { rebuild_run_id: summary.rebuild_run_id } : {}),
+    ...(shadowOwner(summary) ? { owner: shadowOwner(summary) } : {}),
+    ...(shadowRevision(summary) ? { result_revision: shadowRevision(summary) } : {}),
   };
+  const revision = shadowRevision(summary);
+  if (revision) await putJson(env?.ALERT_STATE, shadowRevisionKey(now, revision), receipt);
   await putJson(env?.ALERT_STATE, key(DIGEST_SHADOW_LEDGER_PREFIX, now), receipt);
   return receipt;
+}
+
+async function readCurrentDigestShadowReceipt(env, today) {
+  let revision = null;
+  if (env?.DB?.prepare) {
+    try {
+      const row = await env.DB.prepare(
+        "SELECT summary_json FROM digest_shadow_runs WHERE run_day = ?",
+      ).bind(today).first();
+      revision = shadowRevision(row?.summary_json ? JSON.parse(row.summary_json) : null);
+    } catch {
+      revision = null;
+    }
+  }
+  if (revision) {
+    const receipt = await readJson(env?.ALERT_STATE, `${DIGEST_SHADOW_LEDGER_PREFIX}${today}:${revision}`);
+    return receipt?.result_revision === revision ? receipt : null;
+  }
+  const legacy = await readJson(env?.ALERT_STATE, `${DIGEST_SHADOW_LEDGER_PREFIX}${today}`);
+  // The mutable compatibility key cannot verify a versioned result when D1 did not
+  // establish the current revision. Older unversioned receipts retain their contract.
+  return legacy?.result_revision ? null : legacy;
 }
 
 /**
@@ -486,7 +515,7 @@ export async function mailWatchdogSnapshot(env, { now = new Date() } = {}) {
 
 export async function digestWatchdogSnapshot(env, { now = new Date(), deadlineHour = 14 } = {}) {
   const today = day(now);
-  const shadow = await readJson(env?.ALERT_STATE, `${DIGEST_SHADOW_LEDGER_PREFIX}${today}`);
+  const shadow = await readCurrentDigestShadowReceipt(env, today);
   const delivery = await readJson(env?.ALERT_STATE, `${DIGEST_DELIVERY_LEDGER_PREFIX}${today}`);
   const dlq = Number(await env?.ALERT_STATE?.get?.(`digest:dlq:${today}`)) || 0;
   const mail = await mailWatchdogSnapshot(env, { now });

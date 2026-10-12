@@ -294,6 +294,7 @@ export function buildDigestShadowSummary({
   history = [],
   now = new Date(),
   ontologyDelta = null,
+  validationScope = "full",
   // digest_id -> the most recent previously rendered preview for that id, used to say what a
   // reader is served while a source is unavailable. Read-only; nothing here is re-rendered.
   lastGoodPreviews = null,
@@ -443,7 +444,7 @@ export function buildDigestShadowSummary({
   // that built fewer items than usual. Raising a second, differently-worded finding for the same
   // outage would only put a name on it that points at us.
   const aggregateComparable = upstreamIncidents.length === 0;
-  if (quietWatermark) {
+  if (validationScope === "full" && quietWatermark) {
     // Informational: candidates were present and the seen watermark already held them.
     // This is not an attention redline and it does not hold anyone's mail.
     observations.push({
@@ -462,7 +463,8 @@ export function buildDigestShadowSummary({
         backlog_flush: backlogFlush,
       },
     });
-  } else if (trailingBaseline != null && trailingBaseline >= MIN_TRAILING_AVERAGE && aggregateComparable) {
+  } else if (validationScope === "full"
+    && trailingBaseline != null && trailingBaseline >= MIN_TRAILING_AVERAGE && aggregateComparable) {
     const ratio = totalItems / trailingBaseline;
     if (ratio < COLLAPSE_RATIO) {
       redlines.push(redline(
@@ -674,13 +676,51 @@ async function readHistory(env, day, count = HISTORY_DAYS) {
   return logs;
 }
 
-export async function persistDigestShadow(db, summary) {
+export async function validateDigestShadowRun(env, run, {
+  now = new Date(),
+  ontologyDeltaCandidates = null,
+} = {}) {
+  const ontology = await import("./lib/ontology_delta_alert.mjs");
+  const at = new Date(now);
+  const day = at.toISOString().slice(0, 10);
+  const history = await readHistory(env, day);
+  const candidates = ontologyDeltaCandidates == null
+    ? await ontology.buildDefaultOntologyDeltaCandidates(env.DB)
+    : ontologyDeltaCandidates;
+  const ontologyDelta = await ontology.reconcileOntologyDeltaCandidates(env.DB, candidates, {
+    observedAt: at,
+  });
+  const failedDigestIds = (Array.isArray(run?.results) ? run.results : [])
+    .filter((result) => result?.error)
+    .map((result) => result.previewId || result.sub || result.watch);
+  const lastGoodPreviews = await readLastGoodPreviews(env.DB, failedDigestIds, day);
+  return buildDigestShadowSummary({ run, history, now: at, ontologyDelta, lastGoodPreviews });
+}
+
+export async function validateDigestShadowTargets(env, results, { now = new Date() } = {}) {
+  const at = new Date(now);
+  const history = await readHistory(env, at.toISOString().slice(0, 10));
+  return (results || []).map((result) => buildDigestShadowSummary({
+    run: { results: [result] },
+    history,
+    now: at,
+    validationScope: "digest",
+  }));
+}
+
+export async function persistDigestShadow(db, summary, { invocationId, mode } = {}) {
   if (!db) throw new Error("digest shadow requires DB");
-  const publicSummary = { ...summary };
+  if (!invocationId || !new Set(["claim", "finalize"]).has(mode)) {
+    throw new Error("digest shadow owned write required");
+  }
+  const publicSummary = {
+    ...summary,
+    ...(invocationId ? { invocation_id: invocationId } : {}),
+  };
   delete publicSummary._rendered_previews;
-  const statements = [
-    db.prepare("DELETE FROM digest_shadow_previews WHERE run_day = ?").bind(summary.run_day),
-    db.prepare(`INSERT INTO digest_shadow_runs
+  const publicSummaryJson = JSON.stringify(publicSummary);
+  const write = mode === "claim"
+    ? db.prepare(`INSERT INTO digest_shadow_runs
       (run_day, ran_at, status, digest_count, total_items, summary_json)
       VALUES (?, ?, ?, ?, ?, ?)
       ON CONFLICT(run_day) DO UPDATE SET
@@ -688,31 +728,43 @@ export async function persistDigestShadow(db, summary) {
         status = excluded.status,
         digest_count = excluded.digest_count,
         total_items = excluded.total_items,
-        summary_json = excluded.summary_json`)
+        summary_json = excluded.summary_json
+      WHERE digest_shadow_runs.status = 'STARTED'`)
       .bind(
         summary.run_day,
         summary.ran_at,
         summary.status,
         summary.digest_count,
         summary.total_items,
-        JSON.stringify(publicSummary),
-      ),
-  ];
+        publicSummaryJson,
+      )
+    : db.prepare(`UPDATE digest_shadow_runs SET ran_at = ?, status = ?, digest_count = ?,
+        total_items = ?, summary_json = ?
+      WHERE run_day = ? AND status = 'STARTED'
+      AND json_extract(summary_json, '$.invocation_id') = ?`)
+      .bind(summary.ran_at, summary.status, summary.digest_count, summary.total_items,
+        publicSummaryJson, summary.run_day, invocationId);
+  const statements = [write];
+  statements.push(db.prepare(`DELETE FROM digest_shadow_previews WHERE run_day = ?
+    AND EXISTS (SELECT 1 FROM digest_shadow_runs WHERE run_day = ? AND summary_json = ?)`)
+    .bind(summary.run_day, summary.run_day, publicSummaryJson));
   for (const preview of summary._rendered_previews || []) {
     statements.push(db.prepare(`INSERT INTO digest_shadow_previews
-      (run_day, digest_id, recipient_redacted, subject, html, item_count, watch_counts_json)
-      VALUES (?, ?, ?, ?, ?, ?, ?)`)
-      .bind(
-        summary.run_day,
-        preview.digest_id,
-        preview.recipient_redacted,
-        preview.subject,
-        preview.html,
-        preview.item_count,
-        JSON.stringify(preview.watch_counts),
-      ));
+        (run_day, digest_id, recipient_redacted, subject, html, item_count, watch_counts_json)
+      SELECT ?, ?, ?, ?, ?, ?, ? WHERE EXISTS (
+        SELECT 1 FROM digest_shadow_runs WHERE run_day = ? AND summary_json = ?)`)
+      .bind(summary.run_day, preview.digest_id, preview.recipient_redacted, preview.subject,
+        preview.html, preview.item_count, JSON.stringify(preview.watch_counts),
+        summary.run_day, publicSummaryJson));
   }
   await db.batch(statements);
+  const row = await db.prepare("SELECT status, summary_json FROM digest_shadow_runs WHERE run_day = ?")
+    .bind(summary.run_day).first();
+  const stored = row?.summary_json ? JSON.parse(row.summary_json) : null;
+  const sameOwner = stored?.invocation_id === invocationId;
+  const accepted = sameOwner && (row?.status === summary.status
+    || row?.status !== DIGEST_SHADOW_STARTED);
+  return { accepted, summary: sameOwner ? stored : null };
 }
 
 function emptyShadowSkeleton(now, status) {
@@ -799,41 +851,118 @@ export function buildDigestShadowFailureSummary(error, now = new Date()) {
   return summary;
 }
 
-async function persistShadowState(env, summary, { now = new Date(), error = null } = {}) {
+async function updateOwnedShadowSummary(db, summary, invocationId) {
+  const publicSummary = { ...summary, invocation_id: invocationId };
+  delete publicSummary._rendered_previews;
+  await db.prepare(`UPDATE digest_shadow_runs SET summary_json = ? WHERE run_day = ? AND status = ?
+    AND json_extract(summary_json, '$.invocation_id') = ?
+    AND json_extract(summary_json, '$.result_revision') = ?`)
+    .bind(JSON.stringify(publicSummary), summary.run_day, summary.status, invocationId,
+      summary.result_revision).run();
+  const row = await db.prepare("SELECT status, summary_json FROM digest_shadow_runs WHERE run_day = ?")
+    .bind(summary.run_day).first();
+  const stored = row?.summary_json ? JSON.parse(row.summary_json) : null;
+  return row?.status === summary.status && stored?.invocation_id === invocationId
+    && stored?.result_revision === summary.result_revision;
+}
+
+async function persistShadowState(env, summary, {
+  now = new Date(),
+  error = null,
+  invocationId,
+  mode,
+  recordHoldFn = null,
+  recordReceiptFn = null,
+} = {}) {
   if (!env?.DB) throw new Error("digest shadow requires DB");
+  if (!invocationId) throw new Error("digest shadow invocation id required");
   const at = new Date(now);
   const [{ recordDigestShadowHoldState }, { recordDigestShadowReceipt }] = await Promise.all([
     import("./digest_shadow_hold.mjs"),
     import("./reliability_watchdogs.mjs"),
   ]);
-  await persistDigestShadow(env.DB, summary);
-  summary.hold = await recordDigestShadowHoldState(env.DB, summary, {
+  const ownedSummary = {
+    ...summary,
+    invocation_id: invocationId,
+    result_revision: summary.result_revision
+      || (mode === "claim" ? `${invocationId}:started` : crypto.randomUUID()),
+  };
+  const persisted = await persistDigestShadow(env.DB, ownedSummary, { invocationId, mode });
+  if (!persisted.accepted) return { ...ownedSummary, write_accepted: false };
+  const effectiveSummary = { ...persisted.summary };
+  effectiveSummary.hold = await (recordHoldFn || recordDigestShadowHoldState)(env.DB, effectiveSummary, {
     now: at,
     receiptStore: env.ALERT_STATE,
   });
-  await persistDigestShadow(env.DB, summary);
-  summary.receipt = await recordDigestShadowReceipt(env, summary, at, error);
-  const out = { ...summary };
+  if (effectiveSummary.hold?.write_accepted === false) {
+    return { ...effectiveSummary, write_accepted: false };
+  }
+  if (!(await updateOwnedShadowSummary(env.DB, effectiveSummary, invocationId))) {
+    return { ...effectiveSummary, write_accepted: false };
+  }
+  const receiptError = effectiveSummary.phase === "failed"
+    ? (error || effectiveSummary.failure?.error || "digest shadow failed")
+    : null;
+  effectiveSummary.receipt = await (recordReceiptFn || recordDigestShadowReceipt)(
+    env, effectiveSummary, at, receiptError,
+  );
+  const out = { ...effectiveSummary, write_accepted: true };
   delete out._rendered_previews;
   return out;
 }
 
 /** Persist the run-day STARTED row and ledger receipt before advisory freshness. */
-export async function persistDigestShadowStarted(env, { now = new Date() } = {}) {
-  return persistShadowState(env, buildDigestShadowStartedSummary(now), { now });
+export async function persistDigestShadowStarted(env, {
+  now = new Date(),
+  invocationId = crypto.randomUUID(),
+} = {}) {
+  return persistShadowState(env, buildDigestShadowStartedSummary(now), {
+    now,
+    invocationId,
+    mode: "claim",
+  });
 }
 
 /**
  * Persist a same-day failure row, hold decision, and FAILED ledger receipt
  * so a thrown rehearsal never reads as MISSING_RUN / rehearsal-stale.
  */
-export async function persistDigestShadowFailure(env, error, { now = new Date() } = {}) {
-  return persistShadowState(env, buildDigestShadowFailureSummary(error, now), { now, error });
+export async function persistDigestShadowFailure(env, error, {
+  now = new Date(),
+  invocationId,
+  recordHoldFn = null,
+  recordReceiptFn = null,
+} = {}) {
+  return persistShadowState(env, buildDigestShadowFailureSummary(error, now), {
+    now,
+    error,
+    invocationId,
+    mode: "finalize",
+    recordHoldFn,
+    recordReceiptFn,
+  });
 }
 
-/** Overwrite the day's D1 row, hold decision, and ledger receipt with a final summary. */
-export async function finalizeDigestShadowRun(env, summary, { now = new Date(), error = null } = {}) {
-  return persistShadowState(env, summary, { now, error });
+/** Finalize an invocation-owned D1 row, hold decision, and ledger receipt. */
+export async function finalizeDigestShadowRun(env, summary, {
+  now = new Date(),
+  error = null,
+  invocationId,
+  recordHoldFn = null,
+  recordReceiptFn = null,
+} = {}) {
+  return persistShadowState(env, {
+    ...summary,
+    phase: "finalized",
+    complete: true,
+  }, {
+    now,
+    error,
+    invocationId,
+    mode: "finalize",
+    recordHoldFn,
+    recordReceiptFn,
+  });
 }
 
 function freshnessIncident(reason, evidence = {}) {
@@ -910,7 +1039,7 @@ export async function runBudgetedNoticeFreshness(env, {
     subrequests: 0,
     elapsed_ms: 0,
   };
-  const originalFetch = fetchImpl;
+  const controller = new AbortController();
   const countingFetch = (...args) => {
     budget.subrequests += 1;
     if (budget.subrequests > maxSubrequests) {
@@ -920,32 +1049,37 @@ export async function runBudgetedNoticeFreshness(env, {
       error.code = "FRESHNESS_SUBREQUEST_BUDGET";
       return Promise.reject(error);
     }
-    return originalFetch(...args);
+    const [input, init = {}] = args;
+    return fetchImpl(input, { ...init, signal: controller.signal });
   };
   let timer;
   const timeout = new Promise((_, reject) => {
     timer = setTimeout(() => {
       const error = new Error(`digest shadow freshness time budget exhausted (${budgetMs}ms)`);
       error.code = "FRESHNESS_TIME_BUDGET";
+      controller.abort(error);
       reject(error);
     }, budgetMs);
     timer.unref?.();
   });
   const work = async () => {
-    const priorFetch = globalThis.fetch;
-    globalThis.fetch = countingFetch;
-    try {
-      const ingest = ingestFn || (await import("./ingest.mjs")).ingestNotices;
-      const prewarm = prewarmFn || (await import("./notice.mjs")).prewarmNotices;
-      const runIngest = acquisitionFn
-        ? () => acquisitionFn(env, "city-record", runId, () => ingest(env))
-        : () => ingest(env);
-      const result = await runIngest();
-      const prewarmResult = await prewarm(env, result?.noticeRequestIds);
-      return { result, prewarm: prewarmResult };
-    } finally {
-      globalThis.fetch = priorFetch;
-    }
+    const ingest = ingestFn || (await import("./ingest.mjs")).ingestNotices;
+    const prewarm = prewarmFn || (await import("./notice.mjs")).prewarmNotices;
+    const ingestOptions = { fetchFn: countingFetch, signal: controller.signal };
+    const ingestWork = async () => {
+      const result = await ingest(env, ingestOptions);
+      controller.signal.throwIfAborted();
+      return result;
+    };
+    const result = acquisitionFn
+      ? await acquisitionFn(env, "city-record", runId, ingestWork, { signal: controller.signal })
+      : await ingestWork();
+    controller.signal.throwIfAborted();
+    const prewarmResult = await prewarm(env, result?.noticeRequestIds, {
+      signal: controller.signal,
+    });
+    controller.signal.throwIfAborted();
+    return { result, prewarm: prewarmResult };
   };
   try {
     const result = await Promise.race([work(), timeout]);
@@ -965,20 +1099,33 @@ export async function runBudgetedNoticeFreshness(env, {
   }
 }
 
+// Update only an in-flight marker. Never replace a completed summary or its previews.
+// Progress contains stage/count/time only, so it is safe for operator diagnostics.
+export async function recordDigestShadowProgress(db, day, progress, now = new Date(), invocationId = null) {
+  await db.prepare(`UPDATE digest_shadow_runs SET summary_json = json_set(summary_json,
+    '$.phase', ?, '$.evaluated_count', ?, '$.progress_at', ?)
+    WHERE run_day = ? AND status = 'STARTED'
+    AND (? IS NULL OR json_extract(summary_json, '$.invocation_id') = ?)
+    AND COALESCE(json_extract(summary_json, '$.evaluated_count'), 0) <= ?`)
+    .bind(progress.phase, progress.evaluated_count, new Date(now).toISOString(), day,
+      invocationId, invocationId, progress.evaluated_count).run();
+}
+
 /** Run the real digest builders with delivery, queue fan-out, and state advancement disabled. */
 export async function runDigestShadow(env, {
   now = new Date(),
   runAlertsFn = null,
   ontologyDeltaCandidates = null,
   suppressPersonalizedLogs = false,
+  invocationId = null,
 } = {}) {
   if (!env.DB) throw new Error("digest shadow requires DB");
-  const [{ runAlerts }, { recordDigestShadowHoldState }, ontology] = await Promise.all([
-    runAlertsFn ? Promise.resolve({ runAlerts: runAlertsFn }) : import("./alerts.mjs"),
-    import("./digest_shadow_hold.mjs"),
-    import("./lib/ontology_delta_alert.mjs"),
-  ]);
+  const { runAlerts } = runAlertsFn
+    ? { runAlerts: runAlertsFn }
+    : await import("./alerts.mjs");
   const at = new Date(now);
+  const day = at.toISOString().slice(0, 10);
+  const onProgress = (progress) => recordDigestShadowProgress(env.DB, day, progress, new Date(), invocationId);
   const shadowEnv = { ...env, ALERTS_LIVE: "false", QUEUE_DIGESTS: "false" };
   const run = await runAlerts(shadowEnv, undefined, {
     now: at,
@@ -990,27 +1137,14 @@ export async function runDigestShadow(env, {
     advanceState: false,
     persist: false,
     simulateDryRunCounters: true,
+    // A rehearsal consumes the same materialized forecasts as delivery; acquisition is a
+    // separate job and must not stall validation or mutate forecast caches during a preview.
+    skipForecastingPipelines: true,
+    onProgress,
     suppressDryRunLogs: suppressPersonalizedLogs,
   });
-  const day = at.toISOString().slice(0, 10);
-  const history = await readHistory(env, day);
-  const candidates = ontologyDeltaCandidates == null
-    ? await ontology.buildDefaultOntologyDeltaCandidates(env.DB)
-    : ontologyDeltaCandidates;
-  const ontologyDelta = await ontology.reconcileOntologyDeltaCandidates(env.DB, candidates, {
-    observedAt: at,
-  });
-  const failedDigestIds = (Array.isArray(run?.results) ? run.results : [])
-    .filter((result) => result?.error)
-    .map((result) => result.previewId || result.sub || result.watch);
-  const lastGoodPreviews = await readLastGoodPreviews(env.DB, failedDigestIds, day);
-  const summary = buildDigestShadowSummary({ run, history, now: at, ontologyDelta, lastGoodPreviews });
-  await persistDigestShadow(env.DB, summary);
-  summary.hold = await recordDigestShadowHoldState(env.DB, summary, { now: at, receiptStore: env.ALERT_STATE });
-  await persistDigestShadow(env.DB, summary);
-  const out = { ...summary };
-  delete out._rendered_previews;
-  return out;
+  await onProgress({ phase: "history_and_ontology", evaluated_count: run?.results?.length || 0 });
+  return validateDigestShadowRun(env, run, { now: at, ontologyDeltaCandidates });
 }
 
 export async function readDigestShadow(db, { day = null, digestId = null } = {}) {

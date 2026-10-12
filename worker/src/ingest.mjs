@@ -145,7 +145,11 @@ async function stateSet(db, k, v) {
   await db.prepare("INSERT OR REPLACE INTO ingest_state (k, v) VALUES (?, ?)").bind(k, v).run();
 }
 
-export async function ingestNotices(env) {
+export async function ingestNotices(env, {
+  fetchFn = fetch,
+  signal,
+  computeHashFn = computeSourceRecordHash,
+} = {}) {
   if (!env.DB) return { skipped: "no-d1-binding" };
   const dataset = env.SOCRATA_DATASET || "dg92-zbpx";
 
@@ -203,11 +207,18 @@ export async function ingestNotices(env) {
   const nowISO = new Date().toISOString();
 
   for (let page = 0; page < MAX_PAGES; page++) {
+    signal?.throwIfAborted();
     const where = encodeURIComponent(`start_date >= '${cursor}T00:00:00'`);
     const url = `${base}?$where=${where}&$order=start_date&$limit=${PAGE}&$offset=${page * PAGE}`;
-    const r = await fetch(url);
-    if (!r.ok) throw new Error(`SODA ${r.status}: ${await r.text()}`);
+    const r = await fetchFn(url, { signal });
+    signal?.throwIfAborted();
+    if (!r.ok) {
+      const detail = await r.text();
+      signal?.throwIfAborted();
+      throw new Error(`SODA ${r.status}: ${detail}`);
+    }
     const rows = await r.json();
+    signal?.throwIfAborted();
     if (rows.length === 0) break;
     fetched += rows.length;
 
@@ -215,6 +226,7 @@ export async function ingestNotices(env) {
     const sourceStmts = [];
     const entityObservations = [];
     for (const row of rows) {
+      signal?.throwIfAborted();
       const m = mapRow(row);
       if (!m.request_id) continue;
       if (noticeRequestIds.length < NOTICE_IDS_CAP) noticeRequestIds.push(m.request_id);
@@ -237,7 +249,8 @@ export async function ingestNotices(env) {
         ),
       );
       if (sourceRecordInsert || String(env?.[ENTITY_LINK_DUAL_WRITE_FLAG] || "").toLowerCase() === "true") {
-        const sourceRecordHash = await computeSourceRecordHash(row);
+        const sourceRecordHash = await computeHashFn(row);
+        signal?.throwIfAborted();
         if (sourceRecordInsert) {
           sourceStmts.push(sourceRecordInsert.bind(
             SOURCE_RECORD_SYSTEM,
@@ -256,9 +269,11 @@ export async function ingestNotices(env) {
         }
       }
     }
+    signal?.throwIfAborted();
     if (noticeStmts.length) {
       await env.DB.batch(noticeStmts);
     }
+    signal?.throwIfAborted();
     if (sourceStmts.length) {
       try {
         await env.DB.batch(sourceStmts);
@@ -266,6 +281,7 @@ export async function ingestNotices(env) {
         // Dual-write failures must not stop the notices mirror from being refreshed.
       }
     }
+    signal?.throwIfAborted();
     if (entityObservations.length && String(env?.[ENTITY_LINK_DUAL_WRITE_FLAG] || "").toLowerCase() === "true") {
       try {
         const entityResult = await shadowWriteExactStemAutoLinks(env, entityObservations, {
@@ -283,12 +299,14 @@ export async function ingestNotices(env) {
         // Entity-resolution shadow writes must never stop the notices mirror.
       }
     }
+    signal?.throwIfAborted();
     if (noticeStmts.length) {
       upserted += noticeStmts.length;
     }
     if (rows.length < PAGE) break;
   }
 
+  signal?.throwIfAborted();
   await stateSet(env.DB, "ingest_cursor", maxStart);
   return { fetched, upserted, cursor: maxStart, noticeRequestIds, awardRequestIds, nychaRequestIds };
 }

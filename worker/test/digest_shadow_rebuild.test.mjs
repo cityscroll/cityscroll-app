@@ -22,7 +22,18 @@ class Statement {
   }
 
   async first() {
+    if (this.sql.includes("UPDATE digest_shadow_rebuild_items") && this.sql.includes("RETURNING attempt_count")) {
+      const [startedAt, runId, digestId] = this.args;
+      const item = this.db.items.get(`${runId}:${digestId}`);
+      if (!item || !new Set(["queued", "running"]).has(item.status)) return null;
+      item.status = "running";
+      item.attempt_count += 1;
+      item.started_at = startedAt;
+      item.error = null;
+      return { attempt_count: item.attempt_count };
+    }
     if (this.sql.includes("digest_shadow_rebuild_runs")) return this.db.runs.get(this.args[0]) || null;
+    if (this.sql.includes("FROM digest_shadow_runs")) return this.db.mainRuns.get(this.args[0]) || null;
     return null;
   }
 
@@ -35,12 +46,12 @@ class Statement {
 
   async run() {
     if (this.sql.startsWith("INSERT INTO digest_shadow_rebuild_runs")) {
-      const [run_id, run_day, requested_digest_ids_json, created_at, updated_at] = this.args;
+      const [run_id, run_day, requested_digest_ids_json, base_summary_json, created_at, updated_at] = this.args;
       this.db.runs.set(run_id, {
-        run_id, run_day, requested_digest_ids_json, status: "queued", total_count: 0,
+        run_id, run_day, requested_digest_ids_json, base_summary_json, status: "queued", total_count: 0,
         completed_count: 0, failed_count: 0, receipt_json: null, error: null, created_at, updated_at,
       });
-      return { success: true };
+      return { success: true, meta: { changes: 1 } };
     }
     if (this.sql.includes("INSERT OR IGNORE INTO digest_shadow_rebuild_items")) {
       const [run_id, digest_id, job_json] = this.args;
@@ -50,33 +61,79 @@ class Statement {
           result_json: null, error: null, started_at: null, completed_at: null,
         });
       }
-      return { success: true };
+      return { success: true, meta: { changes: 1 } };
+    }
+    if (this.sql.includes("INSERT INTO digest_shadow_runs")) {
+      const [run_day, ran_at, status, digest_count, total_items, summary_json] = this.args;
+      const expectedSummary = this.args.at(-1);
+      const current = this.db.mainRuns.get(run_day);
+      if (!current || current.summary_json === expectedSummary) {
+        this.db.mainRuns.set(run_day, { run_day, ran_at, status, digest_count, total_items, summary_json });
+        return { success: true, meta: { changes: 1 } };
+      }
+      return { success: true, meta: { changes: 0 } };
+    }
+    if (this.sql.includes("DELETE FROM digest_shadow_previews")) {
+      const [runDay, digestId, ownerDay, finalizationId] = this.args;
+      const summary = JSON.parse(this.db.mainRuns.get(ownerDay)?.summary_json || "null");
+      const changed = summary?.rebuild_finalization_id === finalizationId
+        ? Number(this.db.previews.delete(`${runDay}:${digestId}`))
+        : 0;
+      return { success: true, meta: { changes: changed } };
+    }
+    if (this.sql.includes("INSERT INTO digest_shadow_previews")) {
+      const [run_day, digest_id, recipient_redacted, subject, html, item_count, watch_counts_json,
+        ownerDay, finalizationId] = this.args;
+      const summary = JSON.parse(this.db.mainRuns.get(ownerDay)?.summary_json || "null");
+      if (summary?.rebuild_finalization_id === finalizationId) {
+        this.db.previews.set(`${run_day}:${digest_id}`, {
+          run_day, digest_id, recipient_redacted, subject, html, item_count, watch_counts_json,
+        });
+        return { success: true, meta: { changes: 1 } };
+      }
+      return { success: true, meta: { changes: 0 } };
     }
     if (this.sql.includes("UPDATE digest_shadow_rebuild_items")) {
-      const item = this.db.items.get(`${this.args.at(-2)}:${this.args.at(-1)}`);
-      if (!item) return { success: true };
-      if (this.sql.includes("status = 'running'")) {
-        item.status = "running";
-        item.attempt_count += 1;
-        item.started_at = this.args[0];
-      } else if (this.sql.includes("status = 'complete'")) {
+      if (this.sql.includes("SET status = 'complete'")) {
+        const [resultJson, completedAt, runId, digestId, attemptCount] = this.args;
+        const item = this.db.items.get(`${runId}:${digestId}`);
+        if (!item || item.status !== "running" || item.attempt_count !== attemptCount) {
+          return { success: true, meta: { changes: 0 } };
+        }
         item.status = "complete";
-        item.result_json = this.args[0];
-        item.completed_at = this.args[1];
+        item.result_json = resultJson;
+        item.completed_at = completedAt;
       } else {
+        const [error, runId, digestId, attemptCount] = this.args;
+        const item = this.db.items.get(`${runId}:${digestId}`);
+        if (!item || item.status !== "running" || item.attempt_count !== attemptCount) {
+          return { success: true, meta: { changes: 0 } };
+        }
         item.status = "queued";
-        item.error = this.args[0];
+        item.error = error;
       }
-      return { success: true };
+      return { success: true, meta: { changes: 1 } };
     }
     if (this.sql.includes("UPDATE digest_shadow_rebuild_runs")) {
       const run = this.db.runs.get(this.args.at(-1));
       if (!run) return { success: true };
+      if (this.sql.includes("MAX(completed_count")) {
+        const [completed, failed, updatedAt, status, receiptJson, error] = this.args;
+        run.completed_count = Math.max(run.completed_count, completed);
+        run.failed_count = Math.max(run.failed_count, failed);
+        run.updated_at = updatedAt;
+        if (!new Set(["complete", "failed"]).has(run.status)) {
+          run.status = status;
+          run.receipt_json = receiptJson;
+          run.error = error;
+        }
+        return { success: true, meta: { changes: 1 } };
+      }
       const fields = this.sql.match(/SET ([\s\S]+?)\s+WHERE/)[1].split(", ").map((field) => field.split(" = ")[0]);
       fields.forEach((field, index) => { run[field] = this.args[index]; });
-      return { success: true };
+      return { success: true, meta: { changes: 1 } };
     }
-    return { success: true };
+    return { success: true, meta: { changes: 1 } };
   }
 }
 
@@ -84,6 +141,8 @@ class FakeD1 {
   constructor() {
     this.runs = new Map();
     this.items = new Map();
+    this.mainRuns = new Map();
+    this.previews = new Map();
   }
 
   prepare(sql) { return new Statement(this, sql); }
@@ -97,6 +156,7 @@ class FakeD1 {
 function kv() {
   const values = new Map();
   return {
+    values,
     async get(key) { return values.get(key) || null; },
     async put(key, value) { values.set(key, String(value)); },
     async delete(key) { values.delete(key); },
@@ -139,7 +199,7 @@ test("queue messages checkpoint one digest and complete the run with a receipt",
   assert.equal(status.status, "complete");
   assert.equal(status.completed_count, 1);
   assert.equal(DB.items.get(`${created.run_id}:digest:one`).status, "complete");
-  assert.equal(status.receipt.status, "READY");
+  assert.equal(status.receipt.status, "PARTIAL");
   assert.equal(status.receipt.rebuild_run_id, created.run_id);
 });
 
@@ -194,6 +254,531 @@ test("an interrupted scoped rebuild resumes after its checkpoint without retryin
   assert.equal(finished.status, "complete");
   assert.equal(finished.complete, true);
   assert.equal(finished.completed_count, 3);
-  assert.equal(finished.receipt.complete, true);
-  assert.equal(finished.receipt.status, "READY");
+  assert.equal(finished.receipt.complete, false);
+  assert.equal(finished.receipt.status, "PARTIAL");
+});
+
+// The result checkpoint and final aggregate are separate writes. A retry must complete
+// the aggregate even when the per-digest result was already durable before the failure.
+test("replayed completed item repairs interrupted finalization", async () => {
+  const DB = new FakeD1();
+  const env = { DB, ALERT_STATE: kv(), DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, { affectedDigestIds: ["digest:one"], now: NOW });
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.total_count = 1;
+  DB.items.set(`${created.run_id}:digest:one`, {
+    run_id: created.run_id, digest_id: "digest:one",
+    job_json: JSON.stringify({ type: "sub", key: "sub:missing" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  const batch = DB.batch.bind(DB);
+  let failed = false;
+  DB.batch = async (statements) => {
+    if (!failed) { failed = true; throw new Error("finalization interrupted"); }
+    return batch(statements);
+  };
+  const message = { type: "digest", run_id: created.run_id, digest_id: "digest:one" };
+  await assert.rejects(handleDigestShadowRebuildQueueMessage(env, message, { now: NOW }), /finalization interrupted/);
+  assert.equal(DB.items.get(`${created.run_id}:digest:one`).status, "complete");
+  const finished = await handleDigestShadowRebuildQueueMessage(env, message, { now: NOW });
+  assert.equal(finished.status, "complete");
+  assert.equal(finished.receipt.status, "PARTIAL");
+  assert.equal(DB.items.get(`${created.run_id}:digest:one`).attempt_count, 1);
+});
+
+test("a stale failed attempt cannot revert a newer completed rebuild item", async () => {
+  const DB = new FakeD1();
+  const env = { DB, ALERT_STATE: kv(), DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, { affectedDigestIds: ["digest:one"], now: NOW });
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.total_count = 1;
+  DB.items.set(`${created.run_id}:digest:one`, {
+    run_id: created.run_id, digest_id: "digest:one",
+    job_json: JSON.stringify({ type: "sub", key: "sub:one" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  let finishSuccess;
+  let finishFailure;
+  let entered = 0;
+  let bothEntered;
+  const enteredGate = new Promise((resolve) => { bothEntered = resolve; });
+  const markEntered = () => {
+    entered += 1;
+    if (entered === 2) bothEntered();
+  };
+  const successGate = new Promise((resolve) => { finishSuccess = resolve; });
+  const failureGate = new Promise((_, reject) => { finishFailure = reject; });
+  const message = { type: "digest", run_id: created.run_id, digest_id: "digest:one" };
+  const fails = handleDigestShadowRebuildQueueMessage(env, message, {
+    now: NOW,
+    runTargetFn: async () => {
+      markEntered();
+      return failureGate;
+    },
+  });
+  const succeeds = handleDigestShadowRebuildQueueMessage(env, message, {
+    now: NOW,
+    runTargetFn: async () => {
+      markEntered();
+      await successGate;
+      return { previews: [], redlines: [], upstream_incidents: [], _rendered_previews: [] };
+    },
+  });
+  await enteredGate;
+  finishSuccess();
+  const completed = await succeeds;
+  finishFailure(new Error("duplicate failed late"));
+  await assert.rejects(fails, /duplicate failed late/);
+  assert.equal(completed.status, "complete");
+  assert.equal(DB.items.get(`${created.run_id}:digest:one`).status, "complete");
+  assert.equal(DB.runs.get(created.run_id).completed_count, 1);
+  assert.equal(DB.runs.get(created.run_id).status, "complete");
+});
+
+test("a stale successful attempt cannot overwrite a newer completed rebuild item", async () => {
+  const DB = new FakeD1();
+  const env = { DB, ALERT_STATE: kv(), DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, { affectedDigestIds: ["digest:one"], now: NOW });
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.total_count = 1;
+  DB.items.set(`${created.run_id}:digest:one`, {
+    run_id: created.run_id, digest_id: "digest:one",
+    job_json: JSON.stringify({ type: "sub", key: "sub:one" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  let finishStale;
+  let finishCurrent;
+  let entered = 0;
+  let bothEntered;
+  const enteredGate = new Promise((resolve) => { bothEntered = resolve; });
+  const markEntered = () => {
+    entered += 1;
+    if (entered === 2) bothEntered();
+  };
+  const staleGate = new Promise((resolve) => { finishStale = resolve; });
+  const currentGate = new Promise((resolve) => { finishCurrent = resolve; });
+  const message = { type: "digest", run_id: created.run_id, digest_id: "digest:one" };
+  const stale = handleDigestShadowRebuildQueueMessage(env, message, {
+    now: NOW,
+    runTargetFn: async () => {
+      markEntered();
+      await staleGate;
+      return { marker: "stale", previews: [], redlines: [], upstream_incidents: [], _rendered_previews: [] };
+    },
+  });
+  const current = handleDigestShadowRebuildQueueMessage(env, message, {
+    now: NOW,
+    runTargetFn: async () => {
+      markEntered();
+      await currentGate;
+      return { marker: "current", previews: [], redlines: [], upstream_incidents: [], _rendered_previews: [] };
+    },
+  });
+  await enteredGate;
+  finishCurrent();
+  const completed = await current;
+  finishStale();
+  const staleResult = await stale;
+  assert.equal(completed.status, "complete");
+  assert.equal(staleResult.status, "complete");
+  assert.equal(JSON.parse(DB.items.get(`${created.run_id}:digest:one`).result_json).marker, "current");
+  assert.equal(JSON.parse(DB.mainRuns.get(run.run_day).summary_json).rebuild_run_id, created.run_id);
+});
+
+test("rebuild aggregate CAS rejects a newer scheduled result without side effects", async () => {
+  const DB = new FakeD1();
+  const ALERT_STATE = kv();
+  const env = { DB, ALERT_STATE, DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, { affectedDigestIds: ["digest:one"], now: NOW });
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.total_count = 1;
+  const started = {
+    run_day: run.run_day, status: "STARTED", phase: "started", complete: false,
+    invocation_id: "shadow:old", previews: [], redlines: [], upstream_incidents: [],
+  };
+  DB.mainRuns.set(run.run_day, {
+    run_day: run.run_day,
+    status: "STARTED",
+    summary_json: JSON.stringify(started),
+  });
+  DB.items.set(`${created.run_id}:digest:one`, {
+    run_id: created.run_id, digest_id: "digest:one",
+    job_json: JSON.stringify({ type: "sub", key: "sub:one" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  const batch = DB.batch.bind(DB);
+  DB.batch = async (statements) => {
+    const newer = {
+      run_day: run.run_day, status: "READY", phase: "finalized", complete: true,
+      invocation_id: "shadow:new", previews: [{ digest_id: "digest:new", item_count: 1 }],
+      redlines: [], upstream_incidents: [],
+    };
+    DB.mainRuns.set(run.run_day, {
+      run_day: run.run_day,
+      status: "READY",
+      summary_json: JSON.stringify(newer),
+    });
+    DB.previews.set(`${run.run_day}:digest:new`, { run_day: run.run_day, digest_id: "digest:new" });
+    DB.batch = batch;
+    return batch(statements);
+  };
+
+  const finished = await handleDigestShadowRebuildQueueMessage(env, {
+    type: "digest", run_id: created.run_id, digest_id: "digest:one",
+  }, {
+    now: NOW,
+    runTargetFn: async () => ({
+      previews: [{ digest_id: "digest:one", item_count: 1 }],
+      redlines: [],
+      upstream_incidents: [],
+      _rendered_previews: [{
+        digest_id: "digest:one", recipient_redacted: "on***@example.test", subject: "One",
+        html: "<p>One</p>", item_count: 1, watch_counts: [],
+      }],
+    }),
+  });
+  const stored = JSON.parse(DB.mainRuns.get(run.run_day).summary_json);
+  assert.equal(finished.status, "failed");
+  assert.match(finished.error, /changed during rebuild finalization/);
+  assert.equal(stored.invocation_id, "shadow:new");
+  assert.equal(stored.rebuild_run_id, undefined);
+  assert.equal(DB.previews.has(`${run.run_day}:digest:new`), true);
+  assert.equal(DB.previews.has(`${run.run_day}:digest:one`), false);
+  assert.equal(ALERT_STATE.values.size, 0);
+});
+
+test("scoped rebuild cannot certify an incomplete STARTED base", async () => {
+  const DB = new FakeD1();
+  const env = { DB, ALERT_STATE: kv(), DIGEST_SHADOW_QUEUE: { async send() {} } };
+  DB.mainRuns.set("2026-09-21", {
+    run_day: "2026-09-21",
+    status: "STARTED",
+    summary_json: JSON.stringify({
+      run_day: "2026-09-21",
+      status: "STARTED",
+      phase: "started",
+      complete: false,
+      previews: [],
+      redlines: [],
+      upstream_incidents: [],
+    }),
+  });
+  const created = await createDigestShadowRebuild(env, { affectedDigestIds: ["digest:one"], now: NOW });
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.total_count = 1;
+  DB.items.set(`${created.run_id}:digest:one`, {
+    run_id: created.run_id, digest_id: "digest:one",
+    job_json: JSON.stringify({ type: "sub", key: "sub:one" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  const finished = await handleDigestShadowRebuildQueueMessage(env, {
+    type: "digest", run_id: created.run_id, digest_id: "digest:one",
+  }, {
+    now: NOW,
+    runTargetFn: async () => ({
+      previewId: "digest:one", skipped: "no-new",
+    }),
+  });
+  const summary = JSON.parse(DB.mainRuns.get(run.run_day).summary_json);
+  assert.equal(finished.receipt.status, "PARTIAL");
+  assert.equal(summary.status, "NEEDS_ATTENTION");
+  assert.equal(summary.phase, "partial_rebuild");
+  assert.equal(summary.complete, false);
+  assert.equal(summary.rebuild_complete, false);
+  assert.equal(summary.redlines.at(-1).code, "rebuild_partial_incomplete_base");
+});
+
+test("partial aggregate retry resumes side effects after receipt interruption", async () => {
+  const DB = new FakeD1();
+  const ALERT_STATE = kv();
+  DB.mainRuns.set("2026-09-21", {
+    run_day: "2026-09-21",
+    status: "STARTED",
+    summary_json: JSON.stringify({
+      run_day: "2026-09-21", status: "STARTED", phase: "started", complete: false,
+      previews: [], redlines: [], upstream_incidents: [],
+    }),
+  });
+  let interrupt = true;
+  const put = ALERT_STATE.put.bind(ALERT_STATE);
+  ALERT_STATE.put = async (key, value) => {
+    if (interrupt && key.startsWith("ops:digest:shadow:")) {
+      interrupt = false;
+      throw new Error("receipt interrupted");
+    }
+    return put(key, value);
+  };
+  const env = { DB, ALERT_STATE, DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, { affectedDigestIds: ["digest:one"], now: NOW });
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.total_count = 1;
+  DB.items.set(`${created.run_id}:digest:one`, {
+    run_id: created.run_id, digest_id: "digest:one",
+    job_json: JSON.stringify({ type: "sub", key: "sub:one" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  const message = { type: "digest", run_id: created.run_id, digest_id: "digest:one" };
+  await assert.rejects(handleDigestShadowRebuildQueueMessage(env, message, {
+    now: NOW,
+    runTargetFn: async () => ({ previewId: "digest:one", skipped: "no-new" }),
+  }), /receipt interrupted/);
+  const stored = JSON.parse(DB.mainRuns.get(run.run_day).summary_json);
+  assert.equal(stored.rebuild_complete, false);
+  assert.ok(stored.rebuild_finalization_id);
+  const resumed = await handleDigestShadowRebuildQueueMessage(env, message, { now: NOW });
+  assert.equal(resumed.status, "complete");
+  assert.equal(resumed.receipt.status, "PARTIAL");
+});
+
+test("concurrent finalizers converge on one accepted rebuild result", async () => {
+  const DB = new FakeD1();
+  const env = { DB, ALERT_STATE: kv(), DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, {
+    affectedDigestIds: ["digest:one", "digest:two"],
+    now: NOW,
+  });
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.total_count = 2;
+  for (const digestId of ["digest:one", "digest:two"]) {
+    DB.items.set(`${created.run_id}:${digestId}`, {
+      run_id: created.run_id, digest_id: digestId,
+      job_json: JSON.stringify({ type: "sub", key: digestId }),
+      status: "complete", attempt_count: 1,
+      result_json: JSON.stringify({ previewId: digestId, skipped: "no-new" }),
+      error: null,
+    });
+  }
+  const [first, second] = await Promise.all([
+    handleDigestShadowRebuildQueueMessage(env, {
+      type: "digest", run_id: created.run_id, digest_id: "digest:one",
+    }, { now: NOW }),
+    handleDigestShadowRebuildQueueMessage(env, {
+      type: "digest", run_id: created.run_id, digest_id: "digest:two",
+    }, { now: NOW }),
+  ]);
+  assert.equal(first.status, "complete");
+  assert.equal(second.status, "complete");
+  const stored = JSON.parse(DB.mainRuns.get(run.run_day).summary_json);
+  assert.equal(stored.rebuild_run_id, created.run_id);
+  assert.ok(stored.rebuild_finalization_id);
+});
+
+test("rebuild preserves upstream degradation in terminal evidence", async () => {
+  const DB = new FakeD1();
+  const env = { DB, ALERT_STATE: kv(), DIGEST_SHADOW_QUEUE: { async send() {} } };
+  DB.mainRuns.set("2026-09-21", {
+    run_day: "2026-09-21",
+    status: "READY",
+    summary_json: JSON.stringify({
+      run_day: "2026-09-21", status: "READY", phase: "finalized", complete: true,
+      previews: [], redlines: [], upstream_incidents: [],
+    }),
+  });
+  const created = await createDigestShadowRebuild(env, { affectedDigestIds: ["digest:one"], now: NOW });
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.total_count = 1;
+  DB.items.set(`${created.run_id}:digest:one`, {
+    run_id: created.run_id, digest_id: "digest:one",
+    job_json: JSON.stringify({ type: "sub", key: "sub:one" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  const finished = await handleDigestShadowRebuildQueueMessage(env, {
+    type: "digest", run_id: created.run_id, digest_id: "digest:one",
+  }, {
+    now: NOW,
+    runTargetFn: async () => ({
+      previewId: "digest:one",
+      error: "SODA 524 after retry budget",
+    }),
+  });
+  const summary = JSON.parse(DB.mainRuns.get(run.run_day).summary_json);
+  assert.equal(finished.receipt.status, "DEGRADED");
+  assert.equal(summary.status, "DEGRADED_UPSTREAM");
+  assert.deepEqual(summary.upstream_sources_unavailable, ["soda"]);
+});
+
+test("scoped rebuild retains an unchanged historical zero redline", async () => {
+  const DB = new FakeD1();
+  const ALERT_STATE = kv();
+  ALERT_STATE.values.set("digest:daylog:2026-09-20", JSON.stringify({
+    day: "2026-09-20",
+    entries: [{ day: "2026-09-20", id: "sub:quiet", noticeCount: 3, forecasts: 0 }],
+  }));
+  DB.mainRuns.set("2026-09-21", {
+    run_day: "2026-09-21",
+    status: "NEEDS_ATTENTION",
+    summary_json: JSON.stringify({
+      run_day: "2026-09-21", status: "NEEDS_ATTENTION", phase: "finalized", complete: true,
+      previews: [], upstream_incidents: [],
+      redlines: [{ code: "historical_watch_zero", digest_id: "digest:quiet" }],
+    }),
+  });
+  const env = { DB, ALERT_STATE, DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, {
+    affectedDigestIds: ["digest:quiet"],
+    now: NOW,
+  });
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.total_count = 1;
+  DB.items.set(`${created.run_id}:digest:quiet`, {
+    run_id: created.run_id, digest_id: "digest:quiet",
+    job_json: JSON.stringify({ type: "sub", key: "sub:quiet" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  await handleDigestShadowRebuildQueueMessage(env, {
+    type: "digest", run_id: created.run_id, digest_id: "digest:quiet",
+  }, {
+    now: NOW,
+    runTargetFn: async () => ({
+      sub: "sub:quiet", previewId: "digest:quiet", found: 0, new: 0, forecasts: 0,
+      action: "heartbeat", emailRedacted: "qu***@example.test",
+      preview: {
+        subject: "Quiet",
+        html: '<a href="https://cityscroll.org/context">Context</a><a href="https://cityscroll.org/unsubscribe">Unsubscribe</a>',
+        listUnsubscribe: "<https://cityscroll.org/unsubscribe>",
+      },
+    }),
+  });
+  const summary = JSON.parse(DB.mainRuns.get(run.run_day).summary_json);
+  assert.equal(summary.status, "NEEDS_ATTENTION");
+  assert.equal(summary.redlines.filter((item) => item.code === "historical_watch_zero").length, 1);
+  assert.equal(summary.redlines.some((item) => item.code === "aggregate_count_collapse"), false);
+});
+
+test("full rebuild reuses scheduled history validation and evaluated count", async () => {
+  const DB = new FakeD1();
+  const ALERT_STATE = kv();
+  ALERT_STATE.values.set("digest:daylog:2026-09-20", JSON.stringify({
+    day: "2026-09-20",
+    entries: [{ day: "2026-09-20", id: "sub:quiet", noticeCount: 3, forecasts: 0 }],
+  }));
+  DB.mainRuns.set("2026-09-21", {
+    run_day: "2026-09-21",
+    status: "STARTED",
+    summary_json: JSON.stringify({
+      run_day: "2026-09-21", status: "STARTED", phase: "started", complete: false,
+      previews: [], redlines: [], upstream_incidents: [],
+    }),
+  });
+  const env = { DB, ALERT_STATE, DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, { now: NOW });
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.total_count = 1;
+  DB.items.set(`${created.run_id}:digest:quiet`, {
+    run_id: created.run_id, digest_id: "digest:quiet",
+    job_json: JSON.stringify({ type: "sub", key: "sub:quiet" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  const finished = await handleDigestShadowRebuildQueueMessage(env, {
+    type: "digest", run_id: created.run_id, digest_id: "digest:quiet",
+  }, {
+    now: NOW,
+    runTargetFn: async () => ({
+      sub: "sub:quiet",
+      previewId: "digest:quiet",
+      kind: "subscription",
+      found: 0,
+      new: 0,
+      forecasts: 0,
+      action: "heartbeat",
+      emailRedacted: "qu***@example.test",
+      preview: {
+        subject: "Quiet",
+        html: '<a href="https://cityscroll.org/context">Context</a><a href="https://cityscroll.org/unsubscribe">Unsubscribe</a>',
+        listUnsubscribe: "<https://cityscroll.org/unsubscribe>",
+      },
+    }),
+  });
+  const summary = JSON.parse(DB.mainRuns.get(run.run_day).summary_json);
+  assert.equal(finished.receipt.status, "DEGRADED");
+  assert.equal(summary.evaluated_count, 1);
+  assert.equal(summary.complete, true);
+  assert.equal(summary.rebuild_complete, true);
+  assert.ok(summary.redlines.some((finding) => finding.code === "historical_watch_zero"));
+});
+
+test("rebuild evaluation remains frozen when queue work crosses UTC midnight", async () => {
+  const DB = new FakeD1();
+  DB.mainRuns.set("2026-09-21", {
+    run_day: "2026-09-21",
+    status: "STARTED",
+    summary_json: JSON.stringify({
+      run_day: "2026-09-21", status: "STARTED", phase: "started", complete: false,
+      previews: [], redlines: [], upstream_incidents: [],
+    }),
+  });
+  const ALERT_STATE = kv();
+  const env = { DB, ALERT_STATE, DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, { now: NOW });
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.total_count = 1;
+  DB.items.set(`${created.run_id}:digest:one`, {
+    run_id: created.run_id, digest_id: "digest:one",
+    job_json: JSON.stringify({ type: "sub", key: "sub:one" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  let evaluatedAt;
+  const nextDay = new Date("2026-09-22T00:05:00.000Z");
+  const finished = await handleDigestShadowRebuildQueueMessage(env, {
+    type: "digest", run_id: created.run_id, digest_id: "digest:one",
+  }, {
+    now: nextDay,
+    runTargetFn: async (_env, _job, at) => {
+      evaluatedAt = new Date(at).toISOString();
+      return { previewId: "digest:one", skipped: "no-new" };
+    },
+  });
+  const summary = JSON.parse(DB.mainRuns.get(run.run_day).summary_json);
+  assert.equal(evaluatedAt, NOW.toISOString());
+  assert.equal(summary.run_day, "2026-09-21");
+  assert.equal(summary.ran_at, NOW.toISOString());
+  assert.equal(finished.receipt.day, "2026-09-21");
+  assert.equal(ALERT_STATE.values.has("ops:digest:shadow:2026-09-22"), false);
+});
+
+test("rebuild failed targets cannot produce READY evidence", async () => {
+  const DB = new FakeD1();
+  const env = { DB, ALERT_STATE: kv(), DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, {
+    affectedDigestIds: ["digest:one", "digest:missing"],
+    now: NOW,
+  });
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.total_count = 2;
+  DB.items.set(`${created.run_id}:digest:one`, {
+    run_id: created.run_id, digest_id: "digest:one",
+    job_json: JSON.stringify({ type: "sub", key: "sub:one" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  DB.items.set(`${created.run_id}:digest:missing`, {
+    run_id: created.run_id, digest_id: "digest:missing",
+    job_json: JSON.stringify({ type: "missing", digest_id: "digest:missing" }),
+    status: "failed", attempt_count: 0, result_json: null, error: "digest-not-found",
+  });
+  const finished = await handleDigestShadowRebuildQueueMessage(env, {
+    type: "digest", run_id: created.run_id, digest_id: "digest:one",
+  }, {
+    now: NOW,
+    runTargetFn: async () => ({
+      previewId: "digest:one", skipped: "no-new",
+    }),
+  });
+  const summary = JSON.parse(DB.mainRuns.get(run.run_day).summary_json);
+  assert.equal(finished.status, "failed");
+  assert.notEqual(finished.receipt.status, "READY");
+  assert.equal(summary.status, "NEEDS_ATTENTION");
+  assert.equal(summary.redlines[0].code, "rebuild_target_failed");
+  assert.equal(summary.redlines[0].digest_id, "digest:missing");
 });
