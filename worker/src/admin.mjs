@@ -1912,7 +1912,8 @@ export async function handleAdminDigestShadow(req, env, {
       receiptStore: env.ALERT_STATE,
     });
     const receipt = projectDigestShadowDegradedReceipt(hold?.degraded_receipt || degradedReceipt, out.summary, hold);
-    const attention = out.summary?.ok === false || receipt?.attention_status === "open";
+    const attention = out.summary?.ok === false || receipt?.attention_status === "open"
+      || (hold?.source_status === "READY" && hold.pending_catch_up_status !== "absent");
     return json({ ...out, hold, degraded_receipt: receipt || null }, attention ? 503 : 200);
   } catch (error) {
     return json({ error: "shadow-read-failed", detail: String(error?.message || error) }, 503);

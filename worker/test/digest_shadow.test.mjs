@@ -436,10 +436,14 @@ function readDb(summaryJson, preview = null) {
   };
 }
 
-function receiptKv(receipt) {
+function receiptKv(receipt, { pending = null, pendingError = null } = {}) {
   return {
     async get(key) {
       if (key === `digest:shadow:degraded:${receipt.run_day}`) return JSON.stringify(receipt);
+      if (key === "digest:shadow:dark-hold:pending") {
+        if (pendingError) throw pendingError;
+        return pending;
+      }
       return null;
     },
   };
@@ -531,9 +535,44 @@ test("verified READY recovery resolves current degraded attention without rewrit
   }
 });
 
+test("READY recovery closes attention only after proving catch-up is absent", async () => {
+  const clean = { ...summary([result()]), phase: "finalized", complete: true, result_revision: "recovered-revision" };
+  const receipt = { contract: "digest-shadow-degraded-decision.v1", run_day: clean.run_day,
+    decision: "SEND_FAIL_OPEN", attention_status: "open", catch_up_required: false };
+  const pendingReceipt = JSON.stringify({
+    decision_id: `${clean.run_day}:HOLD_ALL_DARK_PERIOD`,
+    decision: "HOLD_ALL_DARK_PERIOD",
+    catch_up_required: true,
+  });
+  for (const [label, alertState, expectedStatus, expectedLookup, catchUpRequired] of [
+    ["missing binding", undefined, 503, "unavailable", false],
+    ["throwing lookup", receiptKv(receipt, { pendingError: new Error("KV unavailable") }), 503, "unavailable", false],
+    ["malformed pending value", receiptKv(receipt, { pending: "not-json" }), 503, "malformed", false],
+    ["verified absent", receiptKv(receipt), 200, "absent", false],
+    ["actual pending", receiptKv(receipt, { pending: pendingReceipt }), 503, "pending", true],
+  ]) {
+    const response = await handleAdminDigestShadow(
+      new Request("https://w/admin/digest-shadow", { headers: { authorization: "Bearer secret" } }),
+      { ADMIN_KEY: "secret", DB: readDb(clean), ALERT_STATE: alertState }, { now: NOW },
+    );
+    assert.equal(response.status, expectedStatus, label);
+    const body = await response.json();
+    assert.equal(body.hold.pending_catch_up_status, expectedLookup, label);
+    assert.equal(body.hold.catch_up_required === true, catchUpRequired, label);
+    assert.equal(body.degraded_receipt?.attention_status,
+      label === "missing binding" ? undefined : expectedStatus === 200 ? "closed" : "open", label);
+  }
+});
+
 test("GET /admin/digest-shadow accepts the read-only SHADOW_STATUS_KEY; POST rejects it", async () => {
   const clean = summary([result()]);
-  const env = (extra = {}) => ({ ADMIN_KEY: "admin-key", SHADOW_STATUS_KEY: "shadow-key", DB: readDb(clean), ...extra });
+  const env = (extra = {}) => ({
+    ADMIN_KEY: "admin-key",
+    SHADOW_STATUS_KEY: "shadow-key",
+    DB: readDb(clean),
+    ALERT_STATE: { get: async () => null },
+    ...extra,
+  });
 
   const getWithShadow = await handleAdminDigestShadow(
     new Request("https://w/admin/digest-shadow", { headers: { authorization: "Bearer shadow-key" } }),

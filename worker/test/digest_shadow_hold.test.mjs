@@ -353,6 +353,7 @@ test("READY recovery carries the pending dark hold into the catch-up path", asyn
   await receipts.put("digest:shadow:dark-hold:pending", JSON.stringify({
     decision_id: "2026-08-03:HOLD_ALL_DARK_PERIOD",
     decision: "HOLD_ALL_DARK_PERIOD",
+    catch_up_required: true,
   }));
   const state = await resolveDigestShadowHold(graduatedDb({ summary: ready() }), {
     now: `${DAY}T13:00:00.000Z`,
@@ -443,11 +444,13 @@ for (const [lastReadyRunDay, policy, age] of [
 test("current recovery projection requires complete matching evidence and never clears catch-up", () => {
   const receipt = { run_day: DAY, decision: "SEND_FAIL_OPEN", attention_status: "open", catch_up_required: false };
   const summary = { ...ready(), phase: "finalized", complete: true, result_revision: "revision-a" };
-  const hold = { run_day: DAY, source_status: "READY", result_revision: "revision-a" };
+  const hold = { run_day: DAY, source_status: "READY", result_revision: "revision-a", pending_catch_up_status: "absent" };
   assert.equal(projectDigestShadowDegradedReceipt(receipt, summary, hold).attention_status, "closed");
   for (const [label, receiptPatch, summaryPatch, holdPatch] of [
     ["pending catch-up receipt", { catch_up_required: true }, {}, {}],
     ["pending catch-up hold", {}, {}, { catch_up_required: true }],
+    ["unverified catch-up absence", {}, {}, { pending_catch_up_status: "unavailable" }],
+    ["malformed catch-up evidence", {}, {}, { pending_catch_up_status: "malformed" }],
     ["dark-period decision", { decision: "HOLD_ALL_DARK_PERIOD" }, {}, {}],
     ["incomplete", {}, { complete: false }, {}],
     ["partial phase", {}, { phase: "partial_rebuild" }, {}],
