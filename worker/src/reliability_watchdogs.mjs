@@ -122,8 +122,14 @@ async function readCurrentDigestShadowReceipt(env, today) {
       revision = null;
     }
   }
-  if (revision) return readJson(env?.ALERT_STATE, `${DIGEST_SHADOW_LEDGER_PREFIX}${today}:${revision}`);
-  return readJson(env?.ALERT_STATE, `${DIGEST_SHADOW_LEDGER_PREFIX}${today}`);
+  if (revision) {
+    const receipt = await readJson(env?.ALERT_STATE, `${DIGEST_SHADOW_LEDGER_PREFIX}${today}:${revision}`);
+    return receipt?.result_revision === revision ? receipt : null;
+  }
+  const legacy = await readJson(env?.ALERT_STATE, `${DIGEST_SHADOW_LEDGER_PREFIX}${today}`);
+  // The mutable compatibility key cannot verify a versioned result when D1 did not
+  // establish the current revision. Older unversioned receipts retain their contract.
+  return legacy?.result_revision ? null : legacy;
 }
 
 /**

@@ -187,8 +187,9 @@ Reader-facing HTML uses canonical `cityscroll.org` paths. Existing API-host link
 ## The daily digest (ZAP lookup + hearings + exams `0 8 * * *`; shadow `0 10 * * *` ≈ 6am ET; send `0 13 * * *` ≈ 9am ET)
 
 The rehearsal reads already materialized forecast caches and does not run forecast acquisition.
-Legacy Socrata watch reads have one cancellation deadline spanning response headers, body
-consumption, and retry waits. Exhaustion is reported as upstream unavailability, not a successful
+Legacy static Socrata watch reads have one 60-second cancellation deadline spanning response
+headers, body consumption, and retry waits. This allowance covers slow source-wide searches;
+other subscription read budgets are unchanged. Exhaustion is reported as upstream unavailability, not a successful
 empty result. In-flight summaries checkpoint the phase, completed evaluation count, and progress
 time without subscriber identifiers; completed summaries cannot be overwritten by late progress.
 An unfinished `STARTED` row still consults the last `READY` day for the existing dark-period rule.

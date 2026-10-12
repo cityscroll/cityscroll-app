@@ -89,3 +89,34 @@ test("static-watch progress checkpoints every success and error", async () => {
     [0, 1, 2],
   );
 });
+
+for (const phase of ["headers", "body"]) {
+  test(`legacy watch permits a slow successful ${phase} read inside its bounded default deadline`, async (t) => {
+    t.mock.timers.enable({ apis: ["setTimeout", "Date"] });
+    const rows = [{ request_id: "20261012001" }];
+    const afterSourceDelay = (value) => new Promise((resolve) => setTimeout(() => resolve(value), 45_000));
+    const response = { ok: true, json: () => phase === "body" ? afterSourceDelay(rows) : Promise.resolve(rows) };
+    const pending = fetchSodaRowsWithRetry("https://example.test/soda", {
+      fetchFn: () => phase === "headers" ? afterSourceDelay(response) : Promise.resolve(response),
+    });
+    pending.catch(() => {});
+    // Let the body reader start before advancing its simulated source delay.
+    await Promise.resolve();
+    await Promise.resolve();
+    t.mock.timers.tick(45_000);
+    assert.deepEqual(await pending, rows);
+  });
+}
+
+test("legacy watch default deadline still aborts an indefinitely stalled request", async (t) => {
+  t.mock.timers.enable({ apis: ["setTimeout", "Date"] });
+  let signal;
+  const pending = fetchSodaRowsWithRetry("https://example.test/soda", {
+    fetchFn: (_url, options) => { signal = options.signal; return new Promise(() => {}); },
+  });
+  pending.catch(() => {});
+  t.mock.timers.tick(59_999);
+  assert.equal(signal.aborted, false);
+  t.mock.timers.tick(1);
+  await assert.rejects(pending, (error) => error.upstream_source === "soda" && signal.aborted);
+});

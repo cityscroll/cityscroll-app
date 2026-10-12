@@ -455,7 +455,9 @@ const REQ_URL = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeU
 // clock so one unwell source can never stall the whole digest run behind it.
 const RETRYABLE_SODA_STATUSES = TRANSIENT_UPSTREAM_STATUSES;
 const SODA_RETRY_DELAYS_MS = Object.freeze([250, 1000]);
-const SODA_RETRY_BUDGET_MS = 4000;
+// Static source-wide watches can take tens of seconds even when the source is healthy.
+// Keep their complete read bounded without treating the short retry backoff as a read limit.
+const SODA_RETRY_BUDGET_MS = 60_000;
 
 export async function runDigestShadowRecoveryCatchUp(env, shadowHold, {
   now = new Date(),
