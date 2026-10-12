@@ -221,12 +221,15 @@ unrelated digests remain eligible. A `READY` rerun releases all leases and clear
 
 The failure boundary is deliberately narrow: a redline is fail-closed only for its
 `affected_digest_ids`. Hold-store reads get three bounded attempts (250 ms then 1 s backoff), then
-use that day's last persisted hold state when one is usable. Without a last-known state, a missing
-or unavailable run stays fail-open with a loud `digest-shadow-degraded-decision.v1` receipt while
-the latest `READY` rehearsal is less than `DIGEST_SHADOW_DARK_DAYS` calendar days old (default 3,
-chosen to allow a bounded repair window without allowing stale validation to run indefinitely). At the dark-period boundary the
-policy holds every digest; the next `READY` rehearsal runs watermark catch-up before normal
-delivery and closes the receipt. `/admin/digest-shadow` exposes the receipt and returns HTTP 503
+use that day's D1 hold only when its immutable result revision still matches the current run.
+Mutable KV projections are never treated as current delivery authority when D1 cannot verify their
+revision. Without verified current state, a missing or unavailable run stays fail-open with a loud
+`digest-shadow-degraded-decision.v1` receipt while readable D1 history places the latest `READY`
+rehearsal less than `DIGEST_SHADOW_DARK_DAYS` calendar days in the past (default 3, chosen to allow
+a bounded repair window without allowing stale validation to run indefinitely). At the dark-period
+boundary the policy holds every digest; if D1 cannot establish that history, the decision remains
+explicitly degraded rather than inventing readiness or a hold. The next `READY` rehearsal runs
+watermark catch-up before normal delivery and closes the receipt. `/admin/digest-shadow` exposes the receipt and returns HTTP 503
 while attention is open; the daylog carries the same collapsed decision for the operations line.
 Run-level redlines without named digest scope remain fail-open. Named holds expire at 14:00 UTC; a
 queue message found held is acknowledged as `skipped:shadow-hold`, never retried into an accidental

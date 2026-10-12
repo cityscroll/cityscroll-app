@@ -332,8 +332,8 @@ async function readPersistedState(db, day) {
       if (state?.run_day === day && !state?.degraded_receipt) return state;
     }
   } catch {
-    // D1 is the canonical audit store; the KV copy keeps today's last-known
-    // decision available when that store itself is unavailable.
+    // D1 is canonical. Without a revision-verifiable row, no fallback state can
+    // authorize a delivery decision.
   }
   return null;
 }
