@@ -928,6 +928,17 @@ test('dead letter finalizes a stranded item and is idempotent after completion',
   } finally { f.sqlite.close(); }
 });
 
+test('dead letter rejects an unsupported finalize message', async () => {
+  const f = await sqliteRecoveryFixture();
+  try {
+    const { handleDigestShadowRebuildDeadLetter } = await import('../src/digest_shadow_rebuild.mjs');
+    await assert.rejects(
+      handleDigestShadowRebuildDeadLetter(f.env, { type: 'finalize', run_id: f.runId }, { now: NOW }),
+      /unknown digest shadow dead letter/,
+    );
+  } finally { f.sqlite.close(); }
+});
+
 test('dead letter retries aggregate failure without erasing a completed checkpoint', async () => {
   const f = await sqliteRecoveryFixture();
   try {

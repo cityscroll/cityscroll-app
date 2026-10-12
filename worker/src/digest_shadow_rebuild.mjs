@@ -561,7 +561,7 @@ export async function handleDigestShadowRebuildDeadLetter(env, message, { now = 
           THEN 'rebuild expansion exhausted before dispatch completed' ELSE error END
         WHERE run_id = ? AND status NOT IN ('complete', 'failed')`).bind(run.run_id),
     ]);
-  } else if (body.type !== "finalize") {
+  } else {
     throw new Error("unknown digest shadow dead letter");
   }
   return finalizeProgress(env, await readRun(env.DB, run.run_id), now);
