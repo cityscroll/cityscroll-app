@@ -211,3 +211,31 @@ test("dual-write hash is stable across repeat ingest runs", async () => {
     assert.deepEqual(secondRunHashes, firstRunHashes);
   });
 });
+
+test("ingest abort during row processing stops every later write boundary", async () => {
+  const DB = fakeDb();
+  const controller = new AbortController();
+  let enterHash;
+  let releaseHash;
+  const hashing = new Promise((resolve) => { releaseHash = resolve; });
+  const entered = new Promise((resolve) => { enterHash = resolve; });
+  const ingest = ingestNotices({
+    DB,
+    CITY_RECORD_SOURCE_RECORD_DUAL_WRITE: "true",
+  }, {
+    signal: controller.signal,
+    fetchFn: async () => Response.json([FIXTURE[0]]),
+    computeHashFn: async () => {
+      enterHash();
+      await hashing;
+      return "hash-after-abort";
+    },
+  });
+  await entered;
+  controller.abort(new Error("freshness deadline"));
+  releaseHash();
+  await assert.rejects(ingest, /freshness deadline/);
+  assert.equal(DB.notices.size, 0);
+  assert.equal(DB.sourceRecords.length, 0);
+  assert.equal(DB.state.ingest_cursor, "2026-06-01");
+});

@@ -35,7 +35,7 @@ function scheduledWorker({ now = NOW, overrides = {} } = {}) {
   const calls = [];
   const errors = [];
   const pending = [];
-  const context = { Date, console: { log() {}, error: (...args) => errors.push(args) } };
+  const context = { Date, crypto, console: { log() {}, error: (...args) => errors.push(args) } };
   for (const match of source.matchAll(/import\s+\{([^}]+)\}\s+from\s+"[^"]+";/g)) {
     for (const entry of match[1].split(",").map((s) => s.trim()).filter(Boolean)) {
       const name = entry.split(/\s+as\s+/).at(-1);
@@ -67,50 +67,48 @@ function kv() {
 }
 
 function shadowDb() {
-  const runs = new Map();
-  const holdStates = [];
+  const sqlite = new DatabaseSync(":memory:");
+  sqlite.exec(`
+    CREATE TABLE digest_shadow_runs (
+      run_day TEXT PRIMARY KEY, ran_at TEXT NOT NULL, status TEXT NOT NULL,
+      digest_count INTEGER NOT NULL, total_items INTEGER NOT NULL, summary_json TEXT NOT NULL
+    );
+    CREATE TABLE digest_shadow_previews (
+      run_day TEXT NOT NULL, digest_id TEXT NOT NULL, recipient_redacted TEXT,
+      subject TEXT NOT NULL, html TEXT NOT NULL, item_count INTEGER NOT NULL,
+      watch_counts_json TEXT NOT NULL, PRIMARY KEY (run_day, digest_id)
+    );
+    CREATE TABLE digest_shadow_hold_states (
+      run_day TEXT PRIMARY KEY, contract TEXT NOT NULL, evaluated_at TEXT NOT NULL,
+      source_status TEXT NOT NULL, delivery_policy TEXT NOT NULL, cutoff_at TEXT NOT NULL,
+      delivery_boundary_at TEXT NOT NULL, expires_at TEXT NOT NULL, state_json TEXT NOT NULL
+    );
+    CREATE TABLE digest_shadow_hold_overrides (
+      run_day TEXT NOT NULL, digest_id TEXT NOT NULL, created_at TEXT NOT NULL,
+      reason TEXT NOT NULL, PRIMARY KEY (run_day, digest_id)
+    );
+  `);
+  const statement = (sql, args = []) => ({
+    bind: (...next) => statement(sql, next),
+    run: async () => sqlite.prepare(sql).run(...args),
+    first: async () => sqlite.prepare(sql).get(...args) || null,
+    all: async () => ({ results: sqlite.prepare(sql).all(...args) }),
+  });
   return {
-    runs,
-    holdStates,
-    prepare(sql) {
-      const statement = {
-        sql,
-        args: [],
-        bind(...args) {
-          this.args = args;
-          return this;
-        },
-        async run() {
-          if (sql.includes("INSERT INTO digest_shadow_runs")) {
-            const [runDay, ranAt, status, digestCount, totalItems, summaryJson] = this.args;
-            runs.set(runDay, {
-              run_day: runDay,
-              ran_at: ranAt,
-              status,
-              digest_count: digestCount,
-              total_items: totalItems,
-              summary_json: summaryJson,
-            });
-          }
-          if (sql.includes("digest_shadow_hold_states")) {
-            holdStates.push(JSON.parse(this.args.at(-1)));
-          }
-          return { success: true };
-        },
-        async first() {
-          if (sql.includes("FROM digest_shadow_runs WHERE run_day")) {
-            return runs.get(this.args[0]) || null;
-          }
-          return null;
-        },
-        async all() {
-          return { results: [] };
-        },
-      };
-      return statement;
+    runs: {
+      has: (runDay) => Boolean(sqlite.prepare("SELECT 1 FROM digest_shadow_runs WHERE run_day = ?").get(runDay)),
+      get: (runDay) => sqlite.prepare("SELECT * FROM digest_shadow_runs WHERE run_day = ?").get(runDay),
     },
+    prepare: (sql) => statement(sql),
     async batch(statements) {
-      for (const statement of statements) await statement.run();
+      sqlite.exec("BEGIN");
+      try {
+        for (const item of statements) await item.run();
+        sqlite.exec("COMMIT");
+      } catch (error) {
+        sqlite.exec("ROLLBACK");
+        throw error;
+      }
     },
   };
 }
@@ -303,15 +301,64 @@ test("persistDigestShadowStarted leaves a same-day row a killed cron would still
 test("persistDigestShadowFailure finalizes FAILED over the started day", async () => {
   const DB = shadowDb();
   const ALERT_STATE = kv();
-  await persistDigestShadowStarted({ DB, ALERT_STATE }, { now: NOW });
+  const started = await persistDigestShadowStarted({ DB, ALERT_STATE }, { now: NOW });
   const out = await persistDigestShadowFailure(
     { DB, ALERT_STATE },
     new Error("rehearsal exploded before persist"),
-    { now: NOW },
+    { now: NOW, invocationId: started.invocation_id },
   );
   assert.equal(out.status, DIGEST_SHADOW_ATTENTION);
   assert.equal(out.receipt.status, "FAILED");
   assert.equal(JSON.parse(DB.runs.get(DAY).summary_json).status, DIGEST_SHADOW_ATTENTION);
+});
+
+test("scheduled shadow ownership fences overlapping terminal writes and previews", async () => {
+  const DB = shadowDb();
+  const ALERT_STATE = kv();
+  const env = { DB, ALERT_STATE };
+  const firstId = "shadow:first";
+  const secondId = "shadow:second";
+  assert.equal((await persistDigestShadowStarted(env, { now: NOW, invocationId: firstId })).write_accepted, true);
+  assert.equal((await persistDigestShadowStarted(env, { now: NOW, invocationId: secondId })).write_accepted, true);
+
+  const staleFinal = await finalizeDigestShadowRun(env, readySummary(), {
+    now: NOW,
+    invocationId: firstId,
+  });
+  assert.equal(staleFinal.write_accepted, false);
+
+  const accepted = await finalizeDigestShadowRun(env, {
+    ...readySummary(),
+    previews: [{ digest_id: "digest:second", item_count: 1 }],
+    _rendered_previews: [{
+      digest_id: "digest:second",
+      recipient_redacted: "se***@example.test",
+      subject: "Second",
+      html: "<p data-digest-item=\"1\">Second</p>",
+      item_count: 1,
+      watch_counts: [],
+    }],
+  }, { now: NOW, invocationId: secondId });
+  assert.equal(accepted.write_accepted, true);
+
+  assert.equal((await persistDigestShadowFailure(env, new Error("late failure"), {
+    now: NOW,
+    invocationId: firstId,
+  })).write_accepted, false);
+  assert.equal((await persistDigestShadowStarted(env, {
+    now: NOW,
+    invocationId: "shadow:retry",
+  })).write_accepted, false);
+
+  const stored = JSON.parse(DB.runs.get(DAY).summary_json);
+  assert.equal(stored.status, "READY");
+  assert.equal(stored.phase, "finalized");
+  assert.equal(stored.complete, true);
+  assert.equal(stored.invocation_id, secondId);
+  const preview = await DB.prepare("SELECT digest_id FROM digest_shadow_previews WHERE run_day = ?")
+    .bind(DAY).first();
+  assert.equal(preview.digest_id, "digest:second");
+  assert.equal(JSON.parse(ALERT_STATE.store.get(`${DIGEST_SHADOW_LEDGER_PREFIX}${DAY}`)).status, "READY");
 });
 
 test("0 10 cron writes STARTED before freshness, still runs shadow when freshness degrades", async () => {
@@ -336,9 +383,9 @@ test("0 10 cron writes STARTED before freshness, still runs shadow when freshnes
     overrides: {
       // Real helpers: the VM stubs every import; leave these wired to production behavior.
       applyFreshnessDegradation,
-      async persistDigestShadowStarted() {
+      async persistDigestShadowStarted(_env, options) {
         order.push("started");
-        return persistDigestShadowStarted(env, { now: NOW });
+        return persistDigestShadowStarted(env, { ...options, now: NOW });
       },
       async runBudgetedNoticeFreshness() {
         order.push("freshness");
@@ -377,15 +424,15 @@ test("0 10 cron still finalizes FAILED when the rehearsal throws after STARTED",
   const env = { DB, ALERT_STATE };
   const worker = scheduledWorker({
     overrides: {
-      async persistDigestShadowStarted() {
-        return persistDigestShadowStarted(env, { now: NOW });
+      async persistDigestShadowStarted(_env, options) {
+        return persistDigestShadowStarted(env, { ...options, now: NOW });
       },
       async runBudgetedNoticeFreshness() {
         return { ok: true, degraded: false, result: {}, prewarm: {} };
       },
       runDigestShadow() { throw new Error("rehearsal exploded before persist"); },
-      async persistDigestShadowFailure(_env, error) {
-        return persistDigestShadowFailure(env, error, { now: NOW });
+      async persistDigestShadowFailure(_env, error, options) {
+        return persistDigestShadowFailure(env, error, { ...options, now: NOW });
       },
       refreshPublicSearchUsageSnapshot: async () => ({}),
     },
@@ -408,15 +455,31 @@ test("progress survives interruption and cannot overwrite finalized evidence", a
   try {
     sqlite.exec("CREATE TABLE digest_shadow_runs (run_day TEXT PRIMARY KEY, status TEXT, summary_json TEXT)");
     sqlite.prepare("INSERT INTO digest_shadow_runs VALUES (?, 'STARTED', ?)")
-      .run(DAY, JSON.stringify({ status: "STARTED", phase: "started" }));
+      .run(DAY, JSON.stringify({ status: "STARTED", phase: "started", invocation_id: "shadow:owner" }));
     const db = { prepare: (sql) => ({ bind: (...args) => ({ run: async () => sqlite.prepare(sql).run(...args) }) }) };
-    await recordDigestShadowProgress(db, DAY, { phase: "account_builds", evaluated_count: 20 }, NOW);
+    await recordDigestShadowProgress(
+      db, DAY, { phase: "account_builds", evaluated_count: 20 }, NOW, "shadow:owner",
+    );
     const read = () => JSON.parse(sqlite.prepare("SELECT summary_json FROM digest_shadow_runs").get().summary_json);
-    assert.deepEqual(read(), { status: "STARTED", phase: "account_builds", evaluated_count: 20, progress_at: NOW });
-    await recordDigestShadowProgress(db, DAY, { phase: "stale_static_writer", evaluated_count: 1 }, NOW);
+    assert.deepEqual(read(), {
+      status: "STARTED",
+      phase: "account_builds",
+      invocation_id: "shadow:owner",
+      evaluated_count: 20,
+      progress_at: NOW,
+    });
+    await recordDigestShadowProgress(
+      db, DAY, { phase: "wrong_owner", evaluated_count: 30 }, NOW, "shadow:stale",
+    );
+    assert.equal(read().phase, "account_builds");
+    await recordDigestShadowProgress(
+      db, DAY, { phase: "stale_static_writer", evaluated_count: 1 }, NOW, "shadow:owner",
+    );
     assert.equal(read().evaluated_count, 20);
     sqlite.exec("UPDATE digest_shadow_runs SET status = 'READY'");
-    await recordDigestShadowProgress(db, DAY, { phase: "late_writer", evaluated_count: 1 }, NOW);
+    await recordDigestShadowProgress(
+      db, DAY, { phase: "late_writer", evaluated_count: 21 }, NOW, "shadow:owner",
+    );
     assert.equal(read().phase, "account_builds");
   } finally { sqlite.close(); }
 });

@@ -1,4 +1,10 @@
-import { buildDigestShadowSummary, readDigestShadow } from "./digest_shadow.mjs";
+import {
+  DIGEST_SHADOW_ATTENTION,
+  DIGEST_SHADOW_DEGRADED_UPSTREAM,
+  DIGEST_SHADOW_READY,
+  buildDigestShadowSummary,
+  readDigestShadow,
+} from "./digest_shadow.mjs";
 import {
   loadDigestSubscription,
   runAlerts,
@@ -155,7 +161,19 @@ async function mergeCompletedSummary(env, run, items, now) {
   };
   const touched = new Set(items.map((item) => item.digest_id));
   const targetSummaries = items.map((item) => item.result).filter(Boolean);
-  const targetRedlines = targetSummaries.flatMap((summary) => summary.redlines || []);
+  const targetRedlines = [
+    ...targetSummaries.flatMap((summary) => summary.redlines || []),
+    ...items.filter((item) => item.status !== "complete" || !item.result).map((item) => ({
+      code: "rebuild_target_failed",
+      digest_id: item.digest_id,
+      watch_id: null,
+      reason: "The requested digest could not be rebuilt.",
+      evidence: {
+        status: item.status,
+        error: item.error || "result unavailable",
+      },
+    })),
+  ];
   const targetIncidents = targetSummaries.flatMap((summary) => summary.upstream_incidents || []);
   const targetPreviews = targetSummaries.flatMap((summary) => summary.previews || []);
   const previewById = new Map((base.previews || []).map((preview) => [preview.digest_id, preview]));
@@ -171,12 +189,20 @@ async function mergeCompletedSummary(env, run, items, now) {
     ...(base.upstream_incidents || []).filter((incident) => !touched.has(incident.digest_id)),
     ...targetIncidents,
   ];
+  const status = redlines.length
+    ? DIGEST_SHADOW_ATTENTION
+    : upstreamIncidents.length
+      ? DIGEST_SHADOW_DEGRADED_UPSTREAM
+      : DIGEST_SHADOW_READY;
   const merged = {
     ...base,
     run_day: run.run_day,
     ran_at: iso(now),
     ok: redlines.length === 0,
-    status: redlines.length === 0 ? "READY" : "NEEDS_ATTENTION",
+    status,
+    phase: "finalized",
+    complete: true,
+    rebuild_complete: true,
     digest_count: [...previewById.values()].length,
     total_items: [...previewById.values()].reduce((sum, preview) => sum + (Number(preview.item_count) || 0), 0),
     redlines,

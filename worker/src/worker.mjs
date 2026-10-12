@@ -581,10 +581,16 @@ const worker = {
     // hard time/subrequest budget; exhaustion records DEGRADED_UPSTREAM and the rehearsal still runs.
     if (event.cron === "0 10 * * *") {
       const shadowNow = new Date();
+      const shadowInvocationId = crypto.randomUUID();
       try {
-        await persistDigestShadowStarted(env, { now: shadowNow });
+        const started = await persistDigestShadowStarted(env, {
+          now: shadowNow,
+          invocationId: shadowInvocationId,
+        });
+        if (started?.write_accepted === false) return;
       } catch (error) {
         console.error("digest shadow start receipt failed:", String(error?.message || error));
+        return;
       }
 
       let freshness = { ok: true, degraded: false };
@@ -623,11 +629,16 @@ const worker = {
       try {
         let summary = await runDigestShadow(env, {
           now: shadowNow,
+          invocationId: shadowInvocationId,
           suppressPersonalizedLogs: event.costProbe === true,
         });
         // Await so schedule-harness stubs (async wrappers) and a future async helper both land.
         if (freshness.degraded) summary = await applyFreshnessDegradation(summary, freshness);
-        await finalizeDigestShadowRun(env, summary, { now: shadowNow });
+        const finalized = await finalizeDigestShadowRun(env, summary, {
+          now: shadowNow,
+          invocationId: shadowInvocationId,
+        });
+        if (finalized?.write_accepted === false) return;
         if (event.costProbe !== true) {
           console.log("digest shadow:", JSON.stringify(summary, (key, value) => {
             if (typeof value !== "string") return value;
@@ -639,7 +650,11 @@ const worker = {
       } catch (error) {
         console.error("digest shadow failed:", String(error?.message || error));
         try {
-          const failed = await persistDigestShadowFailure(env, error, { now: shadowNow });
+          const failed = await persistDigestShadowFailure(env, error, {
+            now: shadowNow,
+            invocationId: shadowInvocationId,
+          });
+          if (failed?.write_accepted === false) return;
           console.error("digest shadow failure receipt:", JSON.stringify({
             run_day: failed?.run_day,
             status: failed?.status,

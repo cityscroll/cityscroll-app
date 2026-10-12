@@ -674,13 +674,18 @@ async function readHistory(env, day, count = HISTORY_DAYS) {
   return logs;
 }
 
-export async function persistDigestShadow(db, summary) {
+export async function persistDigestShadow(db, summary, { invocationId, mode } = {}) {
   if (!db) throw new Error("digest shadow requires DB");
-  const publicSummary = { ...summary };
+  if (!invocationId || !new Set(["claim", "finalize"]).has(mode)) {
+    throw new Error("digest shadow owned write required");
+  }
+  const publicSummary = {
+    ...summary,
+    ...(invocationId ? { invocation_id: invocationId } : {}),
+  };
   delete publicSummary._rendered_previews;
-  const statements = [
-    db.prepare("DELETE FROM digest_shadow_previews WHERE run_day = ?").bind(summary.run_day),
-    db.prepare(`INSERT INTO digest_shadow_runs
+  const write = mode === "claim"
+    ? db.prepare(`INSERT INTO digest_shadow_runs
       (run_day, ran_at, status, digest_count, total_items, summary_json)
       VALUES (?, ?, ?, ?, ?, ?)
       ON CONFLICT(run_day) DO UPDATE SET
@@ -688,7 +693,8 @@ export async function persistDigestShadow(db, summary) {
         status = excluded.status,
         digest_count = excluded.digest_count,
         total_items = excluded.total_items,
-        summary_json = excluded.summary_json`)
+        summary_json = excluded.summary_json
+      WHERE digest_shadow_runs.status = 'STARTED'`)
       .bind(
         summary.run_day,
         summary.ran_at,
@@ -696,23 +702,33 @@ export async function persistDigestShadow(db, summary) {
         summary.digest_count,
         summary.total_items,
         JSON.stringify(publicSummary),
-      ),
-  ];
+      )
+    : db.prepare(`UPDATE digest_shadow_runs SET ran_at = ?, status = ?, digest_count = ?,
+        total_items = ?, summary_json = ?
+      WHERE run_day = ? AND status = 'STARTED'
+      AND json_extract(summary_json, '$.invocation_id') = ?`)
+      .bind(summary.ran_at, summary.status, summary.digest_count, summary.total_items,
+        JSON.stringify(publicSummary), summary.run_day, invocationId);
+  const statements = [write];
+  statements.push(db.prepare(`DELETE FROM digest_shadow_previews WHERE run_day = ?
+    AND EXISTS (SELECT 1 FROM digest_shadow_runs WHERE run_day = ? AND status = ?
+      AND json_extract(summary_json, '$.invocation_id') = ?)`)
+    .bind(summary.run_day, summary.run_day, summary.status, invocationId));
   for (const preview of summary._rendered_previews || []) {
     statements.push(db.prepare(`INSERT INTO digest_shadow_previews
-      (run_day, digest_id, recipient_redacted, subject, html, item_count, watch_counts_json)
-      VALUES (?, ?, ?, ?, ?, ?, ?)`)
-      .bind(
-        summary.run_day,
-        preview.digest_id,
-        preview.recipient_redacted,
-        preview.subject,
-        preview.html,
-        preview.item_count,
-        JSON.stringify(preview.watch_counts),
-      ));
+        (run_day, digest_id, recipient_redacted, subject, html, item_count, watch_counts_json)
+      SELECT ?, ?, ?, ?, ?, ?, ? WHERE EXISTS (
+        SELECT 1 FROM digest_shadow_runs WHERE run_day = ? AND status = ?
+        AND json_extract(summary_json, '$.invocation_id') = ?)`)
+      .bind(summary.run_day, preview.digest_id, preview.recipient_redacted, preview.subject,
+        preview.html, preview.item_count, JSON.stringify(preview.watch_counts),
+        summary.run_day, summary.status, invocationId));
   }
   await db.batch(statements);
+  const row = await db.prepare("SELECT status, summary_json FROM digest_shadow_runs WHERE run_day = ?")
+    .bind(summary.run_day).first();
+  const stored = row?.summary_json ? JSON.parse(row.summary_json) : null;
+  return row?.status === summary.status && stored?.invocation_id === invocationId;
 }
 
 function emptyShadowSkeleton(now, status) {
@@ -799,41 +815,86 @@ export function buildDigestShadowFailureSummary(error, now = new Date()) {
   return summary;
 }
 
-async function persistShadowState(env, summary, { now = new Date(), error = null } = {}) {
+async function updateOwnedShadowSummary(db, summary, invocationId) {
+  const publicSummary = { ...summary, invocation_id: invocationId };
+  delete publicSummary._rendered_previews;
+  await db.prepare(`UPDATE digest_shadow_runs SET summary_json = ? WHERE run_day = ? AND status = ?
+    AND json_extract(summary_json, '$.invocation_id') = ?`)
+    .bind(JSON.stringify(publicSummary), summary.run_day, summary.status, invocationId).run();
+  const row = await db.prepare("SELECT status, summary_json FROM digest_shadow_runs WHERE run_day = ?")
+    .bind(summary.run_day).first();
+  const stored = row?.summary_json ? JSON.parse(row.summary_json) : null;
+  return row?.status === summary.status && stored?.invocation_id === invocationId;
+}
+
+async function persistShadowState(env, summary, {
+  now = new Date(),
+  error = null,
+  invocationId,
+  mode,
+} = {}) {
   if (!env?.DB) throw new Error("digest shadow requires DB");
+  if (!invocationId) throw new Error("digest shadow invocation id required");
   const at = new Date(now);
   const [{ recordDigestShadowHoldState }, { recordDigestShadowReceipt }] = await Promise.all([
     import("./digest_shadow_hold.mjs"),
     import("./reliability_watchdogs.mjs"),
   ]);
-  await persistDigestShadow(env.DB, summary);
-  summary.hold = await recordDigestShadowHoldState(env.DB, summary, {
+  const ownedSummary = { ...summary, invocation_id: invocationId };
+  const writeAccepted = await persistDigestShadow(env.DB, ownedSummary, { invocationId, mode });
+  if (!writeAccepted) return { ...ownedSummary, write_accepted: false };
+  ownedSummary.hold = await recordDigestShadowHoldState(env.DB, ownedSummary, {
     now: at,
     receiptStore: env.ALERT_STATE,
   });
-  await persistDigestShadow(env.DB, summary);
-  summary.receipt = await recordDigestShadowReceipt(env, summary, at, error);
-  const out = { ...summary };
+  if (!(await updateOwnedShadowSummary(env.DB, ownedSummary, invocationId))) {
+    return { ...ownedSummary, write_accepted: false };
+  }
+  ownedSummary.receipt = await recordDigestShadowReceipt(env, ownedSummary, at, error);
+  const out = { ...ownedSummary, write_accepted: true };
   delete out._rendered_previews;
   return out;
 }
 
 /** Persist the run-day STARTED row and ledger receipt before advisory freshness. */
-export async function persistDigestShadowStarted(env, { now = new Date() } = {}) {
-  return persistShadowState(env, buildDigestShadowStartedSummary(now), { now });
+export async function persistDigestShadowStarted(env, {
+  now = new Date(),
+  invocationId = crypto.randomUUID(),
+} = {}) {
+  return persistShadowState(env, buildDigestShadowStartedSummary(now), {
+    now,
+    invocationId,
+    mode: "claim",
+  });
 }
 
 /**
  * Persist a same-day failure row, hold decision, and FAILED ledger receipt
  * so a thrown rehearsal never reads as MISSING_RUN / rehearsal-stale.
  */
-export async function persistDigestShadowFailure(env, error, { now = new Date() } = {}) {
-  return persistShadowState(env, buildDigestShadowFailureSummary(error, now), { now, error });
+export async function persistDigestShadowFailure(env, error, {
+  now = new Date(),
+  invocationId,
+} = {}) {
+  return persistShadowState(env, buildDigestShadowFailureSummary(error, now), {
+    now,
+    error,
+    invocationId,
+    mode: "finalize",
+  });
 }
 
-/** Overwrite the day's D1 row, hold decision, and ledger receipt with a final summary. */
-export async function finalizeDigestShadowRun(env, summary, { now = new Date(), error = null } = {}) {
-  return persistShadowState(env, summary, { now, error });
+/** Finalize an invocation-owned D1 row, hold decision, and ledger receipt. */
+export async function finalizeDigestShadowRun(env, summary, {
+  now = new Date(),
+  error = null,
+  invocationId,
+} = {}) {
+  return persistShadowState(env, {
+    ...summary,
+    phase: "finalized",
+    complete: true,
+  }, { now, error, invocationId, mode: "finalize" });
 }
 
 function freshnessIncident(reason, evidence = {}) {
@@ -972,13 +1033,14 @@ export async function runBudgetedNoticeFreshness(env, {
 
 // Update only an in-flight marker. Never replace a completed summary or its previews.
 // Progress contains stage/count/time only, so it is safe for operator diagnostics.
-export async function recordDigestShadowProgress(db, day, progress, now = new Date()) {
+export async function recordDigestShadowProgress(db, day, progress, now = new Date(), invocationId = null) {
   await db.prepare(`UPDATE digest_shadow_runs SET summary_json = json_set(summary_json,
     '$.phase', ?, '$.evaluated_count', ?, '$.progress_at', ?)
     WHERE run_day = ? AND status = 'STARTED'
+    AND (? IS NULL OR json_extract(summary_json, '$.invocation_id') = ?)
     AND COALESCE(json_extract(summary_json, '$.evaluated_count'), 0) <= ?`)
     .bind(progress.phase, progress.evaluated_count, new Date(now).toISOString(), day,
-      progress.evaluated_count).run();
+      invocationId, invocationId, progress.evaluated_count).run();
 }
 
 /** Run the real digest builders with delivery, queue fan-out, and state advancement disabled. */
@@ -987,16 +1049,16 @@ export async function runDigestShadow(env, {
   runAlertsFn = null,
   ontologyDeltaCandidates = null,
   suppressPersonalizedLogs = false,
+  invocationId = null,
 } = {}) {
   if (!env.DB) throw new Error("digest shadow requires DB");
-  const [{ runAlerts }, { recordDigestShadowHoldState }, ontology] = await Promise.all([
+  const [{ runAlerts }, ontology] = await Promise.all([
     runAlertsFn ? Promise.resolve({ runAlerts: runAlertsFn }) : import("./alerts.mjs"),
-    import("./digest_shadow_hold.mjs"),
     import("./lib/ontology_delta_alert.mjs"),
   ]);
   const at = new Date(now);
   const day = at.toISOString().slice(0, 10);
-  const onProgress = (progress) => recordDigestShadowProgress(env.DB, day, progress);
+  const onProgress = (progress) => recordDigestShadowProgress(env.DB, day, progress, new Date(), invocationId);
   const shadowEnv = { ...env, ALERTS_LIVE: "false", QUEUE_DIGESTS: "false" };
   const run = await runAlerts(shadowEnv, undefined, {
     now: at,
@@ -1027,9 +1089,6 @@ export async function runDigestShadow(env, {
     .map((result) => result.previewId || result.sub || result.watch);
   const lastGoodPreviews = await readLastGoodPreviews(env.DB, failedDigestIds, day);
   const summary = buildDigestShadowSummary({ run, history, now: at, ontologyDelta, lastGoodPreviews });
-  await persistDigestShadow(env.DB, summary);
-  summary.hold = await recordDigestShadowHoldState(env.DB, summary, { now: at, receiptStore: env.ALERT_STATE });
-  await persistDigestShadow(env.DB, summary);
   const out = { ...summary };
   delete out._rendered_previews;
   return out;

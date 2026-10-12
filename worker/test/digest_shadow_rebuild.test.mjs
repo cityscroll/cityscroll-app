@@ -23,6 +23,7 @@ class Statement {
 
   async first() {
     if (this.sql.includes("digest_shadow_rebuild_runs")) return this.db.runs.get(this.args[0]) || null;
+    if (this.sql.includes("FROM digest_shadow_runs")) return this.db.mainRuns.get(this.args[0]) || null;
     return null;
   }
 
@@ -50,6 +51,22 @@ class Statement {
           result_json: null, error: null, started_at: null, completed_at: null,
         });
       }
+      return { success: true };
+    }
+    if (this.sql.includes("INSERT INTO digest_shadow_runs")) {
+      const [run_day, ran_at, status, digest_count, total_items, summary_json] = this.args;
+      this.db.mainRuns.set(run_day, { run_day, ran_at, status, digest_count, total_items, summary_json });
+      return { success: true };
+    }
+    if (this.sql.includes("DELETE FROM digest_shadow_previews")) {
+      this.db.previews.delete(`${this.args[0]}:${this.args[1]}`);
+      return { success: true };
+    }
+    if (this.sql.includes("INSERT INTO digest_shadow_previews")) {
+      const [run_day, digest_id, recipient_redacted, subject, html, item_count, watch_counts_json] = this.args;
+      this.db.previews.set(`${run_day}:${digest_id}`, {
+        run_day, digest_id, recipient_redacted, subject, html, item_count, watch_counts_json,
+      });
       return { success: true };
     }
     if (this.sql.includes("UPDATE digest_shadow_rebuild_items")) {
@@ -96,6 +113,8 @@ class FakeD1 {
   constructor() {
     this.runs = new Map();
     this.items = new Map();
+    this.mainRuns = new Map();
+    this.previews = new Map();
   }
 
   prepare(sql) { return new Statement(this, sql); }
@@ -287,4 +306,116 @@ test("a failed duplicate cannot revert a concurrently completed rebuild item", a
   assert.equal(DB.items.get(`${created.run_id}:digest:one`).status, "complete");
   assert.equal(DB.runs.get(created.run_id).completed_count, 1);
   assert.equal(DB.runs.get(created.run_id).status, "complete");
+});
+
+test("rebuild finalizes a STARTED base as terminal READY evidence", async () => {
+  const DB = new FakeD1();
+  const env = { DB, ALERT_STATE: kv(), DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, { affectedDigestIds: ["digest:one"], now: NOW });
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.total_count = 1;
+  DB.mainRuns.set(run.run_day, {
+    run_day: run.run_day,
+    status: "STARTED",
+    summary_json: JSON.stringify({
+      run_day: run.run_day,
+      status: "STARTED",
+      phase: "started",
+      complete: false,
+      previews: [],
+      redlines: [],
+      upstream_incidents: [],
+    }),
+  });
+  DB.items.set(`${created.run_id}:digest:one`, {
+    run_id: created.run_id, digest_id: "digest:one",
+    job_json: JSON.stringify({ type: "sub", key: "sub:one" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  const finished = await handleDigestShadowRebuildQueueMessage(env, {
+    type: "digest", run_id: created.run_id, digest_id: "digest:one",
+  }, {
+    now: NOW,
+    runTargetFn: async () => ({
+      status: "READY", ok: true, previews: [], redlines: [], upstream_incidents: [], _rendered_previews: [],
+    }),
+  });
+  const summary = JSON.parse(DB.mainRuns.get(run.run_day).summary_json);
+  assert.equal(finished.receipt.status, "READY");
+  assert.equal(summary.status, "READY");
+  assert.equal(summary.phase, "finalized");
+  assert.equal(summary.complete, true);
+  assert.equal(summary.rebuild_complete, true);
+});
+
+test("rebuild preserves upstream degradation in terminal evidence", async () => {
+  const DB = new FakeD1();
+  const env = { DB, ALERT_STATE: kv(), DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, { affectedDigestIds: ["digest:one"], now: NOW });
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.total_count = 1;
+  DB.items.set(`${created.run_id}:digest:one`, {
+    run_id: created.run_id, digest_id: "digest:one",
+    job_json: JSON.stringify({ type: "sub", key: "sub:one" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  const finished = await handleDigestShadowRebuildQueueMessage(env, {
+    type: "digest", run_id: created.run_id, digest_id: "digest:one",
+  }, {
+    now: NOW,
+    runTargetFn: async () => ({
+      status: "DEGRADED_UPSTREAM",
+      ok: true,
+      previews: [],
+      redlines: [],
+      upstream_incidents: [{
+        code: "upstream_unavailable",
+        digest_id: "digest:one",
+        evidence: { source: "soda" },
+      }],
+      _rendered_previews: [],
+    }),
+  });
+  const summary = JSON.parse(DB.mainRuns.get(run.run_day).summary_json);
+  assert.equal(finished.receipt.status, "DEGRADED");
+  assert.equal(summary.status, "DEGRADED_UPSTREAM");
+  assert.deepEqual(summary.upstream_sources_unavailable, ["soda"]);
+});
+
+test("rebuild failed targets cannot produce READY evidence", async () => {
+  const DB = new FakeD1();
+  const env = { DB, ALERT_STATE: kv(), DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, {
+    affectedDigestIds: ["digest:one", "digest:missing"],
+    now: NOW,
+  });
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.total_count = 2;
+  DB.items.set(`${created.run_id}:digest:one`, {
+    run_id: created.run_id, digest_id: "digest:one",
+    job_json: JSON.stringify({ type: "sub", key: "sub:one" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  DB.items.set(`${created.run_id}:digest:missing`, {
+    run_id: created.run_id, digest_id: "digest:missing",
+    job_json: JSON.stringify({ type: "missing", digest_id: "digest:missing" }),
+    status: "failed", attempt_count: 0, result_json: null, error: "digest-not-found",
+  });
+  const finished = await handleDigestShadowRebuildQueueMessage(env, {
+    type: "digest", run_id: created.run_id, digest_id: "digest:one",
+  }, {
+    now: NOW,
+    runTargetFn: async () => ({
+      status: "READY", ok: true, previews: [], redlines: [], upstream_incidents: [], _rendered_previews: [],
+    }),
+  });
+  const summary = JSON.parse(DB.mainRuns.get(run.run_day).summary_json);
+  assert.equal(finished.status, "failed");
+  assert.notEqual(finished.receipt.status, "READY");
+  assert.equal(summary.status, "NEEDS_ATTENTION");
+  assert.equal(summary.redlines[0].code, "rebuild_target_failed");
+  assert.equal(summary.redlines[0].digest_id, "digest:missing");
 });

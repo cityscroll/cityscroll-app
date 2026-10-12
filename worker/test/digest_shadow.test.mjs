@@ -352,8 +352,7 @@ test("shadow invocation uses the shared runAlerts path inline and cannot deliver
     skipForecastingPipelines: true,
     suppressDryRunLogs: true,
   });
-  assert.equal(DB.batches.length, 2);
-  assert.equal(DB.runs.length, 3);
+  assert.equal(DB.batches.length, 0);
 });
 
 test("shadow failures produce no outbound email", async () => {
@@ -381,8 +380,7 @@ test("shadow failures produce no outbound email", async () => {
     assert.equal(out.redlines[0].code, "render_error");
     assert.equal(outboundRequests, 0);
     assert.equal("notification" in out, false);
-    assert.equal(DB.batches.length, 2);
-    assert.equal(DB.runs.length, 2);
+    assert.equal(DB.batches.length, 0);
   } finally {
     globalThis.fetch = originalFetch;
   }
