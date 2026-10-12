@@ -2682,9 +2682,8 @@ function digestHtml(w, rows) {
   </div>`;
 }
 
-// Human replies need a mailbox that can actually receive. cityscroll.org has no apex MX
-// (so replies to alerts@cityscroll.org bounce); crol-list.org still has Cloudflare email
-// routing. Prefer ALERTS_REPLY_TO, then the address that used to be the digest From.
+// Subscriber Reply-To retains its compatibility default independently of the operator
+// notification recipient. Prefer ALERTS_REPLY_TO, then the established digest reply address.
 function replyToAddress(env) {
   return env.ALERTS_REPLY_TO || "alerts@crol-list.org";
 }

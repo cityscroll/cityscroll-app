@@ -175,7 +175,7 @@ def main() -> None:
         failures.append("email scope: ALERTS_FROM must send from alerts@cityscroll.org")
     if re.search(r'ALERTS_FROM\s*=\s*"[^"]*alerts@crol-list\.org', wrangler):
         failures.append("email scope: alerts@crol-list.org must not be the live ALERTS_FROM value")
-    # Reply-To stays on the still-routable old-domain address: cityscroll.org has no apex MX.
+    # Subscriber Reply-To retains its compatibility default independently of operator routing.
     if 'ALERTS_REPLY_TO = "alerts@crol-list.org"' not in wrangler:
         failures.append("email scope: ALERTS_REPLY_TO must keep human replies on alerts@crol-list.org (still-routable)")
 

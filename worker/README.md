@@ -273,10 +273,10 @@ the site's `#notice/<id>` permalinks.
 **Email identity:** From is always the app's own (`ALERTS_FROM` =
 `CityScroll <alerts@cityscroll.org>`, domain verified in Resend); Reply-To is
 `ALERTS_REPLY_TO` (the compatibility address on the retired product domain; see
-`worker/wrangler.toml`) because cityscroll.org has no apex MX and
-replies to the From address would bounce — that domain still has Cloudflare email
-routing. To is only ever the subscriber's own opted-in address. Never sends as a
-person. The sending domain is managed separately from the public website hostnames.
+`worker/wrangler.toml`). Subscriber Reply-To retains that compatibility default
+independently of the dedicated operator-notification recipient. To is only ever the
+subscriber's own opted-in address. Never sends as a person. The sending domain is
+managed separately from the public website hostnames.
 
 ## Defense in depth (denial-of-wallet & abuse)
 
