@@ -993,7 +993,7 @@ test('real static rebuild keeps private HTML in D1 and out of logs without sendi
   try {
     f.sqlite.prepare("UPDATE digest_shadow_rebuild_items SET status = 'queued' WHERE digest_id = 'digest:000'").run();
     f.sqlite.prepare("UPDATE digest_shadow_rebuild_items SET digest_id = 'watch:fixture', job_json = ? WHERE digest_id = 'digest:last'")
-      .run(JSON.stringify({ type: 'static', watch: { id: 'fixture', label: 'Fixture', email: 'fixture@example.com', q: 'fixture' } }));
+      .run(JSON.stringify({ type: 'static', watch: { id: 'fixture', label: 'Fixture', email: 'fixture-recipient', q: 'fixture' } }));
     f.env.ALERTS_LIVE = 'true';
     f.env.RESEND_API_KEY = 'test-not-a-key';
     f.env.QUEUE_DIGESTS = 'true';
@@ -1009,7 +1009,7 @@ test('real static rebuild keeps private HTML in D1 and out of logs without sendi
       { type: 'digest', run_id: f.runId, digest_id: 'watch:fixture' }, { now: NOW });
     const result = JSON.parse(f.sqlite.prepare("SELECT result_json FROM digest_shadow_rebuild_items WHERE digest_id = 'watch:fixture'").get().result_json);
     assert.match(result.preview.html, /PRIVATE-PREVIEW-SENTINEL/);
-    assert.equal(logs.some((line) => line.includes(sentinel) || line.includes('fixture@example.com')), false);
+    assert.equal(logs.some((line) => line.includes(sentinel) || line.includes('fixture-recipient')), false);
     assert.equal(requests.length, 1);
     assert.equal(await f.env.ALERT_STATE.get('seen:fixture'), before);
     assert.equal([...f.env.ALERT_STATE.values.keys()].some((key) => /^(sendcount:|lastsent:|digest:daylog:)/.test(key)), false);
