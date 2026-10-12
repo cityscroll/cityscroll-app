@@ -260,6 +260,25 @@ export function keysetAfterPredicate(keyCols, lastKeyValues) {
   };
 }
 
+function keysetAtOrBeforePredicate(keyCols, keyValues) {
+  if (!Array.isArray(keyCols) || keyCols.length === 0) {
+    canaryFail("keyset upper bound needs at least one key column");
+  }
+  if (!Array.isArray(keyValues) || keyValues.length !== keyCols.length) {
+    canaryFail(
+      `keyset upper bound has ${Array.isArray(keyValues) ? keyValues.length : 0} `
+      + `values for ${keyCols.length} key columns`,
+    );
+  }
+  if (keyCols.length === 1) {
+    return { clause: `${keyCols[0]} <= ?`, params: [keyValues[0]] };
+  }
+  return {
+    clause: `(${keyCols.join(", ")}) <= (${keyCols.map(() => "?").join(", ")})`,
+    params: [...keyValues],
+  };
+}
+
 /**
  * Choose the next page row count from a measured JSON dump so the next page
  * stays near the target byte budget and never exceeds maxRows.
@@ -296,7 +315,8 @@ function addRowsToKeyMap(byKey, rows, keyCols) {
     const keyValues = keyCols.map((column) => row[column]);
     const key = keyValues.join("|");
     const bucket = byKey.get(key) || [];
-    bucket.push(row);
+    const { __cityscroll_scan_rowid: _scanRowid, ...storedRow } = row;
+    bucket.push(storedRow);
     byKey.set(key, bucket);
   }
 }
@@ -320,6 +340,9 @@ export async function scanTableForPartition({
   pageRows = null,
   targetPageBytes = PARTITION_SCAN_TARGET_PAGE_BYTES,
   maxPageRows = MAX_PARTITION_SCAN_PAGE_ROWS,
+  afterKeyValues = null,
+  throughKeyValues = null,
+  maxTotalRows = null,
 } = {}) {
   const adaptive = pageRows == null;
   if (!adaptive && (!Number.isInteger(pageRows) || pageRows < 1)) {
@@ -331,27 +354,54 @@ export async function scanTableForPartition({
   if (!Number.isInteger(maxPageRows) || maxPageRows < 1) {
     canaryFail(`partition scan maxPageRows must be a positive integer, got ${maxPageRows}`);
   }
+  if (maxTotalRows !== null && (!Number.isInteger(maxTotalRows) || maxTotalRows < 1)) {
+    canaryFail(`partition scan maxTotalRows must be a positive integer, got ${maxTotalRows}`);
+  }
   const columns = TABLE_COLUMNS[table];
   if (!columns) canaryFail(`no TABLE_COLUMNS entry for ${table}`);
   const scope = partitionScopeClause(entry, table);
   const keyCols = keyColumns(entry, table);
-  const orderBy = orderByKeyColumns(keyCols);
+  const cursorCols = [...keyCols, "rowid"];
+  const orderBy = orderByKeyColumns(cursorCols);
   const byKey = new Map();
   let limit = adaptive ? Math.min(DEFAULT_PARTITION_SCAN_PAGE_ROWS, maxPageRows) : Math.min(pageRows, maxPageRows);
-  let lastKeyValues = null;
+  let lastCursorValues = null;
+  let observedRows = 0;
+  let scanComplete = true;
   for (;;) {
     const requestLimit = limit;
     const params = [];
     let where = scope.clause;
     if (scope.bound) params.push(partition);
-    if (lastKeyValues) {
-      const keyset = keysetAfterPredicate(keyCols, lastKeyValues);
+    if (lastCursorValues || afterKeyValues) {
+      const keyset = lastCursorValues
+        ? keysetAfterPredicate(cursorCols, lastCursorValues)
+        : keysetAfterPredicate(keyCols, afterKeyValues);
       where = `(${where}) AND ${keyset.clause}`;
       params.push(...keyset.params);
     }
-    const sql = `SELECT ${columns.join(", ")} FROM ${table} WHERE ${where} ORDER BY ${orderBy} LIMIT ${requestLimit}`;
+    if (throughKeyValues) {
+      const upper = keysetAtOrBeforePredicate(keyCols, throughKeyValues);
+      // SQLite comparisons against NULL are neither true nor false. The first
+      // bounded range therefore owns every corrupt row with a NULL logical-key
+      // component explicitly; otherwise `key <= upper` would silently omit it.
+      const nullKeys = keyCols.map((column) => `${column} IS NULL`).join(" OR ");
+      const boundedUpper = afterKeyValues
+        ? upper.clause
+        : `((${nullKeys}) OR ${upper.clause})`;
+      where = `(${where}) AND ${boundedUpper}`;
+      params.push(...upper.params);
+    }
+    const sql = `SELECT rowid AS __cityscroll_scan_rowid, ${columns.join(", ")} FROM ${table} WHERE ${where} ORDER BY ${orderBy} LIMIT ${requestLimit}`;
     const rows = await adapter.select(sql, params);
-    addRowsToKeyMap(byKey, rows, keyCols);
+    const remaining = maxTotalRows === null ? rows.length : Math.max(0, maxTotalRows - observedRows);
+    const retainedRows = rows.slice(0, remaining);
+    addRowsToKeyMap(byKey, retainedRows, keyCols);
+    observedRows += retainedRows.length;
+    if (retainedRows.length < rows.length) {
+      scanComplete = false;
+      break;
+    }
     if (rows.length === 0) break;
     if (adaptive) {
       const encodedBytes = Buffer.byteLength(JSON.stringify(rows), "utf8");
@@ -363,8 +413,13 @@ export async function scanTableForPartition({
       });
     }
     if (rows.length < requestLimit) break;
-    lastKeyValues = keyCols.map((column) => rows[rows.length - 1][column]);
+    const lastRow = rows[rows.length - 1];
+    lastCursorValues = [...keyCols.map((column) => lastRow[column]), lastRow.__cityscroll_scan_rowid];
   }
+  Object.defineProperties(byKey, {
+    scanComplete: { value: scanComplete, enumerable: false },
+    observedRows: { value: observedRows, enumerable: false },
+  });
   return byKey;
 }
 
@@ -518,6 +573,190 @@ export async function verifyPartitionScope({ manifest, sourceDocuments, adapter,
   }
 
   return { findings: sortFindings(findings), watermarks, representativeQueries, rowsScanned };
+}
+
+function compareKeyValues(left, right) {
+  for (let index = 0; index < Math.max(left.length, right.length); index += 1) {
+    const comparison = compareText(String(left[index] ?? ""), String(right[index] ?? ""));
+    if (comparison !== 0) return comparison;
+  }
+  return 0;
+}
+
+function tableVerificationChunks({ entry, table, expectedRows, maxRows }) {
+  const ordered = [...expectedRows].sort((left, right) => compareKeyValues(left.key_values, right.key_values));
+  if (ordered.length === 0) {
+    return [{ entry, table, expectedRows: [], afterKeyValues: null, throughKeyValues: null }];
+  }
+  const chunks = [];
+  for (let start = 0; start < ordered.length; start += maxRows) {
+    const rows = ordered.slice(start, start + maxRows);
+    const final = start + rows.length === ordered.length;
+    chunks.push({
+      entry,
+      table,
+      expectedRows: rows,
+      afterKeyValues: start === 0 ? null : ordered[start - 1].key_values,
+      // The final range is deliberately open-ended so unexpected target rows
+      // after the last expected key are still covered.
+      throughKeyValues: final ? null : rows[rows.length - 1].key_values,
+    });
+  }
+  return chunks;
+}
+
+/**
+ * Verify every selected changed partition as a finite sequence of bounded
+ * table-key ranges. `maxPartitions` bounds each sequential window,
+ * `maxRows` bounds the expected rows in a chunk and every SELECT page, and
+ * `maxFindings` stops a corrupt generation without allowing partial coverage
+ * to report consistency.
+ */
+export async function verifyPartitionScopeCompletely({
+  manifest,
+  sourceDocuments,
+  adapter,
+  selection,
+  maxPartitions,
+  maxRows,
+  maxFindings,
+}) {
+  for (const [name, value] of Object.entries({ maxPartitions, maxRows, maxFindings })) {
+    if (!Number.isInteger(value) || value < 1) canaryFail(`${name} must be a positive integer`);
+  }
+
+  const work = [];
+  const partitions = [];
+  const partitionChecks = [];
+  for (const [partitionIndex, item] of selection.entries()) {
+    const entry = modelEntry(manifest, item.model_id);
+    const sourceDocument = sourceDocuments[item.model_id];
+    const partitionRows = tableRows(entry, sourceDocument).rows
+      .filter((row) => row.partition === item.partition);
+    const rowsByTable = new Map();
+    for (const row of partitionRows) {
+      if (!rowsByTable.has(row.table)) rowsByTable.set(row.table, []);
+      rowsByTable.get(row.table).push(row);
+    }
+    const chunks = [];
+    for (const table of entry.tables.map((candidate) => candidate.name)) {
+      chunks.push(...tableVerificationChunks({
+        entry,
+        table,
+        expectedRows: rowsByTable.get(table) || [],
+        maxRows,
+      }));
+    }
+    const partitionCoverage = {
+      model_id: item.model_id,
+      partition: item.partition,
+      changed_rows: item.rows ?? null,
+      expected_rows: partitionRows.length,
+      chunks_total: chunks.length,
+      chunks_completed: 0,
+      complete: false,
+    };
+    partitions.push(partitionCoverage);
+    partitionChecks.push({ entry, sourceDocument, rowsByTable });
+    for (const chunk of chunks) work.push({ ...chunk, partitionIndex, partition: item.partition });
+  }
+
+  const windows = [];
+  for (let start = 0; start < partitions.length; start += maxPartitions) {
+    const members = partitions.slice(start, start + maxPartitions);
+    windows.push({
+      ordinal: windows.length,
+      partition_count: members.length,
+      expected_rows: members.reduce((sum, item) => sum + item.expected_rows, 0),
+      chunks_total: members.reduce((sum, item) => sum + item.chunks_total, 0),
+      chunks_completed: 0,
+      complete: false,
+    });
+  }
+
+  const findings = [];
+  const watermarks = [];
+  const representativeQueries = [];
+  let rowsScanned = 0;
+  let observedRows = 0;
+  let abortedReason = null;
+
+  for (const chunk of work) {
+    const observedByKey = await scanTableForPartition({
+      entry: chunk.entry,
+      table: chunk.table,
+      partition: chunk.partition,
+      adapter,
+      maxPageRows: maxRows,
+      maxTotalRows: maxRows,
+      afterKeyValues: chunk.afterKeyValues,
+      throughKeyValues: chunk.throughKeyValues,
+    });
+    observedRows += observedByKey.observedRows;
+    const chunkFindings = classifyPartitionFindings({
+      entry: chunk.entry,
+      table: chunk.table,
+      partition: chunk.partition,
+      expectedRows: chunk.expectedRows,
+      observedByKey,
+    });
+    const remaining = Math.max(0, maxFindings - findings.length);
+    findings.push(...chunkFindings.slice(0, remaining));
+    rowsScanned += chunk.expectedRows.length;
+
+    if (!observedByKey.scanComplete) {
+      abortedReason = "max_rows";
+      break;
+    }
+    const coverage = partitions[chunk.partitionIndex];
+    coverage.chunks_completed += 1;
+
+    if (chunkFindings.length > remaining || findings.length >= maxFindings) {
+      abortedReason = "max_findings";
+      break;
+    }
+
+    if (coverage.chunks_completed !== coverage.chunks_total) continue;
+    const { entry, sourceDocument, rowsByTable } = partitionChecks[chunk.partitionIndex];
+    watermarks.push(await verifyWatermark({
+      entry, sourceDocument, partition: chunk.partition, adapter,
+    }));
+    const representativeQuery = REPRESENTATIVE_QUERY[entry.model_id];
+    if (representativeQuery) {
+      representativeQueries.push(await representativeQuery({
+        entry, partition: chunk.partition, rowsByTable, adapter,
+      }));
+    }
+    coverage.complete = true;
+  }
+
+  for (const window of windows) {
+    const members = partitions.slice(
+      window.ordinal * maxPartitions,
+      (window.ordinal + 1) * maxPartitions,
+    );
+    window.chunks_completed = members.reduce((sum, item) => sum + item.chunks_completed, 0);
+    window.complete = members.every((item) => item.complete);
+  }
+  const complete = !abortedReason && partitions.every((item) => item.complete);
+  return {
+    findings: sortFindings(findings),
+    watermarks,
+    representativeQueries,
+    rowsScanned,
+    coverage: {
+      complete,
+      aborted_reason: abortedReason,
+      candidate_partitions: selection.length,
+      verified_partitions: partitions.filter((item) => item.complete).length,
+      expected_rows: partitions.reduce((sum, item) => sum + item.expected_rows, 0),
+      observed_rows: observedRows,
+      chunks_total: partitions.reduce((sum, item) => sum + item.chunks_total, 0),
+      chunks_completed: partitions.reduce((sum, item) => sum + item.chunks_completed, 0),
+      windows,
+      partitions,
+    },
+  };
 }
 
 /**

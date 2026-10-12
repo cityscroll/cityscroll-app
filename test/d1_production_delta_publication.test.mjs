@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 
 import { statementsForModel } from "../tools/build_worker_d1_read_models.mjs";
 import { publishBounded, planBatches, renderBatch } from "../tools/d1_bounded_publisher.mjs";
+import { verifyPartitionScopeCompletely } from "../tools/d1_canary.mjs";
 import { planDelta, snapshotFor, watermarksFromSnapshot } from "../tools/d1_delta_plan.mjs";
 import { abandonGeneration, claimGeneration, completeGeneration, createMemoryStateStore } from "../tools/d1_generation_fence.mjs";
 import { loadManifest, modelEntry } from "../tools/d1_manifest.mjs";
@@ -51,6 +52,7 @@ function openDatabase(sources = fixture.prior) {
 function databaseAdapter(db, {
   loseConfirmationOnce = false,
   corruptTable = null,
+  beforeSelect = null,
   generation,
   holder = "production-fixture",
 } = {}) {
@@ -102,6 +104,10 @@ function databaseAdapter(db, {
       return Boolean(db.prepare("SELECT 1 FROM d1_publication_batches WHERE checkpoint_id = ?").get(checkpointId));
     },
     async select(sql, params = []) {
+      if (beforeSelect) {
+        const override = await beforeSelect({ db, sql, params });
+        if (override !== undefined) return override;
+      }
       if (corruptTable && sql.includes(corruptTable)) {
         db.exec("UPDATE ocp_awards_warehouse SET vendor_name = 'corrupt' WHERE request_id = 'r1'");
         corruptTable = null;
@@ -124,6 +130,45 @@ const policy = {
   reconcile: { max_partitions: 25, max_rows: 5000 },
   abort_threshold: { max_findings: 25 }
 };
+
+function oversizedOcpSources(rowCount = policy.reconcile.max_rows + 200) {
+  const prior = structuredClone(fixture.prior);
+  const current = structuredClone(fixture.current);
+  current.ocp_awards = {
+    ...current.ocp_awards,
+    materialized_at: "2026-09-12T00:00:00Z",
+    rows: [
+      ...current.ocp_awards.rows,
+      ...Array.from({ length: rowCount }, (_, index) => ({
+        request_id: `bulk-${String(index).padStart(6, "0")}`,
+        pin: `pin-${String(index).padStart(6, "0")}`,
+        start_date: "2026-09-12",
+        agency_name: "Large delta fixture",
+        vendor_name: `Vendor ${index}`,
+        contract_amount: index,
+      })),
+    ],
+  };
+  return { prior, current };
+}
+
+function oversizedKeywordSources(rowCount = policy.reconcile.max_rows + 100) {
+  const prior = structuredClone(fixture.prior);
+  const current = structuredClone(fixture.current);
+  current.keyword_search.families.gamma = {
+    source: "large delta fixture",
+    as_of: "2026-09-12T00:00:00Z",
+    source_row_count: rowCount,
+    indexed_count: rowCount,
+    coverage: [],
+    documents: Array.from({ length: rowCount }, (_, index) => ({
+      title: `Bulk notice ${index}`,
+      summary: "Bounded reconciliation fixture",
+      object_ref: `notice:bulk-${String(index).padStart(6, "0")}`,
+    })),
+  };
+  return { prior, current };
+}
 
 test("every ordinary production model declares delta-upsert publication", () => {
   assert.ok(manifest.models.every((model) => model.publication_mode === "delta_upsert"));
@@ -284,6 +329,261 @@ test("production delta applies keyed inserts, updates, explicit deletes, and no 
   assert.equal(receipt.deploy_fingerprint, fingerprint);
   assert.equal(receipt.totals.estimated_writes, receipt.totals.observed_writes);
   assert.ok(receipt.models.every((model) => model.delta_counts && model.batch_count !== null));
+});
+
+test("oversized changed partitions reconcile completely in bounded windows", { skip: !DatabaseSync }, async () => {
+  const sources = oversizedOcpSources();
+  const priorSnapshot = snapshotFor(manifest, sources.prior);
+  const currentSnapshot = snapshotFor(manifest, sources.current);
+  const { fenceStore, generation, holder } = await claimed(currentSnapshot, "oversized-reconcile");
+  const db = openDatabase(sources.prior);
+  const adapter = databaseAdapter(db, { generation, holder });
+
+  const result = await runProductionDelta({
+    priorSnapshot, currentSnapshot, manifest, sourceDocuments: sources.current,
+    generation, fingerprint, holder, fenceStore, adapter, appliedBatchStore: adapter,
+    policy, maxOpsPerBatch: 500, now: clock,
+  });
+
+  assert.equal(result.batchPlan.summary.total_ops > policy.reconcile.max_rows, true);
+  assert.equal(result.outcome, "published");
+  assert.equal(result.reconcileReport.consistent, true);
+  assert.equal(result.reconcileReport.truncated, false);
+  assert.equal(result.reconcileReport.scope.rows > policy.reconcile.max_rows, true);
+  const ocpCoverage = result.reconcileReport.scope.selected.find((item) => item.model_id === "ocp_awards");
+  assert.ok(ocpCoverage);
+  assert.equal(ocpCoverage.expected_rows > policy.reconcile.max_rows, true);
+  assert.equal(ocpCoverage.chunks_total >= 2, true);
+  assert.equal(ocpCoverage.chunks_completed, ocpCoverage.chunks_total);
+  assert.equal(ocpCoverage.complete, true);
+});
+
+test("later reconciliation windows detect missing, stale, and unexpected rows", { skip: !DatabaseSync }, async () => {
+  const sources = oversizedOcpSources();
+  const priorSnapshot = snapshotFor(manifest, sources.prior);
+  const currentSnapshot = snapshotFor(manifest, sources.current);
+  const { fenceStore, generation, holder } = await claimed(currentSnapshot, "late-window-corruption");
+  const db = openDatabase(sources.prior);
+  const corruptKey = "bulk-005100|pin-005100|2026-09-12";
+  const missingKey = "bulk-005099|pin-005099|2026-09-12";
+  const unexpectedKey = "zzzz-unexpected|pin|2026-09-12";
+  let corrupted = false;
+  const adapter = databaseAdapter(db, {
+    generation,
+    holder,
+    beforeSelect: ({ db: target, sql, params }) => {
+      if (!corrupted && sql.includes("ocp_awards_warehouse") && sql.includes("row_key > ?") && params.length === 1) {
+        target.prepare("UPDATE ocp_awards_warehouse SET vendor_name = 'corrupt' WHERE row_key = ?").run(corruptKey);
+        target.prepare("DELETE FROM ocp_awards_warehouse WHERE row_key = ?").run(missingKey);
+        target.prepare("INSERT INTO ocp_awards_warehouse (row_key, request_id, vendor_name) VALUES (?, ?, ?)")
+          .run(unexpectedKey, "unexpected", "Unexpected vendor");
+        corrupted = true;
+      }
+    },
+  });
+
+  const result = await runProductionDelta({
+    priorSnapshot, currentSnapshot, manifest, sourceDocuments: sources.current,
+    generation, fingerprint, holder, fenceStore, adapter, appliedBatchStore: adapter,
+    policy, maxOpsPerBatch: 500, now: clock,
+  });
+
+  assert.equal(corrupted, true, "the fixture must corrupt only after the first bounded range");
+  assert.equal(result.outcome, "failed_permanent");
+  assert.equal(result.reconcileReport.consistent, false);
+  assert.equal(result.reconcileReport.truncated, false);
+  assert.ok(result.reconcileReport.findings.some((finding) => (
+    finding.classification === "stale"
+    && finding.table === "ocp_awards_warehouse"
+    && finding.key === corruptKey
+  )));
+  assert.ok(result.reconcileReport.findings.some((finding) => (
+    finding.classification === "missing" && finding.key === missingKey
+  )));
+  assert.ok(result.reconcileReport.findings.some((finding) => (
+    finding.classification === "unexpected" && finding.key === unexpectedKey
+  )));
+});
+
+test("oversized reconciliation cannot omit an unexpected NULL logical key", { skip: !DatabaseSync }, async () => {
+  const sources = oversizedOcpSources();
+  const priorSnapshot = snapshotFor(manifest, sources.prior);
+  const currentSnapshot = snapshotFor(manifest, sources.current);
+  const { fenceStore, generation, holder } = await claimed(currentSnapshot, "null-key-corruption");
+  const db = openDatabase(sources.prior);
+  let corrupted = false;
+  const adapter = databaseAdapter(db, {
+    generation,
+    holder,
+    beforeSelect: ({ db: target, sql }) => {
+      if (!corrupted && sql.includes("FROM ocp_awards_warehouse")) {
+        target.prepare("INSERT INTO ocp_awards_warehouse (row_key, request_id, vendor_name) VALUES (NULL, ?, ?)")
+          .run("null-key", "Unexpected NULL-key vendor");
+        corrupted = true;
+      }
+    },
+  });
+
+  const result = await runProductionDelta({
+    priorSnapshot, currentSnapshot, manifest, sourceDocuments: sources.current,
+    generation, fingerprint, holder, fenceStore, adapter, appliedBatchStore: adapter,
+    policy, maxOpsPerBatch: 500, now: clock,
+  });
+
+  assert.equal(corrupted, true);
+  assert.equal(result.outcome, "failed_permanent");
+  assert.equal(result.reconcileReport.consistent, false);
+  assert.equal(result.reconcileReport.truncated, true, "the extra NULL row exceeds the bounded chunk and fails closed");
+  assert.ok(result.reconcileReport.findings.some((finding) => (
+    finding.classification === "unexpected"
+    && finding.table === "ocp_awards_warehouse"
+    && finding.key === ""
+  )));
+});
+
+test("an FTS duplicate split across a scan-page boundary cannot pass reconciliation", { skip: !DatabaseSync }, async () => {
+  const sources = oversizedKeywordSources(policy.reconcile.max_rows + 1_000);
+  const priorSnapshot = snapshotFor(manifest, sources.prior);
+  const currentSnapshot = snapshotFor(manifest, sources.current);
+  const { fenceStore, generation, holder } = await claimed(currentSnapshot, "late-window-duplicate");
+  const db = openDatabase(sources.prior);
+  const duplicateKey = "gamma:notice:bulk-005499";
+  let duplicated = false;
+  const adapter = databaseAdapter(db, {
+    generation,
+    holder,
+    beforeSelect: ({ db: target, sql, params }) => {
+      if (
+        !duplicated
+        && sql.includes("FROM keyword_search_fts")
+        && sql.includes("document_id > ?")
+        && !sql.includes("document_id <= ?")
+        && params.length === 2
+      ) {
+        target.prepare(`INSERT INTO keyword_search_fts (document_id, family_id, search_text)
+          SELECT document_id, family_id, search_text FROM keyword_search_fts WHERE document_id = ?`)
+          .run(duplicateKey);
+        duplicated = true;
+      }
+    },
+  });
+
+  const result = await runProductionDelta({
+    priorSnapshot, currentSnapshot, manifest, sourceDocuments: sources.current,
+    generation, fingerprint, holder, fenceStore, adapter, appliedBatchStore: adapter,
+    policy, maxOpsPerBatch: 500, now: clock,
+  });
+
+  assert.equal(duplicated, true);
+  assert.equal(result.outcome, "failed_permanent");
+  assert.equal(result.reconcileReport.consistent, false);
+  assert.equal(result.reconcileReport.truncated, false);
+  assert.ok(result.reconcileReport.findings.some((finding) => (
+    finding.classification === "duplicate"
+    && finding.table === "keyword_search_fts"
+    && finding.key === duplicateKey
+  )));
+});
+
+test("watermark and representative-query failures cannot pass complete reconciliation", { skip: !DatabaseSync }, async () => {
+  const currentSnapshot = snapshotFor(manifest, fixture.current);
+  for (const failure of ["watermark", "representative_query"]) {
+    const { fenceStore, generation, holder } = await claimed(currentSnapshot, `${failure}-reconcile`);
+    const db = openDatabase(fixture.prior);
+    const adapter = databaseAdapter(db, {
+      generation,
+      holder,
+      beforeSelect: ({ sql }) => {
+        if (failure === "watermark" && sql.startsWith("SELECT as_of FROM keyword_search_families")) {
+          return [{ as_of: "stale-watermark" }];
+        }
+        if (failure === "representative_query" && sql.includes("keyword_search_fts MATCH")) return [];
+        return undefined;
+      },
+    });
+    const result = await runProductionDelta({
+      priorSnapshot: snapshotFor(manifest, fixture.prior), currentSnapshot,
+      manifest, sourceDocuments: fixture.current, generation, fingerprint, holder,
+      fenceStore, adapter, appliedBatchStore: adapter,
+      policy: { ...policy, canary: { max_partitions: 1, max_rows: 200 } },
+      maxOpsPerBatch: 2, now: clock,
+    });
+
+    assert.equal(result.outcome, "failed_permanent", `${failure} cannot publish`);
+    assert.equal(result.reconcileReport.consistent, false);
+    assert.equal(result.reconcileReport.truncated, false);
+    if (failure === "watermark") {
+      assert.ok(result.reconcileReport.watermarks.some((item) => item.status === "mismatch"));
+    } else {
+      assert.ok(result.reconcileReport.representative_queries.some((item) => item.status === "failed"));
+    }
+  }
+});
+
+test("the finding ceiling aborts oversized reconciliation as incomplete", { skip: !DatabaseSync }, async () => {
+  const sources = oversizedOcpSources();
+  const priorSnapshot = snapshotFor(manifest, sources.prior);
+  const currentSnapshot = snapshotFor(manifest, sources.current);
+  const { fenceStore, generation, holder } = await claimed(currentSnapshot, "reconcile-abort-limit");
+  const db = openDatabase(sources.prior);
+  let corrupted = false;
+  const adapter = databaseAdapter(db, {
+    generation,
+    holder,
+    beforeSelect: ({ db: target, sql, params }) => {
+      if (!corrupted && sql.includes("ocp_awards_warehouse") && sql.includes("row_key > ?") && params.length === 1) {
+        const update = target.prepare("UPDATE ocp_awards_warehouse SET vendor_name = 'corrupt' WHERE row_key = ?");
+        for (let index = 5_100; index < 5_130; index += 1) {
+          update.run(`bulk-${String(index).padStart(6, "0")}|pin-${String(index).padStart(6, "0")}|2026-09-12`);
+        }
+        corrupted = true;
+      }
+    },
+  });
+
+  const result = await runProductionDelta({
+    priorSnapshot, currentSnapshot, manifest, sourceDocuments: sources.current,
+    generation, fingerprint, holder, fenceStore, adapter, appliedBatchStore: adapter,
+    policy, maxOpsPerBatch: 500, now: clock,
+  });
+
+  assert.equal(corrupted, true);
+  assert.equal(result.outcome, "failed_permanent");
+  assert.equal(result.reconcileReport.consistent, false);
+  assert.equal(result.reconcileReport.truncated, true);
+  assert.equal(result.reconcileReport.findings_count, policy.abort_threshold.max_findings);
+  const ocpCoverage = result.reconcileReport.scope.selected.find((item) => item.model_id === "ocp_awards");
+  assert.equal(ocpCoverage.complete, false);
+});
+
+test("a later abort preserves completed earlier partition evidence", { skip: !DatabaseSync }, async () => {
+  const db = openDatabase(fixture.current);
+  db.exec("UPDATE ocp_awards_warehouse SET vendor_name = 'corrupt'");
+  const adapter = databaseAdapter(db, { generation: 1 });
+
+  const verification = await verifyPartitionScopeCompletely({
+    manifest,
+    sourceDocuments: fixture.current,
+    adapter,
+    selection: [
+      { model_id: "keyword_search", partition: "alpha", rows: 1 },
+      { model_id: "ocp_awards", partition: "__model__", rows: 1 },
+    ],
+    maxPartitions: 25,
+    maxRows: 5_000,
+    maxFindings: 1,
+  });
+
+  assert.equal(verification.coverage.complete, false);
+  assert.equal(verification.coverage.aborted_reason, "max_findings");
+  assert.equal(verification.coverage.partitions[0].complete, true);
+  assert.equal(verification.coverage.partitions[1].complete, false);
+  assert.ok(verification.watermarks.some((item) => (
+    item.model_id === "keyword_search" && item.partition === "alpha" && item.status === "match"
+  )));
+  assert.ok(verification.representativeQueries.some((item) => (
+    item.model_id === "keyword_search" && item.partition === "alpha" && item.status === "passed"
+  )));
 });
 
 test("an unchanged snapshot is a zero-write skip", { skip: !DatabaseSync }, async () => {

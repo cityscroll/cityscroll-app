@@ -35,15 +35,21 @@ The ordinary path is the fenced, idempotent delta path:
    canary slice.
 4. Run the bounded canary and stop on any finding, watermark mismatch, or
    failed representative query.
-5. Reconcile the accepted generation before it can serve. A finding or
-   truncated reconcile is not consistent and cannot be promoted.
+5. Reconcile every partition changed by the accepted generation before it can
+   serve. The reconcile bounds apply to each finite verification unit, not to
+   the generation's cumulative size: partitions are grouped into windows of at
+   most `reconcile.max_partitions`, and each table is scanned in key ranges and
+   target pages of at most `reconcile.max_rows`. Reconciliation stops after
+   `abort_threshold.max_findings`; any finding or incomplete scan is not
+   consistent and cannot be promoted.
 6. Retain the publication decision, batch, canary, reconcile, generation, and
    zero-write evidence as the append-only local JSONL receipt and the retained
    workflow artifact; the best-effort KV mirror is supplementary.
 
 The checked-in policy data in `worker/d1-release-policy.json` owns the canary,
-reconcile, abort, budget, and rollback bounds. The policy check verifies this
-workflow order and refuses a rebuild reference in the ordinary path.
+reconcile-window, reconcile-chunk, abort, budget, and rollback bounds. The
+policy check verifies this workflow order and refuses a rebuild reference in
+the ordinary path.
 
 Receipt `estimated_writes` and `observed_writes` fields count application-row
 mutations represented by the delta batches. An observed count means the batch's
