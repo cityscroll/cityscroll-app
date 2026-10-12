@@ -2,8 +2,7 @@ import {
   DIGEST_SHADOW_ATTENTION,
   DIGEST_SHADOW_DEGRADED_UPSTREAM,
   DIGEST_SHADOW_READY,
-  buildDigestShadowSummary,
-  readDigestShadow,
+  compactDigestShadowResult,
   validateDigestShadowRun,
   validateDigestShadowTargets,
 } from "./digest_shadow.mjs";
@@ -70,6 +69,7 @@ function rebuildContext(env, now) {
     caps: { "per-run": Number.MAX_SAFE_INTEGER, daily: Number.MAX_SAFE_INTEGER },
     onSent: async () => {},
     onDryRun: async () => {},
+    suppressDryRunLogs: true,
     capturePreviews: true,
     previewOnly: true,
     advanceState: false,
@@ -87,6 +87,7 @@ async function runTarget(env, job, now) {
       now: new Date(now),
       live: false,
       forceInline: true,
+      suppressDryRunLogs: true,
       capturePreviews: true,
       previewOnly: true,
       advanceState: false,
@@ -129,14 +130,51 @@ async function readRun(db, runId) {
 }
 
 async function readItems(db, runId) {
-  const out = await db.prepare(`SELECT run_id, digest_id, job_json, status, attempt_count,
-      result_json, error, started_at, completed_at FROM ${DIGEST_SHADOW_REBUILD_ITEM_TABLE}
-      WHERE run_id = ? ORDER BY digest_id`).bind(runId).all();
-  return (out.results || []).map((row) => ({
-    ...row,
-    job: JSON.parse(row.job_json || "null"),
-    result: JSON.parse(row.result_json || "null"),
-  }));
+  const out = await db.prepare(`SELECT run_id, digest_id, status, attempt_count,
+      result_json IS NOT NULL AS result_available, error, started_at, completed_at
+      FROM ${DIGEST_SHADOW_REBUILD_ITEM_TABLE} WHERE run_id = ? ORDER BY digest_id`).bind(runId).all();
+  return (out.results || []).map((row) => ({ ...row, result_available: Boolean(row.result_available) }));
+}
+
+async function readTerminalItems(db, runId) {
+  const items = [];
+  const contentRedlines = [];
+  let after = "";
+  for (;;) {
+    // Keyset pagination holds at most one serialized/parsed preview at a time.
+    const row = await db.prepare(`SELECT digest_id, status, result_json, error
+      FROM ${DIGEST_SHADOW_REBUILD_ITEM_TABLE} WHERE run_id = ? AND digest_id > ?
+      ORDER BY digest_id LIMIT 1`).bind(runId, after).first();
+    if (!row) break;
+    const raw = JSON.parse(row.result_json || "null");
+    const identity = raw?.previewId || raw?.sub || raw?.watch || "unknown";
+    if (raw?.preview && identity !== row.digest_id) {
+      items.push({ digest_id: row.digest_id, status: "failed", error: "preview identity does not match checkpoint", result: null });
+    } else {
+      const compact = compactDigestShadowResult(raw);
+      items.push({ digest_id: row.digest_id, status: row.status, error: row.error, result: compact.result });
+      contentRedlines.push(...compact.contentRedlines);
+    }
+    after = row.digest_id;
+  }
+  return { items, contentRedlines };
+}
+
+// The transaction's summary CAS is also the preview-copy fence. Bodies never
+// leave D1 for promotion and only metadata from the validated summary is used.
+function copyPreviews(db, run, finalizationId) {
+  return db.prepare(`INSERT INTO digest_shadow_previews
+    (run_day, digest_id, recipient_redacted, subject, html, item_count, watch_counts_json)
+    SELECT r.run_day, json_extract(p.value, '$.digest_id'),
+      json_extract(p.value, '$.recipient_redacted'), json_extract(p.value, '$.subject'),
+      COALESCE(json_extract(i.result_json, '$.preview.html'), ''),
+      json_extract(p.value, '$.item_count'), json_extract(p.value, '$.watch_counts')
+    FROM digest_shadow_runs r, json_each(r.summary_json, '$.previews') p
+    JOIN ${DIGEST_SHADOW_REBUILD_ITEM_TABLE} i ON i.run_id = ?
+      AND i.digest_id = json_extract(p.value, '$.digest_id')
+    WHERE r.run_day = ? AND json_extract(r.summary_json, '$.rebuild_finalization_id') = ?
+      AND i.status = 'complete' AND json_type(i.result_json, '$.preview') = 'object'`)
+    .bind(run.run_id, run.run_day, finalizationId);
 }
 
 async function updateRun(db, runId, values) {
@@ -154,7 +192,7 @@ async function persistMergedSideEffects(env, run, merged, now) {
   return { accepted: true, merged, receipt };
 }
 
-async function mergeCompletedSummary(env, run, items, now) {
+async function mergeCompletedSummary(env, run, items, now, contentRedlines) {
   const evaluationNow = new Date(run.created_at);
   const currentRow = await env.DB.prepare(
     "SELECT summary_json FROM digest_shadow_runs WHERE run_day = ?",
@@ -176,8 +214,16 @@ async function mergeCompletedSummary(env, run, items, now) {
   const touched = new Set(items.map((item) => item.digest_id));
   const rawResults = items.map((item) => item.result).filter(Boolean);
   const fullRebuild = run.requested_digest_ids == null;
-  if (fullRebuild && rawResults.length === items.length && items.every((item) => item.status === "complete")) {
-    const validated = await validateDigestShadowRun(env, { results: rawResults }, { now: evaluationNow });
+  if (fullRebuild && !run.error) {
+    // A failed target is still part of the full population. Target-only fallback
+    // would lose aggregate findings that a later scoped repair must preserve.
+    const results = items.map((item) => item.status === "complete" && item.result ? item.result : {
+      previewId: item.digest_id,
+      error: `Rebuild target failed: ${item.error || "result unavailable"}`,
+    });
+    const validated = await validateDigestShadowRun(env, { results }, {
+      now: evaluationNow, renderedContentRedlines: contentRedlines,
+    });
     const finalizationId = crypto.randomUUID();
     const merged = {
       ...validated,
@@ -207,15 +253,7 @@ async function mergeCompletedSummary(env, run, items, now) {
       AND EXISTS (SELECT 1 FROM digest_shadow_runs WHERE run_day = ?
         AND json_extract(summary_json, '$.rebuild_finalization_id') = ?)`)
       .bind(run.run_day, run.run_day, finalizationId));
-    for (const preview of merged._rendered_previews || []) {
-      statements.push(env.DB.prepare(`INSERT INTO digest_shadow_previews
-        (run_day, digest_id, recipient_redacted, subject, html, item_count, watch_counts_json)
-        SELECT ?, ?, ?, ?, ?, ?, ? WHERE EXISTS (
-          SELECT 1 FROM digest_shadow_runs WHERE run_day = ?
-            AND json_extract(summary_json, '$.rebuild_finalization_id') = ?)`)
-        .bind(run.run_day, preview.digest_id, preview.recipient_redacted, preview.subject,
-          preview.html, preview.item_count, json(preview.watch_counts), run.run_day, finalizationId));
-    }
+    statements.push(copyPreviews(env.DB, run, finalizationId));
     await env.DB.batch(statements);
     const storedRow = await env.DB.prepare(
       "SELECT summary_json FROM digest_shadow_runs WHERE run_day = ?",
@@ -229,8 +267,10 @@ async function mergeCompletedSummary(env, run, items, now) {
     }
     return persistMergedSideEffects(env, run, merged, evaluationNow);
   }
-  const targetSummaries = await validateDigestShadowTargets(env, rawResults, { now: evaluationNow });
+  const targetSummaries = await validateDigestShadowTargets(env, rawResults, { now: evaluationNow, renderedContentRedlines: contentRedlines });
   const targetRedlines = [
+    ...(run.error ? [{ code: "rebuild_manifest_incomplete", digest_id: "run", watch_id: null,
+      reason: "The rebuild could not confirm its complete manifest.", evidence: { error: run.error } }] : []),
     ...targetSummaries.flatMap((summary) => summary.redlines || []),
     ...items.filter((item) => item.status !== "complete" || !item.result).map((item) => ({
       code: "rebuild_target_failed",
@@ -258,7 +298,7 @@ async function mergeCompletedSummary(env, run, items, now) {
     ...(base.upstream_incidents || []).filter((incident) => !touched.has(incident.digest_id)),
     ...targetIncidents,
   ];
-  const incompleteBase = !fullRebuild && base.complete !== true;
+  const incompleteBase = (!fullRebuild && base.complete !== true) || Boolean(run.error);
   if (incompleteBase) {
     redlines.push({
       code: "rebuild_partial_incomplete_base",
@@ -302,7 +342,6 @@ async function mergeCompletedSummary(env, run, items, now) {
     },
   };
   delete merged.invocation_id;
-  const rawPreviews = targetSummaries.flatMap((summary) => summary._rendered_previews || []);
   const publicSummary = { ...merged };
   delete publicSummary._rendered_previews;
   const statements = [
@@ -322,15 +361,7 @@ async function mergeCompletedSummary(env, run, items, now) {
         AND json_extract(summary_json, '$.rebuild_finalization_id') = ?)`)
       .bind(run.run_day, digestId, run.run_day, finalizationId));
   }
-  for (const preview of rawPreviews) {
-    statements.push(env.DB.prepare(`INSERT INTO digest_shadow_previews
-      (run_day, digest_id, recipient_redacted, subject, html, item_count, watch_counts_json)
-      SELECT ?, ?, ?, ?, ?, ?, ? WHERE EXISTS (
-        SELECT 1 FROM digest_shadow_runs WHERE run_day = ?
-          AND json_extract(summary_json, '$.rebuild_finalization_id') = ?)`)
-      .bind(run.run_day, preview.digest_id, preview.recipient_redacted, preview.subject,
-        preview.html, preview.item_count, json(preview.watch_counts), run.run_day, finalizationId));
-  }
+  statements.push(copyPreviews(env.DB, run, finalizationId));
   await env.DB.batch(statements);
   const storedRow = await env.DB.prepare(
     "SELECT summary_json FROM digest_shadow_runs WHERE run_day = ?",
@@ -371,58 +402,58 @@ export async function createDigestShadowRebuild(env, { affectedDigestIds = null,
 async function expandRun(env, runId, now) {
   const run = await readRun(env.DB, runId);
   if (!run || run.status === "complete" || run.status === "failed") return run;
-  const subscriptions = await listDigestSubscriptions(env);
-  const wanted = new Set(run.requested_digest_ids || []);
-  const jobs = [];
-  for (const watch of cfg.watches || []) {
-    const job = { type: "static", watch };
-    const digestId = await digestShadowRebuildJobId(job);
-    if (!wanted.size || wanted.has(digestId)) jobs.push({ ...job, digest_id: digestId });
-  }
-  for (const job of buildDigestJobs(subscriptions)) {
-    const digestId = await digestShadowRebuildJobId(job);
-    if (!wanted.size || wanted.has(digestId)) jobs.push({ ...job, digest_id: digestId });
-  }
-  const knownIds = new Set(jobs.map((job) => job.digest_id));
-  const missing = [...wanted].filter((id) => !knownIds.has(id));
-  const statements = jobs.map((job) => env.DB.prepare(`INSERT OR IGNORE INTO ${DIGEST_SHADOW_REBUILD_ITEM_TABLE}
-    (run_id, digest_id, job_json, status, attempt_count, result_json, error, started_at, completed_at)
-    VALUES (?, ?, ?, 'queued', 0, NULL, NULL, NULL, NULL)`)
-    .bind(runId, job.digest_id, json(job)));
-  for (const digestId of missing) {
-    statements.push(env.DB.prepare(`INSERT OR IGNORE INTO ${DIGEST_SHADOW_REBUILD_ITEM_TABLE}
+  if (run.status === "running") return finalizeProgress(env, run, now);
+  if (run.status !== "dispatching") {
+    const claim = await env.DB.prepare(`UPDATE ${DIGEST_SHADOW_REBUILD_RUN_TABLE}
+      SET status = 'expanding', updated_at = ? WHERE run_id = ? AND status IN ('queued', 'expanding')`)
+      .bind(iso(now), runId).run();
+    if (!(Number(claim?.meta?.changes) > 0)) return readRun(env.DB, runId);
+    const subscriptions = await listDigestSubscriptions(env);
+    const wanted = new Set(run.requested_digest_ids || []);
+    const jobs = [];
+    for (const watch of cfg.watches || []) {
+      const job = { type: "static", watch };
+      const digestId = await digestShadowRebuildJobId(job);
+      if (!wanted.size || wanted.has(digestId)) jobs.push({ ...job, digest_id: digestId });
+    }
+    for (const job of buildDigestJobs(subscriptions)) {
+      const digestId = await digestShadowRebuildJobId(job);
+      if (!wanted.size || wanted.has(digestId)) jobs.push({ ...job, digest_id: digestId });
+    }
+    const knownIds = new Set(jobs.map((job) => job.digest_id));
+    const missing = [...wanted].filter((id) => !knownIds.has(id));
+    const statements = jobs.map((job) => env.DB.prepare(`INSERT OR IGNORE INTO ${DIGEST_SHADOW_REBUILD_ITEM_TABLE}
       (run_id, digest_id, job_json, status, attempt_count, result_json, error, started_at, completed_at)
-      VALUES (?, ?, ?, 'failed', 0, NULL, ?, NULL, ?)`)
-      .bind(runId, digestId, json({ type: "missing", digest_id: digestId }), "digest-not-found", iso(now)));
+      VALUES (?, ?, ?, 'queued', 0, NULL, NULL, NULL, NULL)`)
+      .bind(runId, job.digest_id, json(job)));
+    for (const digestId of missing) {
+      statements.push(env.DB.prepare(`INSERT OR IGNORE INTO ${DIGEST_SHADOW_REBUILD_ITEM_TABLE}
+        (run_id, digest_id, job_json, status, attempt_count, result_json, error, started_at, completed_at)
+        VALUES (?, ?, ?, 'failed', 0, NULL, ?, NULL, ?)`)
+        .bind(runId, digestId, json({ type: "missing", digest_id: digestId }), "digest-not-found", iso(now)));
+    }
+    if (statements.length) await env.DB.batch(statements);
+    const sealed = await env.DB.prepare(`UPDATE ${DIGEST_SHADOW_REBUILD_RUN_TABLE}
+      SET status = 'dispatching', total_count = ?, error = ?, updated_at = ?
+      WHERE run_id = ? AND status = 'expanding'`)
+      .bind(statements.length, missing.length ? "one or more requested digest ids were not found" : null,
+        iso(now), runId).run();
+    if (!(Number(sealed?.meta?.changes) > 0)) return readRun(env.DB, runId);
   }
-  if (statements.length) await env.DB.batch(statements);
   const items = await readItems(env.DB, runId);
-  const failed = items.filter((item) => item.status === "failed").length;
-  await updateRun(env.DB, runId, {
-    status: items.length && failed === items.length ? "failed" : (items.length ? "running" : "complete"),
-    total_count: items.length,
-    completed_count: items.filter((item) => item.status === "complete").length,
-    failed_count: failed,
-    error: missing.length ? "one or more requested digest ids were not found" : null,
-    updated_at: iso(now),
-  });
   for (const item of items.filter((candidate) => candidate.status === "queued")) {
     await env.DIGEST_SHADOW_QUEUE.send({ type: "digest", run_id: runId, digest_id: item.digest_id });
   }
-  if (!items.length) {
-    const current = await readDigestShadow(env.DB, { day: run.run_day });
-    if (current?.summary) {
-      const receipt = await recordDigestShadowReceipt(env, { ...current.summary, rebuild_run_id: runId }, now);
-      await updateRun(env.DB, runId, { receipt_json: json(receipt), updated_at: iso(now) });
-    }
-  }
-  return readRun(env.DB, runId);
+  await env.DB.prepare(`UPDATE ${DIGEST_SHADOW_REBUILD_RUN_TABLE} SET status = 'running', updated_at = ?
+    WHERE run_id = ? AND status = 'dispatching'`).bind(iso(now), runId).run();
+  return finalizeProgress(env, await readRun(env.DB, runId), now);
 }
 
 async function processItem(env, runId, digestId, now, runTargetFn = runTarget) {
   const run = await readRun(env.DB, runId);
   if (!run) throw new Error("digest shadow rebuild run not found");
-  const item = (await readItems(env.DB, runId)).find((candidate) => candidate.digest_id === digestId);
+  const item = await env.DB.prepare(`SELECT job_json, status FROM ${DIGEST_SHADOW_REBUILD_ITEM_TABLE}
+    WHERE run_id = ? AND digest_id = ?`).bind(runId, digestId).first();
   if (!item || run.status === "complete" || run.status === "failed") return run;
   if (item.status === "complete" || item.status === "failed") return finalizeProgress(env, run, now);
   const claim = await env.DB.prepare(`UPDATE ${DIGEST_SHADOW_REBUILD_ITEM_TABLE}
@@ -433,7 +464,7 @@ async function processItem(env, runId, digestId, now, runTargetFn = runTarget) {
   if (!claim) return readRun(env.DB, runId);
   const attemptCount = claim.attempt_count;
   try {
-    const summary = await runTargetFn(env, item.job, new Date(run.created_at));
+    const summary = await runTargetFn(env, JSON.parse(item.job_json), new Date(run.created_at));
     const completed = await env.DB.prepare(`UPDATE ${DIGEST_SHADOW_REBUILD_ITEM_TABLE}
       SET status = 'complete', result_json = ?, completed_at = ?, error = NULL
       WHERE run_id = ? AND digest_id = ? AND status = 'running' AND attempt_count = ?`)
@@ -451,13 +482,21 @@ async function processItem(env, runId, digestId, now, runTargetFn = runTarget) {
 
 async function finalizeProgress(env, run, now) {
   const runId = run.run_id;
-  const items = await readItems(env.DB, runId);
-  const complete = items.filter((candidate) => candidate.status === "complete").length;
-  const failed = items.filter((candidate) => candidate.status === "failed").length;
+  if (["queued", "expanding", "dispatching", "complete", "failed"].includes(run.status)) return run;
+  const counts = await env.DB.prepare(`SELECT COUNT(*) AS total,
+    COALESCE(SUM(status = 'complete'), 0) AS completed,
+    COALESCE(SUM(status = 'failed'), 0) AS failed
+    FROM ${DIGEST_SHADOW_REBUILD_ITEM_TABLE} WHERE run_id = ?`).bind(runId).first();
+  const complete = counts.completed;
+  const failed = counts.failed;
+  if (Number(run.total_count) !== counts.total) {
+    run = { ...run, error: "rebuild manifest count does not match durable items" };
+  }
   const updated = { completed_count: complete, failed_count: failed, updated_at: iso(now) };
-  if (complete + failed === items.length) {
-    const finalized = await mergeCompletedSummary(env, run, items, now);
-    updated.status = finalized.accepted ? (failed ? "failed" : "complete") : "failed";
+  if (complete + failed === counts.total) {
+    const { items, contentRedlines } = await readTerminalItems(env.DB, runId);
+    const finalized = await mergeCompletedSummary(env, run, items, now, contentRedlines);
+    updated.status = finalized.accepted ? (failed || run.error ? "failed" : "complete") : "failed";
     updated.receipt_json = finalized.accepted ? json(finalized.receipt) : null;
     updated.error = finalized.accepted ? run.error : "digest shadow changed during rebuild finalization";
   } else {
@@ -490,14 +529,66 @@ export async function handleDigestShadowRebuildQueueMessage(env, message, {
   throw new Error("unknown digest shadow rebuild message");
 }
 
+// Retry exhaustion is a receipt event, never a subscriber delivery failure.
+// Throw until both the durable item decision and aggregate finalization succeed.
+export async function handleDigestShadowRebuildDeadLetter(env, message, { now = new Date() } = {}) {
+  const body = message?.body || message || {};
+  const run = await readRun(env.DB, body.run_id);
+  if (!run || ["complete", "failed"].includes(run.status)) return run;
+  if (body.type === "digest") {
+    const cutoff = iso(new Date(new Date(now).getTime() - 20 * 60 * 1000));
+    await env.DB.prepare(`UPDATE ${DIGEST_SHADOW_REBUILD_ITEM_TABLE}
+      SET status = 'failed', error = 'queue retries exhausted', completed_at = ?
+      WHERE run_id = ? AND digest_id = ? AND (status = 'queued'
+        OR (status = 'running' AND (started_at IS NULL OR started_at < ?)))`)
+      .bind(iso(now), run.run_id, body.digest_id, cutoff).run();
+    const item = await env.DB.prepare(`SELECT status FROM ${DIGEST_SHADOW_REBUILD_ITEM_TABLE}
+      WHERE run_id = ? AND digest_id = ?`).bind(run.run_id, body.digest_id).first();
+    // A duplicate old delivery must not cancel a newer, live claim. Keep this
+    // receipt retryable; cron reconciles it if the DLQ's own retries exhaust.
+    if (item?.status === "running") throw new Error("digest shadow claim still active");
+  } else if (body.type === "expand" || body.type === "stale") {
+    if (body.type === "expand" && run.status === "running") return finalizeProgress(env, run, now);
+    await env.DB.batch([
+      env.DB.prepare(`UPDATE ${DIGEST_SHADOW_REBUILD_ITEM_TABLE}
+        SET status = 'failed', error = 'rebuild execution exhausted', completed_at = ?
+        WHERE run_id = ? AND status IN ('queued', 'running')
+          AND NOT EXISTS (SELECT 1 FROM ${DIGEST_SHADOW_REBUILD_ITEM_TABLE} active
+            WHERE active.run_id = ? AND active.status = 'running' AND active.started_at >= ?)`)
+        .bind(iso(now), run.run_id, run.run_id, iso(new Date(new Date(now).getTime() - 20 * 60 * 1000))),
+      env.DB.prepare(`UPDATE ${DIGEST_SHADOW_REBUILD_RUN_TABLE}
+        SET status = 'running', error = CASE WHEN status IN ('queued', 'expanding', 'dispatching')
+          THEN 'rebuild expansion exhausted before dispatch completed' ELSE error END
+        WHERE run_id = ? AND status NOT IN ('complete', 'failed')`).bind(run.run_id),
+    ]);
+  } else {
+    throw new Error("unknown digest shadow dead letter");
+  }
+  return finalizeProgress(env, await readRun(env.DB, run.run_id), now);
+}
+
+// D1 is the retry authority if even the DLQ consumer is interrupted. Each cron
+// retries a bounded oldest set; no queue message is required to remain alive.
+export async function reconcileStaleDigestShadowRebuilds(env, { now = new Date() } = {}) {
+  if (!env?.DB?.prepare) return [];
+  const cutoff = iso(new Date(new Date(now).getTime() - 2 * 60 * 60 * 1000));
+  const out = await env.DB.prepare(`SELECT run_id FROM ${DIGEST_SHADOW_REBUILD_RUN_TABLE} r
+    WHERE status NOT IN ('complete', 'failed') AND updated_at < ?
+      AND NOT EXISTS (SELECT 1 FROM ${DIGEST_SHADOW_REBUILD_ITEM_TABLE} i
+        WHERE i.run_id = r.run_id AND i.status = 'running' AND i.started_at >= ?)
+    ORDER BY updated_at, run_id LIMIT 2`).bind(cutoff, cutoff).all();
+  const results = [];
+  for (const row of out.results || []) {
+    results.push(await handleDigestShadowRebuildDeadLetter(env, { type: "stale", run_id: row.run_id }, { now }));
+  }
+  return results;
+}
+
 export async function readDigestShadowRebuildStatus(db, runId) {
   if (!db?.prepare || !runId) return null;
   const run = await readRun(db, runId);
   if (!run) return null;
-  const items = (await readItems(db, runId)).map(({ result, result_json, ...item }) => ({
-    ...item,
-    result_available: Boolean(result_json),
-  }));
+  const items = await readItems(db, runId);
   const { base_summary, base_summary_json, ...publicRun } = run;
   return { ...publicRun, items };
 }

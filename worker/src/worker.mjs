@@ -110,7 +110,7 @@ import {
   runBudgetedNoticeFreshness,
   runDigestShadow,
 } from "./digest_shadow.mjs";
-import { handleDigestShadowRebuildQueueMessage } from "./digest_shadow_rebuild.mjs";
+import { handleDigestShadowRebuildQueueMessage, handleDigestShadowRebuildDeadLetter, reconcileStaleDigestShadowRebuilds } from "./digest_shadow_rebuild.mjs";
 import { handleNearYou } from "./near_you.mjs";
 import { isNearYouDeferredPath, isNearYouDocumentPath } from "../../site/near_you_scope_runtime.mjs";
 import { handleFollowing } from "./following.mjs";
@@ -530,14 +530,18 @@ const worker = {
     // Early-return branches, delivery errors, and slow publisher refreshes must not
     // prevent a publication attempt. waitUntil retains this work without delaying
     // delivery; daily aggregates are idempotent across the three windows.
-    ctx.waitUntil((async () => {
+    const searchUsageRefresh = (async () => {
       try {
         const r = await refreshPublicSearchUsageSnapshot(env);
         console.log("public search usage snapshot:", JSON.stringify(r));
       } catch (error) {
         console.error("public search usage refresh failed:", String(error?.message || error));
       }
-    })());
+    })();
+    const shadowReconciliation = reconcileStaleDigestShadowRebuilds(env).catch((error) => {
+      console.error("digest shadow stale reconciliation failed", String(error?.message || error));
+    });
+    ctx.waitUntil(Promise.all([searchUsageRefresh, shadowReconciliation]));
     // Morning live-derived caches. Council Events acquisition runs first so the
     // shared meeting view, route slices, Search, Now, and later alert replay
     // consume the same vintage instead of yesterday's snapshot.
@@ -631,7 +635,7 @@ const worker = {
         let summary = await runDigestShadow(env, {
           now: shadowNow,
           invocationId: shadowInvocationId,
-          suppressPersonalizedLogs: event.costProbe === true,
+          suppressPersonalizedLogs: true,
         });
         // Await so schedule-harness stubs (async wrappers) and a future async helper both land.
         if (freshness.degraded) summary = await applyFreshnessDegradation(summary, freshness);
@@ -908,14 +912,16 @@ const worker = {
   },
 
   async runQueue(batch, env) {
-    if (batch.queue === "crol-digest-shadow-rebuild") {
+    if (["crol-digest-shadow-rebuild", "crol-digest-shadow-rebuild-dlq"].includes(batch.queue)) {
       for (const msg of batch.messages) {
         try {
-          await handleDigestShadowRebuildQueueMessage(env, msg, { now: new Date() });
+          const handler = batch.queue === "crol-digest-shadow-rebuild-dlq"
+            ? handleDigestShadowRebuildDeadLetter : handleDigestShadowRebuildQueueMessage;
+          await handler(env, msg, { now: new Date() });
           msg.ack();
         } catch (error) {
           console.error("digest shadow rebuild job failed", String(error?.message || error));
-          msg.retry();
+          msg.retry(batch.queue === "crol-digest-shadow-rebuild-dlq" ? { delaySeconds: 600 } : undefined);
         }
       }
       return;

@@ -2,8 +2,8 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/digest-shadow-quiet-watermark-monitor",
   "status": "implemented",
-  "fingerprint": "digest-shadow-quiet-watermark-monitor.v3",
-  "updated_at": "2026-09-21T00:00:00.000Z",
+  "fingerprint": "digest-shadow-quiet-watermark-monitor.v4",
+  "updated_at": "2026-10-12T00:00:00.000Z",
   "projections": [
     {
       "id": "digest-shadow-detector",
@@ -44,6 +44,30 @@
     {
       "id": "quiet-watermark-named-assertions",
       "path": "test/digest_shadow_quiet_watermark.test.mjs"
+    },
+    {
+      "id": "default-local-home-worker-routes",
+      "path": "worker/wrangler.toml"
+    },
+    {
+      "id": "independent-scheduled-publication",
+      "path": "worker/src/worker.mjs"
+    },
+    {
+      "id": "digest-shadow-recovery-base-schema",
+      "path": "worker/migrations/0035_digest_shadow_rebuild_base.sql"
+    },
+    {
+      "id": "digest-shadow-recovery-ops-contract",
+      "path": "worker/ops-contract.v1.json"
+    },
+    {
+      "id": "digest-shadow-recovery-bounded-memory-tests",
+      "path": "worker/test/digest_shadow_rebuild.test.mjs"
+    },
+    {
+      "id": "digest-shadow-recovery-schedule-tests",
+      "path": "worker/test/digest_shadow_schedule.test.mjs"
     }
   ]
 }

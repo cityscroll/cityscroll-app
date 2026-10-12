@@ -57,6 +57,7 @@ function scheduledWorker({ now = NOW, overrides = {} } = {}) {
   const ctx = { waitUntil(promise) { pending.push(promise); } };
   return {
     calls,
+    queue: (batch, env) => context.worker.runQueue(batch, env),
     errors,
     pending,
     run: (cron, env, scheduledTime = new Date(now).getTime()) => context.worker.runScheduled({ cron, scheduledTime }, env, ctx),
@@ -752,4 +753,26 @@ test("progress survives interruption and cannot overwrite finalized evidence", a
     );
     assert.equal(read().phase, "account_builds");
   } finally { sqlite.close(); }
+});
+
+
+test("shadow dead-letter routing retries failed durable receipts without delivery counters", async () => {
+  let fail = true;
+  let acked = 0;
+  const retries = [];
+  const harness = scheduledWorker({ overrides: {
+    handleDigestShadowRebuildDeadLetter: async () => { if (fail) throw new Error("receipt write failed"); },
+  } });
+  const batch = { queue: "crol-digest-shadow-rebuild-dlq", messages: [{
+    body: { type: "digest", run_id: "fixture", digest_id: "one" },
+    ack() { acked++; }, retry(options) { retries.push(options); },
+  }] };
+  await harness.queue(batch, {});
+  assert.equal(acked, 0);
+  assert.equal(retries[0].delaySeconds, 600);
+  fail = false;
+  await harness.queue(batch, {});
+  assert.equal(acked, 1);
+  assert.equal(harness.calls.includes("recordDigestQueueFailure"), false);
+  assert.equal(harness.calls.includes("consumeDigestJob"), false);
 });

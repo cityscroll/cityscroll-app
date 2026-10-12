@@ -103,6 +103,7 @@ commented-out declaration is a reserved seam, not custody.
 | `DIGEST_QUEUE` | Queue producer for `crol-digests` | active |
 | `DIGEST_SHADOW_QUEUE` | Queue producer for `crol-digest-shadow-rebuild` | active |
 | `queues.consumers:crol-digest-shadow-rebuild` | Queue consumer for `crol-digest-shadow-rebuild` | active |
+| `queues.consumers:crol-digest-shadow-rebuild-dlq` | Queue consumer for exhausted shadow rebuilds | active |
 | `queues.consumers:crol-digests` | Queue consumer for `crol-digests` | active |
 | `queues.consumers:crol-digests-dlq` | Queue consumer for the dead-letter queue | active |
 | `SOURCE_VAULT` | R2 bucket | inactive — the `[[r2_buckets]]` declaration is commented out and `SOURCE_VAULT_ENABLED` is `"false"` |

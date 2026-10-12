@@ -288,6 +288,52 @@ function lastGoodPreview(store, digestId) {
   return { run_day: String(row.run_day), item_count: finiteCount(row.item_count) };
 }
 
+// Shared rendered-content detector. The checkpointed reader invokes this while
+// one real preview body is resident, then retains only these bounded findings.
+export function validateDigestRenderedContent(preview) {
+  const redlines = [];
+  const rendered = markerCount(preview.html);
+  if (rendered !== preview.item_count) {
+    redlines.push(redline(
+      "count_list_mismatch",
+      preview.digest_id,
+      "The declared item count does not equal the rendered item list.",
+      { declared_item_count: preview.item_count, rendered_item_count: rendered },
+    ));
+  }
+  const links = linkProblems(preview);
+  if (links.invalid.length || !links.unsubscribe || !links.context) {
+    redlines.push(redline(
+      "broken_digest_link",
+      preview.digest_id,
+      "The rendered digest has a missing or malformed unsubscribe/context link.",
+      {
+        invalid_hrefs: links.invalid.slice(0, 10),
+        unsubscribe_present: links.unsubscribe,
+        context_present: links.context,
+      },
+    ));
+  }
+
+  return redlines;
+}
+
+export function compactDigestShadowResult(result) {
+  if (!result) return { result, contentRedlines: [] };
+  const contentRedlines = result.preview ? validateDigestRenderedContent({
+    digest_id: result.previewId || result.sub || result.watch || "unknown",
+    html: result.preview.html || "",
+    item_count: finiteCount(result.new) + finiteCount(result.forecasts),
+  }) : [];
+  const compact = { ...result };
+  if (result.preview) compact.preview = { subject: result.preview.subject || "" };
+  if (Array.isArray(result.sections)) compact.sections = result.sections.map((section) => {
+    const { preview, ...metadata } = section;
+    return metadata;
+  });
+  return { result: compact, contentRedlines };
+}
+
 /** Pure detector + contract builder. */
 export function buildDigestShadowSummary({
   run,
@@ -295,6 +341,7 @@ export function buildDigestShadowSummary({
   now = new Date(),
   ontologyDelta = null,
   validationScope = "full",
+  renderedContentRedlines = null,
   // digest_id -> the most recent previously rendered preview for that id, used to say what a
   // reader is served while a source is unavailable. Read-only; nothing here is re-rendered.
   lastGoodPreviews = null,
@@ -364,29 +411,10 @@ export function buildDigestShadowSummary({
     ));
   }
 
-  for (const preview of previews) {
-    const rendered = markerCount(preview.html);
-    if (rendered !== preview.item_count) {
-      redlines.push(redline(
-        "count_list_mismatch",
-        preview.digest_id,
-        "The declared item count does not equal the rendered item list.",
-        { declared_item_count: preview.item_count, rendered_item_count: rendered },
-      ));
-    }
-    const links = linkProblems(preview);
-    if (links.invalid.length || !links.unsubscribe || !links.context) {
-      redlines.push(redline(
-        "broken_digest_link",
-        preview.digest_id,
-        "The rendered digest has a missing or malformed unsubscribe/context link.",
-        {
-          invalid_hrefs: links.invalid.slice(0, 10),
-          unsubscribe_present: links.unsubscribe,
-          context_present: links.context,
-        },
-      ));
-    }
+  if (renderedContentRedlines == null) {
+    for (const preview of previews) redlines.push(...validateDigestRenderedContent(preview));
+  } else {
+    redlines.push(...renderedContentRedlines);
   }
 
   const watchCounts = currentWatchCounts(results);
@@ -679,6 +707,7 @@ async function readHistory(env, day, count = HISTORY_DAYS) {
 export async function validateDigestShadowRun(env, run, {
   now = new Date(),
   ontologyDeltaCandidates = null,
+  renderedContentRedlines = null,
 } = {}) {
   const ontology = await import("./lib/ontology_delta_alert.mjs");
   const at = new Date(now);
@@ -694,10 +723,10 @@ export async function validateDigestShadowRun(env, run, {
     .filter((result) => result?.error)
     .map((result) => result.previewId || result.sub || result.watch);
   const lastGoodPreviews = await readLastGoodPreviews(env.DB, failedDigestIds, day);
-  return buildDigestShadowSummary({ run, history, now: at, ontologyDelta, lastGoodPreviews });
+  return buildDigestShadowSummary({ run, history, now: at, ontologyDelta, lastGoodPreviews, renderedContentRedlines });
 }
 
-export async function validateDigestShadowTargets(env, results, { now = new Date() } = {}) {
+export async function validateDigestShadowTargets(env, results, { now = new Date(), renderedContentRedlines = null } = {}) {
   const at = new Date(now);
   const history = await readHistory(env, at.toISOString().slice(0, 10));
   return (results || []).map((result) => buildDigestShadowSummary({
@@ -705,6 +734,7 @@ export async function validateDigestShadowTargets(env, results, { now = new Date
     history,
     now: at,
     validationScope: "digest",
+    renderedContentRedlines: renderedContentRedlines?.filter((finding) => finding.digest_id === (result.previewId || result.sub || result.watch || "unknown")),
   }));
 }
 
@@ -1116,7 +1146,7 @@ export async function runDigestShadow(env, {
   now = new Date(),
   runAlertsFn = null,
   ontologyDeltaCandidates = null,
-  suppressPersonalizedLogs = false,
+  suppressPersonalizedLogs = true,
   invocationId = null,
 } = {}) {
   if (!env.DB) throw new Error("digest shadow requires DB");

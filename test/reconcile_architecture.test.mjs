@@ -335,6 +335,7 @@ test("architecture facts observe three cron triggers and no bound R2 source vaul
       "SUBS",
       "USAGE_ANALYTICS",
       "queues.consumers:crol-digest-shadow-rebuild",
+      "queues.consumers:crol-digest-shadow-rebuild-dlq",
       "queues.consumers:crol-digests",
       "queues.consumers:crol-digests-dlq",
     ],
