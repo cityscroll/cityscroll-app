@@ -3,7 +3,7 @@ export const OPS_ALERT_TO = "alerts@cityscroll.org";
 
 export async function notifyOperator(env, { subject, text, html }) {
   const payload = {
-    from: env.ALERTS_FROM || "CityScroll <alerts@crol-list.org>",
+    from: env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>",
     to: OPS_ALERT_TO,
     subject,
     text,
