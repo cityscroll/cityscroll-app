@@ -209,8 +209,10 @@ Schedule-skipped sections remain visible in watch counts through `evaluation_sta
 The scheduled `digest-shadow-monitor.yml` polls after both rehearsal and delivery, and opens or
 updates a repair issue when the run is redlined, missing, stale, or has an open degraded-path
 receipt. A degraded delivery decision also sends one deduplicated operator signal through the
-existing `FEEDBACK_TO`/Resend notification route; it never addresses a subscriber. The
-authenticated admin endpoint remains the canonical machine-readable status surface.
+dedicated `alerts@cityscroll.org`/Resend notification route (`OPS_ALERT_TO`); it never
+addresses a subscriber. `FEEDBACK_TO` remains exclusively for user-submitted feedback,
+including the submitter Reply-To. Both technical notification helpers share `OPS_ALERT_TO`.
+The authenticated admin endpoint remains the canonical machine-readable status surface.
 The repair protocol is to diagnose the listed `affected_digest_ids`, apply the repair, then use
 authenticated `POST /admin/digest-shadow` to queue a checkpointed rebuild before 09:00. The POST
 returns immediately; `GET /admin/digest-shadow?run_id=…` reports expansion, per-digest progress,
@@ -285,10 +287,10 @@ the site's `#notice/<id>` permalinks.
 **Email identity:** From is always the app's own (`ALERTS_FROM` =
 `CityScroll <alerts@cityscroll.org>`, domain verified in Resend); Reply-To is
 `ALERTS_REPLY_TO` (the compatibility address on the retired product domain; see
-`worker/wrangler.toml`) because cityscroll.org has no apex MX and
-replies to the From address would bounce — that domain still has Cloudflare email
-routing. To is only ever the subscriber's own opted-in address. Never sends as a
-person. The sending domain is managed separately from the public website hostnames.
+`worker/wrangler.toml`). Subscriber Reply-To retains that compatibility default
+independently of the dedicated operator-notification recipient. To is only ever the
+subscriber's own opted-in address. Never sends as a person. The sending domain is
+managed separately from the public website hostnames.
 
 ## Defense in depth (denial-of-wallet & abuse)
 

@@ -229,8 +229,10 @@ Browser (site/index.html: inline CSS + static markup)
 Inbound email (Email Routing: subscribe@crol-list.org → this worker): plain
 English → LLM-parsed immediate watch + welcome reply (metered, loop-guarded).
 Outbound worker email to users comes from `alerts@cityscroll.org` (set by `ALERTS_FROM`),
-with Reply-To `alerts@crol-list.org` (`ALERTS_REPLY_TO`) so human replies land on a
-mailbox that still has MX (cityscroll.org apex has none). See `docs/mail-leg-health.md`.
+with subscriber Reply-To retaining the compatibility default declared by `ALERTS_REPLY_TO`,
+independently of operator-notification routing. The recipient-separation contract is documented
+in the [Worker guide](../worker/README.md). See also `worker/wrangler.toml` and
+`docs/mail-leg-health.md`.
 
 Cron (three daily UTC triggers — 08:00, 10:00 and 13:00; responsibilities and the
   authoritative schedule list are in `docs/release/cloudflare-native-builds.md`).

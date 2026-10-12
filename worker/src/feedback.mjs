@@ -8,8 +8,9 @@
 //         fb:<ts>:<rand> → { category, message, email, ip, ua, at }
 //       so there's a reviewable record (read it back via /admin/feedback), and
 //   (2) NOTIFY the operator by email via Resend — To FEEDBACK_TO (default
-//       feedback@cityscroll.org), From alerts@crol-list.org, Reply-To the submitter IF they
-//       left an address so the operator can just hit Reply.
+//       feedback@cityscroll.org), From ALERTS_FROM (or the established compatibility
+//       fallback), Reply-To the submitter IF they left an address so the operator can just
+//       hit Reply.
 // It deliberately does NOT auto-file GitHub issues (a public form that opens issues is a spam
 // vector); the operator triages the archive and files real issues by hand.
 
@@ -61,7 +62,7 @@ export async function handleFeedback(req, env) {
     return json({ ok: false, reason: "send-failed" }, 502, cors);
   }
   try {
-    await notifyOperator(env, record);
+    await notifyFeedback(env, record);
   } catch {
     return json({ ok: false, reason: "send-failed" }, 502, cors);
   }
@@ -72,27 +73,16 @@ function rand() {
   return [...crypto.getRandomValues(new Uint8Array(6))].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-// Shared operator notification route. Feedback and delivery-safety signals use
-// the same Resend destination and sender; neither path addresses subscribers.
-export async function notifyOperator(env, r) {
+// Preserve the established notification sender independently of recipient routing.
+export function feedbackNotificationSender(env) {
   const from = env.ALERTS_FROM || "CityScroll <alerts@crol-list.org>";
+  return from;
+}
+
+// User-submitted feedback stays on the shared feedback route.
+async function notifyFeedback(env, r) {
+  const from = feedbackNotificationSender(env);
   const to = env.FEEDBACK_TO || DEFAULT_TO;
-  if (r.subject && r.text) {
-    const payload = {
-      from,
-      to,
-      subject: r.subject,
-      text: r.text,
-      html: r.html || `<pre style="white-space:pre-wrap">${escHtml(r.text)}</pre>`,
-    };
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { "content-type": "application/json", authorization: `Bearer ${env.RESEND_API_KEY}` },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) throw new Error(`Resend ${res.status}: ${await res.text()}`);
-    return res.json();
-  }
   const label = {
     bug: "Bug",
     feature: "Feature idea",

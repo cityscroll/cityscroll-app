@@ -1,5 +1,5 @@
-// Digest sender identity: From is the CityScroll sending domain; Reply-To stays on the
-// still-routable crol-list.org address because cityscroll.org has no apex MX. Also covers
+// Digest sender identity: From is the CityScroll sending domain; subscriber Reply-To retains
+// its compatibility default independently of operator notification routing. Also covers
 // ALERTS_LIVE dry-run rendering (full HTML logged, Resend never called).
 import { test } from "node:test";
 import assert from "node:assert/strict";

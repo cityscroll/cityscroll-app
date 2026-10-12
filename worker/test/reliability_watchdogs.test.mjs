@@ -436,7 +436,7 @@ test("runtime alarms use the existing Resend path and the ops mailbox", async ()
     assert.equal(request.url, "https://api.resend.com/emails");
     const payload = JSON.parse(request.options.body);
     assert.equal(payload.to, OPS_ALERT_TO);
-    assert.equal(payload.to, "james@cityscroll.org");
+    assert.equal(payload.to, "alerts@cityscroll.org");
     assert.notEqual(payload.to, "team@cityscroll.org");
     assert.equal(request.options.headers["Idempotency-Key"], "incident-test");
   } finally {

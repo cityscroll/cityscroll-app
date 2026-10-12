@@ -1,3 +1,4 @@
+import { OPS_ALERT_TO } from "./operator_notification.mjs";
 import { opsNotificationDecision } from "./lib/ops_notification_policy.mjs";
 // alerts — scheduled daily digest. The Worker's `scheduled` handler (cron in
 // wrangler.toml: "0 13 * * *") calls runAlerts().
@@ -143,7 +144,7 @@ async function bumpDigestCategories(env, rows, fallbackCategory) {
 // stats:page_view, stats:catday:*, stats:alert_confirmed) so a list-prefix scan or
 // exact get can never confuse a page-view counter with a send cap or last-sent clock.
 export const DIGEST_RUN_LATEST_KEY = "digest:run:latest";
-export const OPS_ALERT_TO = "james@cityscroll.org";
+export { OPS_ALERT_TO } from "./operator_notification.mjs";
 
 export function digestRunDayKey(day) {
   return `digest:run:${day}`;
@@ -2711,9 +2712,8 @@ function digestHtml(w, rows) {
   </div>`;
 }
 
-// Human replies need a mailbox that can actually receive. cityscroll.org has no apex MX
-// (so replies to alerts@cityscroll.org bounce); crol-list.org still has Cloudflare email
-// routing. Prefer ALERTS_REPLY_TO, then the address that used to be the digest From.
+// Subscriber Reply-To retains its compatibility default independently of the operator
+// notification recipient. Prefer ALERTS_REPLY_TO, then the established digest reply address.
 function replyToAddress(env) {
   return env.ALERTS_REPLY_TO || "alerts@crol-list.org";
 }
