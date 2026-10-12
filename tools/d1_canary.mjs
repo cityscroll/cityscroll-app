@@ -627,17 +627,23 @@ export async function verifyPartitionScopeCompletely({
 
   const work = [];
   const partitions = [];
+  const partitionChecks = [];
   for (const [partitionIndex, item] of selection.entries()) {
     const entry = modelEntry(manifest, item.model_id);
     const sourceDocument = sourceDocuments[item.model_id];
     const partitionRows = tableRows(entry, sourceDocument).rows
       .filter((row) => row.partition === item.partition);
+    const rowsByTable = new Map();
+    for (const row of partitionRows) {
+      if (!rowsByTable.has(row.table)) rowsByTable.set(row.table, []);
+      rowsByTable.get(row.table).push(row);
+    }
     const chunks = [];
     for (const table of entry.tables.map((candidate) => candidate.name)) {
       chunks.push(...tableVerificationChunks({
         entry,
         table,
-        expectedRows: partitionRows.filter((row) => row.table === table),
+        expectedRows: rowsByTable.get(table) || [],
         maxRows,
       }));
     }
@@ -651,6 +657,7 @@ export async function verifyPartitionScopeCompletely({
       complete: false,
     };
     partitions.push(partitionCoverage);
+    partitionChecks.push({ entry, sourceDocument, rowsByTable });
     for (const chunk of chunks) work.push({ ...chunk, partitionIndex, partition: item.partition });
   }
 
@@ -673,7 +680,6 @@ export async function verifyPartitionScopeCompletely({
   let rowsScanned = 0;
   let observedRows = 0;
   let abortedReason = null;
-  let abortedPartitionIndex = null;
 
   for (const chunk of work) {
     const observedByKey = await scanTableForPartition({
@@ -700,41 +706,28 @@ export async function verifyPartitionScopeCompletely({
 
     if (!observedByKey.scanComplete) {
       abortedReason = "max_rows";
-      abortedPartitionIndex = chunk.partitionIndex;
       break;
     }
-    partitions[chunk.partitionIndex].chunks_completed += 1;
+    const coverage = partitions[chunk.partitionIndex];
+    coverage.chunks_completed += 1;
 
     if (chunkFindings.length > remaining || findings.length >= maxFindings) {
       abortedReason = "max_findings";
-      abortedPartitionIndex = chunk.partitionIndex;
       break;
     }
-  }
 
-  for (const [partitionIndex, item] of selection.entries()) {
-    const coverage = partitions[partitionIndex];
-    coverage.complete = coverage.chunks_completed === coverage.chunks_total
-      && partitionIndex !== abortedPartitionIndex;
-    if (!coverage.complete || abortedReason) continue;
-    const entry = modelEntry(manifest, item.model_id);
-    const sourceDocument = sourceDocuments[item.model_id];
-    const partitionRows = tableRows(entry, sourceDocument).rows
-      .filter((row) => row.partition === item.partition);
-    const rowsByTable = new Map();
-    for (const row of partitionRows) {
-      if (!rowsByTable.has(row.table)) rowsByTable.set(row.table, []);
-      rowsByTable.get(row.table).push(row);
-    }
+    if (coverage.chunks_completed !== coverage.chunks_total) continue;
+    const { entry, sourceDocument, rowsByTable } = partitionChecks[chunk.partitionIndex];
     watermarks.push(await verifyWatermark({
-      entry, sourceDocument, partition: item.partition, adapter,
+      entry, sourceDocument, partition: chunk.partition, adapter,
     }));
-    const representativeQuery = REPRESENTATIVE_QUERY[item.model_id];
+    const representativeQuery = REPRESENTATIVE_QUERY[entry.model_id];
     if (representativeQuery) {
       representativeQueries.push(await representativeQuery({
-        entry, partition: item.partition, rowsByTable, adapter,
+        entry, partition: chunk.partition, rowsByTable, adapter,
       }));
     }
+    coverage.complete = true;
   }
 
   for (const window of windows) {

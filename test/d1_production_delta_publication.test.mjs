@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 
 import { statementsForModel } from "../tools/build_worker_d1_read_models.mjs";
 import { publishBounded, planBatches, renderBatch } from "../tools/d1_bounded_publisher.mjs";
+import { verifyPartitionScopeCompletely } from "../tools/d1_canary.mjs";
 import { planDelta, snapshotFor, watermarksFromSnapshot } from "../tools/d1_delta_plan.mjs";
 import { abandonGeneration, claimGeneration, completeGeneration, createMemoryStateStore } from "../tools/d1_generation_fence.mjs";
 import { loadManifest, modelEntry } from "../tools/d1_manifest.mjs";
@@ -553,6 +554,36 @@ test("the finding ceiling aborts oversized reconciliation as incomplete", { skip
   assert.equal(result.reconcileReport.findings_count, policy.abort_threshold.max_findings);
   const ocpCoverage = result.reconcileReport.scope.selected.find((item) => item.model_id === "ocp_awards");
   assert.equal(ocpCoverage.complete, false);
+});
+
+test("a later abort preserves completed earlier partition evidence", { skip: !DatabaseSync }, async () => {
+  const db = openDatabase(fixture.current);
+  db.exec("UPDATE ocp_awards_warehouse SET vendor_name = 'corrupt'");
+  const adapter = databaseAdapter(db, { generation: 1 });
+
+  const verification = await verifyPartitionScopeCompletely({
+    manifest,
+    sourceDocuments: fixture.current,
+    adapter,
+    selection: [
+      { model_id: "keyword_search", partition: "alpha", rows: 1 },
+      { model_id: "ocp_awards", partition: "__model__", rows: 1 },
+    ],
+    maxPartitions: 25,
+    maxRows: 5_000,
+    maxFindings: 1,
+  });
+
+  assert.equal(verification.coverage.complete, false);
+  assert.equal(verification.coverage.aborted_reason, "max_findings");
+  assert.equal(verification.coverage.partitions[0].complete, true);
+  assert.equal(verification.coverage.partitions[1].complete, false);
+  assert.ok(verification.watermarks.some((item) => (
+    item.model_id === "keyword_search" && item.partition === "alpha" && item.status === "match"
+  )));
+  assert.ok(verification.representativeQueries.some((item) => (
+    item.model_id === "keyword_search" && item.partition === "alpha" && item.status === "passed"
+  )));
 });
 
 test("an unchanged snapshot is a zero-write skip", { skip: !DatabaseSync }, async () => {
