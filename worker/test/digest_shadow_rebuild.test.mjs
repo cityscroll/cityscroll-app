@@ -605,6 +605,55 @@ test("rebuild preserves upstream degradation in terminal evidence", async () => 
   assert.deepEqual(summary.upstream_sources_unavailable, ["soda"]);
 });
 
+test("scoped rebuild retains an unchanged historical zero redline", async () => {
+  const DB = new FakeD1();
+  const ALERT_STATE = kv();
+  ALERT_STATE.values.set("digest:daylog:2026-09-20", JSON.stringify({
+    day: "2026-09-20",
+    entries: [{ day: "2026-09-20", id: "sub:quiet", noticeCount: 3, forecasts: 0 }],
+  }));
+  DB.mainRuns.set("2026-09-21", {
+    run_day: "2026-09-21",
+    status: "NEEDS_ATTENTION",
+    summary_json: JSON.stringify({
+      run_day: "2026-09-21", status: "NEEDS_ATTENTION", phase: "finalized", complete: true,
+      previews: [], upstream_incidents: [],
+      redlines: [{ code: "historical_watch_zero", digest_id: "digest:quiet" }],
+    }),
+  });
+  const env = { DB, ALERT_STATE, DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, {
+    affectedDigestIds: ["digest:quiet"],
+    now: NOW,
+  });
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.total_count = 1;
+  DB.items.set(`${created.run_id}:digest:quiet`, {
+    run_id: created.run_id, digest_id: "digest:quiet",
+    job_json: JSON.stringify({ type: "sub", key: "sub:quiet" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  await handleDigestShadowRebuildQueueMessage(env, {
+    type: "digest", run_id: created.run_id, digest_id: "digest:quiet",
+  }, {
+    now: NOW,
+    runTargetFn: async () => ({
+      sub: "sub:quiet", previewId: "digest:quiet", found: 0, new: 0, forecasts: 0,
+      action: "heartbeat", emailRedacted: "qu***@example.test",
+      preview: {
+        subject: "Quiet",
+        html: '<a href="https://cityscroll.org/context">Context</a><a href="https://cityscroll.org/unsubscribe">Unsubscribe</a>',
+        listUnsubscribe: "<https://cityscroll.org/unsubscribe>",
+      },
+    }),
+  });
+  const summary = JSON.parse(DB.mainRuns.get(run.run_day).summary_json);
+  assert.equal(summary.status, "NEEDS_ATTENTION");
+  assert.equal(summary.redlines.filter((item) => item.code === "historical_watch_zero").length, 1);
+  assert.equal(summary.redlines.some((item) => item.code === "aggregate_count_collapse"), false);
+});
+
 test("full rebuild reuses scheduled history validation and evaluated count", async () => {
   const DB = new FakeD1();
   const ALERT_STATE = kv();

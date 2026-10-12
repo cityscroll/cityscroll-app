@@ -5,6 +5,7 @@ import {
   buildDigestShadowSummary,
   readDigestShadow,
   validateDigestShadowRun,
+  validateDigestShadowTargets,
 } from "./digest_shadow.mjs";
 import {
   loadDigestSubscription,
@@ -185,6 +186,7 @@ async function mergeCompletedSummary(env, run, items, now) {
       rebuild_complete: true,
       rebuild_run_id: run.run_id,
       rebuild_finalization_id: finalizationId,
+      result_revision: finalizationId,
       repair: {
         ...(validated.repair || {}),
         rerun_scope: "checkpointed_digest_queue",
@@ -227,11 +229,7 @@ async function mergeCompletedSummary(env, run, items, now) {
     }
     return persistMergedSideEffects(env, run, merged, evaluationNow);
   }
-  const targetSummaries = rawResults.map((result) => buildDigestShadowSummary({
-    run: { results: [result] },
-    history: [],
-    now: evaluationNow,
-  }));
+  const targetSummaries = await validateDigestShadowTargets(env, rawResults, { now: evaluationNow });
   const targetRedlines = [
     ...targetSummaries.flatMap((summary) => summary.redlines || []),
     ...items.filter((item) => item.status !== "complete" || !item.result).map((item) => ({
@@ -294,6 +292,7 @@ async function mergeCompletedSummary(env, run, items, now) {
     previews: [...previewById.values()].sort((a, b) => String(a.digest_id).localeCompare(String(b.digest_id))),
     rebuild_run_id: run.run_id,
     rebuild_finalization_id: finalizationId,
+    result_revision: finalizationId,
     repair: {
       ...(base.repair || {}),
       state: redlines.length ? "dispatch_required" : "none",

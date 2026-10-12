@@ -20,7 +20,11 @@ import {
   runDigestShadow,
 } from "../src/digest_shadow.mjs";
 import { ingestNotices } from "../src/ingest.mjs";
-import { buildDigestShadowHoldState } from "../src/digest_shadow_hold.mjs";
+import {
+  buildDigestShadowHoldState,
+  recordDigestShadowHoldState,
+  resolveDigestShadowHold,
+} from "../src/digest_shadow_hold.mjs";
 import {
   DIGEST_SHADOW_LEDGER_PREFIX,
   digestWatchdogSnapshot,
@@ -501,7 +505,112 @@ test("stale scheduled finalizer cannot publish hold or receipt after owner repla
   releaseHold();
   const result = await stale;
   assert.equal(result.write_accepted, false);
-  assert.equal(JSON.parse(ALERT_STATE.store.get(`${DIGEST_SHADOW_LEDGER_PREFIX}${DAY}:${invocationId}`)).status, "STARTED");
+  assert.equal(JSON.parse(ALERT_STATE.store.get(
+    `${DIGEST_SHADOW_LEDGER_PREFIX}${DAY}:${invocationId}:started`,
+  )).status, "STARTED");
+});
+
+test("same scheduled owner cannot regress READY hold to STARTED", async () => {
+  const DB = shadowDb();
+  const ALERT_STATE = kv();
+  const invocationId = "shadow:same-owner";
+  await persistDigestShadowStarted({ DB, ALERT_STATE }, { now: NOW, invocationId });
+  const started = JSON.parse(DB.runs.get(DAY).summary_json);
+  const originalPrepare = DB.prepare.bind(DB);
+  let release;
+  let entered;
+  let pause = true;
+  const gate = new Promise((resolve) => { release = resolve; });
+  const startedWrite = new Promise((resolve) => { entered = resolve; });
+  DB.prepare = (sql) => {
+    const statement = originalPrepare(sql);
+    if (!sql.includes("INSERT INTO digest_shadow_hold_states")) return statement;
+    return {
+      bind(...args) {
+        const bound = statement.bind(...args);
+        return {
+          async run() {
+            if (pause) {
+              pause = false;
+              entered();
+              await gate;
+            }
+            return bound.run();
+          },
+        };
+      },
+    };
+  };
+  const staleHold = recordDigestShadowHoldState(DB, started, { now: NOW, receiptStore: ALERT_STATE });
+  await startedWrite;
+  const ready = await finalizeDigestShadowRun({ DB, ALERT_STATE }, readySummary(), {
+    now: NOW,
+    invocationId,
+  });
+  assert.equal(ready.status, "READY");
+  release();
+  assert.equal((await staleHold).write_accepted, false);
+  const row = await originalPrepare(
+    "SELECT state_json FROM digest_shadow_hold_states WHERE run_day = ?",
+  ).bind(DAY).first();
+  assert.equal(JSON.parse(row.state_json).source_status, "READY");
+});
+
+test("same-owner STARTED receipt cannot overwrite READY revision", async () => {
+  const DB = shadowDb();
+  const ALERT_STATE = kv();
+  const owner = "shadow:receipt-owner";
+  const started = {
+    ...buildDigestShadowStartedSummary(NOW),
+    invocation_id: owner,
+    result_revision: `${owner}:started`,
+  };
+  const ready = {
+    ...readySummary(),
+    invocation_id: owner,
+    result_revision: "ready-revision",
+  };
+  await DB.prepare(`INSERT INTO digest_shadow_runs
+    (run_day, ran_at, status, digest_count, total_items, summary_json) VALUES (?, ?, ?, ?, ?, ?)`)
+    .bind(DAY, NOW, "READY", 1, 0, JSON.stringify(ready)).run();
+  const put = ALERT_STATE.put.bind(ALERT_STATE);
+  let release;
+  let entered;
+  const gate = new Promise((resolve) => { release = resolve; });
+  const startedWrite = new Promise((resolve) => { entered = resolve; });
+  ALERT_STATE.put = async (name, value) => {
+    if (name.endsWith(":started")) {
+      entered();
+      await gate;
+    }
+    return put(name, value);
+  };
+  const stale = recordDigestShadowReceipt({ ALERT_STATE }, started, new Date(NOW));
+  await startedWrite;
+  await recordDigestShadowReceipt({ ALERT_STATE }, ready, new Date(NOW));
+  release();
+  await stale;
+  const snapshot = await digestWatchdogSnapshot({ DB, ALERT_STATE }, {
+    now: new Date(NOW),
+    deadlineHour: 24,
+  });
+  assert.equal(snapshot.shadow.status, "READY");
+  assert.equal(snapshot.shadow.result_revision, "ready-revision");
+});
+
+test("D1-unavailable hold resolution ignores unverifiable mutable cache", async () => {
+  const ALERT_STATE = kv();
+  await ALERT_STATE.put("digest:shadow:hold:last-known:2026-10-05", JSON.stringify({
+    run_day: DAY,
+    source_status: "READY",
+    delivery_policy: "ALL_DIGESTS_ELIGIBLE",
+  }));
+  const state = await resolveDigestShadowHold(null, {
+    now: NOW,
+    receiptStore: ALERT_STATE,
+  });
+  assert.equal(state.source_status, "HOLD_STORE_UNAVAILABLE");
+  assert.equal(state.fail_policy, "fail_open_without_digest_scope");
 });
 
 test("watchdog selects the receipt owned by the current D1 summary", async () => {

@@ -15,7 +15,6 @@ export const DIGEST_SHADOW_DEGRADED_CONTRACT = "digest-shadow-degraded-decision.
 const DEGRADED_LATEST_KEY = "digest:shadow:degraded:latest";
 const DARK_HOLD_PENDING_KEY = "digest:shadow:dark-hold:pending";
 const DEGRADED_ALERT_PREFIX = "digest:shadow:degraded:alerted:";
-const LAST_KNOWN_STATE_PREFIX = "digest:shadow:hold:last-known:";
 const DEFAULT_RETRY_DELAYS_MS = Object.freeze([250, 1000]);
 
 export class DigestShadowHoldInputError extends Error {
@@ -319,10 +318,14 @@ async function readLastReadyRunDay(db, day) {
   return row?.run_day || null;
 }
 
-async function readPersistedState(db, day, fallbackStore = null) {
+async function readPersistedState(db, day) {
   try {
     const row = await db.prepare(
-      "SELECT state_json FROM digest_shadow_hold_states WHERE run_day = ?",
+      `SELECT hold.state_json FROM digest_shadow_hold_states AS hold
+        JOIN digest_shadow_runs AS run ON run.run_day = hold.run_day
+        WHERE hold.run_day = ?
+        AND json_extract(hold.state_json, '$.result_revision') =
+          json_extract(run.summary_json, '$.result_revision')`,
     ).bind(day).first();
     if (row?.state_json) {
       const state = JSON.parse(row.state_json);
@@ -332,15 +335,7 @@ async function readPersistedState(db, day, fallbackStore = null) {
     // D1 is the canonical audit store; the KV copy keeps today's last-known
     // decision available when that store itself is unavailable.
   }
-  if (!fallbackStore?.get) return null;
-  try {
-    const raw = await fallbackStore.get(`${LAST_KNOWN_STATE_PREFIX}${day}`);
-    if (!raw) return null;
-    const state = JSON.parse(raw);
-    return state?.run_day === day && !state?.degraded_receipt ? state : null;
-  } catch {
-    return null;
-  }
+  return null;
 }
 
 function lastKnownState(lastKnown, { now, attempts, sourceError }) {
@@ -532,14 +527,13 @@ async function persistState(db, state) {
     ).run();
 }
 
-async function persistOwnedState(db, state, owner) {
+async function persistOwnedState(db, state, revision) {
   const result = await db.prepare(`INSERT INTO digest_shadow_hold_states
     (run_day, contract, evaluated_at, source_status, delivery_policy, cutoff_at,
       delivery_boundary_at, expires_at, state_json)
     SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?
     WHERE EXISTS (SELECT 1 FROM digest_shadow_runs WHERE run_day = ?
-      AND COALESCE(json_extract(summary_json, '$.rebuild_finalization_id'),
-        json_extract(summary_json, '$.invocation_id')) = ?)
+      AND json_extract(summary_json, '$.result_revision') = ?)
     ON CONFLICT(run_day) DO UPDATE SET
       contract = excluded.contract,
       evaluated_at = excluded.evaluated_at,
@@ -550,8 +544,7 @@ async function persistOwnedState(db, state, owner) {
       expires_at = excluded.expires_at,
       state_json = excluded.state_json
     WHERE EXISTS (SELECT 1 FROM digest_shadow_runs WHERE run_day = excluded.run_day
-      AND COALESCE(json_extract(summary_json, '$.rebuild_finalization_id'),
-        json_extract(summary_json, '$.invocation_id')) = ?)`)
+      AND json_extract(summary_json, '$.result_revision') = ?)`)
     .bind(
       state.run_day,
       state.contract,
@@ -563,15 +556,10 @@ async function persistOwnedState(db, state, owner) {
       state.expires_at,
       JSON.stringify(state),
       state.run_day,
-      owner,
-      owner,
+      revision,
+      revision,
     ).run();
   return Number(result?.meta?.changes ?? result?.changes) > 0;
-}
-
-async function persistLastKnownState(store, state) {
-  if (!store?.put || !state?.run_day || state.degraded_receipt) return;
-  await store.put(`${LAST_KNOWN_STATE_PREFIX}${state.run_day}`, JSON.stringify(state));
 }
 
 /**
@@ -593,7 +581,7 @@ export async function resolveDigestShadowHold(db, {
   if (!db) {
     const sourceError = new Error("DB binding unavailable");
     let lastKnown = null;
-    try { lastKnown = await readPersistedState(null, day, receiptStore); } catch { /* KV fallback is best effort */ }
+    try { lastKnown = await readPersistedState(null, day); } catch { /* no persisted state is authoritative */ }
     const state = lastKnown
       ? lastKnownState(lastKnown, { now, attempts: 0, sourceError })
       : buildDigestShadowHoldState({ now, sourceError, attempts: 0, darkDays });
@@ -626,6 +614,7 @@ export async function resolveDigestShadowHold(db, {
         attempts,
         darkDays,
       });
+      if (summary?.result_revision) state = { ...state, result_revision: summary.result_revision };
       break;
     } catch (error) {
       sourceError = error;
@@ -636,7 +625,7 @@ export async function resolveDigestShadowHold(db, {
   if (!state) {
     let lastKnown = null;
     let lastReadyRunDay = undefined;
-    try { lastKnown = await readPersistedState(db, day, receiptStore); } catch { /* primary error remains authoritative */ }
+    try { lastKnown = await readPersistedState(db, day); } catch { /* primary error remains authoritative */ }
     if (lastKnown) {
       state = lastKnownState(lastKnown, { now, attempts, sourceError });
     } else {
@@ -666,14 +655,10 @@ export async function resolveDigestShadowHold(db, {
   if (persist) {
     if (!state.degraded_receipt) {
       try {
-        await persistState(db, state);
+        if (state.result_revision) await persistOwnedState(db, state, state.result_revision);
+        else await persistState(db, state);
       } catch (error) {
         state = { ...state, observation: `${state.observation}; audit persistence failed: ${String(error?.message || error)}` };
-      }
-      try {
-        await persistLastKnownState(receiptStore, state);
-      } catch (error) {
-        state = { ...state, observation: `${state.observation}; last-known persistence failed: ${String(error?.message || error)}` };
       }
     }
     if (state.degraded_receipt) {
@@ -692,23 +677,24 @@ export async function resolveDigestShadowHold(db, {
 /** Shadow-run write. A READY rerun replaces any active state with an eligible receipt. */
 export async function recordDigestShadowHoldState(db, summary, { now = new Date(), receiptStore = null } = {}) {
   const day = summary?.run_day || iso(now).slice(0, 10);
-  const owner = summary?.rebuild_finalization_id || summary?.invocation_id || null;
-  if (!owner) throw new Error("digest shadow hold owner required");
+  const revision = summary?.result_revision || null;
+  if (!revision) throw new Error("digest shadow hold revision required");
   let overriddenDigestIds = [];
   if (summary?.status === "READY" && summary?.ok !== false) {
     await db.prepare(`DELETE FROM digest_shadow_hold_overrides WHERE run_day = ?
       AND EXISTS (SELECT 1 FROM digest_shadow_runs WHERE run_day = ?
-        AND COALESCE(json_extract(summary_json, '$.rebuild_finalization_id'),
-          json_extract(summary_json, '$.invocation_id')) = ?)`)
-      .bind(day, day, owner).run();
+        AND json_extract(summary_json, '$.result_revision') = ?)`)
+      .bind(day, day, revision).run();
   } else {
     overriddenDigestIds = await readOverrides(db, day);
   }
   const lastReadyRunDay = summary?.status === "STARTED" ? await readLastReadyRunDay(db, day) : undefined;
-  const state = { ...buildDigestShadowHoldState({ summary, overriddenDigestIds, now, lastReadyRunDay }), owner };
-  const writeAccepted = await persistOwnedState(db, state, owner);
+  const state = {
+    ...buildDigestShadowHoldState({ summary, overriddenDigestIds, now, lastReadyRunDay }),
+    result_revision: revision,
+  };
+  const writeAccepted = await persistOwnedState(db, state, revision);
   if (!writeAccepted) return { ...state, write_accepted: false };
-  await persistLastKnownState(receiptStore, state);
   return { ...state, write_accepted: true };
 }
 
@@ -744,6 +730,11 @@ export async function overrideDigestShadowHold(db, {
     overriddenDigestIds: uniqueIds([...existing, ...requested]),
     now,
   });
-  await persistState(db, state);
-  return state;
+  if (!summary.result_revision) {
+    await persistState(db, state);
+    return state;
+  }
+  const ownedState = { ...state, result_revision: summary.result_revision };
+  const writeAccepted = await persistOwnedState(db, ownedState, summary.result_revision);
+  return { ...ownedState, write_accepted: writeAccepted };
 }

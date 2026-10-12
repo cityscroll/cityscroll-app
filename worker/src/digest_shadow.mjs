@@ -294,6 +294,7 @@ export function buildDigestShadowSummary({
   history = [],
   now = new Date(),
   ontologyDelta = null,
+  validationScope = "full",
   // digest_id -> the most recent previously rendered preview for that id, used to say what a
   // reader is served while a source is unavailable. Read-only; nothing here is re-rendered.
   lastGoodPreviews = null,
@@ -443,7 +444,7 @@ export function buildDigestShadowSummary({
   // that built fewer items than usual. Raising a second, differently-worded finding for the same
   // outage would only put a name on it that points at us.
   const aggregateComparable = upstreamIncidents.length === 0;
-  if (quietWatermark) {
+  if (validationScope === "full" && quietWatermark) {
     // Informational: candidates were present and the seen watermark already held them.
     // This is not an attention redline and it does not hold anyone's mail.
     observations.push({
@@ -462,7 +463,8 @@ export function buildDigestShadowSummary({
         backlog_flush: backlogFlush,
       },
     });
-  } else if (trailingBaseline != null && trailingBaseline >= MIN_TRAILING_AVERAGE && aggregateComparable) {
+  } else if (validationScope === "full"
+    && trailingBaseline != null && trailingBaseline >= MIN_TRAILING_AVERAGE && aggregateComparable) {
     const ratio = totalItems / trailingBaseline;
     if (ratio < COLLAPSE_RATIO) {
       redlines.push(redline(
@@ -695,6 +697,17 @@ export async function validateDigestShadowRun(env, run, {
   return buildDigestShadowSummary({ run, history, now: at, ontologyDelta, lastGoodPreviews });
 }
 
+export async function validateDigestShadowTargets(env, results, { now = new Date() } = {}) {
+  const at = new Date(now);
+  const history = await readHistory(env, at.toISOString().slice(0, 10));
+  return (results || []).map((result) => buildDigestShadowSummary({
+    run: { results: [result] },
+    history,
+    now: at,
+    validationScope: "digest",
+  }));
+}
+
 export async function persistDigestShadow(db, summary, { invocationId, mode } = {}) {
   if (!db) throw new Error("digest shadow requires DB");
   if (!invocationId || !new Set(["claim", "finalize"]).has(mode)) {
@@ -842,12 +855,15 @@ async function updateOwnedShadowSummary(db, summary, invocationId) {
   const publicSummary = { ...summary, invocation_id: invocationId };
   delete publicSummary._rendered_previews;
   await db.prepare(`UPDATE digest_shadow_runs SET summary_json = ? WHERE run_day = ? AND status = ?
-    AND json_extract(summary_json, '$.invocation_id') = ?`)
-    .bind(JSON.stringify(publicSummary), summary.run_day, summary.status, invocationId).run();
+    AND json_extract(summary_json, '$.invocation_id') = ?
+    AND json_extract(summary_json, '$.result_revision') = ?`)
+    .bind(JSON.stringify(publicSummary), summary.run_day, summary.status, invocationId,
+      summary.result_revision).run();
   const row = await db.prepare("SELECT status, summary_json FROM digest_shadow_runs WHERE run_day = ?")
     .bind(summary.run_day).first();
   const stored = row?.summary_json ? JSON.parse(row.summary_json) : null;
-  return row?.status === summary.status && stored?.invocation_id === invocationId;
+  return row?.status === summary.status && stored?.invocation_id === invocationId
+    && stored?.result_revision === summary.result_revision;
 }
 
 async function persistShadowState(env, summary, {
@@ -865,7 +881,12 @@ async function persistShadowState(env, summary, {
     import("./digest_shadow_hold.mjs"),
     import("./reliability_watchdogs.mjs"),
   ]);
-  const ownedSummary = { ...summary, invocation_id: invocationId };
+  const ownedSummary = {
+    ...summary,
+    invocation_id: invocationId,
+    result_revision: summary.result_revision
+      || (mode === "claim" ? `${invocationId}:started` : crypto.randomUUID()),
+  };
   const persisted = await persistDigestShadow(env.DB, ownedSummary, { invocationId, mode });
   if (!persisted.accepted) return { ...ownedSummary, write_accepted: false };
   const effectiveSummary = { ...persisted.summary };
