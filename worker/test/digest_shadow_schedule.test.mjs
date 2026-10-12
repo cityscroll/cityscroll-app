@@ -1,3 +1,4 @@
+import { DatabaseSync } from "node:sqlite";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
@@ -15,6 +16,7 @@ import {
   persistDigestShadowFailure,
   persistDigestShadowStarted,
   runBudgetedNoticeFreshness,
+  recordDigestShadowProgress,
 } from "../src/digest_shadow.mjs";
 import { buildDigestShadowHoldState } from "../src/digest_shadow_hold.mjs";
 import {
@@ -235,7 +237,8 @@ test("persistDigestShadowStarted leaves a same-day row a killed cron would still
   const out = await persistDigestShadowStarted({ DB, ALERT_STATE }, { now: NOW });
   assert.equal(out.status, DIGEST_SHADOW_STARTED);
   assert.equal(out.receipt.status, "STARTED");
-  assert.equal(out.hold.source_status, "STARTED_NOT_FINISHED");
+  assert.equal(out.hold.source_status, "DARK_PERIOD");
+  assert.equal(out.hold.delivery_policy, "ALL_DIGESTS_HELD");
   assert.ok(DB.runs.has(DAY));
   assert.notEqual(out.hold.source_status, "MISSING_RUN");
 });
@@ -341,4 +344,20 @@ test("0 10 cron still finalizes FAILED when the rehearsal throws after STARTED",
     }).source_status,
     "MISSING_RUN",
   );
+});
+
+test("progress survives interruption and cannot overwrite finalized evidence", async () => {
+  const sqlite = new DatabaseSync(":memory:");
+  try {
+    sqlite.exec("CREATE TABLE digest_shadow_runs (run_day TEXT PRIMARY KEY, status TEXT, summary_json TEXT)");
+    sqlite.prepare("INSERT INTO digest_shadow_runs VALUES (?, 'STARTED', ?)")
+      .run(DAY, JSON.stringify({ status: "STARTED", phase: "started" }));
+    const db = { prepare: (sql) => ({ bind: (...args) => ({ run: async () => sqlite.prepare(sql).run(...args) }) }) };
+    await recordDigestShadowProgress(db, DAY, { phase: "account_builds", evaluated_count: 20 }, NOW);
+    const read = () => JSON.parse(sqlite.prepare("SELECT summary_json FROM digest_shadow_runs").get().summary_json);
+    assert.deepEqual(read(), { status: "STARTED", phase: "account_builds", evaluated_count: 20, progress_at: NOW });
+    sqlite.exec("UPDATE digest_shadow_runs SET status = 'READY'");
+    await recordDigestShadowProgress(db, DAY, { phase: "late_writer", evaluated_count: 1 }, NOW);
+    assert.equal(read().phase, "account_builds");
+  } finally { sqlite.close(); }
 });

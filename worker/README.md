@@ -186,6 +186,14 @@ Reader-facing HTML uses canonical `cityscroll.org` paths. Existing API-host link
 
 ## The daily digest (ZAP lookup + hearings + exams `0 8 * * *`; shadow `0 10 * * *` ≈ 6am ET; send `0 13 * * *` ≈ 9am ET)
 
+The rehearsal reads already materialized forecast caches and does not run forecast acquisition.
+Legacy Socrata watch reads have one cancellation deadline spanning response headers, body
+consumption, and retry waits. Exhaustion is reported as upstream unavailability, not a successful
+empty result. In-flight summaries checkpoint the phase, completed evaluation count, and progress
+time without subscriber identifiers; completed summaries cannot be overwritten by late progress.
+An unfinished `STARTED` row still consults the last `READY` day for the existing dark-period rule.
+Checkpointed repair retries also retry aggregate finalization after an item result is durable.
+
 The 06:00 ET shadow run forces the real account digest builders inline against live data with
 delivery, queue fan-out, watermarks, send counters, and search-health state advancement disabled.
 Every email that would be eligible under the production queue/day-cap semantics is fully rendered

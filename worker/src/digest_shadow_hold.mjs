@@ -579,7 +579,8 @@ export async function resolveDigestShadowHold(db, {
         readSummary(db, day),
         readOverrides(db, day),
       ]);
-      const lastReadyRunDay = summary ? undefined : await readLastReadyRunDay(db, day);
+      const lastReadyRunDay = !summary || summary.status === "STARTED"
+        ? await readLastReadyRunDay(db, day) : undefined;
       state = buildDigestShadowHoldState({
         summary,
         overriddenDigestIds,
@@ -660,7 +661,8 @@ export async function recordDigestShadowHoldState(db, summary, { now = new Date(
   } else {
     overriddenDigestIds = await readOverrides(db, day);
   }
-  const state = buildDigestShadowHoldState({ summary, overriddenDigestIds, now });
+  const lastReadyRunDay = summary?.status === "STARTED" ? await readLastReadyRunDay(db, day) : undefined;
+  const state = buildDigestShadowHoldState({ summary, overriddenDigestIds, now, lastReadyRunDay });
   await persistState(db, state);
   await persistLastKnownState(receiptStore, state);
   return state;

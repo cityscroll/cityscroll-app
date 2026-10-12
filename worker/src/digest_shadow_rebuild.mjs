@@ -297,10 +297,11 @@ async function processItem(env, runId, digestId, now) {
   const run = await readRun(env.DB, runId);
   if (!run) throw new Error("digest shadow rebuild run not found");
   const item = (await readItems(env.DB, runId)).find((candidate) => candidate.digest_id === digestId);
-  if (!item || item.status === "complete" || item.status === "failed") return run;
+  if (!item || run.status === "complete" || run.status === "failed") return run;
+  if (item.status === "complete" || item.status === "failed") return finalizeProgress(env, run, now);
   await env.DB.prepare(`UPDATE ${DIGEST_SHADOW_REBUILD_ITEM_TABLE}
     SET status = 'running', attempt_count = attempt_count + 1, started_at = ?, error = NULL
-    WHERE run_id = ? AND digest_id = ? AND status = 'queued'`)
+    WHERE run_id = ? AND digest_id = ? AND status IN ('queued', 'running')`)
     .bind(iso(now), runId, digestId).run();
   try {
     const summary = await runTarget(env, item.job, now);
@@ -314,6 +315,11 @@ async function processItem(env, runId, digestId, now) {
       .bind(String(error?.message || error), runId, digestId).run();
     throw error;
   }
+  return finalizeProgress(env, run, now);
+}
+
+async function finalizeProgress(env, run, now) {
+  const runId = run.run_id;
   const items = await readItems(env.DB, runId);
   const complete = items.filter((candidate) => candidate.status === "complete").length;
   const failed = items.filter((candidate) => candidate.status === "failed").length;

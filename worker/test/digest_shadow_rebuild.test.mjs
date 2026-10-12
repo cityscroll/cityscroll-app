@@ -197,3 +197,32 @@ test("an interrupted scoped rebuild resumes after its checkpoint without retryin
   assert.equal(finished.receipt.complete, true);
   assert.equal(finished.receipt.status, "READY");
 });
+
+// The result checkpoint and final aggregate are separate writes. A retry must complete
+// the aggregate even when the per-digest result was already durable before the failure.
+test("replayed completed item repairs interrupted finalization", async () => {
+  const DB = new FakeD1();
+  const env = { DB, ALERT_STATE: kv(), DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, { affectedDigestIds: ["digest:one"], now: NOW });
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.total_count = 1;
+  DB.items.set(`${created.run_id}:digest:one`, {
+    run_id: created.run_id, digest_id: "digest:one",
+    job_json: JSON.stringify({ type: "sub", key: "sub:missing" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  const batch = DB.batch.bind(DB);
+  let failed = false;
+  DB.batch = async (statements) => {
+    if (!failed) { failed = true; throw new Error("finalization interrupted"); }
+    return batch(statements);
+  };
+  const message = { type: "digest", run_id: created.run_id, digest_id: "digest:one" };
+  await assert.rejects(handleDigestShadowRebuildQueueMessage(env, message, { now: NOW }), /finalization interrupted/);
+  assert.equal(DB.items.get(`${created.run_id}:digest:one`).status, "complete");
+  const finished = await handleDigestShadowRebuildQueueMessage(env, message, { now: NOW });
+  assert.equal(finished.status, "complete");
+  assert.equal(finished.receipt.status, "READY");
+  assert.equal(DB.items.get(`${created.run_id}:digest:one`).attempt_count, 1);
+});

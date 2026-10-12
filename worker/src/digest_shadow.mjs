@@ -966,6 +966,15 @@ export async function runBudgetedNoticeFreshness(env, {
 }
 
 /** Run the real digest builders with delivery, queue fan-out, and state advancement disabled. */
+// Update only an in-flight marker. Never replace a completed summary or its previews.
+// Progress contains stage/count/time only, so it is safe for operator diagnostics.
+export async function recordDigestShadowProgress(db, day, progress, now = new Date()) {
+  await db.prepare(`UPDATE digest_shadow_runs SET summary_json = json_set(summary_json,
+    '$.phase', ?, '$.evaluated_count', ?, '$.progress_at', ?)
+    WHERE run_day = ? AND status = 'STARTED'`)
+    .bind(progress.phase, progress.evaluated_count, new Date(now).toISOString(), day).run();
+}
+
 export async function runDigestShadow(env, {
   now = new Date(),
   runAlertsFn = null,
@@ -979,6 +988,8 @@ export async function runDigestShadow(env, {
     import("./lib/ontology_delta_alert.mjs"),
   ]);
   const at = new Date(now);
+  const day = at.toISOString().slice(0, 10);
+  const onProgress = (progress) => recordDigestShadowProgress(env.DB, day, progress);
   const shadowEnv = { ...env, ALERTS_LIVE: "false", QUEUE_DIGESTS: "false" };
   const run = await runAlerts(shadowEnv, undefined, {
     now: at,
@@ -990,9 +1001,13 @@ export async function runDigestShadow(env, {
     advanceState: false,
     persist: false,
     simulateDryRunCounters: true,
+    // A rehearsal consumes the same materialized forecasts as delivery; acquisition is a
+    // separate job and must not stall validation or mutate forecast caches during a preview.
+    skipForecastingPipelines: true,
+    onProgress,
     suppressDryRunLogs: suppressPersonalizedLogs,
   });
-  const day = at.toISOString().slice(0, 10);
+  await onProgress({ phase: "history_and_ontology", evaluated_count: run?.results?.length || 0 });
   const history = await readHistory(env, day);
   const candidates = ontologyDeltaCandidates == null
     ? await ontology.buildDefaultOntologyDeltaCandidates(env.DB)

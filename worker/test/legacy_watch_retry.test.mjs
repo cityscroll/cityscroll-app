@@ -35,3 +35,26 @@ test("legacy watch fetch does not retry a non-transient SODA response", async ()
   );
   assert.equal(calls, 1);
 });
+
+for (const phase of ["headers", "body"]) {
+  test(`legacy watch deadline cancels a stalled ${phase} read`, async () => {
+    let signal;
+    const stalled = () => new Promise(() => {});
+    const read = fetchSodaRowsWithRetry("https://example.test/soda", {
+      budgetMs: 15,
+      fetchFn: async (_url, options) => {
+        signal = options?.signal;
+        if (phase === "headers") return stalled();
+        return { ok: true, json: stalled };
+      },
+    });
+    const outcome = await Promise.race([
+      read.then(() => "unexpected-success", (error) => error),
+      new Promise((resolve) => setTimeout(() => resolve("deadline-not-enforced"), 100)),
+    ]);
+    assert.ok(outcome instanceof Error, String(outcome));
+    assert.match(outcome.message, /deadline|timed out/i);
+    assert.equal(outcome.upstream_source, "soda");
+    assert.equal(signal?.aborted, true);
+  });
+}

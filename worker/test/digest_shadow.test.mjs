@@ -337,7 +337,9 @@ test("shadow invocation uses the shared runAlerts path inline and cannot deliver
   assert.equal(calls.length, 1);
   assert.equal(calls[0][0].ALERTS_LIVE, "false");
   assert.equal(calls[0][0].QUEUE_DIGESTS, "false");
-  assert.deepEqual(calls[0][2], {
+  assert.equal(typeof calls[0][2].onProgress, "function");
+  const { onProgress, ...options } = calls[0][2];
+  assert.deepEqual(options, {
     now: NOW,
     live: false,
     forceInline: true,
@@ -347,10 +349,11 @@ test("shadow invocation uses the shared runAlerts path inline and cannot deliver
     advanceState: false,
     persist: false,
     simulateDryRunCounters: true,
+    skipForecastingPipelines: true,
     suppressDryRunLogs: true,
   });
   assert.equal(DB.batches.length, 2);
-  assert.equal(DB.runs.length, 2);
+  assert.equal(DB.runs.length, 3);
 });
 
 test("shadow failures produce no outbound email", async () => {
@@ -379,7 +382,7 @@ test("shadow failures produce no outbound email", async () => {
     assert.equal(outboundRequests, 0);
     assert.equal("notification" in out, false);
     assert.equal(DB.batches.length, 2);
-    assert.equal(DB.runs.length, 1);
+    assert.equal(DB.runs.length, 2);
   } finally {
     globalThis.fetch = originalFetch;
   }

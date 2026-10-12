@@ -423,3 +423,17 @@ test("dark-period policy partitions every queued digest into the recovery hold",
   assert.deepEqual(partition.eligible, []);
   assert.deepEqual(partition.held.map((item) => item.job), jobs);
 });
+
+for (const [lastReadyRunDay, policy, age] of [
+  ["2026-08-03", "ALL_DIGESTS_ELIGIBLE", 1],
+  ["2026-08-01", "ALL_DIGESTS_HELD", 3],
+  [null, "ALL_DIGESTS_HELD", null],
+]) {
+  test(`unfinished rehearsal consults READY history (${lastReadyRunDay})`, async () => {
+    const db = graduatedDb({ summary: { ...ready(), status: "STARTED", ok: false }, lastReadyRunDay });
+    const state = await resolveDigestShadowHold(db, { now: `${DAY}T13:00:00.000Z` });
+    assert.equal(state.delivery_policy, policy);
+    assert.equal(state.degraded_receipt.last_ready_run_day, lastReadyRunDay);
+    assert.equal(state.degraded_receipt.ready_age_days, age);
+  });
+}
