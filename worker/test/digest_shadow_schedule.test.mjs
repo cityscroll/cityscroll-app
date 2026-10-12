@@ -361,6 +361,43 @@ test("scheduled shadow ownership fences overlapping terminal writes and previews
   assert.equal(JSON.parse(ALERT_STATE.store.get(`${DIGEST_SHADOW_LEDGER_PREFIX}${DAY}`)).status, "READY");
 });
 
+test("same scheduled owner resumes terminal side effects without replacing its result", async () => {
+  const DB = shadowDb();
+  const ALERT_STATE = kv();
+  const env = { DB, ALERT_STATE };
+  const invocationId = "shadow:resume";
+  await persistDigestShadowStarted(env, { now: NOW, invocationId });
+  await assert.rejects(finalizeDigestShadowRun(env, {
+    ...readySummary(),
+    _rendered_previews: [{
+      digest_id: "digest:ready",
+      recipient_redacted: "re***@example.test",
+      subject: "Ready",
+      html: "<p data-digest-item=\"1\">Ready</p>",
+      item_count: 1,
+      watch_counts: [],
+    }],
+  }, {
+    now: NOW,
+    invocationId,
+    recordReceiptFn: async () => { throw new Error("receipt unavailable"); },
+  }), /receipt unavailable/);
+  assert.equal(JSON.parse(DB.runs.get(DAY).summary_json).status, "READY");
+  assert.equal(JSON.parse(ALERT_STATE.store.get(`${DIGEST_SHADOW_LEDGER_PREFIX}${DAY}`)).status, "STARTED");
+
+  const resumed = await persistDigestShadowFailure(env, new Error("finalizer interrupted"), {
+    now: NOW,
+    invocationId,
+  });
+  assert.equal(resumed.write_accepted, true);
+  assert.equal(resumed.status, "READY");
+  assert.equal(resumed.receipt.status, "READY");
+  assert.equal(JSON.parse(DB.runs.get(DAY).summary_json).status, "READY");
+  const preview = await DB.prepare("SELECT digest_id FROM digest_shadow_previews WHERE run_day = ?")
+    .bind(DAY).first();
+  assert.equal(preview.digest_id, "digest:ready");
+});
+
 test("0 10 cron writes STARTED before freshness, still runs shadow when freshness degrades", async () => {
   const DB = shadowDb();
   const ALERT_STATE = kv();

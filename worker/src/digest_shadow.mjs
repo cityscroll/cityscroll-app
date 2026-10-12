@@ -684,6 +684,7 @@ export async function persistDigestShadow(db, summary, { invocationId, mode } = 
     ...(invocationId ? { invocation_id: invocationId } : {}),
   };
   delete publicSummary._rendered_previews;
+  const publicSummaryJson = JSON.stringify(publicSummary);
   const write = mode === "claim"
     ? db.prepare(`INSERT INTO digest_shadow_runs
       (run_day, ran_at, status, digest_count, total_items, summary_json)
@@ -701,34 +702,35 @@ export async function persistDigestShadow(db, summary, { invocationId, mode } = 
         summary.status,
         summary.digest_count,
         summary.total_items,
-        JSON.stringify(publicSummary),
+        publicSummaryJson,
       )
     : db.prepare(`UPDATE digest_shadow_runs SET ran_at = ?, status = ?, digest_count = ?,
         total_items = ?, summary_json = ?
       WHERE run_day = ? AND status = 'STARTED'
       AND json_extract(summary_json, '$.invocation_id') = ?`)
       .bind(summary.ran_at, summary.status, summary.digest_count, summary.total_items,
-        JSON.stringify(publicSummary), summary.run_day, invocationId);
+        publicSummaryJson, summary.run_day, invocationId);
   const statements = [write];
   statements.push(db.prepare(`DELETE FROM digest_shadow_previews WHERE run_day = ?
-    AND EXISTS (SELECT 1 FROM digest_shadow_runs WHERE run_day = ? AND status = ?
-      AND json_extract(summary_json, '$.invocation_id') = ?)`)
-    .bind(summary.run_day, summary.run_day, summary.status, invocationId));
+    AND EXISTS (SELECT 1 FROM digest_shadow_runs WHERE run_day = ? AND summary_json = ?)`)
+    .bind(summary.run_day, summary.run_day, publicSummaryJson));
   for (const preview of summary._rendered_previews || []) {
     statements.push(db.prepare(`INSERT INTO digest_shadow_previews
         (run_day, digest_id, recipient_redacted, subject, html, item_count, watch_counts_json)
       SELECT ?, ?, ?, ?, ?, ?, ? WHERE EXISTS (
-        SELECT 1 FROM digest_shadow_runs WHERE run_day = ? AND status = ?
-        AND json_extract(summary_json, '$.invocation_id') = ?)`)
+        SELECT 1 FROM digest_shadow_runs WHERE run_day = ? AND summary_json = ?)`)
       .bind(summary.run_day, preview.digest_id, preview.recipient_redacted, preview.subject,
         preview.html, preview.item_count, JSON.stringify(preview.watch_counts),
-        summary.run_day, summary.status, invocationId));
+        summary.run_day, publicSummaryJson));
   }
   await db.batch(statements);
   const row = await db.prepare("SELECT status, summary_json FROM digest_shadow_runs WHERE run_day = ?")
     .bind(summary.run_day).first();
   const stored = row?.summary_json ? JSON.parse(row.summary_json) : null;
-  return row?.status === summary.status && stored?.invocation_id === invocationId;
+  const sameOwner = stored?.invocation_id === invocationId;
+  const accepted = sameOwner && (row?.status === summary.status
+    || (mode === "finalize" && row?.status !== DIGEST_SHADOW_STARTED));
+  return { accepted, summary: sameOwner ? stored : null };
 }
 
 function emptyShadowSkeleton(now, status) {
@@ -832,6 +834,8 @@ async function persistShadowState(env, summary, {
   error = null,
   invocationId,
   mode,
+  recordHoldFn = null,
+  recordReceiptFn = null,
 } = {}) {
   if (!env?.DB) throw new Error("digest shadow requires DB");
   if (!invocationId) throw new Error("digest shadow invocation id required");
@@ -841,17 +845,23 @@ async function persistShadowState(env, summary, {
     import("./reliability_watchdogs.mjs"),
   ]);
   const ownedSummary = { ...summary, invocation_id: invocationId };
-  const writeAccepted = await persistDigestShadow(env.DB, ownedSummary, { invocationId, mode });
-  if (!writeAccepted) return { ...ownedSummary, write_accepted: false };
-  ownedSummary.hold = await recordDigestShadowHoldState(env.DB, ownedSummary, {
+  const persisted = await persistDigestShadow(env.DB, ownedSummary, { invocationId, mode });
+  if (!persisted.accepted) return { ...ownedSummary, write_accepted: false };
+  const effectiveSummary = { ...persisted.summary };
+  effectiveSummary.hold = await (recordHoldFn || recordDigestShadowHoldState)(env.DB, effectiveSummary, {
     now: at,
     receiptStore: env.ALERT_STATE,
   });
-  if (!(await updateOwnedShadowSummary(env.DB, ownedSummary, invocationId))) {
-    return { ...ownedSummary, write_accepted: false };
+  if (!(await updateOwnedShadowSummary(env.DB, effectiveSummary, invocationId))) {
+    return { ...effectiveSummary, write_accepted: false };
   }
-  ownedSummary.receipt = await recordDigestShadowReceipt(env, ownedSummary, at, error);
-  const out = { ...ownedSummary, write_accepted: true };
+  const receiptError = effectiveSummary.phase === "failed"
+    ? (error || effectiveSummary.failure?.error || "digest shadow failed")
+    : null;
+  effectiveSummary.receipt = await (recordReceiptFn || recordDigestShadowReceipt)(
+    env, effectiveSummary, at, receiptError,
+  );
+  const out = { ...effectiveSummary, write_accepted: true };
   delete out._rendered_previews;
   return out;
 }
@@ -875,12 +885,16 @@ export async function persistDigestShadowStarted(env, {
 export async function persistDigestShadowFailure(env, error, {
   now = new Date(),
   invocationId,
+  recordHoldFn = null,
+  recordReceiptFn = null,
 } = {}) {
   return persistShadowState(env, buildDigestShadowFailureSummary(error, now), {
     now,
     error,
     invocationId,
     mode: "finalize",
+    recordHoldFn,
+    recordReceiptFn,
   });
 }
 
@@ -889,12 +903,21 @@ export async function finalizeDigestShadowRun(env, summary, {
   now = new Date(),
   error = null,
   invocationId,
+  recordHoldFn = null,
+  recordReceiptFn = null,
 } = {}) {
   return persistShadowState(env, {
     ...summary,
     phase: "finalized",
     complete: true,
-  }, { now, error, invocationId, mode: "finalize" });
+  }, {
+    now,
+    error,
+    invocationId,
+    mode: "finalize",
+    recordHoldFn,
+    recordReceiptFn,
+  });
 }
 
 function freshnessIncident(reason, evidence = {}) {
