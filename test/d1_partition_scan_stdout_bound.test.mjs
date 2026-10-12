@@ -106,8 +106,12 @@ function parseKeysetLimit(sql) {
  * stdout bound — the same fail-closed check runWrangler applies after streaming.
  */
 function boundedStdoutAdapter(allRows, keyCols) {
-  const ordered = [...allRows].sort((left, right) => (
-    compareKey(keyValuesOf(left, keyCols), keyValuesOf(right, keyCols))
+  const cursorCols = [...keyCols, "__cityscroll_scan_rowid"];
+  const ordered = allRows.map((row, index) => ({
+    ...row,
+    __cityscroll_scan_rowid: index + 1,
+  })).sort((left, right) => (
+    compareKey(keyValuesOf(left, cursorCols), keyValuesOf(right, cursorCols))
   ));
   const calls = [];
   return {
@@ -119,11 +123,11 @@ function boundedStdoutAdapter(allRows, keyCols) {
       if (params.length > 0) {
         // Unbound partitions pass only keyset params; family partitions pass
         // the partition value first. Tests for ocp/entity use unbound scope.
-        const keyParams = params.length === keyCols.length
+        const keyParams = params.length === cursorCols.length
           ? params
-          : params.slice(params.length - keyCols.length);
-        assert.equal(keyParams.length, keyCols.length);
-        start = ordered.findIndex((row) => compareKey(keyValuesOf(row, keyCols), keyParams) > 0);
+          : params.slice(params.length - cursorCols.length);
+        assert.equal(keyParams.length, cursorCols.length);
+        start = ordered.findIndex((row) => compareKey(keyValuesOf(row, cursorCols), keyParams) > 0);
         if (start < 0) start = ordered.length;
       }
       const slice = ordered.slice(start, start + page.limit);
@@ -368,9 +372,9 @@ test("keyset paging walks a multi-column key and still reports missing/unexpecte
   for (const call of adapter.calls.slice(1)) {
     assert.match(
       call.sql,
-      /\(subject_ref, entity_ref, relation, confidence\)\s*>\s*\(\?, \?, \?, \?\)/,
+      /\(subject_ref, entity_ref, relation, confidence, rowid\)\s*>\s*\(\?, \?, \?, \?, \?\)/,
     );
-    assert.equal(call.params.length, SUBJECT_REFS_KEYS.length);
+    assert.equal(call.params.length, SUBJECT_REFS_KEYS.length + 1);
   }
   assert.equal(observedByKey.size, rows.length);
 
