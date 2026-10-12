@@ -459,6 +459,28 @@ export async function readDigestShadowDegradedReceipt(store, { day = null } = {}
   }
 }
 
+/** Project current recovery without mutating the historical send-time decision. */
+export function projectDigestShadowDegradedReceipt(receipt, summary, hold) {
+  if (!receipt || receipt.attention_status !== "open"
+    || !["SEND_FAIL_OPEN", "SEND_ON_LAST_KNOWN_STATE"].includes(receipt.decision)
+    || receipt.catch_up_required || hold?.catch_up_required
+    || summary?.status !== "READY" || summary.ok !== true
+    || summary.complete !== true || summary.phase !== "finalized"
+    || !summary.result_revision || hold?.result_revision !== summary.result_revision
+    || hold.source_status !== "READY" || hold.degraded_receipt
+    || receipt.run_day !== summary.run_day || hold.run_day !== summary.run_day) return receipt;
+  return {
+    ...receipt,
+    original_attention_status: receipt.attention_status,
+    attention_status: "closed",
+    resolution: {
+      source: "current_ready_rehearsal",
+      result_revision: summary.result_revision,
+      delivery_sent: false,
+    },
+  };
+}
+
 async function readPendingDarkHold(store) {
   if (!store) return null;
   try {

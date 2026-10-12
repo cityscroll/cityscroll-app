@@ -134,6 +134,7 @@ import {
   DigestShadowHoldInputError,
   overrideDigestShadowHold,
   readDigestShadowDegradedReceipt,
+  projectDigestShadowDegradedReceipt,
   resolveDigestShadowHold,
 } from "./digest_shadow_hold.mjs";
 import {
@@ -1906,11 +1907,11 @@ export async function handleAdminDigestShadow(req, env, {
         degradedReceipt?.attention_status === "open" ? 503 : 404);
     }
     if (digestId && !out.preview) return json({ ...out, error: "preview-not-found" }, 404);
-    const hold = day ? null : await resolveDigestShadowHold(env.DB, {
+    const hold = day && day !== new Date(now).toISOString().slice(0, 10) ? null : await resolveDigestShadowHold(env.DB, {
       now,
       receiptStore: env.ALERT_STATE,
     });
-    const receipt = hold?.degraded_receipt || degradedReceipt;
+    const receipt = projectDigestShadowDegradedReceipt(hold?.degraded_receipt || degradedReceipt, out.summary, hold);
     const attention = out.summary?.ok === false || receipt?.attention_status === "open";
     return json({ ...out, hold, degraded_receipt: receipt || null }, attention ? 503 : 200);
   } catch (error) {

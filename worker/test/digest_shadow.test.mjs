@@ -507,6 +507,30 @@ test("shadow status exposes an open degraded-path receipt and wakes machine poll
   assert.equal((await response.json()).degraded_receipt.decision, "SEND_FAIL_OPEN");
 });
 
+test("verified READY recovery resolves current degraded attention without rewriting delivery evidence", async () => {
+  const clean = { ...summary([result()]), phase: "finalized", complete: true, result_revision: "recovered-revision" };
+  const receipt = { contract: "digest-shadow-degraded-decision.v1", run_day: clean.run_day,
+    decision: "SEND_FAIL_OPEN", attention_status: "open", catch_up_required: false };
+  const writes = [];
+  const kv = { ...receiptKv(receipt), put: async (...args) => writes.push(args), delete: async (...args) => writes.push(args) };
+  for (const suffix of ["", `?day=${clean.run_day}`]) {
+  const response = await handleAdminDigestShadow(
+    new Request(`https://w/admin/digest-shadow${suffix}`, { headers: { authorization: "Bearer secret" } }),
+    { ADMIN_KEY: "secret", DB: readDb(clean), ALERT_STATE: kv }, { now: NOW },
+  );
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.equal(body.degraded_receipt.decision, "SEND_FAIL_OPEN");
+  assert.equal(body.degraded_receipt.attention_status, "closed");
+  assert.equal(body.degraded_receipt.original_attention_status, "open");
+  assert.deepEqual(body.degraded_receipt.resolution, {
+    source: "current_ready_rehearsal", result_revision: "recovered-revision", delivery_sent: false,
+  });
+  assert.deepEqual(JSON.parse(await kv.get(`digest:shadow:degraded:${clean.run_day}`)), receipt);
+  assert.deepEqual(writes, []);
+  }
+});
+
 test("GET /admin/digest-shadow accepts the read-only SHADOW_STATUS_KEY; POST rejects it", async () => {
   const clean = summary([result()]);
   const env = (extra = {}) => ({ ADMIN_KEY: "admin-key", SHADOW_STATUS_KEY: "shadow-key", DB: readDb(clean), ...extra });
