@@ -141,6 +141,23 @@ export const DIGEST_SHADOW = Object.freeze({
     override: "Authenticated POST with action=override-hold, digest_ids, and reason",
     successful_rerun: "Authenticated READY rerun clears overrides and releases every digest",
   },
+  rebuild_execution: {
+    "result_reads": "one raw checkpoint per keyset page; compact shared validation facts",
+    "preview_promotion": "D1 SQL copy under summary finalization ownership fence",
+    "dead_letter_queue": "crol-digest-shadow-rebuild-dlq",
+    "active_claim_grace_minutes": 20,
+    "stale_run_hours": 2,
+    "stale_runs_per_scheduled_window": 2,
+    "receipt_retry_authority": "D1 nonterminal runs, retried by scheduled reconciliation",
+    "partial_expansion": "incomplete manifest cannot certify READY",
+    "logging": "personalized dry-run payloads suppressed",
+    "residual_limits": [
+      "single result size",
+      "aggregate metadata and history",
+      "shared isolate baseline and concurrent requests",
+      "scheduled inline preview accumulation"
+    ]
+  },
 });
 
 /**

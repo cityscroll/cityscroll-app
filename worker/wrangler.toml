@@ -166,6 +166,14 @@ max_batch_size = 1
 max_batch_timeout = 5
 max_retries = 3
 max_concurrency = 1
+dead_letter_queue = "crol-digest-shadow-rebuild-dlq"
+
+[[queues.consumers]]
+queue = "crol-digest-shadow-rebuild-dlq"
+max_batch_size = 1
+max_batch_timeout = 5
+max_retries = 3
+max_concurrency = 1
 
 # D1 mirror of City Record notices (Socrata stays the source of truth; the daily cron
 # refreshes it -- see src/ingest.mjs). Created via `wrangler d1 create crol-notices`;

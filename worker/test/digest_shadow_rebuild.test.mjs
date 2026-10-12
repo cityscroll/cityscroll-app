@@ -32,6 +32,15 @@ class Statement {
       item.error = null;
       return { attempt_count: item.attempt_count };
     }
+    if (this.sql.includes("FROM digest_shadow_rebuild_items")) {
+      const items = [...this.db.items.values()].filter((item) => item.run_id === this.args[0]);
+      if (this.sql.includes("COUNT(*)")) return { total: items.length,
+        completed: items.filter((item) => item.status === "complete").length,
+        failed: items.filter((item) => item.status === "failed").length };
+      if (this.sql.includes("digest_id >")) return items.filter((item) => item.digest_id > this.args[1])
+        .sort((a, b) => a.digest_id.localeCompare(b.digest_id))[0] || null;
+      return items.find((item) => item.digest_id === this.args[1]) || null;
+    }
     if (this.sql.includes("digest_shadow_rebuild_runs")) return this.db.runs.get(this.args[0]) || null;
     if (this.sql.includes("FROM digest_shadow_runs")) return this.db.mainRuns.get(this.args[0]) || null;
     return null;
@@ -39,7 +48,8 @@ class Statement {
 
   async all() {
     if (this.sql.includes("digest_shadow_rebuild_items")) {
-      return { results: [...this.db.items.values()].filter((item) => item.run_id === this.args[0]) };
+      return { results: [...this.db.items.values()].filter((item) => item.run_id === this.args[0])
+        .map(({ result_json, job_json, ...item }) => ({ ...item, result_available: result_json != null })) };
     }
     return { results: [] };
   }
@@ -82,6 +92,22 @@ class Statement {
       return { success: true, meta: { changes: changed } };
     }
     if (this.sql.includes("INSERT INTO digest_shadow_previews")) {
+      if (this.sql.includes("json_each")) {
+        const [runId, runDay, finalizationId] = this.args;
+        const summary = JSON.parse(this.db.mainRuns.get(runDay)?.summary_json || "null");
+        if (summary?.rebuild_finalization_id !== finalizationId) return { meta: { changes: 0 } };
+        for (const item of this.db.items.values()) {
+          if (item.run_id !== runId || item.status !== "complete") continue;
+          const result = JSON.parse(item.result_json || "null");
+          if (!result?.preview) continue;
+          const id = result.previewId || result.sub || result.watch || "unknown";
+          const metadata = summary.previews.find((p) => p.digest_id === id);
+          if (metadata) this.db.previews.set(`${runDay}:${id}`, { ...metadata,
+            run_day: runDay, html: result.preview.html || "", watch_counts_json: JSON.stringify(metadata.watch_counts) });
+        }
+        return { meta: { changes: 1 } };
+      }
+
       const [run_day, digest_id, recipient_redacted, subject, html, item_count, watch_counts_json,
         ownerDay, finalizationId] = this.args;
       const summary = JSON.parse(this.db.mainRuns.get(ownerDay)?.summary_json || "null");
@@ -781,4 +807,295 @@ test("rebuild failed targets cannot produce READY evidence", async () => {
   assert.equal(summary.status, "NEEDS_ATTENTION");
   assert.equal(summary.redlines[0].code, "rebuild_target_failed");
   assert.equal(summary.redlines[0].digest_id, "digest:missing");
+});
+
+// Execute the production SQL, including transaction/fence semantics, with a small
+// transport ceiling. Unrelated private previews must never cross that boundary.
+async function sqliteRecoveryFixture() {
+  const { DatabaseSync } = await import('node:sqlite');
+  const { readFileSync } = await import('node:fs');
+  const sqlite = new DatabaseSync(':memory:');
+  for (const file of ['0014_digest_shadow.sql', '0015_digest_shadow_hold.sql',
+    '0034_digest_shadow_rebuild.sql', '0035_digest_shadow_rebuild_base.sql']) {
+    sqlite.exec(readFileSync(new URL(`../migrations/${file}`, import.meta.url), 'utf8'));
+  }
+  const metrics = { maxBytes: 0, limit: 160_000 };
+  function checked(value) {
+    const bytes = Buffer.byteLength(JSON.stringify(value));
+    metrics.maxBytes = Math.max(metrics.maxBytes, bytes);
+    assert.ok(bytes <= metrics.limit, `D1 transport ${bytes} exceeds ${metrics.limit}`);
+    return value;
+  }
+  const DB = {
+    prepare(sql) {
+      let args = [];
+      return {
+        bind(...values) { args = values; return this; },
+        async first() { return checked(sqlite.prepare(sql).get(...args) || null); },
+        async all() { return checked({ results: sqlite.prepare(sql).all(...args) }); },
+        async run() { const out = sqlite.prepare(sql).run(...args); return { meta: { changes: Number(out.changes) } }; },
+      };
+    },
+    async batch(statements) {
+      sqlite.exec('BEGIN');
+      try { const out = []; for (const statement of statements) out.push(await statement.run()); sqlite.exec('COMMIT'); return out; }
+      catch (error) { sqlite.exec('ROLLBACK'); throw error; }
+    },
+  };
+  const env = { DB, ALERT_STATE: kv(), DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, { now: NOW });
+  sqlite.prepare("UPDATE digest_shadow_rebuild_runs SET status = 'running', total_count = 25 WHERE run_id = ?").run(created.run_id);
+  const insert = sqlite.prepare(`INSERT INTO digest_shadow_rebuild_items
+    (run_id, digest_id, job_json, status, result_json) VALUES (?, ?, '{}', ?, ?)`);
+  for (let i = 0; i < 24; i++) {
+    const id = `digest:${String(i).padStart(3, '0')}`;
+    insert.run(created.run_id, id, 'complete', JSON.stringify({ previewId: id, new: 1,
+      preview: { subject: 'Preview', html: '<li data-digest-item="1">item</li><a href="https://cityscroll.org/">Context</a><a href="https://api.cityscroll.org/unsubscribe?x=1">Unsubscribe</a>' + ' '.repeat(40_000) } }));
+  }
+  insert.run(created.run_id, 'digest:last', 'queued', null);
+  return { sqlite, DB, env, runId: created.run_id, metrics };
+}
+
+test('recovery status and one-item progress do not transport unrelated preview bodies', async () => {
+  const f = await sqliteRecoveryFixture();
+  try {
+    const { readDigestShadowRebuildStatus } = await import('../src/digest_shadow_rebuild.mjs');
+    const status = await readDigestShadowRebuildStatus(f.DB, f.runId);
+    assert.equal(status.items.length, 25);
+    assert.equal(status.items[0].result_available, true);
+    assert.equal(status.items[0].result_json, undefined);
+    f.sqlite.prepare("UPDATE digest_shadow_rebuild_items SET status = 'queued' WHERE digest_id = 'digest:000'").run();
+    const out = await handleDigestShadowRebuildQueueMessage(f.env, { type: 'digest', run_id: f.runId, digest_id: 'digest:last' },
+      { now: NOW, runTargetFn: async () => ({ previewId: 'digest:last', skipped: 'no-new' }) });
+    assert.equal(out.completed_count, 24);
+    assert.equal(out.status, 'running');
+  } finally { f.sqlite.close(); }
+});
+
+test('terminal validation pages legacy raw results and copies original bodies in SQL', async () => {
+  const f = await sqliteRecoveryFixture();
+  try {
+    const original = f.sqlite.prepare("SELECT result_json FROM digest_shadow_rebuild_items WHERE digest_id = 'digest:000'").get().result_json;
+    const out = await handleDigestShadowRebuildQueueMessage(f.env, { type: 'digest', run_id: f.runId, digest_id: 'digest:last' },
+      { now: NOW, runTargetFn: async () => ({ previewId: 'digest:last', skipped: 'no-new' }) });
+    assert.equal(out.status, 'complete');
+    const stored = JSON.parse(f.sqlite.prepare('SELECT summary_json FROM digest_shadow_runs').get().summary_json);
+    assert.equal(stored.status, 'READY');
+    assert.equal(stored.evaluated_count, 25);
+    assert.equal(stored.total_items, 24);
+    assert.equal(f.sqlite.prepare('SELECT COUNT(*) AS n FROM digest_shadow_previews').get().n, 24);
+    assert.equal(f.sqlite.prepare("SELECT html FROM digest_shadow_previews WHERE digest_id = 'digest:000'").get().html,
+      JSON.parse(original).preview.html);
+    assert.ok(f.metrics.maxBytes < f.metrics.limit);
+  } finally { f.sqlite.close(); }
+});
+
+test('compact validation preserves real content, history, aggregate and ontology detectors', async () => {
+  const { compactDigestShadowResult, buildDigestShadowSummary } = await import('../src/digest_shadow.mjs');
+  const results = [
+    { previewId: 'one', new: 2, preview: { subject: 'Preview', html: '<li data-digest-item="1">one</li><a href="#missing">bad</a>' } },
+    { previewId: 'two', new: 0, found: 0, preview: { subject: 'Empty', html: '<a href="https://api.cityscroll.org/unsubscribe?x=1">Unsubscribe</a>' } },
+    { previewId: 'three', skipped: 'no-new', selection_funnel: { source_candidates: 2, watermark_fresh: 0 } },
+    { previewId: 'four', error: 'SODA 524 after retry budget' },
+  ];
+  const history = [{ day: '2026-09-20', entries: [{ id: 'two', new: 4 }], totalNotices: 100 }];
+  const ontologyDelta = { contract: 'test', candidate_count: 1, emitted_count: 1, emitted: [{ type: 'event' }], receipts: [{ state: 'candidate' }] };
+  const inline = buildDigestShadowSummary({ run: { results }, history, now: NOW, ontologyDelta });
+  const compact = results.map(compactDigestShadowResult);
+  const streamed = buildDigestShadowSummary({ run: { results: compact.map((r) => r.result) }, history, now: NOW, ontologyDelta,
+    renderedContentRedlines: compact.flatMap((r) => r.contentRedlines) });
+  delete inline._rendered_previews;
+  delete streamed._rendered_previews;
+  assert.deepEqual(streamed, inline);
+  assert.ok(streamed.redlines.some((r) => r.code === 'count_list_mismatch'));
+  assert.ok(streamed.redlines.some((r) => r.code === 'broken_digest_link'));
+  assert.equal(streamed.upstream_incidents.length, 1);
+});
+
+test('dead letter finalizes a stranded item and is idempotent after completion', async () => {
+  const f = await sqliteRecoveryFixture();
+  try {
+    const { handleDigestShadowRebuildDeadLetter } = await import('../src/digest_shadow_rebuild.mjs');
+    f.sqlite.prepare("UPDATE digest_shadow_rebuild_items SET status = 'running', attempt_count = 4 WHERE digest_id = 'digest:last'").run();
+    const message = { type: 'digest', run_id: f.runId, digest_id: 'digest:last' };
+    const out = await handleDigestShadowRebuildDeadLetter(f.env, message, { now: NOW });
+    assert.equal(out.status, 'failed');
+    assert.equal(out.failed_count, 1);
+    const summary = f.sqlite.prepare('SELECT summary_json FROM digest_shadow_runs').get().summary_json;
+    assert.equal(JSON.parse(summary).status, 'NEEDS_ATTENTION');
+    await handleDigestShadowRebuildDeadLetter(f.env, message, { now: NOW });
+    assert.equal(f.sqlite.prepare('SELECT summary_json FROM digest_shadow_runs').get().summary_json, summary);
+  } finally { f.sqlite.close(); }
+});
+
+test('dead letter retries aggregate failure without erasing a completed checkpoint', async () => {
+  const f = await sqliteRecoveryFixture();
+  try {
+    const { handleDigestShadowRebuildDeadLetter } = await import('../src/digest_shadow_rebuild.mjs');
+    f.sqlite.prepare("UPDATE digest_shadow_rebuild_items SET status = 'complete', result_json = ? WHERE digest_id = 'digest:last'")
+      .run(JSON.stringify({ previewId: 'digest:last', skipped: 'no-new' }));
+    const batch = f.DB.batch;
+    f.DB.batch = async () => { throw new Error('durable store interrupted'); };
+    const message = { type: 'digest', run_id: f.runId, digest_id: 'digest:last' };
+    await assert.rejects(handleDigestShadowRebuildDeadLetter(f.env, message, { now: NOW }), /durable store interrupted/);
+    assert.equal(f.sqlite.prepare("SELECT status FROM digest_shadow_rebuild_items WHERE digest_id = 'digest:last'").get().status, 'complete');
+    f.DB.batch = batch;
+    assert.equal((await handleDigestShadowRebuildDeadLetter(f.env, message, { now: NOW })).status, 'complete');
+    assert.equal((await handleDigestShadowRebuildDeadLetter(f.env, message, { now: NOW })).status, 'complete');
+  } finally { f.sqlite.close(); }
+});
+
+test('expansion exhaustion cannot certify a partial manifest', async () => {
+  const f = await sqliteRecoveryFixture();
+  try {
+    const { handleDigestShadowRebuildDeadLetter } = await import('../src/digest_shadow_rebuild.mjs');
+    f.sqlite.prepare("UPDATE digest_shadow_rebuild_runs SET status = 'dispatching' WHERE run_id = ?").run(f.runId);
+    const out = await handleDigestShadowRebuildDeadLetter(f.env, { type: 'expand', run_id: f.runId }, { now: NOW });
+    assert.equal(out.status, 'failed');
+    const summary = JSON.parse(f.sqlite.prepare('SELECT summary_json FROM digest_shadow_runs').get().summary_json);
+    assert.equal(summary.complete, false);
+    assert.ok(summary.redlines.some((r) => r.code === 'rebuild_manifest_incomplete'));
+    assert.equal(f.sqlite.prepare("SELECT COUNT(*) AS n FROM digest_shadow_rebuild_items WHERE status = 'complete'").get().n, 24);
+  } finally { f.sqlite.close(); }
+});
+
+test('stale reconciliation recovers lost messages and retries finalization independently', async () => {
+  const f = await sqliteRecoveryFixture();
+  try {
+    const { reconcileStaleDigestShadowRebuilds } = await import('../src/digest_shadow_rebuild.mjs');
+    const later = new Date(NOW.getTime() + 3 * 60 * 60 * 1000);
+    assert.deepEqual(await reconcileStaleDigestShadowRebuilds(f.env, { now: NOW }), []);
+    const [out] = await reconcileStaleDigestShadowRebuilds(f.env, { now: later });
+    assert.equal(out.status, 'failed');
+    assert.equal(out.failed_count, 1);
+    assert.deepEqual(await reconcileStaleDigestShadowRebuilds(f.env, { now: later }), []);
+  } finally { f.sqlite.close(); }
+});
+
+test('real static rebuild keeps private HTML in D1 and out of logs without sending or advancing watermarks', async () => {
+  const f = await sqliteRecoveryFixture();
+  const originalFetch = globalThis.fetch;
+  const originalLog = console.log;
+  const logs = [];
+  const requests = [];
+  const sentinel = 'PRIVATE-PREVIEW-SENTINEL';
+  try {
+    f.sqlite.prepare("UPDATE digest_shadow_rebuild_items SET status = 'queued' WHERE digest_id = 'digest:000'").run();
+    f.sqlite.prepare("UPDATE digest_shadow_rebuild_items SET digest_id = 'watch:fixture', job_json = ? WHERE digest_id = 'digest:last'")
+      .run(JSON.stringify({ type: 'static', watch: { id: 'fixture', label: 'Fixture', email: 'fixture@example.test', q: 'fixture' } }));
+    f.env.ALERTS_LIVE = 'true';
+    f.env.RESEND_API_KEY = 'test-not-a-key';
+    f.env.QUEUE_DIGESTS = 'true';
+    await f.env.ALERT_STATE.put('seen:fixture', JSON.stringify(['old-id']));
+    const before = await f.env.ALERT_STATE.get('seen:fixture');
+    globalThis.fetch = async (url) => {
+      requests.push(String(url));
+      assert.match(String(url), /data.cityofnewyork.us/);
+      return Response.json([{ request_id: '20260921001', start_date: '2026-09-21', short_title: sentinel, agency_name: 'Fixture' }]);
+    };
+    console.log = (...args) => logs.push(args.join(' '));
+    await handleDigestShadowRebuildQueueMessage(f.env,
+      { type: 'digest', run_id: f.runId, digest_id: 'watch:fixture' }, { now: NOW });
+    const result = JSON.parse(f.sqlite.prepare("SELECT result_json FROM digest_shadow_rebuild_items WHERE digest_id = 'watch:fixture'").get().result_json);
+    assert.match(result.preview.html, /PRIVATE-PREVIEW-SENTINEL/);
+    assert.equal(logs.some((line) => line.includes(sentinel) || line.includes('fixture@example.test')), false);
+    assert.equal(requests.length, 1);
+    assert.equal(await f.env.ALERT_STATE.get('seen:fixture'), before);
+    assert.equal([...f.env.ALERT_STATE.values.keys()].some((key) => /^(sendcount:|lastsent:|digest:daylog:)/.test(key)), false);
+  } finally { globalThis.fetch = originalFetch; console.log = originalLog; f.sqlite.close(); }
+});
+
+test('mismatched preview identity cannot be promoted under another digest', async () => {
+  const f = await sqliteRecoveryFixture();
+  try {
+    const out = await handleDigestShadowRebuildQueueMessage(f.env,
+      { type: 'digest', run_id: f.runId, digest_id: 'digest:last' }, { now: NOW,
+        runTargetFn: async () => ({ previewId: 'another-digest', new: 0, preview: { subject: 'Wrong', html: '' } }) });
+    assert.equal(JSON.parse(f.sqlite.prepare('SELECT summary_json FROM digest_shadow_runs').get().summary_json).status, 'NEEDS_ATTENTION');
+    assert.equal(f.sqlite.prepare("SELECT COUNT(*) AS n FROM digest_shadow_previews WHERE digest_id = 'another-digest'").get().n, 0);
+  } finally { f.sqlite.close(); }
+});
+
+test('SQL preview promotion is fenced against a newer summary committed before the batch', async () => {
+  const f = await sqliteRecoveryFixture();
+  try {
+    const batch = f.DB.batch;
+    const newer = JSON.stringify({ status: 'READY', complete: true, result_revision: 'newer', previews: [] });
+    f.DB.batch = async (statements) => {
+      f.sqlite.prepare("INSERT INTO digest_shadow_runs VALUES (?, ?, 'READY', 0, 0, ?)").run('2026-09-21', NOW.toISOString(), newer);
+      f.DB.batch = batch;
+      return batch(statements);
+    };
+    const out = await handleDigestShadowRebuildQueueMessage(f.env,
+      { type: 'digest', run_id: f.runId, digest_id: 'digest:last' }, { now: NOW,
+        runTargetFn: async () => ({ previewId: 'digest:last', skipped: 'no-new' }) });
+    assert.equal(out.status, 'failed');
+    assert.equal(f.sqlite.prepare('SELECT summary_json FROM digest_shadow_runs').get().summary_json, newer);
+    assert.equal(f.sqlite.prepare('SELECT COUNT(*) AS n FROM digest_shadow_previews').get().n, 0);
+  } finally { f.sqlite.close(); }
+});
+
+test('late dead letter cannot cancel a newer active claim', async () => {
+  const f = await sqliteRecoveryFixture();
+  try {
+    const { handleDigestShadowRebuildDeadLetter } = await import('../src/digest_shadow_rebuild.mjs');
+    f.sqlite.prepare("UPDATE digest_shadow_rebuild_items SET status = 'running', attempt_count = 5, started_at = ? WHERE digest_id = 'digest:last'").run(NOW.toISOString());
+    const message = { type: 'digest', run_id: f.runId, digest_id: 'digest:last' };
+    await assert.rejects(handleDigestShadowRebuildDeadLetter(f.env, message, { now: NOW }), /claim still active/);
+    assert.equal(f.sqlite.prepare("SELECT status FROM digest_shadow_rebuild_items WHERE digest_id = 'digest:last'").get().status, 'running');
+    f.sqlite.prepare("UPDATE digest_shadow_rebuild_items SET status = 'complete', result_json = ? WHERE digest_id = 'digest:last'")
+      .run(JSON.stringify({ previewId: 'digest:last', skipped: 'no-new' }));
+    assert.equal((await handleDigestShadowRebuildDeadLetter(f.env, message, { now: NOW })).status, 'complete');
+  } finally { f.sqlite.close(); }
+});
+
+test('failed full manifest retains aggregate validation through a later scoped repair', async () => {
+  const f = await sqliteRecoveryFixture();
+  try {
+    const { handleDigestShadowRebuildDeadLetter } = await import('../src/digest_shadow_rebuild.mjs');
+    await f.env.ALERT_STATE.put('digest:daylog:2026-09-20', JSON.stringify({ day: '2026-09-20', totalNotices: 200 }));
+    await handleDigestShadowRebuildDeadLetter(f.env,
+      { type: 'digest', run_id: f.runId, digest_id: 'digest:last' }, { now: NOW });
+    let summary = JSON.parse(f.sqlite.prepare('SELECT summary_json FROM digest_shadow_runs').get().summary_json);
+    assert.ok(summary.redlines.some((r) => r.code === 'aggregate_count_collapse'));
+    const repair = await createDigestShadowRebuild(f.env, { affectedDigestIds: ['digest:last'], now: NOW });
+    f.sqlite.prepare("UPDATE digest_shadow_rebuild_runs SET status = 'running', total_count = 1 WHERE run_id = ?").run(repair.run_id);
+    f.sqlite.prepare("INSERT INTO digest_shadow_rebuild_items (run_id, digest_id, job_json, status) VALUES (?, 'digest:last', '{}', 'queued')").run(repair.run_id);
+    await handleDigestShadowRebuildQueueMessage(f.env,
+      { type: 'digest', run_id: repair.run_id, digest_id: 'digest:last' }, { now: NOW,
+        runTargetFn: async () => ({ previewId: 'digest:last', skipped: 'no-new' }) });
+    summary = JSON.parse(f.sqlite.prepare('SELECT summary_json FROM digest_shadow_runs').get().summary_json);
+    assert.equal(summary.status, 'NEEDS_ATTENTION');
+    assert.ok(summary.redlines.some((r) => r.code === 'aggregate_count_collapse'));
+  } finally { f.sqlite.close(); }
+});
+
+test('interrupted expansion resumes its sealed manifest and finalizes only after dispatch', async () => {
+  const f = await sqliteRecoveryFixture();
+  try {
+    f.sqlite.exec('DELETE FROM digest_shadow_rebuild_items');
+    f.sqlite.prepare("UPDATE digest_shadow_rebuild_runs SET status = 'queued', total_count = 0 WHERE run_id = ?").run(f.runId);
+    const sent = [];
+    f.env.DIGEST_SHADOW_QUEUE.send = async (message) => {
+      if (sent.length === 1) throw new Error('dispatch interrupted');
+      sent.push(message);
+    };
+    const expand = { type: 'expand', run_id: f.runId };
+    await assert.rejects(handleDigestShadowRebuildQueueMessage(f.env, expand, { now: NOW }), /dispatch interrupted/);
+    assert.equal(f.sqlite.prepare('SELECT status FROM digest_shadow_rebuild_runs').get().status, 'dispatching');
+    const complete = await handleDigestShadowRebuildQueueMessage(f.env, sent[0], { now: NOW,
+      runTargetFn: async () => ({ previewId: sent[0].digest_id, skipped: 'no-new' }) });
+    assert.equal(complete.status, 'dispatching');
+    assert.equal(f.sqlite.prepare('SELECT COUNT(*) AS n FROM digest_shadow_runs').get().n, 0);
+    const pending = [];
+    f.env.DIGEST_SHADOW_QUEUE.send = async (message) => { pending.push(message); };
+    // Retry must use the durable manifest, without rediscovering subscriptions.
+    f.env.SUBS = { async list() { throw new Error('must not rediscover manifest'); } };
+    await handleDigestShadowRebuildQueueMessage(f.env, expand, { now: NOW });
+    assert.ok(pending.length > 0);
+    assert.equal(pending.some((message) => message.digest_id === sent[0].digest_id), false);
+    for (const message of pending) await handleDigestShadowRebuildQueueMessage(f.env, message, { now: NOW,
+      runTargetFn: async () => ({ previewId: message.digest_id, skipped: 'no-new' }) });
+    assert.equal(f.sqlite.prepare('SELECT status FROM digest_shadow_rebuild_runs').get().status, 'complete');
+  } finally { f.sqlite.close(); }
 });

@@ -216,7 +216,31 @@ The authenticated admin endpoint remains the canonical machine-readable status s
 The repair protocol is to diagnose the listed `affected_digest_ids`, apply the repair, then use
 authenticated `POST /admin/digest-shadow` to queue a checkpointed rebuild before 09:00. The POST
 returns immediately; `GET /admin/digest-shadow?run_id=…` reports expansion, per-digest progress,
-and the final receipt. At 12:45 UTC
+and the final receipt. Recovery status/expansion read metadata only; item claims select one
+checkpoint and progress uses SQL counts. Terminal validation pages raw results by digest ID,
+runs the same rendered-content detector as inline validation, and retains compact facts for
+history, aggregate, and ontology checks. Private HTML stays in D1 and is promoted by SQL under
+the summary ownership fence. Existing raw checkpoints remain readable; a preview identity
+mismatch fails validation instead of copying another digest's content. Rehearsal rendering
+suppresses personalized dry-run logs and never sends or advances delivery state.
+
+The dedicated `crol-digest-shadow-rebuild-dlq` consumer records exhausted work separately from
+subscriber delivery failures. It preserves completed checkpoints, retries failed durable
+finalization, and refuses to cancel a claim started within the last 20 minutes. Each scheduled
+window also reconciles at most two runs inactive for two hours, provided no recent item claim
+exists. This D1 backstop survives exhaustion of the dead-letter consumer itself. Expansion has
+separate discovery and dispatch states; exhaustion before dispatch completion records an
+incomplete manifest, never READY. These timers bound eligibility for reconciliation, not a
+promise of completion while D1 or scheduled execution is unavailable.
+
+Memory remains bounded by one rendered result plus aggregate metadata, history, and the
+Worker's imports for recovery; it is not independent of a single digest's size or the number
+of metadata records. Cloudflare's isolate memory is shared across concurrent requests, so
+these query and validation checks do not prove production headroom. The scheduled inline
+rehearsal still retains its full preview population; converting it to checkpointed execution
+must also preserve freshness degradation and global simulated delivery-cap semantics.
+
+At 12:45 UTC
 (15 minutes before the
 configured 13:00 UTC delivery cron), any digest IDs still named by a redlined run receive a
 `digest-shadow-hold.v1` delivery lease. The producer and queue consumer both enforce that lease;
