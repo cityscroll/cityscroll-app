@@ -185,7 +185,7 @@ test("store outage uses today's persisted redline state and emits a degraded rec
   assert.equal(db.writes.length, 0, "degraded receipt must not overwrite the usable canonical state");
 });
 
-test("store outage can read the last-known state from alert-state KV when D1 is down", async () => {
+test("store outage does not trust unverified last-known alert-state KV", async () => {
   const receipts = new MockKV();
   await receipts.put("digest:shadow:hold:last-known:2026-08-04", JSON.stringify(persistedState({
     source_status: "READY",
@@ -197,12 +197,12 @@ test("store outage can read the last-known state from alert-state KV when D1 is 
     receiptStore: receipts,
     retryDelaysMs: [0, 0],
   });
-  assert.equal(state.source_status, "LAST_KNOWN_READY");
-  assert.equal(state.delivery_policy, "ALL_DIGESTS_ELIGIBLE");
-  assert.equal(state.degraded_receipt.decision, "SEND_ON_LAST_KNOWN_STATE");
+  assert.equal(state.source_status, "DARK_PERIOD");
+  assert.equal(state.delivery_policy, "ALL_DIGESTS_HELD");
+  assert.equal(state.degraded_receipt.decision, "HOLD_ALL_DARK_PERIOD");
 });
 
-test("missing D1 binding also uses today's last-known state from alert-state KV", async () => {
+test("missing D1 binding does not trust unverified last-known alert-state KV", async () => {
   const receipts = new MockKV();
   await receipts.put("digest:shadow:hold:last-known:2026-08-04", JSON.stringify(persistedState({
     source_status: "READY",
@@ -214,9 +214,9 @@ test("missing D1 binding also uses today's last-known state from alert-state KV"
     persist: true,
     receiptStore: receipts,
   });
-  assert.equal(state.source_status, "LAST_KNOWN_READY");
+  assert.equal(state.source_status, "HOLD_STORE_UNAVAILABLE");
   assert.equal(state.delivery_policy, "ALL_DIGESTS_ELIGIBLE");
-  assert.equal(state.degraded_receipt.decision, "SEND_ON_LAST_KNOWN_STATE");
+  assert.equal(state.degraded_receipt.decision, "SEND_FAIL_OPEN");
 });
 
 test("store outage sends on today's persisted READY state", async () => {
