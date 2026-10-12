@@ -404,13 +404,13 @@ test("later reconciliation windows detect missing, stale, and unexpected rows", 
   )));
 });
 
-test("later reconciliation windows cannot pass an FTS duplicate", { skip: !DatabaseSync }, async () => {
-  const sources = oversizedKeywordSources();
+test("an FTS duplicate split across a scan-page boundary cannot pass reconciliation", { skip: !DatabaseSync }, async () => {
+  const sources = oversizedKeywordSources(policy.reconcile.max_rows + 1_000);
   const priorSnapshot = snapshotFor(manifest, sources.prior);
   const currentSnapshot = snapshotFor(manifest, sources.current);
   const { fenceStore, generation, holder } = await claimed(currentSnapshot, "late-window-duplicate");
   const db = openDatabase(sources.prior);
-  const duplicateKey = "gamma:notice:bulk-005050";
+  const duplicateKey = "gamma:notice:bulk-005499";
   let duplicated = false;
   const adapter = databaseAdapter(db, {
     generation,

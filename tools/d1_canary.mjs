@@ -315,7 +315,8 @@ function addRowsToKeyMap(byKey, rows, keyCols) {
     const keyValues = keyCols.map((column) => row[column]);
     const key = keyValues.join("|");
     const bucket = byKey.get(key) || [];
-    bucket.push(row);
+    const { __cityscroll_scan_rowid: _scanRowid, ...storedRow } = row;
+    bucket.push(storedRow);
     byKey.set(key, bucket);
   }
 }
@@ -360,10 +361,11 @@ export async function scanTableForPartition({
   if (!columns) canaryFail(`no TABLE_COLUMNS entry for ${table}`);
   const scope = partitionScopeClause(entry, table);
   const keyCols = keyColumns(entry, table);
-  const orderBy = orderByKeyColumns(keyCols);
+  const cursorCols = [...keyCols, "rowid"];
+  const orderBy = orderByKeyColumns(cursorCols);
   const byKey = new Map();
   let limit = adaptive ? Math.min(DEFAULT_PARTITION_SCAN_PAGE_ROWS, maxPageRows) : Math.min(pageRows, maxPageRows);
-  let lastKeyValues = afterKeyValues;
+  let lastCursorValues = null;
   let observedRows = 0;
   let scanComplete = true;
   for (;;) {
@@ -371,8 +373,10 @@ export async function scanTableForPartition({
     const params = [];
     let where = scope.clause;
     if (scope.bound) params.push(partition);
-    if (lastKeyValues) {
-      const keyset = keysetAfterPredicate(keyCols, lastKeyValues);
+    if (lastCursorValues || afterKeyValues) {
+      const keyset = lastCursorValues
+        ? keysetAfterPredicate(cursorCols, lastCursorValues)
+        : keysetAfterPredicate(keyCols, afterKeyValues);
       where = `(${where}) AND ${keyset.clause}`;
       params.push(...keyset.params);
     }
@@ -381,7 +385,7 @@ export async function scanTableForPartition({
       where = `(${where}) AND ${upper.clause}`;
       params.push(...upper.params);
     }
-    const sql = `SELECT ${columns.join(", ")} FROM ${table} WHERE ${where} ORDER BY ${orderBy} LIMIT ${requestLimit}`;
+    const sql = `SELECT rowid AS __cityscroll_scan_rowid, ${columns.join(", ")} FROM ${table} WHERE ${where} ORDER BY ${orderBy} LIMIT ${requestLimit}`;
     const rows = await adapter.select(sql, params);
     const remaining = maxTotalRows === null ? rows.length : Math.max(0, maxTotalRows - observedRows);
     const retainedRows = rows.slice(0, remaining);
@@ -402,7 +406,8 @@ export async function scanTableForPartition({
       });
     }
     if (rows.length < requestLimit) break;
-    lastKeyValues = keyCols.map((column) => rows[rows.length - 1][column]);
+    const lastRow = rows[rows.length - 1];
+    lastCursorValues = [...keyCols.map((column) => lastRow[column]), lastRow.__cityscroll_scan_rowid];
   }
   Object.defineProperties(byKey, {
     scanComplete: { value: scanComplete, enumerable: false },
