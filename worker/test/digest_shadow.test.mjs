@@ -535,6 +535,21 @@ test("verified READY recovery resolves current degraded attention without rewrit
   }
 });
 
+test("verified READY recovery leaves last-known-state attention open", async () => {
+  const clean = { ...summary([result()]), phase: "finalized", complete: true, result_revision: "recovered-revision" };
+  const receipt = { contract: "digest-shadow-degraded-decision.v1", run_day: clean.run_day,
+    decision: "SEND_ON_LAST_KNOWN_STATE", attention_status: "open", catch_up_required: false };
+  const response = await handleAdminDigestShadow(
+    new Request("https://w/admin/digest-shadow", { headers: { authorization: "Bearer secret" } }),
+    { ADMIN_KEY: "secret", DB: readDb(clean), ALERT_STATE: receiptKv(receipt) }, { now: NOW },
+  );
+  assert.equal(response.status, 503);
+  const body = await response.json();
+  assert.equal(body.degraded_receipt.decision, "SEND_ON_LAST_KNOWN_STATE");
+  assert.equal(body.degraded_receipt.attention_status, "open");
+  assert.equal(body.degraded_receipt.resolution, undefined);
+});
+
 test("READY recovery closes attention only after proving catch-up is absent", async () => {
   const clean = { ...summary([result()]), phase: "finalized", complete: true, result_revision: "recovered-revision" };
   const receipt = { contract: "digest-shadow-degraded-decision.v1", run_day: clean.run_day,

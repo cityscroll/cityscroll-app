@@ -462,7 +462,7 @@ export async function readDigestShadowDegradedReceipt(store, { day = null } = {}
 /** Project current recovery without mutating the historical send-time decision. */
 export function projectDigestShadowDegradedReceipt(receipt, summary, hold) {
   if (!receipt || receipt.attention_status !== "open"
-    || !["SEND_FAIL_OPEN", "SEND_ON_LAST_KNOWN_STATE"].includes(receipt.decision)
+    || receipt.decision !== "SEND_FAIL_OPEN"
     || receipt.catch_up_required || hold?.catch_up_required
     || hold?.pending_catch_up_status !== "absent"
     || summary?.status !== "READY" || summary.ok !== true
