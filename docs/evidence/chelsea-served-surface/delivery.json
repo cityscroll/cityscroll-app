@@ -1,0 +1,16 @@
+{
+  "landed_commit": "964dff5f0bbc0d69d6c3bdba22d9b1c0791d870e",
+  "note": "Required ancestors for the Chelsea Near You served-surface production read. Overview delivery restores the no-lens place summary; map_fix keeps the selected neighborhood boundary in the first viewport. Capture waits until Worker health commit and Pages artifact-manifest both contain these ancestors, and until Deploy worker Live URL smoke succeeds for the Worker head.",
+  "required_ancestors": [
+    {
+      "commit": "964dff5f0bbc0d69d6c3bdba22d9b1c0791d870e",
+      "role": "overview"
+    },
+    {
+      "commit": "62220ddcf225e4a4b51fa4159e030e8925cef0ff",
+      "role": "map_fix"
+    }
+  ],
+  "schema": "cityscroll.capture_delivery.v1",
+  "surface": "pages"
+}
