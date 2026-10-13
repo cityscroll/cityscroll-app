@@ -256,9 +256,11 @@ revision. Without verified current state, a missing or unavailable run stays fai
 rehearsal less than `DIGEST_SHADOW_DARK_DAYS` calendar days in the past (default 3, chosen to allow
 a bounded repair window without allowing stale validation to run indefinitely). At the dark-period
 boundary the policy holds every digest; if D1 cannot establish that history, the decision remains
-explicitly degraded rather than inventing readiness or a hold. The next `READY` rehearsal runs
-watermark catch-up before normal delivery and closes the receipt. `/admin/digest-shadow` exposes the receipt and returns HTTP 503
-while attention is open; the daylog carries the same collapsed decision for the operations line.
+explicitly degraded rather than inventing readiness or a hold. Recovery and current-attention
+projection are defined by `digest_shadow.hold.recovery_policy` in the versioned
+[`ops-contract.v1.json`](ops-contract.v1.json). `/admin/digest-shadow` returns HTTP 503 while
+attention is open or the absence of pending catch-up cannot be verified; the daylog carries the
+same collapsed decision for the operations line.
 Run-level redlines without named digest scope remain fail-open. Named holds expire at 14:00 UTC; a
 queue message found held is acknowledged as `skipped:shadow-hold`, never retried into an accidental
 later send. The authenticated override body above requires a reason and can release only IDs named

@@ -459,13 +459,47 @@ export async function readDigestShadowDegradedReceipt(store, { day = null } = {}
   }
 }
 
+/** Project current recovery without mutating the historical send-time decision. */
+export function projectDigestShadowDegradedReceipt(receipt, summary, hold) {
+  if (!receipt || receipt.attention_status !== "open"
+    || receipt.decision !== "SEND_FAIL_OPEN"
+    || receipt.catch_up_required || hold?.catch_up_required
+    || hold?.pending_catch_up_status !== "absent"
+    || summary?.status !== "READY" || summary.ok !== true
+    || summary.complete !== true || summary.phase !== "finalized"
+    || !summary.result_revision || hold?.result_revision !== summary.result_revision
+    || hold.source_status !== "READY" || hold.degraded_receipt
+    || receipt.run_day !== summary.run_day || hold.run_day !== summary.run_day) return receipt;
+  return {
+    ...receipt,
+    original_attention_status: receipt.attention_status,
+    attention_status: "closed",
+    resolution: {
+      source: "current_ready_rehearsal",
+      result_revision: summary.result_revision,
+      delivery_sent: false,
+    },
+  };
+}
+
 async function readPendingDarkHold(store) {
-  if (!store) return null;
+  if (!store?.get) return { status: "unavailable", pending: null };
   try {
     const raw = await store.get(DARK_HOLD_PENDING_KEY);
-    return raw ? JSON.parse(raw) : null;
+    if (raw == null) return { status: "absent", pending: null };
+    let pending;
+    try {
+      pending = JSON.parse(raw);
+    } catch {
+      return { status: "malformed", pending: null };
+    }
+    if (!pending || typeof pending !== "object" || Array.isArray(pending)
+      || pending.catch_up_required !== true) {
+      return { status: "malformed", pending: null };
+    }
+    return { status: "pending", pending };
   } catch {
-    return null;
+    return { status: "unavailable", pending: null };
   }
 }
 
@@ -641,12 +675,13 @@ export async function resolveDigestShadowHold(db, {
   }
 
   if (state.source_status === "READY") {
-    const pending = await readPendingDarkHold(receiptStore);
-    if (pending) {
+    const pendingLookup = await readPendingDarkHold(receiptStore);
+    state = { ...state, pending_catch_up_status: pendingLookup.status };
+    if (pendingLookup.pending) {
       state = {
         ...state,
         catch_up_required: true,
-        recovery_of: pending,
+        recovery_of: pendingLookup.pending,
         observation: "READY rehearsal restored delivery; catch-up is required before the normal send",
       };
     }

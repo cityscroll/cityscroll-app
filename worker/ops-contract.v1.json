@@ -99,7 +99,7 @@
       "source_retry_policy": "legacy static Socrata watch reads retry transient failures within one 60000ms cancellation deadline spanning response headers, body consumption, and retry waits; other subscription read budgets are unchanged",
       "unavailable_policy": "use today's D1 hold only when its immutable result revision matches the current run; without revision-verifiable current state or readable D1 READY history, remain explicitly degraded rather than trusting a mutable fallback or inventing readiness",
       "missing_run_policy": "fail open loudly while a READY rehearsal is less than 3 days old; hold all at the 3-day boundary",
-      "recovery_policy": "a READY rehearsal after a dark-period hold triggers automatic catch-up before normal delivery",
+      "recovery_policy": "Recovery has two distinct paths: a READY rehearsal after a dark-period hold triggers automatic catch-up before normal delivery; current status may project an open SEND_FAIL_OPEN receipt closed only from complete finalized READY evidence for the same run day and result revision after successfully proving no catch-up is pending. That projection preserves the historical receipt and decision, sends nothing, advances no watermarks, and does not claim delivery.",
       "degraded_receipt_contract": "digest-shadow-degraded-decision.v1",
       "redline_policy": "fail closed only for affected_digest_ids",
       "expiry_policy": "fail open after the bounded delivery window",
