@@ -55,9 +55,22 @@ test("?beta=0 clears the persisted opt-in", () => {
   assert.equal(resolution.slug, null);
 });
 
-test("expired flags fail closed in the browser runtime", () => {
+test("flags remain active through their last day and then fail closed", () => {
+  const expiringFlags = [{
+    slug: "expiry-fixture",
+    default_off: true,
+    removal_date: "2026-08-01",
+  }];
   assert.deepEqual(
-    resolveFlag({ search: "?beta=channel-banner", flags, today: "2026-10-15" }),
+    resolveFlag({ search: "?beta=expiry-fixture", flags: expiringFlags, today: "2026-08-01" }),
+    { slug: "expiry-fixture", storage: "persist" },
+  );
+  assert.deepEqual(
+    resolveFlag({ search: "?beta=expiry-fixture", flags: expiringFlags, today: "2026-08-02" }),
+    { slug: null, storage: "clear" },
+  );
+  assert.deepEqual(
+    resolveFlag({ stored: "expiry-fixture", flags: expiringFlags, today: "2026-08-02" }),
     { slug: null, storage: "clear" },
   );
 });
