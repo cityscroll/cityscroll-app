@@ -17323,8 +17323,8 @@
   "sources": {
     "catalog": {
       "path": "site/data/land_project_catalog.json",
-      "content_id": "fnv1a32:ff211dc0:244",
-      "sha256": "c6725ebda1f59ecc88af084e8b6cd892a304ffbbd49da40a43e84408b29de5f8"
+      "content_id": "fnv1a32:d2322768:244",
+      "sha256": "d1f85c240a0ea1ce3599ef4a32017cc283ede55594cfae5b6f309c426fc293a7"
     },
     "bbl_index": {
       "path": "site/data/zap_bbl_warehouse_lookup.json",
@@ -17345,9 +17345,9 @@
     }
   },
   "source_dates": {
-    "catalog_content_id": "fnv1a32:ff211dc0:244",
-    "catalog_materialized_at": "2026-09-30T13:15:13.798Z",
-    "catalog_generated_at": "2026-09-30T13:04:22.921Z",
+    "catalog_content_id": "fnv1a32:d2322768:244",
+    "catalog_materialized_at": "2026-10-15T12:31:32.168Z",
+    "catalog_generated_at": "2026-10-15T12:18:19.810Z",
     "bbl_materialized_at": "2026-10-05T17:35:26.970Z",
     "parcel_coordinate_vintage": "pluto_25v4",
     "boundary_vintages": {
@@ -17360,8 +17360,8 @@
   },
   "generation": {
     "derivation": "node tools/build_land_place_membership.mjs",
-    "content_id": "fnv1a32:640b5dbd:244",
-    "id": "aa757d8b1fd9c0b68bcd02a5eef8ee061ed3efd12c4af34331ce904c0c4afea7",
-    "built_at": "2026-09-30T13:15:13.798Z"
+    "content_id": "fnv1a32:8776ecc0:244",
+    "id": "46f561694c6b2083684072bbe737085fadabb0f3a4af46f20a11442fa43d0268",
+    "built_at": "2026-10-15T12:31:32.168Z"
   }
 }

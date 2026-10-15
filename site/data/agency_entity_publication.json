@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.agency_entity_publication.v1",
   "method": "agency_entity_publication_v1",
-  "generated_at": "2026-10-09T14:15:05.584Z",
+  "generated_at": "2026-10-15T12:12:12.538Z",
   "sources": [
     {
       "system": "nyc_open_data",
@@ -39,7 +39,7 @@
       "name": "Award-corroborated public contract census",
       "attribution": null,
       "url": null,
-      "observed_on": "2026-10-09",
+      "observed_on": "2026-10-15",
       "provides": [
         "published_by_agency"
       ]
@@ -1211,6 +1211,7 @@
         "name": "Board of Education Retirement System"
       },
       "agency_id": "board-of-education-retirement-system",
+      "constellation_display_name": "Board of Education Retirement System",
       "dossier_rows": [
         {
           "entity_id": "agency:id:board-of-education-retirement-system",

@@ -2,21 +2,21 @@
   "schema_version": 1,
   "version": "pin_family_mismatch_review_v1",
   "title": "PIN-family Checkbook ↔ PASSPort contract-id mismatches",
-  "observed_on": "2026-10-09",
-  "generated_at": "2026-10-09T14:15:05.584Z",
+  "observed_on": "2026-10-15",
+  "generated_at": "2026-10-15T12:12:12.538Z",
   "sources": {
     "crosswalk": "site/data/passport_checkbook_crosswalk.json",
     "spine": "site/data/procurement_spine_sources.json"
   },
   "metrics": {
-    "pin_family_id_mismatches": 144,
-    "auto_related_instrument": 134,
+    "pin_family_id_mismatches": 145,
+    "auto_related_instrument": 135,
     "needs_review": 10,
     "auto_same_contract": 0,
     "by_rule": {
       "successor_term": 60,
       "later_term_renewal": 12,
-      "fms_document_type_mismatch": 62
+      "fms_document_type_mismatch": 63
     },
     "public_same_contract_rule": "contract_id_exact only; PIN-family id mismatches are not sold as the same contract"
   },
@@ -629,7 +629,7 @@
           "agency": "Fire Department",
           "current_amount": 3850639,
           "original_amount": 3850639,
-          "spent_amount": 0,
+          "spent_amount": 973724,
           "start": "2026-10-01",
           "end": "2027-09-30",
           "registered": "2026-07-30",
@@ -2635,7 +2635,7 @@
           "agency": "Department of Youth and Community Development",
           "current_amount": 5500000,
           "original_amount": 5500000,
-          "spent_amount": 1054343.9,
+          "spent_amount": 1113378.75,
           "start": "2026-07-01",
           "end": "2027-06-30",
           "registered": "2026-09-14",
@@ -4801,65 +4801,6 @@
       }
     },
     {
-      "pair_id": "pf:CTA107220267206617::MMA1-072-20228802194",
-      "identity_class": "related_instrument",
-      "label_source": "rule",
-      "rule": "fms_document_type_mismatch",
-      "rationale": "Checkbook CTA1 and PASSPort MMA1 are different FMS document types sharing a PIN (requirement contract / task order vs master agreement, or another instrument pair). They are related, not the same registered contract.",
-      "evidence": {
-        "pin": "07219B8214KXLA001",
-        "epin": "07219B8214KXLR001",
-        "join_method": "pin_prefix_of_epin",
-        "checkbook": {
-          "contract_id": "CTA107220267206617",
-          "subject_ref": "contract:CTA107220267206617",
-          "source_record_id": "checkbook:contract:CTA107220267206617",
-          "vendor": "ATLAS FENCE & RAILING CO INC",
-          "agency": "Department of Correction",
-          "current_amount": 2000000,
-          "original_amount": 2000000,
-          "spent_amount": 1402903.87,
-          "start": "2025-10-14",
-          "end": "2026-10-13",
-          "registered": "2026-06-29",
-          "status": "registered",
-          "fms": {
-            "type": "CTA1",
-            "agency": "072",
-            "form": "compact"
-          }
-        },
-        "passport": {
-          "contract_id": "MMA1-072-20228802194",
-          "subject_ref": "contract:MMA1-072-20228802194",
-          "source_record_id": "passport:contract:MMA1-072-20228802194",
-          "vendor": "ATLAS FENCE & RAILING CO INC",
-          "agency": "DEPARTMENT OF CORRECTION",
-          "current_amount": 5000000,
-          "award_amount": 5000000,
-          "paid_amount": 0,
-          "start": "2021-07-11",
-          "end": "2023-07-10",
-          "registered": "2021-12-23",
-          "status": "Registered",
-          "title": "Chain Link Fencing at various DOC facilities Renewal #1",
-          "procurement_method": "Renewal",
-          "fms": {
-            "type": "MMA1",
-            "agency": "072",
-            "form": "hyphen"
-          }
-        },
-        "vendor_same": true,
-        "vendor_stems": {
-          "checkbook": "ATLAS FENCE RAILING",
-          "passport": "ATLAS FENCE RAILING"
-        },
-        "amount_ratio": 0.4,
-        "term_gap_days": 827
-      }
-    },
-    {
       "pair_id": "pf:CTA112520267205791::MMA1-827-20268802706",
       "identity_class": "related_instrument",
       "label_source": "rule",
@@ -6866,6 +6807,65 @@
       }
     },
     {
+      "pair_id": "pf:CTA184620267207561::MMA1-846-20268804989",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "fms_document_type_mismatch",
+      "rationale": "Checkbook CTA1 and PASSPort MMA1 are different FMS document types sharing a PIN (requirement contract / task order vs master agreement, or another instrument pair). They are related, not the same registered contract.",
+      "evidence": {
+        "pin": "84623P0002004R001",
+        "epin": "84623P0002004R001",
+        "join_method": "pin_epin_exact",
+        "checkbook": {
+          "contract_id": "CTA184620267207561",
+          "subject_ref": "contract:CTA184620267207561",
+          "source_record_id": "checkbook:contract:CTA184620267207561",
+          "vendor": "STANTEC CONSULTING SERVICES INC",
+          "agency": "Department of Parks and Recreation",
+          "current_amount": 501612.32,
+          "original_amount": 501612.32,
+          "spent_amount": 0,
+          "start": "2026-10-15",
+          "end": "2029-04-12",
+          "registered": "2026-07-17",
+          "status": "registered",
+          "fms": {
+            "type": "CTA1",
+            "agency": "846",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "MMA1-846-20268804989",
+          "subject_ref": "contract:MMA1-846-20268804989",
+          "source_record_id": "passport:contract:MMA1-846-20268804989",
+          "vendor": "STANTEC CONSULTING SERVICES INC",
+          "agency": "DEPARTMENT OF PARKS AND RECREATION",
+          "current_amount": 9000000,
+          "award_amount": 9000000,
+          "paid_amount": 0,
+          "start": "2026-03-01",
+          "end": "2028-02-28",
+          "registered": "2026-03-13",
+          "status": "Registered",
+          "title": "CNYG-1823MR Civil and Structural Engineering Renewal",
+          "procurement_method": "Renewal",
+          "fms": {
+            "type": "MMA1",
+            "agency": "846",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "STANTEC CONSULTING SERVICES",
+          "passport": "STANTEC CONSULTING SERVICES"
+        },
+        "amount_ratio": 0.055734702222222224,
+        "term_gap_days": -501
+      }
+    },
+    {
       "pair_id": "pf:CTA184620277200018::MMA1-846-20258803839",
       "identity_class": "related_instrument",
       "label_source": "rule",
@@ -6922,6 +6922,65 @@
         },
         "amount_ratio": 0.222272,
         "term_gap_days": -23
+      }
+    },
+    {
+      "pair_id": "pf:CTA184620277201321::MMA1-846-20258801160",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "fms_document_type_mismatch",
+      "rationale": "Checkbook CTA1 and PASSPort MMA1 are different FMS document types sharing a PIN (requirement contract / task order vs master agreement, or another instrument pair). They are related, not the same registered contract.",
+      "evidence": {
+        "pin": "84622P8003KXLA001",
+        "epin": "84622P8003KXLR001",
+        "join_method": "pin_prefix_of_epin",
+        "checkbook": {
+          "contract_id": "CTA184620277201321",
+          "subject_ref": "contract:CTA184620277201321",
+          "source_record_id": "checkbook:contract:CTA184620277201321",
+          "vendor": "TWIN PEAKS INC",
+          "agency": "Department of Parks and Recreation",
+          "current_amount": 63360,
+          "original_amount": 63360,
+          "spent_amount": 0,
+          "start": "2026-10-14",
+          "end": "2027-04-15",
+          "registered": "2026-09-29",
+          "status": "registered",
+          "fms": {
+            "type": "CTA1",
+            "agency": "846",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "MMA1-846-20258801160",
+          "subject_ref": "contract:MMA1-846-20258801160",
+          "source_record_id": "passport:contract:MMA1-846-20258801160",
+          "vendor": "TWIN PEAKS INC",
+          "agency": "DEPARTMENT OF PARKS AND RECREATION",
+          "current_amount": 625000,
+          "award_amount": 625000,
+          "paid_amount": 0,
+          "start": "2024-08-30",
+          "end": "2027-08-29",
+          "registered": "2024-07-31",
+          "status": "Registered",
+          "title": "CNYG-222MR Special Inspections & Laboratory Testing Renewal",
+          "procurement_method": "Renewal",
+          "fms": {
+            "type": "MMA1",
+            "agency": "846",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "TWIN PEAKS",
+          "passport": "TWIN PEAKS"
+        },
+        "amount_ratio": 0.101376,
+        "term_gap_days": -319
       }
     },
     {
@@ -7060,7 +7119,7 @@
           "agency": "Department of Design and Construction",
           "current_amount": 6000,
           "original_amount": 6000,
-          "spent_amount": 245.7,
+          "spent_amount": 662,
           "start": "2026-07-01",
           "end": "2027-06-30",
           "registered": "2026-09-10",
@@ -7178,7 +7237,7 @@
           "agency": "Department of Citywide Administrative Services",
           "current_amount": 9801625,
           "original_amount": 9801625,
-          "spent_amount": 0,
+          "spent_amount": 148972.5,
           "start": "2026-06-03",
           "end": "2029-06-01",
           "registered": "2026-06-30",
@@ -7709,7 +7768,7 @@
           "agency": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
           "current_amount": 37720544.89,
           "original_amount": 37720544.89,
-          "spent_amount": 7798323.01,
+          "spent_amount": 7971136.99,
           "start": "2026-05-01",
           "end": "2028-04-30",
           "registered": "2026-03-09",
@@ -7768,7 +7827,7 @@
           "agency": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
           "current_amount": 15934967.31,
           "original_amount": 15934967.31,
-          "spent_amount": 2503099.3,
+          "spent_amount": 2715771.41,
           "start": "2026-06-01",
           "end": "2028-05-31",
           "registered": "2026-03-09",
@@ -7827,7 +7886,7 @@
           "agency": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
           "current_amount": 66867092.43,
           "original_amount": 66867092.43,
-          "spent_amount": 825532.9,
+          "spent_amount": 1014427.48,
           "start": "2026-08-01",
           "end": "2027-07-31",
           "registered": "2026-07-28",
@@ -8042,6 +8101,65 @@
           "passport": "WSP"
         },
         "amount_ratio": 0.899270998865262,
+        "term_gap_days": 1
+      }
+    },
+    {
+      "pair_id": "pf:MMA103020278802926::MMA1-030-20238800752",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "03021P0003001R001",
+        "epin": "03021P0003001",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "MMA103020278802926",
+          "subject_ref": "contract:MMA103020278802926",
+          "source_record_id": "checkbook:contract:MMA103020278802926",
+          "vendor": "AKRF INC",
+          "agency": "Department of City Planning",
+          "current_amount": 2280000,
+          "original_amount": 2280000,
+          "spent_amount": 0,
+          "start": "2026-08-01",
+          "end": "2029-07-31",
+          "registered": "2026-10-09",
+          "status": "registered",
+          "fms": {
+            "type": "MMA1",
+            "agency": "030",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "MMA1-030-20238800752",
+          "subject_ref": "contract:MMA1-030-20238800752",
+          "source_record_id": "passport:contract:MMA1-030-20238800752",
+          "vendor": "AKRF INC",
+          "agency": "DEPARTMENT OF CITY PLANNING",
+          "current_amount": 5510155.75,
+          "award_amount": 1659000,
+          "paid_amount": 0,
+          "start": "2022-08-01",
+          "end": "2026-07-31",
+          "registered": "2022-07-29",
+          "status": "Registered",
+          "title": "On-Call Contract for Enviromental Consulting & Engineering",
+          "procurement_method": "Competitive Sealed Proposal",
+          "fms": {
+            "type": "MMA1",
+            "agency": "030",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "AKRF",
+          "passport": "AKRF"
+        },
+        "amount_ratio": 0.41378140717710205,
         "term_gap_days": 1
       }
     },
@@ -8456,65 +8574,6 @@
         },
         "amount_ratio": 0.339731,
         "term_gap_days": -50
-      }
-    },
-    {
-      "pair_id": "pf:MMA185820268802500::MMA1-858-20238802676",
-      "identity_class": "related_instrument",
-      "label_source": "rule",
-      "rule": "successor_term",
-      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
-      "evidence": {
-        "pin": "85821P0001007R001",
-        "epin": "85821P0001007",
-        "join_method": "pin_strip_suffix",
-        "checkbook": {
-          "contract_id": "MMA185820268802500",
-          "subject_ref": "contract:MMA185820268802500",
-          "source_record_id": "checkbook:contract:MMA185820268802500",
-          "vendor": "KPMG LLP",
-          "agency": "Department of Information Technology and Telecommunications",
-          "current_amount": 13000000,
-          "original_amount": 13000000,
-          "spent_amount": 0,
-          "start": "2025-10-10",
-          "end": "2028-10-09",
-          "registered": "2025-09-17",
-          "status": "registered",
-          "fms": {
-            "type": "MMA1",
-            "agency": "858",
-            "form": "compact"
-          }
-        },
-        "passport": {
-          "contract_id": "MMA1-858-20238802676",
-          "subject_ref": "contract:MMA1-858-20238802676",
-          "source_record_id": "passport:contract:MMA1-858-20238802676",
-          "vendor": "KPMG LLP",
-          "agency": "DEPARTMENT OF INFORMATION TECHNOLOGY AND TELECOMMUNICATIONS",
-          "current_amount": 13000000,
-          "award_amount": 13000000,
-          "paid_amount": 0,
-          "start": "2022-10-10",
-          "end": "2025-10-09",
-          "registered": "2023-07-13",
-          "status": "Registered",
-          "title": "CITYWIDE QUALITY CONTROL (QC) CLASS 1",
-          "procurement_method": "Competitive Sealed Proposal",
-          "fms": {
-            "type": "MMA1",
-            "agency": "858",
-            "form": "hyphen"
-          }
-        },
-        "vendor_same": true,
-        "vendor_stems": {
-          "checkbook": "KPMG",
-          "passport": "KPMG"
-        },
-        "amount_ratio": 1,
-        "term_gap_days": 1
       }
     }
   ]
