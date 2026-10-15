@@ -404,19 +404,19 @@
       ],
       "receipt": {
         "path": "data/geography/receipts/business_improvement_district/2024-10-08.json",
-        "sha256": "8b3041f029390d5ee4e9c9c6acf382d975109068060a23b5de920a89bd875742"
+        "sha256": "b6349cad01d042ee77c2fb3b54d20f6dba1fbf58e154b1ad4f1f95e50aba1431"
       },
       "artifacts": {
         "full": {
           "path": "data/geography/layers/business_improvement_district/2024-10-08.full.json",
-          "sha256": "b5e9c56add79c62448f28f2e8aa41158e61ac41c1f3f3ac6ff71310293c7fee8",
+          "sha256": "e2b2e191f1580d224f845566b512628017890e4567eff837f9388f2392d92a6f",
           "bytes": 2193434,
           "geometry_fidelity": "full"
         },
         "simplified": {
           "site_path": "site/data/geography/layers/business_improvement_district/2024-10-08.json",
           "worker_path": "worker/src/data/geography/layers/business_improvement_district/2024-10-08.json",
-          "sha256": "08068826530cf25cf0e3bbea40150c176d09dd23ccd0de69acb90939237fe64f",
+          "sha256": "a5212cd41c7afee9b6a16d5dac28a1a796051321191544299657d774b80c9302",
           "bytes": 232146,
           "geometry_fidelity": "simplified"
         }

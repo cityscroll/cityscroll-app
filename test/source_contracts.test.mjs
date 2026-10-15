@@ -663,6 +663,142 @@ test("an unchanged republish affirms when the retained digest is loaded from art
   assert.equal(observation?.content_digest, contentDigest(retainedRows, contract.required_fields));
 });
 
+test("the BID contract pins the retained vintage its receipt actually holds", () => {
+  const registry = loadSourceContracts();
+  const bid = registry.contracts.find((row) => row.id === "business-improvement-district-boundaries");
+  const pin = bid.freshness_contract.stable_reference;
+  assert.equal(pin.publisher_updated_at, pin.retained_vintage_at);
+  // The retained receipt states the same publisher instant the contract pins.
+  const receipt = JSON.parse(readFileSync(
+    new URL("../data/geography/receipts/business_improvement_district/2024-10-08.json", import.meta.url),
+    "utf8",
+  ));
+  assert.equal(Date.parse(pin.publisher_updated_at), Date.parse(receipt.source.publisher_updated_at));
+  assert.match(receipt.source.sha256, /^[a-f0-9]{64}$/);
+  assert.ok(pin.evidence.includes(receipt.source.sha256), "pin evidence names the retained acquisition hash");
+  // The republish check reads that same receipt, whose digest covers exactly
+  // the required fields the live monitor digests.
+  assert.equal(bid.freshness_contract.republish_content_check.artifact_path, "data/geography/receipts/business_improvement_district/2024-10-08.json");
+  assert.deepEqual(receipt.content_digest.required_fields, bid.required_fields);
+  assert.ok(/^[a-f0-9]{64}$/.test(receipt.content_digest.digest));
+  assert.ok(pin.evidence.includes(receipt.content_digest.digest), "pin evidence names the retained content digest");
+  // The declaration is a retained vintage, not a raised limit: the day bound
+  // stays where it was, and the builder still gates the pinned stamp.
+  assert.equal(bid.max_stale_days, 730);
+  assert.equal(bid.freshness_contract.max_stale_days, 730);
+  const builder = readFileSync(new URL("../tools/build_civic_geography.mjs", import.meta.url), "utf8");
+  assert.match(builder, /source_updated_at: "2024-10-08T15:54:16\.000Z"/);
+
+  const drifted = structuredClone(registry);
+  const target = drifted.contracts.find((row) => row.id === "business-improvement-district-boundaries");
+  target.freshness_contract.stable_reference.retained_vintage_at = "2026-01-01T00:00:00Z";
+  assert.deepEqual(
+    validateSourceContracts(drifted).filter((error) => error.includes("stable_reference")),
+    ["business-improvement-district-boundaries: stable_reference pins a publisher vintage we do not retain"],
+  );
+});
+
+test("a retained-vintage BID source still alerts when the publisher republishes or stops verifying", async (t) => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  const pinned = Date.UTC(2024, 9, 8, 15, 54, 16);
+  // Features shaped like the live Socrata GeoJSON export: the legacy the_geom
+  // column arrives as the feature geometry, not as a property.
+  const retainedFeatures = [
+    { type: "Feature", properties: { objectid_2: "2", f_all_bids: "125th Street", f_all_bi_2: "125th Street" }, geometry: { type: "MultiPolygon", coordinates: [[[1, 1]]] } },
+    { type: "Feature", properties: { objectid_2: "3", f_all_bids: "161st Street", f_all_bi_2: "161st Street" }, geometry: { type: "MultiPolygon", coordinates: [[[2, 2]]] } },
+  ];
+  const contract = {
+    id: "bid-field-case",
+    domain: "https://data.example.gov",
+    dataset_id: "aaaa-bbbb",
+    required_fields: ["the_geom", "objectid_2", "f_all_bids", "f_all_bi_2"],
+    max_stale_days: 730,
+    freshness_contract: {
+      mode: "periodic",
+      max_stale_days: 730,
+      clock_basis: "publisher_updated",
+      stable_reference: {
+        publisher_updated_at: "2024-10-08T15:54:16.000Z",
+        retained_vintage_at: "2024-10-08T15:54:16.000Z",
+        observed_on: "2026-10-15",
+        method: "pin the publisher stamp",
+        evidence: "retained rows",
+        recheck: "re-acquire and compare",
+      },
+      republish_content_check: { mode: "content_digest" },
+    },
+  };
+  const retainedReceipt = {
+    content_digest: {
+      schema: "cityscroll.source_content_digest.v1",
+      algorithm: "sha256",
+      digest: contentDigest(retainedFeatures, contract.required_fields),
+    },
+  };
+  const metadata = (rowsUpdatedAt) => socrataMetadata({
+    rowsUpdatedAt: rowsUpdatedAt / 1000,
+    fields: contract.required_fields,
+  });
+  const geojson = (features) => new Response(JSON.stringify({ type: "FeatureCollection", features }), {
+    status: 200, headers: { "Content-Type": "application/geo+json" },
+  });
+  const sampleRow = new Response(JSON.stringify([{ objectid_2: "2" }]), {
+    status: 200, headers: { "Content-Type": "application/json" },
+  });
+  const publisher = (at, features) => async (url) => {
+    const target = String(url);
+    if (target.includes("/api/views/")) return metadata(at);
+    if (target.includes(".geojson")) return geojson(features);
+    return sampleRow;
+  };
+
+  // Pin still holds: retained, verified unchanged — read as retained, not fresh.
+  globalThis.fetch = publisher(pinned, retainedFeatures);
+  assert.match(await verifySocrata(contract, { retainedReceipt }), /stable reference unchanged at 2024-10-08/);
+
+  // Publisher stamp moved but the geometry is byte-for-byte the same content:
+  // affirmed as an unchanged republish, never as a failure.
+  let observation;
+  globalThis.fetch = publisher(Date.UTC(2026, 9, 15, 12), retainedFeatures);
+  const affirmed = await verifySocrata(contract, { retainedReceipt, onObservation: (value) => { observation = value; } });
+  assert.match(affirmed, /republished, content unchanged at 2026-10-15/);
+  assert.equal(observation.status, "affirmed");
+  assert.equal(observation.content_digest, retainedReceipt.content_digest.digest);
+
+  // Publisher stamp moved and the geometry genuinely changed: still alerts.
+  const redrawn = structuredClone(retainedFeatures);
+  redrawn[1].geometry.coordinates = [[[9, 9]]];
+  globalThis.fetch = publisher(Date.UTC(2026, 9, 15, 12), redrawn);
+  await assert.rejects(verifySocrata(contract, { retainedReceipt }), /publisher republished .*re-acquire the retained snapshot/);
+
+  // The dataset stops verifying (metadata gone): still alerts.
+  globalThis.fetch = async () => new Response("gone", { status: 404 });
+  await assert.rejects(verifySocrata(contract, { retainedReceipt }), /metadata HTTP 404/);
+});
+
+test("the content digest covers legacy the_geom geometry moved onto the feature", () => {
+  const fields = ["the_geom", "objectid_2", "f_all_bids", "f_all_bi_2"];
+  const feature = {
+    type: "Feature",
+    properties: { objectid_2: "2", f_all_bids: "125th Street", f_all_bi_2: "125th Street" },
+    geometry: { type: "MultiPolygon", coordinates: [[[1, 1]]] },
+  };
+  const redrawn = structuredClone(feature);
+  redrawn.geometry.coordinates = [[[9, 9]]];
+  assert.notEqual(
+    contentDigest([feature], fields),
+    contentDigest([redrawn], fields),
+    "a geometry-only change must move the digest",
+  );
+  const reordered = {
+    geometry: feature.geometry,
+    type: "Feature",
+    properties: { f_all_bi_2: "125th Street", f_all_bids: "125th Street", objectid_2: "2" },
+  };
+  assert.equal(contentDigest([feature], fields), contentDigest([reordered], fields));
+});
+
 test("a stable-reference pin must name a publisher vintage we actually retain", () => {
   const registry = loadSourceContracts();
   const dsny = registry.contracts.find((row) => row.id === "dsny-district-boundaries");

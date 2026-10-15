@@ -10,7 +10,9 @@ function canonicalJson(value) {
 
 function rowField(row, field) {
   if (row && Object.prototype.hasOwnProperty.call(row, field)) return row[field];
-  if (field === "multipolygon" && row?.geometry !== undefined) return row.geometry;
+  // Socrata GeoJSON exports move the geometry column (multipolygon on newer
+  // datasets, the_geom on legacy ones) from properties onto the feature.
+  if ((field === "multipolygon" || field === "the_geom") && row?.geometry !== undefined) return row.geometry;
   return row?.properties?.[field];
 }
 

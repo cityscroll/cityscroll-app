@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.geography_ingestion_receipt.v1",
   "type": "business_improvement_district",
-  "acquired_at": "2026-08-18T16:00:00.000Z",
+  "acquired_at": "2026-10-15T18:00:47.211Z",
   "boundary_vintage": "2024-10-08",
   "source": {
     "contract_id": "business-improvement-district-boundaries",
@@ -12,6 +12,17 @@
     "sha256": "034b0df5df044c87ac6d8e5e03c779e65157068738135cce828116d64541acc4",
     "bytes": 2332920,
     "source_feature_count": 76
+  },
+  "content_digest": {
+    "schema": "cityscroll.source_content_digest.v1",
+    "algorithm": "sha256",
+    "required_fields": [
+      "the_geom",
+      "objectid_2",
+      "f_all_bids",
+      "f_all_bi_2"
+    ],
+    "digest": "9b11a2de77ac6c9abf5fcfddb6254c4db7b2a00633251adc0e67cf6245a61167"
   },
   "normalized_input": {
     "format": "GeoJSON",
@@ -54,13 +65,13 @@
   "artifacts": {
     "full": {
       "path": "data/geography/layers/business_improvement_district/2024-10-08.full.json",
-      "sha256": "b5e9c56add79c62448f28f2e8aa41158e61ac41c1f3f3ac6ff71310293c7fee8",
+      "sha256": "e2b2e191f1580d224f845566b512628017890e4567eff837f9388f2392d92a6f",
       "geometry_fidelity": "full"
     },
     "simplified": {
       "site_path": "site/data/geography/layers/business_improvement_district/2024-10-08.json",
       "worker_path": "worker/src/data/geography/layers/business_improvement_district/2024-10-08.json",
-      "sha256": "08068826530cf25cf0e3bbea40150c176d09dd23ccd0de69acb90939237fe64f",
+      "sha256": "a5212cd41c7afee9b6a16d5dac28a1a796051321191544299657d774b80c9302",
       "geometry_fidelity": "simplified"
     }
   },
