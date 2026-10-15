@@ -385,3 +385,13 @@ test("A4: a missing fixed case is reported rather than replaced", () => {
   );
   assert.equal(connectedHistoryCaseForQuery("Replacement corridor"), null);
 });
+
+
+test("external publisher activation remains bounded and local navigation remains strict", () => {
+  const result = spawnSync(
+    "python3",
+    ["-m", "unittest", "tests.test_documented_history_navigation"],
+    { cwd: ROOT, encoding: "utf8", timeout: 120_000 },
+  );
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+});

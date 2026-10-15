@@ -36,6 +36,7 @@ from deployed_capture_ancestor import (  # noqa: E402
 )
 from local_site_server import QuietHandler, _RobustThreadingHTTPServer  # noqa: E402
 from repository_revision import branch_head, resolve_repository_revision  # noqa: E402
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError  # noqa: E402
 
 DEFAULT_BASE = "https://cityscroll.org"
 MANIFEST_PATH = ROOT / "docs" / "evidence" / "documented-history-journeys" / "capture-manifest.json"
@@ -262,9 +263,30 @@ def activate_link(
         if request.is_navigation_request():
             navigation_requests.append(request.url)
 
+    expected_url = urllib.parse.urlsplit(expected)
+    initial_host = (urllib.parse.urlsplit(initial_url).hostname or "").lower()
+    same_origin = (expected_url.hostname or "").lower() == initial_host
     page.on("request", record_request)
-    link.click()
-    page.wait_for_load_state("domcontentloaded")
+    try:
+        link.click(timeout=5_000 if not fixture and not same_origin else 30_000)
+        page.wait_for_load_state("domcontentloaded")
+    except PlaywrightTimeoutError:
+        # A publisher can hang after accepting navigation or serve an attachment.
+        # The declared external-link contract is activation, not publisher uptime.
+        # A timeout without the exact in-run navigation request still fails.
+        requested_expected = any(
+            urllib.parse.urldefrag(url)[0] == urllib.parse.urldefrag(expected)[0]
+            for url in navigation_requests
+        )
+        if fixture or same_origin or not requested_expected:
+            raise
+        session = page.context.new_cdp_session(page)
+        try:
+            session.send("Page.stopLoading")
+        finally:
+            session.detach()
+    finally:
+        page.remove_listener("request", record_request)
     actual = page.url
     departed = actual != initial_url
     actual_url = urllib.parse.urlsplit(actual)
