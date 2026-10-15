@@ -9,12 +9,13 @@ import {
   projectCouncilHearingMatterContinuation,
   renderCouncilHearingMatterContinuation,
 } from "../site/council_hearing_matter_continuation.mjs";
-import { readSharedMeetingReadModelDocument } from "../tools/lib/shared_meeting_read_model_io.mjs";
-
 const snapshot = JSON.parse(readFileSync(new URL("../site/data/meeting_outcomes_snapshot.json", import.meta.url), "utf8"));
-const sharedModel = readSharedMeetingReadModelDocument(
-  new URL("../site/data/shared_meeting_read_model.json", import.meta.url),
+// Frozen City Record canary — rolling shared-meeting windows may drop July notices.
+const canaryFixture = JSON.parse(
+  readFileSync(new URL("./fixtures/council-hearing-canary/meeting_city_record_20260707022.json", import.meta.url), "utf8"),
 );
+const canaryRow = canaryFixture.row;
+const canarySharedModel = { rows: [canaryRow] };
 
 function meeting(requestId, outcome) {
   return {
@@ -60,9 +61,10 @@ test("the one-matter Council canary composes an exact subject continuation", () 
 });
 
 test("the materialized meeting document carries the canary continuation without changing ICS identity", () => {
-  const row = sharedModel.rows.find((candidate) => candidate.meeting_id === "meeting:city_record:20260707022");
-  assert.ok(row?.meeting_outcome, "the shared meeting model should carry the outcome projection");
-  const html = renderMeetingDocument(row, sharedModel);
+  const row = canaryRow;
+  assert.equal(row.meeting_id, "meeting:city_record:20260707022");
+  assert.ok(row?.meeting_outcome, "the canary fixture should carry the outcome projection");
+  const html = renderMeetingDocument(row, canarySharedModel);
   assert.match(html, /data-continuation-state="single"/);
   assert.match(html, /data-subject-ref="matter:79200"/);
   assert.match(html, /href="\/meeting\.ics\?id=meeting%3Acity_record%3A20260707022"/);

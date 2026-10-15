@@ -52,6 +52,30 @@ const ASSERT_EXACT_ID_MATCH_RE = new RegExp(
   "g",
 );
 
+// Exact calendar-day / ISO pins against refreshed retained vintages / snapshot
+// dates. assert.equal(vintage.at, "2026-09-09") and assert.equal(x.snapshot_date,
+// "…") / full ISO timestamps break whenever first-class refresh restamps the
+// serving artifact.
+const ASSERT_EXACT_VINTAGE_RE =
+  /\bassert\.(?:equal|strictEqual)\s*\(\s*([^,]+?)\s*,\s*(['"`])(\d{4}-\d{2}-\d{2}(?:T[\d:.+-Z]*)?)\2/g;
+const VINTAGE_EXPR_RE = /(?:vintage|\.at\b|snapshot_date|generated_at|observed_on|acquired_at|data_vintage|materialized_at|checked_at|pulled_at)/i;
+
+/** Synthetic source that must keep producing exact-count + exact-vintage findings. */
+export const POSITIVE_CONTROL_SOURCE = `
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+const snapshot = JSON.parse(readFileSync(new URL("../site/data/meeting_outcomes_snapshot.json", import.meta.url), "utf8"));
+assert.equal(Object.keys(snapshot.by_notice).length, 78);
+assert.equal(snapshot.generated_at, "2026-09-09T12:00:00.000Z");
+`;
+
+// Exact response/payload byte sizes against live refreshed corpora. Research and
+// browse suites that pin assert.equal(bytes, 642928) break when row populations
+// roll under first-class refresh.
+const ASSERT_EXACT_BYTES_RE =
+  /\bassert\.(?:equal|strictEqual)\s*\(\s*([^,]+?)\s*,\s*(\d[\d_]*)\s*(?:,|\))/g;
+const BYTES_EXPR_RE = /(?:\bbytes\b|byte_size|response_bytes|tool_output_bytes|wire_bytes|payload_bytes)/i;
+
 // Discovery matches load idioms, including helpers whose names look like
 // readers/loaders with a bare governed path argument
 // (loadJsonFile("site/data/...")), JSON module imports, and join/URL path
@@ -68,6 +92,11 @@ const LOAD_PATTERNS = [
   // join(WAREHOUSE_DIR, "receipts", "proof", "zap-projects_bulk_latest.json")
   /(?:path\.join|join)\(\s*[^)]*?['"`]receipts['"`]\s*,\s*['"`]proof['"`]\s*,\s*['"`]([^'"`]+\.json)['"`]/g,
 ];
+
+// join("site", "data", "analytics_registered_contracts.json") — bare capture
+// must not go through normalizeGovernedPath (that maps bare names to warehouse).
+const SITE_DATA_JOIN_RE =
+  /(?:path\.join|join)\(\s*['"`]site['"`]\s*,\s*['"`]data['"`]\s*,\s*['"`]([^'"`]+\.json)['"`]\s*\)/g;
 
 const EXCLUDED_EXPR_RE = /(?:digest|sha256|hash|hex|status|viewport|width|height)/i;
 
@@ -157,6 +186,12 @@ export function loadsRefreshedArtifacts(source, refreshedArtifacts) {
       if (normalized && refreshedSet.has(normalized)) loaded.add(normalized);
     }
   }
+  SITE_DATA_JOIN_RE.lastIndex = 0;
+  let siteJoin;
+  while ((siteJoin = SITE_DATA_JOIN_RE.exec(source))) {
+    const normalized = `site/data/${siteJoin[1]}`;
+    if (refreshedSet.has(normalized)) loaded.add(normalized);
+  }
   // Builder path constants imported into tests (PAYLOAD_JSON / RECEIPT_JSON).
   if (
     /readFileSync\s*\(\s*new\s+URL\(\s*`[^`]*\$\{(?:PAYLOAD_JSON|RECEIPT_JSON)\}/.test(source)
@@ -172,7 +207,11 @@ export function loadsRefreshedArtifacts(source, refreshedArtifacts) {
 function countLikeExpression(expr, countPropertyPattern) {
   if (EXCLUDED_EXPR_RE.test(expr)) return false;
   const re = new RegExp(`\\b${countPropertyPattern}\\b`, "i");
-  return re.test(expr);
+  if (re.test(expr)) return true;
+  // snake_case pins where \bcount\b cannot match inside
+  // constellation_only_source_count (underscore joins the tokens).
+  if (/_source_count\b/i.test(expr)) return true;
+  return false;
 }
 
 const GOVERNED_PATH_RE =
@@ -188,6 +227,10 @@ function extractGovernedPaths(text) {
   WAREHOUSE_PROOF_JOIN_RE.lastIndex = 0;
   while ((match = WAREHOUSE_PROOF_JOIN_RE.exec(text))) {
     out.push(`warehouse/receipts/proof/${match[1]}`);
+  }
+  SITE_DATA_JOIN_RE.lastIndex = 0;
+  while ((match = SITE_DATA_JOIN_RE.exec(text))) {
+    out.push(`site/data/${match[1]}`);
   }
   return out;
 }
@@ -245,7 +288,15 @@ export function refreshedLoadBindings(source, refreshedArtifacts) {
     const name = match[1];
     const rhs = match[2];
     if (bindings.has(name)) continue;
-    if (!rhsLoadsGovernedJson(rhs) && !/JSON\.parse|readJson\s*\(/.test(rhs)) continue;
+    // Follow path aliases into JSON.parse / readJson / read*Document helpers
+    // (e.g. readAnalyticalProjectionDocument(join(ROOT, PROJECTION_PATH))).
+    if (
+      !rhsLoadsGovernedJson(rhs)
+      && !/JSON\.parse|readJson\s*\(/.test(rhs)
+      && !/\bread[A-Za-z_$]*\s*\(/.test(rhs)
+    ) {
+      continue;
+    }
     for (const alias of pathAliases) {
       if (new RegExp(`\\b${alias}\\b`).test(rhs)) {
         bindings.add(name);
@@ -341,6 +392,44 @@ export function scanSource(source, {
         expression: match[1].trim().replace(/\s+/g, " "),
         literal: match[2],
         kind: "exact-record-id",
+        loaded_artifacts: loaded,
+      });
+    }
+  }
+
+  // Exact calendar-day vintage pins against refreshed analytics / domain loads.
+  ASSERT_EXACT_VINTAGE_RE.lastIndex = 0;
+  while ((match = ASSERT_EXACT_VINTAGE_RE.exec(scanText))) {
+    const expr = match[1].trim();
+    if (!VINTAGE_EXPR_RE.test(expr)) continue;
+    if (!expressionReferencesBinding(expr, bindings)) continue;
+    findings.push({
+      file: relativePath,
+      line: lineNumberAt(source, match.index),
+      expression: expr.replace(/\s+/g, " "),
+      literal: match[3],
+      kind: "exact-vintage",
+      loaded_artifacts: loaded,
+    });
+  }
+
+  // Exact byte-size pins against live registered-contract / research corpora.
+  // Scoped to analytics_registered_contracts so budget ceilings and packed
+  // fixture sizes in unrelated suites stay unflagged.
+  const analyticsSensitive = loaded.some((path) => path.includes("analytics_registered_contracts"));
+  if (analyticsSensitive) {
+    ASSERT_EXACT_BYTES_RE.lastIndex = 0;
+    while ((match = ASSERT_EXACT_BYTES_RE.exec(scanText))) {
+      const expr = match[1].trim();
+      const literal = Number(String(match[2]).replaceAll("_", ""));
+      if (literal === 0) continue;
+      if (!BYTES_EXPR_RE.test(expr)) continue;
+      findings.push({
+        file: relativePath,
+        line: lineNumberAt(source, match.index),
+        expression: expr.replace(/\s+/g, " "),
+        literal,
+        kind: "exact-bytes",
         loaded_artifacts: loaded,
       });
     }
@@ -491,7 +580,13 @@ export function formatFinding(finding, policy = null) {
   const permitted = shapes.length
     ? shapes.join(" | ")
     : "fixture-pin (load test/fixtures/) | refresh-invariant (property that survives refresh)";
-  const kind = finding.kind === "exact-record-id" ? "exact-record-id" : "exact-count";
+  const kind = finding.kind === "exact-record-id"
+    ? "exact-record-id"
+    : finding.kind === "exact-vintage"
+      ? "exact-vintage"
+      : finding.kind === "exact-bytes"
+        ? "exact-bytes"
+        : "exact-count";
   return `${finding.file}:${finding.line}: ${kind} assertion ${finding.expression} == ${finding.literal} reads refreshed artifact (${finding.loaded_artifacts.join(", ")}). `
     + `Replace it with one of the two permitted shapes — ${permitted}`;
 }
@@ -501,6 +596,25 @@ export function checkRepository(options = {}) {
   const policy = options.policy || loadPolicy(rootDir);
   return scanRepository({ ...options, rootDir, policy }).map((finding) =>
     formatFinding(finding, policy));
+}
+
+/**
+ * Positive control: the detector must still flag a known-bad exact-count and
+ * exact-vintage pair whenever those patterns are implemented. A silent miss
+ * here means the guard can no longer see the refresh-fragile class.
+ */
+export function positiveControlFindings({
+  refreshedArtifacts,
+  countPropertyPattern,
+} = {}) {
+  const findings = scanSource(POSITIVE_CONTROL_SOURCE, {
+    relativePath: "test/__positive_control_refresh_pins.test.mjs",
+    refreshedArtifacts: refreshedArtifacts || [],
+    countPropertyPattern,
+  });
+  const kinds = new Set(findings.map((finding) => finding.kind));
+  const missing = ["exact-count", "exact-vintage"].filter((kind) => !kinds.has(kind));
+  return { findings, missing, ok: missing.length === 0 };
 }
 
 function parseArgs(argv) {
@@ -514,6 +628,17 @@ function parseArgs(argv) {
 function main(argv = process.argv.slice(2)) {
   const options = parseArgs(argv);
   const policy = loadPolicy(options.rootDir);
+  const refreshedArtifacts = governedRefreshedArtifacts(policy);
+  const countPropertyPattern = policy?.count_property_pattern
+    || "(?:count|length|total|size|appearances|matter_count|references|universe|row_count)";
+  const control = positiveControlFindings({ refreshedArtifacts, countPropertyPattern });
+  if (!control.ok) {
+    console.error(
+      `refresh exact-count guard positive control failed: missing ${control.missing.join(", ")} on detectable probe`,
+    );
+    process.exitCode = 1;
+    return;
+  }
   const scanned = defaultScanTargets(policy, options.rootDir);
   const findings = scanRepository({
     rootDir: options.rootDir,
@@ -530,7 +655,7 @@ function main(argv = process.argv.slice(2)) {
     return;
   }
   console.log(
-    `refresh exact-count guard OK — scanned ${scannedCount} test file(s) that load governed refreshed artifacts; 0 exact-count asserts`,
+    `refresh exact-count guard OK — positive control detected exact-count+exact-vintage; scanned ${scannedCount} test file(s) that load governed refreshed artifacts; 0 exact-count asserts`,
   );
 }
 

@@ -83,7 +83,8 @@ test("schedule-only exams without NOE stamp class (a) not_yet_ingested, not clas
     assert.equal(view.class, "not_yet_ingested");
   }
   // Population integrity: class-b fee/salary gaps must be rare, and each one
-  // must trace to a notice the snapshot recorded as stating no annual salary.
+  // must record why the notice does not state a yearly minimum — on the exam
+  // row itself and/or on the open-competitive snapshot while the title is live.
   const declared = new Map(
     openCompetitive.records
       .filter((row) => row.salary_publication)
@@ -92,9 +93,10 @@ test("schedule-only exams without NOE stamp class (a) not_yet_ingested, not clas
   const classB = artifact.exams.filter((exam) => exam.fee_salary_gap?.class === "not_published");
   for (const exam of classB) {
     assert.ok(
-      declared.has(exam.exam_number),
+      exam.salary_publication || declared.has(exam.exam_number),
       `${exam.exam_number} omits fee/salary without recording why the notice does not state it`,
     );
+    assert.match(String(exam.salary_publication || declared.get(exam.exam_number)), /\S/);
   }
   const linkedNoe = artifact.exams.filter((exam) => exam.notice_url);
   assert.ok(
@@ -205,6 +207,42 @@ test("applyNoeDensifyRecord never overwrites structured fee and multi-exam numbe
   assert.equal(nums.length, 12);
   assert.equal(nums[0], "7311");
   assert.equal(nums.at(-1), "7322");
+});
+
+test("applyNoeDensifyRecord refuses salary when the notice declares no yearly minimum", () => {
+  const densifyRow = densify.records.find((r) => r.exam_number === "7314") || {
+    exam_number: "7314",
+    fee: 0,
+    salary_min: 55942,
+    salary_max: 109352,
+    salary_note: "Current minimum annual salary",
+    densify_method: "noe_pdf_body_multi_exam",
+  };
+  const refused = applyNoeDensifyRecord(
+    {
+      exam_number: "7314",
+      fee: 0,
+      salary_publication: "The notice does not state a minimum annual salary for this title.",
+      sources: ["dcas-open-competitive"],
+    },
+    densifyRow,
+  );
+  assert.equal(refused.fee, 0);
+  assert.ok(!refused.salary_min, "must not invent a yearly minimum the notice omitted");
+  assert.ok(!refused.salary_max);
+  assert.match(refused.salary_publication, /does not state a minimum annual salary/);
+});
+
+test("attachFeeSalaryGap stamps salary_publication on class-b salary gaps", () => {
+  const stamped = attachFeeSalaryGap({
+    exam_number: "7070",
+    fee: 88,
+    salary_min: null,
+    notice_url: "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277070000.pdf",
+    sources: ["dcas-annual-schedule", "dcas-noe"],
+  });
+  assert.equal(stamped.fee_salary_gap?.class, "not_published");
+  assert.match(String(stamped.salary_publication), /does not state a minimum annual salary/);
 });
 
 test("#exam deep-link preserves detail hash and paints detail shell before list", () => {

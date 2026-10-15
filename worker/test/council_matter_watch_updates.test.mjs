@@ -22,8 +22,12 @@ import {
 import { processOneSub, subDigestHtml } from "../src/alerts.mjs";
 import { buildSubscription, deriveSubscriberId, deriveWatchId } from "../src/lib/subscriptions.mjs";
 import { projectCivicOutcomeTransition } from "../../site/civic_outcome_transition.mjs";
+import { retainedMatterIdsFromSnapshot } from "../../site/council_matter_watch_scope.mjs";
 
 const snapshot = JSON.parse(readFileSync(new URL("./fixtures/matter-coverage-recovery/meeting_outcomes_snapshot.json", import.meta.url), "utf8"));
+// confirmExactMatterWatch defaults to the live retained roster; pin TEN matters
+// to the frozen fixture so first-class refresh drops cannot unsupported-scope them.
+const FIXTURE_ROSTER = retainedMatterIdsFromSnapshot(snapshot);
 const outboxSql = readFileSync(new URL("../migrations/0018_digest_outbox.sql", import.meta.url), "utf8");
 const sourceSql = readFileSync(new URL("../migrations/0008_source_records.sql", import.meta.url), "utf8");
 const journalSql = readFileSync(new URL("../migrations/0027_matter_observation_journal.sql", import.meta.url), "utf8");
@@ -241,6 +245,7 @@ test("A1: ten later-hearing packets create ten logical updates and replay adds n
     await confirmExactMatterWatch(env, record, {
       now: "2026-08-01T00:00:00.000Z",
       observations: [early],
+      roster: FIXTURE_ROSTER,
     });
     const afterBaseline = reduceCouncilMatterWatchUpdates({
       matter_ref: matterRef(row.matter_id),
@@ -431,7 +436,11 @@ test("A5: reducer sequence is [0,1,0,0,1,1,1,0] through persisted outbox after r
     }
     return updates;
   }
-  await confirmExactMatterWatch(env, record, { now: "2026-08-01T00:00:00.000Z", observations: [early] });
+  await confirmExactMatterWatch(env, record, {
+    now: "2026-08-01T00:00:00.000Z",
+    observations: [early],
+    roster: FIXTURE_ROSTER,
+  });
   await step([early]);
   await step([early, later]);
   const snapshotState = sqlite.prepare("SELECT sql FROM sqlite_master WHERE sql IS NOT NULL").all();
@@ -487,7 +496,11 @@ test("A6: crash before enqueue, after enqueue, after provider accept, and before
       const early = packet(TEN[5], "early");
       const later = packet(TEN[5], "later");
       insertJournal(sqlite, early);
-      await confirmExactMatterWatch(env, record, { now: "2026-08-01T00:00:00.000Z", observations: [early] });
+      await confirmExactMatterWatch(env, record, {
+        now: "2026-08-01T00:00:00.000Z",
+        observations: [early],
+        roster: FIXTURE_ROSTER,
+      });
       insertJournal(sqlite, later);
       const first = await processOneSub(env, record, ctx("2026-08-10", crash ? { injectCrash: crash } : {}));
       const owedAfterCrash = sqlite.prepare("SELECT COUNT(*) AS n FROM digest_outbox_items").get().n;
@@ -532,7 +545,11 @@ test("A7: digest selection, temporal reconciliation, outbox identity, rendering,
   const early = packet(TEN[5], "early");
   const later = packet(TEN[5], "later");
   insertJournal(sqlite, early);
-  await confirmExactMatterWatch(env, record, { now: "2026-08-01T00:00:00.000Z", observations: [early] });
+  await confirmExactMatterWatch(env, record, {
+    now: "2026-08-01T00:00:00.000Z",
+    observations: [early],
+    roster: FIXTURE_ROSTER,
+  });
   insertJournal(sqlite, later);
   const compiled = compileSub(record, "2026-08-10");
   assert.equal(compiled.idField, "matter_update_key");

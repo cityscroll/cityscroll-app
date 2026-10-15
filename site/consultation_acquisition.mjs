@@ -128,6 +128,24 @@ export function consultationLifecycle(record, asOf = new Date().toISOString()) {
   return { invitation: "listed", current: passed ? "deadline_passed" : "unresolved", open_now: false, response_action: passed ? "removed" : "view_channel" };
 }
 
+/**
+ * Microsoft Forms loading shells cannot prove open_now. Their transport
+ * failures still record repair evidence, but they must not freeze the retained
+ * first-class vintage or fail the scheduled producer when every organizer
+ * invitation and resident evidence source verified.
+ */
+export function consultationSourceFailureBlocksRefresh(role) {
+  return role !== "microsoft_form";
+}
+
+export function consultationSourceRoleById(sourceId) {
+  for (const record of DOT_PILOT_SEEDS) {
+    const match = record.sources.find((item) => item.id === sourceId);
+    if (match) return match.role;
+  }
+  return null;
+}
+
 export function materializeConsultations({ observations = [], asOf = "2026-09-14T00:00:00.000Z" } = {}) {
   validateConsultationMaterialization(DOT_PILOT_SEEDS);
   const byUrl = new Map(observations.map((item) => [item.url, item]));
@@ -154,6 +172,7 @@ export async function acquireConsultationSources({ fetchImpl = globalThis.fetch,
       observation_id: `${record.id}:${item.id}`,
       consultation_id: record.id,
       source_id: item.id,
+      source_role: item.role,
       url: item.url,
       observed_at: asOf,
       ok: response.ok,
@@ -161,16 +180,30 @@ export async function acquireConsultationSources({ fetchImpl = globalThis.fetch,
       source_hash: response.ok ? `sha256:${await sha256(bytes)}` : null,
       receipt: response.receipt,
       failure: response.ok ? null : response.receipt.reason,
+      blocks_refresh: response.ok ? false : consultationSourceFailureBlocksRefresh(item.role),
     });
   }
   const failures = observations.filter((item) => !item.ok);
-  const materialization = failures.length > 0 && previous
+  const blockingFailures = failures.filter((item) => item.blocks_refresh);
+  const softFailures = failures.filter((item) => !item.blocks_refresh);
+  const preserveLastGood = blockingFailures.length > 0 && Boolean(previous);
+  const materialization = preserveLastGood
     ? previous
     : materializeConsultations({ observations, asOf });
   return {
     materialization,
     observations,
-    receipt: { schema: CONSULTATION_SOURCE_SCHEMA, observed_at: asOf, transport: { ...CONSULTATION_TRANSPORT_DEFAULTS, ...transportOptions }, request_graph: request.graph, stats: request.stats(), failures: failures.length, last_good_preserved: failures.length > 0 && Boolean(previous) },
+    receipt: {
+      schema: CONSULTATION_SOURCE_SCHEMA,
+      observed_at: asOf,
+      transport: { ...CONSULTATION_TRANSPORT_DEFAULTS, ...transportOptions },
+      request_graph: request.graph,
+      stats: request.stats(),
+      failures: failures.length,
+      blocking_failures: blockingFailures.length,
+      soft_failures: softFailures.length,
+      last_good_preserved: preserveLastGood,
+    },
   };
 }
 

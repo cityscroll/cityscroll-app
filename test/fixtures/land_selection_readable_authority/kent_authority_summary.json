@@ -1,0 +1,106 @@
+{
+  "schema": "cityscroll.land_selection_readable_authority.fixture.v1",
+  "note": "Frozen 200 Kent authority summary for A4 journey evidence. Live land_authority_summary refresh must not move fixture_vintage.",
+  "generated_at": "2026-09-30T13:04:22.921Z",
+  "project_id": "2024K0286",
+  "summary": {
+    "schema": "cityscroll.land_authority_summary.v1",
+    "layer": "tier_a",
+    "status": "resolved",
+    "reason": null,
+    "project_id": "2024K0286",
+    "procedure_id": "ulurp_197c",
+    "procedure_resolution": "uniform",
+    "current_stage": {
+      "stage_id": "ulurp_197c.city_planning_commission_review",
+      "spine_phase_id": "cpc",
+      "status": "known"
+    },
+    "current_actor_refs": [
+      "agency:id:city-planning-commission"
+    ],
+    "current_role": "decision_maker",
+    "effect": "Holds a public hearing and may approve, approve with modifications, or disapprove the application.",
+    "source_basis": {
+      "profile": {
+        "procedure_id": "ulurp_197c",
+        "stage_id": "ulurp_197c.city_planning_commission_review",
+        "role": "decision_maker"
+      },
+      "phase": {
+        "current_milestone": "EAS - CPC Public Meeting - Vote",
+        "phase_id": "cpc",
+        "milestone_phase_id": "cpc"
+      },
+      "geography": {
+        "status": "resolved",
+        "profile_version": "2026-08-27.v1"
+      },
+      "publisher": {
+        "source": "land_upcoming_hearings",
+        "source_id": null,
+        "checked": true
+      }
+    },
+    "expected_next_stage": null,
+    "published_next_opportunity": {
+      "status": "none",
+      "checked": true,
+      "checked_vintage": "2026-09-30",
+      "source_id": null,
+      "source": "land_upcoming_hearings",
+      "label": null,
+      "date": null,
+      "representing": null,
+      "phase_id": null,
+      "body_ref": null
+    },
+    "next_procedural_body": null,
+    "affected_actor_refs": [
+      {
+        "body_ref": "community-board:brooklyn-cb-01",
+        "role": "affected_community_board"
+      },
+      {
+        "body_ref": "borough-president:brooklyn",
+        "role": "affected_borough_president"
+      }
+    ],
+    "observed": {
+      "status": "observed",
+      "recommendations": [
+        {
+          "body_ref": "community-board:brooklyn-cb-01",
+          "representing": "Community Board",
+          "value": "Conditional Favorable",
+          "status": "Submitted",
+          "vote_date": "2026-04-14",
+          "votes_for": 28,
+          "votes_against": 0,
+          "votes_abstain": 0,
+          "source_id": "987f36a1-43bb-f011-bbd2-001dd8089923"
+        },
+        {
+          "body_ref": "borough-president:brooklyn",
+          "representing": "Borough President",
+          "value": "Conditional Favorable",
+          "status": "Submitted",
+          "vote_date": null,
+          "votes_for": null,
+          "votes_against": null,
+          "votes_abstain": null,
+          "source_id": "1f5d4dad-43bb-f011-bbd3-001dd80f20e8"
+        }
+      ]
+    },
+    "freshness": {
+      "generated_at": "2026-09-30T13:04:22.921Z",
+      "as_of": "2026-09-30T13:04:22.921Z",
+      "source_vintages": {
+        "project_milestone_date": "2026-06-30T00:00:00.000",
+        "outcomes_generated_at": "2026-09-28T13:09:50.458Z",
+        "hearings_generated_at": "2026-09-30T13:14:16.581Z"
+      }
+    }
+  }
+}

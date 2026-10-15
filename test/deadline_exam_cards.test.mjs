@@ -16,9 +16,8 @@ const contracts = JSON.parse(readFileSync(new URL("../site/data/source_contracts
 const openCompetitive = JSON.parse(
   readFileSync(new URL("./fixtures/exam-openness/dcas_open_competitive.json", import.meta.url)),
 );
-const oasysMap = JSON.parse(
-  readFileSync(new URL("../site/data/exam_sources/oasys_exam_map.json", import.meta.url)),
-);
+// Live OASys map rolls with filing windows; deep-link asserts use the frozen
+// staffing artifact's own oasys_exam_id marks instead of ambient map membership.
 /** The published cohort rolls monthly; card assertions read the artifact's own clock. */
 const CURRENT_DAY = artifact.open_window_as_of || artifact.generated_at;
 const html = SITE_SOURCE;
@@ -224,20 +223,14 @@ test("deadline-first card markup leads with the deadline and keeps OASys + NOE a
 });
 
 test("mapped exams deep-link to OASys NOE pages, unmapped ones keep the landing", () => {
-  const mapped = (oasysMap.records || []).filter((row) => row.oasys_exam_id);
-  assert.ok(mapped.length > 0, "the OASys map still carries open exams");
-  let checked = 0;
-  for (const row of mapped) {
-    const exam = artifact.exams.find((item) => item.exam_number === String(row.exam_number));
-    if (!exam) continue;
-    checked += 1;
-    assert.equal(exam.application_handoff_mode, "deep", row.exam_number);
-    assert.match(exam.official_application_url, /a856-exams\.nyc\.gov\/OASysWeb\/noe\?examId=\d+$/, row.exam_number);
-    assert.notEqual(exam.official_application_url, Staffing.OASY_APPLY_URL, row.exam_number);
-    assert.ok(exam.oasys_exam_id, row.exam_number);
-    assert.notEqual(String(exam.oasys_exam_id), String(row.exam_number), "examId must not equal DCAS exam number");
+  const mapped = artifact.exams.filter((exam) => exam.oasys_exam_id);
+  assert.ok(mapped.length > 0, "the frozen staffing artifact still carries OASys-mapped exams");
+  for (const exam of mapped) {
+    assert.equal(exam.application_handoff_mode, "deep", exam.exam_number);
+    assert.match(exam.official_application_url, /a856-exams\.nyc\.gov\/OASysWeb\/noe\?examId=\d+$/, exam.exam_number);
+    assert.notEqual(exam.official_application_url, Staffing.OASY_APPLY_URL, exam.exam_number);
+    assert.notEqual(String(exam.oasys_exam_id), String(exam.exam_number), "examId must not equal DCAS exam number");
   }
-  assert.ok(checked > 0, "at least one mapped exam must reach the artifact");
   const unmapped = artifact.exams.filter((exam) => !exam.oasys_exam_id);
   assert.ok(unmapped.every((exam) => exam.application_handoff_mode !== "deep"));
 });

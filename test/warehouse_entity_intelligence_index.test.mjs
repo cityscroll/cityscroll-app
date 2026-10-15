@@ -26,7 +26,10 @@ import { indexObservationsByRoot } from "../entity_resolution/cross_domain/index
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 describe("warehouse entity intelligence index", () => {
   it("indexes roots and join-key edges from fixture observations", () => {
-    const observations = collectFixtureObservations(ROOT, { limit: 400 });
+    const observations = collectFixtureObservations(ROOT, {
+      limit: 400,
+      include_test_fixtures: true,
+    });
     assert.ok(observations.length > 10);
     const index = indexObservationsByRoot(observations);
     const edges = flattenIndexToEdges(index, { max_edges: 5000 });
@@ -66,7 +69,12 @@ describe("warehouse entity intelligence index", () => {
   });
 
   it("buildEntityIntelligenceIndex is self-consistent for Parks demo", () => {
-    const observations = collectFixtureObservations(ROOT, { limit: 400 });
+    // Parks multi-domain proof runs over admitted warehouse/EI fixtures, not
+    // ambient refreshed site/data composition under a capped sample.
+    const observations = collectFixtureObservations(ROOT, {
+      limit: 400,
+      include_test_fixtures: true,
+    });
     const doc = buildEntityIntelligenceIndex(observations, {
       max_entities: 40,
       max_per_domain: 6,
@@ -91,7 +99,10 @@ describe("warehouse entity intelligence index", () => {
     const proofDir = mkdtempSync(join(generated, "cityscroll-warehouse-ei-proof-test-"));
     try {
       const proofPath = join(proofDir, "proof.json");
-      const observations = collectFixtureObservations(ROOT, { limit: 400 });
+      const observations = collectFixtureObservations(ROOT, {
+        limit: 400,
+        include_test_fixtures: true,
+      });
       const doc = buildEntityIntelligenceIndex(observations, {
         max_entities: 40,
         max_per_domain: 6,

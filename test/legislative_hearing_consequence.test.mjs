@@ -15,15 +15,17 @@ import {
   renderLegislativeHearingConsequence,
 } from "../site/legislative_hearing_consequence.mjs";
 import { renderMeetingDocument } from "../site/meeting_document.mjs";
-import { readSharedMeetingReadModelDocument } from "../tools/lib/shared_meeting_read_model_io.mjs";
 
 const goldFixtures = JSON.parse(
   readFileSync(new URL("fixtures/consequence_projection/gold_fixtures.v0.json", import.meta.url), "utf8"),
 );
 const goldCase = (id) => goldFixtures.cases.find((c) => c.id === id);
-const sharedModel = readSharedMeetingReadModelDocument(
-  new URL("../site/data/shared_meeting_read_model.json", import.meta.url),
+// Frozen City Record canary — rolling shared-meeting windows may drop July notices.
+const canaryFixture = JSON.parse(
+  readFileSync(new URL("fixtures/council-hearing-canary/meeting_city_record_20260707022.json", import.meta.url), "utf8"),
 );
+const canaryRow = canaryFixture.row;
+const canarySharedModel = { rows: [canaryRow] };
 
 // The Council-hearing/land-use gold fixture: exact single-matter join on
 // matter 79200, hearing outcome "Laid Over by Subcommittee". This matter has
@@ -100,9 +102,10 @@ test("A1/G1: a request with one exact matter renders a consequence block tied to
 });
 
 test("A1: the consequence block sits above the existing continuation on the materialized meeting document", () => {
-  const row = sharedModel.rows.find((candidate) => candidate.meeting_id === "meeting:city_record:20260707022");
-  assert.ok(row?.meeting_outcome, "the shared meeting model should carry the outcome projection");
-  const html = renderMeetingDocument(row, sharedModel);
+  const row = canaryRow;
+  assert.equal(row.meeting_id, "meeting:city_record:20260707022");
+  assert.ok(row?.meeting_outcome, "the canary fixture should carry the outcome projection");
+  const html = renderMeetingDocument(row, canarySharedModel);
   const consequenceIndex = html.indexOf('data-legislative-hearing-consequence="1"');
   const continuationIndex = html.indexOf('data-council-matter-continuation="1"');
   assert.ok(consequenceIndex > -1, "the consequence block should render");

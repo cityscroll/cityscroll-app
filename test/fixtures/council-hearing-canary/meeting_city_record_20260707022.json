@@ -1,0 +1,234 @@
+{
+  "schema": "cityscroll.council_hearing_canary.v1",
+  "note": "Frozen City Record canary meeting:city_record:20260707022 + outcome for continuation/consequence document asserts. Rolling City Record windows may drop this notice from the live shared meeting model.",
+  "meeting_id": "meeting:city_record:20260707022",
+  "row": {
+    "request_id": "20260707022",
+    "meeting_id": "meeting:city_record:20260707022",
+    "agency_name": "City Council",
+    "short_title": "7-22-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+    "start_date": "2026-07-16T00:00:00.000",
+    "event_date": "2026-07-22T11:00:00.000",
+    "type_of_notice_description": "Public Hearings",
+    "section_name": "Public Hearings and Meetings",
+    "street_address_1": "250 Broadway, 8th Floor",
+    "street_address_2": "Committee Room 1",
+    "city": "New York",
+    "state": "NY",
+    "zip_code": "10007",
+    "source_system": "city_record",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707022",
+    "matter_subject": {
+      "schema": "cityscroll.meeting_matter_stamp.v1",
+      "subject_tokens": [],
+      "matter_ids": []
+    },
+    "affected_area": {
+      "scope": "local",
+      "boroughs": [
+        "Manhattan"
+      ],
+      "addresses": [
+        "250 Broadway, 8th Floor, Committee Room 1, New York, NY, 10007"
+      ],
+      "derivation": {
+        "methods": [
+          "venue_column"
+        ],
+        "confidence": 0.65,
+        "role": "venue",
+        "evidence": [
+          "250 Broadway, 8th Floor, Committee Room 1, New York, NY, 10007"
+        ]
+      },
+      "confidence_tier": "derived",
+      "source": "venue"
+    },
+    "object_type": "meeting",
+    "schema": "cityscroll.meeting_object.v1",
+    "source_keys": [
+      {
+        "source_system": "city_record",
+        "key_type": "request_id",
+        "value": "20260707022"
+      }
+    ],
+    "publisher_identifier": "20260707022",
+    "title": "7-22-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+    "event_end": null,
+    "schedule": {
+      "schema": "cityscroll.meeting_schedule.v1",
+      "starts_at": "2026-07-22T11:00:00",
+      "timezone": "America/New_York",
+      "precision": "exact_time",
+      "basis": "publisher_field",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707022",
+      "observed_at": null,
+      "raw_date": "2026-07-22",
+      "raw_time": "11:00:00",
+      "status": "resolved"
+    },
+    "meeting_family": "descriptive_meeting_v0",
+    "activity": null,
+    "attendance_mode": null,
+    "speaking_rights": "unknown",
+    "observer_access": null,
+    "access_steps": [],
+    "venue": {
+      "address": "250 Broadway, 8th Floor, Committee Room 1, New York, NY, 10007",
+      "mode": "in-person"
+    },
+    "participation": null,
+    "committee": null,
+    "agency": "City Council",
+    "board_name": null,
+    "description": null,
+    "search_text": "7-22-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting City Council 7-22-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting Public Hearings Public Hearings and Meetings 250 Broadway, 8th Floor Committee Room 1 New York NY 10007 City Council Manhattan",
+    "meeting_documents": [],
+    "source_receipt": {
+      "schema": "cityscroll.meeting_source_receipt.v1",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707022",
+      "observed_at": "2026-10-05T17:33:11.875Z",
+      "status": "ok",
+      "fetch_status": "snapshot",
+      "reason": null
+    },
+    "join_status": "not_applicable",
+    "institution_refs": {
+      "agency_ref": null,
+      "board_ref": null
+    },
+    "compatibility": {
+      "legacy_notice_href": "/notices/20260707022",
+      "legacy_fragment_href": "#notice/20260707022",
+      "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707022"
+    },
+    "source_record_id": "20260707022",
+    "board_id": null,
+    "source_record": {
+      "source_system": "city_record",
+      "identifier": "20260707022",
+      "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707022",
+      "receipt": {
+        "schema": "cityscroll.meeting_source_receipt.v1",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707022",
+        "observed_at": "2026-10-05T17:33:11.875Z",
+        "status": "ok",
+        "fetch_status": "snapshot",
+        "reason": null
+      }
+    },
+    "meeting_outcome": {
+      "request_id": "20260707022",
+      "snapshot_state": "present",
+      "event": {
+        "event_id": "22509",
+        "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
+        "date": "2026-07-22",
+        "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22509&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+        "documents": [
+          {
+            "name": "Agenda",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22509_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-07-22_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22509_M_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-07-22_Meeting_Minutes.pdf"
+          }
+        ]
+      },
+      "matters": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "440691",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "440717",
+              "action": "Laid Over by Subcommittee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79200",
+          "matter_file": "LU 0114-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79200",
+          "title": "Landmarks, Queens CD 2 Walk to Park Site Selection/Acquisition, Queens (C 260089 PCQ).",
+          "outcome": "Laid Over by Subcommittee",
+          "votes": null
+        }
+      ]
+    },
+    "same_proceeding": null,
+    "collection_visibility": "visible",
+    "collection_role": "representative",
+    "minutes_freshness": {
+      "status": "not_published",
+      "latest_date": null,
+      "checked_at": "2026-09-30T12:59:02.901Z"
+    },
+    "geography_backfill": {
+      "outcome": "unresolved_evidence",
+      "input_hash": "75038abddee21ea8af9270244d8563c05e35ad7feaa5561bceda7f4de113abe9",
+      "processed_at": "2026-10-14T14:46:00.144Z"
+    }
+  },
+  "outcome": {
+    "request_id": "20260707022",
+    "snapshot_state": "present",
+    "event": {
+      "event_id": "22509",
+      "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
+      "date": "2026-07-22",
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22509&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "documents": [
+        {
+          "name": "Agenda",
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22509_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-07-22_Committee_Agenda.pdf"
+        },
+        {
+          "name": "Minutes",
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22509_M_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-07-22_Meeting_Minutes.pdf"
+        }
+      ]
+    },
+    "matters": [
+      {
+        "actions": [
+          "Hearing Held by Committee",
+          "Laid Over by Subcommittee"
+        ],
+        "documents": [],
+        "item_actions": [
+          {
+            "agenda_item_id": "440691",
+            "action": "Hearing Held by Committee",
+            "vote_state": "no_roll_call_recorded",
+            "votes": null
+          },
+          {
+            "agenda_item_id": "440717",
+            "action": "Laid Over by Subcommittee",
+            "vote_state": "no_roll_call_recorded",
+            "votes": null
+          }
+        ],
+        "matter_id": "79200",
+        "matter_file": "LU 0114-2026",
+        "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79200",
+        "title": "Landmarks, Queens CD 2 Walk to Park Site Selection/Acquisition, Queens (C 260089 PCQ).",
+        "outcome": "Laid Over by Subcommittee",
+        "votes": null
+      }
+    ]
+  }
+}

@@ -89,9 +89,41 @@ test("A2 partial-source failure retains last good and suppresses open-now on eve
     assert.equal(sawFailure, true);
     assert.ok(result.observations.some((row) => row.ok));
     assert.ok(result.observations.some((row) => !row.ok));
+    assert.equal(result.receipt.blocking_failures, 1);
     assert.equal(result.receipt.last_good_preserved, true);
     assert.deepEqual(result.materialization, previous);
     assert.ok(result.materialization.consultations.every((row) => row.channels.every((channel) => channel.open_now === false)));
+  });
+});
+
+test("A2 microsoft_form soft failure rematerializes and keeps the scheduled producer green", async () => {
+  await withPinnedClock(DAY_TWO, async () => {
+    const previous = await goodMaterialization(DAY_ONE);
+    const softUrl = DOT_PILOT_SEEDS
+      .flatMap((row) => row.sources)
+      .find((item) => item.role === "microsoft_form").url;
+    const root = mkdtempSync(join(tmpdir(), "consultation-soft-"));
+    try {
+      mkdirSync(join(root, "site/data"), { recursive: true });
+      const output = join(root, "site/data/consultations.json");
+      writeFileSync(output, `${JSON.stringify(previous, null, 2)}\n`);
+      const result = await runConsultationRefresh({
+        root,
+        asOf: DAY_TWO,
+        fetchImpl: async (url) => (url === softUrl ? response(503, "busy") : response(200)),
+        transportOptions: TRANSPORT,
+      });
+      assert.equal(result.status, "succeeded");
+      assert.equal(result.receipt.blocking_failures, 0);
+      assert.equal(result.receipt.soft_failures, 1);
+      assert.equal(result.receipt.last_good_preserved, false);
+      assert.equal(result.materialization.observed_at, DAY_TWO);
+      assert.equal(consultationRefreshExitCode(result), 0);
+      assert.equal(JSON.parse(readFileSync(output, "utf8")).observed_at, DAY_TWO);
+      assert.ok(result.materialization.consultations.every((row) => row.channels.every((channel) => channel.open_now === false)));
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
   });
 });
 
