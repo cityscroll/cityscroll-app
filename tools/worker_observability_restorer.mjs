@@ -11,6 +11,9 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   createFileWindowStore,
   createBetaWorkerObservabilityTransport,
+  createDualViewObservabilityTransport,
+  createScriptSettingsObservabilityTransport,
+  windowRequiresExactLayerTransport,
 } from "./lib/worker_observability_settings.mjs";
 import {
   DEFAULT_POLL_MS,
@@ -19,6 +22,8 @@ import {
   restorerPaths,
   runRestorerLoop,
 } from "./lib/worker_observability_restorer.mjs";
+
+export const DUAL_VIEW_TRANSPORT_MODE = "dual-view-script-settings+beta";
 
 function arg(argv, name) {
   const index = argv.indexOf(name);
@@ -34,20 +39,60 @@ function secret(env, name) {
   return readFileSync(path, "utf8").trim();
 }
 
-async function loadTransport(env) {
-  const moduleUrl = env.CITYSCROLL_OBSERVABILITY_RESTORER_TRANSPORT_MODULE;
-  if (moduleUrl) {
-    const mod = await import(moduleUrl);
-    if (typeof mod.createTransport === "function") return mod.createTransport({ env });
-    if (typeof mod.default === "function") return mod.default({ env });
-    if (mod.transport) return mod.transport;
-    throw new Error("transport module must export createTransport, default, or transport");
-  }
+function createCredentialedBetaTransport(env) {
   return createBetaWorkerObservabilityTransport({
     accountId: env.CLOUDFLARE_ACCOUNT_ID,
     workerId: env.CLOUDFLARE_WORKER_ID || "cityscroll-worker",
     token: secret(env, "CLOUDFLARE_API_TOKEN"),
   });
+}
+
+function createCredentialedDualViewTransport(env) {
+  const accountId = env.CLOUDFLARE_ACCOUNT_ID;
+  const workerId = env.CLOUDFLARE_WORKER_ID || "cityscroll-worker";
+  const token = secret(env, "CLOUDFLARE_API_TOKEN");
+  return createDualViewObservabilityTransport({
+    scriptSettingsTransport: createScriptSettingsObservabilityTransport({
+      accountId,
+      scriptName: workerId,
+      token,
+    }),
+    betaTransport: createBetaWorkerObservabilityTransport({
+      accountId,
+      workerId,
+      token,
+    }),
+  });
+}
+
+/**
+ * Transport selection is window-bound for exact-layer windows: a script_layer
+ * restore_mode of script-settings-null requires dual-view. Env
+ * CITYSCROLL_OBSERVABILITY_RESTORER_TRANSPORT may force dual-view. A custom
+ * transport module still wins when set. Exact-layer never silently falls back
+ * to beta-only.
+ */
+export async function loadTransport(env, { window = null } = {}) {
+  const moduleUrl = env.CITYSCROLL_OBSERVABILITY_RESTORER_TRANSPORT_MODULE;
+  if (moduleUrl) {
+    const mod = await import(moduleUrl);
+    let transport;
+    if (typeof mod.createTransport === "function") transport = await mod.createTransport({ env, window });
+    else if (typeof mod.default === "function") transport = await mod.default({ env, window });
+    else if (mod.transport) transport = mod.transport;
+    else throw new Error("transport module must export createTransport, default, or transport");
+    if (windowRequiresExactLayerTransport(window) && typeof transport?.getDualView !== "function") {
+      throw new Error("exact-layer window requires dual-view transport; refusing silent beta fallback");
+    }
+    return transport;
+  }
+
+  const envMode = env.CITYSCROLL_OBSERVABILITY_RESTORER_TRANSPORT || "";
+  const needsDual = windowRequiresExactLayerTransport(window) || envMode === DUAL_VIEW_TRANSPORT_MODE;
+  if (needsDual) {
+    return createCredentialedDualViewTransport(env);
+  }
+  return createCredentialedBetaTransport(env);
 }
 
 export async function main(argv = process.argv.slice(2), env = process.env) {
@@ -59,7 +104,11 @@ export async function main(argv = process.argv.slice(2), env = process.env) {
   const pollMs = Number(arg(argv, "--poll-ms") || DEFAULT_POLL_MS);
   const expectedWindowId = arg(argv, "--window-id") || assignment?.window_id || null;
   const store = createFileWindowStore(windowPath);
-  const transport = await loadTransport(env);
+  const window = await store.read();
+  if (expectedWindowId && window?.window_id && window.window_id !== expectedWindowId) {
+    throw new Error(`window id mismatch: expected ${expectedWindowId}, got ${window.window_id}`);
+  }
+  const transport = await loadTransport(env, { window });
   return runRestorerLoop({
     store,
     transport,

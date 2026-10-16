@@ -82,11 +82,17 @@ os.chmod(path, 0o600)
 print(json.dumps(manifest, indent=2))
 PY
 
+# Transport mode: empty keeps window-bound selection (exact-layer windows
+# select dual-view from script_layer; others use beta). Override with
+# CITYSCROLL_OBSERVABILITY_RESTORER_TRANSPORT=dual-view-script-settings+beta.
+transport_mode=${CITYSCROLL_OBSERVABILITY_RESTORER_TRANSPORT:-}
+
 sed -e "s|__NODE__|$node_bin|g" \
   -e "s|__STATE_ROOT__|$state_root|g" \
   -e "s|__LOG_DIR__|$log_dir|g" \
   -e "s|__TOKEN_FILE__|$token_file|g" \
   -e "s|__ACCOUNT_ID__|$account_id|g" \
+  -e "s|__TRANSPORT_MODE__|$transport_mode|g" \
   "$root/ops/launchd/$label.plist.template" > "$target"
 chmod 644 "$target"
 

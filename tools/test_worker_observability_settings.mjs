@@ -15,6 +15,7 @@ import {
   assertPrivacyArmedFromRawGet,
   assertWindowMutable,
   classifyCurrentSettings,
+  classifyExactLayerScriptOverride,
   compareAndSwapObservability,
   createBetaWorkerObservabilityTransport,
   createDualViewObservabilityTransport,
@@ -30,6 +31,7 @@ import {
   openExactLayerSettingsWindow,
   openSettingsWindow,
   patchBodyForScriptSettingsObservability,
+  planExactLayerRestore,
   planSettingsRestore,
   privacyArmedObservability,
   confirmOwnedSettings,
@@ -38,6 +40,7 @@ import {
   restoreExactLayerSettingsWindow,
   restoreSettingsWindow,
   runIndependentRestorer,
+  windowRequiresExactLayerTransport,
 } from "./lib/worker_observability_settings.mjs";
 
 const ACCOUNT = "a".repeat(32);
@@ -1005,11 +1008,20 @@ test("dual-view exact-layer restore proves script null and beta baseline; metada
   assert.equal(window.script_layer.restore_mode, SCRIPT_LAYER_RESTORE_MODE);
   assert.equal(window.script_layer.baseline_override, null);
   assert.equal(window.baseline_sha256, observabilitySha256(BASELINE));
+  assert.equal(windowRequiresExactLayerTransport(window), true);
   window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z", restorerId: "r-exact" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+    pending_mutation: null,
+  };
 
   const before = await dual.getDualView();
   assert.equal(before.script_override_is_null, false);
   assert.equal(before.effective_sha256, observabilitySha256(armed));
+  assert.equal(classifyExactLayerScriptOverride(before.script_override, window).class, "owned");
 
   const restored = await restoreExactLayerSettingsWindow(window, dual, {
     now: "2026-10-16T00:01:00.000Z",
@@ -1112,5 +1124,126 @@ test("restorer owns exact script layer via dual-view transport", async () => {
   assert.equal(restored.after.script_override_is_null, true);
   assert.equal(restored.after.effective_sha256, observabilitySha256(BASELINE));
   assert.equal(scriptStored.observability, null);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("exact-layer foreign script override refuses restore without PATCH", async () => {
+  const armed = privacyArmedObservability(BASELINE);
+  const foreign = {
+    ...armed,
+    head_sampling_rate: 0.25,
+    logs: { ...armed.logs, head_sampling_rate: 0.25 },
+  };
+  let patchCount = 0;
+  let scriptStored = {
+    logpush: false,
+    tags: ["foreign"],
+    tail_consumers: [],
+    observability: foreign,
+  };
+  let effective = structuredClone(foreign);
+  const dual = createDualViewObservabilityTransport({
+    scriptSettingsTransport: createScriptSettingsObservabilityTransport({
+      accountId: ACCOUNT,
+      token: "t",
+      fetchImpl: async (_url, init) => {
+        const method = init?.method || "GET";
+        const body = init?.body ? JSON.parse(init.body) : undefined;
+        if (method === "PATCH") {
+          patchCount += 1;
+          scriptStored = {
+            ...scriptStored,
+            observability: body.observability === null ? null : normalizeObservability(body.observability),
+          };
+          effective = scriptStored.observability === null
+            ? structuredClone(BASELINE)
+            : structuredClone(scriptStored.observability);
+        }
+        return {
+          ok: true,
+          status: 200,
+          async json() {
+            return { success: true, errors: [], result: structuredClone(scriptStored) };
+          },
+        };
+      },
+    }),
+    betaTransport: {
+      async getObservability() { return structuredClone(effective); },
+      async patchObservability() { throw new Error("beta PATCH forbidden"); },
+    },
+  });
+
+  let window = openExactLayerSettingsWindow({
+    effectiveBaseline: BASELINE,
+    scriptOverrideBaseline: null,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    windowId: "exact-foreign-1",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z", restorerId: "r-foreign" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+    pending_mutation: null,
+  };
+
+  const before = await dual.getDualView();
+  assert.equal(classifyExactLayerScriptOverride(before.script_override, window).class, "conflict");
+  assert.equal(classifyCurrentSettings(before.effective, window).class, "conflict");
+  const plan = planExactLayerRestore(before, window, { now: "2026-10-16T00:01:00.000Z" });
+  assert.equal(plan.action, "refuse-conflict");
+  assert.equal(plan.patch, null);
+
+  const restored = await restoreExactLayerSettingsWindow(window, dual, {
+    now: "2026-10-16T00:01:00.000Z",
+  });
+  assert.equal(restored.action, "refuse-conflict");
+  assert.equal(restored.proved, false);
+  assert.equal(patchCount, 0);
+  assert.equal(scriptStored.observability.head_sampling_rate, 0.25);
+  assert.equal(restored.before.script_override.head_sampling_rate, 0.25);
+});
+
+test("exact-layer refuses silent beta fallback when dual-view is absent", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-exact-no-dual-"));
+  const armed = privacyArmedObservability(BASELINE);
+  const store = createFileWindowStore(join(dir, "window.json"));
+  let window = openExactLayerSettingsWindow({
+    effectiveBaseline: BASELINE,
+    scriptOverrideBaseline: null,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    durationSeconds: 60,
+    windowId: "exact-no-dual",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z", restorerId: "r-no-dual" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+    pending_mutation: null,
+  };
+  await store.write(window);
+
+  const betaOnly = {
+    async getObservability() { return structuredClone(armed); },
+    async patchObservability() {
+      throw new Error("beta PATCH must not run for exact-layer silent fallback");
+    },
+  };
+
+  await assert.rejects(
+    () => runIndependentRestorer({
+      store,
+      transport: betaOnly,
+      now: "2026-10-16T00:02:00.000Z",
+      alreadyLocked: true,
+    }),
+    /refusing silent beta fallback/,
+  );
   rmSync(dir, { recursive: true, force: true });
 });

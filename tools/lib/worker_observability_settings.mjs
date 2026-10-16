@@ -1086,6 +1086,10 @@ export async function compareAndSwapObservability(transport, options = {}) {
   });
 }
 
+export function windowRequiresExactLayerTransport(window) {
+  return window?.script_layer?.restore_mode === SCRIPT_LAYER_RESTORE_MODE;
+}
+
 export async function runIndependentRestorer({
   store,
   transport,
@@ -1100,10 +1104,15 @@ export async function runIndependentRestorer({
     if (!window) fail("settings window is missing");
     if (!window.restorer?.armed) fail("restorer is not armed");
     const windowId = window.window_id;
-    const restored = window.script_layer?.restore_mode === SCRIPT_LAYER_RESTORE_MODE
-      && typeof transport?.getDualView === "function"
-      ? await restoreExactLayerSettingsWindow(window, transport, { now })
-      : await restoreSettingsWindow(window, transport, { now });
+    let restored;
+    if (windowRequiresExactLayerTransport(window)) {
+      if (typeof transport?.getDualView !== "function") {
+        fail("exact-layer restore requires dual-view transport; refusing silent beta fallback");
+      }
+      restored = await restoreExactLayerSettingsWindow(window, transport, { now });
+    } else {
+      restored = await restoreSettingsWindow(window, transport, { now });
+    }
     await store.write(restored.window, { expectedWindowId: windowId });
     return restored;
   };
@@ -1418,7 +1427,172 @@ export function openExactLayerSettingsWindow({
 }
 
 /**
+ * Classify the script-settings observability override against the window's
+ * baseline / owned / pending identities. Null baseline stays exact null.
+ */
+export function classifyExactLayerScriptOverride(scriptOverride, window) {
+  if (!window?.script_layer || window.script_layer.restore_mode !== SCRIPT_LAYER_RESTORE_MODE) {
+    fail("exact-layer classification requires a script_layer window with script-settings-null mode");
+  }
+  const baselineOverride = Object.prototype.hasOwnProperty.call(window.script_layer, "baseline_override")
+    ? window.script_layer.baseline_override
+    : null;
+  const baselineIsNull = baselineOverride === null;
+
+  if (scriptOverride === null && baselineIsNull) {
+    return { class: "baseline", script_override: null, sha256: null };
+  }
+
+  if (scriptOverride !== null && typeof scriptOverride === "object" && !Array.isArray(scriptOverride)) {
+    const normalized = normalizeObservability(scriptOverride);
+    const digest = observabilitySha256(normalized);
+    if (window.pending_mutation?.after_sha256 && digest === window.pending_mutation.after_sha256) {
+      return { class: "pending-after", script_override: normalized, sha256: digest };
+    }
+    if (window.pending_mutation?.before_sha256 && digest === window.pending_mutation.before_sha256) {
+      return { class: "pending-before", script_override: normalized, sha256: digest };
+    }
+    if (window.owned_sha256 && digest === window.owned_sha256) {
+      return { class: "owned", script_override: normalized, sha256: digest };
+    }
+    if (!baselineIsNull && digest === observabilitySha256(normalizeObservability(baselineOverride))) {
+      return { class: "baseline", script_override: normalized, sha256: digest };
+    }
+    return { class: "conflict", script_override: normalized, sha256: digest };
+  }
+
+  if (scriptOverride === null && !baselineIsNull) {
+    return { class: "conflict", script_override: null, sha256: null };
+  }
+
+  return { class: "conflict", script_override: scriptOverride ?? null, sha256: null };
+}
+
+function exactLayerIdentityIsOwn(classificationClass) {
+  return classificationClass === "owned"
+    || classificationClass === "pending-after"
+    || classificationClass === "pending-before";
+}
+
+/**
+ * Plan exact-layer restore against BOTH script override and effective views.
+ * Foreign identity on either layer refuses without a PATCH.
+ */
+export function planExactLayerRestore(dualView, window, { now = new Date().toISOString() } = {}) {
+  if (!window?.script_layer || window.script_layer.restore_mode !== SCRIPT_LAYER_RESTORE_MODE) {
+    fail("exact-layer restore planning requires a script_layer window with script-settings-null mode");
+  }
+  if (!dualView || typeof dualView !== "object") fail("dual view is required for exact-layer planning");
+  const at = requireIso(now, "now");
+  const expired = Date.parse(at) >= Date.parse(window.expires_at);
+  const scriptClassification = classifyExactLayerScriptOverride(
+    dualView.script_override_is_null ? null : dualView.script_override,
+    window,
+  );
+  const effectiveClassification = classifyCurrentSettings(dualView.effective, window);
+
+  if (scriptClassification.class === "baseline" && effectiveClassification.class === "baseline") {
+    return {
+      action: "already-restored",
+      expired,
+      script_classification: scriptClassification,
+      effective_classification: effectiveClassification,
+      patch: null,
+      receipt: {
+        schema: WORKER_OBSERVABILITY_SETTINGS_RECEIPT_SCHEMA,
+        kind: "restore",
+        outcome: "already-restored",
+        window_id: window.window_id,
+        observed_at: at,
+        expired,
+        restore_mode: SCRIPT_LAYER_RESTORE_MODE,
+        script_override_is_null: dualView.script_override_is_null === true,
+        effective_sha256: effectiveClassification.sha256,
+        baseline_sha256: window.baseline_sha256,
+      },
+    };
+  }
+
+  // Script already at baseline null while effective is still this window's owned
+  // or pending identity: exact-layer null restore is already satisfied (no PATCH).
+  if (scriptClassification.class === "baseline" && exactLayerIdentityIsOwn(effectiveClassification.class)) {
+    return {
+      action: "already-restored",
+      expired,
+      script_classification: scriptClassification,
+      effective_classification: effectiveClassification,
+      patch: null,
+      receipt: {
+        schema: WORKER_OBSERVABILITY_SETTINGS_RECEIPT_SCHEMA,
+        kind: "restore",
+        outcome: "already-restored",
+        window_id: window.window_id,
+        observed_at: at,
+        expired,
+        restore_mode: SCRIPT_LAYER_RESTORE_MODE,
+        script_override_is_null: true,
+        effective_sha256: effectiveClassification.sha256,
+        baseline_sha256: window.baseline_sha256,
+      },
+    };
+  }
+
+  const scriptOwn = exactLayerIdentityIsOwn(scriptClassification.class);
+  const effectiveOwnOrBaseline = exactLayerIdentityIsOwn(effectiveClassification.class)
+    || effectiveClassification.class === "baseline";
+
+  if (scriptOwn && effectiveOwnOrBaseline) {
+    return {
+      action: "restore",
+      expired,
+      script_classification: scriptClassification,
+      effective_classification: effectiveClassification,
+      patch: { observability: null },
+      receipt: {
+        schema: WORKER_OBSERVABILITY_SETTINGS_RECEIPT_SCHEMA,
+        kind: "restore",
+        outcome: "restore-planned",
+        window_id: window.window_id,
+        observed_at: at,
+        expired,
+        restore_mode: SCRIPT_LAYER_RESTORE_MODE,
+        script_override_sha256: scriptClassification.sha256,
+        effective_sha256: effectiveClassification.sha256,
+        baseline_sha256: window.baseline_sha256,
+        owned_sha256: window.owned_sha256,
+      },
+    };
+  }
+
+  return {
+    action: "refuse-conflict",
+    expired,
+    script_classification: scriptClassification,
+    effective_classification: effectiveClassification,
+    patch: null,
+    receipt: {
+      schema: WORKER_OBSERVABILITY_SETTINGS_RECEIPT_SCHEMA,
+      kind: "restore",
+      outcome: "refused-conflict",
+      window_id: window.window_id,
+      observed_at: at,
+      expired,
+      restore_mode: SCRIPT_LAYER_RESTORE_MODE,
+      script_class: scriptClassification.class,
+      effective_class: effectiveClassification.class,
+      script_override_sha256: scriptClassification.sha256,
+      effective_sha256: effectiveClassification.sha256,
+      baseline_sha256: window.baseline_sha256,
+      owned_sha256: window.owned_sha256,
+      reason: "script override or effective settings changed outside this window",
+      concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
+    },
+  };
+}
+
+/**
  * Restore via PATCH {observability:null} to /script-settings and prove both views.
+ * Refuses foreign script override or effective state without PATCH.
  * Other script-settings metadata (logpush/tags/tail_consumers) must stay unchanged.
  */
 export async function restoreExactLayerSettingsWindow(window, dualTransport, {
@@ -1430,38 +1604,47 @@ export async function restoreExactLayerSettingsWindow(window, dualTransport, {
   if (!dualTransport || typeof dualTransport.getDualView !== "function") {
     fail("exact-layer restore requires a dual-view transport");
   }
+  if (typeof dualTransport.restoreScriptOverrideToNull !== "function") {
+    fail("exact-layer restore requires restoreScriptOverrideToNull");
+  }
   const at = requireIso(now, "now");
   const before = await dualTransport.getDualView();
   const metadataBefore = before.script_settings_metadata;
+  const plan = planExactLayerRestore(before, window, { now: at });
 
-  if (
-    before.script_override_is_null
-    && before.effective_sha256 === window.baseline_sha256
-  ) {
+  if (plan.action === "already-restored") {
     return {
       action: "already-restored",
       proved: true,
-      expired: Date.parse(at) >= Date.parse(window.expires_at),
+      expired: plan.expired,
       before,
       after: before,
       window: markWindowRestored(window, {
         now: at,
         beforeSha256: before.effective_sha256,
         afterSha256: before.effective_sha256,
+        expired: plan.expired,
         outcome: "already-restored",
       }),
       metadata_unchanged: true,
-      receipt: {
-        schema: WORKER_OBSERVABILITY_SETTINGS_RECEIPT_SCHEMA,
-        kind: "restore",
-        outcome: "already-restored",
-        window_id: window.window_id,
-        observed_at: at,
-        restore_mode: SCRIPT_LAYER_RESTORE_MODE,
-        script_override_is_null: true,
-        effective_sha256: before.effective_sha256,
-        baseline_sha256: window.baseline_sha256,
-      },
+      script_classification: plan.script_classification,
+      effective_classification: plan.effective_classification,
+      receipt: plan.receipt,
+    };
+  }
+
+  if (plan.action === "refuse-conflict") {
+    return {
+      action: "refuse-conflict",
+      proved: false,
+      expired: plan.expired,
+      before,
+      after: before,
+      window,
+      metadata_unchanged: true,
+      script_classification: plan.script_classification,
+      effective_classification: plan.effective_classification,
+      receipt: plan.receipt,
     };
   }
 
@@ -1480,16 +1663,19 @@ export async function restoreExactLayerSettingsWindow(window, dualTransport, {
   return {
     action: "restored",
     proved: true,
-    expired: Date.parse(at) >= Date.parse(window.expires_at),
+    expired: plan.expired,
     before,
     after,
     window: markWindowRestored(window, {
       now: at,
       beforeSha256: before.effective_sha256,
       afterSha256: after.effective_sha256,
+      expired: plan.expired,
       outcome: "restored",
     }),
     metadata_unchanged: true,
+    script_classification: plan.script_classification,
+    effective_classification: plan.effective_classification,
     receipt: {
       schema: WORKER_OBSERVABILITY_SETTINGS_RECEIPT_SCHEMA,
       kind: "restore",

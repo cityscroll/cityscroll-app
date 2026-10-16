@@ -155,7 +155,13 @@ The harness also speaks the script-level `/script-settings` JSON writer (the sam
 endpoint Wrangler uses for non-versioned observability). Script-override `null`
 is preserved exactly and never normalized into invented defaults; restoration of
 that layer PATCHes `observability: null` and proves both the script-override view
-and the effective Worker view. A live privacy-armed enable/collect window still
+and the effective Worker view. Exact-layer windows select dual-view transport from
+the window's `script_layer` restore mode (or an explicit
+`CITYSCROLL_OBSERVABILITY_RESTORER_TRANSPORT=dual-view-script-settings+beta`);
+the restorer refuses a silent beta-only fallback when exact-layer capability is
+required. Exact-layer restore matches baseline, owned, and pending identities on
+both the script override and the effective view, and refuses a foreign override
+or effective state without PATCH. A live privacy-armed enable/collect window still
 requires the provider to retain privacy fields while observability stays
 disabled. When that stickiness cannot be proved on either write path, the live
 window stays unavailable and the related route, cron, queue, cold-start, and

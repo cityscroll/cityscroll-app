@@ -21,6 +21,15 @@
     <string>__TOKEN_FILE__</string>
     <key>CITYSCROLL_OBSERVABILITY_RESTORER_STATE</key>
     <string>__STATE_ROOT__</string>
+    <!--
+      Transport is window-bound: an assigned window with script_layer
+      restore_mode script-settings-null selects dual-view automatically.
+      Set CITYSCROLL_OBSERVABILITY_RESTORER_TRANSPORT to
+      dual-view-script-settings+beta to force dual-view without relying on
+      window contents. Leave unset for beta-only non-exact windows.
+    -->
+    <key>CITYSCROLL_OBSERVABILITY_RESTORER_TRANSPORT</key>
+    <string>__TRANSPORT_MODE__</string>
   </dict>
   <key>RunAtLoad</key>
   <false/>

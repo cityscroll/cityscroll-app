@@ -18,12 +18,15 @@ import {
   normalizeObservability,
   observabilityEquals,
   observabilitySha256,
+  openExactLayerSettingsWindow,
   openSettingsWindow,
   privacyArmedObservability,
   recordMutationIntent,
+  SCRIPT_LAYER_RESTORE_MODE,
   SETTINGS_SUCCESS_STATUSES,
   settingsCommandSucceeded,
 } from "./lib/worker_observability_settings.mjs";
+import { loadTransport } from "./worker_observability_restorer.mjs";
 import {
   INSTALL_MANIFEST_SCHEMA,
   announceRestorerReady,
@@ -901,4 +904,304 @@ test("root d038 response-loss triad: enable-after-arm, issued-before-dispatch, r
   assert.equal(gap.outcome, "retained-pending-unknown");
   assert.equal(Boolean(gap.window.pending_mutation), true);
   assert.equal(gap.window.pending_mutation.issued, true);
+});
+
+test("loadTransport refuses exact-layer window without dual-view module", async () => {
+  const armed = privacyArmedObservability(BASELINE);
+  let window = openExactLayerSettingsWindow({
+    effectiveBaseline: BASELINE,
+    scriptOverrideBaseline: null,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    windowId: "load-transport-exact",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z", restorerId: "r-lt" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+  };
+
+  const dir = mkdtempSync(join(tmpdir(), "cc05-lt-"));
+  const betaModule = join(dir, "beta-only.mjs");
+  writeFakeTransportModule(betaModule, armed);
+  await assert.rejects(
+    () => loadTransport({
+      CITYSCROLL_OBSERVABILITY_RESTORER_TRANSPORT_MODULE: `file://${betaModule}`,
+    }, { window }),
+    /refusing silent beta fallback/,
+  );
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("supervised exact-layer fixture: dual-view after controller exit, foreign refuse, reinstall", async () => {
+  // Offline supervised-process proof (no provider calls). Birth/argv/ancestry are
+  // recorded from the controller spawn; heartbeats continue after controller exit;
+  // exact-layer dual-view restores owned state; foreign head_sampling refuses without PATCH.
+  const dir = mkdtempSync(join(tmpdir(), "cc05-supervised-exact-"));
+  const stateRoot = join(dir, "restorer");
+  installDurableRunner(stateRoot);
+  clearKillSwitch(stateRoot);
+
+  const armed = privacyArmedObservability(BASELINE);
+  const dualStatePath = join(dir, "dual-state.json");
+  writeFileSync(dualStatePath, JSON.stringify({
+    script: {
+      logpush: false,
+      tags: ["supervised"],
+      tail_consumers: [],
+      observability: armed,
+    },
+    effective: armed,
+    patch_count: 0,
+  }), { mode: 0o600 });
+
+  const baselineSha = observabilitySha256(BASELINE);
+  const armedSha = observabilitySha256(armed);
+  const transportModule = join(dir, "dual-transport.mjs");
+  writeFileSync(transportModule, `import { readFileSync, writeFileSync } from "node:fs";
+const statePath = ${JSON.stringify(dualStatePath)};
+const BASELINE = ${JSON.stringify(BASELINE)};
+const BASELINE_SHA = ${JSON.stringify(baselineSha)};
+const ARMED_SHA = ${JSON.stringify(armedSha)};
+function load() { return JSON.parse(readFileSync(statePath, "utf8")); }
+function save(state) { writeFileSync(statePath, JSON.stringify(state)); }
+function effectiveSha(effective) {
+  if (effective && effective.redact_query_string === true) return ARMED_SHA;
+  return BASELINE_SHA;
+}
+export function createTransport() {
+  return {
+    endpoint: "dual-view-script-settings+beta",
+    async getObservability() { return structuredClone(load().effective); },
+    async patchObservability() { throw new Error("beta PATCH forbidden in exact-layer fixture"); },
+    async getDualView() {
+      const state = load();
+      const scriptOverride = state.script.observability;
+      return {
+        script_override: scriptOverride === null ? null : structuredClone(scriptOverride),
+        script_override_is_null: scriptOverride === null,
+        effective: structuredClone(state.effective),
+        effective_sha256: effectiveSha(state.effective),
+        script_settings_metadata: {
+          logpush: state.script.logpush ?? null,
+          tags: Array.isArray(state.script.tags) ? [...state.script.tags].sort() : state.script.tags ?? null,
+          tail_consumers_len: Array.isArray(state.script.tail_consumers) ? state.script.tail_consumers.length : null,
+          top_keys: Object.keys(state.script).sort(),
+        },
+        script_settings_raw_top_keys: Object.keys(state.script).sort(),
+      };
+    },
+    async restoreScriptOverrideToNull() {
+      const state = load();
+      state.patch_count = (state.patch_count || 0) + 1;
+      state.script = { ...state.script, observability: null };
+      state.effective = structuredClone(BASELINE);
+      save(state);
+      return null;
+    },
+  };
+}
+`, { mode: 0o600 });
+
+  const windowPath = join(dir, "window.json");
+  const store = createFileWindowStore(windowPath);
+  let window = openExactLayerSettingsWindow({
+    effectiveBaseline: BASELINE,
+    scriptOverrideBaseline: null,
+    accountIdSha256: ACCOUNT_SHA,
+    now: new Date(Date.now() - 2_000).toISOString(),
+    durationSeconds: 8,
+    windowId: "supervised-exact-1",
+  });
+  assert.equal(window.script_layer.restore_mode, SCRIPT_LAYER_RESTORE_MODE);
+  window = armRestorer(window, { now: new Date().toISOString(), restorerId: "supervised-exact-restorer" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+    pending_mutation: null,
+  };
+  await store.write(window);
+
+  const controllerScript = join(dir, "controller.mjs");
+  const birthPath = join(dir, "birth.json");
+  writeFileSync(controllerScript, `import { spawn } from "node:child_process";
+import { writeFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const transportUrl = pathToFileURL(${JSON.stringify(transportModule)}).href;
+const argv = [
+  ${JSON.stringify(join(stateRoot, "run.mjs"))},
+  "--window-state", ${JSON.stringify(windowPath)},
+  "--state-root", ${JSON.stringify(stateRoot)},
+  "--poll-ms", "100",
+  "--window-id", "supervised-exact-1",
+];
+const child = spawn(process.execPath, argv, {
+  detached: true,
+  stdio: "ignore",
+  env: { ...process.env, CITYSCROLL_OBSERVABILITY_RESTORER_TRANSPORT_MODULE: transportUrl },
+});
+child.unref();
+writeFileSync(${JSON.stringify(birthPath)}, JSON.stringify({
+  restorer_pid: child.pid,
+  controller_pid: process.pid,
+  controller_ppid: process.ppid,
+  argv,
+  exec_path: process.execPath,
+  transport_module: transportUrl,
+  window_id: "supervised-exact-1",
+  restorer_id: "supervised-exact-restorer",
+  mode: "script-settings-null",
+  detection: "controller-spawn-birth-record",
+}) + "\\n");
+setTimeout(() => process.exit(0), 80);
+`, { mode: 0o600 });
+
+  await new Promise((resolve, reject) => {
+    const controller = spawn(process.execPath, [controllerScript], { stdio: "ignore" });
+    controller.on("exit", (code) => (code === 0 ? resolve() : reject(new Error(`controller exit ${code}`))));
+  });
+
+  const birth = JSON.parse(readFileSync(birthPath, "utf8"));
+  assert.ok(birth.restorer_pid > 0);
+  assert.ok(Array.isArray(birth.argv));
+  assert.ok(birth.argv.includes("--window-id"));
+  assert.equal(birth.mode, "script-settings-null");
+  assert.ok(birth.controller_pid > 0);
+
+  const paths = restorerPaths(stateRoot);
+  const readyDeadline = Date.now() + 10_000;
+  while (Date.now() < readyDeadline && !existsSync(paths.readyReceipt)) {
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
+  assert.ok(existsSync(paths.readyReceipt), "ready receipt after supervised spawn");
+  const ready = JSON.parse(readFileSync(paths.readyReceipt, "utf8"));
+  assert.equal(ready.window_id, "supervised-exact-1");
+  assert.equal(ready.restorer_id, "supervised-exact-restorer");
+  assert.equal(ready.pid, birth.restorer_pid);
+
+  // Heartbeats must continue after the controller has already exited.
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  assert.ok(existsSync(paths.heartbeatReceipt), "heartbeat after controller exit");
+  const heartbeat = JSON.parse(readFileSync(paths.heartbeatReceipt, "utf8"));
+  assert.equal(heartbeat.pid, birth.restorer_pid);
+  assert.equal(heartbeat.window_id, "supervised-exact-1");
+
+  writeRestorerReceipt(paths.controllerDeathReceipt, {
+    schema: "cityscroll.worker_observability_restorer_runtime.v1",
+    kind: "controller-death",
+    observed_at: new Date().toISOString(),
+    controller_exited: true,
+    restorer_pid: birth.restorer_pid,
+    window_id: window.window_id,
+    restorer_id: window.restorer.restorer_id,
+    detection: "test-parent-handwritten-receipt",
+    not_sigkill: true,
+    not_automatic_liveness_detection: true,
+    birth_record: birthPath,
+  });
+
+  const terminalPath = paths.terminalReceipt;
+  const terminalDeadline = Date.now() + 15_000;
+  while (Date.now() < terminalDeadline && !existsSync(terminalPath)) {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+  assert.ok(existsSync(terminalPath), "terminal receipt after exact-layer restore");
+  const terminal = JSON.parse(readFileSync(terminalPath, "utf8"));
+  assert.equal(terminal.proved, true);
+  assert.ok(["restored", "already-restored"].includes(terminal.outcome));
+  const dualAfter = JSON.parse(readFileSync(dualStatePath, "utf8"));
+  assert.equal(dualAfter.script.observability, null);
+  assert.ok(dualAfter.patch_count >= 1);
+
+  try { process.kill(birth.restorer_pid, "SIGTERM"); } catch { /* gone */ }
+
+  // Foreign conflict: same dual transport, foreign head_sampling_rate, no PATCH.
+  const foreignDir = join(dir, "foreign");
+  mkdirSync(foreignDir, { recursive: true, mode: 0o700 });
+  const foreignState = join(foreignDir, "dual-state.json");
+  const foreignObs = { ...armed, head_sampling_rate: 0.25, logs: { ...armed.logs, head_sampling_rate: 0.25 } };
+  writeFileSync(foreignState, JSON.stringify({
+    script: { logpush: false, tags: [], tail_consumers: [], observability: foreignObs },
+    effective: foreignObs,
+    patch_count: 0,
+  }));
+  const {
+    restoreExactLayerSettingsWindow,
+    planExactLayerRestore,
+  } = await import("./lib/worker_observability_settings.mjs");
+  const foreignDual = {
+    async getDualView() {
+      const state = JSON.parse(readFileSync(foreignState, "utf8"));
+      return {
+        script_override: state.script.observability,
+        script_override_is_null: state.script.observability === null,
+        effective: state.effective,
+        effective_sha256: observabilitySha256(state.effective),
+        script_settings_metadata: {
+          logpush: false,
+          tags: [],
+          tail_consumers_len: 0,
+          top_keys: Object.keys(state.script).sort(),
+        },
+      };
+    },
+    async restoreScriptOverrideToNull() {
+      const state = JSON.parse(readFileSync(foreignState, "utf8"));
+      state.patch_count += 1;
+      writeFileSync(foreignState, JSON.stringify(state));
+      throw new Error("foreign restore must not PATCH");
+    },
+  };
+  let foreignWindow = openExactLayerSettingsWindow({
+    effectiveBaseline: BASELINE,
+    scriptOverrideBaseline: null,
+    accountIdSha256: ACCOUNT_SHA,
+    now: new Date().toISOString(),
+    windowId: "supervised-foreign-1",
+  });
+  foreignWindow = armRestorer(foreignWindow, { now: new Date().toISOString(), restorerId: "r-foreign-sup" });
+  foreignWindow = {
+    ...foreignWindow,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+  };
+  const foreignBefore = await foreignDual.getDualView();
+  assert.equal(planExactLayerRestore(foreignBefore, foreignWindow).action, "refuse-conflict");
+  const foreignResult = await restoreExactLayerSettingsWindow(foreignWindow, foreignDual, {
+    now: new Date().toISOString(),
+  });
+  assert.equal(foreignResult.action, "refuse-conflict");
+  assert.equal(JSON.parse(readFileSync(foreignState, "utf8")).patch_count, 0);
+
+  // Exact reinstall with manifest into a fresh state root; leave no assigned window.
+  const reinstallRoot = join(dir, "reinstall-root");
+  writeFileSync(join(dir, "fake-token"), "test-token\n", { mode: 0o600 });
+  const { spawnSync } = await import("node:child_process");
+  const install = spawnSync("bash", [join(ROOT, "tools/install_observability_settings_restorer.sh")], {
+    env: {
+      ...process.env,
+      CITYSCROLL_OBSERVABILITY_RESTORER_STATE: reinstallRoot,
+      CITYSCROLL_NODE: process.execPath,
+      CLOUDFLARE_API_TOKEN_FILE: join(dir, "fake-token"),
+      CLOUDFLARE_ACCOUNT_ID: "a".repeat(32),
+      HOME: dir,
+    },
+    encoding: "utf8",
+  });
+  assert.equal(install.status, 0, install.stderr || install.stdout);
+  const manifest = JSON.parse(readFileSync(join(reinstallRoot, "install-manifest.json"), "utf8"));
+  assert.equal(manifest.schema, INSTALL_MANIFEST_SCHEMA);
+  assert.ok(manifest.files["run.mjs"]);
+  assert.ok(manifest.files["lib/worker_observability_settings.mjs"]);
+  assert.deepEqual(measureInstalledRuntimeShas(reinstallRoot), manifest.files);
+  assert.equal(existsSync(join(reinstallRoot, "assigned-window.json")), false);
+  // Fixture leaves the job unbootstrapped / booted out: no assigned window, no live pid.
+  assert.equal(existsSync(join(reinstallRoot, "restorer.pid")), false);
+
+  rmSync(dir, { recursive: true, force: true });
 });
