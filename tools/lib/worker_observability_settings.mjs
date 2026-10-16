@@ -1100,7 +1100,10 @@ export async function runIndependentRestorer({
     if (!window) fail("settings window is missing");
     if (!window.restorer?.armed) fail("restorer is not armed");
     const windowId = window.window_id;
-    const restored = await restoreSettingsWindow(window, transport, { now });
+    const restored = window.script_layer?.restore_mode === SCRIPT_LAYER_RESTORE_MODE
+      && typeof transport?.getDualView === "function"
+      ? await restoreExactLayerSettingsWindow(window, transport, { now })
+      : await restoreSettingsWindow(window, transport, { now });
     await store.write(restored.window, { expectedWindowId: windowId });
     return restored;
   };
@@ -1184,6 +1187,320 @@ export function createBetaWorkerObservabilityTransport({
     },
     async patchObservability(observability) {
       return request("PATCH", patchBodyForObservability(observability));
+    },
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Script-settings exact layer
+// Cloudflare TypeScript SDK SettingEditParams.observability?: Observability | null
+// PATCH /workers/scripts/{name}/script-settings accepts explicit null.
+// ---------------------------------------------------------------------------
+
+export const SCRIPT_SETTINGS_API_PATH = "/accounts/{account_id}/workers/scripts/{script_name}/script-settings";
+export const SCRIPT_LAYER_RESTORE_MODE = "script-settings-null";
+export const SCRIPT_SETTINGS_METADATA_KEYS = Object.freeze(["logpush", "tags", "tail_consumers"]);
+
+/**
+ * Preserve script-override null exactly. Never normalize null into invented defaults.
+ */
+export function exactScriptOverride(value, { path = "script_override" } = {}) {
+  if (value === null) return null;
+  if (value === undefined) fail(`${path} must be present as null or an object`);
+  return normalizeObservability(value);
+}
+
+export function patchBodyForScriptSettingsObservability(observability) {
+  if (observability === null) return { observability: null };
+  return { observability: normalizeObservability(observability) };
+}
+
+export function redactScriptSettingsMetadata(result) {
+  if (!result || typeof result !== "object") return null;
+  return {
+    logpush: result.logpush ?? null,
+    tags: Array.isArray(result.tags) ? [...result.tags].sort() : result.tags ?? null,
+    tail_consumers_len: Array.isArray(result.tail_consumers) ? result.tail_consumers.length : null,
+    top_keys: Object.keys(result).sort(),
+  };
+}
+
+export function scriptSettingsMetadataEquals(a, b) {
+  return canonicalJson(redactScriptSettingsMetadata(a)) === canonicalJson(redactScriptSettingsMetadata(b));
+}
+
+export function scriptSettingsUrl({
+  accountId,
+  scriptName = DEFAULT_WORKER_ID,
+  origin = "https://api.cloudflare.com/client/v4",
+} = {}) {
+  if (typeof accountId !== "string" || !accountId.trim()) fail("accountId is required");
+  if (typeof scriptName !== "string" || !scriptName.trim()) fail("scriptName is required");
+  return `${origin}/accounts/${encodeURIComponent(accountId)}/workers/scripts/${encodeURIComponent(scriptName)}/script-settings`;
+}
+
+/**
+ * JSON GET/PATCH transport for /script-settings.
+ * getObservability may return null; callers must not normalize null into defaults.
+ */
+export function createScriptSettingsObservabilityTransport({
+  accountId,
+  scriptName = DEFAULT_WORKER_ID,
+  token,
+  fetchImpl = fetch,
+  origin = "https://api.cloudflare.com/client/v4",
+} = {}) {
+  if (typeof token !== "string" || !token) fail("token is required");
+  const url = scriptSettingsUrl({ accountId, scriptName, origin });
+  let lastExchange = null;
+  let lastFullResult = null;
+
+  async function request(method, body) {
+    const response = await fetchImpl(url, {
+      method,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
+    });
+    let payload = null;
+    try {
+      payload = await response.json();
+    } catch (error) {
+      lastExchange = captureProviderExchange({
+        method,
+        url,
+        httpStatus: response.status,
+        success: false,
+        requestBody: body,
+        resultObservability: null,
+        errors: [{ message: `response json parse failed: ${String(error?.message || error)}` }],
+      });
+      fail(`script-settings ${method} failed with status ${response.status}`);
+    }
+    const result = payload?.result && typeof payload.result === "object" ? payload.result : null;
+    lastFullResult = result;
+    const observability = result && Object.prototype.hasOwnProperty.call(result, "observability")
+      ? result.observability
+      : null;
+    lastExchange = captureProviderExchange({
+      method,
+      url,
+      httpStatus: response.status,
+      success: payload?.success === true,
+      requestBody: body,
+      resultObservability: observability,
+      errors: payload?.errors || [],
+      messages: payload?.messages || [],
+    });
+    if (!response.ok || payload?.success !== true) {
+      fail(`script-settings ${method} failed with status ${response.status}`);
+    }
+    return { result, observability };
+  }
+
+  return {
+    url,
+    endpoint: "script-settings",
+    concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
+    get last_exchange() {
+      return lastExchange;
+    },
+    get last_full_result() {
+      return lastFullResult ? structuredClone(lastFullResult) : null;
+    },
+    async getScriptSettings() {
+      const { result } = await request("GET");
+      return structuredClone(result);
+    },
+    async getObservability() {
+      const { observability } = await request("GET");
+      // Exact layer: null stays null.
+      return observability === null ? null : observability;
+    },
+    async patchObservability(observability) {
+      if (observability !== null && (typeof observability !== "object" || Array.isArray(observability))) {
+        fail("script-settings patch observability must be null or an object");
+      }
+      const { observability: after } = await request(
+        "PATCH",
+        patchBodyForScriptSettingsObservability(observability),
+      );
+      return after === null ? null : after;
+    },
+  };
+}
+
+/**
+ * Dual-view transport: writes go to /script-settings; effective reads use beta Worker GET.
+ * Classification digests use the effective (beta) view. Restore clears the script override to null.
+ */
+export function createDualViewObservabilityTransport({
+  scriptSettingsTransport,
+  betaTransport,
+} = {}) {
+  if (!scriptSettingsTransport || typeof scriptSettingsTransport.patchObservability !== "function") {
+    fail("scriptSettingsTransport is required");
+  }
+  if (!betaTransport || typeof betaTransport.getObservability !== "function") {
+    fail("betaTransport is required");
+  }
+
+  return {
+    endpoint: "dual-view-script-settings+beta",
+    concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
+    get last_exchange() {
+      return scriptSettingsTransport.last_exchange || betaTransport.last_exchange || null;
+    },
+    async getObservability() {
+      // Effective view for classification / digests.
+      return betaTransport.getObservability();
+    },
+    async patchObservability(observability) {
+      return scriptSettingsTransport.patchObservability(observability);
+    },
+    async getDualView() {
+      const scriptSettings = await scriptSettingsTransport.getScriptSettings();
+      const scriptOverride = scriptSettings && Object.prototype.hasOwnProperty.call(scriptSettings, "observability")
+        ? scriptSettings.observability
+        : null;
+      const effective = await betaTransport.getObservability();
+      return {
+        script_override: scriptOverride === null ? null : scriptOverride,
+        script_override_is_null: scriptOverride === null,
+        effective,
+        effective_sha256: observabilitySha256(effective),
+        script_settings_metadata: redactScriptSettingsMetadata(scriptSettings),
+        script_settings_raw_top_keys: scriptSettings ? Object.keys(scriptSettings).sort() : [],
+      };
+    },
+    async restoreScriptOverrideToNull() {
+      return scriptSettingsTransport.patchObservability(null);
+    },
+  };
+}
+
+/**
+ * Open a window whose exact script-layer baseline is null (inherit) while the
+ * effective beta baseline is the normalized production object (c0a41c0a…).
+ */
+export function openExactLayerSettingsWindow({
+  effectiveBaseline,
+  scriptOverrideBaseline = null,
+  workerId = DEFAULT_WORKER_ID,
+  accountIdSha256,
+  now = new Date().toISOString(),
+  durationSeconds = MAX_SETTINGS_WINDOW_SECONDS,
+  windowId = randomUUID(),
+} = {}) {
+  const exactOverride = exactScriptOverride(scriptOverrideBaseline, { path: "scriptOverrideBaseline" });
+  const window = openSettingsWindow({
+    baseline: effectiveBaseline,
+    workerId,
+    accountIdSha256,
+    now,
+    durationSeconds,
+    windowId,
+  });
+  return {
+    ...window,
+    script_layer: {
+      endpoint: "script-settings",
+      restore_mode: SCRIPT_LAYER_RESTORE_MODE,
+      baseline_override: exactOverride,
+      baseline_override_is_null: exactOverride === null,
+      sdk_null_restore: true,
+      sdk_ref: "cloudflare-typescript SettingEditParams.observability?: Observability | null",
+    },
+  };
+}
+
+/**
+ * Restore via PATCH {observability:null} to /script-settings and prove both views.
+ * Other script-settings metadata (logpush/tags/tail_consumers) must stay unchanged.
+ */
+export async function restoreExactLayerSettingsWindow(window, dualTransport, {
+  now = new Date().toISOString(),
+} = {}) {
+  if (!window?.script_layer || window.script_layer.restore_mode !== SCRIPT_LAYER_RESTORE_MODE) {
+    fail("exact-layer restore requires a script_layer window with script-settings-null mode");
+  }
+  if (!dualTransport || typeof dualTransport.getDualView !== "function") {
+    fail("exact-layer restore requires a dual-view transport");
+  }
+  const at = requireIso(now, "now");
+  const before = await dualTransport.getDualView();
+  const metadataBefore = before.script_settings_metadata;
+
+  if (
+    before.script_override_is_null
+    && before.effective_sha256 === window.baseline_sha256
+  ) {
+    return {
+      action: "already-restored",
+      proved: true,
+      expired: Date.parse(at) >= Date.parse(window.expires_at),
+      before,
+      after: before,
+      window: markWindowRestored(window, {
+        now: at,
+        beforeSha256: before.effective_sha256,
+        afterSha256: before.effective_sha256,
+        outcome: "already-restored",
+      }),
+      metadata_unchanged: true,
+      receipt: {
+        schema: WORKER_OBSERVABILITY_SETTINGS_RECEIPT_SCHEMA,
+        kind: "restore",
+        outcome: "already-restored",
+        window_id: window.window_id,
+        observed_at: at,
+        restore_mode: SCRIPT_LAYER_RESTORE_MODE,
+        script_override_is_null: true,
+        effective_sha256: before.effective_sha256,
+        baseline_sha256: window.baseline_sha256,
+      },
+    };
+  }
+
+  await dualTransport.restoreScriptOverrideToNull();
+  const after = await dualTransport.getDualView();
+  if (!after.script_override_is_null) {
+    fail("script-settings restore did not prove observability null");
+  }
+  if (after.effective_sha256 !== window.baseline_sha256) {
+    fail("beta effective view did not prove baseline after script-settings null restore");
+  }
+  if (!scriptSettingsMetadataEquals(metadataBefore, after.script_settings_metadata)) {
+    fail("script-settings metadata changed during null restore");
+  }
+
+  return {
+    action: "restored",
+    proved: true,
+    expired: Date.parse(at) >= Date.parse(window.expires_at),
+    before,
+    after,
+    window: markWindowRestored(window, {
+      now: at,
+      beforeSha256: before.effective_sha256,
+      afterSha256: after.effective_sha256,
+      outcome: "restored",
+    }),
+    metadata_unchanged: true,
+    receipt: {
+      schema: WORKER_OBSERVABILITY_SETTINGS_RECEIPT_SCHEMA,
+      kind: "restore",
+      outcome: "restored",
+      window_id: window.window_id,
+      observed_at: at,
+      restore_mode: SCRIPT_LAYER_RESTORE_MODE,
+      script_override_is_null: true,
+      effective_sha256: after.effective_sha256,
+      baseline_sha256: window.baseline_sha256,
+      metadata_unchanged: true,
     },
   };
 }

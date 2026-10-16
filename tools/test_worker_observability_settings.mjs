@@ -7,6 +7,7 @@ import test from "node:test";
 
 import {
   PROVIDER_OBSERVABILITY_CONCURRENCY,
+  SCRIPT_LAYER_RESTORE_MODE,
   acknowledgePrivacyFields,
   armRestorer,
   assertMeasurementWindow,
@@ -16,19 +17,25 @@ import {
   classifyCurrentSettings,
   compareAndSwapObservability,
   createBetaWorkerObservabilityTransport,
+  createDualViewObservabilityTransport,
   createFileWindowStore,
+  createScriptSettingsObservabilityTransport,
+  exactScriptOverride,
   markWindowExpiry,
   measurementWindowObservability,
   mutateOwnedWindowObservability,
   normalizeObservability,
   observabilityEquals,
   observabilitySha256,
+  openExactLayerSettingsWindow,
   openSettingsWindow,
+  patchBodyForScriptSettingsObservability,
   planSettingsRestore,
   privacyArmedObservability,
   confirmOwnedSettings,
   markPendingMutationIssued,
   recordMutationIntent,
+  restoreExactLayerSettingsWindow,
   restoreSettingsWindow,
   runIndependentRestorer,
 } from "./lib/worker_observability_settings.mjs";
@@ -881,5 +888,229 @@ test("mutateOwnedWindowObservability persists issued before never-settling PATCH
   // On-disk proof: re-read raw file after the fsync write-ahead boundary.
   const raw = JSON.parse(readFileSync(storePath, "utf8"));
   assert.equal(raw.pending_mutation.issued, true);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+// ---------------------------------------------------------------------------
+// /script-settings exact layer (null preserved; dual-view restore)
+// ---------------------------------------------------------------------------
+
+test("exactScriptOverride preserves null and never invents defaults", () => {
+  assert.equal(exactScriptOverride(null), null);
+  assert.throws(() => exactScriptOverride(undefined), /must be present/);
+  assert.throws(() => normalizeObservability(null), /must be an object/);
+  const body = patchBodyForScriptSettingsObservability(null);
+  assert.deepEqual(body, { observability: null });
+  assert.equal(Object.prototype.hasOwnProperty.call(body, "observability"), true);
+});
+
+test("script-settings transport null round-trip and metadata unchanged", async () => {
+  const calls = [];
+  let stored = {
+    logpush: false,
+    tags: ["cityscroll"],
+    tail_consumers: [],
+    observability: null,
+  };
+  const transport = createScriptSettingsObservabilityTransport({
+    accountId: ACCOUNT,
+    scriptName: "cityscroll-worker",
+    token: "test-token",
+    fetchImpl: async (url, init) => {
+      const method = init.method || "GET";
+      const body = init.body ? JSON.parse(init.body) : undefined;
+      calls.push({ method, url, body });
+      if (method === "PATCH") {
+        assert.deepEqual(Object.keys(body).sort(), ["observability"]);
+        stored = {
+          ...stored,
+          observability: body.observability === null ? null : body.observability,
+        };
+      }
+      return {
+        ok: true,
+        status: 200,
+        async json() {
+          return { success: true, errors: [], messages: [], result: structuredClone(stored) };
+        },
+      };
+    },
+  });
+
+  assert.equal(await transport.getObservability(), null);
+  assert.equal(await transport.patchObservability(null), null);
+  const armed = privacyArmedObservability(BASELINE);
+  const afterArm = await transport.patchObservability(armed);
+  assert.equal(afterArm === null, false);
+  assert.equal(await transport.patchObservability(null), null);
+  const full = await transport.getScriptSettings();
+  assert.equal(full.observability, null);
+  assert.equal(full.logpush, false);
+  assert.deepEqual(full.tags, ["cityscroll"]);
+  assert.equal(full.tail_consumers.length, 0);
+  assert.ok(calls.every((c) => c.url.includes("/script-settings")));
+  assert.ok(calls.some((c) => c.method === "PATCH" && c.body.observability === null));
+});
+
+test("dual-view exact-layer restore proves script null and beta baseline; metadata unchanged", async () => {
+  const armed = privacyArmedObservability(BASELINE);
+  let scriptStored = {
+    logpush: true,
+    tags: ["keep-me"],
+    tail_consumers: [{ service: "log-consumer" }],
+    observability: armed,
+  };
+  let effective = structuredClone(armed);
+  const scriptTransport = createScriptSettingsObservabilityTransport({
+    accountId: ACCOUNT,
+    token: "t",
+    fetchImpl: async (_url, init) => {
+      const method = init.method || "GET";
+      const body = init.body ? JSON.parse(init.body) : undefined;
+      if (method === "PATCH") {
+        scriptStored = {
+          ...scriptStored,
+          observability: body.observability === null ? null : normalizeObservability(body.observability),
+        };
+        effective = scriptStored.observability === null
+          ? structuredClone(BASELINE)
+          : structuredClone(scriptStored.observability);
+      }
+      return {
+        ok: true,
+        status: 200,
+        async json() {
+          return { success: true, errors: [], result: structuredClone(scriptStored) };
+        },
+      };
+    },
+  });
+  const betaTransport = {
+    async getObservability() { return structuredClone(effective); },
+    async patchObservability() { failBeta(); },
+  };
+  function failBeta() { throw new Error("beta PATCH must not be used for exact-layer restore"); }
+
+  const dual = createDualViewObservabilityTransport({
+    scriptSettingsTransport: scriptTransport,
+    betaTransport,
+  });
+  let window = openExactLayerSettingsWindow({
+    effectiveBaseline: BASELINE,
+    scriptOverrideBaseline: null,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    windowId: "exact-layer-1",
+  });
+  assert.equal(window.script_layer.restore_mode, SCRIPT_LAYER_RESTORE_MODE);
+  assert.equal(window.script_layer.baseline_override, null);
+  assert.equal(window.baseline_sha256, observabilitySha256(BASELINE));
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z", restorerId: "r-exact" });
+
+  const before = await dual.getDualView();
+  assert.equal(before.script_override_is_null, false);
+  assert.equal(before.effective_sha256, observabilitySha256(armed));
+
+  const restored = await restoreExactLayerSettingsWindow(window, dual, {
+    now: "2026-10-16T00:01:00.000Z",
+  });
+  assert.equal(restored.proved, true);
+  assert.equal(restored.action, "restored");
+  assert.equal(restored.after.script_override_is_null, true);
+  assert.equal(restored.after.effective_sha256, window.baseline_sha256);
+  assert.equal(restored.metadata_unchanged, true);
+  assert.equal(restored.after.script_settings_metadata.logpush, true);
+  assert.deepEqual(restored.after.script_settings_metadata.tags, ["keep-me"]);
+  assert.equal(restored.after.script_settings_metadata.tail_consumers_len, 1);
+
+  // Fresh window while provider is already at null+baseline → already-restored.
+  let fresh = openExactLayerSettingsWindow({
+    effectiveBaseline: BASELINE,
+    scriptOverrideBaseline: null,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:02:00.000Z",
+    windowId: "exact-layer-already",
+  });
+  fresh = armRestorer(fresh, { now: "2026-10-16T00:02:01.000Z", restorerId: "r-already" });
+  const already = await restoreExactLayerSettingsWindow(fresh, dual, {
+    now: "2026-10-16T00:02:02.000Z",
+  });
+  assert.equal(already.action, "already-restored");
+  assert.equal(already.after.script_override_is_null, true);
+  assert.equal(already.metadata_unchanged, true);
+});
+
+test("restorer owns exact script layer via dual-view transport", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-exact-layer-restorer-"));
+  const armed = privacyArmedObservability(BASELINE);
+  let scriptStored = {
+    logpush: false,
+    tags: [],
+    tail_consumers: [],
+    observability: armed,
+  };
+  let effective = structuredClone(armed);
+  const scriptTransport = createScriptSettingsObservabilityTransport({
+    accountId: ACCOUNT,
+    token: "t",
+    fetchImpl: async (_url, init) => {
+      const method = init.method || "GET";
+      const body = init.body ? JSON.parse(init.body) : undefined;
+      if (method === "PATCH") {
+        scriptStored = {
+          ...scriptStored,
+          observability: body.observability === null ? null : normalizeObservability(body.observability),
+        };
+        effective = scriptStored.observability === null
+          ? structuredClone(BASELINE)
+          : structuredClone(scriptStored.observability);
+      }
+      return {
+        ok: true,
+        status: 200,
+        async json() {
+          return { success: true, errors: [], result: structuredClone(scriptStored) };
+        },
+      };
+    },
+  });
+  const dual = createDualViewObservabilityTransport({
+    scriptSettingsTransport: scriptTransport,
+    betaTransport: {
+      async getObservability() { return structuredClone(effective); },
+      async patchObservability() { throw new Error("beta PATCH forbidden"); },
+    },
+  });
+
+  const store = createFileWindowStore(join(dir, "window.json"));
+  let window = openExactLayerSettingsWindow({
+    effectiveBaseline: BASELINE,
+    scriptOverrideBaseline: null,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    durationSeconds: 60,
+    windowId: "exact-restorer-1",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z", restorerId: "r-exact-restorer" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+    pending_mutation: null,
+  };
+  await store.write(window);
+
+  const restored = await runIndependentRestorer({
+    store,
+    transport: dual,
+    now: "2026-10-16T00:02:00.000Z",
+    alreadyLocked: true,
+  });
+  assert.equal(restored.proved, true);
+  assert.ok(["restored", "already-restored"].includes(restored.action));
+  assert.equal(restored.after.script_override_is_null, true);
+  assert.equal(restored.after.effective_sha256, observabilitySha256(BASELINE));
+  assert.equal(scriptStored.observability, null);
   rmSync(dir, { recursive: true, force: true });
 });
