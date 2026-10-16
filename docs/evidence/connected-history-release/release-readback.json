@@ -9017,5 +9017,12 @@
         "A6": "met"
       }
     }
-  ]
+  ],
+  "release_alignment": {
+    "state": "stale",
+    "changed_inputs": [
+      "tools/capture_documented_history_journeys.py",
+      "tools/check_connected_history_release.mjs"
+    ]
+  }
 }

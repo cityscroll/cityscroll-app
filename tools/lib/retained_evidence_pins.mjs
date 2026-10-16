@@ -32,7 +32,8 @@ export function retainedEvidencePins(root, evidenceRoot = "docs/evidence") {
     if (!text || !text.includes("\"measurement_provenance\"")) continue;
     let provenance;
     try {
-      provenance = JSON.parse(text).measurement_provenance;
+      const document = JSON.parse(text);
+      provenance = document.hermetic_measurement_provenance || document.measurement_provenance;
     } catch {
       continue;
     }

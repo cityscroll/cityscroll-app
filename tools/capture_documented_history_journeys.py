@@ -655,27 +655,28 @@ def run_failure_control(
     return result
 
 
-def write_hermetic_manifest(receipt: dict) -> None:
-    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+def write_hermetic_manifest(receipt: dict, manifest_path: Path = MANIFEST_PATH) -> None:
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     observed = {capture["case"]: capture for capture in receipt["captures"]}
     retained = {capture["case"]: capture for capture in manifest["captures"]}
     if observed.keys() != retained.keys():
         missing = sorted(observed.keys() ^ retained.keys())
         raise RuntimeError(f"manifest cases do not match measurement: {missing}")
     production = manifest.get("production_measurement")
+    if isinstance(production, dict) and "retained_measurement_provenance" in production:
+        manifest["measurement_provenance"] = production.pop("retained_measurement_provenance")
     run_receipt = production.get("run_receipt") if isinstance(production, dict) else None
     retained = run_receipt.get("retained_measurement") if isinstance(run_receipt, dict) else None
-    previous_provenance = manifest.get("measurement_provenance")
-    if isinstance(production, dict) and "retained_measurement_provenance" not in production:
-        if (not isinstance(retained, dict) or not isinstance(previous_provenance, dict)
-                or retained.get("revision") != previous_provenance.get("revision")):
-            raise RuntimeError("production retained measurement provenance is unavailable")
-        production["retained_measurement_provenance"] = previous_provenance
+    production_provenance = manifest.get("measurement_provenance")
+    if (isinstance(production, dict) and (not isinstance(retained, dict)
+            or not isinstance(production_provenance, dict)
+            or retained.get("revision") != production_provenance.get("revision"))):
+        raise RuntimeError("production retained measurement provenance is unavailable")
     current_provenance = {
         "revision": receipt["repository_revision"],
         "inputs": receipt["measured_inputs"],
     }
-    manifest["measurement_provenance"] = current_provenance
+    manifest["hermetic_measurement_provenance"] = current_provenance
     for capture in manifest["captures"]:
         measurement = observed[capture["case"]]
         capture["revision"] = receipt["repository_revision"]
@@ -685,7 +686,7 @@ def write_hermetic_manifest(receipt: dict) -> None:
         else:
             capture.pop("local_capture_sha256", None)
     if isinstance(production, dict):
-        production_inputs = production["retained_measurement_provenance"]["inputs"]
+        production_inputs = production_provenance["inputs"]
         production_by_path = {item["path"]: item["sha256"] for item in production_inputs}
         current_by_path = {item["path"]: item["sha256"] for item in current_provenance["inputs"]}
         changed = sorted(path for path in production_by_path.keys() | current_by_path.keys()
@@ -694,7 +695,7 @@ def write_hermetic_manifest(receipt: dict) -> None:
             "state": "stale" if changed else "current",
             "changed_inputs": changed,
         }
-    MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
 
 def production_failure_control(receipt: dict, data_vintage) -> dict:
@@ -724,10 +725,14 @@ def production_failure_control(receipt: dict, data_vintage) -> dict:
     }
 
 
-def write_production_manifest(receipt: dict) -> None:
+def write_production_manifest(receipt: dict, manifest_path: Path = MANIFEST_PATH) -> None:
     """Retain a public-safe production receipt without local screenshot paths."""
 
-    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    hermetic_provenance = manifest.get("hermetic_measurement_provenance")
+    if not isinstance(hermetic_provenance, dict):
+        raise RuntimeError("hermetic measurement provenance is unavailable")
+    manifest["measurement_provenance"] = hermetic_provenance
     vintages = sorted({value for value in receipt["data_vintage"].values() if value})
     data_vintage = vintages[0] if len(vintages) == 1 else receipt["data_vintage"]
     captures = []
@@ -784,10 +789,9 @@ def write_production_manifest(receipt: dict) -> None:
         ),
         "run_receipt_sha256": run_receipt_sha256,
         "run_receipt": run_receipt,
-        "retained_measurement_provenance": manifest["measurement_provenance"],
         "release_alignment": {"state": "current", "changed_inputs": []},
     }
-    MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
 
 def parse_args() -> argparse.Namespace:

@@ -1,130 +1,82 @@
-export function createLandOutcomeRuntime({
-  cache = new Map(),
-  ttlMs = 300000,
-  // determinism-lint: allow clock session-cache expiry and evidence age require the browser's current instant; source observation clocks remain unchanged.
-  now = () => Date.now(),
-  normalizeRecord = (record) => record,
-  translate = (key) => key,
-  formatDate = (value) => value,
-  escapeHTML = (value) => String(value),
-  fetchResponse,
-  connectionTools = async () => null,
-} = {}) {
-  function get(projectId) {
-    const hit = cache.get(projectId);
-    if (!hit || hit.p) return hit || null;
-    return now() - hit.at < ttlMs ? hit : { ...hit, expired: true };
+export function createLandOutcomeRuntime({cache=new Map(),ttlMs=300000,
+// determinism-lint: allow clock for expiry and evidence age.
+now=()=>Date.now(),normalizeRecord=record=>record,translate=key=>key,
+formatDate=value=>value,escapeHTML=value=>String(value),fetchResponse,
+connectionTools=async()=>null}={}){
+  function get(id){
+    const hit=cache.get(id);
+    if(!hit||hit.p)return hit||null;
+    return now()-hit.at<ttlMs?hit:{...hit,expired:true};
   }
-
-  function evidenceState(payload, nowMs = now()) {
-    const observedAt = payload?.record?.generated_at || null;
-    const stamp = Date.parse(observedAt || "");
-    return {
-      observedAt,
-      stale: payload?.stale === true || !Number.isFinite(stamp) || nowMs - stamp > 24 * 60 * 60 * 1000,
-    };
+  function evidenceState(p,n=now()){
+    const observedAt=p?.record?.generated_at||null,stamp=Date.parse(observedAt||"");
+    return {observedAt,stale:p?.stale===true||!Number.isFinite(stamp)||n-stamp>86400000};
   }
-
-  function freshnessHTML(payload, { failed = false } = {}) {
-    const state = evidenceState(payload);
-    if (!failed && !state.stale) return "";
-    const stamp = state.observedAt
-      ? translate("land_outcome_checked_at", { date: formatDate(state.observedAt) })
-      : translate("land_outcome_check_unknown");
+  function freshnessHTML(p,{failed=false}={}){
+    const s=evidenceState(p);
+    if(!failed&&!s.stale)return "";
+    const stamp=s.observedAt?translate("land_outcome_checked_at",{date:formatDate(s.observedAt)}):translate("land_outcome_check_unknown");
     return `<p class="land-outcome-freshness" role="status">${escapeHTML(translate(failed ? "land_outcome_update_failed" : "land_outcome_stale"))} ${escapeHTML(stamp)} ${escapeHTML(translate("land_outcome_stage_caution"))}</p>`;
   }
-
-  function recordForDisplay(payload, failed = false) {
-    const state = evidenceState(payload);
-    return normalizeRecord({ ...payload.record, evidence_stale: failed || state.stale });
+  function recordForDisplay(p,failed=false){
+    return normalizeRecord({...p.record,evidence_stale:failed||evidenceState(p).stale});
   }
-
-  function display(payload, { fallback = null, failed = false } = {}) {
-    const usable = (value) => value?.ok !== false && value?.record;
-    const source = usable(payload) ? payload : usable(fallback) ? fallback : null;
-    if (!source) return { source: null, record: null, freshness: "", failed };
-    const updateFailed = failed || source !== payload;
-    return {
-      source,
-      record: recordForDisplay(source, updateFailed),
-      freshness: freshnessHTML(source, { failed: updateFailed }),
-      failed: updateFailed,
-    };
+  function display(p,{fallback=null,failed=false}={}){
+    const usable=v=>v?.ok!==false&&v?.record,s=usable(p)?p:usable(fallback)?fallback:null;
+    if(!s)return {source:null,record:null,freshness:"",failed};
+    const f=failed||s!==p;
+    return {source:s,record:recordForDisplay(s,f),freshness:freshnessHTML(s,{failed:f}),failed:f};
   }
-
-  async function refreshDisplay(projectId) {
-    const warm = get(projectId);
-    const payload = await fetch(projectId, { allowStatic: false });
-    return {
-      payload,
-      ...display(payload, {
-        fallback: warm?.data,
-        failed: !payload || payload.ok === false || !payload.record,
-      }),
-    };
+  async function refreshDisplay(id){
+    const warm=get(id),payload=await fetch(id,{allowStatic:false});
+    return {payload,...display(payload,{fallback:warm?.data,failed:!payload||payload.ok===false||!payload.record})};
   }
-
-  function seed(snapshot) {
-    const byProject = snapshot?.outcomes?.by_project || {};
-    const generatedAt = snapshot?.generated_at || null;
-    for (const [id, record] of Object.entries(byProject)) {
-      if (!record || record.snapshot_state === "unavailable") continue;
-      const previous = cache.get(id);
-      if (previous?.p || previous?.data?.record && (!previous.staticSnapshot
-        || Date.parse(previous.data.record.generated_at) >= Date.parse(record.generated_at))) continue;
-      cache.set(id, {
-        data: { ok: true, cached: true, static_snapshot: true, generated_at: generatedAt, record },
-        at: now(),
-        generatedAt,
-        staticSnapshot: true,
-      });
+  function seed(s){
+    const byProject=s?.outcomes?.by_project||{},g=s?.generated_at||null;
+    for(const [id,record] of Object.entries(byProject)){
+      if(!record||record.snapshot_state==="unavailable")continue;
+      const previous=cache.get(id);
+      if(previous?.p||previous?.data?.record&&(!previous.staticSnapshot||Date.parse(previous.data.record.generated_at)>=Date.parse(record.generated_at)))continue;
+      cache.set(id,{data:{ok:true,cached:true,static_snapshot:true,generated_at:g,record},at:now(),generatedAt:g,staticSnapshot:true});
     }
   }
-
-  function fetch(projectId, { allowStatic = true } = {}) {
-    const id = String(projectId || "").trim();
-    if (!id) return Promise.resolve(null);
-    const existing = get(id);
-    if (existing?.p) return existing.p;
-    if (existing?.data && !existing.expired && (allowStatic || !existing.staticSnapshot)) {
-      return Promise.resolve(existing.data);
-    }
-    const p = (async () => {
-      try {
-        const tools = await connectionTools();
-        const accepts = tools ? async (response) => {
-          if (!response?.ok) return false;
-          const payload = await response.json();
-          return payload?.ok !== false && payload?.record?.project_id === id;
-        } : null;
-        const response = await fetchResponse(id, accepts);
-        if (!response?.ok) return null;
-        const payload = await response.json();
-        return tools ? tools.normalizeProjectConnectionsPayload(payload, id) : payload;
-      } catch (_error) {
-        return null;
-      }
+  function fetch(projectId,{allowStatic=true}={}){
+    const id=String(projectId||"").trim();
+    if(!id)return Promise.resolve(null);
+    const e=get(id);
+    if(e?.p)return e.p;
+    if(e?.data&&!e.expired&&(allowStatic||!e.staticSnapshot))return Promise.resolve(e.data);
+    const p=(async()=>{
+      try{
+        const tools=await connectionTools();
+        const accepts=tools?async r=>{
+          if(!r?.ok)return false;
+          const p=await r.json();
+          return p?.ok!==false&&p?.record?.project_id===id;
+        }:null;
+        const r=await fetchResponse(id,accepts);
+        if(!r?.ok)return null;
+        const data=await r.json();
+        return tools?tools.normalizeProjectConnectionsPayload(data,id):data;
+      }catch(_error){return null;}
     })();
-    cache.set(id, { ...existing, p });
-    return p.then((data) => {
-      if (data && data.ok !== false && data.record) {
-        const old = existing?.data?.record;
-        if (old && (Date.parse(old.generated_at) > Date.parse(data.record.generated_at)
-          || !Number.isFinite(Date.parse(data.record.generated_at))
-          || old.spine?.events?.length && !data.record.spine?.events?.length)) {
-          cache.set(id, existing);
-          return { ...existing.data, stale: true };
+    cache.set(id,{...e,p});
+    return p.then(data=>{
+      if(data&&data.ok!==false&&data.record){
+        const old=e?.data?.record;
+        if(old&&(Date.parse(old.generated_at)>Date.parse(data.record.generated_at)||!Number.isFinite(Date.parse(data.record.generated_at))||old.spine?.events?.length&&!data.record.spine?.events?.length)){
+          cache.set(id,e);
+          return {...e.data,stale:true};
         }
-        cache.set(id, { data, at: now() });
-      } else if (existing?.data) cache.set(id, existing);
+        cache.set(id,{data,at:now()});
+      }else if(e?.data)cache.set(id,e);
       else cache.delete(id);
       return data;
-    }).catch(() => {
-      if (existing?.data) cache.set(id, existing);
+    }).catch(()=>{
+      if(e?.data)cache.set(id,e);
       else cache.delete(id);
       return null;
     });
   }
-
-  return { cache, ttlMs, get, seed, fetch, evidenceState, freshnessHTML, recordForDisplay, display, refreshDisplay };
+  return {cache,ttlMs,get,seed,fetch,evidenceState,freshnessHTML,recordForDisplay,display,refreshDisplay};
 }
