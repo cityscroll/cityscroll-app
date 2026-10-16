@@ -1013,7 +1013,8 @@ test("supervised exact-layer fixture: dual-view after controller exit, foreign r
   // Limits (honest): controller-death is a handwritten parent receipt, not automatic
   // SIGKILL detection. Birth/argv are proved from an independent `ps` listing of the
   // live restorer pid, not only from what the controller wrote. Foreign-conflict
-  // refusal runs inside a pinned child process, not in the test parent.
+  // refusal runs inside a pinned-library child (imports settings lib directly; not
+  // the full guardian CLI / durable run.mjs), not in the test parent.
   const dir = mkdtempSync(join(tmpdir(), "cc05-supervised-exact-"));
   const stateRoot = join(dir, "restorer");
   installDurableRunner(stateRoot);
@@ -1206,7 +1207,8 @@ setTimeout(() => process.exit(0), 80);
 
   try { process.kill(ready.pid, "SIGTERM"); } catch { /* gone */ }
 
-  // Foreign conflict refusal inside a pinned CHILD process (not the test parent).
+  // Foreign conflict refusal inside a pinned-library CHILD (not the test parent,
+  // and not the full guardian CLI). Labels stay honest: no SIGKILL claim.
   const foreignDir = join(dir, "foreign");
   mkdirSync(foreignDir, { recursive: true, mode: 0o700 });
   const foreignState = join(foreignDir, "dual-state.json");
@@ -1220,7 +1222,6 @@ setTimeout(() => process.exit(0), 80);
   const foreignChild = join(foreignDir, "foreign-child.mjs");
   writeFileSync(foreignChild, `
 import { readFileSync, writeFileSync } from "node:fs";
-import { createHash } from "node:crypto";
 import {
   openExactLayerSettingsWindow,
   armRestorer,
@@ -1281,7 +1282,9 @@ writeFileSync(${JSON.stringify(foreignResultPath)}, JSON.stringify({
   result_action: result.action,
   proved: result.proved,
   patch_count: JSON.parse(readFileSync(foreignState, "utf8")).patch_count,
-  detection: "pinned-child-foreign-conflict",
+  detection: "pinned-library-child-foreign-conflict",
+  not_guardian_cli: true,
+  not_automatic_sigkill: true,
 }) + "\\n");
 `, { mode: 0o600 });
 
@@ -1292,7 +1295,9 @@ writeFileSync(${JSON.stringify(foreignResultPath)}, JSON.stringify({
   assert.equal(foreignProof.result_action, "refuse-conflict");
   assert.equal(foreignProof.proved, false);
   assert.equal(foreignProof.patch_count, 0);
-  assert.equal(foreignProof.detection, "pinned-child-foreign-conflict");
+  assert.equal(foreignProof.detection, "pinned-library-child-foreign-conflict");
+  assert.equal(foreignProof.not_guardian_cli, true);
+  assert.equal(foreignProof.not_automatic_sigkill, true);
   assert.ok(foreignProof.pid > 0);
   assert.notEqual(foreignProof.pid, process.pid);
 
