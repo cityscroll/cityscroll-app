@@ -242,7 +242,7 @@ export async function publishRouteReadModels({
       planned: plan.planned,
       attempted,
       confirmed,
-      state_advanced: false,
+      state_advanced: attempted.state_puts === 0 ? false : null,
     };
     throw error;
   } finally {

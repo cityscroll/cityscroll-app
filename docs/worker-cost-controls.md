@@ -16,11 +16,14 @@ therefore performs no route-key or manifest puts.
 
 Workers KV is eventually consistent and does not provide a multi-key manifest
 transaction. A delayed slice remains an explicit unavailable section in the
-reader while other valid sections continue to load. A failed publication leaves
-the completed-state record unchanged and can be retried with the same immutable
-keys. Publication receipts keep planned operations separate from operations
-actually attempted and confirmed, including provider calls that fail. The
-deployment workflow still attempts the independent Worker code deployment
+reader while other valid sections continue to load. Failures before the state
+write is issued leave the completed-state record unchanged. If the state write
+was issued but unacknowledged, its final state is unknown; a safe retry
+re-reads completed state before deciding whether publication is still needed.
+Publication receipts keep planned operations separate from operations actually
+attempted and confirmed, including provider calls that fail.
+Confirmed counts are provider-acknowledged lower bounds, not provider or billed
+totals. The deployment workflow still attempts the independent Worker code deployment
 before reporting a route-data publication failure.
 
 ## Provider-native invocation profiles
