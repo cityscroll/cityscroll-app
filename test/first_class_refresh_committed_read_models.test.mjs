@@ -352,7 +352,7 @@ test("a timed-out step that wrote partial published output restores last-good an
         "if (id === 'partial') {",
         "  writeFileSync('site/artifact.json', '{\"partial\":true}\\n');",
         "  const child = spawn(process.execPath, ['-e',",
-        "    \"import { writeFileSync } from 'node:fs'; writeFileSync('child.pid', String(process.pid)); setInterval(() => writeFileSync('child.alive', String(Date.now())), 100);\"",
+        "    \"import { writeFileSync } from 'node:fs'; writeFileSync('child.pid', String(process.pid)); let n = 0; setInterval(() => writeFileSync('child.alive', String(++n)), 100);\"",
         "  ], { stdio: 'ignore' });",
         "  writeFileSync('parent.pid', String(process.pid));",
         "  setInterval(() => {}, 1000);",
