@@ -1,11 +1,29 @@
 import { createHash, randomUUID } from "node:crypto";
-import { openSync, fsyncSync, closeSync, renameSync, writeFileSync, readFileSync, existsSync, statSync } from "node:fs";
+import {
+  openSync, fsyncSync, closeSync, renameSync, writeFileSync, readFileSync,
+  existsSync, statSync, mkdirSync, rmSync, readdirSync,
+} from "node:fs";
 
 export const WORKER_OBSERVABILITY_SETTINGS_WINDOW_SCHEMA = "cityscroll.worker_observability_settings_window.v1";
 export const WORKER_OBSERVABILITY_SETTINGS_RECEIPT_SCHEMA = "cityscroll.worker_observability_settings_receipt.v1";
 export const BETA_WORKER_API_PATH = "/accounts/{account_id}/workers/workers/{worker_id}";
 export const DEFAULT_WORKER_ID = "cityscroll-worker";
 export const MAX_SETTINGS_WINDOW_SECONDS = 30 * 60;
+export const SETTINGS_SUCCESS_STATUSES = Object.freeze([
+  "ok",
+  "captured",
+  "privacy-armed",
+  "enabled",
+  "restored",
+  "already-restored",
+  "complete",
+]);
+export const TERMINAL_WINDOW_PHASES = Object.freeze([
+  "restored",
+  "expired-restored",
+  "closed",
+  "refused-conflict",
+]);
 
 /**
  * Provider beta Worker PATCH documents partial updates with omitted fields left
@@ -176,11 +194,18 @@ export function assertWindowMutable(window, now = new Date().toISOString()) {
   if (!window || window.schema !== WORKER_OBSERVABILITY_SETTINGS_WINDOW_SCHEMA) {
     fail("settings window is invalid");
   }
+  if (TERMINAL_WINDOW_PHASES.includes(window.phase)) {
+    fail(`window phase ${window.phase} is closed; refuse arm/enable`);
+  }
   const at = requireIso(now, "now");
   if (Date.parse(at) >= Date.parse(window.expires_at)) {
     fail("settings window has expired; refuse arm/enable and capture a fresh window");
   }
   return window;
+}
+
+export function isProcessAlive(pid) {
+  return processAlive(pid);
 }
 
 export function privacyArmedObservability(baseline) {
@@ -283,16 +308,83 @@ function requirePositiveDurationSeconds(value, label) {
   return seconds;
 }
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function processAlive(pid) {
+  if (!Number.isInteger(pid) || pid <= 0) return false;
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Exclusive directory lock serializing mutator and restorer against one window.
+ * Stale locks whose recorded pid is dead are reaped.
+ */
+export async function withExclusiveDirLock(lockDir, fn, {
+  timeoutMs = 15_000,
+  staleMs = 120_000,
+  holder = `pid:${process.pid}`,
+} = {}) {
+  if (typeof lockDir !== "string" || !lockDir) fail("lockDir is required");
+  const started = Date.now();
+  while (true) {
+    try {
+      mkdirSync(lockDir);
+      writeFileSync(`${lockDir}/holder.json`, `${JSON.stringify({
+        holder,
+        pid: process.pid,
+        acquired_at: new Date().toISOString(),
+      }, null, 2)}\n`, { mode: 0o600 });
+      break;
+    } catch (error) {
+      if (error?.code !== "EEXIST") throw error;
+      let stale = false;
+      try {
+        const holderPath = `${lockDir}/holder.json`;
+        if (existsSync(holderPath)) {
+          const recorded = JSON.parse(readFileSync(holderPath, "utf8"));
+          const age = Date.now() - Date.parse(recorded.acquired_at || 0);
+          if (!processAlive(recorded.pid) || (Number.isFinite(age) && age > staleMs)) stale = true;
+        } else if (!readdirSync(lockDir).length) {
+          stale = true;
+        }
+      } catch {
+        stale = true;
+      }
+      if (stale) {
+        rmSync(lockDir, { recursive: true, force: true });
+        continue;
+      }
+      if (Date.now() - started > timeoutMs) fail(`timed out waiting for window lock ${lockDir}`);
+      await sleep(25);
+    }
+  }
+  try {
+    return await fn();
+  } finally {
+    rmSync(lockDir, { recursive: true, force: true });
+  }
+}
+
 export function createFileWindowStore(path) {
   if (typeof path !== "string" || !path) fail("window store path is required");
-  return {
+  const lockDir = `${path}.lock`;
+  const store = {
     path,
+    lockDir,
     async read() {
       if (!existsSync(path)) return null;
       if ((statSync(path).mode & 0o077) !== 0) fail("window store must be mode 0600");
       return JSON.parse(readFileSync(path, "utf8"));
     },
-    async write(window) {
+    async write(window, { expectedWindowId = null } = {}) {
+      assertWindowIdentityWritable(window, { expectedWindowId, allowTerminalWrite: true });
       const temporary = `${path}.next`;
       const payload = `${JSON.stringify(window, null, 2)}\n`;
       writeFileSync(temporary, payload, { mode: 0o600 });
@@ -312,7 +404,28 @@ export function createFileWindowStore(path) {
         closeSync(out);
       }
     },
+    async withLock(fn, options = {}) {
+      return withExclusiveDirLock(lockDir, () => fn(store), options);
+    },
   };
+  return store;
+}
+
+export function assertWindowIdentityWritable(window, {
+  expectedWindowId = null,
+  allowTerminalWrite = false,
+} = {}) {
+  if (!window || window.schema !== WORKER_OBSERVABILITY_SETTINGS_WINDOW_SCHEMA) {
+    fail("settings window is invalid");
+  }
+  if (typeof window.window_id !== "string" || !window.window_id) fail("window_id is required");
+  if (expectedWindowId && window.window_id !== expectedWindowId) {
+    fail("stale window identity rejected");
+  }
+  if (!allowTerminalWrite && TERMINAL_WINDOW_PHASES.includes(window.phase)) {
+    fail(`window phase ${window.phase} is closed; reject stale lifecycle write`);
+  }
+  return window;
 }
 
 export function openSettingsWindow({
@@ -647,6 +760,9 @@ export async function mutateOwnedWindowObservability({
   nextObservability,
   phase,
   now = new Date().toISOString(),
+  requireLiveRestorer = true,
+  assertRestorerReady = null,
+  alreadyLocked = false,
 } = {}) {
   if (!transport || typeof transport.getObservability !== "function" || typeof transport.patchObservability !== "function") {
     fail("mutation transport must provide getObservability and patchObservability");
@@ -658,84 +774,111 @@ export async function mutateOwnedWindowObservability({
     fail("expectedSha256 must be a sha256 hex digest");
   }
 
-  let window = await store.read();
-  if (!window) fail("settings window is missing from durable store");
-  if (!window.restorer?.armed) fail("independent restorer must be armed before mutation");
-  // Refuse expired arm/enable before any provider GET/PATCH.
-  assertWindowMutable(window, now);
+  const run = async () => {
+    let window = await store.read();
+    if (!window) fail("settings window is missing from durable store");
+    if (!window.restorer?.armed) fail("independent restorer must be armed before mutation");
+    // Refuse expired/closed arm/enable before any provider GET/PATCH.
+    assertWindowMutable(window, now);
+    if (requireLiveRestorer) {
+      if (typeof assertRestorerReady !== "function") {
+        fail("live restorer readiness check is required before mutation");
+      }
+      assertRestorerReady(window, { now });
+    }
 
-  const beforeRaw = await transport.getObservability();
-  const before = normalizeObservability(beforeRaw);
-  const beforeSha = observabilitySha256(before);
-  if (beforeSha !== expectedSha256) {
-    return {
-      ok: false,
-      reason: "settings-changed-underneath",
-      before,
-      before_sha256: beforeSha,
-      expected_sha256: expectedSha256,
-      window,
-      concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
-    };
-  }
+    const windowId = window.window_id;
+    const beforeRaw = await transport.getObservability();
+    const before = normalizeObservability(beforeRaw);
+    const beforeSha = observabilitySha256(before);
+    if (beforeSha !== expectedSha256) {
+      return {
+        ok: false,
+        reason: "settings-changed-underneath",
+        before,
+        before_sha256: beforeSha,
+        expected_sha256: expectedSha256,
+        window,
+        concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
+      };
+    }
 
-  window = recordMutationIntent(window, {
-    phase,
-    beforeSha256: beforeSha,
-    intendedObservability: nextObservability,
-    now,
-  });
-  await store.write(window);
+    // Re-read under the same lock so a concurrent restorer cannot race the intent.
+    window = await store.read();
+    if (!window || window.window_id !== windowId) fail("stale window identity rejected");
+    assertWindowMutable(window, now);
 
-  let patchError = null;
-  try {
-    await transport.patchObservability(window.pending_mutation.intended_observability);
-  } catch (error) {
-    patchError = error;
-  }
+    window = recordMutationIntent(window, {
+      phase,
+      beforeSha256: beforeSha,
+      intendedObservability: nextObservability,
+      now,
+    });
+    await store.write(window, { expectedWindowId: windowId });
 
-  let afterRaw;
-  try {
-    afterRaw = await transport.getObservability();
-  } catch (error) {
-    // Intent remains durable; restorer reconciles via a later GET.
-    return {
-      ok: false,
-      reason: "readback-failed",
-      patch_error: patchError ? String(patchError?.message || patchError) : null,
-      readback_error: String(error?.message || error),
-      window,
-      concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
-    };
-  }
+    let patchError = null;
+    try {
+      await transport.patchObservability(window.pending_mutation.intended_observability);
+    } catch (error) {
+      patchError = error;
+    }
 
-  // Digests use normalization for equality; privacy/measurement confirmation
-  // must see the RAW provider GET so omit-defaults cannot fabricate proof.
-  const after = normalizeObservability(afterRaw);
-  const afterSha = observabilitySha256(after);
-  if (afterSha !== window.pending_mutation.after_sha256) {
-    // PATCH may have failed or a foreign writer won the race. Leave intent for restorer.
-    return {
-      ok: false,
-      reason: patchError ? "patch-failed-uncertain" : "readback-mismatch",
-      patch_error: patchError ? String(patchError?.message || patchError) : null,
-      before,
-      before_sha256: beforeSha,
-      after,
-      after_sha256: afterSha,
-      expected_after_sha256: window.pending_mutation.after_sha256,
-      window,
-      concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
-    };
-  }
+    let afterRaw;
+    try {
+      afterRaw = await transport.getObservability();
+    } catch (error) {
+      // Intent remains durable; restorer reconciles via a later GET.
+      return {
+        ok: false,
+        reason: "readback-failed",
+        patch_error: patchError ? String(patchError?.message || patchError) : null,
+        readback_error: String(error?.message || error),
+        window,
+        concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
+      };
+    }
 
-  if (patchError) {
-    // Applied then threw: RAW GET proves the intended after-state.
+    // Digests use normalization for equality; privacy/measurement confirmation
+    // must see the RAW provider GET so omit-defaults cannot fabricate proof.
+    const after = normalizeObservability(afterRaw);
+    const afterSha = observabilitySha256(after);
+    if (afterSha !== window.pending_mutation.after_sha256) {
+      // PATCH may have failed or a foreign writer won the race. Leave intent for restorer.
+      return {
+        ok: false,
+        reason: patchError ? "patch-failed-uncertain" : "readback-mismatch",
+        patch_error: patchError ? String(patchError?.message || patchError) : null,
+        before,
+        before_sha256: beforeSha,
+        after,
+        after_sha256: afterSha,
+        expected_after_sha256: window.pending_mutation.after_sha256,
+        window,
+        concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
+      };
+    }
+
+    if (patchError) {
+      // Applied then threw: RAW GET proves the intended after-state.
+      window = confirmOwnedSettings(window, afterRaw, { now });
+      await store.write(window, { expectedWindowId: windowId });
+      return {
+        ok: true,
+        recovered_from_patch_throw: true,
+        before,
+        before_sha256: beforeSha,
+        after: window.owned_observability,
+        after_sha256: afterSha,
+        after_raw: afterRaw,
+        window,
+        concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
+      };
+    }
+
     window = confirmOwnedSettings(window, afterRaw, { now });
-    await store.write(window);
+    await store.write(window, { expectedWindowId: windowId });
     return {
       ok: true,
-      recovered_from_patch_throw: true,
       before,
       before_sha256: beforeSha,
       after: window.owned_observability,
@@ -744,20 +887,10 @@ export async function mutateOwnedWindowObservability({
       window,
       concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
     };
-  }
-
-  window = confirmOwnedSettings(window, afterRaw, { now });
-  await store.write(window);
-  return {
-    ok: true,
-    before,
-    before_sha256: beforeSha,
-    after: window.owned_observability,
-    after_sha256: afterSha,
-    after_raw: afterRaw,
-    window,
-    concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
   };
+
+  if (alreadyLocked || typeof store.withLock !== "function") return run();
+  return store.withLock(run);
 }
 
 /** @deprecated Use mutateOwnedWindowObservability; kept as a thin alias for call sites. */
@@ -773,19 +906,36 @@ export async function compareAndSwapObservability(transport, options = {}) {
     nextObservability: options.nextObservability,
     phase: options.phase,
     now: options.now,
+    requireLiveRestorer: options.requireLiveRestorer === true,
+    assertRestorerReady: options.assertRestorerReady || null,
+    alreadyLocked: options.alreadyLocked === true,
   });
 }
 
-export async function runIndependentRestorer({ store, transport, now = new Date().toISOString() } = {}) {
+export async function runIndependentRestorer({
+  store,
+  transport,
+  now = new Date().toISOString(),
+  alreadyLocked = false,
+} = {}) {
   if (!store || typeof store.read !== "function" || typeof store.write !== "function") {
     fail("durable window store is required for the independent restorer");
   }
-  const window = await store.read();
-  if (!window) fail("settings window is missing");
-  if (!window.restorer?.armed) fail("restorer is not armed");
-  const restored = await restoreSettingsWindow(window, transport, { now });
-  await store.write(restored.window);
-  return restored;
+  const run = async () => {
+    const window = await store.read();
+    if (!window) fail("settings window is missing");
+    if (!window.restorer?.armed) fail("restorer is not armed");
+    const windowId = window.window_id;
+    const restored = await restoreSettingsWindow(window, transport, { now });
+    await store.write(restored.window, { expectedWindowId: windowId });
+    return restored;
+  };
+  if (alreadyLocked || typeof store.withLock !== "function") return run();
+  return store.withLock(run);
+}
+
+export function settingsCommandSucceeded(result) {
+  return SETTINGS_SUCCESS_STATUSES.includes(result?.status);
 }
 
 export function betaWorkerUrl({ accountId, workerId = DEFAULT_WORKER_ID, origin = "https://api.cloudflare.com/client/v4" } = {}) {

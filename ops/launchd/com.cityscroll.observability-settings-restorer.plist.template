@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.cityscroll.observability-settings-restorer</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>__NODE__</string>
+    <string>__STATE_ROOT__/run.mjs</string>
+    <string>--state-root</string>
+    <string>__STATE_ROOT__</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>__STATE_ROOT__</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>CLOUDFLARE_ACCOUNT_ID</key>
+    <string>__ACCOUNT_ID__</string>
+    <key>CLOUDFLARE_API_TOKEN_FILE</key>
+    <string>__TOKEN_FILE__</string>
+    <key>CITYSCROLL_OBSERVABILITY_RESTORER_STATE</key>
+    <string>__STATE_ROOT__</string>
+  </dict>
+  <key>RunAtLoad</key>
+  <false/>
+  <key>KeepAlive</key>
+  <dict>
+    <key>PathState</key>
+    <dict>
+      <key>__STATE_ROOT__/assigned-window.json</key>
+      <true/>
+    </dict>
+  </dict>
+  <key>StandardOutPath</key>
+  <string>__LOG_DIR__/restorer.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>__LOG_DIR__/restorer.err.log</string>
+</dict>
+</plist>

@@ -36,7 +36,17 @@ import {
   openSettingsWindow,
   privacyArmedObservability,
   runIndependentRestorer,
+  settingsCommandSucceeded,
 } from "./lib/worker_observability_settings.mjs";
+import {
+  DEFAULT_RESTORER_STATE_ROOT,
+  assertRestorerReady,
+  bindWindowToRestorer,
+  restorerPaths,
+  startSupervisedRestorerProcess,
+  waitForRestorerReady,
+} from "./lib/worker_observability_restorer.mjs";
+import { existsSync as fsExistsSync } from "node:fs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const WORKER_DIRECTORY = join(ROOT, "worker");
@@ -644,15 +654,35 @@ export async function runObservabilitySettingsCommand(argv, { env = process.env,
   if (command === "observability-window-open") {
     const baseline = normalizeObservability(await settings.getObservability());
     const durationSeconds = Number(arg(argv, "--duration-seconds") || MAX_COLLECTOR_SECONDS);
+    const stateRoot = env.CITYSCROLL_OBSERVABILITY_RESTORER_STATE || DEFAULT_RESTORER_STATE_ROOT;
     let window = openSettingsWindow({
       baseline,
       workerId: env.CLOUDFLARE_WORKER_ID || DEFAULT_WORKER_ID,
       accountIdSha256,
       durationSeconds,
     });
-    // Arm the independent restorer before any mutation can be attempted.
     window = armRestorer(window);
     await writeWindowState(windowPath, window);
+
+    // Ensure durable runner copies exist (install script is authoritative).
+    const paths = restorerPaths(stateRoot);
+    if (!fsExistsSync(paths.durableRunner)) {
+      throw new Error(`durable restorer runner missing at ${paths.durableRunner}; run tools/install_observability_settings_restorer.sh`);
+    }
+    const started = startSupervisedRestorerProcess({
+      windowPath,
+      windowId: window.window_id,
+      stateRoot,
+      env,
+    });
+    window = bindWindowToRestorer(window, {
+      pid: started.pid,
+      stateRoot,
+      restorerId: window.restorer.restorer_id,
+    });
+    await writeWindowState(windowPath, window);
+    await waitForRestorerReady({ window, stateRoot });
+    window = await readWindowState(windowPath);
     return {
       schema: "cityscroll.worker_observability_settings_window.v1",
       status: "captured",
@@ -660,6 +690,8 @@ export async function runObservabilitySettingsCommand(argv, { env = process.env,
       baseline_sha256: window.baseline_sha256,
       expires_at: window.expires_at,
       restorer_armed: window.restorer?.armed === true,
+      restorer_pid: window.restorer?.runtime?.pid || started.pid,
+      restorer_state_root: stateRoot,
       concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
       window_state: windowPath,
     };
@@ -674,6 +706,8 @@ export async function runObservabilitySettingsCommand(argv, { env = process.env,
       window = armRestorer(window);
       await store.write(window);
     }
+    const stateRoot = window.restorer?.runtime?.state_root || env.CITYSCROLL_OBSERVABILITY_RESTORER_STATE || DEFAULT_RESTORER_STATE_ROOT;
+    assertRestorerReady(window, { stateRoot });
     const armed = privacyArmedObservability(window.baseline_observability);
     const result = await mutateOwnedWindowObservability({
       transport: settings,
@@ -681,6 +715,7 @@ export async function runObservabilitySettingsCommand(argv, { env = process.env,
       expectedSha256: window.owned_sha256 || window.baseline_sha256,
       nextObservability: armed,
       phase: "privacy_armed",
+      assertRestorerReady: (current) => assertRestorerReady(current, { stateRoot }),
     });
     if (!result.ok) {
       return {
@@ -715,6 +750,8 @@ export async function runObservabilitySettingsCommand(argv, { env = process.env,
     if (!window.restorer?.armed) {
       throw new Error("independent restorer must be armed before enabling a measurement window");
     }
+    const stateRoot = window.restorer?.runtime?.state_root || env.CITYSCROLL_OBSERVABILITY_RESTORER_STATE || DEFAULT_RESTORER_STATE_ROOT;
+    assertRestorerReady(window, { stateRoot });
     const provedBeforeEnable = assertPrivacyArmedFromRawGet(await settings.getObservability());
     if (observabilitySha256(provedBeforeEnable) !== window.owned_sha256) {
       return {
@@ -733,6 +770,7 @@ export async function runObservabilitySettingsCommand(argv, { env = process.env,
       expectedSha256: window.owned_sha256,
       nextObservability: enabled,
       phase: "enabled",
+      assertRestorerReady: (current) => assertRestorerReady(current, { stateRoot }),
     });
     if (!result.ok) {
       return {
@@ -805,7 +843,9 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   try {
     const result = await runWorkerCostAcquisition(process.argv.slice(2));
     console.log(JSON.stringify(result, null, 2));
-    if (result.status !== "complete") process.exitCode = 2;
+    // Settings statuses (captured/privacy-armed/enabled/restored/ok) exit 0.
+    // Profile/warehouse keep requiring status=complete. Blocked/unknown => nonzero.
+    if (!settingsCommandSucceeded(result)) process.exitCode = 2;
   } catch (error) {
     console.log(JSON.stringify({
       schema: "cityscroll.worker_cost_acquisition.v1",

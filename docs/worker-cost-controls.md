@@ -110,21 +110,33 @@ warehouse experiments only when a live 0/1 flag is actually present; request
 order, wall time, and startup time never invent isolate class.
 
 A bounded observability settings window uses the beta Worker settings API. The
-harness captures the effective baseline first, arms an independent restorer,
-then write-ahead records intended before/after digests (fsynced) before any
-PATCH. Privacy arming keeps observability, logs, and traces disabled
-(`persist=false`, `redact_query_string=true`, empty destinations) and proves
-every privacy field by an explicit typed acknowledgement of the RAW provider GET
-before any enable (normalized omit-defaults are never accepted as proof).
-Expired captured windows refuse arm/enable before any PATCH; restore of already
-owned expired state remains allowed. Ownership is confirmed only after the RAW
-GET matches the write-ahead after-digest.
-Mutation control is window-owned read-modify-write: the Cloudflare beta Worker
-PATCH has no documented conditional update for observability settings, so this
-path never claims immunity to foreign concurrent writers. The independent
-restorer reconciles uncertain owned targets via GET, restores the captured
-baseline on expiry, failure, or successful completion (including unacknowledged
-applied mutations), and refuses if settings changed outside the owned window.
+harness captures the effective baseline first, then starts a supervised
+restorer process from durable copies under
+`~/.local/state/cityscroll-cost-control/observability-restorer/` (so controller
+death and disposal of the source checkout cannot strand an armed window). Before any PATCH the
+mutator requires an fsynced readiness handshake with that live restorer
+(matching `window_id`, `restorer_id`, pid, and fresh heartbeat). Write-ahead
+intended before/after digests are fsynced under the shared window lock before
+PATCH; the mutator and restorer serialize lifecycle updates through the same
+lock and reject stale or closed window identities. Privacy arming keeps
+observability, logs, and traces disabled (`persist=false`,
+`redact_query_string=true`, empty destinations) and proves every privacy field
+by an explicit typed acknowledgement of the RAW provider GET before any enable
+(normalized omit-defaults are never accepted as proof). Expired captured windows
+refuse arm/enable before any PATCH; restore of already owned expired state
+remains allowed. Ownership is confirmed only after the RAW GET matches the
+write-ahead after-digest. Mutation control is window-owned read-modify-write:
+the Cloudflare beta Worker PATCH has no documented conditional update for
+observability settings, so this path never claims immunity to foreign concurrent
+writers. The supervised restorer reconciles uncertain owned targets via GET,
+restores the captured baseline on expiry, failure, or successful completion
+(including unacknowledged applied mutations), and refuses if settings changed
+outside the owned window. Install with
+`tools/install_observability_settings_restorer.sh`; the kill switch is
+`observability-restorer.off` beside the durable state root. Settings CLI
+statuses `ok` / `captured` / `privacy-armed` / `enabled` / `restored` /
+`already-restored` exit 0; blocked or unknown exit nonzero so a failure never
+triggers a blind PATCH retry.
 
 ## Warehouse experiment and release gate
 

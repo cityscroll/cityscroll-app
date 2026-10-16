@@ -309,6 +309,7 @@ test("confirm ownership uses RAW GET so omit-heavy readback cannot pass after PA
       expectedSha256: window.baseline_sha256,
       nextObservability: armed,
       phase: "privacy_armed",
+      requireLiveRestorer: false,
       now: "2026-10-16T00:01:00.000Z",
     }),
     /persist must be present|destinations must be present/,
@@ -364,6 +365,7 @@ test("write-ahead intent is durable before PATCH and apply-then-throw still rest
     expectedSha256: window.baseline_sha256,
     nextObservability: privacyArmedObservability(BASELINE),
     phase: "privacy_armed",
+    requireLiveRestorer: false,
     now: "2026-10-16T00:01:00.000Z",
   });
 
@@ -418,6 +420,7 @@ test("apply-then-throw with failed GET leaves pending intent that restorer recon
     expectedSha256: window.baseline_sha256,
     nextObservability: armed,
     phase: "privacy_armed",
+    requireLiveRestorer: false,
     now: "2026-10-16T00:01:00.000Z",
   });
   assert.equal(result.ok, false);
@@ -512,6 +515,7 @@ test("foreign conflict refuses restore even after expiry", async () => {
     expectedSha256: window.baseline_sha256,
     nextObservability: privacyArmedObservability(BASELINE),
     phase: "privacy_armed",
+    requireLiveRestorer: false,
     now: "2026-10-16T00:00:30.000Z",
   });
   assert.equal(armedResult.ok, true);
@@ -545,6 +549,7 @@ test("settings-changed-underneath refuses PATCH (window-owned RMW, not provider 
     expectedSha256: window.baseline_sha256,
     nextObservability: privacyArmedObservability(BASELINE),
     phase: "privacy_armed",
+    requireLiveRestorer: false,
     now: "2026-10-16T00:01:00.000Z",
   });
   assert.equal(result.ok, false);
@@ -586,6 +591,7 @@ test("privacy arm path proves GET before any enable", async () => {
     expectedSha256: window.baseline_sha256,
     nextObservability: privacyArmedObservability(BASELINE),
     phase: "privacy_armed",
+    requireLiveRestorer: false,
     now: "2026-10-16T00:01:00.000Z",
   });
   assert.equal(result.ok, true);
@@ -605,6 +611,7 @@ test("compareAndSwapObservability alias requires durable store semantics", async
     nextObservability: privacyArmedObservability(BASELINE),
     store: fixture.store,
     phase: "privacy_armed",
+    requireLiveRestorer: false,
     now: "2026-10-16T00:01:00.000Z",
   });
   assert.equal(result.ok, true);
@@ -624,6 +631,7 @@ test("expiry receipt records and expired owned settings still restore", async ()
     expectedSha256: window.baseline_sha256,
     nextObservability: privacyArmedObservability(BASELINE),
     phase: "privacy_armed",
+    requireLiveRestorer: false,
     now: "2026-10-16T00:00:30.000Z",
   });
   const expiry = markWindowExpiry(armedResult.window, {
