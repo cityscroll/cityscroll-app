@@ -6,6 +6,7 @@ import test from "node:test";
 
 import { contentAddressedEntry } from "./build_worker_route_read_models.mjs";
 import {
+  ROUTE_MANIFEST_KEYS,
   ROUTE_PUBLICATION_STATE_KEY,
   publishRouteReadModels,
 } from "./lib/worker_route_publication.mjs";
@@ -34,10 +35,11 @@ function fixture(version = "generation-1", nearRows = [{ id: "near-1" }]) {
   return dir;
 }
 
-function fakeWrangler({ failAtPut = null } = {}) {
+function fakeWrangler({ failAtPut = null, failAfterApplyAtPut = null } = {}) {
   const values = new Map();
   const calls = [];
   let puts = 0;
+  let failed = false;
   return {
     values,
     calls,
@@ -47,12 +49,19 @@ function fakeWrangler({ failAtPut = null } = {}) {
         return { stdout: values.get(ROUTE_PUBLICATION_STATE_KEY) || "" };
       }
       puts += 1;
-      if (puts === failAtPut) throw new Error("injected publication failure");
+      if (!failed && puts === failAtPut) {
+        failed = true;
+        throw new Error("injected publication failure");
+      }
       if (args[1] === "bulk") {
         for (const row of JSON.parse(readFileSync(args[3], "utf8"))) values.set(row.key, row.value);
       } else if (args[1] === "key" && args[2] === "put") {
         const path = args[args.indexOf("--path") + 1];
         values.set(args[3], readFileSync(path, "utf8"));
+      }
+      if (!failed && puts === failAfterApplyAtPut) {
+        failed = true;
+        throw new Error("injected publication response loss");
       }
       return { stdout: "" };
     },
@@ -64,6 +73,8 @@ test("an identical code-only release performs no route or manifest puts", async 
   const remote = fakeWrangler();
   try {
     const first = await publishRouteReadModels({ routeDir: dir, invoke: remote.invoke });
+    assert.deepEqual(first.attempted, { kv_reads: 1, route_key_puts: 2, manifest_puts: 2, state_puts: 1 });
+    assert.deepEqual(first.confirmed, { route_key_puts: 2, manifest_puts: 2, state_puts: 1 });
     assert.equal(first.confirmed.route_key_puts, 2);
     assert.equal(first.confirmed.manifest_puts, 2);
     const callsAfterFirst = remote.calls.length;
@@ -74,6 +85,7 @@ test("an identical code-only release performs no route or manifest puts", async 
     }));
     const second = await publishRouteReadModels({ routeDir: dir, invoke: remote.invoke });
     assert.equal(second.decision, "unchanged-content");
+    assert.deepEqual(second.attempted, { kv_reads: 1, route_key_puts: 0, manifest_puts: 0, state_puts: 0 });
     assert.deepEqual(second.confirmed, { route_key_puts: 0, manifest_puts: 0, state_puts: 0 });
     assert.equal(remote.calls.length, callsAfterFirst + 1, "second publication performs only the state read");
   } finally {
@@ -169,7 +181,16 @@ test("state reads preserve authentication and non-404 provider failures", async 
             throw error;
           },
         }),
-        new RegExp(message.split(" ")[0]),
+        (error) => {
+          assert.match(error.message, new RegExp(message.split(" ")[0]));
+          assert.deepEqual(error.publication_receipt.attempted, {
+            kv_reads: 1, route_key_puts: 0, manifest_puts: 0, state_puts: 0,
+          });
+          assert.deepEqual(error.publication_receipt.confirmed, {
+            route_key_puts: 0, manifest_puts: 0, state_puts: 0,
+          });
+          return true;
+        },
       );
     }
   } finally {
@@ -205,19 +226,166 @@ test("a failed write never advances state and an exact retry completes safely", 
     const prior = remote.values.get(ROUTE_PUBLICATION_STATE_KEY);
     const failing = fakeWrangler({ failAtPut: 2 });
     failing.values.set(ROUTE_PUBLICATION_STATE_KEY, prior);
+    failing.values.set(ROUTE_MANIFEST_KEYS.nearYou, remote.values.get(ROUTE_MANIFEST_KEYS.nearYou));
+    failing.values.set(ROUTE_MANIFEST_KEYS.meetings, remote.values.get(ROUTE_MANIFEST_KEYS.meetings));
     await assert.rejects(
       () => publishRouteReadModels({ routeDir: changed, invoke: failing.invoke }),
       (error) => {
+        assert.deepEqual(error.publication_receipt.planned, {
+          kv_reads: 1, route_key_puts: 1, manifest_puts: 2, state_puts: 1,
+        });
+        assert.deepEqual(error.publication_receipt.attempted, {
+          kv_reads: 1, route_key_puts: 1, manifest_puts: 1, state_puts: 0,
+        });
+        assert.deepEqual(error.publication_receipt.confirmed, {
+          route_key_puts: 1, manifest_puts: 0, state_puts: 0,
+        });
         assert.equal(error.publication_receipt.state_advanced, false);
         return true;
       },
     );
     assert.equal(failing.values.get(ROUTE_PUBLICATION_STATE_KEY), prior);
+    assert.equal(failing.values.get(ROUTE_MANIFEST_KEYS.nearYou), remote.values.get(ROUTE_MANIFEST_KEYS.nearYou));
+    assert.equal(failing.values.get(ROUTE_MANIFEST_KEYS.meetings), remote.values.get(ROUTE_MANIFEST_KEYS.meetings));
     const retried = await publishRouteReadModels({ routeDir: changed, invoke: failing.invoke });
+    assert.deepEqual(retried.attempted, { kv_reads: 1, route_key_puts: 1, manifest_puts: 2, state_puts: 1 });
+    assert.deepEqual(retried.confirmed, { route_key_puts: 1, manifest_puts: 2, state_puts: 1 });
     assert.equal(retried.confirmed.state_puts, 1);
     assert.notEqual(failing.values.get(ROUTE_PUBLICATION_STATE_KEY), prior);
+    assert.equal(failing.values.get(ROUTE_MANIFEST_KEYS.nearYou), readFileSync(join(changed, "near-you.manifest.json"), "utf8"));
+    assert.equal(failing.values.get(ROUTE_MANIFEST_KEYS.meetings), readFileSync(join(changed, "meetings.manifest.json"), "utf8"));
   } finally {
     rmSync(baseline, { recursive: true, force: true });
     rmSync(changed, { recursive: true, force: true });
+  }
+});
+
+const FAILURE_BOUNDARIES = [
+  {
+    name: "bulk before apply",
+    put: 1,
+    afterApply: false,
+    attempted: { kv_reads: 1, route_key_puts: 1, manifest_puts: 0, state_puts: 0 },
+    confirmed: { route_key_puts: 0, manifest_puts: 0, state_puts: 0 },
+    stateAdvanced: false,
+  },
+  {
+    name: "bulk after apply",
+    put: 1,
+    afterApply: true,
+    attempted: { kv_reads: 1, route_key_puts: 1, manifest_puts: 0, state_puts: 0 },
+    confirmed: { route_key_puts: 0, manifest_puts: 0, state_puts: 0 },
+    stateAdvanced: false,
+  },
+  {
+    name: "first manifest before apply",
+    put: 2,
+    afterApply: false,
+    attempted: { kv_reads: 1, route_key_puts: 1, manifest_puts: 1, state_puts: 0 },
+    confirmed: { route_key_puts: 1, manifest_puts: 0, state_puts: 0 },
+    stateAdvanced: false,
+  },
+  {
+    name: "first manifest after apply",
+    put: 2,
+    afterApply: true,
+    attempted: { kv_reads: 1, route_key_puts: 1, manifest_puts: 1, state_puts: 0 },
+    confirmed: { route_key_puts: 1, manifest_puts: 0, state_puts: 0 },
+    stateAdvanced: false,
+  },
+  {
+    name: "second manifest after apply",
+    put: 3,
+    afterApply: true,
+    attempted: { kv_reads: 1, route_key_puts: 1, manifest_puts: 2, state_puts: 0 },
+    confirmed: { route_key_puts: 1, manifest_puts: 1, state_puts: 0 },
+    stateAdvanced: false,
+  },
+  {
+    name: "state before apply",
+    put: 4,
+    afterApply: false,
+    attempted: { kv_reads: 1, route_key_puts: 1, manifest_puts: 2, state_puts: 1 },
+    confirmed: { route_key_puts: 1, manifest_puts: 2, state_puts: 0 },
+    stateAdvanced: null,
+  },
+  {
+    name: "state after apply with response loss",
+    put: 4,
+    afterApply: true,
+    attempted: { kv_reads: 1, route_key_puts: 1, manifest_puts: 2, state_puts: 1 },
+    confirmed: { route_key_puts: 1, manifest_puts: 2, state_puts: 0 },
+    stateAdvanced: null,
+    retryUnchanged: true,
+  },
+];
+
+for (const boundary of FAILURE_BOUNDARIES) {
+  test(`failure receipt and retry are truthful at the ${boundary.name} boundary`, async () => {
+    const baseline = fixture();
+    const changed = fixture("generation-2", [{ id: "near-2" }]);
+    const seeded = fakeWrangler();
+    try {
+      await publishRouteReadModels({ routeDir: baseline, invoke: seeded.invoke });
+      const prior = seeded.values.get(ROUTE_PUBLICATION_STATE_KEY);
+      const failing = fakeWrangler(boundary.afterApply
+        ? { failAfterApplyAtPut: boundary.put }
+        : { failAtPut: boundary.put });
+      failing.values.set(ROUTE_PUBLICATION_STATE_KEY, prior);
+      failing.values.set(ROUTE_MANIFEST_KEYS.nearYou, seeded.values.get(ROUTE_MANIFEST_KEYS.nearYou));
+      failing.values.set(ROUTE_MANIFEST_KEYS.meetings, seeded.values.get(ROUTE_MANIFEST_KEYS.meetings));
+
+      await assert.rejects(
+        () => publishRouteReadModels({ routeDir: changed, invoke: failing.invoke }),
+        (error) => {
+          assert.deepEqual(error.publication_receipt.planned, {
+            kv_reads: 1, route_key_puts: 1, manifest_puts: 2, state_puts: 1,
+          });
+          assert.deepEqual(error.publication_receipt.attempted, boundary.attempted);
+          assert.deepEqual(error.publication_receipt.confirmed, boundary.confirmed);
+          assert.equal(error.publication_receipt.state_advanced, boundary.stateAdvanced);
+          return true;
+        },
+      );
+
+      if (boundary.retryUnchanged) {
+        assert.notEqual(failing.values.get(ROUTE_PUBLICATION_STATE_KEY), prior);
+      } else {
+        assert.equal(failing.values.get(ROUTE_PUBLICATION_STATE_KEY), prior);
+      }
+
+      const retried = await publishRouteReadModels({ routeDir: changed, invoke: failing.invoke });
+      if (boundary.retryUnchanged) {
+        assert.equal(retried.decision, "unchanged-content");
+        assert.deepEqual(retried.attempted, { kv_reads: 1, route_key_puts: 0, manifest_puts: 0, state_puts: 0 });
+        assert.deepEqual(retried.confirmed, { route_key_puts: 0, manifest_puts: 0, state_puts: 0 });
+      } else {
+        assert.equal(retried.decision, "changed-content");
+        assert.deepEqual(retried.attempted, { kv_reads: 1, route_key_puts: 1, manifest_puts: 2, state_puts: 1 });
+        assert.deepEqual(retried.confirmed, { route_key_puts: 1, manifest_puts: 2, state_puts: 1 });
+        assert.equal(retried.state.content_version, JSON.parse(failing.values.get(ROUTE_PUBLICATION_STATE_KEY)).content_version);
+      }
+      assert.match(JSON.parse(failing.values.get(ROUTE_PUBLICATION_STATE_KEY)).content_version, /^sha256:[a-f0-9]{64}$/);
+      assert.equal(failing.values.get(ROUTE_MANIFEST_KEYS.nearYou), readFileSync(join(changed, "near-you.manifest.json"), "utf8"));
+      assert.equal(failing.values.get(ROUTE_MANIFEST_KEYS.meetings), readFileSync(join(changed, "meetings.manifest.json"), "utf8"));
+    } finally {
+      rmSync(baseline, { recursive: true, force: true });
+      rmSync(changed, { recursive: true, force: true });
+    }
+  });
+}
+
+test("a supplied prior state avoids an unissued KV read", async () => {
+  const dir = fixture();
+  const remote = fakeWrangler();
+  try {
+    const first = await publishRouteReadModels({ routeDir: dir, invoke: remote.invoke });
+    const before = remote.calls.length;
+    const result = await publishRouteReadModels({ routeDir: dir, invoke: remote.invoke, previousState: first.state });
+    assert.equal(result.decision, "unchanged-content");
+    assert.deepEqual(result.attempted, { kv_reads: 0, route_key_puts: 0, manifest_puts: 0, state_puts: 0 });
+    assert.equal(remote.calls.length, before);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
   }
 });
