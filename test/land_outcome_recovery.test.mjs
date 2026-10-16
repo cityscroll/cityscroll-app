@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
-import { buildZapOutcomeRecord, refreshZapOutcomes, handleZapOutcomes, kvKey } from "../worker/src/zap_outcomes.mjs";
+import { buildZapOutcomeRecord, prewarmOneZapOutcome, refreshZapOutcomes, handleZapOutcomes, kvKey } from "../worker/src/zap_outcomes.mjs";
 import * as phaseTools from "../site/land_phase_spine.mjs";
 import { compactZapOutcomeRecord, buildLandDefaultSnapshot } from "../tools/lib/batch_precompute_snapshots.mjs";
 
@@ -150,9 +150,15 @@ function browser(){
     landPipelinePositionHTML:()=>null, landStatutoryDeadlineHTML:()=>"",
     landPhaseAggregateHTML:a=>a.title,landSpineEventRowHTML:e=>e.title,
     landSpineLagHTML:()=>"",landSpineGapsHTML:()=>"",landZoningStatisticsHTML:()=>"",
+    document:{contains:()=>true},ensureLandPhaseSpineTools:async()=>({}),
+    paintProjectConnections:async()=>{},paintConnectedCalendar:()=>{},
+    landOutcomesHTML:r=>`stage:${r.stage}`,landOutcomeSnapshotHTML:r=>`stage:${r.stage}`,
+    bindLandSpineUI:()=>{},paintLandActionRail:()=>{},$:()=>null,
+    ensureProjectConnectionsTools:async()=>({projectConnectionsPayloadState:()=>"available"}),
+    landOutcomeRecordIsPresent:()=>true,reportLandOutcomesReady:()=>{},
     ZAP_OUTCOMES_MEM:new Map(),ZAP_OUTCOMES_MEM_TTL:300000,
   });
-  vm.runInContext(["landOutcomeEvidenceState","landOutcomeFreshnessHTML","landOutcomeRecordForDisplay","landPhaseSpineHTML","seedLandOutcomeSnapshot","zapOutcomesMemGet","fetchZapOutcomesPayload"].map(fn).join("\n"),c);
+  vm.runInContext(["landOutcomeEvidenceState","landOutcomeFreshnessHTML","landOutcomeRecordForDisplay","landPhaseSpineHTML","seedLandOutcomeSnapshot","zapOutcomesMemGet","fetchZapOutcomesPayload","loadZapOutcomes"].map(fn).join("\n"),c);
   return c;
 }
 
@@ -208,6 +214,19 @@ test("stale evidence keeps its vintage through new bundles, session reuse, faile
   assert.equal(c.landOutcomeFreshnessHTML(recovered),"");
 });
 
+test("expired live evidence revalidates and repaints retained stage after failure",async()=>{
+  const c=browser();
+  const id="2026K0233";
+  const record={project_id:id,generated_at:new Date().toISOString(),stage:"borough_president",filled:true,spine:{events:[]}};
+  c.ZAP_OUTCOMES_MEM.set(id,{data:{ok:true,record},at:Date.now()-c.ZAP_OUTCOMES_MEM_TTL-1});
+  c.workerFetch=async()=>new Response("blocked",{status:403});
+  const el={innerHTML:""};
+  await c.loadZapOutcomes({project_id:id},el);
+  assert.match(el.innerHTML,/land_outcome_update_failed/);
+  assert.match(el.innerHTML,/stage:borough_president/);
+  assert.equal(c.zapOutcomesMemGet(id).data.record.generated_at,record.generated_at);
+});
+
 test("real acquisition rejects timeout, HTTP error and malformed JSON without replacing good evidence",async()=>{
   const original=globalThis.fetch;
   try{
@@ -223,6 +242,44 @@ test("real acquisition rejects timeout, HTTP error and malformed JSON without re
       assert.equal(result.status,"failed");
       assert.deepEqual(JSON.parse(rows.get(kvKey(previous.project_id))),previous);
     }
+  }finally{globalThis.fetch=original;}
+});
+
+test("partial required-source acquisitions retain the prior complete observation",async()=>{
+  const original=globalThis.fetch;
+  const id="PARTIAL1";
+  const previous={project_id:id,join:{matched:true},generated_at:"2026-09-28T00:00:00Z",
+    open_data:{project_id:id,project_name:"Retained"},city_record_notices:[{request_id:"retained"}]};
+  const projectFixture=structuredClone(fixture);
+  projectFixture.data.id=id;
+  projectFixture.data.attributes["dcp-name"]=id;
+  try{
+    for(const unavailable of ["open-data","city-record"]){
+      const rows=new Map([[kvKey(id),JSON.stringify(previous)]]);
+      const env={ALERT_STATE:{get:async k=>rows.get(k)||null,put:async(k,v)=>rows.set(k,v)}};
+      globalThis.fetch=async url=>{
+        const value=String(url);
+        if(value.includes("herokuapp.com")) return new Response(JSON.stringify(projectFixture));
+        if(unavailable==="open-data"&&value.includes("hgx4-8ukb")) return new Response("blocked",{status:503});
+        if(unavailable==="city-record"&&value.includes("dg92-zbpx")) return new Response("blocked",{status:503});
+        return new Response(JSON.stringify(unavailable==="city-record"?[{
+          project_id:id,project_name:"Fresh",ulurp_numbers:"C240046HAM",actions:"ZM",
+        }]:[]));
+      };
+      const result=await prewarmOneZapOutcome(env,id,{force:true,
+        build:projectId=>buildZapOutcomeRecord(projectId,{fetchBbl:false,lookupDoc:{rows:[]}})});
+      assert.equal(result.status,"failed",unavailable);
+      assert.deepEqual(JSON.parse(rows.get(kvKey(id))),previous,unavailable);
+      assert.match(JSON.parse(rows.get(`${kvKey(id)}:attempt`)).reason,/source-unavailable/);
+    }
+    const rows=new Map();
+    const env={ALERT_STATE:{get:async k=>rows.get(k)||null,put:async(k,v)=>rows.set(k,v)}};
+    globalThis.fetch=async url=>String(url).includes("herokuapp.com")
+      ? new Response(JSON.stringify(projectFixture)) : new Response("[]");
+    const emptyResult=await prewarmOneZapOutcome(env,id,{force:true,
+      build:projectId=>buildZapOutcomeRecord(projectId,{fetchBbl:false,lookupDoc:{rows:[]}})});
+    assert.equal(emptyResult.status,"computed");
+    assert.equal(JSON.parse(rows.get(kvKey(id))).project_id,id);
   }finally{globalThis.fetch=original;}
 });
 

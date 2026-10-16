@@ -1677,7 +1677,7 @@ async function loadZapOutcomes(r, el, selection){
       || connectionState!=="available"
     );
     if(landOutcomeRecordIsPresent(record)) reportLandOutcomesReady(record);
-    if(!staleStatic){
+    if(!staleStatic&&!warm.expired){
       if(!landOutcomeRecordIsPresent(record)) reportLandOutcomesReady(record);
       return;
     }

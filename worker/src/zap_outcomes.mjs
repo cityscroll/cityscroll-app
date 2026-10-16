@@ -55,6 +55,12 @@ const CITY_RECORD_SELECT = [
   "other_info_1", "other_info_2", "other_info_3",
   "printout_1", "printout_2", "printout_3",
 ].join(",");
+const sourceAcquisitionState = new WeakMap();
+
+function markSourceAcquisition(value, status) {
+  sourceAcquisitionState.set(value, status);
+  return value;
+}
 
 // Sell-facing land universe for daily write-ahead prewarm. Order is priority:
 // public-review first (what the default Land list shows), then noticed/active/filed.
@@ -227,6 +233,12 @@ export async function prewarmOneZapOutcome(env, projectId, {
     if (!record || normProjectId(record.project_id) !== normProjectId(id)
       || record.join?.matched !== true || !Number.isFinite(Date.parse(record.generated_at))) {
       throw new Error(record?.join?.reason || "invalid-acquisition");
+    }
+    const unavailableSources = Object.entries(sourceAcquisitionState.get(record) || {})
+      .filter(([, status]) => status !== "ok")
+      .map(([source]) => source);
+    if (unavailableSources.length) {
+      throw new Error(`source-unavailable:${unavailableSources.join(",")}`);
     }
     await kvPutRecord(env, record);
     await env.ALERT_STATE.put(`${kvKey(id)}:attempt`, JSON.stringify({
@@ -418,7 +430,7 @@ export async function fetchOpenDataRow(projectId, { lookupDoc } = {}) {
   // WH-05: instant hit from live KV lookup (or committed twin) before live SODA.
   const wh = lookupZapFromWarehouseMaterialization(id, lookupDoc);
   if (wh.hit && wh.row) {
-    return { ...wh.row, lookup_path: "warehouse" };
+    return markSourceAcquisition({ ...wh.row, lookup_path: "warehouse" }, "ok");
   }
 
   // Live SODA fallback when the materialization lacks this project_id.
@@ -430,14 +442,15 @@ export async function fetchOpenDataRow(projectId, { lookupDoc } = {}) {
     + `&$where=${encodeURIComponent(where)}&$limit=1`;
   try {
     const rows = await fetchJson(url);
+    if (!Array.isArray(rows)) throw new Error("invalid-open-data-response");
     if (Array.isArray(rows) && rows[0]) {
       const shaped = shapeZapLookupRow(rows[0]);
-      return { ...(shaped || rows[0]), lookup_path: "soda" };
+      return markSourceAcquisition({ ...(shaped || rows[0]), lookup_path: "soda" }, "ok");
     }
   } catch {
-    // Fail-soft: empty shell so spine/join can still proceed with project_id.
+    return markSourceAcquisition({ project_id: id, lookup_path: "soda" }, "unavailable");
   }
-  return { project_id: id, lookup_path: "soda" };
+  return markSourceAcquisition({ project_id: id, lookup_path: "soda" }, "ok");
 }
 
 async function fetchCityRecordCandidates(openData, projectName) {
@@ -456,6 +469,7 @@ async function fetchCityRecordCandidates(openData, projectName) {
   if (!terms.length) return { rows: [], status: "ok" };
 
   let successful = 0;
+  let failed = 0;
   const rows = [];
   const seen = new Set();
   await Promise.all(terms.map(async (term) => {
@@ -463,6 +477,7 @@ async function fetchCityRecordCandidates(openData, projectName) {
       + `&$q=${encodeURIComponent(term)}&$order=start_date DESC&$limit=40`;
     try {
       const found = await fetchJson(url, 10000);
+      if (!Array.isArray(found)) throw new Error("invalid-city-record-response");
       successful++;
       for (const row of found || []) {
         const id = String(row?.request_id || "");
@@ -471,10 +486,10 @@ async function fetchCityRecordCandidates(openData, projectName) {
         rows.push(row);
       }
     } catch {
-      // A partial query failure must not erase successful strict-token candidates.
+      failed++;
     }
   }));
-  return { rows, status: successful ? "ok" : "unavailable" };
+  return { rows, status: failed ? (successful ? "partial" : "unavailable") : "ok" };
 }
 
 /**
@@ -637,9 +652,14 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true, lookup
   });
   // Charter deadlines remain authoritative; this warehouse layer adds
   // historical context only after its out-of-time scorecard clears the bar.
-  return attachZoningStatistics(withStatutoryClock, zoningStatistics, {
+  const finalRecord = attachZoningStatistics(withStatutoryClock, zoningStatistics, {
     generatedAt: assembled.generated_at,
   });
+  sourceAcquisitionState.set(finalRecord, {
+    open_data: sourceAcquisitionState.get(openData) || "unavailable",
+    city_record: candidateResult.status,
+  });
+  return finalRecord;
 }
 
 /** Cap notice payload size while keeping body + venue fields for participation steps. */
