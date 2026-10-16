@@ -1,6 +1,6 @@
 /**
- * Characterization: daily write-ahead prewarm for Land ZAP outcomes.
- * Cold GET /zap-outcomes is multi-source (~12s); prewarm fills KV so public reads hit cache.
+ * Characterization: bounded write-ahead materialization for Land ZAP outcomes.
+ * Scheduled and authenticated refreshes fill KV; public GET reads only retained observations.
  *
  *   node --test worker/test/zap_outcomes_prewarm.test.mjs
  */
