@@ -455,6 +455,8 @@ function milestoneEvent(milestone, record) {
     id: `zap-milestone:${milestone.id || milestone.sequence || milestone.time.value}`,
     kind: "zap_milestone",
     title: milestone.title,
+    source_title: milestone.source_title,
+    source_title_field: milestone.source_title_field,
     detail: milestone.outcome || milestone.status || null,
     status: milestone.status,
     outcome: milestone.outcome,

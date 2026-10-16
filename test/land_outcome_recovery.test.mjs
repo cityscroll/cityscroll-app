@@ -136,10 +136,13 @@ const fixture = {
     }
   ]
 };
-function browser(){
+const TEST_NOW="2026-10-16T20:00:00.000Z";
+const TEST_NOW_MS=Date.parse(TEST_NOW);
+
+function browser({now=()=>TEST_NOW_MS}={}){
   let response=async()=>new Response("blocked",{status:403});
   const runtime=createLandOutcomeRuntime({
-    now:()=>Date.now(),
+    now,
     normalizeRecord:r=>r,
     translate:(key,args={})=>[key,...Object.values(args)].join(" "),
     formatDate:s=>s,
@@ -152,7 +155,7 @@ function browser(){
 
 test("browser outcome runtime supplies its production clock by default",()=>{
   const runtime=createLandOutcomeRuntime();
-  const record={project_id:"CLOCK1",generated_at:new Date().toISOString(),spine:{events:[]}};
+  const record={project_id:"CLOCK1",generated_at:TEST_NOW,spine:{events:[]}};
   runtime.seed({generated_at:record.generated_at,outcomes:{by_project:{CLOCK1:record}}});
   assert.equal(runtime.get("CLOCK1").data.record,record);
 });
@@ -163,7 +166,7 @@ test("notice refresh bypasses a warm static snapshot and retains it on failure",
   const stale={project_id:id,generated_at:"2026-10-02T00:00:00Z",stage:"community_board",spine:{events:[]}};
   runtime.seed({generated_at:stale.generated_at,outcomes:{by_project:{[id]:stale}}});
   let requests=0;
-  const fresh={...stale,generated_at:new Date().toISOString(),stage:"borough_president"};
+  const fresh={...stale,generated_at:TEST_NOW,stage:"borough_president"};
   setResponse(async()=>{
     requests+=1;
     return new Response(JSON.stringify({ok:true,record:fresh}));
@@ -209,6 +212,31 @@ test("frozen publisher evidence refreshes older CB cache through materializer, e
   }finally{globalThis.fetch=original;}
 });
 
+test("raw completed hearing remains CPC progress until the publisher vote",async()=>{
+  const original=globalThis.fetch;
+  const completedHearing=structuredClone(fixture);
+  const milestone=name=>completedHearing.included.find(item=>item.attributes?.milestonename===name).attributes;
+  Object.assign(milestone("Borough President Referral"),{
+    statuscode:"Completed",
+    "dcp-actualenddate":"2026-11-03T04:00:00.000Z",
+  });
+  Object.assign(milestone("CPC Public Meeting - Public Hearing"),{
+    statuscode:"Completed",
+    "dcp-actualstartdate":"2026-11-11T04:00:00.000Z",
+    "dcp-actualenddate":"2026-11-13T04:00:00.000Z",
+  });
+  globalThis.fetch=async url=>new Response(JSON.stringify(String(url).includes("herokuapp.com")?completedHearing:[]));
+  try{
+    const record=await buildZapOutcomeRecord("2026K0233",{fetchBbl:false});
+    const hearing=record.spine.events.find(event=>event.id.startsWith("zap-milestone:2abdc83a"));
+    assert.equal(hearing.title,"City Planning Commission Review");
+    assert.equal(hearing.source_title,"CPC Public Meeting - Public Hearing");
+    assert.equal(hearing.status,"Completed");
+    const view=phaseTools.buildLandPhaseView(record.spine,record);
+    assert.equal(view.current.phase_id,"cpc");
+  }finally{globalThis.fetch=original;}
+});
+
 test("stale evidence keeps its vintage through new bundles, session reuse, failed load and recovery",async()=>{
   const {runtime,setResponse}=browser();
   const record={project_id:"2026K0233",generated_at:"2026-09-28T00:00:00Z",filled:true,spine:{events:[]}};
@@ -218,13 +246,13 @@ test("stale evidence keeps its vintage through new bundles, session reuse, faile
   const staleDisplay=runtime.display(payload);
   assert.equal(staleDisplay.record.evidence_stale,true);
   assert.match(staleDisplay.freshness,/2026-09-28/);
-  runtime.cache.get(record.project_id).at=Date.now()-runtime.ttlMs-1;
+  runtime.cache.get(record.project_id).at=TEST_NOW_MS-runtime.ttlMs-1;
   assert.equal(runtime.get(record.project_id).expired,true);
   assert.equal(await runtime.fetch(record.project_id,{allowStatic:false}),null);
   const failedDisplay=runtime.display(null,{fallback:runtime.get(record.project_id).data,failed:true});
   assert.match(failedDisplay.freshness,/land_outcome_update_failed/);
   assert.equal(failedDisplay.record.generated_at,record.generated_at);
-  const fresh={...record,generated_at:new Date().toISOString()};
+  const fresh={...record,generated_at:TEST_NOW};
   setResponse(async()=>new Response(JSON.stringify({ok:true,stale:false,record:fresh})));
   await runtime.fetch(record.project_id,{allowStatic:false});
   runtime.seed(snapshot);
@@ -236,8 +264,8 @@ test("stale evidence keeps its vintage through new bundles, session reuse, faile
 test("expired live evidence revalidates and repaints retained stage after failure",async()=>{
   const {runtime}=browser();
   const id="2026K0233";
-  const record={project_id:id,generated_at:new Date().toISOString(),stage:"borough_president",filled:true,spine:{events:[]}};
-  runtime.cache.set(id,{data:{ok:true,record},at:Date.now()-runtime.ttlMs-1});
+  const record={project_id:id,generated_at:TEST_NOW,stage:"borough_president",filled:true,spine:{events:[]}};
+  runtime.cache.set(id,{data:{ok:true,record},at:TEST_NOW_MS-runtime.ttlMs-1});
   assert.equal(await runtime.fetch(id,{allowStatic:false}),null);
   const fallback=runtime.get(id).data;
   const display=runtime.display(null,{fallback,failed:true});

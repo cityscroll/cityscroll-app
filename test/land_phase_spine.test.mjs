@@ -572,32 +572,6 @@ test("hearing notices and occurrence alone do not complete Borough President rev
   }
 });
 
-test("a completed ZAP public hearing does not advance past a planned CPC vote", () => {
-  const hearing = {
-    kind: "zap_milestone",
-    title: "CPC Public Meeting - Public Hearing",
-    status: "Completed",
-    time: { value: "2026-11-13", certainty: "actual" },
-  };
-  const vote = {
-    kind: "zap_milestone",
-    title: "CPC Public Meeting - Vote",
-    status: "Not Started",
-    time: { value: "2026-11-24", certainty: "planned" },
-  };
-  const council = {
-    kind: "zap_milestone",
-    title: "City Council Review",
-    status: "Not Started",
-    time: { value: "2026-11-25", certainty: "planned" },
-  };
-  const pointer = deriveLandCurrentPhaseId({
-    byPhase: { cpc: [hearing, vote], city_council: [council] },
-    events: [hearing, vote, council],
-  });
-  assert.equal(pointer.phase_id, "cpc");
-});
-
 test("completed votes and submitted dispositions remain terminal stage evidence", () => {
   const council = {
     kind: "zap_milestone",

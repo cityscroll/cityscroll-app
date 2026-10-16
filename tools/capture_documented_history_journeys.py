@@ -674,6 +674,18 @@ def write_hermetic_manifest(receipt: dict) -> None:
             capture["local_capture_sha256"] = measurement["capture_sha256"]
         else:
             capture.pop("local_capture_sha256", None)
+    production = manifest.get("production_measurement")
+    run_receipt = production.get("run_receipt") if isinstance(production, dict) else None
+    if isinstance(run_receipt, dict):
+        run_receipt["retained_measurement"] = {
+            "revision": receipt["repository_revision"],
+            "inputs_ref": "#/measurement_provenance/inputs",
+        }
+        production["run_receipt_sha256"] = sha256_text(json.dumps(
+            run_receipt,
+            sort_keys=True,
+            separators=(",", ":"),
+        ))
     MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
 

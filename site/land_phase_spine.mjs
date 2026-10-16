@@ -215,7 +215,10 @@ function eventIsActualProgress(event) {
 function eventIsHearing(event) {
   if (event?.kind === "city_record_hearing") return true;
   if (event?.kind !== "zap_milestone") return false;
-  const description = [event?.title, event?.detail, event?.outcome].filter(Boolean).join(" ").toLowerCase();
+  const description = [event?.title, event?.source_title, event?.detail, event?.outcome]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
   return /\bhearing\b/.test(description);
 }
 

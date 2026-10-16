@@ -10,7 +10,7 @@
     "state": "measured",
     "runner": "python3 tools/capture_documented_history_journeys.py --production --landed-commit c2a407d7d24258bf34153f85e56796081fa42bcd --write-manifest",
     "requirement": "The runner refuses a non-main pin, a served revision that does not contain it, a revision change during capture, absent served materializations, a missing rendered journey, or a served failure control that is not intercepted, does not show the unavailable state, or does not recover through its retry link.",
-    "run_receipt_sha256": "8fd60d4c2824427b4135c09116e1cd2e8e4dca288c58bf9ab4dc4cd8cc575fe7",
+    "run_receipt_sha256": "aad3ba0cb70fe4552c6db13910351d8fbfbc1ffcb5c1405b21bd2de0b986849b",
     "run_receipt": {
       "schema": "cityscroll.documented_history_production_read.v1",
       "evidence_class": "deployed-production-read-back",
@@ -21,7 +21,7 @@
       "served_revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
       "served_revision_after": "c35f30021a08623c2fb031563c175f1d91f54e65",
       "retained_measurement": {
-        "revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
+        "revision": "3ccce381341fd1aabe0dc9f1a004e2e23aca4f9e",
         "inputs_ref": "#/measurement_provenance/inputs"
       },
       "data_vintage": {
@@ -580,7 +580,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
+      "revision": "3ccce381341fd1aabe0dc9f1a004e2e23aca4f9e",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "b4b6104fc98ac1046b6d3ad179266f8a546458bdd20467acce766441a1213248",
@@ -594,7 +594,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
+      "revision": "3ccce381341fd1aabe0dc9f1a004e2e23aca4f9e",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "f95a845f29828f840c880ff9dd1276672bcabc3c30363df6398949dcfbaf8c8e",
@@ -608,7 +608,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
+      "revision": "3ccce381341fd1aabe0dc9f1a004e2e23aca4f9e",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "6e92e7e4439ff27fc562d130ec29f8f23e7ba50afd949b49aefb51b023d21eee",
@@ -622,7 +622,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
+      "revision": "3ccce381341fd1aabe0dc9f1a004e2e23aca4f9e",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "a5135465d20eeb8cd045f5c77b6aec15f893d31459fedb8da688cf5ac4ff374b",
@@ -636,7 +636,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
+      "revision": "3ccce381341fd1aabe0dc9f1a004e2e23aca4f9e",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "a4408d522f345dd5629bebb7f7ed7678b505f37b0e1371768245056de76a8c6f",
@@ -650,7 +650,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
+      "revision": "3ccce381341fd1aabe0dc9f1a004e2e23aca4f9e",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "ed4e1f0b13ab69428a75e8cacc7398654c254bd3dd8068509ecf55b36097bf6b",
@@ -664,7 +664,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
+      "revision": "3ccce381341fd1aabe0dc9f1a004e2e23aca4f9e",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "b4b6104fc98ac1046b6d3ad179266f8a546458bdd20467acce766441a1213248",
@@ -678,7 +678,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
+      "revision": "3ccce381341fd1aabe0dc9f1a004e2e23aca4f9e",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "f95a845f29828f840c880ff9dd1276672bcabc3c30363df6398949dcfbaf8c8e",
@@ -692,7 +692,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
+      "revision": "3ccce381341fd1aabe0dc9f1a004e2e23aca4f9e",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "6e92e7e4439ff27fc562d130ec29f8f23e7ba50afd949b49aefb51b023d21eee",
@@ -706,7 +706,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
+      "revision": "3ccce381341fd1aabe0dc9f1a004e2e23aca4f9e",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "a5135465d20eeb8cd045f5c77b6aec15f893d31459fedb8da688cf5ac4ff374b",
@@ -720,7 +720,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
+      "revision": "3ccce381341fd1aabe0dc9f1a004e2e23aca4f9e",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "a4408d522f345dd5629bebb7f7ed7678b505f37b0e1371768245056de76a8c6f",
@@ -734,7 +734,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
+      "revision": "3ccce381341fd1aabe0dc9f1a004e2e23aca4f9e",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "ed4e1f0b13ab69428a75e8cacc7398654c254bd3dd8068509ecf55b36097bf6b",
@@ -748,7 +748,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
+      "revision": "3ccce381341fd1aabe0dc9f1a004e2e23aca4f9e",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
       "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
@@ -761,7 +761,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
+      "revision": "3ccce381341fd1aabe0dc9f1a004e2e23aca4f9e",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
       "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
@@ -774,7 +774,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
+      "revision": "3ccce381341fd1aabe0dc9f1a004e2e23aca4f9e",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
       "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
@@ -787,7 +787,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
+      "revision": "3ccce381341fd1aabe0dc9f1a004e2e23aca4f9e",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
       "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
@@ -800,7 +800,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
+      "revision": "3ccce381341fd1aabe0dc9f1a004e2e23aca4f9e",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
       "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
@@ -813,7 +813,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
+      "revision": "3ccce381341fd1aabe0dc9f1a004e2e23aca4f9e",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
       "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
@@ -826,7 +826,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
+      "revision": "3ccce381341fd1aabe0dc9f1a004e2e23aca4f9e",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Injected materialization failure preserves the exact query and exposes retry plus an official source without claiming a successful empty result.",
       "sha256": "4e2a5d2f38b2cf574599bd62d52568ecef19d74bbc4362d0f8c4e46810d359b2",
@@ -834,7 +834,7 @@
     }
   ],
   "measurement_provenance": {
-    "revision": "c35f30021a08623c2fb031563c175f1d91f54e65",
+    "revision": "3ccce381341fd1aabe0dc9f1a004e2e23aca4f9e",
     "inputs": [
       {
         "path": "capabilities/federated_search.mjs",
@@ -974,7 +974,7 @@
       },
       {
         "path": "site/i18n.js",
-        "sha256": "c1bbf5667826cabfc3362eb82bff58b25d813f16a9164578adf7327e7dc8ae8a"
+        "sha256": "e4ede3eb3de4b5574e4b27e9ee550a36cd721d93f5262d73c59a9b38b46d1c5c"
       },
       {
         "path": "site/land_view_state.mjs",
