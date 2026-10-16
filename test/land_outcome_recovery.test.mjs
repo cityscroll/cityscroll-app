@@ -150,6 +150,13 @@ function browser(){
   return {runtime,setResponse:fn=>{response=fn;}};
 }
 
+test("browser outcome runtime supplies its production clock by default",()=>{
+  const runtime=createLandOutcomeRuntime();
+  const record={project_id:"CLOCK1",generated_at:new Date().toISOString(),spine:{events:[]}};
+  runtime.seed({generated_at:record.generated_at,outcomes:{by_project:{CLOCK1:record}}});
+  assert.equal(runtime.get("CLOCK1").data.record,record);
+});
+
 test("frozen publisher evidence refreshes older CB cache through materializer, endpoint and renderer",async()=>{
   const original=globalThis.fetch;
   const rows=new Map();
@@ -185,13 +192,15 @@ test("stale evidence keeps its vintage through new bundles, session reuse, faile
   const payload={ok:true,stale:true,record};
   const snapshot=buildLandDefaultSnapshot([{project_id:record.project_id}],{outcomesByProject:{[record.project_id]:record}});
   runtime.seed(snapshot);
-  assert.equal(runtime.recordForDisplay(payload).evidence_stale,true);
-  assert.match(runtime.freshnessHTML(payload),/2026-09-28/);
-  assert.match(runtime.freshnessHTML(payload,{failed:true}),/land_outcome_update_failed/);
+  const staleDisplay=runtime.display(payload);
+  assert.equal(staleDisplay.record.evidence_stale,true);
+  assert.match(staleDisplay.freshness,/2026-09-28/);
   runtime.cache.get(record.project_id).at=Date.now()-runtime.ttlMs-1;
   assert.equal(runtime.get(record.project_id).expired,true);
   assert.equal(await runtime.fetch(record.project_id,{allowStatic:false}),null);
-  assert.equal(runtime.get(record.project_id).data.record.generated_at,record.generated_at);
+  const failedDisplay=runtime.display(null,{fallback:runtime.get(record.project_id).data,failed:true});
+  assert.match(failedDisplay.freshness,/land_outcome_update_failed/);
+  assert.equal(failedDisplay.record.generated_at,record.generated_at);
   const fresh={...record,generated_at:new Date().toISOString()};
   setResponse(async()=>new Response(JSON.stringify({ok:true,stale:false,record:fresh})));
   await runtime.fetch(record.project_id,{allowStatic:false});
@@ -208,7 +217,8 @@ test("expired live evidence revalidates and repaints retained stage after failur
   runtime.cache.set(id,{data:{ok:true,record},at:Date.now()-runtime.ttlMs-1});
   assert.equal(await runtime.fetch(id,{allowStatic:false}),null);
   const fallback=runtime.get(id).data;
-  const html=runtime.freshnessHTML(fallback,{failed:true})+`stage:${runtime.recordForDisplay(fallback,true).stage}`;
+  const display=runtime.display(null,{fallback,failed:true});
+  const html=display.freshness+`stage:${display.record.stage}`;
   assert.match(html,/land_outcome_update_failed/);
   assert.match(html,/stage:borough_president/);
   assert.equal(runtime.get(id).data.record.generated_at,record.generated_at);

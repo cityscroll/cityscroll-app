@@ -1,7 +1,8 @@
 export function createLandOutcomeRuntime({
   cache = new Map(),
   ttlMs = 300000,
-  now,
+  // determinism-lint: allow clock session-cache expiry and evidence age require the browser's current instant; source observation clocks remain unchanged.
+  now = () => Date.now(),
   normalizeRecord = (record) => record,
   translate = (key) => key,
   formatDate = (value) => value,
@@ -36,6 +37,19 @@ export function createLandOutcomeRuntime({
   function recordForDisplay(payload, failed = false) {
     const state = evidenceState(payload);
     return normalizeRecord({ ...payload.record, evidence_stale: failed || state.stale });
+  }
+
+  function display(payload, { fallback = null, failed = false } = {}) {
+    const usable = (value) => value?.ok !== false && value?.record;
+    const source = usable(payload) ? payload : usable(fallback) ? fallback : null;
+    if (!source) return { source: null, record: null, freshness: "", failed };
+    const updateFailed = failed || source !== payload;
+    return {
+      source,
+      record: recordForDisplay(source, updateFailed),
+      freshness: freshnessHTML(source, { failed: updateFailed }),
+      failed: updateFailed,
+    };
   }
 
   function seed(snapshot) {
@@ -100,5 +114,5 @@ export function createLandOutcomeRuntime({
     });
   }
 
-  return { cache, ttlMs, get, seed, fetch, evidenceState, freshnessHTML, recordForDisplay };
+  return { cache, ttlMs, get, seed, fetch, evidenceState, freshnessHTML, recordForDisplay, display };
 }
