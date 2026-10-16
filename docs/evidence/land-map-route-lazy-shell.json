@@ -52,7 +52,7 @@
     "limit_source": "docs/evidence/index-module-split.json#after.working_bar_bytes",
     "command": "node --test test/site_module_architecture.test.mjs",
     "before": {
-      "site/app/land.mjs": 99431
+      "site/app/land.mjs": 99764
     },
     "after": {
       "site/app/land.mjs": 96060,

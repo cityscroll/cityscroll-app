@@ -232,13 +232,17 @@ test("real acquisition rejects timeout, HTTP error and malformed JSON without re
   }finally{globalThis.fetch=original;}
 });
 
-test("required identity failure retains the record while optional outage advances ZAP stage",async()=>{
+test("partial City Record acquisition merges fresh strict matches with retained evidence",async()=>{
   const original=globalThis.fetch;
   const id="PARTIAL1";
   const previous={project_id:id,join:{matched:true},generated_at:"2026-09-28T00:00:00Z",
     open_data:{project_id:id,project_name:"Retained"},filled:true,
-    city_record_notices:[{request_id:"retained",start_date:"2026-09-01",
-      short_title:"C 240046 HAM hearing",join:{method:"exact_ulurp_token",keys:["C240046HAM"]}}],
+    city_record_notices:[
+      {request_id:"retained",start_date:"2026-09-01",short_title:"C 240046 HAM retained hearing",
+        join:{method:"exact_ulurp_token",keys:["C240046HAM"]}},
+      {request_id:"replaced",start_date:"2026-09-02",short_title:"C 240046 HAM old title",
+        join:{method:"exact_ulurp_token",keys:["C240046HAM"]}},
+    ],
     source_observations:{city_record:{source_system:"city_record",acquisition_status:"ok",
       observation_status:"observed",observed_at:"2026-09-28T00:00:00Z"}},
     spine:{events:[{id:"old-cb",kind:"zap_milestone",title:"Community Board Review",status:"In Progress",
@@ -246,6 +250,20 @@ test("required identity failure retains the record while optional outage advance
   const projectFixture=structuredClone(fixture);
   projectFixture.data.id=id;
   projectFixture.data.attributes["dcp-name"]=id;
+  const openData=[{project_id:id,project_name:"Fresh",ulurp_numbers:"C240046HAM",actions:"ZM"}];
+  const freshNotice={request_id:"replaced",start_date:"2026-10-10",
+    short_title:"C 240046 HAM fresh title"};
+  const fetchForCityRecord=(mode)=>async url=>{
+    const value=String(url);
+    if(value.includes("herokuapp.com")) return new Response(JSON.stringify(projectFixture));
+    if(value.includes("dg92-zbpx")){
+      const term=new URL(value).searchParams.get("$q");
+      if(mode==="partial"&&term==="240 Nassau Street") return new Response(JSON.stringify([freshNotice]));
+      if(mode==="empty") return new Response("[]");
+      return new Response("blocked",{status:503});
+    }
+    return new Response(JSON.stringify(openData));
+  };
   try{
     const failedRows=new Map([[kvKey(id),JSON.stringify(previous)]]);
     const failedEnv={ALERT_STATE:{get:async k=>failedRows.get(k)||null,put:async(k,v)=>failedRows.set(k,v)}};
@@ -256,16 +274,21 @@ test("required identity failure retains the record while optional outage advance
     assert.equal(failed.status,"failed");
     assert.deepEqual(JSON.parse(failedRows.get(kvKey(id))),previous);
 
+    const unavailableRows=new Map([[kvKey(id),JSON.stringify(previous)]]);
+    const unavailableEnv={ALERT_STATE:{get:async k=>unavailableRows.get(k)||null,
+      put:async(k,v)=>unavailableRows.set(k,v)}};
+    globalThis.fetch=fetchForCityRecord("unavailable");
+    const unavailable=await refreshZapOutcomes(unavailableEnv,{projectIds:[id],force:true,
+      build:projectId=>buildZapOutcomeRecord(projectId,{fetchBbl:false,lookupDoc:{rows:[]}})});
+    assert.equal(unavailable.status,"partial");
+    const unavailableRecord=JSON.parse(unavailableRows.get(kvKey(id)));
+    assert.deepEqual(unavailableRecord.city_record_notices.map(row=>row.request_id),["retained","replaced"]);
+    assert.equal(unavailableRecord.source_observations.city_record.observation_status,"retained");
+    assert.equal(unavailableRecord.source_observations.city_record.observed_at,"2026-09-28T00:00:00Z");
+
     const rows=new Map([[kvKey(id),JSON.stringify(previous)]]);
     const env={ALERT_STATE:{get:async k=>rows.get(k)||null,put:async(k,v)=>rows.set(k,v)}};
-    globalThis.fetch=async url=>{
-      const value=String(url);
-      if(value.includes("herokuapp.com")) return new Response(JSON.stringify(projectFixture));
-      if(value.includes("dg92-zbpx")) return new Response("blocked",{status:503});
-      return new Response(JSON.stringify([{
-        project_id:id,project_name:"Fresh",ulurp_numbers:"C240046HAM",actions:"ZM",
-      }]));
-    };
+    globalThis.fetch=fetchForCityRecord("partial");
     const refreshed=await refreshZapOutcomes(env,{projectIds:[id],force:true,
       build:projectId=>buildZapOutcomeRecord(projectId,{fetchBbl:false,lookupDoc:{rows:[]}})});
     assert.equal(refreshed.status,"partial");
@@ -273,24 +296,43 @@ test("required identity failure retains the record while optional outage advance
     assert.equal(refreshed.partial,1);
     const response=await handleZapOutcomes(new Request(`https://example.test/zap-outcomes?id=${id}`),env);
     const payload=await response.json();
-    assert.equal(payload.record.city_record_notices[0].request_id,"retained");
-    assert.equal(payload.record.source_observations.city_record.observation_status,"retained");
-    assert.equal(payload.record.source_observations.city_record.acquisition_status,"unavailable");
-    assert.equal(payload.record.source_observations.city_record.observed_at,"2026-09-28T00:00:00Z");
+    assert.deepEqual(payload.record.city_record_notices.map(row=>row.request_id),["retained","replaced"]);
+    assert.equal(payload.record.city_record_notices[1].short_title,"C 240046 HAM fresh title");
+    assert.equal(new Set(payload.record.city_record_notices.map(row=>row.request_id)).size,2);
+    assert.equal(payload.record.city_record_notices[0].source_observation.observed_at,"2026-09-28T00:00:00Z");
+    assert.equal(payload.record.city_record_notices[0].source_observation.observation_status,"retained");
+    assert.notEqual(payload.record.city_record_notices[1].source_observation.observed_at,"2026-09-28T00:00:00Z");
+    assert.equal(payload.record.city_record_notices[1].source_observation.observation_status,"observed");
+    assert.equal(payload.record.source_observations.city_record.observation_status,"observed_and_retained");
+    assert.equal(payload.record.source_observations.city_record.acquisition_status,"partial");
+    assert.equal(payload.record.source_observations.city_record.retained_observed_at,"2026-09-28T00:00:00Z");
+    assert.equal(payload.record.source_observations.city_record.observed_count,1);
+    assert.equal(payload.record.source_observations.city_record.retained_count,1);
     assert.notEqual(payload.record.source_observations.city_record.attempted_at,"2026-09-28T00:00:00Z");
     assert.ok(payload.record.spine.events.some(event=>event.id==="city-record:retained:published"));
+    assert.ok(payload.record.spine.events.some(event=>event.id==="city-record:replaced:published"));
     assert.ok(payload.record.spine.gaps.some(gap=>gap.slot==="city_record_notices"&&gap.retained===true));
     const view=phaseTools.buildLandPhaseView(payload.record.spine,payload.record);
     assert.equal(view.current.phase_id,"borough_president");
     const {runtime}=browser();
-    assert.equal(runtime.recordForDisplay(payload).city_record_notices[0].request_id,"retained");
+    assert.equal(runtime.recordForDisplay(payload).city_record_notices[1].request_id,"replaced");
     assert.equal(phaseTools.landPhasePanelDataAttributes(view.phases.find(phase=>phase.id===view.current.phase_id)),
       'data-land-phase-panel="borough_president" data-land-phase-state="current"');
 
+    const freshOnlyRows=new Map();
+    const freshOnlyEnv={ALERT_STATE:{get:async k=>freshOnlyRows.get(k)||null,
+      put:async(k,v)=>freshOnlyRows.set(k,v)}};
+    const freshOnly=await refreshZapOutcomes(freshOnlyEnv,{projectIds:[id],force:true,
+      build:projectId=>buildZapOutcomeRecord(projectId,{fetchBbl:false,lookupDoc:{rows:[]}})});
+    assert.equal(freshOnly.status,"partial");
+    const freshOnlyRecord=JSON.parse(freshOnlyRows.get(kvKey(id)));
+    assert.deepEqual(freshOnlyRecord.city_record_notices.map(row=>row.request_id),["replaced"]);
+    assert.equal(freshOnlyRecord.source_observations.city_record.observation_status,"observed");
+    assert.equal(freshOnlyRecord.source_observations.city_record.retained_count,0);
+
     const emptyRows=new Map();
     const emptyEnv={ALERT_STATE:{get:async k=>emptyRows.get(k)||null,put:async(k,v)=>emptyRows.set(k,v)}};
-    globalThis.fetch=async url=>String(url).includes("herokuapp.com")
-      ? new Response(JSON.stringify(projectFixture)) : new Response("[]");
+    globalThis.fetch=fetchForCityRecord("empty");
     const emptyResult=await prewarmOneZapOutcome(emptyEnv,id,{force:true,
       build:projectId=>buildZapOutcomeRecord(projectId,{fetchBbl:false,lookupDoc:{rows:[]}})});
     assert.equal(emptyResult.status,"computed");

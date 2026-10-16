@@ -76,10 +76,38 @@ function retainOptionalSourceEvidence(record, cached) {
   if (!Object.hasOwn(acquisition, "city_record") || acquisition.city_record === "ok") return record;
   const priorObservation = cached?.source_observations?.city_record;
   const priorGap = cached?.spine?.gaps?.find((gap) => gap.slot === "city_record_notices");
-  const retained = !!cached && (["observed", "retained"].includes(priorObservation?.observation_status)
+  const canRetain = !!cached && (["observed", "retained", "observed_and_retained"].includes(priorObservation?.observation_status)
     || (Object.hasOwn(cached, "city_record_notices") && priorGap?.class !== "source_unavailable"));
-  const notices = retained && Array.isArray(cached.city_record_notices)
+  const priorNotices = canRetain && Array.isArray(cached.city_record_notices)
     ? cached.city_record_notices : [];
+  const freshNotices = acquisition.city_record === "partial" && Array.isArray(record.city_record_notices)
+    ? record.city_record_notices : [];
+  const freshIds = new Set(freshNotices.map((notice) => String(notice?.request_id || "").trim()).filter(Boolean));
+  const retainedAt = priorObservation?.observed_at || cached?.generated_at || null;
+  const merged = new Map();
+  for (const notice of priorNotices) {
+    const id = String(notice?.request_id || "").trim();
+    if (!id) continue;
+    merged.set(id, {
+      ...notice,
+      source_observation: {
+        ...notice.source_observation,
+        source_system: "city_record",
+        observation_status: "retained",
+        observed_at: notice.source_observation?.observed_at || retainedAt,
+      },
+    });
+  }
+  for (const notice of freshNotices) {
+    const id = String(notice?.request_id || "").trim();
+    if (id) merged.set(id, notice);
+  }
+  const notices = [...merged.values()].sort((left, right) =>
+    String(left.start_date || "").localeCompare(String(right.start_date || ""))
+      || String(left.request_id || "").localeCompare(String(right.request_id || "")));
+  const freshCount = freshIds.size;
+  const retainedCount = notices.filter((notice) => !freshIds.has(String(notice.request_id || "").trim())).length;
+  const retained = retainedCount > 0;
   const spine = buildLandEventSpine(record, {
     cityRecordNotices: notices,
     noticeLookupStatus: "unavailable",
@@ -92,6 +120,7 @@ function retainOptionalSourceEvidence(record, cached) {
       taxonomy: false,
       source: "City Record Online",
       retained,
+      observed: freshCount > 0,
     },
   ];
   return {
@@ -103,9 +132,13 @@ function retainOptionalSourceEvidence(record, cached) {
       city_record: {
         source_system: "city_record",
         acquisition_status: acquisition.city_record || "unavailable",
-        observation_status: retained ? "retained" : "unavailable",
-        observed_at: priorObservation?.observed_at || (retained ? cached.generated_at : null),
+        observation_status: freshCount ? (retained ? "observed_and_retained" : "observed")
+          : retained ? "retained" : "unavailable",
+        observed_at: freshCount ? record.generated_at : retainedAt,
+        retained_observed_at: retained ? retainedAt : null,
         attempted_at: record.generated_at,
+        observed_count: freshCount,
+        retained_count: retainedCount,
       },
     },
   };
@@ -703,7 +736,14 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true, lookup
     ...withDob,
     // Slim public notice rows for land-detail action rail (participation extraction).
     // Same SODA fields already used for the ULURP spine join — not a new publisher.
-    city_record_notices: slimCityRecordNoticesForActionRail(cityRecordNotices),
+    city_record_notices: slimCityRecordNoticesForActionRail(cityRecordNotices).map((notice) => ({
+      ...notice,
+      source_observation: {
+        source_system: "city_record",
+        observation_status: "observed",
+        observed_at: withDob.generated_at,
+      },
+    })),
     spine: buildLandEventSpine(withDob, {
       cityRecordNotices,
       noticeLookupStatus: candidateResult.status,

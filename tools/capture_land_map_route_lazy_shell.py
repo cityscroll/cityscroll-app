@@ -443,7 +443,7 @@ def main() -> None:
     args = parser.parse_args()
     if args.module_sizes_only:
         receipt = json.loads(RECEIPT.read_text(encoding="utf-8"))
-        receipt["module_size_gate"] = module_sizes()
+        receipt["module_size_gate"]["after"] = module_sizes()["after"]
         RECEIPT.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
         print("wrote", RECEIPT)
         return
