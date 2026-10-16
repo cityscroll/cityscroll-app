@@ -212,6 +212,13 @@ function eventIsActualProgress(event) {
   return true;
 }
 
+function eventIsHearing(event) {
+  if (event?.kind === "city_record_hearing") return true;
+  if (event?.kind !== "zap_milestone") return false;
+  const description = [event?.title, event?.detail, event?.outcome].filter(Boolean).join(" ").toLowerCase();
+  return /\bhearing\b/.test(description);
+}
+
 /**
  * True when the event is a finished disposition/milestone from a source row
  * (not planned, not in-progress, not a synthetic open-data status stamp).
@@ -222,6 +229,7 @@ function eventIsTerminalComplete(event) {
   if (event?._synthetic) return false;
   if (!eventIsActualProgress(event)) return false;
   if (eventIsInProgress(event)) return false;
+  if (eventIsHearing(event)) return false;
   // Publication and holding a hearing are not completion of a review stage.
   const status = String(event?.status || event?.detail || "").toLowerCase();
   if (event.kind === "zap_milestone") return /\bcompleted?\b/.test(status);
