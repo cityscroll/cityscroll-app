@@ -384,15 +384,14 @@ test("handleAdminZapOutcomesRefresh: 405 on non-POST", async () => {
   assert.equal(r.status, 405);
 });
 
-test("handleAdminZapOutcomesRefresh: success returns refresh summary plus timestamp", async () => {
+test("handleAdminZapOutcomesRefresh: reports missing KV as a failed refresh", async () => {
   const r = await handleAdminZapOutcomesRefresh(
     zapRefreshPost("https://w/admin/zap-outcomes-refresh?key=s3cr3t"),
     { ADMIN_KEY: "s3cr3t" },
   );
   assert.equal(r.status, 200);
   const body = await r.json();
-  // Without ALERT_STATE the refresh is a documented no-op (same as cron path).
-  assert.equal(body.status, "skipped");
+  assert.equal(body.status, "failed");
   assert.equal(body.reason, "no-kv");
   assert.ok(body.triggeredAt);
 });

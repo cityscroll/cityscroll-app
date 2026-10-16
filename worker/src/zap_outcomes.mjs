@@ -19,14 +19,14 @@ import {
 import { extractUlurpKeys } from "./lib/ulurp_recommendations_join.mjs";
 import { lookupZapFromWarehouseMaterialization, warehouseZapMaterializationMeta } from "./lib/zap_warehouse_lookup.mjs";
 import { committedZapProjectsLookupFloor, loadZapProjectsLookup, shapeZapLookupRow } from "./lib/zap_projects_lookup_kv.mjs";
-import { lookupZapBblsFromWarehouseMaterialization } from "./lib/zap_bbl_warehouse_lookup.mjs";
+import { lookupZapBblsFromWarehouseMaterialization, warehouseZapBblMaterializationMeta } from "./lib/zap_bbl_warehouse_lookup.mjs";
 import { attachUlurpStatutoryPredictions } from "./lib/ulurp_statutory_predictions.mjs";
 import zoningStatistics from "./data/zoning_statistics.json" with { type: "json" };
 import { attachZoningStatistics } from "./lib/zoning_statistics.mjs";
 import { attachProjectConnectionsSection } from "./project_connections.mjs";
 import { dualWriteZapProjectObservations } from "./lib/zap_project_source_records.mjs";
 import { stampLandActionProcedureResolution } from "../../site/land_action_procedure_resolution.mjs";
-import { buildLandPhaseView } from "../../site/land_phase_spine.mjs";
+import { buildLandPhaseView, LAND_ULURP_PHASES } from "../../site/land_phase_spine.mjs";
 import { landStageEvidenceIsStale, landStageEvidenceObservedAt } from "../../site/land_outcome_runtime.mjs";
 // Do not static-import admin.mjs here: it pulls alerts.mjs → @jimdc/sendcap, and
 // test/land_event_spine.test.mjs imports buildZapOutcomeRecord from this module
@@ -90,7 +90,142 @@ async function writeZapOutcomeAttempt(env, projectId, payload) {
   }
 }
 
-function retainOptionalSourceEvidence(record, cached) {
+function retainedObservation(prior, sourceSystem, acquisitionStatus, attemptedAt) {
+  return {
+    ...prior,
+    source_system: prior?.source_system || sourceSystem,
+    acquisition_status: acquisitionStatus,
+    observation_status: "retained",
+    observed_at: prior && Object.hasOwn(prior, "observed_at") ? prior.observed_at : null,
+    attempted_at: attemptedAt,
+  };
+}
+
+function retainedRow(row, sourceSystem, observedAt) {
+  return {
+    ...row,
+    source_observation: {
+      ...row?.source_observation,
+      source_system: row?.source_observation?.source_system || sourceSystem,
+      observation_status: "retained",
+      observed_at: row?.source_observation && Object.hasOwn(row.source_observation, "observed_at")
+        ? row.source_observation.observed_at
+        : observedAt,
+    },
+  };
+}
+
+function mergeRetainedRows(current, prior, identity, sourceSystem, observedAt) {
+  const rows = Array.isArray(current) ? current.slice() : [];
+  const seen = new Set(rows.map(identity).filter(Boolean));
+  for (const row of prior || []) {
+    const key = identity(row);
+    if (!key || seen.has(key)) continue;
+    rows.push(retainedRow(row, sourceSystem, observedAt));
+    seen.add(key);
+  }
+  return rows;
+}
+
+function retainZapSourceEvidence(record, cached) {
+  if (!cached?.join?.matched || record?.join?.matched !== true) return record;
+  const priorObservation = cached.source_observations?.zap_api;
+  const priorAt = priorObservation && Object.hasOwn(priorObservation, "observed_at")
+    ? priorObservation.observed_at
+    : cached.stage_observation?.source_system === "zap_project_api"
+      ? cached.stage_observation.observed_at || null : null;
+  const actions = mergeRetainedRows(record.actions, cached.actions,
+    (row) => row?.id || [row?.action, row?.ulurp_number].join("|"), "zap_project_api", priorAt);
+  const milestones = mergeRetainedRows(record.milestones, cached.milestones,
+    (row) => row?.id || [row?.title, row?.time?.value].join("|"), "zap_project_api", priorAt);
+  const dispositions = mergeRetainedRows(record.dispositions, cached.dispositions,
+    (row) => row?.id || (row?.source_ids || []).join("|") || [row?.name, row?.vote_date].join("|"),
+    "zap_project_api", priorAt);
+  const documents = mergeRetainedRows(record.documents, cached.documents,
+    (row) => row?.id || row?.url || [row?.group_id, row?.name, row?.time_created].join("|"),
+    "zap_project_api", priorAt);
+  const approvedActions = mergeRetainedRows(record.approved_actions, cached.approved_actions,
+    (row) => row?.id || [row?.action, row?.ulurp_number].join("|"), "zap_project_api", priorAt);
+  const retained = actions.length > (record.actions?.length || 0)
+    || milestones.length > (record.milestones?.length || 0)
+    || dispositions.length > (record.dispositions?.length || 0)
+    || documents.length > (record.documents?.length || 0)
+    || approvedActions.length > (record.approved_actions?.length || 0);
+  if (!retained) return record;
+  const acquisition = sourceAcquisitionState.get(record) || {};
+  const merged = {
+    ...record,
+    actions,
+    milestones,
+    dispositions,
+    documents,
+    approved_actions: approvedActions,
+    n_documents: Math.max(Number(record.n_documents) || 0, Number(cached.n_documents) || 0, documents.length),
+    n_dispositions: dispositions.length,
+    n_approved_actions: approvedActions.length,
+    useful: record.useful || cached.useful,
+    source_observations: {
+      ...record.source_observations,
+      zap_api: {
+        ...record.source_observations?.zap_api,
+        observation_status: "observed_and_retained",
+        retained_observed_at: priorAt,
+      },
+    },
+  };
+  merged.filled = outcomeIsFilled(merged);
+  merged.spine = buildLandEventSpine(merged, {
+    cityRecordNotices: merged.city_record_notices,
+    noticeLookupStatus: acquisition.city_record || "ok",
+  });
+  const stamped = stampLandStageObservation(merged);
+  const candidatePhase = buildLandPhaseView(record.spine, record).current;
+  const mergedPhase = buildLandPhaseView(stamped.spine, stamped).current;
+  if (cached.stage_observation?.source_system === "zap_project_api"
+    && mergedPhase.evidence_source_id === "zap-project-api"
+    && candidatePhase.evidence_source_id !== "zap-project-api"
+    && LAND_ULURP_PHASES.indexOf(candidatePhase.phase_id) <= LAND_ULURP_PHASES.indexOf(mergedPhase.phase_id)) {
+    stamped.stage_observation = { ...cached.stage_observation };
+  }
+  sourceAcquisitionState.set(stamped, acquisition);
+  return stamped;
+}
+
+function retainDobSourceEvidence(record, cached) {
+  const acquisition = sourceAcquisitionState.get(record) || {};
+  if (!cached || (acquisition.bbl !== "unavailable" && acquisition.dob !== "unavailable")) return record;
+  const next = { ...record, source_observations: { ...record.source_observations } };
+  const observed = (observation) => ["observed", "retained", "observed_and_retained"]
+    .includes(observation?.observation_status);
+  const retainableBbl = Array.isArray(cached.bbls)
+    && (cached.bbls.length > 0 || observed(cached.source_observations?.bbl));
+  const retainableDob = cached.dob && (cached.dob.matched
+    || cached.dob.filings?.length > 0 || observed(cached.source_observations?.dob));
+  if (acquisition.bbl === "unavailable") {
+    if (retainableBbl) {
+      next.bbls = cached.bbls;
+      next.source_observations.bbl = retainedObservation(
+        cached.source_observations?.bbl, "zap_bbl_open_data", "unavailable", record.generated_at,
+      );
+    }
+    if (retainableDob) {
+      next.dob = cached.dob;
+      next.source_observations.dob = retainedObservation(
+        cached.source_observations?.dob, "dob_now", "skipped", record.generated_at,
+      );
+    }
+  } else if (acquisition.dob === "unavailable"
+    && retainableDob) {
+    next.dob = cached.dob;
+    next.source_observations.dob = retainedObservation(
+      cached.source_observations?.dob, "dob_now", "unavailable", record.generated_at,
+    );
+  }
+  sourceAcquisitionState.set(next, acquisition);
+  return next;
+}
+
+function retainCityRecordEvidence(record, cached) {
   const acquisition = sourceAcquisitionState.get(record) || {};
   if (!Object.hasOwn(acquisition, "city_record") || acquisition.city_record === "ok") return record;
   const priorObservation = cached?.source_observations?.city_record;
@@ -348,7 +483,9 @@ export async function prewarmOneZapOutcome(env, projectId, {
       && (!Number.isFinite(candidateStageAt) || candidateStageAt < cachedStageAt)) {
       throw new Error("stage-evidence-regressed");
     }
-    record = retainOptionalSourceEvidence(record, cached);
+    record = retainZapSourceEvidence(record, cached);
+    record = retainDobSourceEvidence(record, cached);
+    record = retainCityRecordEvidence(record, cached);
     await kvPutRecord(env, record);
   } catch (error) {
     const attemptReceipt = await writeZapOutcomeAttempt(env, id, {
@@ -384,9 +521,12 @@ export async function prewarmOneZapOutcome(env, projectId, {
     filled: !!record.filled,
     matched: !!(record.join && record.join.matched),
     attempt_receipt: attemptReceipt,
-    partial_sources: record.source_observations?.city_record
-      && record.source_observations.city_record.acquisition_status !== "ok"
-      ? ["city_record"] : [],
+    partial_sources: Object.entries(record.source_observations || {})
+      .filter(([, observation]) => (observation?.acquisition_status
+          && !["ok", "not_requested"].includes(observation.acquisition_status))
+        || observation?.observation_status === "retained"
+        || observation?.observation_status === "observed_and_retained")
+      .map(([source]) => source),
     dual_write: dualWrite,
   };
 }
@@ -642,7 +782,7 @@ async function fetchCityRecordCandidates(openData, projectName) {
  * Returns BBL strings (max 25). Attaches lookup_path via array property when useful
  * for tests — callers that only need ids can ignore it.
  */
-export async function fetchBbls(projectId) {
+export async function fetchBbls(projectId, { observedAt = new Date().toISOString() } = {}) {
   const id = String(projectId || "").trim();
   // WH-06: instant hit from warehouse materialization index (no network).
   const wh = lookupZapBblsFromWarehouseMaterialization(id);
@@ -650,7 +790,7 @@ export async function fetchBbls(projectId) {
     // Hit with empty list is still a warehouse answer (project known, no lots).
     const bbls = (wh.bbls || []).slice(0, 25);
     bbls.lookup_path = "warehouse";
-    return bbls;
+    return markSourceAcquisition(bbls, "ok", warehouseZapBblMaterializationMeta().materialized_at);
   }
 
   // Live SODA fallback when the materialization lacks this project_id.
@@ -659,22 +799,23 @@ export async function fetchBbls(projectId) {
     `${SODA}/${ZAP_SODA_BBL}.json?$select=bbl&$where=${encodeURIComponent(where)}&$limit=40`;
   try {
     const rows = await fetchJson(url, 8000);
+    if (!Array.isArray(rows)) throw new Error("invalid-bbl-response");
     const bbls = [...new Set((rows || []).map((r) => {
       let s = String(r?.bbl ?? "").trim().replace(/\.0$/, "");
       if (s && /^\d+$/.test(s) && s.length < 10) s = s.padStart(10, "0");
       return /^\d{10}$/.test(s) ? s : null;
     }).filter(Boolean))].slice(0, 25);
     bbls.lookup_path = "soda";
-    return bbls;
+    return markSourceAcquisition(bbls, "ok", observedAt);
   } catch {
     const empty = [];
     empty.lookup_path = "soda";
-    return empty;
+    return markSourceAcquisition(empty, "unavailable");
   }
 }
 
-async function fetchDobForBbls(bbls) {
-  if (!bbls?.length) return [];
+async function fetchDobForBbls(bbls, { observedAt = new Date().toISOString() } = {}) {
+  if (!bbls?.length) return markSourceAcquisition([], "not_requested");
   // Query up to 3 BBLs to stay inside URL limits; enough for the side-car.
   const sample = bbls.slice(0, 3);
   const clauses = sample.map((b) => `bbl='${String(b).replace(/'/g, "''")}'`).join(" OR ");
@@ -683,9 +824,11 @@ async function fetchDobForBbls(bbls) {
     + `house_no,street_name,bbl,bin`
     + `&$where=${encodeURIComponent(clauses)}&$order=filing_date DESC&$limit=20`;
   try {
-    return await fetchJson(url, 8000);
+    const rows = await fetchJson(url, 8000);
+    if (!Array.isArray(rows)) throw new Error("invalid-dob-response");
+    return markSourceAcquisition(rows, "ok", observedAt);
   } catch {
-    return [];
+    return markSourceAcquisition([], "unavailable");
   }
 }
 
@@ -703,7 +846,8 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true, lookup
     };
   }
 
-  const openData = await fetchOpenDataRow(id, { lookupDoc, observedAt: now() });
+  const acquisitionAt = now();
+  const openData = await fetchOpenDataRow(id, { lookupDoc, observedAt: acquisitionAt });
   let apiPayload = null;
   try {
     apiPayload = await fetchJson(
@@ -743,8 +887,12 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true, lookup
     reason: "Tax-lot / DOB side-car not requested.",
   };
   let bbls = [];
+  let bblStatus = "not_requested";
+  let dobStatus = "not_requested";
+  let dobObservedAt = null;
   if (fetchBbl) {
-    bbls = await fetchBbls(id);
+    bbls = await fetchBbls(id, { observedAt: acquisitionAt });
+    bblStatus = sourceAcquisitionState.get(bbls) || "unavailable";
     if (!bbls.length) {
       dob = {
         matched: false,
@@ -753,7 +901,9 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true, lookup
         reason: "No tax lots published for this project in ZAP BBL data.",
       };
     } else {
-      const filings = await fetchDobForBbls(bbls);
+      const filings = await fetchDobForBbls(bbls, { observedAt: acquisitionAt });
+      dobStatus = sourceAcquisitionState.get(filings) || "unavailable";
+      dobObservedAt = sourceObservationState.get(filings)?.observed_at || null;
       dob = joinDobFilingsToBbls(filings, bbls);
       dob.bbls_checked = bbls.length;
     }
@@ -810,6 +960,8 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true, lookup
   const acquisition = {
     open_data: sourceAcquisitionState.get(openData) || "unavailable",
     city_record: candidateResult.status,
+    bbl: bblStatus,
+    dob: dobStatus,
   };
   const observedRecord = {
     ...finalRecord,
@@ -833,6 +985,20 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true, lookup
         observation_status: acquisition.city_record === "ok" ? "observed" : "unavailable",
         observed_at: acquisition.city_record === "ok" ? assembled.generated_at : null,
         attempted_at: assembled.generated_at,
+      },
+      bbl: {
+        source_system: "zap_bbl_open_data",
+        acquisition_status: acquisition.bbl,
+        observation_status: acquisition.bbl === "ok" ? "observed" : acquisition.bbl === "not_requested" ? "not_requested" : "unavailable",
+        observed_at: acquisition.bbl === "ok" ? sourceObservationState.get(bbls)?.observed_at || null : null,
+        attempted_at: fetchBbl ? assembled.generated_at : null,
+      },
+      dob: {
+        source_system: "dob_now",
+        acquisition_status: acquisition.dob,
+        observation_status: acquisition.dob === "ok" ? "observed" : acquisition.dob === "not_requested" ? "not_requested" : "unavailable",
+        observed_at: acquisition.dob === "ok" ? dobObservedAt : null,
+        attempted_at: acquisition.dob === "not_requested" ? null : assembled.generated_at,
       },
     },
   };

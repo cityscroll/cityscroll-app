@@ -506,6 +506,125 @@ test("prewarm retains newer stage evidence and accepts fresh authoritative ZAP p
   }finally{globalThis.fetch=original;}
 });
 
+test("prewarm retains richer ZAP evidence without renewing carried clocks",async()=>{
+  const id="RICH1",old="2026-10-02T00:00:00Z";
+  const cached={project_id:id,generated_at:old,join:{matched:true},useful:true,filled:true,
+    actions:[{id:"action-old",action:"ZM",approved:true}],approved_actions:[{id:"action-old",action:"ZM",approved:true}],
+    milestones:[{id:"milestone-old",title:"Community Board Review",status:"Completed",time:{value:"2026-10-01",precision:"day",basis:"actual_end",certainty:"actual"}}],
+    dispositions:[],documents:[{id:"document-old",name:"Decision"}],n_documents:1,n_dispositions:0,n_approved_actions:1,
+    spine:{events:[{id:"zap-milestone:milestone-old",title:"Community Board Review"}]},
+    source_observations:{zap_api:{source_system:"zap_project_api",observation_status:"observed",observed_at:old}},
+    stage_observation:{source_system:"zap_project_api",observed_at:old}};
+  const values=new Map([[kvKey(id),JSON.stringify(cached)]]);
+  const env={ALERT_STATE:{get:async key=>values.get(key)||null,put:async(key,value)=>values.set(key,value)}};
+  const thin={project_id:id,generated_at:TEST_NOW,join:{matched:true},useful:false,filled:false,
+    actions:[],approved_actions:[],milestones:[],dispositions:[],documents:[],n_documents:0,
+    open_data:{project_id:id,public_status:"In Public Review",current_milestone:"Community Board Referral"},
+    source_observations:{
+      zap_api:{source_system:"zap_project_api",observation_status:"observed",observed_at:TEST_NOW},
+      open_data:{source_system:"zap_projects_open_data",observation_status:"observed",observed_at:TEST_NOW},
+    },
+    stage_observation:{source_system:"zap_projects_open_data",observed_at:TEST_NOW}};
+  const result=await prewarmOneZapOutcome(env,id,{force:true,nowMs:TEST_NOW_MS,build:async()=>thin});
+  assert.equal(result.status,"computed");
+  assert.deepEqual(result.partial_sources,["zap_api"]);
+  const stored=JSON.parse(values.get(kvKey(id)));
+  assert.equal(stored.documents[0].id,"document-old");
+  assert.equal(stored.documents[0].source_observation.observed_at,old);
+  assert.equal(stored.actions[0].source_observation.observed_at,old);
+  assert.equal(stored.stage_observation.observed_at,TEST_NOW);
+  assert.equal(stored.stage_observation.source_system,"zap_projects_open_data");
+  assert.equal(stored.source_observations.zap_api.observed_at,TEST_NOW);
+  assert.equal(stored.source_observations.zap_api.retained_observed_at,old);
+
+  const advancing={...thin,generated_at:"2026-10-17T00:00:00Z",
+    milestones:[{id:"milestone-new",title:"Borough President Review",status:"In Progress",time:{value:"2026-10-17",precision:"day",basis:"actual_start",certainty:"actual"}}],
+    source_observations:{zap_api:{source_system:"zap_project_api",observation_status:"observed",observed_at:"2026-10-17T00:00:00Z"}},
+    stage_observation:{source_system:"zap_project_api",observed_at:"2026-10-17T00:00:00Z"}};
+  await prewarmOneZapOutcome(env,id,{force:true,nowMs:Date.parse("2026-10-17T00:00:00Z"),build:async()=>advancing});
+  const advanced=JSON.parse(values.get(kvKey(id)));
+  assert.equal(advanced.documents[0].source_observation.observed_at,old);
+  assert.equal(advanced.stage_observation.observed_at,"2026-10-17T00:00:00Z");
+});
+
+test("DOB and BBL failures retain only affected prior side-car evidence",async()=>{
+  const original=globalThis.fetch;
+  const old="2026-10-02T00:00:00Z",bbl="3001230001";
+  const failureResponse=kind=>{
+    if(kind==="throw")throw new Error("network unavailable");
+    if(kind==="malformed")return new Response("{");
+    return new Response(JSON.stringify({error:"unavailable"}));
+  };
+  const run=async(source,kind,index)=>{
+    const id=`2099K${String(index).padStart(4,"0")}`;
+    const cached={project_id:id,generated_at:old,join:{matched:true},bbls:[bbl],
+      dob:{matched:true,method:"exact_bbl",filings:[{job_filing_number:"OLD-1",bbl}],reason:null},
+      source_observations:{
+        bbl:{source_system:"zap_bbl_open_data",observation_status:"observed",observed_at:old},
+        dob:{source_system:"dob_now",observation_status:"observed",observed_at:old},
+      }};
+    const values=new Map([[kvKey(id),JSON.stringify(cached)]]);
+    const env={ALERT_STATE:{get:async key=>values.get(key)||null,put:async(key,value)=>values.set(key,value)}};
+    const thin={data:{id,type:"projects",attributes:{"dcp-name":id,"dcp-projectname":id}},included:[]};
+    globalThis.fetch=async url=>{
+      const value=String(url);
+      if(value.includes("herokuapp.com"))return new Response(JSON.stringify(thin));
+      if(value.includes("2iga-a6mk"))return source==="bbl"?failureResponse(kind):new Response(JSON.stringify([{bbl}]));
+      if(value.includes("w9ak-ipjd"))return source==="dob"?failureResponse(kind):new Response(JSON.stringify([]));
+      return new Response(JSON.stringify([]));
+    };
+    const lookupDoc={source:"soda",materialized_at:TEST_NOW,rows:[{project_id:id,public_status:"In Public Review",current_milestone:"Community Board Referral",
+      source_observation:{source_system:"zap_projects_open_data",observation_status:"observed",observed_at:TEST_NOW}}]};
+    const result=await prewarmOneZapOutcome(env,id,{force:true,nowMs:TEST_NOW_MS,
+      build:projectId=>buildZapOutcomeRecord(projectId,{lookupDoc,now:()=>TEST_NOW})});
+    assert.equal(result.status,"computed");
+    const stored=JSON.parse(values.get(kvKey(id)));
+    assert.equal(stored.dob.filings[0].job_filing_number,"OLD-1");
+    assert.equal(stored.source_observations[source].observation_status,"retained");
+    assert.equal(stored.source_observations[source].observed_at,old);
+    assert.ok(result.partial_sources.includes(source));
+    if(source==="dob")assert.equal(stored.source_observations.bbl.observation_status,"observed");
+  };
+  try{
+    let index=1;
+    for(const source of ["bbl","dob"]){
+      for(const kind of ["shape","throw","malformed"])await run(source,kind,index++);
+    }
+  }finally{globalThis.fetch=original;}
+});
+
+test("observed empty BBL and DOB responses clear prior side-car evidence",async()=>{
+  const original=globalThis.fetch;
+  const old="2026-10-02T00:00:00Z",bbl="3001230001";
+  try{
+    for(const emptySource of ["bbl","dob"]){
+      const id=emptySource==="bbl"?"2099K0101":"2099K0102";
+      const cached={project_id:id,generated_at:old,join:{matched:true},bbls:[bbl],
+        dob:{matched:true,method:"exact_bbl",filings:[{job_filing_number:"OLD-1",bbl}],reason:null},
+        source_observations:{dob:{source_system:"dob_now",observation_status:"observed",observed_at:old}}};
+      const values=new Map([[kvKey(id),JSON.stringify(cached)]]);
+      const env={ALERT_STATE:{get:async key=>values.get(key)||null,put:async(key,value)=>values.set(key,value)}};
+      const thin={data:{id,type:"projects",attributes:{"dcp-name":id,"dcp-projectname":id}},included:[]};
+      globalThis.fetch=async url=>{
+        const value=String(url);
+        if(value.includes("herokuapp.com"))return new Response(JSON.stringify(thin));
+        if(value.includes("2iga-a6mk"))return new Response(JSON.stringify(emptySource==="bbl"?[]:[{bbl}]));
+        if(value.includes("w9ak-ipjd"))return new Response(JSON.stringify([]));
+        return new Response(JSON.stringify([]));
+      };
+      const lookupDoc={source:"soda",materialized_at:TEST_NOW,rows:[{project_id:id,public_status:"In Public Review",current_milestone:"Community Board Referral",
+        source_observation:{source_system:"zap_projects_open_data",observation_status:"observed",observed_at:TEST_NOW}}]};
+      const result=await prewarmOneZapOutcome(env,id,{force:true,nowMs:TEST_NOW_MS,
+        build:projectId=>buildZapOutcomeRecord(projectId,{lookupDoc,now:()=>TEST_NOW})});
+      assert.equal(result.status,"computed");
+      const stored=JSON.parse(values.get(kvKey(id)));
+      assert.equal(stored.dob.filings.length,0);
+      assert.equal(stored.source_observations[emptySource].observation_status,"observed");
+      assert.ok(!result.partial_sources.includes(emptySource));
+    }
+  }finally{globalThis.fetch=original;}
+});
+
 test("public outcome staleness follows the stage evidence clock",async()=>{
   const id="STALEAPI1";
   const record={project_id:id,generated_at:TEST_NOW,join:{matched:true},
