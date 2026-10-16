@@ -69,7 +69,7 @@ import {
 import { landFilingEvidenceFilterFromControls } from "../land_filing_evidence_facet.mjs";
 import { mtxHTML } from "../land_outcomes_matrix.mjs";
 import { createLandOutcomeRuntime } from "../land_outcome_runtime.mjs";
-import { escapeHtml as escapeLandOutcomeHtml } from "../text_clean.mjs";
+import { escapeHtml } from "../text_clean.mjs";
 import { attachLandLotSourceDigests, landLotSourceDigestsHTML, loadLandLotSourceDigests } from "../land_lot_source_digests.mjs";
 import {
   fetchBrowseScoped,
@@ -1465,7 +1465,7 @@ const landOutcomeRuntime=createLandOutcomeRuntime({
   normalizeRecord:normalizeLandRecord,
   translate:t,
   formatDate:fdate,
-  escapeHTML:escapeLandOutcomeHtml,
+  escapeHTML:escapeHtml,
   connectionTools:ensureProjectConnectionsTools,
   fetchResponse:(id,accepts)=>workerFetch("/zap-outcomes?id="+encodeURIComponent(id),null,12000,accepts),
 });
