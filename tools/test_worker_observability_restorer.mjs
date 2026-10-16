@@ -26,6 +26,7 @@ import {
   assertRestorerReady,
   bindWindowToRestorer,
   clearKillSwitch,
+  controllerDeathSignaled,
   engageKillSwitch,
   restorerPaths,
   restorerTick,
@@ -170,6 +171,122 @@ test("readiness handshake requires live supervised pid and matching receipt", as
   rmSync(dir, { recursive: true, force: true });
 });
 
+test("healthy owned window with future expiry stays idle (no early restore)", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-idle-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(join(stateRoot, "receipts"), { recursive: true, mode: 0o700 });
+  const windowPath = join(dir, "window.json");
+  const store = createFileWindowStore(windowPath);
+  const armed = privacyArmedObservability(BASELINE);
+  const transport = memoryTransport(armed);
+  let window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    durationSeconds: 1800,
+    windowId: "idle-1",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+    pending_mutation: null,
+  };
+  await store.write(window);
+
+  const tick = await restorerTick({
+    store,
+    transport,
+    stateRoot,
+    now: "2026-10-16T00:05:00.000Z",
+  });
+  assert.equal(tick.outcome, "idle");
+  assert.equal(tick.reason, "owned-window-active-until-deadline");
+  assert.equal(tick.window.phase, "privacy_armed");
+  assert.equal(tick.window.owned_sha256, observabilitySha256(armed));
+  assert.equal(existsSync(restorerPaths(stateRoot).terminalReceipt), false);
+  assert.ok(observabilityEquals(transport.snapshot(), armed));
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("pending-after while healthy reconciles to owned without restoring baseline", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-pending-after-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(join(stateRoot, "receipts"), { recursive: true, mode: 0o700 });
+  const store = createFileWindowStore(join(dir, "window.json"));
+  const armed = privacyArmedObservability(BASELINE);
+  const transport = memoryTransport(armed);
+  let window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    durationSeconds: 1800,
+    windowId: "pending-after-1",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z" });
+  window = recordMutationIntent(window, {
+    phase: "privacy_armed",
+    beforeSha256: window.baseline_sha256,
+    intendedObservability: armed,
+    now: "2026-10-16T00:00:30.000Z",
+  });
+  await store.write(window);
+
+  const tick = await restorerTick({
+    store,
+    transport,
+    stateRoot,
+    now: "2026-10-16T00:01:00.000Z",
+  });
+  assert.equal(tick.outcome, "reconciled-owned");
+  assert.equal(tick.window.phase, "privacy_armed");
+  assert.equal(tick.window.pending_mutation, null);
+  assert.equal(tick.window.owned_sha256, observabilitySha256(armed));
+  assert.ok(observabilityEquals(transport.snapshot(), armed));
+  assert.equal(existsSync(restorerPaths(stateRoot).terminalReceipt), false);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("pending-before while healthy clears intent without closing the window", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-pending-before-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(join(stateRoot, "receipts"), { recursive: true, mode: 0o700 });
+  const store = createFileWindowStore(join(dir, "window.json"));
+  const transport = memoryTransport(BASELINE);
+  const armed = privacyArmedObservability(BASELINE);
+  let window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    durationSeconds: 1800,
+    windowId: "pending-before-1",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z" });
+  window = recordMutationIntent(window, {
+    phase: "privacy_armed",
+    beforeSha256: window.baseline_sha256,
+    intendedObservability: armed,
+    now: "2026-10-16T00:00:30.000Z",
+  });
+  await store.write(window);
+
+  const tick = await restorerTick({
+    store,
+    transport,
+    stateRoot,
+    now: "2026-10-16T00:01:00.000Z",
+  });
+  assert.equal(tick.outcome, "reconciled-cleared");
+  assert.equal(tick.window.phase, "captured");
+  assert.equal(tick.window.pending_mutation, null);
+  assert.equal(tick.window.owned_observability, null);
+  assert.ok(["captured"].includes(tick.window.phase));
+  assert.equal(existsSync(restorerPaths(stateRoot).terminalReceipt), false);
+  rmSync(dir, { recursive: true, force: true });
+});
+
 test("restorer tick restores owned settings with GET proof", async () => {
   const dir = mkdtempSync(join(tmpdir(), "cc05-tick-"));
   const stateRoot = join(dir, "restorer");
@@ -213,6 +330,51 @@ test("restorer tick restores owned settings with GET proof", async () => {
   assert.ok(observabilityEquals(tick.after, BASELINE));
   assert.equal(tick.terminal_receipt.proved, true);
   assert.ok(existsSync(restorerPaths(stateRoot).terminalReceipt));
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("controller-death receipt restores owned window before deadline", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-death-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(join(stateRoot, "receipts"), { recursive: true, mode: 0o700 });
+  const store = createFileWindowStore(join(dir, "window.json"));
+  const armed = privacyArmedObservability(BASELINE);
+  const transport = memoryTransport(armed);
+  let window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    durationSeconds: 1800,
+    windowId: "death-1",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+    pending_mutation: null,
+  };
+  await store.write(window);
+  assert.equal(controllerDeathSignaled(stateRoot), false);
+
+  writeRestorerReceipt(restorerPaths(stateRoot).controllerDeathReceipt, {
+    schema: "cityscroll.worker_observability_restorer_runtime.v1",
+    kind: "controller-death",
+    observed_at: "2026-10-16T00:05:00.000Z",
+  });
+  assert.equal(controllerDeathSignaled(stateRoot), true);
+
+  const tick = await restorerTick({
+    store,
+    transport,
+    stateRoot,
+    now: "2026-10-16T00:05:01.000Z",
+  });
+  assert.equal(tick.proved, true);
+  assert.ok(["restored", "already-restored"].includes(tick.action));
+  assert.ok(observabilityEquals(tick.after, BASELINE));
+  assert.equal(tick.terminal_receipt.controller_death, true);
   rmSync(dir, { recursive: true, force: true });
 });
 

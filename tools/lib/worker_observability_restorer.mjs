@@ -11,6 +11,8 @@ import {
   TERMINAL_WINDOW_PHASES,
   WORKER_OBSERVABILITY_SETTINGS_RECEIPT_SCHEMA,
   armRestorer,
+  classifyCurrentSettings,
+  confirmOwnedSettings,
   createFileWindowStore,
   isProcessAlive,
   runIndependentRestorer,
@@ -60,6 +62,111 @@ export function restorerPaths(stateRoot = DEFAULT_RESTORER_STATE_ROOT) {
 
 export function killSwitchEngaged(stateRoot = DEFAULT_RESTORER_STATE_ROOT) {
   return existsSync(restorerPaths(stateRoot).killSwitch);
+}
+
+/** Explicit controller-death receipt asks the guardian to restore before the deadline. */
+export function controllerDeathSignaled(stateRoot = DEFAULT_RESTORER_STATE_ROOT) {
+  return existsSync(restorerPaths(stateRoot).controllerDeathReceipt);
+}
+
+/**
+ * Pending intents are reconciled by GET while the window is still healthy:
+ * - pending-after => confirm ownership and keep the window active
+ * - pending-before => clear the intent and keep the window non-terminal
+ * - conflict => refuse
+ * Never closes a healthy non-expired window just because ownership exists.
+ */
+export async function reconcilePendingMutation({
+  window,
+  transport,
+  now = new Date().toISOString(),
+} = {}) {
+  if (!window?.pending_mutation) fail("reconcilePendingMutation requires a pending mutation");
+  if (!transport || typeof transport.getObservability !== "function") {
+    fail("reconcile transport must provide getObservability");
+  }
+  const current = await transport.getObservability();
+  const classification = classifyCurrentSettings(current, window);
+  const at = now;
+
+  if (classification.class === "pending-after") {
+    const confirmed = confirmOwnedSettings(window, current, { now: at });
+    return {
+      outcome: "reconciled-owned",
+      action: "reconciled-owned",
+      proved: true,
+      expired: false,
+      classification,
+      window: confirmed,
+      after: confirmed.owned_observability,
+      receipt: {
+        schema: WORKER_OBSERVABILITY_SETTINGS_RECEIPT_SCHEMA,
+        kind: "restorer",
+        outcome: "reconciled-owned",
+        window_id: window.window_id,
+        observed_at: at,
+        current_sha256: classification.sha256,
+        owned_sha256: confirmed.owned_sha256,
+        pending_after_sha256: window.pending_mutation.after_sha256,
+      },
+    };
+  }
+
+  if (classification.class === "pending-before" || classification.class === "baseline") {
+    const cleared = {
+      ...window,
+      phase: window.phase?.startsWith("intent-") ? "captured" : window.phase,
+      pending_mutation: null,
+      mutations: [
+        ...(window.mutations || []),
+        {
+          at,
+          kind: "pending-cleared",
+          reason: "reconcile-pending-before",
+          before_sha256: window.pending_mutation.before_sha256,
+          after_sha256: classification.sha256,
+        },
+      ],
+    };
+    return {
+      outcome: "reconciled-cleared",
+      action: "reconciled-cleared",
+      proved: true,
+      expired: false,
+      classification,
+      window: cleared,
+      after: classification.observability,
+      receipt: {
+        schema: WORKER_OBSERVABILITY_SETTINGS_RECEIPT_SCHEMA,
+        kind: "restorer",
+        outcome: "reconciled-cleared",
+        window_id: window.window_id,
+        observed_at: at,
+        current_sha256: classification.sha256,
+        baseline_sha256: window.baseline_sha256,
+        pending_after_sha256: window.pending_mutation.after_sha256,
+      },
+    };
+  }
+
+  return {
+    outcome: "refused-conflict",
+    action: "refuse-conflict",
+    proved: false,
+    expired: false,
+    classification,
+    window,
+    after: classification.observability,
+    receipt: {
+      schema: WORKER_OBSERVABILITY_SETTINGS_RECEIPT_SCHEMA,
+      kind: "restorer",
+      outcome: "refused-conflict",
+      window_id: window.window_id,
+      observed_at: at,
+      current_sha256: classification.sha256,
+      reason: "effective settings changed outside this window during pending reconcile",
+    },
+  };
 }
 
 export function writeRestorerReceipt(path, receipt) {
@@ -243,14 +350,51 @@ export async function restorerTick({
     }
 
     const expired = Date.parse(now) >= Date.parse(window.expires_at);
-    const needsRestore = Boolean(window.pending_mutation) || Boolean(window.owned_observability) || expired;
-    if (!needsRestore) {
+    const pending = Boolean(window.pending_mutation);
+    const owned = Boolean(window.owned_observability);
+    const controllerDead = controllerDeathSignaled(stateRoot);
+    const cancelRequested = window.cancel_requested === true;
+
+    // Healthy owned/enabled windows stay active until deadline, cancel, or
+    // explicit controller-death. Ownership alone must not trigger restore.
+    if (owned && !pending && !expired && !controllerDead && !cancelRequested) {
+      return {
+        outcome: "idle",
+        window,
+        reason: "owned-window-active-until-deadline",
+      };
+    }
+
+    if (!pending && !owned && !expired && !controllerDead && !cancelRequested) {
       return {
         outcome: "idle",
         window,
       };
     }
 
+    // Pending intent while the window is still healthy: reconcile by GET.
+    // Do not close a healthy window or restore baseline early.
+    if (pending && !expired && !controllerDead && !cancelRequested) {
+      const reconciled = await reconcilePendingMutation({ window, transport, now });
+      await store.write(reconciled.window, { expectedWindowId: window.window_id });
+      if (reconciled.outcome === "refused-conflict") {
+        const receipt = writeRestorerReceipt(paths.terminalReceipt, reconciled.receipt);
+        return { ...reconciled, terminal_receipt: receipt };
+      }
+      writeRestorerReceipt(paths.heartbeatReceipt, {
+        schema: RESTORER_READY_SCHEMA,
+        kind: "heartbeat",
+        outcome: reconciled.outcome,
+        observed_at: now,
+        pid: process.pid,
+        window_id: reconciled.window.window_id,
+        restorer_id: reconciled.window.restorer?.restorer_id || null,
+        phase: reconciled.window.phase,
+      });
+      return reconciled;
+    }
+
+    // Deadline, controller death, or cancel: restore baseline with GET proof.
     // alreadyLocked: restorerTick holds the window lock for this critical section.
     const restored = await runIndependentRestorer({ store, transport, now, alreadyLocked: true });
     const receipt = writeRestorerReceipt(paths.terminalReceipt, {
@@ -266,6 +410,8 @@ export async function restorerTick({
       baseline_sha256: restored.receipt?.baseline_sha256 || null,
       after_sha256: restored.receipt?.after_sha256 || null,
       reason: restored.receipt?.reason || null,
+      controller_death: controllerDead,
+      cancel_requested: cancelRequested,
     });
     return { ...restored, terminal_receipt: receipt };
   });
