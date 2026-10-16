@@ -21,14 +21,20 @@ public read access.
 
 ## Observation and attempt clocks
 
-- `record.generated_at` is the retained observation time. Downloading the record,
-  putting it in session cache, or generating a static bundle does not renew it.
+- `record.stage_observation.observed_at` is the evidence clock for the displayed
+  stage. `record.generated_at` is the record assembly clock; legacy records that
+  omit `stage_observation` fall back to it, while an explicit missing observation
+  clock remains unknown. Downloading the record, putting it in session cache, or
+  generating a static bundle does not renew either clock.
 - The endpoint's `stale` flag applies the 24-hour observation objective. The
   browser also checks the retained observation time and labels stale or failed
   checks as the last recorded stage.
-- Prewarming refreshes observations after 18 hours. A matching project identity,
-  successful exact join, and valid observation timestamp are required before
-  replacing a cached record. An empty set of decisions is not an acquisition error.
+- Prewarming refreshes assembled records after 18 hours. A matching project
+  identity, successful exact join, and valid assembly timestamp are required
+  before replacing a cached record; a candidate with older or unknown stage
+  evidence cannot replace newer known stage evidence. A valid project may have no
+  decisions, but an empty Open Data response for the requested project is a failed
+  acquisition rather than a fresh observation.
 - Failed acquisition leaves the previous record untouched. A separate
   `<outcome-key>:attempt` KV record carries the attempt time and result.
 - Refresh summaries distinguish `ok`, `partial`, `failed`, and `skipped`.

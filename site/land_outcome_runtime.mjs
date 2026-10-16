@@ -1,6 +1,7 @@
 export function landStageEvidenceObservedAt(record){
   return record&&Object.hasOwn(record,"stage_observation")?record.stage_observation?.observed_at||null:record?.generated_at||null;
 }
+// determinism-lint: allow clock evidence age is intentionally evaluated at the current browser instant; callers may inject a pinned instant.
 export function landStageEvidenceIsStale(record,n=Date.now()){
   const stamp=Date.parse(landStageEvidenceObservedAt(record)||"");
   return !Number.isFinite(stamp)||n-stamp>86400000;

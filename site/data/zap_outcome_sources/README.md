@@ -20,14 +20,14 @@ document proxy (`/document/disposition|artifact|package|projectaction/…`).
 ## Product path
 
 1. Browser land detail calls only `GET /zap-outcomes?id={project_id}` (no live ZAP API).
-2. Worker fetches Open Data row + ZAP API project detail, parses documents/actions/dispositions,
-   optionally joins DOB NOW filings on exact BBL from `zap-bbl`, and caches in KV (~1 day).
-3. **Daily write-ahead prewarm** (`refreshZapOutcomes` on the digest cron, and
-   `POST /admin/zap-outcomes-refresh`) materializes sell-facing project ids first
-   (In Public Review → Noticed → Active → Filed, capped, plus demo `2022M0258`).
-   Cold multi-source builds take ~12s; warm KV reads are sub-second. Unlisted ids
-   still compute-on-miss. The land list also session-prefetches the first screenful
-   of project ids after paint.
+2. Scheduled or authenticated refresh fetches the Open Data row + ZAP API project
+   detail, parses documents/actions/dispositions, optionally joins DOB NOW filings
+   on exact BBL from `zap-bbl`, and stores the retained observation in KV.
+3. The public endpoint is materialization-only: missing observations return `404`
+   rather than computing on read. The bounded morning refresh and authenticated
+   admin refresh own acquisition; see [Land outcome observations](../../../docs/zap-outcomes.md)
+   for refresh, evidence-clock, and retention semantics. The land list may
+   session-prefetch already-materialized project ids after paint.
 4. Unmatched or empty outcome slots use the class-(a) register: name the public source.
 
 Individual-project hearing logistics reuse the disposition fields already carried
