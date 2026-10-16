@@ -3694,7 +3694,7 @@
     land_outcome_update_failed: "We could not check for an update.",
     land_outcome_checked_at: "Last checked {date}.",
     land_outcome_check_unknown: "The last check date is unavailable.",
-    land_outcome_stage_caution: "The stage below is the last recorded stage; it may have changed.",
+    land_outcome_stage_caution: "The stage below is the last recorded stage. It may have changed.",
     land_spine_now_label: "项目当前所处阶段",
     land_spine_since: "自 {date}",
     land_spine_status_noticed_html: "公开状态：<b>已通知（Noticed）</b> — 尚未认证进入正式 ULURP 公众审查。",

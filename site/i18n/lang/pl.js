@@ -3732,7 +3732,7 @@
     land_outcome_update_failed: "We could not check for an update.",
     land_outcome_checked_at: "Last checked {date}.",
     land_outcome_check_unknown: "The last check date is unavailable.",
-    land_outcome_stage_caution: "The stage below is the last recorded stage; it may have changed.",
+    land_outcome_stage_caution: "The stage below is the last recorded stage. It may have changed.",
     land_spine_now_label: "Where this project is now",
     land_spine_since: "since {date}",
     land_spine_status_noticed_html: "Public status: <b>Noticed</b> — not yet certified into formal ULURP public review.",
