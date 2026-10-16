@@ -331,9 +331,9 @@ for (const boundary of FAILURE_BOUNDARIES) {
       const failing = fakeWrangler(boundary.afterApply
         ? { failAfterApplyAtPut: boundary.put }
         : { failAtPut: boundary.put });
-      failing.values.set(ROUTE_PUBLICATION_STATE_KEY, prior);
-      failing.values.set(ROUTE_MANIFEST_KEYS.nearYou, seeded.values.get(ROUTE_MANIFEST_KEYS.nearYou));
-      failing.values.set(ROUTE_MANIFEST_KEYS.meetings, seeded.values.get(ROUTE_MANIFEST_KEYS.meetings));
+      // The retry provider is a new store. Seed the complete baseline, not
+      // only its state and manifests, before checking retained payloads.
+      for (const [key, value] of seeded.values) failing.values.set(key, value);
 
       await assert.rejects(
         () => publishRouteReadModels({ routeDir: changed, invoke: failing.invoke }),
