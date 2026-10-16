@@ -185,6 +185,49 @@ test("notice refresh bypasses a warm static snapshot and retains it on failure",
   assert.match(retained.freshness,/land_outcome_update_failed/);
 });
 
+test("browser retains newer stage evidence and accepts a genuinely newer observation",async()=>{
+  const id="EVIDENCE1";
+  const known="2026-10-15T20:00:00Z";
+  for(const observed_at of ["2026-10-02T00:00:00Z",null]){
+    const {runtime,setResponse}=browser();
+    const retained={project_id:id,generated_at:known,stage:"community_board",spine:{events:[]},
+      stage_observation:{source_system:"zap_projects_open_data",observed_at:known}};
+    runtime.seed({generated_at:known,outcomes:{by_project:{[id]:retained}}});
+    setResponse(async()=>new Response(JSON.stringify({ok:true,record:{...retained,generated_at:TEST_NOW,
+      stage:"borough_president",stage_observation:{source_system:"zap_projects_open_data",observed_at}}})));
+    const result=await runtime.refreshDisplay(id);
+    assert.equal(result.record.stage,"community_board");
+    assert.equal(runtime.cache.get(id).data.record.stage_observation.observed_at,known);
+    assert.match(result.freshness,/land_outcome_stage_caution/);
+  }
+
+  const {runtime,setResponse}=browser();
+  const older={project_id:id,generated_at:"2026-10-02T00:00:00Z",stage:"community_board",spine:{events:[]},
+    stage_observation:{source_system:"zap_projects_open_data",observed_at:"2026-10-02T00:00:00Z"}};
+  runtime.seed({generated_at:older.generated_at,outcomes:{by_project:{[id]:older}}});
+  setResponse(async()=>new Response(JSON.stringify({ok:true,record:{...older,generated_at:TEST_NOW,
+    stage:"borough_president",stage_observation:{source_system:"zap_project_api",observed_at:TEST_NOW}}})));
+  const recovered=await runtime.refreshDisplay(id);
+  assert.equal(recovered.record.stage,"borough_president");
+  assert.equal(runtime.cache.get(id).data.record.stage_observation.observed_at,TEST_NOW);
+});
+
+test("static seed replacement follows the stage evidence clock",()=>{
+  const {runtime}=browser();
+  const id="SEED1",known="2026-10-15T20:00:00Z";
+  const record={project_id:id,generated_at:known,stage:"community_board",spine:{events:[]},
+    stage_observation:{source_system:"zap_projects_open_data",observed_at:known}};
+  runtime.seed({generated_at:known,outcomes:{by_project:{[id]:record}}});
+  runtime.seed({generated_at:TEST_NOW,outcomes:{by_project:{[id]:{...record,generated_at:TEST_NOW,
+    stage:"borough_president",stage_observation:{source_system:"zap_projects_open_data",observed_at:null}}}}});
+  assert.equal(runtime.get(id).data.record.stage,"community_board");
+
+  const newer="2026-10-17T20:00:00Z";
+  runtime.seed({generated_at:newer,outcomes:{by_project:{[id]:{...record,generated_at:newer,
+    stage:"borough_president",stage_observation:{source_system:"zap_project_api",observed_at:newer}}}}});
+  assert.equal(runtime.get(id).data.record.stage,"borough_president");
+});
+
 test("frozen publisher evidence refreshes older CB cache through materializer, endpoint and renderer",async()=>{
   const original=globalThis.fetch;
   const rows=new Map();

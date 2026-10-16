@@ -24,7 +24,8 @@
 //   BBL prefix / borough+block without full lot
 //
 // Verdict: above usefulness threshold (≥30%) on decision-document outcomes.
-// Ship edge materialization via GET /zap-outcomes (precompute-first for the browser).
+// Scheduled and authenticated refreshes materialize the edge record; the browser's
+// GET /zap-outcomes request reads that retained observation without publisher I/O.
 
 import { extractUlurpKeys } from "./ulurp_recommendations_join.mjs";
 import { extractZapHearingLogistics } from "./zap_hearing_logistics.mjs";

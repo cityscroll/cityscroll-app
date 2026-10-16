@@ -1,6 +1,11 @@
 export function landStageEvidenceObservedAt(record){
   return record&&Object.hasOwn(record,"stage_observation")?record.stage_observation?.observed_at||null:record?.generated_at||null;
 }
+function regressesLandStageEvidence(current,candidate){
+  const currentStamp=Date.parse(landStageEvidenceObservedAt(current)||"");
+  const candidateStamp=Date.parse(landStageEvidenceObservedAt(candidate)||"");
+  return Number.isFinite(currentStamp)&&(!Number.isFinite(candidateStamp)||candidateStamp<currentStamp);
+}
 // determinism-lint: allow clock evidence age is intentionally evaluated at the current browser instant; callers may inject a pinned instant.
 export function landStageEvidenceIsStale(record,n=Date.now()){
   const stamp=Date.parse(landStageEvidenceObservedAt(record)||"");
@@ -44,7 +49,7 @@ connectionTools=async()=>null}={}){
     for(const [id,record] of Object.entries(byProject)){
       if(!record||record.snapshot_state==="unavailable")continue;
       const previous=cache.get(id);
-      if(previous?.p||previous?.data?.record&&(!previous.staticSnapshot||Date.parse(previous.data.record.generated_at)>=Date.parse(record.generated_at)))continue;
+      if(previous?.p||previous?.data?.record&&(!previous.staticSnapshot||Date.parse(previous.data.record.generated_at)>=Date.parse(record.generated_at)||regressesLandStageEvidence(previous.data.record,record)))continue;
       cache.set(id,{data:{ok:true,cached:true,static_snapshot:true,generated_at:g,record},at:now(),generatedAt:g,staticSnapshot:true});
     }
   }
@@ -72,7 +77,7 @@ connectionTools=async()=>null}={}){
     return p.then(data=>{
       if(data&&data.ok!==false&&data.record){
         const old=e?.data?.record;
-        if(old&&(Date.parse(old.generated_at)>Date.parse(data.record.generated_at)||!Number.isFinite(Date.parse(data.record.generated_at))||old.spine?.events?.length&&!data.record.spine?.events?.length)){
+        if(old&&(Date.parse(old.generated_at)>Date.parse(data.record.generated_at)||!Number.isFinite(Date.parse(data.record.generated_at))||regressesLandStageEvidence(old,data.record)||old.spine?.events?.length&&!data.record.spine?.events?.length)){
           cache.set(id,e);
           return {...e.data,stale:true};
         }
