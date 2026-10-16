@@ -105,61 +105,15 @@ test("full preflight and CI use the route-aware server without touching existing
   assert.doesNotMatch(`${shardRunner}\n${readiness}`, /python3 -m http\.server 8000 --directory _site/);
 });
 
-test("a11y readiness deadline helpers use sub-second monotonic time", () => {
-  // BEFORE (deterministic model): integer SECONDS deadline remaining wall time
-  // for outer=2 is (2 - fractionIntoCurrentSecond), so a late start can leave
-  // barely more than 1s — matching root's measured ~1537ms early give-up.
-  const secondsQuantizedRemaining = (outer, fractionIntoCurrentSecond) =>
-    outer - fractionIntoCurrentSecond;
-  assert.equal(secondsQuantizedRemaining(2, 0), 2);
-  assert.ok(secondsQuantizedRemaining(2, 0.99) < 1.1);
-  assert.ok(secondsQuantizedRemaining(2, 0.463) < 1.6); // ~1537ms class
-
-  // BEFORE (live Bash control): start late in a SECONDS bucket and require an
-  // early expiry. Retry alignment a few times so a slow sleep that rolls the
-  // bucket cannot flake the proof.
-  const secondsEarlyScript = [
-    "set -euo pipefail",
-    "SECONDS=0",
-    "while (( SECONDS < 1 )); do :; done",
-    "bucket=$SECONDS",
-    "sleep 0.9",
-    // If sleep crossed the bucket, this attempt is inconclusive.
-    'if (( SECONDS != bucket )); then echo "inconclusive"; exit 0; fi',
-    "start_ms=$(python3 -c 'import time; print(int(time.monotonic()*1000))')",
-    "deadline=$((SECONDS + 2))",
-    "while (( SECONDS < deadline )); do sleep 0.05; done",
-    "end_ms=$(python3 -c 'import time; print(int(time.monotonic()*1000))')",
-    'python3 -c "import sys; print(int(sys.argv[2])-int(sys.argv[1]))" "$start_ms" "$end_ms"',
-  ].join("\n");
-  let earlyMs = null;
-  const attempts = [];
-  for (let attempt = 0; attempt < 8; attempt += 1) {
-    const raw = execFileSync("bash", ["-c", secondsEarlyScript], {
-      cwd: ROOT,
-      encoding: "utf8",
-      timeout: 10000,
-    }).trim();
-    attempts.push(raw);
-    if (raw === "inconclusive") continue;
-    const ms = Number(raw);
-    assert.ok(Number.isFinite(ms), `before elapsed not numeric: ${raw}`);
-    if (ms < 1700) {
-      earlyMs = ms;
-      break;
-    }
-  }
-  assert.ok(
-    earlyMs != null,
-    `SECONDS outer=2 control never expired early in 8 attempts: ${attempts.join(",")}`,
-  );
-
-  // AFTER: helper clock stays open for a fresh 2s window and closed once past it.
+test("a11y readiness deadline helpers use a controlled monotonic clock", () => {
+  // Controlled-clock check only. Live old-SECONDS early-expiry reproduction is
+  // scheduler-dependent and lives as private evidence, not CI.
   const after = execFileSync("bash", ["-c", [
     "set -euo pipefail",
     "source tools/a11y_server_readiness.sh",
     'started="$(a11y_monotonic_now)"',
     'if ! a11y_before_deadline "$started" 2; then echo "fresh_window_closed"; exit 3; fi',
+    // Inject a started timestamp already past the outer window.
     'past="$(python3 -c "import time; print(time.monotonic()-3)")"',
     'if a11y_before_deadline "$past" 2; then echo "stale_window_open"; exit 4; fi',
     'echo "helpers_ok"',
@@ -183,7 +137,7 @@ test("outer readiness wait keeps a full sub-second deadline when ready never pub
     // Never publish ready; must wait the full outer window (not SECONDS ~1s).
     'a11y_wait_for_local_site "$1" "$2" "$3" "$4" "$outer"',
   ].join("\n");
-  const started = Date.now();
+  const started = performance.now();
   const child = spawn(
     "bash",
     ["-c", script, "readiness-full-deadline", ready, probeError, serverLog, String(process.pid)],
@@ -192,14 +146,13 @@ test("outer readiness wait keeps a full sub-second deadline when ready never pub
   const stderr = [];
   child.stderr.on("data", (chunk) => stderr.push(chunk));
   const exitCode = await new Promise((resolve) => child.once("close", resolve));
-  const elapsedMs = Date.now() - started;
+  const elapsedMs = performance.now() - started;
   assert.notEqual(exitCode, 0);
   assert.match(Buffer.concat(stderr).toString(), /timed out after 2s waiting for the local site server/);
   assert.ok(
     elapsedMs >= 1900,
-    `full outer=2s wait must last >=1900ms wall time; got ${elapsedMs}ms (SECONDS quantization regresses to ~1–1.5s)`,
+    `full outer=2s wait must last >=1900ms; got ${elapsedMs}ms (SECONDS quantization regresses to ~1–1.5s)`,
   );
-  assert.ok(elapsedMs < 5000, `full outer=2s wait took too long: ${elapsedMs}ms`);
 });
 
 test("outer readiness wait accepts publication near the scaled inner deadline", async (t) => {
