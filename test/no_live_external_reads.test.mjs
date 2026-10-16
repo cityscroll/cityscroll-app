@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { withPinnedClock } from "./helpers/test_clock.mjs";
@@ -104,12 +105,26 @@ test("the CLI warns when the manifest has fewer than seven days remaining", () =
     encoding: "utf8",
     env: {
       ...process.env,
-      CITYSCROLL_TEST_TIME_PIN: "2026-10-09T00:00:00.000Z",
+      CITYSCROLL_TEST_TIME_PIN: "2026-11-09T00:00:00.000Z",
       NODE_OPTIONS: `--import=${preload}`,
     },
   });
   assert.equal(result.status, 0, result.stderr);
-  assert.match(result.stdout, /warning: no-live debt manifest expires in 6 day\(s\) on 2026-10-15/);
+  assert.match(result.stdout, /warning: no-live debt manifest expires in 6 day\(s\) on 2026-11-15/);
+});
+
+test("the repository debt manifest expires under the shared clock one day after its date", async () => {
+  const debtPath = fileURLToPath(new URL("../architecture/no-live-external-debt.json", import.meta.url));
+  const debt = JSON.parse(readFileSync(debtPath, "utf8"));
+  const dayAfterExpiry = new Date(`${debt.expires_on}T00:00:00.000Z`);
+  dayAfterExpiry.setUTCDate(dayAfterExpiry.getUTCDate() + 1);
+
+  await withPinnedClock(dayAfterExpiry, () => {
+    assert.throws(
+      () => runNoLiveExternalReads(),
+      new RegExp(`no-live debt manifest expired on ${debt.expires_on}`),
+    );
+  });
 });
 
 test("repository resident-read gate is green", async () => {
