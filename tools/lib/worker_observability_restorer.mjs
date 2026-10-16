@@ -15,6 +15,7 @@ import {
   confirmOwnedSettings,
   createFileWindowStore,
   isProcessAlive,
+  pendingMutationIsIssued,
   runIndependentRestorer,
 } from "./worker_observability_settings.mjs";
 
@@ -64,15 +65,29 @@ export function killSwitchEngaged(stateRoot = DEFAULT_RESTORER_STATE_ROOT) {
   return existsSync(restorerPaths(stateRoot).killSwitch);
 }
 
-/** Explicit controller-death receipt asks the guardian to restore before the deadline. */
-export function controllerDeathSignaled(stateRoot = DEFAULT_RESTORER_STATE_ROOT) {
-  return existsSync(restorerPaths(stateRoot).controllerDeathReceipt);
+/**
+ * Explicit controller-death receipt asks the guardian to restore before the
+ * deadline. The receipt must bind to this window_id and restorer_id so a stale
+ * death signal from an older generation cannot restore a fresh healthy window.
+ */
+export function controllerDeathSignaled(
+  stateRoot = DEFAULT_RESTORER_STATE_ROOT,
+  { windowId = null, restorerId = null } = {},
+) {
+  const paths = restorerPaths(stateRoot);
+  const receipt = readJsonIfPresent(paths.controllerDeathReceipt);
+  if (!receipt || receipt.kind !== "controller-death") return false;
+  if (typeof windowId !== "string" || !windowId) return false;
+  if (typeof restorerId !== "string" || !restorerId) return false;
+  return receipt.window_id === windowId && receipt.restorer_id === restorerId;
 }
 
 /**
  * Pending intents are reconciled by GET while the window is still healthy:
  * - pending-after => confirm ownership and keep the window active
- * - pending-before => clear the intent and keep the window non-terminal
+ * - pending-before/baseline with issued UNKNOWN intent => retain intended-after
+ *   ownership (a prestate GET does not prove the PATCH never applied)
+ * - pending-before/baseline when never issued or explicitly rejected => clear
  * - conflict => refuse
  * Never closes a healthy non-expired window just because ownership exists.
  */
@@ -88,6 +103,7 @@ export async function reconcilePendingMutation({
   const current = await transport.getObservability();
   const classification = classifyCurrentSettings(current, window);
   const at = now;
+  const pending = window.pending_mutation;
 
   if (classification.class === "pending-after") {
     const confirmed = confirmOwnedSettings(window, current, { now: at });
@@ -107,12 +123,51 @@ export async function reconcilePendingMutation({
         observed_at: at,
         current_sha256: classification.sha256,
         owned_sha256: confirmed.owned_sha256,
-        pending_after_sha256: window.pending_mutation.after_sha256,
+        pending_after_sha256: pending.after_sha256,
       },
     };
   }
 
   if (classification.class === "pending-before" || classification.class === "baseline") {
+    // Issued-but-unacknowledged PATCH: prestate GET is UNKNOWN, not "not applied".
+    // Keep durable intended-after ownership until rejection or resolved restoration.
+    if (pendingMutationIsIssued(pending)) {
+      const retained = {
+        ...window,
+        mutations: [
+          ...(window.mutations || []),
+          {
+            at,
+            kind: "pending-retained-unknown",
+            reason: "prestate-get-does-not-disprove-issued-patch",
+            before_sha256: pending.before_sha256,
+            after_sha256: pending.after_sha256,
+            current_sha256: classification.sha256,
+          },
+        ],
+      };
+      return {
+        outcome: "retained-pending-unknown",
+        action: "retained-pending-unknown",
+        proved: false,
+        expired: false,
+        classification,
+        window: retained,
+        after: classification.observability,
+        receipt: {
+          schema: WORKER_OBSERVABILITY_SETTINGS_RECEIPT_SCHEMA,
+          kind: "restorer",
+          outcome: "retained-pending-unknown",
+          window_id: window.window_id,
+          observed_at: at,
+          current_sha256: classification.sha256,
+          baseline_sha256: window.baseline_sha256,
+          pending_after_sha256: pending.after_sha256,
+          issued: true,
+        },
+      };
+    }
+
     const cleared = {
       ...window,
       phase: window.phase?.startsWith("intent-") ? "captured" : window.phase,
@@ -122,8 +177,8 @@ export async function reconcilePendingMutation({
         {
           at,
           kind: "pending-cleared",
-          reason: "reconcile-pending-before",
-          before_sha256: window.pending_mutation.before_sha256,
+          reason: pending?.rejected ? "explicit-rejection" : "reconcile-pending-before-unissued",
+          before_sha256: pending.before_sha256,
           after_sha256: classification.sha256,
         },
       ],
@@ -144,7 +199,7 @@ export async function reconcilePendingMutation({
         observed_at: at,
         current_sha256: classification.sha256,
         baseline_sha256: window.baseline_sha256,
-        pending_after_sha256: window.pending_mutation.after_sha256,
+        pending_after_sha256: pending.after_sha256,
       },
     };
   }
@@ -352,7 +407,10 @@ export async function restorerTick({
     const expired = Date.parse(now) >= Date.parse(window.expires_at);
     const pending = Boolean(window.pending_mutation);
     const owned = Boolean(window.owned_observability);
-    const controllerDead = controllerDeathSignaled(stateRoot);
+    const controllerDead = controllerDeathSignaled(stateRoot, {
+      windowId: window.window_id,
+      restorerId: window.restorer?.restorer_id || null,
+    });
     const cancelRequested = window.cancel_requested === true;
 
     // Healthy owned/enabled windows stay active until deadline, cancel, or

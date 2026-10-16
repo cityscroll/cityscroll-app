@@ -577,6 +577,8 @@ export function recordMutationIntent(window, {
       intended_observability: intended,
       recorded_at: at,
       confirmed: false,
+      issued: false,
+      rejected: false,
     },
   }, {
     at,
@@ -585,6 +587,71 @@ export function recordMutationIntent(window, {
     before_sha256: beforeSha256,
     after_sha256: afterSha256,
   });
+}
+
+/**
+ * Mark that a provider PATCH for the pending intent was issued (or may have
+ * been issued). Prestate GETs must not clear this ownership while UNKNOWN.
+ */
+export function markPendingMutationIssued(window, {
+  now = new Date().toISOString(),
+  exchange = null,
+} = {}) {
+  if (!window?.pending_mutation) fail("markPendingMutationIssued requires a pending mutation");
+  const at = requireIso(now, "now");
+  return appendMutation({
+    ...window,
+    pending_mutation: {
+      ...window.pending_mutation,
+      issued: true,
+      issued_at: at,
+      rejected: false,
+      last_exchange_http_status: exchange?.http_status ?? null,
+    },
+  }, {
+    at,
+    kind: "pending-issued",
+    after_sha256: window.pending_mutation.after_sha256,
+    http_status: exchange?.http_status ?? null,
+  });
+}
+
+/**
+ * Explicit provider rejection (documented client error) means the PATCH was not
+ * applied; the intended-after ownership may be cleared on reconcile.
+ */
+export function markPendingMutationRejected(window, {
+  now = new Date().toISOString(),
+  exchange = null,
+  reason = "explicit-provider-rejection",
+} = {}) {
+  if (!window?.pending_mutation) fail("markPendingMutationRejected requires a pending mutation");
+  const at = requireIso(now, "now");
+  return appendMutation({
+    ...window,
+    pending_mutation: {
+      ...window.pending_mutation,
+      issued: false,
+      rejected: true,
+      rejected_at: at,
+      rejection_reason: reason,
+      last_exchange_http_status: exchange?.http_status ?? null,
+    },
+  }, {
+    at,
+    kind: "pending-rejected",
+    reason,
+    http_status: exchange?.http_status ?? null,
+  });
+}
+
+export function pendingMutationIsIssued(pending) {
+  return Boolean(pending?.issued) && pending?.rejected !== true;
+}
+
+export function isExplicitProviderRejection(exchange) {
+  const status = Number(exchange?.http_status);
+  return Number.isInteger(status) && status >= 400 && status < 500 && exchange?.success === false;
 }
 
 export function confirmOwnedSettings(window, confirmedObservability, { now = new Date().toISOString() } = {}) {
@@ -888,9 +955,19 @@ export async function mutateOwnedWindowObservability({
     try {
       await transport.patchObservability(window.pending_mutation.intended_observability);
       patchExchange = transport.last_exchange || null;
+      // PATCH returned without throw: treat as issued; readback still proves ownership.
+      window = markPendingMutationIssued(window, { now, exchange: patchExchange });
+      await store.write(window, { expectedWindowId: windowId });
     } catch (error) {
       patchError = error;
       patchExchange = transport.last_exchange || error?.provider_exchange || null;
+      if (isExplicitProviderRejection(patchExchange)) {
+        window = markPendingMutationRejected(window, { now, exchange: patchExchange });
+      } else {
+        // Network/5xx/unknown: PATCH may have applied; retain intended-after ownership.
+        window = markPendingMutationIssued(window, { now, exchange: patchExchange });
+      }
+      await store.write(window, { expectedWindowId: windowId });
     }
 
     let afterRaw;

@@ -129,13 +129,15 @@ write-ahead after-digest. Mutation control is window-owned read-modify-write:
 the Cloudflare beta Worker PATCH has no documented conditional update for
 observability settings, so this path never claims immunity to foreign concurrent
 writers. A healthy owned privacy-armed or enabled window stays active until its
-deadline, an explicit cancel, or a controller-death receipt; ownership alone
-does not trigger restore. Pending intents are reconciled by GET (confirm
-ownership on pending-after, clear intent on pending-before) without closing a
-healthy window. The restorer restores the captured baseline on expiry,
-controller death, or cancel (including unacknowledged applied mutations after
-the deadline), and refuses if settings changed outside the owned window. Install
-with
+deadline, an explicit cancel, or a controller-death receipt bound to that
+window_id and restorer_id (stale death receipts from older windows are ignored);
+ownership alone does not trigger restore. Pending intents are reconciled by GET:
+pending-after confirms ownership; an issued-but-unacknowledged intent whose GET
+still shows the prestate is retained as UNKNOWN (a prestate GET does not prove
+the PATCH never applied); unissued or explicitly rejected intents may clear.
+The restorer restores the captured baseline on expiry, bound controller death,
+or cancel (including unacknowledged applied mutations after the deadline), and
+refuses if settings changed outside the owned window. Install with
 `tools/install_observability_settings_restorer.sh`; the kill switch is
 `observability-restorer.off` beside the durable state root. Settings CLI
 statuses `ok` / `captured` / `privacy-armed` / `enabled` / `restored` /
