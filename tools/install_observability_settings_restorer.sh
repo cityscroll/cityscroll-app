@@ -54,6 +54,34 @@ PY
 chmod 755 "$state_root/run.mjs"
 chmod 644 "$state_root/lib/"*.mjs
 
+# Install manifest: source commit + sha256 of each pinned runtime file.
+source_commit=${CITYSCROLL_OBSERVABILITY_RESTORER_SOURCE_COMMIT:-$(git -C "$root" rev-parse HEAD 2>/dev/null || true)}
+includes_commit=${CITYSCROLL_OBSERVABILITY_RESTORER_INCLUDES_COMMIT:-d03848063bf69116501e082580bc2994ba1b824e}
+python3 - <<PY
+import hashlib, json, os
+from pathlib import Path
+from datetime import datetime, timezone
+state = Path("$state_root")
+files = {
+  "run.mjs": state / "run.mjs",
+  "lib/worker_observability_restorer.mjs": state / "lib" / "worker_observability_restorer.mjs",
+  "lib/worker_observability_settings.mjs": state / "lib" / "worker_observability_settings.mjs",
+}
+digests = {rel: hashlib.sha256(path.read_bytes()).hexdigest() for rel, path in files.items()}
+manifest = {
+  "schema": "cityscroll.observability_restorer_install_manifest.v1",
+  "installed_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+  "source_commit": "$source_commit" or None,
+  "includes_commit": "$includes_commit",
+  "state_root": str(state),
+  "files": digests,
+}
+path = state / "install-manifest.json"
+path.write_text(json.dumps(manifest, indent=2) + "\\n")
+os.chmod(path, 0o600)
+print(json.dumps(manifest, indent=2))
+PY
+
 sed -e "s|__NODE__|$node_bin|g" \
   -e "s|__STATE_ROOT__|$state_root|g" \
   -e "s|__LOG_DIR__|$log_dir|g" \
@@ -66,6 +94,7 @@ chmod 644 "$target"
 kill_switch="$state_root/observability-restorer.off"
 
 echo "installed durable restorer at $state_root"
+echo "install manifest at $state_root/install-manifest.json"
 echo "LaunchAgent plist at $target (not bootstrapped by this script)"
 echo "kill switch: $kill_switch"
 echo "bootstrap with: launchctl bootstrap gui/\$(id -u) $target"

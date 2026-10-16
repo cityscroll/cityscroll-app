@@ -23,15 +23,18 @@ import {
   settingsCommandSucceeded,
 } from "./lib/worker_observability_settings.mjs";
 import {
+  INSTALL_MANIFEST_SCHEMA,
   announceRestorerReady,
   assertRestorerReady,
   bindWindowToRestorer,
   clearKillSwitch,
   controllerDeathSignaled,
   engageKillSwitch,
+  measureInstalledRuntimeShas,
   restorerPaths,
   restorerTick,
   runRestorerLoop,
+  sha256File,
   writeRestorerReceipt,
 } from "./lib/worker_observability_restorer.mjs";
 
@@ -104,6 +107,50 @@ export function createTransport() {
 }
 `, { mode: 0o600 });
 }
+
+test("ready receipt carries installed runtime commit and matching file shas", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-manifest-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(join(stateRoot, "lib"), { recursive: true, mode: 0o700 });
+  mkdirSync(join(stateRoot, "receipts"), { recursive: true, mode: 0o700 });
+  const runPath = join(stateRoot, "run.mjs");
+  const restorerLib = join(stateRoot, "lib", "worker_observability_restorer.mjs");
+  const settingsLib = join(stateRoot, "lib", "worker_observability_settings.mjs");
+  writeFileSync(runPath, "// run\n", { mode: 0o755 });
+  writeFileSync(restorerLib, "// restorer\n", { mode: 0o644 });
+  writeFileSync(settingsLib, "// settings\n", { mode: 0o644 });
+  const files = {
+    "run.mjs": sha256File(runPath),
+    "lib/worker_observability_restorer.mjs": sha256File(restorerLib),
+    "lib/worker_observability_settings.mjs": sha256File(settingsLib),
+  };
+  writeRestorerReceipt(restorerPaths(stateRoot).installManifest, {
+    schema: INSTALL_MANIFEST_SCHEMA,
+    source_commit: "d03848063bf69116501e082580bc2994ba1b824e",
+    includes_commit: "d03848063bf69116501e082580bc2994ba1b824e",
+    files,
+  });
+  const store = createFileWindowStore(join(dir, "window.json"));
+  let window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    windowId: "manifest-1",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z", restorerId: "r-manifest" });
+  await store.write(window);
+  const announced = await announceRestorerReady({
+    store,
+    stateRoot,
+    now: "2026-10-16T00:00:02.000Z",
+    pid: process.pid,
+  });
+  assert.equal(announced.ready.installed_runtime.source_commit, "d03848063bf69116501e082580bc2994ba1b824e");
+  assert.equal(announced.ready.installed_runtime.matches_manifest, true);
+  assert.deepEqual(announced.ready.installed_runtime.files, files);
+  assert.deepEqual(measureInstalledRuntimeShas(stateRoot), files);
+  rmSync(dir, { recursive: true, force: true });
+});
 
 test("settings success statuses cover captured privacy-armed enabled restored", () => {
   for (const status of ["ok", "captured", "privacy-armed", "enabled", "restored", "already-restored", "complete"]) {

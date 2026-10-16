@@ -7,6 +7,8 @@ import { dirname, join } from "node:path";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
+export const INSTALL_MANIFEST_SCHEMA = "cityscroll.observability_restorer_install_manifest.v1";
+
 import {
   TERMINAL_WINDOW_PHASES,
   WORKER_OBSERVABILITY_SETTINGS_RECEIPT_SCHEMA,
@@ -58,6 +60,36 @@ export function restorerPaths(stateRoot = DEFAULT_RESTORER_STATE_ROOT) {
     assignedWindow: join(stateRoot, "assigned-window.json"),
     durableRunner: join(stateRoot, "run.mjs"),
     durableLibDir: join(stateRoot, "lib"),
+    installManifest: join(stateRoot, "install-manifest.json"),
+  };
+}
+
+export function sha256File(path) {
+  return createHash("sha256").update(readFileSync(path)).digest("hex");
+}
+
+/** Read the installer-written runtime identity (commit + per-file sha256). */
+export function readInstalledRuntimeManifest(stateRoot = DEFAULT_RESTORER_STATE_ROOT) {
+  const paths = restorerPaths(stateRoot);
+  const manifest = readJsonIfPresent(paths.installManifest);
+  if (!manifest || manifest.schema !== INSTALL_MANIFEST_SCHEMA) return null;
+  return manifest;
+}
+
+/**
+ * Live hashes of the pinned durable runner/libs. Used to prove ready receipts
+ * match the install-manifest before any provider mutation.
+ */
+export function measureInstalledRuntimeShas(stateRoot = DEFAULT_RESTORER_STATE_ROOT) {
+  const paths = restorerPaths(stateRoot);
+  return {
+    "run.mjs": existsSync(paths.durableRunner) ? sha256File(paths.durableRunner) : null,
+    "lib/worker_observability_restorer.mjs": existsSync(join(paths.durableLibDir, "worker_observability_restorer.mjs"))
+      ? sha256File(join(paths.durableLibDir, "worker_observability_restorer.mjs"))
+      : null,
+    "lib/worker_observability_settings.mjs": existsSync(join(paths.durableLibDir, "worker_observability_settings.mjs"))
+      ? sha256File(join(paths.durableLibDir, "worker_observability_settings.mjs"))
+      : null,
   };
 }
 
@@ -495,6 +527,8 @@ export async function announceRestorerReady({
       restorerId: window.restorer.restorer_id,
     }), { now, pid });
     await store.write(window, { expectedWindowId: window.window_id });
+    const installManifest = readInstalledRuntimeManifest(stateRoot);
+    const installedShas = measureInstalledRuntimeShas(stateRoot);
     const ready = writeRestorerReceipt(paths.readyReceipt, {
       schema: RESTORER_READY_SCHEMA,
       kind: "ready",
@@ -502,6 +536,19 @@ export async function announceRestorerReady({
       observed_at: now,
       pid,
       window_id: window.window_id,
+      installed_runtime: {
+        source_commit: installManifest?.source_commit || null,
+        includes_commit: installManifest?.includes_commit || null,
+        manifest_path: paths.installManifest,
+        files: installedShas,
+        manifest_files: installManifest?.files || null,
+        matches_manifest: Boolean(
+          installManifest?.files
+          && installedShas["run.mjs"] === installManifest.files["run.mjs"]
+          && installedShas["lib/worker_observability_restorer.mjs"] === installManifest.files["lib/worker_observability_restorer.mjs"]
+          && installedShas["lib/worker_observability_settings.mjs"] === installManifest.files["lib/worker_observability_settings.mjs"]
+        ),
+      },
       restorer_id: window.restorer.restorer_id,
       window_path: store.path,
       state_root: stateRoot,
@@ -643,8 +690,4 @@ export function repoRestorerEntryUrl() {
 
 export function repoRestorerEntryPath() {
   return fileURLToPath(new URL("../worker_observability_restorer.mjs", import.meta.url));
-}
-
-export function sha256File(path) {
-  return createHash("sha256").update(readFileSync(path)).digest("hex");
 }
