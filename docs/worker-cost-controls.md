@@ -62,14 +62,16 @@ mismatched provider version is rejected. No resident-delivering cron or queue
 job is run merely to complete a profile; absent native evidence remains
 unknown.
 
-Collection is capped at 24 hours and 10,000 events. Each scheduled cohort has
-its own exact timestamp and at-most-30-minute acceptance window within that
-day, allowing one immutable version to observe the existing 08:00, 10:00, and
-13:00 UTC triggers without firing them artificially. The retained shape omits
-URLs, query strings, headers, bodies, credentials, account
-identifiers, and resident identifiers. Missing cohorts remain `unknown`; they
-never become zero-valued samples. Attempted and confirmed operations are kept
-separate, and collector overhead is a required cohort.
+Collection is capped at 24 hours and 10,000 events, with each live tail limited
+to 30 minutes. Each scheduled cohort has its own exact timestamp and
+at-most-30-minute acceptance window within that day, allowing one immutable
+version to observe the existing 08:00, 10:00, and 13:00 UTC triggers without
+firing them artificially. The retained shape omits URLs, query strings,
+headers, bodies, credentials, account identifiers, and resident identifiers.
+Missing cohorts remain `unknown`; they never become zero-valued samples.
+Attempted and confirmed operations are kept separate, and collector overhead is
+a required cohort. Every retained profile carries an explicit `traffic_mix`
+label.
 
 `tools/worker_cost_acquisition.mjs profile` owns live acquisition. It reads
 credentials only from the environment or a mode-0600 file, authenticates
@@ -81,22 +83,42 @@ never reused for deployment reads. Retained Logs and Traces remain disabled.
 Each live-tail session sends an authenticated heartbeat for the exact Worker
 before acquisition and every 15 seconds while open; heartbeat or socket failure
 aborts the collection, and shutdown cancels the heartbeat. This maintains
-session eligibility only. Missing live events or cold-start metadata still
-leave the affected evidence incomplete.
+session eligibility only. Missing live events leave the affected evidence
+incomplete. Missing cold-start metadata leaves isolate state unknown without
+blocking route-level attribution cohorts.
 Multiple collection windows may cover the natural cron schedule, but every
 future live tail opens at its declared window start rather than spending its
 collection timeout waiting. Every individual live tail is limited to 30 minutes,
 the combined collectors accept at most 10,000 events, and the complete profile
-remains within 24 hours. Raw provider events stay in memory; only
-sanitized samples are returned. Missing access, cold-start metadata, native
-events, or provider batch messages yields a partial result rather than a zero or
-complete profile.
+hard-caps at 1,800 seconds and 10,000 retained events. Raw provider events stay
+in memory; only sanitized samples are returned. Missing access, native events,
+or provider batch messages yields a partial result rather than a zero or
+complete profile. Missing cold-start metadata does not invent warm or cold
+classes. When `$metadata.coldStart` is present as 0 or 1 it stays
+`unverified-raw` and never becomes cold/warm acceptance by itself.
 
-The fixed profile covers cold and warm health, unknown-route, events, full RUM,
+The fixed attribution profile covers health, unknown-route, events, full RUM,
 search, Near You, Browse, ZAP BBL, ZAP project, and Doing Business requests;
-all three configured cron windows; the queue; and collector overhead. Each cold
-or warm label requires provider condition evidence rather than inferring
-isolate state from request order.
+all three configured cron windows; the queue; and collector overhead. Provider
+`$metadata.coldStart` is an optional numeric field whose 0/1 meaning is
+unverified on this account. Missing values stay unknown and never become warm,
+cold, or zero CPU. Optional isolate-labeled cohorts remain available for matched
+warehouse experiments only when a live 0/1 flag is actually present; request
+order, wall time, and startup time never invent isolate class.
+
+A bounded observability settings window uses the beta Worker settings API. The
+harness captures the effective baseline first, arms an independent restorer,
+then write-ahead records intended before/after digests (fsynced) before any
+PATCH. Privacy arming keeps observability, logs, and traces disabled
+(`persist=false`, `redact_query_string=true`, empty destinations) and proves
+every privacy field by an explicit typed GET acknowledgement before any enable.
+Ownership is confirmed only after GET matches the write-ahead after-digest.
+Mutation control is window-owned read-modify-write: the Cloudflare beta Worker
+PATCH has no documented conditional update for observability settings, so this
+path never claims immunity to foreign concurrent writers. The independent
+restorer reconciles uncertain owned targets via GET, restores the captured
+baseline on expiry, failure, or successful completion (including unacknowledged
+applied mutations), and refuses if settings changed outside the owned window.
 
 ## Warehouse experiment and release gate
 

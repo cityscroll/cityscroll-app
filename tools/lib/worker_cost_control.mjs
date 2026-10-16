@@ -1,18 +1,38 @@
 import { createHash } from "node:crypto";
 
+/**
+ * Attribution completeness uses route, cron, queue, and collector cohorts.
+ * Provider `$metadata.coldStart` is an optional numeric field whose 0/1 meaning
+ * is unverified on this account; missing values stay unknown and never become
+ * warm, cold, or zero. Optional isolate-labeled cohorts remain available for
+ * warehouse experiments when a live 0/1 flag is actually present.
+ */
+export const HTTP_ROUTE_COHORTS = Object.freeze([
+  "health", "unknown-route", "events", "rum-16", "search", "nearby",
+  "browse", "zap-bbl", "zap-project", "doing-business",
+]);
+
+export const OPTIONAL_ISOLATE_COHORTS = Object.freeze(
+  HTTP_ROUTE_COHORTS.flatMap((cohort) => [`${cohort}:cold`, `${cohort}:warm`]),
+);
+
 export const REQUIRED_COST_COHORTS = Object.freeze([
-  "health:cold", "health:warm",
-  "unknown-route:cold", "unknown-route:warm",
-  "events:cold", "events:warm",
-  "rum-16:cold", "rum-16:warm",
-  "search:cold", "search:warm",
-  "nearby:cold", "nearby:warm",
-  "browse:cold", "browse:warm",
-  "zap-bbl:cold", "zap-bbl:warm",
-  "zap-project:cold", "zap-project:warm",
-  "doing-business:cold", "doing-business:warm",
+  ...HTTP_ROUTE_COHORTS,
   "cron:0 8 * * *", "cron:0 10 * * *", "cron:0 13 * * *", "queue", "collector-overhead",
 ]);
+
+export const ISOLATE_CONTRACT = Object.freeze({
+  source: "$metadata.coldStart",
+  semantics: "optional-unverified-provider-flag",
+  missing_means: "unknown",
+  never_infer_from: Object.freeze([
+    "request-order",
+    "wall-time",
+    "startup-time",
+    "javascript-elapsed",
+    "absent-field",
+  ]),
+});
 
 export const COST_METERS = Object.freeze([
   "native_cpu_ms", "collector_cpu_ms", "kv_reads", "kv_writes",
@@ -195,10 +215,40 @@ function queueCondition(event, options) {
 
 function providerColdCondition(event, cohort) {
   const coldStart = event?.$metadata?.coldStart;
-  if (coldStart !== 0 && coldStart !== 1) fail("provider $metadata.coldStart must be the numeric 0 or 1 flag");
+  if (coldStart !== 0 && coldStart !== 1) {
+    fail("provider $metadata.coldStart must be the numeric 0 or 1 flag for isolate-labeled cohorts");
+  }
   const cold = coldStart === 1;
   if (cold !== cohort.endsWith(":cold")) fail("provider $metadata.coldStart does not match cohort");
-  return { mode: "provider-observed", source: "$metadata.coldStart", cold_start: cold };
+  return {
+    mode: "provider-observed",
+    source: ISOLATE_CONTRACT.source,
+    cold_start: cold,
+    semantics: ISOLATE_CONTRACT.semantics,
+  };
+}
+
+function providerRouteCondition(event) {
+  const coldStart = event?.$metadata?.coldStart;
+  const isolate = coldStart === 0 || coldStart === 1
+    ? {
+      present: true,
+      raw: coldStart,
+      // Raw provider flag only; 0/1 is unverified and never accepted as cold/warm.
+      provisional_label: "unverified-raw",
+      semantics: ISOLATE_CONTRACT.semantics,
+    }
+    : {
+      present: false,
+      raw: null,
+      provisional_label: "unknown",
+      semantics: ISOLATE_CONTRACT.semantics,
+    };
+  return {
+    mode: "bounded-production-execution",
+    source: "owned-http-probe",
+    isolate_observation: isolate,
+  };
 }
 
 function validateCondition(cohort, condition, path) {
@@ -208,6 +258,28 @@ function validateCondition(cohort, condition, path) {
       fail(`${path} must use provider $metadata.coldStart evidence`);
     }
     if (condition.cold_start !== cohort.endsWith(":cold")) fail(`${path} coldStart does not match cohort`);
+    if (condition.semantics && condition.semantics !== ISOLATE_CONTRACT.semantics) {
+      fail(`${path}.semantics does not match the isolate contract`);
+    }
+  } else if (HTTP_ROUTE_COHORTS.includes(cohort) || cohort === "collector-overhead") {
+    if (condition.mode !== "bounded-production-execution") {
+      fail(`${path} must use bounded production execution evidence`);
+    }
+    if (condition.isolate_observation) {
+      const isolate = condition.isolate_observation;
+      if (isolate.semantics !== ISOLATE_CONTRACT.semantics) fail(`${path}.isolate_observation.semantics is invalid`);
+      if (isolate.present === true) {
+        if (isolate.raw !== 0 && isolate.raw !== 1) fail(`${path}.isolate_observation.raw must be 0 or 1 when present`);
+        if (isolate.provisional_label !== "unverified-raw") {
+          fail(`${path}.isolate_observation.provisional_label must stay unverified-raw`);
+        }
+      } else if (isolate.present === false) {
+        if (isolate.raw !== null) fail(`${path}.isolate_observation.raw must be null when absent`);
+        if (isolate.provisional_label !== "unknown") fail(`${path} must not invent cold or warm from absence`);
+      } else {
+        fail(`${path}.isolate_observation.present is invalid`);
+      }
+    }
   } else if (cohort.startsWith("cron:")) {
     requireExactKeys(condition, [
       "mode", "source", "cron", "scheduled_time", "provider_request_id_sha256", "run_marker_sha256", "workload_digest", "instrumentation_log_count",
@@ -314,7 +386,9 @@ export function sanitizeNativeInvocation(event, {
   expectedBatchFingerprint,
   expectedBatchSize,
 } = {}) {
-  if (!REQUIRED_COST_COHORTS.includes(cohort)) fail(`unknown cost cohort ${cohort}`);
+  if (!REQUIRED_COST_COHORTS.includes(cohort) && !OPTIONAL_ISOLATE_COHORTS.includes(cohort)) {
+    fail(`unknown cost cohort ${cohort}`);
+  }
   let retainedCondition = condition;
   let retainedOperations = operations;
   if (cohort.startsWith("cron:")) {
@@ -338,7 +412,11 @@ export function sanitizeNativeInvocation(event, {
     const ownedHeader = headers["x-cityscroll-cost-probe"] || headers["X-Cityscroll-Cost-Probe"];
     if (!expectedHeaderValue || ownedHeader !== expectedHeaderValue) fail("provider event is not owned by the literal probe header");
     if (request?.url !== expectedUrl || request?.method !== expectedMethod) fail("provider event does not match the expected URL and method");
-    if (cohort.endsWith(":cold") || cohort.endsWith(":warm")) retainedCondition = providerColdCondition(event, cohort);
+    if (cohort.endsWith(":cold") || cohort.endsWith(":warm")) {
+      retainedCondition = providerColdCondition(event, cohort);
+    } else if (HTTP_ROUTE_COHORTS.includes(cohort) || cohort === "collector-overhead") {
+      retainedCondition = providerRouteCondition(event);
+    }
   }
   const provider = providerInvocation(event);
   const cpu = event?.cpuTime ?? provider.cpuTimeMs;
@@ -422,7 +500,7 @@ export function buildWorkerCostProfile(samples, {
   if (!/^[a-f0-9]{40}$/.test(String(revision || ""))) fail("profile revision must be a full commit SHA");
   finiteNonNegative(durationSeconds, "duration_seconds");
   finiteNonNegativeInteger(eventCount, "event_count");
-  if (durationSeconds > 24 * 60 * 60) fail("collection exceeded the 24 hour bound");
+  if (durationSeconds > 30 * 60) fail("collection exceeded the 30 minute bound");
   if (eventCount > 10_000) fail("collection exceeded the 10000 event bound");
   const providerVersionId = validateProviderDeployment(providerDeployment, revision, "provider_deployment");
   const cohorts = {};
@@ -452,7 +530,7 @@ export function buildWorkerCostProfile(samples, {
     kind: "provider-native-bounded",
     revision,
     observed_at: observedAt,
-    window: { duration_seconds: durationSeconds, event_count: eventCount, max_seconds: 86_400, max_events: 10_000 },
+    window: { duration_seconds: durationSeconds, event_count: eventCount, max_seconds: 1_800, max_events: 10_000 },
     traffic_mix: trafficMix,
     provider_deployment: providerDeployment,
     cohorts,
@@ -471,8 +549,11 @@ export function validateWorkerCostProfile(profile, { requireComplete = true } = 
   const providerVersionId = validateProviderDeployment(profile.provider_deployment, profile.revision, "profile.provider_deployment");
   finiteNonNegative(profile.window?.duration_seconds, "profile.window.duration_seconds");
   finiteNonNegativeInteger(profile.window?.event_count, "profile.window.event_count");
-  if (profile.window?.duration_seconds > profile.window?.max_seconds || profile.window?.max_seconds !== 86_400) fail("profile exceeds duration bound");
+  if (profile.window?.duration_seconds > profile.window?.max_seconds || profile.window?.max_seconds !== 1_800) fail("profile exceeds duration bound");
   if (profile.window?.event_count > profile.window?.max_events || profile.window?.max_events !== 10_000) fail("profile exceeds event bound");
+  if (typeof profile.traffic_mix !== "string" || !profile.traffic_mix.trim()) {
+    fail("profile traffic_mix label is required");
+  }
   let retainedSampleCount = 0;
   for (const name of REQUIRED_COST_COHORTS) {
     const cohort = profile.cohorts?.[name];

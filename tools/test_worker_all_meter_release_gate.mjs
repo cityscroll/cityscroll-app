@@ -89,7 +89,7 @@ function profile(profileRevision = revision, totals = {}, samplesPerCohort = 1) 
 function receipt(meters = {}, overrides = {}) {
   const deployedRevision = overrides.deployed_revision || revision;
   const measuredMeters = {
-    native_cpu_ms: 24,
+    native_cpu_ms: REQUIRED_COST_COHORTS.length - 1,
     collector_cpu_ms: 1,
     kv_reads: 0,
     kv_writes: 0,
@@ -139,11 +139,11 @@ function pair(candidateMeters = {}, candidateOverrides = {}) {
 }
 
 test("a complete tariff-free cost vector passes when no meter regresses", () => {
-  const result = evaluateAllMeterRelease(pair({ native_cpu_ms: 9 }));
+  const result = evaluateAllMeterRelease(pair({ native_cpu_ms: 7 }));
   assert.equal(result.pass, true);
   assert.deepEqual(result.regressions, []);
   assert.equal(result.tariff_free, true);
-  assert.equal(result.candidate_normalized.native_cpu_ms, 0.375);
+  assert.equal(result.candidate_normalized.native_cpu_ms, 0.5);
   assert.equal(result.candidate_normalized.collector_cpu_ms, 1);
   assert.equal(result.candidate_populations.native_cpu_ms, REQUIRED_COST_COHORTS.length - 1);
   assert.equal(result.candidate_populations.collector_cpu_ms, 1);
@@ -189,7 +189,7 @@ test("release meters cannot contradict provider-native samples", () => {
 
 test("failed provider outcomes cannot be retained as zero errors", () => {
   const evidence = pair();
-  const sample = evidence.candidate.profile.cohorts["health:cold"].samples[0];
+  const sample = evidence.candidate.profile.cohorts["health"].samples[0];
   sample.outcome = "exception";
   sample.error_count = 0;
   assert.throws(() => evaluateAllMeterRelease(evidence), /failed provider outcome/);
@@ -230,7 +230,7 @@ test("release evidence cannot authenticate its own provider deployment binding",
 });
 
 test("release CLI gates the exact candidate revision from configured evidence", () => {
-  const { baseline, candidate, acquiredDeployments } = pair({ native_cpu_ms: 9 });
+  const { baseline, candidate, acquiredDeployments } = pair({ native_cpu_ms: 7 });
   const dir = mkdtempSync(join(tmpdir(), "cityscroll-release-bindings-"));
   const acquiredPath = join(dir, "split.json");
   try {

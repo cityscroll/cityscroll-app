@@ -187,7 +187,7 @@ async function profileTransport({ corruptQueue = false, missingColdStart = false
     collectProviderEvents: async ({ execute }) => {
       await execute?.();
       const events = Object.entries(expectations).map(([cohort, owned], index) => httpEvent(owned, cohort, 2, {
-        coldStart: missingColdStart && cohort === "health:cold" ? undefined : cohort.endsWith(":cold") ? 1 : 0,
+        coldStart: missingColdStart && cohort === "health" ? undefined : cohort.endsWith(":cold") ? 1 : 0,
         extraRecord: index === 0,
       }));
       if (missingColdStart) {
@@ -219,14 +219,16 @@ test("profile acquisition binds outer requests, structured receipts, and every m
   assert.equal(await queueFingerprintFromProviderEvent(rawQueue), rawQueue.source.batch_fingerprint_sha256);
 });
 
-test("missing provider cold-start metadata remains partial", async () => {
+test("missing provider cold-start metadata keeps route cohorts measured as unknown isolate", async () => {
   const result = await acquireWorkerCostProfile({
     revision: REVISION,
     window: { from: "2026-10-09T07:55:00Z", to: "2026-10-09T08:25:00Z" },
     transport: await profileTransport({ missingColdStart: true }),
   });
-  assert.equal(result.status, "partial");
-  assert.equal(result.profile.cohorts["health:cold"].status, "unknown");
+  assert.equal(result.status, "complete");
+  assert.equal(result.profile.cohorts.health.status, "measured");
+  assert.equal(result.profile.cohorts.health.samples[0].condition.isolate_observation.present, false);
+  assert.equal(result.profile.cohorts.health.samples[0].condition.isolate_observation.provisional_label, "unknown");
 });
 
 test("unbound queue evidence remains partial instead of becoming zero", async () => {
@@ -254,7 +256,7 @@ test("profile collection coordinates future windows without serially consuming t
     transport: {
       acquireDeployment: async () => deployment(REVISION),
       measurementPlan: async () => plan(),
-      executeFixedHttpWorkloads: async () => ({ "health:cold": expectation("health:cold") }),
+      executeFixedHttpWorkloads: async () => ({ "health": expectation("health") }),
       collectProviderEvents: async ({ execute, limit }) => {
         active += 1;
         maximumActive = Math.max(maximumActive, active);
@@ -297,7 +299,7 @@ test("provider query uses official envelopes, nested parameters, and bounded cur
 });
 
 test("provider invocation envelopes merge structured logs with nested Worker requests", () => {
-  const owned = expectation("health:cold");
+  const owned = expectation("health");
   const events = providerEventsFromEnvelope({
     result: {
       invocations: {
@@ -317,7 +319,7 @@ test("provider invocation envelopes merge structured logs with nested Worker req
     },
   });
   assert.equal(events.length, 1);
-  assert.equal(selectOwnedHttpEvent(events, owned, "health:cold").$metadata.id, "event-grouped");
+  assert.equal(selectOwnedHttpEvent(events, owned, "health").$metadata.id, "event-grouped");
 });
 
 test("live-tail URLs accept secure provider schemes and reject user information", () => {
@@ -516,7 +518,7 @@ test("collection cancellation reaches in-flight workload fetches", async () => {
   const acquired = deployment(REVISION);
   const planValue = {
     series: "fixed-series",
-    http_workloads: [{ cohort: "health:cold", probe_cohort: "health", header: expectation("health:cold").header, workload_hash: WORKLOAD, body: { kind: "http", route: "health" } }],
+    http_workloads: [{ cohort: "health", probe_cohort: "health", header: expectation("health").header, workload_hash: WORKLOAD, body: { kind: "http", route: "health" } }],
   };
   await assert.rejects(transport.collectProviderEvents({
     from: "2026-10-09T08:00:00Z",
@@ -561,7 +563,7 @@ test("live transport separates telemetry authentication and targets the authenti
       }
       if (url.includes("/live-tail")) return Response.json({ success: true, result: { wsUrl: "wss://tail.example/session" } });
       if (url.endsWith("/admin/cost-control-probe")) {
-        const receipt = expectation("health:cold").receipt;
+        const receipt = expectation("health").receipt;
         return Response.json(receipt);
       }
       throw new Error(`unexpected fetch ${url}`);
@@ -572,7 +574,7 @@ test("live transport separates telemetry authentication and targets the authenti
   assert.ok(wranglerEnvironments.every((value) => !value.CLOUDFLARE_API_TOKEN && !value.CLOUDFLARE_OBSERVABILITY_TOKEN));
   const planValue = {
     series: "fixed-series",
-    http_workloads: [{ cohort: "health:cold", probe_cohort: "health", header: expectation("health:cold").header, workload_hash: WORKLOAD, body: { kind: "http", route: "health" } }],
+    http_workloads: [{ cohort: "health", probe_cohort: "health", header: expectation("health").header, workload_hash: WORKLOAD, body: { kind: "http", route: "health" } }],
   };
   let expected;
   const events = await transport.collectProviderEvents({
@@ -580,8 +582,8 @@ test("live transport separates telemetry authentication and targets the authenti
     to: "2026-10-09T08:30:00Z",
     limit: 10_000,
     execute: async () => {
-      expected = (await transport.executeFixedHttpWorkloads({ plan: planValue, deployment: acquired }))["health:cold"];
-      socket.emit("message", { data: JSON.stringify({ events: [{ events: [httpEvent(expected, "health:cold")] }] }) });
+      expected = (await transport.executeFixedHttpWorkloads({ plan: planValue, deployment: acquired })).health;
+      socket.emit("message", { data: JSON.stringify({ events: [{ events: [httpEvent(expected, "health")] }] }) });
     },
   });
   assert.equal(events.length, 1);
