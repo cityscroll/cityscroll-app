@@ -137,7 +137,7 @@ async function kvPutRecord(env, record) {
  * List project_ids for the sell-facing land statuses (priority order, deduped, capped).
  * Pure SODA — no ZAP API. Fail-soft per status so one query outage still yields others.
  */
-export async function listPrewarmProjectIds({
+async function listPrewarmProjectRoster({
   fetchImpl = fetch,
   statuses = ZAP_PREWARM_STATUSES,
   max = ZAP_PREWARM_MAX,
@@ -146,6 +146,8 @@ export async function listPrewarmProjectIds({
   const cap = Math.max(1, Math.min(Number(max) || ZAP_PREWARM_MAX, 500));
   const ordered = [];
   const seen = new Set();
+  const failures = [];
+  let succeeded = 0;
 
   function pushId(raw) {
     const id = String(raw || "").trim();
@@ -175,19 +177,31 @@ export async function listPrewarmProjectIds({
         headers: { Accept: "application/json", "User-Agent": "cityscroll-zap-outcomes/1.0" },
         signal: ctl.signal,
       });
-      if (!res.ok) continue;
+      if (!res.ok) {
+        failures.push({ status, reason: `http-${res.status || "error"}` });
+        continue;
+      }
       const rows = await res.json();
+      if (!Array.isArray(rows)) throw new Error("invalid-roster");
+      succeeded++;
       for (const row of rows || []) {
         if (ordered.length >= cap) break;
         pushId(row?.project_id);
       }
-    } catch {
-      // Partial status list is fine — prewarm what we can.
+    } catch (error) {
+      failures.push({ status, reason: String(error?.message || error) });
     } finally {
       clearTimeout(timer);
     }
   }
-  return ordered.slice(0, cap);
+  return {
+    projectIds: ordered.slice(0, cap),
+    listing: { requested: statusList.length, succeeded, failed: failures.length, failures },
+  };
+}
+
+export async function listPrewarmProjectIds(options = {}) {
+  return (await listPrewarmProjectRoster(options)).projectIds;
 }
 
 /**
@@ -299,13 +313,16 @@ export async function refreshZapOutcomes(env, opts = {}) {
   const force = opts.force === true;
   let projectIds = Array.isArray(opts.projectIds) ? opts.projectIds : null;
   let listed = 0;
+  let listing = { requested: 0, succeeded: 0, failed: 0, failures: [] };
   if (!projectIds) {
-    projectIds = await listPrewarmProjectIds({
+    const roster = await listPrewarmProjectRoster({
       max,
       statuses: opts.statuses || ZAP_PREWARM_STATUSES,
       demoIds: opts.demoIds || ZAP_PREWARM_DEMO_IDS,
       fetchImpl: opts.fetchImpl || fetch,
     });
+    projectIds = roster.projectIds;
+    listing = roster.listing;
     listed = projectIds.length;
   } else {
     projectIds = projectIds.slice(0, max);
@@ -323,12 +340,18 @@ export async function refreshZapOutcomes(env, opts = {}) {
     nowMs: opts.nowMs || Date.now(),
     max,
   });
+  const failed = summary.failed + listing.failed;
+  const succeeded = summary.computed + summary.skipped;
+  const reason = listing.failed && !listing.succeeded ? "roster-unavailable"
+    : listing.failed ? "roster-partial"
+      : !summary.requested ? "empty-roster"
+        : !summary.failed && !summary.computed ? "already-fresh" : null;
   return {
-    status: summary.failed ? (summary.computed || summary.skipped ? "partial" : "failed")
+    status: failed ? (succeeded ? "partial" : "failed")
       : summary.computed ? "ok" : "skipped",
-    ...(!summary.requested ? { reason: "empty-roster" }
-      : !summary.failed && !summary.computed ? { reason: "already-fresh" } : {}),
+    ...(reason ? { reason } : {}),
     listed,
+    listing,
     ...summary,
     generated_at: new Date(opts.nowMs || Date.now()).toISOString(),
   };

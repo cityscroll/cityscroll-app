@@ -1586,15 +1586,14 @@ function zapOutcomesMemGet(projectId){
   if(hit.p) return hit;
   // determinism-lint: allow clock cache age inside one page view, not a civic date; it decides whether to reuse a payload.
   if(Date.now() - hit.at < ZAP_OUTCOMES_MEM_TTL) return hit;
-  ZAP_OUTCOMES_MEM.delete(projectId);
-  return null;
+  return {...hit,expired:true};
 }
 function fetchZapOutcomesPayload(projectId,{allowStatic=true}={}){
   const id = String(projectId || "").trim();
   if(!id) return Promise.resolve(null);
   const existing = zapOutcomesMemGet(id);
   if(existing?.p) return existing.p;
-  if(existing?.data && (allowStatic || !existing.staticSnapshot)) return Promise.resolve(existing.data);
+  if(existing?.data && !existing.expired && (allowStatic || !existing.staticSnapshot)) return Promise.resolve(existing.data);
   const p = (async ()=>{
     try{
       const tools=await ensureProjectConnectionsTools();
@@ -1626,7 +1625,11 @@ function fetchZapOutcomesPayload(projectId,{allowStatic=true}={}){
       else ZAP_OUTCOMES_MEM.delete(id);
     }
     return data;
-  }).catch(()=>{ ZAP_OUTCOMES_MEM.delete(id); return null; });
+  }).catch(()=>{
+    if(existing?.data) ZAP_OUTCOMES_MEM.set(id,existing);
+    else ZAP_OUTCOMES_MEM.delete(id);
+    return null;
+  });
 }
 function prefetchZapOutcomesForList(rows){
   if(!Array.isArray(rows) || !rows.length) return;
@@ -1641,7 +1644,8 @@ function prefetchZapOutcomesForList(rows){
     if(ids.length >= 12) break;
   }
   for(const id of ids){
-    if(zapOutcomesMemGet(id)) continue;
+    const cached=zapOutcomesMemGet(id);
+    if(cached&&!cached.expired) continue;
     fetchZapOutcomesPayload(id);
   }
 }

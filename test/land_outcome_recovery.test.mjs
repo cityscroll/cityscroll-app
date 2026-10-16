@@ -195,6 +195,8 @@ test("stale evidence keeps its vintage through new bundles, session reuse, faile
   assert.match(c.landOutcomeFreshnessHTML(payload,{failed:true}),/land_outcome_update_failed/);
   c.ensureProjectConnectionsTools=async()=>({normalizeProjectConnectionsPayload:p=>p});
   c.workerFetch=async()=>new Response("blocked",{status:403});
+  c.ZAP_OUTCOMES_MEM.get(record.project_id).at=Date.now()-c.ZAP_OUTCOMES_MEM_TTL-1;
+  assert.equal(c.zapOutcomesMemGet(record.project_id).expired,true);
   assert.equal(await c.fetchZapOutcomesPayload(record.project_id,{allowStatic:false}),null);
   assert.equal(c.zapOutcomesMemGet(record.project_id).data.record.generated_at,record.generated_at);
   const fresh={...record,generated_at:new Date().toISOString()};

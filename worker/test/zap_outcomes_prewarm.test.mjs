@@ -256,6 +256,29 @@ test("refresh distinguishes failures, partial coverage, fresh skips and empty wo
   assert.equal(empty.reason, "empty-roster");
 });
 
+test("refresh reports partial coverage when roster queries fail", async () => {
+  const env = { ALERT_STATE: kv() };
+  const fetchImpl = async () => ({ ok: false, status: 503 });
+  const result = await refreshZapOutcomes(env, {
+    fetchImpl,
+    demoIds: ["DEMO"],
+    statuses: ["In Public Review", "Active"],
+    build: async id => recordFor(id),
+  });
+  assert.equal(result.status, "partial");
+  assert.equal(result.reason, "roster-unavailable");
+  assert.deepEqual(result.listing, {
+    requested: 2,
+    succeeded: 0,
+    failed: 2,
+    failures: [
+      { status: "In Public Review", reason: "http-503" },
+      { status: "Active", reason: "http-503" },
+    ],
+  });
+  assert.equal(result.computed, 1);
+});
+
 test("valid thin observations are accepted while mismatched identities are rejected", async () => {
   const env = { ALERT_STATE: kv() };
   const thin = { ...recordFor("THIN"), filled: false, documents: [] };
