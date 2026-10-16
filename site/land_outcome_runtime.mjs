@@ -9,7 +9,7 @@ connectionTools=async()=>null}={}){
     return now()-hit.at<ttlMs?hit:{...hit,expired:true};
   }
   function evidenceState(p,n=now()){
-    const observedAt=p?.record?.generated_at||null,stamp=Date.parse(observedAt||"");
+    const record=p?.record,observedAt=record&&Object.hasOwn(record,"stage_observation")?record.stage_observation?.observed_at||null:record?.generated_at||null,stamp=Date.parse(observedAt||"");
     return {observedAt,stale:p?.stale===true||!Number.isFinite(stamp)||n-stamp>86400000};
   }
   function freshnessHTML(p,{failed=false}={}){

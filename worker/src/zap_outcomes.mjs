@@ -26,6 +26,7 @@ import { attachZoningStatistics } from "./lib/zoning_statistics.mjs";
 import { attachProjectConnectionsSection } from "./project_connections.mjs";
 import { dualWriteZapProjectObservations } from "./lib/zap_project_source_records.mjs";
 import { stampLandActionProcedureResolution } from "../../site/land_action_procedure_resolution.mjs";
+import { buildLandPhaseView } from "../../site/land_phase_spine.mjs";
 // Do not static-import admin.mjs here: it pulls alerts.mjs → @jimdc/sendcap, and
 // test/land_event_spine.test.mjs imports buildZapOutcomeRecord from this module
 // during site unit tests (before the worker dependency install). Auth is loaded only on the admin path.
@@ -56,6 +57,21 @@ const CITY_RECORD_SELECT = [
   "printout_1", "printout_2", "printout_3",
 ].join(",");
 const sourceAcquisitionState = new WeakMap();
+
+export function stampLandStageObservation(record) {
+  const view = buildLandPhaseView(record?.spine, record || {});
+  const key = view.current.evidence_source_id === "zap-project-api" ? "zap_api"
+    : view.current.evidence_source_id === "nyc-open-data-zap" ? "open_data"
+    : view.current.evidence_source_id === "city-record-online" ? "city_record" : null;
+  const observation = key ? record?.source_observations?.[key] : null;
+  return {
+    ...record,
+    stage_observation: {
+      source_system: observation?.source_system || null,
+      observed_at: observation?.observed_at || null,
+    },
+  };
+}
 
 function markSourceAcquisition(value, status) {
   sourceAcquisitionState.set(value, status);
@@ -807,8 +823,9 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true, lookup
       },
     },
   };
-  sourceAcquisitionState.set(observedRecord, acquisition);
-  return observedRecord;
+  const stampedRecord = stampLandStageObservation(observedRecord);
+  sourceAcquisitionState.set(stampedRecord, acquisition);
+  return stampedRecord;
 }
 
 /** Cap notice payload size while keeping body + venue fields for participation steps. */

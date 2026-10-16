@@ -717,8 +717,6 @@ export function buildLandPhaseView(spine, opts = {}) {
       short: LAND_PHASE_META[id].short,
       label_key: LAND_PHASE_META[id].label_key,
       state,
-      // "no_recorded_outcome" when the pipeline advanced past this stage without a
-      // terminal completion row (stranded In Progress / missing disposition).
       outcome_status: missingOutcomes.has(id) ? "no_recorded_outcome" : null,
       overlap: overlapExplained,
       // Sibling phase ids the resolved procedure reviews at the same time
@@ -750,10 +748,14 @@ export function buildLandPhaseView(spine, opts = {}) {
     phase.observed_outcomes = observedOutcomes.filter((outcome) => spinePhaseIdForActorKind(outcome.actor_kind) === phase.id);
   }
 
-  // Next = first future phase AFTER current only. Never fall back to an earlier
-  // incomplete template slot (that produced "What's next: Pre-certification"
-  // while current was Mayoral on completed projects).
   const curIdx = LAND_ULURP_PHASES.indexOf(currentPhaseId);
+  const currentEvidenceEvents = [...(byPhase[currentPhaseId] || [])].reverse();
+  const currentEvidenceEvent = currentEvidenceEvents.find(eventIsInProgress)
+    || currentEvidenceEvents.find((event) => eventIsActualProgress(event) && !event._synthetic)
+    || currentEvidenceEvents.find((event) => !event._synthetic);
+  const currentEvidenceSourceId = derived.reason === "open_data_milestone" ? "nyc-open-data-zap"
+    : derived.reason === "default_pre_application" ? null
+    : currentEvidenceEvent?.source?.id || (completedLike ? "nyc-open-data-zap" : null);
   let nextPhase = null;
   if (!completedLike) {
     for (let i = curIdx + 1; i < phases.length; i++) {
@@ -761,7 +763,6 @@ export function buildLandPhaseView(spine, opts = {}) {
         nextPhase = phases[i];
         break;
       }
-      // Skip passed/overlap (e.g. concurrent notice while still in filing/CEQR)
     }
   }
 
@@ -800,6 +801,7 @@ export function buildLandPhaseView(spine, opts = {}) {
       milestone_label: currentMilestoneLabel,
       since: currentMilestoneDate,
       public_status: publicStatus,
+      evidence_source_id: currentEvidenceSourceId,
       noticed,
       // True only when Open Data already labels full public review / completion paths.
       // Completed/approved are terminal — not "in public review" for action rails.

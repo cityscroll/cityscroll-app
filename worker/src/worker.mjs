@@ -514,7 +514,10 @@ const worker = {
     if (event.cron === "0 8 * * *") {
       // Start independently of delivery and the other advisory acquisitions.
       // A slow/failed digest must not strand resident land records indefinitely.
-      startMorningZapOutcomes(ctx, env, runId, refreshZapOutcomes);
+      startMorningZapOutcomes(ctx, env, runId, refreshZapOutcomes, console, async () => {
+        const r = await withWorkerAcquisitionReceipt(env, "zap-projects", runId, () => refreshZapProjectsLookup(env));
+        console.log("land zap lookup:", JSON.stringify(r));
+      });
       try {
         const r = await withWorkerAcquisitionReceipt(env, "nyc-council-legistar", runId, () => refreshMeetingOutcomes(env));
         console.log("meeting outcomes:", JSON.stringify(r));
@@ -526,12 +529,6 @@ const worker = {
         console.log("hearings:", JSON.stringify(r));
       } catch (error) {
         console.error("hearing refresh failed:", String(error?.message || error));
-      }
-      try {
-        const r = await withWorkerAcquisitionReceipt(env, "zap-projects", runId, () => refreshZapProjectsLookup(env));
-        console.log("land zap lookup:", JSON.stringify(r));
-      } catch (error) {
-        console.error("land zap lookup refresh failed:", String(error?.message || error));
       }
       try {
         const r = await withWorkerAcquisitionReceipt(env, "city-record", runId, () => refreshLandUpcomingHearings(env));

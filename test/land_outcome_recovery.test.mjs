@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { buildZapOutcomeRecord, prewarmOneZapOutcome, refreshZapOutcomes, handleZapOutcomes, kvKey } from "../worker/src/zap_outcomes.mjs";
+import { buildZapOutcomeRecord, prewarmOneZapOutcome, refreshZapOutcomes, handleZapOutcomes, kvKey, stampLandStageObservation } from "../worker/src/zap_outcomes.mjs";
 import * as phaseTools from "../site/land_phase_spine.mjs";
 import { createLandOutcomeRuntime } from "../site/land_outcome_runtime.mjs";
 import { startMorningZapOutcomes, withWorkerAcquisitionReceipt } from "../worker/src/lib/worker_acquisition_runtime.mjs";
@@ -208,8 +208,31 @@ test("frozen publisher evidence refreshes older CB cache through materializer, e
     assert.equal(compact.snapshot_state,"present");
     assert.deepEqual(compact.spine,record.spine);
     assert.deepEqual(compact.source_observations,record.source_observations);
+    assert.deepEqual(compact.stage_observation,record.stage_observation);
     assert.equal(compact.generated_at,record.generated_at);
+    assert.equal(record.stage_observation.source_system,"zap_project_api");
+    assert.equal(runtime.evidenceState(payload).stale,false);
+    const mixed=stampLandStageObservation({...record,source_observations:{...record.source_observations,
+      open_data:{...record.source_observations.open_data,observed_at:"2026-10-02T00:00:00Z"}}});
+    assert.equal(mixed.stage_observation.source_system,"zap_project_api");
+    assert.equal(runtime.evidenceState({record:mixed}).stale,false);
   }finally{globalThis.fetch=original;}
+});
+
+test("display freshness follows the source that selects the current stage",()=>{
+  const old="2026-10-02T00:00:00Z";
+  const base={project_id:"CLOCK2",generated_at:TEST_NOW,join:{matched:true},source_observations:{
+    zap_api:{source_system:"zap_project_api",observed_at:TEST_NOW},
+    open_data:{source_system:"zap_projects_open_data",observed_at:old},
+  }};
+  const openDataOnly=stampLandStageObservation({...base,open_data:{project_id:"CLOCK2",current_milestone:"Community Board Referral"},spine:{events:[]}});
+  const {runtime}=browser();
+  assert.equal(openDataOnly.stage_observation.source_system,"zap_projects_open_data");
+  assert.equal(openDataOnly.stage_observation.observed_at,old);
+  assert.equal(runtime.evidenceState({record:openDataOnly}).stale,true);
+  const unknown=stampLandStageObservation({...base,source_observations:{open_data:{source_system:"zap_projects_open_data",observed_at:null}},open_data:{project_id:"CLOCK2",current_milestone:"Community Board Referral"},spine:{events:[]}});
+  assert.equal(runtime.evidenceState({record:unknown}).observedAt,null);
+  assert.equal(runtime.evidenceState({record:unknown}).stale,true);
 });
 
 test("raw completed hearing remains CPC progress until the publisher vote",async()=>{
@@ -429,12 +452,30 @@ test("scheduled acquisition receipts preserve partial and held results",async()=
   }
 });
 
-test("morning outcomes start independently even while another acquisition is stalled",async()=>{
+test("morning outcomes await one same-cycle lookup and survive its failure",async()=>{
   const retained=[];
-  let refreshed=false;
+  const order=[];
   const env={ALERT_STATE:{put:async()=>{}}};
+  let releaseUnrelated,unrelatedDone=false;
+  const unrelated=new Promise(resolve=>{releaseUnrelated=resolve;}).then(()=>{unrelatedDone=true;});
+  let release;
+  const lookup=new Promise(resolve=>{release=resolve;});
   startMorningZapOutcomes({waitUntil:p=>retained.push(p)},env,"test",
-    async()=>{refreshed=true;return {status:"ok"};},{log(){},error(){}});
+    async()=>{order.push("outcomes");return {status:"ok"};},{log(){},error(){}},
+    async()=>{order.push("lookup");await lookup;});
+  await Promise.resolve();
+  assert.deepEqual(order,["lookup"]);
+  release();
   await Promise.all(retained);
-  assert.equal(refreshed,true);
+  assert.deepEqual(order,["lookup","outcomes"]);
+  assert.equal(unrelatedDone,false);
+  releaseUnrelated();
+  await unrelated;
+
+  const failed=[];
+  startMorningZapOutcomes({waitUntil:p=>failed.push(p)},env,"test",
+    async()=>{order.push("fallback-outcomes");return {status:"ok"};},{log(){},error(){}},
+    async()=>{throw new Error("lookup unavailable");});
+  await Promise.all(failed);
+  assert.equal(order.at(-1),"fallback-outcomes");
 });
