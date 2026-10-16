@@ -223,3 +223,42 @@ test("refreshZapOutcomes: explicit projectIds with injected build (no network)",
   assert.equal(r.computed, 2);
   assert.equal(r.failed, 0);
 });
+
+test("failed acquisition objects retain the last good observation and expose a separate attempt", async () => {
+  const store = kv();
+  const id = "2026K0233";
+  const previous = recordFor(id, "2026-09-28T00:00:00Z");
+  await store.put(kvKey(id), JSON.stringify(previous));
+  const result = await prewarmOneZapOutcome({ ALERT_STATE: store }, id, {
+    force: true,
+    nowMs: Date.parse("2026-10-16T19:00:00Z"),
+    build: async () => ({ project_id: id, open_data: { project_id: id },
+      join: { matched: false, reason: "Could not reach the ZAP project API for decision documents." },
+      useful: false, filled: false }),
+  });
+  assert.equal(result.status, "failed");
+  assert.deepEqual(JSON.parse(await store.get(kvKey(id))), previous);
+  const attempt = JSON.parse(await store.get(`${kvKey(id)}:attempt`));
+  assert.equal(attempt.status, "failed");
+  assert.equal(attempt.observed_at, "2026-10-16T19:00:00.000Z");
+});
+
+test("refresh distinguishes failures, partial coverage, fresh skips and empty work", async () => {
+  const env = { ALERT_STATE: kv() };
+  const build = async id => id === "BAD" ? { project_id: id, join: { matched: false } } : recordFor(id);
+  assert.equal((await refreshZapOutcomes(env, { projectIds: ["BAD"], build })).status, "failed");
+  assert.equal((await refreshZapOutcomes(env, { projectIds: ["GOOD", "BAD"], build })).status, "partial");
+  const fresh = await refreshZapOutcomes(env, { projectIds: ["GOOD"], build });
+  assert.equal(fresh.status, "skipped");
+  assert.equal(fresh.reason, "already-fresh");
+  const empty = await refreshZapOutcomes(env, { projectIds: [], build });
+  assert.equal(empty.status, "skipped");
+  assert.equal(empty.reason, "empty-roster");
+});
+
+test("valid thin observations are accepted while mismatched identities are rejected", async () => {
+  const env = { ALERT_STATE: kv() };
+  const thin = { ...recordFor("THIN"), filled: false, documents: [] };
+  assert.equal((await prewarmOneZapOutcome(env, "THIN", { build: async () => thin })).status, "computed");
+  assert.equal((await prewarmOneZapOutcome(env, "OTHER", { build: async () => thin })).status, "failed");
+});

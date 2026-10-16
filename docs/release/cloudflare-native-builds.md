@@ -75,7 +75,7 @@ Repeated windows leave an already stored daily aggregate unchanged.
 
 | UTC schedule | Responsibility |
 |---|---|
-| `0 8 * * *` | Refreshes the sell-facing ZAP project lookup, Land upcoming hearings, and staffing exams into `ALERT_STATE`, so those lists do not wait behind the digest chain. |
+| `0 8 * * *` | Independently starts Land outcome acquisition, then refreshes the sell-facing ZAP project lookup, Land upcoming hearings, and staffing exams into `ALERT_STATE`, so those lists do not wait behind the digest chain. |
 | `0 10 * * *` | Delivery-free digest shadow rehearsal. It renders and validates without sending; three calendar days without a `READY` rehearsal holds delivery. |
 | `0 13 * * *` | The delivery chain: Socrata to D1 ingest refresh, prior-cycle pre-warm, hearings, Property and vendor projection rebuilds, payroll title mart refresh, then digest fan-out under the send caps. |
 

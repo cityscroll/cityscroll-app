@@ -243,6 +243,9 @@ function seedLandOutcomeSnapshot(snapshot){
   const generatedAt=snapshot?.generated_at||null;
   for(const [id,record] of Object.entries(byProject)){
     if(!record || record.snapshot_state==="unavailable") continue;
+    const previous=ZAP_OUTCOMES_MEM.get(id);
+    if(previous?.p || previous?.data?.record && (!previous.staticSnapshot
+      || Date.parse(previous.data.record.generated_at)>=Date.parse(record.generated_at))) continue;
     ZAP_OUTCOMES_MEM.set(id,{
       data:{ok:true,cached:true,static_snapshot:true,generated_at:generatedAt,record},
       // determinism-lint: allow clock the moment this snapshot entered the session cache, read back only by the age comparison in zapOutcomesMemGet().
@@ -1197,7 +1200,7 @@ function landPhaseSpineHTML(view, tools, record){
     : "";
   const cur=view.current||{};
   const phaseName=landPhaseLabel({label_key:cur.label_key});
-  const pipelineHTML=landPipelinePositionHTML(view, record);
+  const pipelineHTML=record?.evidence_stale ? null : landPipelinePositionHTML(view, record);
   let statusExtra="";
   // Skip "Public status: In Public Review" when the pipeline sentence already covers it.
   if(pipelineHTML){
@@ -1208,7 +1211,7 @@ function landPhaseSpineHTML(view, tools, record){
     statusExtra=t("land_spine_status_public_html",{status:escUiHtml(cur.public_status)});
   }
   const lead=`<div class="land-spine-lead">
-    <div class="land-spine-now-label">${t("land_spine_now_label")}</div>
+    <div class="land-spine-now-label">${record?.evidence_stale ? t("land_outcome_last_recorded") : t("land_spine_now_label")}</div>
     ${pipelineHTML||`<p class="land-spine-now-phase">${escUiHtml(phaseName)}</p>`}
     <p class="land-spine-now-detail" lang="en" dir="ltr">${escUiHtml(cur.milestone_label || "—")}${cur.since?` · ${t("land_spine_since",{date:fdate(cur.since)})}`:""}${statusExtra?`<br>${statusExtra}`:""}</p>
     ${view.next?`<p class="land-spine-next">${t("land_spine_next_html",{phase:escUiHtml(landPhaseLabel(view.next))})}</p>`:""}
@@ -1224,7 +1227,7 @@ function landPhaseSpineHTML(view, tools, record){
   const phasePanelHTML=(p)=>{
     const open=p.state==="current"||p.state==="overlap"?" open":"";
     const stateWord=p.state==="current"
-      ? t("land_spine_phase_current")
+      ? (record?.evidence_stale ? t("land_outcome_last_recorded") : t("land_spine_phase_current"))
       : p.state==="passed"
         ? t("land_spine_phase_done")
         : p.state==="overlap"
@@ -1452,7 +1455,7 @@ function landOutcomeFirstPaintHTML(r){
   const hit=r?.project_id?zapOutcomesMemGet(r.project_id):null;
   const record=hit?.data?.record;
   if(!record||record.snapshot_state==="absent") return "";
-  return landOutcomeSnapshotHTML(record,null);
+  return landOutcomeFreshnessHTML(hit.data)+landOutcomeSnapshotHTML(landOutcomeRecordForDisplay(hit.data),null);
 }
 function landOutcomeSnapshotHTML(record,phaseTools,listRow){
   if(!record||record.snapshot_state==="absent") return "";
@@ -1558,6 +1561,25 @@ async function paintProjectConnections(record,selection){
   if(!host.isConnected||host!==$("#project-connections")) return;
   host.innerHTML=projectConnectionsHTML(record?.project_connections,tools);
 }
+/** Arrival in a browser cache never renews the publisher observation clock. */
+function landOutcomeEvidenceState(payload, nowMs){
+  const observedAt=payload?.record?.generated_at||null;
+  const stamp=Date.parse(observedAt||"");
+  return { observedAt, stale: payload?.stale===true || !Number.isFinite(stamp)
+    || nowMs-stamp>24*60*60*1000 };
+}
+function landOutcomeFreshnessHTML(payload,{failed=false}={}){
+  // determinism-lint: allow clock compare current time with retained observation, never replace its vintage.
+  const state=landOutcomeEvidenceState(payload,Date.now());
+  if(!failed&&!state.stale) return "";
+  const stamp=state.observedAt ? t("land_outcome_checked_at",{date:fdate(state.observedAt)}) : t("land_outcome_check_unknown");
+  return `<p class="land-outcome-freshness" role="status">${escUiHtml(t(failed ? "land_outcome_update_failed" : "land_outcome_stale"))} ${escUiHtml(stamp)} ${escUiHtml(t("land_outcome_stage_caution"))}</p>`;
+}
+function landOutcomeRecordForDisplay(payload,failed=false){
+  // determinism-lint: allow clock qualify an observation using its own age.
+  const state=landOutcomeEvidenceState(payload,Date.now());
+  return normalizeLandRecord({...payload.record,evidence_stale:failed||state.stale});
+}
 function zapOutcomesMemGet(projectId){
   const hit = ZAP_OUTCOMES_MEM.get(projectId);
   if(!hit) return null;
@@ -1579,7 +1601,7 @@ function fetchZapOutcomesPayload(projectId,{allowStatic=true}={}){
       const accepts=tools?async response=>{
         if(!response?.ok) return false;
         const payload=await response.json();
-        return tools.projectConnectionsPayloadState(payload,id)==="available";
+        return payload?.ok!==false && payload?.record?.project_id===id;
       }:null;
       const resp = await workerFetch("/zap-outcomes?id=" + encodeURIComponent(id), null, 12000, accepts);
       if(!resp || !resp.ok) return null;
@@ -1587,13 +1609,21 @@ function fetchZapOutcomesPayload(projectId,{allowStatic=true}={}){
       return tools?tools.normalizeProjectConnectionsPayload(payload,id):payload;
     }catch(e){ return null; }
   })();
-  ZAP_OUTCOMES_MEM.set(id, {p});
+  ZAP_OUTCOMES_MEM.set(id, {...existing,p});
   return p.then(data=>{
     if(data && data.ok !== false && data.record){
+      const old=existing?.data?.record;
+      if(old && (Date.parse(old.generated_at)>Date.parse(data.record.generated_at)
+        || !Number.isFinite(Date.parse(data.record.generated_at))
+        || old.spine?.events?.length && !data.record.spine?.events?.length)){
+        ZAP_OUTCOMES_MEM.set(id,existing);
+        return {...existing.data,stale:true};
+      }
       // determinism-lint: allow clock the moment this payload entered the session cache, read back only by the age comparison above.
       ZAP_OUTCOMES_MEM.set(id, {data, at: Date.now()});
     }else{
-      ZAP_OUTCOMES_MEM.delete(id);
+      if(existing?.data) ZAP_OUTCOMES_MEM.set(id,existing);
+      else ZAP_OUTCOMES_MEM.delete(id);
     }
     return data;
   }).catch(()=>{ ZAP_OUTCOMES_MEM.delete(id); return null; });
@@ -1625,14 +1655,14 @@ async function loadZapOutcomes(r, el, selection){
     const [phaseTools] = await Promise.all([phaseToolsP,paintProjectConnections(warm.data.record,selection)]);
     if(selection !== undefined && selection !== landSelectionSeq) return;
     if(!document.contains(el)) return;
-    const record = normalizeLandRecord(warm.data.record);
+    const record = landOutcomeRecordForDisplay(warm.data);
     paintConnectedCalendar(record,selection);
-    el.innerHTML = warm.staticSnapshot
+    el.innerHTML = landOutcomeFreshnessHTML(warm.data)+(warm.staticSnapshot
       ? landOutcomeSnapshotHTML(record,phaseTools,r)
-      : landOutcomesHTML(record,phaseTools,r);
+      : landOutcomesHTML(record,phaseTools,r));
     bindLandSpineUI(el);
     paintLandActionRail($("#land-actions"), r, record, phaseTools);
-    const generated=Date.parse(warm.generatedAt||warm.data.generated_at||"");
+    const generated=Date.parse(warm.data.record.generated_at||"");
     const connectionState=(await ensureProjectConnectionsTools())?.projectConnectionsPayloadState(
       warm.data,r.project_id
     );
@@ -1655,16 +1685,19 @@ async function loadZapOutcomes(r, el, selection){
   if(selection !== undefined && selection !== landSelectionSeq) return;
   if(!document.contains(el)) return;
   if(!data || data.ok === false || !data.record){
-    // Preserve a static first paint on transient freshness failures. An empty
-    // region is allowed only when this project was outside the bounded snapshot.
-    // Private telemetry can still mark an honest terminal state.
+    const fallback=warm?.data;
+    el.innerHTML=landOutcomeFreshnessHTML(fallback,{failed:true})+(fallback?.record
+      ? landOutcomesHTML(landOutcomeRecordForDisplay(fallback,true),phaseTools,r) : "");
+    bindLandSpineUI(el);
+    if(fallback?.record) paintLandActionRail($("#land-actions"),r,landOutcomeRecordForDisplay(fallback,true),phaseTools);
+    // Retain useful content, but never leave a failed check looking current.
     reportLandOutcomesReady(data?.record, {
       fetchFailed: !data,
       responseOk: data ? data.ok !== false : false,
     });
     return;
   }
-  const record = normalizeLandRecord(data.record);
+  const record = landOutcomeRecordForDisplay(data);
   await paintProjectConnections(record,selection);
   if(selection !== undefined && selection !== landSelectionSeq) return;
   if(!document.contains(el)) return;
@@ -1673,7 +1706,7 @@ async function loadZapOutcomes(r, el, selection){
     reportLandOutcomesReady(record);
     return;
   }
-  el.innerHTML = landOutcomesHTML(record, phaseTools, r);
+  el.innerHTML = landOutcomeFreshnessHTML(data)+landOutcomesHTML(record, phaseTools, r);
   bindLandSpineUI(el);
   paintLandActionRail($("#land-actions"), r, record, phaseTools);
   reportLandOutcomesReady(record);

@@ -192,7 +192,7 @@ export function mapMilestoneToPhase(title, hint = null) {
 function eventIsPlanned(event) {
   if (event?.time?.certainty === "planned") return true;
   const status = String(event?.status || event?.detail || "").toLowerCase();
-  return status.includes("not started");
+  return /not started|scheduled|postponed|cancelled|canceled|draft/.test(status);
 }
 
 function eventIsInProgress(event) {
@@ -202,7 +202,7 @@ function eventIsInProgress(event) {
 
 function eventIsActualProgress(event) {
   if (event?._synthetic && event.kind === "open_data_status") return true;
-  if (eventIsPlanned(event)) return false;
+  if (eventIsPlanned(event) || event?.kind === "city_record_notice_published") return false;
   const status = String(event?.status || event?.detail || "").toLowerCase();
   if (status.includes("not started")) return false;
   return true;
@@ -218,7 +218,11 @@ function eventIsTerminalComplete(event) {
   if (event?._synthetic) return false;
   if (!eventIsActualProgress(event)) return false;
   if (eventIsInProgress(event)) return false;
-  return true;
+  // Publication and holding a hearing are not completion of a review stage.
+  const status = String(event?.status || event?.detail || "").toLowerCase();
+  if (event.kind === "zap_milestone") return /\bcompleted?\b/.test(status);
+  if (event.kind === "zap_disposition") return /\bsubmitted\b/.test(status);
+  return false;
 }
 
 /**

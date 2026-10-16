@@ -1289,6 +1289,7 @@ function landActionMatter(projectRow, outcomeRecord, phaseTools){
       if(view&&view.current&&view.current.label_key) phaseLabel=t(view.current.label_key);
     }catch(_e){}
   }
+  if(rec?.evidence_stale && phaseLabel) phaseLabel=t("land_outcome_last_recorded_value",{stage:phaseLabel});
   const hearings=rec?landActionHearingsFromRecord(rec):[];
   // Prefer nearest upcoming hearing date as deadline when present.
   const upcoming=hearings

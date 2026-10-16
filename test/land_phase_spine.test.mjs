@@ -555,3 +555,19 @@ test("public Land detail phase panel wires the role strip above the observed row
     assert.doesNotMatch(eventRowFn, new RegExp(marker), `landSpineEventRowHTML references ${marker}`);
   }
 });
+
+test("hearing notices and occurrence alone do not complete Borough President review", () => {
+  const milestone = (title, status) => ({ kind: "zap_milestone", title, status,
+    time: { value: "2026-10-06", certainty: status === "Not Started" ? "planned" : "actual" } });
+  for (const [kind, status] of [["city_record_hearing", "scheduled"],
+    ["city_record_notice_published", "published"], ["city_record_hearing", "held"],
+    ["city_record_hearing", "cancelled"], ["city_record_hearing", "postponed"]]) {
+    const pointer = deriveLandCurrentPhaseId({ byPhase: {
+      community_board: [milestone("Community Board Review", "In Progress")],
+      borough_president: [milestone("Borough President Review", "Not Started"),
+        { kind, title: "Borough President hearing", status, time: { value: "2026-12-14", certainty: "actual" } }],
+      cpc: [milestone("City Planning Commission Review", "Not Started")],
+    } });
+    assert.notEqual(pointer.phase_id, "cpc", `${kind}/${status} does not complete review`);
+  }
+});

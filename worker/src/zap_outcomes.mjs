@@ -201,16 +201,24 @@ export async function prewarmOneZapOutcome(env, projectId, {
 } = {}) {
   const id = String(projectId || "").trim();
   if (!id) return { status: "failed", reason: "bad-id" };
+  if (!env?.ALERT_STATE) return { status: "failed", project_id: id, reason: "no-kv" };
   const cached = await kvGetRecord(env, id);
-  if (!force && outcomeCacheIsPrewarmFresh(cached, nowMs)) {
+  if (!force && cached?.join?.matched === true && outcomeCacheIsPrewarmFresh(cached, nowMs)) {
     return { status: "skipped", project_id: id, generated_at: cached.generated_at };
   }
   try {
     const record = await build(id);
-    if (!record || !record.project_id) {
-      return { status: "failed", project_id: id, reason: "empty-record" };
+    // Acquisition validity is independent of outcome richness: a matched thin
+    // project is valid, an error-shaped shell is not a new observation.
+    if (!record || normProjectId(record.project_id) !== normProjectId(id)
+      || record.join?.matched !== true || !Number.isFinite(Date.parse(record.generated_at))) {
+      throw new Error(record?.join?.reason || "invalid-acquisition");
     }
     await kvPutRecord(env, record);
+    await env.ALERT_STATE.put(`${kvKey(id)}:attempt`, JSON.stringify({
+      status: "succeeded", observed_at: new Date(nowMs).toISOString(),
+      generated_at: record.generated_at,
+    }));
     const dualWrite = await dualWriteZapProjectObservations(
       env,
       record.open_data ? [record.open_data] : [],
@@ -225,6 +233,12 @@ export async function prewarmOneZapOutcome(env, projectId, {
       dual_write: dualWrite,
     };
   } catch (error) {
+    // Keep failed-attempt clocks separate from the retained successful evidence.
+    await env.ALERT_STATE.put(`${kvKey(id)}:attempt`, JSON.stringify({
+      status: "failed", observed_at: new Date(nowMs).toISOString(),
+      reason: String(error?.message || error),
+      retained_generated_at: cached?.generated_at || null,
+    })).catch(() => {});
     return {
       status: "failed",
       project_id: id,
@@ -310,7 +324,10 @@ export async function refreshZapOutcomes(env, opts = {}) {
     max,
   });
   return {
-    status: "ok",
+    status: summary.failed ? (summary.computed || summary.skipped ? "partial" : "failed")
+      : summary.computed ? "ok" : "skipped",
+    ...(!summary.requested ? { reason: "empty-roster" }
+      : !summary.failed && !summary.computed ? { reason: "already-fresh" } : {}),
     listed,
     ...summary,
     generated_at: new Date(opts.nowMs || Date.now()).toISOString(),
@@ -533,6 +550,8 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true, lookup
   // authority materializer, the phase view) without re-deriving it from the
   // narrower Open Data snapshot alone.
   const record = stampLandActionProcedureResolution(joinOpenDataToZapOutcome(openData, apiPayload));
+
+  if (record.join?.matched !== true) return record;
 
   let dob = {
     matched: false,

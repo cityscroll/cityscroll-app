@@ -427,6 +427,10 @@ const ZAP_OUTCOME_SNAPSHOT_FIELDS = Object.freeze([
   "dispositions",
   "documents",
   "n_documents",
+  "spine",
+  "milestones",
+  "statutory_clock",
+  "freshness",
   "generated_at",
 ]);
 
@@ -440,7 +444,7 @@ export function compactZapOutcomeRecord(record) {
   if (Array.isArray(out.approved_actions)) out.approved_actions = out.approved_actions.slice(0, 8);
   if (Array.isArray(out.dispositions)) out.dispositions = out.dispositions.slice(0, 6);
   if (Array.isArray(out.documents)) out.documents = out.documents.slice(0, 10);
-  out.snapshot_state = record.filled ? "present" : "absent";
+  out.snapshot_state = record.filled || record.spine?.events?.length ? "present" : "absent";
   return out;
 }
 

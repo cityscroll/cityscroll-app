@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/land-outcome-recovery",
+  "status": "implemented",
+  "fingerprint": "land-outcome-recovery.v1",
+  "updated_at": "2026-10-16T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "retained-acquisition",
+      "path": "worker/src/zap_outcomes.mjs"
+    },
+    {
+      "id": "independent-scheduled-publication",
+      "path": "worker/src/worker.mjs"
+    },
+    {
+      "id": "remaining-browse-land-seam",
+      "path": "site/app/land.mjs"
+    },
+    {
+      "id": "phase-completion-evidence",
+      "path": "site/land_phase_spine.mjs"
+    },
+    {
+      "id": "refresh-render-regression",
+      "path": "test/land_outcome_recovery.test.mjs"
+    }
+  ]
+}
