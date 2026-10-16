@@ -1247,3 +1247,162 @@ test("exact-layer refuses silent beta fallback when dual-view is absent", async 
   );
   rmSync(dir, { recursive: true, force: true });
 });
+
+test("exact-layer null script with owned effective stays await-effective and unproved", async () => {
+  const armed = privacyArmedObservability(BASELINE);
+  let patches = 0;
+  const dual = {
+    async getDualView() {
+      return {
+        script_override: null,
+        script_override_is_null: true,
+        effective: armed,
+        effective_sha256: observabilitySha256(armed),
+        script_settings_metadata: {
+          logpush: false, tags: [], tail_consumers_len: 0, top_keys: ["observability"],
+        },
+      };
+    },
+    async restoreScriptOverrideToNull() {
+      patches += 1;
+      throw new Error("must not PATCH while awaiting effective baseline");
+    },
+  };
+
+  let window = openExactLayerSettingsWindow({
+    effectiveBaseline: BASELINE,
+    scriptOverrideBaseline: null,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    windowId: "await-effective-1",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z", restorerId: "r-await" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+    pending_mutation: null,
+  };
+
+  const plan = planExactLayerRestore(await dual.getDualView(), window, {
+    now: "2026-10-16T00:31:00.000Z",
+  });
+  assert.equal(plan.action, "await-effective-baseline");
+  assert.equal(plan.patch, null);
+
+  const result = await restoreExactLayerSettingsWindow(window, dual, {
+    now: "2026-10-16T00:31:00.000Z",
+  });
+  assert.equal(result.action, "await-effective-baseline");
+  assert.equal(result.proved, false);
+  assert.equal(result.window.phase, "privacy_armed");
+  assert.equal(result.window.owned_sha256, observabilitySha256(armed));
+  assert.equal(patches, 0);
+  assert.notEqual(result.after.effective_sha256, window.baseline_sha256);
+});
+
+test("exact-layer rejects non-null scriptOverrideBaseline at open and restore entry", async () => {
+  assert.throws(
+    () => openExactLayerSettingsWindow({
+      effectiveBaseline: BASELINE,
+      scriptOverrideBaseline: BASELINE,
+      accountIdSha256: ACCOUNT_SHA,
+      now: "2026-10-16T00:00:00.000Z",
+      windowId: "non-null-baseline",
+    }),
+    /scriptOverrideBaseline must be null/,
+  );
+
+  const armed = privacyArmedObservability(BASELINE);
+  let window = openExactLayerSettingsWindow({
+    effectiveBaseline: BASELINE,
+    scriptOverrideBaseline: null,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    windowId: "persisted-non-null",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z", restorerId: "r-nn" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+    script_layer: {
+      ...window.script_layer,
+      baseline_override: structuredClone(BASELINE),
+      baseline_override_is_null: false,
+    },
+  };
+
+  let patches = 0;
+  await assert.rejects(
+    () => restoreExactLayerSettingsWindow(window, {
+      async getDualView() {
+        return {
+          script_override: armed,
+          script_override_is_null: false,
+          effective: armed,
+          effective_sha256: observabilitySha256(armed),
+          script_settings_metadata: {
+            logpush: false, tags: [], tail_consumers_len: 0, top_keys: ["observability"],
+          },
+        };
+      },
+      async restoreScriptOverrideToNull() {
+        patches += 1;
+      },
+    }, { now: "2026-10-16T00:31:00.000Z" }),
+    /baseline_override must remain null/,
+  );
+  assert.equal(patches, 0);
+});
+
+test("exact-layer pending/issued owned effective with null script stays await-effective", async () => {
+  const armed = privacyArmedObservability(BASELINE);
+  let window = openExactLayerSettingsWindow({
+    effectiveBaseline: BASELINE,
+    scriptOverrideBaseline: null,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    windowId: "await-pending-1",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z", restorerId: "r-pending" });
+  window = recordMutationIntent(window, {
+    now: "2026-10-16T00:00:02.000Z",
+    phase: "privacy_armed",
+    beforeSha256: window.baseline_sha256,
+    intendedObservability: armed,
+  });
+  window = markPendingMutationIssued(window, { now: "2026-10-16T00:00:03.000Z" });
+  window = {
+    ...window,
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+  };
+
+  const dual = {
+    async getDualView() {
+      return {
+        script_override: null,
+        script_override_is_null: true,
+        effective: armed,
+        effective_sha256: observabilitySha256(armed),
+        script_settings_metadata: {
+          logpush: false, tags: [], tail_consumers_len: 0, top_keys: ["observability"],
+        },
+      };
+    },
+    async restoreScriptOverrideToNull() {
+      throw new Error("must not PATCH while awaiting effective baseline with issued pending");
+    },
+  };
+
+  const result = await restoreExactLayerSettingsWindow(window, dual, {
+    now: "2026-10-16T00:31:00.000Z",
+  });
+  assert.equal(result.action, "await-effective-baseline");
+  assert.equal(result.proved, false);
+  assert.equal(Boolean(result.window.pending_mutation?.issued), true);
+  assert.ok(result.window.owned_sha256);
+});

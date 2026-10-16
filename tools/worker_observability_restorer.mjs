@@ -4,6 +4,7 @@
  * Installed under ~/.local/state/cityscroll-cost-control/observability-restorer/
  * so it survives controller death and disposal of the source checkout.
  */
+import { createHash } from "node:crypto";
 import { readFileSync, existsSync, statSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -24,6 +25,7 @@ import {
 } from "./lib/worker_observability_restorer.mjs";
 
 export const DUAL_VIEW_TRANSPORT_MODE = "dual-view-script-settings+beta";
+export const DEFAULT_WORKER_ID = "cityscroll-worker";
 
 function arg(argv, name) {
   const index = argv.indexOf(name);
@@ -39,17 +41,37 @@ function secret(env, name) {
   return readFileSync(path, "utf8").trim();
 }
 
+/**
+ * Bind env account/worker to the persisted window before any GET or PATCH.
+ * Mismatch refuses transport construction.
+ */
+export function assertTransportTargetMatchesWindow(env, window) {
+  if (!window || typeof window !== "object") return;
+  const accountId = env.CLOUDFLARE_ACCOUNT_ID;
+  const workerId = env.CLOUDFLARE_WORKER_ID || DEFAULT_WORKER_ID;
+  if (!accountId || typeof accountId !== "string") {
+    throw new Error("CLOUDFLARE_ACCOUNT_ID is required to bind restorer transport to the window");
+  }
+  const accountSha = createHash("sha256").update(accountId).digest("hex");
+  if (window.account_id_sha256 && window.account_id_sha256 !== accountSha) {
+    throw new Error("restorer env account does not match window account_id_sha256");
+  }
+  if (window.worker_id && window.worker_id !== workerId) {
+    throw new Error("restorer env worker does not match window worker_id");
+  }
+}
+
 function createCredentialedBetaTransport(env) {
   return createBetaWorkerObservabilityTransport({
     accountId: env.CLOUDFLARE_ACCOUNT_ID,
-    workerId: env.CLOUDFLARE_WORKER_ID || "cityscroll-worker",
+    workerId: env.CLOUDFLARE_WORKER_ID || DEFAULT_WORKER_ID,
     token: secret(env, "CLOUDFLARE_API_TOKEN"),
   });
 }
 
 function createCredentialedDualViewTransport(env) {
   const accountId = env.CLOUDFLARE_ACCOUNT_ID;
-  const workerId = env.CLOUDFLARE_WORKER_ID || "cityscroll-worker";
+  const workerId = env.CLOUDFLARE_WORKER_ID || DEFAULT_WORKER_ID;
   const token = secret(env, "CLOUDFLARE_API_TOKEN");
   return createDualViewObservabilityTransport({
     scriptSettingsTransport: createScriptSettingsObservabilityTransport({
@@ -70,9 +92,12 @@ function createCredentialedDualViewTransport(env) {
  * restore_mode of script-settings-null requires dual-view. Env
  * CITYSCROLL_OBSERVABILITY_RESTORER_TRANSPORT may force dual-view. A custom
  * transport module still wins when set. Exact-layer never silently falls back
- * to beta-only.
+ * to beta-only. Account hash and worker id must match the persisted window
+ * before any GET or PATCH.
  */
 export async function loadTransport(env, { window = null } = {}) {
+  assertTransportTargetMatchesWindow(env, window);
+
   const moduleUrl = env.CITYSCROLL_OBSERVABILITY_RESTORER_TRANSPORT_MODULE;
   if (moduleUrl) {
     const mod = await import(moduleUrl);

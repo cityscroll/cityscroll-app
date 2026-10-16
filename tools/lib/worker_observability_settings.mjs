@@ -1394,6 +1394,8 @@ export function createDualViewObservabilityTransport({
 /**
  * Open a window whose exact script-layer baseline is null (inherit) while the
  * effective beta baseline is the normalized production object (c0a41c0a…).
+ * Non-null scriptOverrideBaseline is rejected: null restore would lose the
+ * exact object baseline.
  */
 export function openExactLayerSettingsWindow({
   effectiveBaseline,
@@ -1404,7 +1406,10 @@ export function openExactLayerSettingsWindow({
   durationSeconds = MAX_SETTINGS_WINDOW_SECONDS,
   windowId = randomUUID(),
 } = {}) {
-  const exactOverride = exactScriptOverride(scriptOverrideBaseline, { path: "scriptOverrideBaseline" });
+  if (scriptOverrideBaseline !== null && scriptOverrideBaseline !== undefined) {
+    fail("exact-layer scriptOverrideBaseline must be null; non-null baselines are unsupported");
+  }
+  const exactOverride = exactScriptOverride(null, { path: "scriptOverrideBaseline" });
   const window = openSettingsWindow({
     baseline: effectiveBaseline,
     workerId,
@@ -1419,11 +1424,21 @@ export function openExactLayerSettingsWindow({
       endpoint: "script-settings",
       restore_mode: SCRIPT_LAYER_RESTORE_MODE,
       baseline_override: exactOverride,
-      baseline_override_is_null: exactOverride === null,
+      baseline_override_is_null: true,
       sdk_null_restore: true,
       sdk_ref: "cloudflare-typescript SettingEditParams.observability?: Observability | null",
     },
   };
+}
+
+/** Exact-layer windows may only restore to script-settings observability null. */
+export function assertExactLayerNullBaseline(window, { path = "window.script_layer" } = {}) {
+  if (!window?.script_layer || window.script_layer.restore_mode !== SCRIPT_LAYER_RESTORE_MODE) {
+    fail(`${path} requires script-settings-null restore mode`);
+  }
+  if (window.script_layer.baseline_override !== null || window.script_layer.baseline_override_is_null !== true) {
+    fail(`${path} baseline_override must remain null; refusing restore that would lose a non-null exact baseline`);
+  }
 }
 
 /**
@@ -1514,10 +1529,11 @@ export function planExactLayerRestore(dualView, window, { now = new Date().toISO
   }
 
   // Script already at baseline null while effective is still this window's owned
-  // or pending identity: exact-layer null restore is already satisfied (no PATCH).
+  // or pending identity: script-layer null is satisfied, but effective has not
+  // proved baseline. Stay nonterminal/unproved and retry; never clear ownership.
   if (scriptClassification.class === "baseline" && exactLayerIdentityIsOwn(effectiveClassification.class)) {
     return {
-      action: "already-restored",
+      action: "await-effective-baseline",
       expired,
       script_classification: scriptClassification,
       effective_classification: effectiveClassification,
@@ -1525,7 +1541,7 @@ export function planExactLayerRestore(dualView, window, { now = new Date().toISO
       receipt: {
         schema: WORKER_OBSERVABILITY_SETTINGS_RECEIPT_SCHEMA,
         kind: "restore",
-        outcome: "already-restored",
+        outcome: "await-effective-baseline",
         window_id: window.window_id,
         observed_at: at,
         expired,
@@ -1533,6 +1549,8 @@ export function planExactLayerRestore(dualView, window, { now = new Date().toISO
         script_override_is_null: true,
         effective_sha256: effectiveClassification.sha256,
         baseline_sha256: window.baseline_sha256,
+        owned_sha256: window.owned_sha256,
+        reason: "script override is null but effective view has not proved baseline",
       },
     };
   }
@@ -1601,6 +1619,8 @@ export async function restoreExactLayerSettingsWindow(window, dualTransport, {
   if (!window?.script_layer || window.script_layer.restore_mode !== SCRIPT_LAYER_RESTORE_MODE) {
     fail("exact-layer restore requires a script_layer window with script-settings-null mode");
   }
+  // Persisted invalid windows (non-null exact baseline) must fail before any PATCH.
+  assertExactLayerNullBaseline(window);
   if (!dualTransport || typeof dualTransport.getDualView !== "function") {
     fail("exact-layer restore requires a dual-view transport");
   }
@@ -1626,6 +1646,21 @@ export async function restoreExactLayerSettingsWindow(window, dualTransport, {
         expired: plan.expired,
         outcome: "already-restored",
       }),
+      metadata_unchanged: true,
+      script_classification: plan.script_classification,
+      effective_classification: plan.effective_classification,
+      receipt: plan.receipt,
+    };
+  }
+
+  if (plan.action === "await-effective-baseline") {
+    return {
+      action: "await-effective-baseline",
+      proved: false,
+      expired: plan.expired,
+      before,
+      after: before,
+      window,
       metadata_unchanged: true,
       script_classification: plan.script_classification,
       effective_classification: plan.effective_classification,

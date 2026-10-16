@@ -541,6 +541,29 @@ export async function restorerTick({
 
     // alreadyLocked: restorerTick holds the window lock for this critical section.
     const restored = await runIndependentRestorer({ store, transport, now, alreadyLocked: true });
+
+    // Script null but effective still owned/pending: stay nonterminal and retry.
+    if (restored.action === "await-effective-baseline") {
+      writeRestorerReceipt(paths.heartbeatReceipt, {
+        schema: RESTORER_READY_SCHEMA,
+        kind: "heartbeat",
+        outcome: "await-effective-baseline",
+        observed_at: now,
+        pid: process.pid,
+        window_id: restored.window.window_id,
+        restorer_id: restored.window.restorer?.restorer_id || null,
+        phase: restored.window.phase,
+        proved: false,
+        effective_sha256: restored.receipt?.effective_sha256 || null,
+        baseline_sha256: restored.receipt?.baseline_sha256 || null,
+        reason: restored.receipt?.reason || null,
+        controller_death: controllerDead,
+        cancel_requested: cancelRequested,
+        expired: restored.expired === true,
+      });
+      return restored;
+    }
+
     const receipt = writeRestorerReceipt(paths.terminalReceipt, {
       schema: WORKER_OBSERVABILITY_SETTINGS_RECEIPT_SCHEMA,
       kind: "restorer",
