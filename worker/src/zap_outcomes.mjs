@@ -62,6 +62,55 @@ function markSourceAcquisition(value, status) {
   return value;
 }
 
+async function writeZapOutcomeAttempt(env, projectId, payload) {
+  try {
+    await env.ALERT_STATE.put(`${kvKey(projectId)}:attempt`, JSON.stringify(payload));
+    return { status: "written" };
+  } catch (error) {
+    return { status: "failed", reason: String(error?.message || error) };
+  }
+}
+
+function retainOptionalSourceEvidence(record, cached) {
+  const acquisition = sourceAcquisitionState.get(record) || {};
+  if (!Object.hasOwn(acquisition, "city_record") || acquisition.city_record === "ok") return record;
+  const priorObservation = cached?.source_observations?.city_record;
+  const priorGap = cached?.spine?.gaps?.find((gap) => gap.slot === "city_record_notices");
+  const retained = !!cached && (["observed", "retained"].includes(priorObservation?.observation_status)
+    || (Object.hasOwn(cached, "city_record_notices") && priorGap?.class !== "source_unavailable"));
+  const notices = retained && Array.isArray(cached.city_record_notices)
+    ? cached.city_record_notices : [];
+  const spine = buildLandEventSpine(record, {
+    cityRecordNotices: notices,
+    noticeLookupStatus: "unavailable",
+  });
+  spine.gaps = [
+    ...spine.gaps.filter((gap) => gap.slot !== "city_record_notices"),
+    {
+      slot: "city_record_notices",
+      class: "source_unavailable",
+      taxonomy: false,
+      source: "City Record Online",
+      retained,
+    },
+  ];
+  return {
+    ...record,
+    city_record_notices: notices,
+    spine,
+    source_observations: {
+      ...record.source_observations,
+      city_record: {
+        source_system: "city_record",
+        acquisition_status: acquisition.city_record || "unavailable",
+        observation_status: retained ? "retained" : "unavailable",
+        observed_at: priorObservation?.observed_at || (retained ? cached.generated_at : null),
+        attempted_at: record.generated_at,
+      },
+    },
+  };
+}
+
 // Sell-facing land universe for daily write-ahead prewarm. Order is priority:
 // public-review first (what the default Land list shows), then noticed/active/filed.
 // The bounded resident corpus is prewarmed; missing rows remain unavailable until
@@ -226,8 +275,9 @@ export async function prewarmOneZapOutcome(env, projectId, {
   if (!force && cached?.join?.matched === true && outcomeCacheIsPrewarmFresh(cached, nowMs)) {
     return { status: "skipped", project_id: id, generated_at: cached.generated_at };
   }
+  let record;
   try {
-    const record = await build(id);
+    record = await build(id);
     // Acquisition validity is independent of outcome richness: a matched thin
     // project is valid, an error-shaped shell is not a new observation.
     if (!record || normProjectId(record.project_id) !== normProjectId(id)
@@ -235,42 +285,52 @@ export async function prewarmOneZapOutcome(env, projectId, {
       throw new Error(record?.join?.reason || "invalid-acquisition");
     }
     const unavailableSources = Object.entries(sourceAcquisitionState.get(record) || {})
-      .filter(([, status]) => status !== "ok")
+      .filter(([source, status]) => source === "open_data" && status !== "ok")
       .map(([source]) => source);
     if (unavailableSources.length) {
       throw new Error(`source-unavailable:${unavailableSources.join(",")}`);
     }
+    record = retainOptionalSourceEvidence(record, cached);
     await kvPutRecord(env, record);
-    await env.ALERT_STATE.put(`${kvKey(id)}:attempt`, JSON.stringify({
-      status: "succeeded", observed_at: new Date(nowMs).toISOString(),
-      generated_at: record.generated_at,
-    }));
-    const dualWrite = await dualWriteZapProjectObservations(
-      env,
-      record.open_data ? [record.open_data] : [],
-      new Date(nowMs).toISOString(),
-    );
-    return {
-      status: "computed",
-      project_id: id,
-      generated_at: record.generated_at,
-      filled: !!record.filled,
-      matched: !!(record.join && record.join.matched),
-      dual_write: dualWrite,
-    };
   } catch (error) {
-    // Keep failed-attempt clocks separate from the retained successful evidence.
-    await env.ALERT_STATE.put(`${kvKey(id)}:attempt`, JSON.stringify({
+    const attemptReceipt = await writeZapOutcomeAttempt(env, id, {
       status: "failed", observed_at: new Date(nowMs).toISOString(),
       reason: String(error?.message || error),
       retained_generated_at: cached?.generated_at || null,
-    })).catch(() => {});
+    });
     return {
       status: "failed",
       project_id: id,
       reason: String(error?.message || error),
+      attempt_receipt: attemptReceipt,
     };
   }
+  const attemptReceipt = await writeZapOutcomeAttempt(env, id, {
+    status: "succeeded", observed_at: new Date(nowMs).toISOString(),
+    generated_at: record.generated_at,
+  });
+  let dualWrite;
+  try {
+    dualWrite = await dualWriteZapProjectObservations(
+      env,
+      record.open_data ? [record.open_data] : [],
+      new Date(nowMs).toISOString(),
+    );
+  } catch (error) {
+    dualWrite = { written: 0, failed: true, rejected: 0, reason: String(error?.message || error) };
+  }
+  return {
+    status: "computed",
+    project_id: id,
+    generated_at: record.generated_at,
+    filled: !!record.filled,
+    matched: !!(record.join && record.join.matched),
+    attempt_receipt: attemptReceipt,
+    partial_sources: record.source_observations?.city_record
+      && record.source_observations.city_record.acquisition_status !== "ok"
+      ? ["city_record"] : [],
+    dual_write: dualWrite,
+  };
 }
 
 /**
@@ -291,6 +351,8 @@ export async function prewarmZapOutcomes(env, projectIds, {
   let computed = 0;
   let skipped = 0;
   let failed = 0;
+  let partial = 0;
+  let attemptReceiptFailed = 0;
   const dualWrite = { written: 0, failed: 0, rejected: 0 };
   const wave = Math.max(1, Math.min(Number(concurrency) || ZAP_PREWARM_CONCURRENCY, 8));
 
@@ -303,6 +365,8 @@ export async function prewarmZapOutcomes(env, projectIds, {
       if (r.status === "computed") computed++;
       else if (r.status === "skipped") skipped++;
       else failed++;
+      if (r.partial_sources?.length) partial++;
+      if (r.attempt_receipt?.status === "failed") attemptReceiptFailed++;
       if (r.dual_write) {
         dualWrite.written += Number(r.dual_write.written) || 0;
         dualWrite.failed += r.dual_write.failed ? 1 : 0;
@@ -310,7 +374,15 @@ export async function prewarmZapOutcomes(env, projectIds, {
       }
     }
   }
-  return { requested: ids.length, computed, skipped, failed, dual_write: dualWrite };
+  return {
+    requested: ids.length,
+    computed,
+    skipped,
+    failed,
+    partial,
+    attempt_receipt_failed: attemptReceiptFailed,
+    dual_write: dualWrite,
+  };
 }
 
 /**
@@ -356,11 +428,12 @@ export async function refreshZapOutcomes(env, opts = {}) {
   const succeeded = summary.computed + summary.skipped;
   const reason = listing.failed && !listing.succeeded ? "roster-unavailable"
     : listing.failed ? "roster-partial"
-      : !summary.requested ? "empty-roster"
-        : !summary.failed && !summary.computed ? "already-fresh" : null;
+      : summary.partial ? "source-partial"
+        : !summary.requested ? "empty-roster"
+          : !summary.failed && !summary.computed ? "already-fresh" : null;
   return {
     status: failed ? (succeeded ? "partial" : "failed")
-      : summary.computed ? "ok" : "skipped",
+      : summary.partial ? "partial" : summary.computed ? "ok" : "skipped",
     ...(reason ? { reason } : {}),
     listed,
     listing,
@@ -655,11 +728,41 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true, lookup
   const finalRecord = attachZoningStatistics(withStatutoryClock, zoningStatistics, {
     generatedAt: assembled.generated_at,
   });
-  sourceAcquisitionState.set(finalRecord, {
+  const acquisition = {
     open_data: sourceAcquisitionState.get(openData) || "unavailable",
     city_record: candidateResult.status,
-  });
-  return finalRecord;
+  };
+  const observedRecord = {
+    ...finalRecord,
+    source_observations: {
+      zap_api: {
+        source_system: "zap_project_api",
+        acquisition_status: "ok",
+        observation_status: "observed",
+        observed_at: assembled.generated_at,
+      },
+      open_data: {
+        source_system: "zap_projects_open_data",
+        acquisition_status: acquisition.open_data,
+        observation_status: acquisition.open_data === "ok" ? "observed" : "unavailable",
+        observed_at: acquisition.open_data === "ok"
+          ? (openData?.environmental_projection?.as_of
+            || openData?.authority_summary?.freshness?.as_of
+            || assembled.generated_at)
+          : null,
+        attempted_at: assembled.generated_at,
+      },
+      city_record: {
+        source_system: "city_record",
+        acquisition_status: acquisition.city_record,
+        observation_status: acquisition.city_record === "ok" ? "observed" : "unavailable",
+        observed_at: acquisition.city_record === "ok" ? assembled.generated_at : null,
+        attempted_at: assembled.generated_at,
+      },
+    },
+  };
+  sourceAcquisitionState.set(observedRecord, acquisition);
+  return observedRecord;
 }
 
 /** Cap notice payload size while keeping body + venue fields for participation steps. */

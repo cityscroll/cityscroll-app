@@ -431,6 +431,7 @@ const ZAP_OUTCOME_SNAPSHOT_FIELDS = Object.freeze([
   "milestones",
   "statutory_clock",
   "freshness",
+  "source_observations",
   "generated_at",
 ]);
 
