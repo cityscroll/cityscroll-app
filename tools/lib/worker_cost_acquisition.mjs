@@ -194,12 +194,11 @@ export async function acquireWorkerCostProfile({ revision, window, transport } =
       reasons.push({ cohort, reason: String(error?.message || error) });
     }
   }
-  // Profile duration is the longest individual collector window (≤1800s), not the
-  // wall-clock span across spaced cron query windows.
-  const durationSeconds = Math.max(...windows.map((entry) => (entry.to - entry.from) / 1000));
+  // Aggregate profile duration may span the multi-window measurement period
+  // (up to 24h). Each live collector window remains ≤ MAX_COLLECTOR_SECONDS.
   const profile = buildWorkerCostProfile(samples, {
     revision, observedAt: new Date(bounds.to).toISOString(),
-    durationSeconds, eventCount: events.length,
+    durationSeconds: (bounds.to - bounds.from) / 1000, eventCount: events.length,
     providerDeployment: deployment, correctness: aggregateObservedCorrectness(httpExpectations),
   });
   return {

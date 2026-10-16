@@ -264,16 +264,16 @@ test("native queue ownership rejects HTTP rehearsal and cross-batch evidence", (
 test("complete bounded profiles cover routes, three crons, queue and collector overhead", () => {
   const samples = REQUIRED_COST_COHORTS.map((cohort, index) => sample(cohort, index));
   const profile = buildWorkerCostProfile(samples, {
-    revision, observedAt: "2026-10-09T13:05:00Z", durationSeconds: 1_800, eventCount: samples.length,
+    revision, observedAt: "2026-10-09T13:05:00Z", durationSeconds: 6 * 60 * 60, eventCount: samples.length,
   });
   assert.equal(profile.complete, true);
-  assert.equal(profile.window.max_seconds, 1_800);
+  assert.equal(profile.window.max_seconds, 86_400);
   assert.equal(profile.window.max_events, 10_000);
   assert.deepEqual(validateWorkerCostProfile(profile), { ok: true, complete: true });
   assert.throws(() => buildWorkerCostProfile(samples, {
-    revision, observedAt: "2026-10-10T08:00:01Z", durationSeconds: 1_800 + 1,
+    revision, observedAt: "2026-10-10T08:00:01Z", durationSeconds: 24 * 60 * 60 + 1,
     eventCount: samples.length,
-  }), /30 minute bound/);
+  }), /24 hour bound/);
 });
 
 test("profiles retain and enforce every sample revision", () => {

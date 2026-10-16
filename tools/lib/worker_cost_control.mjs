@@ -500,7 +500,9 @@ export function buildWorkerCostProfile(samples, {
   if (!/^[a-f0-9]{40}$/.test(String(revision || ""))) fail("profile revision must be a full commit SHA");
   finiteNonNegative(durationSeconds, "duration_seconds");
   finiteNonNegativeInteger(eventCount, "event_count");
-  if (durationSeconds > 30 * 60) fail("collection exceeded the 30 minute bound");
+  // Aggregate / multi-window profiles may span up to 24h. The live enabled
+  // observability window and each live collector stay capped at 1800s separately.
+  if (durationSeconds > 24 * 60 * 60) fail("collection exceeded the 24 hour bound");
   if (eventCount > 10_000) fail("collection exceeded the 10000 event bound");
   const providerVersionId = validateProviderDeployment(providerDeployment, revision, "provider_deployment");
   const cohorts = {};
@@ -530,7 +532,7 @@ export function buildWorkerCostProfile(samples, {
     kind: "provider-native-bounded",
     revision,
     observed_at: observedAt,
-    window: { duration_seconds: durationSeconds, event_count: eventCount, max_seconds: 1_800, max_events: 10_000 },
+    window: { duration_seconds: durationSeconds, event_count: eventCount, max_seconds: 86_400, max_events: 10_000 },
     traffic_mix: trafficMix,
     provider_deployment: providerDeployment,
     cohorts,
@@ -549,7 +551,7 @@ export function validateWorkerCostProfile(profile, { requireComplete = true } = 
   const providerVersionId = validateProviderDeployment(profile.provider_deployment, profile.revision, "profile.provider_deployment");
   finiteNonNegative(profile.window?.duration_seconds, "profile.window.duration_seconds");
   finiteNonNegativeInteger(profile.window?.event_count, "profile.window.event_count");
-  if (profile.window?.duration_seconds > profile.window?.max_seconds || profile.window?.max_seconds !== 1_800) fail("profile exceeds duration bound");
+  if (profile.window?.duration_seconds > profile.window?.max_seconds || profile.window?.max_seconds !== 86_400) fail("profile exceeds duration bound");
   if (profile.window?.event_count > profile.window?.max_events || profile.window?.max_events !== 10_000) fail("profile exceeds event bound");
   if (typeof profile.traffic_mix !== "string" || !profile.traffic_mix.trim()) {
     fail("profile traffic_mix label is required");

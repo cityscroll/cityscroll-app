@@ -62,11 +62,12 @@ mismatched provider version is rejected. No resident-delivering cron or queue
 job is run merely to complete a profile; absent native evidence remains
 unknown.
 
-Collection is capped at 24 hours and 10,000 events, with each live tail limited
-to 30 minutes. Each scheduled cohort has its own exact timestamp and
-at-most-30-minute acceptance window within that day, allowing one immutable
-version to observe the existing 08:00, 10:00, and 13:00 UTC triggers without
-firing them artificially. The retained shape omits URLs, query strings,
+Account and cron aggregate profiles may use a distinct measurement period of up
+to 24 hours and 10,000 events. Each live collector and live-tail session is
+limited to 30 minutes (1,800 seconds). Each scheduled cohort has its own exact
+timestamp and at-most-30-minute acceptance window within that day, allowing one
+immutable version to observe the existing 08:00, 10:00, and 13:00 UTC triggers
+without firing them artificially. The retained shape omits URLs, query strings,
 headers, bodies, credentials, account identifiers, and resident identifiers.
 Missing cohorts remain `unknown`; they never become zero-valued samples.
 Attempted and confirmed operations are kept separate, and collector overhead is
@@ -88,14 +89,16 @@ incomplete. Missing cold-start metadata leaves isolate state unknown without
 blocking route-level attribution cohorts.
 Multiple collection windows may cover the natural cron schedule, but every
 future live tail opens at its declared window start rather than spending its
-collection timeout waiting. Every individual live tail is limited to 30 minutes,
-the combined collectors accept at most 10,000 events, and the complete profile
-hard-caps at 1,800 seconds and 10,000 retained events. Raw provider events stay
-in memory; only sanitized samples are returned. Missing access, native events,
-or provider batch messages yields a partial result rather than a zero or
-complete profile. Missing cold-start metadata does not invent warm or cold
-classes. When `$metadata.coldStart` is present as 0 or 1 it stays
-`unverified-raw` and never becomes cold/warm acceptance by itself.
+collection timeout waiting. Every individual live tail is limited to 30 minutes
+and the combined collectors accept at most 10,000 events. Aggregate profile
+`max_seconds` remains 86,400 so multi-window cron provenance is not weakened;
+the live enabled observability settings window separately hard-caps at 1,800
+seconds. Raw provider events stay in memory; only sanitized samples are
+returned. Missing access, native events, or provider batch messages yields a
+partial result rather than a zero or complete profile. Missing cold-start
+metadata does not invent warm or cold classes. When `$metadata.coldStart` is
+present as 0 or 1 it stays `unverified-raw` and never becomes cold/warm
+acceptance by itself.
 
 The fixed attribution profile covers health, unknown-route, events, full RUM,
 search, Near You, Browse, ZAP BBL, ZAP project, and Doing Business requests;
@@ -111,8 +114,11 @@ harness captures the effective baseline first, arms an independent restorer,
 then write-ahead records intended before/after digests (fsynced) before any
 PATCH. Privacy arming keeps observability, logs, and traces disabled
 (`persist=false`, `redact_query_string=true`, empty destinations) and proves
-every privacy field by an explicit typed GET acknowledgement before any enable.
-Ownership is confirmed only after GET matches the write-ahead after-digest.
+every privacy field by an explicit typed acknowledgement of the RAW provider GET
+before any enable (normalized omit-defaults are never accepted as proof).
+Expired captured windows refuse arm/enable before any PATCH; restore of already
+owned expired state remains allowed. Ownership is confirmed only after the RAW
+GET matches the write-ahead after-digest.
 Mutation control is window-owned read-modify-write: the Cloudflare beta Worker
 PATCH has no documented conditional update for observability settings, so this
 path never claims immunity to foreign concurrent writers. The independent

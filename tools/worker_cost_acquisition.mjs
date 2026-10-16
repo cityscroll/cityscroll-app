@@ -25,7 +25,8 @@ import {
   DEFAULT_WORKER_ID,
   PROVIDER_OBSERVABILITY_CONCURRENCY,
   armRestorer,
-  assertPrivacyArmed,
+  assertPrivacyArmedFromRawGet,
+  assertWindowMutable,
   createBetaWorkerObservabilityTransport,
   createFileWindowStore,
   measurementWindowObservability,
@@ -668,6 +669,7 @@ export async function runObservabilitySettingsCommand(argv, { env = process.env,
     const store = windowStoreFromPath(windowPath);
     let window = await store.read();
     if (!window) throw new Error(`--window-state is missing: ${windowPath}`);
+    assertWindowMutable(window);
     if (!window.restorer?.armed) {
       window = armRestorer(window);
       await store.write(window);
@@ -690,7 +692,7 @@ export async function runObservabilitySettingsCommand(argv, { env = process.env,
         concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
       };
     }
-    const proved = assertPrivacyArmed(await settings.getObservability());
+    const proved = assertPrivacyArmedFromRawGet(await settings.getObservability());
     return {
       schema: "cityscroll.worker_observability_settings_receipt.v1",
       status: "privacy-armed",
@@ -706,13 +708,14 @@ export async function runObservabilitySettingsCommand(argv, { env = process.env,
     const store = windowStoreFromPath(windowPath);
     const window = await store.read();
     if (!window) throw new Error(`--window-state is missing: ${windowPath}`);
+    assertWindowMutable(window);
     if (window.phase !== "privacy_armed") {
       throw new Error("privacy arming must be proved before enabling a measurement window");
     }
     if (!window.restorer?.armed) {
       throw new Error("independent restorer must be armed before enabling a measurement window");
     }
-    const provedBeforeEnable = assertPrivacyArmed(await settings.getObservability());
+    const provedBeforeEnable = assertPrivacyArmedFromRawGet(await settings.getObservability());
     if (observabilitySha256(provedBeforeEnable) !== window.owned_sha256) {
       return {
         schema: "cityscroll.worker_observability_settings_receipt.v1",

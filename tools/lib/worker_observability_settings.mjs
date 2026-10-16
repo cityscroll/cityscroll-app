@@ -124,7 +124,9 @@ export function observabilityEquals(left, right) {
 
 /**
  * Privacy proof requires every privacy field to be explicitly present and typed
- * in the provider GET. Omitted persist/destinations/redact must not pass.
+ * in the RAW provider GET. Callers must pass the provider readback before any
+ * normalizeObservability step: normalization invents omit→false/[] and must
+ * never be used as the enable-gate proof input.
  */
 export function acknowledgePrivacyFields(settings, path = "observability") {
   if (!settings || typeof settings !== "object" || Array.isArray(settings)) {
@@ -163,6 +165,22 @@ export function acknowledgePrivacyFields(settings, path = "observability") {
 
 export function assertPrivacyArmed(settings, path = "observability") {
   return acknowledgePrivacyFields(settings, path);
+}
+
+/** Enable-gate helper: requires the RAW provider GET body, not a normalized view. */
+export function assertPrivacyArmedFromRawGet(rawSettings, path = "raw_provider_get") {
+  return acknowledgePrivacyFields(rawSettings, path);
+}
+
+export function assertWindowMutable(window, now = new Date().toISOString()) {
+  if (!window || window.schema !== WORKER_OBSERVABILITY_SETTINGS_WINDOW_SCHEMA) {
+    fail("settings window is invalid");
+  }
+  const at = requireIso(now, "now");
+  if (Date.parse(at) >= Date.parse(window.expires_at)) {
+    fail("settings window has expired; refuse arm/enable and capture a fresh window");
+  }
+  return window;
 }
 
 export function privacyArmedObservability(baseline) {
@@ -643,6 +661,8 @@ export async function mutateOwnedWindowObservability({
   let window = await store.read();
   if (!window) fail("settings window is missing from durable store");
   if (!window.restorer?.armed) fail("independent restorer must be armed before mutation");
+  // Refuse expired arm/enable before any provider GET/PATCH.
+  assertWindowMutable(window, now);
 
   const beforeRaw = await transport.getObservability();
   const before = normalizeObservability(beforeRaw);
@@ -689,6 +709,8 @@ export async function mutateOwnedWindowObservability({
     };
   }
 
+  // Digests use normalization for equality; privacy/measurement confirmation
+  // must see the RAW provider GET so omit-defaults cannot fabricate proof.
   const after = normalizeObservability(afterRaw);
   const afterSha = observabilitySha256(after);
   if (afterSha !== window.pending_mutation.after_sha256) {
@@ -708,30 +730,31 @@ export async function mutateOwnedWindowObservability({
   }
 
   if (patchError) {
-    // Applied then threw: GET proves the intended after-state, so confirm ownership
-    // from evidence rather than from the thrown transport ack.
-    window = confirmOwnedSettings(window, after, { now });
+    // Applied then threw: RAW GET proves the intended after-state.
+    window = confirmOwnedSettings(window, afterRaw, { now });
     await store.write(window);
     return {
       ok: true,
       recovered_from_patch_throw: true,
       before,
       before_sha256: beforeSha,
-      after,
+      after: window.owned_observability,
       after_sha256: afterSha,
+      after_raw: afterRaw,
       window,
       concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
     };
   }
 
-  window = confirmOwnedSettings(window, after, { now });
+  window = confirmOwnedSettings(window, afterRaw, { now });
   await store.write(window);
   return {
     ok: true,
     before,
     before_sha256: beforeSha,
-    after,
+    after: window.owned_observability,
     after_sha256: afterSha,
+    after_raw: afterRaw,
     window,
     concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
   };

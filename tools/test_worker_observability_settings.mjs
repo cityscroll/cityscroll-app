@@ -11,6 +11,8 @@ import {
   armRestorer,
   assertMeasurementWindow,
   assertPrivacyArmed,
+  assertPrivacyArmedFromRawGet,
+  assertWindowMutable,
   classifyCurrentSettings,
   compareAndSwapObservability,
   createBetaWorkerObservabilityTransport,
@@ -113,6 +115,30 @@ async function seededArmedWindow(baseline = BASELINE, extras = {}) {
   return { fixture, window };
 }
 
+test("raw omit fails privacy proof while normalize invents defaults that would pass", () => {
+  const omitted = {
+    enabled: false,
+    redact_query_string: true,
+    logs: { enabled: false },
+    traces: { enabled: false },
+  };
+  assert.throws(() => assertPrivacyArmedFromRawGet(omitted), /logs.persist must be present/);
+  // Normalization invents persist:false / destinations:[]; that must never be the enable gate input.
+  const invented = normalizeObservability({
+    ...omitted,
+    logs: { enabled: false, head_sampling_rate: 1 },
+    traces: { enabled: false, head_sampling_rate: 1 },
+  });
+  assert.equal(invented.logs.persist, false);
+  assert.deepEqual(invented.logs.destinations, []);
+  assert.throws(() => assertPrivacyArmedFromRawGet({
+    enabled: false,
+    redact_query_string: true,
+    logs: { enabled: false },
+    traces: { enabled: false, persist: false, destinations: [] },
+  }), /logs.persist must be present/);
+});
+
 test("acknowledgePrivacyFields rejects omitted persist destinations and redact", () => {
   assert.throws(
     () => acknowledgePrivacyFields({
@@ -211,6 +237,87 @@ test("openSettingsWindow records concurrency limitation and null ownership", () 
   assert.equal(window.concurrency_control.provider_conditional_update, false);
   assert.match(window.concurrency_control.limitation, /no documented conditional update/i);
   assert.deepEqual(window.concurrency_control, PROVIDER_OBSERVABILITY_CONCURRENCY);
+});
+
+test("expired window refuses arm/enable before any PATCH", async () => {
+  const fixture = tempStore();
+  const transport = memoryTransport(BASELINE);
+  let window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    durationSeconds: 60,
+    windowId: "window-expired-arm",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z" });
+  await fixture.seed(window);
+
+  assert.throws(
+    () => assertWindowMutable(window, "2026-10-16T00:02:00.000Z"),
+    /settings window has expired/,
+  );
+
+  await assert.rejects(
+    () => mutateOwnedWindowObservability({
+      transport,
+      store: fixture.store,
+      expectedSha256: window.baseline_sha256,
+      nextObservability: privacyArmedObservability(BASELINE),
+      phase: "privacy_armed",
+      now: "2026-10-16T00:02:00.000Z",
+    }),
+    /settings window has expired/,
+  );
+  assert.equal(transport.calls.filter((call) => call.method === "PATCH").length, 0);
+  assert.equal(transport.calls.filter((call) => call.method === "GET").length, 0);
+  fixture.cleanup();
+});
+
+test("confirm ownership uses RAW GET so omit-heavy readback cannot pass after PATCH", async () => {
+  const { fixture, window } = await seededArmedWindow(BASELINE, { windowId: "window-raw-confirm" });
+  const armed = privacyArmedObservability(BASELINE);
+  const transport = {
+    calls: [],
+    async getObservability() {
+      this.calls.push({ method: "GET" });
+      if (this.calls.filter((call) => call.method === "PATCH").length === 0) {
+        return structuredClone(BASELINE);
+      }
+      // Provider returns privacy-shaped values but omits persist/destinations.
+      return {
+        enabled: false,
+        head_sampling_rate: 1,
+        redact_query_string: true,
+        logs: { enabled: false, head_sampling_rate: 1, invocation_logs: true },
+        traces: {
+          enabled: false,
+          head_sampling_rate: 1,
+          propagation_policy: "enforce",
+        },
+      };
+    },
+    async patchObservability(observability) {
+      this.calls.push({ method: "PATCH", observability: structuredClone(observability) });
+      return structuredClone(observability);
+    },
+  };
+
+  await assert.rejects(
+    () => mutateOwnedWindowObservability({
+      transport,
+      store: fixture.store,
+      expectedSha256: window.baseline_sha256,
+      nextObservability: armed,
+      phase: "privacy_armed",
+      now: "2026-10-16T00:01:00.000Z",
+    }),
+    /persist must be present|destinations must be present/,
+  );
+  // Write-ahead intent must remain so the restorer can reconcile.
+  const durable = await fixture.read();
+  assert.ok(durable.pending_mutation);
+  assert.equal(durable.owned_observability, null);
+  fixture.cleanup();
 });
 
 test("mutation refuses without an armed independent restorer", async () => {
