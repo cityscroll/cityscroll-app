@@ -14,6 +14,8 @@ import {
   REQUIRED_COST_COHORTS,
   WAREHOUSE_EXPERIMENT_COHORTS,
   WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+  baseCohortFromFlagRaw,
+  parseColdStartFlagRaw,
   providerDeploymentReceiptSha256,
 } from "./lib/worker_cost_control.mjs";
 import {
@@ -57,7 +59,7 @@ function deployment(revision) {
 }
 
 function expectation(cohort, revision = REVISION, index = 0) {
-  const probeCohort = cohort.replace(/:(?:cold|warm)$/, "");
+  const probeCohort = baseCohortFromFlagRaw(cohort);
   const header = `owned-${probeCohort.replaceAll(/[^a-z0-9]/g, "-")}-${index}`;
   const series = "fixed-series";
   const receipt = {
@@ -97,7 +99,9 @@ function httpEvent(owned, cohort, cpu = 2, { coldStart, extraRecord = false } = 
     },
     $metadata: {
       id: `event-${owned.header}`,
-      ...(coldStart === undefined ? { coldStart: cohort.endsWith(":cold") ? 1 : 0 } : { coldStart }),
+      ...(coldStart === undefined
+        ? { coldStart: parseColdStartFlagRaw(cohort) ?? 0 }
+        : { coldStart }),
     },
     $workers: { cpuTimeMs: cpu, outcome: "ok", scriptVersion: { id: owned.providerVersionId } },
     exceptions: [],
@@ -187,12 +191,12 @@ async function profileTransport({ corruptQueue = false, missingColdStart = false
     collectProviderEvents: async ({ execute }) => {
       await execute?.();
       const events = Object.entries(expectations).map(([cohort, owned], index) => httpEvent(owned, cohort, 2, {
-        coldStart: missingColdStart && cohort === "health" ? undefined : cohort.endsWith(":cold") ? 1 : 0,
+        coldStart: missingColdStart && cohort === "health" ? undefined : parseColdStartFlagRaw(cohort) ?? 0,
         extraRecord: index === 0,
       }));
       if (missingColdStart) {
-        const coldHealth = events.find((event) => event.event.request.headers["x-cityscroll-cost-probe"].startsWith("owned-health-"));
-        delete coldHealth.$metadata.coldStart;
+        const healthEvent = events.find((event) => event.event.request.headers["x-cityscroll-cost-probe"].startsWith("owned-health-"));
+        delete healthEvent.$metadata.coldStart;
       }
       for (const [cron, time] of Object.entries(configuration.scheduled_times)) events.push(scheduledEvent(cron, time));
       const queued = await queueEvent();
@@ -595,10 +599,10 @@ test("live transport separates telemetry authentication and targets the authenti
   assert.equal(workloadRequest.init.method, "POST");
 });
 
-function liveWarehouseTransport({ coldCoverage = true } = {}) {
-  const bases = [...new Set(WAREHOUSE_EXPERIMENT_COHORTS.map((cohort) => cohort.replace(/:(?:cold|warm)$/, "")))];
+function liveWarehouseTransport({ flagRaw1Coverage = true } = {}) {
+  const bases = [...new Set(WAREHOUSE_EXPERIMENT_COHORTS.map((cohort) => baseCohortFromFlagRaw(cohort)))];
   const workloads = WAREHOUSE_EXPERIMENT_COHORTS.map((cohort) => {
-    const base = cohort.replace(/:(?:cold|warm)$/, "");
+    const base = baseCohortFromFlagRaw(cohort);
     return {
       cohort,
       probe_cohort: base,
@@ -657,7 +661,7 @@ function liveWarehouseTransport({ coldCoverage = true } = {}) {
         source: receipt,
         $metadata: {
           id: `warehouse-${requests}`,
-          ...(!isCollector ? { coldStart: coldCoverage && seen < 100 ? 1 : 0 } : {}),
+          ...(!isCollector ? { coldStart: flagRaw1Coverage && seen < 100 ? 1 : 0 } : {}),
         },
         $workers: {
           cpuTimeMs: 2,
@@ -677,7 +681,7 @@ function liveWarehouseTransport({ coldCoverage = true } = {}) {
   return { transport, requestCount: () => requests };
 }
 
-test("warehouse runner samples until exact provider-observed cold and warm populations exist", async () => {
+test("warehouse runner samples until exact provider-observed cold_start_flag_raw 0/1 populations exist", async () => {
   const { transport, requestCount } = liveWarehouseTransport();
   const result = await transport.collectWarehouseRun({
     label: "baseline",
@@ -695,15 +699,16 @@ test("warehouse runner samples until exact provider-observed cold and warm popul
     assert.ok(result.cohorts[cohort].every((sample) => {
       const isolate = sample.condition.isolate_observation;
       return isolate?.present === true
-        && isolate.raw === (cohort.endsWith(":cold") ? 1 : 0)
+        && isolate.raw === parseColdStartFlagRaw(cohort)
         && isolate.provisional_label === "unverified-raw"
+        && isolate.semantics === "unverified-provider-flag"
         && !("cold_start" in sample.condition);
     }));
   }
 });
 
-test("warehouse runner reports incomplete genuine cold coverage", async () => {
-  const { transport } = liveWarehouseTransport({ coldCoverage: false });
+test("warehouse runner reports incomplete cold_start_flag_raw=1 coverage", async () => {
+  const { transport } = liveWarehouseTransport({ flagRaw1Coverage: false });
   const result = await transport.collectWarehouseRun({
     label: "baseline",
     revision: REVISION,
@@ -714,7 +719,7 @@ test("warehouse runner reports incomplete genuine cold coverage", async () => {
     maxEvents: 10_000,
   });
   assert.equal(result.status, "blocked");
-  assert.match(result.reason, /cold provider samples are incomplete/);
+  assert.match(result.reason, /cold_start_flag_raw=1 provider samples are incomplete/);
 });
 
 function warehouseIsolateCondition(raw) {
@@ -725,7 +730,7 @@ function warehouseIsolateCondition(raw) {
       present: true,
       raw,
       provisional_label: "unverified-raw",
-      semantics: "optional-unverified-provider-flag",
+      semantics: "unverified-provider-flag",
     },
   };
 }
@@ -758,7 +763,7 @@ test("matched warehouse acquisition retains baseline on a queue regression", asy
             ...warehouseSample(
               revision,
               label === "candidate" ? 1 : 0,
-              cohort.endsWith(":cold") ? 1 : 0,
+              parseColdStartFlagRaw(cohort),
             ),
           })),
         ])),

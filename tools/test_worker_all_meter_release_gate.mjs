@@ -46,24 +46,22 @@ function profile(profileRevision = revision, totals = {}, samplesPerCohort = 1) 
   const routeCohortCount = REQUIRED_COST_COHORTS.length - 1;
   const samples = REQUIRED_COST_COHORTS.flatMap((cohort, cohortIndex) => Array.from({ length: samplesPerCohort }, (_, sampleIndex) => ({
     cohort,
-    condition: cohort.endsWith(":cold") || cohort.endsWith(":warm")
-      ? { mode: "provider-observed", source: "$metadata.coldStart", cold_start: cohort.endsWith(":cold") }
-      : cohort.startsWith("cron:")
+    condition: cohort.startsWith("cron:")
+      ? {
+        mode: "provider-native-scheduled", source: "$workers.event",
+        cron: cohort.slice("cron:".length), scheduled_time: 1_760_000_000_000,
+        provider_request_id_sha256: "b".repeat(64),
+        run_marker_sha256: "c".repeat(64), workload_digest: "d".repeat(64),
+        instrumentation_log_count: 1,
+      }
+      : cohort === "queue"
         ? {
-          mode: "provider-native-scheduled", source: "$workers.event",
-          cron: cohort.slice("cron:".length), scheduled_time: 1_760_000_000_000,
+          mode: "provider-native-queue", source: "$workers.event", queue: "crol-cost-probe", batch_size: 1,
           provider_request_id_sha256: "b".repeat(64),
           run_marker_sha256: "c".repeat(64), workload_digest: "d".repeat(64),
-          instrumentation_log_count: 1,
+          batch_fingerprint_sha256: "e".repeat(64), instrumentation_log_count: 1,
         }
-        : cohort === "queue"
-          ? {
-            mode: "provider-native-queue", source: "$workers.event", queue: "crol-cost-probe", batch_size: 1,
-            provider_request_id_sha256: "b".repeat(64),
-            run_marker_sha256: "c".repeat(64), workload_digest: "d".repeat(64),
-            batch_fingerprint_sha256: "e".repeat(64), instrumentation_log_count: 1,
-          }
-          : { mode: "bounded-production-execution" },
+        : { mode: "bounded-production-execution" },
     revision: profileRevision,
     native_cpu_ms: cohort === "collector-overhead"
       ? (totals.collector_cpu_ms ?? 1) / samplesPerCohort

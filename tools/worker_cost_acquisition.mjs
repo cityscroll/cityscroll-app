@@ -19,6 +19,8 @@ import {
 import {
   WAREHOUSE_EXPERIMENT_COHORTS,
   WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+  baseCohortFromFlagRaw,
+  coldStartFlagRawCohort,
   sanitizeNativeInvocation,
 } from "./lib/worker_cost_control.mjs";
 import {
@@ -52,7 +54,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const WORKER_DIRECTORY = join(ROOT, "worker");
 const QUERY_PAGE_LIMIT = 2_000;
 const LIVE_TAIL_HEARTBEAT_MS = 15_000;
-const WAREHOUSE_BASE_COHORTS = Object.freeze([...new Set(WAREHOUSE_EXPERIMENT_COHORTS.map((cohort) => cohort.replace(/:(?:cold|warm)$/, "")))]);
+const WAREHOUSE_BASE_COHORTS = Object.freeze([...new Set(WAREHOUSE_EXPERIMENT_COHORTS.map((cohort) => baseCohortFromFlagRaw(cohort)))]);
 const WAREHOUSE_COLLECTOR_SAMPLES = WAREHOUSE_EXPERIMENT_COHORTS.length * WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT;
 const WAREHOUSE_MAX_ATTEMPTS_PER_INPUT = Math.floor((MAX_COLLECTOR_EVENTS - WAREHOUSE_COLLECTOR_SAMPLES) / WAREHOUSE_BASE_COHORTS.length);
 const WAREHOUSE_PROBE_CONCURRENCY = 32;
@@ -283,12 +285,12 @@ async function mapConcurrent(items, concurrency, signal, operation) {
 function warehouseWorkloadPairs(byCohort) {
   const pairs = new Map();
   for (const base of WAREHOUSE_BASE_COHORTS) {
-    const cold = byCohort.get(`${base}:cold`);
-    const warm = byCohort.get(`${base}:warm`);
-    if (!cold || !warm || cold.workload_hash !== warm.workload_hash) {
-      throw new Error(`${base} cold and warm workloads must be an exact matched input`);
+    const flagRaw1 = byCohort.get(coldStartFlagRawCohort(base, 1));
+    const flagRaw0 = byCohort.get(coldStartFlagRawCohort(base, 0));
+    if (!flagRaw1 || !flagRaw0 || flagRaw1.workload_hash !== flagRaw0.workload_hash) {
+      throw new Error(`${base} cold_start_flag_raw=0 and =1 workloads must be an exact matched input`);
     }
-    pairs.set(base, cold);
+    pairs.set(base, flagRaw1);
   }
   return pairs;
 }
@@ -368,7 +370,7 @@ export function createLiveWorkerCostTransport({
   }
   const executeWorkload = async (workload, series, deployment, header = workload.header, signal) => {
     if (signal?.aborted) throw new Error("cost workload collection was cancelled");
-    const probeCohort = workload.probe_cohort || workload.cohort.replace(/:(?:cold|warm)$/, "");
+    const probeCohort = workload.probe_cohort || baseCohortFromFlagRaw(workload.cohort);
     const providerVersionId = deployment?.receipt?.cloudflare_version?.id;
     if (!providerVersionId) throw new Error("exact provider version is unavailable");
     const outerUrl = `${apiOrigin}/admin/cost-control-probe`;
@@ -558,18 +560,18 @@ export function createLiveWorkerCostTransport({
           cohort,
           selectConditionedEvents(
             eventIndex,
-            expectations.filter((expectation) => expectation.probeCohort === cohort.replace(/:(?:cold|warm)$/, "")),
+            expectations.filter((expectation) => expectation.probeCohort === baseCohortFromFlagRaw(cohort)),
             cohort,
             samplesPerCohort,
           ),
         ]));
         for (const base of WAREHOUSE_BASE_COHORTS) {
           const fingerprints = new Set([
-            ...conditioned[`${base}:cold`],
-            ...conditioned[`${base}:warm`],
+            ...conditioned[coldStartFlagRawCohort(base, 1)],
+            ...conditioned[coldStartFlagRawCohort(base, 0)],
           ].map(({ expectation }) => correctnessFingerprint(expectation)));
           if (fingerprints.size !== 1 || [...fingerprints][0].startsWith(":")) {
-            throw new Error(`${base} cold and warm responses are not matched`);
+            throw new Error(`${base} cold_start_flag_raw=0 and =1 responses are not matched`);
           }
         }
         const collectors = collectorExpectations.map((expectation) => ({

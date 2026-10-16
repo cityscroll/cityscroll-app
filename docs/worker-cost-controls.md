@@ -95,10 +95,10 @@ and the combined collectors accept at most 10,000 events. Aggregate profile
 the live enabled observability settings window separately hard-caps at 1,800
 seconds. Raw provider events stay in memory; only sanitized samples are
 returned. Missing access, native events, or provider batch messages yields a
-partial result rather than a zero or complete profile. Missing cold-start
-metadata does not invent warm or cold classes. When `$metadata.coldStart` is
-present as 0 or 1 it stays `unverified-raw` and never becomes cold/warm
-acceptance by itself.
+partial result rather than a zero or complete profile. Missing `$metadata.coldStart`
+metadata stays unknown. When `$metadata.coldStart` is present as 0 or 1 it stays
+`unverified-raw` under semantics `unverified-provider-flag` and never becomes a
+semantic cold/warm acceptance by itself.
 
 The fixed attribution profile covers health, unknown-route, events, full RUM,
 search, Near You, Browse, ZAP BBL, ZAP project, and Doing Business requests;
@@ -106,9 +106,11 @@ all three configured cron windows; the queue; and collector overhead. Provider
 `$metadata.coldStart` is an optional numeric field whose 0/1 meaning is
 unverified on this account. Missing or unverified values stay unknown and never
 become warm, cold, zero CPU, or a semantic `cold_start` true/false. Optional
-`:cold` / `:warm` cohort suffixes are raw numeric buckets (1 vs 0) for matched
-warehouse experiments when a live 0/1 flag is present; they do not claim
-validated isolate class. Request order, wall time, and startup time never invent
+warehouse cohorts are keyed only by the raw provider flag value
+(`:cold_start_flag_raw=0` / `:cold_start_flag_raw=1`) with semantics
+`unverified-provider-flag`. They are never named, labeled, or validated as cold
+or warm, and never set `cold_start` true/false. Contracts that require semantic
+cold/warm stay UNKNOWN. Request order, wall time, and startup time never invent
 isolate class.
 
 A bounded observability settings window uses the beta Worker settings API. The
@@ -164,8 +166,8 @@ both the script override and the effective view, and refuses a foreign override
 or effective state without PATCH. A live privacy-armed enable/collect window still
 requires the provider to retain privacy fields while observability stays
 disabled. When that stickiness cannot be proved on either write path, the live
-window stays unavailable and the related route, cron, queue, cold-start, and
-collector CPU samples remain `unknown` rather than fabricated. Account-level or
+window stays unavailable and the related route, cron, queue, coldStart-flag-raw,
+and collector CPU samples remain `unknown` rather than fabricated. Account-level or
 version-level aggregates that do not need the live window may still be retained
 separately with their own provenance.
 
@@ -174,23 +176,26 @@ separately with their own provenance.
 The fixed warehouse experiment compares the current static ZAP BBL, ZAP
 project, and Doing Business lookups with the route-scoped candidate under the
 same inputs and workload. Each valid lookup plus the unrelated health and
-browse controls uses exactly 100 cold and 100 warm provider-observed samples.
-Joins, provenance, miss behavior, freshness, and cohort sizes must match. The
-candidate is retained only when no CPU, KV, D1, storage, Queue, Analytics
-Engine, collector, or error meter regresses and at least one meter improves;
-otherwise the baseline stays active. The experiment records an operational
-retention recommendation, never a financial-savings claim.
+browse controls uses exactly 100 `cold_start_flag_raw=1` and 100
+`cold_start_flag_raw=0` provider-observed samples. Joins, provenance, miss
+behavior, freshness, and cohort sizes must match. The candidate is retained
+only when no CPU, KV, D1, storage, Queue, Analytics Engine, collector, or error
+meter regresses and at least one meter improves; otherwise the baseline stays
+active. The experiment records an operational retention recommendation, never a
+financial-savings claim.
 `tools/worker_cost_acquisition.mjs warehouse` owns the matched live run and
 calls the evaluator only after both authenticated versions have the fixed
-100-sample cold and warm cohorts, correctness/freshness/miss digests, and the
-complete CPU, collector, KV, D1, storage, Queue, and Analytics Engine vector.
-The runner uses bounded concurrent attempts within the same 30-minute and
-10,000-event ceiling, then retains exactly 100 invocations whose provider
-metadata proves cold execution and 100 whose metadata proves warm execution for
-each identical input digest. If either population is unavailable, the run is
-incomplete; it never relabels an invocation or forces a deployment to create a
-cold sample. Cancellation reaches every in-flight workload request and prevents
-new attempts from being scheduled.
+100-sample `cold_start_flag_raw=0/1` cohorts, correctness/freshness/miss
+digests, and the complete CPU, collector, KV, D1, storage, Queue, and Analytics
+Engine vector. The runner uses bounded concurrent attempts within the same
+30-minute and 10,000-event ceiling, then retains exactly 100 invocations whose
+provider metadata carries raw flag `1` and 100 whose metadata carries raw flag
+`0` for each identical input digest. Those raw buckets stay
+`unverified-provider-flag`; they do not prove semantic cold or warm execution.
+If either population is unavailable, the run is incomplete; it never relabels
+an invocation or forces a deployment to create a flag-raw sample. Cancellation
+reaches every in-flight workload request and prevents new attempts from being
+scheduled.
 Correctness, join, provenance, miss, and freshness digests are derived from each
 version's observed child responses and structured receipts; measurement-plan
 assertions cannot substitute for observed results.

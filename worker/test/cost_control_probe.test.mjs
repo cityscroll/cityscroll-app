@@ -92,7 +92,7 @@ test("probe rejects missing operator authorization without exposing the route", 
   const denied = beginCostControlProbe(new Request("https://api.cityscroll.org/health", {
     headers: {
       "x-cityscroll-cost-probe": "probe-test-0002",
-      "x-cityscroll-cost-cohort": "health:cold",
+      "x-cityscroll-cost-cohort": "health:cold_start_flag_raw=1",
       "x-cityscroll-cost-workload": WORKLOAD,
       "x-cityscroll-cost-series": "series-test-0002",
     },
@@ -525,7 +525,7 @@ test("authenticated HTTP probe runs the real route without synthetic isolate lab
     url: "https://api.cityscroll.org/health",
   };
   const env = { ADMIN_KEY, GIT_COMMIT_SHA: "a".repeat(40), WRANGLER_ENV: "production" };
-  const syntheticResponse = await worker.fetch(request({ tag: "probe-test-http-0", series: "series-test-http-0", cohort: "health:cold", body }), env, { waitUntil() {} });
+  const syntheticResponse = await worker.fetch(request({ tag: "probe-test-http-0", series: "series-test-http-0", cohort: "health:cold_start_flag_raw=1", body }), env, { waitUntil() {} });
   const firstResponse = await worker.fetch(request({ tag: "probe-test-http-1", series: "series-test-http-1", cohort: "health", body }), env, { waitUntil() {} });
   const secondResponse = await worker.fetch(request({ tag: "probe-test-http-2", series: "series-test-http-2", cohort: "health", body }), env, { waitUntil() {} });
   const first = await firstResponse.json();

@@ -4,17 +4,40 @@ import { createHash } from "node:crypto";
  * Attribution completeness uses route, cron, queue, and collector cohorts.
  * Provider `$metadata.coldStart` is an optional numeric field whose 0/1 meaning
  * is unverified on this account; missing or unverified values stay unknown and
- * never become warm, cold, zero, or `cold_start` true/false. Optional `:cold` /
- * `:warm` cohort suffixes are raw numeric buckets (1 vs 0) only—they do not
- * claim validated isolate class.
+ * never become warm, cold, zero, or `cold_start` true/false. Optional warehouse
+ * cohorts are keyed only by the raw provider flag value
+ * (`:cold_start_flag_raw=0` / `:cold_start_flag_raw=1`) with semantics
+ * `unverified-provider-flag`. They are never named, labeled, or validated as
+ * cold or warm, and never set `cold_start` true/false. Contracts that require
+ * semantic cold/warm stay UNKNOWN.
  */
 export const HTTP_ROUTE_COHORTS = Object.freeze([
   "health", "unknown-route", "events", "rum-16", "search", "nearby",
   "browse", "zap-bbl", "zap-project", "doing-business",
 ]);
 
+export const COLD_START_FLAG_RAW_KEY = "cold_start_flag_raw";
+export const COLD_START_FLAG_RAW_SUFFIX_RE = /:cold_start_flag_raw=([01])$/;
+
+export function coldStartFlagRawCohort(base, raw) {
+  if (raw !== 0 && raw !== 1) fail("cold_start_flag_raw must be numeric 0 or 1");
+  return `${base}:cold_start_flag_raw=${raw}`;
+}
+
+export function parseColdStartFlagRaw(cohort) {
+  const match = String(cohort || "").match(COLD_START_FLAG_RAW_SUFFIX_RE);
+  return match ? Number(match[1]) : null;
+}
+
+export function baseCohortFromFlagRaw(cohort) {
+  return String(cohort || "").replace(COLD_START_FLAG_RAW_SUFFIX_RE, "");
+}
+
 export const OPTIONAL_ISOLATE_COHORTS = Object.freeze(
-  HTTP_ROUTE_COHORTS.flatMap((cohort) => [`${cohort}:cold`, `${cohort}:warm`]),
+  HTTP_ROUTE_COHORTS.flatMap((cohort) => [
+    coldStartFlagRawCohort(cohort, 1),
+    coldStartFlagRawCohort(cohort, 0),
+  ]),
 );
 
 export const REQUIRED_COST_COHORTS = Object.freeze([
@@ -24,7 +47,7 @@ export const REQUIRED_COST_COHORTS = Object.freeze([
 
 export const ISOLATE_CONTRACT = Object.freeze({
   source: "$metadata.coldStart",
-  semantics: "optional-unverified-provider-flag",
+  semantics: "unverified-provider-flag",
   missing_means: "unknown",
   never_infer_from: Object.freeze([
     "request-order",
@@ -214,12 +237,15 @@ function queueCondition(event, options) {
   }, operations: ownership.operations };
 }
 
-function providerColdCondition(event, cohort) {
+function providerFlagRawCondition(event, cohort) {
   const coldStart = event?.$metadata?.coldStart;
   if (coldStart !== 0 && coldStart !== 1) {
     fail("provider $metadata.coldStart must be the numeric 0 or 1 flag for raw isolate-bucket cohorts");
   }
-  const wantRaw = cohort.endsWith(":cold") ? 1 : 0;
+  const wantRaw = parseColdStartFlagRaw(cohort);
+  if (wantRaw === null) {
+    fail("cohort must be keyed by cold_start_flag_raw=0 or =1");
+  }
   if (coldStart !== wantRaw) {
     fail("provider $metadata.coldStart does not match raw cohort bucket");
   }
@@ -276,12 +302,12 @@ function validateCondition(cohort, condition, path) {
     // Unverified optional $metadata.coldStart must never become semantic cold/warm.
     fail(`${path} must not claim semantic cold_start from unverified $metadata.coldStart`);
   }
-  if (cohort.endsWith(":cold") || cohort.endsWith(":warm")) {
+  const flagRaw = parseColdStartFlagRaw(cohort);
+  if (flagRaw !== null) {
     if (condition.mode !== "bounded-production-execution") {
       fail(`${path} must use bounded production execution evidence`);
     }
-    const wantRaw = cohort.endsWith(":cold") ? 1 : 0;
-    validateIsolateObservation(condition.isolate_observation, path, { requirePresentRaw: wantRaw });
+    validateIsolateObservation(condition.isolate_observation, path, { requirePresentRaw: flagRaw });
   } else if (HTTP_ROUTE_COHORTS.includes(cohort) || cohort === "collector-overhead") {
     if (condition.mode !== "bounded-production-execution") {
       fail(`${path} must use bounded production execution evidence`);
@@ -421,8 +447,8 @@ export function sanitizeNativeInvocation(event, {
     const ownedHeader = headers["x-cityscroll-cost-probe"] || headers["X-Cityscroll-Cost-Probe"];
     if (!expectedHeaderValue || ownedHeader !== expectedHeaderValue) fail("provider event is not owned by the literal probe header");
     if (request?.url !== expectedUrl || request?.method !== expectedMethod) fail("provider event does not match the expected URL and method");
-    if (cohort.endsWith(":cold") || cohort.endsWith(":warm")) {
-      retainedCondition = providerColdCondition(event, cohort);
+    if (parseColdStartFlagRaw(cohort) !== null) {
+      retainedCondition = providerFlagRawCondition(event, cohort);
     } else if (HTTP_ROUTE_COHORTS.includes(cohort) || cohort === "collector-overhead") {
       retainedCondition = providerRouteCondition(event);
     }
@@ -642,11 +668,11 @@ function normalizeProfileEvidence(evidence, label) {
 }
 
 export const WAREHOUSE_EXPERIMENT_COHORTS = Object.freeze([
-  "zap-bbl:cold", "zap-bbl:warm",
-  "zap-project:cold", "zap-project:warm",
-  "doing-business:cold", "doing-business:warm",
-  "health:cold", "health:warm",
-  "browse:cold", "browse:warm",
+  coldStartFlagRawCohort("zap-bbl", 1), coldStartFlagRawCohort("zap-bbl", 0),
+  coldStartFlagRawCohort("zap-project", 1), coldStartFlagRawCohort("zap-project", 0),
+  coldStartFlagRawCohort("doing-business", 1), coldStartFlagRawCohort("doing-business", 0),
+  coldStartFlagRawCohort("health", 1), coldStartFlagRawCohort("health", 0),
+  coldStartFlagRawCohort("browse", 1), coldStartFlagRawCohort("browse", 0),
 ]);
 export const WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT = 100;
 
