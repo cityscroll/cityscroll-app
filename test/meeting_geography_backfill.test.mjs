@@ -946,20 +946,26 @@ test("locality and unit suffixes resolve through production PAD and parcel shard
     FROZEN_NEIGHBORHOOD_PUBLICATION_BASELINE.by_outcome.virtual,
   );
 
-  const shared = readSharedMeetingReadModelDocument(SHARED_MEETING_PATH);
-  const retainedIds = new Set([
-    ...frozenIds.physical_venue_meeting_ids,
-    ...frozenIds.virtual_meeting_ids,
-  ]);
-  const replayRows = shared.rows.filter((row) => retainedIds.has(row.meeting_id));
+  // Replay against frozen shared-meeting rows, not the rolling live catalog.
+  const replayFixture = loadJson(
+    path.join(ROOT, "test/fixtures/meeting-geography-backfill/locality_unit_replay_rows.json"),
+  );
   assert.equal(
-    replayRows.length,
+    replayFixture.rows.length,
     FROZEN_NEIGHBORHOOD_PUBLICATION_BASELINE.by_outcome.physical_venue
       + FROZEN_NEIGHBORHOOD_PUBLICATION_BASELINE.by_outcome.virtual,
   );
+  assert.deepEqual(
+    replayFixture.physical_venue_meeting_ids,
+    frozenIds.physical_venue_meeting_ids,
+  );
+  assert.deepEqual(
+    replayFixture.virtual_meeting_ids,
+    frozenIds.virtual_meeting_ids,
+  );
 
   const replay = createProductionRunner().run({
-    rows: replayRows,
+    rows: replayFixture.rows,
     generation: "test-locality-unit-parity",
     sourceGenerationHash: "locality-unit-parity",
     observedAt: "2026-09-29T12:30:00.000Z",

@@ -12,8 +12,11 @@
     }
   ],
   "scope": {
-    "note": "Governs exact-count asserts only when a test loads one of the listed refreshed site/data or warehouse proof artifacts and the asserted expression references that load binding. The default guard run discovers those test files by content under test/ and worker/test/, including helper-based loads, JSON module imports, and join(WAREHOUSE_DIR, \"receipts\", \"proof\", \"…\") forms; it does not limit the scan to a fixed file allowlist. Paths that only appear in string arrays or non-load calls stay unscanned. Exact counts against committed fixtures are allowed. Grow these artifact lists only when a later refresh proves another member.",
+    "note": "Governs exact-count, exact-vintage, and analytics exact-bytes asserts when a test loads one of the listed refreshed site/data or warehouse proof artifacts and the asserted expression references that load binding (bytes pins are scoped to analytics_registered_contracts). The default guard run discovers those test files by content under test/ and worker/test/, including helper-based loads, JSON module imports, join(\"site\", \"data\", \"…\"), and join(WAREHOUSE_DIR, \"receipts\", \"proof\", \"…\") forms; it does not limit the scan to a fixed file allowlist. Paths that only appear in string arrays or non-load calls stay unscanned. Exact counts against committed fixtures are allowed. Grow these artifact lists only when a later refresh proves another member.",
     "refreshed_site_data_artifacts": [
+      "site/data/agency_constellation_lookup.json",
+      "site/data/agency_route_identity_report.json",
+      "site/data/analytics_registered_contracts.json",
       "site/data/committee_graph_lookup.json",
       "site/data/district_activity.json",
       "site/data/doing_business_warehouse_lookup.json",
@@ -25,6 +28,7 @@
       "site/data/legislative_matter_index.json",
       "site/data/legislative_matter_lookup.json",
       "site/data/meeting_outcomes_snapshot.json",
+      "site/data/meetings_domain_observations.json",
       "site/data/money_resident_snapshot.json",
       "site/data/official_committee_memberships_lookup.json",
       "site/data/person_hub_lookup.json",
@@ -38,7 +42,7 @@
       "warehouse/receipts/proof/zap-projects_bulk_latest.json"
     ]
   },
-  "count_property_pattern": "(?:count|length|total|size|appearances|matter_count|references|universe|rows|row_count|committees?|exams?|groups?|members?|mapped|unmapped)",
+  "count_property_pattern": "(?:count|length|total|size|appearances|matter_count|references|universe|rows|row_count|source_count|committees?|exams?|groups?|members?|mapped|unmapped|unresolved)",
   "empirical_starting_set": {
     "source": "Scheduled first-class refresh pull request restamps that invalidated exact pins",
     "note": "Provenance of the suites a real refresh invalidated. Kept covered by the default scan and is not the scan allowlist; content discovery is authoritative for which files are checked. warehouse_bulk is provenance for warehouse proof rematerialization restamps.",

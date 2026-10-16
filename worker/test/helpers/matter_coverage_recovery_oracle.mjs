@@ -44,6 +44,7 @@ import {
 import { publishMatterGeneration } from "../../src/lib/matter_publication.mjs";
 import { readJournalRows, retainSnapshotMatterObservations } from "../../src/lib/matter_observation_journal.mjs";
 import { buildSubscription, deriveSubscriberId, deriveWatchId } from "../../src/lib/subscriptions.mjs";
+import { retainedMatterIdsFromSnapshot } from "../../../site/council_matter_watch_scope.mjs";
 import { d1FromSqlite } from "./matter_observation_d1.mjs";
 import {
   START,
@@ -66,6 +67,10 @@ const RAW_SNAPSHOT = JSON.parse(
 export const SNAPSHOT = observedSnapshot(RAW_SNAPSHOT);
 export const ORACLE = deriveFrozenCoverageOracle(SNAPSHOT);
 export const DATA_VINTAGE = SNAPSHOT.generated_at;
+// confirmExactMatterWatch defaults to defaultRetainedMatterRoster(), which
+// imports live site/data/meeting_outcomes_snapshot.json. Pin the gate to the
+// same frozen fixture so rolling publisher windows cannot drop A1–A3 matters.
+export const FIXTURE_ROSTER = retainedMatterIdsFromSnapshot(RAW_SNAPSHOT);
 export { START, FROZEN_LATER_EVENT_WATCHES };
 
 const SOURCE_SQL = readFileSync(new URL("../../migrations/0008_source_records.sql", import.meta.url), "utf8");
@@ -246,6 +251,7 @@ export async function runFrozenCoverageReplay({
     await confirmExactMatterWatch(env, record, {
       now: now0.toISOString(),
       observations,
+      roster: FIXTURE_ROSTER,
     });
     watches.push(record);
   }

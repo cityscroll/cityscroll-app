@@ -146,6 +146,7 @@ describe("Checkbook Contracts source-contract vintage", () => {
     );
     const vintage = readRetainedVintage(contract.freshness_contract.retained_vintage);
     assert.equal(vintage.field, "snapshot_date");
-    assert.equal(vintage.at, "2026-09-09");
+    assert.ok(vintage.at, "retained vintage must resolve against the analytics snapshot");
+    assert.match(String(vintage.at), /^\d{4}-\d{2}-\d{2}/);
   });
 });

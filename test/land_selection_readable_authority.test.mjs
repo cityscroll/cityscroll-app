@@ -39,6 +39,10 @@ const landDefault = JSON.parse(read("site", "data", "land_default_ulurp.json"));
 const points = JSON.parse(read("site", "data", "land_project_map_points.json"));
 const authorityPayload = JSON.parse(read("site", "data", "land_authority_summary.json"));
 const authoritySummaries = authorityPayload.summaries || authorityPayload;
+// Frozen 200 Kent authority slice for A4 journey evidence vintage.
+const kentAuthorityFixture = JSON.parse(
+  read("test", "fixtures", "land_selection_readable_authority", "kent_authority_summary.json"),
+);
 
 const en = new Function(
   "window",
@@ -287,17 +291,19 @@ test("A4: record the applicable journey evidence with revision, route, viewport,
   const groundedMain = spawnSync("git", ["rev-parse", "origin/main"], { encoding: "utf8" }).stdout.trim();
   assert.match(groundedMain, /^[0-9a-f]{40}$/);
 
-  const row = kentRow();
+  // Drive the journey from the frozen Kent authority slice so live refresh
+  // cannot move fixture_vintage out from under the committed manifest.
+  const row = kentRow(structuredClone(kentAuthorityFixture.summary));
   const html = selectionHTML(row);
   const text = visibleText(html);
   const route = "/browse/zoning/?view=map";
   const viewports = [[1440, 900], [390, 844]];
   const fixtureVintage = String(
-    row.authority_summary?.freshness?.generated_at
-      || authorityPayload.generated_at
-      || points.schema
+    kentAuthorityFixture.generated_at
+      || row.authority_summary?.freshness?.generated_at
       || "",
   );
+  assert.equal(fixtureVintage, "2026-09-30T13:04:22.921Z");
 
   assert.doesNotMatch(text, /\bulurp_197c\b/);
   assert.match(text, /Uniform Land Use Review Procedure/);

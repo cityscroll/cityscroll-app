@@ -787,7 +787,9 @@ const CAPTURE = read("docs/evidence/board-land-positions/manifest.json");
 test("the capture manifest is the proof, and no image binary is committed", () => {
   assert.equal(CAPTURE.schema, "cityscroll.board_land_position_capture.v1");
   assert.match(CAPTURE.revision, /^[0-9a-f]{40}$/);
+  // Capture vintage tracks the frozen LOOKUP fixture, never ambient live refresh.
   assert.equal(CAPTURE.data_vintage.community_board_land_positions, LOOKUP.source.observed_on);
+  assert.equal(CAPTURE.data_vintage.community_board_land_positions, LOOKUP.generated_at);
   assert.deepEqual(CAPTURE.counts, LOOKUP.counts);
   assert.ok(CAPTURE.captures.length >= 20);
   for (const capture of CAPTURE.captures) {

@@ -25,6 +25,7 @@ import {
   formatFinding,
   governedRefreshedArtifacts,
   loadPolicy,
+  positiveControlFindings,
   scanRepository,
   scanSource,
 } from "../tools/check_refresh_exact_count_assertions.mjs";
@@ -50,6 +51,9 @@ test("policy names the two permitted shapes and scopes refreshed artifacts", () 
     ["fixture-pin", "refresh-invariant"],
   );
   assert.ok(REFRESHED.includes("site/data/meeting_outcomes_snapshot.json"));
+  assert.ok(REFRESHED.includes("site/data/agency_route_identity_report.json"));
+  assert.ok(REFRESHED.includes("site/data/analytics_registered_contracts.json"));
+  assert.ok(REFRESHED.includes("site/data/meetings_domain_observations.json"));
   assert.ok(REFRESHED.includes("warehouse/receipts/proof/zap-projects_bulk_latest.json"));
   assert.ok(POLICY.empirical_starting_set.test_files.length >= 10);
 });
@@ -104,6 +108,33 @@ assert.equal(Object.keys(snapshot.by_notice).length, 78);
   assert.match(message, /fixture-pin/);
   assert.match(message, /refresh-invariant/);
   assert.match(message, /meeting_outcomes_snapshot\.json/);
+});
+
+test("positive control keeps exact-count and exact-vintage detection alive", () => {
+  const control = positiveControlFindings({
+    refreshedArtifacts: REFRESHED,
+    countPropertyPattern: COUNT_RE,
+  });
+  assert.equal(control.ok, true, `missing ${control.missing.join(", ")}`);
+  assert.ok(control.findings.some((finding) => finding.kind === "exact-count"));
+  assert.ok(control.findings.some((finding) => finding.kind === "exact-vintage"));
+});
+
+test("exact ISO vintage pins against refreshed site/data are findings", () => {
+  const source = `
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+const snapshot = JSON.parse(readFileSync(new URL("../site/data/meeting_outcomes_snapshot.json", import.meta.url), "utf8"));
+assert.equal(snapshot.generated_at, "2026-09-09T12:00:00.000Z");
+`;
+  const findings = scanSource(source, {
+    relativePath: "test/mutation_live_vintage.test.mjs",
+    refreshedArtifacts: REFRESHED,
+    countPropertyPattern: COUNT_RE,
+  });
+  assert.equal(findings.length, 1);
+  assert.equal(findings[0].kind, "exact-vintage");
+  assert.equal(findings[0].literal, "2026-09-09T12:00:00.000Z");
 });
 
 test("converting the same assert to a fixture pin makes the guard pass", () => {
@@ -576,4 +607,149 @@ test("clean repository check exports messages only when findings exist", () => {
     files: [new URL("./refresh_exact_count_guard.test.mjs", import.meta.url).pathname],
   });
   assert.ok(Array.isArray(messages));
+});
+
+test("exact agency route-identity counts fail; alignment invariants pass", () => {
+  const pinned = `
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+const report = JSON.parse(readFileSync(new URL("../site/data/agency_route_identity_report.json", import.meta.url), "utf8"));
+assert.equal(report.constellation_only_source_count, 23);
+assert.equal(report.classification_counts.unresolved, 2);
+assert.equal(report.cases.length, 23);
+`;
+  const pinnedFindings = scanSource(pinned, {
+    relativePath: "test/mutation_agency_route_identity_count.test.mjs",
+    refreshedArtifacts: REFRESHED,
+    countPropertyPattern: COUNT_RE,
+  });
+  assert.ok(pinnedFindings.length >= 3, `expected agency exact-count findings, got ${pinnedFindings.length}`);
+  assert.ok(pinnedFindings.every((row) => row.kind === "exact-count"));
+  assert.ok(pinnedFindings.some((row) => row.literal === 23));
+  assert.ok(pinnedFindings.some((row) => row.literal === 2));
+  assert.match(formatFinding(pinnedFindings[0], POLICY), /agency_route_identity_report\.json/);
+
+  const invariant = `
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+const report = JSON.parse(readFileSync(new URL("../site/data/agency_route_identity_report.json", import.meta.url), "utf8"));
+assert.ok(report.cases.length > 0);
+assert.equal(report.constellation_only_source_count, report.cases.length);
+const values = Object.values(report.classification_counts || {});
+assert.ok(values.length > 0);
+assert.equal(values.reduce((sum, value) => sum + value, 0), report.cases.length);
+`;
+  const invariantFindings = scanSource(invariant, {
+    relativePath: "test/mutation_agency_route_identity_invariant.test.mjs",
+    refreshedArtifacts: REFRESHED,
+    countPropertyPattern: COUNT_RE,
+  });
+  assert.deepEqual(invariantFindings, []);
+});
+
+test("exact retained-vintage calendar day fails; resolve-and-shape invariant passes", () => {
+  const pinned = `
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+const analytics = JSON.parse(readFileSync(new URL("../site/data/analytics_registered_contracts.json", import.meta.url), "utf8"));
+assert.equal(analytics.snapshot_date, "2026-09-09");
+assert.equal(analytics.generated_at, "2026-09-09");
+`;
+  const pinnedFindings = scanSource(pinned, {
+    relativePath: "test/mutation_checkbook_vintage.test.mjs",
+    refreshedArtifacts: REFRESHED,
+    countPropertyPattern: COUNT_RE,
+  });
+  assert.ok(pinnedFindings.length >= 2, `expected exact-vintage findings, got ${pinnedFindings.length}`);
+  assert.ok(pinnedFindings.every((row) => row.kind === "exact-vintage"));
+  assert.ok(pinnedFindings.every((row) => row.literal === "2026-09-09"));
+  assert.match(formatFinding(pinnedFindings[0], POLICY), /exact-vintage/);
+  assert.match(formatFinding(pinnedFindings[0], POLICY), /analytics_registered_contracts\.json/);
+
+  const invariant = `
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+const analytics = JSON.parse(readFileSync(new URL("../site/data/analytics_registered_contracts.json", import.meta.url), "utf8"));
+assert.ok(analytics.snapshot_date);
+assert.match(String(analytics.snapshot_date), /^\\d{4}-\\d{2}-\\d{2}/);
+`;
+  const invariantFindings = scanSource(invariant, {
+    relativePath: "test/mutation_checkbook_vintage_invariant.test.mjs",
+    refreshedArtifacts: REFRESHED,
+    countPropertyPattern: COUNT_RE,
+  });
+  assert.deepEqual(invariantFindings, []);
+});
+
+test("exact analytics response byte pins fail; budget-ratio invariants pass", () => {
+  const pinned = `
+import assert from "node:assert/strict";
+import { join } from "node:path";
+import { readAnalyticalProjectionDocument } from "../tools/lib/analytical_projection_io.mjs";
+const PROJECTION_PATH = join("site", "data", "analytics_registered_contracts.json");
+const projection = readAnalyticalProjectionDocument(join(ROOT, PROJECTION_PATH));
+const bytes = 642928;
+assert.equal(bytes, 642928);
+assert.equal(projection.rows.length, 26846);
+`;
+  const pinnedFindings = scanSource(pinned, {
+    relativePath: "worker/test/mutation_research_bytes.test.mjs",
+    refreshedArtifacts: REFRESHED,
+    countPropertyPattern: COUNT_RE,
+  });
+  assert.ok(
+    pinnedFindings.some((row) => row.kind === "exact-bytes" && row.literal === 642928),
+    `expected exact-bytes finding, got ${JSON.stringify(pinnedFindings)}`,
+  );
+  assert.ok(
+    pinnedFindings.some((row) => row.kind === "exact-count" && row.literal === 26846),
+    "join(site, data, analytics…) discovery must couple row_count pins",
+  );
+  assert.match(formatFinding(pinnedFindings.find((row) => row.kind === "exact-bytes"), POLICY), /exact-bytes/);
+  assert.match(
+    formatFinding(pinnedFindings.find((row) => row.kind === "exact-bytes"), POLICY),
+    /analytics_registered_contracts\.json/,
+  );
+
+  const invariant = `
+import assert from "node:assert/strict";
+import { join } from "node:path";
+import { readAnalyticalProjectionDocument } from "../tools/lib/analytical_projection_io.mjs";
+const PROJECTION_PATH = join("site", "data", "analytics_registered_contracts.json");
+const projection = readAnalyticalProjectionDocument(join(ROOT, PROJECTION_PATH));
+assert.ok(projection.rows.length >= 1000);
+assert.ok(bytes < RESEARCH_RESPONSE_MAX_BYTES);
+assert.ok(bytes / unboundedBytes < 0.25);
+`;
+  const invariantFindings = scanSource(invariant, {
+    relativePath: "worker/test/mutation_research_bytes_invariant.test.mjs",
+    refreshedArtifacts: REFRESHED,
+    countPropertyPattern: COUNT_RE,
+  });
+  assert.deepEqual(invariantFindings, []);
+});
+
+test("converted research corpus bounds suite stays invariant-clean under analytics governance", () => {
+  const findings = scanRepository({
+    policy: POLICY,
+    files: [new URL("../worker/test/research_response_corpus_bounds.test.mjs", import.meta.url).pathname],
+  });
+  assert.deepEqual(findings, [], "research_response_corpus_bounds must leave zero refresh guard findings");
+});
+
+test("converted agency and checkbook suites stay invariant-clean under the widened guard", () => {
+  const targets = [
+    "test/agency_constellation.test.mjs",
+    "test/agency_source_identity_contract.test.mjs",
+    "test/browse_scope_contract.test.mjs",
+    "test/checkbook_contracts_collector.test.mjs",
+    "test/civic_institution_profile_navigation.test.mjs",
+  ];
+  for (const relative of targets) {
+    const findings = scanRepository({
+      policy: POLICY,
+      files: [new URL(`../${relative}`, import.meta.url).pathname],
+    });
+    assert.deepEqual(findings, [], `${relative} must leave zero refresh exact-count findings`);
+  }
 });

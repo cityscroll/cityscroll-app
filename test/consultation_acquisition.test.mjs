@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { acquireConsultationSources, CONSULTATION_TRANSPORT_DEFAULTS } from "../site/consultation_acquisition.mjs";
+import {
+  acquireConsultationSources,
+  CONSULTATION_TRANSPORT_DEFAULTS,
+  consultationSourceFailureBlocksRefresh,
+} from "../site/consultation_acquisition.mjs";
 import { withPinnedClock } from "./helpers/test_clock.mjs";
 
 const headers = (map = {}) => ({ get: (name) => map[name.toLowerCase()] || null });
@@ -28,10 +32,18 @@ test("HTTP failure and truncated response preserve a last-good materialization",
     let calls = 0;
     const failing = await acquireConsultationSources({ previous: first.materialization, asOf: "2026-09-15T00:00:00.000Z", transportOptions: { minOriginIntervalMs: 0, responseCapBytes: 8 }, fetchImpl: async () => (++calls === 1 ? response(503, "busy") : response(200, "0123456789")) });
     assert.ok(failing.receipt.failures > 0);
+    assert.ok(failing.receipt.blocking_failures > 0);
     assert.equal(failing.receipt.last_good_preserved, true);
     assert.deepEqual(failing.materialization, first.materialization);
     assert.ok(failing.observations.some((item) => item.failure));
   });
+});
+
+test("microsoft_form role failures are soft and do not block refresh", () => {
+  assert.equal(consultationSourceFailureBlocksRefresh("microsoft_form"), false);
+  assert.equal(consultationSourceFailureBlocksRefresh("organizer_invitation"), true);
+  assert.equal(consultationSourceFailureBlocksRefresh("survey"), true);
+  assert.equal(consultationSourceFailureBlocksRefresh("feedback_map"), true);
 });
 
 test("redirect boundary is retained as an explicit failure", async () => {

@@ -1,0 +1,2138 @@
+{
+  "schema": "cityscroll.meeting_geography_backfill.replay_rows.v1",
+  "note": "Slim frozen shared-meeting rows for locality/unit replay. Live shared-meeting retention may drop these ids.",
+  "physical_venue_meeting_ids": [
+    "meeting:city_record:20260819025",
+    "meeting:community_board:2kgb7s2c3q87p5h3nbv9hcqe5v_R20260714T223000@google.com::2026-07-14",
+    "meeting:community_board:2kgb7s2c3q87p5h3nbv9hcqe5v_R20260908T223000@google.com::2026-09-08",
+    "meeting:community_board:5vd2bvo36ek1b06euilka2ghmt_R20260909T223000@google.com::2026-09-09",
+    "meeting:community_board:7h17q97cq2fsthjerram67q67h_R20260903T223000@google.com::2026-09-03",
+    "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+    "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+    "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-12/",
+    "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-15/",
+    "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-19/",
+    "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-10-07/",
+    "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/cannabis-licensing-mar-fitzgerald-chair-patricia-laraia-vice-chair-in-person-only-8/",
+    "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/executive-valerie-de-la-rosa-chair-16/",
+    "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/full-board-valerie-de-la-rosa-chair-11/",
+    "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-chenault-spence-chair-susan-gammie-vice-chair-31/",
+    "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
+    "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/street-activities-erika-olson-vice-chair-19/",
+    "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/traffic-janet-liff-vice-chair-9/",
+    "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-24/",
+    "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/",
+    "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-67/",
+    "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-61/",
+    "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-58/",
+    "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-3/",
+    "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+    "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/",
+    "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-52/",
+    "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+    "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-25/",
+    "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/waterfront-parks-environment-committee-wpe-59/",
+    "meeting:community_board:https://www.brooklyncb11.org/event/general-meeting-6/"
+  ],
+  "virtual_meeting_ids": [
+    "meeting:city_record:20260709020",
+    "meeting:city_record:20260812022",
+    "meeting:city_record:20260818004",
+    "meeting:city_record:20260826006",
+    "meeting:city_record:20260827003",
+    "meeting:city_record:20260901022",
+    "meeting:community_board:02sviph9i86e3ves084eelv4oo@google.com::2026-07-16",
+    "meeting:community_board:1ntpj2o3ckjs4ggnfmhvc4u4un@google.com::2026-09-23",
+    "meeting:community_board:1siimfqt7j2igol3cvg5bddv1d@google.com::2026-09-09",
+    "meeting:community_board:264etuspll5sdhca2ohv92i721@google.com::2026-09-03",
+    "meeting:community_board:2aa6dkse90cddbdvqgi2h5165g@google.com::2026-09-10",
+    "meeting:community_board:2el6p0nkc5csm6v967ta5d6eja@google.com::2026-07-21",
+    "meeting:community_board:2herm8flfomta1b31jtrl1qpho@google.com::2026-07-30",
+    "meeting:community_board:2q5hj0nsacuk2hjf2n3dkvmln3_R20240604T220000@google.com::2026-10-06",
+    "meeting:community_board:2rq8li3s5e5ehohv8lk71pok25@google.com::2026-10-22",
+    "meeting:community_board:2u8l1fdhuo0sfodtolunrthb60@google.com::2026-07-09",
+    "meeting:community_board:33ntcdqhdic5rg6lqc67utj1tt@google.com::2026-06-25",
+    "meeting:community_board:3ectfmt48v3vuj7lmcrmc3u5bb@google.com::2026-10-19",
+    "meeting:community_board:3k4g5mnfgs1uf4t45b9rvsf49g@google.com::2026-06-29",
+    "meeting:community_board:3p8lrr5oa50t0grbf5ms9gfguk@google.com::2026-09-24",
+    "meeting:community_board:4an5rrag5crtfqb1gtjkk7c102@google.com::2026-09-15",
+    "meeting:community_board:4cprhr9hr9lg110jb8fh7k4n0m@google.com::2026-06-29",
+    "meeting:community_board:4fjsm23brmu1965oojlokib311_R20240612T223000@google.com::2026-09-09",
+    "meeting:community_board:4fjsm23brmu1965oojlokib311_R20240612T223000@google.com::2026-10-14",
+    "meeting:community_board:566heur7hgli360u8tv5n14qp0@google.com::2026-08-20",
+    "meeting:community_board:574f5mfqukjk891p60d59c5lvb@google.com::2026-10-01",
+    "meeting:community_board:6g00mtidn7hadopb8rftdtfiap@google.com::2026-08-13",
+    "meeting:community_board:6uuu1gepuatu6p4ko859g9njr2@google.com::2026-10-02",
+    "meeting:community_board:714mm07vskk622h444m1vml7sf@google.com::2026-08-31",
+    "meeting:community_board:71k2ss3vfo1hksnqm4vr1uvbkm@google.com::2026-08-27",
+    "meeting:community_board:74s6ehltphp52khfgu6kdo3ame_R20240611T220000@google.com::2026-09-08",
+    "meeting:community_board:74s6ehltphp52khfgu6kdo3ame_R20240611T220000@google.com::2026-10-13",
+    "meeting:community_board:7vl5hcft8tjgtfi2jcjvern3v8@google.com::2026-09-22",
+    "meeting:community_board:7vsmie9r61kvrhv9ft2qupeq0p@google.com::2026-06-30",
+    "meeting:community_board:https://cb5.org/event/city-services-quality-of-life/",
+    "meeting:community_board:https://cb5.org/event/executive-committee-20/",
+    "meeting:community_board:https://cb5.org/event/land-use-housing-zoning-committee-16/",
+    "meeting:community_board:https://cb5.org/event/landmarks-committee-19/",
+    "meeting:community_board:https://cb5.org/event/parks-public-spaces-environment-committee/",
+    "meeting:community_board:https://cb5.org/event/public-hearing-full-board-meeting-17/",
+    "meeting:community_board:https://cb5.org/event/state-licenses-permits-committee-20/",
+    "meeting:community_board:https://cb5.org/event/transportation-committee-3/",
+    "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/aging/2026-10-12/",
+    "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/aging/2026-11-09/",
+    "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/education-libraries-cultural-affairs/2026-10-27/",
+    "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/executive-2-2/2026-10-12/",
+    "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/full-board/2026-10-13/",
+    "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/health-hospitals-social-services/2026-10-14/",
+    "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/commerce-committee-meeting-9/2026-09-15/",
+    "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/general-board-public-hearing-meeting-4/",
+    "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/housing-block-association-committee-2/2026-09-02/",
+    "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/housing-block-association-committee-2/2026-10-07/",
+    "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/land-use-rezoning-committee-meeting-5/2026-09-03/",
+    "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/land-use-rezoning-committee-meeting-5/2026-10-01/",
+    "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/parks-beautification-committee-meeting-5/2026-09-01/",
+    "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/parks-beautification-committee-meeting-5/2026-10-06/",
+    "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/sanitation-dep-committee-meeting-3/2026-09-21/",
+    "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/youth-education-committee-meeting-6/2026-09-09/",
+    "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/youth-education-committee-meeting-6/2026-10-14/",
+    "meeting:community_board:kr8dstbptvgrbhkb9uoan0er4f@google.com::2026-09-22",
+    "meeting:community_board:oglh37k1ij8sqmq9m2jgqnm3ni@google.com::2026-09-16",
+    "meeting:community_board:oglh37k1ij8sqmq9m2jgqnm3ni@google.com::2026-10-21",
+    "meeting:community_board:p3vfshdk6m2pt5kmskct7dt8em@google.com::2026-09-14"
+  ],
+  "rows": [
+    {
+      "meeting_id": "meeting:city_record:20260819025",
+      "request_id": "20260819025",
+      "source_system": "city_record",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-14T14:30:00.000",
+      "title": "The Battery Conservancy, Inc. for the Operation and Maintenance of The Battery in Manhattan",
+      "short_title": "The Battery Conservancy, Inc. for the Operation and Maintenance of The Battery in Manhattan",
+      "street_address_1": "255 Greenwich St",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10007",
+      "venue": {
+        "address": "255 Greenwich St, New York, NY 10007",
+        "mode": "in-person"
+      },
+      "agency": "Parks and Recreation",
+      "agency_name": "Parks and Recreation",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "b5369d05e713935cb671026fe579fbfaab1d020fbaa48154c204e0a2cb217244",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:2kgb7s2c3q87p5h3nbv9hcqe5v_R20260714T223000@google.com::2026-07-14",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-07-14T18:30:00-04:00",
+      "title": "Aging, Health & Social Services (AHSS) Committee Mtg",
+      "short_title": "Aging, Health & Social Services (AHSS) Committee Mtg",
+      "venue": {
+        "address": "127 Pennsylvania Avenue, Brooklyn NY",
+        "mode": "in-person"
+      },
+      "board_id": "brooklyn-cb-05",
+      "board_name": "Brooklyn Community Board 5",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "f246d02ea6c71dc39da5843497a0877f4e0d45e806c3c7618eab86e4289da5d1",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:2kgb7s2c3q87p5h3nbv9hcqe5v_R20260908T223000@google.com::2026-09-08",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-08T18:30:00-04:00",
+      "title": "Aging, Health & Social Services (AHSS) Committee Mtg",
+      "short_title": "Aging, Health & Social Services (AHSS) Committee Mtg",
+      "venue": {
+        "address": "127 Pennsylvania Avenue, Brooklyn NY",
+        "mode": "in-person"
+      },
+      "board_id": "brooklyn-cb-05",
+      "board_name": "Brooklyn Community Board 5",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "96ca8aff381a1af726c43b64cf88430ea189d2d09e1b7f9e6c92b528f2ebe275",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:5vd2bvo36ek1b06euilka2ghmt_R20260909T223000@google.com::2026-09-09",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-09T18:30:00-04:00",
+      "title": "Economic Development, IBZ, & BIDs (EDIB) Committee",
+      "short_title": "Economic Development, IBZ, & BIDs (EDIB) Committee",
+      "venue": {
+        "address": "127 Pennsylvania Avenue",
+        "mode": "in-person"
+      },
+      "board_id": "brooklyn-cb-05",
+      "board_name": "Brooklyn Community Board 5",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "9063455c163ba2be318f1f797d523b4d87698267b2ff46d3f867919a51e8b72a",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:7h17q97cq2fsthjerram67q67h_R20260903T223000@google.com::2026-09-03",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-03T18:30:00-04:00",
+      "title": "Education & Youth Services (EYS) Committee Meeting",
+      "short_title": "Education & Youth Services (EYS) Committee Meeting",
+      "venue": {
+        "address": "127 Pennsylvania Avenue, Brooklyn NY",
+        "mode": "in-person"
+      },
+      "board_id": "brooklyn-cb-05",
+      "board_name": "Brooklyn Community Board 5",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "a2de881f5be10b989ed4df07e1eefe86b638bfcc9c0214e957b72ebf218bfc04",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-23T18:30:00-04:00",
+      "title": "Housing and Land Use Committee Meeting",
+      "short_title": "Housing and Land Use Committee Meeting",
+      "venue": {
+        "name": "Brooklyn CB14 District Office",
+        "address": "810 East 16th Street, Brooklyn, NY 11230",
+        "mode": "in-person",
+        "components": {
+          "street_address": "810 East 16th Street",
+          "address_locality": "Brooklyn",
+          "address_region": "NY",
+          "postal_code": "11230",
+          "address_borough": null
+        }
+      },
+      "board_id": "brooklyn-cb-14",
+      "board_name": "Brooklyn Community Board 14",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "29bdd06a24865bf82a93737ed896c9e51ede573ced2c8bd75e82f08ccd43355b",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-09T18:30:00-04:00",
+      "title": "Public Hearing on ULURP Application and Executive Committee Meeting",
+      "short_title": "Public Hearing on ULURP Application and Executive Committee Meeting",
+      "venue": {
+        "name": "Brooklyn CB14 District Office",
+        "address": "810 East 16th Street, Brooklyn, NY 11230",
+        "mode": "in-person",
+        "components": {
+          "street_address": "810 East 16th Street",
+          "address_locality": "Brooklyn",
+          "address_region": "NY",
+          "postal_code": "11230",
+          "address_borough": null
+        }
+      },
+      "board_id": "brooklyn-cb-14",
+      "board_name": "Brooklyn Community Board 14",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "f46562cc6f20e909576ab24d84e1af488574803b6f623cd2caf88024d87be4e3",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-12/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-10-19T19:00:00-04:00",
+      "title": "Monthly Board Meeting",
+      "short_title": "Monthly Board Meeting",
+      "venue": {
+        "name": "In Person at Knights of Columbus, 1305 86th Street and Livestreamed to YouTube",
+        "address": "1305 86th Street, Brooklyn, NY 11228",
+        "mode": "in-person",
+        "components": {
+          "street_address": "1305 86th Street",
+          "address_locality": "Brooklyn",
+          "address_region": "NY",
+          "postal_code": "11228",
+          "address_borough": null
+        }
+      },
+      "board_id": "brooklyn-cb-10",
+      "board_name": "Brooklyn Community Board 10",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "791be04bf951f98e4f9747c1d8895da6cddf2e81b5f0979e15a3db908d94ff15",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-15/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2027-01-19T19:00:00-05:00",
+      "title": "Monthly Board Meeting",
+      "short_title": "Monthly Board Meeting",
+      "venue": {
+        "name": "Dyker Beach Golf Course and livestreamed to YouTube",
+        "address": "1030 86th Street, Brooklyn, NY 11228",
+        "mode": "in-person",
+        "components": {
+          "street_address": "1030 86th Street",
+          "address_locality": "Brooklyn",
+          "address_region": "NY",
+          "postal_code": "11228",
+          "address_borough": null
+        }
+      },
+      "board_id": "brooklyn-cb-10",
+      "board_name": "Brooklyn Community Board 10",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "f7fbe005d5a82a4a69f7aa7dc3adc22b3fb5b69e3fd6c96773e51378652391e4",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-19/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2027-06-21T19:00:00-04:00",
+      "title": "Monthly Board Meeting",
+      "short_title": "Monthly Board Meeting",
+      "venue": {
+        "name": "In Person at Knights of Columbus, 1305 86th Street and Livestreamed to YouTube",
+        "address": "1305 86th Street, Brooklyn, NY, 11228",
+        "mode": "in-person"
+      },
+      "board_id": "brooklyn-cb-10",
+      "board_name": "Brooklyn Community Board 10",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "80ddffd14a0ec51aaac0a787c3fd9369393992e2f156f0a63ce28f67e79bec67",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-10-07/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-10-07T18:00:00-04:00",
+      "title": "General Board Meeting",
+      "short_title": "General Board Meeting",
+      "venue": {
+        "name": "National Urban League",
+        "address": "117 W. 125th St, New York, NY, 10027",
+        "mode": "in-person"
+      },
+      "board_id": "manhattan-cb-10",
+      "board_name": "Manhattan Community Board 10",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "b0510c25d634c4e6578b927673c6cbded91c3c5fd2d2ed24fa3992065a0dfd35",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/cannabis-licensing-mar-fitzgerald-chair-patricia-laraia-vice-chair-in-person-only-8/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-08-31T18:30:00-04:00",
+      "title": "CANCELLED \u2013 CANNABIS LICENSING \u2013 Mar Fitzgerald, Chair; Patricia Laraia, Vice Chair \u2013 IN PERSON ONLY",
+      "short_title": "CANCELLED \u2013 CANNABIS LICENSING \u2013 Mar Fitzgerald, Chair; Patricia Laraia, Vice Chair \u2013 IN PERSON ONLY",
+      "venue": {
+        "name": "CB2 Conference Room",
+        "address": "3 Washington Square Village #1A, New York, NY 10012",
+        "mode": "in-person",
+        "components": {
+          "street_address": "3 Washington Square Village #1A",
+          "address_locality": "New York",
+          "address_region": "NY",
+          "postal_code": "10012",
+          "address_borough": null
+        }
+      },
+      "board_id": "manhattan-cb-02",
+      "board_name": "Manhattan Community Board 2",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "094f65bdca219b7a89e758eb34641b4599e3933e1aa5e687941a1491f351103f",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/executive-valerie-de-la-rosa-chair-16/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-22T18:30:00-04:00",
+      "title": "EXECUTIVE \u2013 Valerie De La Rosa, Chair",
+      "short_title": "EXECUTIVE \u2013 Valerie De La Rosa, Chair",
+      "venue": {
+        "name": "CB 2 Conference Room (and via Video Conference)",
+        "address": "3 Washington Square Village #1A, New York, NY, 10012",
+        "mode": "not-stated",
+        "components": {
+          "street_address": "3 Washington Square Village #1A",
+          "address_locality": "New York",
+          "address_region": "NY",
+          "postal_code": "10012",
+          "address_borough": null
+        },
+        "attendance_conflict": true
+      },
+      "board_id": "manhattan-cb-02",
+      "board_name": "Manhattan Community Board 2",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "261fd83b5edad99e0043fbcaef2ab1e7e8b1bc88e8521d51c739555589157235",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/full-board-valerie-de-la-rosa-chair-11/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-24T18:30:00-04:00",
+      "title": "FULL BOARD \u2013 Valerie De La Rosa, Chair",
+      "short_title": "FULL BOARD \u2013 Valerie De La Rosa, Chair",
+      "venue": {
+        "name": "Gould Welcome Center, 50 West 4th Street, New York, NY 10012",
+        "address": "50 West 4th Street, New York, NY, 10012",
+        "mode": "not-stated",
+        "components": {
+          "street_address": "50 West 4th Street",
+          "address_locality": "New York",
+          "address_region": "NY",
+          "postal_code": "10012",
+          "address_borough": null
+        },
+        "attendance_conflict": true
+      },
+      "board_id": "manhattan-cb-02",
+      "board_name": "Manhattan Community Board 2",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "4d19d2a8eba5d1f66aa8d0442090f2031e9c9cda08eee933ff078c9272d6f549",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-chenault-spence-chair-susan-gammie-vice-chair-31/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-17T18:00:00-04:00",
+      "title": "LANDMARKS \u2013 Chenault Spence, Chair; Susan Gammie, Vice Chair",
+      "short_title": "LANDMARKS \u2013 Chenault Spence, Chair; Susan Gammie, Vice Chair",
+      "venue": {
+        "name": "CB 2 Conference Room (and via Video Conference)",
+        "address": "3 Washington Square Village #1A, New York, NY, 10012",
+        "mode": "not-stated",
+        "components": {
+          "street_address": "3 Washington Square Village #1A",
+          "address_locality": "New York",
+          "address_region": "NY",
+          "postal_code": "10012",
+          "address_borough": null
+        },
+        "attendance_conflict": true
+      },
+      "board_id": "manhattan-cb-02",
+      "board_name": "Manhattan Community Board 2",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "99d7749f1fa0b0ad93151bae3a0da45cc904a6ddaa08509773fe09d1f40de441",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-15T18:30:00-04:00",
+      "title": "OUTDOOR DINING WORKING GROUP \u2013 Valerie De La Rosa, Chair; Stella FitzGerald, Vice Chair",
+      "short_title": "OUTDOOR DINING WORKING GROUP \u2013 Valerie De La Rosa, Chair; Stella FitzGerald, Vice Chair",
+      "venue": {
+        "name": "CB 2 Conference Room (and via Video Conference)",
+        "address": "3 Washington Square Village #1A, New York, NY, 10012",
+        "mode": "not-stated",
+        "components": {
+          "street_address": "3 Washington Square Village #1A",
+          "address_locality": "New York",
+          "address_region": "NY",
+          "postal_code": "10012",
+          "address_borough": null
+        },
+        "attendance_conflict": true
+      },
+      "board_id": "manhattan-cb-02",
+      "board_name": "Manhattan Community Board 2",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "002db4d5dfdced0d3c1669c9f6010ef08ced095cfc16ca12f6ebc0a64a24f38a",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/street-activities-erika-olson-vice-chair-19/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-14T18:30:00-04:00",
+      "title": "STREET ACTIVITIES & RESILIEINCY \u2013 Will Benesh, Chair; Erika Olson, Vice Chair",
+      "short_title": "STREET ACTIVITIES & RESILIEINCY \u2013 Will Benesh, Chair; Erika Olson, Vice Chair",
+      "venue": {
+        "name": "CB 2 Conference Room (and via Video Conference)",
+        "address": "3 Washington Square Village #1A, New York, NY, 10012",
+        "mode": "not-stated",
+        "components": {
+          "street_address": "3 Washington Square Village #1A",
+          "address_locality": "New York",
+          "address_region": "NY",
+          "postal_code": "10012",
+          "address_borough": null
+        },
+        "attendance_conflict": true
+      },
+      "board_id": "manhattan-cb-02",
+      "board_name": "Manhattan Community Board 2",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "ae4135c3290ef7e80b8e40fac8e684714c224a335111a59cbf46f259069649ed",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/traffic-janet-liff-vice-chair-9/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-29T18:30:00-04:00",
+      "title": "TRAFFIC & TRANSPORTATION \u2013 Jeannine Kiely, Chair; Janet Liff, Vice Chair",
+      "short_title": "TRAFFIC & TRANSPORTATION \u2013 Jeannine Kiely, Chair; Janet Liff, Vice Chair",
+      "venue": {
+        "name": "CB 2 Conference Room (and via Video Conference)",
+        "address": "3 Washington Square Village #1A, New York, NY, 10012",
+        "mode": "not-stated",
+        "components": {
+          "street_address": "3 Washington Square Village #1A",
+          "address_locality": "New York",
+          "address_region": "NY",
+          "postal_code": "10012",
+          "address_borough": null
+        },
+        "attendance_conflict": true
+      },
+      "board_id": "manhattan-cb-02",
+      "board_name": "Manhattan Community Board 2",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "be39279db10bb135217bca9cdcbfe58185ea865788c4eeb406f2a91a12481be4",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-24/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-14T18:30:00-04:00",
+      "title": "Arts, Culture, Education & Schools Committee (ACES)",
+      "short_title": "Arts, Culture, Education & Schools Committee (ACES)",
+      "venue": {
+        "name": "MCB4 Office \u2013 630 9th Avenue, Suite 208",
+        "address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "mode": "not-stated",
+        "components": {
+          "street_address": "630 9th Avenue, Ste. 208",
+          "address_locality": "New York",
+          "address_region": null,
+          "postal_code": "10036",
+          "address_borough": null
+        },
+        "attendance_conflict": true
+      },
+      "board_id": "manhattan-cb-04",
+      "board_name": "Manhattan Community Board 4",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "8c20d3b8cfbbe1f909613572d1c01754c5587ce4772c5201218b579007ed4cfd",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-28T17:00:00-04:00",
+      "title": "Budget Task Force",
+      "short_title": "Budget Task Force",
+      "venue": {
+        "name": "MCB4 Office \u2013 630 9th Avenue, Suite 208",
+        "address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "mode": "not-stated",
+        "components": {
+          "street_address": "630 9th Avenue, Ste. 208",
+          "address_locality": "New York",
+          "address_region": null,
+          "postal_code": "10036",
+          "address_borough": null
+        },
+        "attendance_conflict": true
+      },
+      "board_id": "manhattan-cb-04",
+      "board_name": "Manhattan Community Board 4",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "6ee837b3616b90b7a8bc2990a38c664b6d70eb10692743d5ccb2904c6e161d14",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-67/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-08T18:30:00-04:00",
+      "title": "Business License & Permits Committee (BLP)",
+      "short_title": "Business License & Permits Committee (BLP)",
+      "venue": {
+        "name": "MCB4 Office \u2013 630 9th Avenue, Suite 208",
+        "address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "mode": "not-stated",
+        "components": {
+          "street_address": "630 9th Avenue, Ste. 208",
+          "address_locality": "New York",
+          "address_region": null,
+          "postal_code": "10036",
+          "address_borough": null
+        },
+        "attendance_conflict": true
+      },
+      "board_id": "manhattan-cb-04",
+      "board_name": "Manhattan Community Board 4",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "349b9339867acab63df19b28429fc9f715e61c4eecf6f7ef4d97dac852b9a8ba",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-61/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-22T18:30:00-04:00",
+      "title": "Chelsea Land Use Committee (CLU)",
+      "short_title": "Chelsea Land Use Committee (CLU)",
+      "venue": {
+        "name": "MCB4 Office \u2013 630 9th Avenue, Suite 208",
+        "address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "mode": "not-stated",
+        "components": {
+          "street_address": "630 9th Avenue, Ste. 208",
+          "address_locality": "New York",
+          "address_region": null,
+          "postal_code": "10036",
+          "address_borough": null
+        },
+        "attendance_conflict": true
+      },
+      "board_id": "manhattan-cb-04",
+      "board_name": "Manhattan Community Board 4",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "7a6f897d91c402f9f1e90f06994a8a0b0567af1bc70f34236e2334afccad6737",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-58/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-09T18:30:00-04:00",
+      "title": "Clinton/Hell\u2019s Kitchen Land Use Committee (CHKLU)",
+      "short_title": "Clinton/Hell\u2019s Kitchen Land Use Committee (CHKLU)",
+      "venue": {
+        "name": "MCB4 Office \u2013 630 9th Avenue, Suite 208",
+        "address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "mode": "not-stated",
+        "components": {
+          "street_address": "630 9th Avenue, Ste. 208",
+          "address_locality": "New York",
+          "address_region": null,
+          "postal_code": "10036",
+          "address_borough": null
+        },
+        "attendance_conflict": true
+      },
+      "board_id": "manhattan-cb-04",
+      "board_name": "Manhattan Community Board 4",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "5a9def9d64285986c93c3c9a383a6e00d0a355339130ebcfeef0c85dbb7dcd39",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-3/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-17T18:30:00-04:00",
+      "title": "Economic Development & Public Safety Committee (EDPS)",
+      "short_title": "Economic Development & Public Safety Committee (EDPS)",
+      "venue": {
+        "name": "MCB4 Office \u2013 630 9th Avenue, Suite 208",
+        "address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "mode": "not-stated",
+        "components": {
+          "street_address": "630 9th Avenue, Ste. 208",
+          "address_locality": "New York",
+          "address_region": null,
+          "postal_code": "10036",
+          "address_borough": null
+        },
+        "attendance_conflict": true
+      },
+      "board_id": "manhattan-cb-04",
+      "board_name": "Manhattan Community Board 4",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "6d922188b492ac45d376468bb034eadf23a0e63bb923eea71f834f09c699ee38",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-28T18:30:00-04:00",
+      "title": "Executive Committee (EXEC)",
+      "short_title": "Executive Committee (EXEC)",
+      "venue": {
+        "name": "MCB4 Office \u2013 630 9th Avenue, Suite 208",
+        "address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "mode": "not-stated",
+        "components": {
+          "street_address": "630 9th Avenue, Ste. 208",
+          "address_locality": "New York",
+          "address_region": null,
+          "postal_code": "10036",
+          "address_borough": null
+        },
+        "attendance_conflict": true
+      },
+      "board_id": "manhattan-cb-04",
+      "board_name": "Manhattan Community Board 4",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "2a10b5d033f7ffc28aeb3aae7757099e05e695b8395cc4d7d6a283d9dfa7b6af",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-02T18:30:00-04:00",
+      "title": "Full Board",
+      "short_title": "Full Board",
+      "venue": {
+        "name": "Hotel Trades Council",
+        "address": "305 West 44th Street, New York, NY, 10036",
+        "mode": "not-stated",
+        "components": {
+          "street_address": "305 West 44th Street",
+          "address_locality": "New York",
+          "address_region": "NY",
+          "postal_code": "10036",
+          "address_borough": null
+        },
+        "attendance_conflict": true
+      },
+      "board_id": "manhattan-cb-04",
+      "board_name": "Manhattan Community Board 4",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "9511f8bb3c7d2415b8514749f5f537e976eced4bfdf57d94adb37646d52b920a",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-52/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-23T18:30:00-04:00",
+      "title": "Housing, Health & Human Services Committee (HHHS)",
+      "short_title": "Housing, Health & Human Services Committee (HHHS)",
+      "venue": {
+        "name": "MCB4 Office \u2013 630 9th Avenue, Suite 208",
+        "address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "mode": "not-stated",
+        "components": {
+          "street_address": "630 9th Avenue, Ste. 208",
+          "address_locality": "New York",
+          "address_region": null,
+          "postal_code": "10036",
+          "address_borough": null
+        },
+        "attendance_conflict": true
+      },
+      "board_id": "manhattan-cb-04",
+      "board_name": "Manhattan Community Board 4",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "35bf2366da1bc1f9a51b977e1f1f79edc625faab38cd7f71f5f03fb95f5b765e",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-10-01T18:30:00-04:00",
+      "title": "Housing, Health & Human Services Committee (HHHS)",
+      "short_title": "Housing, Health & Human Services Committee (HHHS)",
+      "venue": {
+        "name": "MCB4 Office \u2013 630 9th Avenue, Suite 208",
+        "address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "mode": "not-stated",
+        "components": {
+          "street_address": "630 9th Avenue, Ste. 208",
+          "address_locality": "New York",
+          "address_region": null,
+          "postal_code": "10036",
+          "address_borough": null
+        },
+        "attendance_conflict": true
+      },
+      "board_id": "manhattan-cb-04",
+      "board_name": "Manhattan Community Board 4",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "08d9452bd1bc646f65b48cda7b4e40399c1ccf77907711ee7718c40e2bae8a34",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-25/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-16T18:30:00-04:00",
+      "title": "Transportation Planning Committee (TPC)",
+      "short_title": "Transportation Planning Committee (TPC)",
+      "venue": {
+        "name": "MCB4 Office \u2013 630 9th Avenue, Suite 208",
+        "address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "mode": "not-stated",
+        "components": {
+          "street_address": "630 9th Avenue, Ste. 208",
+          "address_locality": "New York",
+          "address_region": null,
+          "postal_code": "10036",
+          "address_borough": null
+        },
+        "attendance_conflict": true
+      },
+      "board_id": "manhattan-cb-04",
+      "board_name": "Manhattan Community Board 4",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "507de739fe7f9fbb74fea744eb522c0fc2bc0d70e2da0cc64d8dcdd1256a28db",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/waterfront-parks-environment-committee-wpe-59/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-10T18:30:00-04:00",
+      "title": "Waterfront, Parks & Environment Committee (WPE)",
+      "short_title": "Waterfront, Parks & Environment Committee (WPE)",
+      "venue": {
+        "name": "MCB4 Office \u2013 630 9th Avenue, Suite 208",
+        "address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "mode": "not-stated",
+        "components": {
+          "street_address": "630 9th Avenue, Ste. 208",
+          "address_locality": "New York",
+          "address_region": null,
+          "postal_code": "10036",
+          "address_borough": null
+        },
+        "attendance_conflict": true
+      },
+      "board_id": "manhattan-cb-04",
+      "board_name": "Manhattan Community Board 4",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "1c5a1a9e423d912f3ea1a9642e6476dfe17a1b28151f536f6acbc61d9eb61b1b",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://www.brooklyncb11.org/event/general-meeting-6/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-10T19:00:00-04:00",
+      "title": "General Meeting",
+      "short_title": "General Meeting",
+      "venue": {
+        "name": "Bensonhurst Center for Rehabilitation and Healthcare",
+        "address": "1740 84th Street, Brooklyn, 11214",
+        "mode": "in-person"
+      },
+      "board_id": "brooklyn-cb-11",
+      "board_name": "Brooklyn Community Board 11",
+      "geography_backfill": {
+        "outcome": "physical_venue",
+        "input_hash": "9a317ad5ff7cc2b3969901cf342a0299c659072ced43266e3f1da03c2a71854d",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:city_record:20260709020",
+      "request_id": "20260709020",
+      "source_system": "city_record",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-09T10:00:00.000",
+      "title": "FOR ACQUISTION - Block 5308 Lot 50",
+      "short_title": "FOR ACQUISTION - Block 5308 Lot 50",
+      "venue": {
+        "mode": "virtual"
+      },
+      "agency": "Citywide Administrative Services",
+      "agency_name": "Citywide Administrative Services",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "8bfdaa8c67bd84229dbb0c20e97ee89f5873e03dc74e766fa2eaa0eef2392bf4",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:city_record:20260812022",
+      "request_id": "20260812022",
+      "source_system": "city_record",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-16T08:00:00.000",
+      "title": "New York City Independent Budget Office Advisory Committee Meeting",
+      "short_title": "New York City Independent Budget Office Advisory Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "agency": "Independent Budget Office",
+      "agency_name": "Independent Budget Office",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "ca24ba95aab16f364595851ec0d9602ec78d9ad1e1893ea2d0704247018d1409",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:city_record:20260818004",
+      "request_id": "20260818004",
+      "source_system": "city_record",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-17T11:00:00.000",
+      "title": "Dining Out NYC Public Hearing",
+      "short_title": "Dining Out NYC Public Hearing",
+      "venue": {
+        "mode": "virtual"
+      },
+      "agency": "Transportation",
+      "agency_name": "Transportation",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "1956dbcb7fb1082a8c9106121b45c9f54bc35ba4be1fc68f7ade33085eb24a96",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:city_record:20260826006",
+      "request_id": "20260826006",
+      "source_system": "city_record",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-24T11:00:00.000",
+      "title": "Dining Out NYC Public Hearings",
+      "short_title": "Dining Out NYC Public Hearings",
+      "venue": {
+        "mode": "virtual"
+      },
+      "agency": "Transportation",
+      "agency_name": "Transportation",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "0c720ec953c867c90934f76287a9779104beaf69908ea66e9cee3f15fb763f3c",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:city_record:20260827003",
+      "request_id": "20260827003",
+      "source_system": "city_record",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-17T11:00:00.000",
+      "title": "Dining Out NYC Public Hearings",
+      "short_title": "Dining Out NYC Public Hearings",
+      "venue": {
+        "mode": "virtual"
+      },
+      "agency": "Transportation",
+      "agency_name": "Transportation",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "4571fecf66385a80610ab0b5f4289c2e2133ee32a4132004c4efb359a46ff92c",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:city_record:20260901022",
+      "request_id": "20260901022",
+      "source_system": "city_record",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-10T18:30:00.000",
+      "title": "September 10, 2026 Public Hearing",
+      "short_title": "September 10, 2026 Public Hearing",
+      "venue": {
+        "mode": "virtual"
+      },
+      "agency": "Community Boards",
+      "agency_name": "Community Boards",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "78d0f066920efcf81df83cbe5a8536a15bf039947236482f7e18f0a3a95b6c2d",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:02sviph9i86e3ves084eelv4oo@google.com::2026-07-16",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-07-16T22:00:00Z",
+      "title": "Capital & Expense Budget Committee Meeting",
+      "short_title": "Capital & Expense Budget Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "24eff514e0ce613c304d259304572abe6877d9ef3cfe50c91c256a85a5057632",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:1ntpj2o3ckjs4ggnfmhvc4u4un@google.com::2026-09-23",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-23T22:00:00Z",
+      "title": "Capital & Expense Budget Committee Meeting",
+      "short_title": "Capital & Expense Budget Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "6583fcccd0f8b9a3d9e116c127f9881f600f60fc326417b3ba41afd6984d4e1e",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:1siimfqt7j2igol3cvg5bddv1d@google.com::2026-09-09",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-09T00:00:00Z",
+      "title": "CB6 Executive Committee Meeting",
+      "short_title": "CB6 Executive Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-06",
+      "board_name": "Queens Community Board 6",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "c21b8efc2423d2bca59eca33c2169be31c7dbc0c6cffce6232228195132536df",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:264etuspll5sdhca2ohv92i721@google.com::2026-09-03",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-03T22:00:00Z",
+      "title": "Special Land Use Committee Meeting",
+      "short_title": "Special Land Use Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "6e7820d6ba304840a0229010c9d397e31a411cb4fe54fb8351375f69ee7d7a1d",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:2aa6dkse90cddbdvqgi2h5165g@google.com::2026-09-10",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-10T22:30:00Z",
+      "title": "CB2 Board Meeting",
+      "short_title": "CB2 Board Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "5dc2b7359d7a791219665cee1b1a1a8515d1c1415ab0293c3ec06e4cea990322",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:2el6p0nkc5csm6v967ta5d6eja@google.com::2026-07-21",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-07-21T22:00:00Z",
+      "title": "Executive Committee Meeting",
+      "short_title": "Executive Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "5dc7cf3bcd65e1227a19ef575f53625797e7ba48f6603b3ecac47ce1d0018b53",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:2herm8flfomta1b31jtrl1qpho@google.com::2026-07-30",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-07-30T22:30:00Z",
+      "title": "Preservation Committee **NEW DATE & REMOTE ONLY**",
+      "short_title": "Preservation Committee **NEW DATE & REMOTE ONLY**",
+      "venue": {
+        "address": "Via Zoom",
+        "mode": "virtual"
+      },
+      "board_id": "manhattan-cb-07",
+      "board_name": "Manhattan Community Board 7",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "42438a40a4f2f985980c8665da850922f2cb17261e1d1d190ae07d79ca52ec60",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:2q5hj0nsacuk2hjf2n3dkvmln3_R20240604T220000@google.com::2026-10-06",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-10-06T18:00:00-04:00",
+      "title": "Transportation Committee Meeting",
+      "short_title": "Transportation Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "6523215c2b01268a056fafd3ab19db031060ab19e150b86e659161ec60a066ca",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:2rq8li3s5e5ehohv8lk71pok25@google.com::2026-10-22",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-10-22T22:00:00Z",
+      "title": "Capital & Expense Budget Committee Meeting",
+      "short_title": "Capital & Expense Budget Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "95b2f479bc300d536ea5cc799be5452b12407b29720a7b581314963540413018",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:2u8l1fdhuo0sfodtolunrthb60@google.com::2026-07-09",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-07-09T14:00:00Z",
+      "title": "Senior Task Force (Remote Only)",
+      "short_title": "Senior Task Force (Remote Only)",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "manhattan-cb-07",
+      "board_name": "Manhattan Community Board 7",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "b8d34c813a61d16eccd2f725a1dc2734555e22e4d235b629c593b078ae58c10e",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:33ntcdqhdic5rg6lqc67utj1tt@google.com::2026-06-25",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-06-25T22:30:00Z",
+      "title": "Environment, Parks, and Recreation Committee Meeting",
+      "short_title": "Environment, Parks, and Recreation Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "bd179e6bacb78e0293c9619b8cbf8ff58f2ecd69dcd2afe8b8778e29e8597e4c",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:3ectfmt48v3vuj7lmcrmc3u5bb@google.com::2026-10-19",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-10-19T22:00:00Z",
+      "title": "Health & Human Services Committee Meeting",
+      "short_title": "Health & Human Services Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "556ddbdbf0840a0be5967d4e8fe2ef0158047e0ca71be959e32d8523766549e3",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:3k4g5mnfgs1uf4t45b9rvsf49g@google.com::2026-06-29",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-06-29T21:00:00Z",
+      "title": "Aging, Health, Recovery Services Committee Briefing Notice",
+      "short_title": "Aging, Health, Recovery Services Committee Briefing Notice",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-06",
+      "board_name": "Queens Community Board 6",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "e97a1455083b8755ebaf8cdd6171488b677a0e80046af987393db305c3941742",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:3p8lrr5oa50t0grbf5ms9gfguk@google.com::2026-09-24",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-24T22:30:00Z",
+      "title": "Environment, Parks, and Recreation Committee Meeting",
+      "short_title": "Environment, Parks, and Recreation Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "9dab3e9a23997fb638cddce03bf63788fd2f67dc01f8c57646c7623ab30c04bc",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:4an5rrag5crtfqb1gtjkk7c102@google.com::2026-09-15",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-15T22:00:00Z",
+      "title": "Transportation Committee Meeting",
+      "short_title": "Transportation Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "4b7bd0b62792312f41920f8dc597f24d4dc4600c1e63090a5cf99fda0c8950a3",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:4cprhr9hr9lg110jb8fh7k4n0m@google.com::2026-06-29",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-06-29T23:00:00Z",
+      "title": "Consumer Affairs, Cultural Affairs, Economic Development Committee Briefing",
+      "short_title": "Consumer Affairs, Cultural Affairs, Economic Development Committee Briefing",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-06",
+      "board_name": "Queens Community Board 6",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "4d91e5adf91f65b3b0f0da2edaf143298b6512b971584b098fb781c357765dac",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:4fjsm23brmu1965oojlokib311_R20240612T223000@google.com::2026-09-09",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-09T18:30:00-04:00",
+      "title": "City Services & Public Safety Committee Meeting",
+      "short_title": "City Services & Public Safety Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "2c7f0cad1fbdd822ce0273750ac65b79ba058368a95fe568bcd8ccacf503cbbb",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:4fjsm23brmu1965oojlokib311_R20240612T223000@google.com::2026-10-14",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-10-14T18:30:00-04:00",
+      "title": "City Services & Public Safety Committee Meeting",
+      "short_title": "City Services & Public Safety Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "09f5aa3168316abe32f9d7903bdf3da7a40d2ce7688663513a2d76035db130cb",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:566heur7hgli360u8tv5n14qp0@google.com::2026-08-20",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-08-20T22:00:00Z",
+      "title": "Capital & Expense Budget Committee Meeting",
+      "short_title": "Capital & Expense Budget Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "6a8b77fd535bd242c74844ace49464f1366560e2d497ff52aa340394d4c87300",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:574f5mfqukjk891p60d59c5lvb@google.com::2026-10-01",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-10-01T18:30:00-04:00",
+      "title": "CB2 Board Meeting",
+      "short_title": "CB2 Board Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "4a63d145952aa6142b5365210eb3de35bc4db39576ba078fac664ce5ad5cca60",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:6g00mtidn7hadopb8rftdtfiap@google.com::2026-08-13",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-08-13T14:00:00Z",
+      "title": "Senior Task Force",
+      "short_title": "Senior Task Force",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "manhattan-cb-07",
+      "board_name": "Manhattan Community Board 7",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "119abc05c1a2b04d78672d5b2d38d2d581c2ac7d0a04692ed5452dd9c3ed351c",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:6uuu1gepuatu6p4ko859g9njr2@google.com::2026-10-02",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-10-02T00:00:00Z",
+      "title": "Transportation, Public Transit, Street Safety Committee Briefing",
+      "short_title": "Transportation, Public Transit, Street Safety Committee Briefing",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-06",
+      "board_name": "Queens Community Board 6",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "d7b40b95cb5666c2af4abf037a566715d140c2c983b601da401507383dcad1ad",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:714mm07vskk622h444m1vml7sf@google.com::2026-08-31",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-08-31T22:30:00Z",
+      "title": "Housing & Land Use Committee **NEW DATE**",
+      "short_title": "Housing & Land Use Committee **NEW DATE**",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "manhattan-cb-07",
+      "board_name": "Manhattan Community Board 7",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "e99719a68cef36c542d6fb9840cbcc26c7306bd8e3d5fdeed6894da980fee590",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:71k2ss3vfo1hksnqm4vr1uvbkm@google.com::2026-08-27",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-08-27T22:00:00Z",
+      "title": "Executive and Personnel Committee Meeting",
+      "short_title": "Executive and Personnel Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "a18b5365b260d21d505d2b8668dfc6c97e4cf3b914cfac260179e53f1ae483d9",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:74s6ehltphp52khfgu6kdo3ame_R20240611T220000@google.com::2026-09-08",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-08T18:00:00-04:00",
+      "title": "Arts & Cultural Affairs Committee Meeting",
+      "short_title": "Arts & Cultural Affairs Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "4f294248cbababa1119d18486b8d7347a9b05c7afef592fbdc5b440d2019f973",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:74s6ehltphp52khfgu6kdo3ame_R20240611T220000@google.com::2026-10-13",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-10-13T18:00:00-04:00",
+      "title": "Arts & Culture Committee Meeting",
+      "short_title": "Arts & Culture Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "e0b95ae27ca9191329c60006bb99b616edbcc373e0bbaa7548e37032b3b22740",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:7vl5hcft8tjgtfi2jcjvern3v8@google.com::2026-09-22",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-22T18:00:00-04:00",
+      "title": "Engagement and Inclusion Committee Meeting",
+      "short_title": "Engagement and Inclusion Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "f59a4a63dd3f6368626c2af3b3aa45a209d53f00c83019f15c6dac35ebe3093d",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:7vsmie9r61kvrhv9ft2qupeq0p@google.com::2026-06-30",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-06-30T23:00:00Z",
+      "title": "Education, Youth Committee Briefing",
+      "short_title": "Education, Youth Committee Briefing",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-06",
+      "board_name": "Queens Community Board 6",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "b237fd2645a73349b63941025d627f67e842925f87946123544d29506c1c870b",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cb5.org/event/city-services-quality-of-life/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-01-28T18:00:00-05:00",
+      "title": "City Services & Quality of Life",
+      "short_title": "City Services & Quality of Life",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "manhattan-cb-05",
+      "board_name": "Manhattan Community Board 5",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "91d3a482a0a54dcf93687882db7bf96c6652e896e48c2867d33d7f54a6689303",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cb5.org/event/executive-committee-20/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-01-06T18:00:00-05:00",
+      "title": "Executive Committee",
+      "short_title": "Executive Committee",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "manhattan-cb-05",
+      "board_name": "Manhattan Community Board 5",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "b4f4c16c3e74981b875d46b165f4c85ccaf15518c6b52a735adac1814ce0d448",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cb5.org/event/land-use-housing-zoning-committee-16/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-01-21T18:00:00-05:00",
+      "title": "Land Use, Housing & Zoning Committee",
+      "short_title": "Land Use, Housing & Zoning Committee",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "manhattan-cb-05",
+      "board_name": "Manhattan Community Board 5",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "ca2e722db96b77fa4e25fed2429dd0ee03e0c2492aaa0d9f02eb46fd1f8cab67",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cb5.org/event/landmarks-committee-19/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-01-27T18:00:00-05:00",
+      "title": "Landmarks Committee",
+      "short_title": "Landmarks Committee",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "manhattan-cb-05",
+      "board_name": "Manhattan Community Board 5",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "e49996c887dfaf4315807ded5170644149b274201ad75a213453de0fe95e2194",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cb5.org/event/parks-public-spaces-environment-committee/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-01-22T18:00:00-05:00",
+      "title": "Parks, Public Spaces & Environment Committee",
+      "short_title": "Parks, Public Spaces & Environment Committee",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "manhattan-cb-05",
+      "board_name": "Manhattan Community Board 5",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "76d76815e9879cdad6b47355e534ae0e50d8af3a17287a53190fda1fa90ca771",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cb5.org/event/public-hearing-full-board-meeting-17/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-01-08T18:00:00-05:00",
+      "title": "Public Hearing & Full Board Meeting",
+      "short_title": "Public Hearing & Full Board Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "manhattan-cb-05",
+      "board_name": "Manhattan Community Board 5",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "d68b60ade290051d55d88623b057975a09bf62c8ed94387efd06dcc368112298",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cb5.org/event/state-licenses-permits-committee-20/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-01-20T18:00:00-05:00",
+      "title": "State Licenses & Permits Committee",
+      "short_title": "State Licenses & Permits Committee",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "manhattan-cb-05",
+      "board_name": "Manhattan Community Board 5",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "c74868b542d0f1c815b3d9da519084a80ddb0b471e06ba520a6ed9d2859a75c8",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cb5.org/event/transportation-committee-3/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-01-26T18:00:00-05:00",
+      "title": "Transportation Committee",
+      "short_title": "Transportation Committee",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "manhattan-cb-05",
+      "board_name": "Manhattan Community Board 5",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "53070a8f5e569453df19a76f0f6333c9504aeb3c7ee27cea2ccb6180bbbd5945",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/aging/2026-10-12/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-10-12T16:00:00+00:00",
+      "title": "Aging",
+      "short_title": "Aging",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "bronx-cb-08",
+      "board_name": "Bronx Community Board 8",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "d0c9d14c32f74ee40155085a03f61ac3ea90830ba2afe698a28968075f10868e",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/aging/2026-11-09/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-11-09T16:00:00+00:00",
+      "title": "Aging",
+      "short_title": "Aging",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "bronx-cb-08",
+      "board_name": "Bronx Community Board 8",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "01c770c4103357a4d0746474330a0f91aa987ae8779a23d38c3879096b9afbdc",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/education-libraries-cultural-affairs/2026-10-27/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-10-27T19:30:00+00:00",
+      "title": "Education, Libraries & Cultural Affairs",
+      "short_title": "Education, Libraries & Cultural Affairs",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "bronx-cb-08",
+      "board_name": "Bronx Community Board 8",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "8c1442e52255cc44fbf4b75d73b8e68c74678275cbe2305b487ed4d2f95fb4f3",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/executive-2-2/2026-10-12/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-10-12T19:00:00+00:00",
+      "title": "EXECUTIVE COMMITTEE",
+      "short_title": "EXECUTIVE COMMITTEE",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "bronx-cb-08",
+      "board_name": "Bronx Community Board 8",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "9994e7673dcc0cbed78bbefb24c517ff4df21bbcbf98b2acfbc3c8800bccb2c5",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/full-board/2026-10-13/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-10-13T19:00:00+00:00",
+      "title": "Full Board",
+      "short_title": "Full Board",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "bronx-cb-08",
+      "board_name": "Bronx Community Board 8",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "666de92afa5974d8a806ba5dabb209961c490b05c132fe8dd0cfbc4d0071ac47",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/health-hospitals-social-services/2026-10-14/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-10-14T19:00:00+00:00",
+      "title": "Health, Hospitals & Social Services",
+      "short_title": "Health, Hospitals & Social Services",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "bronx-cb-08",
+      "board_name": "Bronx Community Board 8",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "48169eaa7286318372657336b0b8fd5c51feb81e2fb864a1991ab259b2b6609f",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/commerce-committee-meeting-9/2026-09-15/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-15T19:00:00-04:00",
+      "title": "Commerce Committee Meeting",
+      "short_title": "Commerce Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "brooklyn-cb-17",
+      "board_name": "Brooklyn Community Board 17",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "38a27e642025d70e3b5eb2159f7d60c7e8b685803b9f880b95767683108112c1",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/general-board-public-hearing-meeting-4/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-16T19:00:00-04:00",
+      "title": "General Board/Public Hearing Meeting",
+      "short_title": "General Board/Public Hearing Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "brooklyn-cb-17",
+      "board_name": "Brooklyn Community Board 17",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "c1d9f9a24647f418417c2db53f9678f7bbf3c8076b40d60b6c1235fe523b8ba6",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/housing-block-association-committee-2/2026-09-02/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-02T19:00:00-04:00",
+      "title": "Housing & Block Association Committee",
+      "short_title": "Housing & Block Association Committee",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "brooklyn-cb-17",
+      "board_name": "Brooklyn Community Board 17",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "2ff948a3044a6ab308f3b5d02b00350573af399dd9e64a970a334cb88bffbd5e",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/housing-block-association-committee-2/2026-10-07/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-10-07T19:00:00-04:00",
+      "title": "Housing & Block Association Committee",
+      "short_title": "Housing & Block Association Committee",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "brooklyn-cb-17",
+      "board_name": "Brooklyn Community Board 17",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "f40ca3c32b2c223cba477ae8acc4ed08f18412d481eea284adcfa63f051b90d2",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/land-use-rezoning-committee-meeting-5/2026-09-03/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-03T19:30:00-04:00",
+      "title": "Land Use/ReZoning Committee Meeting",
+      "short_title": "Land Use/ReZoning Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "brooklyn-cb-17",
+      "board_name": "Brooklyn Community Board 17",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "356ad75123272855c42fa29d10e2dd75b63e1f55335da32835735ef98c847ad6",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/land-use-rezoning-committee-meeting-5/2026-10-01/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-10-01T19:30:00-04:00",
+      "title": "Land Use/ReZoning Committee Meeting",
+      "short_title": "Land Use/ReZoning Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "brooklyn-cb-17",
+      "board_name": "Brooklyn Community Board 17",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "d6d3dca0de0d2af146104204eed60399d78ee6719f931311a7294ba3a75e1eb9",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/parks-beautification-committee-meeting-5/2026-09-01/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-01T19:30:00-04:00",
+      "title": "Parks & Beautification Committee Meeting",
+      "short_title": "Parks & Beautification Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "brooklyn-cb-17",
+      "board_name": "Brooklyn Community Board 17",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "7644be5b41fa0cec3a859f0630ae08d1dec3b6c74696dae30745b7f68339cc98",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/parks-beautification-committee-meeting-5/2026-10-06/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-10-06T19:30:00-04:00",
+      "title": "Parks & Beautification Committee Meeting",
+      "short_title": "Parks & Beautification Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "brooklyn-cb-17",
+      "board_name": "Brooklyn Community Board 17",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "a08b976c47f30a03b679a4cfaaedc00b8c8ed17e31eac03ad280afa2cc9e4ea3",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/sanitation-dep-committee-meeting-3/2026-09-21/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-21T19:30:00-04:00",
+      "title": "Sanitation/DEP Committee Meeting",
+      "short_title": "Sanitation/DEP Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "brooklyn-cb-17",
+      "board_name": "Brooklyn Community Board 17",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "e657de5bb3bb67f5f8cfc64d547d0900bf166408b633cc9f9613301bccf8f09c",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/youth-education-committee-meeting-6/2026-09-09/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-09T19:30:00-04:00",
+      "title": "Youth & Education Committee Meeting",
+      "short_title": "Youth & Education Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "brooklyn-cb-17",
+      "board_name": "Brooklyn Community Board 17",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "810b1c03f845530fa23e8d9e6cc95626dd95be65c628a6e5b8e629bb404893c8",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/youth-education-committee-meeting-6/2026-10-14/",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-10-14T19:30:00-04:00",
+      "title": "Youth & Education Committee Meeting",
+      "short_title": "Youth & Education Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "brooklyn-cb-17",
+      "board_name": "Brooklyn Community Board 17",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "5288432dd2746316675f9ad56a9d13faa35d290f9b5d179a6fe21989e3bf8747",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:kr8dstbptvgrbhkb9uoan0er4f@google.com::2026-09-22",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-22T17:00:00-04:00",
+      "title": "Small Business and Local Economy",
+      "short_title": "Small Business and Local Economy",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "a2b668be34ee7d8993eabaa47f0dc67f63d27444466d4137d13849a6c1e696fa",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:oglh37k1ij8sqmq9m2jgqnm3ni@google.com::2026-09-16",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-16T18:00:00-04:00",
+      "title": "Land Use Committee Meeting",
+      "short_title": "Land Use Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "fd1d7a1ddde51317cfc8b5d1523d8f165111487062c74e42979118930773d8fa",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:oglh37k1ij8sqmq9m2jgqnm3ni@google.com::2026-10-21",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-10-21T18:00:00-04:00",
+      "title": "Land Use Committee Meeting",
+      "short_title": "Land Use Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "b44df6bd4f4993aa79f6db3c1cdcdd9328d51515a3d084d55f161ad984a08e72",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    },
+    {
+      "meeting_id": "meeting:community_board:p3vfshdk6m2pt5kmskct7dt8em@google.com::2026-09-14",
+      "source_system": "community_board",
+      "schema": "cityscroll.meeting_object.v1",
+      "object_type": "meeting",
+      "event_date": "2026-09-14T18:00:00-04:00",
+      "title": "Health & Human Services Committee Meeting",
+      "short_title": "Health & Human Services Committee Meeting",
+      "venue": {
+        "mode": "virtual"
+      },
+      "board_id": "queens-cb-02",
+      "board_name": "Queens Community Board 2",
+      "geography_backfill": {
+        "outcome": "virtual",
+        "input_hash": "c09c0626d156c04ec2d3e0e6e30964d9f6705769114c3e4c743efac89c55487a",
+        "processed_at": "2026-10-14T14:46:00.144Z"
+      }
+    }
+  ]
+}

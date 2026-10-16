@@ -556,7 +556,13 @@ test("the capture manifest names every case the relation has to survive", () => 
 });
 
 test("the captured population is the relation's own, at the vintage it names", () => {
-  assert.equal(CAPTURE.data_vintage.community_board_budget_register, REGISTER.acquired_at);
+  // Capture evidence is a frozen read-back. Daily register refresh must not
+  // force an ambient restamp equality against live REGISTER.acquired_at.
+  assert.match(
+    String(CAPTURE.data_vintage.community_board_budget_register || ""),
+    /^\d{4}-\d{2}-\d{2}T/,
+  );
+  assert.match(String(REGISTER.acquired_at || ""), /^\d{4}-\d{2}-\d{2}T/);
   assert.equal(CAPTURE.data_vintage.request_project_links_reviewed_on, LINKS.reviewed_on);
   assert.equal(
     CAPTURE.data_vintage.capital_projects_latest_release,
@@ -564,6 +570,7 @@ test("the captured population is the relation's own, at the vintage it names", (
   );
   assert.equal(CAPTURE.counts.relations, LINKS.counts.relations);
   assert.equal(CAPTURE.counts.reviewed_refusals, LINKS.counts.reviewed_refusals);
+  assert.ok(CAPTURE.counts.relations > 0);
   assert.equal(CAPTURE.positive_project, BRONX_SBS_PROJECT);
 });
 

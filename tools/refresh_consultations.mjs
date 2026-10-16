@@ -18,16 +18,21 @@ export async function runConsultationRefresh({ root = defaultRoot, asOf = new Da
   }
   const result = await acquireConsultationSources({ fetchImpl, asOf, previous, transportOptions });
   if (result.materialization) writeFileSync(output, `${JSON.stringify(result.materialization, null, 2)}\n`);
-  return { status: result.receipt.failures ? "degraded" : "succeeded", ...result };
+  // Soft-only failures (Microsoft Forms loading shells) rematerialize and stay
+  // green; blocking publisher failures preserve last-good and fail visibly.
+  const status = (result.receipt.blocking_failures || 0) > 0 ? "degraded" : "succeeded";
+  return { status, ...result };
 }
 
 /**
- * A degraded acquisition — any publisher source that did not verify — fails the
- * scheduled producer even when the last verified materialization was preserved.
- * Exiting zero there let the dataset age out behind green runs while production
- * kept refusing to publish it, so degradation is a visible failure for every
- * caller: the dedicated scheduled refresh, the bundled first-class refresh, and
- * a hand-run refresh alike. The kill switch stays a clean, intentional skip.
+ * A degraded acquisition — any blocking publisher source that did not verify —
+ * fails the scheduled producer even when the last verified materialization was
+ * preserved. Exiting zero there let the dataset age out behind green runs while
+ * production kept refusing to publish it, so degradation is a visible failure
+ * for every caller: the dedicated scheduled refresh, the bundled first-class
+ * refresh, and a hand-run refresh alike. Soft failures on Microsoft Forms
+ * loading shells (which cannot prove open_now) rematerialize and stay green.
+ * The kill switch stays a clean, intentional skip.
  */
 export function consultationRefreshExitCode(result) {
   return result?.status === "degraded" ? 1 : 0;

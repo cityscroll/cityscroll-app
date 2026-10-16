@@ -134,8 +134,12 @@ export function applyNoeDensifyRecord(exam, densifyRow) {
     out.fee = densifyRow.fee;
     changed = true;
   }
+  // Open-competitive (or a retained notice declaration) may already record that
+  // the NOE states no yearly minimum. Multi-exam densify must not invent one.
+  const salaryDeclaredAbsent = Boolean(out.salary_publication);
   if (
-    (out.salary_min == null || out.salary_min === "")
+    !salaryDeclaredAbsent
+    && (out.salary_min == null || out.salary_min === "")
     && densifyRow.salary_min != null
     && densifyRow.salary_min !== ""
   ) {
@@ -143,14 +147,15 @@ export function applyNoeDensifyRecord(exam, densifyRow) {
     changed = true;
   }
   if (
-    (out.salary_max == null || out.salary_max === "")
+    !salaryDeclaredAbsent
+    && (out.salary_max == null || out.salary_max === "")
     && densifyRow.salary_max != null
     && densifyRow.salary_max !== ""
   ) {
     out.salary_max = densifyRow.salary_max;
     changed = true;
   }
-  if (!out.salary_note && densifyRow.salary_note) {
+  if (!salaryDeclaredAbsent && !out.salary_note && densifyRow.salary_note) {
     out.salary_note = densifyRow.salary_note;
     changed = true;
   }
@@ -164,6 +169,10 @@ export function applyNoeDensifyRecord(exam, densifyRow) {
   if (densifyRow.densify_method) out.fee_salary_densify = densifyRow.densify_method;
   return out;
 }
+
+/** Prose retained when a linked NOE omits a yearly minimum salary. */
+export const NOE_UNSTATED_ANNUAL_SALARY =
+  "The notice does not state a minimum annual salary for this title.";
 
 /**
  * Count exams with both fee and salary_min present (fee 0 counts).
@@ -585,6 +594,12 @@ export function attachFeeSalaryGap(exam) {
     const { fee_salary_gap: _drop, ...rest } = base;
     return { ...rest, fee_salary_gap: null };
   }
+  // Class-b gaps must carry the notice's own declaration on the exam row so a
+  // title that rolled off the live open-competitive page still records why no
+  // yearly minimum appears (instead of an unexplained hole).
+  if (gap.class === "not_published" && !base.salary_publication && gap.missing?.includes("salary_min")) {
+    return { ...base, salary_publication: NOE_UNSTATED_ANNUAL_SALARY, fee_salary_gap: gap };
+  }
   return { ...base, fee_salary_gap: gap };
 }
 
@@ -931,7 +946,14 @@ export function buildArtifact({
   for (const [examNumber, exam] of exams.entries()) {
     const densified = applyNoeDensifyRecord(exam, densifyByNumber.get(examNumber));
     if (densified !== exam) densifyApplied += 1;
-    exams.set(examNumber, densified);
+    // A notice that declares no yearly minimum must not keep densified salaries
+    // from a multi-exam PDF sibling or a prior retain path.
+    if (densified.salary_publication && densified.salary_min != null) {
+      const { salary_min: _s, salary_max: _x, salary_note: _n, ...rest } = densified;
+      exams.set(examNumber, { ...rest, salary_min: null, salary_max: null, salary_note: null });
+    } else {
+      exams.set(examNumber, densified);
+    }
   }
 
   // Differentiator densify: exam format, quals, residency, filter facets, card leads.
