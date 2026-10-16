@@ -55,7 +55,14 @@ function run(overrides = {}) {
         native_cpu_source: { field: "cpuTime", unit: "milliseconds", precision: "provider" },
         script_version_id: result.provider_deployment.receipt.cloudflare_version.id,
         condition: {
-          mode: "provider-observed", source: "$metadata.coldStart", cold_start: name.endsWith(":cold"),
+          mode: "bounded-production-execution",
+          source: "owned-http-probe",
+          isolate_observation: {
+            present: true,
+            raw: name.endsWith(":cold") ? 1 : 0,
+            provisional_label: "unverified-raw",
+            semantics: "optional-unverified-provider-flag",
+          },
         },
         outcome: carriesTotals && result.error_count > 0 ? "exception" : "ok",
         operations: Object.fromEntries(

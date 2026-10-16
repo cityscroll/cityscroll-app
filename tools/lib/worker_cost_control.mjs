@@ -3,9 +3,10 @@ import { createHash } from "node:crypto";
 /**
  * Attribution completeness uses route, cron, queue, and collector cohorts.
  * Provider `$metadata.coldStart` is an optional numeric field whose 0/1 meaning
- * is unverified on this account; missing values stay unknown and never become
- * warm, cold, or zero. Optional isolate-labeled cohorts remain available for
- * warehouse experiments when a live 0/1 flag is actually present.
+ * is unverified on this account; missing or unverified values stay unknown and
+ * never become warm, cold, zero, or `cold_start` true/false. Optional `:cold` /
+ * `:warm` cohort suffixes are raw numeric buckets (1 vs 0) only—they do not
+ * claim validated isolate class.
  */
 export const HTTP_ROUTE_COHORTS = Object.freeze([
   "health", "unknown-route", "events", "rum-16", "search", "nearby",
@@ -216,16 +217,14 @@ function queueCondition(event, options) {
 function providerColdCondition(event, cohort) {
   const coldStart = event?.$metadata?.coldStart;
   if (coldStart !== 0 && coldStart !== 1) {
-    fail("provider $metadata.coldStart must be the numeric 0 or 1 flag for isolate-labeled cohorts");
+    fail("provider $metadata.coldStart must be the numeric 0 or 1 flag for raw isolate-bucket cohorts");
   }
-  const cold = coldStart === 1;
-  if (cold !== cohort.endsWith(":cold")) fail("provider $metadata.coldStart does not match cohort");
-  return {
-    mode: "provider-observed",
-    source: ISOLATE_CONTRACT.source,
-    cold_start: cold,
-    semantics: ISOLATE_CONTRACT.semantics,
-  };
+  const wantRaw = cohort.endsWith(":cold") ? 1 : 0;
+  if (coldStart !== wantRaw) {
+    fail("provider $metadata.coldStart does not match raw cohort bucket");
+  }
+  // Unverified optional flag: keep raw evidence only. Never mint cold_start.
+  return providerRouteCondition(event);
 }
 
 function providerRouteCondition(event) {
@@ -251,34 +250,44 @@ function providerRouteCondition(event) {
   };
 }
 
+function validateIsolateObservation(isolate, path, { requirePresentRaw = null } = {}) {
+  if (!isolate || typeof isolate !== "object") fail(`${path}.isolate_observation is required`);
+  if (isolate.semantics !== ISOLATE_CONTRACT.semantics) fail(`${path}.isolate_observation.semantics is invalid`);
+  if (isolate.present === true) {
+    if (isolate.raw !== 0 && isolate.raw !== 1) fail(`${path}.isolate_observation.raw must be 0 or 1 when present`);
+    if (isolate.provisional_label !== "unverified-raw") {
+      fail(`${path}.isolate_observation.provisional_label must stay unverified-raw`);
+    }
+    if (requirePresentRaw !== null && isolate.raw !== requirePresentRaw) {
+      fail(`${path}.isolate_observation.raw does not match raw cohort bucket`);
+    }
+  } else if (isolate.present === false) {
+    if (requirePresentRaw !== null) fail(`${path}.isolate_observation must be present for raw isolate-bucket cohorts`);
+    if (isolate.raw !== null) fail(`${path}.isolate_observation.raw must be null when absent`);
+    if (isolate.provisional_label !== "unknown") fail(`${path} must not invent cold or warm from absence`);
+  } else {
+    fail(`${path}.isolate_observation.present is invalid`);
+  }
+}
+
 function validateCondition(cohort, condition, path) {
   if (!condition || typeof condition !== "object" || !condition.mode) fail(`${path} controlled condition evidence is required`);
+  if ("cold_start" in condition) {
+    // Unverified optional $metadata.coldStart must never become semantic cold/warm.
+    fail(`${path} must not claim semantic cold_start from unverified $metadata.coldStart`);
+  }
   if (cohort.endsWith(":cold") || cohort.endsWith(":warm")) {
-    if (condition.source !== "$metadata.coldStart" || typeof condition.cold_start !== "boolean") {
-      fail(`${path} must use provider $metadata.coldStart evidence`);
+    if (condition.mode !== "bounded-production-execution") {
+      fail(`${path} must use bounded production execution evidence`);
     }
-    if (condition.cold_start !== cohort.endsWith(":cold")) fail(`${path} coldStart does not match cohort`);
-    if (condition.semantics && condition.semantics !== ISOLATE_CONTRACT.semantics) {
-      fail(`${path}.semantics does not match the isolate contract`);
-    }
+    const wantRaw = cohort.endsWith(":cold") ? 1 : 0;
+    validateIsolateObservation(condition.isolate_observation, path, { requirePresentRaw: wantRaw });
   } else if (HTTP_ROUTE_COHORTS.includes(cohort) || cohort === "collector-overhead") {
     if (condition.mode !== "bounded-production-execution") {
       fail(`${path} must use bounded production execution evidence`);
     }
     if (condition.isolate_observation) {
-      const isolate = condition.isolate_observation;
-      if (isolate.semantics !== ISOLATE_CONTRACT.semantics) fail(`${path}.isolate_observation.semantics is invalid`);
-      if (isolate.present === true) {
-        if (isolate.raw !== 0 && isolate.raw !== 1) fail(`${path}.isolate_observation.raw must be 0 or 1 when present`);
-        if (isolate.provisional_label !== "unverified-raw") {
-          fail(`${path}.isolate_observation.provisional_label must stay unverified-raw`);
-        }
-      } else if (isolate.present === false) {
-        if (isolate.raw !== null) fail(`${path}.isolate_observation.raw must be null when absent`);
-        if (isolate.provisional_label !== "unknown") fail(`${path} must not invent cold or warm from absence`);
-      } else {
-        fail(`${path}.isolate_observation.present is invalid`);
-      }
+      validateIsolateObservation(condition.isolate_observation, path);
     }
   } else if (cohort.startsWith("cron:")) {
     requireExactKeys(condition, [

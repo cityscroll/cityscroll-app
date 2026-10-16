@@ -692,7 +692,13 @@ test("warehouse runner samples until exact provider-observed cold and warm popul
   assert.equal(requestCount(), 2_000);
   for (const cohort of WAREHOUSE_EXPERIMENT_COHORTS) {
     assert.equal(result.cohorts[cohort].length, 100);
-    assert.ok(result.cohorts[cohort].every((sample) => sample.condition.cold_start === cohort.endsWith(":cold")));
+    assert.ok(result.cohorts[cohort].every((sample) => {
+      const isolate = sample.condition.isolate_observation;
+      return isolate?.present === true
+        && isolate.raw === (cohort.endsWith(":cold") ? 1 : 0)
+        && isolate.provisional_label === "unverified-raw"
+        && !("cold_start" in sample.condition);
+    }));
   }
 });
 
@@ -711,13 +717,26 @@ test("warehouse runner reports incomplete genuine cold coverage", async () => {
   assert.match(result.reason, /cold provider samples are incomplete/);
 });
 
-function warehouseSample(revision, meter = 0) {
+function warehouseIsolateCondition(raw) {
+  return {
+    mode: "bounded-production-execution",
+    source: "owned-http-probe",
+    isolate_observation: {
+      present: true,
+      raw,
+      provisional_label: "unverified-raw",
+      semantics: "optional-unverified-provider-flag",
+    },
+  };
+}
+
+function warehouseSample(revision, meter = 0, rawColdStart = 0) {
   return {
     revision,
     native_cpu_ms: 2,
     collector_cpu_ms: 1,
     native_cpu_source: { field: "$workers.cpuTimeMs", unit: "milliseconds", precision: "integer" },
-    condition: { mode: "provider-observed", source: "$metadata.coldStart", cold_start: false },
+    condition: warehouseIsolateCondition(rawColdStart),
     script_version_id: deployment(revision).receipt.cloudflare_version.id,
     outcome: "ok",
     operations: operations(meter, 0),
@@ -736,8 +755,11 @@ test("matched warehouse acquisition retains baseline on a queue regression", asy
         observedAt: label === "baseline" ? "2026-10-09T08:00:00Z" : "2026-10-09T09:00:00Z",
         cohorts: Object.fromEntries(WAREHOUSE_EXPERIMENT_COHORTS.map((cohort) => [cohort,
           Array.from({ length: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT }, () => ({
-            ...warehouseSample(revision, label === "candidate" ? 1 : 0),
-            condition: { mode: "provider-observed", source: "$metadata.coldStart", cold_start: cohort.endsWith(":cold") },
+            ...warehouseSample(
+              revision,
+              label === "candidate" ? 1 : 0,
+              cohort.endsWith(":cold") ? 1 : 0,
+            ),
           })),
         ])),
         correctness: CORRECTNESS,

@@ -370,6 +370,7 @@ test("route cohorts keep absent coldStart unknown and isolate labels stay eviden
   assert.equal(derived.condition.isolate_observation.raw, 1);
   assert.equal(derived.condition.isolate_observation.provisional_label, "unverified-raw");
   assert.equal(derived.condition.isolate_observation.semantics, "optional-unverified-provider-flag");
+  assert.equal("cold_start" in derived.condition, false);
 
   const missing = event();
   delete missing.$metadata.coldStart;
@@ -381,19 +382,58 @@ test("route cohorts keep absent coldStart unknown and isolate labels stay eviden
   assert.equal(absent.condition.isolate_observation.present, false);
   assert.equal(absent.condition.isolate_observation.raw, null);
   assert.equal(absent.condition.isolate_observation.provisional_label, "unknown");
+  assert.equal("cold_start" in absent.condition, false);
 
   assert.throws(() => sanitizeNativeInvocation(event(4, 0), {
     cohort: "health:cold", revision,
     expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
-  }), /does not match cohort/);
+  }), /does not match raw cohort bucket/);
   assert.throws(() => sanitizeNativeInvocation(missing, {
     cohort: "health:warm", revision,
     expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
-  }), /numeric 0 or 1 flag for isolate-labeled cohorts/);
+  }), /numeric 0 or 1 flag for raw isolate-bucket cohorts/);
   assert.throws(() => sanitizeNativeInvocation(event(4, true), {
     cohort: "health:cold", revision,
     expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
-  }), /numeric 0 or 1 flag for isolate-labeled cohorts/);
+  }), /numeric 0 or 1 flag for raw isolate-bucket cohorts/);
+});
+
+test("raw coldStart 0/1 never becomes semantic cold_start true/false", () => {
+  const rawOne = sanitizeNativeInvocation(event(4, 1), {
+    cohort: "health:cold", revision,
+    expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
+    operations: emptyOperations(),
+  });
+  assert.equal(rawOne.condition.isolate_observation.present, true);
+  assert.equal(rawOne.condition.isolate_observation.raw, 1);
+  assert.equal(rawOne.condition.isolate_observation.provisional_label, "unverified-raw");
+  assert.equal("cold_start" in rawOne.condition, false);
+  assert.notEqual(rawOne.condition.mode, "provider-observed");
+
+  const rawZero = sanitizeNativeInvocation(event(4, 0), {
+    cohort: "health:warm", revision,
+    expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
+    operations: emptyOperations(),
+  });
+  assert.equal(rawZero.condition.isolate_observation.raw, 0);
+  assert.equal(rawZero.condition.isolate_observation.provisional_label, "unverified-raw");
+  assert.equal("cold_start" in rawZero.condition, false);
+
+  // Imported semantic cold_start claims fail closed under unverified semantics.
+  const profile = buildWorkerCostProfile(REQUIRED_COST_COHORTS.map((cohort) => sample(cohort)), {
+    revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 120,
+    eventCount: REQUIRED_COST_COHORTS.length,
+  });
+  profile.cohorts.health.samples[0].condition = {
+    mode: "provider-observed",
+    source: "$metadata.coldStart",
+    cold_start: true,
+    semantics: "optional-unverified-provider-flag",
+  };
+  assert.throws(
+    () => validateWorkerCostProfile(profile),
+    /must not claim semantic cold_start from unverified/,
+  );
 });
 
 test("attempted writes cannot be represented as confirmed", () => {

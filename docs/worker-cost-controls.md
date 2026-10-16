@@ -104,10 +104,12 @@ The fixed attribution profile covers health, unknown-route, events, full RUM,
 search, Near You, Browse, ZAP BBL, ZAP project, and Doing Business requests;
 all three configured cron windows; the queue; and collector overhead. Provider
 `$metadata.coldStart` is an optional numeric field whose 0/1 meaning is
-unverified on this account. Missing values stay unknown and never become warm,
-cold, or zero CPU. Optional isolate-labeled cohorts remain available for matched
-warehouse experiments only when a live 0/1 flag is actually present; request
-order, wall time, and startup time never invent isolate class.
+unverified on this account. Missing or unverified values stay unknown and never
+become warm, cold, zero CPU, or a semantic `cold_start` true/false. Optional
+`:cold` / `:warm` cohort suffixes are raw numeric buckets (1 vs 0) for matched
+warehouse experiments when a live 0/1 flag is present; they do not claim
+validated isolate class. Request order, wall time, and startup time never invent
+isolate class.
 
 A bounded observability settings window uses the beta Worker settings API. The
 harness captures the effective baseline first, then starts a supervised
