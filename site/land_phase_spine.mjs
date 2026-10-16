@@ -799,6 +799,8 @@ export function buildLandPhaseView(spine, opts = {}) {
       since: currentMilestoneDate,
       public_status: publicStatus,
       evidence_source_id: currentEvidenceSourceId,
+      evidence_observation: currentEvidenceSourceId === currentEvidenceEvent?.source?.id
+        ? currentEvidenceEvent?.source_observation || null : null,
       noticed,
       // True only when Open Data already labels full public review / completion paths.
       // Completed/approved are terminal — not "in public review" for action rails.

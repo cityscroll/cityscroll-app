@@ -463,6 +463,7 @@ function milestoneEvent(milestone, record) {
     outcome: milestone.outcome,
     time: milestone.time,
     source: source("zap-project-api", "Zoning Application Portal", record.portal_url),
+    source_observation: milestone.source_observation || null,
   };
 }
 
@@ -483,6 +484,7 @@ function dispositionEvent(disposition, index, record) {
     outcome: clean(recommendation),
     time,
     source: source("zap-project-api", "Zoning Application Portal", record.portal_url),
+    source_observation: disposition.source_observation || null,
   };
 }
 

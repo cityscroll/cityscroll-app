@@ -547,6 +547,84 @@ test("prewarm retains richer ZAP evidence without renewing carried clocks",async
   assert.equal(advanced.stage_observation.observed_at,"2026-10-17T00:00:00Z");
 });
 
+test("retained ZAP phases keep their selecting evidence clock",async()=>{
+  const old="2026-10-02T00:00:00Z";
+  const milestone=(id,title,status,date)=>({id,title,status,time:{value:date,precision:"day",basis:"actual_start",certainty:"actual"}});
+  const run=async({id,cachedMilestone,candidateMilestone,legacy=false})=>{
+    const cached={project_id:id,generated_at:old,join:{matched:true},useful:false,filled:false,
+      actions:[],approved_actions:[],milestones:[cachedMilestone],dispositions:[],documents:[],n_documents:0,
+      source_observations:legacy?{}:{zap_api:{source_system:"zap_project_api",observation_status:"observed",observed_at:old}},
+      ...(legacy?{}:{stage_observation:{source_system:"zap_project_api",observed_at:old}})};
+    const values=new Map([[kvKey(id),JSON.stringify(cached)]]);
+    const env={ALERT_STATE:{get:async key=>values.get(key)||null,put:async(key,value)=>values.set(key,value)}};
+    const candidate={project_id:id,generated_at:TEST_NOW,join:{matched:true},useful:false,filled:false,
+      actions:[],approved_actions:[],milestones:[candidateMilestone],dispositions:[],documents:[],n_documents:0,
+      source_observations:{zap_api:{source_system:"zap_project_api",observation_status:"observed",observed_at:TEST_NOW}},
+      stage_observation:{source_system:"zap_project_api",observed_at:TEST_NOW}};
+    const result=await prewarmOneZapOutcome(env,id,{force:true,nowMs:TEST_NOW_MS,build:async()=>candidate});
+    assert.equal(result.status,"computed");
+    const response=await handleZapOutcomes(new Request(`https://example.test/zap-outcomes?id=${id}`),env);
+    const payload=await response.json();
+    assert.equal(payload.record.stage_observation.source_system,"zap_project_api");
+    assert.equal(payload.record.stage_observation.observed_at,legacy?null:old);
+    assert.equal(payload.stale,true);
+    assert.equal(browser().runtime.evidenceState(payload).stale,true);
+    return payload.record;
+  };
+  const later=await run({id:"RETAINED-LATER",
+    cachedMilestone:milestone("cpc-old","City Planning Commission Review","In Progress","2026-10-02"),
+    candidateMilestone:milestone("cb-new","Community Board Review","In Progress","2026-10-16")});
+  assert.equal(phaseTools.buildLandPhaseView(later.spine,later).current.phase_id,"cpc");
+  const same=await run({id:"RETAINED-SAME",
+    cachedMilestone:milestone("bp-old","Borough President Review","In Progress","2026-10-02"),
+    candidateMilestone:milestone("bp-new","Borough President Review","Completed","2026-10-16")});
+  assert.equal(phaseTools.buildLandPhaseView(same.spine,same).current.phase_id,"borough_president");
+  await run({id:"RETAINED-LEGACY",legacy:true,
+    cachedMilestone:milestone("cpc-legacy","City Planning Commission Review","In Progress","2026-10-02"),
+    candidateMilestone:milestone("cb-current","Community Board Review","In Progress","2026-10-16")});
+});
+
+test("retained dispositions preserve hearing logistics and current IDs win",async()=>{
+  const id="HEARING-RETAIN",old="2026-10-02T00:00:00Z";
+  const disposition={id:"disp-1",name:"CPC Hearing",representing:"City Planning Commission",
+    status:"Scheduled",hearing_date:"2026-10-20",hearing_at:"2026-10-20T13:30:00.000Z",
+    hearing_location:"In person at 120 Broadway or livestreamed at https://youtube.com/watch?v=abc"};
+  const cached={project_id:id,generated_at:old,join:{matched:true},useful:false,filled:false,
+    actions:[],approved_actions:[],milestones:[],dispositions:[disposition],documents:[{id:"hearing-doc",name:"Hearing notice"}],n_documents:1,
+    source_observations:{zap_api:{source_system:"zap_project_api",observation_status:"observed",observed_at:old}},
+    stage_observation:{source_system:"zap_projects_open_data",observed_at:old}};
+  const values=new Map([[kvKey(id),JSON.stringify(cached)]]);
+  const env={ALERT_STATE:{get:async key=>values.get(key)||null,put:async(key,value)=>values.set(key,value)}};
+  const candidate={project_id:id,generated_at:TEST_NOW,join:{matched:true},useful:false,filled:false,
+    actions:[],approved_actions:[],milestones:[],dispositions:[],documents:[],n_documents:0,
+    open_data:{project_id:id,public_status:"In Public Review",current_milestone:"Community Board Referral"},
+    source_observations:{zap_api:{source_system:"zap_project_api",observation_status:"observed",observed_at:TEST_NOW},
+      open_data:{source_system:"zap_projects_open_data",observation_status:"observed",observed_at:TEST_NOW}},
+    stage_observation:{source_system:"zap_projects_open_data",observed_at:TEST_NOW}};
+  await prewarmOneZapOutcome(env,id,{force:true,nowMs:TEST_NOW_MS,build:async()=>candidate});
+  let response=await handleZapOutcomes(new Request(`https://example.test/zap-outcomes?id=${id}`),env);
+  let payload=await response.json();
+  let logistics=payload.record.hearing_logistics[0];
+  assert.equal(logistics.venue_address,"120 Broadway");
+  assert.equal(logistics.hearing_at,"2026-10-20T13:30:00.000Z");
+  assert.match(logistics.livestream_url,/youtube\.com/);
+  assert.equal(logistics.source_observation.observed_at,old);
+  assert.equal(browser().runtime.recordForDisplay(payload).hearing_logistics[0].venue_address,"120 Broadway");
+
+  const currentDisposition={...disposition,hearing_location:"In person at 22 Reade Street",hearing_at:"2026-10-21T14:00:00.000Z",hearing_date:"2026-10-21"};
+  const current={...candidate,generated_at:"2026-10-17T00:00:00Z",dispositions:[currentDisposition],
+    source_observations:{zap_api:{source_system:"zap_project_api",observation_status:"observed",observed_at:"2026-10-17T00:00:00Z"},
+      open_data:{source_system:"zap_projects_open_data",observation_status:"observed",observed_at:"2026-10-17T00:00:00Z"}},
+    stage_observation:{source_system:"zap_projects_open_data",observed_at:"2026-10-17T00:00:00Z"}};
+  await prewarmOneZapOutcome(env,id,{force:true,nowMs:Date.parse("2026-10-17T00:00:00Z"),build:async()=>current});
+  response=await handleZapOutcomes(new Request(`https://example.test/zap-outcomes?id=${id}`),env);
+  payload=await response.json();
+  logistics=payload.record.hearing_logistics[0];
+  assert.equal(logistics.venue_address,"22 Reade Street");
+  assert.equal(logistics.hearing_at,"2026-10-21T14:00:00.000Z");
+  assert.equal(Object.hasOwn(logistics,"source_observation"),false);
+});
+
 test("DOB and BBL failures retain only affected prior side-car evidence",async()=>{
   const original=globalThis.fetch;
   const old="2026-10-02T00:00:00Z",bbl="3001230001";

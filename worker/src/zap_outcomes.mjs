@@ -25,8 +25,9 @@ import zoningStatistics from "./data/zoning_statistics.json" with { type: "json"
 import { attachZoningStatistics } from "./lib/zoning_statistics.mjs";
 import { attachProjectConnectionsSection } from "./project_connections.mjs";
 import { dualWriteZapProjectObservations } from "./lib/zap_project_source_records.mjs";
+import { extractZapHearingLogistics } from "./lib/zap_hearing_logistics.mjs";
 import { stampLandActionProcedureResolution } from "../../site/land_action_procedure_resolution.mjs";
-import { buildLandPhaseView, LAND_ULURP_PHASES } from "../../site/land_phase_spine.mjs";
+import { buildLandPhaseView } from "../../site/land_phase_spine.mjs";
 import { landStageEvidenceIsStale, landStageEvidenceObservedAt } from "../../site/land_outcome_runtime.mjs";
 // Do not static-import admin.mjs here: it pulls alerts.mjs → @jimdc/sendcap, and
 // test/land_event_spine.test.mjs imports buildZapOutcomeRecord from this module
@@ -65,7 +66,7 @@ export function stampLandStageObservation(record) {
   const key = view.current.evidence_source_id === "zap-project-api" ? "zap_api"
     : view.current.evidence_source_id === "nyc-open-data-zap" ? "open_data"
     : view.current.evidence_source_id === "city-record" ? "city_record" : null;
-  const observation = key ? record?.source_observations?.[key] : null;
+  const observation = view.current.evidence_observation || (key ? record?.source_observations?.[key] : null);
   return {
     ...record,
     stage_observation: {
@@ -173,20 +174,21 @@ function retainZapSourceEvidence(record, cached) {
       },
     },
   };
+  const dispositionById = new Map(dispositions.flatMap((row) => [
+    row?.id ? [row.id, row] : null,
+    ...(row?.source_ids || []).map((id) => [id, row]),
+  ].filter(Boolean)));
+  const hearingLogistics = extractZapHearingLogistics(merged).map((row) => {
+    const observation = dispositionById.get(row.disposition_id)?.source_observation;
+    return observation ? { ...row, source_observation: { ...observation } } : row;
+  });
+  merged.hearing_logistics = hearingLogistics.length ? hearingLogistics : null;
   merged.filled = outcomeIsFilled(merged);
   merged.spine = buildLandEventSpine(merged, {
     cityRecordNotices: merged.city_record_notices,
     noticeLookupStatus: acquisition.city_record || "ok",
   });
   const stamped = stampLandStageObservation(merged);
-  const candidatePhase = buildLandPhaseView(record.spine, record).current;
-  const mergedPhase = buildLandPhaseView(stamped.spine, stamped).current;
-  if (cached.stage_observation?.source_system === "zap_project_api"
-    && mergedPhase.evidence_source_id === "zap-project-api"
-    && candidatePhase.evidence_source_id !== "zap-project-api"
-    && LAND_ULURP_PHASES.indexOf(candidatePhase.phase_id) <= LAND_ULURP_PHASES.indexOf(mergedPhase.phase_id)) {
-    stamped.stage_observation = { ...cached.stage_observation };
-  }
   sourceAcquisitionState.set(stamped, acquisition);
   return stamped;
 }
