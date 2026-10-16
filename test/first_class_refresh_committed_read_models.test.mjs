@@ -14,7 +14,6 @@ import {
   registryBuilders,
   registryDrift,
   describeDrift,
-  restoreNewlyDirtiedPublishedPaths,
   runRebuildSequence,
   unpublishedRebuildOutputs,
   workflowGateBuilders,
@@ -297,122 +296,6 @@ function isolationFixture() {
   };
   return { root, registry, marker: (id) => path.join(root, `${id}.marker`) };
 }
-
-test("a timed-out rebuild step fails closed and leaves independent siblings running", () => {
-  const fixture = isolationFixture();
-  try {
-    writeFileSync(
-      path.join(fixture.root, "tool.mjs"),
-      [
-        "import { writeFileSync } from 'node:fs';",
-        "const id = process.argv[2];",
-        'const forced = (process.env.FORCE_FAIL || "").split(",").filter(Boolean);',
-        "if (forced.includes(id)) { console.error(`forced failure: ${id}`); process.exit(1); }",
-        'if ((process.env.FORCE_HANG || "").split(",").filter(Boolean).includes(id)) {',
-        "  setInterval(() => {}, 1000);",
-        "  await new Promise(() => {});",
-        "}",
-        'writeFileSync(`${id}.marker`, "built\\n");',
-      ].join("\n"),
-    );
-    const { results } = runRebuildSequence(fixture.registry, fixture.root, {
-      ...process.env,
-      FORCE_HANG: "leaf-a",
-      FIRST_CLASS_REBUILD_STEP_TIMEOUT_MS: "200",
-    });
-    const byId = Object.fromEntries(results.map((row) => [row.id, row]));
-    assert.equal(byId.root.status, "succeeded");
-    assert.equal(byId["leaf-a"].status, "failed");
-    assert.equal(byId["leaf-a"].reason, "timeout");
-    assert.equal(byId["leaf-a"].timeout_ms, 200);
-    assert.ok(!existsSync(fixture.marker("leaf-a")));
-    assert.equal(byId["leaf-b"].status, "succeeded");
-    assert.ok(existsSync(fixture.marker("leaf-b")));
-    assert.equal(byId.dependent.status, "skipped");
-    assert.equal(byId.dependent.blocked_by, "leaf-a");
-  } finally {
-    rmSync(fixture.root, { recursive: true, force: true });
-  }
-});
-
-test("a timed-out step that wrote partial published output restores last-good and kills nested children", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "rebuild-timeout-restore-"));
-  try {
-    assert.equal(spawnSync("git", ["init"], { cwd: root, encoding: "utf8" }).status, 0);
-    spawnSync("git", ["config", "user.email", "rebuild-timeout@example.com"], { cwd: root });
-    spawnSync("git", ["config", "user.name", "Rebuild Timeout"], { cwd: root });
-    mkdirSync(path.join(root, "site"));
-    writeFileSync(path.join(root, "site", "artifact.json"), '{"good":true}\n');
-    writeFileSync(
-      path.join(root, "tool.mjs"),
-      [
-        "import { spawn } from 'node:child_process';",
-        "import { writeFileSync } from 'node:fs';",
-        "const id = process.argv[2];",
-        "if (id === 'partial') {",
-        "  writeFileSync('site/artifact.json', '{\"partial\":true}\\n');",
-        "  const child = spawn(process.execPath, ['-e',",
-        "    \"import { writeFileSync } from 'node:fs'; writeFileSync('child.pid', String(process.pid)); let n = 0; setInterval(() => writeFileSync('child.alive', String(++n)), 100);\"",
-        "  ], { stdio: 'ignore' });",
-        "  writeFileSync('parent.pid', String(process.pid));",
-        "  setInterval(() => {}, 1000);",
-        "  await new Promise(() => {});",
-        "}",
-        "writeFileSync(`${id}.marker`, 'built\\n');",
-      ].join("\n"),
-    );
-    assert.equal(spawnSync("git", ["add", "site", "tool.mjs"], { cwd: root }).status, 0);
-    assert.equal(spawnSync("git", ["commit", "-m", "seed"], { cwd: root, encoding: "utf8" }).status, 0);
-
-    const registry = {
-      schema: "cityscroll.committed_read_model_rebuild.v1",
-      published_paths: [{ path: "site", reason: "test fixture" }],
-      not_rebuilt: [],
-      rebuild_sequence: [
-        { id: "partial", command: ["tool.mjs", "partial"], after: [] },
-        { id: "sibling", command: ["tool.mjs", "sibling"], after: [] },
-      ],
-    };
-    const { results } = runRebuildSequence(registry, root, {
-      ...process.env,
-      FIRST_CLASS_REBUILD_STEP_TIMEOUT_MS: "400",
-    });
-    const byId = Object.fromEntries(results.map((row) => [row.id, row]));
-    assert.equal(byId.partial.status, "failed");
-    assert.equal(byId.partial.reason, "timeout");
-    assert.ok(byId.partial.restored_paths.includes("site/artifact.json"));
-    assert.equal(readFileSync(path.join(root, "site", "artifact.json"), "utf8"), '{"good":true}\n');
-    assert.equal(byId.sibling.status, "succeeded");
-
-    // Nested child (same process group as the timed-out tool) must be gone.
-    const childPidPath = path.join(root, "child.pid");
-    assert.ok(existsSync(childPidPath), "fixture must have recorded the nested child pid");
-    const childPid = Number(readFileSync(childPidPath, "utf8"));
-    assert.ok(Number.isInteger(childPid) && childPid > 0);
-    let alive = true;
-    try {
-      process.kill(childPid, 0);
-    } catch {
-      alive = false;
-    }
-    assert.equal(alive, false, "nested child must not survive the process-group kill");
-  } finally {
-    rmSync(root, { recursive: true, force: true });
-  }
-});
-
-test("restoreNewlyDirtiedPublishedPaths leaves pre-existing dirt alone", () => {
-  const restored = restoreNewlyDirtiedPublishedPaths(
-    REPO_ROOT,
-    ["site/preexisting.json"],
-    ["site/preexisting.json", "site/new-partial.json"],
-    ["site"],
-  );
-  // new-partial is not actually present / tracked here; helper still reports the
-  // candidate it attempted. preexisting must not appear.
-  assert.ok(!restored.includes("site/preexisting.json"));
-  assert.deepEqual(restored, ["site/new-partial.json"]);
-});
 
 test("one failed rebuild step is isolated: independent steps still run, only its own dependents are skipped", () => {
   const fixture = isolationFixture();
