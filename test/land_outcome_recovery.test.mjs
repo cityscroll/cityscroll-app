@@ -5,6 +5,7 @@ import * as phaseTools from "../site/land_phase_spine.mjs";
 import { createLandOutcomeRuntime } from "../site/land_outcome_runtime.mjs";
 import { startMorningZapOutcomes, withWorkerAcquisitionReceipt } from "../worker/src/lib/worker_acquisition_runtime.mjs";
 import { refreshZapProjectsLookup, ZAP_PROJECTS_LOOKUP_KV_KEY } from "../worker/src/zap_projects_lookup.mjs";
+import { buildZapProjectsLookupDoc, committedZapProjectsLookupFloor } from "../worker/src/lib/zap_projects_lookup_kv.mjs";
 import { compactZapOutcomeRecord, buildLandDefaultSnapshot } from "../tools/lib/batch_precompute_snapshots.mjs";
 
 // Selected public milestone fields from the October 16, 2026 publisher capture.
@@ -350,6 +351,55 @@ test("lookup refresh retains seeded clocks and observes reacquired rows",async()
     assert.equal(runtime.evidenceState(runtime.get(seedId).data).stale,true);
     assert.match(runtime.freshnessHTML(runtime.get(seedId).data),/2026-09-30/);
     assert.equal(runtime.evidenceState(runtime.get(freshId).data).stale,false);
+  }finally{globalThis.fetch=original;}
+});
+
+test("legacy carried lookup rows remain unknown while the committed floor keeps its clock",async()=>{
+  const original=globalThis.fetch;
+  const id="2022M0258";
+  const thin={data:{id,type:"projects",attributes:{"dcp-name":id,"dcp-projectname":"Legacy Project"}},included:[]};
+  globalThis.fetch=async url=>new Response(JSON.stringify(String(url).includes("herokuapp.com")?thin:[]));
+  try{
+    const legacy=buildZapProjectsLookupDoc([],{now:TEST_NOW,floor:{
+      materialized_at:"2026-09-01T00:00:00Z",
+      rows:[{project_id:id,project_name:"Legacy Project",public_status:"In Public Review",current_milestone:"Community Board Referral"}],
+    }});
+    for(const row of legacy.rows)delete row.source_observation;
+    const ambiguous=await buildZapOutcomeRecord(id,{fetchBbl:false,lookupDoc:legacy,now:()=>TEST_NOW});
+    assert.equal(ambiguous.join.matched,true);
+    assert.equal(ambiguous.source_observations.open_data.observed_at,null);
+    assert.equal(ambiguous.stage_observation.observed_at,null);
+    assert.equal(browser().runtime.evidenceState({record:ambiguous}).stale,true);
+
+    const floor=committedZapProjectsLookupFloor();
+    const committed=await buildZapOutcomeRecord(id,{fetchBbl:false,lookupDoc:floor,now:()=>TEST_NOW});
+    assert.equal(committed.source_observations.open_data.observed_at,floor.materialized_at);
+  }finally{globalThis.fetch=original;}
+});
+
+test("empty SODA lookup retains cached evidence with a failed attempt receipt",async()=>{
+  const original=globalThis.fetch;
+  const id="EMPTY1";
+  const cached={project_id:id,project_name:"Cached Project",generated_at:"2026-09-28T00:00:00Z",
+    join:{matched:true},open_data:{project_id:id,current_milestone:"Community Board Referral"},
+    source_observations:{open_data:{source_system:"zap_projects_open_data",acquisition_status:"ok",
+      observation_status:"observed",observed_at:"2026-09-28T00:00:00Z"}}};
+  const values=new Map([[kvKey(id),JSON.stringify(cached)]]);
+  const env={ALERT_STATE:{get:async key=>values.get(key)||null,put:async(key,value)=>values.set(key,value)}};
+  const thin={data:{id,type:"projects",attributes:{"dcp-name":id,"dcp-projectname":"Thin Project"}},included:[]};
+  globalThis.fetch=async url=>new Response(JSON.stringify(String(url).includes("herokuapp.com")?thin:[]));
+  try{
+    const candidate=await buildZapOutcomeRecord(id,{fetchBbl:false,lookupDoc:{rows:[]},now:()=>TEST_NOW});
+    assert.equal(candidate.join.matched,true);
+    assert.equal(candidate.source_observations.open_data.acquisition_status,"unavailable");
+    assert.equal(candidate.source_observations.open_data.observed_at,null);
+    const result=await prewarmOneZapOutcome(env,id,{force:true,nowMs:TEST_NOW_MS,build:async()=>candidate});
+    assert.equal(result.status,"failed");
+    assert.equal(result.reason,"source-unavailable:open_data");
+    assert.deepEqual(JSON.parse(values.get(kvKey(id))),cached);
+    const attempt=JSON.parse(values.get(`${kvKey(id)}:attempt`));
+    assert.equal(attempt.status,"failed");
+    assert.equal(attempt.retained_generated_at,cached.generated_at);
   }finally{globalThis.fetch=original;}
 });
 

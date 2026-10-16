@@ -18,7 +18,7 @@ import {
 } from "./lib/zap_outcomes.mjs";
 import { extractUlurpKeys } from "./lib/ulurp_recommendations_join.mjs";
 import { lookupZapFromWarehouseMaterialization, warehouseZapMaterializationMeta } from "./lib/zap_warehouse_lookup.mjs";
-import { loadZapProjectsLookup, shapeZapLookupRow } from "./lib/zap_projects_lookup_kv.mjs";
+import { committedZapProjectsLookupFloor, loadZapProjectsLookup, shapeZapLookupRow } from "./lib/zap_projects_lookup_kv.mjs";
 import { lookupZapBblsFromWarehouseMaterialization } from "./lib/zap_bbl_warehouse_lookup.mjs";
 import { attachUlurpStatutoryPredictions } from "./lib/ulurp_statutory_predictions.mjs";
 import zoningStatistics from "./data/zoning_statistics.json" with { type: "json" };
@@ -561,9 +561,13 @@ export async function fetchOpenDataRow(projectId, { lookupDoc, observedAt = new 
   const wh = lookupZapFromWarehouseMaterialization(id, lookupDoc);
   if (wh.hit && wh.row) {
     const observation = wh.row.source_observation;
+    const materialization = warehouseZapMaterializationMeta(lookupDoc);
+    const floorObservedAt = committedZapProjectsLookupFloor().materialized_at || null;
     const observedAt = observation && Object.hasOwn(observation, "observed_at")
       ? observation.observed_at
-      : warehouseZapMaterializationMeta(lookupDoc).materialized_at;
+      : lookupDoc?.source === "soda" && materialization.materialized_at !== floorObservedAt
+        ? null
+        : materialization.materialized_at;
     return markSourceAcquisition({ ...wh.row, lookup_path: "warehouse" }, "ok", observedAt);
   }
 
@@ -584,7 +588,7 @@ export async function fetchOpenDataRow(projectId, { lookupDoc, observedAt = new 
   } catch {
     return markSourceAcquisition({ project_id: id, lookup_path: "soda" }, "unavailable");
   }
-  return markSourceAcquisition({ project_id: id, lookup_path: "soda" }, "ok", observedAt);
+  return markSourceAcquisition({ project_id: id, lookup_path: "soda" }, "unavailable");
 }
 
 async function fetchCityRecordCandidates(openData, projectName) {
