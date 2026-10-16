@@ -235,6 +235,70 @@ test("display freshness follows the source that selects the current stage",()=>{
   assert.equal(runtime.evidenceState({record:unknown}).stale,true);
 });
 
+test("materialized stage clocks preserve lookup, SODA, ZAP, and Noticed provenance",async()=>{
+  const original=globalThis.fetch;
+  const id="CLOCK3";
+  const thin={data:{id,type:"projects",attributes:{"dcp-name":id,"dcp-projectname":"Clock Project"}},included:[]};
+  const row={project_id:id,project_name:"Clock Project",public_status:"In Public Review",current_milestone:"Community Board Referral"};
+  let sodaRows=[];
+  globalThis.fetch=async url=>{
+    const value=String(url);
+    if(value.includes("herokuapp.com"))return new Response(JSON.stringify(thin));
+    if(value.includes("hgx4-8ukb"))return new Response(JSON.stringify(sodaRows));
+    return new Response("[]");
+  };
+  try{
+    const old="2026-09-01T00:00:00Z";
+    const stale=await buildZapOutcomeRecord(id,{fetchBbl:false,lookupDoc:{materialized_at:old,rows:[row]}});
+    assert.equal(stale.source_observations.open_data.observed_at,old);
+    assert.equal(stale.stage_observation.observed_at,old);
+    const snapshot=buildLandDefaultSnapshot([{project_id:id}],{outcomesByProject:{[id]:stale}});
+    const {runtime}=browser();
+    runtime.seed(snapshot);
+    const cached=runtime.get(id).data;
+    assert.equal(cached.record.stage_observation.observed_at,old);
+    assert.equal(runtime.evidenceState(cached).stale,true);
+    assert.match(runtime.freshnessHTML(cached),/2026-09-01/);
+
+    const freshLookup=await buildZapOutcomeRecord(id,{fetchBbl:false,lookupDoc:{materialized_at:TEST_NOW,rows:[{
+      ...row,environmental_projection:{as_of:old},authority_summary:{freshness:{as_of:old}},
+    }]}});
+    assert.equal(freshLookup.source_observations.open_data.observed_at,TEST_NOW);
+    assert.equal(freshLookup.stage_observation.observed_at,TEST_NOW);
+
+    const unknown=await buildZapOutcomeRecord(id,{fetchBbl:false,lookupDoc:{rows:[row]}});
+    assert.equal(unknown.source_observations.open_data.observed_at,null);
+    assert.equal(unknown.stage_observation.observed_at,null);
+
+    const noticed=await buildZapOutcomeRecord(id,{fetchBbl:false,lookupDoc:{materialized_at:TEST_NOW,rows:[{
+      ...row,public_status:"Noticed",current_milestone:null,
+    }]}});
+    assert.equal(phaseTools.buildLandPhaseView(noticed.spine,noticed).current.phase_id,"pre_certification");
+    assert.equal(noticed.stage_observation.source_system,"zap_projects_open_data");
+    assert.equal(noticed.stage_observation.observed_at,TEST_NOW);
+
+    const detailed=structuredClone(fixture);
+    detailed.data.id=id;
+    detailed.data.attributes["dcp-name"]=id;
+    globalThis.fetch=async url=>new Response(JSON.stringify(String(url).includes("herokuapp.com")?detailed:[]));
+    const freshZap=await buildZapOutcomeRecord(id,{fetchBbl:false,lookupDoc:{materialized_at:old,rows:[row]}});
+    assert.equal(phaseTools.buildLandPhaseView(freshZap.spine,freshZap).current.phase_id,"borough_president");
+    assert.equal(freshZap.stage_observation.source_system,"zap_project_api");
+    assert.notEqual(freshZap.stage_observation.observed_at,old);
+
+    sodaRows=[row];
+    globalThis.fetch=async url=>{
+      const value=String(url);
+      if(value.includes("herokuapp.com"))return new Response(JSON.stringify(thin));
+      if(value.includes("hgx4-8ukb"))return new Response(JSON.stringify(sodaRows));
+      return new Response("[]");
+    };
+    const direct=await buildZapOutcomeRecord(id,{fetchBbl:false,lookupDoc:{rows:[]},now:()=>TEST_NOW});
+    assert.equal(direct.source_observations.open_data.observed_at,TEST_NOW);
+    assert.equal(direct.stage_observation.observed_at,direct.source_observations.open_data.observed_at);
+  }finally{globalThis.fetch=original;}
+});
+
 test("raw completed hearing remains CPC progress until the publisher vote",async()=>{
   const original=globalThis.fetch;
   const completedHearing=structuredClone(fixture);
@@ -478,4 +542,18 @@ test("morning outcomes await one same-cycle lookup and survive its failure",asyn
     async()=>{throw new Error("lookup unavailable");});
   await Promise.all(failed);
   assert.equal(order.at(-1),"fallback-outcomes");
+});
+
+test("morning orchestration forces fresh cached outcomes after lookup refresh",async()=>{
+  const id="FORCE1",rows=new Map(),retained=[];
+  rows.set(kvKey(id),JSON.stringify({project_id:id,join:{matched:true},generated_at:TEST_NOW,lookup_version:"old"}));
+  const env={ALERT_STATE:{get:async key=>rows.get(key)||null,put:async(key,value)=>rows.set(key,value)}};
+  let lookupVersion="old";
+  startMorningZapOutcomes({waitUntil:p=>retained.push(p)},env,"test",refreshZapOutcomes,
+    {log(){},error(){}},async()=>{lookupVersion="new";},{
+      projectIds:[id],nowMs:TEST_NOW_MS,
+      build:async()=>({project_id:id,join:{matched:true},generated_at:TEST_NOW,lookup_version:lookupVersion}),
+    });
+  await Promise.all(retained);
+  assert.equal(JSON.parse(rows.get(kvKey(id))).lookup_version,"new");
 });

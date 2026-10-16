@@ -17,7 +17,7 @@ import {
   outcomeIsFilled,
 } from "./lib/zap_outcomes.mjs";
 import { extractUlurpKeys } from "./lib/ulurp_recommendations_join.mjs";
-import { lookupZapFromWarehouseMaterialization } from "./lib/zap_warehouse_lookup.mjs";
+import { lookupZapFromWarehouseMaterialization, warehouseZapMaterializationMeta } from "./lib/zap_warehouse_lookup.mjs";
 import { loadZapProjectsLookup, shapeZapLookupRow } from "./lib/zap_projects_lookup_kv.mjs";
 import { lookupZapBblsFromWarehouseMaterialization } from "./lib/zap_bbl_warehouse_lookup.mjs";
 import { attachUlurpStatutoryPredictions } from "./lib/ulurp_statutory_predictions.mjs";
@@ -57,12 +57,13 @@ const CITY_RECORD_SELECT = [
   "printout_1", "printout_2", "printout_3",
 ].join(",");
 const sourceAcquisitionState = new WeakMap();
+const sourceObservationState = new WeakMap();
 
 export function stampLandStageObservation(record) {
   const view = buildLandPhaseView(record?.spine, record || {});
   const key = view.current.evidence_source_id === "zap-project-api" ? "zap_api"
     : view.current.evidence_source_id === "nyc-open-data-zap" ? "open_data"
-    : view.current.evidence_source_id === "city-record-online" ? "city_record" : null;
+    : view.current.evidence_source_id === "city-record" ? "city_record" : null;
   const observation = key ? record?.source_observations?.[key] : null;
   return {
     ...record,
@@ -73,8 +74,9 @@ export function stampLandStageObservation(record) {
   };
 }
 
-function markSourceAcquisition(value, status) {
+function markSourceAcquisition(value, status, observedAt = null) {
   sourceAcquisitionState.set(value, status);
+  sourceObservationState.set(value, { observed_at: observedAt });
   return value;
 }
 
@@ -553,12 +555,13 @@ async function fetchJson(url, timeoutMs = 12000) {
  * ZAP Open Data project row: warehouse materialization first (WH-05), then live SODA.
  * Returns the SODA-shaped row (always includes project_id). Attaches lookup_path when known.
  */
-export async function fetchOpenDataRow(projectId, { lookupDoc } = {}) {
+export async function fetchOpenDataRow(projectId, { lookupDoc, observedAt = new Date().toISOString() } = {}) {
   const id = String(projectId || "").trim();
   // WH-05: instant hit from live KV lookup (or committed twin) before live SODA.
   const wh = lookupZapFromWarehouseMaterialization(id, lookupDoc);
   if (wh.hit && wh.row) {
-    return markSourceAcquisition({ ...wh.row, lookup_path: "warehouse" }, "ok");
+    const observedAt = warehouseZapMaterializationMeta(lookupDoc).materialized_at;
+    return markSourceAcquisition({ ...wh.row, lookup_path: "warehouse" }, "ok", observedAt);
   }
 
   // Live SODA fallback when the materialization lacks this project_id.
@@ -573,12 +576,12 @@ export async function fetchOpenDataRow(projectId, { lookupDoc } = {}) {
     if (!Array.isArray(rows)) throw new Error("invalid-open-data-response");
     if (Array.isArray(rows) && rows[0]) {
       const shaped = shapeZapLookupRow(rows[0]);
-      return markSourceAcquisition({ ...(shaped || rows[0]), lookup_path: "soda" }, "ok");
+      return markSourceAcquisition({ ...(shaped || rows[0]), lookup_path: "soda" }, "ok", observedAt);
     }
   } catch {
     return markSourceAcquisition({ project_id: id, lookup_path: "soda" }, "unavailable");
   }
-  return markSourceAcquisition({ project_id: id, lookup_path: "soda" }, "ok");
+  return markSourceAcquisition({ project_id: id, lookup_path: "soda" }, "ok", observedAt);
 }
 
 async function fetchCityRecordCandidates(openData, projectName) {
@@ -675,7 +678,7 @@ async function fetchDobForBbls(bbls) {
 /**
  * Build one outcome record for a project_id (Open Data + ZAP API + optional DOB).
  */
-export async function buildZapOutcomeRecord(projectId, { fetchBbl = true, lookupDoc } = {}) {
+export async function buildZapOutcomeRecord(projectId, { fetchBbl = true, lookupDoc, now = () => new Date().toISOString() } = {}) {
   const id = String(projectId || "").trim();
   if (!id) {
     return {
@@ -686,7 +689,7 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true, lookup
     };
   }
 
-  const openData = await fetchOpenDataRow(id, { lookupDoc });
+  const openData = await fetchOpenDataRow(id, { lookupDoc, observedAt: now() });
   let apiPayload = null;
   try {
     apiPayload = await fetchJson(
@@ -747,7 +750,7 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true, lookup
     dob,
     bbls: Array.isArray(bbls) ? bbls : [],
     filled: outcomeIsFilled(record),
-    generated_at: new Date().toISOString(),
+    generated_at: now(),
   };
   const candidateResult = await fetchCityRecordCandidates(openData, record.project_name);
   const cityRecordNotices = joinCityRecordLandNotices(
@@ -807,11 +810,7 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true, lookup
         source_system: "zap_projects_open_data",
         acquisition_status: acquisition.open_data,
         observation_status: acquisition.open_data === "ok" ? "observed" : "unavailable",
-        observed_at: acquisition.open_data === "ok"
-          ? (openData?.environmental_projection?.as_of
-            || openData?.authority_summary?.freshness?.as_of
-            || assembled.generated_at)
-          : null,
+        observed_at: acquisition.open_data === "ok" ? sourceObservationState.get(openData)?.observed_at || null : null,
         attempted_at: assembled.generated_at,
       },
       city_record: {

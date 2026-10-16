@@ -752,7 +752,8 @@ export function buildLandPhaseView(spine, opts = {}) {
   const currentEvidenceEvents = [...(byPhase[currentPhaseId] || [])].reverse();
   const currentEvidenceEvent = currentEvidenceEvents.find(eventIsInProgress)
     || currentEvidenceEvents.find((event) => eventIsActualProgress(event) && !event._synthetic)
-    || currentEvidenceEvents.find((event) => !event._synthetic);
+    || currentEvidenceEvents.find((event) => !event._synthetic)
+    || currentEvidenceEvents.find((event) => event._synthetic);
   const currentEvidenceSourceId = derived.reason === "open_data_milestone" ? "nyc-open-data-zap"
     : derived.reason === "default_pre_application" ? null
     : currentEvidenceEvent?.source?.id || (completedLike ? "nyc-open-data-zap" : null);

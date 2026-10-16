@@ -43,7 +43,7 @@ export async function withWorkerAcquisitionReceipt(env, sourceContractId, runId,
   }
 }
 
-export function startMorningZapOutcomes(ctx, env, runId, refreshZapOutcomes, logger = console, refreshLookup = null) {
+export function startMorningZapOutcomes(ctx, env, runId, refreshZapOutcomes, logger = console, refreshLookup = null, refreshOptions = {}) {
   const task = (async () => {
     if (refreshLookup) {
       try {
@@ -53,7 +53,7 @@ export function startMorningZapOutcomes(ctx, env, runId, refreshZapOutcomes, log
       }
     }
     try {
-      const result = await withWorkerAcquisitionReceipt(env, "zap-api-outcomes", runId, () => refreshZapOutcomes(env));
+      const result = await withWorkerAcquisitionReceipt(env, "zap-api-outcomes", runId, () => refreshZapOutcomes(env, { ...refreshOptions, force: true }));
       logger.log("zap outcomes prewarm:", JSON.stringify(result));
     } catch (error) {
       logger.error("zap outcomes prewarm failed:", String(error?.message || error));
