@@ -52,6 +52,18 @@ export function createLandOutcomeRuntime({
     };
   }
 
+  async function refreshDisplay(projectId) {
+    const warm = get(projectId);
+    const payload = await fetch(projectId, { allowStatic: false });
+    return {
+      payload,
+      ...display(payload, {
+        fallback: warm?.data,
+        failed: !payload || payload.ok === false || !payload.record,
+      }),
+    };
+  }
+
   function seed(snapshot) {
     const byProject = snapshot?.outcomes?.by_project || {};
     const generatedAt = snapshot?.generated_at || null;
@@ -114,5 +126,5 @@ export function createLandOutcomeRuntime({
     });
   }
 
-  return { cache, ttlMs, get, seed, fetch, evidenceState, freshnessHTML, recordForDisplay, display };
+  return { cache, ttlMs, get, seed, fetch, evidenceState, freshnessHTML, recordForDisplay, display, refreshDisplay };
 }

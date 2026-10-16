@@ -69,6 +69,7 @@ import {
 import { landFilingEvidenceFilterFromControls } from "../land_filing_evidence_facet.mjs";
 import { mtxHTML } from "../land_outcomes_matrix.mjs";
 import { createLandOutcomeRuntime } from "../land_outcome_runtime.mjs";
+import { escapeHtml as escapeLandOutcomeHtml } from "../text_clean.mjs";
 import { attachLandLotSourceDigests, landLotSourceDigestsHTML, loadLandLotSourceDigests } from "../land_lot_source_digests.mjs";
 import {
   fetchBrowseScoped,
@@ -1465,7 +1466,7 @@ const landOutcomeRuntime=createLandOutcomeRuntime({
   normalizeRecord:normalizeLandRecord,
   translate:t,
   formatDate:fdate,
-  escapeHTML:escUiHtml,
+  escapeHTML:escapeLandOutcomeHtml,
   connectionTools:ensureProjectConnectionsTools,
   fetchResponse:(id,accepts)=>workerFetch("/zap-outcomes?id="+encodeURIComponent(id),null,12000,accepts),
 });
@@ -1563,6 +1564,7 @@ async function paintProjectConnections(record,selection){
 const landOutcomeFreshnessHTML=landOutcomeRuntime.freshnessHTML;
 const landOutcomeRecordForDisplay=landOutcomeRuntime.recordForDisplay;
 const landOutcomeDisplay=landOutcomeRuntime.display;
+const refreshLandOutcomeDisplay=landOutcomeRuntime.refreshDisplay;
 const zapOutcomesMemGet=landOutcomeRuntime.get;
 const fetchZapOutcomesPayload=landOutcomeRuntime.fetch;
 function prefetchZapOutcomesForList(rows){
@@ -1617,14 +1619,15 @@ async function loadZapOutcomes(r, el, selection){
       return;
     }
   }
-  const [data, phaseTools] = await Promise.all([
-    fetchZapOutcomesPayload(r.project_id,{allowStatic:false}),
+  const [refresh, phaseTools] = await Promise.all([
+    refreshLandOutcomeDisplay(r.project_id),
     phaseToolsP
   ]);
+  const data=refresh.payload;
   if(selection !== undefined && selection !== landSelectionSeq) return;
   if(!document.contains(el)) return;
   if(!data || data.ok === false || !data.record){
-    const display=landOutcomeDisplay(data,{fallback:warm?.data,failed:true});
+    const display=refresh;
     const fallback=display.record;
     el.innerHTML=display.freshness+(fallback?landOutcomesHTML(fallback,phaseTools,r):"");
     bindLandSpineUI(el);
@@ -1636,7 +1639,7 @@ async function loadZapOutcomes(r, el, selection){
     });
     return;
   }
-  const display=landOutcomeDisplay(data);
+  const display=refresh;
   const record=display.record;
   await paintProjectConnections(record,selection);
   if(selection !== undefined && selection !== landSelectionSeq) return;
@@ -1738,14 +1741,12 @@ async function loadNoticeLandSpine(r, el){
     project_id:resolution.project_id
   };
 
-  const warm=zapOutcomesMemGet(resolution.project_id);
   const phaseToolsP=ensureLandPhaseSpineTools();
-  const [data, phaseTools]=await Promise.all([
-    fetchZapOutcomesPayload(resolution.project_id),
+  const [display, phaseTools]=await Promise.all([
+    refreshLandOutcomeDisplay(resolution.project_id),
     phaseToolsP
   ]);
   if(!document.contains(el)) return;
-  const display=landOutcomeDisplay(data,{fallback:warm?.data,failed:!data||data.ok===false||!data.record});
   if(!display.record){
     el.innerHTML="";
     return;

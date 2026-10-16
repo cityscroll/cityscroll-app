@@ -157,6 +157,29 @@ test("browser outcome runtime supplies its production clock by default",()=>{
   assert.equal(runtime.get("CLOCK1").data.record,record);
 });
 
+test("notice refresh bypasses a warm static snapshot and retains it on failure",async()=>{
+  const {runtime,setResponse}=browser();
+  const id="STATIC1";
+  const stale={project_id:id,generated_at:"2026-10-02T00:00:00Z",stage:"community_board",spine:{events:[]}};
+  runtime.seed({generated_at:stale.generated_at,outcomes:{by_project:{[id]:stale}}});
+  let requests=0;
+  const fresh={...stale,generated_at:new Date().toISOString(),stage:"borough_president"};
+  setResponse(async()=>{
+    requests+=1;
+    return new Response(JSON.stringify({ok:true,record:fresh}));
+  });
+  const recovered=await runtime.refreshDisplay(id);
+  assert.equal(requests,1);
+  assert.equal(recovered.record.stage,"borough_president");
+  const failed=browser();
+  failed.runtime.seed({generated_at:stale.generated_at,outcomes:{by_project:{[id]:stale}}});
+  failed.setResponse(async()=>new Response("blocked",{status:403}));
+  const retained=await failed.runtime.refreshDisplay(id);
+  assert.equal(retained.record.stage,"community_board");
+  assert.equal(retained.record.generated_at,stale.generated_at);
+  assert.match(retained.freshness,/land_outcome_update_failed/);
+});
+
 test("frozen publisher evidence refreshes older CB cache through materializer, endpoint and renderer",async()=>{
   const original=globalThis.fetch;
   const rows=new Map();
