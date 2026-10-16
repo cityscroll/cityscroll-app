@@ -143,13 +143,18 @@ test("prewarmZapOutcomes: bounded, fail-soft, summary counts", async () => {
   assert.equal(summary.skipped, 1);
   assert.equal(summary.computed, 1);
   assert.equal(summary.failed, 1);
+  assert.deepEqual(summary.failure_reasons, ["upstream"]);
   assert.ok(await store.get(kvKey("B")));
 });
 
-test("refreshZapOutcomes: no-kv skip; lists + prewarms with fixture fetch", async () => {
+test("refreshZapOutcomes: no-kv failure; lists + prewarms with fixture fetch", async () => {
   const bare = await refreshZapOutcomes({});
-  assert.equal(bare.status, "skipped");
+  assert.equal(bare.status, "failed");
   assert.equal(bare.reason, "no-kv");
+
+  const unbound = await prewarmZapOutcomes({}, ["2023Q0315"]);
+  assert.equal(unbound.failed, 1);
+  assert.deepEqual(unbound.failure_reasons, ["no-kv"]);
 
   const store = kv();
   const env = { ALERT_STATE: store };
@@ -178,7 +183,7 @@ test("refreshZapOutcomes: no-kv skip; lists + prewarms with fixture fetch", asyn
   assert.equal(body.record.project_id, "2023Q0315");
 });
 
-test("handleAdminZapOutcomesRefresh: auth + no-kv skip (no network)", async () => {
+test("handleAdminZapOutcomesRefresh: auth + no-kv failure (no network)", async () => {
   const noKey = await handleAdminZapOutcomesRefresh(
     new Request("https://w/admin/zap-outcomes-refresh", { method: "POST" }),
     {},
@@ -203,7 +208,7 @@ test("handleAdminZapOutcomesRefresh: auth + no-kv skip (no network)", async () =
   );
   assert.equal(ok.status, 200);
   const body = await ok.json();
-  assert.equal(body.status, "skipped");
+  assert.equal(body.status, "failed");
   assert.equal(body.reason, "no-kv");
   assert.ok(body.triggeredAt);
 });

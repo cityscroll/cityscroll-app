@@ -386,6 +386,7 @@ export async function prewarmZapOutcomes(env, projectIds, {
   let failed = 0;
   let partial = 0;
   let attemptReceiptFailed = 0;
+  const failureReasons = new Set();
   const dualWrite = { written: 0, failed: 0, rejected: 0 };
   const wave = Math.max(1, Math.min(Number(concurrency) || ZAP_PREWARM_CONCURRENCY, 8));
 
@@ -397,7 +398,10 @@ export async function prewarmZapOutcomes(env, projectIds, {
     for (const r of results) {
       if (r.status === "computed") computed++;
       else if (r.status === "skipped") skipped++;
-      else failed++;
+      else {
+        failed++;
+        if (r.reason) failureReasons.add(r.reason);
+      }
       if (r.partial_sources?.length) partial++;
       if (r.attempt_receipt?.status === "failed") attemptReceiptFailed++;
       if (r.dual_write) {
@@ -413,6 +417,7 @@ export async function prewarmZapOutcomes(env, projectIds, {
     skipped,
     failed,
     partial,
+    failure_reasons: [...failureReasons].sort(),
     attempt_receipt_failed: attemptReceiptFailed,
     dual_write: dualWrite,
   };
@@ -424,7 +429,7 @@ export async function prewarmZapOutcomes(env, projectIds, {
  */
 export async function refreshZapOutcomes(env, opts = {}) {
   if (!env?.ALERT_STATE) {
-    return { status: "skipped", reason: "no-kv" };
+    return { status: "failed", reason: "no-kv" };
   }
   const max = opts.max ?? ZAP_PREWARM_MAX;
   const force = opts.force === true;
@@ -462,6 +467,7 @@ export async function refreshZapOutcomes(env, opts = {}) {
   const reason = listing.failed && !listing.succeeded ? "roster-unavailable"
     : listing.failed ? "roster-partial"
       : summary.partial ? "source-partial"
+        : summary.failure_reasons.includes("no-kv") ? "no-kv"
         : !summary.requested ? "empty-roster"
           : !summary.failed && !summary.computed ? "already-fresh" : null;
   return {

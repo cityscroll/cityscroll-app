@@ -32,8 +32,9 @@ public read access.
 - Failed acquisition leaves the previous record untouched. A separate
   `<outcome-key>:attempt` KV record carries the attempt time and result.
 - Refresh summaries distinguish `ok`, `partial`, `failed`, and `skipped`.
-  Skips distinguish `already-fresh`, `empty-roster`, and `no-kv`. Scheduled
-  acquisition receipts map skipped work to `held`, never new successful acquisition.
+  Skips distinguish `already-fresh` and `empty-roster`; a missing KV binding is
+  a `no-kv` failure. Scheduled acquisition receipts map skipped work to `held`,
+  never new successful acquisition.
 
 Outcome acquisition starts independently in the existing 08:00 UTC morning
 window, so digest delivery and unrelated advisory jobs cannot prevent it from

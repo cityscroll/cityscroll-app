@@ -300,13 +300,22 @@ test("A3: retained Chromium measurements cover all six at named viewports and no
     inputs: provenance.inputs,
   });
   assert.equal(retainedStatus.ok, true, `${retainedStatus.reason}: ${retainedStatus.changedInputs.join(", ")}`);
-  assert.equal(productionReceipt.retained_measurement.revision, provenance.revision);
+  const productionProvenance = production.retained_measurement_provenance;
+  assert.equal(productionReceipt.retained_measurement.revision, productionProvenance.revision);
   assert.equal(productionReceipt.retained_measurement.inputs_ref, "#/measurement_provenance/inputs");
   const productionStatus = retainedMeasurementStatus(ROOT, {
-    revision: productionReceipt.repository_revision,
-    inputs: provenance.inputs,
+    revision: productionProvenance.revision,
+    inputs: productionProvenance.inputs,
   });
-  assert.equal(productionStatus.ok, true, `${productionStatus.reason}: ${productionStatus.changedInputs.join(", ")}`);
+  const currentInputs = new Map(provenance.inputs.map((input) => [input.path, input.sha256]));
+  const productionInputs = new Map(productionProvenance.inputs.map((input) => [input.path, input.sha256]));
+  const changedProductionInputs = [...new Set([...currentInputs.keys(), ...productionInputs.keys()])]
+    .filter((path) => currentInputs.get(path) !== productionInputs.get(path))
+    .sort();
+  assert.deepEqual(production.release_alignment.changed_inputs, changedProductionInputs);
+  assert.equal(production.release_alignment.state, changedProductionInputs.length ? "stale" : "current");
+  assert.deepEqual(productionStatus.changedInputs,
+    changedProductionInputs.filter((path) => productionInputs.has(path)));
   assert.equal(
     spawnSync(
       "git",
