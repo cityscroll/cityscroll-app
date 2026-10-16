@@ -14,6 +14,7 @@ import {
   registryBuilders,
   registryDrift,
   describeDrift,
+  restoreNewlyDirtiedPublishedPaths,
   runRebuildSequence,
   unpublishedRebuildOutputs,
   workflowGateBuilders,
@@ -332,6 +333,85 @@ test("a timed-out rebuild step fails closed and leaves independent siblings runn
   } finally {
     rmSync(fixture.root, { recursive: true, force: true });
   }
+});
+
+test("a timed-out step that wrote partial published output restores last-good and kills nested children", () => {
+  const root = mkdtempSync(path.join(tmpdir(), "rebuild-timeout-restore-"));
+  try {
+    assert.equal(spawnSync("git", ["init"], { cwd: root, encoding: "utf8" }).status, 0);
+    spawnSync("git", ["config", "user.email", "rebuild-timeout@example.com"], { cwd: root });
+    spawnSync("git", ["config", "user.name", "Rebuild Timeout"], { cwd: root });
+    mkdirSync(path.join(root, "site"));
+    writeFileSync(path.join(root, "site", "artifact.json"), '{"good":true}\n');
+    writeFileSync(
+      path.join(root, "tool.mjs"),
+      [
+        "import { spawn } from 'node:child_process';",
+        "import { writeFileSync } from 'node:fs';",
+        "const id = process.argv[2];",
+        "if (id === 'partial') {",
+        "  writeFileSync('site/artifact.json', '{\"partial\":true}\\n');",
+        "  const child = spawn(process.execPath, ['-e',",
+        "    \"import { writeFileSync } from 'node:fs'; writeFileSync('child.pid', String(process.pid)); setInterval(() => writeFileSync('child.alive', String(Date.now())), 100);\"",
+        "  ], { stdio: 'ignore' });",
+        "  writeFileSync('parent.pid', String(process.pid));",
+        "  setInterval(() => {}, 1000);",
+        "  await new Promise(() => {});",
+        "}",
+        "writeFileSync(`${id}.marker`, 'built\\n');",
+      ].join("\n"),
+    );
+    assert.equal(spawnSync("git", ["add", "site", "tool.mjs"], { cwd: root }).status, 0);
+    assert.equal(spawnSync("git", ["commit", "-m", "seed"], { cwd: root, encoding: "utf8" }).status, 0);
+
+    const registry = {
+      schema: "cityscroll.committed_read_model_rebuild.v1",
+      published_paths: [{ path: "site", reason: "test fixture" }],
+      not_rebuilt: [],
+      rebuild_sequence: [
+        { id: "partial", command: ["tool.mjs", "partial"], after: [] },
+        { id: "sibling", command: ["tool.mjs", "sibling"], after: [] },
+      ],
+    };
+    const { results } = runRebuildSequence(registry, root, {
+      ...process.env,
+      FIRST_CLASS_REBUILD_STEP_TIMEOUT_MS: "400",
+    });
+    const byId = Object.fromEntries(results.map((row) => [row.id, row]));
+    assert.equal(byId.partial.status, "failed");
+    assert.equal(byId.partial.reason, "timeout");
+    assert.ok(byId.partial.restored_paths.includes("site/artifact.json"));
+    assert.equal(readFileSync(path.join(root, "site", "artifact.json"), "utf8"), '{"good":true}\n');
+    assert.equal(byId.sibling.status, "succeeded");
+
+    // Nested child (same process group as the timed-out tool) must be gone.
+    const childPidPath = path.join(root, "child.pid");
+    assert.ok(existsSync(childPidPath), "fixture must have recorded the nested child pid");
+    const childPid = Number(readFileSync(childPidPath, "utf8"));
+    assert.ok(Number.isInteger(childPid) && childPid > 0);
+    let alive = true;
+    try {
+      process.kill(childPid, 0);
+    } catch {
+      alive = false;
+    }
+    assert.equal(alive, false, "nested child must not survive the process-group kill");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("restoreNewlyDirtiedPublishedPaths leaves pre-existing dirt alone", () => {
+  const restored = restoreNewlyDirtiedPublishedPaths(
+    REPO_ROOT,
+    ["site/preexisting.json"],
+    ["site/preexisting.json", "site/new-partial.json"],
+    ["site"],
+  );
+  // new-partial is not actually present / tracked here; helper still reports the
+  // candidate it attempted. preexisting must not appear.
+  assert.ok(!restored.includes("site/preexisting.json"));
+  assert.deepEqual(restored, ["site/new-partial.json"]);
 });
 
 test("one failed rebuild step is isolated: independent steps still run, only its own dependents are skipped", () => {

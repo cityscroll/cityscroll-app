@@ -29,7 +29,7 @@
 //   node ops/first-class-refresh/rebuild-committed-read-models.mjs --check-registry
 //   node ops/first-class-refresh/rebuild-committed-read-models.mjs --published-paths
 
-import { appendFileSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { appendFileSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
@@ -190,6 +190,62 @@ export function rebuildStepTimeoutMs(step = {}, env = process.env) {
 }
 
 /**
+ * Restore published paths that became dirty during a timed-out step back to HEAD
+ * (tracked) or delete them (untracked). Paths already dirty before the step are
+ * left alone. Returns the restored relative paths.
+ */
+export function restoreNewlyDirtiedPublishedPaths(root, beforeDirty, afterDirty, published) {
+  const prior = new Set(beforeDirty || []);
+  const restored = [];
+  for (const file of afterDirty || []) {
+    if (prior.has(file)) continue;
+    if (!coveredByPublishedPaths(file, published)) continue;
+    const checkout = spawnSync("git", ["checkout", "HEAD", "--", file], { cwd: root, encoding: "utf8" });
+    if (checkout.status !== 0) {
+      try {
+        rmSync(join(root, file), { recursive: true, force: true });
+      } catch {
+        // Best-effort cleanup of a partial untracked write.
+      }
+    }
+    restored.push(file);
+  }
+  return restored.sort();
+}
+
+/**
+ * Run one rebuild tool with a wall-clock timeout. On Unix the child is detached
+ * into its own process group so a timeout can SIGKILL the whole tree (nested
+ * generators spawned by a boundary), not only the parent tool process.
+ */
+export function runTimedRebuildCommand(executable, args, { cwd, env, timeoutMs, stdio = "inherit" } = {}) {
+  const grouped = process.platform !== "win32";
+  const result = spawnSync(executable, args, {
+    cwd,
+    env,
+    stdio,
+    timeout: timeoutMs,
+    killSignal: "SIGKILL",
+    detached: grouped,
+  });
+  const timedOut = result.error?.code === "ETIMEDOUT";
+  if (timedOut && grouped && result.pid) {
+    try {
+      process.kill(-result.pid, "SIGKILL");
+    } catch {
+      // Group already reaped.
+    }
+  }
+  return {
+    status: result.status,
+    signal: result.signal || null,
+    error: result.error || null,
+    timed_out: timedOut,
+    pid: result.pid || null,
+  };
+}
+
+/**
  * Run every declared rebuild step, in registry order, without letting one
  * step's failure stop the ones after it. A step whose `after` list names an
  * already-failed-or-skipped step is skipped rather than attempted, and that
@@ -201,13 +257,15 @@ export function rebuildStepTimeoutMs(step = {}, env = process.env) {
  * throws or exits for an individual step failure, so a caller always gets a
  * complete accounting of what ran, what failed, and what was blocked.
  *
- * Each step also has a bounded wall-clock timeout. A timed-out step is recorded
- * as failed and last-good outputs for that artifact stay in place; independent
- * siblings still run.
+ * Each step also has a bounded wall-clock timeout. On timeout the process group
+ * is killed and any published paths newly dirtied by that step are restored to
+ * HEAD (or deleted if untracked), so partial writes do not remain as a false
+ * last-good. Independent siblings still run.
  */
 export function runRebuildSequence(registry, root, env) {
   assertExecutables(registry, root);
   const before = dirtyPaths(root);
+  const published = publishedPaths(registry);
   const gaps = `\n### Read-model rebuild boundaries\n\n${registry.not_rebuilt.map((entry) => `- ${entry.builder} (${entry.disposition}): ${entry.reason}`).join("\n")}\n`;
   console.log(gaps);
   if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, gaps);
@@ -228,16 +286,28 @@ export function runRebuildSequence(registry, root, env) {
     // derived JSON boundary measures itself against a declared cold-build time
     // budget; running them side by side would make that measurement meaningless.
     const executable = step.runtime === "python3" ? "python3" : process.execPath;
-    const result = spawnSync(executable, [join(root, tool), ...args], {
+    const beforeStep = dirtyPaths(root);
+    const result = runTimedRebuildCommand(executable, [join(root, tool), ...args], {
       cwd: root,
-      stdio: "inherit",
       env,
-      timeout: timeoutMs,
-      killSignal: "SIGTERM",
+      timeoutMs,
+      stdio: "inherit",
     });
-    if (result.error?.code === "ETIMEDOUT") {
-      console.error(`rebuild step ${step.id} timed out (${tool}) after ${timeoutMs}ms; retaining last-good outputs`);
-      results.push({ id: step.id, tool, status: "failed", reason: "timeout", timeout_ms: timeoutMs });
+    if (result.timed_out || result.error?.code === "ETIMEDOUT") {
+      const afterStep = dirtyPaths(root);
+      const restored = restoreNewlyDirtiedPublishedPaths(root, beforeStep, afterStep, published);
+      console.error(
+        `rebuild step ${step.id} timed out (${tool}) after ${timeoutMs}ms; `
+        + `killed process group and restored ${restored.length} newly dirtied published path(s)`,
+      );
+      results.push({
+        id: step.id,
+        tool,
+        status: "failed",
+        reason: "timeout",
+        timeout_ms: timeoutMs,
+        restored_paths: restored,
+      });
       blocked.set(step.id, step.id);
       continue;
     }
@@ -255,7 +325,7 @@ export function runRebuildSequence(registry, root, env) {
     }
     results.push({ id: step.id, tool, status: "succeeded" });
   }
-  const stranded = unpublishedRebuildOutputs(before, dirtyPaths(root), publishedPaths(registry));
+  const stranded = unpublishedRebuildOutputs(before, dirtyPaths(root), published);
   return { results, stranded };
 }
 

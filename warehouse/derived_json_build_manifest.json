@@ -48,6 +48,7 @@
     {
       "id": "procurement",
       "generator": "tools/build_shared_procurement_read_model.mjs",
+      "skip_when_check_current": true,
       "source_paths": [
         "site/data/procurement_spine_sources.json",
         "site/data/ocp_awards_warehouse_lookup.json",

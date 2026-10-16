@@ -119,9 +119,61 @@ function runOrExit(sourceDir, tool, args = []) {
   if (status !== 0) process.exit(status);
 }
 
-/** True when the family's committed outputs already match a fresh generator --check. */
+/** True when the family's generator --check exits 0. Weak checks may exit 0 without proving inputs. */
 export function familyCheckCurrent(sourceDir, generator) {
   return run(sourceDir, generator, ["--check"], { stdio: ["ignore", "pipe", "pipe"] }) === 0;
+}
+
+/**
+ * Skip is opt-in. Only families whose --check proves current inputs and outputs
+ * (today: shared procurement's receipt fast-check) may set skip_when_check_current.
+ * Receipt-schema / idle-ok generators must rebuild every boundary pass.
+ */
+export function familyMaySkipWhenCheckCurrent(family) {
+  return family?.skip_when_check_current === true;
+}
+
+/** Decide whether this family may skip a rebuild on this source tree. */
+export function decideFamilyRebuildAction(family, sourceDir) {
+  if (!familyMaySkipWhenCheckCurrent(family)) return "build";
+  return familyCheckCurrent(sourceDir, family.generator) ? "skip" : "build";
+}
+
+/**
+ * Run generated families in order. Exported so tests can drive the real skip path
+ * without the warehouse source-snapshot gate.
+ */
+export function runGeneratedFamilies(sourceDir, families, { fileHashFn = fileHash, outputHashesFn = outputHashes } = {}) {
+  const results = [];
+  for (const family of families) {
+    const familyStartedAt = performance.now();
+    const sourceHashes = Object.fromEntries(family.source_paths.map((path) => [path, fileHashFn(sourceDir, path)]));
+    const action = decideFamilyRebuildAction(family, sourceDir);
+    if (action === "skip") {
+      console.log(`skip ${family.id}: skip_when_check_current and generator --check already current`);
+      results.push({
+        id: family.id,
+        generator: family.generator,
+        duration_ms: Math.round(performance.now() - familyStartedAt),
+        skipped: true,
+        skip_reason: "check_current",
+        source_hashes: sourceHashes,
+        outputs: outputHashesFn(sourceDir, family.output_paths),
+      });
+      continue;
+    }
+    runOrExit(sourceDir, family.generator);
+    runOrExit(sourceDir, family.generator, ["--check"]);
+    results.push({
+      id: family.id,
+      generator: family.generator,
+      duration_ms: Math.round(performance.now() - familyStartedAt),
+      skipped: false,
+      source_hashes: sourceHashes,
+      outputs: outputHashesFn(sourceDir, family.output_paths),
+    });
+  }
+  return results;
 }
 
 function validateManifest(sourceDir, manifest) {
@@ -134,6 +186,9 @@ function validateManifest(sourceDir, manifest) {
     if (!family.id || ids.has(family.id)) throw new Error(`duplicate or missing generated family id: ${family.id}`);
     ids.add(family.id);
     if (!family.generator || !family.source_paths?.length || !family.output_paths?.length) throw new Error(`incomplete generated family: ${family.id}`);
+    if (family.skip_when_check_current != null && typeof family.skip_when_check_current !== "boolean") {
+      throw new Error(`skip_when_check_current must be boolean for ${family.id}`);
+    }
     assertFile(sourceDir, family.generator, `generator for ${family.id}`);
     for (const path of family.source_paths) assertFile(sourceDir, path, `source for ${family.id}`);
   }
@@ -151,39 +206,9 @@ function main() {
     console.log(`Derived JSON build boundary valid (snapshot ${sourceSnapshot.sha256})`);
     return;
   }
-  const families = [];
-
-  for (const family of manifest.generated_families) {
-    const familyStartedAt = performance.now();
-    const sourceHashes = Object.fromEntries(family.source_paths.map((path) => [path, fileHash(sourceDir, path)]));
-    // Keep last-good when --check already passes (e.g. acquisition just rebuilt the
-    // family). Rebuilding every family unconditionally re-spent ~11 minutes on
-    // shared procurement during scheduled refresh and left the 60-minute job wall
-    // with no room for the rest of the committed-read-model sequence.
-    if (familyCheckCurrent(sourceDir, family.generator)) {
-      console.log(`skip ${family.id}: generator --check already current`);
-      families.push({
-        id: family.id,
-        generator: family.generator,
-        duration_ms: Math.round(performance.now() - familyStartedAt),
-        skipped: true,
-        skip_reason: "check_current",
-        source_hashes: sourceHashes,
-        outputs: outputHashes(sourceDir, family.output_paths),
-      });
-      continue;
-    }
-    runOrExit(sourceDir, family.generator);
-    runOrExit(sourceDir, family.generator, ["--check"]);
-    families.push({
-      id: family.id,
-      generator: family.generator,
-      duration_ms: Math.round(performance.now() - familyStartedAt),
-      skipped: false,
-      source_hashes: sourceHashes,
-      outputs: outputHashes(sourceDir, family.output_paths),
-    });
-  }
+  // Opt-in skip only for families whose --check proves current inputs+outputs
+  // (procurement receipt fast-check). Weak idle/schema checks always rebuild.
+  const families = runGeneratedFamilies(sourceDir, manifest.generated_families);
 
   const elapsedMs = performance.now() - startedAt;
   // This boundary runs only when generated artifacts are rebuilt. Its elapsed time
