@@ -1,3 +1,10 @@
+export function landStageEvidenceObservedAt(record){
+  return record&&Object.hasOwn(record,"stage_observation")?record.stage_observation?.observed_at||null:record?.generated_at||null;
+}
+export function landStageEvidenceIsStale(record,n=Date.now()){
+  const stamp=Date.parse(landStageEvidenceObservedAt(record)||"");
+  return !Number.isFinite(stamp)||n-stamp>86400000;
+}
 export function createLandOutcomeRuntime({cache=new Map(),ttlMs=300000,
 // determinism-lint: allow clock for expiry and evidence age.
 now=()=>Date.now(),normalizeRecord=record=>record,translate=key=>key,
@@ -9,8 +16,8 @@ connectionTools=async()=>null}={}){
     return now()-hit.at<ttlMs?hit:{...hit,expired:true};
   }
   function evidenceState(p,n=now()){
-    const record=p?.record,observedAt=record&&Object.hasOwn(record,"stage_observation")?record.stage_observation?.observed_at||null:record?.generated_at||null,stamp=Date.parse(observedAt||"");
-    return {observedAt,stale:p?.stale===true||!Number.isFinite(stamp)||n-stamp>86400000};
+    const record=p?.record,observedAt=landStageEvidenceObservedAt(record);
+    return {observedAt,stale:p?.stale===true||landStageEvidenceIsStale(record,n)};
   }
   function freshnessHTML(p,{failed=false}={}){
     const s=evidenceState(p);

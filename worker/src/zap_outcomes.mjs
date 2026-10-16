@@ -27,6 +27,7 @@ import { attachProjectConnectionsSection } from "./project_connections.mjs";
 import { dualWriteZapProjectObservations } from "./lib/zap_project_source_records.mjs";
 import { stampLandActionProcedureResolution } from "../../site/land_action_procedure_resolution.mjs";
 import { buildLandPhaseView } from "../../site/land_phase_spine.mjs";
+import { landStageEvidenceIsStale, landStageEvidenceObservedAt } from "../../site/land_outcome_runtime.mjs";
 // Do not static-import admin.mjs here: it pulls alerts.mjs → @jimdc/sendcap, and
 // test/land_event_spine.test.mjs imports buildZapOutcomeRecord from this module
 // during site unit tests (before the worker dependency install). Auth is loaded only on the admin path.
@@ -340,6 +341,12 @@ export async function prewarmOneZapOutcome(env, projectId, {
       .map(([source]) => source);
     if (unavailableSources.length) {
       throw new Error(`source-unavailable:${unavailableSources.join(",")}`);
+    }
+    const cachedStageAt = Date.parse(landStageEvidenceObservedAt(cached) || "");
+    const candidateStageAt = Date.parse(landStageEvidenceObservedAt(record) || "");
+    if (Number.isFinite(cachedStageAt)
+      && (!Number.isFinite(candidateStageAt) || candidateStageAt < cachedStageAt)) {
+      throw new Error("stage-evidence-regressed");
     }
     record = retainOptionalSourceEvidence(record, cached);
     await kvPutRecord(env, record);
@@ -902,7 +909,7 @@ export async function handleZapOutcomes(request, env, _ctx) {
   if (cached) {
     return await successResponse(cached, {
       cached: true,
-      stale: !outcomeCacheIsFresh(cached),
+      stale: landStageEvidenceIsStale(cached),
       generated_at: cached.generated_at,
     });
   }

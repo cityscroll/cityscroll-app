@@ -403,6 +403,51 @@ test("empty SODA lookup retains cached evidence with a failed attempt receipt",a
   }finally{globalThis.fetch=original;}
 });
 
+test("prewarm retains newer stage evidence and accepts fresh authoritative ZAP progress",async()=>{
+  const id="2026K0233";
+  const cached={project_id:id,generated_at:"2026-10-15T20:00:00Z",join:{matched:true},stage:"community_board",
+    stage_observation:{source_system:"zap_projects_open_data",observed_at:"2026-10-15T20:00:00Z"}};
+  for(const observed_at of [null,"2026-10-02T00:00:00Z"]){
+    const values=new Map([[kvKey(id),JSON.stringify(cached)]]);
+    const env={ALERT_STATE:{get:async key=>values.get(key)||null,put:async(key,value)=>values.set(key,value)}};
+    const candidate={project_id:id,generated_at:TEST_NOW,join:{matched:true},stage:"community_board",
+      stage_observation:{source_system:"zap_projects_open_data",observed_at}};
+    const result=await prewarmOneZapOutcome(env,id,{force:true,nowMs:TEST_NOW_MS,build:async()=>candidate});
+    assert.equal(result.status,"failed");
+    assert.equal(result.reason,"stage-evidence-regressed");
+    assert.deepEqual(JSON.parse(values.get(kvKey(id))),cached);
+    assert.equal(JSON.parse(values.get(`${kvKey(id)}:attempt`)).status,"failed");
+  }
+
+  const original=globalThis.fetch;
+  const values=new Map([[kvKey(id),JSON.stringify({...cached,generated_at:"2026-10-02T00:00:00Z",
+    stage_observation:{...cached.stage_observation,observed_at:"2026-10-02T00:00:00Z"}})]]);
+  const env={ALERT_STATE:{get:async key=>values.get(key)||null,put:async(key,value)=>values.set(key,value)}};
+  globalThis.fetch=async url=>new Response(JSON.stringify(String(url).includes("herokuapp.com")?fixture:[]));
+  try{
+    const row={project_id:id,project_name:"240 Nassau Street",public_status:"In Public Review",current_milestone:"Community Board Referral"};
+    const result=await prewarmOneZapOutcome(env,id,{force:true,nowMs:TEST_NOW_MS,
+      build:projectId=>buildZapOutcomeRecord(projectId,{fetchBbl:false,lookupDoc:{materialized_at:"2026-09-01T00:00:00Z",rows:[row]},now:()=>TEST_NOW})});
+    assert.equal(result.status,"computed");
+    const stored=JSON.parse(values.get(kvKey(id)));
+    assert.equal(stored.stage_observation.source_system,"zap_project_api");
+    assert.equal(stored.stage_observation.observed_at,TEST_NOW);
+  }finally{globalThis.fetch=original;}
+});
+
+test("public outcome staleness follows the stage evidence clock",async()=>{
+  const id="STALEAPI1";
+  const record={project_id:id,generated_at:TEST_NOW,join:{matched:true},
+    stage_observation:{source_system:"zap_projects_open_data",observed_at:"2026-09-30T00:00:00Z"}};
+  const values=new Map([[kvKey(id),JSON.stringify(record)]]);
+  const env={ALERT_STATE:{get:async key=>values.get(key)||null}};
+  const response=await handleZapOutcomes(new Request(`https://example.test/zap-outcomes?id=${id}`),env);
+  assert.equal(response.status,200);
+  const payload=await response.json();
+  assert.equal(payload.stale,true);
+  assert.equal(payload.record.stage_observation.observed_at,"2026-09-30T00:00:00Z");
+});
+
 test("raw completed hearing remains CPC progress until the publisher vote",async()=>{
   const original=globalThis.fetch;
   const completedHearing=structuredClone(fixture);
