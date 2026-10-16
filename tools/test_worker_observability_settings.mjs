@@ -26,6 +26,8 @@ import {
   openSettingsWindow,
   planSettingsRestore,
   privacyArmedObservability,
+  confirmOwnedSettings,
+  markPendingMutationIssued,
   recordMutationIntent,
   restoreSettingsWindow,
   runIndependentRestorer,
@@ -797,5 +799,87 @@ test("readback-mismatch receipt keeps patch http status and redacted bodies", as
   assert.equal(result.provider_exchanges.readback_get.http_status, 200);
   assert.equal(result.after_redacted.logs.persist, true);
   assert.equal(result.expected_after_redacted.logs.persist, false);
+  // Issued must already be durable after a completed PATCH attempt (even mismatch).
+  assert.equal(result.window.pending_mutation.issued, true);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("enable after confirmed privacy-arm classifies pending-before not owned conflict", () => {
+  const now = "2026-10-16T00:00:00.000Z";
+  let window = armRestorer(openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now,
+    windowId: "enable-after-arm",
+  }), { now, restorerId: "r-enable-after-arm" });
+  const armed = privacyArmedObservability(BASELINE);
+  window = recordMutationIntent(window, {
+    phase: "privacy_armed",
+    beforeSha256: observabilitySha256(BASELINE),
+    intendedObservability: armed,
+    now,
+  });
+  window = confirmOwnedSettings(window, armed, { now });
+  const enabled = {
+    ...armed,
+    enabled: true,
+    logs: { ...armed.logs, enabled: true },
+  };
+  window = recordMutationIntent(window, {
+    phase: "enabled",
+    beforeSha256: observabilitySha256(armed),
+    intendedObservability: enabled,
+    now,
+  });
+  // Owned digest equals pending before-sha; pending-before must win.
+  assert.equal(classifyCurrentSettings(armed, window).class, "pending-before");
+  assert.equal(classifyCurrentSettings(enabled, window).class, "pending-after");
+  assert.equal(
+    planSettingsRestore(armed, window, { now: "2026-10-16T00:01:00.000Z" }).action,
+    "restore",
+  );
+});
+
+test("mutateOwnedWindowObservability persists issued before never-settling PATCH", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-issued-before-dispatch-"));
+  const storePath = join(dir, "window.json");
+  const store = createFileWindowStore(storePath);
+  const now = "2026-10-16T00:00:00.000Z";
+  let window = armRestorer(openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now,
+    windowId: "issued-before-dispatch",
+  }), { now, restorerId: "r-issued-before" });
+  await store.write(window);
+  const armed = privacyArmedObservability(BASELINE);
+  let dispatched = false;
+
+  void mutateOwnedWindowObservability({
+    store,
+    transport: {
+      async getObservability() { return structuredClone(BASELINE); },
+      async patchObservability() {
+        dispatched = true;
+        return new Promise(() => {});
+      },
+    },
+    expectedSha256: observabilitySha256(BASELINE),
+    nextObservability: armed,
+    phase: "privacy_armed",
+    now,
+    requireLiveRestorer: false,
+    alreadyLocked: true,
+  });
+  await new Promise((r) => setTimeout(r, 20));
+
+  assert.equal(dispatched, true);
+  const persisted = await store.read();
+  assert.ok(persisted.pending_mutation);
+  assert.equal(persisted.pending_mutation.issued, true);
+  assert.equal(persisted.pending_mutation.after_sha256, observabilitySha256(armed));
+  // On-disk proof: re-read raw file after the fsync write-ahead boundary.
+  const raw = JSON.parse(readFileSync(storePath, "utf8"));
+  assert.equal(raw.pending_mutation.issued, true);
   rmSync(dir, { recursive: true, force: true });
 });

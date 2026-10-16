@@ -11,8 +11,10 @@ import test from "node:test";
 
 import {
   armRestorer,
+  confirmOwnedSettings,
   createFileWindowStore,
   markPendingMutationIssued,
+  mutateOwnedWindowObservability,
   normalizeObservability,
   observabilityEquals,
   observabilitySha256,
@@ -31,6 +33,7 @@ import {
   controllerDeathSignaled,
   engageKillSwitch,
   measureInstalledRuntimeShas,
+  reconcilePendingMutation,
   restorerPaths,
   restorerTick,
   runRestorerLoop,
@@ -647,4 +650,102 @@ test("kill switch stops restorer work", async () => {
   assert.equal(tick.outcome, "kill-switch");
   clearKillSwitch(stateRoot);
   rmSync(dir, { recursive: true, force: true });
+});
+
+test("root d038 response-loss triad: enable-after-arm, issued-before-dispatch, retain on prestate", async () => {
+  // Built on root's reproduce.mjs against a696e13f (zero provider calls).
+  const now = "2026-10-16T00:00:00.000Z";
+  const base = BASELINE;
+  let w = armRestorer(openSettingsWindow({
+    baseline: base,
+    accountIdSha256: ACCOUNT_SHA,
+    now,
+    windowId: "root-d038",
+  }), { now, restorerId: "root-d038-r" });
+  const armed = privacyArmedObservability(base);
+  w = recordMutationIntent(w, {
+    phase: "privacy_armed",
+    beforeSha256: observabilitySha256(base),
+    intendedObservability: armed,
+    now,
+  });
+  w = confirmOwnedSettings(w, armed, { now });
+  const enabled = {
+    ...armed,
+    enabled: true,
+    logs: { ...armed.logs, enabled: true },
+  };
+  let pending = markPendingMutationIssued(recordMutationIntent(w, {
+    phase: "enabled",
+    beforeSha256: observabilitySha256(armed),
+    intendedObservability: enabled,
+    now,
+  }), { now });
+  const valid = await reconcilePendingMutation({
+    window: pending,
+    transport: { async getObservability() { return structuredClone(armed); } },
+    now,
+  });
+  assert.equal(valid.outcome, "retained-pending-unknown");
+  assert.equal(valid.classification.class, "pending-before");
+  assert.equal(Boolean(valid.window.pending_mutation), true);
+
+  let persisted = structuredClone(w);
+  let dispatched = false;
+  const store = {
+    async read() { return structuredClone(persisted); },
+    async write(next) { persisted = structuredClone(next); },
+  };
+  void mutateOwnedWindowObservability({
+    store,
+    transport: {
+      async getObservability() { return structuredClone(armed); },
+      async patchObservability() {
+        dispatched = true;
+        return new Promise(() => {});
+      },
+    },
+    expectedSha256: observabilitySha256(armed),
+    nextObservability: enabled,
+    phase: "enabled",
+    now,
+    requireLiveRestorer: false,
+    alreadyLocked: true,
+  });
+  await new Promise((r) => setTimeout(r, 20));
+  const crashed = structuredClone(persisted);
+  assert.equal(dispatched, true);
+  assert.equal(Boolean(crashed.pending_mutation?.issued), true);
+
+  let privacyPersisted = armRestorer(openSettingsWindow({
+    baseline: base,
+    accountIdSha256: ACCOUNT_SHA,
+    now,
+    windowId: "root-gap",
+  }), { now, restorerId: "root-gap-r" });
+  void mutateOwnedWindowObservability({
+    store: {
+      async read() { return structuredClone(privacyPersisted); },
+      async write(n) { privacyPersisted = structuredClone(n); },
+    },
+    transport: {
+      async getObservability() { return structuredClone(base); },
+      async patchObservability() { return new Promise(() => {}); },
+    },
+    expectedSha256: observabilitySha256(base),
+    nextObservability: armed,
+    phase: "privacy_armed",
+    now,
+    requireLiveRestorer: false,
+    alreadyLocked: true,
+  });
+  await new Promise((r) => setTimeout(r, 20));
+  const gap = await reconcilePendingMutation({
+    window: privacyPersisted,
+    transport: { async getObservability() { return structuredClone(base); } },
+    now,
+  });
+  assert.equal(gap.outcome, "retained-pending-unknown");
+  assert.equal(Boolean(gap.window.pending_mutation), true);
+  assert.equal(gap.window.pending_mutation.issued, true);
 });

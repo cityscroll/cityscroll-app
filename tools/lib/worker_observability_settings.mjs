@@ -686,14 +686,17 @@ export function classifyCurrentSettings(current, window) {
   const normalized = normalizeObservability(current);
   const digest = observabilitySha256(normalized);
   if (digest === window.baseline_sha256) return { class: "baseline", observability: normalized, sha256: digest };
-  if (window.owned_sha256 && digest === window.owned_sha256) {
-    return { class: "owned", observability: normalized, sha256: digest };
-  }
+  // Pending before/after must win over owned. After a confirmed privacy-arm the
+  // owned digest equals the next enable intent's before-sha; classifying that as
+  // "owned" refused the valid next owned transition as a foreign conflict.
   if (window.pending_mutation?.after_sha256 && digest === window.pending_mutation.after_sha256) {
     return { class: "pending-after", observability: normalized, sha256: digest };
   }
   if (window.pending_mutation?.before_sha256 && digest === window.pending_mutation.before_sha256) {
     return { class: "pending-before", observability: normalized, sha256: digest };
+  }
+  if (window.owned_sha256 && digest === window.owned_sha256) {
+    return { class: "owned", observability: normalized, sha256: digest };
   }
   return { class: "conflict", observability: normalized, sha256: digest };
 }
@@ -702,7 +705,9 @@ export function classifyCurrentSettings(current, window) {
  * Restore planning understands write-ahead intents:
  * - baseline => already restored
  * - owned or pending-after => restore to baseline (including unacknowledged applied mutations)
- * - pending-before => treat as not applied; already at pre-mutation side
+ * - pending-before => restore to baseline when the prestate is an owned intermediate
+ *   (e.g. privacy-armed before enable). Baseline-side prestates classify as "baseline"
+ *   first, so they never reach this branch.
  * - anything else => refuse foreign conflict
  */
 export function planSettingsRestore(current, window, { now = new Date().toISOString() } = {}) {
@@ -711,7 +716,7 @@ export function planSettingsRestore(current, window, { now = new Date().toISOStr
   const expired = Date.parse(at) >= Date.parse(window.expires_at);
   const classification = classifyCurrentSettings(current, window);
 
-  if (classification.class === "baseline" || classification.class === "pending-before") {
+  if (classification.class === "baseline") {
     return {
       action: "already-restored",
       expired,
@@ -733,7 +738,11 @@ export function planSettingsRestore(current, window, { now = new Date().toISOStr
     };
   }
 
-  if (classification.class === "owned" || classification.class === "pending-after") {
+  if (
+    classification.class === "owned"
+    || classification.class === "pending-after"
+    || classification.class === "pending-before"
+  ) {
     return {
       action: "restore",
       expired,
@@ -950,12 +959,18 @@ export async function mutateOwnedWindowObservability({
     });
     await store.write(window, { expectedWindowId: windowId });
 
+    // Issued intent must be durably persisted (store.write fsyncs) BEFORE dispatch.
+    // A hang or crash inside patchObservability otherwise leaves dispatched=true with
+    // issued=false, and a prestate GET clears ownership (response loss).
+    window = markPendingMutationIssued(window, { now, exchange: null });
+    await store.write(window, { expectedWindowId: windowId });
+
     let patchError = null;
     let patchExchange = null;
     try {
       await transport.patchObservability(window.pending_mutation.intended_observability);
       patchExchange = transport.last_exchange || null;
-      // PATCH returned without throw: treat as issued; readback still proves ownership.
+      // Refresh exchange metadata on the already-issued intent; readback still proves ownership.
       window = markPendingMutationIssued(window, { now, exchange: patchExchange });
       await store.write(window, { expectedWindowId: windowId });
     } catch (error) {
@@ -964,7 +979,7 @@ export async function mutateOwnedWindowObservability({
       if (isExplicitProviderRejection(patchExchange)) {
         window = markPendingMutationRejected(window, { now, exchange: patchExchange });
       } else {
-        // Network/5xx/unknown: PATCH may have applied; retain intended-after ownership.
+        // Network/5xx/unknown: PATCH may have applied; keep issued ownership + exchange.
         window = markPendingMutationIssued(window, { now, exchange: patchExchange });
       }
       await store.write(window, { expectedWindowId: windowId });

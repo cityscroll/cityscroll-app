@@ -125,16 +125,21 @@ by an explicit typed acknowledgement of the RAW provider GET before any enable
 (normalized omit-defaults are never accepted as proof). Expired captured windows
 refuse arm/enable before any PATCH; restore of already owned expired state
 remains allowed. Ownership is confirmed only after the RAW GET matches the
-write-ahead after-digest. Mutation control is window-owned read-modify-write:
-the Cloudflare beta Worker PATCH has no documented conditional update for
-observability settings, so this path never claims immunity to foreign concurrent
-writers. A healthy owned privacy-armed or enabled window stays active until its
-deadline, an explicit cancel, or a controller-death receipt bound to that
-window_id and restorer_id (stale death receipts from older windows are ignored);
-ownership alone does not trigger restore. Pending intents are reconciled by GET:
-pending-after confirms ownership; an issued-but-unacknowledged intent whose GET
-still shows the prestate is retained as UNKNOWN (a prestate GET does not prove
-the PATCH never applied); unissued or explicitly rejected intents may clear.
+write-ahead after-digest. The issued flag is fsynced into the window store
+before `patchObservability` is dispatched so a hang or crash during PATCH cannot
+leave `dispatched=true` with `issued=false`. Mutation control is window-owned
+read-modify-write: the Cloudflare beta Worker PATCH has no documented
+conditional update for observability settings, so this path never claims
+immunity to foreign concurrent writers. A healthy owned privacy-armed or
+enabled window stays active until its deadline, an explicit cancel, or a
+controller-death receipt bound to that window_id and restorer_id (stale death
+receipts from older windows are ignored); ownership alone does not trigger
+restore. Pending intents are reconciled by GET: pending-after confirms
+ownership; pending-before wins over owned when digests coincide so a confirmed
+privacy-arm can take the next enable transition; an issued-but-unacknowledged
+intent whose GET still shows the prestate is retained as UNKNOWN (a prestate
+GET does not prove the PATCH never applied); unissued or explicitly rejected
+intents may clear.
 The restorer restores the captured baseline on expiry, bound controller death,
 or cancel (including unacknowledged applied mutations after the deadline), and
 refuses if settings changed outside the owned window. Install with

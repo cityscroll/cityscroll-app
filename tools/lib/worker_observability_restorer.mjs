@@ -119,6 +119,8 @@ export function controllerDeathSignaled(
  * - pending-after => confirm ownership and keep the window active
  * - pending-before/baseline with issued UNKNOWN intent => retain intended-after
  *   ownership (a prestate GET does not prove the PATCH never applied)
+ * - pending-before also covers the owned confirmed-armed prestate of a next
+ *   enable (classify prefers pending-before over owned when digests coincide)
  * - pending-before/baseline when never issued or explicitly rejected => clear
  * - conflict => refuse
  * Never closes a healthy non-expired window just because ownership exists.
