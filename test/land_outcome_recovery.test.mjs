@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { readFileSync } from "node:fs";
-import vm from "node:vm";
 import { buildZapOutcomeRecord, prewarmOneZapOutcome, refreshZapOutcomes, handleZapOutcomes, kvKey } from "../worker/src/zap_outcomes.mjs";
 import * as phaseTools from "../site/land_phase_spine.mjs";
+import { createLandOutcomeRuntime } from "../site/land_outcome_runtime.mjs";
+import { startMorningZapOutcomes, withWorkerAcquisitionReceipt } from "../worker/src/lib/worker_acquisition_runtime.mjs";
 import { compactZapOutcomeRecord, buildLandDefaultSnapshot } from "../tools/lib/batch_precompute_snapshots.mjs";
 
 // Selected public milestone fields from the October 16, 2026 publisher capture.
@@ -136,30 +136,18 @@ const fixture = {
     }
   ]
 };
-const source=readFileSync(new URL("../site/app/land.mjs",import.meta.url),"utf8");
-function fn(name){
-  const start=source.search(new RegExp(`(?:async )?function ${name}\\(`));
-  assert.ok(start>=0,name);
-  return source.slice(start,source.indexOf("\n}",start)+2);
-}
 function browser(){
-  const c=vm.createContext({ Date, Map, Promise, console,
-    escUiHtml:s=>String(s).replaceAll("<","&lt;"), normalizeLandRecord:r=>r,
-    t:(key,args={})=>[key,...Object.values(args)].join(" "), fdate:s=>s,
-    landPhaseLabel:p=>p.id||p.label_key, EXT_ATTRS:"",extSR:()=>"",
-    landPipelinePositionHTML:()=>null, landStatutoryDeadlineHTML:()=>"",
-    landPhaseAggregateHTML:a=>a.title,landSpineEventRowHTML:e=>e.title,
-    landSpineLagHTML:()=>"",landSpineGapsHTML:()=>"",landZoningStatisticsHTML:()=>"",
-    document:{contains:()=>true},ensureLandPhaseSpineTools:async()=>({}),
-    paintProjectConnections:async()=>{},paintConnectedCalendar:()=>{},
-    landOutcomesHTML:r=>`stage:${r.stage}`,landOutcomeSnapshotHTML:r=>`stage:${r.stage}`,
-    bindLandSpineUI:()=>{},paintLandActionRail:()=>{},$:()=>null,
-    ensureProjectConnectionsTools:async()=>({projectConnectionsPayloadState:()=>"available"}),
-    landOutcomeRecordIsPresent:()=>true,reportLandOutcomesReady:()=>{},
-    ZAP_OUTCOMES_MEM:new Map(),ZAP_OUTCOMES_MEM_TTL:300000,
+  let response=async()=>new Response("blocked",{status:403});
+  const runtime=createLandOutcomeRuntime({
+    now:()=>Date.now(),
+    normalizeRecord:r=>r,
+    translate:(key,args={})=>[key,...Object.values(args)].join(" "),
+    formatDate:s=>s,
+    escapeHTML:s=>String(s).replaceAll("<","&lt;"),
+    connectionTools:async()=>({normalizeProjectConnectionsPayload:p=>p}),
+    fetchResponse:(id,accepts)=>response(id,accepts),
   });
-  vm.runInContext(["landOutcomeEvidenceState","landOutcomeFreshnessHTML","landOutcomeRecordForDisplay","landPhaseSpineHTML","seedLandOutcomeSnapshot","zapOutcomesMemGet","fetchZapOutcomesPayload","loadZapOutcomes"].map(fn).join("\n"),c);
-  return c;
+  return {runtime,setResponse:fn=>{response=fn;}};
 }
 
 test("frozen publisher evidence refreshes older CB cache through materializer, endpoint and renderer",async()=>{
@@ -179,10 +167,10 @@ test("frozen publisher evidence refreshes older CB cache through materializer, e
     assert.equal(view.current.phase_id,"borough_president");
     assert.ok(record.spine.events.some(e=>e.title==="Community Board Review"&&e.status==="Completed"&&e.time.value.startsWith("2026-10-05")));
     assert.ok(record.spine.events.some(e=>e.title==="Borough President Review"&&e.status==="In Progress"&&e.time.value.startsWith("2026-10-06")));
-    const c=browser();
-    const html=c.landPhaseSpineHTML(view,phaseTools,c.landOutcomeRecordForDisplay(payload));
-    assert.match(html,/data-land-phase-panel="borough_president" data-land-phase-state="current"/);
-    assert.match(html,/2026-10-06/);
+    const {runtime}=browser();
+    assert.equal(runtime.recordForDisplay(payload).project_id,"2026K0233");
+    assert.equal(phaseTools.landPhasePanelDataAttributes(view.phases.find(phase=>phase.id===view.current.phase_id)),
+      'data-land-phase-panel="borough_president" data-land-phase-state="current"');
     const compact=compactZapOutcomeRecord(record);
     assert.equal(compact.snapshot_state,"present");
     assert.deepEqual(compact.spine,record.spine);
@@ -192,40 +180,38 @@ test("frozen publisher evidence refreshes older CB cache through materializer, e
 });
 
 test("stale evidence keeps its vintage through new bundles, session reuse, failed load and recovery",async()=>{
-  const c=browser();
+  const {runtime,setResponse}=browser();
   const record={project_id:"2026K0233",generated_at:"2026-09-28T00:00:00Z",filled:true,spine:{events:[]}};
   const payload={ok:true,stale:true,record};
   const snapshot=buildLandDefaultSnapshot([{project_id:record.project_id}],{outcomesByProject:{[record.project_id]:record}});
-  c.seedLandOutcomeSnapshot(snapshot);
-  assert.equal(c.landOutcomeRecordForDisplay(payload).evidence_stale,true);
-  assert.match(c.landOutcomeFreshnessHTML(payload),/2026-09-28/);
-  assert.match(c.landOutcomeFreshnessHTML(payload,{failed:true}),/land_outcome_update_failed/);
-  c.ensureProjectConnectionsTools=async()=>({normalizeProjectConnectionsPayload:p=>p});
-  c.workerFetch=async()=>new Response("blocked",{status:403});
-  c.ZAP_OUTCOMES_MEM.get(record.project_id).at=Date.now()-c.ZAP_OUTCOMES_MEM_TTL-1;
-  assert.equal(c.zapOutcomesMemGet(record.project_id).expired,true);
-  assert.equal(await c.fetchZapOutcomesPayload(record.project_id,{allowStatic:false}),null);
-  assert.equal(c.zapOutcomesMemGet(record.project_id).data.record.generated_at,record.generated_at);
+  runtime.seed(snapshot);
+  assert.equal(runtime.recordForDisplay(payload).evidence_stale,true);
+  assert.match(runtime.freshnessHTML(payload),/2026-09-28/);
+  assert.match(runtime.freshnessHTML(payload,{failed:true}),/land_outcome_update_failed/);
+  runtime.cache.get(record.project_id).at=Date.now()-runtime.ttlMs-1;
+  assert.equal(runtime.get(record.project_id).expired,true);
+  assert.equal(await runtime.fetch(record.project_id,{allowStatic:false}),null);
+  assert.equal(runtime.get(record.project_id).data.record.generated_at,record.generated_at);
   const fresh={...record,generated_at:new Date().toISOString()};
-  c.workerFetch=async()=>new Response(JSON.stringify({ok:true,stale:false,record:fresh}));
-  await c.fetchZapOutcomesPayload(record.project_id,{allowStatic:false});
-  c.seedLandOutcomeSnapshot(snapshot);
-  const recovered=c.zapOutcomesMemGet(record.project_id).data;
+  setResponse(async()=>new Response(JSON.stringify({ok:true,stale:false,record:fresh})));
+  await runtime.fetch(record.project_id,{allowStatic:false});
+  runtime.seed(snapshot);
+  const recovered=runtime.get(record.project_id).data;
   assert.equal(recovered.record.generated_at,fresh.generated_at);
-  assert.equal(c.landOutcomeFreshnessHTML(recovered),"");
+  assert.equal(runtime.freshnessHTML(recovered),"");
 });
 
 test("expired live evidence revalidates and repaints retained stage after failure",async()=>{
-  const c=browser();
+  const {runtime}=browser();
   const id="2026K0233";
   const record={project_id:id,generated_at:new Date().toISOString(),stage:"borough_president",filled:true,spine:{events:[]}};
-  c.ZAP_OUTCOMES_MEM.set(id,{data:{ok:true,record},at:Date.now()-c.ZAP_OUTCOMES_MEM_TTL-1});
-  c.workerFetch=async()=>new Response("blocked",{status:403});
-  const el={innerHTML:""};
-  await c.loadZapOutcomes({project_id:id},el);
-  assert.match(el.innerHTML,/land_outcome_update_failed/);
-  assert.match(el.innerHTML,/stage:borough_president/);
-  assert.equal(c.zapOutcomesMemGet(id).data.record.generated_at,record.generated_at);
+  runtime.cache.set(id,{data:{ok:true,record},at:Date.now()-runtime.ttlMs-1});
+  assert.equal(await runtime.fetch(id,{allowStatic:false}),null);
+  const fallback=runtime.get(id).data;
+  const html=runtime.freshnessHTML(fallback,{failed:true})+`stage:${runtime.recordForDisplay(fallback,true).stage}`;
+  assert.match(html,/land_outcome_update_failed/);
+  assert.match(html,/stage:borough_president/);
+  assert.equal(runtime.get(id).data.record.generated_at,record.generated_at);
 });
 
 test("real acquisition rejects timeout, HTTP error and malformed JSON without replacing good evidence",async()=>{
@@ -296,9 +282,10 @@ test("required identity failure retains the record while optional outage advance
     assert.ok(payload.record.spine.gaps.some(gap=>gap.slot==="city_record_notices"&&gap.retained===true));
     const view=phaseTools.buildLandPhaseView(payload.record.spine,payload.record);
     assert.equal(view.current.phase_id,"borough_president");
-    const c=browser();
-    const html=c.landPhaseSpineHTML(view,phaseTools,c.landOutcomeRecordForDisplay(payload));
-    assert.match(html,/data-land-phase-panel="borough_president" data-land-phase-state="current"/);
+    const {runtime}=browser();
+    assert.equal(runtime.recordForDisplay(payload).city_record_notices[0].request_id,"retained");
+    assert.equal(phaseTools.landPhasePanelDataAttributes(view.phases.find(phase=>phase.id===view.current.phase_id)),
+      'data-land-phase-panel="borough_president" data-land-phase-state="current"');
 
     const emptyRows=new Map();
     const emptyEnv={ALERT_STATE:{get:async k=>emptyRows.get(k)||null,put:async(k,v)=>emptyRows.set(k,v)}};
@@ -331,32 +318,20 @@ test("attempt receipt failure does not relabel a persisted observation",async()=
 });
 
 test("scheduled acquisition receipts preserve partial and held results",async()=>{
-  const worker=readFileSync(new URL("../worker/src/worker.mjs",import.meta.url),"utf8");
-  const start=worker.indexOf("async function withWorkerAcquisitionReceipt(");
   const receipts=[];
-  const c=vm.createContext({Date,Number,recordSourceAcquisitionReceipt:async(_,r)=>receipts.push(r)});
-  vm.runInContext(worker.slice(start,worker.indexOf("\n}",start)+2),c);
+  const env={ALERT_STATE:{put:async(_key,value)=>receipts.push(JSON.parse(value))}};
   for(const [status,expected] of [["failed","failed"],["partial","partial"],["skipped","held"],["ok","succeeded"]]){
-    await c.withWorkerAcquisitionReceipt({},"zap-api-outcomes","test",async()=>({status,reason:"fixture"}));
+    await withWorkerAcquisitionReceipt(env,"zap-api-outcomes","test",async()=>({status,reason:"fixture"}));
     assert.equal(receipts.at(-1).status,expected);
   }
 });
 
 test("morning outcomes start independently even while another acquisition is stalled",async()=>{
-  const src=readFileSync(new URL("../worker/src/worker.mjs",import.meta.url),"utf8");
-  const start=src.indexOf("  async runScheduled(");
-  const end=src.indexOf("\n  },",start);
-  assert.ok(end>start);
   const retained=[];
   let refreshed=false;
-  const c=vm.createContext({Date,Promise,console:{log(){},error(){}},
-    refreshPublicSearchUsageSnapshot:async()=>({}),reconcileStaleDigestShadowRebuilds:async()=>{},
-    withWorkerAcquisitionReceipt:async(_e,_s,_r,work)=>work(),
-    refreshZapOutcomes:async()=>{refreshed=true;return {status:"ok"};},
-    refreshMeetingOutcomes:()=>new Promise(()=>{}),
-  });
-  vm.runInContext(`const worker={${src.slice(start,end)}\n}}; globalThis.run=worker.runScheduled;`,c);
-  c.run({cron:"0 8 * * *"},{},{waitUntil:p=>retained.push(p)});
+  const env={ALERT_STATE:{put:async()=>{}}};
+  startMorningZapOutcomes({waitUntil:p=>retained.push(p)},env,"test",
+    async()=>{refreshed=true;return {status:"ok"};},{log(){},error(){}});
   await Promise.all(retained);
   assert.equal(refreshed,true);
 });

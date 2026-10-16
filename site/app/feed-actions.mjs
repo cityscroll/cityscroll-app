@@ -18,7 +18,6 @@ import {
 } from "../affordance_grammar.mjs";
 import { meetingOriginLabel } from "../meeting_origin.mjs";
 import {applyMeetingAvailability as a,meetingAvailabilityFromControls as m,meetingAvailabilitySummaryHTML as h,syncMeetingAvailabilityControls as s} from "../meeting_availability_filter.mjs";
-//typeof selection === "object" evaluateMeetingAvailabilityRows
 import { canonicalMeetingsForRender } from "../meeting_capability_projection.mjs";
 import { meetingsCardInteractionProjection } from "../meetings_card_interaction.mjs";
 import { renderCouncilHearingMatterContinuation } from "../council_hearing_matter_continuation.mjs";
@@ -91,10 +90,6 @@ function hasFeedDistrictFilter(filter){
 async function filterFeedRowsToDistrictBag(key,rows){
   const filter=feedDistrictFilter(key);
   if(!hasFeedDistrictFilter(filter)) return rows;
-  // The stamped district bag is a map read model, not the Meetings list's source
-  // of truth. A borough-only list scope must match every current affected-area
-  // record, including newly published and multi-borough hearings that have not
-  // reached the next map build yet.
   if(key==="meetings" && (filter.borough || filter.locationScope)
     && !filter.communityDistrict && !filter.councilDistrict){
     return filterMeetingRowsByAffectedArea(rows, filter);
@@ -119,8 +114,6 @@ function loadRulesDomainSnapshot(){
     }));
   return rulesDomainPromise;
 }
-// Rule lifecycle joins are a distinct daily projection from the source-native domain rows.
-// The Worker GET is cache-only; it never rebuilds from NYC Rules or City Record on demand.
 function loadRulesView(){
   if(!rulesViewPromise){
     rulesViewPromise=workerFetch("/rules",{},12000)
@@ -143,10 +136,6 @@ function loadMeetingView(){
   }
   return meetingViewPromise;
 }
-// Map request_id -> lifecycle record, covering matched
-// notices (classified stage) and unmatched City Record notices (stage "proposed"); the
-// NYC-Rules-only entries carry request_id:null and are skipped (they have no City Record
-// row to enrich here).
 function buildRulesStageMap(view){
   const m=new Map();
   if(!view || !Array.isArray(view.rules)) return m;

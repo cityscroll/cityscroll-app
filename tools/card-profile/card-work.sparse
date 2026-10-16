@@ -584,6 +584,7 @@
 /site/land_next_decision_watch.mjs
 /site/land_nta_geography_runtime.mjs
 /site/land_nta_watch_scope.mjs
+/site/land_outcome_runtime.mjs
 /site/land_outcomes_matrix.mjs
 /site/land_phase_label.mjs
 /site/land_phase_spine.mjs

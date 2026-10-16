@@ -191,8 +191,12 @@ export function mapMilestoneToPhase(title, hint = null) {
 
 function eventIsPlanned(event) {
   if (event?.time?.certainty === "planned") return true;
-  const status = String(event?.status || event?.detail || "").toLowerCase();
+  const status = [event?.status, event?.detail, event?.title, event?.outcome].filter(Boolean).join(" ").toLowerCase();
   return /not started|scheduled|postponed|cancelled|canceled|draft/.test(status);
+}
+
+export function landPhasePanelDataAttributes(phase, escape = (value) => String(value)) {
+  return `data-land-phase-panel="${escape(phase?.id || "")}" data-land-phase-state="${escape(phase?.state || "")}"`;
 }
 
 function eventIsInProgress(event) {

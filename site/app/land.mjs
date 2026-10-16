@@ -68,6 +68,7 @@ import {
 } from "../land_filing_evidence_view.mjs";
 import { landFilingEvidenceFilterFromControls } from "../land_filing_evidence_facet.mjs";
 import { mtxHTML } from "../land_outcomes_matrix.mjs";
+import { createLandOutcomeRuntime } from "../land_outcome_runtime.mjs";
 import { attachLandLotSourceDigests, landLotSourceDigestsHTML, loadLandLotSourceDigests } from "../land_lot_source_digests.mjs";
 import {
   fetchBrowseScoped,
@@ -237,23 +238,6 @@ function loadLandPropertySnapshot(){
       .then(r=>r.ok?r.json():null).catch(()=>null);
   }
   return landPropertySnapshotPromise;
-}
-function seedLandOutcomeSnapshot(snapshot){
-  const byProject=snapshot?.outcomes?.by_project||{};
-  const generatedAt=snapshot?.generated_at||null;
-  for(const [id,record] of Object.entries(byProject)){
-    if(!record || record.snapshot_state==="unavailable") continue;
-    const previous=ZAP_OUTCOMES_MEM.get(id);
-    if(previous?.p || previous?.data?.record && (!previous.staticSnapshot
-      || Date.parse(previous.data.record.generated_at)>=Date.parse(record.generated_at))) continue;
-    ZAP_OUTCOMES_MEM.set(id,{
-      data:{ok:true,cached:true,static_snapshot:true,generated_at:generatedAt,record},
-      // determinism-lint: allow clock the moment this snapshot entered the session cache, read back only by the age comparison in zapOutcomesMemGet().
-      at:Date.now(),
-      generatedAt,
-      staticSnapshot:true
-    });
-  }
 }
 function loadLandUpcomingHearings(){
   if(!landUpcomingHearingsPromise){
@@ -1264,7 +1248,9 @@ function landPhaseSpineHTML(view, tools, record){
     const statutory=landStatutoryDeadlineHTML(p.id, clock, p.state);
     const body=(p.aggregates||[]).map((a,idx)=>landPhaseAggregateHTML(a,p.id,idx)).join("")
       || `<div class="land-phase-row"><div class="land-phase-row-meta">${t("land_spine_phase_empty")}</div></div>`;
-    return `<details class="land-phase${p.state==="current"?" current-phase":""}${p.state==="overlap"?" overlap-phase":""}"${open} id="land-phase-${escUiHtml(p.id)}" data-land-phase-panel="${escUiHtml(p.id)}" data-land-phase-state="${escUiHtml(p.state||"")}">
+    const panelData=tools?.landPhasePanelDataAttributes?.(p,escUiHtml)
+      || `data-land-phase-panel="${escUiHtml(p.id)}" data-land-phase-state="${escUiHtml(p.state||"")}"`;
+    return `<details class="land-phase${p.state==="current"?" current-phase":""}${p.state==="overlap"?" overlap-phase":""}"${open} id="land-phase-${escUiHtml(p.id)}" ${panelData}>
       <summary>
         <span class="land-phase-name">${escUiHtml(landPhaseLabel(p))}</span>
         <span class="land-phase-state">${escUiHtml(stateWord)}</span>
@@ -1472,6 +1458,17 @@ function ensureProjectConnectionsTools(){
   }
   return projectConnectionsToolsPromise;
 }
+const landOutcomeRuntime=createLandOutcomeRuntime({
+  cache:ZAP_OUTCOMES_MEM,
+  ttlMs:ZAP_OUTCOMES_MEM_TTL,
+  normalizeRecord:normalizeLandRecord,
+  translate:t,
+  formatDate:fdate,
+  escapeHTML:escUiHtml,
+  connectionTools:ensureProjectConnectionsTools,
+  fetchResponse:(id,accepts)=>workerFetch("/zap-outcomes?id="+encodeURIComponent(id),null,12000,accepts),
+});
+const seedLandOutcomeSnapshot=landOutcomeRuntime.seed;
 let lcalP=null;
 function ensureLcal(){
   if(!lcalP){
@@ -1562,75 +1559,11 @@ async function paintProjectConnections(record,selection){
   host.innerHTML=projectConnectionsHTML(record?.project_connections,tools);
 }
 /** Arrival in a browser cache never renews the publisher observation clock. */
-function landOutcomeEvidenceState(payload, nowMs){
-  const observedAt=payload?.record?.generated_at||null;
-  const stamp=Date.parse(observedAt||"");
-  return { observedAt, stale: payload?.stale===true || !Number.isFinite(stamp)
-    || nowMs-stamp>24*60*60*1000 };
-}
-function landOutcomeFreshnessHTML(payload,{failed=false}={}){
-  // determinism-lint: allow clock compare current time with retained observation, never replace its vintage.
-  const state=landOutcomeEvidenceState(payload,Date.now());
-  if(!failed&&!state.stale) return "";
-  const stamp=state.observedAt ? t("land_outcome_checked_at",{date:fdate(state.observedAt)}) : t("land_outcome_check_unknown");
-  return `<p class="land-outcome-freshness" role="status">${escUiHtml(t(failed ? "land_outcome_update_failed" : "land_outcome_stale"))} ${escUiHtml(stamp)} ${escUiHtml(t("land_outcome_stage_caution"))}</p>`;
-}
-function landOutcomeRecordForDisplay(payload,failed=false){
-  // determinism-lint: allow clock qualify an observation using its own age.
-  const state=landOutcomeEvidenceState(payload,Date.now());
-  return normalizeLandRecord({...payload.record,evidence_stale:failed||state.stale});
-}
-function zapOutcomesMemGet(projectId){
-  const hit = ZAP_OUTCOMES_MEM.get(projectId);
-  if(!hit) return null;
-  if(hit.p) return hit;
-  // determinism-lint: allow clock cache age inside one page view, not a civic date; it decides whether to reuse a payload.
-  if(Date.now() - hit.at < ZAP_OUTCOMES_MEM_TTL) return hit;
-  return {...hit,expired:true};
-}
-function fetchZapOutcomesPayload(projectId,{allowStatic=true}={}){
-  const id = String(projectId || "").trim();
-  if(!id) return Promise.resolve(null);
-  const existing = zapOutcomesMemGet(id);
-  if(existing?.p) return existing.p;
-  if(existing?.data && !existing.expired && (allowStatic || !existing.staticSnapshot)) return Promise.resolve(existing.data);
-  const p = (async ()=>{
-    try{
-      const tools=await ensureProjectConnectionsTools();
-      const accepts=tools?async response=>{
-        if(!response?.ok) return false;
-        const payload=await response.json();
-        return payload?.ok!==false && payload?.record?.project_id===id;
-      }:null;
-      const resp = await workerFetch("/zap-outcomes?id=" + encodeURIComponent(id), null, 12000, accepts);
-      if(!resp || !resp.ok) return null;
-      const payload=await resp.json();
-      return tools?tools.normalizeProjectConnectionsPayload(payload,id):payload;
-    }catch(e){ return null; }
-  })();
-  ZAP_OUTCOMES_MEM.set(id, {...existing,p});
-  return p.then(data=>{
-    if(data && data.ok !== false && data.record){
-      const old=existing?.data?.record;
-      if(old && (Date.parse(old.generated_at)>Date.parse(data.record.generated_at)
-        || !Number.isFinite(Date.parse(data.record.generated_at))
-        || old.spine?.events?.length && !data.record.spine?.events?.length)){
-        ZAP_OUTCOMES_MEM.set(id,existing);
-        return {...existing.data,stale:true};
-      }
-      // determinism-lint: allow clock the moment this payload entered the session cache, read back only by the age comparison above.
-      ZAP_OUTCOMES_MEM.set(id, {data, at: Date.now()});
-    }else{
-      if(existing?.data) ZAP_OUTCOMES_MEM.set(id,existing);
-      else ZAP_OUTCOMES_MEM.delete(id);
-    }
-    return data;
-  }).catch(()=>{
-    if(existing?.data) ZAP_OUTCOMES_MEM.set(id,existing);
-    else ZAP_OUTCOMES_MEM.delete(id);
-    return null;
-  });
-}
+const landOutcomeEvidenceState=landOutcomeRuntime.evidenceState;
+const landOutcomeFreshnessHTML=landOutcomeRuntime.freshnessHTML;
+const landOutcomeRecordForDisplay=landOutcomeRuntime.recordForDisplay;
+const zapOutcomesMemGet=landOutcomeRuntime.get;
+const fetchZapOutcomesPayload=landOutcomeRuntime.fetch;
 function prefetchZapOutcomesForList(rows){
   if(!Array.isArray(rows) || !rows.length) return;
   // Cap so a 40-row list does not fan out unbounded; demo + first screenful first.

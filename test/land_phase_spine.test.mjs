@@ -571,3 +571,23 @@ test("hearing notices and occurrence alone do not complete Borough President rev
     assert.notEqual(pointer.phase_id, "cpc", `${kind}/${status} does not complete review`);
   }
 });
+
+test("completed draft milestones do not advance into a planned phase", () => {
+  const draft = {
+    kind: "zap_milestone",
+    title: "Prepare Draft Land Use Application",
+    status: "Completed",
+    time: { value: "2026-10-06", certainty: "actual" },
+  };
+  const planned = {
+    kind: "zap_milestone",
+    title: "Community Board Review",
+    status: "Not Started",
+    time: { value: "2026-12-14", certainty: "planned" },
+  };
+  const pointer = deriveLandCurrentPhaseId({
+    byPhase: { pre_application: [draft], community_board: [planned] },
+    events: [draft, planned],
+  });
+  assert.notEqual(pointer.phase_id, "community_board");
+});
