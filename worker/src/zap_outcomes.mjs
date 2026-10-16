@@ -592,7 +592,7 @@ export async function prewarmZapOutcomes(env, projectIds, {
 
 /**
  * Daily / admin path: list sell-facing project_ids, then prewarm into KV.
- * Same shape as refreshMeetingOutcomes — skip cleanly when KV is unbound.
+ * A missing KV binding is a failed refresh rather than completed or held work.
  */
 export async function refreshZapOutcomes(env, opts = {}) {
   if (!env?.ALERT_STATE) {

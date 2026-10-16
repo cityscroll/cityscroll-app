@@ -714,8 +714,8 @@ function landRenderList(kw, kwIsTextMatch, boro, autoSelect){
     if(event.target.closest("[data-object-card-copy]")) return;
     landSelect(+el.dataset.i, el);
   }));
-  // Warm outcomes for the visible list (edge KV prewarm + session cache) so the first
-  // select paints decision docs without the cold multi-second spinner.
+  // Prefetch retained outcomes for the visible list into session cache so the first
+  // selection can paint already-materialized decision documents without another wait.
   prefetchZapOutcomesForList(lRows);
   if(autoSelect !== false) document.querySelector("#llist .row")?.click();
 }
