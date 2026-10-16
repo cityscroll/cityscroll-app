@@ -195,10 +195,6 @@ function eventIsPlanned(event) {
   return /not started|scheduled|postponed|cancelled|canceled|draft/.test(status);
 }
 
-export function landPhasePanelDataAttributes(phase, escape = (value) => String(value)) {
-  return `data-land-phase-panel="${escape(phase?.id || "")}" data-land-phase-state="${escape(phase?.state || "")}"`;
-}
-
 function eventIsInProgress(event) {
   const status = String(event?.status || event?.detail || "").toLowerCase();
   return status.includes("in progress");

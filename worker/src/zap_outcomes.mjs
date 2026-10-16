@@ -560,7 +560,10 @@ export async function fetchOpenDataRow(projectId, { lookupDoc, observedAt = new 
   // WH-05: instant hit from live KV lookup (or committed twin) before live SODA.
   const wh = lookupZapFromWarehouseMaterialization(id, lookupDoc);
   if (wh.hit && wh.row) {
-    const observedAt = warehouseZapMaterializationMeta(lookupDoc).materialized_at;
+    const observation = wh.row.source_observation;
+    const observedAt = observation && Object.hasOwn(observation, "observed_at")
+      ? observation.observed_at
+      : warehouseZapMaterializationMeta(lookupDoc).materialized_at;
     return markSourceAcquisition({ ...wh.row, lookup_path: "warehouse" }, "ok", observedAt);
   }
 

@@ -1249,8 +1249,7 @@ function landPhaseSpineHTML(view, tools, record){
     const statutory=landStatutoryDeadlineHTML(p.id, clock, p.state);
     const body=(p.aggregates||[]).map((a,idx)=>landPhaseAggregateHTML(a,p.id,idx)).join("")
       || `<div class="land-phase-row"><div class="land-phase-row-meta">${t("land_spine_phase_empty")}</div></div>`;
-    const panelData=tools?.landPhasePanelDataAttributes?.(p,escUiHtml)
-      || `data-land-phase-panel="${escUiHtml(p.id)}" data-land-phase-state="${escUiHtml(p.state||"")}"`;
+    const panelData=`data-land-phase-panel="${escUiHtml(p.id)}" data-land-phase-state="${escUiHtml(p.state||"")}"`;
     return `<details class="land-phase${p.state==="current"?" current-phase":""}${p.state==="overlap"?" overlap-phase":""}"${open} id="land-phase-${escUiHtml(p.id)}" ${panelData}>
       <summary>
         <span class="land-phase-name">${escUiHtml(landPhaseLabel(p))}</span>

@@ -4,6 +4,7 @@ import { buildZapOutcomeRecord, prewarmOneZapOutcome, refreshZapOutcomes, handle
 import * as phaseTools from "../site/land_phase_spine.mjs";
 import { createLandOutcomeRuntime } from "../site/land_outcome_runtime.mjs";
 import { startMorningZapOutcomes, withWorkerAcquisitionReceipt } from "../worker/src/lib/worker_acquisition_runtime.mjs";
+import { refreshZapProjectsLookup, ZAP_PROJECTS_LOOKUP_KV_KEY } from "../worker/src/zap_projects_lookup.mjs";
 import { compactZapOutcomeRecord, buildLandDefaultSnapshot } from "../tools/lib/batch_precompute_snapshots.mjs";
 
 // Selected public milestone fields from the October 16, 2026 publisher capture.
@@ -202,8 +203,6 @@ test("frozen publisher evidence refreshes older CB cache through materializer, e
     assert.ok(record.spine.events.some(e=>e.title==="Borough President Review"&&e.status==="In Progress"&&e.time.value.startsWith("2026-10-06")));
     const {runtime}=browser();
     assert.equal(runtime.recordForDisplay(payload).project_id,"2026K0233");
-    assert.equal(phaseTools.landPhasePanelDataAttributes(view.phases.find(phase=>phase.id===view.current.phase_id)),
-      'data-land-phase-panel="borough_president" data-land-phase-state="current"');
     const compact=compactZapOutcomeRecord(record);
     assert.equal(compact.snapshot_state,"present");
     assert.deepEqual(compact.spine,record.spine);
@@ -296,6 +295,61 @@ test("materialized stage clocks preserve lookup, SODA, ZAP, and Noticed provenan
     const direct=await buildZapOutcomeRecord(id,{fetchBbl:false,lookupDoc:{rows:[]},now:()=>TEST_NOW});
     assert.equal(direct.source_observations.open_data.observed_at,TEST_NOW);
     assert.equal(direct.stage_observation.observed_at,direct.source_observations.open_data.observed_at);
+  }finally{globalThis.fetch=original;}
+});
+
+test("lookup refresh retains seeded clocks and observes reacquired rows",async()=>{
+  const original=globalThis.fetch;
+  const values=new Map();
+  const env={ALERT_STATE:{
+    get:async key=>values.get(key)||null,
+    put:async(key,value)=>values.set(key,value),
+  }};
+  const seedId="2025Q0331";
+  const freshId="2026K0123";
+  const rows=[
+    {project_id:freshId,project_name:"1550 Bedford Avenue Rezoning",public_status:"Filed",current_milestone:"Review Filed Land Use Application"},
+    {project_id:"2022M0258",project_name:"Demo",public_status:"Active"},
+    ...Array.from({length:108},(_,index)=>({
+      project_id:`2026X${String(index+1).padStart(4,"0")}`,
+      project_name:`Project ${index+1}`,
+      public_status:"Filed",
+    })),
+  ];
+  const thin=id=>({data:{id,type:"projects",attributes:{"dcp-name":id,"dcp-projectname":id}},included:[]});
+  globalThis.fetch=async url=>{
+    const value=String(url);
+    if(value.includes("hgx4-8ukb.json"))return new Response(JSON.stringify(rows));
+    if(value.includes("herokuapp.com"))return new Response(JSON.stringify(thin(value.split("/").pop())));
+    return new Response("[]");
+  };
+  try{
+    const refreshed=await refreshZapProjectsLookup(env,{fetchImpl:globalThis.fetch,now:new Date(TEST_NOW)});
+    assert.equal(refreshed.status,"success");
+    const lookup=JSON.parse(values.get(ZAP_PROJECTS_LOOKUP_KV_KEY));
+    const seeded=lookup.rows.find(row=>row.project_id===seedId);
+    const reacquired=lookup.rows.find(row=>row.project_id===freshId);
+    assert.equal(seeded.source_observation.observation_status,"retained");
+    assert.equal(seeded.source_observation.observed_at,"2026-09-30T13:15:13.798Z");
+    assert.equal(reacquired.source_observation.observation_status,"observed");
+    assert.equal(reacquired.source_observation.observed_at,TEST_NOW);
+
+    const stale=await buildZapOutcomeRecord(seedId,{fetchBbl:false,lookupDoc:lookup,now:()=>TEST_NOW});
+    const fresh=await buildZapOutcomeRecord(freshId,{fetchBbl:false,lookupDoc:lookup,now:()=>TEST_NOW});
+    assert.equal(stale.source_observations.open_data.observed_at,"2026-09-30T13:15:13.798Z");
+    assert.equal(stale.stage_observation.observed_at,"2026-09-30T13:15:13.798Z");
+    assert.equal(fresh.source_observations.open_data.observed_at,TEST_NOW);
+    assert.equal(fresh.stage_observation.observed_at,TEST_NOW);
+
+    const snapshot=buildLandDefaultSnapshot(
+      [{project_id:seedId},{project_id:freshId}],
+      {outcomesByProject:{[seedId]:stale,[freshId]:fresh}},
+    );
+    const {runtime}=browser();
+    runtime.seed(snapshot);
+    assert.equal(runtime.evidenceState(runtime.get(seedId).data).stale,true);
+    assert.match(runtime.freshnessHTML(runtime.get(seedId).data),/2026-09-30/);
+    assert.equal(runtime.evidenceState(runtime.get(freshId).data).stale,false);
   }finally{globalThis.fetch=original;}
 });
 
@@ -464,9 +518,6 @@ test("partial City Record acquisition merges fresh strict matches with retained 
     assert.equal(view.current.phase_id,"borough_president");
     const {runtime}=browser();
     assert.equal(runtime.recordForDisplay(payload).city_record_notices[1].request_id,"replaced");
-    assert.equal(phaseTools.landPhasePanelDataAttributes(view.phases.find(phase=>phase.id===view.current.phase_id)),
-      'data-land-phase-panel="borough_president" data-land-phase-state="current"');
-
     const freshOnlyRows=new Map();
     const freshOnlyEnv={ALERT_STATE:{get:async k=>freshOnlyRows.get(k)||null,
       put:async(k,v)=>freshOnlyRows.set(k,v)}};

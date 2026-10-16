@@ -162,7 +162,14 @@ function mergeSeedRows(sodaRows, floorRows, opts = {}) {
   const byId = new Map();
   for (const raw of sodaRows || []) {
     const row = shapeZapLookupRow(raw, opts);
-    if (row) byId.set(row.project_id, row);
+    if (row) {
+      row.source_observation = {
+        source_system: "zap_projects_open_data",
+        observation_status: "observed",
+        observed_at: opts.asOf || null,
+      };
+      byId.set(row.project_id, row);
+    }
   }
   const required = new Set([
     DEMO_PROJECT_ID,
@@ -172,7 +179,17 @@ function mergeSeedRows(sodaRows, floorRows, opts = {}) {
     const id = String(raw?.project_id || "").trim();
     if (!id || byId.has(id) || !required.has(id)) continue;
     const row = shapeZapLookupRow(raw, opts);
-    if (row) byId.set(row.project_id, row);
+    if (row) {
+      const prior = raw?.source_observation;
+      row.source_observation = {
+        source_system: prior?.source_system || "zap_projects_open_data",
+        observation_status: "retained",
+        observed_at: prior && Object.hasOwn(prior, "observed_at")
+          ? prior.observed_at
+          : opts.retainedObservedAt || null,
+      };
+      byId.set(row.project_id, row);
+    }
   }
   return [...byId.values()].sort((left, right) =>
     String(left.project_id).localeCompare(String(right.project_id)));
@@ -181,7 +198,11 @@ function mergeSeedRows(sodaRows, floorRows, opts = {}) {
 export function buildZapProjectsLookupDoc(sodaRows, opts = {}) {
   const floor = opts.floor || committedZapProjectsLookupFloor();
   const asOf = opts.now || new Date().toISOString();
-  const rows = mergeSeedRows(sodaRows, floor.rows, { asOf, cutoff: opts.cutoff || asOf });
+  const rows = mergeSeedRows(sodaRows, floor.rows, {
+    asOf,
+    cutoff: opts.cutoff || asOf,
+    retainedObservedAt: floor.materialized_at || null,
+  });
   return {
     schema_version: ZAP_PROJECTS_LOOKUP_SCHEMA_VERSION,
     phase: "WH-05",
