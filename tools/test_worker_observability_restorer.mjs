@@ -395,6 +395,158 @@ test("issued pending retained on prestate GET; later intended-after restores at 
   rmSync(dir, { recursive: true, force: true });
 });
 
+test("controller death mid-flight: baseline GET retains ownership; late visibility restores", async () => {
+  // // Explicit bound controller-death receipt + memory provider (not SIGKILL).
+  // While issued is unknown, baseline GET must not erase after-target or claim
+  // terminal restored on the death path; repeated unresolved polls stay bounded.
+  const dir = mkdtempSync(join(tmpdir(), "cc05-midflight-death-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(join(stateRoot, "receipts"), { recursive: true, mode: 0o700 });
+  const store = createFileWindowStore(join(dir, "window.json"));
+  const armed = privacyArmedObservability(BASELINE);
+  const transport = memoryTransport(BASELINE);
+  let window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    durationSeconds: 1800,
+    windowId: "midflight-death-1",
+  });
+  window = armRestorer(window, {
+    now: "2026-10-16T00:00:01.000Z",
+    restorerId: "restorer-midflight-1",
+  });
+  window = recordMutationIntent(window, {
+    phase: "privacy_armed",
+    beforeSha256: window.baseline_sha256,
+    intendedObservability: armed,
+    now: "2026-10-16T00:00:30.000Z",
+  });
+  window = markPendingMutationIssued(window, {
+    now: "2026-10-16T00:00:31.000Z",
+    exchange: { http_status: null, success: null },
+  });
+  await store.write(window);
+
+  writeRestorerReceipt(restorerPaths(stateRoot).controllerDeathReceipt, {
+    schema: "cityscroll.worker_observability_restorer_runtime.v1",
+    kind: "controller-death",
+    observed_at: "2026-10-16T00:00:40.000Z",
+    window_id: window.window_id,
+    restorer_id: window.restorer.restorer_id,
+  });
+
+  // PATCH still in flight: provider GET is baseline. Must retain issued ownership.
+  const midflight = await restorerTick({
+    store,
+    transport,
+    stateRoot,
+    now: "2026-10-16T00:00:41.000Z",
+  });
+  assert.equal(midflight.outcome, "retained-pending-unknown");
+  assert.ok(midflight.window.pending_mutation);
+  assert.equal(midflight.window.pending_mutation.issued, true);
+  assert.equal(
+    midflight.window.pending_mutation.after_sha256,
+    observabilitySha256(armed),
+  );
+  assert.equal(existsSync(restorerPaths(stateRoot).terminalReceipt), false);
+  const retainCountAfterFirst = (midflight.window.mutations || [])
+    .filter((m) => m.kind === "pending-retained-unknown").length;
+  assert.equal(retainCountAfterFirst, 1);
+
+  // Repeated unresolved polls must not append unlimited identical retain rows.
+  const midflightAgain = await restorerTick({
+    store,
+    transport,
+    stateRoot,
+    now: "2026-10-16T00:00:45.000Z",
+  });
+  assert.equal(midflightAgain.outcome, "retained-pending-unknown");
+  assert.equal(midflightAgain.receipt.retain_history_appended, false);
+  const retainCountAfterRepeat = (midflightAgain.window.mutations || [])
+    .filter((m) => m.kind === "pending-retained-unknown").length;
+  assert.equal(retainCountAfterRepeat, 1);
+  assert.equal(
+    midflightAgain.window.pending_mutation.after_sha256,
+    observabilitySha256(armed),
+  );
+
+  // Late visibility of the in-flight PATCH: restore must keep ownership and
+  // return to baseline, never refuse-conflict as a foreign write.
+  transport.set(armed);
+  const restored = await restorerTick({
+    store,
+    transport,
+    stateRoot,
+    now: "2026-10-16T00:00:50.000Z",
+  });
+  assert.equal(restored.proved, true);
+  assert.ok(["restored", "already-restored"].includes(restored.action));
+  assert.ok(observabilityEquals(restored.after, BASELINE));
+  assert.notEqual(restored.action, "refuse-conflict");
+  assert.equal(restored.terminal_receipt.controller_death, true);
+  assert.equal(observabilityEquals(transport.snapshot(), BASELINE), true);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("expiry mid-flight: baseline GET retains ownership; late visibility restores", async () => {
+  // Same UNKNOWN-issued obligation on the expired path.
+  const dir = mkdtempSync(join(tmpdir(), "cc05-midflight-expiry-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(join(stateRoot, "receipts"), { recursive: true, mode: 0o700 });
+  const store = createFileWindowStore(join(dir, "window.json"));
+  const armed = privacyArmedObservability(BASELINE);
+  const transport = memoryTransport(BASELINE);
+  let window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    durationSeconds: 60,
+    windowId: "midflight-expiry-1",
+  });
+  window = armRestorer(window, {
+    now: "2026-10-16T00:00:01.000Z",
+    restorerId: "restorer-midflight-expiry-1",
+  });
+  window = recordMutationIntent(window, {
+    phase: "privacy_armed",
+    beforeSha256: window.baseline_sha256,
+    intendedObservability: armed,
+    now: "2026-10-16T00:00:30.000Z",
+  });
+  window = markPendingMutationIssued(window, {
+    now: "2026-10-16T00:00:31.000Z",
+    exchange: { http_status: null, success: null },
+  });
+  await store.write(window);
+
+  const atExpiry = await restorerTick({
+    store,
+    transport,
+    stateRoot,
+    now: "2026-10-16T00:02:00.000Z",
+  });
+  assert.equal(atExpiry.outcome, "retained-pending-unknown");
+  assert.ok(atExpiry.window.pending_mutation);
+  assert.equal(atExpiry.window.pending_mutation.issued, true);
+  assert.equal(existsSync(restorerPaths(stateRoot).terminalReceipt), false);
+
+  transport.set(armed);
+  const restored = await restorerTick({
+    store,
+    transport,
+    stateRoot,
+    now: "2026-10-16T00:02:10.000Z",
+  });
+  assert.equal(restored.proved, true);
+  assert.ok(["restored", "already-restored"].includes(restored.action));
+  assert.ok(observabilityEquals(restored.after, BASELINE));
+  assert.notEqual(restored.action, "refuse-conflict");
+  assert.equal(restored.terminal_receipt.expired, true);
+  rmSync(dir, { recursive: true, force: true });
+});
+
 test("restorer tick restores owned settings with GET proof", async () => {
   const dir = mkdtempSync(join(tmpdir(), "cc05-tick-"));
   const stateRoot = join(dir, "restorer");

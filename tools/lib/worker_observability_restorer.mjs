@@ -166,20 +166,36 @@ export async function reconcilePendingMutation({
     // Issued-but-unacknowledged PATCH: prestate GET is UNKNOWN, not "not applied".
     // Keep durable intended-after ownership until rejection or resolved restoration.
     if (pendingMutationIsIssued(pending)) {
-      const retained = {
-        ...window,
-        mutations: [
-          ...(window.mutations || []),
-          {
-            at,
-            kind: "pending-retained-unknown",
-            reason: "prestate-get-does-not-disprove-issued-patch",
-            before_sha256: pending.before_sha256,
-            after_sha256: pending.after_sha256,
-            current_sha256: classification.sha256,
-          },
-        ],
-      };
+      const prior = window.mutations || [];
+      const last = prior.length ? prior[prior.length - 1] : null;
+      // Bound storage: repeated unresolved polls must not append unlimited identical
+      // retain rows for the same pending after-target and current digest.
+      const identicalRetain = Boolean(
+        last
+        && last.kind === "pending-retained-unknown"
+        && last.before_sha256 === pending.before_sha256
+        && last.after_sha256 === pending.after_sha256
+        && last.current_sha256 === classification.sha256
+      );
+      const retained = identicalRetain
+        ? {
+          ...window,
+          mutations: prior,
+        }
+        : {
+          ...window,
+          mutations: [
+            ...prior,
+            {
+              at,
+              kind: "pending-retained-unknown",
+              reason: "prestate-get-does-not-disprove-issued-patch",
+              before_sha256: pending.before_sha256,
+              after_sha256: pending.after_sha256,
+              current_sha256: classification.sha256,
+            },
+          ],
+        };
       return {
         outcome: "retained-pending-unknown",
         action: "retained-pending-unknown",
@@ -198,6 +214,7 @@ export async function reconcilePendingMutation({
           baseline_sha256: window.baseline_sha256,
           pending_after_sha256: pending.after_sha256,
           issued: true,
+          retain_history_appended: !identicalRetain,
         },
       };
     }
@@ -487,6 +504,41 @@ export async function restorerTick({
     }
 
     // Deadline, controller death, or cancel: restore baseline with GET proof.
+    // Issued-but-unacknowledged pending + baseline/pending-before GET is UNKNOWN:
+    // a hang mid-PATCH can still land after this GET. Retaining ownership keeps the
+    // window open so late visibility restores instead of already-restored-clearing
+    // and orphaning the applied settings after an in-flight issued write.
+    if (pending && pendingMutationIsIssued(window.pending_mutation)) {
+      const reconciled = await reconcilePendingMutation({ window, transport, now });
+      await store.write(reconciled.window, { expectedWindowId: window.window_id });
+      if (reconciled.outcome === "retained-pending-unknown") {
+        writeRestorerReceipt(paths.heartbeatReceipt, {
+          schema: RESTORER_READY_SCHEMA,
+          kind: "heartbeat",
+          outcome: reconciled.outcome,
+          observed_at: now,
+          pid: process.pid,
+          window_id: reconciled.window.window_id,
+          restorer_id: reconciled.window.restorer?.restorer_id || null,
+          phase: reconciled.window.phase,
+          controller_death: controllerDead,
+          cancel_requested: cancelRequested,
+          expired,
+        });
+        return reconciled;
+      }
+      if (reconciled.outcome === "refused-conflict") {
+        const receipt = writeRestorerReceipt(paths.terminalReceipt, {
+          ...reconciled.receipt,
+          controller_death: controllerDead,
+          cancel_requested: cancelRequested,
+          expired,
+        });
+        return { ...reconciled, terminal_receipt: receipt };
+      }
+      // reconciled-owned / cleared: fall through to restore with updated window.
+    }
+
     // alreadyLocked: restorerTick holds the window lock for this critical section.
     const restored = await runIndependentRestorer({ store, transport, now, alreadyLocked: true });
     const receipt = writeRestorerReceipt(paths.terminalReceipt, {
