@@ -295,6 +295,73 @@ export function patchBodyForObservability(settings) {
   return { observability: normalizeObservability(settings) };
 }
 
+/** Redact observability for receipts/logs: keep privacy-relevant fields, drop secrets. */
+export function redactObservabilityForReceipt(observability) {
+  if (observability == null) return observability;
+  if (typeof observability !== "object") return { type: typeof observability };
+  const logs = observability.logs && typeof observability.logs === "object" ? observability.logs : null;
+  const traces = observability.traces && typeof observability.traces === "object" ? observability.traces : null;
+  return {
+    enabled: observability.enabled,
+    head_sampling_rate: observability.head_sampling_rate,
+    redact_query_string: observability.redact_query_string,
+    top_keys: Object.keys(observability).sort(),
+    logs: logs ? {
+      enabled: logs.enabled,
+      persist: logs.persist,
+      invocation_logs: logs.invocation_logs,
+      head_sampling_rate: logs.head_sampling_rate,
+      destinations_len: Array.isArray(logs.destinations) ? logs.destinations.length : null,
+      destinations_present: Object.prototype.hasOwnProperty.call(logs, "destinations"),
+      keys: Object.keys(logs).sort(),
+    } : logs,
+    traces: traces ? {
+      enabled: traces.enabled,
+      persist: traces.persist,
+      head_sampling_rate: traces.head_sampling_rate,
+      destinations_len: Array.isArray(traces.destinations) ? traces.destinations.length : null,
+      destinations_present: Object.prototype.hasOwnProperty.call(traces, "destinations"),
+      propagation_policy: traces.propagation_policy ?? null,
+      keys: Object.keys(traces).sort(),
+    } : traces,
+    issues: observability.issues ?? null,
+  };
+}
+
+export function captureProviderExchange({
+  method,
+  url,
+  httpStatus,
+  success,
+  requestBody = undefined,
+  resultObservability = undefined,
+  errors = [],
+  messages = [],
+} = {}) {
+  return {
+    method,
+    url,
+    http_status: httpStatus,
+    success: success === true,
+    content_type: "application/json",
+    request_body_redacted: requestBody && typeof requestBody === "object"
+      ? {
+          top_keys: Object.keys(requestBody).sort(),
+          observability: redactObservabilityForReceipt(requestBody.observability),
+        }
+      : requestBody === undefined ? undefined : null,
+    result_observability_redacted: redactObservabilityForReceipt(resultObservability),
+    errors: Array.isArray(errors) ? errors.map((entry) => ({
+      code: entry?.code ?? null,
+      message: entry?.message ?? String(entry),
+    })) : [],
+    messages: Array.isArray(messages) ? messages.map((entry) => ({
+      code: entry?.code ?? null,
+      message: entry?.message ?? String(entry),
+    })) : [],
+  };
+}
+
 function requireIso(value, label) {
   if (!Number.isFinite(Date.parse(value))) fail(`${label} must be an ISO timestamp`);
   return value;
@@ -817,15 +884,20 @@ export async function mutateOwnedWindowObservability({
     await store.write(window, { expectedWindowId: windowId });
 
     let patchError = null;
+    let patchExchange = null;
     try {
       await transport.patchObservability(window.pending_mutation.intended_observability);
+      patchExchange = transport.last_exchange || null;
     } catch (error) {
       patchError = error;
+      patchExchange = transport.last_exchange || error?.provider_exchange || null;
     }
 
     let afterRaw;
+    let readbackExchange = null;
     try {
       afterRaw = await transport.getObservability();
+      readbackExchange = transport.last_exchange || null;
     } catch (error) {
       // Intent remains durable; restorer reconciles via a later GET.
       return {
@@ -833,6 +905,10 @@ export async function mutateOwnedWindowObservability({
         reason: "readback-failed",
         patch_error: patchError ? String(patchError?.message || patchError) : null,
         readback_error: String(error?.message || error),
+        provider_exchanges: {
+          patch: patchExchange,
+          readback_get: transport.last_exchange || error?.provider_exchange || null,
+        },
         window,
         concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
       };
@@ -852,7 +928,13 @@ export async function mutateOwnedWindowObservability({
         before_sha256: beforeSha,
         after,
         after_sha256: afterSha,
+        after_redacted: redactObservabilityForReceipt(afterRaw),
         expected_after_sha256: window.pending_mutation.after_sha256,
+        expected_after_redacted: redactObservabilityForReceipt(window.pending_mutation.intended_observability),
+        provider_exchanges: {
+          patch: patchExchange,
+          readback_get: readbackExchange,
+        },
         window,
         concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
       };
@@ -953,6 +1035,7 @@ export function createBetaWorkerObservabilityTransport({
 } = {}) {
   if (typeof token !== "string" || !token) fail("token is required");
   const url = betaWorkerUrl({ accountId, workerId, origin });
+  let lastExchange = null;
 
   async function request(method, body) {
     const response = await fetchImpl(url, {
@@ -963,11 +1046,35 @@ export function createBetaWorkerObservabilityTransport({
       },
       ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
     });
-    const payload = await response.json();
-    if (!response.ok || payload?.success !== true) {
+    let payload = null;
+    try {
+      payload = await response.json();
+    } catch (error) {
+      lastExchange = captureProviderExchange({
+        method,
+        url,
+        httpStatus: response.status,
+        success: false,
+        requestBody: body,
+        resultObservability: null,
+        errors: [{ message: `response json parse failed: ${String(error?.message || error)}` }],
+      });
       fail(`beta worker settings ${method} failed with status ${response.status}`);
     }
     const observability = payload?.result?.observability;
+    lastExchange = captureProviderExchange({
+      method,
+      url,
+      httpStatus: response.status,
+      success: payload?.success === true,
+      requestBody: body,
+      resultObservability: observability,
+      errors: payload?.errors || [],
+      messages: payload?.messages || [],
+    });
+    if (!response.ok || payload?.success !== true) {
+      fail(`beta worker settings ${method} failed with status ${response.status}`);
+    }
     if (!observability || typeof observability !== "object") {
       fail("beta worker settings response omitted effective observability");
     }
@@ -977,6 +1084,9 @@ export function createBetaWorkerObservabilityTransport({
   return {
     url,
     concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
+    get last_exchange() {
+      return lastExchange;
+    },
     async getObservability() {
       return request("GET");
     },

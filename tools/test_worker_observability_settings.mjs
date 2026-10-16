@@ -707,3 +707,95 @@ test("beta transport documents endpoint and concurrency limitation", async () =>
   assert.equal(calls[0].method, "GET");
   assert.equal(calls[1].method, "PATCH");
 });
+
+test("beta transport records http status and redacted body on every exchange", async () => {
+  const transport = createBetaWorkerObservabilityTransport({
+    accountId: ACCOUNT,
+    token: "test-token",
+    fetchImpl: async (url, init) => ({
+      ok: true,
+      status: 200,
+      async json() {
+        return {
+          success: true,
+          result: {
+            observability: init.method === "PATCH"
+              ? JSON.parse(init.body).observability
+              : BASELINE,
+          },
+          errors: [],
+          messages: [],
+        };
+      },
+    }),
+  });
+  await transport.getObservability();
+  assert.equal(transport.last_exchange.method, "GET");
+  assert.equal(transport.last_exchange.http_status, 200);
+  assert.equal(transport.last_exchange.success, true);
+  assert.equal(transport.last_exchange.result_observability_redacted.redact_query_string, false);
+  assert.equal(transport.last_exchange.result_observability_redacted.logs.persist, true);
+
+  const intended = privacyArmedObservability(BASELINE);
+  await transport.patchObservability(intended);
+  assert.equal(transport.last_exchange.method, "PATCH");
+  assert.equal(transport.last_exchange.http_status, 200);
+  assert.equal(transport.last_exchange.content_type, "application/json");
+  assert.equal(transport.last_exchange.request_body_redacted.observability.redact_query_string, true);
+  assert.equal(transport.last_exchange.request_body_redacted.observability.logs.persist, false);
+  assert.equal(transport.last_exchange.result_observability_redacted.redact_query_string, true);
+});
+
+test("readback-mismatch receipt keeps patch http status and redacted bodies", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-exchange-"));
+  const path = join(dir, "window.json");
+  const store = createFileWindowStore(path);
+  let window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    windowId: "exchange-1",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z" });
+  await store.write(window);
+  const armed = privacyArmedObservability(BASELINE);
+
+  const transport = createBetaWorkerObservabilityTransport({
+    accountId: ACCOUNT,
+    token: "test-token",
+    fetchImpl: async (_url, init) => ({
+      ok: true,
+      status: 200,
+      async json() {
+        // Provider accepts PATCH (HTTP 200) but leaves effective settings unchanged.
+        return {
+          success: true,
+          result: { observability: structuredClone(BASELINE) },
+          errors: [],
+          messages: [],
+        };
+      },
+    }),
+  });
+
+  const result = await mutateOwnedWindowObservability({
+    transport,
+    store,
+    expectedSha256: window.baseline_sha256,
+    nextObservability: armed,
+    phase: "privacy_armed",
+    requireLiveRestorer: false,
+    now: "2026-10-16T00:01:00.000Z",
+  });
+  assert.equal(result.ok, false);
+  assert.equal(result.reason, "readback-mismatch");
+  assert.equal(result.provider_exchanges.patch.http_status, 200);
+  assert.equal(result.provider_exchanges.patch.success, true);
+  assert.equal(result.provider_exchanges.patch.method, "PATCH");
+  assert.equal(result.provider_exchanges.patch.request_body_redacted.observability.logs.persist, false);
+  assert.equal(result.provider_exchanges.patch.result_observability_redacted.logs.persist, true);
+  assert.equal(result.provider_exchanges.readback_get.http_status, 200);
+  assert.equal(result.after_redacted.logs.persist, true);
+  assert.equal(result.expected_after_redacted.logs.persist, false);
+  rmSync(dir, { recursive: true, force: true });
+});

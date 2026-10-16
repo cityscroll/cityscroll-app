@@ -723,7 +723,13 @@ export async function runObservabilitySettingsCommand(argv, { env = process.env,
         status: "blocked",
         reason: result.reason,
         before_sha256: result.before_sha256,
-        expected_sha256: result.expected_sha256,
+        expected_sha256: result.expected_sha256 || result.expected_after_sha256 || null,
+        after_sha256: result.after_sha256 || null,
+        expected_after_sha256: result.expected_after_sha256 || null,
+        patch_error: result.patch_error || null,
+        after_redacted: result.after_redacted || null,
+        expected_after_redacted: result.expected_after_redacted || null,
+        provider_exchanges: result.provider_exchanges || null,
         concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
       };
     }
@@ -735,6 +741,9 @@ export async function runObservabilitySettingsCommand(argv, { env = process.env,
       after_sha256: result.after_sha256,
       proved_sha256: observabilitySha256(proved),
       observability: proved,
+      provider_exchanges: result.provider_exchanges || {
+        patch: settings.last_exchange || null,
+      },
       concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
     };
   }
@@ -778,7 +787,13 @@ export async function runObservabilitySettingsCommand(argv, { env = process.env,
         status: "blocked",
         reason: result.reason,
         before_sha256: result.before_sha256,
-        expected_sha256: result.expected_sha256,
+        expected_sha256: result.expected_sha256 || result.expected_after_sha256 || null,
+        after_sha256: result.after_sha256 || null,
+        expected_after_sha256: result.expected_after_sha256 || null,
+        patch_error: result.patch_error || null,
+        after_redacted: result.after_redacted || null,
+        expected_after_redacted: result.expected_after_redacted || null,
+        provider_exchanges: result.provider_exchanges || null,
         concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
       };
     }
@@ -788,6 +803,7 @@ export async function runObservabilitySettingsCommand(argv, { env = process.env,
       window_id: result.window.window_id,
       after_sha256: result.after_sha256,
       observability: result.after,
+      provider_exchanges: result.provider_exchanges || null,
       concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
     };
   }
