@@ -268,6 +268,7 @@ export async function fetchZapProjectsLookupFromSoda(fetchImpl = fetch, opts = {
 export async function refreshZapProjectsLookup(env, {
   fetchImpl = fetch,
   now = new Date(),
+  onDocument,
 } = {}) {
   if (!env?.ALERT_STATE || typeof env.ALERT_STATE.put !== "function") {
     return { status: "skipped", reason: "no-kv" };
@@ -281,6 +282,7 @@ export async function refreshZapProjectsLookup(env, {
     };
   }
   await env.ALERT_STATE.put(ZAP_PROJECTS_LOOKUP_KV_KEY, JSON.stringify(doc));
+  await onDocument?.(doc);
   return {
     status: "success",
     row_count: doc.row_count,

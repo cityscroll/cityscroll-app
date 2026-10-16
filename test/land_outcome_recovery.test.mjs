@@ -252,6 +252,7 @@ test("frozen publisher evidence refreshes older CB cache through materializer, e
     assert.deepEqual(compact.spine,record.spine);
     assert.deepEqual(compact.source_observations,record.source_observations);
     assert.deepEqual(compact.stage_observation,record.stage_observation);
+    assert.equal(phaseTools.buildLandPhaseView(compact.spine,compact).current.phase_id,view.current.phase_id);
     assert.equal(compact.generated_at,record.generated_at);
     assert.equal(record.stage_observation.source_system,"zap_project_api");
     assert.equal(runtime.evidenceState(payload).stale,false);
@@ -260,6 +261,33 @@ test("frozen publisher evidence refreshes older CB cache through materializer, e
     assert.equal(mixed.stage_observation.source_system,"zap_project_api");
     assert.equal(runtime.evidenceState({record:mixed}).stale,false);
   }finally{globalThis.fetch=original;}
+});
+
+test("compact outcomes preserve Open Data-only phase evidence",()=>{
+  const record={
+    project_id:"OPEN-DATA-PHASE",
+    public_status:"In Public Review",
+    spine:{events:[]},
+    open_data:{
+      project_id:"OPEN-DATA-PHASE",
+      public_status:"In Public Review",
+      current_milestone:"Community Board Referral",
+      current_milestone_date:"2026-10-02T00:00:00Z",
+      ulurp_non:"ULURP",
+      source_observation:{source_system:"zap_projects_open_data",observed_at:"2026-10-02T00:00:00Z"},
+      lookup_path:"warehouse",
+      project_name:"not needed by the phase renderer",
+    },
+    source_observations:{open_data:{source_system:"zap_projects_open_data",observed_at:"2026-10-02T00:00:00Z"}},
+    stage_observation:{source_system:"zap_projects_open_data",observed_at:"2026-10-02T00:00:00Z"},
+    generated_at:TEST_NOW,
+  };
+  const compact=compactZapOutcomeRecord(record);
+  assert.equal(phaseTools.buildLandPhaseView(record.spine,record).current.phase_id,"community_board");
+  assert.equal(phaseTools.buildLandPhaseView(compact.spine,compact).current.phase_id,"community_board");
+  assert.deepEqual(compact.open_data.source_observation,record.open_data.source_observation);
+  assert.equal(compact.open_data.lookup_path,"warehouse");
+  assert.equal(Object.hasOwn(compact.open_data,"project_name"),false);
 });
 
 test("display freshness follows the source that selects the current stage",()=>{
@@ -745,4 +773,34 @@ test("morning orchestration forces fresh cached outcomes after lookup refresh",a
     });
   await Promise.all(retained);
   assert.equal(JSON.parse(rows.get(kvKey(id))).lookup_version,"new");
+});
+
+test("morning outcomes consume the refreshed lookup before KV becomes consistent",async()=>{
+  const original=globalThis.fetch;
+  const id="2026K0233",retained=[],values=new Map();
+  const floor=committedZapProjectsLookupFloor();
+  const staleDoc={...floor,source:"soda",materialized_at:"2026-10-02T00:00:00Z",rows:floor.rows.map(row=>
+    row.project_id===id?{...row,current_milestone:"Community Board Referral"}:row)};
+  let writtenLookup=null;
+  const env={ALERT_STATE:{
+    get:async key=>key===ZAP_PROJECTS_LOOKUP_KV_KEY?JSON.stringify(staleDoc):values.get(key)||null,
+    put:async(key,value)=>{if(key===ZAP_PROJECTS_LOOKUP_KV_KEY)writtenLookup=JSON.parse(value);else values.set(key,value);},
+  }};
+  const freshRows=floor.rows.map(row=>row.project_id===id
+    ?{...row,current_milestone:"Borough President Referral",current_milestone_date:TEST_NOW}
+    :row);
+  const thin={data:{id,type:"projects",attributes:{"dcp-name":id,"dcp-projectname":"240 Nassau Street"}},included:[]};
+  globalThis.fetch=async url=>new Response(JSON.stringify(String(url).includes("herokuapp.com")?thin:[]));
+  try{
+    startMorningZapOutcomes({waitUntil:p=>retained.push(p)},env,"test",refreshZapOutcomes,
+      {log(){},error(){}},
+      lookupOptions=>refreshZapProjectsLookup(env,{...lookupOptions,now:new Date(TEST_NOW),fetchImpl:async()=>new Response(JSON.stringify(freshRows))}),
+      {projectIds:[id],nowMs:TEST_NOW_MS});
+    await Promise.all(retained);
+    assert.equal(writtenLookup.rows.find(row=>row.project_id===id).current_milestone,"Borough President Referral");
+    assert.equal(JSON.parse(await env.ALERT_STATE.get(ZAP_PROJECTS_LOOKUP_KV_KEY)).rows.find(row=>row.project_id===id).current_milestone,"Community Board Referral");
+    const stored=JSON.parse(values.get(kvKey(id)));
+    assert.equal(stored.open_data.current_milestone,"Borough President Referral");
+    assert.equal(stored.source_observations.open_data.observed_at,TEST_NOW);
+  }finally{globalThis.fetch=original;}
 });

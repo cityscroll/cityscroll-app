@@ -45,15 +45,20 @@ export async function withWorkerAcquisitionReceipt(env, sourceContractId, runId,
 
 export function startMorningZapOutcomes(ctx, env, runId, refreshZapOutcomes, logger = console, refreshLookup = null, refreshOptions = {}) {
   const task = (async () => {
+    let lookupDoc = null;
     if (refreshLookup) {
       try {
-        await refreshLookup();
+        await refreshLookup({ onDocument: (doc) => { lookupDoc = doc; } });
       } catch (error) {
         logger.error("land zap lookup refresh failed:", String(error?.message || error));
       }
     }
     try {
-      const result = await withWorkerAcquisitionReceipt(env, "zap-api-outcomes", runId, () => refreshZapOutcomes(env, { ...refreshOptions, force: true }));
+      const result = await withWorkerAcquisitionReceipt(env, "zap-api-outcomes", runId, () => refreshZapOutcomes(env, {
+        ...refreshOptions,
+        ...(lookupDoc ? { lookupDoc } : {}),
+        force: true,
+      }));
       logger.log("zap outcomes prewarm:", JSON.stringify(result));
     } catch (error) {
       logger.error("zap outcomes prewarm failed:", String(error?.message || error));

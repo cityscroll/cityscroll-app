@@ -514,8 +514,8 @@ const worker = {
     if (event.cron === "0 8 * * *") {
       // Start independently of delivery and the other advisory acquisitions.
       // A slow/failed digest must not strand resident land records indefinitely.
-      startMorningZapOutcomes(ctx, env, runId, refreshZapOutcomes, console, async () => {
-        const r = await withWorkerAcquisitionReceipt(env, "zap-projects", runId, () => refreshZapProjectsLookup(env));
+      startMorningZapOutcomes(ctx, env, runId, refreshZapOutcomes, console, async (lookupOptions) => {
+        const r = await withWorkerAcquisitionReceipt(env, "zap-projects", runId, () => refreshZapProjectsLookup(env, lookupOptions));
         console.log("land zap lookup:", JSON.stringify(r));
       });
       try {
