@@ -107,6 +107,7 @@ test("a failing rebuild step still reaches the summary and pull-request steps, a
     assert.ok(step, `workflow has no step named "${title}"`);
     return step;
   };
+  assert.match(workflow, /timeout-minutes:\s*90/, "job wall must leave room after a ~47m acquisition");
   const rebuild = named("Rebuild the committed read models the refreshed datasets feed");
   assert.match(rebuild, /id:\s*rebuild/);
   assert.match(rebuild, /continue-on-error:\s*true/, "a failed rebuild step must not fail the job or skip the steps after it");
@@ -295,6 +296,43 @@ function isolationFixture() {
   };
   return { root, registry, marker: (id) => path.join(root, `${id}.marker`) };
 }
+
+test("a timed-out rebuild step fails closed and leaves independent siblings running", () => {
+  const fixture = isolationFixture();
+  try {
+    writeFileSync(
+      path.join(fixture.root, "tool.mjs"),
+      [
+        "import { writeFileSync } from 'node:fs';",
+        "const id = process.argv[2];",
+        'const forced = (process.env.FORCE_FAIL || "").split(",").filter(Boolean);',
+        "if (forced.includes(id)) { console.error(`forced failure: ${id}`); process.exit(1); }",
+        'if ((process.env.FORCE_HANG || "").split(",").filter(Boolean).includes(id)) {',
+        "  setInterval(() => {}, 1000);",
+        "  await new Promise(() => {});",
+        "}",
+        'writeFileSync(`${id}.marker`, "built\\n");',
+      ].join("\n"),
+    );
+    const { results } = runRebuildSequence(fixture.registry, fixture.root, {
+      ...process.env,
+      FORCE_HANG: "leaf-a",
+      FIRST_CLASS_REBUILD_STEP_TIMEOUT_MS: "200",
+    });
+    const byId = Object.fromEntries(results.map((row) => [row.id, row]));
+    assert.equal(byId.root.status, "succeeded");
+    assert.equal(byId["leaf-a"].status, "failed");
+    assert.equal(byId["leaf-a"].reason, "timeout");
+    assert.equal(byId["leaf-a"].timeout_ms, 200);
+    assert.ok(!existsSync(fixture.marker("leaf-a")));
+    assert.equal(byId["leaf-b"].status, "succeeded");
+    assert.ok(existsSync(fixture.marker("leaf-b")));
+    assert.equal(byId.dependent.status, "skipped");
+    assert.equal(byId.dependent.blocked_by, "leaf-a");
+  } finally {
+    rmSync(fixture.root, { recursive: true, force: true });
+  }
+});
 
 test("one failed rebuild step is isolated: independent steps still run, only its own dependents are skipped", () => {
   const fixture = isolationFixture();

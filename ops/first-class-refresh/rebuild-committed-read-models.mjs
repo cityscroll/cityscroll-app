@@ -178,6 +178,16 @@ function assertExecutables(registry, root) {
 
 export const REBUILD_RECEIPT_SCHEMA = "cityscroll.first_class_rebuild_receipt.v1";
 export const REBUILD_RECEIPT_PATH = ".artifacts/first-class-rebuild-receipt.json";
+/** Default per-step wall so one hung builder cannot consume the whole job budget. */
+export const DEFAULT_REBUILD_STEP_TIMEOUT_MS = 20 * 60 * 1000;
+
+export function rebuildStepTimeoutMs(step = {}, env = process.env) {
+  const declared = Number(step.timeout_ms);
+  if (Number.isFinite(declared) && declared > 0) return declared;
+  const fromEnv = Number(env.FIRST_CLASS_REBUILD_STEP_TIMEOUT_MS);
+  if (Number.isFinite(fromEnv) && fromEnv > 0) return fromEnv;
+  return DEFAULT_REBUILD_STEP_TIMEOUT_MS;
+}
 
 /**
  * Run every declared rebuild step, in registry order, without letting one
@@ -190,6 +200,10 @@ export const REBUILD_RECEIPT_PATH = ".artifacts/first-class-rebuild-receipt.json
  * descendants. Every step's outcome is recorded and returned; nothing here
  * throws or exits for an individual step failure, so a caller always gets a
  * complete accounting of what ran, what failed, and what was blocked.
+ *
+ * Each step also has a bounded wall-clock timeout. A timed-out step is recorded
+ * as failed and last-good outputs for that artifact stay in place; independent
+ * siblings still run.
  */
 export function runRebuildSequence(registry, root, env) {
   assertExecutables(registry, root);
@@ -208,12 +222,25 @@ export function runRebuildSequence(registry, root, env) {
       continue;
     }
     const [tool, ...args] = step.command;
+    const timeoutMs = rebuildStepTimeoutMs(step, env);
     console.log(`rebuilding ${step.id}: ${tool} ${args.join(" ")}`.trimEnd());
     // Serial by design. These builders are the repository's heavy ones and the
     // derived JSON boundary measures itself against a declared cold-build time
     // budget; running them side by side would make that measurement meaningless.
     const executable = step.runtime === "python3" ? "python3" : process.execPath;
-    const result = spawnSync(executable, [join(root, tool), ...args], { cwd: root, stdio: "inherit", env });
+    const result = spawnSync(executable, [join(root, tool), ...args], {
+      cwd: root,
+      stdio: "inherit",
+      env,
+      timeout: timeoutMs,
+      killSignal: "SIGTERM",
+    });
+    if (result.error?.code === "ETIMEDOUT") {
+      console.error(`rebuild step ${step.id} timed out (${tool}) after ${timeoutMs}ms; retaining last-good outputs`);
+      results.push({ id: step.id, tool, status: "failed", reason: "timeout", timeout_ms: timeoutMs });
+      blocked.set(step.id, step.id);
+      continue;
+    }
     if (result.error) {
       console.error(`rebuild step ${step.id} failed (${tool}): ${result.error.message}`);
       results.push({ id: step.id, tool, status: "failed", reason: result.error.message });

@@ -85,6 +85,19 @@ test("required PR CI catches a stale keyword read model before Worker deployment
   assert.match(workflow, /name: Committed keyword search read-model freshness[\s\S]*?node tools\/build_keyword_search_index\.mjs --check/);
 });
 
+test("familyCheckCurrent reports whether a generator --check already passes", async () => {
+  const { familyCheckCurrent } = await import(path.join(ROOT, "tools/derived_json_build_boundary.mjs"));
+  const dir = mkdtempSync(path.join(os.tmpdir(), "derived-json-check-current-"));
+  try {
+    writeFileSync(path.join(dir, "ok.mjs"), "process.exit(process.argv.includes('--check') ? 0 : 1);\n");
+    writeFileSync(path.join(dir, "bad.mjs"), "process.exit(1);\n");
+    assert.equal(familyCheckCurrent(dir, "ok.mjs"), true);
+    assert.equal(familyCheckCurrent(dir, "bad.mjs"), false);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("the retained source snapshot validation fails closed before generation", async () => {
   const pinned = "2026-09-14T00:00:00.000Z";
   await withPinnedClock(pinned, () => {

@@ -5,6 +5,7 @@ import { mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "n
 import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import { performance } from "node:perf_hooks";
+import { pathToFileURL } from "node:url";
 
 const SCHEMA = "cityscroll.derived_json_build_receipt.v1";
 
@@ -104,13 +105,23 @@ function outputHashes(sourceDir, paths) {
   }));
 }
 
-function run(sourceDir, tool, args = []) {
+function run(sourceDir, tool, args = [], { stdio = "inherit" } = {}) {
   const command = process.execPath;
   const target = absolute(sourceDir, tool);
   console.log(`$ ${command} ${tool} ${args.join(" ")}`);
-  const result = spawnSync(command, [target, ...args], { cwd: sourceDir, stdio: "inherit" });
+  const result = spawnSync(command, [target, ...args], { cwd: sourceDir, stdio });
   if (result.error) throw result.error;
-  if (result.status !== 0) process.exit(result.status ?? 1);
+  return result.status ?? 1;
+}
+
+function runOrExit(sourceDir, tool, args = []) {
+  const status = run(sourceDir, tool, args);
+  if (status !== 0) process.exit(status);
+}
+
+/** True when the family's committed outputs already match a fresh generator --check. */
+export function familyCheckCurrent(sourceDir, generator) {
+  return run(sourceDir, generator, ["--check"], { stdio: ["ignore", "pipe", "pipe"] }) === 0;
 }
 
 function validateManifest(sourceDir, manifest) {
@@ -145,12 +156,30 @@ function main() {
   for (const family of manifest.generated_families) {
     const familyStartedAt = performance.now();
     const sourceHashes = Object.fromEntries(family.source_paths.map((path) => [path, fileHash(sourceDir, path)]));
-    run(sourceDir, family.generator);
-    run(sourceDir, family.generator, ["--check"]);
+    // Keep last-good when --check already passes (e.g. acquisition just rebuilt the
+    // family). Rebuilding every family unconditionally re-spent ~11 minutes on
+    // shared procurement during scheduled refresh and left the 60-minute job wall
+    // with no room for the rest of the committed-read-model sequence.
+    if (familyCheckCurrent(sourceDir, family.generator)) {
+      console.log(`skip ${family.id}: generator --check already current`);
+      families.push({
+        id: family.id,
+        generator: family.generator,
+        duration_ms: Math.round(performance.now() - familyStartedAt),
+        skipped: true,
+        skip_reason: "check_current",
+        source_hashes: sourceHashes,
+        outputs: outputHashes(sourceDir, family.output_paths),
+      });
+      continue;
+    }
+    runOrExit(sourceDir, family.generator);
+    runOrExit(sourceDir, family.generator, ["--check"]);
     families.push({
       id: family.id,
       generator: family.generator,
       duration_ms: Math.round(performance.now() - familyStartedAt),
+      skipped: false,
       source_hashes: sourceHashes,
       outputs: outputHashes(sourceDir, family.output_paths),
     });
@@ -191,4 +220,6 @@ function main() {
   console.log(`Derived JSON build boundary complete (${families.length} families)`);
 }
 
-main();
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main();
+}

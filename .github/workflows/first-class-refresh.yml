@@ -36,7 +36,10 @@ jobs:
   refresh:
     name: Refresh due first-class datasets
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # Acquisition routinely spends ~45–50 minutes; the committed-read-model rebuild
+    # then needs headroom for the remaining builders after skip-if-current. 60 minutes
+    # cancelled mid-rebuild (run 38896493551); 90 leaves room without open-ending the job.
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
         with:
