@@ -63,7 +63,7 @@ export function loadRoutePublicationCandidate(routeDir) {
   };
 }
 
-export function planRoutePublication(candidate, previousState = null) {
+export function planRoutePublication(candidate, previousState = null, { stateReadIssued = true } = {}) {
   if (previousState?.schema && previousState.schema !== "cityscroll.worker_route_publication_state.v1") {
     throw new Error("unsupported route publication state schema");
   }
@@ -75,7 +75,7 @@ export function planRoutePublication(candidate, previousState = null) {
       candidate,
       previous_state: previousState,
       entries: { near_you: [], meetings: [] },
-      attempted: { kv_reads: 1, route_key_puts: 0, manifest_puts: 0, state_puts: 0 },
+      planned: { kv_reads: stateReadIssued ? 1 : 0, route_key_puts: 0, manifest_puts: 0, state_puts: 0 },
       writes_avoided: candidate.entries.near_you.length + candidate.entries.meetings.length + 2,
     };
   }
@@ -97,7 +97,7 @@ export function planRoutePublication(candidate, previousState = null) {
     candidate,
     previous_state: previousState,
     entries,
-    attempted: { kv_reads: 1, route_key_puts: routeKeyPuts, manifest_puts: 2, state_puts: 1 },
+    planned: { kv_reads: stateReadIssued ? 1 : 0, route_key_puts: routeKeyPuts, manifest_puts: 2, state_puts: 1 },
     writes_avoided: totalCandidateKeys - routeKeyPuts,
   };
 }
@@ -152,6 +152,14 @@ function isMissingPublicationState(error) {
     || /\b(?:code|error)(?::)?\s*10009\b/i.test(providerText);
 }
 
+function operationCounts() {
+  return { kv_reads: 0, route_key_puts: 0, manifest_puts: 0, state_puts: 0 };
+}
+
+function confirmedWriteCounts() {
+  return { route_key_puts: 0, manifest_puts: 0, state_puts: 0 };
+}
+
 /**
  * Publish immutable payloads first, then the two independently readable
  * manifests, and advance state only after every prior write succeeds. KV does
@@ -167,7 +175,10 @@ export async function publishRouteReadModels({
 } = {}) {
   if (typeof invoke !== "function") throw new Error("publishRouteReadModels requires a Wrangler invoker");
   let prior = previousState;
+  const attempted = operationCounts();
+  const confirmed = confirmedWriteCounts();
   if (prior === undefined) {
+    attempted.kv_reads += 1;
     try {
       const result = await invoke([
         "kv", "key", "get", ROUTE_PUBLICATION_STATE_KEY,
@@ -177,21 +188,31 @@ export async function publishRouteReadModels({
     } catch (error) {
       // Wrangler reports a genuinely absent remote KV value as a provider 404.
       // Only that exact read is absence; auth, transport, and other failures stay fatal.
-      if (!isMissingPublicationState(error)) throw error;
+      if (!isMissingPublicationState(error)) {
+        error.publication_receipt = {
+          schema: "cityscroll.worker_route_publication_failure.v1",
+          decision: "state-read-failed",
+          content_version: null,
+          attempted,
+          confirmed,
+          state_advanced: false,
+        };
+        throw error;
+      }
       prior = null;
     }
   }
   const candidate = loadRoutePublicationCandidate(routeDir);
-  const plan = planRoutePublication(candidate, prior || null);
+  const plan = planRoutePublication(candidate, prior || null, { stateReadIssued: attempted.kv_reads === 1 });
   if (plan.decision === "unchanged-content") {
-    return { ...plan, confirmed: { route_key_puts: 0, manifest_puts: 0, state_puts: 0 } };
+    return { ...plan, attempted, confirmed };
   }
 
   const temp = mkdtempSync(join(tmpdir(), "cityscroll-route-publication-"));
-  const confirmed = { route_key_puts: 0, manifest_puts: 0, state_puts: 0 };
   try {
     for (const [section, rows] of Object.entries(plan.entries)) {
       for (const path of writeBulkChunks(temp, section, rows)) {
+        attempted.route_key_puts += readJson(path).length;
         await invoke(["kv", "bulk", "put", path, ...kvArgs(configPath)]);
         confirmed.route_key_puts += readJson(path).length;
       }
@@ -201,6 +222,7 @@ export async function publishRouteReadModels({
       ["meetings", ROUTE_MANIFEST_KEYS.meetings, "meetings.manifest.json"],
     ]) {
       const path = join(routeDir, filename);
+      attempted.manifest_puts += 1;
       await invoke(["kv", "key", "put", key, "--path", path, ...kvArgs(configPath)]);
       confirmed.manifest_puts += 1;
       if (!plan.candidate.manifests[name]) throw new Error(`missing ${name} manifest after publication`);
@@ -208,15 +230,17 @@ export async function publishRouteReadModels({
     const state = completedRoutePublicationState(plan, completedAt);
     const statePath = join(temp, "publication-state.json");
     writeFileSync(statePath, `${JSON.stringify(state, null, 2)}\n`);
+    attempted.state_puts += 1;
     await invoke(["kv", "key", "put", ROUTE_PUBLICATION_STATE_KEY, "--path", statePath, ...kvArgs(configPath)]);
     confirmed.state_puts = 1;
-    return { ...plan, state, confirmed };
+    return { ...plan, state, attempted, confirmed };
   } catch (error) {
     error.publication_receipt = {
       schema: "cityscroll.worker_route_publication_failure.v1",
       decision: plan.decision,
       content_version: plan.content_version,
-      attempted: plan.attempted,
+      planned: plan.planned,
+      attempted,
       confirmed,
       state_advanced: false,
     };

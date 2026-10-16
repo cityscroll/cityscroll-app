@@ -26,6 +26,7 @@ try {
     schema: "cityscroll.worker_route_publication_receipt.v1",
     decision: result.decision,
     content_version: result.content_version,
+    planned: result.planned,
     attempted: result.attempted,
     confirmed: result.confirmed,
     writes_avoided: result.writes_avoided,

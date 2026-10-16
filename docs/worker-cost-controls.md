@@ -18,8 +18,10 @@ Workers KV is eventually consistent and does not provide a multi-key manifest
 transaction. A delayed slice remains an explicit unavailable section in the
 reader while other valid sections continue to load. A failed publication leaves
 the completed-state record unchanged and can be retried with the same immutable
-keys. The deployment workflow still attempts the independent Worker code
-deployment before reporting a route-data publication failure.
+keys. Publication receipts keep planned operations separate from operations
+actually attempted and confirmed, including provider calls that fail. The
+deployment workflow still attempts the independent Worker code deployment
+before reporting a route-data publication failure.
 
 ## Provider-native invocation profiles
 
