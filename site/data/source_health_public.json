@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.public_source_health.v1",
-  "generated_at": "2026-10-09T14:15:05.584Z",
+  "generated_at": "2026-10-16T19:00:51.262Z",
   "available": true,
   "source_count": 64,
   "sources": [
@@ -2161,7 +2161,7 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": "2026-10-09T13:51:33.015Z",
+            "at": "2026-10-16T19:00:51.262Z",
             "state": "KNOWN",
             "basis": "cityscroll_check"
           },
@@ -2414,7 +2414,7 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": "2026-10-09T13:51:33.219Z",
+            "at": "2026-10-16T19:00:51.184Z",
             "state": "KNOWN",
             "basis": "cityscroll_acquisition"
           },
