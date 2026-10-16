@@ -2,7 +2,7 @@
 /**
  * Durable supervised observability-settings restorer.
  * Installed under ~/.local/state/cityscroll-cost-control/observability-restorer/
- * so it survives controller death and worktree teardown.
+ * so it survives controller death and disposal of the source checkout.
  */
 import { readFileSync, existsSync, statSync } from "node:fs";
 import { join, dirname } from "node:path";

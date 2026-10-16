@@ -149,6 +149,18 @@ statuses `ok` / `captured` / `privacy-armed` / `enabled` / `restored` /
 `already-restored` exit 0; blocked or unknown exit nonzero so a failure never
 triggers a blind PATCH retry.
 
+The harness also speaks the script-level `/script-settings` JSON writer (the same
+endpoint Wrangler uses for non-versioned observability). Script-override `null`
+is preserved exactly and never normalized into invented defaults; restoration of
+that layer PATCHes `observability: null` and proves both the script-override view
+and the effective Worker view. A live privacy-armed enable/collect window still
+requires the provider to retain privacy fields while observability stays
+disabled. When that stickiness cannot be proved on either write path, the live
+window stays unavailable and the related route, cron, queue, cold-start, and
+collector CPU samples remain `unknown` rather than fabricated. Account-level or
+version-level aggregates that do not need the live window may still be retained
+separately with their own provenance.
+
 ## Warehouse experiment and release gate
 
 The fixed warehouse experiment compares the current static ZAP BBL, ZAP

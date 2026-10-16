@@ -661,8 +661,8 @@ export async function runRestorerLoop({
 
 /**
  * Start a supervised restorer in a durable state root. The child imports the
- * durable runner copy under stateRoot so worktree teardown cannot kill the code
- * path mid-window. Tests may pass nodeArgs/execPath overrides.
+ * durable runner copy under stateRoot so disposing the source checkout cannot
+ * kill the code path mid-window. Tests may pass nodeArgs/execPath overrides.
  */
 export function startSupervisedRestorerProcess({
   windowPath,

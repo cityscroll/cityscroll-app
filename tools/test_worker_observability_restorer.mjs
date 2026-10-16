@@ -396,9 +396,10 @@ test("issued pending retained on prestate GET; later intended-after restores at 
 });
 
 test("controller death mid-flight: baseline GET retains ownership; late visibility restores", async () => {
-  // // Explicit bound controller-death receipt + memory provider (not SIGKILL).
-  // While issued is unknown, baseline GET must not erase after-target or claim
-  // terminal restored on the death path; repeated unresolved polls stay bounded.
+  // Explicit bound controller-death receipt + memory provider (not SIGKILL).
+  // While an in-flight issued write is still unresolved, baseline GET must not
+  // erase after-target or claim terminal restored on the death path; repeated
+  // unresolved polls stay bounded.
   const dir = mkdtempSync(join(tmpdir(), "cc05-midflight-death-"));
   const stateRoot = join(dir, "restorer");
   mkdirSync(join(stateRoot, "receipts"), { recursive: true, mode: 0o700 });
@@ -491,7 +492,7 @@ test("controller death mid-flight: baseline GET retains ownership; late visibili
 });
 
 test("expiry mid-flight: baseline GET retains ownership; late visibility restores", async () => {
-  // Same UNKNOWN-issued obligation on the expired path.
+  // Same unresolved issued-write obligation on the expiry path.
   const dir = mkdtempSync(join(tmpdir(), "cc05-midflight-expiry-"));
   const stateRoot = join(dir, "restorer");
   mkdirSync(join(stateRoot, "receipts"), { recursive: true, mode: 0o700 });

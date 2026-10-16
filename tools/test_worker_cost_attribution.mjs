@@ -269,11 +269,34 @@ test("complete bounded profiles cover routes, three crons, queue and collector o
   assert.equal(profile.complete, true);
   assert.equal(profile.window.max_seconds, 86_400);
   assert.equal(profile.window.max_events, 10_000);
+  assert.equal(typeof profile.traffic_mix, "string");
+  assert.ok(profile.traffic_mix.trim().length > 0);
   assert.deepEqual(validateWorkerCostProfile(profile), { ok: true, complete: true });
   assert.throws(() => buildWorkerCostProfile(samples, {
     revision, observedAt: "2026-10-10T08:00:01Z", durationSeconds: 24 * 60 * 60 + 1,
     eventCount: samples.length,
   }), /24 hour bound/);
+});
+
+test("profiles require an explicit traffic_mix label on the receipt", () => {
+  const samples = REQUIRED_COST_COHORTS.map((cohort) => sample(cohort));
+  const labeled = buildWorkerCostProfile(samples, {
+    revision,
+    observedAt: "2026-10-09T13:05:00Z",
+    durationSeconds: 120,
+    eventCount: samples.length,
+    trafficMix: "fixed-controlled-v1",
+  });
+  assert.equal(labeled.traffic_mix, "fixed-controlled-v1");
+  assert.deepEqual(validateWorkerCostProfile(labeled), { ok: true, complete: true });
+
+  const blank = structuredClone(labeled);
+  blank.traffic_mix = "   ";
+  assert.throws(() => validateWorkerCostProfile(blank), /traffic_mix label is required/);
+
+  const missing = structuredClone(labeled);
+  delete missing.traffic_mix;
+  assert.throws(() => validateWorkerCostProfile(missing), /traffic_mix label is required/);
 });
 
 test("profiles retain and enforce every sample revision", () => {
