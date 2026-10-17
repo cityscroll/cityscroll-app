@@ -379,6 +379,12 @@ test("lookup refresh retains seeded clocks and observes reacquired rows",async()
   }};
   const seedId="2025Q0331";
   const freshId="2026K0123";
+  const retainedFloorClock = committedZapProjectsLookupFloor().materialized_at;
+  // Browser clock must sit more than 24h after the retained floor so seed evidence
+  // is stale while a same-cycle reacquire stays fresh.
+  const browserNowMs = Date.parse(retainedFloorClock) + 25 * 60 * 60 * 1000;
+  const browserNowIso = new Date(browserNowMs).toISOString();
+  const retainedDay = retainedFloorClock.slice(0, 10);
   const rows=[
     {project_id:freshId,project_name:"1550 Bedford Avenue Rezoning",public_status:"Filed",current_milestone:"Review Filed Land Use Application"},
     {project_id:"2022M0258",project_name:"Demo",public_status:"Active"},
@@ -396,31 +402,31 @@ test("lookup refresh retains seeded clocks and observes reacquired rows",async()
     return new Response("[]");
   };
   try{
-    const refreshed=await refreshZapProjectsLookup(env,{fetchImpl:globalThis.fetch,now:new Date(TEST_NOW)});
+    const refreshed=await refreshZapProjectsLookup(env,{fetchImpl:globalThis.fetch,now:new Date(browserNowIso)});
     assert.equal(refreshed.status,"success");
     const lookup=JSON.parse(values.get(ZAP_PROJECTS_LOOKUP_KV_KEY));
     const seeded=lookup.rows.find(row=>row.project_id===seedId);
     const reacquired=lookup.rows.find(row=>row.project_id===freshId);
     assert.equal(seeded.source_observation.observation_status,"retained");
-    assert.equal(seeded.source_observation.observed_at,"2026-09-30T13:15:13.798Z");
+    assert.equal(seeded.source_observation.observed_at, retainedFloorClock);
     assert.equal(reacquired.source_observation.observation_status,"observed");
-    assert.equal(reacquired.source_observation.observed_at,TEST_NOW);
+    assert.equal(reacquired.source_observation.observed_at,browserNowIso);
 
-    const stale=await buildZapOutcomeRecord(seedId,{fetchBbl:false,lookupDoc:lookup,now:()=>TEST_NOW});
-    const fresh=await buildZapOutcomeRecord(freshId,{fetchBbl:false,lookupDoc:lookup,now:()=>TEST_NOW});
-    assert.equal(stale.source_observations.open_data.observed_at,"2026-09-30T13:15:13.798Z");
-    assert.equal(stale.stage_observation.observed_at,"2026-09-30T13:15:13.798Z");
-    assert.equal(fresh.source_observations.open_data.observed_at,TEST_NOW);
-    assert.equal(fresh.stage_observation.observed_at,TEST_NOW);
+    const stale=await buildZapOutcomeRecord(seedId,{fetchBbl:false,lookupDoc:lookup,now:()=>browserNowIso});
+    const fresh=await buildZapOutcomeRecord(freshId,{fetchBbl:false,lookupDoc:lookup,now:()=>browserNowIso});
+    assert.equal(stale.source_observations.open_data.observed_at, retainedFloorClock);
+    assert.equal(stale.stage_observation.observed_at, retainedFloorClock);
+    assert.equal(fresh.source_observations.open_data.observed_at,browserNowIso);
+    assert.equal(fresh.stage_observation.observed_at,browserNowIso);
 
     const snapshot=buildLandDefaultSnapshot(
       [{project_id:seedId},{project_id:freshId}],
       {outcomesByProject:{[seedId]:stale,[freshId]:fresh}},
     );
-    const {runtime}=browser();
+    const {runtime}=browser({now:()=>browserNowMs});
     runtime.seed(snapshot);
     assert.equal(runtime.evidenceState(runtime.get(seedId).data).stale,true);
-    assert.match(runtime.freshnessHTML(runtime.get(seedId).data),/2026-09-30/);
+    assert.match(runtime.freshnessHTML(runtime.get(seedId).data), new RegExp(retainedDay));
     assert.equal(runtime.evidenceState(runtime.get(freshId).data).stale,false);
   }finally{globalThis.fetch=original;}
 });

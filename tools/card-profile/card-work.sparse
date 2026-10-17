@@ -1027,6 +1027,7 @@
 /warehouse/scripts/refresh_housing_project_activity.mjs
 /worker/.dev.vars.example
 /worker/.gitignore
+/worker/.route-read-models/
 /worker/README.md
 /worker/alerts.config.json
 /worker/d1-read-models.manifest.json
