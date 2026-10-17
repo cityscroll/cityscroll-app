@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import functools
 import json
+import os
 import threading
 import time
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -15,6 +16,7 @@ from browser_support import launched_chromium
 ROOT = Path(__file__).resolve().parents[2]
 PROJECT_ID = "2026K0233"
 NOW = "2026-10-17T12:00:00.000Z"
+EVIDENCE_DIR = Path(os.environ["NO_MISTAKES_EVIDENCE_DIR"]) if os.environ.get("NO_MISTAKES_EVIDENCE_DIR") else None
 
 ROW = {
     "project_id": PROJECT_ID,
@@ -222,6 +224,9 @@ def assert_card(page, *, phase: str, stage: str, actor: str, status: str) -> Non
     assert actor in timeline_actor, {"expected_actor": actor, "timeline_actor": timeline_actor}
     assert current_phase(page) == phase
     assert page.locator('[data-land-authority-published-checked="true"]').count() == 1
+    if EVIDENCE_DIR:
+        EVIDENCE_DIR.mkdir(parents=True, exist_ok=True)
+        page.screenshot(path=EVIDENCE_DIR / f"land-authority-{phase}-{status}.png", full_page=True)
 
 
 def open_case(browser, base: str, *, warm_phase: str, refreshed: dict | None, delay: float = 0):
@@ -274,6 +279,9 @@ def main() -> int:
         assert page.locator("#land-authority .land-outcome-freshness").count() == 1
         assert page.locator("#land-outcomes .land-outcome-freshness").count() == 1
         assert "last recorded" in page.locator("#land-outcomes").inner_text().lower()
+        if EVIDENCE_DIR:
+            EVIDENCE_DIR.mkdir(parents=True, exist_ok=True)
+            page.screenshot(path=EVIDENCE_DIR / "land-authority-refresh-failed-stale.png", full_page=True)
         context.close()
 
     print(json.dumps({"ok": True, "project_id": PROJECT_ID, "states": ["warm", "fresh", "failed"]}))
