@@ -81,8 +81,77 @@ export function classifyCpuValue(cpuTime) {
 }
 
 /**
- * Positive control: TraceItem-shaped object with a lazy cpuTime getter
- * (models workerd JSG lazy getters; Object.keys will not list it).
+ * Fixed allowlisted comparison cohorts. Keys are the only ones that may be
+ * persisted. Specific RUM routes, search, nearby, cold-start flag partitions,
+ * and collector stay UNKNOWN (count 0) until an allowlisted cohort tag is
+ * present — never derived from URL/query/request identity.
+ */
+export const FIXED_COHORT_KEYS = Object.freeze([
+  "http",
+  "rum_01", "rum_02", "rum_03", "rum_04", "rum_05", "rum_06", "rum_07", "rum_08",
+  "rum_09", "rum_10", "rum_11", "rum_12", "rum_13", "rum_14", "rum_15", "rum_16",
+  "search",
+  "nearby",
+  "cold_start_flag_raw_0",
+  "cold_start_flag_raw_1",
+  "cold_start_unknown",
+  "cron_0800",
+  "cron_1000",
+  "cron_1300",
+  "cron_unknown",
+  "queue",
+  "collector",
+  "unknown",
+]);
+
+const FIXED_COHORT_SET = new Set(FIXED_COHORT_KEYS);
+
+/** Known production cron expressions → fixed cohort keys. */
+export const KNOWN_CRON_TO_COHORT = Object.freeze({
+  "0 8 * * *": "cron_0800",
+  "0 10 * * *": "cron_1000",
+  "0 13 * * *": "cron_1300",
+});
+
+export function mapFixedCohort({ eventType = null, cron = null, cohort = null } = {}) {
+  if (typeof cohort === "string" && FIXED_COHORT_SET.has(cohort)) return cohort;
+  if (typeof cron === "string" && KNOWN_CRON_TO_COHORT[cron]) return KNOWN_CRON_TO_COHORT[cron];
+  if (eventType === "scheduled") return "cron_unknown";
+  if (eventType === "queue") return "queue";
+  if (eventType === "fetch") return "http";
+  return "unknown";
+}
+
+export function mapPersistedOutcome(outcome) {
+  if (outcome == null) return "null";
+  if (ALLOWED_OUTCOMES.has(outcome)) return outcome;
+  return "other";
+}
+
+export function parseExpectedRevisionAllowlist(raw) {
+  const set = new Set();
+  if (typeof raw !== "string" || !raw.trim()) return set;
+  for (const part of raw.split(",")) {
+    const id = part.trim();
+    if (id) set.add(id);
+  }
+  return set;
+}
+
+/**
+ * Persist only configured expected-version ids. Missing allowlist or unknown
+ * revision → "unknown"; present but not allowlisted → "other".
+ */
+export function mapPersistedRevision(revision, expectedSet) {
+  if (typeof revision !== "string" || revision.length === 0) return "unknown";
+  if (!(expectedSet instanceof Set) || expectedSet.size === 0) return "unknown";
+  if (expectedSet.has(revision)) return revision;
+  return "other";
+}
+
+/**
+ * Positive control: TraceItem-shaped object with a lazy cpuTime getter.
+ * Local fixture only — not a claim about provider property enumerability.
  */
 export function makeLazyCpuTraceItem({
   cpuTime = 7,
@@ -118,9 +187,9 @@ export function makeLazyCpuTraceItem({
 }
 
 /**
- * workerd-style TraceItem: outcome/event/cpuTime/wallTime/scriptVersion are
- * non-enumerable lazy getters. Enumeration (Object.keys) is the wrong validity
- * test — validate by guarded property reads instead.
+ * Local getter-only TraceItem fixture: outcome/event/cpuTime/wallTime/
+ * scriptVersion are non-enumerable getters. This exercises semantic property
+ * reads; it is not provider enumerability proof.
  */
 export function makeGetterOnlyTraceItem({
   cpuTime = 5,
@@ -226,10 +295,15 @@ export function projectAllowlistedTailEvent(obj) {
     return { accepted: false, reason: "event_getter_unknown" };
   }
   let eventType = "unknown";
+  let cron = null;
   if (event && typeof event === "object") {
     if ("request" in event) eventType = "fetch";
-    else if ("cron" in event || "scheduledTime" in event) eventType = "scheduled";
-    else if ("queue" in event || "batchSize" in event) eventType = "queue";
+    else if ("cron" in event || "scheduledTime" in event) {
+      eventType = "scheduled";
+      if (typeof event.cron === "string" && KNOWN_CRON_TO_COHORT[event.cron]) {
+        cron = event.cron;
+      }
+    } else if ("queue" in event || "batchSize" in event) eventType = "queue";
     else eventType = "other";
   }
   let wallTime = null;
@@ -249,6 +323,8 @@ export function projectAllowlistedTailEvent(obj) {
     deployedRevision = null;
   }
 
+  const cohort = mapFixedCohort({ eventType, cron, cohort: null });
+
   return {
     accepted: true,
     cpuTime: (!cpuThrown && typeof cpuTime === "number" && Number.isFinite(cpuTime)) ? cpuTime : null,
@@ -257,6 +333,8 @@ export function projectAllowlistedTailEvent(obj) {
     wallTime,
     outcome: ALLOWED_OUTCOMES.has(outcomeRaw) ? outcomeRaw : (outcomeRaw == null ? null : "other"),
     eventType,
+    cron,
+    cohort,
     deployed_revision: deployedRevision,
     // Intentionally omit URL, headers, query, body, logs, rayId.
   };
@@ -307,6 +385,11 @@ export function serializeAllowlistedDelta(projected) {
   if (!projected || projected.accepted !== true) {
     return { accepted: false, reason: projected?.reason || "not_accepted" };
   }
+  const cohort = mapFixedCohort({
+    eventType: projected.eventType,
+    cron: projected.cron,
+    cohort: projected.cohort,
+  });
   return {
     accepted: true,
     cpuTime: projected.cpuTime,
@@ -315,6 +398,10 @@ export function serializeAllowlistedDelta(projected) {
     wallTime: projected.wallTime,
     outcome: projected.outcome,
     eventType: projected.eventType,
+    cron: typeof projected.cron === "string" && KNOWN_CRON_TO_COHORT[projected.cron]
+      ? projected.cron
+      : null,
+    cohort,
     deployed_revision: typeof projected.deployed_revision === "string"
       ? projected.deployed_revision
       : null,

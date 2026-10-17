@@ -12,10 +12,14 @@ import {
   classifyCpuValue,
   cpuMsBucket,
   createNdjsonFramer,
+  FIXED_COHORT_KEYS,
   FORBIDDEN_PERSIST_KEYS,
   isValidatedTailEventShape,
   makeGetterOnlyTraceItem,
   makeLazyCpuTraceItem,
+  mapFixedCohort,
+  mapPersistedRevision,
+  parseExpectedRevisionAllowlist,
   projectAllowlistedTailEvent,
   projectNdjsonLine,
   serializeAllowlistedDelta,
@@ -28,6 +32,7 @@ import {
 } from "../workers/cityscroll-tail-sanitizer/src/aggregate_sink_logic.mjs";
 import {
   AggregateSink,
+  actuateOwnedDetachFromCapSignal,
 } from "../workers/cityscroll-tail-sanitizer/src/worker.mjs";
 import workerEntrypoint from "../workers/cityscroll-tail-sanitizer/src/worker.mjs";
 
@@ -307,7 +312,8 @@ test("absent cpuTime on validated event stays cpu_class undefined (never wall-ti
 function createFakeStorage() {
   const map = new Map();
   let writes = 0;
-  return {
+  let txnChain = Promise.resolve();
+  const api = {
     async get(key) {
       if (!map.has(key)) return undefined;
       return structuredClone(map.get(key));
@@ -323,48 +329,62 @@ function createFakeStorage() {
       writes += 1;
       map.clear();
     },
+    /**
+     * Serialize transactional closures the way DO storage.transaction does for
+     * a single object. Concurrent fetch handlers may still interleave outside
+     * the transaction (e.g. while awaiting req.json before entering).
+     */
+    async transaction(fn) {
+      const run = txnChain.then(() => fn(api));
+      txnChain = run.then(() => undefined, () => undefined);
+      return run;
+    },
     writeCount() { return writes; },
     keys() { return [...map.keys()].sort(); },
   };
+  return api;
 }
 
-/**
- * Durable Object request handling is single-threaded per object. Serialize
- * stub.fetch so concurrent Promise.all exercises the ALL-seen cap under the
- * same queueing semantics instead of last-write-wins on shared Map state.
- */
-function createSerializedSink(sink) {
-  let chain = Promise.resolve();
-  return {
-    async fetch(req) {
-      const run = chain.then(() => sink.fetch(req));
-      // Keep the queue alive even when a handler rejects.
-      chain = run.then(() => undefined, () => undefined);
-      return run;
-    },
+function createFakeSinkEnv(storage, {
+  readbackToken = "owned-readback",
+  expectedRevisions = "rev-a,rev-b,rev-c,rev-cpu,rev-1,getter-only-revision",
+  ownedDetachActuator = null,
+} = {}) {
+  const env = {
+    READBACK_TOKEN: readbackToken,
+    EXPECTED_DEPLOYED_REVISIONS: expectedRevisions,
   };
-}
-
-function createFakeSinkEnv(storage, { readbackToken = "owned-readback" } = {}) {
-  const sink = new AggregateSink({ storage }, { READBACK_TOKEN: readbackToken });
-  const serialized = createSerializedSink(sink);
+  if (ownedDetachActuator) env.OWNED_DETACH_ACTUATOR = ownedDetachActuator;
+  const sink = new AggregateSink({ storage }, env);
   const stub = {
     async fetch(url, init = {}) {
-      const req = new Request(url, init);
-      return serialized.fetch(req);
+      const req = init && init.body !== undefined
+        ? new Request(url, init)
+        : (url instanceof Request ? url : new Request(url, init));
+      return sink.fetch(req);
     },
   };
+  env.AGG_SINK = {
+    idFromName() { return { name: "cityscroll-tail-sanitizer-aggregate" }; },
+    get() { return stub; },
+  };
+  return { sink, storage, env };
+}
+
+function delayedJsonRequest(url, body, gate) {
   return {
-    sink: serialized,
-    storage,
-    env: {
-      READBACK_TOKEN: readbackToken,
-      AGG_SINK: {
-        idFromName() { return { name: "cityscroll-tail-sanitizer-aggregate" }; },
-        get() { return stub; },
-      },
+    url,
+    method: "POST",
+    headers: new Headers({ "content-type": "application/json" }),
+    async json() {
+      await gate;
+      return structuredClone(body);
     },
   };
+}
+
+function eventsSeenHelper(c) {
+  return (c.events_accepted || 0) + (c.events_rejected || 0) + (c.events_dropped_after_cap || 0);
 }
 
 test("getter-only TraceItem validates by property reads; empty {} still fails", () => {
@@ -407,11 +427,17 @@ test("AggregateSink: unauthenticated readback is 401 with zero storage writes", 
   assert.deepEqual(storage.keys(), []);
 });
 
-test("AggregateSink: ALL-seen cap + tail() stops on non-ACK", async () => {
+test("AggregateSink: ALL-seen cap + tail() classifies all items and drops after cap", async () => {
   const storage = createFakeStorage();
-  const { env, sink } = createFakeSinkEnv(storage);
-  // Seed max_events=2 via first opens, then force small cap by applying through sink
-  // with a custom meta — open via apply then patch meta.
+  let detachCalls = 0;
+  const { env, sink } = createFakeSinkEnv(storage, {
+    ownedDetachActuator: {
+      async fetch() {
+        detachCalls += 1;
+        return new Response(null, { status: 204 });
+      },
+    },
+  });
   const open = await sink.fetch(new Request("https://sink/apply", {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -425,7 +451,6 @@ test("AggregateSink: ALL-seen cap + tail() stops on non-ACK", async () => {
     }),
   }));
   assert.equal((await open.json()).acked, true);
-  // Shrink cap to 2 for the rest of the test.
   const meta = await storage.get("meta");
   meta.max_events = 2;
   await storage.put("meta", meta);
@@ -441,25 +466,22 @@ test("AggregateSink: ALL-seen cap + tail() stops on non-ACK", async () => {
   assert.equal(secondBody.trigger_owned_detach, true);
   assert.equal(secondBody.events_seen, 2);
 
-  const writesBeforeTail = storage.writeCount();
   const batch = [
     makeGetterOnlyTraceItem({ cpuTime: 1, scriptVersionId: "rev-b" }),
     makeGetterOnlyTraceItem({ cpuTime: 2, scriptVersionId: "rev-b" }),
     makeGetterOnlyTraceItem({ cpuTime: 3, scriptVersionId: "rev-b" }),
   ];
-  await workerEntrypoint.tail(batch, env);
-  // Cap already reached: tail should stop after first non-ACK without counting three accepts.
+  const tailResult = await workerEntrypoint.tail(batch, env);
+  assert.equal(tailResult.classified, 3);
+  assert.ok(tailResult.dropped_after_cap >= 1);
+  assert.equal(tailResult.owned_detach.actuated, true);
+  assert.equal(detachCalls, 1);
   const counters = await storage.get("counters");
   assert.equal(counters.events_accepted, 1);
-  assert.equal(counters.events_rejected, 1);
-  assert.equal(eventsSeenHelper(counters), 2);
-  // Some apply attempts may write meta/counters on SINK_CAP; must not accept more.
-  assert.ok(storage.writeCount() >= writesBeforeTail);
+  assert.ok(counters.events_rejected >= 1);
+  assert.ok(counters.events_dropped_after_cap >= 1);
+  assert.ok(eventsSeenHelper(counters) >= 2);
 });
-
-function eventsSeenHelper(c) {
-  return (c.events_accepted || 0) + (c.events_rejected || 0);
-}
 
 test("AggregateSink: cleanup tombstone survives; readback never reopens", async () => {
   const storage = createFakeStorage();
@@ -496,7 +518,6 @@ test("AggregateSink: cleanup tombstone survives; readback never reopens", async 
   assert.equal(storage.keys().includes("meta"), false);
   assert.equal(storage.keys().includes("counters"), false);
 
-  // Stale apply must not reopen.
   const stale = await sink.fetch(new Request("https://sink/apply", {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -512,7 +533,10 @@ test("AggregateSink: cleanup tombstone survives; readback never reopens", async 
 
 test("AggregateSink: distinct cpuTime values produce distinct sums (not class-only)", async () => {
   const storage = createFakeStorage();
-  const { sink } = createFakeSinkEnv(storage, { readbackToken: "tok" });
+  const { sink } = createFakeSinkEnv(storage, {
+    readbackToken: "tok",
+    expectedRevisions: "rev-cpu",
+  });
   for (const ms of [1, 100]) {
     const res = await sink.fetch(new Request("https://sink/apply", {
       method: "POST",
@@ -538,16 +562,110 @@ test("AggregateSink: distinct cpuTime values produce distinct sums (not class-on
   assert.equal(rb.counters.cpu_ms_count, 2);
   assert.equal(rb.counters.cpu_ms_histogram["0_1"], 1);
   assert.equal(rb.counters.cpu_ms_histogram["10_100"], 1);
-  assert.equal(rb.counters.by_cohort_cpu.fetch.cpu_ms_sum, 101);
+  assert.equal(rb.counters.by_cohort_cpu.http.cpu_ms_sum, 101);
   assert.equal(rb.counters.by_deployed_revision["rev-cpu"], 2);
   assert.equal(cpuMsBucket(1), "0_1");
   assert.equal(cpuMsBucket(100), "10_100");
+  for (const key of FIXED_COHORT_KEYS) {
+    assert.ok(Object.prototype.hasOwnProperty.call(rb.counters.by_cohort_cpu, key), key);
+  }
 });
 
-test("AggregateSink: concurrent applies honor ALL-seen cap with bounded overshoot", async () => {
+test("AggregateSink: root delayed-body race — ACK count matches persisted accepted", async () => {
+  // Root reproduction at 00bc4aa2: first /apply paused at req.json AFTER reading
+  // counters; second completed; first resumed. Both ACK'd but accepted stayed 2
+  // after a seed of 1 (3 ACKs total). Fix: parse body before transactional RMW.
   const storage = createFakeStorage();
-  const { sink } = createFakeSinkEnv(storage);
-  // Open + set cap 5.
+  const sink = new AggregateSink({ storage }, {
+    READBACK_TOKEN: "tok",
+    EXPECTED_DEPLOYED_REVISIONS: "rev-a",
+  });
+
+  const seed = await sink.fetch(new Request("https://sink/apply", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      accepted: true, cpu_class: "positive", cpuTime: 1, outcome: "ok",
+      eventType: "fetch", deployed_revision: "rev-a",
+    }),
+  }));
+  assert.equal((await seed.json()).acked, true);
+
+  let release;
+  const gate = new Promise((resolve) => { release = resolve; });
+  const delayed = delayedJsonRequest("https://sink/apply", {
+    accepted: true, cpu_class: "positive", cpuTime: 1, outcome: "ok",
+    eventType: "fetch", deployed_revision: "rev-a",
+  }, gate);
+  const second = new Request("https://sink/apply", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      accepted: true, cpu_class: "positive", cpuTime: 1, outcome: "ok",
+      eventType: "fetch", deployed_revision: "rev-a",
+    }),
+  });
+
+  const p1 = sink.fetch(delayed);
+  await new Promise((r) => setTimeout(r, 20));
+  const r2 = await (await sink.fetch(second)).json();
+  release();
+  const r1 = await (await p1).json();
+  const counters = await storage.get("counters");
+
+  const acks = [r1.acked, r2.acked].filter(Boolean).length;
+  assert.equal(acks, 2, "both concurrent applies after seed should ACK under atomic RMW");
+  assert.equal(counters.events_accepted, 3, "persisted accepted must equal seed+2 ACKs");
+  assert.equal(counters.cpu_ms_sum, 3);
+  assert.ok(
+    r1.events_accepted_lower_bound === 3 || r2.events_accepted_lower_bound === 3,
+    "at least one ACK reports the final lower bound",
+  );
+});
+
+test("AggregateSink: cleanup versus in-flight apply keeps tombstone closed", async () => {
+  const storage = createFakeStorage();
+  const { sink } = createFakeSinkEnv(storage, { readbackToken: "tok", expectedRevisions: "rev-a" });
+  await sink.fetch(new Request("https://sink/apply", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      accepted: true, cpu_class: "positive", cpuTime: 1, outcome: "ok",
+      eventType: "fetch", deployed_revision: "rev-a",
+    }),
+  }));
+
+  let release;
+  const gate = new Promise((resolve) => { release = resolve; });
+  const delayedApply = delayedJsonRequest("https://sink/apply", {
+    accepted: true, cpu_class: "positive", cpuTime: 2, outcome: "ok",
+    eventType: "fetch", deployed_revision: "rev-a",
+  }, gate);
+
+  const applyPromise = sink.fetch(delayedApply);
+  await new Promise((r) => setTimeout(r, 20));
+  const cleaned = await sink.fetch(new Request("https://sink/cleanup", {
+    method: "POST",
+    headers: { "x-cityscroll-tail-readback-token": "tok" },
+  }));
+  assert.equal((await cleaned.json()).tombstone, true);
+  release();
+  const applyBody = await (await applyPromise).json();
+  assert.equal(applyBody.acked, false);
+  assert.equal(applyBody.reason, "SINK_CLOSED");
+  assert.deepEqual(storage.keys(), ["terminal"]);
+
+  const rb = await (await sink.fetch(new Request("https://sink/readback", {
+    method: "GET",
+    headers: { "x-cityscroll-tail-readback-token": "tok" },
+  }))).json();
+  assert.equal(rb.closed, true);
+  assert.equal(rb.from_tombstone, true);
+});
+
+test("AggregateSink: concurrent applies under transactional RMW bound the cap", async () => {
+  const storage = createFakeStorage();
+  const { sink } = createFakeSinkEnv(storage, { expectedRevisions: "rev-c" });
   await sink.fetch(new Request("https://sink/apply", {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -574,13 +692,46 @@ test("AggregateSink: concurrent applies honor ALL-seen cap with bounded overshoo
     body: JSON.stringify(body),
   })).then((r) => r.json())));
   const counters = await storage.get("counters");
-  const seen = eventsSeenHelper(counters);
-  // Serialized DO queue: seed(1) + 4 accepts fill cap 5; remaining get SINK_CAP.
-  // The accept that fills the cap returns acked=true with cap_reached=true.
-  assert.equal(seen, 5, `seen=${seen}`);
   const acked = results.filter((r) => r.acked).length;
+  const refused = results.filter((r) => r.acked === false && r.reason === "SINK_CAP");
   assert.equal(acked, 4);
-  const cappedRefused = results.filter((r) => r.acked === false && (r.reason === "SINK_CAP" || r.cap_reached === true));
-  assert.equal(cappedRefused.length, 4);
-  assert.equal(results.filter((r) => r.acked === true && r.cap_reached === true).length, 1);
+  assert.equal(refused.length, 4);
+  assert.equal(counters.events_accepted, 5);
+  assert.equal(counters.apply_overshoot, 4);
+  assert.equal(eventsSeenHelper(counters), 5 + 4);
+});
+
+test("AggregateSink: revision keys stay on expected allowlist; unknown cohort stays unknown", () => {
+  const expected = parseExpectedRevisionAllowlist("rev-a,rev-b");
+  assert.equal(mapPersistedRevision("rev-a", expected), "rev-a");
+  assert.equal(mapPersistedRevision("foreign-rev", expected), "other");
+  assert.equal(mapPersistedRevision("rev-a", new Set()), "unknown");
+  assert.equal(mapFixedCohort({ eventType: "fetch" }), "http");
+  assert.equal(mapFixedCohort({ eventType: "scheduled", cron: "0 8 * * *" }), "cron_0800");
+  assert.equal(mapFixedCohort({ eventType: "scheduled", cron: "0 1 * * *" }), "cron_unknown");
+  assert.equal(mapFixedCohort({ eventType: "queue" }), "queue");
+  assert.equal(mapFixedCohort({ cohort: "search" }), "search");
+  assert.equal(mapFixedCohort({ cohort: "not-a-real-cohort" }), "unknown");
+  assert.ok(FIXED_COHORT_KEYS.includes("rum_16"));
+  assert.ok(FIXED_COHORT_KEYS.includes("collector"));
+  assert.ok(FIXED_COHORT_KEYS.includes("cold_start_flag_raw_0"));
+});
+
+test("actuateOwnedDetachFromCapSignal requires binding and signal", async () => {
+  const none = await actuateOwnedDetachFromCapSignal({}, { trigger_owned_detach: true });
+  assert.equal(none.actuated, false);
+  assert.equal(none.reason, "no_actuator_bound");
+  const skipped = await actuateOwnedDetachFromCapSignal({ OWNED_DETACH_ACTUATOR: { fetch() {} } }, {});
+  assert.equal(skipped.actuated, false);
+  let called = false;
+  const ok = await actuateOwnedDetachFromCapSignal({
+    OWNED_DETACH_ACTUATOR: {
+      async fetch() {
+        called = true;
+        return new Response(null, { status: 204 });
+      },
+    },
+  }, { trigger_owned_detach: true, events_seen: 10 });
+  assert.equal(ok.actuated, true);
+  assert.equal(called, true);
 });
