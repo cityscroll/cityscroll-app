@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { test } from "node:test";
 
 import {
@@ -12,14 +13,23 @@ import {
   loadCivicGeographyLayer,
   resolveCivicGeographies,
 } from "../site/civic_geography.mjs";
+import { writeFirstFour } from "../tools/build_civic_geography.mjs";
 import {
   compatibilityDistrictLayer,
   fixtureBundle,
+  writeLayerDocument,
 } from "../tools/build_district_boundaries.mjs";
+import {
+  jsonText,
+  layerWithoutBuiltAt,
+  semanticLayerEqual,
+  sha256Text,
+} from "../tools/lib/geography_layer_builder.mjs";
 import {
   normalizeCommunityDistrictSource,
   normalizeCouncilDistrictSource,
 } from "../tools/lib/district_boundary_source_adapters.mjs";
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 test("the registry is closed to the three baseline and four independently acquired layers", () => {
   assert.deepEqual(
@@ -140,4 +150,197 @@ test("committed registry points to full and simplified artifacts for every layer
     assert.equal(simplified.vintage.id, row.boundary_vintage);
     assert.deepEqual(full.features.map((feature) => feature.key), simplified.features.map((feature) => feature.key));
   }
+});
+
+test("semantic layer equality ignores built_at restamps only", () => {
+  const base = {
+    schema: "cityscroll.geography_layer.v1",
+    type: "nta2020",
+    built_at: "2026-09-30T13:15:20.219Z",
+    vintage: { id: "26B" },
+    features: [{ id: "MN0401", label: "Chelsea-Hudson Yards" }],
+  };
+  const restamped = {
+    ...base,
+    built_at: "2026-10-17T01:53:51.743Z",
+  };
+  const changed = {
+    ...restamped,
+    features: [{ id: "MN0401", label: "Chelsea" }],
+  };
+  assert.deepEqual(layerWithoutBuiltAt(base).built_at, undefined);
+  assert.equal(semanticLayerEqual(base, restamped), true);
+  assert.equal(semanticLayerEqual(base, changed), false);
+});
+
+test("unchanged geography layer rewrite keeps prior bytes when only built_at differs", async () => {
+  await withTempDir("geo-layer-preserve", async (dir) => {
+    const path = join(dir, "nta2020.json");
+    const original = {
+      schema: "cityscroll.geography_layer.v1",
+      type: "nta2020",
+      built_at: "2026-09-30T13:15:20.219Z",
+      vintage: { id: "26B" },
+      features: [{ id: "MN0401", label: "Chelsea-Hudson Yards" }],
+    };
+    const first = writeLayerDocument(path, original);
+    assert.equal(first.preserved, false);
+    const before = readFileSync(path, "utf8");
+    assert.equal(before, jsonText(original));
+
+    const restamped = {
+      ...original,
+      built_at: "2026-10-17T01:53:51.743Z",
+    };
+    const second = writeLayerDocument(path, restamped);
+    assert.equal(second.preserved, true);
+    assert.equal(readFileSync(path, "utf8"), before);
+    assert.equal(second.text, before);
+
+    const contentChanged = {
+      ...restamped,
+      features: [{ id: "MN0401", label: "Chelsea" }],
+    };
+    const third = writeLayerDocument(path, contentChanged);
+    assert.equal(third.preserved, false);
+    assert.equal(readFileSync(path, "utf8"), jsonText(contentChanged));
+  });
+});
+
+function writeJsonFile(path, value) {
+  mkdirSync(dirname(path), { recursive: true });
+  writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`);
+}
+
+function squareRing(x, y) {
+  return [[x, y], [x + 0.01, y], [x + 0.01, y + 0.01], [x, y + 0.01], [x, y]];
+}
+
+function polygonFeature(properties, x = 0, y = 0) {
+  return {
+    type: "Feature",
+    properties,
+    geometry: { type: "Polygon", coordinates: [squareRing(x, y)] },
+  };
+}
+
+/** Seed a temp repo root + source dir for a hermetic writeFirstFour pass. */
+function seedWriteFirstFourFixture(root, sourceDir, { ntaLabel = "Financial District-Seaport" } = {}) {
+  const baseline = JSON.parse(
+    readFileSync(new URL("../site/data/geography/layer_registry.json", import.meta.url), "utf8"),
+  );
+  // Keep the three baseline rows; first-four rows are replaced by the writer.
+  const seedRegistry = {
+    ...baseline,
+    layers: baseline.layers.filter((row) => (
+      row.type === "borough"
+      || row.type === "community_district"
+      || row.type === "council_district"
+    )),
+  };
+  writeJsonFile(join(root, "site/data/geography/layer_registry.json"), seedRegistry);
+  writeJsonFile(join(root, "worker/src/data/geography/layer_registry.json"), seedRegistry);
+  writeJsonFile(join(root, "ontology/geography/bid_reviewed_ids.json"), {
+    schema: "cityscroll.reviewed_bid_identity_registry.v1",
+    entries: [{
+      source_row_id: "1",
+      source_name: "Alliance for Downtown New York",
+      canonical_slug: "alliance-for-downtown-new-york",
+    }],
+  });
+
+  mkdirSync(sourceDir, { recursive: true });
+  writeJsonFile(join(sourceDir, "nta.geojson"), {
+    type: "FeatureCollection",
+    features: [polygonFeature({
+      NTA2020: "MN0101",
+      NTAName: ntaLabel,
+      NTAType: "0",
+      BoroCode: "1",
+      CDTA2020: "MN01",
+    })],
+  });
+  writeFileSync(join(sourceDir, "nynta2020_26b.zip"), "nta-acquisition-bytes");
+  writeJsonFile(join(sourceDir, "pp.geojson"), {
+    type: "FeatureCollection",
+    features: [polygonFeature({ Precinct: "1" }, 0.02, 0)],
+  });
+  writeFileSync(join(sourceDir, "nypp_26b.zip"), "pp-acquisition-bytes");
+  writeJsonFile(join(sourceDir, "dsny.geojson"), {
+    type: "FeatureCollection",
+    features: [polygonFeature({
+      districtcode: "101",
+      district: "Manhattan 1",
+      objectid: "9",
+    }, 0.04, 0)],
+  });
+  writeJsonFile(join(sourceDir, "bid.geojson"), {
+    type: "FeatureCollection",
+    features: [polygonFeature({
+      objectid_2: "1",
+      f_all_bi_2: "Alliance for Downtown New York",
+      f_all_bids: "0.0",
+    }, 0.06, 0)],
+  });
+}
+
+function assertReceiptRegistryDiskAgree(root, type) {
+  const registry = JSON.parse(readFileSync(join(root, "site/data/geography/layer_registry.json"), "utf8"));
+  const row = registry.layers.find((candidate) => candidate.type === type);
+  assert.ok(row, `${type} registry row`);
+  const fullText = readFileSync(join(root, row.artifacts.full.path), "utf8");
+  const siteText = readFileSync(join(root, row.artifacts.simplified.site_path), "utf8");
+  const receipt = JSON.parse(readFileSync(join(root, row.receipt.path), "utf8"));
+  assert.equal(row.artifacts.full.sha256, sha256Text(fullText), `${type} registry full digest`);
+  assert.equal(row.artifacts.simplified.sha256, sha256Text(siteText), `${type} registry simplified digest`);
+  assert.equal(receipt.artifacts.full.sha256, sha256Text(fullText), `${type} receipt full digest`);
+  assert.equal(receipt.artifacts.simplified.sha256, sha256Text(siteText), `${type} receipt simplified digest`);
+  return { row, fullText, siteText, receipt };
+}
+
+test("writeFirstFour preserves bytes and keeps receipt+registry digests aligned on built_at-only rebuild", async () => {
+  await withTempDir("civic-geo-write-first-four", async (dir) => {
+    const root = join(dir, "repo");
+    const sourceDir = join(dir, "sources");
+    seedWriteFirstFourFixture(root, sourceDir);
+
+    const first = writeFirstFour({
+      sourceDir,
+      builtAt: "2026-09-30T13:15:20.219Z",
+      root,
+    });
+    assert.equal(first.layers.length, 7);
+    const before = assertReceiptRegistryDiskAgree(root, "nta2020");
+
+    const second = writeFirstFour({
+      sourceDir,
+      builtAt: "2026-10-17T01:53:51.743Z",
+      root,
+    });
+    assert.equal(second.layers.length, 7);
+    const after = assertReceiptRegistryDiskAgree(root, "nta2020");
+    assert.equal(after.fullText, before.fullText, "full layer bytes must stay preserved");
+    assert.equal(after.siteText, before.siteText, "simplified layer bytes must stay preserved");
+    assert.equal(after.receipt.artifacts.full.sha256, before.receipt.artifacts.full.sha256);
+    assert.equal(after.row.artifacts.full.sha256, before.row.artifacts.full.sha256);
+    assert.notEqual(
+      JSON.parse(after.fullText).built_at,
+      "2026-10-17T01:53:51.743Z",
+      "preserved layer must keep the original built_at",
+    );
+
+    // Real content change must rewrite bytes and advance every digest together.
+    seedWriteFirstFourFixture(root, sourceDir, { ntaLabel: "Financial District" });
+    const third = writeFirstFour({
+      sourceDir,
+      builtAt: "2026-10-17T02:00:00.000Z",
+      root,
+    });
+    assert.equal(third.layers.length, 7);
+    const changed = assertReceiptRegistryDiskAgree(root, "nta2020");
+    assert.notEqual(changed.fullText, before.fullText);
+    assert.notEqual(changed.receipt.artifacts.full.sha256, before.receipt.artifacts.full.sha256);
+    assert.notEqual(changed.row.artifacts.full.sha256, before.row.artifacts.full.sha256);
+    assert.match(changed.fullText, /Financial District/);
+  });
 });

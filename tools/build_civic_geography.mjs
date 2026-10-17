@@ -18,6 +18,7 @@ import { checkLayer } from "./build_district_boundaries.mjs";
 import {
   buildGeographyLayer,
   jsonText,
+  semanticLayerEqual,
   sha256Text,
 } from "./lib/geography_layer_builder.mjs";
 import {
@@ -152,11 +153,11 @@ function artifactPaths(type, vintage) {
   };
 }
 
-function registryRow(registered, pair, receiptPath) {
+function registryRow(registered, pair, receiptPath, root = ROOT) {
   const paths = artifactPaths(registered.type, pair.full.vintage.id);
   const fullText = jsonText(pair.full);
   const simplifiedText = jsonText(pair.simplified);
-  const receiptText = readFileSync(join(ROOT, receiptPath), "utf8");
+  const receiptText = readFileSync(join(root, receiptPath), "utf8");
   return {
     type: registered.type,
     class: registered.class,
@@ -196,6 +197,23 @@ function registryRow(registered, pair, receiptPath) {
 function writeText(path, text) {
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, text);
+}
+
+function writeLayerDocument(path, value) {
+  if (existsSync(path)) {
+    try {
+      const existingText = readFileSync(path, "utf8");
+      const existing = JSON.parse(existingText);
+      if (semanticLayerEqual(existing, value)) {
+        return { text: existingText, preserved: true };
+      }
+    } catch {
+      // rewrite
+    }
+  }
+  const text = jsonText(value);
+  writeText(path, text);
+  return { text, preserved: false };
 }
 
 function sourceReceipt(type, pair, spec, sourceFiles, diagnostics, builtAt, sourceRows) {
@@ -277,11 +295,13 @@ function sourcesFromDirectory(sourceDir, types = FIRST_FOUR) {
   return { sources, files };
 }
 
-export function writeFirstFour({ sourceDir, builtAt, types = FIRST_FOUR }) {
+export function writeFirstFour({ sourceDir, builtAt, types = FIRST_FOUR, root = ROOT }) {
   const { sources, files } = sourcesFromDirectory(sourceDir, types);
-  const reviewedBidIds = readJson(REVIEWED_BID_IDS);
+  const reviewedBidIds = readJson(join(root, "ontology/geography/bid_reviewed_ids.json"));
   const built = buildFirstFourLayers({ sources, reviewedBidIds, builtAt });
-  const committedRegistry = readJson(SITE_REGISTRY);
+  const siteRegistryPath = join(root, "site/data/geography/layer_registry.json");
+  const workerRegistryPath = join(root, "worker/src/data/geography/layer_registry.json");
+  const committedRegistry = readJson(siteRegistryPath);
   const existing = new Map((committedRegistry.layers || []).map((row) => [row.type, row]));
   const rows = new Map(existing);
 
@@ -297,11 +317,21 @@ export function writeFirstFour({ sourceDir, builtAt, types = FIRST_FOUR }) {
       builtAt,
       sources[type],
     );
-    writeText(join(ROOT, paths.full), jsonText(pair.full));
-    writeText(join(ROOT, paths.site), jsonText(pair.simplified));
-    writeText(join(ROOT, paths.worker), jsonText(pair.simplified));
-    writeText(join(ROOT, paths.receipt), jsonText(receipt, { pretty: true }));
-    rows.set(type, registryRow(definition(type), pair, paths.receipt));
+    const fullWrite = writeLayerDocument(join(root, paths.full), pair.full);
+    const siteWrite = writeLayerDocument(join(root, paths.site), pair.simplified);
+    writeText(join(root, paths.worker), siteWrite.text);
+    // Receipt digests must match the bytes actually retained on disk, including
+    // when writeLayerDocument preserves prior bytes for a built_at-only restamp.
+    receipt.artifacts.full.sha256 = sha256Text(fullWrite.text);
+    receipt.artifacts.simplified.sha256 = sha256Text(siteWrite.text);
+    writeText(join(root, paths.receipt), jsonText(receipt, { pretty: true }));
+    // Registry digests must match the bytes actually retained on disk.
+    const row = registryRow(definition(type), pair, paths.receipt, root);
+    row.artifacts.full.sha256 = sha256Text(fullWrite.text);
+    row.artifacts.full.bytes = Buffer.byteLength(fullWrite.text);
+    row.artifacts.simplified.sha256 = sha256Text(siteWrite.text);
+    row.artifacts.simplified.bytes = Buffer.byteLength(siteWrite.text);
+    rows.set(type, row);
   }
 
   const registry = {
@@ -314,8 +344,8 @@ export function writeFirstFour({ sourceDir, builtAt, types = FIRST_FOUR }) {
   const errors = validateCivicGeographyRegistry(registry);
   if (errors.length) throw new Error(errors.join("; "));
   const registryText = jsonText(registry, { pretty: true });
-  writeText(SITE_REGISTRY, registryText);
-  writeText(WORKER_REGISTRY, registryText);
+  writeText(siteRegistryPath, registryText);
+  writeText(workerRegistryPath, registryText);
   return registry;
 }
 

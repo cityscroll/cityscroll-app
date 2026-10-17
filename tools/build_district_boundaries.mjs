@@ -23,6 +23,7 @@ import {
   buildGeographyLayer,
   jsonText,
   legacyPolygonsForFeature,
+  semanticLayerEqual,
   sha256Text,
 } from "./lib/geography_layer_builder.mjs";
 import {
@@ -221,7 +222,7 @@ function artifactPaths(type, vintage) {
   };
 }
 
-function registryForBundle(bundle) {
+function registryForBundle(bundle, writtenTexts = {}) {
   const existingRows = existsSync(SITE_REGISTRY)
     ? new Map((JSON.parse(readFileSync(SITE_REGISTRY, "utf8")).layers || []).map((row) => [row.type, row]))
     : new Map();
@@ -236,8 +237,8 @@ function registryForBundle(bundle) {
         return existing;
       }
       const paths = artifactPaths(registered.type, pair.full.vintage.id);
-      const fullText = jsonText(pair.full);
-      const simplifiedText = jsonText(pair.simplified);
+      const fullText = writtenTexts[`${registered.type}:full`] || jsonText(pair.full);
+      const simplifiedText = writtenTexts[`${registered.type}:simplified`] || jsonText(pair.simplified);
       return {
         type: registered.type,
         class: registered.class,
@@ -276,6 +277,28 @@ function writeText(path, text) {
   writeFileSync(path, text);
 }
 
+/**
+ * Write a geography layer document. When an existing file already matches on
+ * every field except built_at, keep the existing bytes so crosswalk source
+ * hashes and registry digests stay stable across no-op refresh rebuilds.
+ */
+export function writeLayerDocument(path, value, options) {
+  if (existsSync(path)) {
+    try {
+      const existingText = readFileSync(path, "utf8");
+      const existing = JSON.parse(existingText);
+      if (semanticLayerEqual(existing, value)) {
+        return { text: existingText, preserved: true, layer: existing };
+      }
+    } catch {
+      // Unreadable or invalid existing bytes: rewrite.
+    }
+  }
+  const text = jsonText(value, options);
+  writeText(path, text);
+  return { text, preserved: false, layer: value };
+}
+
 function writeJson(path, value, options) {
   const text = jsonText(value, options);
   writeText(path, text);
@@ -293,14 +316,22 @@ export function writeLayer(unified) {
 }
 
 export function writeGeographyBundle(bundle) {
-  const registry = registryForBundle(bundle);
-  for (const row of registry.layers) {
-    const pair = bundle.layers[row.type];
+  const writtenTexts = {};
+  for (const [type, pair] of Object.entries(bundle.layers || {})) {
     if (!pair) continue;
-    writeJson(join(ROOT, row.artifacts.full.path), pair.full);
-    writeJson(join(ROOT, row.artifacts.simplified.site_path), pair.simplified);
-    writeJson(join(ROOT, row.artifacts.simplified.worker_path), pair.simplified);
+    const paths = artifactPaths(type, pair.full.vintage.id);
+    const fullWrite = writeLayerDocument(join(ROOT, paths.full), pair.full);
+    const siteWrite = writeLayerDocument(join(ROOT, paths.site), pair.simplified);
+    const workerWrite = writeLayerDocument(join(ROOT, paths.worker), pair.simplified);
+    writtenTexts[`${type}:full`] = fullWrite.text;
+    writtenTexts[`${type}:simplified`] = siteWrite.text;
+    // Keep site/worker twins byte-identical when either side was preserved.
+    if (siteWrite.text !== workerWrite.text) {
+      writeText(join(ROOT, paths.worker), siteWrite.text);
+      writtenTexts[`${type}:simplified`] = siteWrite.text;
+    }
   }
+  const registry = registryForBundle(bundle, writtenTexts);
   writeJson(SITE_REGISTRY, registry, { pretty: true });
   writeJson(WORKER_REGISTRY, registry, { pretty: true });
   writeLayer(bundle.unified);

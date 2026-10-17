@@ -51,9 +51,13 @@ const HELLS_KITCHEN = "geography:nta2020:MN0402";
 const M04 = "geography:community_district:M04";
 const LOCAL_UNSUPPORTED_COPY = "We can’t filter these meetings to this neighborhood yet.";
 const LOCAL_ZERO_COPY = "No mapped meetings match these filters.";
+/** Frozen district-activity slice for Chelsea Near You hermetic acceptance. */
+const CHELSEA_ACTIVITY_FIXTURE = "test/fixtures/near-you-chelsea-repair/district_activity.json";
 
 function committedActivity() {
-  return readJson("site/data/district_activity.json");
+  // Hermetic: first-class refresh rewrites live site/data/district_activity.json.
+  // These coverage-state assertions pin a frozen Chelsea/Hell's Kitchen/M04 slice.
+  return readJson(CHELSEA_ACTIVITY_FIXTURE);
 }
 
 function residentialPlaces() {
