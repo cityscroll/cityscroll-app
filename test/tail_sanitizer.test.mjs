@@ -459,8 +459,8 @@ test("AggregateSink: authenticated FRESH/EMPTY /readback is honest unopened zero
   assert.equal(body.deadline_ms, 1_800_000);
   assert.equal(body.max_events, 10_000);
   assert.equal(body.counters.apply_overshoot, 0);
-  assert.equal(body.a2.pass, true);
-  assert.equal(body.a2.reason, "within_all_seen_cap");
+  assert.equal(body.a2.pass, null);
+  assert.equal(body.a2.reason, "not_evaluated");
   // Unopened readback must not open a window or invent meta (no READY↔attach deadlock).
   assert.deepEqual(storage.keys(), []);
 
@@ -507,6 +507,8 @@ test("AggregateSink: authenticated FRESH/EMPTY /readback is honest unopened zero
   assert.equal(signal.cap_reached, false);
   assert.equal(signal.events_seen, 0);
   assert.equal(signal.opened, false);
+  assert.equal(signal.a2.pass, null);
+  assert.equal(signal.a2.reason, "not_evaluated");
   assert.equal("body" in signal, false);
   assert.equal(signal.identity_binding.sink_name, TAIL_SINK_NAME);
 
@@ -553,7 +555,8 @@ test("AggregateSink: authenticated FRESH/EMPTY /readback is honest unopened zero
   assert.equal(directBody.opened, false);
   assert.equal(directBody.deadline_ms, body.deadline_ms);
   assert.equal(directBody.max_events, body.max_events);
-  assert.equal(directBody.a2.pass, true);
+  assert.equal(directBody.a2.pass, null);
+  assert.equal(directBody.a2.reason, "not_evaluated");
 });
 
 test("AggregateSink: ALL-seen cap + tail() classifies all items and drops after cap", async () => {
@@ -899,6 +902,14 @@ test("evaluateAllSeenCapA2 fails above all-seen cap or unknown overshoot", () =>
     cap_reached: false,
     apply_overshoot: 0,
   }).pass, true);
+  const unevaluated = evaluateAllSeenCapA2({
+    events_seen: 0,
+    cap_reached: false,
+    apply_overshoot: 0,
+  }, { opened: false });
+  assert.equal(unevaluated.pass, null);
+  assert.equal(unevaluated.reason, "not_evaluated");
+  assert.equal(unevaluated.events_seen, 0);
 });
 
 test("actuateOwnedDetachFromCapSignal requires binding and signal", async () => {

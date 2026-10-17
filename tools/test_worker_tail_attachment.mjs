@@ -89,8 +89,8 @@ function freshSinkReadbackBody(overrides = {}) {
     counters: { apply_overshoot: 0 },
     cap_reached: false,
     a2: {
-      pass: true,
-      reason: "within_all_seen_cap",
+      pass: null,
+      reason: "not_evaluated",
       events_seen: 0,
       apply_overshoot: 0,
     },
@@ -1082,8 +1082,8 @@ test("createSinkReadbackCapSignal: valid unopened schema with events_seen 0 is R
   assert.equal(signal.cap_reached, false);
   assert.equal(signal.events_seen, 0);
   assert.equal(signal.opened, false);
-  assert.equal(signal.a2.pass, true);
-  assert.equal(signal.a2.reason, CAP_A2_REASON.WITHIN_ALL_SEEN_CAP);
+  assert.equal(signal.a2.pass, null);
+  assert.equal(signal.a2.reason, CAP_A2_REASON.NOT_EVALUATED);
   assert.equal("body" in signal, false);
   assert.equal(signal.identity_binding.window_id, "cap-bind-win");
   assert.equal(signal.identity_binding.desired_consumer_service, SANITIZER_A.service);
@@ -1135,6 +1135,24 @@ test("projectCapSignalA2 maps unknown reasons and drops raw fields", () => {
   assert.equal(projected.reason, CAP_A2_REASON.A2_REASON_UNKNOWN);
   assert.equal("hostile" in projected, false);
   assert.equal("body" in projected, false);
+
+  const unevaluated = projectCapSignalA2({
+    pass: null,
+    reason: CAP_A2_REASON.NOT_EVALUATED,
+    events_seen: 0,
+    apply_overshoot: 0,
+  });
+  assert.equal(unevaluated.pass, null);
+  assert.equal(unevaluated.reason, CAP_A2_REASON.NOT_EVALUATED);
+
+  const nullWithoutReason = projectCapSignalA2({
+    pass: null,
+    reason: "within_all_seen_cap",
+    events_seen: 0,
+    apply_overshoot: 0,
+  });
+  assert.equal(nullWithoutReason.pass, false);
+  assert.equal(nullWithoutReason.reason, CAP_A2_REASON.WITHIN_ALL_SEEN_CAP);
 });
 
 test("projectSinkReadbackCapSignal never includes raw body", () => {
@@ -1142,7 +1160,7 @@ test("projectSinkReadbackCapSignal never includes raw body", () => {
     cap_reached: false,
     events_seen: 0,
     apply_overshoot: 0,
-    a2: { pass: true, reason: "within_all_seen_cap", events_seen: 0, apply_overshoot: 0 },
+    a2: { pass: null, reason: "not_evaluated", events_seen: 0, apply_overshoot: 0 },
     deadline_ms: 1_800_000,
     max_events: 10_000,
     opened: false,
@@ -1150,7 +1168,8 @@ test("projectSinkReadbackCapSignal never includes raw body", () => {
   });
   assert.equal(projected.readback_ok, true);
   assert.equal("body" in projected, false);
-  assert.equal(projected.a2.reason, CAP_A2_REASON.WITHIN_ALL_SEEN_CAP);
+  assert.equal(projected.a2.pass, null);
+  assert.equal(projected.a2.reason, CAP_A2_REASON.NOT_EVALUATED);
 });
 
 test("createSinkReadbackCapSignal: hung body still settles UNKNOWN via outer race", async () => {
@@ -1222,7 +1241,16 @@ test("validateSinkReadbackBody rejects non-boolean cap and negative counts", () 
     expectedSinkName: TAIL_SINK_NAME,
   });
   assert.equal(okFresh.ok, true);
-  assert.equal(okFresh.a2.reason, CAP_A2_REASON.WITHIN_ALL_SEEN_CAP);
+  assert.equal(okFresh.a2.pass, null);
+  assert.equal(okFresh.a2.reason, CAP_A2_REASON.NOT_EVALUATED);
+  assert.equal(
+    validateSinkReadbackBody(freshSinkReadbackBody({
+      a2: { pass: null, reason: "within_all_seen_cap", events_seen: 0, apply_overshoot: 0 },
+    }), {
+      expectedSinkName: TAIL_SINK_NAME,
+    }).ok,
+    false,
+  );
   assert.equal(
     validateSinkReadbackBody(freshSinkReadbackBody({ sink_name: "wrong-sink" }), {
       expectedSinkName: TAIL_SINK_NAME,

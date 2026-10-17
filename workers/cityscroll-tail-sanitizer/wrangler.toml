@@ -15,8 +15,7 @@ class_name = "AggregateSink"
 tag = "v1-tail-sanitizer-aggregate-sink"
 new_sqlite_classes = ["AggregateSink"]
 
-# READBACK_TOKEN must be set via `wrangler secret put READBACK_TOKEN` before
-# any authenticated readback. Placeholder keeps local config valid; runtime
-# refuses readback while unset.
-[vars]
-READBACK_TOKEN = "unset"
+# READBACK_TOKEN is a Worker secret only (`wrangler secret put READBACK_TOKEN`).
+# Do not declare it under [vars]: a plaintext placeholder collides with the
+# secret binding name (Cloudflare API 10053). Runtime refuses readback while
+# the secret is unset or equal to the literal "unset".

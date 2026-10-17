@@ -32,7 +32,10 @@ invocation aggregates. It is separate from `cityscroll-worker`.
 Deploy is intentionally out of band from the main Worker path filter
 (`worker/**`). Do not deploy from this tree until an authorized production
 window names this Worker and sets `READBACK_TOKEN` via
-`wrangler secret put`.
+`wrangler secret put READBACK_TOKEN`. Do not put `READBACK_TOKEN` under
+`[vars]` in `wrangler.toml` — a plaintext placeholder collides with the
+secret binding name. The runtime refuses readback while the secret is unset
+or equal to the literal `"unset"`.
 
 ## Tests
 
