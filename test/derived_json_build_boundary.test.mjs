@@ -85,7 +85,7 @@ test("required PR CI catches a stale keyword read model before Worker deployment
   assert.match(workflow, /name: Committed keyword search read-model freshness[\s\S]*?node tools\/build_keyword_search_index\.mjs --check/);
 });
 
-test("familyCheckCurrent reports whether a generator --check already passes", async () => {
+test("familyCheckCurrent reports whether a receipt-only probe passes", async () => {
   const { familyCheckCurrent } = await import(path.join(ROOT, "tools/derived_json_build_boundary.mjs"));
   const dir = mkdtempSync(path.join(os.tmpdir(), "derived-json-check-current-"));
   try {
@@ -219,5 +219,47 @@ test("payload integrity can inspect the materialized artifact directory", () => 
     assert.match(result.stdout, /1 payload trees/);
   } finally {
     rmSync(artifact, { recursive: true, force: true });
+  }
+});
+
+
+test("cold and invalid receipt probes never run the generator's full comparison", async () => {
+  const { runGeneratedFamilies } = await import("../tools/derived_json_build_boundary.mjs");
+  const dir = mkdtempSync(path.join(os.tmpdir(), "derived-json-cold-probe-"));
+  try {
+    writeFileSync(path.join(dir, "input.json"), "first");
+    writeFileSync(path.join(dir, "generator.mjs"), `
+      import { appendFileSync, existsSync, readFileSync, writeFileSync } from "node:fs";
+      const input = readFileSync("input.json", "utf8");
+      const current = existsSync("receipt") && existsSync("output.json")
+        && readFileSync("receipt", "utf8") === input
+        && readFileSync("output.json", "utf8") === input;
+      if (process.argv.includes("--check")) {
+        if (current) process.exit(0);
+        if (process.argv.includes("--receipt-only")) process.exit(1);
+        appendFileSync("calls", "full-comparison\\n");
+        process.exit(1);
+      }
+      appendFileSync("calls", "build\\n");
+      writeFileSync("output.json", input);
+      writeFileSync("receipt", input);
+    `);
+    const family = { id: "probe", generator: "generator.mjs", skip_when_check_current: true,
+      source_paths: ["input.json"], output_paths: ["output.json"] };
+    const run = () => runGeneratedFamilies(dir, [family])[0];
+    const calls = () => readFileSync(path.join(dir, "calls"), "utf8").trim().split("\n");
+    assert.equal(run().skipped, false);
+    assert.deepEqual(calls(), ["build"], "cold build must compute exactly once");
+    assert.equal(run().skipped, true);
+    assert.deepEqual(calls(), ["build"]);
+    writeFileSync(path.join(dir, "input.json"), "changed");
+    assert.equal(run().skipped, false);
+    writeFileSync(path.join(dir, "output.json"), "corrupted");
+    assert.equal(run().skipped, false);
+    rmSync(path.join(dir, "receipt"));
+    assert.equal(run().skipped, false);
+    assert.deepEqual(calls(), ["build", "build", "build", "build"]);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
   }
 });
