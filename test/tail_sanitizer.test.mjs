@@ -437,15 +437,18 @@ test("AggregateSink: authenticated FRESH/EMPTY /readback is honest unopened zero
     createSinkReadbackCapSignal,
     establishCapReadbackIdentityBinding,
   } = await import("../tools/lib/worker_tail_attachment.mjs");
+  const { loadCapDetachActuator } = await import("../tools/worker_tail_attachment_restorer.mjs");
 
   const storage = createFakeStorage();
-  const { sink } = createFakeSinkEnv(storage, { readbackToken: "owned-readback" });
-  const res = await sink.fetch(new Request("https://sink/readback", {
+  const { sink, env } = createFakeSinkEnv(storage, { readbackToken: "owned-readback" });
+
+  // Actual Worker entrypoint with fake AGG_SINK binding + storage — not a hand mock.
+  const entryRes = await workerEntrypoint.fetch(new Request("https://worker/readback", {
     method: "GET",
     headers: { "x-cityscroll-tail-readback-token": "owned-readback" },
-  }));
-  assert.equal(res.status, 200);
-  const body = await res.json();
+  }), env);
+  assert.equal(entryRes.status, 200);
+  const body = await entryRes.json();
   assert.equal(body.ok, true);
   assert.equal(body.schema, "cityscroll.tail_sanitizer_aggregate_sink.v1");
   assert.equal(body.sink_name, "cityscroll-tail-sanitizer-aggregate");
@@ -458,22 +461,25 @@ test("AggregateSink: authenticated FRESH/EMPTY /readback is honest unopened zero
   assert.equal(body.counters.apply_overshoot, 0);
   assert.equal(body.a2.pass, true);
   assert.equal(body.a2.reason, "within_all_seen_cap");
-  // Unopened readback must not open a window or invent meta.
+  // Unopened readback must not open a window or invent meta (no READY↔attach deadlock).
   assert.deepEqual(storage.keys(), []);
 
   const accountSha = createHash("sha256").update("a".repeat(32)).digest("hex");
   const versionSha = createHash("sha256").update("bootstrap-version").digest("hex");
-  const readbackUrl = "https://sink/readback";
-  const identity = establishCapReadbackIdentityBinding({
-    window: {
-      window_id: "bootstrap-win",
-      account_id_sha256: accountSha,
-      version_evidence: {
-        present: true,
-        sha256: versionSha,
-        consumer: { service: "cityscroll-cc05-r4-tail-sanitizer", environment: null, namespace: null },
-      },
+  const readbackUrl = "https://worker/readback";
+  const window = {
+    window_id: "bootstrap-win",
+    account_id_sha256: accountSha,
+    restorer: { armed: true, cap_detach_actuator_bound: true },
+    version_evidence: {
+      present: true,
+      sha256: versionSha,
+      consumer: { service: "cityscroll-cc05-r4-tail-sanitizer", environment: null, namespace: null },
     },
+    owned_consumers: null,
+  };
+  const identity = establishCapReadbackIdentityBinding({
+    window,
     desiredConsumer: { service: "cityscroll-cc05-r4-tail-sanitizer", environment: null, namespace: null },
     readbackUrl,
     credentialProvenance: CAP_CREDENTIAL_PROVENANCE.TEST_FIXTURE,
@@ -481,18 +487,20 @@ test("AggregateSink: authenticated FRESH/EMPTY /readback is honest unopened zero
   });
   assert.equal(identity.ok, true);
 
-  // Strict reader against the ACTUAL AggregateSink.fetch body (not a hand mock).
+  const sinkFetch = async (_url, init) => {
+    const req = new Request(readbackUrl, {
+      method: "GET",
+      headers: init?.headers || {},
+    });
+    return workerEntrypoint.fetch(req, env);
+  };
+
+  // Strict reader against the ACTUAL entrypoint→AggregateSink FRESH body.
   const readCapSignal = createSinkReadbackCapSignal({
     url: readbackUrl,
     token: "owned-readback",
     identityBinding: identity.binding,
-    fetchImpl: async (_url, init) => {
-      const req = new Request(_url, {
-        method: "GET",
-        headers: init?.headers || {},
-      });
-      return sink.fetch(req);
-    },
+    fetchImpl: sinkFetch,
   });
   const signal = await readCapSignal({ timeoutMs: 200 });
   assert.equal(signal.readback_ok, true);
@@ -501,6 +509,25 @@ test("AggregateSink: authenticated FRESH/EMPTY /readback is honest unopened zero
   assert.equal(signal.opened, false);
   assert.equal("body" in signal, false);
   assert.equal(signal.identity_binding.sink_name, TAIL_SINK_NAME);
+
+  // Default loader readiness against the same real FRESH/EMPTY response.
+  const actuator = await loadCapDetachActuator(
+    {
+      CITYSCROLL_TAIL_SINK_READBACK_URL: readbackUrl,
+      CITYSCROLL_TAIL_SINK_READBACK_TOKEN: "owned-readback",
+    },
+    window,
+    {
+      store: null,
+      transport: { getTailConsumers: async () => [] },
+      versionTransport: null,
+      fetchImpl: sinkFetch,
+    },
+  );
+  assert.ok(actuator);
+  assert.equal(typeof actuator.pollAndDetachIfCapped, "function");
+  // Still no meta — READY before attach does not open the sink window.
+  assert.deepEqual(storage.keys(), []);
 
   // Malformed {} still refuses READY.
   const empty = createSinkReadbackCapSignal({
@@ -516,6 +543,17 @@ test("AggregateSink: authenticated FRESH/EMPTY /readback is honest unopened zero
   const emptySignal = await empty({ timeoutMs: 50 });
   assert.equal(emptySignal.readback_ok, false);
   assert.equal(emptySignal.reason, CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID);
+
+  // Direct AggregateSink path stays consistent with the entrypoint.
+  const direct = await sink.fetch(new Request("https://sink/readback", {
+    method: "GET",
+    headers: { "x-cityscroll-tail-readback-token": "owned-readback" },
+  }));
+  const directBody = await direct.json();
+  assert.equal(directBody.opened, false);
+  assert.equal(directBody.deadline_ms, body.deadline_ms);
+  assert.equal(directBody.max_events, body.max_events);
+  assert.equal(directBody.a2.pass, true);
 });
 
 test("AggregateSink: ALL-seen cap + tail() classifies all items and drops after cap", async () => {

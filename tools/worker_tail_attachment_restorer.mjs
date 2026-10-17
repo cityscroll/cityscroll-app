@@ -110,7 +110,12 @@ async function loadVersionTransport(env, window) {
  * Fixture injection via CITYSCROLL_TAIL_ATTACHMENT_RESTORER_CAP_DETACH_MODULE
  * is for tests only.
  */
-export async function loadCapDetachActuator(env, window, { store, transport, versionTransport }) {
+export async function loadCapDetachActuator(env, window, {
+  store,
+  transport,
+  versionTransport,
+  fetchImpl = globalThis.fetch,
+} = {}) {
   if (window?.restorer?.cap_detach_actuator_bound !== true) {
     return null;
   }
@@ -152,6 +157,7 @@ export async function loadCapDetachActuator(env, window, { store, transport, ver
     url: readbackUrl,
     token: readbackToken,
     identityBinding: identity.binding,
+    fetchImpl,
   });
   const readiness = await readCapSignal({});
   if (!readiness || readiness.readback_ok !== true) {
