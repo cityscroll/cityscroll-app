@@ -1,11 +1,11 @@
 /**
  * Resident renderer for a bounded Land authority summary.
- * Accepts a precomputed summary only — it does not resolve procedure or fetch
- * a publisher. Profile, phase, geography, and published-opportunity facts stay
+ * Renders precomputed summaries and projects retained outcome evidence during
+ * hydration; never fetches a publisher. Profile, phase, geography, and opportunity facts stay
  * in separate DOM/data structures.
  */
 
-import { resolveLandAuthoritySourceBasis } from "./land_authority_summary.mjs";
+import { buildLandAuthoritySummary, resolveLandAuthoritySourceBasis } from "./land_authority_summary.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
 import { calendarNativeSubscriptionUrl } from "./calendar_subscription.mjs";
 import {
@@ -74,14 +74,59 @@ export function attachLandAuthoritySummaries(target, payload) {
 }
 
 export function landAuthoritySummaryFor(row) {
-  return row?.authority_summary || landAuthorityLookup?.[row?.project_id] || null;
+  const embedded = row?.authority_summary;
+  const loaded = landAuthorityLookup?.[row?.project_id];
+  if (!embedded) return loaded || null;
+  if (!loaded) return embedded;
+  return (Date.parse(loaded.freshness?.generated_at || "") || 0) > (Date.parse(embedded.freshness?.generated_at || "") || 0)
+    ? loaded : embedded;
+}
+
+/** Project materialized outcome evidence into the same card after cache/refresh resolution. */
+export function landAuthoritySummaryFromOutcome(row, record) {
+  const previous = landAuthoritySummaryFor(row);
+  const geographySummary = [previous, landAuthorityLookup?.[row.project_id]].find(
+    (summary) => summary?.project_id === row.project_id && summary.source_basis?.geography?.status === "resolved"
+  );
+  const refs = geographySummary?.affected_actor_refs || [];
+  const bodies = (role) => refs.filter((ref) => ref.role === role).map((ref) => ref.body_ref);
+  const affected = refs.length ? {
+    ...geographySummary.source_basis.geography, edges: refs,
+    facts: {
+      community_boards: bodies("affected_community_board"),
+      borough_presidents: bodies("affected_borough_president"),
+      borough_president: bodies("affected_borough_president").length === 1 ? bodies("affected_borough_president")[0] : null,
+      borough_boards: bodies("affected_borough_board"),
+      borough_board: bodies("affected_borough_board").length > 0,
+    },
+  } : null;
+  const summary = buildLandAuthoritySummary({
+    affectedReviewBodies: affected,
+    project: { ...row, ...Object.fromEntries(Object.entries(record?.open_data || {}).filter(([, value]) => value != null)), project_id: row.project_id },
+    outcomes: record || {},
+    stale: !record || record.evidence_stale === true,
+    asOf: record?.stage_observation?.observed_at || record?.generated_at || null,
+    generatedAt: record?.generated_at || null,
+  });
+  // Published opportunities have their own checked source and clock. Outcome
+  // hydration must not turn an already checked calendar into an unchecked one.
+  const publishedSummary = [previous, landAuthorityLookup?.[row.project_id]].find(
+    (candidate) => candidate?.published_next_opportunity?.checked === true
+  ) || previous;
+  if (publishedSummary?.published_next_opportunity) {
+    summary.published_next_opportunity = publishedSummary.published_next_opportunity;
+    summary.next_procedural_body = publishedSummary.next_procedural_body || null;
+    summary.source_basis.publisher = publishedSummary.source_basis?.publisher || summary.source_basis.publisher;
+    summary.freshness.source_vintages.hearings_generated_at = publishedSummary.freshness?.source_vintages?.hearings_generated_at || null;
+  }
+  return summary;
 }
 
 export function loadLandAuthoritySummaryLookup() {
   return fetch(LAND_AUTHORITY_SUMMARY_URL, { cache: "force-cache", credentials: "omit" })
     .then((response) => response.ok ? response.json() : null)
-    .then((payload) => rememberLandAuthoritySummaries(payload))
-    .catch(() => rememberLandAuthoritySummaries(null));
+    .then((payload) => { rememberLandAuthoritySummaries(payload); return payload; })
+    .catch(() => { rememberLandAuthoritySummaries(null); return null; });
 }
 
 function clean(value) {
@@ -412,7 +457,7 @@ export function landAuthoritySummaryHTML(summary, { t, escape, payload = null } 
       <div class="land-authority-subhead">${esc(translate("land_authority_provenance"))}</div>
       <ul>
         <li data-land-authority-provenance="profile" data-registry-version="${esc(citation?.registry_version || "")}" data-procedure-id="${esc(citation?.procedure_id || "")}">${esc(translate("land_authority_provenance_profile"))}: ${profileCitation}</li>
-        <li data-land-authority-provenance="phase" data-source-field="current_milestone">${esc(translate("land_authority_provenance_phase"))}: ${esc(phaseMilestone || translate("land_authority_not_found"))}</li>
+        <li data-land-authority-provenance="phase" data-source-field="${esc(summary.source_basis?.phase?.source_field || "current_milestone")}">${esc(translate("land_authority_provenance_phase"))}: ${esc(phaseMilestone || translate("land_authority_not_found"))}</li>
         <li data-land-authority-provenance="geography" data-source-type="affected_review_body_for">${esc(translate("land_authority_provenance_geography"))}: ${geographyCitation}</li>
         <li data-land-authority-provenance="publisher" data-source-id="${esc(publisher.source_id || "")}">${esc(translate("land_authority_provenance_publisher"))}: ${esc(publisherCopy)}</li>
       </ul>

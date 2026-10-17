@@ -59,7 +59,7 @@ import {
 } from "../report_issue.mjs";
 import { zoningHearingRowsForScope } from "../zoning_hearing_calendar.mjs";
 import { projectCalendarActionsHTML as projectCalendarActions } from "../project_calendar.mjs";
-import { attachAuth, authHTML, landAuthoritySummaryFor, loadAuth } from "../land_authority_summary_view.mjs";
+import { attachAuth, authHTML, landAuthoritySummaryFor, landAuthoritySummaryFromOutcome, loadAuth } from "../land_authority_summary_view.mjs";
 import { landHearingRowRoleHTML } from "../land_hearing_authority_copy.mjs";
 import {
   landFilingEvidenceSectionsHTML,
@@ -783,7 +783,8 @@ async function landSelect(i, el){
   }
   if(r.project_brief) html+=`<div class="scope" id="land-brief"><span class="lbl">${t("in_plain_english")}</span>${excerptHtml(r.project_brief,900)}</div>`;
   else html+=`<div class="scope" id="land-brief" hidden></div>`;
-  html+=authHTML(r.authority_summary,{t,escape:escUiHtml});
+  r.authority_summary=landAuthoritySummaryFor(r);
+  html+=`<div id="land-authority">${authHTML(r.authority_summary,{t,escape:escUiHtml})}</div>`;
   html+=landFilingEvidenceSectionsHTML(r,{t,escape:escUiHtml});
   html+=landLotSourceDigestsHTML(r,{escape:escUiHtml});
   if(actList.length) html+=`<div class="rmeta2" style="margin-top:10px"><b>${t("actions_lbl")}</b> ${actList.join(" · ")}</div>`;
@@ -1584,6 +1585,14 @@ function prefetchZapOutcomesForList(rows){
     fetchZapOutcomesPayload(id);
   }
 }
+function paintLandAuthority(row, display) {
+  const host = $("#land-authority");
+  if (!host) return;
+  host.innerHTML = display.freshness + authHTML(
+    landAuthoritySummaryFromOutcome(row, display.record), { t, escape: escUiHtml }
+  );
+}
+
 async function loadZapOutcomes(r, el, selection){
   if(!el || !r || !r.project_id) return;
   const phaseToolsP = ensureLandPhaseSpineTools();
@@ -1596,6 +1605,7 @@ async function loadZapOutcomes(r, el, selection){
     if(!document.contains(el)) return;
     const display=landOutcomeDisplay(warm.data);
     const record=display.record;
+    paintLandAuthority(r,display);
     paintConnectedCalendar(record,selection);
     el.innerHTML = display.freshness+(warm.staticSnapshot
       ? landOutcomeSnapshotHTML(record,phaseTools,r)
@@ -1628,6 +1638,7 @@ async function loadZapOutcomes(r, el, selection){
   if(!data || data.ok === false || !data.record){
     const display=refresh;
     const fallback=display.record;
+    paintLandAuthority(r,display);
     el.innerHTML=display.freshness+(fallback?landOutcomesHTML(fallback,phaseTools,r):"");
     bindLandSpineUI(el);
     if(fallback) paintLandActionRail($("#land-actions"),r,fallback,phaseTools);
@@ -1643,6 +1654,7 @@ async function loadZapOutcomes(r, el, selection){
   await paintProjectConnections(record,selection);
   if(selection !== undefined && selection !== landSelectionSeq) return;
   if(!document.contains(el)) return;
+  paintLandAuthority(r,display);
   paintConnectedCalendar(record,selection);
   if(record.snapshot_state==="absent" || record.snapshot_state==="unavailable"){
     reportLandOutcomesReady(record);

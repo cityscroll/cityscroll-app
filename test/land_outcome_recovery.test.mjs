@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { buildZapOutcomeRecord, prewarmOneZapOutcome, refreshZapOutcomes, handleZapOutcomes, kvKey, stampLandStageObservation } from "../worker/src/zap_outcomes.mjs";
+import { loadAuth, attachAuth, landAuthoritySummaryFor, landAuthoritySummaryFromOutcome, landAuthoritySummaryHTML } from "../site/land_authority_summary_view.mjs";
+import { buildLandAuthoritySummary } from "../site/land_authority_summary.mjs";
 import * as phaseTools from "../site/land_phase_spine.mjs";
 import { createLandOutcomeRuntime } from "../site/land_outcome_runtime.mjs";
 import { startMorningZapOutcomes, withWorkerAcquisitionReceipt } from "../worker/src/lib/worker_acquisition_runtime.mjs";
@@ -236,13 +238,31 @@ test("frozen publisher evidence refreshes older CB cache through materializer, e
   globalThis.fetch=async url=>new Response(JSON.stringify(String(url).includes("herokuapp.com")?fixture:[]));
   try{
     const result=await refreshZapOutcomes(env,{projectIds:["2026K0233"],force:true,
-      build:id=>buildZapOutcomeRecord(id,{fetchBbl:false})});
+      build:id=>buildZapOutcomeRecord(id,{fetchBbl:false,lookupDoc:{rows:[{project_id:id,actions:"ZM",ulurp_numbers:"C260395ZMK",ulurp_non:"ULURP",borough:"Brooklyn",community_district:"K02",current_milestone:"ZM - Prepare Filed Land Use Fee Payment"}]}})});
     assert.equal(result.status,"ok");
     const response=await handleZapOutcomes(new Request("https://example.test/zap-outcomes?id=2026K0233"),env);
     const payload=await response.json();
     const record=payload.record;
     const view=phaseTools.buildLandPhaseView(record.spine,record);
     assert.equal(view.current.phase_id,"borough_president");
+    const authority=buildLandAuthoritySummary({
+      project:{...record.open_data,project_id:record.project_id,actions:"ZM",ulurp_numbers:"C260395ZMK",ulurp_non:"ULURP",current_milestone:"ZM - Prepare Filed Land Use Fee Payment"},
+      outcomes:record,asOf:TEST_NOW,
+    });
+    assert.equal(authority.current_stage.spine_phase_id,view.current.phase_id);
+    assert.equal(authority.status,"resolved");
+    const row={project_id:record.project_id,actions:"ZM",ulurp_numbers:"C260395ZMK",ulurp_non:"ULURP",borough:"Brooklyn",current_milestone:"ZM - Prepare Filed Land Use Fee Payment"};
+    row.authority_summary={project_id:row.project_id,source_basis:{geography:{status:"resolved"}},affected_actor_refs:[{body_ref:"borough-president:brooklyn",role:"affected_borough_president"}]};
+    const hydrated=landAuthoritySummaryFromOutcome(row,record);
+    assert.deepEqual(hydrated.current_actor_refs,["borough-president:brooklyn"]);
+    assert.equal(hydrated.current_stage.spine_phase_id,"borough_president");
+    assert.match(landAuthoritySummaryHTML(hydrated),/data-land-authority-stage="ulurp_197c.borough_president_review"/);
+    const failed=landAuthoritySummaryFromOutcome(row,{...record,evidence_stale:true});
+    assert.equal(failed.status,"unknown");
+    assert.equal(failed.reason,"stale_source");
+    assert.equal(failed.freshness.source_vintages.outcomes_generated_at,record.generated_at);
+    assert.equal(landAuthoritySummaryFromOutcome(row,null).status,"unknown");
+
     assert.ok(record.spine.events.some(e=>e.title==="Community Board Review"&&e.status==="Completed"&&e.time.value.startsWith("2026-10-05")));
     assert.ok(record.spine.events.some(e=>e.title==="Borough President Review"&&e.status==="In Progress"&&e.time.value.startsWith("2026-10-06")));
     const {runtime}=browser();
@@ -1006,4 +1026,18 @@ test("morning outcomes consume the refreshed lookup before KV becomes consistent
     assert.equal(stored.open_data.current_milestone,"Borough President Referral");
     assert.equal(stored.source_observations.open_data.observed_at,TEST_NOW);
   }finally{globalThis.fetch=original;}
+});
+
+
+test("authority lookup survives load-and-attach and hydrates a catalog row", async () => {
+  const original = globalThis.fetch;
+  const summary = { project_id: "LOOKUP", freshness: { generated_at: TEST_NOW }, source_basis: { geography: { status: "resolved" } }, affected_actor_refs: [{ body_ref: "borough-president:brooklyn", role: "affected_borough_president" }] };
+  globalThis.fetch = async () => new Response(JSON.stringify({ summaries: { LOOKUP: summary } }));
+  try {
+    const loaded = await loadAuth();
+    const snapshot = { projects: [{ project_id: "LOOKUP" }] };
+    attachAuth(snapshot, loaded);
+    assert.deepEqual(snapshot.projects[0].authority_summary, summary);
+    assert.deepEqual(landAuthoritySummaryFor({ project_id: "LOOKUP" }), summary);
+  } finally { globalThis.fetch = original; }
 });
