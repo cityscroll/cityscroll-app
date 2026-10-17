@@ -206,8 +206,8 @@ function main() {
     console.log(`Derived JSON build boundary valid (snapshot ${sourceSnapshot.sha256})`);
     return;
   }
-  // Opt-in skip only for families whose --check proves current inputs+outputs
-  // (procurement receipt fast-check). Weak idle/schema checks always rebuild.
+  // Opt-in skip only for families whose --check --receipt-only proves current
+  // inputs and outputs. Weak idle/schema checks always rebuild.
   const families = runGeneratedFamilies(sourceDir, manifest.generated_families);
 
   const elapsedMs = performance.now() - startedAt;
