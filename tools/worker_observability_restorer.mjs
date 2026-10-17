@@ -19,9 +19,12 @@ import {
 import {
   DEFAULT_POLL_MS,
   DEFAULT_RESTORER_STATE_ROOT,
+  installRestorerProcessEvidenceHandlers,
+  mapRestorerErrorName,
   readJsonIfPresent,
   restorerPaths,
   runRestorerLoop,
+  writeGuardianFailureReceipt,
 } from "./lib/worker_observability_restorer.mjs";
 
 export const DUAL_VIEW_TRANSPORT_MODE = "dual-view-script-settings+beta";
@@ -128,6 +131,8 @@ export async function main(argv = process.argv.slice(2), env = process.env) {
   if (!windowPath) throw new Error("--window-state or assigned-window.json is required");
   const pollMs = Number(arg(argv, "--poll-ms") || DEFAULT_POLL_MS);
   const expectedWindowId = arg(argv, "--window-id") || assignment?.window_id || null;
+  // Child-side crash/exit evidence (parent spawn uses stdio:ignore).
+  installRestorerProcessEvidenceHandlers(stateRoot, { windowId: expectedWindowId });
   const store = createFileWindowStore(windowPath);
   const window = await store.read();
   if (expectedWindowId && window?.window_id && window.window_id !== expectedWindowId) {
@@ -150,7 +155,23 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
     }
     process.exitCode = 0;
   }).catch((error) => {
-    process.stderr.write(`${String(error?.stack || error)}\n`);
+    // Never persist raw stack/provider bodies. Guardian-owned coded receipt only.
+    try {
+      const stateRoot = process.env.CITYSCROLL_OBSERVABILITY_RESTORER_STATE || DEFAULT_RESTORER_STATE_ROOT;
+      writeGuardianFailureReceipt(stateRoot, {
+        code: "tick-throw",
+        stage: "durable-runner-main",
+        fields: {
+          error_name: mapRestorerErrorName(error?.name || "Error"),
+          proved: false,
+          ownership_preserved: true,
+          ownership_unknown: true,
+          survived: false,
+        },
+      });
+    } catch {
+      /* best-effort */
+    }
     process.exitCode = 2;
   });
 }
