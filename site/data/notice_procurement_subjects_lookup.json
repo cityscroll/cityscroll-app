@@ -1,12 +1,12 @@
 {
   "schema": "cityscroll.notice_procurement_subjects.v1",
   "version": 1,
-  "generated_at": "2026-10-09T14:15:05.584Z",
+  "generated_at": "2026-10-17T01:23:06.178Z",
   "method": "compatibility.city_record_notice_hrefs",
-  "source_model_fingerprint": "48689402d0a802efb0f15d688cf8672171cd4483cf5346713bd685bfc8c40044",
+  "source_model_fingerprint": "c285a3bee197f86691e2593511dcfe4fee0c780311f5e3dd06d1a901ba6572f4",
   "counts": {
-    "notices": 12948,
-    "subject_links": 12948
+    "notices": 12947,
+    "subject_links": 12947
   },
   "by_notice": {
     "20201016111": [
@@ -25283,13 +25283,6 @@
       {
         "procurement_id": "procurement:contract:CT106920238804671",
         "href": "/procurements/procurement%3Acontract%3ACT106920238804671",
-        "relation_basis": "compatibility.city_record_notice_hrefs"
-      }
-    ],
-    "20230130108": [
-      {
-        "procurement_id": "procurement:contract:CT104020238805553",
-        "href": "/procurements/procurement%3Acontract%3ACT104020238805553",
         "relation_basis": "compatibility.city_record_notice_hrefs"
       }
     ],
@@ -66551,6 +66544,13 @@
         "relation_basis": "compatibility.city_record_notice_hrefs"
       }
     ],
+    "20250512014": [
+      {
+        "procurement_id": "procurement:contract:MMA184620258806886",
+        "href": "/procurements/procurement%3Acontract%3AMMA184620258806886",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
     "20250512015": [
       {
         "procurement_id": "procurement:contract:MA185720258807165",
@@ -81346,13 +81346,6 @@
       {
         "procurement_id": "procurement:contract:CT182620268805907",
         "href": "/procurements/procurement%3Acontract%3ACT182620268805907",
-        "relation_basis": "compatibility.city_record_notice_hrefs"
-      }
-    ],
-    "20260316006": [
-      {
-        "procurement_id": "procurement:contract:MMA184620268804989",
-        "href": "/procurements/procurement%3Acontract%3AMMA184620268804989",
         "relation_basis": "compatibility.city_record_notice_hrefs"
       }
     ],
