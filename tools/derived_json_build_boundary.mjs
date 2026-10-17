@@ -150,7 +150,7 @@ export function runGeneratedFamilies(sourceDir, families, { fileHashFn = fileHas
     const sourceHashes = Object.fromEntries(family.source_paths.map((path) => [path, fileHashFn(sourceDir, path)]));
     const action = decideFamilyRebuildAction(family, sourceDir);
     if (action === "skip") {
-      console.log(`skip ${family.id}: skip_when_check_current and generator --check already current`);
+      console.log(`skip ${family.id}: skip_when_check_current and receipt-only probe already current`);
       results.push({
         id: family.id,
         generator: family.generator,

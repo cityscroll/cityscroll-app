@@ -85,7 +85,7 @@ test("required PR CI catches a stale keyword read model before Worker deployment
   assert.match(workflow, /name: Committed keyword search read-model freshness[\s\S]*?node tools\/build_keyword_search_index\.mjs --check/);
 });
 
-test("familyCheckCurrent reports whether a generator --check already passes", async () => {
+test("familyCheckCurrent reports whether a receipt-only probe passes", async () => {
   const { familyCheckCurrent } = await import(path.join(ROOT, "tools/derived_json_build_boundary.mjs"));
   const dir = mkdtempSync(path.join(os.tmpdir(), "derived-json-check-current-"));
   try {
