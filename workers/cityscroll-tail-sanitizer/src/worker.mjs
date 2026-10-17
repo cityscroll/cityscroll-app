@@ -320,6 +320,7 @@ export class AggregateSink {
           const snapshot = {
             ok: true,
             schema: "cityscroll.tail_sanitizer_aggregate_sink.v1",
+            sink_name: SINK_NAME,
             closed: true,
             from_tombstone: true,
             opened_at_ms: terminal.opened_at_ms ?? null,
@@ -349,15 +350,28 @@ export class AggregateSink {
         }
         let meta = await txn.get(META_KEY);
         if (!meta) {
+          // Honest unopened / FRESH response: configured limits + known-0
+          // counters + A2, bound to the configured sink target. Guardian READY
+          // polls this before producer attach; do not require traffic or meta.
+          const freshCounters = emptyCounters();
           return Response.json({
             ok: true,
             schema: "cityscroll.tail_sanitizer_aggregate_sink.v1",
+            sink_name: SINK_NAME,
             closed: false,
             opened: false,
-            counters: emptyCounters(),
+            deadline_ms: DEFAULT_DEADLINE_MS,
+            max_events: MAX_EVENTS,
+            counters: freshCounters,
             events_seen: 0,
+            apply_overshoot: 0,
             cap_reached: false,
-            cost_vector: costVectorFrom(emptyCounters(), 0),
+            cost_vector: costVectorFrom(freshCounters, 0),
+            a2: evaluateAllSeenCapA2({
+              events_seen: 0,
+              cap_reached: false,
+              apply_overshoot: 0,
+            }, { maxEvents: MAX_EVENTS }),
             note: "no window open",
           });
         }
@@ -380,6 +394,7 @@ export class AggregateSink {
         return Response.json({
           ok: true,
           schema: "cityscroll.tail_sanitizer_aggregate_sink.v1",
+          sink_name: SINK_NAME,
           closed: meta.closed === true,
           from_tombstone: false,
           opened_at_ms: meta.opened_at_ms,

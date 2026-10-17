@@ -16,10 +16,12 @@ import { spawn } from "node:child_process";
 import { setTimeout as sleep } from "node:timers/promises";
 
 import {
+  CAP_SIGNAL_REASON,
   TAIL_ATTACHMENT_TERMINAL_PHASES,
   VERSION_GUARD_LABEL,
   WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
   adaptProviderTailConsumers,
+  allowlistedCapSignalReason,
   assertTailTransportTargetMatchesWindow,
   assertVersionTransportMatchesBound,
   classifyTailAttachment,
@@ -30,6 +32,8 @@ import {
   createFileTailAttachmentStore,
   createScriptSettingsTailConsumersTransport,
   observeVersionGuard,
+  projectCapIdentityBinding,
+  projectCapSignalA2,
   runIndependentTailRestorer,
 } from "./worker_tail_attachment.mjs";
 import { DEFAULT_WORKER_ID, isProcessAlive } from "./worker_observability_settings.mjs";
@@ -45,6 +49,39 @@ export const DEFAULT_TAIL_POLL_MS = 1_000;
 
 function fail(message) {
   throw new Error(message);
+}
+
+/** Persist only the allowlisted A2 projection — never raw a2 / body text. */
+function projectPersistedCapA2(raw) {
+  if (raw == null) return null;
+  return projectCapSignalA2(raw);
+}
+
+/** Persist only allowlisted cap-signal scalars (no body, no arbitrary keys). */
+function projectPersistedCapSignal(signal) {
+  if (!signal || typeof signal !== "object") return null;
+  return {
+    cap_reached: signal.cap_reached === true,
+    readback_ok: signal.readback_ok === true,
+    reason: typeof signal.reason === "string"
+      ? allowlistedCapSignalReason(signal.reason)
+      : (signal.readback_ok === true ? null : CAP_SIGNAL_REASON.CAP_SIGNAL_UNKNOWN),
+    events_seen: Number.isInteger(signal.events_seen) && signal.events_seen >= 0
+      ? signal.events_seen
+      : null,
+    apply_overshoot: Number.isInteger(signal.apply_overshoot) && signal.apply_overshoot >= 0
+      ? signal.apply_overshoot
+      : null,
+    deadline_ms: Number.isFinite(signal.deadline_ms) && signal.deadline_ms > 0
+      ? signal.deadline_ms
+      : null,
+    max_events: Number.isInteger(signal.max_events) && signal.max_events > 0
+      ? signal.max_events
+      : null,
+    opened: typeof signal.opened === "boolean" ? signal.opened : null,
+    a2: projectPersistedCapA2(signal.a2),
+    identity_binding: projectCapIdentityBinding(signal.identity_binding),
+  };
 }
 
 function fsyncWriteJson(path, value) {
@@ -642,7 +679,11 @@ export async function tailAttachmentRestorerTick({
         reason: "actuator_missing_pollCapSignal",
         events_seen: null,
         apply_overshoot: null,
-        a2: { pass: false, reason: "readback_unavailable" },
+        deadline_ms: null,
+        max_events: null,
+        opened: null,
+        a2: { pass: false, reason: "a2_reason_unknown", events_seen: null, apply_overshoot: null },
+        identity_binding: null,
       };
     }
   }
@@ -715,8 +756,11 @@ export async function tailAttachmentRestorerTick({
             window_id: window.window_id,
             restorer_id: window.restorer?.restorer_id || null,
             phase: window.phase,
-            a2: cap.signal.a2,
-            events_seen: cap.signal.events_seen ?? null,
+            // Allowlisted A2 projection only — never raw body/a2.
+            a2: projectPersistedCapA2(cap.signal.a2),
+            events_seen: typeof cap.signal.events_seen === "number"
+              ? cap.signal.events_seen
+              : null,
           });
         }
         if (cap?.actuated === true && (cap.proved === true || cap.action === "already-restored")) {
@@ -729,9 +773,13 @@ export async function tailAttachmentRestorerTick({
             window_id: restoredWindow.window_id,
             proved: cap.proved === true,
             cap_reached: true,
-            events_seen: cap.signal?.events_seen ?? null,
-            apply_overshoot: cap.signal?.apply_overshoot ?? null,
-            a2: cap.signal?.a2 || null,
+            events_seen: typeof cap.signal?.events_seen === "number"
+              ? cap.signal.events_seen
+              : null,
+            apply_overshoot: typeof cap.signal?.apply_overshoot === "number"
+              ? cap.signal.apply_overshoot
+              : null,
+            a2: projectPersistedCapA2(cap.signal?.a2),
             version_guard: cap.version_guard || cap.result?.version_guard || null,
             controller_death: false,
             cancel_requested: false,
@@ -752,7 +800,8 @@ export async function tailAttachmentRestorerTick({
         outcome: "idle",
         window,
         reason: "owned-window-active-until-deadline",
-        cap_signal: prefetchedCapSignal,
+        // Prefetched signal is already an allowlisted scalar projection.
+        cap_signal: projectPersistedCapSignal(prefetchedCapSignal),
       };
     }
 

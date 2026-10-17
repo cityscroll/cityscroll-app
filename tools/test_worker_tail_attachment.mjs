@@ -11,9 +11,15 @@ import {
   adaptProviderTailConsumers,
   canonicalizeTailConsumer,
   canonicalizeTailConsumers,
+  CAP_A2_REASON,
+  CAP_CREDENTIAL_PROVENANCE,
   CAP_SIGNAL_REASON,
+  TAIL_SINK_NAME,
   TAIL_SINK_READBACK_SCHEMA,
   createSinkReadbackCapSignal,
+  establishCapReadbackIdentityBinding,
+  projectCapSignalA2,
+  projectSinkReadbackCapSignal,
   validateSinkReadbackBody,
   tailConsumersSha256,
   openTailAttachmentWindow,
@@ -32,6 +38,8 @@ import {
 } from "./lib/worker_tail_attachment.mjs";
 
 const ACCOUNT_SHA = createHash("sha256").update("a".repeat(32)).digest("hex");
+const VERSION_SHA = createHash("sha256").update("deployed-version-fixture").digest("hex");
+const READBACK_URL = "https://example.test/readback";
 
 /** Script-settings ConsumerScript identity: {service, environment, namespace}. */
 const SANITIZER_A = Object.freeze({
@@ -39,6 +47,54 @@ const SANITIZER_A = Object.freeze({
   environment: null,
   namespace: null,
 });
+
+/** Authoritative identity binding for cap-signal readiness tests. */
+function testIdentityBinding(overrides = {}) {
+  const established = establishCapReadbackIdentityBinding({
+    window: {
+      window_id: "cap-bind-win",
+      account_id_sha256: ACCOUNT_SHA,
+      version_evidence: {
+        present: true,
+        sha256: VERSION_SHA,
+        consumer: SANITIZER_A,
+      },
+      owned_consumers: null,
+    },
+    desiredConsumer: SANITIZER_A,
+    readbackUrl: READBACK_URL,
+    credentialProvenance: CAP_CREDENTIAL_PROVENANCE.TEST_FIXTURE,
+    sinkName: TAIL_SINK_NAME,
+    ...overrides,
+  });
+  assert.equal(established.ok, true, "test identity binding must establish");
+  return established.binding;
+}
+
+/** Honest AggregateSink unopened / FRESH body shape (mirrors Worker). */
+function freshSinkReadbackBody(overrides = {}) {
+  return {
+    ok: true,
+    schema: TAIL_SINK_READBACK_SCHEMA,
+    sink_name: TAIL_SINK_NAME,
+    closed: false,
+    opened: false,
+    deadline_ms: 1_800_000,
+    max_events: 10_000,
+    events_seen: 0,
+    apply_overshoot: 0,
+    counters: { apply_overshoot: 0 },
+    cap_reached: false,
+    a2: {
+      pass: true,
+      reason: "within_all_seen_cap",
+      events_seen: 0,
+      apply_overshoot: 0,
+    },
+    note: "no window open",
+    ...overrides,
+  };
+}
 const SANITIZER_B = Object.freeze({
   service: "cityscroll-cc05-r4-tail-sanitizer",
   environment: null,
@@ -896,8 +952,9 @@ test("owned cap-detach actuator polls signal and runs generation-checked emergen
 
 test("createSinkReadbackCapSignal: rejected fetch becomes UNKNOWN and never throws", async () => {
   const readCapSignal = createSinkReadbackCapSignal({
-    url: "https://example.test/readback",
+    url: READBACK_URL,
     token: "test-token",
+    identityBinding: testIdentityBinding(),
     fetchImpl: async (_url, init) => {
       assert.ok(init?.signal, "AbortSignal must be supplied to fetch");
       throw new Error("network down");
@@ -908,13 +965,15 @@ test("createSinkReadbackCapSignal: rejected fetch becomes UNKNOWN and never thro
   assert.equal(signal.readback_ok, false);
   assert.equal(signal.reason, "readback_error");
   assert.equal(signal.a2.pass, false);
+  assert.equal("body" in signal, false);
 });
 
 test("createSinkReadbackCapSignal: stalled fetch aborts within bound (AbortSignal)", async () => {
   let sawAbortSignal = false;
   const readCapSignal = createSinkReadbackCapSignal({
-    url: "https://example.test/readback",
+    url: READBACK_URL,
     token: "test-token",
+    identityBinding: testIdentityBinding(),
     fetchImpl: async (_url, init) => {
       sawAbortSignal = Boolean(init?.signal);
       assert.equal(init.signal.aborted, false);
@@ -928,7 +987,6 @@ test("createSinkReadbackCapSignal: stalled fetch aborts within bound (AbortSigna
   const signal = await readCapSignal({ timeoutMs: 30 });
   const elapsed = Date.now() - started;
   assert.equal(sawAbortSignal, true);
-  assert.equal(signal.fetch_abort_signal_supplied == null ? true : true, true);
   assert.equal(signal.cap_reached, false);
   assert.equal(signal.readback_ok, false);
   assert.equal(signal.aborted, true);
@@ -938,8 +996,9 @@ test("createSinkReadbackCapSignal: stalled fetch aborts within bound (AbortSigna
 
 test("createSinkReadbackCapSignal: unauthorized / malformed stay UNKNOWN", async () => {
   const unauthorized = createSinkReadbackCapSignal({
-    url: "https://example.test/readback",
+    url: READBACK_URL,
     token: "test-token",
+    identityBinding: testIdentityBinding(),
     fetchImpl: async () => ({ ok: false, status: 401 }),
   });
   const u = await unauthorized({ timeoutMs: 50 });
@@ -947,8 +1006,9 @@ test("createSinkReadbackCapSignal: unauthorized / malformed stay UNKNOWN", async
   assert.equal(u.reason, "readback_unauthorized");
 
   const malformed = createSinkReadbackCapSignal({
-    url: "https://example.test/readback",
+    url: READBACK_URL,
     token: "test-token",
+    identityBinding: testIdentityBinding(),
     fetchImpl: async () => ({
       ok: true,
       status: 200,
@@ -965,8 +1025,9 @@ test("createSinkReadbackCapSignal: unauthorized / malformed stay UNKNOWN", async
 
 test("createSinkReadbackCapSignal: empty {} / incomplete schema is UNKNOWN (refuses READY)", async () => {
   const empty = createSinkReadbackCapSignal({
-    url: "https://example.test/readback",
+    url: READBACK_URL,
     token: "test-token",
+    identityBinding: testIdentityBinding(),
     fetchImpl: async () => ({
       ok: true,
       status: 200,
@@ -976,16 +1037,19 @@ test("createSinkReadbackCapSignal: empty {} / incomplete schema is UNKNOWN (refu
   const e = await empty({ timeoutMs: 50 });
   assert.equal(e.readback_ok, false);
   assert.equal(e.reason, CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID);
+  assert.equal("body" in e, false);
 
   const noA2 = createSinkReadbackCapSignal({
-    url: "https://example.test/readback",
+    url: READBACK_URL,
     token: "test-token",
+    identityBinding: testIdentityBinding(),
     fetchImpl: async () => ({
       ok: true,
       status: 200,
       json: async () => ({
         ok: true,
         schema: TAIL_SINK_READBACK_SCHEMA,
+        sink_name: TAIL_SINK_NAME,
         cap_reached: false,
         events_seen: 0,
         apply_overshoot: 0,
@@ -999,36 +1063,93 @@ test("createSinkReadbackCapSignal: empty {} / incomplete schema is UNKNOWN (refu
   assert.equal(n.reason, CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID);
 });
 
-test("createSinkReadbackCapSignal: valid schema with events_seen 0 is READY-ok", async () => {
+test("createSinkReadbackCapSignal: valid unopened schema with events_seen 0 is READY-ok", async () => {
   const readCapSignal = createSinkReadbackCapSignal({
-    url: "https://example.test/readback",
+    url: READBACK_URL,
     token: "test-token",
+    identityBinding: testIdentityBinding(),
     fetchImpl: async () => ({
       ok: true,
       status: 200,
-      json: async () => ({
-        ok: true,
-        schema: "cityscroll.tail_sanitizer_aggregate_sink.v1",
-        cap_reached: false,
-        events_seen: 0,
-        apply_overshoot: 0,
-        counters: { apply_overshoot: 0 },
-        deadline_ms: 1_800_000,
-        max_events: 10_000,
-        a2: { pass: true, reason: "within_all_seen_cap", events_seen: 0, apply_overshoot: 0 },
-      }),
+      json: async () => freshSinkReadbackBody(),
     }),
   });
   const signal = await readCapSignal({ timeoutMs: 50 });
   assert.equal(signal.readback_ok, true);
   assert.equal(signal.cap_reached, false);
   assert.equal(signal.events_seen, 0);
+  assert.equal(signal.opened, false);
+  assert.equal(signal.a2.pass, true);
+  assert.equal(signal.a2.reason, CAP_A2_REASON.WITHIN_ALL_SEEN_CAP);
+  assert.equal("body" in signal, false);
+  assert.equal(signal.identity_binding.window_id, "cap-bind-win");
+  assert.equal(signal.identity_binding.desired_consumer_service, SANITIZER_A.service);
+  assert.equal(signal.identity_binding.credential_provenance, CAP_CREDENTIAL_PROVENANCE.TEST_FIXTURE);
+});
+
+test("createSinkReadbackCapSignal: missing identity binding refuses READY", async () => {
+  const readCapSignal = createSinkReadbackCapSignal({
+    url: READBACK_URL,
+    token: "test-token",
+    // deliberately omit window / version / consumer binding
+    fetchImpl: async () => ({
+      ok: true,
+      status: 200,
+      json: async () => freshSinkReadbackBody(),
+    }),
+  });
+  const signal = await readCapSignal({ timeoutMs: 50 });
+  assert.equal(signal.readback_ok, false);
+  assert.equal(signal.reason, CAP_SIGNAL_REASON.IDENTITY_BINDING_UNKNOWN);
+});
+
+test("createSinkReadbackCapSignal: deadline_ms/max_events alone are not identity", () => {
+  const limitsOnly = establishCapReadbackIdentityBinding({
+    window: { window_id: "w", account_id_sha256: ACCOUNT_SHA },
+    // no consumer, no version evidence
+    readbackUrl: READBACK_URL,
+    credentialProvenance: CAP_CREDENTIAL_PROVENANCE.TEST_FIXTURE,
+  });
+  assert.equal(limitsOnly.ok, false);
+  assert.equal(limitsOnly.reason, CAP_SIGNAL_REASON.IDENTITY_BINDING_UNKNOWN);
+});
+
+test("projectCapSignalA2 maps unknown reasons and drops raw fields", () => {
+  const projected = projectCapSignalA2({
+    pass: true,
+    reason: "https://secret.example/token=abc leaked",
+    events_seen: 0,
+    apply_overshoot: 0,
+    hostile: "drop-me",
+    body: { raw: true },
+  });
+  assert.equal(projected.pass, true);
+  assert.equal(projected.reason, CAP_A2_REASON.A2_REASON_UNKNOWN);
+  assert.equal("hostile" in projected, false);
+  assert.equal("body" in projected, false);
+});
+
+test("projectSinkReadbackCapSignal never includes raw body", () => {
+  const projected = projectSinkReadbackCapSignal({
+    cap_reached: false,
+    events_seen: 0,
+    apply_overshoot: 0,
+    a2: { pass: true, reason: "within_all_seen_cap", events_seen: 0, apply_overshoot: 0 },
+    deadline_ms: 1_800_000,
+    max_events: 10_000,
+    opened: false,
+    identityBinding: testIdentityBinding(),
+  });
+  assert.equal(projected.readback_ok, true);
+  assert.equal("body" in projected, false);
+  assert.equal(projected.a2.reason, CAP_A2_REASON.WITHIN_ALL_SEEN_CAP);
 });
 
 test("createSinkReadbackCapSignal: hung body still settles UNKNOWN via outer race", async () => {
   const readCapSignal = createSinkReadbackCapSignal({
-    url: "https://example.test/readback",
+    url: READBACK_URL,
     token: "test-token",
+    identityBinding: testIdentityBinding(),
     fetchImpl: async (_url, init) => ({
       ok: true,
       status: 200,
@@ -1065,6 +1186,7 @@ test("validateSinkReadbackBody rejects non-boolean cap and negative counts", () 
     validateSinkReadbackBody({
       ok: true,
       schema: TAIL_SINK_READBACK_SCHEMA,
+      sink_name: TAIL_SINK_NAME,
       cap_reached: "yes",
       events_seen: 0,
       apply_overshoot: 0,
@@ -1078,12 +1200,24 @@ test("validateSinkReadbackBody rejects non-boolean cap and negative counts", () 
     validateSinkReadbackBody({
       ok: true,
       schema: TAIL_SINK_READBACK_SCHEMA,
+      sink_name: TAIL_SINK_NAME,
       cap_reached: false,
       events_seen: -1,
       apply_overshoot: 0,
       deadline_ms: 1000,
       max_events: 10,
       a2: { pass: true },
+    }).ok,
+    false,
+  );
+  const okFresh = validateSinkReadbackBody(freshSinkReadbackBody(), {
+    expectedSinkName: TAIL_SINK_NAME,
+  });
+  assert.equal(okFresh.ok, true);
+  assert.equal(okFresh.a2.reason, CAP_A2_REASON.WITHIN_ALL_SEEN_CAP);
+  assert.equal(
+    validateSinkReadbackBody(freshSinkReadbackBody({ sink_name: "wrong-sink" }), {
+      expectedSinkName: TAIL_SINK_NAME,
     }).ok,
     false,
   );

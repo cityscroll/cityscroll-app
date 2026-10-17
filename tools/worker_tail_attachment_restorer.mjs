@@ -13,11 +13,13 @@ import { resolve as resolvePath } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import {
+  CAP_CREDENTIAL_PROVENANCE,
   assertTailTransportTargetMatchesWindow,
   createFileTailAttachmentStore,
   createOwnedCapDetachActuator,
   createScriptSettingsTailConsumersTransport,
   createSinkReadbackCapSignal,
+  establishCapReadbackIdentityBinding,
 } from "./lib/worker_tail_attachment.mjs";
 import {
   DEFAULT_TAIL_POLL_MS,
@@ -131,9 +133,25 @@ export async function loadCapDetachActuator(env, window, { store, transport, ver
     // UNKNOWN — no idle fake actuator. Bound windows refuse READY/run.
     return null;
   }
+  // Identity binding: authoritative window + desired consumer + deployed
+  // version + exact readback target/credential provenance. Limit scalars
+  // (deadline_ms / max_events) are not identity. Missing any part → UNKNOWN.
+  const identity = establishCapReadbackIdentityBinding({
+    window,
+    desiredConsumer: window?.version_evidence?.consumer
+      ?? window?.owned_consumers?.[0]
+      ?? null,
+    versionEvidence: window?.version_evidence ?? null,
+    readbackUrl,
+    credentialProvenance: CAP_CREDENTIAL_PROVENANCE.ENV_READBACK_TOKEN,
+  });
+  if (!identity.ok) {
+    return null;
+  }
   const readCapSignal = createSinkReadbackCapSignal({
     url: readbackUrl,
     token: readbackToken,
+    identityBinding: identity.binding,
   });
   const readiness = await readCapSignal({});
   if (!readiness || readiness.readback_ok !== true) {

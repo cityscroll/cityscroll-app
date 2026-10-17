@@ -31,8 +31,13 @@ import {
   observeVersionGuard,
   openTailAttachmentWindow,
   armTailAttachmentRestorer,
+  CAP_CREDENTIAL_PROVENANCE,
+  CAP_SIGNAL_REASON,
+  TAIL_SINK_NAME,
+  TAIL_SINK_READBACK_SCHEMA,
   createOwnedCapDetachActuator,
   createSinkReadbackCapSignal,
+  establishCapReadbackIdentityBinding,
   readTailConsumersFieldFromBetaWorkerResult,
   recordTailAttachmentIntent,
   markTailAttachmentIssued,
@@ -3224,24 +3229,41 @@ test("loadCapDetachActuator: successful authenticated readiness poll returns act
 test("loadCapDetachActuator default path: readiness requires successful validated poll", async () => {
   const transport = memoryTransport([]);
   const versionTransport = memoryVersionTransport();
+  const versionSha = createHash("sha256").update("restorer-ready-version").digest("hex");
   const window = {
+    window_id: "ready-bind-win",
+    account_id_sha256: ACCOUNT_SHA,
     restorer: { armed: true, cap_detach_actuator_bound: true },
+    version_evidence: {
+      present: true,
+      sha256: versionSha,
+      consumer: SANITIZER,
+    },
+    owned_consumers: null,
   };
-  // Monkey-patch via createSinkReadbackCapSignal is covered in attachment tests;
-  // here prove the default loader wires createSinkReadbackCapSignal and refuses
-  // when the readiness GET is unauthorized by injecting a local fetch through
-  // a tiny module that still exercises createOwnedCapDetachActuator after a
-  // successful probe helper.
+  const readbackUrl = "https://example.test/readback";
+  const identity = establishCapReadbackIdentityBinding({
+    window,
+    desiredConsumer: SANITIZER,
+    readbackUrl,
+    credentialProvenance: CAP_CREDENTIAL_PROVENANCE.TEST_FIXTURE,
+    sinkName: TAIL_SINK_NAME,
+  });
+  assert.equal(identity.ok, true);
+
   const dir = mkdtempSync(join(tmpdir(), "cc05-cap-ready-ok-"));
   const probe = createSinkReadbackCapSignal({
-    url: "https://example.test/readback",
+    url: readbackUrl,
     token: "tok",
+    identityBinding: identity.binding,
     fetchImpl: async () => ({
       ok: true,
       status: 200,
       json: async () => ({
         ok: true,
-        schema: "cityscroll.tail_sanitizer_aggregate_sink.v1",
+        schema: TAIL_SINK_READBACK_SCHEMA,
+        sink_name: TAIL_SINK_NAME,
+        opened: false,
         cap_reached: false,
         events_seen: 0,
         apply_overshoot: 0,
@@ -3254,11 +3276,13 @@ test("loadCapDetachActuator default path: readiness requires successful validate
   });
   const readiness = await probe({ timeoutMs: 50 });
   assert.equal(readiness.readback_ok, true);
+  assert.equal("body" in readiness, false);
 
   // Incomplete schema must not be treated as ready.
   const incomplete = createSinkReadbackCapSignal({
-    url: "https://example.test/readback",
+    url: readbackUrl,
     token: "tok",
+    identityBinding: identity.binding,
     fetchImpl: async () => ({
       ok: true,
       status: 200,
@@ -3270,12 +3294,24 @@ test("loadCapDetachActuator default path: readiness requires successful validate
 
   // Unauthorized probe must not be treated as ready.
   const bad = createSinkReadbackCapSignal({
-    url: "https://example.test/readback",
+    url: readbackUrl,
     token: "tok",
+    identityBinding: identity.binding,
     fetchImpl: async () => ({ ok: false, status: 403 }),
   });
   const badReady = await bad({ timeoutMs: 50 });
   assert.equal(badReady.readback_ok, false);
+
+  // Default loader without version/consumer identity → null (UNKNOWN).
+  const unbound = await loadCapDetachActuator(
+    {
+      CITYSCROLL_TAIL_SINK_READBACK_URL: readbackUrl,
+      CITYSCROLL_TAIL_SINK_READBACK_TOKEN: "tok",
+    },
+    { restorer: { armed: true, cap_detach_actuator_bound: true } },
+    { store: null, transport, versionTransport },
+  );
+  assert.equal(unbound, null);
 
   // Default loader with URL/TOKEN but network failure → null (UNKNOWN).
   const actuator = await loadCapDetachActuator(
@@ -3315,13 +3351,30 @@ test("tailAttachmentRestorerTick: stalled cap poll stays outside lock; expiry re
   };
   owned = await store.write(owned);
 
+  const stallReadbackUrl = "https://example.test/readback";
+  const stallIdentity = establishCapReadbackIdentityBinding({
+    window: owned,
+    desiredConsumer: SANITIZER,
+    versionEvidence: owned.version_evidence?.present
+      ? owned.version_evidence
+      : {
+        present: true,
+        sha256: createHash("sha256").update("stall-version").digest("hex"),
+        consumer: SANITIZER,
+      },
+    readbackUrl: stallReadbackUrl,
+    credentialProvenance: CAP_CREDENTIAL_PROVENANCE.TEST_FIXTURE,
+    sinkName: TAIL_SINK_NAME,
+  });
+  assert.equal(stallIdentity.ok, true);
   const actuator = createOwnedCapDetachActuator({
     transport,
     versionTransport,
     readCapSignal: createSinkReadbackCapSignal({
-      url: "https://example.test/readback",
+      url: stallReadbackUrl,
       token: "tok",
       timeoutMs: 30,
+      identityBinding: stallIdentity.binding,
       fetchImpl: async (_url, init) => {
         pollStarted = true;
         assert.ok(init?.signal, "poll must supply AbortSignal");

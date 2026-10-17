@@ -428,6 +428,96 @@ test("AggregateSink: unauthenticated readback is 401 with zero storage writes", 
   assert.deepEqual(storage.keys(), []);
 });
 
+test("AggregateSink: authenticated FRESH/EMPTY /readback is honest unopened zero-event (bootstrap)", async () => {
+  const { createHash } = await import("node:crypto");
+  const {
+    CAP_CREDENTIAL_PROVENANCE,
+    CAP_SIGNAL_REASON,
+    TAIL_SINK_NAME,
+    createSinkReadbackCapSignal,
+    establishCapReadbackIdentityBinding,
+  } = await import("../tools/lib/worker_tail_attachment.mjs");
+
+  const storage = createFakeStorage();
+  const { sink } = createFakeSinkEnv(storage, { readbackToken: "owned-readback" });
+  const res = await sink.fetch(new Request("https://sink/readback", {
+    method: "GET",
+    headers: { "x-cityscroll-tail-readback-token": "owned-readback" },
+  }));
+  assert.equal(res.status, 200);
+  const body = await res.json();
+  assert.equal(body.ok, true);
+  assert.equal(body.schema, "cityscroll.tail_sanitizer_aggregate_sink.v1");
+  assert.equal(body.sink_name, "cityscroll-tail-sanitizer-aggregate");
+  assert.equal(body.opened, false);
+  assert.equal(body.closed, false);
+  assert.equal(body.events_seen, 0);
+  assert.equal(body.cap_reached, false);
+  assert.equal(body.deadline_ms, 1_800_000);
+  assert.equal(body.max_events, 10_000);
+  assert.equal(body.counters.apply_overshoot, 0);
+  assert.equal(body.a2.pass, true);
+  assert.equal(body.a2.reason, "within_all_seen_cap");
+  // Unopened readback must not open a window or invent meta.
+  assert.deepEqual(storage.keys(), []);
+
+  const accountSha = createHash("sha256").update("a".repeat(32)).digest("hex");
+  const versionSha = createHash("sha256").update("bootstrap-version").digest("hex");
+  const readbackUrl = "https://sink/readback";
+  const identity = establishCapReadbackIdentityBinding({
+    window: {
+      window_id: "bootstrap-win",
+      account_id_sha256: accountSha,
+      version_evidence: {
+        present: true,
+        sha256: versionSha,
+        consumer: { service: "cityscroll-cc05-r4-tail-sanitizer", environment: null, namespace: null },
+      },
+    },
+    desiredConsumer: { service: "cityscroll-cc05-r4-tail-sanitizer", environment: null, namespace: null },
+    readbackUrl,
+    credentialProvenance: CAP_CREDENTIAL_PROVENANCE.TEST_FIXTURE,
+    sinkName: TAIL_SINK_NAME,
+  });
+  assert.equal(identity.ok, true);
+
+  // Strict reader against the ACTUAL AggregateSink.fetch body (not a hand mock).
+  const readCapSignal = createSinkReadbackCapSignal({
+    url: readbackUrl,
+    token: "owned-readback",
+    identityBinding: identity.binding,
+    fetchImpl: async (_url, init) => {
+      const req = new Request(_url, {
+        method: "GET",
+        headers: init?.headers || {},
+      });
+      return sink.fetch(req);
+    },
+  });
+  const signal = await readCapSignal({ timeoutMs: 200 });
+  assert.equal(signal.readback_ok, true);
+  assert.equal(signal.cap_reached, false);
+  assert.equal(signal.events_seen, 0);
+  assert.equal(signal.opened, false);
+  assert.equal("body" in signal, false);
+  assert.equal(signal.identity_binding.sink_name, TAIL_SINK_NAME);
+
+  // Malformed {} still refuses READY.
+  const empty = createSinkReadbackCapSignal({
+    url: readbackUrl,
+    token: "owned-readback",
+    identityBinding: identity.binding,
+    fetchImpl: async () => ({
+      ok: true,
+      status: 200,
+      json: async () => ({}),
+    }),
+  });
+  const emptySignal = await empty({ timeoutMs: 50 });
+  assert.equal(emptySignal.readback_ok, false);
+  assert.equal(emptySignal.reason, CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID);
+});
+
 test("AggregateSink: ALL-seen cap + tail() classifies all items and drops after cap", async () => {
   const storage = createFakeStorage();
   let detachCalls = 0;

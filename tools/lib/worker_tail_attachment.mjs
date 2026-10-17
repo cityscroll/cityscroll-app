@@ -1063,6 +1063,9 @@ export const DEFAULT_SINK_READBACK_TIMEOUT_MS = 5_000;
 /** AggregateSink readback schema the readiness/liveness poll accepts. */
 export const TAIL_SINK_READBACK_SCHEMA = "cityscroll.tail_sanitizer_aggregate_sink.v1";
 
+/** Configured AggregateSink Durable Object name (readback target identity). */
+export const TAIL_SINK_NAME = "cityscroll-tail-sanitizer-aggregate";
+
 /**
  * Fixed allowlisted cap-signal reason codes only. Heartbeats and receipts must
  * never persist raw URL, query, body, token, or error.message text.
@@ -1078,12 +1081,209 @@ export const CAP_SIGNAL_REASON = Object.freeze({
   CAP_NOT_REACHED: "cap_not_reached",
   CAP_SIGNAL_UNKNOWN: "cap_signal_unknown",
   ACTUATOR_MISSING_POLL: "actuator_missing_pollCapSignal",
+  IDENTITY_BINDING_UNKNOWN: "identity_binding_unknown",
 });
 
 const CAP_SIGNAL_REASON_SET = new Set(Object.values(CAP_SIGNAL_REASON));
 
 export function allowlistedCapSignalReason(code) {
   return CAP_SIGNAL_REASON_SET.has(code) ? code : CAP_SIGNAL_REASON.READBACK_ERROR;
+}
+
+/**
+ * Fixed allowlisted A2 reason codes. Arbitrary a2.reason strings are mapped to
+ * a2_reason_unknown before any persistence.
+ */
+export const CAP_A2_REASON = Object.freeze({
+  WITHIN_ALL_SEEN_CAP: "within_all_seen_cap",
+  EVENTS_SEEN_UNKNOWN: "events_seen_unknown",
+  EVENTS_SEEN_ABOVE_ALL_SEEN_CAP: "events_seen_above_all_seen_cap",
+  OVERSHOOT_UNKNOWN_UNBOUNDED: "overshoot_unknown_unbounded",
+  A2_REASON_UNKNOWN: "a2_reason_unknown",
+});
+
+const CAP_A2_REASON_SET = new Set(Object.values(CAP_A2_REASON));
+
+/** Credential-provenance labels allowed on the identity-binding projection. */
+export const CAP_CREDENTIAL_PROVENANCE = Object.freeze({
+  ENV_READBACK_TOKEN: "env-CITYSCROLL_TAIL_SINK_READBACK_TOKEN",
+  TEST_FIXTURE: "test-fixture",
+});
+
+const CAP_CREDENTIAL_PROVENANCE_SET = new Set(Object.values(CAP_CREDENTIAL_PROVENANCE));
+
+export function allowlistedCapCredentialProvenance(code) {
+  return CAP_CREDENTIAL_PROVENANCE_SET.has(code)
+    ? code
+    : null;
+}
+
+function isNonNegativeInt(value) {
+  return Number.isInteger(value) && value >= 0;
+}
+
+/**
+ * Project A2 onto the positive allowlist. Drops unknown fields; maps unknown
+ * reasons to a2_reason_unknown. Never returns raw body text.
+ */
+export function projectCapSignalA2(raw) {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
+    return {
+      pass: false,
+      reason: CAP_A2_REASON.A2_REASON_UNKNOWN,
+      events_seen: null,
+      apply_overshoot: null,
+    };
+  }
+  const reason = CAP_A2_REASON_SET.has(raw.reason)
+    ? raw.reason
+    : CAP_A2_REASON.A2_REASON_UNKNOWN;
+  const projected = {
+    pass: raw.pass === true,
+    reason,
+    events_seen: isNonNegativeInt(raw.events_seen) ? raw.events_seen : null,
+    apply_overshoot: isNonNegativeInt(raw.apply_overshoot) ? raw.apply_overshoot : null,
+  };
+  if (isNonNegativeInt(raw.max_events) && raw.max_events > 0) {
+    projected.max_events = raw.max_events;
+  }
+  return projected;
+}
+
+/**
+ * Project identity binding onto allowlisted scalars only (no raw URL/token).
+ */
+export function projectCapIdentityBinding(binding) {
+  if (!binding || typeof binding !== "object") return null;
+  return {
+    window_id: typeof binding.window_id === "string" ? binding.window_id : null,
+    account_id_sha256: typeof binding.account_id_sha256 === "string"
+      ? binding.account_id_sha256
+      : null,
+    desired_consumer_service: typeof binding.desired_consumer_service === "string"
+      ? binding.desired_consumer_service
+      : null,
+    deployed_version_sha256: typeof binding.deployed_version_sha256 === "string"
+      ? binding.deployed_version_sha256
+      : null,
+    readback_target_sha256: typeof binding.readback_target_sha256 === "string"
+      ? binding.readback_target_sha256
+      : null,
+    credential_provenance: allowlistedCapCredentialProvenance(binding.credential_provenance),
+    sink_name: typeof binding.sink_name === "string" ? binding.sink_name : null,
+  };
+}
+
+/**
+ * Establish cap-signal identity binding from the authoritative window, desired
+ * consumer, deployed-version evidence, and configured readback target +
+ * credential provenance. deadline_ms / max_events are NOT identity.
+ * Missing any required part → UNKNOWN (refuses READY).
+ */
+export function establishCapReadbackIdentityBinding({
+  window = null,
+  desiredConsumer = null,
+  versionEvidence = null,
+  readbackUrl = null,
+  credentialProvenance = CAP_CREDENTIAL_PROVENANCE.ENV_READBACK_TOKEN,
+  sinkName = TAIL_SINK_NAME,
+} = {}) {
+  if (!window || typeof window !== "object") {
+    return { ok: false, reason: CAP_SIGNAL_REASON.IDENTITY_BINDING_UNKNOWN };
+  }
+  if (typeof window.window_id !== "string" || !window.window_id) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.IDENTITY_BINDING_UNKNOWN };
+  }
+  if (
+    typeof window.account_id_sha256 !== "string"
+    || !/^[a-f0-9]{64}$/.test(window.account_id_sha256)
+  ) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.IDENTITY_BINDING_UNKNOWN };
+  }
+
+  let consumerService = null;
+  const explicit = desiredConsumer
+    ?? versionEvidence?.consumer
+    ?? window.version_evidence?.consumer
+    ?? window.owned_consumers?.[0]
+    ?? null;
+  if (typeof explicit === "string" && explicit.trim()) {
+    consumerService = explicit.trim();
+  } else if (explicit && typeof explicit === "object") {
+    const service = typeof explicit.service === "string"
+      ? explicit.service
+      : (typeof explicit.script === "string" ? explicit.script : null);
+    if (service && service.trim()) consumerService = service.trim();
+  }
+  if (!consumerService) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.IDENTITY_BINDING_UNKNOWN };
+  }
+
+  const evidence = versionEvidence ?? window.version_evidence ?? null;
+  if (
+    !evidence
+    || evidence.present !== true
+    || typeof evidence.sha256 !== "string"
+    || !/^[a-f0-9]{64}$/.test(evidence.sha256)
+  ) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.IDENTITY_BINDING_UNKNOWN };
+  }
+
+  if (typeof readbackUrl !== "string" || !readbackUrl) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.IDENTITY_BINDING_UNKNOWN };
+  }
+  const provenance = allowlistedCapCredentialProvenance(credentialProvenance);
+  if (!provenance) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.IDENTITY_BINDING_UNKNOWN };
+  }
+  if (typeof sinkName !== "string" || !sinkName) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.IDENTITY_BINDING_UNKNOWN };
+  }
+
+  return {
+    ok: true,
+    binding: {
+      window_id: window.window_id,
+      account_id_sha256: window.account_id_sha256,
+      desired_consumer_service: consumerService,
+      deployed_version_sha256: evidence.sha256,
+      readback_target_sha256: createHash("sha256").update(readbackUrl).digest("hex"),
+      credential_provenance: provenance,
+      sink_name: sinkName,
+    },
+  };
+}
+
+/**
+ * Positive-allowlisted scalar projection for a successful validated readback.
+ * Drops raw body and unknown fields; A2 reasons are fixed codes only.
+ */
+export function projectSinkReadbackCapSignal({
+  cap_reached,
+  events_seen,
+  apply_overshoot,
+  a2,
+  deadline_ms = null,
+  max_events = null,
+  opened = null,
+  identityBinding = null,
+  timeout_ms = null,
+} = {}) {
+  return {
+    cap_reached: cap_reached === true,
+    readback_ok: true,
+    reason: cap_reached === true ? null : CAP_SIGNAL_REASON.CAP_NOT_REACHED,
+    events_seen: isNonNegativeInt(events_seen) ? events_seen : null,
+    apply_overshoot: isNonNegativeInt(apply_overshoot) ? apply_overshoot : null,
+    // Limit scalars — schema/limit validity only, not identity.
+    deadline_ms: Number.isFinite(deadline_ms) && deadline_ms > 0 ? deadline_ms : null,
+    max_events: isNonNegativeInt(max_events) && max_events > 0 ? max_events : null,
+    opened: typeof opened === "boolean" ? opened : null,
+    a2: projectCapSignalA2(a2),
+    identity_binding: projectCapIdentityBinding(identityBinding),
+    fetch_abort_signal_supplied: true,
+    timeout_ms: Number.isFinite(timeout_ms) && timeout_ms > 0 ? timeout_ms : null,
+  };
 }
 
 function unknownCapSignal({ reason, status = null, aborted = false } = {}) {
@@ -1096,20 +1296,24 @@ function unknownCapSignal({ reason, status = null, aborted = false } = {}) {
     aborted: aborted === true,
     events_seen: null,
     apply_overshoot: null,
-    a2: { pass: false, reason: code },
+    deadline_ms: null,
+    max_events: null,
+    opened: null,
+    a2: projectCapSignalA2({ pass: false, reason: CAP_A2_REASON.A2_REASON_UNKNOWN }),
+    identity_binding: null,
   };
 }
 
-function isNonNegativeInt(value) {
-  return Number.isInteger(value) && value >= 0;
-}
-
 /**
- * Validate AggregateSink /readback JSON. Empty {}, missing booleans/counts, or
- * unbound window fields stay UNKNOWN (refuses READY). events_seen may be 0.
+ * Validate AggregateSink /readback JSON schema and limit scalars.
+ * deadline_ms / max_events prove limit validity only — identity binding is
+ * established separately via establishCapReadbackIdentityBinding.
+ * Empty {} or missing required fields → UNKNOWN (refuses READY).
+ * events_seen may be 0 (honest unopened / fresh sink).
  */
 export function validateSinkReadbackBody(body, {
   expectedSchema = TAIL_SINK_READBACK_SCHEMA,
+  expectedSinkName = null,
 } = {}) {
   if (!body || typeof body !== "object" || Array.isArray(body)) {
     return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
@@ -1141,15 +1345,21 @@ export function validateSinkReadbackBody(body, {
   if (a2.apply_overshoot != null && !isNonNegativeInt(a2.apply_overshoot)) {
     return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
   }
-  // Window binding: collection deadline + max_events must be present and finite.
+  // Limit scalars: finite positive deadline + positive max_events (not identity).
   if (!Number.isFinite(body.deadline_ms) || body.deadline_ms <= 0) {
     return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
   }
   if (!isNonNegativeInt(body.max_events) || body.max_events <= 0) {
     return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
   }
-  // Consumer / sink binding: schema-qualified sink identity when present, else
-  // the authenticated readback URL+token is the binding (required at construct).
+  // Optional sink_name echo must match the configured target when expected.
+  if (expectedSinkName != null) {
+    if (typeof body.sink_name !== "string" || body.sink_name !== expectedSinkName) {
+      return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
+    }
+  } else if (body.sink_name != null && (typeof body.sink_name !== "string" || !body.sink_name)) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
+  }
   if (body.sink_id != null && (typeof body.sink_id !== "string" || !body.sink_id)) {
     return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
   }
@@ -1158,14 +1368,20 @@ export function validateSinkReadbackBody(body, {
     cap_reached: body.cap_reached,
     events_seen: body.events_seen,
     apply_overshoot: overshoot,
-    a2,
+    deadline_ms: body.deadline_ms,
+    max_events: body.max_events,
+    opened: typeof body.opened === "boolean" ? body.opened : null,
+    // Project immediately — never hand raw a2 to callers.
+    a2: projectCapSignalA2(a2),
   };
 }
 
 /**
  * Poll authenticated AggregateSink readback for cap_reached.
- * Missing/failed/timed-out/unauthorized/invalid-schema readback stays UNKNOWN
- * (cap_reached false, readback_ok false); never invents zero and never throws.
+ * Identity binding (window / desired consumer / deployed version / readback
+ * target + credential provenance) must be established first; otherwise every
+ * poll is UNKNOWN and refuses READY. Limit fields in the body are schema-only.
+ * Returns a positive-allowlisted scalar projection — never raw body or a2.
  * The entire fetch+json+validate path is Promise.race'd against the bound so an
  * injected fetch/body that ignores AbortSignal still settles UNKNOWN in time.
  */
@@ -1175,6 +1391,12 @@ export function createSinkReadbackCapSignal({
   fetchImpl = globalThis.fetch,
   timeoutMs = DEFAULT_SINK_READBACK_TIMEOUT_MS,
   expectedSchema = TAIL_SINK_READBACK_SCHEMA,
+  identityBinding = null,
+  window = null,
+  desiredConsumer = null,
+  versionEvidence = null,
+  credentialProvenance = CAP_CREDENTIAL_PROVENANCE.ENV_READBACK_TOKEN,
+  sinkName = TAIL_SINK_NAME,
 } = {}) {
   if (typeof url !== "string" || !url) fail("sink readback url is required for cap signal");
   if (typeof token !== "string" || !token || token === "unset") {
@@ -1185,10 +1407,40 @@ export function createSinkReadbackCapSignal({
     ? timeoutMs
     : DEFAULT_SINK_READBACK_TIMEOUT_MS;
 
+  let binding = identityBinding;
+  if (!binding) {
+    const established = establishCapReadbackIdentityBinding({
+      window,
+      desiredConsumer,
+      versionEvidence,
+      readbackUrl: url,
+      credentialProvenance,
+      sinkName,
+    });
+    binding = established.ok ? established.binding : null;
+  } else {
+    // Pre-built binding must still project to a complete allowlisted record.
+    const projected = projectCapIdentityBinding(binding);
+    binding = projected
+      && projected.window_id
+      && projected.account_id_sha256
+      && projected.desired_consumer_service
+      && projected.deployed_version_sha256
+      && projected.readback_target_sha256
+      && projected.credential_provenance
+      && projected.sink_name
+      ? projected
+      : null;
+  }
+
   return async function readCapSignal({
     signal = null,
     timeoutMs: callTimeoutMs = defaultTimeoutMs,
   } = {}) {
+    if (!binding) {
+      return unknownCapSignal({ reason: CAP_SIGNAL_REASON.IDENTITY_BINDING_UNKNOWN });
+    }
+
     const boundMs = Number.isFinite(callTimeoutMs) && callTimeoutMs > 0
       ? callTimeoutMs
       : defaultTimeoutMs;
@@ -1235,26 +1487,28 @@ export function createSinkReadbackCapSignal({
             status: res.status ?? null,
           });
         }
-        const validated = validateSinkReadbackBody(body, { expectedSchema });
+        const validated = validateSinkReadbackBody(body, {
+          expectedSchema,
+          expectedSinkName: binding.sink_name,
+        });
         if (!validated.ok) {
           return unknownCapSignal({
             reason: validated.reason,
             status: res.status ?? null,
           });
         }
-        return {
-          cap_reached: validated.cap_reached === true,
-          readback_ok: true,
-          reason: validated.cap_reached === true
-            ? null
-            : CAP_SIGNAL_REASON.CAP_NOT_REACHED,
+        // Allowlisted scalar projection only — never raw body or arbitrary a2.
+        return projectSinkReadbackCapSignal({
+          cap_reached: validated.cap_reached,
           events_seen: validated.events_seen,
           apply_overshoot: validated.apply_overshoot,
           a2: validated.a2,
-          body,
-          fetch_abort_signal_supplied: true,
+          deadline_ms: validated.deadline_ms,
+          max_events: validated.max_events,
+          opened: validated.opened,
+          identityBinding: binding,
           timeout_ms: boundMs,
-        };
+        });
       })();
 
       // Hard outer race: abort + settle UNKNOWN even when fetch/json ignore signal.
