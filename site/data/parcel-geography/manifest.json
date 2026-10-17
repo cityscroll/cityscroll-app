@@ -1577,7 +1577,7 @@
   },
   "membership": {
     "schema": "cityscroll.parcel-membership-manifest.v1",
-    "generated_at": "2026-10-14T14:45:46.685Z",
+    "generated_at": "2026-10-17T06:36:15.919Z",
     "inputs": {
       "points_sha256": "14fe925d8943a13100fe70cc98479a2bad3d96652af2380729e155ded43ab3c0",
       "point_coordinate_vintage": "pluto_25v4"
@@ -1591,7 +1591,7 @@
         "artifact_path": "data/geography/layers/borough/2026-05-26.full.json",
         "source_contract": "community-district-boundaries",
         "feature_count": 5,
-        "computation": "reused",
+        "computation": "computed",
         "counts": {
           "parcels": 857161,
           "matched": 855927,
@@ -1607,7 +1607,7 @@
         "artifact_path": "data/geography/layers/community_district/2026-05-26.full.json",
         "source_contract": "community-district-boundaries",
         "feature_count": 71,
-        "computation": "reused",
+        "computation": "computed",
         "counts": {
           "parcels": 857161,
           "matched": 855927,
@@ -1623,7 +1623,7 @@
         "artifact_path": "data/geography/layers/council_district/2026-05-26.full.json",
         "source_contract": "city-council-district-boundaries",
         "feature_count": 51,
-        "computation": "reused",
+        "computation": "computed",
         "counts": {
           "parcels": 857161,
           "matched": 855927,
@@ -1666,11 +1666,11 @@
     },
     "resolved_parcels": 857161,
     "build": {
-      "started_at": "2026-10-14T14:45:43.743Z",
-      "completed_at": "2026-10-14T14:45:46.685Z",
-      "duration_ms": 2943,
-      "index_ms": 806,
-      "resolve_ms": 1055
+      "started_at": "2026-10-17T06:36:09.440Z",
+      "completed_at": "2026-10-17T06:36:15.919Z",
+      "duration_ms": 6479,
+      "index_ms": 606,
+      "resolve_ms": 5220
     }
   }
 }

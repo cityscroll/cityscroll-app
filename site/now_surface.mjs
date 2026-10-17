@@ -525,7 +525,7 @@ export function buildNowSurface(sources = {}, options = {}) {
         observed_at: record.observed_at || sources.consultations?.observed_at || null,
       })),
       { asOf: `${today}T12:00:00.000Z` },
-    ),
+    ).map((item) => ({ ...item, source: source("consultations") })),
   ], options.scope, options.matchesScope);
   const eventCandidates = scoped([
     ...meetingEvents(sources.meetings, config),

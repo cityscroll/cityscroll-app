@@ -220,10 +220,15 @@ test("A2 builder: rebuilt activity omits sibling empty arrays and keeps per-lens
   const chelseaBag = activity.geography_items.by_key[CHELSEA];
   assert.ok(chelseaBag, "rebuild publishes Chelsea");
   assert.ok(Array.isArray(chelseaBag.land) && chelseaBag.land.length > 0);
-  assert.equal(Object.prototype.hasOwnProperty.call(chelseaBag, "meetings"), false);
-  assert.equal(Object.prototype.hasOwnProperty.call(chelseaBag, "property"), false);
-  assert.equal(Object.prototype.hasOwnProperty.call(chelseaBag, "rules"), false);
-  assert.equal(Object.prototype.hasOwnProperty.call(chelseaBag, "money"), false);
+  // Observed lenses may appear when the retained refresh has membership hits
+  // (Chelsea meetings can be ready after geography binding). Empty sibling
+  // arrays must still be omitted — never fabricated for an absent lens.
+  for (const lens of ["meetings", "property", "rules", "money"]) {
+    if (Object.prototype.hasOwnProperty.call(chelseaBag, lens)) {
+      assert.ok(Array.isArray(chelseaBag[lens]));
+      assert.ok(chelseaBag[lens].length > 0, `Chelsea ${lens} empty arrays must not be sibling-filled`);
+    }
+  }
 
   const hkBag = activity.geography_items.by_key[HELLS_KITCHEN];
   assert.ok(Array.isArray(hkBag.meetings) && hkBag.meetings.length > 0);
@@ -239,10 +244,15 @@ test("A2 builder: rebuilt activity omits sibling empty arrays and keeps per-lens
   assert.equal(meetingsCoverage.status, "ready");
   assert.equal(meetingsCoverage.match_bound, "observed_nta_membership_only");
   assert.equal(meetingsCoverage.types.nta2020.status, "observed_only");
-  assert.equal(
-    geographyRecordProjection(activity, { key: CHELSEA, lens: "meetings" }).state,
-    "unfilterable",
-  );
+  const chelseaMeetingsState = geographyRecordProjection(activity, {
+    key: CHELSEA,
+    lens: "meetings",
+  }).state;
+  if (Object.prototype.hasOwnProperty.call(chelseaBag, "meetings")) {
+    assert.equal(chelseaMeetingsState, "ready");
+  } else {
+    assert.equal(chelseaMeetingsState, "unfilterable");
+  }
   assert.equal(
     geographyRecordProjection(activity, { key: HELLS_KITCHEN, lens: "meetings" }).state,
     "ready",

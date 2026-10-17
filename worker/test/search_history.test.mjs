@@ -119,7 +119,20 @@ function write(target, environment, body, extraHeaders = {}) {
   );
 }
 
-function entry(query, { scope = {}, occurredAt = "2026-09-02T12:00:00.000Z", executionId = null } = {}) {
+/**
+ * One ambient-clock anchor for fixtures that pass through the handler's
+ * Date.now retention window. Captured once per process so ordering offsets
+ * stay stable within a test; under CITYSCROLL_TEST_TIME_SHIFT_DAYS the
+ * preload shifts Date.now before this module evaluates.
+ */
+const AMBIENT_CLOCK_MS = Date.now();
+
+/** ISO instant relative to the ambient test clock (negative = older). */
+function ambientOccurredAt(offsetMs = 0) {
+  return new Date(AMBIENT_CLOCK_MS + offsetMs).toISOString();
+}
+
+function entry(query, { scope = {}, occurredAt = ambientOccurredAt(), executionId = null } = {}) {
   return {
     schema: SEARCH_HISTORY_ENTRY_SCHEMA,
     occurred_at: occurredAt,
@@ -173,8 +186,8 @@ test("remove and clear on one device reach the other", async () => {
   const deviceA = await recognizeThroughEmailLink(environment, READER);
   const deviceB = await recognizeThroughEmailLink(environment, READER);
 
-  await append(deviceA, environment, "rats", { occurredAt: "2026-09-02T12:00:00.000Z" });
-  await append(deviceA, environment, "rezoning", { occurredAt: "2026-09-02T13:00:00.000Z" });
+  await append(deviceA, environment, "rats", { occurredAt: ambientOccurredAt(-120_000) });
+  await append(deviceA, environment, "rezoning", { occurredAt: ambientOccurredAt(-60_000) });
   assert.deepEqual((await entriesFor(deviceB, environment)).map((row) => row.query), ["rezoning", "rats"]);
 
   const removed = await write(deviceB, environment, {
@@ -200,7 +213,7 @@ test("history is bounded to the newest 25 distinct searches", async () => {
   const reader = await recognizeThroughEmailLink(environment, READER);
   for (let index = 0; index < SEARCH_HISTORY_MAX_ENTRIES + 12; index += 1) {
     await append(reader, environment, `query-${index}`, {
-      occurredAt: `2026-09-02T${String(index % 24).padStart(2, "0")}:00:00.000Z`,
+      occurredAt: ambientOccurredAt(-index * 60_000),
     });
   }
   const entries = await entriesFor(reader, environment);
@@ -212,10 +225,10 @@ test("history is bounded to the newest 25 distinct searches", async () => {
 test("running the same search again moves it up instead of duplicating it", async () => {
   const environment = env();
   const reader = await recognizeThroughEmailLink(environment, READER);
-  await append(reader, environment, "rats", { occurredAt: "2026-09-02T09:00:00.000Z" });
-  await append(reader, environment, "rezoning", { occurredAt: "2026-09-02T10:00:00.000Z" });
+  await append(reader, environment, "rats", { occurredAt: ambientOccurredAt(-180_000) });
+  await append(reader, environment, "rezoning", { occurredAt: ambientOccurredAt(-120_000) });
   // Different words, same search once normalized.
-  await append(reader, environment, "RATS", { occurredAt: "2026-09-02T11:00:00.000Z" });
+  await append(reader, environment, "RATS", { occurredAt: ambientOccurredAt(-60_000) });
 
   const entries = await entriesFor(reader, environment);
   assert.equal(entries.length, 2);
@@ -226,8 +239,8 @@ test("running the same search again moves it up instead of duplicating it", asyn
 test("the same words in a different place are a different search", async () => {
   const environment = env();
   const reader = await recognizeThroughEmailLink(environment, READER);
-  await append(reader, environment, "rats", { occurredAt: "2026-09-02T09:00:00.000Z" });
-  await append(reader, environment, "rats", { scope: { boro: "Queens" }, occurredAt: "2026-09-02T10:00:00.000Z" });
+  await append(reader, environment, "rats", { occurredAt: ambientOccurredAt(-120_000) });
+  await append(reader, environment, "rats", { scope: { boro: "Queens" }, occurredAt: ambientOccurredAt(-60_000) });
   assert.equal((await entriesFor(reader, environment)).length, 2);
 });
 
@@ -379,7 +392,7 @@ test("the two projections of one recognized search stay independent", async () =
     headers: { Origin: ORIGIN, "Content-Type": "application/json", Cookie: reader.cookie },
     body: JSON.stringify({
       schema: "cityscroll.search_execution.v1",
-      occurred_at: "2026-09-02T12:00:00.000Z",
+      occurred_at: ambientOccurredAt(),
       query: { raw: "rats", normalized: "rats" },
       search_path: "/search/",
       scope: {},

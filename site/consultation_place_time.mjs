@@ -141,6 +141,14 @@ export function consultationDeadline(record, { asOf = new Date().toISOString(), 
   return { value, precision: record?.deadline?.precision || "day", fresh, supported, expired: Boolean(value && value < today), days: value && today ? Math.round((deadlineMs - dateMs(today)) / DAY_MS) : null };
 }
 
+// Keep label/system aligned with SOURCE_META.consultations in now_surface.mjs.
+// Now cards read item.source.label; omitting source throws before paint.
+const CONSULTATION_NOW_SOURCE = Object.freeze({
+  domain: "consultations",
+  label: "Public consultations",
+  system: "consultations",
+});
+
 export function consultationNowItems(records = [], options = {}) {
   return records.map((record) => {
     const deadline = consultationDeadline(record, options);
@@ -154,6 +162,7 @@ export function consultationNowItems(records = [], options = {}) {
       agency: record.organizer || null,
       domain: "consultations",
       scope_domains: ["consultations"],
+      source: CONSULTATION_NOW_SOURCE,
       route: `/consultations/${encodeURIComponent(record.id)}/`,
       action: { type: "comment", delivery: "internal", label: "Open consultation details", destination: `/consultations/${encodeURIComponent(record.id)}/` },
       time: { value: deadline.value, day: deadline.value, precision: deadline.precision, basis: "published_consultation_deadline", verified: true, source_field: "deadline.value" },

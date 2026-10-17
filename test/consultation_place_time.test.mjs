@@ -139,7 +139,15 @@ test("A1: district activity, digest, Near You, map, Now, and static/client place
       ...Object.fromEntries(emptyDomains.map((domain) => [domain, { status: "available" }])),
       consultations: { status: "available", observed_at: observed, consultations: [cb14] },
     }, { today: "2026-08-15" });
-    assert.ok(surface.act_by.dated.some((item) => item.id === `consultation:${cb14.id}` && item.domain === "consultations"));
+    const consultationCard = surface.act_by.dated.find((item) => item.id === `consultation:${cb14.id}`);
+    assert.ok(consultationCard);
+    assert.equal(consultationCard.domain, "consultations");
+    // SPA #now and static Now cards both read item.source.label; a missing
+    // source throws before .now-surface can paint.
+    assert.equal(consultationCard.source?.domain, "consultations");
+    assert.equal(consultationCard.source?.system, "consultations");
+    assert.equal(consultationCard.source?.label, "Public consultations");
+    assert.ok(consultationCard.action?.type, "consultation cards keep an action");
 
     const staticCollection = buildConsultationCollection({
       materialization: { consultations: [cb14] },
@@ -229,5 +237,8 @@ test("A4: seventy-two-hour freshness is pinned on both sides of its edge", async
     const [item] = consultationNowItems([{ ...fresh, deadline: { value: "2026-08-20", precision: "day" } }], horizonOptions);
     assert.equal(item.time.precision, "day");
     assert.equal(item.place.scope, "unlocated");
+    assert.equal(item.source?.label, "Public consultations");
+    assert.equal(item.source?.system, "consultations");
+    assert.equal(item.source?.domain, "consultations");
   });
 });
