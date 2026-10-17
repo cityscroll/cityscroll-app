@@ -216,6 +216,10 @@ def assert_card(page, *, phase: str, stage: str, actor: str, status: str) -> Non
     assert observed_stage == stage, {"expected_stage": stage, "observed_stage": observed_stage}
     observed_actor = page.locator("[data-land-authority-actor]").inner_text()
     assert actor in observed_actor, {"expected_actor": actor, "observed_actor": observed_actor}
+    timeline_actor = page.locator(
+        f'#land-outcomes [data-land-phase-panel="{phase}"] .land-role-strip-line'
+    ).inner_text()
+    assert actor in timeline_actor, {"expected_actor": actor, "timeline_actor": timeline_actor}
     assert current_phase(page) == phase
     assert page.locator('[data-land-authority-published-checked="true"]').count() == 1
 

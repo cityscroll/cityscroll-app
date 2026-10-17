@@ -60,7 +60,7 @@ import {
 import { zoningHearingRowsForScope } from "../zoning_hearing_calendar.mjs";
 import { projectCalendarActionsHTML as projectCalendarActions } from "../project_calendar.mjs";
 import { attachAuth, authHTML, landAuthoritySummaryFor, loadAuth } from "../land_authority_summary_view.mjs";
-import { landAuthoritySummaryFromOutcome } from "../land_authority_hydration.mjs";
+import { landAffectedReviewBodiesFor, landAuthoritySummaryFromOutcome } from "../land_authority_hydration.mjs";
 import { landHearingRowRoleHTML } from "../land_hearing_authority_copy.mjs";
 import {
   landFilingEvidenceSectionsHTML,
@@ -1307,6 +1307,7 @@ function landSpineHTML(spine, record, phaseTools, listRow){
       actions: record?.actions || record?.zap_actions || null,
       variant_evidence: record?.variant_evidence || null,
       procedure_facts: record?.procedure_facts || null,
+      affected_review_body_for: landAffectedReviewBodiesFor(listRow || {}),
     });
     return landPhaseSpineHTML(view, phaseTools, record);
   }
