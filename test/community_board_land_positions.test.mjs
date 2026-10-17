@@ -783,6 +783,21 @@ test("the rendered section names the publisher and the date it was observed", ()
 /* ---------- the committed capture evidence ---------- */
 
 const CAPTURE = read("docs/evidence/board-land-positions/manifest.json");
+const CAPTURE_RENDERER = readFileSync(
+  new URL("../tools/render_board_land_position_fixtures.mjs", import.meta.url),
+  "utf8",
+);
+
+test("board land capture renderer binds the frozen LOOKUP fixture, not ambient live refresh", () => {
+  assert.match(
+    CAPTURE_RENDERER,
+    /test\/fixtures\/community-board-land-positions\/community_board_land_positions\.json/,
+  );
+  assert.doesNotMatch(
+    CAPTURE_RENDERER,
+    /read\(\s*["']site\/data\/community_board_land_positions\.json["']\s*\)/,
+  );
+});
 
 test("the capture manifest is the proof, and no image binary is committed", () => {
   assert.equal(CAPTURE.schema, "cityscroll.board_land_position_capture.v1");

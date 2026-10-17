@@ -226,3 +226,15 @@ export function jsonText(value, { pretty = false } = {}) {
 export function sha256Text(value) {
   return createHash("sha256").update(value).digest("hex");
 }
+
+/** Drop built_at so digest comparisons ignore rebuild restamps. */
+export function layerWithoutBuiltAt(layer) {
+  if (!layer || typeof layer !== "object" || Array.isArray(layer)) return layer;
+  const { built_at: _builtAt, ...rest } = layer;
+  return rest;
+}
+
+/** True when two layer documents match aside from built_at. */
+export function semanticLayerEqual(left, right) {
+  return JSON.stringify(layerWithoutBuiltAt(left)) === JSON.stringify(layerWithoutBuiltAt(right));
+}

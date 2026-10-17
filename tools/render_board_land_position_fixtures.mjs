@@ -35,7 +35,12 @@ const read = (path) => JSON.parse(readFileSync(join(ROOT, path), "utf8"));
 const geography = read("site/data/community_board_geography_lookup.json");
 const scorecard = read("site/data/community_board_minutes_scorecard.json");
 const sourceRegistry = read("site/data/non_council_outcome_sources/source_registry.json");
-const landPositions = read("site/data/community_board_land_positions.json");
+// Capture evidence must track the frozen acceptance LOOKUP fixture, never the
+// ambient live refresh lookup. First-class refresh rebuilds site/data/... while
+// these fixtures and the committed capture receipt stay pinned here.
+const landPositions = read(
+  "test/fixtures/community-board-land-positions/community_board_land_positions.json",
+);
 
 /** The board whose record carries two applications on one date and one tally. */
 const POSITIVE_BOARD = "manhattan-cb-04";

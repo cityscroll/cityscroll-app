@@ -1,0 +1,4377 @@
+{
+  "boundary_vintage": "2026-05-26",
+  "built_at": "2026-10-08T23:51:25.374Z",
+  "district_items": {
+    "boundary_vintage": "2026-05-26",
+    "built_at": "2026-10-08T23:51:25.374Z",
+    "by_level": {
+      "borough": {},
+      "community_district": {
+        "M04": {
+          "land": [
+            "2019M0059",
+            "2019M0107",
+            "2020M0325",
+            "2020M0375",
+            "2023M0213",
+            "2023M0309",
+            "2024M0244",
+            "2025M0332",
+            "2025M0360",
+            "2026M0445",
+            "P2009M0029",
+            "P2014M0309",
+            "P2015M0247",
+            "P2016M0148"
+          ],
+          "meetings": [
+            "20260723030",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-24/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-67/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-61/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-58/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-3/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-52/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/office-closed-labor-day-7/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-25/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/waterfront-parks-environment-committee-wpe-59/"
+          ],
+          "money": [
+            "20260629032"
+          ],
+          "property": [
+            "20141022109",
+            "20150320104",
+            "20150326109"
+          ],
+          "rules": []
+        }
+      },
+      "council_district": {}
+    },
+    "citywide": {
+      "meetings": []
+    },
+    "lenses": [
+      "land",
+      "property",
+      "rules",
+      "meetings",
+      "money"
+    ],
+    "schema": "cityscroll.district_items.v1",
+    "unlocated": {},
+    "virtual": {}
+  },
+  "geography_items": {
+    "built_at": "2026-10-08T23:51:25.374Z",
+    "by_key": {
+      "geography:community_district:M04": {
+        "land": [
+          "2019M0059",
+          "2019M0107",
+          "2020M0325",
+          "2020M0375",
+          "2023M0213",
+          "2023M0309",
+          "2024M0244",
+          "2025M0332",
+          "2025M0360",
+          "2026M0445",
+          "P2009M0029",
+          "P2014M0309",
+          "P2015M0247",
+          "P2016M0148"
+        ],
+        "meetings": [
+          "20260723030",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-24/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-67/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-61/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-58/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-3/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-52/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/office-closed-labor-day-7/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-25/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/waterfront-parks-environment-committee-wpe-59/"
+        ],
+        "money": [
+          "20260629032"
+        ],
+        "property": [
+          "20141022109",
+          "20150320104",
+          "20150326109"
+        ]
+      },
+      "geography:nta2020:MN0401": {
+        "land": [
+          "2019M0059",
+          "2019M0107",
+          "2020M0325",
+          "2020M0375",
+          "2023M0213",
+          "2023M0309",
+          "2024M0244",
+          "2026M0445",
+          "P2014M0309",
+          "P2015M0247",
+          "P2016M0148"
+        ]
+      },
+      "geography:nta2020:MN0402": {
+        "land": [
+          "2023M0213",
+          "2024M0244",
+          "2025M0332",
+          "2025M0360"
+        ],
+        "meetings": [
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-24/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-67/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-61/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-58/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-3/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-52/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-25/",
+          "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/waterfront-parks-environment-committee-wpe-59/"
+        ],
+        "property": [
+          "20141022109",
+          "20150320104",
+          "20150326109"
+        ]
+      }
+    },
+    "coverage": {
+      "by_lens": {
+        "land": {
+          "admitted": 244,
+          "association_kind": "published_project_lot",
+          "content_id": "fnv1a32:640b5dbd:244",
+          "generation_id": "aa757d8b1fd9c0b68bcd02a5eef8ee061ed3efd12c4af34331ce904c0c4afea7",
+          "match_bound": "spatially_matched_population",
+          "partially_covered": 22,
+          "source": "land_place_membership",
+          "source_dates": {
+            "bbl_materialized_at": "2026-10-05T17:35:26.970Z",
+            "boundary_vintages": {
+              "borough": "2026-05-26",
+              "community_district": "2026-05-26",
+              "council_district": "2026-05-26",
+              "nta2020": "26B",
+              "police_precinct": "26B"
+            },
+            "catalog_content_id": "fnv1a32:ff211dc0:244",
+            "catalog_generated_at": "2026-09-30T13:04:22.921Z",
+            "catalog_materialized_at": "2026-09-30T13:15:13.798Z",
+            "parcel_coordinate_vintage": "pluto_25v4"
+          },
+          "spatially_matched": 233,
+          "status": "ready",
+          "types": {
+            "nta2020": {
+              "content_id": "fnv1a32:640b5dbd:244",
+              "generation_id": "aa757d8b1fd9c0b68bcd02a5eef8ee061ed3efd12c4af34331ce904c0c4afea7",
+              "match_bound": "spatially_matched_population",
+              "reason": null,
+              "source_dates": {
+                "bbl_materialized_at": "2026-10-05T17:35:26.970Z",
+                "boundary_vintages": {
+                  "borough": "2026-05-26",
+                  "community_district": "2026-05-26",
+                  "council_district": "2026-05-26",
+                  "nta2020": "26B",
+                  "police_precinct": "26B"
+                },
+                "catalog_content_id": "fnv1a32:ff211dc0:244",
+                "catalog_generated_at": "2026-09-30T13:04:22.921Z",
+                "catalog_materialized_at": "2026-09-30T13:15:13.798Z",
+                "parcel_coordinate_vintage": "pluto_25v4"
+              },
+              "status": "ready"
+            }
+          }
+        },
+        "meetings": {
+          "counted": 840,
+          "located": 607,
+          "match_bound": "observed_nta_membership_only",
+          "source": "shared_meeting_read_model",
+          "status": "ready",
+          "types": {
+            "nta2020": {
+              "match_bound": "observed_nta_membership_only",
+              "reason": "nta_membership_is_observed_hit_only",
+              "status": "observed_only"
+            }
+          }
+        },
+        "money": {
+          "counted": 340,
+          "located": 128,
+          "match_bound": "observed_nta_membership_only",
+          "source": "money_domain_observations",
+          "status": "ready",
+          "types": {
+            "nta2020": {
+              "match_bound": "observed_nta_membership_only",
+              "reason": "nta_membership_is_observed_hit_only",
+              "status": "observed_only"
+            }
+          }
+        },
+        "property": {
+          "counted": 133,
+          "located": 133,
+          "match_bound": "observed_nta_membership_only",
+          "source": "property_domain_observations",
+          "status": "ready",
+          "types": {
+            "nta2020": {
+              "match_bound": "observed_nta_membership_only",
+              "reason": "nta_membership_is_observed_hit_only",
+              "status": "observed_only"
+            }
+          }
+        },
+        "rules": {
+          "counted": 100,
+          "located": 100,
+          "match_bound": "observed_nta_membership_only",
+          "source": "rules_domain_observations",
+          "status": "ready",
+          "types": {
+            "nta2020": {
+              "match_bound": "observed_nta_membership_only",
+              "reason": "nta_membership_is_observed_hit_only",
+              "status": "observed_only"
+            }
+          }
+        }
+      },
+      "status": "ready"
+    },
+    "definitions": {
+      "geography:community_district:M04": {
+        "boundary_vintage": "2026-05-26",
+        "class": "community_administrative",
+        "id": "M04",
+        "key": "geography:community_district:M04",
+        "label": "Manhattan Community District 4",
+        "source_id": "community-district-boundaries",
+        "type": "community_district"
+      },
+      "geography:nta2020:MN0401": {
+        "boundary_vintage": "26B",
+        "class": "statistical",
+        "id": "MN0401",
+        "key": "geography:nta2020:MN0401",
+        "label": "Chelsea-Hudson Yards",
+        "source_id": "dcp-nta2020-boundaries",
+        "type": "nta2020"
+      },
+      "geography:nta2020:MN0402": {
+        "boundary_vintage": "26B",
+        "class": "statistical",
+        "id": "MN0402",
+        "key": "geography:nta2020:MN0402",
+        "label": "Hell's Kitchen",
+        "source_id": "dcp-nta2020-boundaries",
+        "type": "nta2020"
+      }
+    },
+    "lenses": [
+      "land",
+      "property",
+      "rules",
+      "meetings",
+      "money"
+    ],
+    "public_types": [
+      "borough",
+      "community_district",
+      "council_district",
+      "nta2020",
+      "police_precinct"
+    ],
+    "schema": "cityscroll.geography_items.v1"
+  },
+  "lenses": [
+    "land",
+    "property",
+    "rules",
+    "meetings",
+    "money"
+  ],
+  "provenance": {
+    "kind": "near_you_chelsea_repair_reduced",
+    "note": "Frozen slice for Chelsea Near You hermetic tests: MN0401/MN0402/M04 with Chelsea meetings key absent.",
+    "source_path": "site/data/district_activity.json"
+  },
+  "records": {
+    "land": {
+      "2019M0059": {
+        "actions": "ZC",
+        "agency": "Jerald Johnson",
+        "basis": "Affected area",
+        "basis_method": "publisher_council",
+        "confidence": "strong",
+        "date": "2023-03-13T00:00:00.000",
+        "id": "2019M0059",
+        "place": {
+          "association_kind": null,
+          "basis": "Affected area",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "association_kind": "published_project_lot",
+              "basis": "Affected area",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0401",
+              "key": "geography:nta2020:MN0401",
+              "label": "Chelsea-Hudson Yards",
+              "location_role": "project_geometry",
+              "method": "published_project_lot",
+              "provenance": {
+                "association_kind": "published_project_lot",
+                "confidence_tier": "strong",
+                "placement_method": "published_project_lot",
+                "source_method": "land_place_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "project_geometry",
+          "method": "publisher_council",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "publisher_district",
+            "source_method": null
+          }
+        },
+        "regulatory_effect": "unknown",
+        "regulatory_effect_basis": {
+          "reason": "not_map_amendment"
+        },
+        "regulatory_effect_confidence": "unknown",
+        "route": "/#land/2019M0059",
+        "status": "ZC - Prepare Filed Land Use Application",
+        "title": "311 Tenth Avenue WCh Affordable Housing Fund Cert",
+        "type": "Filed"
+      },
+      "2019M0107": {
+        "actions": "ZC; LD",
+        "agency": "220 11th Ave, LLC",
+        "basis": "Affected area",
+        "basis_method": "publisher_council",
+        "confidence": "strong",
+        "date": "2021-03-09T00:00:00.000",
+        "id": "2019M0107",
+        "place": {
+          "association_kind": null,
+          "basis": "Affected area",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "association_kind": "published_project_lot",
+              "basis": "Affected area",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0401",
+              "key": "geography:nta2020:MN0401",
+              "label": "Chelsea-Hudson Yards",
+              "location_role": "project_geometry",
+              "method": "published_project_lot",
+              "provenance": {
+                "association_kind": "published_project_lot",
+                "confidence_tier": "strong",
+                "placement_method": "published_project_lot",
+                "source_method": "land_place_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "project_geometry",
+          "method": "publisher_council",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "publisher_district",
+            "source_method": null
+          }
+        },
+        "regulatory_effect": "unknown",
+        "regulatory_effect_basis": {
+          "reason": "not_map_amendment"
+        },
+        "regulatory_effect_confidence": "unknown",
+        "route": "/#land/2019M0107",
+        "status": "ZC - Prepare Filed Land Use Application",
+        "title": "220 11th Ave WCh Affordable Housing Fund Cert",
+        "type": "Filed"
+      },
+      "2020M0325": {
+        "actions": "ZC",
+        "agency": "SILVERSTEIN MB LLC",
+        "basis": "Affected area",
+        "basis_method": "publisher_council",
+        "confidence": "strong",
+        "date": "2022-12-05T00:00:00.000",
+        "id": "2020M0325",
+        "place": {
+          "association_kind": null,
+          "basis": "Affected area",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "association_kind": "published_project_lot",
+              "basis": "Affected area",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0401",
+              "key": "geography:nta2020:MN0401",
+              "label": "Chelsea-Hudson Yards",
+              "location_role": "project_geometry",
+              "method": "published_project_lot",
+              "provenance": {
+                "association_kind": "published_project_lot",
+                "confidence_tier": "strong",
+                "placement_method": "published_project_lot",
+                "source_method": "land_place_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "project_geometry",
+          "method": "publisher_council",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "publisher_district",
+            "source_method": null
+          }
+        },
+        "regulatory_effect": "unknown",
+        "regulatory_effect_basis": {
+          "reason": "not_map_amendment"
+        },
+        "regulatory_effect_confidence": "unknown",
+        "route": "/#land/2020M0325",
+        "status": "ZC - Review Filed Land Use Application",
+        "title": "530 W 41st Street (Mercedes Site Phase II Parking)",
+        "type": "Filed"
+      },
+      "2020M0375": {
+        "actions": "ZC",
+        "agency": "W29 Owner LLC",
+        "basis": "Affected area",
+        "basis_method": "publisher_council",
+        "confidence": "strong",
+        "date": "2021-04-21T00:00:00.000",
+        "id": "2020M0375",
+        "place": {
+          "association_kind": null,
+          "basis": "Affected area",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "association_kind": "published_project_lot",
+              "basis": "Affected area",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0401",
+              "key": "geography:nta2020:MN0401",
+              "label": "Chelsea-Hudson Yards",
+              "location_role": "project_geometry",
+              "method": "published_project_lot",
+              "provenance": {
+                "association_kind": "published_project_lot",
+                "confidence_tier": "strong",
+                "placement_method": "published_project_lot",
+                "source_method": "land_place_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "project_geometry",
+          "method": "publisher_council",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "publisher_district",
+            "source_method": null
+          }
+        },
+        "regulatory_effect": "unknown",
+        "regulatory_effect_basis": {
+          "reason": "not_map_amendment"
+        },
+        "regulatory_effect_confidence": "unknown",
+        "route": "/#land/2020M0375",
+        "status": "ZC - Prepare Filed Land Use Application",
+        "title": "542 West 29th St. WCh Affordable Housing Fund Cert",
+        "type": "Filed"
+      },
+      "2023M0213": {
+        "actions": "ZM; ZS; ZR; LD; LD",
+        "agency": "760 12th LLC",
+        "basis": "Affected area",
+        "basis_method": "publisher_council",
+        "confidence": "strong",
+        "date": "2026-07-01T00:00:00.000",
+        "id": "2023M0213",
+        "place": {
+          "association_kind": null,
+          "basis": "Affected area",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "36",
+              "key": "geography:council_district:36",
+              "label": "City Council District 36",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "association_kind": "published_project_lot",
+              "basis": "Affected area",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0401",
+              "key": "geography:nta2020:MN0401",
+              "label": "Chelsea-Hudson Yards",
+              "location_role": "project_geometry",
+              "method": "published_project_lot",
+              "provenance": {
+                "association_kind": "published_project_lot",
+                "confidence_tier": "strong",
+                "placement_method": "published_project_lot",
+                "source_method": "land_place_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            },
+            {
+              "association_kind": "published_project_lot",
+              "basis": "Affected area",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0402",
+              "key": "geography:nta2020:MN0402",
+              "label": "Hell's Kitchen",
+              "location_role": "project_geometry",
+              "method": "published_project_lot",
+              "provenance": {
+                "association_kind": "published_project_lot",
+                "confidence_tier": "strong",
+                "placement_method": "published_project_lot",
+                "source_method": "land_place_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "project_geometry",
+          "method": "publisher_council",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "publisher_district",
+            "source_method": null
+          }
+        },
+        "regulatory_effect": "unknown",
+        "regulatory_effect_basis": {
+          "reason": "district_not_in_far_table"
+        },
+        "regulatory_effect_confidence": "unknown",
+        "route": "/#land/2023M0213",
+        "status": "Ad-hoc - CPC Review of Modification Scope",
+        "title": "Dewitt Clinton Park North (629 West 54th Street)",
+        "type": "In Public Review"
+      },
+      "2023M0309": {
+        "actions": "ZC; ZC; LD",
+        "agency": "Melanie Meyers",
+        "basis": "Affected area",
+        "basis_method": "publisher_council",
+        "confidence": "strong",
+        "date": "2023-08-08T00:00:00.000",
+        "id": "2023M0309",
+        "place": {
+          "association_kind": null,
+          "basis": "Affected area",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "association_kind": "published_project_lot",
+              "basis": "Affected area",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0401",
+              "key": "geography:nta2020:MN0401",
+              "label": "Chelsea-Hudson Yards",
+              "location_role": "project_geometry",
+              "method": "published_project_lot",
+              "provenance": {
+                "association_kind": "published_project_lot",
+                "confidence_tier": "strong",
+                "placement_method": "published_project_lot",
+                "source_method": "land_place_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "project_geometry",
+          "method": "publisher_council",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "publisher_district",
+            "source_method": null
+          }
+        },
+        "regulatory_effect": "unknown",
+        "regulatory_effect_basis": {
+          "reason": "not_map_amendment"
+        },
+        "regulatory_effect_confidence": "unknown",
+        "route": "/#land/2023M0309",
+        "status": "ZC - Prepare Filed Land Use Application",
+        "title": "413-421 Ninth Avenue (HY DIB and Office Cert.)",
+        "type": "Filed"
+      },
+      "2024M0244": {
+        "actions": "ZS; ZM; ZR; LD; LD",
+        "agency": "801 11th Avenue LLC",
+        "basis": "Affected area",
+        "basis_method": "publisher_council",
+        "confidence": "strong",
+        "date": "2026-07-01T00:00:00.000",
+        "id": "2024M0244",
+        "place": {
+          "association_kind": null,
+          "basis": "Affected area",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "36",
+              "key": "geography:council_district:36",
+              "label": "City Council District 36",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "association_kind": "published_project_lot",
+              "basis": "Affected area",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0401",
+              "key": "geography:nta2020:MN0401",
+              "label": "Chelsea-Hudson Yards",
+              "location_role": "project_geometry",
+              "method": "published_project_lot",
+              "provenance": {
+                "association_kind": "published_project_lot",
+                "confidence_tier": "strong",
+                "placement_method": "published_project_lot",
+                "source_method": "land_place_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            },
+            {
+              "association_kind": "published_project_lot",
+              "basis": "Affected area",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0402",
+              "key": "geography:nta2020:MN0402",
+              "label": "Hell's Kitchen",
+              "location_role": "project_geometry",
+              "method": "published_project_lot",
+              "provenance": {
+                "association_kind": "published_project_lot",
+                "confidence_tier": "strong",
+                "placement_method": "published_project_lot",
+                "source_method": "land_place_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "project_geometry",
+          "method": "publisher_council",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "publisher_district",
+            "source_method": null
+          }
+        },
+        "regulatory_effect": "unknown",
+        "regulatory_effect_basis": {
+          "reason": "district_not_in_far_table"
+        },
+        "regulatory_effect_confidence": "unknown",
+        "route": "/#land/2024M0244",
+        "status": "Ad-hoc - CPC Review of Modification Scope",
+        "title": "Dewitt Clinton Park North (801 Eleventh Avenue)",
+        "type": "In Public Review"
+      },
+      "2025M0332": {
+        "actions": "ZR",
+        "agency": "304 West 49th Street Garage LLC",
+        "basis": "Affected area",
+        "basis_method": "publisher_council",
+        "confidence": "strong",
+        "date": "2026-05-12T00:00:00.000",
+        "id": "2025M0332",
+        "place": {
+          "association_kind": null,
+          "basis": "Affected area",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "association_kind": "published_project_lot",
+              "basis": "Affected area",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0402",
+              "key": "geography:nta2020:MN0402",
+              "label": "Hell's Kitchen",
+              "location_role": "project_geometry",
+              "method": "published_project_lot",
+              "provenance": {
+                "association_kind": "published_project_lot",
+                "confidence_tier": "strong",
+                "placement_method": "published_project_lot",
+                "source_method": "land_place_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "project_geometry",
+          "method": "publisher_council",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "publisher_district",
+            "source_method": null
+          }
+        },
+        "regulatory_effect": "unknown",
+        "regulatory_effect_basis": {
+          "reason": "not_map_amendment"
+        },
+        "regulatory_effect_confidence": "unknown",
+        "route": "/#land/2025M0332",
+        "status": "ZR - Review Draft Land Use Application",
+        "title": "304 West 49th Street",
+        "type": "Filed"
+      },
+      "2025M0360": {
+        "actions": "ZM; ZR",
+        "agency": "515 West 57th Street Leasehold LLC",
+        "basis": "Affected area",
+        "basis_method": "publisher_council",
+        "confidence": "strong",
+        "date": "2026-06-04T00:00:00.000",
+        "id": "2025M0360",
+        "place": {
+          "association_kind": null,
+          "basis": "Affected area",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "6",
+              "key": "geography:council_district:6",
+              "label": "City Council District 6",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "association_kind": "published_project_lot",
+              "basis": "Affected area",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0402",
+              "key": "geography:nta2020:MN0402",
+              "label": "Hell's Kitchen",
+              "location_role": "project_geometry",
+              "method": "published_project_lot",
+              "provenance": {
+                "association_kind": "published_project_lot",
+                "confidence_tier": "strong",
+                "placement_method": "published_project_lot",
+                "source_method": "land_place_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "project_geometry",
+          "method": "publisher_council",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "publisher_district",
+            "source_method": null
+          }
+        },
+        "regulatory_effect": "unknown",
+        "regulatory_effect_basis": {
+          "reason": "district_not_in_far_table"
+        },
+        "regulatory_effect_confidence": "unknown",
+        "route": "/#land/2025M0360",
+        "status": "ZM - Review Filed Land Use Application",
+        "title": "515 West 57th Street Rezoning",
+        "type": "Noticed"
+      },
+      "2026M0445": {
+        "actions": "HI",
+        "agency": "LPC - NYC Landmarks Preservation Commission",
+        "basis": "Affected area",
+        "basis_method": "publisher_council",
+        "confidence": "strong",
+        "date": "2026-06-06T00:00:00.000",
+        "id": "2026M0445",
+        "place": {
+          "association_kind": null,
+          "basis": "Affected area",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "association_kind": "published_project_lot",
+              "basis": "Affected area",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0401",
+              "key": "geography:nta2020:MN0401",
+              "label": "Chelsea-Hudson Yards",
+              "location_role": "project_geometry",
+              "method": "published_project_lot",
+              "provenance": {
+                "association_kind": "published_project_lot",
+                "confidence_tier": "strong",
+                "placement_method": "published_project_lot",
+                "source_method": "land_place_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "project_geometry",
+          "method": "publisher_council",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "publisher_district",
+            "source_method": null
+          }
+        },
+        "regulatory_effect": "unknown",
+        "regulatory_effect_basis": {
+          "reason": "not_map_amendment"
+        },
+        "regulatory_effect_confidence": "unknown",
+        "route": "/#land/2026M0445",
+        "status": "HI - City Council Review",
+        "title": "Lithuanian Alliance Building (LP-2695)",
+        "type": "In Public Review"
+      },
+      "P2009M0029": {
+        "actions": null,
+        "agency": "DPR - Department of Parks & Recreation NYC",
+        "basis": "Affected area",
+        "basis_method": "publisher_council",
+        "confidence": "strong",
+        "date": null,
+        "id": "P2009M0029",
+        "place": {
+          "association_kind": null,
+          "basis": "Affected area",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M02",
+              "key": "geography:community_district:M02",
+              "label": "Manhattan Community District 2",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "13",
+              "key": "geography:council_district:13",
+              "label": "City Council District 13",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "project_geometry",
+          "method": "publisher_council",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "publisher_district",
+            "source_method": null
+          }
+        },
+        "regulatory_effect": "unknown",
+        "regulatory_effect_basis": {
+          "reason": "not_map_amendment"
+        },
+        "regulatory_effect_confidence": "unknown",
+        "route": "/#land/P2009M0029",
+        "status": "On-Hold",
+        "title": "High Line Signage Master Plan",
+        "type": "Filed"
+      },
+      "P2014M0309": {
+        "actions": "ZC",
+        "agency": "SILVERSTEIN MB LLC",
+        "basis": "Affected area",
+        "basis_method": "publisher_council",
+        "confidence": "strong",
+        "date": "2022-12-05T00:00:00.000",
+        "id": "P2014M0309",
+        "place": {
+          "association_kind": null,
+          "basis": "Affected area",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "association_kind": "published_project_lot",
+              "basis": "Affected area",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0401",
+              "key": "geography:nta2020:MN0401",
+              "label": "Chelsea-Hudson Yards",
+              "location_role": "project_geometry",
+              "method": "published_project_lot",
+              "provenance": {
+                "association_kind": "published_project_lot",
+                "confidence_tier": "strong",
+                "placement_method": "published_project_lot",
+                "source_method": "land_place_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "project_geometry",
+          "method": "publisher_council",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "publisher_district",
+            "source_method": null
+          }
+        },
+        "regulatory_effect": "unknown",
+        "regulatory_effect_basis": {
+          "reason": "not_map_amendment"
+        },
+        "regulatory_effect_confidence": "unknown",
+        "route": "/#land/P2014M0309",
+        "status": "ZC - Review Filed Land Use Application",
+        "title": "550 W 41st Street (Mercedes Site Phase I Parking)",
+        "type": "Filed"
+      },
+      "P2015M0247": {
+        "actions": "ZC, ZC, ZC, ZC",
+        "agency": "MEUSHAR 34TH STREET, LLC./C/O THE MOINIAN GROUP",
+        "basis": "Affected area",
+        "basis_method": "publisher_council",
+        "confidence": "strong",
+        "date": "2021-03-22T00:00:00.000",
+        "id": "P2015M0247",
+        "place": {
+          "association_kind": null,
+          "basis": "Affected area",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "association_kind": "published_project_lot",
+              "basis": "Affected area",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0401",
+              "key": "geography:nta2020:MN0401",
+              "label": "Chelsea-Hudson Yards",
+              "location_role": "project_geometry",
+              "method": "published_project_lot",
+              "provenance": {
+                "association_kind": "published_project_lot",
+                "confidence_tier": "strong",
+                "placement_method": "published_project_lot",
+                "source_method": "land_place_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "project_geometry",
+          "method": "publisher_council",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "publisher_district",
+            "source_method": null
+          }
+        },
+        "regulatory_effect": "unknown",
+        "regulatory_effect_basis": {
+          "reason": "not_map_amendment"
+        },
+        "regulatory_effect_confidence": "unknown",
+        "route": "/#land/P2015M0247",
+        "status": "ZC - Prepare Filed Land Use Application",
+        "title": "3 Hudson Blvd (DIB, ERYTDR, office & res certs)",
+        "type": "Filed"
+      },
+      "P2016M0148": {
+        "actions": "ZC",
+        "agency": "Judy Gallent",
+        "basis": "Affected area",
+        "basis_method": "publisher_council",
+        "confidence": "strong",
+        "date": "2025-08-20T00:00:00.000",
+        "id": "P2016M0148",
+        "place": {
+          "association_kind": null,
+          "basis": "Affected area",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "project_geometry",
+              "method": "publisher_council",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "publisher_district",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "association_kind": "published_project_lot",
+              "basis": "Affected area",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0401",
+              "key": "geography:nta2020:MN0401",
+              "label": "Chelsea-Hudson Yards",
+              "location_role": "project_geometry",
+              "method": "published_project_lot",
+              "provenance": {
+                "association_kind": "published_project_lot",
+                "confidence_tier": "strong",
+                "placement_method": "published_project_lot",
+                "source_method": "land_place_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "project_geometry",
+          "method": "publisher_council",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "publisher_district",
+            "source_method": null
+          }
+        },
+        "regulatory_effect": "unknown",
+        "regulatory_effect_basis": {
+          "reason": "not_map_amendment"
+        },
+        "regulatory_effect_confidence": "unknown",
+        "route": "/#land/P2016M0148",
+        "status": "ZC - Review Filed Land Use Application",
+        "title": "520 W 41st Street (DIB)",
+        "type": "Filed"
+      }
+    },
+    "meetings": {
+      "20260723030": {
+        "agency": "Board of Standards and Appeals",
+        "basis": "Venue / logistics",
+        "basis_method": "parcel_membership",
+        "confidence": "strong",
+        "date": "2026-08-10T10:00:00.000",
+        "id": "20260723030",
+        "meeting_origin": "city_record_notice",
+        "place": {
+          "association_kind": null,
+          "basis": "Venue / logistics",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Matter place",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:borough:3",
+              "label": "Brooklyn",
+              "location_role": "matter",
+              "method": "matter_body_borough",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "matter_body_borough",
+                "source_method": "matter_body_borough"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Matter place",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "4",
+              "key": "geography:borough:4",
+              "label": "Queens",
+              "location_role": "matter",
+              "method": "matter_body_borough",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "matter_body_borough",
+                "source_method": "matter_body_borough"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Matter place",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "K15",
+              "key": "geography:community_district:K15",
+              "label": "Brooklyn Community District 15",
+              "location_role": "matter",
+              "method": "matter_body_borough",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "matter_body_borough",
+                "source_method": "matter_body_borough"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M01",
+              "key": "geography:community_district:M01",
+              "label": "Manhattan Community District 1",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Matter place",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "matter",
+              "method": "matter_body_borough",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "matter_body_borough",
+                "source_method": "matter_body_borough"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Matter place",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "Q14",
+              "key": "geography:community_district:Q14",
+              "label": "Queens Community District 14",
+              "location_role": "matter",
+              "method": "matter_body_borough",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "matter_body_borough",
+                "source_method": "matter_body_borough"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:council_district:1",
+              "label": "City Council District 1",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0102",
+              "key": "geography:nta2020:MN0102",
+              "label": "Tribeca-Civic Center",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "service_administrative",
+              "confidence": "strong",
+              "id": "5",
+              "key": "geography:police_precinct:5",
+              "label": "Police Precinct 5",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-police-precinct-boundaries",
+              "type": "police_precinct",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "venue",
+          "method": "parcel_membership",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "parcel_membership",
+            "source_method": "admitted_venue_membership"
+          }
+        },
+        "placement_methods": [
+          "matter_body_borough",
+          "community_board",
+          "admitted_venue_membership",
+          "parcel_membership",
+          "civic_address_pip"
+        ],
+        "route": "/#notice/20260723030",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723030",
+        "status": null,
+        "title": "Board of Standards and Appeals Public Hearing Notice",
+        "type": "Public Hearings",
+        "venue_address": "22 Reade Street, Spector Hall, New York, NY, 10007"
+      },
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-24/": {
+        "agency": null,
+        "basis": "Venue / logistics",
+        "basis_method": "parcel_membership",
+        "confidence": "strong",
+        "date": "2026-09-14T18:30:00-04:00",
+        "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-24/",
+        "meeting_origin": "community_board_source_observed",
+        "place": {
+          "association_kind": null,
+          "basis": "Venue / logistics",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0402",
+              "key": "geography:nta2020:MN0402",
+              "label": "Hell's Kitchen",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "service_administrative",
+              "confidence": "strong",
+              "id": "14",
+              "key": "geography:police_precinct:14",
+              "label": "Police Precinct 14",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-police-precinct-boundaries",
+              "type": "police_precinct",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "venue",
+          "method": "parcel_membership",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "community_board_ontology",
+            "source_method": "board_covers_district"
+          }
+        },
+        "placement_methods": [
+          "board_covers_district",
+          "community_board_ontology",
+          "admitted_venue_membership",
+          "parcel_membership"
+        ],
+        "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Farts-culture-education-schools-committee-aces-24%2F",
+        "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-24/",
+        "status": null,
+        "title": "Arts, Culture, Education & Schools Committee (ACES)",
+        "type": "Community board meeting",
+        "venue_address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "venue_name": "MCB4 Office \u2013 630 9th Avenue, Suite 208"
+      },
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/": {
+        "agency": null,
+        "basis": "Venue / logistics",
+        "basis_method": "parcel_membership",
+        "confidence": "strong",
+        "date": "2026-09-28T17:00:00-04:00",
+        "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/",
+        "meeting_origin": "community_board_source_observed",
+        "place": {
+          "association_kind": null,
+          "basis": "Venue / logistics",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0402",
+              "key": "geography:nta2020:MN0402",
+              "label": "Hell's Kitchen",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "service_administrative",
+              "confidence": "strong",
+              "id": "14",
+              "key": "geography:police_precinct:14",
+              "label": "Police Precinct 14",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-police-precinct-boundaries",
+              "type": "police_precinct",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "venue",
+          "method": "parcel_membership",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "community_board_ontology",
+            "source_method": "board_covers_district"
+          }
+        },
+        "placement_methods": [
+          "board_covers_district",
+          "community_board_ontology",
+          "admitted_venue_membership",
+          "parcel_membership"
+        ],
+        "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fbudget-task-force-15%2F",
+        "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/",
+        "status": null,
+        "title": "Budget Task Force",
+        "type": "Community board meeting",
+        "venue_address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "venue_name": "MCB4 Office \u2013 630 9th Avenue, Suite 208"
+      },
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-67/": {
+        "agency": null,
+        "basis": "Venue / logistics",
+        "basis_method": "parcel_membership",
+        "confidence": "strong",
+        "date": "2026-09-08T18:30:00-04:00",
+        "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-67/",
+        "meeting_origin": "community_board_source_observed",
+        "place": {
+          "association_kind": null,
+          "basis": "Venue / logistics",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0402",
+              "key": "geography:nta2020:MN0402",
+              "label": "Hell's Kitchen",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "service_administrative",
+              "confidence": "strong",
+              "id": "14",
+              "key": "geography:police_precinct:14",
+              "label": "Police Precinct 14",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-police-precinct-boundaries",
+              "type": "police_precinct",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "venue",
+          "method": "parcel_membership",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "community_board_ontology",
+            "source_method": "board_covers_district"
+          }
+        },
+        "placement_methods": [
+          "board_covers_district",
+          "community_board_ontology",
+          "admitted_venue_membership",
+          "parcel_membership"
+        ],
+        "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fbusiness-license-permits-committee-blp-67%2F",
+        "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-67/",
+        "status": null,
+        "title": "Business License & Permits Committee (BLP)",
+        "type": "Community board meeting",
+        "venue_address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "venue_name": "MCB4 Office \u2013 630 9th Avenue, Suite 208"
+      },
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-61/": {
+        "agency": null,
+        "basis": "Venue / logistics",
+        "basis_method": "parcel_membership",
+        "confidence": "strong",
+        "date": "2026-09-22T18:30:00-04:00",
+        "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-61/",
+        "meeting_origin": "community_board_source_observed",
+        "place": {
+          "association_kind": null,
+          "basis": "Venue / logistics",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0402",
+              "key": "geography:nta2020:MN0402",
+              "label": "Hell's Kitchen",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "service_administrative",
+              "confidence": "strong",
+              "id": "14",
+              "key": "geography:police_precinct:14",
+              "label": "Police Precinct 14",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-police-precinct-boundaries",
+              "type": "police_precinct",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "venue",
+          "method": "parcel_membership",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "community_board_ontology",
+            "source_method": "board_covers_district"
+          }
+        },
+        "placement_methods": [
+          "board_covers_district",
+          "community_board_ontology",
+          "admitted_venue_membership",
+          "parcel_membership"
+        ],
+        "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fchelsea-land-use-committee-clu-61%2F",
+        "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-61/",
+        "status": null,
+        "title": "Chelsea Land Use Committee (CLU)",
+        "type": "Community board meeting",
+        "venue_address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "venue_name": "MCB4 Office \u2013 630 9th Avenue, Suite 208"
+      },
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-58/": {
+        "agency": null,
+        "basis": "Venue / logistics",
+        "basis_method": "parcel_membership",
+        "confidence": "strong",
+        "date": "2026-09-09T18:30:00-04:00",
+        "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-58/",
+        "meeting_origin": "community_board_source_observed",
+        "place": {
+          "association_kind": null,
+          "basis": "Venue / logistics",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0402",
+              "key": "geography:nta2020:MN0402",
+              "label": "Hell's Kitchen",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "service_administrative",
+              "confidence": "strong",
+              "id": "14",
+              "key": "geography:police_precinct:14",
+              "label": "Police Precinct 14",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-police-precinct-boundaries",
+              "type": "police_precinct",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "venue",
+          "method": "parcel_membership",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "community_board_ontology",
+            "source_method": "board_covers_district"
+          }
+        },
+        "placement_methods": [
+          "board_covers_district",
+          "community_board_ontology",
+          "admitted_venue_membership",
+          "parcel_membership"
+        ],
+        "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fclinton-hells-kitchen-land-use-committee-chklu-58%2F",
+        "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-58/",
+        "status": null,
+        "title": "Clinton/Hell\u2019s Kitchen Land Use Committee (CHKLU)",
+        "type": "Community board meeting",
+        "venue_address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "venue_name": "MCB4 Office \u2013 630 9th Avenue, Suite 208"
+      },
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-3/": {
+        "agency": null,
+        "basis": "Venue / logistics",
+        "basis_method": "parcel_membership",
+        "confidence": "strong",
+        "date": "2026-09-17T18:30:00-04:00",
+        "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-3/",
+        "meeting_origin": "community_board_source_observed",
+        "place": {
+          "association_kind": null,
+          "basis": "Venue / logistics",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0402",
+              "key": "geography:nta2020:MN0402",
+              "label": "Hell's Kitchen",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "service_administrative",
+              "confidence": "strong",
+              "id": "14",
+              "key": "geography:police_precinct:14",
+              "label": "Police Precinct 14",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-police-precinct-boundaries",
+              "type": "police_precinct",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "venue",
+          "method": "parcel_membership",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "community_board_ontology",
+            "source_method": "board_covers_district"
+          }
+        },
+        "placement_methods": [
+          "board_covers_district",
+          "community_board_ontology",
+          "admitted_venue_membership",
+          "parcel_membership"
+        ],
+        "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Feconomic-development-public-safety-committee-edps-3%2F",
+        "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-3/",
+        "status": null,
+        "title": "Economic Development & Public Safety Committee (EDPS)",
+        "type": "Community board meeting",
+        "venue_address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "venue_name": "MCB4 Office \u2013 630 9th Avenue, Suite 208"
+      },
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/": {
+        "agency": null,
+        "basis": "Venue / logistics",
+        "basis_method": "parcel_membership",
+        "confidence": "strong",
+        "date": "2026-09-28T18:30:00-04:00",
+        "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+        "meeting_origin": "community_board_source_observed",
+        "place": {
+          "association_kind": null,
+          "basis": "Venue / logistics",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0402",
+              "key": "geography:nta2020:MN0402",
+              "label": "Hell's Kitchen",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "service_administrative",
+              "confidence": "strong",
+              "id": "14",
+              "key": "geography:police_precinct:14",
+              "label": "Police Precinct 14",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-police-precinct-boundaries",
+              "type": "police_precinct",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "venue",
+          "method": "parcel_membership",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "community_board_ontology",
+            "source_method": "board_covers_district"
+          }
+        },
+        "placement_methods": [
+          "board_covers_district",
+          "community_board_ontology",
+          "admitted_venue_membership",
+          "parcel_membership"
+        ],
+        "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fexecutive-committee-exec-59%2F",
+        "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+        "status": null,
+        "title": "Executive Committee (EXEC)",
+        "type": "Community board meeting",
+        "venue_address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "venue_name": "MCB4 Office \u2013 630 9th Avenue, Suite 208"
+      },
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/": {
+        "agency": null,
+        "basis": "Venue / logistics",
+        "basis_method": "parcel_membership",
+        "confidence": "strong",
+        "date": "2026-09-02T18:30:00-04:00",
+        "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/",
+        "meeting_origin": "community_board_source_observed",
+        "place": {
+          "association_kind": null,
+          "basis": "Venue / logistics",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0402",
+              "key": "geography:nta2020:MN0402",
+              "label": "Hell's Kitchen",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "service_administrative",
+              "confidence": "strong",
+              "id": "14",
+              "key": "geography:police_precinct:14",
+              "label": "Police Precinct 14",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-police-precinct-boundaries",
+              "type": "police_precinct",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "venue",
+          "method": "parcel_membership",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "community_board_ontology",
+            "source_method": "board_covers_district"
+          }
+        },
+        "placement_methods": [
+          "board_covers_district",
+          "community_board_ontology",
+          "admitted_venue_membership",
+          "parcel_membership"
+        ],
+        "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Ffull-board-66%2F",
+        "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/",
+        "status": null,
+        "title": "Full Board",
+        "type": "Community board meeting",
+        "venue_address": "305 West 44th Street, New York, NY, 10036",
+        "venue_name": "Hotel Trades Council"
+      },
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-52/": {
+        "agency": null,
+        "basis": "Venue / logistics",
+        "basis_method": "parcel_membership",
+        "confidence": "strong",
+        "date": "2026-09-23T18:30:00-04:00",
+        "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-52/",
+        "meeting_origin": "community_board_source_observed",
+        "place": {
+          "association_kind": null,
+          "basis": "Venue / logistics",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0402",
+              "key": "geography:nta2020:MN0402",
+              "label": "Hell's Kitchen",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "service_administrative",
+              "confidence": "strong",
+              "id": "14",
+              "key": "geography:police_precinct:14",
+              "label": "Police Precinct 14",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-police-precinct-boundaries",
+              "type": "police_precinct",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "venue",
+          "method": "parcel_membership",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "community_board_ontology",
+            "source_method": "board_covers_district"
+          }
+        },
+        "placement_methods": [
+          "board_covers_district",
+          "community_board_ontology",
+          "admitted_venue_membership",
+          "parcel_membership"
+        ],
+        "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fhousing-health-human-services-committee-hhhs-52%2F",
+        "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-52/",
+        "status": null,
+        "title": "Housing, Health & Human Services Committee (HHHS)",
+        "type": "Community board meeting",
+        "venue_address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "venue_name": "MCB4 Office \u2013 630 9th Avenue, Suite 208"
+      },
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/": {
+        "agency": null,
+        "basis": "Venue / logistics",
+        "basis_method": "parcel_membership",
+        "confidence": "strong",
+        "date": "2026-10-01T18:30:00-04:00",
+        "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+        "meeting_origin": "community_board_source_observed",
+        "place": {
+          "association_kind": null,
+          "basis": "Venue / logistics",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0402",
+              "key": "geography:nta2020:MN0402",
+              "label": "Hell's Kitchen",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "service_administrative",
+              "confidence": "strong",
+              "id": "14",
+              "key": "geography:police_precinct:14",
+              "label": "Police Precinct 14",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-police-precinct-boundaries",
+              "type": "police_precinct",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "venue",
+          "method": "parcel_membership",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "community_board_ontology",
+            "source_method": "board_covers_district"
+          }
+        },
+        "placement_methods": [
+          "board_covers_district",
+          "community_board_ontology",
+          "admitted_venue_membership",
+          "parcel_membership"
+        ],
+        "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fhousing-health-human-services-committee-hhhs-53%2F",
+        "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+        "status": null,
+        "title": "Housing, Health & Human Services Committee (HHHS)",
+        "type": "Community board meeting",
+        "venue_address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "venue_name": "MCB4 Office \u2013 630 9th Avenue, Suite 208"
+      },
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/office-closed-labor-day-7/": {
+        "agency": null,
+        "basis": "Community board district",
+        "basis_method": "community_board_ontology",
+        "confidence": "strong",
+        "date": "2026-09-07T00:00:00-04:00",
+        "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/office-closed-labor-day-7/",
+        "meeting_origin": "community_board_source_observed",
+        "place": {
+          "association_kind": null,
+          "basis": "Community board district",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "subject_affected_area",
+          "method": "community_board_ontology",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "community_board_ontology",
+            "source_method": "board_covers_district"
+          }
+        },
+        "placement_methods": [
+          "board_covers_district",
+          "community_board_ontology"
+        ],
+        "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Foffice-closed-labor-day-7%2F",
+        "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/office-closed-labor-day-7/",
+        "status": null,
+        "title": "OFFICE CLOSED \u2013 Labor Day",
+        "type": "Community board meeting"
+      },
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-25/": {
+        "agency": null,
+        "basis": "Venue / logistics",
+        "basis_method": "parcel_membership",
+        "confidence": "strong",
+        "date": "2026-09-16T18:30:00-04:00",
+        "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-25/",
+        "meeting_origin": "community_board_source_observed",
+        "place": {
+          "association_kind": null,
+          "basis": "Venue / logistics",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0402",
+              "key": "geography:nta2020:MN0402",
+              "label": "Hell's Kitchen",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "service_administrative",
+              "confidence": "strong",
+              "id": "14",
+              "key": "geography:police_precinct:14",
+              "label": "Police Precinct 14",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-police-precinct-boundaries",
+              "type": "police_precinct",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "venue",
+          "method": "parcel_membership",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "community_board_ontology",
+            "source_method": "board_covers_district"
+          }
+        },
+        "placement_methods": [
+          "board_covers_district",
+          "community_board_ontology",
+          "admitted_venue_membership",
+          "parcel_membership"
+        ],
+        "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Ftransportation-planning-committee-tpc-25%2F",
+        "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-25/",
+        "status": null,
+        "title": "Transportation Planning Committee (TPC)",
+        "type": "Community board meeting",
+        "venue_address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "venue_name": "MCB4 Office \u2013 630 9th Avenue, Suite 208"
+      },
+      "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/waterfront-parks-environment-committee-wpe-59/": {
+        "agency": null,
+        "basis": "Venue / logistics",
+        "basis_method": "parcel_membership",
+        "confidence": "strong",
+        "date": "2026-09-10T18:30:00-04:00",
+        "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/waterfront-parks-environment-committee-wpe-59/",
+        "meeting_origin": "community_board_source_observed",
+        "place": {
+          "association_kind": null,
+          "basis": "Venue / logistics",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Community board district",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "subject_affected_area",
+              "method": "community_board_ontology",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "community_board_ontology",
+                "source_method": "board_covers_district"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0402",
+              "key": "geography:nta2020:MN0402",
+              "label": "Hell's Kitchen",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            },
+            {
+              "basis": "Venue / logistics",
+              "boundary_vintage": "26B",
+              "class": "service_administrative",
+              "confidence": "strong",
+              "id": "14",
+              "key": "geography:police_precinct:14",
+              "label": "Police Precinct 14",
+              "location_role": "venue",
+              "method": "parcel_membership",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "parcel_membership",
+                "source_method": "admitted_venue_membership"
+              },
+              "relation": "located_in",
+              "source_id": "dcp-police-precinct-boundaries",
+              "type": "police_precinct",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "venue",
+          "method": "parcel_membership",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "community_board_ontology",
+            "source_method": "board_covers_district"
+          }
+        },
+        "placement_methods": [
+          "board_covers_district",
+          "community_board_ontology",
+          "admitted_venue_membership",
+          "parcel_membership"
+        ],
+        "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fwaterfront-parks-environment-committee-wpe-59%2F",
+        "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/waterfront-parks-environment-committee-wpe-59/",
+        "status": null,
+        "title": "Waterfront, Parks & Environment Committee (WPE)",
+        "type": "Community board meeting",
+        "venue_address": "630 9th Avenue, Ste. 208, New York, 10036",
+        "venue_name": "MCB4 Office \u2013 630 9th Avenue, Suite 208"
+      }
+    },
+    "money": {
+      "20260629032": {
+        "agency": "Housing Authority",
+        "basis": "Affected area",
+        "basis_method": "matter_body_borough",
+        "confidence": "strong",
+        "date": "2026-07-08T00:00:00.000",
+        "id": "20260629032",
+        "place": {
+          "association_kind": null,
+          "basis": "Affected area",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "place_of_performance",
+              "method": "matter_body_borough",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "matter_body_borough",
+                "source_method": "matter_body_borough"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "place_of_performance",
+              "method": "matter_body_borough",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "matter_body_borough",
+                "source_method": "matter_body_borough"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M05",
+              "key": "geography:community_district:M05",
+              "label": "Manhattan Community District 5",
+              "location_role": "place_of_performance",
+              "method": "matter_body_borough",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "matter_body_borough",
+                "source_method": "matter_body_borough"
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "place_of_performance",
+          "method": "matter_body_borough",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "matter_body_borough",
+            "source_method": "matter_body_borough"
+          }
+        },
+        "route": "/#notice/20260629032",
+        "status": null,
+        "title": "Solicitation 20260629032",
+        "type": "Solicitation"
+      }
+    },
+    "property": {
+      "20141022109": {
+        "agency": "Housing Preservation and Development",
+        "basis": "Affected area",
+        "basis_method": "coordinates_pip",
+        "confidence": "strong",
+        "date": "2014-11-24T01:00:00.000",
+        "id": "20141022109",
+        "place": {
+          "association_kind": null,
+          "basis": "Affected area",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "property_affected",
+              "method": "coordinates_pip",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "coordinates_pip",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "property_affected",
+              "method": "coordinates_pip",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "coordinates_pip",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "property_affected",
+              "method": "coordinates_pip",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "coordinates_pip",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0402",
+              "key": "geography:nta2020:MN0402",
+              "label": "Hell's Kitchen",
+              "location_role": "property_affected",
+              "method": "coordinates_pip",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "coordinates_pip",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "26B",
+              "class": "service_administrative",
+              "confidence": "strong",
+              "id": "18",
+              "key": "geography:police_precinct:18",
+              "label": "Police Precinct 18",
+              "location_role": "property_affected",
+              "method": "coordinates_pip",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "coordinates_pip",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "dcp-police-precinct-boundaries",
+              "type": "police_precinct",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "property_affected",
+          "method": "coordinates_pip",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "coordinates_pip",
+            "source_method": null
+          }
+        },
+        "route": "/#notice/20141022109",
+        "status": "hearing",
+        "title": "Property Dispositions",
+        "type": "Public Hearings"
+      },
+      "20150320104": {
+        "agency": "Housing Preservation and Development",
+        "basis": "Affected area",
+        "basis_method": "coordinates_pip",
+        "confidence": "strong",
+        "date": "2015-04-29T01:00:00.000",
+        "id": "20150320104",
+        "place": {
+          "association_kind": null,
+          "basis": "Affected area",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "property_affected",
+              "method": "coordinates_pip",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "coordinates_pip",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "property_affected",
+              "method": "coordinates_pip",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "coordinates_pip",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "property_affected",
+              "method": "coordinates_pip",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "coordinates_pip",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0402",
+              "key": "geography:nta2020:MN0402",
+              "label": "Hell's Kitchen",
+              "location_role": "property_affected",
+              "method": "coordinates_pip",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "coordinates_pip",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "26B",
+              "class": "service_administrative",
+              "confidence": "strong",
+              "id": "18",
+              "key": "geography:police_precinct:18",
+              "label": "Police Precinct 18",
+              "location_role": "property_affected",
+              "method": "coordinates_pip",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "coordinates_pip",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "dcp-police-precinct-boundaries",
+              "type": "police_precinct",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "property_affected",
+          "method": "coordinates_pip",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "coordinates_pip",
+            "source_method": null
+          }
+        },
+        "route": "/#notice/20150320104",
+        "status": "hearing",
+        "title": "Clinton Site 7 - West 153 Street",
+        "type": "Public Hearings"
+      },
+      "20150326109": {
+        "agency": "Housing Preservation and Development",
+        "basis": "Affected area",
+        "basis_method": "coordinates_pip",
+        "confidence": "strong",
+        "date": "2015-04-29T01:00:00.000",
+        "id": "20150326109",
+        "place": {
+          "association_kind": null,
+          "basis": "Affected area",
+          "confidence": "strong",
+          "geographies": [
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "administrative",
+              "confidence": "strong",
+              "id": "1",
+              "key": "geography:borough:1",
+              "label": "Manhattan",
+              "location_role": "property_affected",
+              "method": "coordinates_pip",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "coordinates_pip",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "borough",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "community_administrative",
+              "confidence": "strong",
+              "id": "M04",
+              "key": "geography:community_district:M04",
+              "label": "Manhattan Community District 4",
+              "location_role": "property_affected",
+              "method": "coordinates_pip",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "coordinates_pip",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "community-district-boundaries",
+              "type": "community_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "2026-05-26",
+              "class": "political",
+              "confidence": "strong",
+              "id": "3",
+              "key": "geography:council_district:3",
+              "label": "City Council District 3",
+              "location_role": "property_affected",
+              "method": "coordinates_pip",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "coordinates_pip",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "city-council-district-boundaries",
+              "type": "council_district",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "26B",
+              "class": "statistical",
+              "confidence": "strong",
+              "id": "MN0402",
+              "key": "geography:nta2020:MN0402",
+              "label": "Hell's Kitchen",
+              "location_role": "property_affected",
+              "method": "coordinates_pip",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "coordinates_pip",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "dcp-nta2020-boundaries",
+              "type": "nta2020",
+              "visibility": "public"
+            },
+            {
+              "basis": "Affected area",
+              "boundary_vintage": "26B",
+              "class": "service_administrative",
+              "confidence": "strong",
+              "id": "18",
+              "key": "geography:police_precinct:18",
+              "label": "Police Precinct 18",
+              "location_role": "property_affected",
+              "method": "coordinates_pip",
+              "provenance": {
+                "confidence_tier": "strong",
+                "placement_method": "coordinates_pip",
+                "source_method": null
+              },
+              "relation": "located_in",
+              "source_id": "dcp-police-precinct-boundaries",
+              "type": "police_precinct",
+              "visibility": "public"
+            }
+          ],
+          "location_role": "property_affected",
+          "method": "coordinates_pip",
+          "provenance": {
+            "confidence_tier": "strong",
+            "placement_method": "coordinates_pip",
+            "source_method": null
+          }
+        },
+        "route": "/#notice/20150326109",
+        "status": "hearing",
+        "title": "Clinton Site 7",
+        "type": "Public Hearings"
+      }
+    }
+  },
+  "schema": "cityscroll.district_activity.v1"
+}
