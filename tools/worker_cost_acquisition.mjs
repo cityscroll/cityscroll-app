@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { readFileSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -18,14 +19,42 @@ import {
 import {
   WAREHOUSE_EXPERIMENT_COHORTS,
   WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+  baseCohortFromFlagRaw,
+  coldStartFlagRawCohort,
   sanitizeNativeInvocation,
 } from "./lib/worker_cost_control.mjs";
+import {
+  DEFAULT_WORKER_ID,
+  PROVIDER_OBSERVABILITY_CONCURRENCY,
+  armRestorer,
+  assertPrivacyArmedFromRawGet,
+  assertWindowMutable,
+  createBetaWorkerObservabilityTransport,
+  createFileWindowStore,
+  measurementWindowObservability,
+  mutateOwnedWindowObservability,
+  normalizeObservability,
+  observabilitySha256,
+  openSettingsWindow,
+  privacyArmedObservability,
+  runIndependentRestorer,
+  settingsCommandSucceeded,
+} from "./lib/worker_observability_settings.mjs";
+import {
+  DEFAULT_RESTORER_STATE_ROOT,
+  assertRestorerReady,
+  bindWindowToRestorer,
+  restorerPaths,
+  startSupervisedRestorerProcess,
+  waitForRestorerReady,
+} from "./lib/worker_observability_restorer.mjs";
+import { existsSync as fsExistsSync } from "node:fs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const WORKER_DIRECTORY = join(ROOT, "worker");
 const QUERY_PAGE_LIMIT = 2_000;
 const LIVE_TAIL_HEARTBEAT_MS = 15_000;
-const WAREHOUSE_BASE_COHORTS = Object.freeze([...new Set(WAREHOUSE_EXPERIMENT_COHORTS.map((cohort) => cohort.replace(/:(?:cold|warm)$/, "")))]);
+const WAREHOUSE_BASE_COHORTS = Object.freeze([...new Set(WAREHOUSE_EXPERIMENT_COHORTS.map((cohort) => baseCohortFromFlagRaw(cohort)))]);
 const WAREHOUSE_COLLECTOR_SAMPLES = WAREHOUSE_EXPERIMENT_COHORTS.length * WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT;
 const WAREHOUSE_MAX_ATTEMPTS_PER_INPUT = Math.floor((MAX_COLLECTOR_EVENTS - WAREHOUSE_COLLECTOR_SAMPLES) / WAREHOUSE_BASE_COHORTS.length);
 const WAREHOUSE_PROBE_CONCURRENCY = 32;
@@ -256,12 +285,12 @@ async function mapConcurrent(items, concurrency, signal, operation) {
 function warehouseWorkloadPairs(byCohort) {
   const pairs = new Map();
   for (const base of WAREHOUSE_BASE_COHORTS) {
-    const cold = byCohort.get(`${base}:cold`);
-    const warm = byCohort.get(`${base}:warm`);
-    if (!cold || !warm || cold.workload_hash !== warm.workload_hash) {
-      throw new Error(`${base} cold and warm workloads must be an exact matched input`);
+    const flagRaw1 = byCohort.get(coldStartFlagRawCohort(base, 1));
+    const flagRaw0 = byCohort.get(coldStartFlagRawCohort(base, 0));
+    if (!flagRaw1 || !flagRaw0 || flagRaw1.workload_hash !== flagRaw0.workload_hash) {
+      throw new Error(`${base} cold_start_flag_raw=0 and =1 workloads must be an exact matched input`);
     }
-    pairs.set(base, cold);
+    pairs.set(base, flagRaw1);
   }
   return pairs;
 }
@@ -341,7 +370,7 @@ export function createLiveWorkerCostTransport({
   }
   const executeWorkload = async (workload, series, deployment, header = workload.header, signal) => {
     if (signal?.aborted) throw new Error("cost workload collection was cancelled");
-    const probeCohort = workload.probe_cohort || workload.cohort.replace(/:(?:cold|warm)$/, "");
+    const probeCohort = workload.probe_cohort || baseCohortFromFlagRaw(workload.cohort);
     const providerVersionId = deployment?.receipt?.cloudflare_version?.id;
     if (!providerVersionId) throw new Error("exact provider version is unavailable");
     const outerUrl = `${apiOrigin}/admin/cost-control-probe`;
@@ -531,18 +560,18 @@ export function createLiveWorkerCostTransport({
           cohort,
           selectConditionedEvents(
             eventIndex,
-            expectations.filter((expectation) => expectation.probeCohort === cohort.replace(/:(?:cold|warm)$/, "")),
+            expectations.filter((expectation) => expectation.probeCohort === baseCohortFromFlagRaw(cohort)),
             cohort,
             samplesPerCohort,
           ),
         ]));
         for (const base of WAREHOUSE_BASE_COHORTS) {
           const fingerprints = new Set([
-            ...conditioned[`${base}:cold`],
-            ...conditioned[`${base}:warm`],
+            ...conditioned[coldStartFlagRawCohort(base, 1)],
+            ...conditioned[coldStartFlagRawCohort(base, 0)],
           ].map(({ expectation }) => correctnessFingerprint(expectation)));
           if (fingerprints.size !== 1 || [...fingerprints][0].startsWith(":")) {
-            throw new Error(`${base} cold and warm responses are not matched`);
+            throw new Error(`${base} cold_start_flag_raw=0 and =1 responses are not matched`);
           }
         }
         const collectors = collectorExpectations.map((expectation) => ({
@@ -581,8 +610,232 @@ export function createLiveWorkerCostTransport({
   };
 }
 
+function windowStoreFromPath(path) {
+  if (!path) throw new Error("--window-state is required");
+  return createFileWindowStore(path);
+}
+
+async function writeWindowState(path, window) {
+  await windowStoreFromPath(path).write(window);
+}
+
+async function readWindowState(path) {
+  const window = await windowStoreFromPath(path).read();
+  if (!window) throw new Error(`--window-state is missing: ${path}`);
+  return window;
+}
+
+function settingsTransportFromEnv(env) {
+  const accountId = env.CLOUDFLARE_ACCOUNT_ID;
+  if (!accountId) throw new Error("CLOUDFLARE_ACCOUNT_ID is required");
+  const token = secret(env, "CLOUDFLARE_API_TOKEN");
+  return createBetaWorkerObservabilityTransport({
+    accountId,
+    workerId: env.CLOUDFLARE_WORKER_ID || DEFAULT_WORKER_ID,
+    token,
+  });
+}
+
+export async function runObservabilitySettingsCommand(argv, { env = process.env, transport } = {}) {
+  const command = argv[0];
+  const settings = transport || settingsTransportFromEnv(env);
+  const windowPath = arg(argv, "--window-state");
+  const accountId = env.CLOUDFLARE_ACCOUNT_ID || "";
+  const accountIdSha256 = createHash("sha256").update(accountId).digest("hex");
+
+  if (command === "observability-get") {
+    const observability = normalizeObservability(await settings.getObservability());
+    return {
+      schema: "cityscroll.worker_observability_effective.v1",
+      status: "ok",
+      observability,
+      observability_sha256: observabilitySha256(observability),
+    };
+  }
+
+  if (command === "observability-window-open") {
+    const baseline = normalizeObservability(await settings.getObservability());
+    const durationSeconds = Number(arg(argv, "--duration-seconds") || MAX_COLLECTOR_SECONDS);
+    const stateRoot = env.CITYSCROLL_OBSERVABILITY_RESTORER_STATE || DEFAULT_RESTORER_STATE_ROOT;
+    let window = openSettingsWindow({
+      baseline,
+      workerId: env.CLOUDFLARE_WORKER_ID || DEFAULT_WORKER_ID,
+      accountIdSha256,
+      durationSeconds,
+    });
+    window = armRestorer(window);
+    await writeWindowState(windowPath, window);
+
+    // Ensure durable runner copies exist (install script is authoritative).
+    const paths = restorerPaths(stateRoot);
+    if (!fsExistsSync(paths.durableRunner)) {
+      throw new Error(`durable restorer runner missing at ${paths.durableRunner}; run tools/install_observability_settings_restorer.sh`);
+    }
+    const started = startSupervisedRestorerProcess({
+      windowPath,
+      windowId: window.window_id,
+      stateRoot,
+      env,
+    });
+    window = bindWindowToRestorer(window, {
+      pid: started.pid,
+      stateRoot,
+      restorerId: window.restorer.restorer_id,
+    });
+    await writeWindowState(windowPath, window);
+    await waitForRestorerReady({ window, stateRoot });
+    window = await readWindowState(windowPath);
+    return {
+      schema: "cityscroll.worker_observability_settings_window.v1",
+      status: "captured",
+      window_id: window.window_id,
+      baseline_sha256: window.baseline_sha256,
+      expires_at: window.expires_at,
+      restorer_armed: window.restorer?.armed === true,
+      restorer_pid: window.restorer?.runtime?.pid || started.pid,
+      restorer_state_root: stateRoot,
+      concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
+      window_state: windowPath,
+    };
+  }
+
+  if (command === "observability-privacy-arm") {
+    const store = windowStoreFromPath(windowPath);
+    let window = await store.read();
+    if (!window) throw new Error(`--window-state is missing: ${windowPath}`);
+    assertWindowMutable(window);
+    if (!window.restorer?.armed) {
+      window = armRestorer(window);
+      await store.write(window);
+    }
+    const stateRoot = window.restorer?.runtime?.state_root || env.CITYSCROLL_OBSERVABILITY_RESTORER_STATE || DEFAULT_RESTORER_STATE_ROOT;
+    assertRestorerReady(window, { stateRoot });
+    const armed = privacyArmedObservability(window.baseline_observability);
+    const result = await mutateOwnedWindowObservability({
+      transport: settings,
+      store,
+      expectedSha256: window.owned_sha256 || window.baseline_sha256,
+      nextObservability: armed,
+      phase: "privacy_armed",
+      assertRestorerReady: (current) => assertRestorerReady(current, { stateRoot }),
+    });
+    if (!result.ok) {
+      return {
+        schema: "cityscroll.worker_observability_settings_receipt.v1",
+        status: "blocked",
+        reason: result.reason,
+        before_sha256: result.before_sha256,
+        expected_sha256: result.expected_sha256 || result.expected_after_sha256 || null,
+        after_sha256: result.after_sha256 || null,
+        expected_after_sha256: result.expected_after_sha256 || null,
+        patch_error: result.patch_error || null,
+        after_redacted: result.after_redacted || null,
+        expected_after_redacted: result.expected_after_redacted || null,
+        provider_exchanges: result.provider_exchanges || null,
+        concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
+      };
+    }
+    const proved = assertPrivacyArmedFromRawGet(await settings.getObservability());
+    return {
+      schema: "cityscroll.worker_observability_settings_receipt.v1",
+      status: "privacy-armed",
+      window_id: result.window.window_id,
+      after_sha256: result.after_sha256,
+      proved_sha256: observabilitySha256(proved),
+      observability: proved,
+      provider_exchanges: result.provider_exchanges || {
+        patch: settings.last_exchange || null,
+      },
+      concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
+    };
+  }
+
+  if (command === "observability-enable") {
+    const store = windowStoreFromPath(windowPath);
+    const window = await store.read();
+    if (!window) throw new Error(`--window-state is missing: ${windowPath}`);
+    assertWindowMutable(window);
+    if (window.phase !== "privacy_armed") {
+      throw new Error("privacy arming must be proved before enabling a measurement window");
+    }
+    if (!window.restorer?.armed) {
+      throw new Error("independent restorer must be armed before enabling a measurement window");
+    }
+    const stateRoot = window.restorer?.runtime?.state_root || env.CITYSCROLL_OBSERVABILITY_RESTORER_STATE || DEFAULT_RESTORER_STATE_ROOT;
+    assertRestorerReady(window, { stateRoot });
+    const provedBeforeEnable = assertPrivacyArmedFromRawGet(await settings.getObservability());
+    if (observabilitySha256(provedBeforeEnable) !== window.owned_sha256) {
+      return {
+        schema: "cityscroll.worker_observability_settings_receipt.v1",
+        status: "blocked",
+        reason: "privacy-settings-changed-before-enable",
+        expected_sha256: window.owned_sha256,
+        current_sha256: observabilitySha256(provedBeforeEnable),
+        concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
+      };
+    }
+    const enabled = measurementWindowObservability(provedBeforeEnable);
+    const result = await mutateOwnedWindowObservability({
+      transport: settings,
+      store,
+      expectedSha256: window.owned_sha256,
+      nextObservability: enabled,
+      phase: "enabled",
+      assertRestorerReady: (current) => assertRestorerReady(current, { stateRoot }),
+    });
+    if (!result.ok) {
+      return {
+        schema: "cityscroll.worker_observability_settings_receipt.v1",
+        status: "blocked",
+        reason: result.reason,
+        before_sha256: result.before_sha256,
+        expected_sha256: result.expected_sha256 || result.expected_after_sha256 || null,
+        after_sha256: result.after_sha256 || null,
+        expected_after_sha256: result.expected_after_sha256 || null,
+        patch_error: result.patch_error || null,
+        after_redacted: result.after_redacted || null,
+        expected_after_redacted: result.expected_after_redacted || null,
+        provider_exchanges: result.provider_exchanges || null,
+        concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
+      };
+    }
+    return {
+      schema: "cityscroll.worker_observability_settings_receipt.v1",
+      status: "enabled",
+      window_id: result.window.window_id,
+      after_sha256: result.after_sha256,
+      observability: result.after,
+      provider_exchanges: result.provider_exchanges || null,
+      concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
+    };
+  }
+
+  if (command === "observability-restore") {
+    const store = windowStoreFromPath(windowPath);
+    let window = await store.read();
+    if (!window) throw new Error(`--window-state is missing: ${windowPath}`);
+    if (!window.restorer?.armed) {
+      window = armRestorer(window);
+      await store.write(window);
+    }
+    const restored = await runIndependentRestorer({ store, transport: settings });
+    return {
+      schema: "cityscroll.worker_observability_settings_receipt.v1",
+      status: restored.proved ? restored.action : "blocked",
+      ...restored.receipt,
+      proved: restored.proved,
+      observability: restored.after,
+      concurrency_control: PROVIDER_OBSERVABILITY_CONCURRENCY,
+    };
+  }
+
+  return null;
+}
+
 export async function runWorkerCostAcquisition(argv, { env = process.env, transport } = {}) {
   const command = argv[0];
+  const settingsResult = await runObservabilitySettingsCommand(argv, { env, transport: transport?.observability });
+  if (settingsResult) return settingsResult;
   const live = transport || createLiveWorkerCostTransport({ env });
   if (command === "profile") {
     const configuredWindows = env.WORKER_COST_COLLECTION_WINDOWS;
@@ -601,14 +854,16 @@ export async function runWorkerCostAcquisition(argv, { env = process.env, transp
       transport: live,
     });
   }
-  throw new Error("usage: worker_cost_acquisition.mjs <profile|warehouse> [options]");
+  throw new Error("usage: worker_cost_acquisition.mjs <profile|warehouse|observability-get|observability-window-open|observability-privacy-arm|observability-enable|observability-restore> [options]");
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   try {
     const result = await runWorkerCostAcquisition(process.argv.slice(2));
     console.log(JSON.stringify(result, null, 2));
-    if (result.status !== "complete") process.exitCode = 2;
+    // Settings statuses (captured/privacy-armed/enabled/restored/ok) exit 0.
+    // Profile/warehouse keep requiring status=complete. Blocked/unknown => nonzero.
+    if (!settingsCommandSucceeded(result)) process.exitCode = 2;
   } catch (error) {
     console.log(JSON.stringify({
       schema: "cityscroll.worker_cost_acquisition.v1",

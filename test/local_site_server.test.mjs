@@ -94,10 +94,65 @@ test("full preflight and CI use the route-aware server without touching existing
   assert.match(readiness, /curl --silent --show-error[^\n]*--connect-timeout 1[^\n]*"\$readiness_url"/);
   assert.match(readiness, /HTTP 404/);
   assert.match(readiness, /outer_timeout <= inner_timeout/);
-  assert.match(readiness, /SECONDS \+ outer_timeout/);
+  // Sub-second monotonic deadline — not Bash SECONDS whole-second quantization.
+  assert.match(readiness, /a11y_monotonic_now/);
+  assert.match(readiness, /a11y_before_deadline/);
+  assert.match(readiness, /time\.monotonic\(\)/);
+  assert.match(readiness, /while a11y_before_deadline "\$started" "\$outer_timeout"/);
+  assert.doesNotMatch(readiness, /while \(\( SECONDS </);
   assert.match(shardRunner, /server_log=/);
   assert.doesNotMatch(shardRunner, /tools\/local_site_server\.py[\s\S]*?--port 8000/);
   assert.doesNotMatch(`${shardRunner}\n${readiness}`, /python3 -m http\.server 8000 --directory _site/);
+});
+
+test("a11y readiness deadline helpers use a controlled monotonic clock", () => {
+  // Controlled-clock check only. Live old-SECONDS early-expiry reproduction is
+  // scheduler-dependent and lives as private evidence, not CI.
+  const after = execFileSync("bash", ["-c", [
+    "set -euo pipefail",
+    "source tools/a11y_server_readiness.sh",
+    'started="$(a11y_monotonic_now)"',
+    'if ! a11y_before_deadline "$started" 2; then echo "fresh_window_closed"; exit 3; fi',
+    // Inject a started timestamp already past the outer window.
+    'past="$(python3 -c "import time; print(time.monotonic()-3)")"',
+    'if a11y_before_deadline "$past" 2; then echo "stale_window_open"; exit 4; fi',
+    'echo "helpers_ok"',
+  ].join("\n")], { cwd: ROOT, encoding: "utf8", timeout: 10000 });
+  assert.match(after, /helpers_ok/);
+});
+
+test("outer readiness wait keeps a full sub-second deadline when ready never publishes", async (t) => {
+  const temp = mkdtempSync(join(tmpdir(), "crol-a11y-readiness-full-"));
+  const ready = join(temp, "ready");
+  const probeError = join(temp, "probe-error.log");
+  const serverLog = join(temp, "server.log");
+  writeFileSync(serverLog, "", "utf8");
+  t.after(() => rmSync(temp, { recursive: true, force: true }));
+
+  const script = [
+    "set -euo pipefail",
+    "source tools/a11y_server_readiness.sh",
+    'outer="$(a11y_readiness_outer_timeout 1 1)"',
+    '[[ "$outer" == "2" ]]',
+    // Never publish ready; must wait the full outer window (not SECONDS ~1s).
+    'a11y_wait_for_local_site "$1" "$2" "$3" "$4" "$outer"',
+  ].join("\n");
+  const started = performance.now();
+  const child = spawn(
+    "bash",
+    ["-c", script, "readiness-full-deadline", ready, probeError, serverLog, String(process.pid)],
+    { cwd: ROOT, stdio: ["ignore", "pipe", "pipe"] },
+  );
+  const stderr = [];
+  child.stderr.on("data", (chunk) => stderr.push(chunk));
+  const exitCode = await new Promise((resolve) => child.once("close", resolve));
+  const elapsedMs = performance.now() - started;
+  assert.notEqual(exitCode, 0);
+  assert.match(Buffer.concat(stderr).toString(), /timed out after 2s waiting for the local site server/);
+  assert.ok(
+    elapsedMs >= 1900,
+    `full outer=2s wait must last >=1900ms; got ${elapsedMs}ms (SECONDS quantization regresses to ~1–1.5s)`,
+  );
 });
 
 test("outer readiness wait accepts publication near the scaled inner deadline", async (t) => {

@@ -555,3 +555,66 @@ test("public Land detail phase panel wires the role strip above the observed row
     assert.doesNotMatch(eventRowFn, new RegExp(marker), `landSpineEventRowHTML references ${marker}`);
   }
 });
+
+test("hearing notices and occurrence alone do not complete Borough President review", () => {
+  const milestone = (title, status) => ({ kind: "zap_milestone", title, status,
+    time: { value: "2026-10-06", certainty: status === "Not Started" ? "planned" : "actual" } });
+  for (const [kind, status] of [["city_record_hearing", "scheduled"],
+    ["city_record_notice_published", "published"], ["city_record_hearing", "held"],
+    ["city_record_hearing", "cancelled"], ["city_record_hearing", "postponed"]]) {
+    const pointer = deriveLandCurrentPhaseId({ byPhase: {
+      community_board: [milestone("Community Board Review", "In Progress")],
+      borough_president: [milestone("Borough President Review", "Not Started"),
+        { kind, title: "Borough President hearing", status, time: { value: "2026-12-14", certainty: "actual" } }],
+      cpc: [milestone("City Planning Commission Review", "Not Started")],
+    } });
+    assert.notEqual(pointer.phase_id, "cpc", `${kind}/${status} does not complete review`);
+  }
+});
+
+test("completed votes and submitted dispositions remain terminal stage evidence", () => {
+  const council = {
+    kind: "zap_milestone",
+    title: "City Council Review",
+    status: "Not Started",
+    time: { value: "2026-11-25", certainty: "planned" },
+  };
+  const terminalEvents = [{
+    kind: "zap_milestone",
+    title: "CPC Public Meeting - Vote",
+    status: "Completed",
+    time: { value: "2026-11-24", certainty: "actual" },
+  }, {
+    kind: "zap_disposition",
+    title: "City Planning Commission Disposition",
+    status: "Submitted",
+    time: { value: "2026-11-24", certainty: "actual" },
+  }];
+  for (const terminal of terminalEvents) {
+    const pointer = deriveLandCurrentPhaseId({
+      byPhase: { cpc: [terminal], city_council: [council] },
+      events: [terminal, council],
+    });
+    assert.equal(pointer.phase_id, "city_council", terminal.kind);
+  }
+});
+
+test("completed draft milestones do not advance into a planned phase", () => {
+  const draft = {
+    kind: "zap_milestone",
+    title: "Prepare Draft Land Use Application",
+    status: "Completed",
+    time: { value: "2026-10-06", certainty: "actual" },
+  };
+  const planned = {
+    kind: "zap_milestone",
+    title: "Community Board Review",
+    status: "Not Started",
+    time: { value: "2026-12-14", certainty: "planned" },
+  };
+  const pointer = deriveLandCurrentPhaseId({
+    byPhase: { pre_application: [draft], community_board: [planned] },
+    events: [draft, planned],
+  });
+  assert.notEqual(pointer.phase_id, "community_board");
+});

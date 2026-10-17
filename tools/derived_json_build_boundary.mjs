@@ -119,14 +119,14 @@ function runOrExit(sourceDir, tool, args = []) {
   if (status !== 0) process.exit(status);
 }
 
-/** True when the family's generator --check exits 0. Weak checks may exit 0 without proving inputs. */
+/** Probe only retained receipts; a cold check must not compute before the build. */
 export function familyCheckCurrent(sourceDir, generator) {
-  return run(sourceDir, generator, ["--check"], { stdio: ["ignore", "pipe", "pipe"] }) === 0;
+  return run(sourceDir, generator, ["--check", "--receipt-only"], { stdio: ["ignore", "pipe", "pipe"] }) === 0;
 }
 
 /**
- * Skip is opt-in. Only families whose --check proves current inputs and outputs
- * (today: shared procurement's receipt fast-check) may set skip_when_check_current.
+ * Skip is opt-in. Only families whose --check --receipt-only proves current inputs and outputs
+ * (today: shared procurement's bounded receipt probe) may set skip_when_check_current.
  * Receipt-schema / idle-ok generators must rebuild every boundary pass.
  */
 export function familyMaySkipWhenCheckCurrent(family) {
@@ -150,7 +150,7 @@ export function runGeneratedFamilies(sourceDir, families, { fileHashFn = fileHas
     const sourceHashes = Object.fromEntries(family.source_paths.map((path) => [path, fileHashFn(sourceDir, path)]));
     const action = decideFamilyRebuildAction(family, sourceDir);
     if (action === "skip") {
-      console.log(`skip ${family.id}: skip_when_check_current and generator --check already current`);
+      console.log(`skip ${family.id}: skip_when_check_current and receipt-only probe already current`);
       results.push({
         id: family.id,
         generator: family.generator,
@@ -206,8 +206,8 @@ function main() {
     console.log(`Derived JSON build boundary valid (snapshot ${sourceSnapshot.sha256})`);
     return;
   }
-  // Opt-in skip only for families whose --check proves current inputs+outputs
-  // (procurement receipt fast-check). Weak idle/schema checks always rebuild.
+  // Opt-in skip only for families whose --check --receipt-only proves current
+  // inputs and outputs. Weak idle/schema checks always rebuild.
   const families = runGeneratedFamilies(sourceDir, manifest.generated_families);
 
   const elapsedMs = performance.now() - startedAt;

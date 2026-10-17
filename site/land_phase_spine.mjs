@@ -191,8 +191,8 @@ export function mapMilestoneToPhase(title, hint = null) {
 
 function eventIsPlanned(event) {
   if (event?.time?.certainty === "planned") return true;
-  const status = String(event?.status || event?.detail || "").toLowerCase();
-  return status.includes("not started");
+  const status = [event?.status, event?.detail, event?.title, event?.outcome].filter(Boolean).join(" ").toLowerCase();
+  return /not started|scheduled|postponed|cancelled|canceled|draft/.test(status);
 }
 
 function eventIsInProgress(event) {
@@ -202,30 +202,33 @@ function eventIsInProgress(event) {
 
 function eventIsActualProgress(event) {
   if (event?._synthetic && event.kind === "open_data_status") return true;
-  if (eventIsPlanned(event)) return false;
+  if (eventIsPlanned(event) || event?.kind === "city_record_notice_published") return false;
   const status = String(event?.status || event?.detail || "").toLowerCase();
   if (status.includes("not started")) return false;
   return true;
 }
 
-/**
- * True when the event is a finished disposition/milestone from a source row
- * (not planned, not in-progress, not a synthetic open-data status stamp).
- * Synthetic "Noticed" must not count as later-stage completion — CEQR and
- * pre-cert notice legitimately overlap.
- */
+function eventIsHearing(event) {
+  if (event?.kind === "city_record_hearing") return true;
+  if (event?.kind !== "zap_milestone") return false;
+  const description = [event?.title, event?.source_title, event?.detail, event?.outcome]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+  return /\bhearing\b/.test(description);
+}
+
 function eventIsTerminalComplete(event) {
   if (event?._synthetic) return false;
   if (!eventIsActualProgress(event)) return false;
   if (eventIsInProgress(event)) return false;
-  return true;
+  if (eventIsHearing(event)) return false;
+  const status = String(event?.status || event?.detail || "").toLowerCase();
+  if (event.kind === "zap_milestone") return /\bcompleted?\b/.test(status);
+  if (event.kind === "zap_disposition") return /\bsubmitted\b/.test(status);
+  return false;
 }
 
-/**
- * Phase has non-synthetic finished rows and none still "In Progress".
- * Used to advance the pipeline pointer past a finished stage into the next one.
- * Synthetic-only phases (pre-cert Noticed stamp) are not terminal for advance.
- */
 function phaseIsFullyTerminal(byPhase, phaseId) {
   const all = byPhase[phaseId] || [];
   const material = all.filter((e) => eventIsActualProgress(e) && !e._synthetic);
@@ -234,11 +237,6 @@ function phaseIsFullyTerminal(byPhase, phaseId) {
   return material.some(eventIsTerminalComplete);
 }
 
-/**
- * Whether any later pipeline phase already has a terminal completion row.
- * A missing CB outcome must not strand the pointer when BP/CPC already ran.
- * Pre-cert "Noticed" alone does not strand an in-progress CEQR phase.
- */
 function laterPhaseHasTerminalCompletes(byPhase, phaseId) {
   const idx = LAND_ULURP_PHASES.indexOf(phaseId);
   if (idx < 0) return false;
@@ -249,22 +247,6 @@ function laterPhaseHasTerminalCompletes(byPhase, phaseId) {
   return false;
 }
 
-/**
- * Derive the pipeline current phase.
- *
- * Semantics (owner feedback on stranded stages): when a later stage already has
- * actual events, advance past earlier stages even if they lack a completion row.
- * Prefer a live "In Progress" only when nothing later has moved; if the latest
- * actual phase is fully terminal and the next phase has any events (including
- * planned Not Started), the process has arrived at that next phase.
- *
- * @param {object} args
- * @param {object} args.byPhase
- * @param {object[]} args.events
- * @param {string|null} args.currentMilestoneLabel
- * @param {boolean} args.completedLike
- * @returns {{ phase_id: string, reason: string }}
- */
 export function deriveLandCurrentPhaseId({
   byPhase,
   events = undefined,
@@ -731,8 +713,6 @@ export function buildLandPhaseView(spine, opts = {}) {
       short: LAND_PHASE_META[id].short,
       label_key: LAND_PHASE_META[id].label_key,
       state,
-      // "no_recorded_outcome" when the pipeline advanced past this stage without a
-      // terminal completion row (stranded In Progress / missing disposition).
       outcome_status: missingOutcomes.has(id) ? "no_recorded_outcome" : null,
       overlap: overlapExplained,
       // Sibling phase ids the resolved procedure reviews at the same time
@@ -764,10 +744,15 @@ export function buildLandPhaseView(spine, opts = {}) {
     phase.observed_outcomes = observedOutcomes.filter((outcome) => spinePhaseIdForActorKind(outcome.actor_kind) === phase.id);
   }
 
-  // Next = first future phase AFTER current only. Never fall back to an earlier
-  // incomplete template slot (that produced "What's next: Pre-certification"
-  // while current was Mayoral on completed projects).
   const curIdx = LAND_ULURP_PHASES.indexOf(currentPhaseId);
+  const currentEvidenceEvents = [...(byPhase[currentPhaseId] || [])].reverse();
+  const currentEvidenceEvent = currentEvidenceEvents.find(eventIsInProgress)
+    || currentEvidenceEvents.find((event) => eventIsActualProgress(event) && !event._synthetic)
+    || currentEvidenceEvents.find((event) => !event._synthetic)
+    || currentEvidenceEvents.find((event) => event._synthetic);
+  const currentEvidenceSourceId = derived.reason === "open_data_milestone" ? "nyc-open-data-zap"
+    : derived.reason === "default_pre_application" ? null
+    : currentEvidenceEvent?.source?.id || (completedLike ? "nyc-open-data-zap" : null);
   let nextPhase = null;
   if (!completedLike) {
     for (let i = curIdx + 1; i < phases.length; i++) {
@@ -775,7 +760,6 @@ export function buildLandPhaseView(spine, opts = {}) {
         nextPhase = phases[i];
         break;
       }
-      // Skip passed/overlap (e.g. concurrent notice while still in filing/CEQR)
     }
   }
 
@@ -814,6 +798,9 @@ export function buildLandPhaseView(spine, opts = {}) {
       milestone_label: currentMilestoneLabel,
       since: currentMilestoneDate,
       public_status: publicStatus,
+      evidence_source_id: currentEvidenceSourceId,
+      evidence_observation: currentEvidenceSourceId === currentEvidenceEvent?.source?.id
+        ? currentEvidenceEvent?.source_observation || null : null,
       noticed,
       // True only when Open Data already labels full public review / completion paths.
       // Completed/approved are terminal — not "in public review" for action rails.

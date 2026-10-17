@@ -586,6 +586,7 @@ site/land_keyword_soda_missfill.mjs
 site/land_lot_source_digests.mjs
 site/land_map_model.mjs
 site/land_nta_watch_scope.mjs
+site/land_outcome_runtime.mjs
 site/land_phase_spine.mjs
 site/land_procedure_facet.mjs
 site/land_procedure_profiles.mjs
@@ -2297,6 +2298,7 @@ worker/src/lib/watch_seen_membership.mjs
 worker/src/lib/watch_text_query_meetings.mjs
 worker/src/lib/watch_text_query_procurement.mjs
 worker/src/lib/watchlog.mjs
+worker/src/lib/worker_acquisition_runtime.mjs
 worker/src/lib/worker_health.mjs
 worker/src/lib/zap_bbl_warehouse_lookup.mjs
 worker/src/lib/zap_hearing_logistics.mjs

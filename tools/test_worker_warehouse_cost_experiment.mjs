@@ -8,7 +8,9 @@ import {
   COST_METERS,
   WAREHOUSE_EXPERIMENT_COHORTS,
   WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+  coldStartFlagRawCohort,
   evaluateWarehouseExperiment,
+  parseColdStartFlagRaw,
   providerDeploymentReceiptSha256,
 } from "./lib/worker_cost_control.mjs";
 import { canaryVersionTag } from "./cloudflare_deployment_binding.mjs";
@@ -55,7 +57,14 @@ function run(overrides = {}) {
         native_cpu_source: { field: "cpuTime", unit: "milliseconds", precision: "provider" },
         script_version_id: result.provider_deployment.receipt.cloudflare_version.id,
         condition: {
-          mode: "provider-observed", source: "$metadata.coldStart", cold_start: name.endsWith(":cold"),
+          mode: "bounded-production-execution",
+          source: "owned-http-probe",
+          isolate_observation: {
+            present: true,
+            raw: parseColdStartFlagRaw(name),
+            provisional_label: "unverified-raw",
+            semantics: "unverified-provider-flag",
+          },
         },
         outcome: carriesTotals && result.error_count > 0 ? "exception" : "ok",
         operations: Object.fromEntries(
@@ -117,7 +126,7 @@ test("changed joins, provenance, misses, freshness or cohort coverage fail close
     assert.throws(() => evaluate(baseline, candidate), new RegExp(field));
   }
   const candidate = run({ deployed_revision: "b".repeat(40), observed_at: "2026-10-08T23:10:00Z" });
-  delete candidate.cohorts["zap-bbl:cold"];
+  delete candidate.cohorts[coldStartFlagRawCohort("zap-bbl", 1)];
   assert.throws(() => evaluate(baseline, candidate), /missing/);
 });
 
@@ -152,11 +161,11 @@ test("experiment cohorts require the fixed matched 100-sample count", () => {
   const validCandidate = { deployed_revision: "b".repeat(40), observed_at: "2026-10-08T23:10:00Z" };
   for (const count of [-1, 1.5]) {
     const candidate = run(validCandidate);
-    candidate.cohorts["zap-bbl:cold"].sample_count = count;
+    candidate.cohorts[coldStartFlagRawCohort("zap-bbl", 1)].sample_count = count;
     assert.throws(() => evaluate(baseline, candidate), /sample_count|sample counts/);
   }
   const candidate = run(validCandidate);
-  candidate.cohorts["zap-bbl:cold"].sample_count = 99;
+  candidate.cohorts[coldStartFlagRawCohort("zap-bbl", 1)].sample_count = 99;
   assert.throws(() => evaluate(baseline, candidate), /fixed 100-sample cohort/);
 });
 
@@ -169,8 +178,8 @@ test("experiment totals and errors are derived from retained provider samples", 
   candidate.meters.native_cpu_ms = 79;
   assert.throws(() => evaluate(baseline, candidate), /does not match retained warehouse samples/);
   candidate.meters.native_cpu_ms = 80;
-  candidate.cohorts["zap-bbl:cold"].samples[0].outcome = "exception";
-  candidate.cohorts["zap-bbl:cold"].samples[0].error_count = 0;
+  candidate.cohorts[coldStartFlagRawCohort("zap-bbl", 1)].samples[0].outcome = "exception";
+  candidate.cohorts[coldStartFlagRawCohort("zap-bbl", 1)].samples[0].error_count = 0;
   assert.throws(() => evaluate(baseline, candidate), /failed provider outcome/);
 });
 

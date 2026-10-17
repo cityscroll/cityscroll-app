@@ -9,6 +9,7 @@ import {
   WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
   buildWorkerCostProfile,
   evaluateWarehouseExperiment,
+  parseColdStartFlagRaw,
   sanitizeNativeInvocation,
 } from "./worker_cost_control.mjs";
 
@@ -113,7 +114,7 @@ function httpRequest(event) {
 }
 
 export function selectOwnedHttpEvent(events, expectation, cohort) {
-  const coldStart = cohort.endsWith(":cold") ? 1 : cohort.endsWith(":warm") ? 0 : null;
+  const coldStart = parseColdStartFlagRaw(cohort);
   const matches = events.filter((event) => {
     const request = httpRequest(event);
     const header = request?.headers?.["x-cityscroll-cost-probe"] || request?.headers?.["X-Cityscroll-Cost-Probe"];
@@ -177,7 +178,10 @@ export async function acquireWorkerCostProfile({ revision, window, transport } =
           expectedRunMarker: plan.run_marker, expectedWorkloadDigest: plan.workload_digest,
         }));
       } else {
-        const expectation = httpExpectations?.[cohort];
+        const expectation = httpExpectations?.[cohort]
+          || Object.values(httpExpectations || {}).find((entry) => (
+            entry?.probeCohort === cohort || entry?.receipt?.cohort === cohort
+          ));
         if (!expectation) throw new Error("owned HTTP workload was not executed");
         const event = selectOwnedHttpEvent(events, expectation, cohort);
         samples.push(sanitizeNativeInvocation(event, {
@@ -191,6 +195,8 @@ export async function acquireWorkerCostProfile({ revision, window, transport } =
       reasons.push({ cohort, reason: String(error?.message || error) });
     }
   }
+  // Aggregate profile duration may span the multi-window measurement period
+  // (up to 24h). Each live collector window remains ≤ MAX_COLLECTOR_SECONDS.
   const profile = buildWorkerCostProfile(samples, {
     revision, observedAt: new Date(bounds.to).toISOString(),
     durationSeconds: (bounds.to - bounds.from) / 1000, eventCount: events.length,

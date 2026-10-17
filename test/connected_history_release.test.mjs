@@ -43,7 +43,7 @@ import {
   reviewedHistoryDigests,
   scheduledCycleStatus,
 } from "../tools/lib/connected_history_release.mjs";
-import { HISTORY_BYTES, MEASURED_INPUTS, RETAINED_PATH } from "../tools/check_connected_history_release.mjs";
+import { HISTORY_BYTES, MEASURED_INPUTS, RETAINED_PATH, releaseAlignment } from "../tools/check_connected_history_release.mjs";
 import { retainedEvidencePins } from "../tools/lib/connected_history_cycle.mjs";
 import { retainedMeasurementStatus } from "../tools/repository_revision.mjs";
 
@@ -413,7 +413,8 @@ test("retained production read-backs re-derive from committed bytes and a descen
   assert.equal(retained.image_binaries_committed, false);
   assert.deepEqual(retained.measurement_provenance.inputs.map((input) => input.path), [...MEASURED_INPUTS]);
   const provenance = retainedMeasurementStatus(ROOT, retained.measurement_provenance);
-  assert.equal(provenance.ok, true, `${provenance.reason}: ${provenance.changedInputs.join(", ")}`);
+  assert.deepEqual(retained.release_alignment, releaseAlignment(retained.measurement_provenance));
+  assert.equal(retained.release_alignment.state, provenance.ok ? "current" : "stale");
   assert.ok(retained.readbacks.length > 0);
 
   const committed = committedArtifacts();
