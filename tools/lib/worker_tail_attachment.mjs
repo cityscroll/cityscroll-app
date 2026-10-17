@@ -928,6 +928,7 @@ export async function emergencyDetachTailAttachment(window, transport, {
   now = new Date().toISOString(),
   store = null,
   expectedGeneration = null,
+  versionTransport = null,
 } = {}) {
   if (!window || window.schema !== WORKER_TAIL_ATTACHMENT_WINDOW_SCHEMA) {
     fail("tail attachment window is invalid");
@@ -1023,78 +1024,271 @@ export async function emergencyDetachTailAttachment(window, transport, {
     };
   }
 
-  if (plan.action === "already-restored") {
-    return {
-      ...plan,
-      window: markTailWindowRestored(active, {
-        now: at,
-        beforeSha256: plan.classification.sha256,
-        afterSha256: plan.classification.sha256,
-        expired: plan.expired,
-        outcome: "already-restored",
-      }),
-      after: plan.classification.consumers,
-      proved: true,
-      patch: null,
-    };
+  // Restore / already-restored go through restoreTailAttachmentWindow so the
+  // consumer-bound versionTransport is observed with truthful performed/UNKNOWN
+  // labels. Drift never blocks detach; an absent guard stays not_performed.
+  if (plan.action === "already-restored" || plan.action === "restore") {
+    return restoreTailAttachmentWindow(active, transport, {
+      now: at,
+      versionTransport,
+    });
   }
 
-  if (plan.action === "restore") {
-    return restoreTailAttachmentWindow(active, transport, { now: at });
-  }
-
-  // confirm-pending and other non-restore plans: never blank-patch.
+  // confirm-pending and other non-restore plans: never blank-patch; do not claim
+  // a version guard was performed when it was not invoked.
   return {
     ...plan,
     proved: false,
     window: active,
     after: plan.classification?.consumers ?? null,
     patch: null,
+    version_guard: {
+      before_actuator: VERSION_GUARD_LABEL.NOT_PERFORMED,
+      after_actuator: VERSION_GUARD_LABEL.NOT_PERFORMED,
+      before_reason: "emergency detach did not invoke restore actuator",
+      after_reason: "emergency detach did not invoke restore actuator",
+      version: "UNKNOWN",
+      version_unknown: true,
+      consumer_bound: Boolean(active?.version_evidence?.present),
+      provider_cas: "UNKNOWN",
+    },
   };
 }
 
 const READBACK_TOKEN_HEADER = "x-cityscroll-tail-readback-token";
 
+/** Default bound for AggregateSink readback polls (ms). */
+export const DEFAULT_SINK_READBACK_TIMEOUT_MS = 5_000;
+
+/** AggregateSink readback schema the readiness/liveness poll accepts. */
+export const TAIL_SINK_READBACK_SCHEMA = "cityscroll.tail_sanitizer_aggregate_sink.v1";
+
+/**
+ * Fixed allowlisted cap-signal reason codes only. Heartbeats and receipts must
+ * never persist raw URL, query, body, token, or error.message text.
+ */
+export const CAP_SIGNAL_REASON = Object.freeze({
+  READBACK_ABORTED: "readback_aborted",
+  READBACK_TIMEOUT: "readback_timeout",
+  READBACK_UNAUTHORIZED: "readback_unauthorized",
+  READBACK_UNAVAILABLE: "readback_unavailable",
+  READBACK_MALFORMED: "readback_malformed",
+  READBACK_SCHEMA_INVALID: "readback_schema_invalid",
+  READBACK_ERROR: "readback_error",
+  CAP_NOT_REACHED: "cap_not_reached",
+  CAP_SIGNAL_UNKNOWN: "cap_signal_unknown",
+  ACTUATOR_MISSING_POLL: "actuator_missing_pollCapSignal",
+});
+
+const CAP_SIGNAL_REASON_SET = new Set(Object.values(CAP_SIGNAL_REASON));
+
+export function allowlistedCapSignalReason(code) {
+  return CAP_SIGNAL_REASON_SET.has(code) ? code : CAP_SIGNAL_REASON.READBACK_ERROR;
+}
+
+function unknownCapSignal({ reason, status = null, aborted = false } = {}) {
+  const code = allowlistedCapSignalReason(reason || CAP_SIGNAL_REASON.READBACK_UNAVAILABLE);
+  return {
+    cap_reached: false,
+    readback_ok: false,
+    reason: code,
+    status,
+    aborted: aborted === true,
+    events_seen: null,
+    apply_overshoot: null,
+    a2: { pass: false, reason: code },
+  };
+}
+
+function isNonNegativeInt(value) {
+  return Number.isInteger(value) && value >= 0;
+}
+
+/**
+ * Validate AggregateSink /readback JSON. Empty {}, missing booleans/counts, or
+ * unbound window fields stay UNKNOWN (refuses READY). events_seen may be 0.
+ */
+export function validateSinkReadbackBody(body, {
+  expectedSchema = TAIL_SINK_READBACK_SCHEMA,
+} = {}) {
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
+  }
+  if (body.ok === false) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_UNAUTHORIZED };
+  }
+  if (body.schema !== expectedSchema) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
+  }
+  // Explicit boolean cap — not merely truthy / missing.
+  if (typeof body.cap_reached !== "boolean") {
+    return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
+  }
+  if (!isNonNegativeInt(body.events_seen)) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
+  }
+  const overshoot = body.counters?.apply_overshoot ?? body.apply_overshoot;
+  if (!isNonNegativeInt(overshoot)) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
+  }
+  const a2 = body.a2;
+  if (!a2 || typeof a2 !== "object" || typeof a2.pass !== "boolean") {
+    return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
+  }
+  if (a2.events_seen != null && !isNonNegativeInt(a2.events_seen)) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
+  }
+  if (a2.apply_overshoot != null && !isNonNegativeInt(a2.apply_overshoot)) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
+  }
+  // Window binding: collection deadline + max_events must be present and finite.
+  if (!Number.isFinite(body.deadline_ms) || body.deadline_ms <= 0) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
+  }
+  if (!isNonNegativeInt(body.max_events) || body.max_events <= 0) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
+  }
+  // Consumer / sink binding: schema-qualified sink identity when present, else
+  // the authenticated readback URL+token is the binding (required at construct).
+  if (body.sink_id != null && (typeof body.sink_id !== "string" || !body.sink_id)) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
+  }
+  return {
+    ok: true,
+    cap_reached: body.cap_reached,
+    events_seen: body.events_seen,
+    apply_overshoot: overshoot,
+    a2,
+  };
+}
+
 /**
  * Poll authenticated AggregateSink readback for cap_reached.
- * Missing/failed readback stays unproved (cap_reached false); never invents zero.
+ * Missing/failed/timed-out/unauthorized/invalid-schema readback stays UNKNOWN
+ * (cap_reached false, readback_ok false); never invents zero and never throws.
+ * The entire fetch+json+validate path is Promise.race'd against the bound so an
+ * injected fetch/body that ignores AbortSignal still settles UNKNOWN in time.
  */
 export function createSinkReadbackCapSignal({
   url,
   token,
   fetchImpl = globalThis.fetch,
+  timeoutMs = DEFAULT_SINK_READBACK_TIMEOUT_MS,
+  expectedSchema = TAIL_SINK_READBACK_SCHEMA,
 } = {}) {
   if (typeof url !== "string" || !url) fail("sink readback url is required for cap signal");
   if (typeof token !== "string" || !token || token === "unset") {
     fail("sink readback token is required for cap signal");
   }
   if (typeof fetchImpl !== "function") fail("fetchImpl must be a function");
-  return async function readCapSignal() {
-    const res = await fetchImpl(url, {
-      method: "GET",
-      headers: { [READBACK_TOKEN_HEADER]: token },
-    });
-    if (!res || res.ok !== true) {
-      return {
-        cap_reached: false,
-        readback_ok: false,
-        status: res?.status ?? null,
-        events_seen: null,
-        apply_overshoot: null,
-        a2: { pass: false, reason: "readback_unavailable" },
-      };
-    }
-    const body = await res.json();
-    const eventsSeen = body?.events_seen;
-    const overshoot = body?.counters?.apply_overshoot ?? body?.apply_overshoot;
-    return {
-      cap_reached: body?.cap_reached === true,
-      readback_ok: true,
-      events_seen: Number.isFinite(eventsSeen) ? eventsSeen : null,
-      apply_overshoot: Number.isFinite(overshoot) ? overshoot : null,
-      a2: body?.a2 || null,
-      body,
+  const defaultTimeoutMs = Number.isFinite(timeoutMs) && timeoutMs > 0
+    ? timeoutMs
+    : DEFAULT_SINK_READBACK_TIMEOUT_MS;
+
+  return async function readCapSignal({
+    signal = null,
+    timeoutMs: callTimeoutMs = defaultTimeoutMs,
+  } = {}) {
+    const boundMs = Number.isFinite(callTimeoutMs) && callTimeoutMs > 0
+      ? callTimeoutMs
+      : defaultTimeoutMs;
+    const controller = new AbortController();
+    let timer = null;
+    const onExternalAbort = () => {
+      try { controller.abort(); } catch { /* ignore */ }
     };
+
+    const settleAbort = (reason) => unknownCapSignal({
+      reason,
+      aborted: reason === CAP_SIGNAL_REASON.READBACK_TIMEOUT
+        || reason === CAP_SIGNAL_REASON.READBACK_ABORTED,
+    });
+
+    try {
+      if (signal) {
+        if (signal.aborted) {
+          return settleAbort(CAP_SIGNAL_REASON.READBACK_ABORTED);
+        }
+        signal.addEventListener("abort", onExternalAbort, { once: true });
+      }
+
+      const work = (async () => {
+        const res = await fetchImpl(url, {
+          method: "GET",
+          headers: { [READBACK_TOKEN_HEADER]: token },
+          signal: controller.signal,
+        });
+        if (!res || res.ok !== true) {
+          return unknownCapSignal({
+            reason: res?.status === 401 || res?.status === 403
+              ? CAP_SIGNAL_REASON.READBACK_UNAUTHORIZED
+              : CAP_SIGNAL_REASON.READBACK_UNAVAILABLE,
+            status: res?.status ?? null,
+          });
+        }
+        let body;
+        try {
+          body = await res.json();
+        } catch {
+          return unknownCapSignal({
+            reason: CAP_SIGNAL_REASON.READBACK_MALFORMED,
+            status: res.status ?? null,
+          });
+        }
+        const validated = validateSinkReadbackBody(body, { expectedSchema });
+        if (!validated.ok) {
+          return unknownCapSignal({
+            reason: validated.reason,
+            status: res.status ?? null,
+          });
+        }
+        return {
+          cap_reached: validated.cap_reached === true,
+          readback_ok: true,
+          reason: validated.cap_reached === true
+            ? null
+            : CAP_SIGNAL_REASON.CAP_NOT_REACHED,
+          events_seen: validated.events_seen,
+          apply_overshoot: validated.apply_overshoot,
+          a2: validated.a2,
+          body,
+          fetch_abort_signal_supplied: true,
+          timeout_ms: boundMs,
+        };
+      })();
+
+      // Hard outer race: abort + settle UNKNOWN even when fetch/json ignore signal.
+      const timeoutPromise = new Promise((resolve) => {
+        timer = setTimeout(() => {
+          try { controller.abort(); } catch { /* ignore */ }
+          resolve(settleAbort(CAP_SIGNAL_REASON.READBACK_TIMEOUT));
+        }, boundMs);
+      });
+      const abortPromise = new Promise((resolve) => {
+        const onAbort = () => resolve(settleAbort(
+          signal?.aborted
+            ? CAP_SIGNAL_REASON.READBACK_ABORTED
+            : CAP_SIGNAL_REASON.READBACK_TIMEOUT,
+        ));
+        if (controller.signal.aborted) {
+          onAbort();
+          return;
+        }
+        controller.signal.addEventListener("abort", onAbort, { once: true });
+      });
+
+      return await Promise.race([work, timeoutPromise, abortPromise]);
+    } catch {
+      const aborted = controller.signal.aborted || Boolean(signal?.aborted);
+      return settleAbort(
+        aborted ? CAP_SIGNAL_REASON.READBACK_TIMEOUT : CAP_SIGNAL_REASON.READBACK_ERROR,
+      );
+    } finally {
+      if (timer) clearTimeout(timer);
+      if (signal) {
+        try { signal.removeEventListener("abort", onExternalAbort); } catch { /* ignore */ }
+      }
+    }
   };
 }
 
@@ -1102,6 +1296,7 @@ export function createSinkReadbackCapSignal({
  * Real owned-window cap-detach actuator used by the durable guardian.
  * Polls/consumes a cap signal, then runs emergencyDetachTailAttachment with
  * own-window identity + generation checks (foreign-safe CAS detach).
+ * versionTransport is forwarded into the emergency detach → restore path.
  */
 export function createOwnedCapDetachActuator({
   readCapSignal,
@@ -1114,25 +1309,73 @@ export function createOwnedCapDetachActuator({
   if (!transport || typeof transport.getTailConsumers !== "function") {
     fail("owned cap-detach actuator requires attachment transport");
   }
+  const versionTransportConfigured = Boolean(
+    versionTransport && typeof versionTransport.getLatestVersionEvidence === "function",
+  );
+
+  async function pollCapSignal({
+    timeoutMs = DEFAULT_SINK_READBACK_TIMEOUT_MS,
+    signal = null,
+  } = {}) {
+    const boundMs = Number.isFinite(timeoutMs) && timeoutMs > 0
+      ? timeoutMs
+      : DEFAULT_SINK_READBACK_TIMEOUT_MS;
+    let outerTimer = null;
+    try {
+      const work = Promise.resolve().then(() => readCapSignal({ timeoutMs: boundMs, signal }));
+      // Outer guardian race: even a broken readCapSignal that never settles
+      // must become UNKNOWN by the remaining deadline.
+      const outerTimeout = new Promise((resolve) => {
+        outerTimer = setTimeout(
+          () => resolve(unknownCapSignal({
+            reason: CAP_SIGNAL_REASON.READBACK_TIMEOUT,
+            aborted: true,
+          })),
+          boundMs,
+        );
+      });
+      const result = await Promise.race([work, outerTimeout]);
+      if (result && typeof result === "object") {
+        return {
+          ...result,
+          reason: result.readback_ok === true
+            ? result.reason
+            : allowlistedCapSignalReason(result.reason),
+        };
+      }
+      return unknownCapSignal({ reason: CAP_SIGNAL_REASON.READBACK_UNAVAILABLE });
+    } catch {
+      return unknownCapSignal({ reason: CAP_SIGNAL_REASON.READBACK_ERROR });
+    } finally {
+      if (outerTimer) clearTimeout(outerTimer);
+    }
+  }
+
   return {
     kind: "owned-window-cas-detach",
-    version_transport_configured: Boolean(
-      versionTransport && typeof versionTransport.getLatestVersionEvidence === "function",
-    ),
+    version_transport_configured: versionTransportConfigured,
+    pollCapSignal,
     async pollAndDetachIfCapped({
       store,
       now = new Date().toISOString(),
+      timeoutMs = DEFAULT_SINK_READBACK_TIMEOUT_MS,
+      signal = null,
+      prefetchedSignal = null,
     } = {}) {
       if (!store || typeof store.read !== "function") {
         fail("cap-detach poll requires durable store.read");
       }
-      const signal = await readCapSignal();
-      if (!signal || signal.cap_reached !== true) {
+      const capSignal = prefetchedSignal == null
+        ? await pollCapSignal({ timeoutMs, signal })
+        : prefetchedSignal;
+      if (!capSignal || capSignal.cap_reached !== true) {
         return {
           actuated: false,
           proved: false,
-          reason: "cap_not_reached",
-          signal: signal || null,
+          reason: capSignal?.readback_ok === true
+            ? CAP_SIGNAL_REASON.CAP_NOT_REACHED
+            : CAP_SIGNAL_REASON.CAP_SIGNAL_UNKNOWN,
+          signal: capSignal || null,
         };
       }
       const window = await store.read();
@@ -1141,7 +1384,7 @@ export function createOwnedCapDetachActuator({
           actuated: false,
           proved: false,
           reason: "no_window",
-          signal,
+          signal: capSignal,
         };
       }
       const expectedGeneration = Number.isInteger(window.window_generation)
@@ -1151,6 +1394,7 @@ export function createOwnedCapDetachActuator({
         now,
         store,
         expectedGeneration,
+        versionTransport,
       });
       if (
         result.proved === true
@@ -1168,8 +1412,9 @@ export function createOwnedCapDetachActuator({
         proved: result.proved === true,
         action: result.action,
         reason: result.reason || result.receipt?.reason || null,
-        signal,
+        signal: capSignal,
         result,
+        version_guard: result.version_guard || null,
       };
     },
   };

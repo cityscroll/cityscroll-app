@@ -9,6 +9,7 @@
  * version evidence.
  */
 import { readFileSync, existsSync, statSync } from "node:fs";
+import { resolve as resolvePath } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import {
@@ -100,7 +101,14 @@ async function loadVersionTransport(env, window) {
   }, window);
 }
 
-async function loadCapDetachActuator(env, window, { store, transport, versionTransport }) {
+/**
+ * Default-loader readiness: configured authenticated AggregateSink readback AND
+ * a successful validated poll. Missing env, unauthorized, malformed, or failed
+ * poll → UNKNOWN (null), which refuses ARM/READY when the window is bound.
+ * Fixture injection via CITYSCROLL_TAIL_ATTACHMENT_RESTORER_CAP_DETACH_MODULE
+ * is for tests only.
+ */
+export async function loadCapDetachActuator(env, window, { store, transport, versionTransport }) {
   if (window?.restorer?.cap_detach_actuator_bound !== true) {
     return null;
   }
@@ -119,29 +127,22 @@ async function loadCapDetachActuator(env, window, { store, transport, versionTra
   }
   const readbackUrl = env.CITYSCROLL_TAIL_SINK_READBACK_URL;
   const readbackToken = env.CITYSCROLL_TAIL_SINK_READBACK_TOKEN;
-  if (readbackUrl && readbackToken) {
-    return createOwnedCapDetachActuator({
-      transport,
-      versionTransport,
-      readCapSignal: createSinkReadbackCapSignal({
-        url: readbackUrl,
-        token: readbackToken,
-      }),
-    });
+  if (!readbackUrl || !readbackToken) {
+    // UNKNOWN — no idle fake actuator. Bound windows refuse READY/run.
+    return null;
   }
-  // Local fixtures / default-loader proofs without a live sink still wire the
-  // REAL emergencyDetach actuator with an idle (never-capped) signal. Production
-  // ARM requires CITYSCROLL_TAIL_SINK_READBACK_URL/TOKEN (go5-v2 plan gate).
+  const readCapSignal = createSinkReadbackCapSignal({
+    url: readbackUrl,
+    token: readbackToken,
+  });
+  const readiness = await readCapSignal({});
+  if (!readiness || readiness.readback_ok !== true) {
+    return null;
+  }
   return createOwnedCapDetachActuator({
     transport,
     versionTransport,
-    readCapSignal: async () => ({
-      cap_reached: false,
-      readback_ok: false,
-      reason: "idle_cap_signal_no_readback_env",
-      events_seen: null,
-      apply_overshoot: null,
-    }),
+    readCapSignal,
   });
 }
 
@@ -179,11 +180,26 @@ async function main(argv = process.argv.slice(2), env = process.env) {
   return paths.terminalReceipt;
 }
 
-const isDirect = import.meta.url === pathToFileURL(process.argv[1]).href
-  || process.argv[1]?.endsWith("worker_tail_attachment_restorer.mjs")
-  || process.argv[1]?.endsWith("/run.mjs");
+// Only auto-run when this file (or an installed durable run.mjs copy) is the
+// process entrypoint. Importing from tests must not invoke main().
+function isDirectEntrypoint() {
+  if (!process.argv[1]) return false;
+  try {
+    if (import.meta.url === pathToFileURL(resolvePath(process.argv[1])).href) {
+      return true;
+    }
+  } catch {
+    // fall through
+  }
+  const entry = String(process.argv[1]).replace(/\\/g, "/");
+  // Durable installed copy is always named run.mjs.
+  if (import.meta.url.endsWith("/run.mjs") && entry.endsWith("run.mjs")) {
+    return true;
+  }
+  return false;
+}
 
-if (isDirect) {
+if (isDirectEntrypoint()) {
   main().catch((error) => {
     console.error(String(error?.stack || error));
     process.exit(1);

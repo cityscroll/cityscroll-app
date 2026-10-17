@@ -568,25 +568,88 @@ export async function runTailRestorerLoop({
   return last;
 }
 
+/** Upper bound for a single outside-lock cap readback poll (ms). */
+export const DEFAULT_CAP_POLL_OUTSIDE_LOCK_MS = 5_000;
+
+function remainingWindowMs(window, now) {
+  const expiresAt = Date.parse(window?.expires_at);
+  const nowMs = Date.parse(now);
+  if (!Number.isFinite(expiresAt) || !Number.isFinite(nowMs)) return 0;
+  return Math.max(0, expiresAt - nowMs);
+}
+
 export async function tailAttachmentRestorerTick({
   store,
   transport,
   versionTransport = null,
   capDetachActuator = null,
   stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT,
-  now = new Date().toISOString(),
+  now = null,
+  nowFn = () => new Date().toISOString(),
 } = {}) {
   const paths = tailRestorerPaths(stateRoot);
+  const nowBefore = typeof now === "string" ? now : nowFn();
   if (killSwitchEngaged(stateRoot)) {
     return writeTailRestorerReceipt(paths.terminalReceipt, {
       schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
       kind: "restorer",
       outcome: "kill-switch",
-      observed_at: now,
+      observed_at: nowBefore,
       pid: process.pid,
     });
   }
   if (!store || typeof store.withLock !== "function") fail("durable Tail store withLock is required");
+  if (typeof store.read !== "function") fail("durable Tail store.read is required");
+
+  // Bound the authenticated cap poll OUTSIDE the lock so a hung/slow readback
+  // cannot block expiry, cancel, or the normal restore path.
+  let prefetchedCapSignal = null;
+  const snapshot = await store.read();
+  if (!snapshot) fail("tail attachment window is missing");
+  if (!snapshot.restorer?.armed) fail("tail restorer is not armed");
+  const snapExpired = Date.parse(nowBefore) >= Date.parse(snapshot.expires_at);
+  const snapPending = Boolean(snapshot.pending_mutation);
+  const snapOwned = Boolean(snapshot.owned_sha256);
+  const snapControllerDead = tailControllerDeathSignaled(stateRoot, {
+    windowId: snapshot.window_id,
+    restorerId: snapshot.restorer?.restorer_id || null,
+  });
+  const snapCancelRequested = snapshot.cancel_requested === true;
+  if (
+    snapOwned
+    && !snapPending
+    && !snapExpired
+    && !snapControllerDead
+    && !snapCancelRequested
+    && snapshot.restorer?.cap_detach_actuator_bound === true
+  ) {
+    if (!capDetachActuator || typeof capDetachActuator.pollAndDetachIfCapped !== "function") {
+      fail("refuse: window armed with cap-detach but runtime actuator absent");
+    }
+    const remainingMs = remainingWindowMs(snapshot, nowBefore);
+    const timeoutMs = Math.max(
+      1,
+      Math.min(remainingMs || DEFAULT_CAP_POLL_OUTSIDE_LOCK_MS, DEFAULT_CAP_POLL_OUTSIDE_LOCK_MS),
+    );
+    if (typeof capDetachActuator.pollCapSignal === "function") {
+      prefetchedCapSignal = await capDetachActuator.pollCapSignal({ timeoutMs });
+    } else {
+      // Fixture/legacy actuators without pollCapSignal: best-effort bounded poll
+      // via pollAndDetachIfCapped would detach under no lock — refuse that path.
+      prefetchedCapSignal = {
+        cap_reached: false,
+        readback_ok: false,
+        reason: "actuator_missing_pollCapSignal",
+        events_seen: null,
+        apply_overshoot: null,
+        a2: { pass: false, reason: "readback_unavailable" },
+      };
+    }
+  }
+
+  // Re-read time AFTER the poll so a poll that ends at the deadline does not
+  // postpone expiry/cancel/restore. Frozen `now` keeps tests hermetic.
+  const nowAfter = typeof now === "string" ? now : nowFn();
 
   return store.withLock(async () => {
     const window = await store.read();
@@ -597,11 +660,16 @@ export async function tailAttachmentRestorerTick({
       schema: TAIL_RESTORER_READY_SCHEMA,
       kind: "heartbeat",
       outcome: "alive",
-      observed_at: now,
+      observed_at: nowAfter,
       pid: process.pid,
       window_id: window.window_id,
       restorer_id: window.restorer?.restorer_id || null,
       phase: window.phase,
+      // Allowlisted reason codes only — never raw URL/query/body/token/error text.
+      cap_signal_reason: typeof prefetchedCapSignal?.reason === "string"
+        ? prefetchedCapSignal.reason
+        : null,
+      cap_readback_ok: prefetchedCapSignal ? prefetchedCapSignal.readback_ok === true : null,
     });
 
     if (TAIL_ATTACHMENT_TERMINAL_PHASES.includes(window.phase)) {
@@ -609,13 +677,13 @@ export async function tailAttachmentRestorerTick({
         schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
         kind: "restorer",
         outcome: "already-terminal",
-        observed_at: now,
+        observed_at: nowAfter,
         window_id: window.window_id,
         phase: window.phase,
       });
     }
 
-    const expired = Date.parse(now) >= Date.parse(window.expires_at);
+    const expired = Date.parse(nowAfter) >= Date.parse(window.expires_at);
     const pending = Boolean(window.pending_mutation);
     const owned = Boolean(window.owned_sha256);
     const controllerDead = tailControllerDeathSignaled(stateRoot, {
@@ -624,20 +692,25 @@ export async function tailAttachmentRestorerTick({
     });
     const cancelRequested = window.cancel_requested === true;
 
-    // Healthy owned windows: poll the real cap-detach actuator, else stay idle
-    // until deadline, cancel, or controller-death.
+    // Healthy owned windows: use the outside-lock cap poll, then detach under
+    // the lock. UNKNOWN/error/stalled polls stay idle so expiry/cancel/restore
+    // below still run on later ticks.
     if (owned && !pending && !expired && !controllerDead && !cancelRequested) {
       if (window.restorer?.cap_detach_actuator_bound === true) {
         if (!capDetachActuator || typeof capDetachActuator.pollAndDetachIfCapped !== "function") {
           fail("refuse: window armed with cap-detach but runtime actuator absent");
         }
-        const cap = await capDetachActuator.pollAndDetachIfCapped({ store, now });
+        const cap = await capDetachActuator.pollAndDetachIfCapped({
+          store,
+          now: nowAfter,
+          prefetchedSignal: prefetchedCapSignal,
+        });
         if (cap?.signal?.a2 && cap.signal.a2.pass === false) {
           writeTailRestorerReceipt(paths.heartbeatReceipt, {
             schema: TAIL_RESTORER_READY_SCHEMA,
             kind: "heartbeat",
             outcome: "a2-failed",
-            observed_at: now,
+            observed_at: nowAfter,
             pid: process.pid,
             window_id: window.window_id,
             restorer_id: window.restorer?.restorer_id || null,
@@ -652,13 +725,14 @@ export async function tailAttachmentRestorerTick({
             schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
             kind: "restorer",
             outcome: cap.action || "cap-detach",
-            observed_at: now,
+            observed_at: nowAfter,
             window_id: restoredWindow.window_id,
             proved: cap.proved === true,
             cap_reached: true,
             events_seen: cap.signal?.events_seen ?? null,
             apply_overshoot: cap.signal?.apply_overshoot ?? null,
             a2: cap.signal?.a2 || null,
+            version_guard: cap.version_guard || cap.result?.version_guard || null,
             controller_death: false,
             cancel_requested: false,
             expired: false,
@@ -678,6 +752,7 @@ export async function tailAttachmentRestorerTick({
         outcome: "idle",
         window,
         reason: "owned-window-active-until-deadline",
+        cap_signal: prefetchedCapSignal,
       };
     }
 
@@ -686,7 +761,7 @@ export async function tailAttachmentRestorerTick({
     }
 
     if (pending && !expired && !controllerDead && !cancelRequested) {
-      const reconciled = await reconcileTailPendingMutation({ window, transport, now });
+      const reconciled = await reconcileTailPendingMutation({ window, transport, now: nowAfter });
       await store.write(reconciled.window, { expectedWindowId: window.window_id });
       if (reconciled.outcome === "refused-conflict") {
         const receipt = writeTailRestorerReceipt(paths.terminalReceipt, reconciled.receipt);
@@ -696,7 +771,7 @@ export async function tailAttachmentRestorerTick({
         schema: TAIL_RESTORER_READY_SCHEMA,
         kind: "heartbeat",
         outcome: reconciled.outcome,
-        observed_at: now,
+        observed_at: nowAfter,
         pid: process.pid,
         window_id: reconciled.window.window_id,
         restorer_id: reconciled.window.restorer?.restorer_id || null,
@@ -706,14 +781,14 @@ export async function tailAttachmentRestorerTick({
     }
 
     if (pending && pendingIssuedUnacked(window)) {
-      const reconciled = await reconcileTailPendingMutation({ window, transport, now });
+      const reconciled = await reconcileTailPendingMutation({ window, transport, now: nowAfter });
       await store.write(reconciled.window, { expectedWindowId: window.window_id });
       if (reconciled.outcome === "retained-pending-unknown") {
         writeTailRestorerReceipt(paths.heartbeatReceipt, {
           schema: TAIL_RESTORER_READY_SCHEMA,
           kind: "heartbeat",
           outcome: reconciled.outcome,
-          observed_at: now,
+          observed_at: nowAfter,
           pid: process.pid,
           window_id: reconciled.window.window_id,
           restorer_id: reconciled.window.restorer?.restorer_id || null,
@@ -739,7 +814,7 @@ export async function tailAttachmentRestorerTick({
       store,
       transport,
       versionTransport,
-      now,
+      now: nowAfter,
       alreadyLocked: true,
     });
 
@@ -761,7 +836,7 @@ export async function tailAttachmentRestorerTick({
         schema: TAIL_RESTORER_READY_SCHEMA,
         kind: "heartbeat",
         outcome: restored.action,
-        observed_at: now,
+        observed_at: nowAfter,
         pid: process.pid,
         window_id: restored.window.window_id,
         restorer_id: restored.window.restorer?.restorer_id || null,
@@ -781,7 +856,7 @@ export async function tailAttachmentRestorerTick({
       schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
       kind: "restorer",
       outcome: restored.proved ? restored.action : "blocked",
-      observed_at: now,
+      observed_at: nowAfter,
       window_id: restored.window.window_id,
       proved: restored.proved,
       expired: restored.expired === true,

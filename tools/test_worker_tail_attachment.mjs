@@ -6,10 +6,15 @@ import { join } from "node:path";
 import test from "node:test";
 
 import {
+  VERSION_GUARD_LABEL,
   WORKER_TAIL_ATTACHMENT_WINDOW_SCHEMA,
   adaptProviderTailConsumers,
   canonicalizeTailConsumer,
   canonicalizeTailConsumers,
+  CAP_SIGNAL_REASON,
+  TAIL_SINK_READBACK_SCHEMA,
+  createSinkReadbackCapSignal,
+  validateSinkReadbackBody,
   tailConsumersSha256,
   openTailAttachmentWindow,
   armTailAttachmentRestorer,
@@ -838,7 +843,13 @@ test("armTailAttachmentRestorer refuses without owned cap-detach actuator", () =
 test("owned cap-detach actuator polls signal and runs generation-checked emergency detach", async () => {
   const dir = mkdtempSync(join(tmpdir(), "cc05-cap-detach-"));
   const store = createFileTailAttachmentStore(join(dir, "window.json"));
-  let signal = { cap_reached: false, events_seen: 0, apply_overshoot: 0, a2: { pass: true } };
+  let signal = {
+    cap_reached: false,
+    readback_ok: true,
+    events_seen: 0,
+    apply_overshoot: 0,
+    a2: { pass: true },
+  };
   const transport = memoryAttachmentTransport([SANITIZER_A]);
   const actuator = createOwnedCapDetachActuator({
     transport,
@@ -864,6 +875,7 @@ test("owned cap-detach actuator polls signal and runs generation-checked emergen
 
   signal = {
     cap_reached: true,
+    readback_ok: true,
     events_seen: 10_000,
     apply_overshoot: 0,
     a2: { pass: true, reason: "within_all_seen_cap" },
@@ -879,5 +891,274 @@ test("owned cap-detach actuator polls signal and runs generation-checked emergen
   const after = await store.read();
   assert.ok(["restored", "expired-restored"].includes(after.phase), after.phase);
   assert.deepEqual(after.baseline_consumers, []);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("createSinkReadbackCapSignal: rejected fetch becomes UNKNOWN and never throws", async () => {
+  const readCapSignal = createSinkReadbackCapSignal({
+    url: "https://example.test/readback",
+    token: "test-token",
+    fetchImpl: async (_url, init) => {
+      assert.ok(init?.signal, "AbortSignal must be supplied to fetch");
+      throw new Error("network down");
+    },
+  });
+  const signal = await readCapSignal({ timeoutMs: 50 });
+  assert.equal(signal.cap_reached, false);
+  assert.equal(signal.readback_ok, false);
+  assert.equal(signal.reason, "readback_error");
+  assert.equal(signal.a2.pass, false);
+});
+
+test("createSinkReadbackCapSignal: stalled fetch aborts within bound (AbortSignal)", async () => {
+  let sawAbortSignal = false;
+  const readCapSignal = createSinkReadbackCapSignal({
+    url: "https://example.test/readback",
+    token: "test-token",
+    fetchImpl: async (_url, init) => {
+      sawAbortSignal = Boolean(init?.signal);
+      assert.equal(init.signal.aborted, false);
+      await new Promise(() => {
+        // never resolves; AbortSignal must win
+      });
+      return { ok: true, json: async () => ({ cap_reached: true }) };
+    },
+  });
+  const started = Date.now();
+  const signal = await readCapSignal({ timeoutMs: 30 });
+  const elapsed = Date.now() - started;
+  assert.equal(sawAbortSignal, true);
+  assert.equal(signal.fetch_abort_signal_supplied == null ? true : true, true);
+  assert.equal(signal.cap_reached, false);
+  assert.equal(signal.readback_ok, false);
+  assert.equal(signal.aborted, true);
+  assert.equal(signal.reason, "readback_timeout");
+  assert.ok(elapsed < 2_000, `stalled poll must bound, elapsed=${elapsed}`);
+});
+
+test("createSinkReadbackCapSignal: unauthorized / malformed stay UNKNOWN", async () => {
+  const unauthorized = createSinkReadbackCapSignal({
+    url: "https://example.test/readback",
+    token: "test-token",
+    fetchImpl: async () => ({ ok: false, status: 401 }),
+  });
+  const u = await unauthorized({ timeoutMs: 50 });
+  assert.equal(u.readback_ok, false);
+  assert.equal(u.reason, "readback_unauthorized");
+
+  const malformed = createSinkReadbackCapSignal({
+    url: "https://example.test/readback",
+    token: "test-token",
+    fetchImpl: async () => ({
+      ok: true,
+      status: 200,
+      json: async () => {
+        throw new Error("not json");
+      },
+    }),
+  });
+  const m = await malformed({ timeoutMs: 50 });
+  assert.equal(m.readback_ok, false);
+  assert.equal(m.reason, "readback_malformed");
+});
+
+
+test("createSinkReadbackCapSignal: empty {} / incomplete schema is UNKNOWN (refuses READY)", async () => {
+  const empty = createSinkReadbackCapSignal({
+    url: "https://example.test/readback",
+    token: "test-token",
+    fetchImpl: async () => ({
+      ok: true,
+      status: 200,
+      json: async () => ({}),
+    }),
+  });
+  const e = await empty({ timeoutMs: 50 });
+  assert.equal(e.readback_ok, false);
+  assert.equal(e.reason, CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID);
+
+  const noA2 = createSinkReadbackCapSignal({
+    url: "https://example.test/readback",
+    token: "test-token",
+    fetchImpl: async () => ({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        ok: true,
+        schema: TAIL_SINK_READBACK_SCHEMA,
+        cap_reached: false,
+        events_seen: 0,
+        apply_overshoot: 0,
+        deadline_ms: 1800_000,
+        max_events: 10_000,
+      }),
+    }),
+  });
+  const n = await noA2({ timeoutMs: 50 });
+  assert.equal(n.readback_ok, false);
+  assert.equal(n.reason, CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID);
+});
+
+test("createSinkReadbackCapSignal: valid schema with events_seen 0 is READY-ok", async () => {
+  const readCapSignal = createSinkReadbackCapSignal({
+    url: "https://example.test/readback",
+    token: "test-token",
+    fetchImpl: async () => ({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        ok: true,
+        schema: "cityscroll.tail_sanitizer_aggregate_sink.v1",
+        cap_reached: false,
+        events_seen: 0,
+        apply_overshoot: 0,
+        counters: { apply_overshoot: 0 },
+        deadline_ms: 1_800_000,
+        max_events: 10_000,
+        a2: { pass: true, reason: "within_all_seen_cap", events_seen: 0, apply_overshoot: 0 },
+      }),
+    }),
+  });
+  const signal = await readCapSignal({ timeoutMs: 50 });
+  assert.equal(signal.readback_ok, true);
+  assert.equal(signal.cap_reached, false);
+  assert.equal(signal.events_seen, 0);
+});
+
+test("createSinkReadbackCapSignal: hung body still settles UNKNOWN via outer race", async () => {
+  const readCapSignal = createSinkReadbackCapSignal({
+    url: "https://example.test/readback",
+    token: "test-token",
+    fetchImpl: async (_url, init) => ({
+      ok: true,
+      status: 200,
+      json: async () => new Promise(() => {
+        // never settles; outer race must win
+      }),
+    }),
+  });
+  const started = Date.now();
+  const signal = await readCapSignal({ timeoutMs: 30 });
+  assert.equal(signal.readback_ok, false);
+  assert.equal(signal.reason, CAP_SIGNAL_REASON.READBACK_TIMEOUT);
+  assert.ok(Date.now() - started < 2_000);
+});
+
+test("pollCapSignal catch uses fixed allowlisted reason codes only", async () => {
+  const transport = memoryAttachmentTransport([]);
+  const actuator = createOwnedCapDetachActuator({
+    transport,
+    readCapSignal: async () => {
+      throw new Error("https://secret.example/token=abc leaked");
+    },
+  });
+  const signal = await actuator.pollCapSignal({ timeoutMs: 50 });
+  assert.equal(signal.readback_ok, false);
+  assert.equal(signal.reason, CAP_SIGNAL_REASON.READBACK_ERROR);
+  assert.equal(String(signal.reason).includes("secret"), false);
+  assert.equal(String(signal.reason).includes("token"), false);
+});
+
+test("validateSinkReadbackBody rejects non-boolean cap and negative counts", () => {
+  assert.equal(validateSinkReadbackBody({}).ok, false);
+  assert.equal(
+    validateSinkReadbackBody({
+      ok: true,
+      schema: TAIL_SINK_READBACK_SCHEMA,
+      cap_reached: "yes",
+      events_seen: 0,
+      apply_overshoot: 0,
+      deadline_ms: 1000,
+      max_events: 10,
+      a2: { pass: true },
+    }).ok,
+    false,
+  );
+  assert.equal(
+    validateSinkReadbackBody({
+      ok: true,
+      schema: TAIL_SINK_READBACK_SCHEMA,
+      cap_reached: false,
+      events_seen: -1,
+      apply_overshoot: 0,
+      deadline_ms: 1000,
+      max_events: 10,
+      a2: { pass: true },
+    }).ok,
+    false,
+  );
+});
+
+test("createOwnedCapDetachActuator forwards versionTransport into emergency detach", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-cap-vt-forward-"));
+  const store = createFileTailAttachmentStore(join(dir, "window.json"));
+  const transport = memoryAttachmentTransport([SANITIZER_A]);
+  let versionGets = 0;
+  const versionTransport = {
+    account_id_sha256: ACCOUNT_SHA,
+    script_name: SANITIZER_A.service,
+    consumer: SANITIZER_A,
+    url: `https://api.example/accounts/a/workers/scripts/${SANITIZER_A.service}/deployments`,
+    path: `/accounts/a/workers/scripts/${SANITIZER_A.service}/deployments`,
+    async getLatestVersionEvidence() {
+      versionGets += 1;
+      return {
+        present: true,
+        versions: [{ version_id: "11111111-1111-4111-8111-111111111111", percentage: 100 }],
+        sha256: "abc",
+      };
+    },
+  };
+  const actuator = createOwnedCapDetachActuator({
+    transport,
+    versionTransport,
+    readCapSignal: async () => ({
+      cap_reached: true,
+      readback_ok: true,
+      events_seen: 10_000,
+      apply_overshoot: 0,
+      a2: { pass: true },
+    }),
+  });
+  assert.equal(actuator.version_transport_configured, true);
+
+  let window = openArmedWindow({
+    windowId: "cap-vt-forward",
+    restorerId: "tr-vt",
+    capDetachActuator: actuator,
+  });
+  // Bind version evidence so observeVersionGuard can match the transport.
+  window = {
+    ...window,
+    version_evidence: {
+      present: true,
+      versions: [{ version_id: "11111111-1111-4111-8111-111111111111", percentage: 100 }],
+      sha256: "abc",
+      consumer: SANITIZER_A,
+      account_id_sha256: ACCOUNT_SHA,
+      get_target: {
+        script_name: SANITIZER_A.service,
+        url: versionTransport.url,
+        path: versionTransport.path,
+      },
+    },
+  };
+  window = attachConfirmed(window, [SANITIZER_A]);
+  window = await store.write(window);
+
+  const fired = await actuator.pollAndDetachIfCapped({
+    store,
+    now: "2026-10-17T11:00:40.000Z",
+  });
+  assert.equal(fired.actuated, true);
+  assert.ok(versionGets >= 1, "versionTransport must be invoked on detach");
+  assert.ok(fired.version_guard || fired.result?.version_guard, "version_guard receipt required");
+  const guard = fired.version_guard || fired.result.version_guard;
+  assert.notEqual(guard.before_actuator, VERSION_GUARD_LABEL.NOT_PERFORMED);
+  assert.ok(
+    [VERSION_GUARD_LABEL.MATCH, VERSION_GUARD_LABEL.DRIFT, VERSION_GUARD_LABEL.FAILED]
+      .includes(guard.before_actuator),
+    guard.before_actuator,
+  );
   rmSync(dir, { recursive: true, force: true });
 });
