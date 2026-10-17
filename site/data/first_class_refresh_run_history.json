@@ -1,18 +1,18 @@
 {
   "schema": "cityscroll.first_class_refresh_run_history.v1",
-  "generated_at": "2026-10-17T02:29:57.877Z",
+  "generated_at": "2026-10-17T11:46:08.076Z",
   "run": {
-    "run_id": "github-actions:38989793665:1",
-    "github_run_id": 38989793665,
-    "run_url": "https://github.com/cityscroll/cityscroll-app/actions/runs/38989793665",
-    "trigger": "workflow_dispatch",
-    "started_at": "2026-10-17T01:12:37Z",
-    "finished_at": "2026-10-17T02:29:57.877Z",
-    "code_revision": "e79cf058db98ca2e692a5493382af4cef8c9554e"
+    "run_id": "github-actions:39027481692:1",
+    "github_run_id": 39027481692,
+    "run_url": "https://github.com/cityscroll/cityscroll-app/actions/runs/39027481692",
+    "trigger": "schedule",
+    "started_at": "2026-10-17T11:08:30Z",
+    "finished_at": "2026-10-17T11:46:08.076Z",
+    "code_revision": "b2e01af12f062cbdd4250666f40c12c327529cff"
   },
   "total": 42,
-  "due_count": 40,
-  "published_count": 36,
+  "due_count": 8,
+  "published_count": 6,
   "datasets": [
     {
       "id": "agency-constellation",
@@ -35,65 +35,65 @@
     {
       "id": "contracts-payments",
       "public_artifact_path": "site/data/analytics_payments.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "succeeded",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "contracts-performance-evidence",
       "public_artifact_path": "site/data/analytics_performance_evidence.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "succeeded",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "contracts-registered",
       "public_artifact_path": "site/data/analytics_registered_contracts.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "succeeded",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "bsa-calendar",
       "public_artifact_path": "site/data/bsa_calendar.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "city-record-pin-chain",
       "public_artifact_path": "site/data/city_record_pin_chain_warehouse_lookup.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "committee-graph",
       "public_artifact_path": "site/data/committee_graph_lookup.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "community-board-budget-register",
       "public_artifact_path": "site/data/community_board_budget_register.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "succeeded",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "community-board-geography",
@@ -107,29 +107,29 @@
     {
       "id": "community-board-meetings",
       "public_artifact_path": "site/data/community_board_meeting_index.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "community-board-people",
       "public_artifact_path": "site/data/community_board_people.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "public-consultations",
       "public_artifact_path": "site/data/consultations.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "doing-business",
@@ -143,29 +143,29 @@
     {
       "id": "land-default",
       "public_artifact_path": "site/data/land_default_ulurp.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "land-upcoming-hearings",
       "public_artifact_path": "site/data/land_upcoming_hearings.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "meeting-notices",
       "public_artifact_path": "site/data/meeting_notice_materialization.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "meeting-outcomes",
@@ -174,43 +174,43 @@
       "acquisition_status": "succeeded",
       "builder_status": "not_applicable",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "address-geography-refresh",
       "public_artifact_path": "site/data/meeting-geography-backfill/manifest.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "meetings-domain",
       "public_artifact_path": "site/data/meetings_domain_observations.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
       "published": true
     },
     {
       "id": "contracts-open",
       "public_artifact_path": "site/data/money_default_open.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "contracts-agency-filter",
       "public_artifact_path": "site/data/money_procurement_agencies.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "contracts-resident-snapshot",
@@ -219,25 +219,25 @@
       "acquisition_status": "failed",
       "builder_status": "skipped",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "community-board-committees",
       "public_artifact_path": "site/data/non_council_outcome_sources/community_board_committees.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "oath-trial-calendar",
       "public_artifact_path": "site/data/oath_trial_calendar.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "succeeded",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "ocp-awards",
@@ -251,38 +251,38 @@
     {
       "id": "official-cfb-influence",
       "public_artifact_path": "site/data/official_cfb_influence_lookup.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "pdc-calendar",
       "public_artifact_path": "site/data/pdc_calendar.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "succeeded",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "people-organizations",
       "public_artifact_path": "site/data/people_organizations_read_model.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "succeeded",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "person-hub",
       "public_artifact_path": "site/data/person_hub_lookup.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "contracts-procurement-query",
@@ -296,11 +296,11 @@
     {
       "id": "contracts-procurement-rows",
       "public_artifact_path": "site/data/procurement_browse_rows.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "property-domain",
@@ -314,65 +314,65 @@
     {
       "id": "property-resident",
       "public_artifact_path": "site/data/property_resident_snapshot.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "succeeded",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
       "published": true
     },
     {
       "id": "rules-domain",
       "public_artifact_path": "site/data/rules_domain_observations.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
       "published": true
     },
     {
       "id": "rules-semantic-lane",
       "public_artifact_path": "site/data/rules_semantic_lane.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "succeeded",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
       "published": true
     },
     {
       "id": "shared-meetings",
       "public_artifact_path": "site/data/shared_meeting_read_model.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "succeeded",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "staffing-hires",
       "public_artifact_path": "site/data/staffing_default_hires.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "staffing-exams",
       "public_artifact_path": "site/data/staffing_exams.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "succeeded",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "upcoming-council-meetings",
       "public_artifact_path": "site/data/upcoming_council_meetings.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "succeeded",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     },
     {
       "id": "zap-bbl",
@@ -386,14 +386,23 @@
     {
       "id": "zap-projects",
       "public_artifact_path": "site/data/zap_projects_warehouse_lookup.json",
-      "due": true,
-      "acquisition_status": "succeeded",
-      "builder_status": "not_applicable",
+      "due": false,
+      "acquisition_status": "not_due",
+      "builder_status": "not_due",
       "rebuild_status": "succeeded",
-      "published": true
+      "published": false
     }
   ],
   "prior_runs": [
+    {
+      "run_id": "github-actions:38989793665:1",
+      "trigger": "workflow_dispatch",
+      "started_at": "2026-10-17T01:12:37Z",
+      "finished_at": "2026-10-17T02:29:57.877Z",
+      "due_count": 40,
+      "published_count": 36,
+      "receipt_sha256": "sha256:64911feceaf53ba7411802f50e1185a87bd5de71dc9a5776037dbdfe3c5e5f5d"
+    },
     {
       "run_id": "github-actions:38731474982:1",
       "trigger": "schedule",

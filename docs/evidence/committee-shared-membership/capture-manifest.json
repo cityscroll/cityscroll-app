@@ -16,11 +16,11 @@
       },
       "javascript": "enabled",
       "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
-      "repository_revision": "4c9d3b53e1c730a42dfdcf3d1fb7d9ede0ff5ae7",
+      "repository_revision": "b2e01af12f062cbdd4250666f40c12c327529cff",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
-        "site/civic-documents.css": "aec377b0862b8ed154c90d0b44bb47e56bcf7b39"
+        "site/civic-documents.css": "b22d6ed92983488ac21bf3ebbdf206e502f4e9e9"
       },
       "data_vintage": {
         "committee_graph_generated_at": "2026-10-17T01:12:39Z",
@@ -197,11 +197,11 @@
       },
       "javascript": "enabled",
       "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
-      "repository_revision": "4c9d3b53e1c730a42dfdcf3d1fb7d9ede0ff5ae7",
+      "repository_revision": "b2e01af12f062cbdd4250666f40c12c327529cff",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
-        "site/civic-documents.css": "aec377b0862b8ed154c90d0b44bb47e56bcf7b39"
+        "site/civic-documents.css": "b22d6ed92983488ac21bf3ebbdf206e502f4e9e9"
       },
       "data_vintage": {
         "committee_graph_generated_at": "2026-10-17T01:12:39Z",
@@ -378,11 +378,11 @@
       },
       "javascript": "enabled",
       "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
-      "repository_revision": "4c9d3b53e1c730a42dfdcf3d1fb7d9ede0ff5ae7",
+      "repository_revision": "b2e01af12f062cbdd4250666f40c12c327529cff",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
-        "site/civic-documents.css": "aec377b0862b8ed154c90d0b44bb47e56bcf7b39"
+        "site/civic-documents.css": "b22d6ed92983488ac21bf3ebbdf206e502f4e9e9"
       },
       "data_vintage": {
         "committee_graph_generated_at": "2026-10-17T01:12:39Z",
@@ -490,11 +490,11 @@
       },
       "javascript": "enabled",
       "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
-      "repository_revision": "4c9d3b53e1c730a42dfdcf3d1fb7d9ede0ff5ae7",
+      "repository_revision": "b2e01af12f062cbdd4250666f40c12c327529cff",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
-        "site/civic-documents.css": "aec377b0862b8ed154c90d0b44bb47e56bcf7b39"
+        "site/civic-documents.css": "b22d6ed92983488ac21bf3ebbdf206e502f4e9e9"
       },
       "data_vintage": {
         "committee_graph_generated_at": "2026-10-17T01:12:39Z",
@@ -706,11 +706,11 @@
       },
       "javascript": "enabled",
       "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
-      "repository_revision": "4c9d3b53e1c730a42dfdcf3d1fb7d9ede0ff5ae7",
+      "repository_revision": "b2e01af12f062cbdd4250666f40c12c327529cff",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
-        "site/civic-documents.css": "aec377b0862b8ed154c90d0b44bb47e56bcf7b39"
+        "site/civic-documents.css": "b22d6ed92983488ac21bf3ebbdf206e502f4e9e9"
       },
       "data_vintage": {
         "committee_graph_generated_at": "2026-10-17T01:12:39Z",
@@ -757,11 +757,11 @@
       },
       "javascript": "enabled",
       "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
-      "repository_revision": "4c9d3b53e1c730a42dfdcf3d1fb7d9ede0ff5ae7",
+      "repository_revision": "b2e01af12f062cbdd4250666f40c12c327529cff",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
-        "site/civic-documents.css": "aec377b0862b8ed154c90d0b44bb47e56bcf7b39"
+        "site/civic-documents.css": "b22d6ed92983488ac21bf3ebbdf206e502f4e9e9"
       },
       "data_vintage": {
         "committee_graph_generated_at": "2026-10-17T01:12:39Z",
@@ -931,11 +931,11 @@
       },
       "javascript": "disabled",
       "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
-      "repository_revision": "4c9d3b53e1c730a42dfdcf3d1fb7d9ede0ff5ae7",
+      "repository_revision": "b2e01af12f062cbdd4250666f40c12c327529cff",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
-        "site/civic-documents.css": "aec377b0862b8ed154c90d0b44bb47e56bcf7b39"
+        "site/civic-documents.css": "b22d6ed92983488ac21bf3ebbdf206e502f4e9e9"
       },
       "data_vintage": {
         "committee_graph_generated_at": "2026-10-17T01:12:39Z",
@@ -963,11 +963,11 @@
       },
       "javascript": "enabled",
       "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
-      "repository_revision": "4c9d3b53e1c730a42dfdcf3d1fb7d9ede0ff5ae7",
+      "repository_revision": "b2e01af12f062cbdd4250666f40c12c327529cff",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
-        "site/civic-documents.css": "aec377b0862b8ed154c90d0b44bb47e56bcf7b39"
+        "site/civic-documents.css": "b22d6ed92983488ac21bf3ebbdf206e502f4e9e9"
       },
       "data_vintage": {
         "committee_graph_generated_at": "2026-10-17T01:12:39Z",
@@ -998,11 +998,11 @@
       },
       "javascript": "enabled",
       "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
-      "repository_revision": "4c9d3b53e1c730a42dfdcf3d1fb7d9ede0ff5ae7",
+      "repository_revision": "b2e01af12f062cbdd4250666f40c12c327529cff",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
-        "site/civic-documents.css": "aec377b0862b8ed154c90d0b44bb47e56bcf7b39"
+        "site/civic-documents.css": "b22d6ed92983488ac21bf3ebbdf206e502f4e9e9"
       },
       "data_vintage": {
         "committee_graph_generated_at": "2026-10-17T01:12:39Z",
@@ -1033,11 +1033,11 @@
       },
       "javascript": "enabled",
       "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
-      "repository_revision": "4c9d3b53e1c730a42dfdcf3d1fb7d9ede0ff5ae7",
+      "repository_revision": "b2e01af12f062cbdd4250666f40c12c327529cff",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
-        "site/civic-documents.css": "aec377b0862b8ed154c90d0b44bb47e56bcf7b39"
+        "site/civic-documents.css": "b22d6ed92983488ac21bf3ebbdf206e502f4e9e9"
       },
       "data_vintage": {
         "committee_graph_generated_at": "2026-10-17T01:12:39Z",
