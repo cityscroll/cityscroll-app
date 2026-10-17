@@ -5792,6 +5792,9 @@ select {
 [data-board-land-positions-ready] .board-land-position-full-record {
   display: inline-block;
   margin-inline-start: var(--space-2);
+  /* WCAG 2.5.8: a comfortable target on a touch screen. */
+  min-height: 24px;
+  padding-block: var(--space-1);
   font-size: .75rem;
   font-weight: 600;
   color: var(--color-action);
