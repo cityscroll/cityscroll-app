@@ -1,0 +1,22 @@
+name = "cityscroll-tail-sanitizer"
+main = "src/worker.mjs"
+compatibility_date = "2026-07-27"
+workers_dev = true
+
+# Persistent observability intentionally ABSENT (disabled / not armed).
+# Do not add an [observability] block. Privacy for Tail collection is the
+# positive-allowlist sanitizer path, not enabling logs/traces.
+
+[[durable_objects.bindings]]
+name = "AGG_SINK"
+class_name = "AggregateSink"
+
+[[migrations]]
+tag = "v1-tail-sanitizer-aggregate-sink"
+new_sqlite_classes = ["AggregateSink"]
+
+# READBACK_TOKEN must be set via `wrangler secret put READBACK_TOKEN` before
+# any authenticated readback. Placeholder keeps local config valid; runtime
+# refuses readback while unset.
+[vars]
+READBACK_TOKEN = "unset"

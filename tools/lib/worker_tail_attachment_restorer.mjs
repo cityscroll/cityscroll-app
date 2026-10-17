@@ -1,0 +1,1351 @@
+/**
+ * Supervised Tail-attachment restorer.
+ *
+ * Reuses the observability restorer's durable state-root / receipt / controller-
+ * death binding pattern for script-settings tail_consumers windows. Own-window
+ * stays idle until expiry, controller-death, or cancel. Issued-but-unacked
+ * writes retain UNKNOWN ownership. Foreign same-count identity is refused.
+ */
+import { createHash } from "node:crypto";
+import {
+  chmodSync, closeSync, cpSync, existsSync, fsyncSync, mkdirSync, openSync,
+  readFileSync, renameSync, rmSync, writeFileSync,
+} from "node:fs";
+import { dirname, join } from "node:path";
+import { spawn } from "node:child_process";
+import { setTimeout as sleep } from "node:timers/promises";
+
+import {
+  CAP_SIGNAL_REASON,
+  TAIL_ATTACHMENT_TERMINAL_PHASES,
+  VERSION_GUARD_LABEL,
+  WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
+  adaptProviderTailConsumers,
+  allowlistedCapSignalReason,
+  assertTailTransportTargetMatchesWindow,
+  assertVersionTransportMatchesBound,
+  bindCapObservationToWindowSnapshot,
+  capObservationMatchesLiveWindow,
+  classifyTailAttachment,
+  confirmTailAttachment,
+  createBetaWorkerTailConsumersTransport,
+  createDeploymentsVersionTransport,
+  createDualViewTailConsumersTransport,
+  createFileTailAttachmentStore,
+  createScriptSettingsTailConsumersTransport,
+  observeVersionGuard,
+  projectCapIdentityBinding,
+  projectCapSignalA2,
+  runIndependentTailRestorer,
+} from "./worker_tail_attachment.mjs";
+import { DEFAULT_WORKER_ID, isProcessAlive } from "./worker_observability_settings.mjs";
+
+export const TAIL_RESTORER_RUNTIME_SCHEMA = "cityscroll.worker_tail_attachment_restorer_runtime.v1";
+export const TAIL_RESTORER_READY_SCHEMA = "cityscroll.worker_tail_attachment_restorer_ready.v1";
+export const DEFAULT_TAIL_RESTORER_STATE_ROOT = join(
+  process.env.HOME || "",
+  ".local/state/cityscroll-cost-control/tail-attachment-restorer",
+);
+export const DEFAULT_TAIL_HEARTBEAT_MAX_AGE_MS = 30_000;
+export const DEFAULT_TAIL_POLL_MS = 1_000;
+
+function fail(message) {
+  throw new Error(message);
+}
+
+/** Persist only the allowlisted A2 projection — never raw a2 / body text. */
+function projectPersistedCapA2(raw) {
+  if (raw == null) return null;
+  return projectCapSignalA2(raw);
+}
+
+/** Persist only allowlisted cap-signal scalars (no body, no arbitrary keys). */
+function projectPersistedCapSignal(signal) {
+  if (!signal || typeof signal !== "object") return null;
+  return {
+    cap_reached: signal.cap_reached === true,
+    readback_ok: signal.readback_ok === true,
+    reason: typeof signal.reason === "string"
+      ? allowlistedCapSignalReason(signal.reason)
+      : (signal.readback_ok === true ? null : CAP_SIGNAL_REASON.CAP_SIGNAL_UNKNOWN),
+    events_seen: Number.isInteger(signal.events_seen) && signal.events_seen >= 0
+      ? signal.events_seen
+      : null,
+    apply_overshoot: Number.isInteger(signal.apply_overshoot) && signal.apply_overshoot >= 0
+      ? signal.apply_overshoot
+      : null,
+    deadline_ms: Number.isFinite(signal.deadline_ms) && signal.deadline_ms > 0
+      ? signal.deadline_ms
+      : null,
+    max_events: Number.isInteger(signal.max_events) && signal.max_events > 0
+      ? signal.max_events
+      : null,
+    opened: typeof signal.opened === "boolean" ? signal.opened : null,
+    a2: projectPersistedCapA2(signal.a2),
+    identity_binding: projectCapIdentityBinding(signal.identity_binding),
+  };
+}
+
+function fsyncWriteJson(path, value) {
+  mkdirSync(dirname(path), { recursive: true, mode: 0o700 });
+  const temporary = `${path}.next`;
+  const payload = `${JSON.stringify(value, null, 2)}\n`;
+  writeFileSync(temporary, payload, { mode: 0o600 });
+  const fd = openSync(temporary, "r");
+  try { fsyncSync(fd); } finally { closeSync(fd); }
+  renameSync(temporary, path);
+  const out = openSync(path, "r");
+  try { fsyncSync(out); } finally { closeSync(out); }
+  chmodSync(path, 0o600);
+}
+
+function readJsonIfPresent(path) {
+  if (!existsSync(path)) return null;
+  return JSON.parse(readFileSync(path, "utf8"));
+}
+
+export function tailRestorerPaths(stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT) {
+  return {
+    root: stateRoot,
+    killSwitch: join(stateRoot, "tail-attachment-restorer.off"),
+    pidFile: join(stateRoot, "restorer.pid"),
+    startReceipt: join(stateRoot, "receipts/start.json"),
+    startSpawnReceipt: join(stateRoot, "receipts/start-spawn.json"),
+    readyReceipt: join(stateRoot, "receipts/ready.json"),
+    heartbeatReceipt: join(stateRoot, "receipts/heartbeat.json"),
+    terminalReceipt: join(stateRoot, "receipts/terminal.json"),
+    controllerDeathReceipt: join(stateRoot, "receipts/controller-death.json"),
+    childExitReceipt: join(stateRoot, "receipts/child-exit.json"),
+    childFailedBeforeReadyReceipt: join(stateRoot, "receipts/child-failed-before-ready.json"),
+    assignedWindow: join(stateRoot, "assigned-window.json"),
+    durableRunner: join(stateRoot, "run.mjs"),
+    durableLibDir: join(stateRoot, "lib"),
+    logsDir: join(stateRoot, "logs"),
+  };
+}
+
+/** Allowlisted guardian startup failure codes — never persist raw stderr. */
+export const GUARDIAN_STARTUP_FAILURE_CODE = Object.freeze({
+  CREDENTIAL_MUTUALLY_EXCLUSIVE: "credential_mutually_exclusive",
+  CREDENTIAL_MISSING: "credential_missing",
+  CREDENTIAL_FILE_MODE: "credential_file_mode",
+  WINDOW_MISSING: "window_missing",
+  TRANSPORT_TARGET_MISMATCH: "transport_target_mismatch",
+  VERSION_EVIDENCE_MISSING: "version_evidence_missing",
+  SPAWN_ERROR: "spawn_error",
+  UNKNOWN_STARTUP_FAILURE: "unknown_startup_failure",
+  NONE: "none",
+});
+
+const GUARDIAN_STDERR_DIAG_MAX_BYTES = 4_096;
+
+/**
+ * Classify a bounded in-memory stderr sample into an allowlisted failure code.
+ * The sample is never persisted — only the returned code/counts are.
+ */
+export function classifyGuardianStartupStderr(sampleText = "") {
+  const text = typeof sampleText === "string" ? sampleText : "";
+  if (/mutually exclusive/i.test(text)) {
+    return GUARDIAN_STARTUP_FAILURE_CODE.CREDENTIAL_MUTUALLY_EXCLUSIVE;
+  }
+  if (/must be mode 0600|mode 0600/i.test(text)) {
+    return GUARDIAN_STARTUP_FAILURE_CODE.CREDENTIAL_FILE_MODE;
+  }
+  if (/CLOUDFLARE_API_TOKEN or CLOUDFLARE_API_TOKEN_FILE is required/i.test(text)
+    || (/CLOUDFLARE_API_TOKEN/i.test(text) && /is required/i.test(text) && !/mutually exclusive/i.test(text))) {
+    return GUARDIAN_STARTUP_FAILURE_CODE.CREDENTIAL_MISSING;
+  }
+  if (/window state missing|tail attachment window is empty|cannot announce.*without a window/i.test(text)) {
+    return GUARDIAN_STARTUP_FAILURE_CODE.WINDOW_MISSING;
+  }
+  if (/transport target|account or worker mismatch|does not match window/i.test(text)) {
+    return GUARDIAN_STARTUP_FAILURE_CODE.TRANSPORT_TARGET_MISMATCH;
+  }
+  if (/version evidence|version_evidence|deployments version/i.test(text)
+    && /required|missing|unproved|refusing/i.test(text)) {
+    return GUARDIAN_STARTUP_FAILURE_CODE.VERSION_EVIDENCE_MISSING;
+  }
+  if (text.trim()) return GUARDIAN_STARTUP_FAILURE_CODE.UNKNOWN_STARTUP_FAILURE;
+  return GUARDIAN_STARTUP_FAILURE_CODE.NONE;
+}
+
+function createBoundedStderrDiagnoser({ maxBytes = GUARDIAN_STDERR_DIAG_MAX_BYTES } = {}) {
+  let sample = Buffer.alloc(0);
+  let bytesSeen = 0;
+  let bytesOmitted = 0;
+  let linesSeen = 0;
+  let linesOmitted = 0;
+  return {
+    max_bytes: maxBytes,
+    onChunk(chunk) {
+      const buf = Buffer.isBuffer(chunk) ? chunk : Buffer.from(String(chunk));
+      bytesSeen += buf.length;
+      const asText = buf.toString("utf8");
+      const newLines = (asText.match(/\n/g) || []).length;
+      linesSeen += newLines;
+      if (sample.length >= maxBytes) {
+        bytesOmitted += buf.length;
+        linesOmitted += newLines;
+        return;
+      }
+      const room = maxBytes - sample.length;
+      if (buf.length <= room) {
+        sample = Buffer.concat([sample, buf]);
+        return;
+      }
+      sample = Buffer.concat([sample, buf.subarray(0, room)]);
+      bytesOmitted += buf.length - room;
+      const omittedText = buf.subarray(room).toString("utf8");
+      linesOmitted += (omittedText.match(/\n/g) || []).length;
+    },
+    snapshot() {
+      const sampleText = sample.toString("utf8");
+      return {
+        failure_code: classifyGuardianStartupStderr(sampleText),
+        stderr_bytes_seen: bytesSeen,
+        stderr_bytes_omitted: bytesOmitted,
+        stderr_lines_seen: linesSeen,
+        stderr_lines_omitted: linesOmitted,
+        stderr_diag_cap_bytes: maxBytes,
+        // Intentionally omit sampleText — never persist raw stderr.
+      };
+    },
+  };
+}
+
+/**
+ * Compose the guardian child env with exactly ONE Cloudflare credential source.
+ * Prefers CLOUDFLARE_API_TOKEN_FILE (no raw token in env). Explicitly deletes the
+ * unused variable so an inherited TOKEN cannot ride along with TOKEN_FILE.
+ * Returns booleans only for logging — never credential values.
+ */
+export function composeGuardianChildEnv(env = process.env, {
+  tokenFile = null,
+  token = null,
+  preferTokenFile = true,
+} = {}) {
+  const incoming = env && typeof env === "object" ? env : {};
+  const out = { ...incoming };
+  const hadToken = Boolean(incoming.CLOUDFLARE_API_TOKEN);
+  const hadTokenFile = Boolean(incoming.CLOUDFLARE_API_TOKEN_FILE);
+  delete out.CLOUDFLARE_API_TOKEN;
+  delete out.CLOUDFLARE_API_TOKEN_FILE;
+
+  const fileCandidate = typeof tokenFile === "string" && tokenFile
+    ? tokenFile
+    : (typeof incoming.CLOUDFLARE_API_TOKEN_FILE === "string" && incoming.CLOUDFLARE_API_TOKEN_FILE
+      ? incoming.CLOUDFLARE_API_TOKEN_FILE
+      : null);
+  const tokenCandidate = typeof token === "string" && token
+    ? token
+    : (typeof incoming.CLOUDFLARE_API_TOKEN === "string" && incoming.CLOUDFLARE_API_TOKEN
+      ? incoming.CLOUDFLARE_API_TOKEN
+      : null);
+
+  let credentialSource = "none";
+  if (preferTokenFile && fileCandidate) {
+    out.CLOUDFLARE_API_TOKEN_FILE = fileCandidate;
+    credentialSource = "TOKEN_FILE";
+  } else if (tokenCandidate) {
+    out.CLOUDFLARE_API_TOKEN = tokenCandidate;
+    credentialSource = "TOKEN";
+  } else if (fileCandidate) {
+    out.CLOUDFLARE_API_TOKEN_FILE = fileCandidate;
+    credentialSource = "TOKEN_FILE";
+  }
+
+  return {
+    env: out,
+    credential_source: credentialSource,
+    has_TOKEN: Boolean(out.CLOUDFLARE_API_TOKEN),
+    has_TOKEN_FILE: Boolean(out.CLOUDFLARE_API_TOKEN_FILE),
+    incoming_had_TOKEN: hadToken,
+    incoming_had_TOKEN_FILE: hadTokenFile,
+    sanitized_dual_credential: hadToken && hadTokenFile,
+  };
+}
+
+export function writeTailRestorerReceipt(path, receipt) {
+  fsyncWriteJson(path, receipt);
+  return receipt;
+}
+
+export function killSwitchEngaged(stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT) {
+  return existsSync(tailRestorerPaths(stateRoot).killSwitch);
+}
+
+/**
+ * Explicit controller-death receipt asks the guardian to restore before the
+ * deadline. Must bind window_id and restorer_id so a stale signal cannot
+ * restore a fresh healthy window.
+ */
+export function tailControllerDeathSignaled(
+  stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT,
+  { windowId = null, restorerId = null } = {},
+) {
+  const paths = tailRestorerPaths(stateRoot);
+  const receipt = readJsonIfPresent(paths.controllerDeathReceipt);
+  if (!receipt || receipt.kind !== "controller-death") return false;
+  if (typeof windowId !== "string" || !windowId) return false;
+  if (typeof restorerId !== "string" || !restorerId) return false;
+  return receipt.window_id === windowId && receipt.restorer_id === restorerId;
+}
+
+export function assignTailWindowForRestorer({
+  windowPath,
+  windowId,
+  stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT,
+} = {}) {
+  if (typeof windowPath !== "string" || !windowPath) fail("windowPath is required");
+  if (typeof windowId !== "string" || !windowId) fail("windowId is required");
+  const paths = tailRestorerPaths(stateRoot);
+  mkdirSync(paths.root, { recursive: true, mode: 0o700 });
+  mkdirSync(join(paths.root, "receipts"), { recursive: true, mode: 0o700 });
+  writeTailRestorerReceipt(paths.assignedWindow, {
+    schema: TAIL_RESTORER_RUNTIME_SCHEMA,
+    kind: "assigned-window",
+    assigned_at: new Date().toISOString(),
+    window_path: windowPath,
+    window_id: windowId,
+  });
+  return paths.assignedWindow;
+}
+
+function pendingIssuedUnacked(window) {
+  return Boolean(window.pending_mutation?.issued && !window.pending_mutation?.confirmed);
+}
+
+/**
+ * Reconcile a pending Tail attach/detach by GET while the window is healthy.
+ */
+export async function reconcileTailPendingMutation({
+  window,
+  transport,
+  now = new Date().toISOString(),
+} = {}) {
+  if (!window?.pending_mutation) fail("reconcileTailPendingMutation requires a pending mutation");
+  if (!transport || typeof transport.getTailConsumers !== "function") {
+    fail("reconcile transport must provide getTailConsumers");
+  }
+  const currentRaw = await transport.getTailConsumers();
+  const adapted = adaptProviderTailConsumers(currentRaw);
+  if (!adapted.present) {
+    return {
+      outcome: "retained-pending-unknown",
+      action: "retain-owned-unknown",
+      proved: false,
+      ownership_preserved: true,
+      ownership_unknown: true,
+      classification: { class: "unknown", consumers: null, sha256: null },
+      window,
+      receipt: {
+        schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
+        kind: "restorer",
+        outcome: "retained-pending-unknown",
+        window_id: window.window_id,
+        observed_at: now,
+        reason: "provider GET missing/malformed during pending reconcile",
+      },
+    };
+  }
+  const classification = classifyTailAttachment(adapted.consumers, window);
+  const pending = window.pending_mutation;
+
+  if (classification.class === "pending-after") {
+    const confirmed = confirmTailAttachment(window, {
+      observedConsumers: adapted.consumers,
+      now,
+    });
+    return {
+      outcome: "reconciled-owned",
+      action: "reconciled-owned",
+      proved: true,
+      ownership_preserved: true,
+      ownership_unknown: false,
+      classification,
+      window: confirmed,
+      receipt: {
+        schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
+        kind: "restorer",
+        outcome: "reconciled-owned",
+        window_id: window.window_id,
+        observed_at: now,
+        current_sha256: classification.sha256,
+        owned_sha256: confirmed.owned_sha256,
+        pending_after_sha256: pending.after_sha256,
+      },
+    };
+  }
+
+  if (classification.class === "pending-before" || classification.class === "baseline") {
+    if (pendingIssuedUnacked(window)) {
+      return {
+        outcome: "retained-pending-unknown",
+        action: "retain-owned-unknown",
+        proved: false,
+        ownership_preserved: true,
+        ownership_unknown: true,
+        classification,
+        window,
+        receipt: {
+          schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
+          kind: "restorer",
+          outcome: "retained-pending-unknown",
+          window_id: window.window_id,
+          observed_at: now,
+          reason: "issued attachment write is unacknowledged; one GET is not baseline-safe",
+        },
+      };
+    }
+    // Unissued pending: clear and keep window open.
+    const cleared = {
+      ...window,
+      pending_mutation: null,
+      phase: window.owned_sha256 ? "attached" : "captured",
+    };
+    return {
+      outcome: "cleared-unissued-pending",
+      action: "cleared-unissued-pending",
+      proved: false,
+      ownership_preserved: Boolean(window.owned_sha256),
+      ownership_unknown: false,
+      classification,
+      window: cleared,
+      receipt: {
+        schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
+        kind: "restorer",
+        outcome: "cleared-unissued-pending",
+        window_id: window.window_id,
+        observed_at: now,
+      },
+    };
+  }
+
+  if (classification.class === "conflict") {
+    return {
+      outcome: "refused-conflict",
+      action: "refuse-conflict",
+      proved: false,
+      ownership_preserved: true,
+      ownership_unknown: false,
+      classification,
+      window,
+      receipt: {
+        schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
+        kind: "restorer",
+        outcome: "refuse-conflict",
+        window_id: window.window_id,
+        observed_at: now,
+        after_sha256: classification.sha256,
+        reason: "foreign tail_consumers identity preserved",
+      },
+    };
+  }
+
+  return {
+    outcome: "idle-pending",
+    action: "idle-pending",
+    proved: false,
+    ownership_preserved: true,
+    ownership_unknown: false,
+    classification,
+    window,
+    receipt: {
+      schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
+      kind: "restorer",
+      outcome: "idle-pending",
+      window_id: window.window_id,
+      observed_at: now,
+      classification: classification.class,
+    },
+  };
+}
+
+/**
+ * One guardian tick over a durable Tail window.
+ */
+export async function announceTailRestorerReady({
+  store,
+  stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT,
+  now = new Date().toISOString(),
+  pid = process.pid,
+  versionTransport = null,
+} = {}) {
+  if (!store || typeof store.withLock !== "function") fail("durable Tail store withLock is required");
+  const paths = tailRestorerPaths(stateRoot);
+  return store.withLock(async () => {
+    const window = await store.read();
+    if (!window) fail("cannot announce Tail restorer readiness without a window");
+    if (!window.restorer?.armed) fail("tail restorer must be armed before ready announcement");
+    writeFileSync(paths.pidFile, `${pid}\n`, { mode: 0o600 });
+    // ready.* flags are derived from an ACTUAL GET observed here — never from
+    // the transport merely being configured. fresh_get_before_and_after_actuator
+    // is reserved for restore terminal receipts after both sides run.
+    const readyObservation = await observeVersionGuard({
+      versionTransport,
+      boundEvidence: window.version_evidence,
+      reasonIfMissing: "ready announcement: versionTransport or bound evidence missing",
+    });
+    // Bound means an actual getLatestVersionEvidence call was observed.
+    const versionGuardBound = readyObservation.performed === true;
+    const ready = writeTailRestorerReceipt(paths.readyReceipt, {
+      schema: TAIL_RESTORER_READY_SCHEMA,
+      kind: "ready",
+      ready_at: now,
+      observed_at: now,
+      pid,
+      window_id: window.window_id,
+      restorer_id: window.restorer.restorer_id,
+      window_path: store.path,
+      state_root: stateRoot,
+      independent_process: true,
+      version_guard_bound: versionGuardBound,
+      version_guard: {
+        observed_at_ready: readyObservation.outcome,
+        reason: readyObservation.reason,
+        version: readyObservation.version_unknown ? "UNKNOWN" : readyObservation.version,
+        version_unknown: readyObservation.version_unknown,
+        consumer: window.version_evidence?.consumer || null,
+        get_target: window.version_evidence?.get_target || null,
+        account_id_sha256: window.version_evidence?.account_id_sha256 || null,
+        // Not claimed here — only set after restore observes before+after.
+        fresh_get_before_and_after_actuator: false,
+        provider_cas: "UNKNOWN",
+      },
+    });
+    writeTailRestorerReceipt(paths.heartbeatReceipt, {
+      schema: TAIL_RESTORER_READY_SCHEMA,
+      kind: "heartbeat",
+      outcome: "ready",
+      observed_at: now,
+      pid,
+      window_id: window.window_id,
+      restorer_id: window.restorer.restorer_id,
+      phase: window.phase,
+      version_guard_bound: versionGuardBound,
+      version_guard_observed_at_ready: readyObservation.outcome,
+    });
+    return {
+      window,
+      ready,
+      version_guard_bound: versionGuardBound,
+      version_guard: ready.version_guard,
+    };
+  });
+}
+
+/**
+ * Durable poll loop for the independent Tail guardian process.
+ * Survives controller exit; stops on terminal receipt, kill switch, or shouldStop.
+ * When versionTransport is provided it is the same consumer-bound deployments
+ * guard the actuator tests cover (fresh GET before/after attach).
+ */
+export async function runTailRestorerLoop({
+  store,
+  transport,
+  versionTransport = null,
+  capDetachActuator = null,
+  stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT,
+  pollMs = DEFAULT_TAIL_POLL_MS,
+  nowFn = () => new Date().toISOString(),
+  shouldStop = () => false,
+} = {}) {
+  const paths = tailRestorerPaths(stateRoot);
+  const initial = await store.read();
+  if (initial?.restorer?.cap_detach_actuator_bound === true) {
+    if (!capDetachActuator || typeof capDetachActuator.pollAndDetachIfCapped !== "function") {
+      fail(
+        "refuse to run: window armed with cap-detach actuator but runtime actuator is absent",
+      );
+    }
+  }
+  writeTailRestorerReceipt(paths.startReceipt, {
+    schema: TAIL_RESTORER_RUNTIME_SCHEMA,
+    kind: "start",
+    started_at: nowFn(),
+    pid: process.pid,
+    state_root: stateRoot,
+    window_path: store.path,
+    // Configured ≠ observed; ready receipt records the actual GET outcome.
+    version_transport_configured: Boolean(
+      versionTransport && typeof versionTransport.getLatestVersionEvidence === "function",
+    ),
+    cap_detach_actuator_bound: initial?.restorer?.cap_detach_actuator_bound === true,
+    cap_detach_actuator_runtime: Boolean(
+      capDetachActuator && typeof capDetachActuator.pollAndDetachIfCapped === "function",
+    ),
+  });
+  writeFileSync(paths.pidFile, `${process.pid}\n`, { mode: 0o600 });
+  const announced = await announceTailRestorerReady({
+    store,
+    stateRoot,
+    now: nowFn(),
+    pid: process.pid,
+    versionTransport,
+  });
+
+  let last = announced;
+  while (!shouldStop() && !killSwitchEngaged(stateRoot)) {
+    if (existsSync(paths.terminalReceipt)) break;
+    const tick = await tailAttachmentRestorerTick({
+      store,
+      transport,
+      versionTransport,
+      capDetachActuator,
+      stateRoot,
+      now: nowFn(),
+    });
+    last = tick;
+    if (tick?.terminal_receipt || tick?.outcome === "kill-switch" || tick?.outcome === "already-terminal") {
+      break;
+    }
+    if (tick?.proved === true && ["restored", "already-restored", "refuse-conflict", "cap-detach"].includes(tick.action || tick.outcome)) {
+      break;
+    }
+    await sleep(pollMs);
+  }
+  return last;
+}
+
+/** Upper bound for a single outside-lock cap readback poll (ms). */
+export const DEFAULT_CAP_POLL_OUTSIDE_LOCK_MS = 5_000;
+
+function remainingWindowMs(window, now) {
+  const expiresAt = Date.parse(window?.expires_at);
+  const nowMs = Date.parse(now);
+  if (!Number.isFinite(expiresAt) || !Number.isFinite(nowMs)) return 0;
+  return Math.max(0, expiresAt - nowMs);
+}
+
+export async function tailAttachmentRestorerTick({
+  store,
+  transport,
+  versionTransport = null,
+  capDetachActuator = null,
+  stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT,
+  now = null,
+  nowFn = () => new Date().toISOString(),
+} = {}) {
+  const paths = tailRestorerPaths(stateRoot);
+  const nowBefore = typeof now === "string" ? now : nowFn();
+  if (killSwitchEngaged(stateRoot)) {
+    return writeTailRestorerReceipt(paths.terminalReceipt, {
+      schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
+      kind: "restorer",
+      outcome: "kill-switch",
+      observed_at: nowBefore,
+      pid: process.pid,
+    });
+  }
+  if (!store || typeof store.withLock !== "function") fail("durable Tail store withLock is required");
+  if (typeof store.read !== "function") fail("durable Tail store.read is required");
+
+  // Bound the authenticated cap poll OUTSIDE the lock so a hung/slow readback
+  // cannot block expiry, cancel, or the normal restore path. Bind the poll to
+  // snapshot A's window/generation/ownership so a stale result cannot actuate
+  // against a later window B under the lock.
+  let prefetchedCapSignal = null;
+  let capObservation = null;
+  const snapshot = await store.read();
+  if (!snapshot) fail("tail attachment window is missing");
+  if (!snapshot.restorer?.armed) fail("tail restorer is not armed");
+  const snapExpired = Date.parse(nowBefore) >= Date.parse(snapshot.expires_at);
+  const snapPending = Boolean(snapshot.pending_mutation);
+  const snapOwned = Boolean(snapshot.owned_sha256);
+  const snapControllerDead = tailControllerDeathSignaled(stateRoot, {
+    windowId: snapshot.window_id,
+    restorerId: snapshot.restorer?.restorer_id || null,
+  });
+  const snapCancelRequested = snapshot.cancel_requested === true;
+  if (
+    snapOwned
+    && !snapPending
+    && !snapExpired
+    && !snapControllerDead
+    && !snapCancelRequested
+    && snapshot.restorer?.cap_detach_actuator_bound === true
+  ) {
+    if (!capDetachActuator || typeof capDetachActuator.pollAndDetachIfCapped !== "function") {
+      fail("refuse: window armed with cap-detach but runtime actuator absent");
+    }
+    const remainingMs = remainingWindowMs(snapshot, nowBefore);
+    const timeoutMs = Math.max(
+      1,
+      Math.min(remainingMs || DEFAULT_CAP_POLL_OUTSIDE_LOCK_MS, DEFAULT_CAP_POLL_OUTSIDE_LOCK_MS),
+    );
+    if (typeof capDetachActuator.pollCapSignal === "function") {
+      prefetchedCapSignal = await capDetachActuator.pollCapSignal({ timeoutMs });
+    } else {
+      // Fixture/legacy actuators without pollCapSignal: best-effort bounded poll
+      // via pollAndDetachIfCapped would detach under no lock — refuse that path.
+      prefetchedCapSignal = {
+        cap_reached: false,
+        readback_ok: false,
+        reason: "actuator_missing_pollCapSignal",
+        events_seen: null,
+        apply_overshoot: null,
+        deadline_ms: null,
+        max_events: null,
+        opened: null,
+        a2: { pass: false, reason: "a2_reason_unknown", events_seen: null, apply_overshoot: null },
+        identity_binding: null,
+      };
+    }
+    capObservation = bindCapObservationToWindowSnapshot(prefetchedCapSignal, snapshot);
+  }
+
+  // Re-read time AFTER the poll so a poll that ends at the deadline does not
+  // postpone expiry/cancel/restore. Frozen `now` keeps tests hermetic.
+  const nowAfter = typeof now === "string" ? now : nowFn();
+
+  return store.withLock(async () => {
+    const window = await store.read();
+    if (!window) fail("tail attachment window is missing");
+    if (!window.restorer?.armed) fail("tail restorer is not armed");
+
+    writeTailRestorerReceipt(paths.heartbeatReceipt, {
+      schema: TAIL_RESTORER_READY_SCHEMA,
+      kind: "heartbeat",
+      outcome: "alive",
+      observed_at: nowAfter,
+      pid: process.pid,
+      window_id: window.window_id,
+      restorer_id: window.restorer?.restorer_id || null,
+      phase: window.phase,
+      // Allowlisted reason codes only — never raw URL/query/body/token/error text.
+      cap_signal_reason: typeof prefetchedCapSignal?.reason === "string"
+        ? prefetchedCapSignal.reason
+        : null,
+      cap_readback_ok: prefetchedCapSignal ? prefetchedCapSignal.readback_ok === true : null,
+    });
+
+    if (TAIL_ATTACHMENT_TERMINAL_PHASES.includes(window.phase)) {
+      return writeTailRestorerReceipt(paths.terminalReceipt, {
+        schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
+        kind: "restorer",
+        outcome: "already-terminal",
+        observed_at: nowAfter,
+        window_id: window.window_id,
+        phase: window.phase,
+      });
+    }
+
+    const expired = Date.parse(nowAfter) >= Date.parse(window.expires_at);
+    const pending = Boolean(window.pending_mutation);
+    const owned = Boolean(window.owned_sha256);
+    const controllerDead = tailControllerDeathSignaled(stateRoot, {
+      windowId: window.window_id,
+      restorerId: window.restorer?.restorer_id || null,
+    });
+    const cancelRequested = window.cancel_requested === true;
+
+    // Healthy owned windows: use the outside-lock cap poll, then detach under
+    // the lock. UNKNOWN/error/stalled polls stay idle so expiry/cancel/restore
+    // below still run on later ticks. A stale observation (A ≠ B) refuses
+    // actuation with 0 PATCH — never invent B's binding or re-poll under lock.
+    if (owned && !pending && !expired && !controllerDead && !cancelRequested) {
+      if (window.restorer?.cap_detach_actuator_bound === true) {
+        if (!capDetachActuator || typeof capDetachActuator.pollAndDetachIfCapped !== "function") {
+          fail("refuse: window armed with cap-detach but runtime actuator absent");
+        }
+        if (!capObservation || !capObservationMatchesLiveWindow(capObservation, window)) {
+          writeTailRestorerReceipt(paths.heartbeatReceipt, {
+            schema: TAIL_RESTORER_READY_SCHEMA,
+            kind: "heartbeat",
+            outcome: "alive",
+            observed_at: nowAfter,
+            pid: process.pid,
+            window_id: window.window_id,
+            restorer_id: window.restorer?.restorer_id || null,
+            phase: window.phase,
+            cap_signal_reason: CAP_SIGNAL_REASON.STALE_CAP_OBSERVATION,
+            cap_readback_ok: prefetchedCapSignal ? prefetchedCapSignal.readback_ok === true : null,
+          });
+          return {
+            outcome: "idle",
+            window,
+            reason: CAP_SIGNAL_REASON.STALE_CAP_OBSERVATION,
+            cap_signal: projectPersistedCapSignal(prefetchedCapSignal),
+          };
+        }
+        const cap = await capDetachActuator.pollAndDetachIfCapped({
+          store,
+          now: nowAfter,
+          capObservation,
+          prefetchedSignal: capObservation.signal,
+          allowRepollUnderLock: false,
+        });
+        if (cap?.reason === CAP_SIGNAL_REASON.STALE_CAP_OBSERVATION) {
+          return {
+            outcome: "idle",
+            window,
+            reason: CAP_SIGNAL_REASON.STALE_CAP_OBSERVATION,
+            cap_signal: projectPersistedCapSignal(cap.signal || prefetchedCapSignal),
+          };
+        }
+        if (cap?.signal?.a2 && cap.signal.a2.pass === false) {
+          writeTailRestorerReceipt(paths.heartbeatReceipt, {
+            schema: TAIL_RESTORER_READY_SCHEMA,
+            kind: "heartbeat",
+            outcome: "a2-failed",
+            observed_at: nowAfter,
+            pid: process.pid,
+            window_id: window.window_id,
+            restorer_id: window.restorer?.restorer_id || null,
+            phase: window.phase,
+            // Allowlisted A2 projection only — never raw body/a2.
+            a2: projectPersistedCapA2(cap.signal.a2),
+            events_seen: typeof cap.signal.events_seen === "number"
+              ? cap.signal.events_seen
+              : null,
+          });
+        }
+        if (cap?.actuated === true && (cap.proved === true || cap.action === "already-restored")) {
+          const restoredWindow = cap.result?.window || (await store.read()) || window;
+          const receipt = writeTailRestorerReceipt(paths.terminalReceipt, {
+            schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
+            kind: "restorer",
+            outcome: cap.action || "cap-detach",
+            observed_at: nowAfter,
+            window_id: restoredWindow.window_id,
+            proved: cap.proved === true,
+            cap_reached: true,
+            events_seen: typeof cap.signal?.events_seen === "number"
+              ? cap.signal.events_seen
+              : null,
+            apply_overshoot: typeof cap.signal?.apply_overshoot === "number"
+              ? cap.signal.apply_overshoot
+              : null,
+            a2: projectPersistedCapA2(cap.signal?.a2),
+            version_guard: cap.version_guard || cap.result?.version_guard || null,
+            controller_death: false,
+            cancel_requested: false,
+            expired: false,
+            reason: "owned-cap-detach",
+          });
+          return {
+            ...cap.result,
+            outcome: "cap-detach",
+            action: cap.action || "cap-detach",
+            proved: cap.proved === true,
+            terminal_receipt: receipt,
+            window: restoredWindow,
+          };
+        }
+      }
+      return {
+        outcome: "idle",
+        window,
+        reason: "owned-window-active-until-deadline",
+        // Prefetched signal is already an allowlisted scalar projection.
+        cap_signal: projectPersistedCapSignal(prefetchedCapSignal),
+      };
+    }
+
+    if (!pending && !owned && !expired && !controllerDead && !cancelRequested) {
+      return { outcome: "idle", window };
+    }
+
+    if (pending && !expired && !controllerDead && !cancelRequested) {
+      const reconciled = await reconcileTailPendingMutation({ window, transport, now: nowAfter });
+      await store.write(reconciled.window, { expectedWindowId: window.window_id });
+      if (reconciled.outcome === "refused-conflict") {
+        const receipt = writeTailRestorerReceipt(paths.terminalReceipt, reconciled.receipt);
+        return { ...reconciled, terminal_receipt: receipt };
+      }
+      writeTailRestorerReceipt(paths.heartbeatReceipt, {
+        schema: TAIL_RESTORER_READY_SCHEMA,
+        kind: "heartbeat",
+        outcome: reconciled.outcome,
+        observed_at: nowAfter,
+        pid: process.pid,
+        window_id: reconciled.window.window_id,
+        restorer_id: reconciled.window.restorer?.restorer_id || null,
+        phase: reconciled.window.phase,
+      });
+      return reconciled;
+    }
+
+    if (pending && pendingIssuedUnacked(window)) {
+      const reconciled = await reconcileTailPendingMutation({ window, transport, now: nowAfter });
+      await store.write(reconciled.window, { expectedWindowId: window.window_id });
+      if (reconciled.outcome === "retained-pending-unknown") {
+        writeTailRestorerReceipt(paths.heartbeatReceipt, {
+          schema: TAIL_RESTORER_READY_SCHEMA,
+          kind: "heartbeat",
+          outcome: reconciled.outcome,
+          observed_at: nowAfter,
+          pid: process.pid,
+          window_id: reconciled.window.window_id,
+          restorer_id: reconciled.window.restorer?.restorer_id || null,
+          phase: reconciled.window.phase,
+          controller_death: controllerDead,
+          cancel_requested: cancelRequested,
+          expired,
+        });
+        return reconciled;
+      }
+      if (reconciled.outcome === "refused-conflict") {
+        const receipt = writeTailRestorerReceipt(paths.terminalReceipt, {
+          ...reconciled.receipt,
+          controller_death: controllerDead,
+          cancel_requested: cancelRequested,
+          expired,
+        });
+        return { ...reconciled, terminal_receipt: receipt };
+      }
+    }
+
+    const restored = await runIndependentTailRestorer({
+      store,
+      transport,
+      versionTransport,
+      now: nowAfter,
+      alreadyLocked: true,
+    });
+
+    const versionGuard = restored.version_guard || null;
+    const freshBothSides = Boolean(
+      versionGuard
+      && versionGuard.before_actuator
+      && versionGuard.before_actuator !== VERSION_GUARD_LABEL.NOT_PERFORMED
+      && versionGuard.after_actuator
+      && versionGuard.after_actuator !== VERSION_GUARD_LABEL.NOT_PERFORMED,
+    );
+
+    if (
+      restored.action === "retain-owned-unknown"
+      || restored.action === "confirm-pending"
+      || restored.action === "restore-readback-mismatch"
+    ) {
+      writeTailRestorerReceipt(paths.heartbeatReceipt, {
+        schema: TAIL_RESTORER_READY_SCHEMA,
+        kind: "heartbeat",
+        outcome: restored.action,
+        observed_at: nowAfter,
+        pid: process.pid,
+        window_id: restored.window.window_id,
+        restorer_id: restored.window.restorer?.restorer_id || null,
+        phase: restored.window.phase,
+        proved: false,
+        ownership_preserved: true,
+        controller_death: controllerDead,
+        cancel_requested: cancelRequested,
+        expired: restored.expired === true,
+        version_guard: versionGuard,
+        fresh_get_before_and_after_actuator: freshBothSides,
+      });
+      return restored;
+    }
+
+    const receipt = writeTailRestorerReceipt(paths.terminalReceipt, {
+      schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
+      kind: "restorer",
+      outcome: restored.proved ? restored.action : "blocked",
+      observed_at: nowAfter,
+      window_id: restored.window.window_id,
+      proved: restored.proved,
+      expired: restored.expired === true,
+      classification: restored.classification?.class || null,
+      after_sha256: restored.receipt?.after_sha256 || null,
+      baseline_sha256: restored.receipt?.baseline_sha256 || null,
+      reason: restored.receipt?.reason || null,
+      controller_death: controllerDead,
+      cancel_requested: cancelRequested,
+      version_guard: versionGuard,
+      fresh_get_before_and_after_actuator: freshBothSides,
+    });
+    return { ...restored, terminal_receipt: receipt };
+  });
+}
+
+export function createBoundScriptSettingsTailTransport(env, window) {
+  const bound = assertTailTransportTargetMatchesWindow(env, window);
+  return createScriptSettingsTailConsumersTransport({
+    accountId: bound.accountId,
+    scriptName: bound.workerId,
+    token: env.CLOUDFLARE_API_TOKEN,
+  });
+}
+
+/**
+ * Bound dual-view Tail transport for probe + guardian restoration.
+ * Script-settings remains the write path; beta Worker GET is the independent
+ * effective empty view. worker_id → script mapping is verified on every beta GET.
+ */
+export function createBoundDualViewTailConsumersTransport(env, window) {
+  const bound = assertTailTransportTargetMatchesWindow(env, window);
+  const token = env.CLOUDFLARE_API_TOKEN;
+  if (typeof token !== "string" || !token) {
+    fail("CLOUDFLARE_API_TOKEN is required for dual-view Tail transport");
+  }
+  const scriptSettingsTransport = createScriptSettingsTailConsumersTransport({
+    accountId: bound.accountId,
+    scriptName: bound.workerId,
+    token,
+  });
+  const betaTransport = createBetaWorkerTailConsumersTransport({
+    accountId: bound.accountId,
+    workerId: bound.workerId,
+    scriptName: bound.workerId,
+    token,
+  });
+  return createDualViewTailConsumersTransport({
+    scriptSettingsTransport,
+    betaTransport,
+  });
+}
+
+/**
+ * Deployments versionTransport bound to the window's consumer-bound version
+ * evidence. Same guard the actuator tests cover: account + script + URL/path
+ * provenance must match before a fresh GET is trusted.
+ */
+export function createBoundDeploymentsVersionTransport(env, window) {
+  if (!window || typeof window !== "object") {
+    fail("Tail attachment window is required for bound deployments versionTransport");
+  }
+  const evidence = window.version_evidence;
+  if (!evidence || evidence.present !== true || !evidence.consumer) {
+    fail("bound consumer version evidence is required for deployments versionTransport");
+  }
+  const accountId = typeof env.CLOUDFLARE_ACCOUNT_ID === "string" && env.CLOUDFLARE_ACCOUNT_ID.trim()
+    ? env.CLOUDFLARE_ACCOUNT_ID.trim()
+    : null;
+  if (!accountId) fail("CLOUDFLARE_ACCOUNT_ID is required for deployments versionTransport");
+  const token = env.CLOUDFLARE_API_TOKEN;
+  if (typeof token !== "string" || !token) {
+    fail("CLOUDFLARE_API_TOKEN is required for deployments versionTransport");
+  }
+  const accountSha = createHash("sha256").update(accountId).digest("hex");
+  if (accountSha !== window.account_id_sha256) {
+    fail("CLOUDFLARE_ACCOUNT_ID does not match window account_id_sha256");
+  }
+  if (accountSha !== evidence.account_id_sha256) {
+    fail("CLOUDFLARE_ACCOUNT_ID does not match bound version evidence account");
+  }
+  const consumer = evidence.consumer;
+  const transport = createDeploymentsVersionTransport({
+    accountId,
+    scriptName: consumer.service,
+    token,
+    environment: consumer.environment,
+    namespace: consumer.namespace,
+  });
+  assertVersionTransportMatchesBound(transport, evidence);
+  return transport;
+}
+
+/**
+ * Start a supervised Tail restorer child against a durable runner copy.
+ * Tests may pass a runnerPath override that imports the repo modules.
+ *
+ * Credential env is sanitized to exactly ONE source (prefer TOKEN_FILE).
+ * Child stderr is parsed through a bounded in-memory pipe into allowlisted
+ * startup-diagnosis fields only — no raw stderr file or tail is persisted.
+ */
+export function startSupervisedTailRestorerProcess({
+  windowPath,
+  windowId,
+  stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT,
+  runnerPath = null,
+  nodeExecPath = process.execPath,
+  nodeArgs = [],
+  env = process.env,
+  detached = true,
+  pollMs = DEFAULT_TAIL_POLL_MS,
+  tokenFile = null,
+  preferTokenFile = true,
+  skipCredentialCompose = false,
+} = {}) {
+  const paths = tailRestorerPaths(stateRoot);
+  mkdirSync(paths.root, { recursive: true, mode: 0o700 });
+  mkdirSync(join(paths.root, "receipts"), { recursive: true, mode: 0o700 });
+  mkdirSync(paths.logsDir, { recursive: true, mode: 0o700 });
+  if (killSwitchEngaged(stateRoot)) fail("tail attachment restorer kill switch is engaged");
+
+  assignTailWindowForRestorer({ windowPath, windowId, stateRoot });
+
+  const runner = runnerPath || paths.durableRunner;
+  if (!existsSync(runner)) {
+    fail(`durable Tail restorer runner missing at ${runner}`);
+  }
+
+  const composed = skipCredentialCompose
+    ? {
+      env: { ...env },
+      credential_source: "passthrough",
+      has_TOKEN: Boolean(env?.CLOUDFLARE_API_TOKEN),
+      has_TOKEN_FILE: Boolean(env?.CLOUDFLARE_API_TOKEN_FILE),
+      incoming_had_TOKEN: Boolean(env?.CLOUDFLARE_API_TOKEN),
+      incoming_had_TOKEN_FILE: Boolean(env?.CLOUDFLARE_API_TOKEN_FILE),
+      sanitized_dual_credential: false,
+    }
+    : composeGuardianChildEnv(env, { tokenFile, preferTokenFile });
+
+  const childEnv = {
+    ...composed.env,
+    CITYSCROLL_TAIL_ATTACHMENT_RESTORER_STATE: stateRoot,
+  };
+  // Defense in depth: after compose, never leave both credential vars set.
+  if (!skipCredentialCompose && childEnv.CLOUDFLARE_API_TOKEN && childEnv.CLOUDFLARE_API_TOKEN_FILE) {
+    delete childEnv.CLOUDFLARE_API_TOKEN;
+  }
+
+  const diagnoser = createBoundedStderrDiagnoser();
+  const argvPrefix = Array.isArray(nodeArgs) ? nodeArgs.filter((a) => typeof a === "string") : [];
+  const child = spawn(nodeExecPath, [
+    ...argvPrefix,
+    runner,
+    "--window-state", windowPath,
+    "--state-root", stateRoot,
+    "--poll-ms", String(pollMs),
+  ], {
+    detached,
+    stdio: ["ignore", "ignore", "pipe"],
+    env: childEnv,
+  });
+
+  if (child.stderr) {
+    child.stderr.on("data", (chunk) => {
+      try { diagnoser.onChunk(chunk); } catch { /* diagnosis best-effort */ }
+    });
+  }
+
+  const allowlistedDiagnosis = (extra = {}) => {
+    const snap = diagnoser.snapshot();
+    return {
+      failure_code: snap.failure_code,
+      exit_code: extra.exit_code ?? null,
+      exit_signal: extra.exit_signal ?? null,
+      has_TOKEN: composed.has_TOKEN,
+      has_TOKEN_FILE: composed.has_TOKEN_FILE,
+      credential_source: composed.credential_source,
+      sanitized_dual_credential: composed.sanitized_dual_credential === true,
+      stderr_bytes_seen: snap.stderr_bytes_seen,
+      stderr_bytes_omitted: snap.stderr_bytes_omitted,
+      stderr_lines_seen: snap.stderr_lines_seen,
+      stderr_lines_omitted: snap.stderr_lines_omitted,
+      stderr_diag_cap_bytes: snap.stderr_diag_cap_bytes,
+      raw_stderr_persisted: false,
+    };
+  };
+
+  const writeChildExitReceipts = (code, signal) => {
+    const diagnosis = allowlistedDiagnosis({ exit_code: code, exit_signal: signal });
+    const exitReceipt = writeTailRestorerReceipt(paths.childExitReceipt, {
+      schema: TAIL_RESTORER_RUNTIME_SCHEMA,
+      kind: "child-exit",
+      observed_at: new Date().toISOString(),
+      pid: child.pid,
+      state_root: stateRoot,
+      window_id: windowId,
+      runner,
+      ready_present: existsSync(paths.readyReceipt),
+      ...diagnosis,
+    });
+    if (!existsSync(paths.readyReceipt)) {
+      writeTailRestorerReceipt(paths.childFailedBeforeReadyReceipt, {
+        schema: TAIL_RESTORER_RUNTIME_SCHEMA,
+        kind: "child-failed-before-ready",
+        observed_at: new Date().toISOString(),
+        pid: child.pid,
+        state_root: stateRoot,
+        window_id: windowId,
+        runner,
+        reason_code: diagnosis.failure_code === GUARDIAN_STARTUP_FAILURE_CODE.NONE
+          ? GUARDIAN_STARTUP_FAILURE_CODE.UNKNOWN_STARTUP_FAILURE
+          : diagnosis.failure_code,
+        child_exit_receipt: paths.childExitReceipt,
+        ...diagnosis,
+      });
+    }
+    return exitReceipt;
+  };
+
+  child.once("exit", (code, signal) => {
+    try { writeChildExitReceipts(code, signal); } catch { /* receipt best-effort */ }
+  });
+  child.once("error", () => {
+    try {
+      const diagnosis = allowlistedDiagnosis({
+        exit_code: null,
+        exit_signal: null,
+      });
+      writeTailRestorerReceipt(paths.childFailedBeforeReadyReceipt, {
+        schema: TAIL_RESTORER_RUNTIME_SCHEMA,
+        kind: "child-failed-before-ready",
+        observed_at: new Date().toISOString(),
+        pid: child.pid || null,
+        state_root: stateRoot,
+        window_id: windowId,
+        runner,
+        ...diagnosis,
+        failure_code: GUARDIAN_STARTUP_FAILURE_CODE.SPAWN_ERROR,
+        reason_code: GUARDIAN_STARTUP_FAILURE_CODE.SPAWN_ERROR,
+      });
+    } catch { /* receipt best-effort */ }
+  });
+
+  if (detached) child.unref();
+
+  // Parent spawn receipt is separate from the child's loop start.json so
+  // credential metadata is never overwritten when ready is reached.
+  writeTailRestorerReceipt(paths.startSpawnReceipt, {
+    schema: TAIL_RESTORER_RUNTIME_SCHEMA,
+    kind: "start-spawn",
+    started_at: new Date().toISOString(),
+    pid: child.pid,
+    state_root: stateRoot,
+    window_path: windowPath,
+    window_id: windowId,
+    runner,
+    node_exec_path: nodeExecPath,
+    node_args: argvPrefix,
+    credential_source: composed.credential_source,
+    has_TOKEN: composed.has_TOKEN,
+    has_TOKEN_FILE: composed.has_TOKEN_FILE,
+    incoming_had_TOKEN: composed.incoming_had_TOKEN,
+    incoming_had_TOKEN_FILE: composed.incoming_had_TOKEN_FILE,
+    sanitized_dual_credential: composed.sanitized_dual_credential,
+    raw_stderr_persisted: false,
+    child_exit_receipt: paths.childExitReceipt,
+    child_failed_before_ready_receipt: paths.childFailedBeforeReadyReceipt,
+  });
+  // Keep writing start.json for backward-compatible parent spawn observers.
+  writeTailRestorerReceipt(paths.startReceipt, {
+    schema: TAIL_RESTORER_RUNTIME_SCHEMA,
+    kind: "start-spawn",
+    started_at: new Date().toISOString(),
+    pid: child.pid,
+    state_root: stateRoot,
+    window_path: windowPath,
+    window_id: windowId,
+    runner,
+    credential_source: composed.credential_source,
+    has_TOKEN: composed.has_TOKEN,
+    has_TOKEN_FILE: composed.has_TOKEN_FILE,
+    raw_stderr_persisted: false,
+  });
+  writeFileSync(paths.pidFile, `${child.pid}\n`, { mode: 0o600 });
+  return {
+    pid: child.pid,
+    child,
+    paths,
+    credential: {
+      source: composed.credential_source,
+      has_TOKEN: composed.has_TOKEN,
+      has_TOKEN_FILE: composed.has_TOKEN_FILE,
+      sanitized_dual_credential: composed.sanitized_dual_credential,
+    },
+  };
+}
+
+export function stopSupervisedTailRestorerProcess({
+  stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT,
+  signal = "SIGTERM",
+} = {}) {
+  const paths = tailRestorerPaths(stateRoot);
+  let parsed = null;
+  if (existsSync(paths.pidFile)) {
+    parsed = Number(readFileSync(paths.pidFile, "utf8").trim());
+  }
+  if (Number.isInteger(parsed) && parsed > 0 && isProcessAlive(parsed)) {
+    try { process.kill(parsed, signal); } catch { /* already gone */ }
+  }
+  return { pid: parsed };
+}
+
+export function accountIdSha256(accountId) {
+  return createHash("sha256").update(String(accountId)).digest("hex");
+}
+
+function sha256File(path) {
+  return createHash("sha256").update(readFileSync(path)).digest("hex");
+}
+
+/**
+ * Copy the Tail restorer CLI + libs into a durable state root so the guardian
+ * process survives disposal of the source checkout. Rewrites runner imports to
+ * the durable lib directory.
+ */
+export function installDurableTailRestorerRunner({
+  stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT,
+  repoRoot,
+  runnerSourcePath = null,
+  libDirSource = null,
+} = {}) {
+  if (typeof repoRoot !== "string" || !repoRoot) fail("repoRoot is required to install the Tail restorer");
+  const paths = tailRestorerPaths(stateRoot);
+  mkdirSync(paths.root, { recursive: true, mode: 0o700 });
+  mkdirSync(paths.durableLibDir, { recursive: true, mode: 0o700 });
+  mkdirSync(join(paths.root, "receipts"), { recursive: true, mode: 0o700 });
+  mkdirSync(paths.logsDir, { recursive: true, mode: 0o700 });
+
+  const runnerSrc = runnerSourcePath || join(repoRoot, "tools/worker_tail_attachment_restorer.mjs");
+  const libSrc = libDirSource || join(repoRoot, "tools/lib");
+  if (!existsSync(runnerSrc)) fail(`Tail restorer runner source missing at ${runnerSrc}`);
+
+  const libFiles = [
+    "worker_tail_attachment.mjs",
+    "worker_tail_attachment_restorer.mjs",
+    "worker_observability_settings.mjs",
+  ];
+  for (const name of libFiles) {
+    const src = join(libSrc, name);
+    if (!existsSync(src)) fail(`Tail restorer lib source missing at ${src}`);
+    cpSync(src, join(paths.durableLibDir, name));
+  }
+  cpSync(runnerSrc, paths.durableRunner);
+
+  // Durable runner must import from ./lib next to itself.
+  let runnerText = readFileSync(paths.durableRunner, "utf8");
+  runnerText = runnerText
+    .replaceAll('from "./lib/worker_tail_attachment.mjs"', 'from "./lib/worker_tail_attachment.mjs"')
+    .replaceAll(
+      'from "./lib/worker_tail_attachment_restorer.mjs"',
+      'from "./lib/worker_tail_attachment_restorer.mjs"',
+    );
+  // Source CLI uses ./lib/... already when placed at tools/; after copy to
+  // stateRoot/run.mjs the same relative ./lib path resolves to durableLibDir.
+  writeFileSync(paths.durableRunner, runnerText, { mode: 0o755 });
+  chmodSync(paths.durableRunner, 0o755);
+
+  // Durable restorer lib imports sibling attachment + settings modules.
+  const restorerLib = join(paths.durableLibDir, "worker_tail_attachment_restorer.mjs");
+  let restorerText = readFileSync(restorerLib, "utf8");
+  restorerText = restorerText
+    .replaceAll('from "./worker_tail_attachment.mjs"', 'from "./worker_tail_attachment.mjs"')
+    .replaceAll(
+      'from "./worker_observability_settings.mjs"',
+      'from "./worker_observability_settings.mjs"',
+    );
+  writeFileSync(restorerLib, restorerText, { mode: 0o644 });
+
+  const attachmentLib = join(paths.durableLibDir, "worker_tail_attachment.mjs");
+  let attachmentText = readFileSync(attachmentLib, "utf8");
+  attachmentText = attachmentText.replaceAll(
+    'from "./worker_observability_settings.mjs"',
+    'from "./worker_observability_settings.mjs"',
+  );
+  writeFileSync(attachmentLib, attachmentText, { mode: 0o644 });
+
+  const files = {
+    "run.mjs": sha256File(paths.durableRunner),
+    "lib/worker_tail_attachment.mjs": sha256File(attachmentLib),
+    "lib/worker_tail_attachment_restorer.mjs": sha256File(restorerLib),
+    "lib/worker_observability_settings.mjs": sha256File(
+      join(paths.durableLibDir, "worker_observability_settings.mjs"),
+    ),
+  };
+  const manifest = {
+    schema: "cityscroll.tail_attachment_restorer_install_manifest.v1",
+    installed_at: new Date().toISOString(),
+    state_root: stateRoot,
+    files,
+  };
+  writeTailRestorerReceipt(join(paths.root, "install-manifest.json"), manifest);
+  return { stateRoot, paths, files, manifest };
+}
+
+export { DEFAULT_WORKER_ID, isProcessAlive };
