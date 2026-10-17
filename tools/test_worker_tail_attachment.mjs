@@ -38,6 +38,13 @@ import {
   isParseableIsoTimestamp,
   createFileTailAttachmentStore,
   assertTailAttachmentWindowMutable,
+  assertExpectedDeployedRevisionsAllowlist,
+  assertProductionTailArmPreconditions,
+  evaluateExpectedRevisionAllowlist,
+  expectedRevisionsAllowlistFromProducerServingGet,
+  proveSanitizerKvAbsentFromBindings,
+  planCollectorSelfTailAttachment,
+  DEFAULT_TAIL_SANITIZER_SCRIPT,
 } from "./lib/worker_tail_attachment.mjs";
 
 const ACCOUNT_SHA = createHash("sha256").update("a".repeat(32)).digest("hex");
@@ -180,6 +187,7 @@ function openArmedWindow({
     windowId,
   });
   window = armTailAttachmentRestorer(window, {
+    strictProductionArm: false,
     now: "2026-10-17T11:00:01.000Z",
     restorerId,
     capDetachActuator: capDetachActuator || fixtureCapDetachActuator(),
@@ -449,6 +457,7 @@ test("negative 3: terminal restored window refuses arm and intent before any mut
   };
   assert.throws(
     () => armTailAttachmentRestorer(window, {
+    strictProductionArm: false,
       now: "2026-10-17T11:01:00.000Z",
       restorerId: "tr-rearm",
       capDetachActuator: fixtureCapDetachActuator(),
@@ -623,6 +632,7 @@ test("negative 7: expired window refuses arm and attach; restore and detach stay
   );
   assert.throws(
     () => armTailAttachmentRestorer(window, {
+    strictProductionArm: false,
       now: "2026-10-17T11:01:00.000Z",
       restorerId: "tr-expired",
       capDetachActuator: fixtureCapDetachActuator(),
@@ -892,6 +902,7 @@ test("armTailAttachmentRestorer refuses without owned cap-detach actuator", () =
   });
   assert.throws(
     () => armTailAttachmentRestorer(window, {
+    strictProductionArm: false,
       now: "2026-10-17T11:00:01.000Z",
       restorerId: "tr-no-actuator",
     }),
@@ -1243,6 +1254,15 @@ test("validateSinkReadbackBody rejects non-boolean cap and negative counts", () 
   assert.equal(okFresh.ok, true);
   assert.equal(okFresh.a2.pass, null);
   assert.equal(okFresh.a2.reason, CAP_A2_REASON.NOT_EVALUATED);
+  // OPENED + not_evaluated is UNKNOWN (cap not proven); unopened stays ok.
+  const openedUnevaluated = validateSinkReadbackBody(freshSinkReadbackBody({
+    opened: true,
+    a2: { pass: null, reason: "not_evaluated", events_seen: 0, apply_overshoot: 0 },
+  }), {
+    expectedSinkName: TAIL_SINK_NAME,
+  });
+  assert.equal(openedUnevaluated.ok, false);
+  assert.equal(openedUnevaluated.reason, CAP_SIGNAL_REASON.CAP_SIGNAL_UNKNOWN);
   assert.equal(
     validateSinkReadbackBody(freshSinkReadbackBody({
       a2: { pass: null, reason: "within_all_seen_cap", events_seen: 0, apply_overshoot: 0 },
@@ -1479,4 +1499,107 @@ test("owned cap-detach: stale outside-lock observation refuses with 0 PATCH", as
   assert.equal(fired.proved, true);
   assert.ok(transport.calls.filter((c) => c.method === "PATCH").length >= 1);
   rmSync(dir, { recursive: true, force: true });
+});
+
+test("EXPECTED_DEPLOYED_REVISIONS empty allowlist refuses READY/ARM", () => {
+  assert.equal(evaluateExpectedRevisionAllowlist("").ok, false);
+  assert.equal(
+    evaluateExpectedRevisionAllowlist("").reason,
+    CAP_SIGNAL_REASON.EXPECTED_REVISION_ALLOWLIST_EMPTY,
+  );
+  assert.equal(evaluateExpectedRevisionAllowlist("  ,  ").ok, false);
+  assert.throws(
+    () => assertExpectedDeployedRevisionsAllowlist(null),
+    /EXPECTED_DEPLOYED_REVISIONS allowlist is empty/,
+  );
+  const fromGet = expectedRevisionsAllowlistFromProducerServingGet({
+    versions: [{ version_id: "fd262db4-prod", percentage: 100 }],
+  });
+  assert.equal(fromGet.ok, true);
+  assert.deepEqual(fromGet.ids, ["fd262db4-prod"]);
+  const ok = assertExpectedDeployedRevisionsAllowlist(fromGet.allowlist_csv);
+  assert.equal(ok.ok, true);
+});
+
+test("proveSanitizerKvAbsentFromBindings proves zero KV and refuses KV present", () => {
+  const absent = proveSanitizerKvAbsentFromBindings({
+    bindings: [
+      { name: "AGG_SINK", type: "durable_object_namespace", class_name: "AggregateSink" },
+      { name: "GIT_COMMIT_SHA", type: "plain_text", text: "abc" },
+      { name: "READBACK_TOKEN", type: "secret_text" },
+    ],
+  });
+  assert.equal(absent.ok, true);
+  assert.equal(absent.kv_binding_count, 0);
+  assert.equal(absent.kv_writes_proved_zero_by_absent_binding, true);
+  assert.equal(JSON.stringify(absent).includes("secret-value"), false);
+
+  const present = proveSanitizerKvAbsentFromBindings([
+    { name: "AGG_SINK", type: "durable_object_namespace", class_name: "AggregateSink" },
+    { name: "LEAK", type: "kv_namespace", namespace_id: "ns" },
+  ]);
+  assert.equal(present.ok, false);
+  assert.equal(present.reason, CAP_SIGNAL_REASON.KV_BINDING_PRESENT);
+  assert.equal(present.kv_binding_count, 1);
+});
+
+test("strict production arm requires revision allowlist and KV-absent proof", () => {
+  const window = openTailAttachmentWindow({
+    baselineConsumers: [],
+    accountIdSha256: ACCOUNT_SHA,
+    workerId: "cityscroll-worker",
+    now: "2026-10-17T11:00:00.000Z",
+    windowId: "prod-arm-pre",
+  });
+  const actuator = fixtureCapDetachActuator();
+  assert.throws(
+    () => armTailAttachmentRestorer(window, {
+      now: "2026-10-17T11:00:01.000Z",
+      restorerId: "tr-prod",
+      capDetachActuator: actuator,
+      strictProductionArm: true,
+    }),
+    /EXPECTED_DEPLOYED_REVISIONS allowlist is empty|KV-absent/,
+  );
+  assert.throws(
+    () => assertProductionTailArmPreconditions({
+      expectedDeployedRevisions: "fd262db4-prod",
+      kvBindingProof: null,
+    }),
+    /KV-absent/,
+  );
+  const kvProof = proveSanitizerKvAbsentFromBindings({
+    bindings: [
+      { name: "AGG_SINK", type: "durable_object_namespace", class_name: "AggregateSink" },
+      { name: "READBACK_TOKEN", type: "secret_text" },
+    ],
+  });
+  const pre = assertProductionTailArmPreconditions({
+    expectedDeployedRevisions: "fd262db4-prod",
+    kvBindingProof: kvProof,
+  });
+  assert.equal(pre.ok, true);
+  const armed = armTailAttachmentRestorer(window, {
+    now: "2026-10-17T11:00:01.000Z",
+    restorerId: "tr-prod-ok",
+    capDetachActuator: actuator,
+    strictProductionArm: true,
+    expectedDeployedRevisions: "fd262db4-prod",
+    kvBindingProof: kvProof,
+  });
+  assert.equal(armed.restorer.armed, true);
+  assert.equal(armed.restorer.expected_deployed_revisions_bound, true);
+  assert.equal(armed.restorer.kv_absent_proved, true);
+});
+
+test("planCollectorSelfTailAttachment restores sanitizer consumers to []", () => {
+  const plan = planCollectorSelfTailAttachment({
+    sanitizerService: DEFAULT_TAIL_SANITIZER_SCRIPT,
+  });
+  assert.equal(plan.target_script, "cityscroll-tail-sanitizer");
+  assert.deepEqual(plan.baseline_consumers, []);
+  assert.deepEqual(plan.restore_consumers, []);
+  assert.equal(plan.attach_consumers.length, 1);
+  assert.equal(plan.attach_consumers[0].service, "cityscroll-tail-sanitizer");
+  assert.match(plan.note, /never wall time/);
 });

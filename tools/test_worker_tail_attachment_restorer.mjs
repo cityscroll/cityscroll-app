@@ -247,6 +247,7 @@ async function openStoredArmedWindow(dir, {
     windowId,
   });
   window = armTailAttachmentRestorer(window, {
+    strictProductionArm: false,
     now: "2026-10-17T11:00:01.000Z",
     restorerId,
     capDetachActuator: capDetachActuator || fixtureCapDetachActuator(),
@@ -382,6 +383,7 @@ test("deployments version GET transport binds evidence; mutate refuses unbound w
     windowId: "ver-win",
   });
   window = armTailAttachmentRestorer(window, {
+    strictProductionArm: false,
     now: "2026-10-17T11:00:01.000Z",
     restorerId: "tr-ver",
     capDetachActuator: fixtureCapDetachActuator(),
@@ -469,6 +471,7 @@ test("negative: version proof for consumer A refuses attach of consumer B (0 PAT
     windowId: "a2b-win",
   });
   window = armTailAttachmentRestorer(window, {
+    strictProductionArm: false,
     now: "2026-10-17T12:00:01.000Z",
     restorerId: "tr-a2b",
     capDetachActuator: fixtureCapDetachActuator(),
@@ -627,6 +630,7 @@ test("negative: cannot relabel an actual consumer-A deployments GET as consumer-
     windowId: "relabel-win",
   });
   window = armTailAttachmentRestorer(window, {
+    strictProductionArm: false,
     now: "2026-10-17T12:00:01.000Z",
     restorerId: "tr-relabel",
     capDetachActuator: fixtureCapDetachActuator(),
@@ -1370,6 +1374,7 @@ test("owned-initialize acknowledgment allows attach when GET stays UNKNOWN; fore
     windowId: "init-win",
   });
   window = armTailAttachmentRestorer(window, {
+    strictProductionArm: false,
     now: "2026-10-17T11:00:01.000Z",
     restorerId: "tr-init",
     capDetachActuator: fixtureCapDetachActuator(),

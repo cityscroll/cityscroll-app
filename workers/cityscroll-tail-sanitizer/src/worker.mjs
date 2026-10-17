@@ -14,7 +14,9 @@ import {
   CPU_MS_BUCKETS,
   FIXED_COHORT_KEYS,
   FORBIDDEN_PERSIST_KEYS,
+  classifyCpuValue,
   cpuMsBucket,
+  isCollectorSelfTailItem,
   isValidatedTailEventShape,
   mapFixedCohort,
   mapPersistedOutcome,
@@ -22,6 +24,14 @@ import {
   parseExpectedRevisionAllowlist,
   projectAllowlistedTailEvent,
   serializeAllowlistedDelta,
+} from "./projection.mjs";
+
+export {
+  assertNonEmptyExpectedRevisionAllowlist,
+  cohortFromFetchPathname,
+  DEFAULT_COLLECTOR_SCRIPT_NAME,
+  isCollectorSelfTailItem,
+  PATHNAME_COHORT_PREFIXES,
 } from "./projection.mjs";
 
 const CPU_CLASS_KEYS = [
@@ -164,7 +174,7 @@ function costVectorFrom(counters, rpcCount = null) {
       ? "UNKNOWN"
       : counters.collector_cpu_ms,
     sink_rpc_count: rpcCount == null ? (counters.collector_do_requests || 0) : rpcCount,
-    note: "collector DO requests/storage ops are measured ACK lower bounds; collector CPU stays UNKNOWN unless measured",
+    note: "collector DO requests/storage ops are measured ACK lower bounds; collector_cpu_ms is self-Tail sum or UNKNOWN",
   };
 }
 
@@ -229,28 +239,49 @@ function backfillCounters(counters) {
   if (counters.apply_overshoot == null) counters.apply_overshoot = 0;
   if (counters.collector_do_requests == null) counters.collector_do_requests = 0;
   if (counters.collector_storage_ops == null) counters.collector_storage_ops = 0;
+  // Preserve a measured numeric collector_cpu_ms; only default when absent.
   if (counters.collector_cpu_ms == null) counters.collector_cpu_ms = "UNKNOWN";
   return counters;
 }
 
-function recordCpu(counters, clean, cohortKey) {
+/**
+ * Record CPU into a cohort. When includeGlobals is false (cold dual-record or
+ * collector overhead), only the cohort bucket is updated — globals stay intact.
+ */
+function recordCpu(counters, clean, cohortKey, { includeGlobals = true } = {}) {
   const cohort = counters.by_cohort_cpu[cohortKey]
     || (counters.by_cohort_cpu[cohortKey] = emptyCohortCpu());
   const ms = clean.cpuTime;
   if (typeof ms === "number" && Number.isFinite(ms) && ms >= 0 && clean.cpu_unknown !== true) {
-    counters.cpu_ms_sum += ms;
-    counters.cpu_ms_count += 1;
+    if (includeGlobals) {
+      counters.cpu_ms_sum += ms;
+      counters.cpu_ms_count += 1;
+      const bucket = cpuMsBucket(ms);
+      if (bucket) {
+        counters.cpu_ms_histogram[bucket] = (counters.cpu_ms_histogram[bucket] || 0) + 1;
+      }
+    }
     cohort.cpu_ms_sum += ms;
     cohort.cpu_ms_count += 1;
     const bucket = cpuMsBucket(ms);
     if (bucket) {
-      counters.cpu_ms_histogram[bucket] = (counters.cpu_ms_histogram[bucket] || 0) + 1;
       cohort.cpu_ms_histogram[bucket] = (cohort.cpu_ms_histogram[bucket] || 0) + 1;
     }
-  } else {
+  } else if (includeGlobals) {
     counters.cpu_ms_unknown_count += 1;
     cohort.cpu_ms_unknown_count += 1;
+  } else {
+    cohort.cpu_ms_unknown_count += 1;
   }
+}
+
+/** Add measured collector self-Tail CPU; never invent 0 from absence; never use wall. */
+function addCollectorCpuMs(counters, ms) {
+  if (typeof ms !== "number" || !Number.isFinite(ms) || ms < 0) return;
+  if (counters.collector_cpu_ms === "UNKNOWN" || counters.collector_cpu_ms == null) {
+    counters.collector_cpu_ms = 0;
+  }
+  counters.collector_cpu_ms += ms;
 }
 
 function expectedRevisionSet(env) {
@@ -392,7 +423,7 @@ export class AggregateSink {
         const counters = backfillCounters((await txn.get(COUNTERS_KEY)) || emptyCounters());
         counters.collector_do_requests = meta.rpc_count;
         counters.collector_storage_ops = (counters.collector_storage_ops || 0) + scratch.collector_storage_ops;
-        counters.collector_cpu_ms = "UNKNOWN";
+        // Never reset a measured collector_cpu_ms back to UNKNOWN on readback.
         await txn.put(META_KEY, meta);
         await txn.put(COUNTERS_KEY, counters);
         const events_seen = eventsSeenOf(counters);
@@ -404,6 +435,9 @@ export class AggregateSink {
           apply_overshoot: counters.apply_overshoot,
           counters,
         }, { maxEvents });
+        const collectorCpu = counters.collector_cpu_ms === "UNKNOWN" || counters.collector_cpu_ms == null
+          ? "UNKNOWN"
+          : counters.collector_cpu_ms;
         return Response.json({
           ok: true,
           schema: "cityscroll.tail_sanitizer_aggregate_sink.v1",
@@ -425,8 +459,8 @@ export class AggregateSink {
             sink_rpc_count: meta.rpc_count,
             collector_do_requests: counters.collector_do_requests,
             collector_storage_ops: counters.collector_storage_ops,
-            collector_cpu_ms: "UNKNOWN",
-            note: "collector DO cost counted as ACK lower bounds; CPU stays UNKNOWN unless measured",
+            collector_cpu_ms: collectorCpu,
+            note: "collector DO cost counted as ACK lower bounds; collector CPU is measured self-Tail sum or UNKNOWN",
           },
           notes: [
             "events_accepted is an observed/acknowledged lower bound",
@@ -436,6 +470,7 @@ export class AggregateSink {
             "collector observed_count 0 is measured zero; missing provider/queue/cohort samples stay UNKNOWN",
             "by_deployed_revision keys are the configured expected-version allowlist only",
             "A2 fails when events_seen exceeds the all-seen cap or overshoot is unknown/unbounded",
+            "collector_overhead applies bump collector_cpu_ms and collector cohort without events_seen",
           ],
         });
       });
@@ -519,11 +554,55 @@ export class AggregateSink {
         counters.collector_do_requests = meta.rpc_count;
         counters.collector_storage_ops = (counters.collector_storage_ops || 0)
           + storageScratch.collector_storage_ops;
-        counters.collector_cpu_ms = "UNKNOWN";
+        // Preserve measured collector_cpu_ms across ordinary applies.
         // Reset scratch so subsequent instrumented ops in this txn are added once more at persist.
         storageScratch.collector_storage_ops = 0;
         const maxEvents = meta.max_events || MAX_EVENTS;
         const seenBefore = eventsSeenOf(counters);
+
+        // Collector self-Tail overhead: record CPU without producer event caps.
+        if (delta && typeof delta === "object" && delta.collector_overhead === true) {
+          for (const key of FORBIDDEN_PERSIST_KEYS) {
+            if (Object.prototype.hasOwnProperty.call(delta, key)) {
+              counters.collector_storage_ops = (counters.collector_storage_ops || 0)
+                + storageScratch.collector_storage_ops;
+              storageScratch.collector_storage_ops = 0;
+              await txn.put(META_KEY, meta);
+              await txn.put(COUNTERS_KEY, counters);
+              return Response.json({ acked: false, reason: "forbidden_key", key, collector_overhead: true });
+            }
+          }
+          if (delta.accepted === true) {
+            const ms = delta.cpuTime;
+            if (typeof ms === "number" && Number.isFinite(ms) && ms >= 0 && delta.cpu_unknown !== true) {
+              addCollectorCpuMs(counters, ms);
+            }
+            recordCpu(counters, {
+              cpuTime: delta.cpuTime,
+              cpu_unknown: delta.cpu_unknown === true,
+            }, "collector", { includeGlobals: false });
+          }
+          counters.collector_storage_ops = (counters.collector_storage_ops || 0)
+            + storageScratch.collector_storage_ops;
+          storageScratch.collector_storage_ops = 0;
+          counters.collector_do_requests = meta.rpc_count;
+          await txn.put(META_KEY, meta);
+          await txn.put(COUNTERS_KEY, counters);
+          const events_seen = eventsSeenOf(counters);
+          return Response.json({
+            acked: delta.accepted === true,
+            collector_overhead: true,
+            events_seen,
+            collector_cpu_ms: counters.collector_cpu_ms,
+            cost_vector: costVectorFrom(counters, meta.rpc_count),
+            a2: evaluateAllSeenCapA2({
+              events_seen,
+              cap_reached: meta.cap_reached === true,
+              apply_overshoot: counters.apply_overshoot,
+              counters,
+            }, { maxEvents }),
+          });
+        }
 
         if (delta && typeof delta === "object" && delta.reason === "dropped_after_cap") {
           const n = Number.isFinite(delta.dropped_count) ? Math.max(0, Math.floor(delta.dropped_count)) : 0;
@@ -589,7 +668,7 @@ export class AggregateSink {
             + storageScratch.collector_storage_ops;
           storageScratch.collector_storage_ops = 0;
           counters.collector_do_requests = meta.rpc_count;
-          counters.collector_cpu_ms = "UNKNOWN";
+          // Preserve measured collector_cpu_ms; never wipe to UNKNOWN here.
           const events_seen = eventsSeenOf(counters);
           if (events_seen >= maxEvents) {
             meta.cap_reached = true;
@@ -639,6 +718,13 @@ export class AggregateSink {
         counters.by_deployed_revision[revisionKey] =
           (counters.by_deployed_revision[revisionKey] || 0) + 1;
         recordCpu(counters, clean, cohortKey);
+        // Dual-record raw coldStart partition without replacing the primary cohort.
+        if (clean.cold_start_flag_raw === 0 || clean.cold_start_flag_raw === 1) {
+          const coldKey = clean.cold_start_flag_raw === 0
+            ? "cold_start_flag_raw_0"
+            : "cold_start_flag_raw_1";
+          recordCpu(counters, clean, coldKey, { includeGlobals: false });
+        }
 
         return persist({
           acked: true,
@@ -648,6 +734,9 @@ export class AggregateSink {
           cpu_ms_count: counters.cpu_ms_count,
           deployed_revision: revisionKey,
           cohort: cohortKey,
+          cold_start_flag_raw: (clean.cold_start_flag_raw === 0 || clean.cold_start_flag_raw === 1)
+            ? clean.cold_start_flag_raw
+            : null,
         });
       });
     }
@@ -708,7 +797,73 @@ export default {
     const batchResults = [];
 
     for (const item of events) {
-      // Classify every received item first — accepted or rejected shape.
+      // Collector self-Tail: allowlisted cpu/outcome only → collector_overhead.
+      // Does not count toward producer events_seen / events_accepted caps.
+      if (isCollectorSelfTailItem(item, env)) {
+        let cpuTime;
+        let cpuThrown = false;
+        try {
+          cpuTime = item.cpuTime;
+        } catch {
+          cpuThrown = true;
+          cpuTime = undefined;
+        }
+        const cpuClass = cpuThrown ? "undefined" : classifyCpuValue(cpuTime);
+        let outcomeRaw = null;
+        try {
+          outcomeRaw = item.outcome ?? item.Outcome;
+        } catch {
+          outcomeRaw = null;
+        }
+        let eventType = "unknown";
+        try {
+          const event = item.event ?? item.Event;
+          if (event && typeof event === "object") {
+            if ("request" in event) eventType = "fetch";
+            else if ("cron" in event || "scheduledTime" in event) eventType = "scheduled";
+            else if ("queue" in event || "batchSize" in event) eventType = "queue";
+            else eventType = "other";
+          }
+        } catch {
+          eventType = "unknown";
+        }
+        const selfDelta = {
+          accepted: true,
+          collector_overhead: true,
+          cpuTime: (!cpuThrown && typeof cpuTime === "number" && Number.isFinite(cpuTime))
+            ? cpuTime
+            : null,
+          cpu_class: cpuClass,
+          cpu_unknown: cpuThrown || !(typeof cpuTime === "number" && Number.isFinite(cpuTime)),
+          outcome: ALLOWED_OUTCOMES.has(outcomeRaw)
+            ? outcomeRaw
+            : (outcomeRaw == null ? null : "other"),
+          eventType,
+          cohort: "collector",
+        };
+        const selfRes = await stub.fetch("https://sink/apply", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(selfDelta),
+        });
+        let selfBody = null;
+        try {
+          selfBody = await selfRes.json();
+        } catch {
+          selfBody = { acked: false, reason: "apply_response_unparsed" };
+        }
+        batchResults.push({
+          classified: true,
+          applied: true,
+          collector_overhead: true,
+          body: selfBody,
+          delta: selfDelta,
+        });
+        // Self-overhead never triggers producer cap detach or stopFurtherApply.
+        continue;
+      }
+
+      // Classify every received producer item — accepted or rejected shape.
       let delta;
       if (!isValidatedTailEventShape(item)) {
         delta = { accepted: false, reason: "not_validated_tail_event_shape" };
