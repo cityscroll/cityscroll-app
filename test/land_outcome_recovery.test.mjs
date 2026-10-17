@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { buildZapOutcomeRecord, prewarmOneZapOutcome, refreshZapOutcomes, handleZapOutcomes, kvKey, stampLandStageObservation } from "../worker/src/zap_outcomes.mjs";
-import { loadAuth, attachAuth, landAuthoritySummaryFor, landAuthoritySummaryFromOutcome, landAuthoritySummaryHTML } from "../site/land_authority_summary_view.mjs";
+import { loadAuth, attachAuth, landAuthoritySummaryFor, landAuthoritySummaryHTML } from "../site/land_authority_summary_view.mjs";
+import { landAuthoritySummaryFromOutcome } from "../site/land_authority_hydration.mjs";
 import { buildLandAuthoritySummary } from "../site/land_authority_summary.mjs";
 import * as phaseTools from "../site/land_phase_spine.mjs";
 import { createLandOutcomeRuntime } from "../site/land_outcome_runtime.mjs";

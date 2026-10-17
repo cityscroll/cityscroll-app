@@ -59,7 +59,8 @@ import {
 } from "../report_issue.mjs";
 import { zoningHearingRowsForScope } from "../zoning_hearing_calendar.mjs";
 import { projectCalendarActionsHTML as projectCalendarActions } from "../project_calendar.mjs";
-import { attachAuth, authHTML, landAuthoritySummaryFor, landAuthoritySummaryFromOutcome, loadAuth } from "../land_authority_summary_view.mjs";
+import { attachAuth, authHTML, landAuthoritySummaryFor, loadAuth } from "../land_authority_summary_view.mjs";
+import { landAuthoritySummaryFromOutcome } from "../land_authority_hydration.mjs";
 import { landHearingRowRoleHTML } from "../land_hearing_authority_copy.mjs";
 import {
   landFilingEvidenceSectionsHTML,
