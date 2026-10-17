@@ -119,14 +119,14 @@ function runOrExit(sourceDir, tool, args = []) {
   if (status !== 0) process.exit(status);
 }
 
-/** True when the family's generator --check exits 0. Weak checks may exit 0 without proving inputs. */
+/** Probe only retained receipts; a cold check must not compute before the build. */
 export function familyCheckCurrent(sourceDir, generator) {
-  return run(sourceDir, generator, ["--check"], { stdio: ["ignore", "pipe", "pipe"] }) === 0;
+  return run(sourceDir, generator, ["--check", "--receipt-only"], { stdio: ["ignore", "pipe", "pipe"] }) === 0;
 }
 
 /**
- * Skip is opt-in. Only families whose --check proves current inputs and outputs
- * (today: shared procurement's receipt fast-check) may set skip_when_check_current.
+ * Skip is opt-in. Only families whose --check --receipt-only proves current inputs and outputs
+ * (today: shared procurement's bounded receipt probe) may set skip_when_check_current.
  * Receipt-schema / idle-ok generators must rebuild every boundary pass.
  */
 export function familyMaySkipWhenCheckCurrent(family) {
