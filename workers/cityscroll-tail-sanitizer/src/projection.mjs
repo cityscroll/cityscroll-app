@@ -83,9 +83,10 @@ export function classifyCpuValue(cpuTime) {
 /**
  * Fixed allowlisted comparison cohorts. Keys are the only ones that may be
  * persisted. RUM is ONE weighted batch cohort (16 observations), not 16 routes.
- * Search, nearby, cold-start flag partitions, and collector stay UNKNOWN
- * (count 0) until an allowlisted cohort tag is present — never derived from
- * URL/query/request identity.
+ * Fetch routes map via PATHNAME_COHORT_PREFIXES (pathname only — never URL,
+ * query, or headers). Cold-start raw partitions are dual-recorded only when a
+ * documented numeric 0|1 flag is present; absent stays unpartitioned.
+ * Collector cohort is for self-Tail overhead only.
  */
 export const RUM_BATCH_OBSERVATION_COUNT = 16;
 export const RUM_BATCH_COHORT_KEY = "rum_batch_16";
@@ -109,12 +110,57 @@ export const FIXED_COHORT_KEYS = Object.freeze([
 
 const FIXED_COHORT_SET = new Set(FIXED_COHORT_KEYS);
 
+/**
+ * Finite pathname-prefix → cohort table for fetch events. Classification runs
+ * before the request is dropped; only the cohort key is emitted.
+ */
+export const PATHNAME_COHORT_PREFIXES = Object.freeze([
+  Object.freeze({ prefix: "/search", cohort: "search" }),
+  Object.freeze({ prefix: "/near-you", cohort: "nearby" }),
+  Object.freeze({ prefix: "/events", cohort: RUM_BATCH_COHORT_KEY }),
+  Object.freeze({ prefix: "/health", cohort: "http" }),
+]);
+
+export const DEFAULT_COLLECTOR_SCRIPT_NAME = "cityscroll-tail-sanitizer";
+
 /** Known production cron expressions → fixed cohort keys. */
 export const KNOWN_CRON_TO_COHORT = Object.freeze({
   "0 8 * * *": "cron_0800",
   "0 10 * * *": "cron_1000",
   "0 13 * * *": "cron_1300",
 });
+
+/**
+ * Pathname-only cohort key from the fixed prefix table. Unknown → http.
+ * Does not accept query strings; callers must pass URL.pathname only.
+ */
+export function cohortFromFetchPathname(pathname) {
+  if (typeof pathname !== "string" || pathname.length === 0) return "http";
+  for (const entry of PATHNAME_COHORT_PREFIXES) {
+    const { prefix, cohort } = entry;
+    if (pathname === prefix || pathname.startsWith(`${prefix}/`)) return cohort;
+  }
+  return "http";
+}
+
+/**
+ * Extract pathname from a request URL string without retaining the URL.
+ * Returns null when the value cannot be parsed as a path.
+ */
+export function pathnameFromRequestUrl(urlValue) {
+  if (typeof urlValue !== "string" || urlValue.length === 0) return null;
+  try {
+    return new URL(urlValue).pathname;
+  } catch {
+    if (!urlValue.startsWith("/")) return null;
+    let end = urlValue.length;
+    const q = urlValue.indexOf("?");
+    const h = urlValue.indexOf("#");
+    if (q >= 0) end = Math.min(end, q);
+    if (h >= 0) end = Math.min(end, h);
+    return urlValue.slice(0, end) || "/";
+  }
+}
 
 export function mapFixedCohort({ eventType = null, cron = null, cohort = null } = {}) {
   if (typeof cohort === "string" && FIXED_COHORT_SET.has(cohort)) return cohort;
@@ -123,6 +169,25 @@ export function mapFixedCohort({ eventType = null, cron = null, cohort = null } 
   if (eventType === "queue") return "queue";
   if (eventType === "fetch") return "http";
   return "unknown";
+}
+
+/**
+ * True when a Tail item is an observation of this collector script itself.
+ * Used to route CPU into collector_overhead without producer event caps.
+ */
+export function isCollectorSelfTailItem(item, env = {}) {
+  if (!item || typeof item !== "object" || Array.isArray(item)) return false;
+  let name;
+  try {
+    name = item.scriptName ?? item.ScriptName;
+  } catch {
+    return false;
+  }
+  if (typeof name !== "string" || name.length === 0) return false;
+  const expected = typeof env?.COLLECTOR_SCRIPT_NAME === "string" && env.COLLECTOR_SCRIPT_NAME.trim()
+    ? env.COLLECTOR_SCRIPT_NAME.trim()
+    : DEFAULT_COLLECTOR_SCRIPT_NAME;
+  return name === expected;
 }
 
 export function mapPersistedOutcome(outcome) {
@@ -139,6 +204,18 @@ export function parseExpectedRevisionAllowlist(raw) {
     if (id) set.add(id);
   }
   return set;
+}
+
+/**
+ * Guardian/arm gate: EXPECTED_DEPLOYED_REVISIONS must be non-empty at arm time.
+ * Empty allowlist forces every revision key to "unknown" and must refuse READY.
+ */
+export function assertNonEmptyExpectedRevisionAllowlist(raw) {
+  const expected = parseExpectedRevisionAllowlist(raw);
+  if (expected.size === 0) {
+    return { ok: false, reason: "empty_expected_revision_allowlist", expected };
+  }
+  return { ok: true, expected };
 }
 
 /**
@@ -299,9 +376,20 @@ export function projectAllowlistedTailEvent(obj) {
   }
   let eventType = "unknown";
   let cron = null;
+  let pathCohort = null;
   if (event && typeof event === "object") {
-    if ("request" in event) eventType = "fetch";
-    else if ("cron" in event || "scheduledTime" in event) {
+    if ("request" in event) {
+      eventType = "fetch";
+      // Pathname-only cohort BEFORE dropping request. Never retain URL/query.
+      try {
+        const req = event.request;
+        const urlValue = req && typeof req === "object" ? req.url : null;
+        const pathname = pathnameFromRequestUrl(urlValue);
+        if (pathname != null) pathCohort = cohortFromFetchPathname(pathname);
+      } catch {
+        pathCohort = null;
+      }
+    } else if ("cron" in event || "scheduledTime" in event) {
       eventType = "scheduled";
       if (typeof event.cron === "string" && KNOWN_CRON_TO_COHORT[event.cron]) {
         cron = event.cron;
@@ -326,9 +414,18 @@ export function projectAllowlistedTailEvent(obj) {
     deployedRevision = null;
   }
 
-  const cohort = mapFixedCohort({ eventType, cron, cohort: null });
+  // Documented numeric coldStart 0|1 only; absent → leave unpartitioned.
+  let cold_start_flag_raw = null;
+  try {
+    const cs = obj.coldStart;
+    if (cs === 0 || cs === 1) cold_start_flag_raw = cs;
+  } catch {
+    cold_start_flag_raw = null;
+  }
 
-  return {
+  const cohort = mapFixedCohort({ eventType, cron, cohort: pathCohort });
+
+  const out = {
     accepted: true,
     cpuTime: (!cpuThrown && typeof cpuTime === "number" && Number.isFinite(cpuTime)) ? cpuTime : null,
     cpu_class: cpuClass,
@@ -341,6 +438,10 @@ export function projectAllowlistedTailEvent(obj) {
     deployed_revision: deployedRevision,
     // Intentionally omit URL, headers, query, body, logs, rayId.
   };
+  if (cold_start_flag_raw === 0 || cold_start_flag_raw === 1) {
+    out.cold_start_flag_raw = cold_start_flag_raw;
+  }
+  return out;
 }
 
 /**
@@ -393,7 +494,7 @@ export function serializeAllowlistedDelta(projected) {
     cron: projected.cron,
     cohort: projected.cohort,
   });
-  return {
+  const out = {
     accepted: true,
     cpuTime: projected.cpuTime,
     cpu_class: projected.cpu_class,
@@ -409,4 +510,11 @@ export function serializeAllowlistedDelta(projected) {
       ? projected.deployed_revision
       : null,
   };
+  if (projected.cold_start_flag_raw === 0 || projected.cold_start_flag_raw === 1) {
+    out.cold_start_flag_raw = projected.cold_start_flag_raw;
+  }
+  if (projected.collector_overhead === true) {
+    out.collector_overhead = true;
+  }
+  return out;
 }

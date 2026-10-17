@@ -368,9 +368,28 @@ export function armTailAttachmentRestorer(window, {
   now = new Date().toISOString(),
   restorerId = randomUUID(),
   capDetachActuator = null,
+  /**
+   * Production arm (default): require non-empty EXPECTED_DEPLOYED_REVISIONS
+   * allowlist (from producer serving-version GET) and a proved KV-absent
+   * sanitizer bindings receipt. Fixture/unit tests may pass
+   * `strictProductionArm: false`.
+   */
+  strictProductionArm = true,
+  expectedDeployedRevisions = null,
+  kvBindingProof = null,
 } = {}) {
   assertTailAttachmentWindowMutable(window, now);
   assertOwnedCapDetachActuator(capDetachActuator);
+  let revisionBound = false;
+  let kvAbsentProved = false;
+  if (strictProductionArm) {
+    const pre = assertProductionTailArmPreconditions({
+      expectedDeployedRevisions,
+      kvBindingProof,
+    });
+    revisionBound = pre.revision_allowlist_bound === true;
+    kvAbsentProved = pre.kv_absent_proved === true;
+  }
   return {
     ...window,
     restorer: {
@@ -379,6 +398,9 @@ export function armTailAttachmentRestorer(window, {
       armed_at: requireIso(now, "now"),
       cap_detach_actuator_bound: true,
       cap_detach_actuator_kind: capDetachActuator.kind || "owned-window-cas-detach",
+      strict_production_arm: strictProductionArm === true,
+      expected_deployed_revisions_bound: revisionBound,
+      kv_absent_proved: kvAbsentProved,
     },
   };
 }
@@ -1083,6 +1105,9 @@ export const CAP_SIGNAL_REASON = Object.freeze({
   ACTUATOR_MISSING_POLL: "actuator_missing_pollCapSignal",
   IDENTITY_BINDING_UNKNOWN: "identity_binding_unknown",
   STALE_CAP_OBSERVATION: "stale_cap_observation",
+  EXPECTED_REVISION_ALLOWLIST_EMPTY: "expected_revision_allowlist_empty",
+  KV_BINDING_PRESENT: "kv_binding_present",
+  KV_BINDING_PROOF_UNKNOWN: "kv_binding_proof_unknown",
 });
 
 const CAP_SIGNAL_REASON_SET = new Set(Object.values(CAP_SIGNAL_REASON));
@@ -1452,6 +1477,15 @@ export function validateSinkReadbackBody(body, {
   }
   if (a2.pass === null && a2.reason !== CAP_A2_REASON.NOT_EVALUATED) {
     return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
+  }
+  // OPENED + not_evaluated: cap is not proven → UNKNOWN (expiry fallback stays
+  // armed). Unopened FRESH not_evaluated remains a valid readiness poll.
+  if (
+    a2.pass === null
+    && a2.reason === CAP_A2_REASON.NOT_EVALUATED
+    && body.opened === true
+  ) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.CAP_SIGNAL_UNKNOWN };
   }
   if (a2.events_seen != null && !isNonNegativeInt(a2.events_seen)) {
     return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
@@ -3151,4 +3185,210 @@ export async function runIndependentTailRestorer({
   };
   if (alreadyLocked || typeof store.withLock !== "function") return run();
   return store.withLock(run);
+}
+
+// ---------------------------------------------------------------------------
+// Production arm preconditions (GO #3 findings fixes): revision allowlist,
+// sanitizer KV-absent proof, collector self-Tail restore plan.
+// ---------------------------------------------------------------------------
+
+export const DEFAULT_TAIL_SANITIZER_SCRIPT = "cityscroll-tail-sanitizer";
+export const DEFAULT_TAIL_PRODUCER_SCRIPT = "cityscroll-worker";
+
+/**
+ * Parse EXPECTED_DEPLOYED_REVISIONS (comma-separated version ids). Empty → [].
+ */
+export function parseExpectedDeployedRevisionsAllowlist(raw) {
+  if (raw instanceof Set) {
+    return [...raw].filter((id) => typeof id === "string" && id.trim()).map((id) => id.trim());
+  }
+  if (Array.isArray(raw)) {
+    return raw.filter((id) => typeof id === "string" && id.trim()).map((id) => id.trim());
+  }
+  if (typeof raw !== "string" || !raw.trim()) return [];
+  return raw.split(",").map((p) => p.trim()).filter(Boolean);
+}
+
+/**
+ * Build allowlist from a producer deployments/versions GET (serving ids).
+ * Prefers 100% versions; falls back to every well-formed version_id.
+ */
+export function expectedRevisionsAllowlistFromProducerServingGet(raw) {
+  const adapted = adaptDeploymentsVersionEvidence(raw);
+  if (!adapted.present || !Array.isArray(adapted.versions) || adapted.versions.length === 0) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.EXPECTED_REVISION_ALLOWLIST_EMPTY, ids: [] };
+  }
+  const at100 = adapted.versions
+    .filter((v) => Number(v.percentage) === 100)
+    .map((v) => v.version_id);
+  const ids = (at100.length > 0 ? at100 : adapted.versions.map((v) => v.version_id))
+    .filter((id) => typeof id === "string" && id.length > 0);
+  if (ids.length === 0) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.EXPECTED_REVISION_ALLOWLIST_EMPTY, ids: [] };
+  }
+  return {
+    ok: true,
+    ids,
+    allowlist_csv: ids.join(","),
+    allowlist_set: new Set(ids),
+  };
+}
+
+/**
+ * Refuse READY/ARM when the expected-revision allowlist is empty.
+ * Returns { ok:true, ids } or { ok:false, reason }.
+ */
+export function evaluateExpectedRevisionAllowlist(raw) {
+  const ids = parseExpectedDeployedRevisionsAllowlist(raw);
+  if (ids.length === 0) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.EXPECTED_REVISION_ALLOWLIST_EMPTY, ids: [] };
+  }
+  return { ok: true, ids, allowlist_set: new Set(ids) };
+}
+
+export function assertExpectedDeployedRevisionsAllowlist(raw) {
+  const evaluated = evaluateExpectedRevisionAllowlist(raw);
+  if (!evaluated.ok) {
+    fail(
+      "refuse to arm/READY: EXPECTED_DEPLOYED_REVISIONS allowlist is empty "
+      + "(set from producer serving-version GET)",
+    );
+  }
+  return evaluated;
+}
+
+const KV_BINDING_TYPES = new Set(["kv_namespace", "kv"]);
+
+/**
+ * Project Worker bindings to name/type only (no secret values). Prove KV absent.
+ * `bindings` may be an array or a settings/version GET `result` object.
+ */
+export function proveSanitizerKvAbsentFromBindings(bindingsOrResult) {
+  let bindings = bindingsOrResult;
+  if (bindings && typeof bindings === "object" && !Array.isArray(bindings)) {
+    if (Array.isArray(bindings.bindings)) bindings = bindings.bindings;
+    else if (bindings.result && Array.isArray(bindings.result.bindings)) {
+      bindings = bindings.result.bindings;
+    } else {
+      return {
+        ok: false,
+        reason: CAP_SIGNAL_REASON.KV_BINDING_PROOF_UNKNOWN,
+        kv_binding_count: null,
+        kv_writes_proved_zero_by_absent_binding: false,
+        binding_types: [],
+        bindings_projected: [],
+      };
+    }
+  }
+  if (!Array.isArray(bindings)) {
+    return {
+      ok: false,
+      reason: CAP_SIGNAL_REASON.KV_BINDING_PROOF_UNKNOWN,
+      kv_binding_count: null,
+      kv_writes_proved_zero_by_absent_binding: false,
+      binding_types: [],
+      bindings_projected: [],
+    };
+  }
+  const projected = [];
+  let kvCount = 0;
+  for (const b of bindings) {
+    if (!b || typeof b !== "object") continue;
+    const type = typeof b.type === "string" ? b.type : null;
+    const name = typeof b.name === "string" ? b.name : null;
+    const entry = { name, type };
+    if (type === "durable_object_namespace" && typeof b.class_name === "string") {
+      entry.class_name = b.class_name;
+    }
+    if (type === "plain_text" && name === "GIT_COMMIT_SHA" && typeof b.text === "string") {
+      entry.text = b.text;
+    }
+    // secret_text: name+type only
+    if (KV_BINDING_TYPES.has(type)) kvCount += 1;
+    projected.push(entry);
+  }
+  if (kvCount > 0) {
+    return {
+      ok: false,
+      reason: CAP_SIGNAL_REASON.KV_BINDING_PRESENT,
+      kv_binding_count: kvCount,
+      kv_writes_proved_zero_by_absent_binding: false,
+      binding_types: [...new Set(projected.map((e) => e.type).filter(Boolean))].sort(),
+      bindings_projected: projected,
+    };
+  }
+  return {
+    ok: true,
+    reason: null,
+    kv_binding_count: 0,
+    kv_writes_proved_zero_by_absent_binding: true,
+    binding_types: [...new Set(projected.map((e) => e.type).filter(Boolean))].sort(),
+    bindings_projected: projected,
+  };
+}
+
+/**
+ * Production READY/ARM gate: non-empty revision allowlist + KV-absent proof.
+ * Throws on failure (guardian refuses arm).
+ */
+export function assertProductionTailArmPreconditions({
+  expectedDeployedRevisions = null,
+  kvBindingProof = null,
+} = {}) {
+  const revision = assertExpectedDeployedRevisionsAllowlist(expectedDeployedRevisions);
+  let proof = kvBindingProof;
+  if (proof && proof.ok === true && proof.kv_writes_proved_zero_by_absent_binding === true) {
+    // already proved
+  } else if (proof && Array.isArray(proof.bindings_projected)) {
+    proof = proveSanitizerKvAbsentFromBindings(proof.bindings_projected);
+  } else if (proof && (Array.isArray(proof) || (proof && typeof proof === "object"))) {
+    proof = proveSanitizerKvAbsentFromBindings(proof);
+  } else {
+    fail(
+      "refuse to arm/READY: sanitizer KV-absent bindings proof required "
+      + "(settings/version bindings GET with kv_binding_count 0)",
+    );
+  }
+  if (!proof || proof.ok !== true || proof.kv_writes_proved_zero_by_absent_binding !== true) {
+    const reason = proof?.reason || CAP_SIGNAL_REASON.KV_BINDING_PROOF_UNKNOWN;
+    fail(`refuse to arm/READY: sanitizer KV proof failed (${reason})`);
+  }
+  return {
+    ok: true,
+    revision_allowlist_bound: true,
+    revision_ids: revision.ids,
+    kv_absent_proved: true,
+    kv_binding_count: 0,
+    binding_types: proof.binding_types,
+  };
+}
+
+/**
+ * Collector self-Tail (findings option 1): attach the sanitizer as a Tail
+ * consumer of itself so native cpuTime can fill collector_cpu_ms. Baseline for
+ * that script's tail_consumers is explicit []. Own restore required — never
+ * use wall time as CPU.
+ */
+export function planCollectorSelfTailAttachment({
+  sanitizerService = DEFAULT_TAIL_SANITIZER_SCRIPT,
+  environment = null,
+  namespace = null,
+} = {}) {
+  if (typeof sanitizerService !== "string" || !sanitizerService.trim()) {
+    fail("collector self-Tail requires sanitizerService");
+  }
+  const consumer = canonicalizeTailConsumer({
+    service: sanitizerService.trim(),
+    environment,
+    namespace,
+  });
+  return {
+    schema: "cityscroll.collector_self_tail_plan.v1",
+    target_script: sanitizerService.trim(),
+    baseline_consumers: [],
+    attach_consumers: [consumer],
+    restore_consumers: [],
+    note: "Attach under own-window CAS on the sanitizer script; restore to []; "
+      + "measure native Tail cpuTime into collector_cpu_ms — never wall time",
+  };
 }

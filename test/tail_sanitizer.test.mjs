@@ -9,17 +9,22 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
+  assertNonEmptyExpectedRevisionAllowlist,
   classifyCpuValue,
+  cohortFromFetchPathname,
   cpuMsBucket,
   createNdjsonFramer,
+  DEFAULT_COLLECTOR_SCRIPT_NAME,
   FIXED_COHORT_KEYS,
   FORBIDDEN_PERSIST_KEYS,
+  isCollectorSelfTailItem,
   isValidatedTailEventShape,
   makeGetterOnlyTraceItem,
   makeLazyCpuTraceItem,
   mapFixedCohort,
   mapPersistedRevision,
   parseExpectedRevisionAllowlist,
+  PATHNAME_COHORT_PREFIXES,
   projectAllowlistedTailEvent,
   projectNdjsonLine,
   serializeAllowlistedDelta,
@@ -46,6 +51,8 @@ test("wrangler config names cityscroll-tail-sanitizer and omits observability", 
   // Config table absent: comments may mention the word; only a real [observability] block fails.
   assert.equal(/^\[observability(?:\.[^\]]+)?\]/m.test(text), false);
   assert.match(text, /class_name\s*=\s*"AggregateSink"/);
+  // Real binding tables only — comments may mention KV absence.
+  assert.equal(/^\[\[kv_namespaces\]\]/m.test(text), false, "sanitizer must not declare kv_namespaces");
 });
 
 test("empty object and banner-like JSON are not validated Tail events", () => {
@@ -929,4 +936,245 @@ test("actuateOwnedDetachFromCapSignal requires binding and signal", async () => 
   }, { trigger_owned_detach: true, events_seen: 10 });
   assert.equal(ok.actuated, true);
   assert.equal(called, true);
+});
+
+test("pathname cohort prefixes map search/nearby/events/health; unknown → http", () => {
+  assert.ok(Object.isFrozen(PATHNAME_COHORT_PREFIXES));
+  assert.equal(cohortFromFetchPathname("/search"), "search");
+  assert.equal(cohortFromFetchPathname("/search/housing"), "search");
+  assert.equal(cohortFromFetchPathname("/near-you"), "nearby");
+  assert.equal(cohortFromFetchPathname("/near-you/midwood"), "nearby");
+  assert.equal(cohortFromFetchPathname("/events"), "rum_batch_16");
+  assert.equal(cohortFromFetchPathname("/events/batch"), "rum_batch_16");
+  assert.equal(cohortFromFetchPathname("/health"), "http");
+  assert.equal(cohortFromFetchPathname("/agencies"), "http");
+  assert.equal(cohortFromFetchPathname("/searching"), "http");
+  assert.equal(cohortFromFetchPathname(""), "http");
+});
+
+test("fetch pathname cohort: /search?secret=x → search; secret never in serialized delta", () => {
+  const SECRET = "pathname-secret-VALUE-7c2e";
+  const item = {
+    outcome: "ok",
+    event: {
+      request: {
+        url: `https://cityscroll.org/search?q=housing&token=${SECRET}`,
+        headers: { authorization: `Bearer ${SECRET}` },
+      },
+    },
+    cpuTime: 9,
+  };
+  const projected = projectAllowlistedTailEvent(item);
+  assert.equal(projected.accepted, true);
+  assert.equal(projected.cohort, "search");
+  assert.equal("url" in projected, false);
+  assert.equal("request" in projected, false);
+  const serialized = JSON.stringify(serializeAllowlistedDelta(projected));
+  assert.equal(serialized.includes(SECRET), false);
+  assert.equal(serialized.includes("housing"), false);
+  assert.equal(serialized.includes("/search"), false);
+  assert.match(serialized, /"cohort":"search"/);
+});
+
+test("hostile query/path/header values never reach AggregateSink storage JSON", async () => {
+  const SECRET = "storage-leak-token-PATH-9aa1";
+  const storage = createFakeStorage();
+  const { sink } = createFakeSinkEnv(storage, {
+    readbackToken: "tok-path",
+    expectedRevisions: "rev-path",
+  });
+  const projected = projectAllowlistedTailEvent({
+    outcome: "ok",
+    event: {
+      request: {
+        url: `https://cityscroll.org/near-you/midwood?geo=${SECRET}&token=${SECRET}`,
+        headers: { cookie: `sid=${SECRET}`, "x-secret": SECRET },
+      },
+    },
+    cpuTime: 4,
+    scriptVersion: { id: "rev-path" },
+  });
+  assert.equal(projected.cohort, "nearby");
+  const apply = await sink.fetch(new Request("https://sink/apply", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(serializeAllowlistedDelta(projected)),
+  }));
+  assert.equal((await apply.json()).acked, true);
+  const counters = await storage.get("counters");
+  const meta = await storage.get("meta");
+  const combined = `${JSON.stringify(counters)}\n${JSON.stringify(meta)}`;
+  assert.equal(combined.includes(SECRET), false);
+  assert.equal(counters.by_cohort_cpu.nearby.cpu_ms_sum, 4);
+  assert.equal(counters.by_cohort_cpu.http.cpu_ms_count, 0);
+});
+test("unknown fetch path → http cohort", () => {
+  const projected = projectAllowlistedTailEvent({
+    outcome: "ok",
+    event: { request: { url: "https://cityscroll.org/agencies/office-of-the-mayor/" } },
+    cpuTime: 2,
+  });
+  assert.equal(projected.cohort, "http");
+  assert.equal(serializeAllowlistedDelta(projected).cohort, "http");
+});
+
+test("coldStart 0|1 dual-records cold cohort without inventing absent zeros", async () => {
+  const storage = createFakeStorage();
+  const { sink } = createFakeSinkEnv(storage, {
+    readbackToken: "tok-cold",
+    expectedRevisions: "rev-cold",
+  });
+  const withFlag = projectAllowlistedTailEvent({
+    outcome: "ok",
+    event: { request: { url: "https://cityscroll.org/search?q=x" } },
+    cpuTime: 10,
+    coldStart: 1,
+    scriptVersion: { id: "rev-cold" },
+  });
+  assert.equal(withFlag.cohort, "search");
+  assert.equal(withFlag.cold_start_flag_raw, 1);
+  assert.equal("cold_start" in withFlag, false);
+
+  const absent = projectAllowlistedTailEvent({
+    outcome: "ok",
+    event: { request: { url: "https://cityscroll.org/search" } },
+    cpuTime: 5,
+    scriptVersion: { id: "rev-cold" },
+  });
+  assert.equal(Object.prototype.hasOwnProperty.call(absent, "cold_start_flag_raw"), false);
+
+  await sink.fetch(new Request("https://sink/apply", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(serializeAllowlistedDelta(withFlag)),
+  }));
+  await sink.fetch(new Request("https://sink/apply", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(serializeAllowlistedDelta(absent)),
+  }));
+
+  const counters = await storage.get("counters");
+  assert.equal(counters.events_accepted, 2);
+  assert.equal(counters.cpu_ms_sum, 15, "globals must not double-count cold dual-record");
+  assert.equal(counters.by_cohort_cpu.search.cpu_ms_sum, 15);
+  assert.equal(counters.by_cohort_cpu.cold_start_flag_raw_1.cpu_ms_sum, 10);
+  assert.equal(counters.by_cohort_cpu.cold_start_flag_raw_1.cpu_ms_count, 1);
+  assert.equal(counters.by_cohort_cpu.cold_start_flag_raw_0.cpu_ms_count, 0);
+  assert.equal(counters.by_cohort_cpu.cold_start_unknown.cpu_ms_count, 0);
+});
+
+test("assertNonEmptyExpectedRevisionAllowlist refuses empty allowlist", () => {
+  assert.equal(assertNonEmptyExpectedRevisionAllowlist("").ok, false);
+  assert.equal(assertNonEmptyExpectedRevisionAllowlist("  ,  ").ok, false);
+  assert.equal(assertNonEmptyExpectedRevisionAllowlist(null).ok, false);
+  const ok = assertNonEmptyExpectedRevisionAllowlist("rev-a,rev-b");
+  assert.equal(ok.ok, true);
+  assert.equal(ok.expected.has("rev-a"), true);
+  assert.equal(mapPersistedRevision("rev-a", new Set()), "unknown");
+});
+
+test("isCollectorSelfTailItem matches scriptName / COLLECTOR_SCRIPT_NAME", () => {
+  assert.equal(isCollectorSelfTailItem({ scriptName: DEFAULT_COLLECTOR_SCRIPT_NAME }, {}), true);
+  assert.equal(isCollectorSelfTailItem({ scriptName: "cityscroll-worker" }, {}), false);
+  assert.equal(isCollectorSelfTailItem({ scriptName: "custom-sanitizer" }, {
+    COLLECTOR_SCRIPT_NAME: "custom-sanitizer",
+  }), true);
+  assert.equal(isCollectorSelfTailItem({ outcome: "ok" }, {}), false);
+});
+
+test("AggregateSink collector_overhead records CPU without events_seen; preserves across apply", async () => {
+  const storage = createFakeStorage();
+  const { sink } = createFakeSinkEnv(storage, {
+    readbackToken: "tok-coll",
+    expectedRevisions: "rev-a",
+  });
+
+  const overhead = await sink.fetch(new Request("https://sink/apply", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      accepted: true,
+      collector_overhead: true,
+      cpuTime: 12,
+      cpu_class: "positive",
+      cpu_unknown: false,
+      outcome: "ok",
+      eventType: "fetch",
+      cohort: "collector",
+    }),
+  }));
+  const overheadBody = await overhead.json();
+  assert.equal(overheadBody.acked, true);
+  assert.equal(overheadBody.collector_overhead, true);
+  assert.equal(overheadBody.events_seen, 0);
+  assert.equal(overheadBody.collector_cpu_ms, 12);
+
+  let counters = await storage.get("counters");
+  assert.equal(counters.events_accepted, 0);
+  assert.equal(counters.events_rejected, 0);
+  assert.equal(counters.collector_cpu_ms, 12);
+  assert.equal(counters.by_cohort_cpu.collector.cpu_ms_sum, 12);
+  assert.equal(counters.cpu_ms_sum, 0, "collector overhead must not inflate producer cpu_ms_sum");
+
+  const producer = await sink.fetch(new Request("https://sink/apply", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      accepted: true,
+      cpu_class: "positive",
+      cpuTime: 3,
+      outcome: "ok",
+      eventType: "fetch",
+      deployed_revision: "rev-a",
+    }),
+  }));
+  const producerBody = await producer.json();
+  assert.equal(producerBody.acked, true);
+  assert.equal(producerBody.cost_vector.collector_cpu_ms, 12, "ordinary apply must not wipe measured collector CPU");
+
+  counters = await storage.get("counters");
+  assert.equal(counters.events_accepted, 1);
+  assert.equal(counters.collector_cpu_ms, 12);
+  assert.equal(counters.cpu_ms_sum, 3);
+
+  const rb = await (await sink.fetch(new Request("https://sink/readback", {
+    headers: { "x-cityscroll-tail-readback-token": "tok-coll" },
+  }))).json();
+  assert.equal(rb.counters.collector_cpu_ms, 12);
+  assert.equal(rb.overhead.collector_cpu_ms, 12);
+  assert.equal(rb.events_seen, 1);
+});
+
+test("tail() self-observation posts collector_overhead without producer caps", async () => {
+  const storage = createFakeStorage();
+  const { env } = createFakeSinkEnv(storage, {
+    readbackToken: "tok-self",
+    expectedRevisions: "rev-self",
+  });
+  const selfItem = {
+    scriptName: "cityscroll-tail-sanitizer",
+    outcome: "ok",
+    event: { request: { url: "https://sink/apply?token=should-never-persist" } },
+    get cpuTime() { return 8; },
+  };
+  const producerItem = {
+    scriptName: "cityscroll-worker",
+    outcome: "ok",
+    event: { request: { url: "https://cityscroll.org/events/rum" } },
+    cpuTime: 20,
+    scriptVersion: { id: "rev-self" },
+  };
+  const batch = await workerEntrypoint.tail([selfItem, producerItem], env);
+  assert.equal(batch.batch_size, 2);
+  assert.equal(batch.classified, 2);
+
+  const counters = await storage.get("counters");
+  assert.equal(counters.events_accepted, 1);
+  assert.equal(counters.collector_cpu_ms, 8);
+  assert.equal(counters.by_cohort_cpu.collector.cpu_ms_sum, 8);
+  assert.equal(counters.by_cohort_cpu.rum_batch_16.cpu_ms_sum, 20);
+  const dumped = JSON.stringify(counters);
+  assert.equal(dumped.includes("should-never-persist"), false);
+  assert.equal(dumped.includes("token="), false);
 });
