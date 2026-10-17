@@ -22,7 +22,7 @@ import {
   observedRecommendationFromDisposition,
   projectAffectedReviewBodies,
 } from "./land_affected_review_body.mjs";
-import { mapMilestoneToPhase } from "./land_phase_spine.mjs";
+import { buildLandPhaseView, mapMilestoneToPhase } from "./land_phase_spine.mjs";
 
 export const LAND_AUTHORITY_SUMMARY_SCHEMA = "cityscroll.land_authority_summary.v1";
 export const LAND_AUTHORITY_SUMMARY_RECEIPT_SCHEMA = "cityscroll.land_authority_summary_receipt.v1";
@@ -501,20 +501,26 @@ export function buildLandAuthoritySummary(input = {}) {
       ? outcomes.dispositions
       : [];
   const publishedOpportunities = input.publishedOpportunities;
-  const stale = input.stale === true;
+  const stale = input.stale === true || outcomes.evidence_stale === true;
   const actionResolution = resolveLandActionProcedures(project);
   const procedureResolution = actionResolution.procedure_resolution;
   const resolvedActions = actionResolution.land_actions.filter((action) => action.status === "resolved");
   const procedureIds = [...new Set(resolvedActions.map((action) => action.procedure_id).filter(Boolean))];
   const procedureId = procedureIds.length === 1 ? procedureIds[0] : null;
   const profile = procedureId ? AUTHORITY_PROFILE_BY_ID.get(procedureId) : null;
-  const affected = projectAffectedReviewBodies(project, { geography });
+  const affected = input.affectedReviewBodies || projectAffectedReviewBodies(project, { geography });
   const facts = {
     ...project,
     affected_review_bodies: affected?.facts || project.affected_review_bodies || {},
   };
-  const milestone = clean(project.current_milestone);
-  const milestonePhaseId = milestone ? mapMilestoneToPhase(milestone) : null;
+  const retainedPhase = outcomes.spine?.events?.length
+    ? buildLandPhaseView(outcomes.spine, {
+        ...outcomes, open_data: { ...project, ...outcomes.open_data },
+        project_id: projectId, procedure_facts: facts,
+      }).current
+    : null;
+  const milestone = clean(retainedPhase?.milestone_label || project.current_milestone);
+  const milestonePhaseId = retainedPhase?.phase_id || (milestone ? mapMilestoneToPhase(milestone) : null);
   const phaseId = milestonePhaseId ? clampMilestonePhaseToProfile(milestonePhaseId, profile) : null;
   const observed = observedFromDispositions(dispositions, affected);
   const published = publishedOpportunity(projectId, publishedOpportunities, asOf);
@@ -533,6 +539,12 @@ export function buildLandAuthoritySummary(input = {}) {
           current_milestone: milestone,
           phase_id: phaseId,
           milestone_phase_id: milestonePhaseId,
+          ...(retainedPhase ? {
+            source_type: "materialized_phase_spine",
+            source_field: "spine.events",
+            evidence_source_id: retainedPhase.evidence_source_id,
+            observed_at: outcomes.stage_observation?.observed_at || null,
+          } : {}),
         }
       : null,
     geography: affected
@@ -724,8 +736,7 @@ export function materializeLandAuthoritySummaries(inputs = {}) {
       project,
       geography,
       outcomes: {
-        actions: outcomeRecord.actions,
-        dispositions: outcomeRecord.dispositions,
+        ...outcomeRecord,
         generated_at: outcomeRecord.generated_at || landDefault.generated_at,
       },
       publishedOpportunities: {
