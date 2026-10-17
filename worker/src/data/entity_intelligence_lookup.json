@@ -3,7 +3,7 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-10-17T05:31:36.495Z",
+  "generated_at": "2026-10-17T11:22:22.264Z",
   "observation_count": 3468,
   "entity_count": 200,
   "multi_domain_count": 34,
@@ -33887,39 +33887,6 @@
           "note": null,
           "objects": [
             {
-              "subject_ref": "notice:20260929001",
-              "domain": "rules",
-              "object_kind": "rule",
-              "label": "Amendment of Rules Relating to Lead Dust",
-              "when": "2026-10-05T00:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260929001",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:health-and-mental-hygiene",
-              "root_kind": "agency",
-              "href": "#notice/20260929001",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260929001",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "rules_agency_name",
-                "observed_at": "2026-10-05T00:00:00.000",
-                "input_value": "Health and Mental Hygiene"
-              },
-              "link_type": "issued_rule",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
               "subject_ref": "notice:20260924006",
               "domain": "rules",
               "object_kind": "rule",
@@ -33941,6 +33908,39 @@
               "provenance": {
                 "source_system": "city_record",
                 "source_record_id": "city_record:20260924006",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "rules_agency_name",
+                "observed_at": "2026-10-05T00:00:00.000",
+                "input_value": "Health and Mental Hygiene"
+              },
+              "link_type": "issued_rule",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260929001",
+              "domain": "rules",
+              "object_kind": "rule",
+              "label": "Amendment of Rules Relating to Lead Dust",
+              "when": "2026-10-05T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260929001",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:health-and-mental-hygiene",
+              "root_kind": "agency",
+              "href": "#notice/20260929001",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260929001",
                 "source_fields": [
                   "agency_name"
                 ],
@@ -44278,39 +44278,6 @@
               "method": "agency_canonical_v1"
             },
             {
-              "subject_ref": "notice:20260811002",
-              "domain": "rules",
-              "object_kind": "rule",
-              "label": "DCWP NOA Self-Storage Facilities and Storage Warehouses",
-              "when": "2026-08-18T00:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260811002",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:consumer-and-worker-protection",
-              "root_kind": "agency",
-              "href": "#notice/20260811002",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260811002",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "rules_agency_name",
-                "observed_at": "2026-08-18T00:00:00.000",
-                "input_value": "Consumer and Worker Protection"
-              },
-              "link_type": "issued_rule",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
               "subject_ref": "notice:20260810007",
               "domain": "rules",
               "object_kind": "rule",
@@ -44332,6 +44299,39 @@
               "provenance": {
                 "source_system": "city_record",
                 "source_record_id": "city_record:20260810007",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "rules_agency_name",
+                "observed_at": "2026-08-18T00:00:00.000",
+                "input_value": "Consumer and Worker Protection"
+              },
+              "link_type": "issued_rule",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260811002",
+              "domain": "rules",
+              "object_kind": "rule",
+              "label": "DCWP NOA Self-Storage Facilities and Storage Warehouses",
+              "when": "2026-08-18T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260811002",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:consumer-and-worker-protection",
+              "root_kind": "agency",
+              "href": "#notice/20260811002",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260811002",
                 "source_fields": [
                   "agency_name"
                 ],
