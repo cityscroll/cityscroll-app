@@ -1766,6 +1766,282 @@ setTimeout(() => process.exit(0), 30);
   rmSync(dir, { recursive: true, force: true });
 });
 
+test("process fixture: autonomous window expiry restores without controller-death receipt", async () => {
+  // Parent stays available but never writes a controller-death receipt and never
+  // cancels. The child loop itself must observe wall-clock expiry and restore.
+  const dir = mkdtempSync(join(tmpdir(), "cc05-tail-autonomy-"));
+  const stateRoot = join(dir, "restorer");
+  installDurableTailRestorerRunner({ stateRoot, repoRoot: REPO_ROOT });
+
+  const transportState = join(dir, "transport-state.json");
+  writeFileSync(transportState, `${JSON.stringify([SANITIZER])}\n`, { mode: 0o600 });
+  const transportModule = join(dir, "fake-transport.mjs");
+  writeFileSync(transportModule, `import { readFileSync, writeFileSync } from "node:fs";
+const statePath = ${JSON.stringify(transportState)};
+const patchLogPath = ${JSON.stringify(join(dir, "patch-log.jsonl"))};
+function load() {
+  return JSON.parse(readFileSync(statePath, "utf8"));
+}
+export function createTransport() {
+  return {
+    async getTailConsumers() {
+      const current = load();
+      return current == null ? null : structuredClone(current);
+    },
+    async patchTailConsumers(next) {
+      const canonical = Array.isArray(next) ? structuredClone(next) : next;
+      writeFileSync(statePath, JSON.stringify(canonical) + "\\n");
+      writeFileSync(patchLogPath, JSON.stringify({ method: "PATCH", consumers: canonical, at: new Date().toISOString() }) + "\\n", { flag: "a" });
+      return structuredClone(canonical);
+    },
+  };
+}
+`);
+  const versionModule = join(dir, "fake-version-transport.mjs");
+  writeFileSync(versionModule, `const ACCOUNT_ID = ${JSON.stringify(ACCOUNT_ID)};
+const ACCOUNT_SHA = ${JSON.stringify(ACCOUNT_SHA)};
+const CONSUMER = ${JSON.stringify(SANITIZER)};
+const VERSION_ID = ${JSON.stringify(VERSION_ID)};
+const path = \`/accounts/\${ACCOUNT_ID}/workers/scripts/\${CONSUMER.service}/deployments\`;
+const url = \`https://api.cloudflare.com/client/v4\${path}\`;
+export function createVersionTransport() {
+  return {
+    account_id: ACCOUNT_ID,
+    account_id_sha256: ACCOUNT_SHA,
+    script_name: CONSUMER.service,
+    consumer: { ...CONSUMER },
+    url,
+    path,
+    async getLatestVersionEvidence() {
+      const versions = [{ version_id: VERSION_ID, percentage: 100 }];
+      return {
+        present: true,
+        reason: null,
+        versions,
+        provenance: "deployments-list-GET",
+        account_id_sha256: ACCOUNT_SHA,
+        get_target: { script_name: CONSUMER.service, url, path },
+        consumer: { ...CONSUMER },
+        http: { method: "GET", status: 200, success: true },
+        sha256: ${JSON.stringify(deploymentsVersionEvidenceSha256([{ version_id: VERSION_ID, percentage: 100 }]))},
+        version: VERSION_ID,
+      };
+    },
+  };
+}
+`);
+
+  const { store, window } = await openStoredArmedWindow(dir, {
+    windowId: "autonomy-win",
+    restorerId: "tr-autonomy",
+    baselineConsumers: [],
+    now: new Date().toISOString(),
+    durationSeconds: 4,
+  });
+  let owned = await store.read();
+  owned = {
+    ...owned,
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER]),
+    owned_sha256: tailConsumersSha256([SANITIZER]),
+    pending_mutation: null,
+  };
+  await store.write(owned, { expectedWindowId: owned.window_id });
+
+  const started = startSupervisedTailRestorerProcess({
+    windowPath: store.path,
+    windowId: window.window_id,
+    stateRoot,
+    runnerPath: join(stateRoot, "run.mjs"),
+    detached: true,
+    pollMs: 100,
+    env: {
+      ...process.env,
+      CITYSCROLL_TAIL_ATTACHMENT_RESTORER_TRANSPORT_MODULE: pathToFileURL(transportModule).href,
+      CITYSCROLL_TAIL_ATTACHMENT_RESTORER_VERSION_TRANSPORT_MODULE: pathToFileURL(versionModule).href,
+      CLOUDFLARE_ACCOUNT_ID: ACCOUNT_ID,
+      CLOUDFLARE_WORKER_ID: WORKER_ID,
+      CLOUDFLARE_API_TOKEN: "test-token-not-used-with-module",
+    },
+  });
+  assert.ok(started.pid > 0);
+
+  const paths = tailRestorerPaths(stateRoot);
+  const readyDeadline = Date.now() + 10_000;
+  while (Date.now() < readyDeadline && !existsSync(paths.readyReceipt)) {
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
+  assert.ok(existsSync(paths.readyReceipt), "independent guardian ready receipt");
+  assert.equal(existsSync(paths.controllerDeathReceipt), false, "no controller-death receipt written");
+
+  const terminalDeadline = Date.now() + 15_000;
+  while (Date.now() < terminalDeadline && !existsSync(paths.terminalReceipt)) {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+  assert.ok(existsSync(paths.terminalReceipt), "guardian terminal receipt after autonomous expiry");
+  assert.equal(existsSync(paths.controllerDeathReceipt), false, "still no controller-death receipt");
+
+  const terminal = JSON.parse(readFileSync(paths.terminalReceipt, "utf8"));
+  assert.equal(terminal.proved, true);
+  assert.ok(["restored", "already-restored"].includes(terminal.outcome), terminal.outcome);
+  assert.equal(terminal.expired, true);
+  assert.equal(terminal.window_id, window.window_id);
+  assert.notEqual(terminal.controller_death, true);
+
+  const after = JSON.parse(readFileSync(store.path, "utf8"));
+  assert.ok(["restored", "expired-restored"].includes(after.phase), after.phase);
+  assert.equal(after.phase, "expired-restored");
+  assert.equal(after.owned_sha256, null);
+  assert.deepEqual(after.baseline_consumers, []);
+  const transportAfter = JSON.parse(readFileSync(transportState, "utf8"));
+  assert.deepEqual(transportAfter, []);
+
+  stopSupervisedTailRestorerProcess({ stateRoot, signal: "SIGTERM" });
+  try { process.kill(started.pid, "SIGTERM"); } catch { /* gone */ }
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("process fixture: foreign same-count under expiry refuses overwrite (0 PATCH to foreign)", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-tail-foreign-expiry-"));
+  const stateRoot = join(dir, "restorer");
+  installDurableTailRestorerRunner({ stateRoot, repoRoot: REPO_ROOT });
+
+  const transportState = join(dir, "transport-state.json");
+  writeFileSync(transportState, `${JSON.stringify([SANITIZER])}\n`, { mode: 0o600 });
+  const patchLogPath = join(dir, "patch-log.jsonl");
+  const transportModule = join(dir, "fake-transport.mjs");
+  writeFileSync(transportModule, `import { readFileSync, writeFileSync, existsSync } from "node:fs";
+const statePath = ${JSON.stringify(transportState)};
+const patchLogPath = ${JSON.stringify(patchLogPath)};
+function load() {
+  return JSON.parse(readFileSync(statePath, "utf8"));
+}
+export function createTransport() {
+  return {
+    async getTailConsumers() {
+      const current = load();
+      return current == null ? null : structuredClone(current);
+    },
+    async patchTailConsumers(next) {
+      const canonical = Array.isArray(next) ? structuredClone(next) : next;
+      writeFileSync(statePath, JSON.stringify(canonical) + "\\n");
+      writeFileSync(patchLogPath, JSON.stringify({ method: "PATCH", consumers: canonical, at: new Date().toISOString() }) + "\\n", { flag: "a" });
+      return structuredClone(canonical);
+    },
+  };
+}
+`);
+  const versionModule = join(dir, "fake-version-transport.mjs");
+  writeFileSync(versionModule, `const ACCOUNT_ID = ${JSON.stringify(ACCOUNT_ID)};
+const ACCOUNT_SHA = ${JSON.stringify(ACCOUNT_SHA)};
+const CONSUMER = ${JSON.stringify(SANITIZER)};
+const VERSION_ID = ${JSON.stringify(VERSION_ID)};
+const path = \`/accounts/\${ACCOUNT_ID}/workers/scripts/\${CONSUMER.service}/deployments\`;
+const url = \`https://api.cloudflare.com/client/v4\${path}\`;
+export function createVersionTransport() {
+  return {
+    account_id: ACCOUNT_ID,
+    account_id_sha256: ACCOUNT_SHA,
+    script_name: CONSUMER.service,
+    consumer: { ...CONSUMER },
+    url,
+    path,
+    async getLatestVersionEvidence() {
+      const versions = [{ version_id: VERSION_ID, percentage: 100 }];
+      return {
+        present: true,
+        reason: null,
+        versions,
+        provenance: "deployments-list-GET",
+        account_id_sha256: ACCOUNT_SHA,
+        get_target: { script_name: CONSUMER.service, url, path },
+        consumer: { ...CONSUMER },
+        http: { method: "GET", status: 200, success: true },
+        sha256: ${JSON.stringify(deploymentsVersionEvidenceSha256([{ version_id: VERSION_ID, percentage: 100 }]))},
+        version: VERSION_ID,
+      };
+    },
+  };
+}
+`);
+
+  const { store, window } = await openStoredArmedWindow(dir, {
+    windowId: "foreign-expiry-win",
+    restorerId: "tr-foreign-expiry",
+    baselineConsumers: [],
+    now: new Date().toISOString(),
+    durationSeconds: 4,
+  });
+  let owned = await store.read();
+  owned = {
+    ...owned,
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER]),
+    owned_sha256: tailConsumersSha256([SANITIZER]),
+    pending_mutation: null,
+  };
+  await store.write(owned, { expectedWindowId: owned.window_id });
+
+  // Foreign same-count identity is already live before the guardian starts, so
+  // expiry cannot race a restore-to-baseline ahead of the swap.
+  writeFileSync(transportState, `${JSON.stringify([FOREIGN_NS])}\n`, { mode: 0o600 });
+
+  const started = startSupervisedTailRestorerProcess({
+    windowPath: store.path,
+    windowId: window.window_id,
+    stateRoot,
+    runnerPath: join(stateRoot, "run.mjs"),
+    detached: true,
+    pollMs: 100,
+    env: {
+      ...process.env,
+      CITYSCROLL_TAIL_ATTACHMENT_RESTORER_TRANSPORT_MODULE: pathToFileURL(transportModule).href,
+      CITYSCROLL_TAIL_ATTACHMENT_RESTORER_VERSION_TRANSPORT_MODULE: pathToFileURL(versionModule).href,
+      CLOUDFLARE_ACCOUNT_ID: ACCOUNT_ID,
+      CLOUDFLARE_WORKER_ID: WORKER_ID,
+      CLOUDFLARE_API_TOKEN: "test-token-not-used-with-module",
+    },
+  });
+  assert.ok(started.pid > 0);
+
+  const paths = tailRestorerPaths(stateRoot);
+  const readyDeadline = Date.now() + 10_000;
+  while (Date.now() < readyDeadline && !existsSync(paths.readyReceipt)) {
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
+  assert.ok(existsSync(paths.readyReceipt), "guardian ready with foreign consumers already live");
+
+  const terminalDeadline = Date.now() + 15_000;
+  while (Date.now() < terminalDeadline && !existsSync(paths.terminalReceipt)) {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+  assert.ok(existsSync(paths.terminalReceipt), "guardian terminal after foreign+expiry");
+
+  const terminal = JSON.parse(readFileSync(paths.terminalReceipt, "utf8"));
+  // Refuse-conflict is unproved → outcome blocked; must not overwrite foreign.
+  assert.equal(terminal.proved, false);
+  assert.ok(
+    terminal.outcome === "blocked"
+      || terminal.outcome === "refuse-conflict"
+      || terminal.classification === "conflict",
+    JSON.stringify(terminal),
+  );
+  assert.equal(existsSync(patchLogPath), false, "no PATCH against foreign consumers");
+  const transportAfter = JSON.parse(readFileSync(transportState, "utf8"));
+  assert.deepEqual(
+    canonicalizeTailConsumers(transportAfter),
+    canonicalizeTailConsumers([FOREIGN_NS]),
+  );
+  const after = JSON.parse(readFileSync(store.path, "utf8"));
+  assert.notEqual(after.phase, "restored");
+  assert.notEqual(after.phase, "expired-restored");
+  assert.equal(after.owned_sha256, tailConsumersSha256([SANITIZER]));
+
+  stopSupervisedTailRestorerProcess({ stateRoot, signal: "SIGTERM" });
+  try { process.kill(started.pid, "SIGTERM"); } catch { /* gone */ }
+  rmSync(dir, { recursive: true, force: true });
+});
+
 test("DETACH version_guard never uses bare true; drift/failure labeled UNKNOWN", async () => {
   const dir = mkdtempSync(join(tmpdir(), "cc05-tail-detach-labels-"));
   const uuid1 = "11111111-1111-1111-1111-111111111111";

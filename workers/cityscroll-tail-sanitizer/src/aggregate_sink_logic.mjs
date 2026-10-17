@@ -31,6 +31,10 @@ function emptyCounters() {
   };
 }
 
+function eventsSeenOf(counters) {
+  return (counters.events_accepted || 0) + (counters.events_rejected || 0);
+}
+
 export function createAggregateDoSink({
   sinkId = "local-tail-sanitizer-sink",
   maxEvents = DEFAULT_MAX_EVENTS,
@@ -40,6 +44,7 @@ export function createAggregateDoSink({
 } = {}) {
   const openedAt = nowMs();
   let closed = false;
+  let capReached = false;
   let counters = emptyCounters();
   let overhead = {
     sink_cpu_ms: "UNKNOWN",
@@ -49,6 +54,8 @@ export function createAggregateDoSink({
   };
   /** Test-only: last applied serialized deltas (allowlisted shape only). */
   const appliedDeltas = [];
+
+  const eventsSeen = () => eventsSeenOf(counters);
 
   const assertOpen = () => {
     if (closed) {
@@ -61,11 +68,25 @@ export function createAggregateDoSink({
       err.code = "SINK_DEADLINE";
       throw err;
     }
-    if (counters.events_accepted >= maxEvents) {
+    // Cap bounds ALL received/seen events (accepted + rejected). Concurrent
+    // applies may briefly overshoot by at most concurrency−1; after cap_reached
+    // stop accepting. Independent window expiry remains the detach fallback.
+    if (capReached || eventsSeen() >= maxEvents) {
       const err = new Error("aggregate sink event cap reached");
       err.code = "SINK_CAP";
+      err.cap_reached = true;
       throw err;
     }
+  };
+
+  const markCapIfReached = (result) => {
+    if (eventsSeen() >= maxEvents) {
+      capReached = true;
+      result.cap_reached = true;
+      result.trigger_owned_detach = true;
+    }
+    result.events_seen = eventsSeen();
+    return result;
   };
 
   const authorize = (token) => {
@@ -85,26 +106,26 @@ export function createAggregateDoSink({
       overhead.sink_rpc_count += 1;
       if (!delta || typeof delta !== "object" || Array.isArray(delta)) {
         counters.events_rejected += 1;
-        return { acked: false, reason: "not_object" };
+        return markCapIfReached({ acked: false, reason: "not_object" });
       }
       for (const key of FORBIDDEN_PERSIST_KEYS) {
         if (Object.prototype.hasOwnProperty.call(delta, key)) {
           counters.events_rejected += 1;
-          return { acked: false, reason: "forbidden_key", key };
+          return markCapIfReached({ acked: false, reason: "forbidden_key", key });
         }
       }
       if (delta.accepted === false) {
         counters.events_rejected += 1;
-        return { acked: false, reason: delta.reason || "not_accepted" };
+        return markCapIfReached({ acked: false, reason: delta.reason || "not_accepted" });
       }
       if (delta.accepted !== true) {
         counters.events_rejected += 1;
-        return { acked: false, reason: "not_accepted" };
+        return markCapIfReached({ acked: false, reason: "not_accepted" });
       }
       const cpuClass = delta.cpu_class || classifyCpuValue(delta.cpuTime);
       if (!CPU_CLASS_COUNTER_KEYS.includes(cpuClass)) {
         counters.events_rejected += 1;
-        return { acked: false, reason: "unknown_cpu_class", cpu_class: cpuClass };
+        return markCapIfReached({ acked: false, reason: "unknown_cpu_class", cpu_class: cpuClass });
       }
       const clean = serializeAllowlistedDelta({ ...delta, accepted: true, cpu_class: cpuClass });
       counters.events_accepted += 1;
@@ -115,19 +136,20 @@ export function createAggregateDoSink({
       const outcome = clean.outcome == null ? "null" : String(clean.outcome);
       counters.by_outcome[outcome] = (counters.by_outcome[outcome] || 0) + 1;
       appliedDeltas.push(clean);
-      return {
+      return markCapIfReached({
         acked: true,
         events_accepted_lower_bound: counters.events_accepted,
         cpu_class: cpuClass,
-      };
+      });
     },
 
     ingestSyntheticTailItem(item) {
+      assertOpen();
       const projected = projectAllowlistedTailEvent(item);
       if (!projected.accepted) {
         counters.events_rejected += 1;
         overhead.sink_rpc_count += 1;
-        return { acked: false, reason: projected.reason, projected };
+        return markCapIfReached({ acked: false, reason: projected.reason, projected });
       }
       const result = this.applyAllowlistedDelta(serializeAllowlistedDelta(projected));
       return { ...result, projected };
@@ -138,6 +160,7 @@ export function createAggregateDoSink({
       if (!authorize(token)) {
         return { ok: false, reason: "unauthorized" };
       }
+      const events_seen = eventsSeen();
       return {
         ok: true,
         schema: AGGREGATE_SINK_SCHEMA,
@@ -147,13 +170,20 @@ export function createAggregateDoSink({
         now_ms: nowMs(),
         deadline_ms: deadlineMs,
         max_events: maxEvents,
-        counters: structuredClone(counters),
+        cap_reached: capReached || events_seen >= maxEvents,
+        events_seen,
+        counters: {
+          ...structuredClone(counters),
+          events_seen,
+        },
         overhead: structuredClone(overhead),
         cpu_classes_contract: [...CPU_CLASSES],
         notes: [
           "events_accepted is an observed/acknowledged lower bound",
+          "events_seen counts accepted + rejected; the cap bounds all seen events",
           "do not report CPU0 or cost0 from absent getters",
           "sink overhead is measured or UNKNOWN",
+          "concurrent applies may briefly overshoot the cap by at most concurrency-1; after cap_reached stop accepting",
         ],
       };
     },
@@ -161,6 +191,7 @@ export function createAggregateDoSink({
     cleanupOwned() {
       counters = emptyCounters();
       closed = true;
+      capReached = false;
       appliedDeltas.length = 0;
       overhead.sink_rpc_count += 1;
       return {
@@ -175,6 +206,8 @@ export function createAggregateDoSink({
     snapshotForTest() {
       return {
         closed,
+        cap_reached: capReached,
+        events_seen: eventsSeen(),
         counters: structuredClone(counters),
         overhead: structuredClone(overhead),
         applied_deltas: structuredClone(appliedDeltas),

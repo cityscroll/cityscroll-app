@@ -46,8 +46,17 @@ function fail(message) {
   throw new Error(message);
 }
 
+/** Strict UTC ISO-8601 with optional fractional seconds, e.g. 2026-10-17T14:11:05.000Z */
+const STRICT_ISO_TIMESTAMP_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/;
+
+export function isParseableIsoTimestamp(value) {
+  return typeof value === "string"
+    && STRICT_ISO_TIMESTAMP_RE.test(value)
+    && !Number.isNaN(Date.parse(value));
+}
+
 function requireIso(value, path) {
-  if (typeof value !== "string" || Number.isNaN(Date.parse(value))) {
+  if (!isParseableIsoTimestamp(value)) {
     fail(`${path} must be an ISO timestamp`);
   }
   return value;
@@ -888,6 +897,142 @@ export async function restoreTailAttachmentWindow(window, transport, {
       baseline_sha256: window.baseline_sha256,
     },
   });
+}
+
+/**
+ * Emergency detach: classify the live attachment before any empty-consumer PATCH.
+ * Never blank-patches [] without restore planning. When a durable store is
+ * supplied, refuse on window_id or window_generation mismatch (0 PATCH).
+ * Foreign same-count and missing/UNKNOWN GETs return the plan with proved:false
+ * and 0 PATCH; only a restore / already-restored plan may actuate.
+ */
+export async function emergencyDetachTailAttachment(window, transport, {
+  now = new Date().toISOString(),
+  store = null,
+  expectedGeneration = null,
+} = {}) {
+  if (!window || window.schema !== WORKER_TAIL_ATTACHMENT_WINDOW_SCHEMA) {
+    fail("tail attachment window is invalid");
+  }
+  if (!transport || typeof transport.getTailConsumers !== "function") {
+    fail("attachment transport must provide getTailConsumers");
+  }
+  const at = requireIso(now, "now");
+  let active = window;
+
+  if (store) {
+    if (typeof store.read !== "function") fail("emergency detach store must provide read");
+    const current = await store.read();
+    if (!current) {
+      return {
+        action: "refuse-stale",
+        proved: false,
+        ownership_preserved: true,
+        ownership_unknown: true,
+        patch: null,
+        window,
+        after: null,
+        reason: "durable store is empty",
+        receipt: {
+          schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
+          kind: "emergency-detach",
+          outcome: "refuse-stale",
+          window_id: window.window_id,
+          observed_at: at,
+          reason: "durable store is empty",
+        },
+      };
+    }
+    if (current.window_id !== window.window_id) {
+      return {
+        action: "refuse-stale",
+        proved: false,
+        ownership_preserved: true,
+        ownership_unknown: false,
+        patch: null,
+        window: current,
+        after: null,
+        reason: "window_id mismatch",
+        receipt: {
+          schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
+          kind: "emergency-detach",
+          outcome: "refuse-stale",
+          window_id: window.window_id,
+          observed_at: at,
+          on_disk_window_id: current.window_id,
+          reason: "window_id mismatch",
+        },
+      };
+    }
+    if (expectedGeneration != null) {
+      const currentGen = Number.isInteger(current.window_generation) ? current.window_generation : 0;
+      if (currentGen !== expectedGeneration) {
+        return {
+          action: "refuse-stale",
+          proved: false,
+          ownership_preserved: true,
+          ownership_unknown: false,
+          patch: null,
+          window: current,
+          after: null,
+          reason: "window_generation mismatch",
+          receipt: {
+            schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
+            kind: "emergency-detach",
+            outcome: "refuse-stale",
+            window_id: window.window_id,
+            observed_at: at,
+            expected_generation: expectedGeneration,
+            on_disk_generation: currentGen,
+            reason: "window_generation mismatch",
+          },
+        };
+      }
+    }
+    active = current;
+  }
+
+  const beforeRaw = await transport.getTailConsumers();
+  const plan = planTailAttachmentRestore(beforeRaw, active, { now: at });
+
+  if (plan.action === "refuse-conflict" || plan.action === "retain-owned-unknown") {
+    return {
+      ...plan,
+      proved: false,
+      window: active,
+      after: plan.classification?.consumers ?? null,
+      patch: null,
+    };
+  }
+
+  if (plan.action === "already-restored") {
+    return {
+      ...plan,
+      window: markTailWindowRestored(active, {
+        now: at,
+        beforeSha256: plan.classification.sha256,
+        afterSha256: plan.classification.sha256,
+        expired: plan.expired,
+        outcome: "already-restored",
+      }),
+      after: plan.classification.consumers,
+      proved: true,
+      patch: null,
+    };
+  }
+
+  if (plan.action === "restore") {
+    return restoreTailAttachmentWindow(active, transport, { now: at });
+  }
+
+  // confirm-pending and other non-restore plans: never blank-patch.
+  return {
+    ...plan,
+    proved: false,
+    window: active,
+    after: plan.classification?.consumers ?? null,
+    patch: null,
+  };
 }
 
 /**

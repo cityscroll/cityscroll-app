@@ -45,6 +45,10 @@ function emptyCounters() {
   };
 }
 
+function eventsSeenOf(counters) {
+  return (counters.events_accepted || 0) + (counters.events_rejected || 0);
+}
+
 /**
  * Durable Object: fixed-key aggregate sink shared across isolates.
  * Never stores raw Tail items.
@@ -99,24 +103,42 @@ export class AggregateSink {
       if (Date.now() - meta.opened_at_ms > meta.deadline_ms) {
         return Response.json({ acked: false, reason: "SINK_DEADLINE" }, { status: 409 });
       }
+      const counters = await this.ensureCounters();
+      const seenBefore = eventsSeenOf(counters);
+      // Cap bounds ALL received/seen events. Concurrent applies may briefly
+      // overshoot by at most concurrency−1; after cap_reached stop accepting.
+      if (meta.cap_reached === true || seenBefore >= meta.max_events) {
+        meta.cap_reached = true;
+        await this.state.storage.put("meta", meta);
+        return Response.json(
+          { acked: false, reason: "SINK_CAP", cap_reached: true, events_seen: seenBefore },
+          { status: 409 },
+        );
+      }
+
+      const finish = async (result) => {
+        const events_seen = eventsSeenOf(counters);
+        if (events_seen >= meta.max_events) {
+          meta.cap_reached = true;
+          result.cap_reached = true;
+          result.trigger_owned_detach = true;
+          await this.state.storage.put("meta", meta);
+        }
+        result.events_seen = events_seen;
+        await this.state.storage.put("counters", counters);
+        return Response.json(result);
+      };
+
       const delta = await req.json().catch(() => null);
       if (!delta || typeof delta !== "object" || delta.accepted !== true) {
-        const counters = await this.ensureCounters();
         counters.events_rejected += 1;
-        await this.state.storage.put("counters", counters);
-        return Response.json({ acked: false, reason: "not_accepted" });
+        return finish({ acked: false, reason: "not_accepted" });
       }
       for (const key of FORBIDDEN_PERSIST_KEYS) {
         if (Object.prototype.hasOwnProperty.call(delta, key)) {
-          const counters = await this.ensureCounters();
           counters.events_rejected += 1;
-          await this.state.storage.put("counters", counters);
-          return Response.json({ acked: false, reason: "forbidden_key", key });
+          return finish({ acked: false, reason: "forbidden_key", key });
         }
-      }
-      const counters = await this.ensureCounters();
-      if (counters.events_accepted >= meta.max_events) {
-        return Response.json({ acked: false, reason: "SINK_CAP" }, { status: 409 });
       }
       const clean = serializeAllowlistedDelta(delta);
       const cpuClass = CPU_CLASS_KEYS.includes(clean.cpu_class) ? clean.cpu_class : "type_other";
@@ -127,8 +149,7 @@ export class AggregateSink {
       counters.by_event_type[eventType] = (counters.by_event_type[eventType] || 0) + 1;
       const outcome = clean.outcome == null ? "null" : String(clean.outcome);
       counters.by_outcome[outcome] = (counters.by_outcome[outcome] || 0) + 1;
-      await this.state.storage.put("counters", counters);
-      return Response.json({
+      return finish({
         acked: true,
         events_accepted_lower_bound: counters.events_accepted,
         cpu_class: cpuClass,
@@ -140,6 +161,8 @@ export class AggregateSink {
         return Response.json({ ok: false, reason: "unauthorized" }, { status: 401 });
       }
       const counters = await this.ensureCounters();
+      const events_seen = eventsSeenOf(counters);
+      const cap_reached = meta.cap_reached === true || events_seen >= meta.max_events;
       return Response.json({
         ok: true,
         schema: "cityscroll.tail_sanitizer_aggregate_sink.v1",
@@ -147,7 +170,9 @@ export class AggregateSink {
         opened_at_ms: meta.opened_at_ms,
         deadline_ms: meta.deadline_ms,
         max_events: meta.max_events,
-        counters,
+        cap_reached,
+        events_seen,
+        counters: { ...counters, events_seen },
         overhead: {
           sink_cpu_ms: "UNKNOWN",
           sink_storage_bytes: "UNKNOWN",
@@ -156,6 +181,7 @@ export class AggregateSink {
         },
         notes: [
           "events_accepted is an observed/acknowledged lower bound",
+          "events_seen counts accepted + rejected; the cap bounds all seen events",
           "do not report CPU0 or cost0 from absent getters",
         ],
       });

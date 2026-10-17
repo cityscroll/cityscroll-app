@@ -160,20 +160,81 @@ test("sink rejects deltas that still carry forbidden keys", () => {
   assert.equal(sink.snapshotForTest().counters.events_accepted, 0);
 });
 
-test("hard cap refuses further accepts after maxEvents", () => {
-  const sink = createAggregateDoSink({ sinkId: "cap", maxEvents: 2 });
-  assert.equal(sink.applyAllowlistedDelta({
+test("hard cap refuses further events after ALL-seen maxEvents (accept + reject)", () => {
+  const sink = createAggregateDoSink({ sinkId: "cap", maxEvents: 3 });
+  const first = sink.applyAllowlistedDelta({
     accepted: true, cpu_class: "zero", outcome: "ok", eventType: "fetch",
-  }).acked, true);
-  assert.equal(sink.applyAllowlistedDelta({
+  });
+  assert.equal(first.acked, true);
+  assert.equal(first.trigger_owned_detach, undefined);
+
+  const rejected = sink.applyAllowlistedDelta({
+    accepted: false, reason: "not_validated_tail_event_shape",
+  });
+  assert.equal(rejected.acked, false);
+  assert.equal(rejected.trigger_owned_detach, undefined);
+
+  const hitting = sink.applyAllowlistedDelta({
     accepted: true, cpu_class: "positive", outcome: "ok", eventType: "fetch",
-  }).acked, true);
+  });
+  assert.equal(hitting.acked, true);
+  assert.equal(hitting.cap_reached, true);
+  assert.equal(hitting.trigger_owned_detach, true);
+  assert.equal(hitting.events_seen, 3);
+
   assert.throws(
     () => sink.applyAllowlistedDelta({
       accepted: true, cpu_class: "positive", outcome: "ok", eventType: "fetch",
     }),
+    (err) => err.code === "SINK_CAP" && err.cap_reached === true,
+  );
+  assert.throws(
+    () => sink.applyAllowlistedDelta({ accepted: false, reason: "after-cap" }),
     (err) => err.code === "SINK_CAP",
   );
+
+  const snap = sink.snapshotForTest();
+  assert.equal(snap.counters.events_accepted, 2);
+  assert.equal(snap.counters.events_rejected, 1);
+  assert.equal(snap.events_seen, 3);
+  assert.equal(snap.cap_reached, true);
+  const readback = sink.readback();
+  assert.equal(readback.events_seen, 3);
+  assert.equal(readback.cap_reached, true);
+  assert.equal(readback.counters.events_seen, 3);
+});
+
+test("rejected events count toward the ALL-seen cap", () => {
+  const sink = createAggregateDoSink({ sinkId: "reject-cap", maxEvents: 2 });
+  const r1 = sink.applyAllowlistedDelta({
+    accepted: true,
+    cpu_class: "positive",
+    cpuTime: 1,
+    outcome: "ok",
+    eventType: "fetch",
+    url: "https://example.invalid/secret",
+  });
+  assert.equal(r1.acked, false);
+  assert.equal(r1.reason, "forbidden_key");
+  assert.equal(r1.trigger_owned_detach, undefined);
+
+  const r2 = sink.ingestSyntheticTailItem({});
+  assert.equal(r2.acked, false);
+  assert.equal(r2.cap_reached, true);
+  assert.equal(r2.trigger_owned_detach, true);
+  assert.equal(r2.events_seen, 2);
+
+  assert.throws(
+    () => sink.applyAllowlistedDelta({
+      accepted: true, cpu_class: "zero", outcome: "ok", eventType: "fetch",
+    }),
+    (err) => err.code === "SINK_CAP",
+  );
+  const snap = sink.snapshotForTest();
+  assert.equal(snap.counters.events_accepted, 0);
+  assert.equal(snap.counters.events_rejected, 2);
+  assert.equal(snap.events_seen, 2);
+  assert.equal(snap.cap_reached, true);
 });
 
 test("deadline refuses applies after deadlineMs", () => {

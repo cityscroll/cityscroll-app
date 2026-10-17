@@ -19,6 +19,8 @@ import {
   classifyTailAttachment,
   planTailAttachmentRestore,
   restoreTailAttachmentWindow,
+  emergencyDetachTailAttachment,
+  isParseableIsoTimestamp,
   createFileTailAttachmentStore,
   assertTailAttachmentWindowMutable,
 } from "./lib/worker_tail_attachment.mjs";
@@ -674,4 +676,118 @@ test("negative 8: adapter present:true without an actual consumers array stays U
   );
   assert.equal(planEmpty.action, "already-restored");
   assert.equal(planEmpty.proved, true);
+});
+
+test("isParseableIsoTimestamp accepts strict UTC ISO and rejects malformed suffixes", () => {
+  assert.equal(isParseableIsoTimestamp("2026-10-17T14:11:05.000Z"), true);
+  assert.equal(isParseableIsoTimestamp("2026-10-17T14:11:05Z"), true);
+  assert.equal(isParseableIsoTimestamp("2026-10-17T14:11:05.3NZ"), false);
+  assert.equal(isParseableIsoTimestamp("2026-10-17T14:11:05+00:00"), false);
+  assert.equal(isParseableIsoTimestamp("not-a-timestamp"), false);
+  assert.throws(
+    () => openTailAttachmentWindow({
+      baselineConsumers: [],
+      accountIdSha256: ACCOUNT_SHA,
+      workerId: "cityscroll-cc05-r4-cpu-producer",
+      now: "2026-10-17T14:11:05.3NZ",
+      windowId: "bad-iso",
+    }),
+    /now must be an ISO timestamp/,
+  );
+});
+
+test("emergencyDetachTailAttachment refuses foreign same-count with 0 PATCH", async () => {
+  let window = openArmedWindow({ windowId: "emerg-foreign", restorerId: "tr-emerg-foreign" });
+  window = {
+    ...window,
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER_A]),
+    owned_sha256: tailConsumersSha256([SANITIZER_A]),
+    pending_mutation: null,
+  };
+  const transport = memoryAttachmentTransport([FOREIGN_SAME_COUNT]);
+  const result = await emergencyDetachTailAttachment(window, transport, {
+    now: "2026-10-17T11:00:30.000Z",
+  });
+  assert.equal(result.action, "refuse-conflict");
+  assert.equal(result.proved, false);
+  assert.equal(result.patch, null);
+  assert.equal(transport.calls.filter((c) => c.method === "PATCH").length, 0);
+  assert.deepEqual(result.after, canonicalizeTailConsumers([FOREIGN_SAME_COUNT]));
+});
+
+test("emergencyDetachTailAttachment retains UNKNOWN when GET is null", async () => {
+  let window = openArmedWindow({ windowId: "emerg-unknown", restorerId: "tr-emerg-unknown" });
+  window = {
+    ...window,
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER_A]),
+    owned_sha256: tailConsumersSha256([SANITIZER_A]),
+    pending_mutation: null,
+  };
+  const transport = memoryAttachmentTransport(null);
+  const result = await emergencyDetachTailAttachment(window, transport, {
+    now: "2026-10-17T11:00:31.000Z",
+  });
+  assert.equal(result.action, "retain-owned-unknown");
+  assert.equal(result.proved, false);
+  assert.equal(result.patch, null);
+  assert.equal(transport.calls.filter((c) => c.method === "PATCH").length, 0);
+});
+
+test("emergencyDetachTailAttachment restores owned attach to baseline [] with 1 PATCH", async () => {
+  let window = openArmedWindow({ windowId: "emerg-restore", restorerId: "tr-emerg-restore" });
+  window = {
+    ...window,
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER_A]),
+    owned_sha256: tailConsumersSha256([SANITIZER_A]),
+    pending_mutation: null,
+  };
+  const transport = memoryAttachmentTransport([SANITIZER_A]);
+  const result = await emergencyDetachTailAttachment(window, transport, {
+    now: "2026-10-17T11:00:32.000Z",
+  });
+  assert.equal(result.action, "restored");
+  assert.equal(result.proved, true);
+  assert.deepEqual(result.after, []);
+  const patches = transport.calls.filter((c) => c.method === "PATCH");
+  assert.equal(patches.length, 1);
+  assert.deepEqual(patches[0].consumers, []);
+  assert.equal(result.window.phase, "restored");
+  assert.equal(result.window.owned_sha256, null);
+});
+
+test("emergencyDetachTailAttachment store generation mismatch → 0 PATCH", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-tail-emerg-gen-"));
+  const store = createFileTailAttachmentStore(join(dir, "tail-window.json"));
+  let window = openArmedWindow({ windowId: "emerg-gen", restorerId: "tr-emerg-gen" });
+  window = {
+    ...window,
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER_A]),
+    owned_sha256: tailConsumersSha256([SANITIZER_A]),
+    pending_mutation: null,
+  };
+  const stamped = await store.write(window);
+  assert.equal(stamped.window_generation, 1);
+  // Advance generation under the caller's feet.
+  const advanced = await store.write(
+    { ...stamped, phase: "attached" },
+    { expectedWindowId: "emerg-gen", expectedGeneration: stamped.window_generation },
+  );
+  assert.equal(advanced.window_generation, 2);
+
+  const transport = memoryAttachmentTransport([SANITIZER_A]);
+  const result = await emergencyDetachTailAttachment(stamped, transport, {
+    now: "2026-10-17T11:00:33.000Z",
+    store,
+    expectedGeneration: stamped.window_generation,
+  });
+  assert.equal(result.action, "refuse-stale");
+  assert.equal(result.proved, false);
+  assert.equal(result.reason, "window_generation mismatch");
+  assert.equal(result.patch, null);
+  assert.equal(transport.calls.filter((c) => c.method === "PATCH").length, 0);
+  rmSync(dir, { recursive: true, force: true });
 });
