@@ -90,6 +90,7 @@ export function makeLazyCpuTraceItem({
   outcome = "ok",
   eventType = "fetch",
   scheduledTimeMs = 1_700_000_000_000,
+  scriptVersionId = "local-positive-control",
 } = {}) {
   const event =
     eventType === "fetch" ? { request: { cf: {}, url: "https://example.invalid/secret?token=abc" } }
@@ -103,7 +104,7 @@ export function makeLazyCpuTraceItem({
       return wallTime;
     },
     get scriptVersion() {
-      return { id: "local-positive-control" };
+      return { id: scriptVersionId };
     },
   };
   Object.defineProperty(item, "cpuTime", {
@@ -117,25 +118,69 @@ export function makeLazyCpuTraceItem({
 }
 
 /**
+ * workerd-style TraceItem: outcome/event/cpuTime/wallTime/scriptVersion are
+ * non-enumerable lazy getters. Enumeration (Object.keys) is the wrong validity
+ * test — validate by guarded property reads instead.
+ */
+export function makeGetterOnlyTraceItem({
+  cpuTime = 5,
+  wallTime = 8,
+  outcome = "ok",
+  eventType = "fetch",
+  scheduledTimeMs = 1_700_000_000_000,
+  scriptVersionId = "getter-only-revision",
+  throwOn = null,
+} = {}) {
+  const event =
+    eventType === "fetch" ? { request: { cf: {}, url: "https://example.invalid/secret?token=abc" } }
+      : eventType === "scheduled" ? { cron: "* * * * *", scheduledTime: scheduledTimeMs }
+        : eventType === "queue" ? { queue: "q", batchSize: 1 }
+          : {};
+  const item = {};
+  const defineGetter = (key, value) => {
+    Object.defineProperty(item, key, {
+      enumerable: false,
+      configurable: true,
+      get() {
+        if (throwOn === key) throw new Error(`getter-throw:${key}`);
+        return value;
+      },
+    });
+  };
+  defineGetter("outcome", outcome);
+  defineGetter("event", event);
+  defineGetter("cpuTime", cpuTime);
+  defineGetter("wallTime", wallTime);
+  defineGetter("scriptVersion", { id: scriptVersionId });
+  return item;
+}
+
+/**
  * True only for objects that look like Tail invocation events.
- * Rejects null, banners, and empty {}.
+ * Validates by semantic guarded property reads — never by Object.keys length.
+ * Empty {} fails because outcome and event are absent. A throwing getter is
+ * treated as UNKNOWN / invalid (not accepted).
  */
 export function isValidatedTailEventShape(obj) {
   if (!obj || typeof obj !== "object" || Array.isArray(obj)) return false;
-  const keys = Object.keys(obj);
-  if (keys.length === 0) return false;
   let outcome;
   let event;
+  let outcomeThrown = false;
+  let eventThrown = false;
   try {
     outcome = obj.outcome ?? obj.Outcome;
   } catch {
+    outcomeThrown = true;
     outcome = undefined;
   }
   try {
     event = obj.event ?? obj.Event;
   } catch {
+    eventThrown = true;
     event = undefined;
   }
+  // Throwing getters cannot prove invocation shape — UNKNOWN / invalid.
+  if (outcomeThrown || eventThrown) return false;
   const hasOutcome = typeof outcome === "string" && outcome.length > 0;
   const hasEvent = event != null && typeof event === "object" && !Array.isArray(event);
   return hasOutcome || hasEvent;
@@ -150,30 +195,35 @@ export function projectAllowlistedTailEvent(obj) {
     return {
       accepted: false,
       reason: "not_validated_tail_event_shape",
+      // Enumeration length is diagnostic only and must not gate acceptance.
       top_keys_len: obj && typeof obj === "object" ? Object.keys(obj).length : 0,
     };
   }
   let cpuTime;
+  let cpuThrown = false;
   try {
     cpuTime = obj.cpuTime;
     if (cpuTime === undefined && Object.prototype.hasOwnProperty.call(obj, "CpuTime")) {
       cpuTime = obj.CpuTime;
     }
   } catch {
-    cpuTime = "throw";
+    cpuThrown = true;
+    cpuTime = undefined;
   }
-  const cpuClass = classifyCpuValue(cpuTime === "throw" ? undefined : cpuTime);
+  // Throwing cpuTime getter → UNKNOWN class (never invent CPU0).
+  const cpuClass = cpuThrown ? "undefined" : classifyCpuValue(cpuTime);
   let outcomeRaw;
   try {
     outcomeRaw = obj.outcome ?? obj.Outcome;
   } catch {
-    outcomeRaw = undefined;
+    // Should not reach here after isValidatedTailEventShape, but stay fail-closed.
+    return { accepted: false, reason: "outcome_getter_unknown" };
   }
   let event;
   try {
     event = obj.event ?? obj.Event;
   } catch {
-    event = undefined;
+    return { accepted: false, reason: "event_getter_unknown" };
   }
   let eventType = "unknown";
   if (event && typeof event === "object") {
@@ -189,15 +239,26 @@ export function projectAllowlistedTailEvent(obj) {
   } catch {
     wallTime = null;
   }
+  let deployedRevision = null;
+  try {
+    const sv = obj.scriptVersion ?? obj.ScriptVersion;
+    if (sv && typeof sv === "object" && typeof sv.id === "string" && sv.id.length > 0) {
+      deployedRevision = sv.id;
+    }
+  } catch {
+    deployedRevision = null;
+  }
 
   return {
     accepted: true,
-    cpuTime: typeof cpuTime === "number" && Number.isFinite(cpuTime) ? cpuTime : null,
+    cpuTime: (!cpuThrown && typeof cpuTime === "number" && Number.isFinite(cpuTime)) ? cpuTime : null,
     cpu_class: cpuClass,
+    cpu_unknown: cpuThrown || !(typeof cpuTime === "number" && Number.isFinite(cpuTime)),
     wallTime,
     outcome: ALLOWED_OUTCOMES.has(outcomeRaw) ? outcomeRaw : (outcomeRaw == null ? null : "other"),
     eventType,
-    // Intentionally omit URL, headers, query, body, logs, rayId, scriptVersion.
+    deployed_revision: deployedRevision,
+    // Intentionally omit URL, headers, query, body, logs, rayId.
   };
 }
 
@@ -221,6 +282,26 @@ export function projectNdjsonLine(line) {
   return { ok: true, projected };
 }
 
+/** Fixed allowlisted CPU-ms histogram buckets for aggregate A1-style sums. */
+export const CPU_MS_BUCKETS = Object.freeze([
+  "0",
+  "0_1",
+  "1_10",
+  "10_100",
+  "100_1000",
+  "1000_plus",
+]);
+
+export function cpuMsBucket(cpuTime) {
+  if (typeof cpuTime !== "number" || !Number.isFinite(cpuTime) || cpuTime < 0) return null;
+  if (cpuTime === 0) return "0";
+  if (cpuTime <= 1) return "0_1";
+  if (cpuTime <= 10) return "1_10";
+  if (cpuTime <= 100) return "10_100";
+  if (cpuTime <= 1000) return "100_1000";
+  return "1000_plus";
+}
+
 /** Serialize a projected delta for sink apply; strips any accidental forbidden keys. */
 export function serializeAllowlistedDelta(projected) {
   if (!projected || projected.accepted !== true) {
@@ -230,8 +311,12 @@ export function serializeAllowlistedDelta(projected) {
     accepted: true,
     cpuTime: projected.cpuTime,
     cpu_class: projected.cpu_class,
+    cpu_unknown: projected.cpu_unknown === true,
     wallTime: projected.wallTime,
     outcome: projected.outcome,
     eventType: projected.eventType,
+    deployed_revision: typeof projected.deployed_revision === "string"
+      ? projected.deployed_revision
+      : null,
   };
 }
