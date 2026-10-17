@@ -93,6 +93,7 @@ export const RUM_BATCH_COHORT_KEY = "rum_batch_16";
 
 export const FIXED_COHORT_KEYS = Object.freeze([
   "http",
+  "http_events",
   RUM_BATCH_COHORT_KEY,
   "search",
   "nearby",
@@ -113,11 +114,17 @@ const FIXED_COHORT_SET = new Set(FIXED_COHORT_KEYS);
 /**
  * Finite pathname-prefix → cohort table for fetch events. Classification runs
  * before the request is dropped; only the cohort key is emitted.
+ *
+ * Producer routes (worker/src/worker.mjs):
+ * - `/events` → handleEvent (aggregate analytics) → `http_events`
+ * - `/performance-events` → handlePerformanceEvents (RUM) → `rum_batch_16`
+ * Prefixes must stay real producer routes; see the producer-router test.
  */
 export const PATHNAME_COHORT_PREFIXES = Object.freeze([
   Object.freeze({ prefix: "/search", cohort: "search" }),
   Object.freeze({ prefix: "/near-you", cohort: "nearby" }),
-  Object.freeze({ prefix: "/events", cohort: RUM_BATCH_COHORT_KEY }),
+  Object.freeze({ prefix: "/performance-events", cohort: RUM_BATCH_COHORT_KEY }),
+  Object.freeze({ prefix: "/events", cohort: "http_events" }),
   Object.freeze({ prefix: "/health", cohort: "http" }),
 ]);
 

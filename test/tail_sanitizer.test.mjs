@@ -938,18 +938,48 @@ test("actuateOwnedDetachFromCapSignal requires binding and signal", async () => 
   assert.equal(called, true);
 });
 
-test("pathname cohort prefixes map search/nearby/events/health; unknown → http", () => {
+test("pathname cohort prefixes map search/nearby/performance-events/events/health; unknown → http", () => {
   assert.ok(Object.isFrozen(PATHNAME_COHORT_PREFIXES));
+  assert.ok(FIXED_COHORT_KEYS.includes("http_events"));
   assert.equal(cohortFromFetchPathname("/search"), "search");
   assert.equal(cohortFromFetchPathname("/search/housing"), "search");
+  assert.equal(cohortFromFetchPathname("/search/candidates"), "search");
   assert.equal(cohortFromFetchPathname("/near-you"), "nearby");
   assert.equal(cohortFromFetchPathname("/near-you/midwood"), "nearby");
-  assert.equal(cohortFromFetchPathname("/events"), "rum_batch_16");
-  assert.equal(cohortFromFetchPathname("/events/batch"), "rum_batch_16");
+  assert.equal(cohortFromFetchPathname("/performance-events"), "rum_batch_16");
+  assert.equal(cohortFromFetchPathname("/performance-events/batch"), "rum_batch_16");
+  assert.equal(cohortFromFetchPathname("/events"), "http_events");
+  assert.equal(cohortFromFetchPathname("/events/batch"), "http_events");
   assert.equal(cohortFromFetchPathname("/health"), "http");
   assert.equal(cohortFromFetchPathname("/agencies"), "http");
   assert.equal(cohortFromFetchPathname("/searching"), "http");
   assert.equal(cohortFromFetchPathname(""), "http");
+});
+
+test("PATHNAME_COHORT_PREFIXES are real producer routes in worker/src/worker.mjs", () => {
+  const producerRouter = readFileSync(path.join(ROOT, "worker/src/worker.mjs"), "utf8");
+  // Exact equality routes: pathname === "/…"
+  const exactRoutes = new Set(
+    [...producerRouter.matchAll(/pathname\s*===\s*"(\/[^"]+)"/g)].map((m) => m[1]),
+  );
+  // Capability registry path: "/…" entries (health/search/nearby/events/performance-events).
+  const registryPaths = new Set(
+    [...producerRouter.matchAll(/\bpath:\s*"(\/[^"]+)"/g)].map((m) => m[1]),
+  );
+  const producerPaths = new Set([...exactRoutes, ...registryPaths]);
+  assert.ok(producerPaths.has("/events"), "producer must route /events");
+  assert.ok(producerPaths.has("/performance-events"), "producer must route /performance-events");
+  for (const { prefix, cohort } of PATHNAME_COHORT_PREFIXES) {
+    assert.ok(
+      producerPaths.has(prefix),
+      `PATHNAME_COHORT_PREFIXES prefix ${prefix} → ${cohort} must be a real producer route`,
+    );
+  }
+  // RUM must not be mis-bound to analytics /events.
+  const rum = PATHNAME_COHORT_PREFIXES.find((e) => e.cohort === "rum_batch_16");
+  assert.equal(rum?.prefix, "/performance-events");
+  const analytics = PATHNAME_COHORT_PREFIXES.find((e) => e.prefix === "/events");
+  assert.equal(analytics?.cohort, "http_events");
 });
 
 test("fetch pathname cohort: /search?secret=x → search; secret never in serialized delta", () => {
@@ -1161,7 +1191,7 @@ test("tail() self-observation posts collector_overhead without producer caps", a
   const producerItem = {
     scriptName: "cityscroll-worker",
     outcome: "ok",
-    event: { request: { url: "https://cityscroll.org/events/rum" } },
+    event: { request: { url: "https://cityscroll.org/performance-events" } },
     cpuTime: 20,
     scriptVersion: { id: "rev-self" },
   };
