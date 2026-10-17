@@ -103,13 +103,26 @@ function emptyCounters() {
  * A2: all-seen hard bound. events_seen above maxEvents fails; an observed
  * overshoot that was not counted (unknown/unbounded) also fails. Missing
  * samples stay UNKNOWN — never CPU 0 / never a pass from absence.
+ *
+ * When no collection window has been opened (`opened: false` FRESH/EMPTY
+ * readback), A2 is `not_evaluated` with `pass: null` — zero events is not a
+ * pass.
  */
 export function evaluateAllSeenCapA2(snapshot, {
   maxEvents = MAX_EVENTS,
+  opened = true,
 } = {}) {
   const eventsSeen = Number(snapshot?.events_seen);
   const overshoot = snapshot?.counters?.apply_overshoot ?? snapshot?.apply_overshoot;
   const capReached = snapshot?.cap_reached === true;
+  if (opened === false) {
+    return {
+      pass: null,
+      reason: "not_evaluated",
+      events_seen: Number.isFinite(eventsSeen) ? eventsSeen : (snapshot?.events_seen ?? null),
+      apply_overshoot: Number.isFinite(Number(overshoot)) ? Number(overshoot) : 0,
+    };
+  }
   if (!Number.isFinite(eventsSeen)) {
     return {
       pass: false,
@@ -371,7 +384,7 @@ export class AggregateSink {
               events_seen: 0,
               cap_reached: false,
               apply_overshoot: 0,
-            }, { maxEvents: MAX_EVENTS }),
+            }, { maxEvents: MAX_EVENTS, opened: false }),
             note: "no window open",
           });
         }

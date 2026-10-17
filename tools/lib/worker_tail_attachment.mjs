@@ -1097,6 +1097,7 @@ export function allowlistedCapSignalReason(code) {
  */
 export const CAP_A2_REASON = Object.freeze({
   WITHIN_ALL_SEEN_CAP: "within_all_seen_cap",
+  NOT_EVALUATED: "not_evaluated",
   EVENTS_SEEN_UNKNOWN: "events_seen_unknown",
   EVENTS_SEEN_ABOVE_ALL_SEEN_CAP: "events_seen_above_all_seen_cap",
   OVERSHOOT_UNKNOWN_UNBOUNDED: "overshoot_unknown_unbounded",
@@ -1126,6 +1127,10 @@ function isNonNegativeInt(value) {
 /**
  * Project A2 onto the positive allowlist. Drops unknown fields; maps unknown
  * reasons to a2_reason_unknown. Never returns raw body text.
+ *
+ * `pass` may be true, false, or null. Null is reserved for not_evaluated
+ * (unopened / FRESH zero-event readback) so READY never confuses absence of a
+ * window with a within-cap pass, and restorer never writes a2-failed for it.
  */
 export function projectCapSignalA2(raw) {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
@@ -1139,8 +1144,19 @@ export function projectCapSignalA2(raw) {
   const reason = CAP_A2_REASON_SET.has(raw.reason)
     ? raw.reason
     : CAP_A2_REASON.A2_REASON_UNKNOWN;
+  let pass;
+  if (raw.pass === true) {
+    pass = true;
+  } else if (raw.pass === false) {
+    pass = false;
+  } else if (raw.pass === null && reason === CAP_A2_REASON.NOT_EVALUATED) {
+    pass = null;
+  } else {
+    // Non-boolean, non-null pass collapses to false (fail closed).
+    pass = false;
+  }
   const projected = {
-    pass: raw.pass === true,
+    pass,
     reason,
     events_seen: isNonNegativeInt(raw.events_seen) ? raw.events_seen : null,
     apply_overshoot: isNonNegativeInt(raw.apply_overshoot) ? raw.apply_overshoot : null,
@@ -1426,7 +1442,15 @@ export function validateSinkReadbackBody(body, {
     return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
   }
   const a2 = body.a2;
-  if (!a2 || typeof a2 !== "object" || typeof a2.pass !== "boolean") {
+  // pass may be boolean or null (not_evaluated on unopened FRESH).
+  if (
+    !a2
+    || typeof a2 !== "object"
+    || !(typeof a2.pass === "boolean" || a2.pass === null)
+  ) {
+    return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
+  }
+  if (a2.pass === null && a2.reason !== CAP_A2_REASON.NOT_EVALUATED) {
     return { ok: false, reason: CAP_SIGNAL_REASON.READBACK_SCHEMA_INVALID };
   }
   if (a2.events_seen != null && !isNonNegativeInt(a2.events_seen)) {
