@@ -251,3 +251,48 @@ test("failure: an unavailable source leaves every other card and its named actio
   assert.match(box.innerHTML, /Browse OASys exams/);
   assert.doesNotMatch(box.innerHTML, /Loading/);
 });
+
+/* ---------- mixed-source render contract ---------- */
+
+test("mixed sources: consultation cards render beside other domains with SOURCE_META badges", () => {
+  // Regression for SPA #now: renderNowCardHTML reads item.source.label
+  // unconditionally. consultationNowItems must carry SOURCE_META.consultations
+  // (via buildNowSurface's source("consultations")) so a refreshed eligible
+  // consultation cannot throw before .now-surface paints.
+  const mixed = sources();
+  mixed.consultations = {
+    status: "available",
+    observed_at: `${TODAY}T00:00:00.000Z`,
+    consultations: [{
+      id: "mixed-source-consultation",
+      title: "Neighborhood bus corridor feedback",
+      organizer: "Transportation",
+      deadline: { value: "2026-08-20", precision: "day" },
+      observed_at: `${TODAY}T00:00:00.000Z`,
+      geography: { labels: ["Brooklyn"], community_districts: ["K08"], method: "community_board_ontology", confidence: 0.9 },
+    }],
+  };
+
+  box.innerHTML = "";
+  assert.doesNotThrow(() => {
+    renderNowSurface(buildNowSurface(mixed, {
+      today: TODAY,
+      compileActionRail: CrolActions.compileActionRail,
+    }));
+  });
+
+  const cards = new Map();
+  for (const [markup] of box.innerHTML.matchAll(/<article class="now-card"[\s\S]*?<\/article>/g)) {
+    cards.set(markup.match(/data-now-item="([^"]*)"/)[1], markup);
+  }
+
+  const consultation = cards.get("consultation:mixed-source-consultation");
+  const money = cards.get("money:bid-open");
+  assert.ok(money, "procurement card still reaches the mixed render");
+  assert.ok(consultation, "eligible consultation reaches the mixed render");
+  assert.match(money, /now-source-badge/);
+  assert.match(money, /City Record · Procurement/);
+  assert.match(consultation, /now-source-badge/);
+  assert.match(consultation, /Public consultations/);
+  assert.doesNotMatch(box.innerHTML, /Loading/);
+});

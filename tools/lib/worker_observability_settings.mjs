@@ -866,26 +866,157 @@ export async function restoreSettingsWindow(window, transport, { now = new Date(
   }
 
   await transport.patchObservability(plan.patch.observability);
-  const afterRaw = await transport.getObservability();
-  const after = normalizeObservability(afterRaw);
-  const afterSha = observabilitySha256(after);
+  let afterRaw = await transport.getObservability();
+  let after = normalizeObservability(afterRaw);
+  let afterSha = observabilitySha256(after);
+  let restoreVia = "beta-patch";
+  let configRevertInvoked = false;
+  const configRevertAvailable = typeof transport.revertObservabilityToBaseline === "function";
+  let actuatorErrorCode = null;
+
+  // Optional probe/config-revert actuator: when beta PATCH HTTP-succeeds but the
+  // effective GET stays at this window's owned/pending digest, a transport may
+  // expose revertObservabilityToBaseline (e.g. wrangler remove-[observability]
+  // redeploy). Production beta-only transports omit this hook.
+  //
+  // Before any fallback: reclassify the after-readback against this exact window.
+  // baseline => done; owned/pending => scoped config revert may run; FOREIGN =>
+  // refuse and preserve the observed foreign state (provider atomic CAS UNKNOWN).
+  // Catching and retrying the same failed beta PATCH is not an effective restore;
+  // the actuator is the effective path when beta readback stays owned.
   if (afterSha !== window.baseline_sha256) {
-    fail("provider readback did not prove baseline restoration");
+    const afterClass = classifyCurrentSettings(after, window);
+    if (afterClass.class === "conflict") {
+      return {
+        ...plan,
+        action: "refuse-conflict",
+        proved: false,
+        window,
+        after,
+        receipt: {
+          ...plan.receipt,
+          outcome: "refuse-conflict",
+          proved: false,
+          after_sha256: afterSha,
+          classification: "conflict",
+          reason: "post-patch readback is foreign; config-revert refused to preserve observed foreign state",
+          restore_via_attempted: "beta-patch",
+          config_revert_available: configRevertAvailable,
+          config_revert_invoked: false,
+          ownership_preserved: true,
+        },
+      };
+    }
+    const ownedOrPending = afterClass.class === "owned"
+      || afterClass.class === "pending-after"
+      || afterClass.class === "pending-before";
+    if (ownedOrPending && configRevertAvailable) {
+      configRevertInvoked = true;
+      restoreVia = "config-revert-actuator";
+      try {
+        await transport.revertObservabilityToBaseline(window.baseline_observability);
+      } catch {
+        actuatorErrorCode = "config-revert-threw";
+        return {
+          ...plan,
+          action: "restore-readback-mismatch",
+          proved: false,
+          window,
+          after,
+          receipt: {
+            ...plan.receipt,
+            outcome: "restore-readback-mismatch",
+            proved: false,
+            after_sha256: afterSha,
+            baseline_sha256: window.baseline_sha256,
+            reason: "config-revert actuator threw; ownership preserved",
+            restore_via_attempted: restoreVia,
+            config_revert_available: true,
+            config_revert_invoked: true,
+            actuator_error_code: actuatorErrorCode,
+            ownership_preserved: true,
+          },
+        };
+      }
+      afterRaw = await transport.getObservability();
+      after = normalizeObservability(afterRaw);
+      afterSha = observabilitySha256(after);
+      // Re-check the actuator's own readback before declaring success.
+      if (afterSha !== window.baseline_sha256) {
+        const actuatorClass = classifyCurrentSettings(after, window);
+        if (actuatorClass.class === "conflict") {
+          return {
+            ...plan,
+            action: "refuse-conflict",
+            proved: false,
+            window,
+            after,
+            receipt: {
+              ...plan.receipt,
+              outcome: "refuse-conflict",
+              proved: false,
+              after_sha256: afterSha,
+              classification: "conflict",
+              reason: "config-revert actuator readback is foreign; foreign state preserved",
+              restore_via_attempted: restoreVia,
+              config_revert_available: true,
+              config_revert_invoked: true,
+              ownership_preserved: true,
+            },
+          };
+        }
+      }
+    }
+  }
+
+  if (afterSha !== window.baseline_sha256) {
+    // Do not throw: a throwing restore kills the supervised guardian loop and
+    // previously left no terminal evidence. Do not collapse zero/unknown into
+    // success. Ownership stays on the window for retry / actuator.
+    return {
+      ...plan,
+      action: "restore-readback-mismatch",
+      proved: false,
+      window,
+      after,
+      receipt: {
+        ...plan.receipt,
+        outcome: "restore-readback-mismatch",
+        proved: false,
+        after_sha256: afterSha,
+        baseline_sha256: window.baseline_sha256,
+        reason: configRevertAvailable
+          ? (configRevertInvoked
+            ? "provider readback did not prove baseline after config-revert actuator"
+            : "provider readback did not prove baseline restoration")
+          : "beta patch readback mismatch and config-revert actuator unavailable",
+        restore_via_attempted: restoreVia,
+        config_revert_available: configRevertAvailable,
+        config_revert_invoked: configRevertInvoked,
+        actuator_error_code: actuatorErrorCode
+          || (configRevertAvailable ? null : "config-revert-unavailable"),
+        ownership_preserved: true,
+      },
+    };
   }
   return {
     ...plan,
-    action: "restored",
+    action: restoreVia === "config-revert-actuator" ? "restored-via-config-revert" : "restored",
     receipt: {
       ...plan.receipt,
-      outcome: "restored",
+      outcome: restoreVia === "config-revert-actuator" ? "restored-via-config-revert" : "restored",
       after_sha256: afterSha,
+      restore_via: restoreVia,
+      config_revert_available: configRevertAvailable,
+      config_revert_invoked: configRevertInvoked,
+      ownership_preserved: false,
     },
     window: markWindowRestored(window, {
       now,
       beforeSha256: plan.classification.sha256,
       afterSha256: afterSha,
       expired: plan.expired,
-      outcome: "restored",
+      outcome: restoreVia === "config-revert-actuator" ? "restored-via-config-revert" : "restored",
     }),
     after,
     proved: true,

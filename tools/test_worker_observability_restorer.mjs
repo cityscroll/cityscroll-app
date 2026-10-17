@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import {
-  cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync, chmodSync,
+  cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync, chmodSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { spawn, spawnSync } from "node:child_process";
 import test from "node:test";
 
@@ -22,6 +22,7 @@ import {
   openSettingsWindow,
   privacyArmedObservability,
   recordMutationIntent,
+  restoreSettingsWindow,
   SCRIPT_LAYER_RESTORE_MODE,
   SETTINGS_SUCCESS_STATUSES,
   settingsCommandSucceeded,
@@ -41,6 +42,14 @@ import {
   restorerTick,
   runRestorerLoop,
   sha256File,
+  startSupervisedRestorerProcess,
+  readBoundedRestorerLogTail,
+  filterRestorerDiagnosticChunk,
+  formatRestorerDiagnosticLine,
+  appendBoundedRestorerLog,
+  mapRestorerErrorName,
+  writeGuardianFailureReceipt,
+  installRestorerProcessEvidenceHandlers,
   writeRestorerReceipt,
 } from "./lib/worker_observability_restorer.mjs";
 
@@ -1324,5 +1333,508 @@ writeFileSync(${JSON.stringify(foreignResultPath)}, JSON.stringify({
   assert.equal(existsSync(join(reinstallRoot, "assigned-window.json")), false);
   assert.equal(existsSync(join(reinstallRoot, "restorer.pid")), false);
 
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("restore readback-mismatch returns proved:false without throwing", async () => {
+  const armed = privacyArmedObservability(BASELINE);
+  const sticky = {
+    async getObservability() { return structuredClone(armed); },
+    async patchObservability() { return structuredClone(armed); }, // silent no-op vs baseline
+  };
+  let window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: new Date().toISOString(),
+    windowId: "restore-mismatch-1",
+  });
+  window = armRestorer(window, { now: new Date().toISOString(), restorerId: "rr-1" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+  };
+  const result = await restoreSettingsWindow(window, sticky, { now: new Date().toISOString() });
+  assert.equal(result.action, "restore-readback-mismatch");
+  assert.equal(result.proved, false);
+  assert.equal(result.window.owned_sha256, observabilitySha256(armed));
+  assert.equal(result.receipt.config_revert_available, false);
+  assert.equal(result.receipt.actuator_error_code, "config-revert-unavailable");
+  assert.equal(result.receipt.ownership_preserved, true);
+  assert.match(result.receipt.reason, /actuator unavailable|did not prove baseline/);
+});
+
+test("optional config-revert actuator restores after beta readback mismatch", async () => {
+  const armed = privacyArmedObservability(BASELINE);
+  let current = structuredClone(armed);
+  let revertCalls = 0;
+  const transport = {
+    async getObservability() { return structuredClone(current); },
+    async patchObservability() { /* beta no-op: leave armed */ return structuredClone(current); },
+    async revertObservabilityToBaseline(baseline) {
+      revertCalls += 1;
+      current = normalizeObservability(baseline);
+      return structuredClone(current);
+    },
+  };
+  let window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: new Date().toISOString(),
+    windowId: "restore-actuator-1",
+  });
+  window = armRestorer(window, { now: new Date().toISOString(), restorerId: "rr-act" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+  };
+  const result = await restoreSettingsWindow(window, transport, { now: new Date().toISOString() });
+  assert.equal(revertCalls, 1);
+  assert.equal(result.proved, true);
+  assert.equal(result.action, "restored-via-config-revert");
+  assert.equal(result.window.owned_sha256, null);
+  assert.equal(observabilitySha256(result.after), observabilitySha256(BASELINE));
+});
+
+test("config-revert fallback refuses when post-patch GET shows foreign state", async () => {
+  // Initial GET shows owned; beta PATCH; next GET shows foreign. Fallback must
+  // be called 0 times, foreign state preserved, no baseline-success receipt.
+  const armed = privacyArmedObservability(BASELINE);
+  const foreign = {
+    ...armed,
+    head_sampling_rate: 0.25,
+    logs: { ...armed.logs, head_sampling_rate: 0.25 },
+  };
+  let gets = 0;
+  let revertCalls = 0;
+  const transport = {
+    async getObservability() {
+      gets += 1;
+      // 1st GET (plan): owned. 2nd GET (post-PATCH): foreign.
+      return structuredClone(gets === 1 ? armed : foreign);
+    },
+    async patchObservability() { return structuredClone(armed); },
+    async revertObservabilityToBaseline() {
+      revertCalls += 1;
+      throw new Error("config-revert must not run on foreign readback");
+    },
+  };
+  let window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: new Date().toISOString(),
+    windowId: "restore-foreign-fallback-1",
+  });
+  window = armRestorer(window, { now: new Date().toISOString(), restorerId: "rr-foreign" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+  };
+  const result = await restoreSettingsWindow(window, transport, { now: new Date().toISOString() });
+  assert.equal(revertCalls, 0);
+  assert.equal(result.action, "refuse-conflict");
+  assert.equal(result.proved, false);
+  assert.equal(result.receipt.config_revert_invoked, false);
+  assert.equal(result.window.owned_sha256, observabilitySha256(armed));
+  assert.equal(observabilitySha256(result.after), observabilitySha256(foreign));
+  assert.match(result.receipt.reason, /foreign/);
+});
+
+test("restorerTick stays nonterminal on restore-readback-mismatch after controller death", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-mismatch-tick-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(join(stateRoot, "receipts"), { recursive: true, mode: 0o700 });
+  clearKillSwitch(stateRoot);
+  const armed = privacyArmedObservability(BASELINE);
+  const store = createFileWindowStore(join(dir, "window.json"));
+  let window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: new Date().toISOString(),
+    durationSeconds: 120,
+    windowId: "mismatch-tick-1",
+  });
+  window = armRestorer(window, { now: new Date().toISOString(), restorerId: "mismatch-r" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+    pending_mutation: null,
+  };
+  window = bindWindowToRestorer(window, {
+    pid: process.pid,
+    stateRoot,
+    restorerId: window.restorer.restorer_id,
+  });
+  await store.write(window);
+  writeRestorerReceipt(restorerPaths(stateRoot).controllerDeathReceipt, {
+    schema: "cityscroll.worker_observability_restorer_runtime.v1",
+    kind: "controller-death",
+    observed_at: new Date().toISOString(),
+    controller_exited: true,
+    window_id: window.window_id,
+    restorer_id: window.restorer.restorer_id,
+  });
+  const sticky = {
+    async getObservability() { return structuredClone(armed); },
+    async patchObservability() { return structuredClone(armed); },
+  };
+  const tick = await restorerTick({
+    store,
+    transport: sticky,
+    stateRoot,
+    now: new Date().toISOString(),
+  });
+  assert.equal(tick.action, "restore-readback-mismatch");
+  assert.equal(tick.proved, false);
+  assert.equal(existsSync(restorerPaths(stateRoot).terminalReceipt), false);
+  const heartbeat = JSON.parse(readFileSync(restorerPaths(stateRoot).heartbeatReceipt, "utf8"));
+  assert.equal(heartbeat.outcome, "restore-readback-mismatch");
+  assert.equal(heartbeat.proved, false);
+  // Ownership retained for retry / config-revert actuator.
+  const durable = await store.read();
+  assert.equal(durable.owned_sha256, observabilitySha256(armed));
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("startSupervisedRestorerProcess child self-evidence writes guardian-owned process-exit receipt", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-stdio-"));
+  const stateRoot = join(dir, "restorer");
+  installDurableRunner(stateRoot);
+  clearKillSwitch(stateRoot);
+  // Crashing child installs evidence handlers and writes a coded diagnostic +
+  // guardian-owned process-exit receipt. Raw stderr is not teed.
+  const libUrl = pathToFileURL(join(stateRoot, "lib/worker_observability_restorer.mjs")).href;
+  writeFileSync(join(stateRoot, "run.mjs"), `#!/usr/bin/env node
+import {
+  installRestorerProcessEvidenceHandlers,
+  writeGuardianFailureReceipt,
+  formatRestorerDiagnosticLine,
+  appendBoundedRestorerLog,
+  restorerPaths,
+} from ${JSON.stringify(libUrl)};
+const stateRoot = ${JSON.stringify(stateRoot)};
+installRestorerProcessEvidenceHandlers(stateRoot, { windowId: "stdio-1" });
+writeGuardianFailureReceipt(stateRoot, {
+  code: "guardian-actuator-failure",
+  stage: "synthetic",
+  windowId: "stdio-1",
+  fields: { proved: false, ownership_preserved: true, survived: false },
+});
+appendBoundedRestorerLog(
+  restorerPaths(stateRoot).diagnosticLog,
+  formatRestorerDiagnosticLine("guardian-actuator-failure", { stage: "synthetic", proved: false }),
+);
+process.exit(2);
+`, { mode: 0o755 });
+  const windowPath = join(dir, "window.json");
+  const store = createFileWindowStore(windowPath);
+  let window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: new Date().toISOString(),
+    windowId: "stdio-1",
+  });
+  window = armRestorer(window, { now: new Date().toISOString(), restorerId: "stdio-r" });
+  await store.write(window);
+
+  const started = startSupervisedRestorerProcess({
+    windowPath,
+    windowId: window.window_id,
+    stateRoot,
+    detached: true,
+    env: { ...process.env },
+  });
+  assert.ok(started.pid > 0);
+  assert.equal(existsSync(restorerPaths(stateRoot).logsDir), true);
+  await new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error("process-exit receipt timeout")), 5000);
+    const poll = () => {
+      if (existsSync(restorerPaths(stateRoot).processExitReceipt)) {
+        clearTimeout(timer);
+        resolve();
+        return;
+      }
+      setTimeout(poll, 50);
+    };
+    poll();
+  });
+  const exitReceipt = JSON.parse(readFileSync(restorerPaths(stateRoot).processExitReceipt, "utf8"));
+  assert.equal(exitReceipt.kind, "process-exit");
+  assert.equal(exitReceipt.exit_code, 2);
+  assert.match(String(exitReceipt.ownership_note || ""), /guardian-owned/);
+  const failure = JSON.parse(readFileSync(restorerPaths(stateRoot).guardianFailureReceipt, "utf8"));
+  assert.equal(failure.code, "guardian-actuator-failure");
+  assert.equal(failure.ownership_preserved, true);
+  const diagnostic = readBoundedRestorerLogTail(restorerPaths(stateRoot).diagnosticLog);
+  assert.equal(diagnostic.present, true);
+  assert.match(diagnostic.text, /restorer:code=guardian-actuator-failure/);
+  assert.equal(typeof installRestorerProcessEvidenceHandlers, "function");
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("restorer log allowlist drops secret-like stderr and exception bodies before durable write", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-log-allow-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(join(stateRoot, "logs"), { recursive: true, mode: 0o700 });
+  const secret = "Authorization: Bearer super-secret-token-value-xyz";
+  const tokenLine = "CLOUDFLARE_API_TOKEN=cf_secret_should_never_persist";
+  const freeform = "guardian-actuator-failure: synthetic readback mismatch";
+  const allowed = formatRestorerDiagnosticLine("guardian-actuator-failure", {
+    stage: "synthetic",
+    proved: false,
+  });
+  const noise = "raw stack Trace: Error: boom\n    at Object.<anonymous> (/tmp/x.mjs:1:1)";
+
+  assert.equal(filterRestorerDiagnosticChunk(secret), "");
+  assert.equal(filterRestorerDiagnosticChunk(tokenLine), "");
+  assert.equal(filterRestorerDiagnosticChunk(noise), "");
+  assert.equal(filterRestorerDiagnosticChunk(freeform), "");
+  assert.match(filterRestorerDiagnosticChunk(allowed), /restorer:code=guardian-actuator-failure/);
+
+  const logPath = restorerPaths(stateRoot).diagnosticLog;
+  appendBoundedRestorerLog(logPath, `${secret}\n${tokenLine}\n${noise}\n${freeform}\n${allowed}`);
+  const onDisk = readFileSync(logPath, "utf8");
+  assert.equal(onDisk.includes("super-secret-token-value-xyz"), false);
+  assert.equal(onDisk.includes("cf_secret_should_never_persist"), false);
+  assert.equal(onDisk.includes("Bearer"), false);
+  assert.equal(onDisk.includes("raw stack Trace"), false);
+  assert.equal(onDisk.includes("synthetic readback mismatch"), false);
+  assert.match(onDisk, /restorer:code=guardian-actuator-failure/);
+
+  // Exception path: install handlers and throw a secret-bearing Error; durable
+  // surfaces keep only coded name fields.
+  const libUrl = pathToFileURL(join(ROOT, "tools/lib/worker_observability_restorer.mjs")).href;
+  const child = join(dir, "throw-secret.mjs");
+  writeFileSync(child, `#!/usr/bin/env node
+import { installRestorerProcessEvidenceHandlers } from ${JSON.stringify(libUrl)};
+const stateRoot = ${JSON.stringify(stateRoot)};
+installRestorerProcessEvidenceHandlers(stateRoot, { windowId: "log-secret-1" });
+console.error(${JSON.stringify(secret)});
+console.error(${JSON.stringify(freeform)});
+throw new Error("leak " + ${JSON.stringify(tokenLine)});
+`, { mode: 0o755 });
+  const run = spawnSync(process.execPath, [child], { encoding: "utf8" });
+  assert.notEqual(run.status, 0);
+  const afterThrow = existsSync(logPath) ? readFileSync(logPath, "utf8") : "";
+  assert.equal(afterThrow.includes("super-secret-token-value-xyz"), false);
+  assert.equal(afterThrow.includes("cf_secret_should_never_persist"), false);
+  assert.equal(afterThrow.includes("Authorization"), false);
+  const failure = JSON.parse(readFileSync(restorerPaths(stateRoot).guardianFailureReceipt, "utf8"));
+  assert.equal(failure.code, "uncaught-exception");
+  assert.equal(failure.error_name, "Error");
+  assert.equal(JSON.stringify(failure).includes("cf_secret"), false);
+  const exitReceipt = JSON.parse(readFileSync(restorerPaths(stateRoot).processExitReceipt, "utf8"));
+  assert.equal(exitReceipt.kind, "process-exit");
+  assert.equal(exitReceipt.code, "uncaught-exception");
+  assert.equal(String(exitReceipt.error_name || "").includes("cf_secret"), false);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("restore-readback-mismatch writes guardian failure and preserves ownership when actuator unavailable", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-actuator-miss-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(join(stateRoot, "receipts"), { recursive: true, mode: 0o700 });
+  clearKillSwitch(stateRoot);
+  const armed = privacyArmedObservability(BASELINE);
+  const store = createFileWindowStore(join(dir, "window.json"));
+  let window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: new Date().toISOString(),
+    durationSeconds: 120,
+    windowId: "actuator-miss-1",
+  });
+  window = armRestorer(window, { now: new Date().toISOString(), restorerId: "actuator-miss-r" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+    pending_mutation: null,
+  };
+  window = bindWindowToRestorer(window, {
+    pid: process.pid,
+    stateRoot,
+    restorerId: window.restorer.restorer_id,
+  });
+  await store.write(window);
+  writeRestorerReceipt(restorerPaths(stateRoot).controllerDeathReceipt, {
+    schema: "cityscroll.worker_observability_restorer_runtime.v1",
+    kind: "controller-death",
+    observed_at: new Date().toISOString(),
+    controller_exited: true,
+    window_id: window.window_id,
+    restorer_id: window.restorer.restorer_id,
+  });
+  const sticky = {
+    async getObservability() { return structuredClone(armed); },
+    async patchObservability() { return structuredClone(armed); },
+    // no revertObservabilityToBaseline — beta-only transport
+  };
+  const tick = await restorerTick({
+    store,
+    transport: sticky,
+    stateRoot,
+    now: new Date().toISOString(),
+  });
+  assert.equal(tick.action, "restore-readback-mismatch");
+  assert.equal(tick.proved, false);
+  assert.equal(tick.receipt.config_revert_available, false);
+  assert.equal(tick.receipt.config_revert_invoked, false);
+  assert.equal(tick.receipt.actuator_error_code, "config-revert-unavailable");
+  assert.equal(tick.receipt.ownership_preserved, true);
+  assert.equal(existsSync(restorerPaths(stateRoot).terminalReceipt), false);
+  const failure = JSON.parse(readFileSync(restorerPaths(stateRoot).guardianFailureReceipt, "utf8"));
+  assert.equal(failure.code, "config-revert-unavailable");
+  assert.equal(failure.ownership_preserved, true);
+  assert.equal(failure.config_revert_available, false);
+  const durable = await store.read();
+  assert.equal(durable.owned_sha256, observabilitySha256(armed));
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("custom secret-bearing error.name maps to unknown and never persists in any durable file", async () => {
+  const secretName = "Bearer_super-secret-token-value-xyz";
+  assert.equal(mapRestorerErrorName(secretName), "unknown");
+  assert.equal(mapRestorerErrorName("TypeError"), "TypeError");
+  assert.equal(mapRestorerErrorName("Error"), "Error");
+
+  const dir = mkdtempSync(join(tmpdir(), "cc05-error-name-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(join(stateRoot, "receipts"), { recursive: true, mode: 0o700 });
+  mkdirSync(join(stateRoot, "logs"), { recursive: true, mode: 0o700 });
+  clearKillSwitch(stateRoot);
+
+  writeGuardianFailureReceipt(stateRoot, {
+    code: "tick-throw",
+    stage: "unit",
+    windowId: "error-name-1",
+    fields: {
+      error_name: secretName,
+      proved: false,
+      ownership_preserved: true,
+      survived: true,
+    },
+  });
+  const guardian = JSON.parse(readFileSync(restorerPaths(stateRoot).guardianFailureReceipt, "utf8"));
+  assert.equal(guardian.error_name, "unknown");
+
+  // Tick-failure path: transport throws a custom-named Error.
+  const store = createFileWindowStore(join(dir, "window.json"));
+  let window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: new Date().toISOString(),
+    durationSeconds: 120,
+    windowId: "error-name-1",
+  });
+  window = armRestorer(window, { now: new Date().toISOString(), restorerId: "error-name-r" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: privacyArmedObservability(BASELINE),
+    owned_sha256: observabilitySha256(privacyArmedObservability(BASELINE)),
+  };
+  window = bindWindowToRestorer(window, {
+    pid: process.pid,
+    stateRoot,
+    restorerId: window.restorer.restorer_id,
+  });
+  await store.write(window);
+  writeRestorerReceipt(restorerPaths(stateRoot).controllerDeathReceipt, {
+    schema: "cityscroll.worker_observability_restorer_runtime.v1",
+    kind: "controller-death",
+    observed_at: new Date().toISOString(),
+    controller_exited: true,
+    window_id: window.window_id,
+    restorer_id: window.restorer.restorer_id,
+  });
+  let ticks = 0;
+  const throwing = {
+    async getObservability() {
+      const err = new Error("actuator boom");
+      err.name = secretName;
+      throw err;
+    },
+    async patchObservability() { return null; },
+  };
+  await runRestorerLoop({
+    store,
+    transport: throwing,
+    stateRoot,
+    pollMs: 10,
+    expectedWindowId: window.window_id,
+    shouldStop: () => {
+      ticks += 1;
+      return ticks > 1;
+    },
+  });
+  const tickFailure = JSON.parse(readFileSync(restorerPaths(stateRoot).tickFailureReceipt, "utf8"));
+  assert.equal(tickFailure.error_name, "unknown");
+  const heartbeat = JSON.parse(readFileSync(restorerPaths(stateRoot).heartbeatReceipt, "utf8"));
+  assert.equal(heartbeat.error_name, "unknown");
+
+  // Child uncaughtException with custom name.
+  const libUrl = pathToFileURL(join(ROOT, "tools/lib/worker_observability_restorer.mjs")).href;
+  const child = join(dir, "throw-named.mjs");
+  writeFileSync(child, `#!/usr/bin/env node
+import { installRestorerProcessEvidenceHandlers } from ${JSON.stringify(libUrl)};
+installRestorerProcessEvidenceHandlers(${JSON.stringify(stateRoot)}, { windowId: "error-name-1" });
+const err = new Error("named");
+err.name = ${JSON.stringify(secretName)};
+throw err;
+`, { mode: 0o755 });
+  const run = spawnSync(process.execPath, [child], { encoding: "utf8" });
+  assert.notEqual(run.status, 0);
+  const exitReceipt = JSON.parse(readFileSync(restorerPaths(stateRoot).processExitReceipt, "utf8"));
+  assert.equal(exitReceipt.error_name, "unknown");
+
+  function assertNoSecretInTree(root) {
+    for (const ent of readdirSync(root, { withFileTypes: true })) {
+      const full = join(root, ent.name);
+      if (ent.isDirectory()) {
+        assertNoSecretInTree(full);
+        continue;
+      }
+      const text = readFileSync(full, "utf8");
+      assert.equal(text.includes(secretName), false, full);
+      assert.equal(text.includes("super-secret-token-value-xyz"), false, full);
+      assert.equal(text.includes("Bearer_"), false, full);
+    }
+  }
+  assertNoSecretInTree(stateRoot);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("appendBoundedRestorerLog re-filters existing raw bytes before durable write", () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-refilter-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(join(stateRoot, "logs"), { recursive: true, mode: 0o700 });
+  const logPath = restorerPaths(stateRoot).diagnosticLog;
+  const secret = "Authorization: Bearer legacy-raw-secret-should-scrub";
+  writeFileSync(logPath, `${secret}\nraw stack Trace: boom\nCLOUDFLARE_API_TOKEN=cf_legacy\n`, { mode: 0o600 });
+  assert.match(readFileSync(logPath, "utf8"), /legacy-raw-secret-should-scrub/);
+
+  const allowed = formatRestorerDiagnosticLine("guardian-actuator-failure", {
+    stage: "scrub",
+    proved: false,
+  });
+  const result = appendBoundedRestorerLog(logPath, allowed);
+  assert.equal(result.written, true);
+  assert.equal(result.scrubbed_existing, true);
+  const onDisk = readFileSync(logPath, "utf8");
+  assert.equal(onDisk.includes("legacy-raw-secret-should-scrub"), false);
+  assert.equal(onDisk.includes("Authorization"), false);
+  assert.equal(onDisk.includes("raw stack"), false);
+  assert.equal(onDisk.includes("cf_legacy"), false);
+  assert.match(onDisk, /restorer:code=guardian-actuator-failure/);
+  assert.match(onDisk, /stage=scrub/);
   rmSync(dir, { recursive: true, force: true });
 });

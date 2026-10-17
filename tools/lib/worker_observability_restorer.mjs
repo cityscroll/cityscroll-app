@@ -47,6 +47,92 @@ function fsyncWriteJson(path, value) {
   chmodSync(path, 0o600);
 }
 
+export const RESTORER_PROCESS_EXIT_SCHEMA = "cityscroll.worker_observability_restorer_process_exit.v1";
+export const RESTORER_GUARDIAN_FAILURE_SCHEMA = "cityscroll.worker_observability_restorer_guardian_failure.v1";
+export const RESTORER_LOG_BYTE_CAP = 16 * 1024;
+
+/**
+ * Fixed diagnostic codes allowed on durable guardian receipts / coded log lines.
+ * Free-form stderr, provider bodies, and stacks are never persisted.
+ */
+export const RESTORER_DIAGNOSTIC_CODES = Object.freeze([
+  "ready",
+  "heartbeat",
+  "terminal",
+  "process-exit",
+  "spawn-error",
+  "tick-throw",
+  "uncaught-exception",
+  "unhandled-rejection",
+  "restore-readback-mismatch",
+  "await-effective-baseline",
+  "refuse-conflict",
+  "config-revert-invoked",
+  "config-revert-unavailable",
+  "config-revert-threw",
+  "actuator-foreign-preserved",
+  "ownership-preserved",
+  "guardian-actuator-failure",
+]);
+
+/** Finite approved fields permitted on guardian failure / coded diagnostic receipts. */
+export const RESTORER_DIAGNOSTIC_FIELD_KEYS = Object.freeze([
+  "code",
+  "stage",
+  "window_id",
+  "restorer_id",
+  "pid",
+  "exit_code",
+  "signal",
+  "proved",
+  "ownership_preserved",
+  "pending_retained",
+  "ownership_unknown",
+  "after_sha256",
+  "baseline_sha256",
+  "owned_sha256",
+  "classification",
+  "restore_via_attempted",
+  "config_revert_available",
+  "config_revert_invoked",
+  "actuator_error_code",
+  "error_name",
+  "survived",
+  "controller_death",
+  "cancel_requested",
+  "expired",
+]);
+
+/**
+ * Finite enum for durable error_name fields. Custom Error.name values (including
+ * secret-bearing ones) collapse to "unknown" so they never persist as-is.
+ */
+export const RESTORER_KNOWN_ERROR_NAMES = Object.freeze([
+  "Error",
+  "TypeError",
+  "RangeError",
+  "SyntaxError",
+  "URIError",
+  "EvalError",
+  "ReferenceError",
+  "AggregateError",
+  "AssertionError",
+  "SystemError",
+]);
+
+const DIAGNOSTIC_CODE_SET = new Set(RESTORER_DIAGNOSTIC_CODES);
+const DIAGNOSTIC_FIELD_SET = new Set(RESTORER_DIAGNOSTIC_FIELD_KEYS);
+const KNOWN_ERROR_NAME_SET = new Set(RESTORER_KNOWN_ERROR_NAMES);
+const SECRET_LIKE_LINE_RE = /authorization\s*:|bearer\s+[a-z0-9._-]+|api[_-]?token\s*[:=]|CLOUDFLARE_API_TOKEN\s*=/i;
+const CODED_DIAGNOSTIC_LINE_RE = /^restorer:code=([a-z0-9-]+)((?:\s+[a-z_][a-z0-9_]*=[A-Za-z0-9._:@+-]{1,128})*)\s*$/;
+
+/** Map any thrown name to the finite enum or the fixed sentinel "unknown". */
+export function mapRestorerErrorName(name) {
+  const raw = String(name ?? "");
+  if (KNOWN_ERROR_NAME_SET.has(raw)) return raw;
+  return "unknown";
+}
+
 export function restorerPaths(stateRoot = DEFAULT_RESTORER_STATE_ROOT) {
   return {
     root: stateRoot,
@@ -57,11 +143,286 @@ export function restorerPaths(stateRoot = DEFAULT_RESTORER_STATE_ROOT) {
     heartbeatReceipt: join(stateRoot, "receipts/heartbeat.json"),
     terminalReceipt: join(stateRoot, "receipts/terminal.json"),
     controllerDeathReceipt: join(stateRoot, "receipts/controller-death.json"),
+    processExitReceipt: join(stateRoot, "receipts/process-exit.json"),
+    tickFailureReceipt: join(stateRoot, "receipts/tick-failure.json"),
+    guardianFailureReceipt: join(stateRoot, "receipts/guardian-failure.json"),
     assignedWindow: join(stateRoot, "assigned-window.json"),
     durableRunner: join(stateRoot, "run.mjs"),
     durableLibDir: join(stateRoot, "lib"),
     installManifest: join(stateRoot, "install-manifest.json"),
+    logsDir: join(stateRoot, "logs"),
+    diagnosticLog: join(stateRoot, "logs/restorer.diagnostic.log"),
   };
+}
+
+function finiteDiagnosticValue(value) {
+  if (value === null) return "null";
+  if (typeof value === "boolean" || typeof value === "number") {
+    if (typeof value === "number" && !Number.isFinite(value)) return null;
+    return String(value);
+  }
+  if (typeof value !== "string") return null;
+  if (!value || value.length > 128) return null;
+  if (SECRET_LIKE_LINE_RE.test(value)) return null;
+  if (!/^[A-Za-z0-9._:@+-]+$/.test(value)) return null;
+  return value;
+}
+
+/**
+ * Build one allowlisted coded diagnostic line. Returns "" when code/fields
+ * are not approved. Never embeds raw stacks, bodies, or free-form text.
+ */
+export function formatRestorerDiagnosticLine(code, fields = {}) {
+  if (!DIAGNOSTIC_CODE_SET.has(code)) return "";
+  const parts = [`restorer:code=${code}`];
+  for (const key of Object.keys(fields || {}).sort()) {
+    if (!DIAGNOSTIC_FIELD_SET.has(key) || key === "code") continue;
+    const rendered = finiteDiagnosticValue(fields[key]);
+    if (rendered === null) continue;
+    parts.push(`${key}=${rendered}`);
+  }
+  return `${parts.join(" ")}\n`;
+}
+
+/**
+ * Positive-allowlist filter applied BEFORE any durable restorer log write.
+ * Only `restorer:code=<allowlisted> key=value...` lines persist.
+ */
+export function filterRestorerDiagnosticChunk(chunk) {
+  const text = String(chunk ?? "");
+  if (!text) return "";
+  const kept = [];
+  for (const rawLine of text.split(/\r?\n/)) {
+    if (!rawLine) continue;
+    if (SECRET_LIKE_LINE_RE.test(rawLine)) continue;
+    const match = CODED_DIAGNOSTIC_LINE_RE.exec(rawLine.trim());
+    if (!match) continue;
+    const code = match[1];
+    if (!DIAGNOSTIC_CODE_SET.has(code)) continue;
+    const fields = {};
+    const pairs = match[2].trim();
+    if (pairs) {
+      for (const token of pairs.split(/\s+/)) {
+        const eq = token.indexOf("=");
+        if (eq <= 0) continue;
+        const key = token.slice(0, eq);
+        const value = token.slice(eq + 1);
+        if (!DIAGNOSTIC_FIELD_SET.has(key)) continue;
+        const rendered = finiteDiagnosticValue(value);
+        if (rendered === null) continue;
+        fields[key] = rendered;
+      }
+    }
+    const rebuilt = formatRestorerDiagnosticLine(code, fields);
+    if (rebuilt) kept.push(rebuilt.trimEnd());
+  }
+  if (kept.length === 0) return "";
+  return `${kept.join("\n")}\n`;
+}
+
+/**
+ * Append allowlisted diagnostic text with an enforced on-disk byte cap.
+ * Existing file bytes are re-filtered BEFORE concatenation so a legacy raw
+ * log cannot be re-persisted. Oldest bytes are dropped when over byteCap.
+ */
+export function appendBoundedRestorerLog(logPath, chunk, { byteCap = RESTORER_LOG_BYTE_CAP } = {}) {
+  const filteredNew = filterRestorerDiagnosticChunk(chunk);
+  const hadFile = existsSync(logPath);
+  const existingRaw = hadFile ? readFileSync(logPath).toString("utf8") : "";
+  // Re-filter legacy bytes every write so unfiltered secrets are scrubbed.
+  const existingFiltered = filterRestorerDiagnosticChunk(existingRaw);
+  const nextText = `${existingFiltered}${filteredNew}`;
+  if (!nextText) {
+    if (hadFile && existingRaw && !existingFiltered) {
+      // Scrub a file that contained only disallowed bytes.
+      writeFileSync(logPath, "", { mode: 0o600 });
+      return { written: true, bytes: 0, scrubbed_existing: true };
+    }
+    return { written: false, bytes: hadFile ? Buffer.byteLength(existingFiltered) : 0 };
+  }
+  mkdirSync(dirname(logPath), { recursive: true, mode: 0o700 });
+  let next = Buffer.from(nextText, "utf8");
+  if (next.length > byteCap) {
+    // Cap after filtering; re-filter the truncated slice so a mid-line cut
+    // cannot reintroduce a partial raw secret line.
+    next = Buffer.from(
+      filterRestorerDiagnosticChunk(next.subarray(next.length - byteCap).toString("utf8")),
+      "utf8",
+    );
+  }
+  writeFileSync(logPath, next, { mode: 0o600 });
+  return {
+    written: true,
+    bytes: next.length,
+    scrubbed_existing: hadFile && existingRaw !== existingFiltered,
+  };
+}
+
+/**
+ * Write one coded diagnostic line under the byte cap. No raw tee.
+ */
+export function writeRestorerDiagnostic(stateRoot, code, fields = {}) {
+  const line = formatRestorerDiagnosticLine(code, fields);
+  if (!line) return { written: false, bytes: 0 };
+  const paths = restorerPaths(stateRoot);
+  return appendBoundedRestorerLog(paths.diagnosticLog, line);
+}
+
+/**
+ * Guardian-owned failure receipt written at the failure site (not by a parent
+ * exit listener). Only allowlisted codes and finite approved fields are kept.
+ * Ownership / UNKNOWN flags are explicit so unacknowledged writes stay owned.
+ */
+export function writeGuardianFailureReceipt(stateRoot, {
+  code,
+  stage,
+  windowId = null,
+  restorerId = null,
+  fields = {},
+} = {}) {
+  if (!DIAGNOSTIC_CODE_SET.has(code)) fail(`guardian failure code not allowlisted: ${code}`);
+  const paths = restorerPaths(stateRoot);
+  mkdirSync(join(paths.root, "receipts"), { recursive: true, mode: 0o700 });
+  const approved = {};
+  for (const key of Object.keys(fields || {})) {
+    if (!DIAGNOSTIC_FIELD_SET.has(key)) continue;
+    let value = fields[key];
+    if (key === "error_name") {
+      approved[key] = mapRestorerErrorName(value);
+      continue;
+    }
+    if (value === null || typeof value === "boolean") {
+      approved[key] = value;
+      continue;
+    }
+    if (typeof value === "number" && Number.isFinite(value)) {
+      approved[key] = value;
+      continue;
+    }
+    const rendered = finiteDiagnosticValue(value);
+    if (rendered !== null) approved[key] = rendered;
+  }
+  const receipt = writeRestorerReceipt(paths.guardianFailureReceipt, {
+    schema: RESTORER_GUARDIAN_FAILURE_SCHEMA,
+    kind: "guardian-failure",
+    observed_at: new Date().toISOString(),
+    pid: process.pid,
+    window_id: windowId,
+    restorer_id: restorerId,
+    code,
+    stage: stage || null,
+    ...approved,
+  });
+  writeRestorerDiagnostic(stateRoot, code, {
+    stage: stage || undefined,
+    window_id: windowId || undefined,
+    restorer_id: restorerId || undefined,
+    proved: approved.proved,
+    ownership_preserved: approved.ownership_preserved,
+    config_revert_available: approved.config_revert_available,
+    config_revert_invoked: approved.config_revert_invoked,
+    restore_via_attempted: approved.restore_via_attempted,
+    actuator_error_code: approved.actuator_error_code,
+    after_sha256: approved.after_sha256,
+    baseline_sha256: approved.baseline_sha256,
+  });
+  return receipt;
+}
+
+/**
+ * Bounded, already-filtered log excerpt for receipts. Truncates to the byte
+ * cap from the end (defense in depth; writers must allowlist at write time).
+ */
+export function readBoundedRestorerLogTail(path, { byteCap = RESTORER_LOG_BYTE_CAP } = {}) {
+  if (!existsSync(path)) return { present: false, bytes: 0, truncated: false, text: "" };
+  const raw = readFileSync(path);
+  const truncated = raw.length > byteCap;
+  const slice = truncated ? raw.subarray(raw.length - byteCap) : raw;
+  // Re-filter so a pre-allowlist file cannot surface raw content via receipts.
+  const text = filterRestorerDiagnosticChunk(slice.toString("utf8"));
+  return { present: true, bytes: raw.length, truncated, text };
+}
+
+/**
+ * Child-side evidence handlers. Parent spawn uses stdio:ignore; the parent
+ * exit listener cannot supply receipts after the parent dies, so the guardian
+ * writes its own coded process-exit / failure receipts. Raw stdout/stderr are
+ * never teed to disk.
+ */
+export function installRestorerProcessEvidenceHandlers(stateRoot = DEFAULT_RESTORER_STATE_ROOT, {
+  windowId = null,
+} = {}) {
+  const paths = restorerPaths(stateRoot);
+  mkdirSync(paths.logsDir, { recursive: true, mode: 0o700 });
+  mkdirSync(join(paths.root, "receipts"), { recursive: true, mode: 0o700 });
+
+  let exitReceiptWritten = false;
+  const writeExit = (fields) => {
+    if (exitReceiptWritten) return;
+    exitReceiptWritten = true;
+    const diagnostic = readBoundedRestorerLogTail(paths.diagnosticLog);
+    writeRestorerReceipt(paths.processExitReceipt, {
+      schema: RESTORER_PROCESS_EXIT_SCHEMA,
+      kind: "process-exit",
+      observed_at: new Date().toISOString(),
+      pid: process.pid,
+      window_id: windowId,
+      state_root: stateRoot,
+      diagnostic_bytes: diagnostic.bytes,
+      diagnostic_tail_truncated: diagnostic.truncated,
+      diagnostic_tail: diagnostic.text.slice(-2000),
+      ownership_note: "guardian-owned; parent exit listener is not the evidence path",
+      ...fields,
+    });
+  };
+
+  process.on("exit", (code) => {
+    writeExit({ exit_code: code, signal: null, code: "process-exit" });
+  });
+  process.on("uncaughtException", (error) => {
+    const name = mapRestorerErrorName(error?.name || "Error");
+    writeGuardianFailureReceipt(stateRoot, {
+      code: "uncaught-exception",
+      stage: "process",
+      windowId,
+      fields: {
+        error_name: name,
+        ownership_preserved: true,
+        proved: false,
+        survived: false,
+      },
+    });
+    writeExit({
+      exit_code: 1,
+      signal: null,
+      code: "uncaught-exception",
+      error_name: name,
+    });
+    process.exit(1);
+  });
+  process.on("unhandledRejection", (reason) => {
+    const name = mapRestorerErrorName(reason?.name || "Error");
+    writeGuardianFailureReceipt(stateRoot, {
+      code: "unhandled-rejection",
+      stage: "process",
+      windowId,
+      fields: {
+        error_name: name,
+        ownership_preserved: true,
+        proved: false,
+        survived: false,
+      },
+    });
+    writeExit({
+      exit_code: 1,
+      signal: null,
+      code: "unhandled-rejection",
+      error_name: name,
+    });
+    process.exit(1);
+  });
+
+  return paths;
 }
 
 export function sha256File(path) {
@@ -543,20 +904,67 @@ export async function restorerTick({
     const restored = await runIndependentRestorer({ store, transport, now, alreadyLocked: true });
 
     // Script null but effective still owned/pending: stay nonterminal and retry.
-    if (restored.action === "await-effective-baseline") {
+    // Same for restore-readback-mismatch: beta PATCH can HTTP-200 while GET stays
+    // at the wrangler-enabled owned digest. Write a guardian-owned failure receipt
+    // at the failure site (parent exit listeners cannot cover guardian death) and
+    // keep ownership. Effective restore requires the config-revert actuator when
+    // beta readback stays owned — do not treat catch/retry of the same PATCH as proof.
+    if (
+      restored.action === "await-effective-baseline"
+      || restored.action === "restore-readback-mismatch"
+    ) {
+      const failureCode = restored.receipt?.actuator_error_code === "config-revert-unavailable"
+        ? "config-revert-unavailable"
+        : restored.receipt?.actuator_error_code === "config-revert-threw"
+          ? "config-revert-threw"
+          : restored.action === "await-effective-baseline"
+            ? "await-effective-baseline"
+            : "restore-readback-mismatch";
+      writeGuardianFailureReceipt(stateRoot, {
+        code: failureCode,
+        stage: "restorerTick",
+        windowId: restored.window.window_id,
+        restorerId: restored.window.restorer?.restorer_id || null,
+        fields: {
+          proved: false,
+          ownership_preserved: true,
+          pending_retained: Boolean(restored.window.pending_mutation),
+          ownership_unknown: Boolean(
+            restored.window.pending_mutation
+            && restored.window.pending_mutation.issued
+            && !restored.window.pending_mutation.confirmed
+          ),
+          after_sha256: restored.receipt?.after_sha256 || restored.receipt?.effective_sha256 || null,
+          baseline_sha256: restored.receipt?.baseline_sha256 || null,
+          owned_sha256: restored.window.owned_sha256 || null,
+          restore_via_attempted: restored.receipt?.restore_via_attempted || null,
+          config_revert_available: restored.receipt?.config_revert_available ?? null,
+          config_revert_invoked: restored.receipt?.config_revert_invoked ?? null,
+          actuator_error_code: restored.receipt?.actuator_error_code || null,
+          controller_death: controllerDead,
+          cancel_requested: cancelRequested,
+          expired: restored.expired === true,
+          survived: true,
+        },
+      });
       writeRestorerReceipt(paths.heartbeatReceipt, {
         schema: RESTORER_READY_SCHEMA,
         kind: "heartbeat",
-        outcome: "await-effective-baseline",
+        outcome: restored.action,
         observed_at: now,
         pid: process.pid,
         window_id: restored.window.window_id,
         restorer_id: restored.window.restorer?.restorer_id || null,
         phase: restored.window.phase,
         proved: false,
-        effective_sha256: restored.receipt?.effective_sha256 || null,
+        effective_sha256: restored.receipt?.effective_sha256 || restored.receipt?.after_sha256 || null,
         baseline_sha256: restored.receipt?.baseline_sha256 || null,
-        reason: restored.receipt?.reason || null,
+        restore_via_attempted: restored.receipt?.restore_via_attempted || null,
+        config_revert_available: restored.receipt?.config_revert_available ?? null,
+        config_revert_invoked: restored.receipt?.config_revert_invoked ?? null,
+        actuator_error_code: restored.receipt?.actuator_error_code || null,
+        ownership_preserved: true,
+        guardian_failure_receipt: paths.guardianFailureReceipt,
         controller_death: controllerDead,
         cancel_requested: cancelRequested,
         expired: restored.expired === true,
@@ -663,13 +1071,67 @@ export async function runRestorerLoop({
 
   const announced = await announceRestorerReady({ store, stateRoot, now: nowFn(), pid: process.pid });
   while (!shouldStop() && !killSwitchEngaged(stateRoot)) {
-    const tick = await restorerTick({
-      store,
-      transport,
-      stateRoot,
-      now: nowFn(),
-      expectedWindowId: expectedWindowId || announced.window.window_id,
-    });
+    let tick;
+    try {
+      tick = await restorerTick({
+        store,
+        transport,
+        stateRoot,
+        now: nowFn(),
+        expectedWindowId: expectedWindowId || announced.window.window_id,
+      });
+    } catch (error) {
+      // Survive unexpected actuator/transport throws; keep ownership. Persist
+      // only allowlisted codes + finite fields — never raw error/provider bodies.
+      const errorName = mapRestorerErrorName(error?.name || "Error");
+      const windowId = expectedWindowId || announced.window.window_id;
+      writeGuardianFailureReceipt(stateRoot, {
+        code: "tick-throw",
+        stage: "runRestorerLoop",
+        windowId,
+        restorerId: announced.window.restorer?.restorer_id || null,
+        fields: {
+          error_name: errorName,
+          proved: false,
+          ownership_preserved: true,
+          ownership_unknown: true,
+          survived: true,
+        },
+      });
+      writeRestorerReceipt(paths.tickFailureReceipt, {
+        schema: RESTORER_RUNTIME_SCHEMA,
+        kind: "tick-failure",
+        observed_at: nowFn(),
+        pid: process.pid,
+        window_id: windowId,
+        code: "tick-throw",
+        error_name: errorName,
+        ownership_preserved: true,
+        ownership_unknown: true,
+        survived: true,
+      });
+      writeRestorerReceipt(paths.heartbeatReceipt, {
+        schema: RESTORER_READY_SCHEMA,
+        kind: "heartbeat",
+        outcome: "tick-failure-survived",
+        observed_at: nowFn(),
+        pid: process.pid,
+        window_id: windowId,
+        restorer_id: announced.window.restorer?.restorer_id || null,
+        proved: false,
+        code: "tick-throw",
+        error_name: errorName,
+        ownership_preserved: true,
+        guardian_failure_receipt: paths.guardianFailureReceipt,
+      });
+      tick = {
+        outcome: "tick-failure-survived",
+        proved: false,
+        code: "tick-throw",
+        error_name: errorName,
+        ownership_preserved: true,
+      };
+    }
     if (typeof onTick === "function") onTick(tick);
     if (tick?.terminal_receipt || TERMINAL_WINDOW_PHASES.includes(tick?.window?.phase)) {
       return tick;
@@ -700,6 +1162,7 @@ export function startSupervisedRestorerProcess({
   const paths = restorerPaths(stateRoot);
   mkdirSync(paths.root, { recursive: true, mode: 0o700 });
   mkdirSync(join(paths.root, "receipts"), { recursive: true, mode: 0o700 });
+  mkdirSync(paths.logsDir, { recursive: true, mode: 0o700 });
   if (killSwitchEngaged(stateRoot)) fail("observability restorer kill switch is engaged");
 
   assignWindowForRestorer({ windowPath, windowId, stateRoot });
@@ -709,14 +1172,38 @@ export function startSupervisedRestorerProcess({
     fail(`durable restorer runner missing at ${runner}; run install_observability_settings_restorer.sh`);
   }
 
+  // stdio ignored in the parent so spawn pipes cannot pin the parent event loop.
+  // Crash/exit evidence is written by the child via installRestorerProcessEvidenceHandlers
+  // (durable runner installs this at boot). Parent only records spawn metadata.
   const child = spawn(nodeExecPath, [runner, "--window-state", windowPath, "--state-root", stateRoot, "--poll-ms", String(pollMs)], {
     detached,
     stdio: ["ignore", "ignore", "ignore"],
     env: {
       ...env,
       CITYSCROLL_OBSERVABILITY_RESTORER_TRANSPORT_MODULE: transportModuleUrl || "",
+      CITYSCROLL_OBSERVABILITY_RESTORER_STATE: stateRoot,
     },
   });
+
+  child.once("error", (error) => {
+    // Spawn failures never reach the child; this is the only parent-written
+    // process receipt. Ordinary guardian failures are child/guardian-owned.
+    const errorName = mapRestorerErrorName(error?.name || "Error");
+    writeRestorerReceipt(paths.processExitReceipt, {
+      schema: RESTORER_PROCESS_EXIT_SCHEMA,
+      kind: "process-exit",
+      observed_at: new Date().toISOString(),
+      pid: child.pid || null,
+      exit_code: null,
+      signal: null,
+      code: "spawn-error",
+      error_name: errorName,
+      window_id: windowId,
+      state_root: stateRoot,
+      ownership_note: "spawn-only parent receipt; guardian failures are child-owned",
+    });
+  });
+
   if (detached) child.unref();
 
   writeRestorerReceipt(paths.startReceipt, {
@@ -728,6 +1215,14 @@ export function startSupervisedRestorerProcess({
     window_path: windowPath,
     window_id: windowId,
     runner,
+    stdio: "ignore-parent+guardian-owned-receipts",
+    process_exit_receipt: paths.processExitReceipt,
+    guardian_failure_receipt: paths.guardianFailureReceipt,
+    logs: {
+      diagnostic: paths.diagnosticLog,
+      byte_cap: RESTORER_LOG_BYTE_CAP,
+      raw_stdio_tee: false,
+    },
   });
   writeFileSync(paths.pidFile, `${child.pid}\n`, { mode: 0o600 });
   return { pid: child.pid, child, paths };
