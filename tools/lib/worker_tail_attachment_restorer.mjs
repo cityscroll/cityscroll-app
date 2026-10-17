@@ -24,6 +24,8 @@ import {
   allowlistedCapSignalReason,
   assertTailTransportTargetMatchesWindow,
   assertVersionTransportMatchesBound,
+  bindCapObservationToWindowSnapshot,
+  capObservationMatchesLiveWindow,
   classifyTailAttachment,
   confirmTailAttachment,
   createBetaWorkerTailConsumersTransport,
@@ -639,8 +641,11 @@ export async function tailAttachmentRestorerTick({
   if (typeof store.read !== "function") fail("durable Tail store.read is required");
 
   // Bound the authenticated cap poll OUTSIDE the lock so a hung/slow readback
-  // cannot block expiry, cancel, or the normal restore path.
+  // cannot block expiry, cancel, or the normal restore path. Bind the poll to
+  // snapshot A's window/generation/ownership so a stale result cannot actuate
+  // against a later window B under the lock.
   let prefetchedCapSignal = null;
+  let capObservation = null;
   const snapshot = await store.read();
   if (!snapshot) fail("tail attachment window is missing");
   if (!snapshot.restorer?.armed) fail("tail restorer is not armed");
@@ -686,6 +691,7 @@ export async function tailAttachmentRestorerTick({
         identity_binding: null,
       };
     }
+    capObservation = bindCapObservationToWindowSnapshot(prefetchedCapSignal, snapshot);
   }
 
   // Re-read time AFTER the poll so a poll that ends at the deadline does not
@@ -735,17 +741,48 @@ export async function tailAttachmentRestorerTick({
 
     // Healthy owned windows: use the outside-lock cap poll, then detach under
     // the lock. UNKNOWN/error/stalled polls stay idle so expiry/cancel/restore
-    // below still run on later ticks.
+    // below still run on later ticks. A stale observation (A ≠ B) refuses
+    // actuation with 0 PATCH — never invent B's binding or re-poll under lock.
     if (owned && !pending && !expired && !controllerDead && !cancelRequested) {
       if (window.restorer?.cap_detach_actuator_bound === true) {
         if (!capDetachActuator || typeof capDetachActuator.pollAndDetachIfCapped !== "function") {
           fail("refuse: window armed with cap-detach but runtime actuator absent");
         }
+        if (!capObservation || !capObservationMatchesLiveWindow(capObservation, window)) {
+          writeTailRestorerReceipt(paths.heartbeatReceipt, {
+            schema: TAIL_RESTORER_READY_SCHEMA,
+            kind: "heartbeat",
+            outcome: "alive",
+            observed_at: nowAfter,
+            pid: process.pid,
+            window_id: window.window_id,
+            restorer_id: window.restorer?.restorer_id || null,
+            phase: window.phase,
+            cap_signal_reason: CAP_SIGNAL_REASON.STALE_CAP_OBSERVATION,
+            cap_readback_ok: prefetchedCapSignal ? prefetchedCapSignal.readback_ok === true : null,
+          });
+          return {
+            outcome: "idle",
+            window,
+            reason: CAP_SIGNAL_REASON.STALE_CAP_OBSERVATION,
+            cap_signal: projectPersistedCapSignal(prefetchedCapSignal),
+          };
+        }
         const cap = await capDetachActuator.pollAndDetachIfCapped({
           store,
           now: nowAfter,
-          prefetchedSignal: prefetchedCapSignal,
+          capObservation,
+          prefetchedSignal: capObservation.signal,
+          allowRepollUnderLock: false,
         });
+        if (cap?.reason === CAP_SIGNAL_REASON.STALE_CAP_OBSERVATION) {
+          return {
+            outcome: "idle",
+            window,
+            reason: CAP_SIGNAL_REASON.STALE_CAP_OBSERVATION,
+            cap_signal: projectPersistedCapSignal(cap.signal || prefetchedCapSignal),
+          };
+        }
         if (cap?.signal?.a2 && cap.signal.a2.pass === false) {
           writeTailRestorerReceipt(paths.heartbeatReceipt, {
             schema: TAIL_RESTORER_READY_SCHEMA,

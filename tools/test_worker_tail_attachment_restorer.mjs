@@ -35,6 +35,7 @@ import {
   CAP_SIGNAL_REASON,
   TAIL_SINK_NAME,
   TAIL_SINK_READBACK_SCHEMA,
+  bindCapObservationToWindowSnapshot,
   createOwnedCapDetachActuator,
   createSinkReadbackCapSignal,
   establishCapReadbackIdentityBinding,
@@ -3510,6 +3511,222 @@ test("tailAttachmentRestorerTick: re-reads time after poll so deadline restore i
     JSON.stringify({ action: tick.action, outcome: tick.outcome }),
   );
   assert.ok(transport.calls.filter((c) => c.method === "PATCH").length >= 1);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("tailAttachmentRestorerTick: generation swap between outside-lock poll and lock → STALE, 0 PATCH", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-stale-cap-swap-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(stateRoot, { recursive: true });
+  const transport = memoryTransport([SANITIZER]);
+  const { store, window, versionTransport } = await openStoredArmedWindow(dir, {
+    windowId: "stale-swap-A",
+    restorerId: "tr-swap",
+    baselineConsumers: [],
+    now: "2026-10-17T11:00:00.000Z",
+    durationSeconds: 1800,
+  });
+  let owned = {
+    ...window,
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER]),
+    owned_sha256: tailConsumersSha256([SANITIZER]),
+    pending_mutation: null,
+  };
+  owned = await store.write(owned);
+  const genA = owned.window_generation;
+  let swappedGen = null;
+  let pollCalls = 0;
+  let detachCalls = 0;
+
+  const actuator = createOwnedCapDetachActuator({
+    transport,
+    versionTransport,
+    readCapSignal: async () => {
+      pollCalls += 1;
+      // Swap generation AFTER snapshot A was read and DURING the outside-lock poll
+      // so under-lock B differs from the bound observation.
+      const current = await store.read();
+      const swapped = await store.write(
+        { ...current },
+        { expectedWindowId: current.window_id, expectedGeneration: current.window_generation },
+      );
+      swappedGen = swapped.window_generation;
+      assert.equal(swappedGen, genA + 1);
+      return {
+        cap_reached: true,
+        readback_ok: true,
+        reason: "cap_reached",
+        events_seen: 10_000,
+        apply_overshoot: 0,
+        a2: { pass: true, reason: "within_all_seen_cap", events_seen: 10_000, apply_overshoot: 0 },
+      };
+    },
+  });
+  const innerDetach = actuator.pollAndDetachIfCapped.bind(actuator);
+  actuator.pollAndDetachIfCapped = async (...args) => {
+    detachCalls += 1;
+    return innerDetach(...args);
+  };
+
+  const before = await store.read();
+  assert.equal(before.window_generation, genA);
+
+  const tick = await tailAttachmentRestorerTick({
+    store,
+    transport,
+    versionTransport,
+    capDetachActuator: actuator,
+    stateRoot,
+    now: "2026-10-17T11:00:10.000Z",
+  });
+
+  assert.equal(pollCalls, 1);
+  assert.equal(tick.outcome, "idle");
+  assert.equal(tick.reason, CAP_SIGNAL_REASON.STALE_CAP_OBSERVATION);
+  assert.equal(transport.calls.filter((c) => c.method === "PATCH").length, 0);
+  // Tick refuses before actuation when A≠B; detach must not run against B.
+  assert.equal(detachCalls, 0, "stale A≠B must refuse before pollAndDetachIfCapped");
+
+  const after = await store.read();
+  assert.equal(after.window_generation, swappedGen, "tick must not write past the swap");
+  assert.equal(after.phase, "attached");
+  assert.ok(after.owned_sha256, "ownership must remain on replacement");
+  assert.deepEqual(after.owned_consumers, canonicalizeTailConsumers([SANITIZER]));
+  assert.equal(after.window_id, "stale-swap-A");
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("tailAttachmentRestorerTick: window_id swap between poll and lock → STALE, 0 PATCH", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-stale-cap-win-swap-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(stateRoot, { recursive: true });
+  const transport = memoryTransport([SANITIZER]);
+  const { store, window, versionTransport } = await openStoredArmedWindow(dir, {
+    windowId: "stale-win-A",
+    restorerId: "tr-win-swap",
+    baselineConsumers: [],
+    now: "2026-10-17T11:00:00.000Z",
+    durationSeconds: 1800,
+  });
+  let owned = {
+    ...window,
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER]),
+    owned_sha256: tailConsumersSha256([SANITIZER]),
+    pending_mutation: null,
+  };
+  owned = await store.write(owned);
+
+  const actuator = createOwnedCapDetachActuator({
+    transport,
+    versionTransport,
+    readCapSignal: async () => {
+      const current = await store.read();
+      // Replace on-disk window identity with B while poll of A is in flight.
+      await store.write({
+        ...current,
+        window_id: "stale-win-B",
+        restorer: {
+          ...current.restorer,
+          restorer_id: "tr-win-swap-B",
+        },
+      });
+      return {
+        cap_reached: true,
+        readback_ok: true,
+        reason: "cap_reached",
+        events_seen: 10_000,
+        apply_overshoot: 0,
+        a2: { pass: true, reason: "within_all_seen_cap", events_seen: 10_000, apply_overshoot: 0 },
+      };
+    },
+  });
+
+  const tick = await tailAttachmentRestorerTick({
+    store,
+    transport,
+    versionTransport,
+    capDetachActuator: actuator,
+    stateRoot,
+    now: "2026-10-17T11:00:10.000Z",
+  });
+
+  assert.equal(tick.outcome, "idle");
+  assert.equal(tick.reason, CAP_SIGNAL_REASON.STALE_CAP_OBSERVATION);
+  assert.equal(transport.calls.filter((c) => c.method === "PATCH").length, 0);
+
+  const after = await store.read();
+  assert.equal(after.window_id, "stale-win-B");
+  assert.equal(after.phase, "attached");
+  assert.ok(after.owned_sha256);
+  // No restore / write against replacement beyond the test's own swap write.
+  assert.equal(after.restorer?.restorer_id, "tr-win-swap-B");
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("tailAttachmentRestorerTick: unchanged-window capped signal still detaches", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-cap-detach-ok-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(stateRoot, { recursive: true });
+  const transport = memoryTransport([SANITIZER]);
+  const { store, window, versionTransport } = await openStoredArmedWindow(dir, {
+    windowId: "cap-ok-win",
+    restorerId: "tr-cap-ok",
+    baselineConsumers: [],
+    now: "2026-10-17T11:00:00.000Z",
+    durationSeconds: 1800,
+  });
+  let owned = {
+    ...window,
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER]),
+    owned_sha256: tailConsumersSha256([SANITIZER]),
+    pending_mutation: null,
+  };
+  owned = await store.write(owned);
+  const genBefore = owned.window_generation;
+
+  const actuator = createOwnedCapDetachActuator({
+    transport,
+    versionTransport,
+    readCapSignal: async () => ({
+      cap_reached: true,
+      readback_ok: true,
+      reason: "cap_reached",
+      events_seen: 10_000,
+      apply_overshoot: 0,
+      a2: { pass: true, reason: "within_all_seen_cap", events_seen: 10_000, apply_overshoot: 0 },
+    }),
+  });
+
+  const tick = await tailAttachmentRestorerTick({
+    store,
+    transport,
+    versionTransport,
+    capDetachActuator: actuator,
+    stateRoot,
+    now: "2026-10-17T11:00:10.000Z",
+  });
+
+  assert.notEqual(tick.reason, CAP_SIGNAL_REASON.STALE_CAP_OBSERVATION);
+  assert.ok(
+    tick.outcome === "cap-detach"
+      || ["restore", "restored", "already-restored", "cap-detach"].includes(tick.action || tick.outcome)
+      || tick.proved === true
+      || tick.terminal_receipt,
+    JSON.stringify({ outcome: tick.outcome, action: tick.action, reason: tick.reason }),
+  );
+  assert.ok(transport.calls.filter((c) => c.method === "PATCH").length >= 1);
+  const after = await store.read();
+  assert.ok(["restored", "expired-restored"].includes(after.phase), after.phase);
+  assert.ok(after.window_generation > genBefore);
+  // Sanity: bind helper still matches an unchanged snapshot.
+  const obs = bindCapObservationToWindowSnapshot(
+    { cap_reached: false, readback_ok: true },
+    { ...owned, window_generation: genBefore },
+  );
+  assert.ok(obs);
   rmSync(dir, { recursive: true, force: true });
 });
 

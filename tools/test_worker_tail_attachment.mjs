@@ -16,8 +16,11 @@ import {
   CAP_SIGNAL_REASON,
   TAIL_SINK_NAME,
   TAIL_SINK_READBACK_SCHEMA,
+  bindCapObservationToWindowSnapshot,
+  capObservationMatchesLiveWindow,
   createSinkReadbackCapSignal,
   establishCapReadbackIdentityBinding,
+  projectCapIdentityBinding,
   projectCapSignalA2,
   projectSinkReadbackCapSignal,
   validateSinkReadbackBody,
@@ -1085,6 +1088,11 @@ test("createSinkReadbackCapSignal: valid unopened schema with events_seen 0 is R
   assert.equal(signal.identity_binding.window_id, "cap-bind-win");
   assert.equal(signal.identity_binding.desired_consumer_service, SANITIZER_A.service);
   assert.equal(signal.identity_binding.credential_provenance, CAP_CREDENTIAL_PROVENANCE.TEST_FIXTURE);
+  // URL hash + sink_name are configured-readback provenance metadata only.
+  assert.equal(signal.identity_binding.readback_target_provenance, "configured-url-hash");
+  assert.equal(signal.identity_binding.sink_name_provenance, "configured-sink-name");
+  assert.equal(typeof signal.identity_binding.readback_target_sha256, "string");
+  assert.equal(signal.identity_binding.sink_name, TAIL_SINK_NAME);
 });
 
 test("createSinkReadbackCapSignal: missing identity binding refuses READY", async () => {
@@ -1294,5 +1302,153 @@ test("createOwnedCapDetachActuator forwards versionTransport into emergency deta
       .includes(guard.before_actuator),
     guard.before_actuator,
   );
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("projectCapIdentityBinding labels URL hash and sink_name as provenance metadata", () => {
+  const binding = testIdentityBinding();
+  const projected = projectCapIdentityBinding(binding);
+  assert.equal(projected.readback_target_provenance, "configured-url-hash");
+  assert.equal(projected.sink_name_provenance, "configured-sink-name");
+  assert.equal(typeof projected.readback_target_sha256, "string");
+  assert.equal(projected.sink_name, TAIL_SINK_NAME);
+});
+
+test("bindCapObservationToWindowSnapshot + match refuse generation/window swap", () => {
+  const snapshot = {
+    window_id: "obs-A",
+    window_generation: 3,
+    owned_sha256: "aa".repeat(32),
+    account_id_sha256: ACCOUNT_SHA,
+    restorer: { restorer_id: "tr-A" },
+  };
+  const signal = {
+    cap_reached: true,
+    readback_ok: true,
+    reason: CAP_SIGNAL_REASON.CAP_NOT_REACHED,
+    identity_binding: {
+      window_id: "obs-A",
+      account_id_sha256: ACCOUNT_SHA,
+      deployed_version_sha256: VERSION_SHA,
+    },
+  };
+  const observation = bindCapObservationToWindowSnapshot(signal, snapshot);
+  assert.ok(observation);
+  assert.equal(observation.observed_at_window.window_id, "obs-A");
+  assert.equal(observation.observed_at_window.window_generation, 3);
+
+  assert.equal(capObservationMatchesLiveWindow(observation, snapshot), true);
+  assert.equal(
+    capObservationMatchesLiveWindow(observation, { ...snapshot, window_generation: 4 }),
+    false,
+  );
+  assert.equal(
+    capObservationMatchesLiveWindow(observation, { ...snapshot, window_id: "obs-B" }),
+    false,
+  );
+  assert.equal(
+    capObservationMatchesLiveWindow(observation, {
+      ...snapshot,
+      owned_sha256: "bb".repeat(32),
+    }),
+    false,
+  );
+  assert.equal(
+    capObservationMatchesLiveWindow(observation, {
+      ...snapshot,
+      restorer: { restorer_id: "tr-B" },
+    }),
+    false,
+  );
+  assert.equal(capObservationMatchesLiveWindow(null, snapshot), false);
+  assert.equal(capObservationMatchesLiveWindow(observation, null), false);
+});
+
+test("owned cap-detach: stale outside-lock observation refuses with 0 PATCH", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-stale-cap-obs-"));
+  const store = createFileTailAttachmentStore(join(dir, "window.json"));
+  const transport = memoryAttachmentTransport([SANITIZER_A]);
+  let pollCalls = 0;
+  const actuator = createOwnedCapDetachActuator({
+    transport,
+    readCapSignal: async () => {
+      pollCalls += 1;
+      return {
+        cap_reached: true,
+        readback_ok: true,
+        events_seen: 10_000,
+        apply_overshoot: 0,
+        a2: { pass: true, reason: "within_all_seen_cap" },
+      };
+    },
+  });
+
+  let window = openArmedWindow({
+    windowId: "stale-obs-A",
+    restorerId: "tr-stale",
+    capDetachActuator: actuator,
+  });
+  window = attachConfirmed(window, [SANITIZER_A]);
+  window = await store.write(window);
+  const genA = window.window_generation;
+
+  const signalA = {
+    cap_reached: true,
+    readback_ok: true,
+    events_seen: 10_000,
+    apply_overshoot: 0,
+    a2: { pass: true, reason: "within_all_seen_cap" },
+  };
+  const observationA = bindCapObservationToWindowSnapshot(signalA, window);
+  assert.ok(observationA);
+
+  // Swap generation under the lock's live window (B) after observation of A.
+  const swapped = await store.write(
+    { ...window },
+    { expectedWindowId: window.window_id, expectedGeneration: genA },
+  );
+  assert.equal(swapped.window_generation, genA + 1);
+  assert.notEqual(swapped.window_generation, observationA.observed_at_window.window_generation);
+
+  const beforeWrites = swapped.window_generation;
+  const stale = await actuator.pollAndDetachIfCapped({
+    store,
+    now: "2026-10-17T11:00:30.000Z",
+    capObservation: observationA,
+    allowRepollUnderLock: false,
+  });
+  assert.equal(stale.actuated, false);
+  assert.equal(stale.proved, false);
+  assert.equal(stale.reason, CAP_SIGNAL_REASON.STALE_CAP_OBSERVATION);
+  assert.equal(transport.calls.filter((c) => c.method === "PATCH").length, 0);
+  assert.equal(pollCalls, 0, "must not re-poll under lock when observation is supplied");
+  const after = await store.read();
+  assert.equal(after.window_generation, beforeWrites, "stale path must not write replacement");
+  assert.equal(after.phase, "attached");
+  assert.ok(after.owned_sha256);
+
+  // Absent prefetch + allowRepollUnderLock false → UNKNOWN, still 0 PATCH.
+  const unknown = await actuator.pollAndDetachIfCapped({
+    store,
+    now: "2026-10-17T11:00:31.000Z",
+    allowRepollUnderLock: false,
+  });
+  assert.equal(unknown.actuated, false);
+  assert.equal(unknown.reason, CAP_SIGNAL_REASON.CAP_SIGNAL_UNKNOWN);
+  assert.equal(transport.calls.filter((c) => c.method === "PATCH").length, 0);
+  assert.equal(pollCalls, 0);
+
+  // Matching observation still actuates (unchanged-window positive path).
+  const live = await store.read();
+  const matching = bindCapObservationToWindowSnapshot(signalA, live);
+  const fired = await actuator.pollAndDetachIfCapped({
+    store,
+    now: "2026-10-17T11:00:32.000Z",
+    capObservation: matching,
+    allowRepollUnderLock: false,
+  });
+  assert.equal(fired.actuated, true);
+  assert.equal(fired.proved, true);
+  assert.ok(transport.calls.filter((c) => c.method === "PATCH").length >= 1);
   rmSync(dir, { recursive: true, force: true });
 });

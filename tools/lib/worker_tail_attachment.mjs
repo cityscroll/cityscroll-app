@@ -1082,6 +1082,7 @@ export const CAP_SIGNAL_REASON = Object.freeze({
   CAP_SIGNAL_UNKNOWN: "cap_signal_unknown",
   ACTUATOR_MISSING_POLL: "actuator_missing_pollCapSignal",
   IDENTITY_BINDING_UNKNOWN: "identity_binding_unknown",
+  STALE_CAP_OBSERVATION: "stale_cap_observation",
 });
 
 const CAP_SIGNAL_REASON_SET = new Set(Object.values(CAP_SIGNAL_REASON));
@@ -1152,6 +1153,11 @@ export function projectCapSignalA2(raw) {
 
 /**
  * Project identity binding onto allowlisted scalars only (no raw URL/token).
+ *
+ * readback_target_sha256 and sink_name are configured-readback provenance
+ * metadata (URL hash + configured sink name). They are NOT a proven
+ * URL-to-deployed-consumer identity; GO uses actual deployment/target/
+ * credential configuration evidence for that.
  */
 export function projectCapIdentityBinding(binding) {
   if (!binding || typeof binding !== "object") return null;
@@ -1166,12 +1172,92 @@ export function projectCapIdentityBinding(binding) {
     deployed_version_sha256: typeof binding.deployed_version_sha256 === "string"
       ? binding.deployed_version_sha256
       : null,
+    // Provenance metadata only — not proven URL↔consumer identity.
+    readback_target_provenance: "configured-url-hash",
     readback_target_sha256: typeof binding.readback_target_sha256 === "string"
       ? binding.readback_target_sha256
       : null,
     credential_provenance: allowlistedCapCredentialProvenance(binding.credential_provenance),
+    sink_name_provenance: "configured-sink-name",
     sink_name: typeof binding.sink_name === "string" ? binding.sink_name : null,
   };
+}
+
+/**
+ * Snapshot the window identity an outside-lock cap poll observed against.
+ * Compared under the lock to the live window before any cap actuation.
+ */
+export function bindCapObservationToWindowSnapshot(signal, snapshot) {
+  if (!signal || typeof signal !== "object" || !snapshot || typeof snapshot !== "object") {
+    return null;
+  }
+  const generation = Number.isInteger(snapshot.window_generation)
+    ? snapshot.window_generation
+    : null;
+  if (typeof snapshot.window_id !== "string" || !snapshot.window_id || generation == null) {
+    return null;
+  }
+  return {
+    signal,
+    observed_at_window: {
+      window_id: snapshot.window_id,
+      window_generation: generation,
+      owned_sha256: typeof snapshot.owned_sha256 === "string" ? snapshot.owned_sha256 : null,
+      restorer_id: typeof snapshot.restorer?.restorer_id === "string"
+        ? snapshot.restorer.restorer_id
+        : null,
+      desired_consumer_service: signal.identity_binding?.desired_consumer_service ?? null,
+      deployed_version_sha256: signal.identity_binding?.deployed_version_sha256 ?? null,
+      account_id_sha256: signal.identity_binding?.account_id_sha256
+        ?? (typeof snapshot.account_id_sha256 === "string" ? snapshot.account_id_sha256 : null),
+    },
+  };
+}
+
+/**
+ * True when the outside-lock cap observation still matches the live window B
+ * under the lock. Mismatch / UNKNOWN → refuse cap actuation (0 PATCH).
+ */
+export function capObservationMatchesLiveWindow(observation, liveWindow) {
+  if (!observation || typeof observation !== "object") return false;
+  if (!liveWindow || typeof liveWindow !== "object") return false;
+  const a = observation.observed_at_window;
+  if (!a || typeof a !== "object") return false;
+  if (typeof a.window_id !== "string" || a.window_id !== liveWindow.window_id) return false;
+  const liveGen = Number.isInteger(liveWindow.window_generation)
+    ? liveWindow.window_generation
+    : null;
+  if (!Number.isInteger(a.window_generation) || a.window_generation !== liveGen) return false;
+  const liveOwned = typeof liveWindow.owned_sha256 === "string" ? liveWindow.owned_sha256 : null;
+  if (a.owned_sha256 !== liveOwned) return false;
+  const liveRestorer = typeof liveWindow.restorer?.restorer_id === "string"
+    ? liveWindow.restorer.restorer_id
+    : null;
+  if (a.restorer_id !== liveRestorer) return false;
+  // When the signal carried identity binding, require it still matches live.
+  const signalBinding = observation.signal?.identity_binding;
+  if (signalBinding && typeof signalBinding === "object") {
+    if (
+      signalBinding.window_id != null
+      && signalBinding.window_id !== liveWindow.window_id
+    ) {
+      return false;
+    }
+    if (
+      signalBinding.account_id_sha256 != null
+      && signalBinding.account_id_sha256 !== liveWindow.account_id_sha256
+    ) {
+      return false;
+    }
+    if (
+      signalBinding.deployed_version_sha256 != null
+      && liveWindow.version_evidence?.present === true
+      && signalBinding.deployed_version_sha256 !== liveWindow.version_evidence.sha256
+    ) {
+      return false;
+    }
+  }
+  return true;
 }
 
 /**
@@ -1179,6 +1265,10 @@ export function projectCapIdentityBinding(binding) {
  * consumer, deployed-version evidence, and configured readback target +
  * credential provenance. deadline_ms / max_events are NOT identity.
  * Missing any required part → UNKNOWN (refuses READY).
+ *
+ * The configured readback URL hash and sink_name are provenance metadata for
+ * the readiness poll target — not a proof that the URL maps to the deployed
+ * consumer. That proof stays with deployment/target/credential evidence.
  */
 export function establishCapReadbackIdentityBinding({
   window = null,
@@ -1614,21 +1704,51 @@ export function createOwnedCapDetachActuator({
       now = new Date().toISOString(),
       timeoutMs = DEFAULT_SINK_READBACK_TIMEOUT_MS,
       signal = null,
-      prefetchedSignal = null,
+      prefetchedSignal = undefined,
+      capObservation = null,
+      // Guardian tick must not re-poll under the lock; direct test callers may.
+      allowRepollUnderLock = true,
     } = {}) {
       if (!store || typeof store.read !== "function") {
         fail("cap-detach poll requires durable store.read");
       }
-      const capSignal = prefetchedSignal == null
-        ? await pollCapSignal({ timeoutMs, signal })
-        : prefetchedSignal;
+
+      let capSignal = null;
+      if (capObservation != null) {
+        // Outside-lock observation: compare to live window under the lock.
+        const liveForObservation = await store.read();
+        if (!capObservationMatchesLiveWindow(capObservation, liveForObservation)) {
+          return {
+            actuated: false,
+            proved: false,
+            reason: CAP_SIGNAL_REASON.STALE_CAP_OBSERVATION,
+            signal: capObservation.signal || null,
+          };
+        }
+        capSignal = capObservation.signal || null;
+      } else if (prefetchedSignal !== undefined && prefetchedSignal !== null) {
+        capSignal = prefetchedSignal;
+      } else if (allowRepollUnderLock === false) {
+        // Absent prefetch under the lock stays UNKNOWN — never invent a fresh poll.
+        return {
+          actuated: false,
+          proved: false,
+          reason: CAP_SIGNAL_REASON.CAP_SIGNAL_UNKNOWN,
+          signal: null,
+        };
+      } else {
+        capSignal = await pollCapSignal({ timeoutMs, signal });
+      }
+
       if (!capSignal || capSignal.cap_reached !== true) {
         return {
           actuated: false,
           proved: false,
           reason: capSignal?.readback_ok === true
             ? CAP_SIGNAL_REASON.CAP_NOT_REACHED
-            : CAP_SIGNAL_REASON.CAP_SIGNAL_UNKNOWN,
+            : allowlistedCapSignalReason(
+              capSignal?.reason || CAP_SIGNAL_REASON.CAP_SIGNAL_UNKNOWN,
+            ),
           signal: capSignal || null,
         };
       }
@@ -1638,6 +1758,19 @@ export function createOwnedCapDetachActuator({
           actuated: false,
           proved: false,
           reason: "no_window",
+          signal: capSignal,
+        };
+      }
+      // Re-check observation against the window used for detach (B may have
+      // changed between the observation compare and this read).
+      if (
+        capObservation != null
+        && !capObservationMatchesLiveWindow(capObservation, window)
+      ) {
+        return {
+          actuated: false,
+          proved: false,
+          reason: CAP_SIGNAL_REASON.STALE_CAP_OBSERVATION,
           signal: capSignal,
         };
       }
