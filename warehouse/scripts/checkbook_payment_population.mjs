@@ -35,6 +35,19 @@ const DEFAULT_OUTPUT = join(DEFAULT_STAGE, "payments.csv");
 const DEFAULT_FIXTURE = join(ROOT, "warehouse/fixtures/checkbook-payment-population/collector.json");
 const MAX_PAGE_SIZE = 20_000;
 const MIN_DELAY_MS = 1_200;
+/** Live fetches retry a short page this many times before failing closed. */
+export const SHORT_PAGE_ATTEMPTS = 3;
+
+/** Rows this page must carry for a stable publisher count (1-based records_from). */
+export function expectedPaymentPageRows(offset, pageSize, publisherCount) {
+  if (!Number.isInteger(offset) || offset < 1) throw new Error("offset must be a positive integer");
+  if (!Number.isInteger(pageSize) || pageSize < 1) throw new Error("pageSize must be a positive integer");
+  if (!Number.isInteger(publisherCount) || publisherCount < 0) {
+    throw new Error("publisherCount must be a non-negative integer");
+  }
+  if (offset > publisherCount) return 0;
+  return Math.min(pageSize, publisherCount - offset + 1);
+}
 const CSV_FIELDS = ["transaction_id", "source_system", "fiscal_year", "issue_date", "agency", "payee_name", "contract_id", "spending_category", "check_amount", "document_id", "expense_category", "department", "budget_code", "capital_project", "industry", "mwbe_category", "sub_vendor", "associated_prime_vendor", "sub_contract_reference_id", "mocs_registered", "woman_owned_business", "emerging_business", "is_reversal", "source_fields_json"];
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
@@ -220,21 +233,51 @@ async function collectPartitions(args) {
     let normalizedNetForPartition = 0;
     let reversalRowsForPartition = 0;
     const partitionAgencies = new Map();
+    // Fixture and reuse-pages paths are deterministic: one attempt. Live fetches
+    // retry a short page a bounded number of times, then fail closed without
+    // advancing the offset (so a one-page miss cannot silently drop MAX_PAGE_SIZE rows).
+    const maxAttempts = (args.fromFixture || args.reusePages) ? 1 : (args.pageRetries ?? SHORT_PAGE_ATTEMPTS);
     while (expectedCount == null || offset <= expectedCount) {
       const file = `fy${year}-offset${String(offset).padStart(8, "0")}.xml`;
       const pagePath = join(pagesDir, file);
-      const page = args.reusePages && existsSync(pagePath)
-        ? { xml: readFileSync(pagePath, "utf8"), fetchedAt: null, httpStatus: null }
-        : await fetchPage({ year, offset });
-      const xml = page.xml;
-      if (!checkbookSuccess(xml)) throw new Error(`Checkbook returned failure for FY${year} offset ${offset}`);
-      const count = responseRecordCount(xml);
-      if (!Number.isInteger(count)) throw new Error(`Checkbook omitted record_count for FY${year} offset ${offset}`);
-      if (expectedCount != null && expectedCount !== count) {
-        throw new Error(`Checkbook record_count changed for FY${year}: ${expectedCount} -> ${count}`);
+      let page = null;
+      let xml = null;
+      let count = null;
+      let parsed = null;
+      let shortPageError = null;
+      for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+        page = args.reusePages && existsSync(pagePath) && attempt === 1
+          ? { xml: readFileSync(pagePath, "utf8"), fetchedAt: null, httpStatus: null }
+          : await fetchPage({ year, offset });
+        xml = page.xml;
+        if (!checkbookSuccess(xml)) throw new Error(`Checkbook returned failure for FY${year} offset ${offset}`);
+        count = responseRecordCount(xml);
+        if (!Number.isInteger(count)) throw new Error(`Checkbook omitted record_count for FY${year} offset ${offset}`);
+        if (expectedCount != null && expectedCount !== count) {
+          throw new Error(`Checkbook record_count changed for FY${year}: ${expectedCount} -> ${count}`);
+        }
+        parsed = parseCheckbookPaymentTransactions(xml);
+        const need = expectedPaymentPageRows(offset, args.pageSize, count);
+        if (parsed.length < need) {
+          shortPageError = new Error(
+            `short page for FY${year} offset ${offset}: parsed ${parsed.length} rows, expected ${need} `
+            + `(pageSize ${args.pageSize}, publisher count ${count}); refusing to advance past a truncated page`,
+          );
+          console.warn(
+            `payment population short page FY${year} offset ${offset}: got ${parsed.length}, expected ${need} `
+            + `(attempt ${attempt}/${maxAttempts})`,
+          );
+          if (attempt < maxAttempts) {
+            await wait(args.delayMs);
+            continue;
+          }
+          throw shortPageError;
+        }
+        shortPageError = null;
+        break;
       }
+      if (shortPageError) throw shortPageError;
       expectedCount = count;
-      const parsed = parseCheckbookPaymentTransactions(xml);
       args.assertRoom?.(Buffer.byteLength(xml));
       writeFileSync(join(pagesDir, file), xml);
       pageManifest.push({ fiscal_year: year, offset, record_count: count, row_count: parsed.length, file, fetched_at: page.fetchedAt, http_status: page.httpStatus, sha256: sha256Text(xml) });

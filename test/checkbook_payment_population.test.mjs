@@ -13,7 +13,11 @@ import {
   paymentTransactionId,
   reconcilePaymentPartition,
 } from "../warehouse/lib/checkbook_payment_population.mjs";
-import { paymentPopulationRequestXml } from "../warehouse/scripts/checkbook_payment_population.mjs";
+import {
+  expectedPaymentPageRows,
+  paymentPopulationRequestXml,
+  SHORT_PAGE_ATTEMPTS,
+} from "../warehouse/scripts/checkbook_payment_population.mjs";
 
 const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const FIXTURE = join(ROOT, "warehouse/fixtures/checkbook-payment-population/collector.json");
@@ -75,6 +79,115 @@ describe("independent Checkbook payment population", () => {
     assert.equal(reconciliation.reconciled, true);
     const groups = groupPaymentsByAgency(normalized);
     assert.deepEqual(groups.map((group) => group.agency), ["Department of Beta", "Unknown / not published", "Department of Alpha"]);
+  });
+});
+
+describe("payment population short-page guard", () => {
+  it("computes the exact row count each page must carry for a stable publisher total", () => {
+    assert.equal(expectedPaymentPageRows(1, 20_000, 1_784_794), 20_000);
+    assert.equal(expectedPaymentPageRows(1_760_001, 20_000, 1_784_794), 20_000);
+    assert.equal(expectedPaymentPageRows(1_780_001, 20_000, 1_784_794), 4_794);
+    assert.equal(expectedPaymentPageRows(1, 2, 4), 2);
+    assert.equal(expectedPaymentPageRows(3, 2, 4), 2);
+    assert.equal(SHORT_PAGE_ATTEMPTS, 3);
+  });
+
+  it("fails closed on a truncated fixture page instead of advancing past it", async () => {
+    await withTempDir("checkbook-payment-short-page", async (stage) => {
+      const base = JSON.parse(readFileSync(FIXTURE, "utf8"));
+      const emptyPage = String(base.pages["fy2026:3"]).replace(
+        /<spending_transactions>[\s\S]*?<\/spending_transactions>/,
+        "<spending_transactions></spending_transactions>",
+      );
+      const fixturePath = join(stage, "short-page-fixture.json");
+      writeFileSync(fixturePath, `${JSON.stringify({
+        ...base,
+        pages: { "fy2026:1": base.pages["fy2026:1"], "fy2026:3": emptyPage },
+      }, null, 2)}\n`);
+      const result = spawnSync(process.execPath, [
+        "warehouse/scripts/checkbook_payment_population.mjs",
+        "--from-fixture",
+        "--fixture", fixturePath,
+        "--fiscal-years", "2026",
+        "--page-size", "2",
+        "--stage-dir", join(stage, "out"),
+        "--receipt", join(stage, "receipt.json"),
+        "--output", join(stage, "payments.csv"),
+      ], { cwd: ROOT, encoding: "utf8" });
+      assert.notEqual(result.status, 0);
+      assert.match(`${result.stderr}\n${result.stdout}`, /short page for FY2026 offset 3/);
+      assert.doesNotMatch(`${result.stderr}\n${result.stdout}`, /parsed row count 2 does not equal/);
+    });
+  });
+
+  it("retries a live short page and keeps last-good when retries still miss", async () => {
+    await withTempDir("checkbook-payment-short-page-retry", async (stage) => {
+      const cache = join(stage, "cache");
+      const mockPublisher = join(stage, "mock-publisher.mjs");
+      try {
+        writeFileSync(mockPublisher, `
+          import { readFileSync } from "node:fs";
+          const fixture = JSON.parse(readFileSync(process.env.MOCK_PAYMENT_FIXTURE, "utf8"));
+          const pages = fixture.pages;
+          const calls = new Map();
+          const emptyOf = (xml) => xml.replace(
+            /<spending_transactions>[\\s\\S]*?<\\/spending_transactions>/,
+            "<spending_transactions></spending_transactions>",
+          );
+          globalThis.fetch = async (_url, init) => {
+            const body = String(init.body);
+            const year = body.match(/<name>fiscal_year<\\/name>[\\s\\S]*?<value>(\\d+)<\\/value>/)[1];
+            const from = Number(body.match(/<records_from>(\\d+)<\\/records_from>/)[1]);
+            const key = \`fy\${year}:\${from}\`;
+            const n = (calls.get(key) || 0) + 1;
+            calls.set(key, n);
+            let xml = pages[key];
+            if (!xml) throw new Error("missing fixture page " + key);
+            if (process.env.MOCK_SHORT_PAGE_OFFSET === String(from) && n <= Number(process.env.MOCK_SHORT_PAGE_ATTEMPTS || 99)) {
+              xml = emptyOf(xml);
+            }
+            return { ok: true, status: 200, text: async () => xml };
+          };
+        `);
+        const environment = (overrides = {}) => ({
+          ...process.env,
+          CITYSCROLL_WAREHOUSE_CACHE: cache,
+          MOCK_PAYMENT_FIXTURE: FIXTURE,
+          MOCK_PAYMENT_OBSERVED_AT: "2026-08-26T12:00:00.000Z",
+          ...overrides,
+        });
+        const refresh = (overrides) => spawnSync(process.execPath, [
+          "--import", mockPublisher,
+          "warehouse/scripts/checkbook_payment_population.mjs",
+          "--refresh",
+          "--page-size", "2",
+          "--delay-ms", "1200",
+        ], { cwd: ROOT, encoding: "utf8", env: environment(overrides) });
+
+        const ok = refresh({ MOCK_SHORT_PAGE_OFFSET: "", MOCK_SHORT_PAGE_ATTEMPTS: "0" });
+        assert.equal(ok.status, 0, ok.stderr || ok.stdout);
+        const pointerPath = join(cache, "checkbook-payment-population", "current.json");
+        const goodVersion = JSON.parse(readFileSync(pointerPath, "utf8")).version;
+
+        const failed = refresh({
+          MOCK_SHORT_PAGE_OFFSET: "3",
+          MOCK_SHORT_PAGE_ATTEMPTS: "99",
+        });
+        assert.notEqual(failed.status, 0);
+        assert.match(`${failed.stderr}\n${failed.stdout}`, /short page for FY2026 offset 3/);
+        assert.equal(JSON.parse(readFileSync(pointerPath, "utf8")).version, goodVersion);
+
+        const recovered = refresh({
+          MOCK_SHORT_PAGE_OFFSET: "3",
+          MOCK_SHORT_PAGE_ATTEMPTS: "1",
+        });
+        assert.equal(recovered.status, 0, recovered.stderr || recovered.stdout);
+        assert.match(`${recovered.stderr}\n${recovered.stdout}`, /short page FY2026 offset 3/);
+        assert.notEqual(JSON.parse(readFileSync(pointerPath, "utf8")).version, goodVersion);
+      } finally {
+        makeWritable(cache);
+      }
+    });
   });
 });
 
