@@ -1767,8 +1767,9 @@ setTimeout(() => process.exit(0), 30);
 });
 
 test("process fixture: autonomous window expiry restores without controller-death receipt", async () => {
-  // Parent stays available but never writes a controller-death receipt and never
-  // cancels. The child loop itself must observe wall-clock expiry and restore.
+  // Real wall-clock child-loop expiry with fake transport factories while the
+  // parent stays available (no death receipt, no cancel). Parent-unavailable +
+  // default-loader combination is covered by the extended fixture below.
   const dir = mkdtempSync(join(tmpdir(), "cc05-tail-autonomy-"));
   const stateRoot = join(dir, "restorer");
   installDurableTailRestorerRunner({ stateRoot, repoRoot: REPO_ROOT });
@@ -2863,5 +2864,210 @@ globalThis.fetch = async (url, init = {}) => {
 
   stopSupervisedTailRestorerProcess({ stateRoot, signal: "SIGTERM" });
   try { process.kill(started.pid, "SIGTERM"); } catch { /* gone */ }
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("process fixture: parent-unavailable autonomous expiry via default loaders + mock-fetch", async () => {
+  // Extends the same autonomous-expiry fixture: disposable launcher spawns the
+  // durable guardian then exits(0). Grandparent (this test) observes that exit.
+  // Guardian uses REAL secret()+default dual-view/deployments loaders under a
+  // mocked fetch preload. No controller-death, no cancel, no parent restore tick.
+  assert.match(process.version, /^v24\./, `installed Node must be 24.x, got ${process.version}`);
+
+  const dir = mkdtempSync(join(tmpdir(), "cc05-tail-parent-unavail-expiry-"));
+  const stateRoot = join(dir, "restorer");
+  const tokenFile = join(dir, "cloudflare-token");
+  writeFileSync(tokenFile, "fixture-token-parent-unavail-expiry\n", { mode: 0o600 });
+  chmodSync(tokenFile, 0o600);
+  installDurableTailRestorerRunner({ stateRoot, repoRoot: REPO_ROOT });
+
+  const scriptStatePath = join(dir, "script-settings-tail.json");
+  writeFileSync(scriptStatePath, `${JSON.stringify([SANITIZER])}\n`, { mode: 0o600 });
+  const patchLogPath = join(dir, "patch-log.jsonl");
+  const mockFetch = join(dir, "mock-fetch-preload.mjs");
+  writeFileSync(mockFetch, `import { readFileSync, writeFileSync } from "node:fs";
+const ACCOUNT = ${JSON.stringify(ACCOUNT_ID)};
+const PRODUCER = ${JSON.stringify(WORKER_ID)};
+const CONSUMER = ${JSON.stringify(SANITIZER.service)};
+const VERSION = ${JSON.stringify(VERSION_ID)};
+const STATE = ${JSON.stringify(scriptStatePath)};
+const PATCH_LOG = ${JSON.stringify(patchLogPath)};
+const json = (status, body) => ({
+  ok: status >= 200 && status < 300,
+  status,
+  async json() { return body; },
+});
+function loadTail() {
+  return JSON.parse(readFileSync(STATE, "utf8"));
+}
+function saveTail(next) {
+  writeFileSync(STATE, JSON.stringify(next) + "\\n");
+}
+globalThis.fetch = async (url, init = {}) => {
+  const u = String(url);
+  const method = (init.method || "GET").toUpperCase();
+  if (u.includes("/script-settings") && u.includes(PRODUCER)) {
+    if (method === "GET") {
+      return json(200, {
+        success: true,
+        result: { logpush: false, tags: [], tail_consumers: loadTail(), observability: null },
+      });
+    }
+    if (method === "PATCH") {
+      const body = typeof init.body === "string" ? JSON.parse(init.body) : {};
+      const next = Array.isArray(body.tail_consumers) ? body.tail_consumers : [];
+      saveTail(next);
+      writeFileSync(PATCH_LOG, JSON.stringify({ method: "PATCH", consumers: next, at: new Date().toISOString() }) + "\\n", { flag: "a" });
+      return json(200, {
+        success: true,
+        result: { logpush: false, tags: [], tail_consumers: next, observability: null },
+      });
+    }
+  }
+  if (u.includes("/workers/workers/") && u.includes(PRODUCER) && method === "GET") {
+    const current = loadTail();
+    // Beta is authoritative only for explicit []. Non-empty stays name-only UNKNOWN.
+    const betaTail = current.length === 0 ? [] : current.map((c) => ({ name: c.service }));
+    return json(200, {
+      success: true,
+      result: { id: "uuid-producer", name: PRODUCER, tail_consumers: betaTail },
+    });
+  }
+  if (u.includes("/deployments") && u.includes(CONSUMER) && method === "GET") {
+    return json(200, {
+      success: true,
+      result: {
+        deployments: [{
+          id: "dep-1",
+          versions: [{ version_id: VERSION, percentage: 100 }],
+        }],
+      },
+    });
+  }
+  return json(500, { success: false, errors: [{ message: \`unexpected fetch \${method} \${u}\` }] });
+};
+`);
+
+  const { store, window } = await openStoredArmedWindow(dir, {
+    windowId: "parent-unavail-expiry-win",
+    restorerId: "tr-parent-unavail-expiry",
+    baselineConsumers: [],
+    now: new Date().toISOString(),
+    durationSeconds: 4,
+  });
+  let owned = await store.read();
+  owned = {
+    ...owned,
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER]),
+    owned_sha256: tailConsumersSha256([SANITIZER]),
+    pending_mutation: null,
+  };
+  await store.write(owned, { expectedWindowId: owned.window_id });
+
+  const launcherMetaPath = join(dir, "launcher-meta.json");
+  const launcherScript = join(dir, "disposable-launcher.mjs");
+  const restorerLibUrl = pathToFileURL(join(REPO_ROOT, "tools/lib/worker_tail_attachment_restorer.mjs")).href;
+  writeFileSync(launcherScript, `import { writeFileSync } from "node:fs";
+import { startSupervisedTailRestorerProcess } from ${JSON.stringify(restorerLibUrl)};
+
+const started = startSupervisedTailRestorerProcess({
+  windowPath: ${JSON.stringify(store.path)},
+  windowId: ${JSON.stringify(window.window_id)},
+  stateRoot: ${JSON.stringify(stateRoot)},
+  runnerPath: ${JSON.stringify(join(stateRoot, "run.mjs"))},
+  nodeExecPath: ${JSON.stringify(process.execPath)},
+  nodeArgs: ["--import", ${JSON.stringify(pathToFileURL(mockFetch).href)}],
+  detached: true,
+  pollMs: 100,
+  tokenFile: ${JSON.stringify(tokenFile)},
+  preferTokenFile: true,
+  env: {
+    ...process.env,
+    CLOUDFLARE_ACCOUNT_ID: ${JSON.stringify(ACCOUNT_ID)},
+    CLOUDFLARE_WORKER_ID: ${JSON.stringify(WORKER_ID)},
+    CLOUDFLARE_API_TOKEN_FILE: ${JSON.stringify(tokenFile)},
+    // Prefer TOKEN_FILE; composeGuardianChildEnv strips any raw TOKEN.
+  },
+});
+
+writeFileSync(${JSON.stringify(launcherMetaPath)}, JSON.stringify({
+  launcher_pid: process.pid,
+  guardian_pid: started.pid,
+  window_id: ${JSON.stringify(window.window_id)},
+  restorer_id: ${JSON.stringify(window.restorer.restorer_id)},
+  genuine_launcher_exit: true,
+  parent_restore_tick: false,
+  transport_module_override: false,
+  version_module_override: false,
+  credential_source: started.credential?.source || null,
+  has_TOKEN: started.credential?.has_TOKEN === true,
+  has_TOKEN_FILE: started.credential?.has_TOKEN_FILE === true,
+}) + "\\n");
+
+// Detached guardian must survive this launcher exit.
+setTimeout(() => process.exit(0), 80);
+`);
+
+  const launcherExit = await new Promise((resolve, reject) => {
+    const launcher = spawn(process.execPath, [launcherScript], { stdio: "ignore" });
+    launcher.on("exit", (code, signal) => resolve({ code, signal, pid: launcher.pid }));
+    launcher.on("error", reject);
+  });
+  assert.equal(launcherExit.code, 0, "disposable launcher must exit 0");
+  assert.equal(launcherExit.signal, null);
+  assert.ok(existsSync(launcherMetaPath), "launcher meta written before exit");
+  const launcherMeta = JSON.parse(readFileSync(launcherMetaPath, "utf8"));
+  assert.equal(launcherMeta.genuine_launcher_exit, true);
+  assert.equal(launcherMeta.parent_restore_tick, false);
+  assert.equal(launcherMeta.transport_module_override, false);
+  assert.equal(launcherMeta.version_module_override, false);
+  assert.equal(launcherMeta.has_TOKEN, false);
+  assert.equal(launcherMeta.has_TOKEN_FILE, true);
+  assert.ok(launcherMeta.guardian_pid > 0);
+  assert.notEqual(launcherMeta.launcher_pid, launcherMeta.guardian_pid);
+
+  const paths = tailRestorerPaths(stateRoot);
+  // Parent (grandparent test) is unavailable for restore ticks / death receipts.
+  assert.equal(existsSync(paths.controllerDeathReceipt), false);
+
+  const readyDeadline = Date.now() + 15_000;
+  while (Date.now() < readyDeadline && !existsSync(paths.readyReceipt)) {
+    if (existsSync(paths.childFailedBeforeReadyReceipt)) break;
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
+  if (!existsSync(paths.readyReceipt) && existsSync(paths.childFailedBeforeReadyReceipt)) {
+    const fail = JSON.parse(readFileSync(paths.childFailedBeforeReadyReceipt, "utf8"));
+    assert.fail(`ready missing after launcher exit; failure_code=${fail.failure_code}`);
+  }
+  assert.ok(existsSync(paths.readyReceipt), "guardian ready under default loaders after launcher exit");
+  const ready = JSON.parse(readFileSync(paths.readyReceipt, "utf8"));
+  assert.equal(ready.version_guard_bound, true);
+  assert.equal(ready.version_guard.observed_at_ready, VERSION_GUARD_LABEL.MATCH);
+
+  const terminalDeadline = Date.now() + 20_000;
+  while (Date.now() < terminalDeadline && !existsSync(paths.terminalReceipt)) {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+  assert.ok(existsSync(paths.terminalReceipt), "guardian terminal after parent-unavailable expiry");
+  assert.equal(existsSync(paths.controllerDeathReceipt), false, "still no controller-death receipt");
+
+  const terminal = JSON.parse(readFileSync(paths.terminalReceipt, "utf8"));
+  assert.equal(terminal.proved, true);
+  assert.ok(["restored", "already-restored"].includes(terminal.outcome), terminal.outcome);
+  assert.equal(terminal.expired, true);
+  assert.equal(terminal.window_id, window.window_id);
+  assert.notEqual(terminal.controller_death, true);
+
+  const after = JSON.parse(readFileSync(store.path, "utf8"));
+  assert.equal(after.phase, "expired-restored");
+  assert.equal(after.owned_sha256, null);
+  assert.deepEqual(after.baseline_consumers, []);
+  const scriptAfter = JSON.parse(readFileSync(scriptStatePath, "utf8"));
+  assert.deepEqual(scriptAfter, []);
+  assert.ok(existsSync(patchLogPath), "default-loader restore must PATCH via mocked fetch");
+
+  stopSupervisedTailRestorerProcess({ stateRoot, signal: "SIGTERM" });
+  try { process.kill(launcherMeta.guardian_pid, "SIGTERM"); } catch { /* gone */ }
   rmSync(dir, { recursive: true, force: true });
 });
