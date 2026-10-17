@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { buildZapOutcomeRecord, prewarmOneZapOutcome, refreshZapOutcomes, handleZapOutcomes, kvKey, stampLandStageObservation } from "../worker/src/zap_outcomes.mjs";
 import { loadAuth, attachAuth, landAuthoritySummaryFor, landAuthoritySummaryHTML } from "../site/land_authority_summary_view.mjs";
-import { landAuthoritySummaryFromOutcome } from "../site/land_authority_hydration.mjs";
+import { landAffectedReviewBodiesFor, landAuthoritySummaryFromOutcome } from "../site/land_authority_hydration.mjs";
 import { buildLandAuthoritySummary } from "../site/land_authority_summary.mjs";
 import * as phaseTools from "../site/land_phase_spine.mjs";
 import { createLandOutcomeRuntime } from "../site/land_outcome_runtime.mjs";
@@ -1041,4 +1041,11 @@ test("authority lookup survives load-and-attach and hydrates a catalog row", asy
     assert.deepEqual(snapshot.projects[0].authority_summary, summary);
     assert.deepEqual(landAuthoritySummaryFor({ project_id: "LOOKUP" }), summary);
   } finally { globalThis.fetch = original; }
+});
+
+
+test("embedded notice timelines can resolve without a Land browse row", () => {
+  assert.equal(landAffectedReviewBodiesFor({}), null);
+  assert.equal(landAffectedReviewBodiesFor(undefined), null);
+  assert.equal(landAffectedReviewBodiesFor({ project_id: "NO_RETAINED_AUTHORITY" }), null);
 });

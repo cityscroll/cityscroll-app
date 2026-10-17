@@ -5,6 +5,7 @@ import { landAuthoritySummaryCandidates, landAuthoritySummaryFor } from "./land_
 
 /** Recover the retained, publication-approved geography shared by the authority card and timeline. */
 export function landAffectedReviewBodiesFor(row) {
+  if (!row?.project_id) return null;
   const previous = landAuthoritySummaryFor(row);
   const geographySummary = [previous, landAuthoritySummaryCandidates(row)[1]].find(
     (summary) => summary?.project_id === row.project_id && summary.source_basis?.geography?.status === "resolved"
