@@ -659,6 +659,11 @@ LAND_PIPELINE_ZAP_OUTCOMES = {
     "cached": True,
     "record": {
         "project_id": "2024Q0292",
+        "generated_at": _iso(0),
+        "stage_observation": {
+            "source_system": "zap_project_api",
+            "observed_at": _iso(0),
+        },
         "project_name": "108-05 68th Road Rezoning",
         "public_status": "In Public Review",
         "portal_url": _LAND_PIPELINE_PORTAL,

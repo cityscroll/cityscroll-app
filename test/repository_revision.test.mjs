@@ -252,13 +252,17 @@ test("committed evidence revisions are ancestors of HEAD with unchanged measurem
     } catch {
       continue;
     }
-    const retainedRevision = document?.measurement_provenance?.revision;
-    if (retainedRevision && Array.isArray(document?.measurement_provenance?.inputs)) {
+    const currentProvenance = document?.hermetic_measurement_provenance || document?.measurement_provenance;
+    const retainedRevision = currentProvenance?.revision;
+    if (retainedRevision && Array.isArray(currentProvenance?.inputs)) {
       const retained = retainedMeasurementStatus(ROOT, {
         revision: retainedRevision,
-        inputs: document.measurement_provenance.inputs,
+        inputs: currentProvenance.inputs,
       });
-      if (!retained.ok) {
+      const declaredAlignment = document?.release_alignment;
+      const declaredStale = declaredAlignment?.state === "stale"
+        && JSON.stringify(declaredAlignment.changed_inputs) === JSON.stringify(retained.changedInputs);
+      if (!retained.ok && !declaredStale) {
         failures.push(
           `${relative(ROOT, file)}:measurement_provenance=${retained.reason}:`
           + retained.changedInputs.join(","),

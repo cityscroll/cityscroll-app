@@ -427,7 +427,26 @@ const ZAP_OUTCOME_SNAPSHOT_FIELDS = Object.freeze([
   "dispositions",
   "documents",
   "n_documents",
+  "spine",
+  "milestones",
+  "statutory_clock",
+  "freshness",
+  "source_observations",
+  "stage_observation",
   "generated_at",
+]);
+
+const ZAP_OUTCOME_OPEN_DATA_SNAPSHOT_FIELDS = Object.freeze([
+  "project_id",
+  "public_status",
+  "current_milestone",
+  "current_milestone_date",
+  "noticed_date",
+  "actions",
+  "ulurp_numbers",
+  "ulurp_non",
+  "source_observation",
+  "lookup_path",
 ]);
 
 /** Keep only fields consumed by the Land outcomes renderer and action rail. */
@@ -437,10 +456,16 @@ export function compactZapOutcomeRecord(record) {
   for (const key of ZAP_OUTCOME_SNAPSHOT_FIELDS) {
     if (record[key] !== undefined) out[key] = record[key];
   }
+  if (record.open_data && typeof record.open_data === "object") {
+    out.open_data = {};
+    for (const key of ZAP_OUTCOME_OPEN_DATA_SNAPSHOT_FIELDS) {
+      if (record.open_data[key] !== undefined) out.open_data[key] = record.open_data[key];
+    }
+  }
   if (Array.isArray(out.approved_actions)) out.approved_actions = out.approved_actions.slice(0, 8);
   if (Array.isArray(out.dispositions)) out.dispositions = out.dispositions.slice(0, 6);
   if (Array.isArray(out.documents)) out.documents = out.documents.slice(0, 10);
-  out.snapshot_state = record.filled ? "present" : "absent";
+  out.snapshot_state = record.filled || record.spine?.events?.length ? "present" : "absent";
   return out;
 }
 

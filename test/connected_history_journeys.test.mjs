@@ -63,6 +63,10 @@ function canonicalJson(value) {
   return JSON.stringify(value);
 }
 
+function resolveJsonPointer(document, pointer) {
+  return pointer.slice(2).split("/").reduce((value, key) => value?.[key.replaceAll("~1", "/").replaceAll("~0", "~")], document);
+}
+
 function dateKey(event) {
   return event.date?.start || event.date?.value || "9999-99-99";
 }
@@ -267,7 +271,7 @@ test("A3: retained Chromium measurements cover all six at named viewports and no
   assert.match(receipt.repository_revision, /^[a-f0-9]{40}$/);
   assert.match(receipt.capture_revision, /^[a-f0-9]{40}$/);
 
-  const provenance = MANIFEST.measurement_provenance;
+  const provenance = MANIFEST.hermetic_measurement_provenance;
   assert.match(provenance.revision, /^[a-f0-9]{40}$/);
   assert.ok(provenance.inputs.length > 0);
   assert.deepEqual(
@@ -300,13 +304,24 @@ test("A3: retained Chromium measurements cover all six at named viewports and no
     inputs: provenance.inputs,
   });
   assert.equal(retainedStatus.ok, true, `${retainedStatus.reason}: ${retainedStatus.changedInputs.join(", ")}`);
-  assert.equal(productionReceipt.retained_measurement.revision, provenance.revision);
+  const productionProvenance = MANIFEST.measurement_provenance;
+  assert.equal(productionReceipt.retained_measurement.revision, productionProvenance.revision);
   assert.equal(productionReceipt.retained_measurement.inputs_ref, "#/measurement_provenance/inputs");
+  assert.deepEqual(resolveJsonPointer(MANIFEST, productionReceipt.retained_measurement.inputs_ref),
+    productionProvenance.inputs);
   const productionStatus = retainedMeasurementStatus(ROOT, {
-    revision: productionReceipt.repository_revision,
-    inputs: provenance.inputs,
+    revision: productionProvenance.revision,
+    inputs: productionProvenance.inputs,
   });
-  assert.equal(productionStatus.ok, true, `${productionStatus.reason}: ${productionStatus.changedInputs.join(", ")}`);
+  const currentInputs = new Map(provenance.inputs.map((input) => [input.path, input.sha256]));
+  const productionInputs = new Map(productionProvenance.inputs.map((input) => [input.path, input.sha256]));
+  const changedProductionInputs = [...new Set([...currentInputs.keys(), ...productionInputs.keys()])]
+    .filter((path) => currentInputs.get(path) !== productionInputs.get(path))
+    .sort();
+  assert.deepEqual(production.release_alignment.changed_inputs, changedProductionInputs);
+  assert.equal(production.release_alignment.state, changedProductionInputs.length ? "stale" : "current");
+  assert.deepEqual(productionStatus.changedInputs,
+    changedProductionInputs.filter((path) => productionInputs.has(path)));
   assert.equal(
     spawnSync(
       "git",
@@ -373,6 +388,15 @@ test("A3: production instrumentation pins the landed Pages revision and served d
   );
   assert.notEqual(refusal.status, 0);
   assert.match(`${refusal.stderr}${refusal.stdout}`, /requires --landed-commit/);
+});
+
+test("capture writers preserve production pointers across hermetic and production rounds", () => {
+  const result = spawnSync(
+    "python3",
+    ["-m", "unittest", "tests.test_documented_history_navigation.ManifestProvenanceRoundTrip"],
+    { cwd: ROOT, encoding: "utf8", timeout: 30_000 },
+  );
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
 });
 
 test("A4: a missing fixed case is reported rather than replaced", () => {

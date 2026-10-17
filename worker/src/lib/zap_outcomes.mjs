@@ -24,7 +24,8 @@
 //   BBL prefix / borough+block without full lot
 //
 // Verdict: above usefulness threshold (≥30%) on decision-document outcomes.
-// Ship edge materialization via GET /zap-outcomes (precompute-first for the browser).
+// Scheduled and authenticated refreshes materialize the edge record; the browser's
+// GET /zap-outcomes request reads that retained observation without publisher I/O.
 
 import { extractUlurpKeys } from "./ulurp_recommendations_join.mjs";
 import { extractZapHearingLogistics } from "./zap_hearing_logistics.mjs";
@@ -455,11 +456,14 @@ function milestoneEvent(milestone, record) {
     id: `zap-milestone:${milestone.id || milestone.sequence || milestone.time.value}`,
     kind: "zap_milestone",
     title: milestone.title,
+    source_title: milestone.source_title,
+    source_title_field: milestone.source_title_field,
     detail: milestone.outcome || milestone.status || null,
     status: milestone.status,
     outcome: milestone.outcome,
     time: milestone.time,
     source: source("zap-project-api", "Zoning Application Portal", record.portal_url),
+    source_observation: milestone.source_observation || null,
   };
 }
 
@@ -480,6 +484,7 @@ function dispositionEvent(disposition, index, record) {
     outcome: clean(recommendation),
     time,
     source: source("zap-project-api", "Zoning Application Portal", record.portal_url),
+    source_observation: disposition.source_observation || null,
   };
 }
 
