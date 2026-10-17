@@ -33,6 +33,7 @@ import {
 import {
   AggregateSink,
   actuateOwnedDetachFromCapSignal,
+  evaluateAllSeenCapA2,
 } from "../workers/cityscroll-tail-sanitizer/src/worker.mjs";
 import workerEntrypoint from "../workers/cityscroll-tail-sanitizer/src/worker.mjs";
 
@@ -712,9 +713,64 @@ test("AggregateSink: revision keys stay on expected allowlist; unknown cohort st
   assert.equal(mapFixedCohort({ eventType: "queue" }), "queue");
   assert.equal(mapFixedCohort({ cohort: "search" }), "search");
   assert.equal(mapFixedCohort({ cohort: "not-a-real-cohort" }), "unknown");
-  assert.ok(FIXED_COHORT_KEYS.includes("rum_16"));
+  assert.ok(FIXED_COHORT_KEYS.includes("rum_batch_16"));
+  assert.equal(FIXED_COHORT_KEYS.includes("rum_01"), false);
   assert.ok(FIXED_COHORT_KEYS.includes("collector"));
   assert.ok(FIXED_COHORT_KEYS.includes("cold_start_flag_raw_0"));
+});
+
+test("AggregateSink cost_vector counts collector DO requests and storage ops", async () => {
+  const storage = createFakeStorage();
+  const { sink } = createFakeSinkEnv(storage, {
+    readbackToken: "tok-cost",
+    expectedRevisions: "rev-a",
+  });
+  const apply = await sink.fetch(new Request("https://sink/apply", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      accepted: true,
+      cpu_class: "positive",
+      cpuTime: 3,
+      outcome: "ok",
+      eventType: "fetch",
+      deployed_revision: "rev-a",
+    }),
+  }));
+  assert.equal(apply.status, 200);
+  const applyBody = await apply.json();
+  assert.ok(applyBody.cost_vector.collector_do_requests >= 1);
+  assert.ok(applyBody.cost_vector.collector_storage_ops >= 1);
+  assert.equal(applyBody.cost_vector.collector_cpu_ms, "UNKNOWN");
+  assert.equal(applyBody.a2.pass, true);
+
+  const readback = await sink.fetch(new Request("https://sink/readback", {
+    headers: { "x-cityscroll-tail-readback-token": "tok-cost" },
+  }));
+  assert.equal(readback.status, 200);
+  const body = await readback.json();
+  assert.ok(body.cost_vector.collector_do_requests >= 2);
+  assert.ok(body.overhead.collector_storage_ops >= 1);
+  assert.equal(body.overhead.collector_cpu_ms, "UNKNOWN");
+  assert.equal(body.a2.pass, true);
+});
+
+test("evaluateAllSeenCapA2 fails above all-seen cap or unknown overshoot", () => {
+  assert.equal(evaluateAllSeenCapA2({
+    events_seen: 10_001,
+    cap_reached: true,
+    apply_overshoot: 1,
+  }).pass, false);
+  assert.equal(evaluateAllSeenCapA2({
+    events_seen: 10_000,
+    cap_reached: true,
+    apply_overshoot: null,
+  }).reason, "overshoot_unknown_unbounded");
+  assert.equal(evaluateAllSeenCapA2({
+    events_seen: 9_999,
+    cap_reached: false,
+    apply_overshoot: 0,
+  }).pass, true);
 });
 
 test("actuateOwnedDetachFromCapSignal requires binding and signal", async () => {

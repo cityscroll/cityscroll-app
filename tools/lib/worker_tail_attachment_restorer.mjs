@@ -505,12 +505,21 @@ export async function runTailRestorerLoop({
   store,
   transport,
   versionTransport = null,
+  capDetachActuator = null,
   stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT,
   pollMs = DEFAULT_TAIL_POLL_MS,
   nowFn = () => new Date().toISOString(),
   shouldStop = () => false,
 } = {}) {
   const paths = tailRestorerPaths(stateRoot);
+  const initial = await store.read();
+  if (initial?.restorer?.cap_detach_actuator_bound === true) {
+    if (!capDetachActuator || typeof capDetachActuator.pollAndDetachIfCapped !== "function") {
+      fail(
+        "refuse to run: window armed with cap-detach actuator but runtime actuator is absent",
+      );
+    }
+  }
   writeTailRestorerReceipt(paths.startReceipt, {
     schema: TAIL_RESTORER_RUNTIME_SCHEMA,
     kind: "start",
@@ -521,6 +530,10 @@ export async function runTailRestorerLoop({
     // Configured ≠ observed; ready receipt records the actual GET outcome.
     version_transport_configured: Boolean(
       versionTransport && typeof versionTransport.getLatestVersionEvidence === "function",
+    ),
+    cap_detach_actuator_bound: initial?.restorer?.cap_detach_actuator_bound === true,
+    cap_detach_actuator_runtime: Boolean(
+      capDetachActuator && typeof capDetachActuator.pollAndDetachIfCapped === "function",
     ),
   });
   writeFileSync(paths.pidFile, `${process.pid}\n`, { mode: 0o600 });
@@ -539,6 +552,7 @@ export async function runTailRestorerLoop({
       store,
       transport,
       versionTransport,
+      capDetachActuator,
       stateRoot,
       now: nowFn(),
     });
@@ -546,7 +560,7 @@ export async function runTailRestorerLoop({
     if (tick?.terminal_receipt || tick?.outcome === "kill-switch" || tick?.outcome === "already-terminal") {
       break;
     }
-    if (tick?.proved === true && ["restored", "already-restored", "refuse-conflict"].includes(tick.action)) {
+    if (tick?.proved === true && ["restored", "already-restored", "refuse-conflict", "cap-detach"].includes(tick.action || tick.outcome)) {
       break;
     }
     await sleep(pollMs);
@@ -558,6 +572,7 @@ export async function tailAttachmentRestorerTick({
   store,
   transport,
   versionTransport = null,
+  capDetachActuator = null,
   stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT,
   now = new Date().toISOString(),
 } = {}) {
@@ -609,8 +624,56 @@ export async function tailAttachmentRestorerTick({
     });
     const cancelRequested = window.cancel_requested === true;
 
-    // Healthy owned windows stay idle until deadline, cancel, or controller-death.
+    // Healthy owned windows: poll the real cap-detach actuator, else stay idle
+    // until deadline, cancel, or controller-death.
     if (owned && !pending && !expired && !controllerDead && !cancelRequested) {
+      if (window.restorer?.cap_detach_actuator_bound === true) {
+        if (!capDetachActuator || typeof capDetachActuator.pollAndDetachIfCapped !== "function") {
+          fail("refuse: window armed with cap-detach but runtime actuator absent");
+        }
+        const cap = await capDetachActuator.pollAndDetachIfCapped({ store, now });
+        if (cap?.signal?.a2 && cap.signal.a2.pass === false) {
+          writeTailRestorerReceipt(paths.heartbeatReceipt, {
+            schema: TAIL_RESTORER_READY_SCHEMA,
+            kind: "heartbeat",
+            outcome: "a2-failed",
+            observed_at: now,
+            pid: process.pid,
+            window_id: window.window_id,
+            restorer_id: window.restorer?.restorer_id || null,
+            phase: window.phase,
+            a2: cap.signal.a2,
+            events_seen: cap.signal.events_seen ?? null,
+          });
+        }
+        if (cap?.actuated === true && (cap.proved === true || cap.action === "already-restored")) {
+          const restoredWindow = cap.result?.window || (await store.read()) || window;
+          const receipt = writeTailRestorerReceipt(paths.terminalReceipt, {
+            schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
+            kind: "restorer",
+            outcome: cap.action || "cap-detach",
+            observed_at: now,
+            window_id: restoredWindow.window_id,
+            proved: cap.proved === true,
+            cap_reached: true,
+            events_seen: cap.signal?.events_seen ?? null,
+            apply_overshoot: cap.signal?.apply_overshoot ?? null,
+            a2: cap.signal?.a2 || null,
+            controller_death: false,
+            cancel_requested: false,
+            expired: false,
+            reason: "owned-cap-detach",
+          });
+          return {
+            ...cap.result,
+            outcome: "cap-detach",
+            action: cap.action || "cap-detach",
+            proved: cap.proved === true,
+            terminal_receipt: receipt,
+            window: restoredWindow,
+          };
+        }
+      }
       return {
         outcome: "idle",
         window,

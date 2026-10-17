@@ -350,17 +350,35 @@ export function openTailAttachmentWindow({
   };
 }
 
+/**
+ * Require a real owned-window cap-detach actuator before arming.
+ * Absent actuator → refuse to arm (production GO cannot proceed).
+ */
+export function assertOwnedCapDetachActuator(actuator) {
+  if (!actuator || typeof actuator.pollAndDetachIfCapped !== "function") {
+    fail(
+      "refuse to arm: owned cap-detach actuator required "
+      + "(generation-checked foreign-safe CAS detach via emergencyDetachTailAttachment)",
+    );
+  }
+  return actuator;
+}
+
 export function armTailAttachmentRestorer(window, {
   now = new Date().toISOString(),
   restorerId = randomUUID(),
+  capDetachActuator = null,
 } = {}) {
   assertTailAttachmentWindowMutable(window, now);
+  assertOwnedCapDetachActuator(capDetachActuator);
   return {
     ...window,
     restorer: {
       armed: true,
       restorer_id: restorerId,
       armed_at: requireIso(now, "now"),
+      cap_detach_actuator_bound: true,
+      cap_detach_actuator_kind: capDetachActuator.kind || "owned-window-cas-detach",
     },
   };
 }
@@ -1032,6 +1050,128 @@ export async function emergencyDetachTailAttachment(window, transport, {
     window: active,
     after: plan.classification?.consumers ?? null,
     patch: null,
+  };
+}
+
+const READBACK_TOKEN_HEADER = "x-cityscroll-tail-readback-token";
+
+/**
+ * Poll authenticated AggregateSink readback for cap_reached.
+ * Missing/failed readback stays unproved (cap_reached false); never invents zero.
+ */
+export function createSinkReadbackCapSignal({
+  url,
+  token,
+  fetchImpl = globalThis.fetch,
+} = {}) {
+  if (typeof url !== "string" || !url) fail("sink readback url is required for cap signal");
+  if (typeof token !== "string" || !token || token === "unset") {
+    fail("sink readback token is required for cap signal");
+  }
+  if (typeof fetchImpl !== "function") fail("fetchImpl must be a function");
+  return async function readCapSignal() {
+    const res = await fetchImpl(url, {
+      method: "GET",
+      headers: { [READBACK_TOKEN_HEADER]: token },
+    });
+    if (!res || res.ok !== true) {
+      return {
+        cap_reached: false,
+        readback_ok: false,
+        status: res?.status ?? null,
+        events_seen: null,
+        apply_overshoot: null,
+        a2: { pass: false, reason: "readback_unavailable" },
+      };
+    }
+    const body = await res.json();
+    const eventsSeen = body?.events_seen;
+    const overshoot = body?.counters?.apply_overshoot ?? body?.apply_overshoot;
+    return {
+      cap_reached: body?.cap_reached === true,
+      readback_ok: true,
+      events_seen: Number.isFinite(eventsSeen) ? eventsSeen : null,
+      apply_overshoot: Number.isFinite(overshoot) ? overshoot : null,
+      a2: body?.a2 || null,
+      body,
+    };
+  };
+}
+
+/**
+ * Real owned-window cap-detach actuator used by the durable guardian.
+ * Polls/consumes a cap signal, then runs emergencyDetachTailAttachment with
+ * own-window identity + generation checks (foreign-safe CAS detach).
+ */
+export function createOwnedCapDetachActuator({
+  readCapSignal,
+  transport,
+  versionTransport = null,
+} = {}) {
+  if (typeof readCapSignal !== "function") {
+    fail("owned cap-detach actuator requires readCapSignal");
+  }
+  if (!transport || typeof transport.getTailConsumers !== "function") {
+    fail("owned cap-detach actuator requires attachment transport");
+  }
+  return {
+    kind: "owned-window-cas-detach",
+    version_transport_configured: Boolean(
+      versionTransport && typeof versionTransport.getLatestVersionEvidence === "function",
+    ),
+    async pollAndDetachIfCapped({
+      store,
+      now = new Date().toISOString(),
+    } = {}) {
+      if (!store || typeof store.read !== "function") {
+        fail("cap-detach poll requires durable store.read");
+      }
+      const signal = await readCapSignal();
+      if (!signal || signal.cap_reached !== true) {
+        return {
+          actuated: false,
+          proved: false,
+          reason: "cap_not_reached",
+          signal: signal || null,
+        };
+      }
+      const window = await store.read();
+      if (!window) {
+        return {
+          actuated: false,
+          proved: false,
+          reason: "no_window",
+          signal,
+        };
+      }
+      const expectedGeneration = Number.isInteger(window.window_generation)
+        ? window.window_generation
+        : 0;
+      const result = await emergencyDetachTailAttachment(window, transport, {
+        now,
+        store,
+        expectedGeneration,
+      });
+      if (
+        result.proved === true
+        && result.window
+        && typeof store.write === "function"
+        && result.window !== window
+      ) {
+        await store.write(result.window, { expectedWindowId: window.window_id });
+      }
+      return {
+        actuated: result.proved === true
+          || result.action === "already-restored"
+          || result.action === "restore"
+          || result.action === "restored",
+        proved: result.proved === true,
+        action: result.action,
+        reason: result.reason || result.receipt?.reason || null,
+        signal,
+        result,
+      };
+    },
   };
 }
 

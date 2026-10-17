@@ -31,6 +31,7 @@ import {
   observeVersionGuard,
   openTailAttachmentWindow,
   armTailAttachmentRestorer,
+  createOwnedCapDetachActuator,
   readTailConsumersFieldFromBetaWorkerResult,
   recordTailAttachmentIntent,
   markTailAttachmentIssued,
@@ -160,6 +161,24 @@ function memoryVersionTransport({
   };
 }
 
+function fixtureCapDetachActuator(transport = null) {
+  return createOwnedCapDetachActuator({
+    transport: transport || {
+      async getTailConsumers() { return []; },
+      async patchTailConsumers() {
+        throw new Error("fixture idle cap-detach must not PATCH");
+      },
+    },
+    readCapSignal: async () => ({
+      cap_reached: false,
+      readback_ok: false,
+      reason: "fixture_idle",
+      events_seen: null,
+      apply_overshoot: null,
+    }),
+  });
+}
+
 async function openStoredArmedWindow(dir, {
   windowId = "tail-restorer-win",
   baselineConsumers = [],
@@ -168,6 +187,7 @@ async function openStoredArmedWindow(dir, {
   restorerId = "tr-restorer",
   versionEvidence = VERSION_EVIDENCE,
   versionTransport = null,
+  capDetachActuator = null,
 } = {}) {
   const store = createFileTailAttachmentStore(join(dir, "tail-window.json"));
   let window = openTailAttachmentWindow({
@@ -181,6 +201,7 @@ async function openStoredArmedWindow(dir, {
   window = armTailAttachmentRestorer(window, {
     now: "2026-10-17T11:00:01.000Z",
     restorerId,
+    capDetachActuator: capDetachActuator || fixtureCapDetachActuator(),
   });
   const vt = versionTransport || memoryVersionTransport();
   if (versionEvidence) {
@@ -315,6 +336,7 @@ test("deployments version GET transport binds evidence; mutate refuses unbound w
   window = armTailAttachmentRestorer(window, {
     now: "2026-10-17T11:00:01.000Z",
     restorerId: "tr-ver",
+    capDetachActuator: fixtureCapDetachActuator(),
   });
   window = await store.write(window);
   assert.throws(() => assertTailAttachmentVersionBound(window), /not bound/);
@@ -401,6 +423,7 @@ test("negative: version proof for consumer A refuses attach of consumer B (0 PAT
   window = armTailAttachmentRestorer(window, {
     now: "2026-10-17T12:00:01.000Z",
     restorerId: "tr-a2b",
+    capDetachActuator: fixtureCapDetachActuator(),
   });
   window = bindTailAttachmentVersionEvidence(window, evidenceA, {
     now: "2026-10-17T12:00:02.000Z",
@@ -558,6 +581,7 @@ test("negative: cannot relabel an actual consumer-A deployments GET as consumer-
   window = armTailAttachmentRestorer(window, {
     now: "2026-10-17T12:00:01.000Z",
     restorerId: "tr-relabel",
+    capDetachActuator: fixtureCapDetachActuator(),
   });
 
   // Root counterexample: binder must refuse consumer B + getTarget B with A's actual URL.
@@ -1300,6 +1324,7 @@ test("owned-initialize acknowledgment allows attach when GET stays UNKNOWN; fore
   window = armTailAttachmentRestorer(window, {
     now: "2026-10-17T11:00:01.000Z",
     restorerId: "tr-init",
+    capDetachActuator: fixtureCapDetachActuator(),
   });
   const initVt = memoryVersionTransport();
   window = bindTailAttachmentVersionEvidence(window, VERSION_EVIDENCE, {
@@ -1386,6 +1411,7 @@ test("own-window stays idle until expiry; expiry restores baseline", async () =>
   const idle = await tailAttachmentRestorerTick({
     store,
     transport,
+    capDetachActuator: fixtureCapDetachActuator(transport),
     stateRoot,
     now: "2026-10-17T11:00:30.000Z",
   });
@@ -1396,6 +1422,7 @@ test("own-window stays idle until expiry; expiry restores baseline", async () =>
   const expired = await tailAttachmentRestorerTick({
     store,
     transport,
+    capDetachActuator: fixtureCapDetachActuator(transport),
     stateRoot,
     now: "2026-10-17T11:01:30.000Z",
   });
@@ -1447,6 +1474,7 @@ test("controller-death receipt bound to window/restorer restores; stale death is
   const stillIdle = await tailAttachmentRestorerTick({
     store,
     transport,
+    capDetachActuator: fixtureCapDetachActuator(transport),
     stateRoot,
     now: "2026-10-17T11:00:15.000Z",
   });
@@ -1461,6 +1489,7 @@ test("controller-death receipt bound to window/restorer restores; stale death is
   const restored = await tailAttachmentRestorerTick({
     store,
     transport,
+    capDetachActuator: fixtureCapDetachActuator(transport),
     stateRoot,
     now: "2026-10-17T11:00:21.000Z",
   });
@@ -1497,6 +1526,7 @@ test("foreign same-count namespace conflict is refused and ownership preserved",
   const tick = await tailAttachmentRestorerTick({
     store,
     transport,
+    capDetachActuator: fixtureCapDetachActuator(transport),
     stateRoot,
     now: "2026-10-17T12:00:00.000Z", // expired → restore path sees conflict
   });
@@ -1534,6 +1564,7 @@ test("issued-unacked pending retains UNKNOWN on baseline GET through restorer ti
   const tick = await tailAttachmentRestorerTick({
     store,
     transport,
+    capDetachActuator: fixtureCapDetachActuator(transport),
     stateRoot,
     now: "2026-10-17T11:00:10.000Z",
   });

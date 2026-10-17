@@ -14,7 +14,9 @@ import { pathToFileURL } from "node:url";
 import {
   assertTailTransportTargetMatchesWindow,
   createFileTailAttachmentStore,
+  createOwnedCapDetachActuator,
   createScriptSettingsTailConsumersTransport,
+  createSinkReadbackCapSignal,
 } from "./lib/worker_tail_attachment.mjs";
 import {
   DEFAULT_TAIL_POLL_MS,
@@ -98,6 +100,51 @@ async function loadVersionTransport(env, window) {
   }, window);
 }
 
+async function loadCapDetachActuator(env, window, { store, transport, versionTransport }) {
+  if (window?.restorer?.cap_detach_actuator_bound !== true) {
+    return null;
+  }
+  if (env.CITYSCROLL_TAIL_ATTACHMENT_RESTORER_CAP_DETACH_MODULE) {
+    const mod = await import(env.CITYSCROLL_TAIL_ATTACHMENT_RESTORER_CAP_DETACH_MODULE);
+    if (typeof mod.createCapDetachActuator === "function") {
+      return mod.createCapDetachActuator(env, window, { store, transport, versionTransport });
+    }
+    if (typeof mod.default === "function") {
+      return mod.default(env, window, { store, transport, versionTransport });
+    }
+    if (mod.capDetachActuator) return mod.capDetachActuator;
+    throw new Error(
+      "cap-detach module must export createCapDetachActuator, default, or capDetachActuator",
+    );
+  }
+  const readbackUrl = env.CITYSCROLL_TAIL_SINK_READBACK_URL;
+  const readbackToken = env.CITYSCROLL_TAIL_SINK_READBACK_TOKEN;
+  if (readbackUrl && readbackToken) {
+    return createOwnedCapDetachActuator({
+      transport,
+      versionTransport,
+      readCapSignal: createSinkReadbackCapSignal({
+        url: readbackUrl,
+        token: readbackToken,
+      }),
+    });
+  }
+  // Local fixtures / default-loader proofs without a live sink still wire the
+  // REAL emergencyDetach actuator with an idle (never-capped) signal. Production
+  // ARM requires CITYSCROLL_TAIL_SINK_READBACK_URL/TOKEN (go5-v2 plan gate).
+  return createOwnedCapDetachActuator({
+    transport,
+    versionTransport,
+    readCapSignal: async () => ({
+      cap_reached: false,
+      readback_ok: false,
+      reason: "idle_cap_signal_no_readback_env",
+      events_seen: null,
+      apply_overshoot: null,
+    }),
+  });
+}
+
 async function main(argv = process.argv.slice(2), env = process.env) {
   const windowPath = arg(argv, "--window-state");
   const stateRoot = arg(argv, "--state-root") || env.CITYSCROLL_TAIL_ATTACHMENT_RESTORER_STATE
@@ -111,6 +158,11 @@ async function main(argv = process.argv.slice(2), env = process.env) {
   if (!window) throw new Error("tail attachment window is empty");
   const transport = await loadTransport(env, window);
   const versionTransport = await loadVersionTransport(env, window);
+  const capDetachActuator = await loadCapDetachActuator(env, window, {
+    store,
+    transport,
+    versionTransport,
+  });
   // Touch createScriptSettingsTailConsumersTransport so durable copy keeps the import.
   if (typeof createScriptSettingsTailConsumersTransport !== "function") {
     throw new Error("script-settings Tail transport is unavailable");
@@ -120,6 +172,7 @@ async function main(argv = process.argv.slice(2), env = process.env) {
     store,
     transport,
     versionTransport,
+    capDetachActuator,
     stateRoot,
     pollMs: Number.isFinite(pollMs) && pollMs > 0 ? pollMs : DEFAULT_TAIL_POLL_MS,
   });

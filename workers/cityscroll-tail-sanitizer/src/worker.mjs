@@ -84,6 +84,9 @@ function emptyCounters() {
     events_dropped_after_cap: 0,
     deltas_acked: 0,
     apply_overshoot: 0,
+    collector_do_requests: 0,
+    collector_storage_ops: 0,
+    collector_cpu_ms: "UNKNOWN",
     by_cpu_class,
     by_event_type,
     by_outcome,
@@ -93,6 +96,89 @@ function emptyCounters() {
     cpu_ms_unknown_count: 0,
     cpu_ms_histogram: emptyCpuHistogram(),
     by_cohort_cpu: emptyFixedCohortCpu(),
+  };
+}
+
+/**
+ * A2: all-seen hard bound. events_seen above maxEvents fails; an observed
+ * overshoot that was not counted (unknown/unbounded) also fails. Missing
+ * samples stay UNKNOWN — never CPU 0 / never a pass from absence.
+ */
+export function evaluateAllSeenCapA2(snapshot, {
+  maxEvents = MAX_EVENTS,
+} = {}) {
+  const eventsSeen = Number(snapshot?.events_seen);
+  const overshoot = snapshot?.counters?.apply_overshoot ?? snapshot?.apply_overshoot;
+  const capReached = snapshot?.cap_reached === true;
+  if (!Number.isFinite(eventsSeen)) {
+    return {
+      pass: false,
+      reason: "events_seen_unknown",
+      events_seen: snapshot?.events_seen ?? null,
+      apply_overshoot: overshoot ?? null,
+    };
+  }
+  if (eventsSeen > maxEvents) {
+    return {
+      pass: false,
+      reason: "events_seen_above_all_seen_cap",
+      events_seen: eventsSeen,
+      max_events: maxEvents,
+      apply_overshoot: Number.isFinite(overshoot) ? overshoot : null,
+    };
+  }
+  if (capReached && (overshoot == null || !Number.isFinite(Number(overshoot)))) {
+    return {
+      pass: false,
+      reason: "overshoot_unknown_unbounded",
+      events_seen: eventsSeen,
+      apply_overshoot: overshoot ?? null,
+    };
+  }
+  return {
+    pass: true,
+    reason: "within_all_seen_cap",
+    events_seen: eventsSeen,
+    apply_overshoot: Number.isFinite(Number(overshoot)) ? Number(overshoot) : 0,
+  };
+}
+
+function costVectorFrom(counters, rpcCount = null) {
+  return {
+    collector_do_requests: counters.collector_do_requests || 0,
+    collector_storage_ops: counters.collector_storage_ops || 0,
+    collector_cpu_ms: counters.collector_cpu_ms === "UNKNOWN" || counters.collector_cpu_ms == null
+      ? "UNKNOWN"
+      : counters.collector_cpu_ms,
+    sink_rpc_count: rpcCount == null ? (counters.collector_do_requests || 0) : rpcCount,
+    note: "collector DO requests/storage ops are measured ACK lower bounds; collector CPU stays UNKNOWN unless measured",
+  };
+}
+
+function instrumentStorage(txn, counters) {
+  const bump = () => {
+    counters.collector_storage_ops = (counters.collector_storage_ops || 0) + 1;
+  };
+  return {
+    get: async (key) => {
+      bump();
+      return txn.get(key);
+    },
+    put: async (key, value) => {
+      bump();
+      return txn.put(key, value);
+    },
+    delete: async (key) => {
+      bump();
+      return txn.delete(key);
+    },
+    deleteAll: async () => {
+      bump();
+      return txn.deleteAll();
+    },
+    transaction: typeof txn.transaction === "function"
+      ? (fn) => txn.transaction(fn)
+      : undefined,
   };
 }
 
@@ -128,6 +214,9 @@ function backfillCounters(counters) {
   if (counters.cpu_ms_unknown_count == null) counters.cpu_ms_unknown_count = 0;
   if (counters.events_dropped_after_cap == null) counters.events_dropped_after_cap = 0;
   if (counters.apply_overshoot == null) counters.apply_overshoot = 0;
+  if (counters.collector_do_requests == null) counters.collector_do_requests = 0;
+  if (counters.collector_storage_ops == null) counters.collector_storage_ops = 0;
+  if (counters.collector_cpu_ms == null) counters.collector_cpu_ms = "UNKNOWN";
   return counters;
 }
 
@@ -218,12 +307,17 @@ export class AggregateSink {
       if (!this.authorize(req)) {
         return Response.json({ ok: false, reason: "unauthorized" }, { status: 401 });
       }
-      return this.withStorageTransaction(async (txn) => {
+      return this.withStorageTransaction(async (rawTxn) => {
+        const scratch = emptyCounters();
+        const txn = instrumentStorage(rawTxn, scratch);
         const terminal = await txn.get(TERMINAL_KEY);
         if (terminal && terminal.closed === true) {
           terminal.rpc_count = (terminal.rpc_count || 0) + 1;
           await txn.put(TERMINAL_KEY, terminal);
-          return Response.json({
+          const tombCounters = emptyCounters();
+          tombCounters.collector_do_requests = terminal.rpc_count;
+          tombCounters.collector_storage_ops = scratch.collector_storage_ops;
+          const snapshot = {
             ok: true,
             schema: "cityscroll.tail_sanitizer_aggregate_sink.v1",
             closed: true,
@@ -234,14 +328,24 @@ export class AggregateSink {
             max_events: terminal.max_events ?? MAX_EVENTS,
             cap_reached: terminal.cap_reached === true,
             events_seen: 0,
-            counters: emptyCounters(),
+            counters: tombCounters,
+            cost_vector: costVectorFrom(tombCounters, terminal.rpc_count),
             overhead: {
               sink_cpu_ms: "UNKNOWN",
               sink_storage_bytes: "UNKNOWN",
               sink_rpc_count: terminal.rpc_count,
-              note: "sink overhead measured or UNKNOWN; aggregate counts are observed lower bounds",
+              collector_do_requests: terminal.rpc_count,
+              collector_storage_ops: scratch.collector_storage_ops,
+              collector_cpu_ms: "UNKNOWN",
+              note: "collector DO cost counted as ACK lower bounds; CPU stays UNKNOWN unless measured",
             },
-          });
+            a2: evaluateAllSeenCapA2({
+              events_seen: 0,
+              cap_reached: terminal.cap_reached === true,
+              apply_overshoot: 0,
+            }, { maxEvents: terminal.max_events ?? MAX_EVENTS }),
+          };
+          return Response.json(snapshot);
         }
         let meta = await txn.get(META_KEY);
         if (!meta) {
@@ -253,14 +357,26 @@ export class AggregateSink {
             counters: emptyCounters(),
             events_seen: 0,
             cap_reached: false,
+            cost_vector: costVectorFrom(emptyCounters(), 0),
             note: "no window open",
           });
         }
         meta.rpc_count = (meta.rpc_count || 0) + 1;
-        await txn.put(META_KEY, meta);
         const counters = backfillCounters((await txn.get(COUNTERS_KEY)) || emptyCounters());
+        counters.collector_do_requests = meta.rpc_count;
+        counters.collector_storage_ops = (counters.collector_storage_ops || 0) + scratch.collector_storage_ops;
+        counters.collector_cpu_ms = "UNKNOWN";
+        await txn.put(META_KEY, meta);
+        await txn.put(COUNTERS_KEY, counters);
         const events_seen = eventsSeenOf(counters);
-        const cap_reached = meta.cap_reached === true || events_seen >= (meta.max_events || MAX_EVENTS);
+        const maxEvents = meta.max_events || MAX_EVENTS;
+        const cap_reached = meta.cap_reached === true || events_seen >= maxEvents;
+        const a2 = evaluateAllSeenCapA2({
+          events_seen,
+          cap_reached,
+          apply_overshoot: counters.apply_overshoot,
+          counters,
+        }, { maxEvents });
         return Response.json({
           ok: true,
           schema: "cityscroll.tail_sanitizer_aggregate_sink.v1",
@@ -269,22 +385,29 @@ export class AggregateSink {
           opened_at_ms: meta.opened_at_ms,
           closed_at_ms: meta.closed_at_ms ?? null,
           deadline_ms: meta.deadline_ms,
-          max_events: meta.max_events,
+          max_events: maxEvents,
           cap_reached,
           events_seen,
           counters: { ...counters, events_seen },
+          cost_vector: costVectorFrom(counters, meta.rpc_count),
+          a2,
           overhead: {
             sink_cpu_ms: "UNKNOWN",
             sink_storage_bytes: "UNKNOWN",
             sink_rpc_count: meta.rpc_count,
-            note: "sink overhead measured or UNKNOWN; aggregate counts are observed lower bounds",
+            collector_do_requests: counters.collector_do_requests,
+            collector_storage_ops: counters.collector_storage_ops,
+            collector_cpu_ms: "UNKNOWN",
+            note: "collector DO cost counted as ACK lower bounds; CPU stays UNKNOWN unless measured",
           },
           notes: [
             "events_accepted is an observed/acknowledged lower bound",
             "events_seen counts accepted + rejected + dropped_after_cap",
             "cpu_ms_sum/count only include finite numeric cpuTime; missing/invalid stay UNKNOWN",
             "do not report CPU0 or cost0 from absent getters",
+            "collector observed_count 0 is measured zero; missing provider/queue/cohort samples stay UNKNOWN",
             "by_deployed_revision keys are the configured expected-version allowlist only",
+            "A2 fails when events_seen exceeds the all-seen cap or overshoot is unknown/unbounded",
           ],
         });
       });
@@ -331,7 +454,9 @@ export class AggregateSink {
       const delta = await req.json().catch(() => null);
       const expectedRevisions = expectedRevisionSet(this.env);
 
-      return this.withStorageTransaction(async (txn) => {
+      return this.withStorageTransaction(async (rawTxn) => {
+        const storageScratch = emptyCounters();
+        const txn = instrumentStorage(rawTxn, storageScratch);
         const terminal = await txn.get(TERMINAL_KEY);
         if (terminal && terminal.closed === true) {
           return Response.json(
@@ -363,6 +488,12 @@ export class AggregateSink {
         }
 
         let counters = backfillCounters((await txn.get(COUNTERS_KEY)) || emptyCounters());
+        counters.collector_do_requests = meta.rpc_count;
+        counters.collector_storage_ops = (counters.collector_storage_ops || 0)
+          + storageScratch.collector_storage_ops;
+        counters.collector_cpu_ms = "UNKNOWN";
+        // Reset scratch so subsequent instrumented ops in this txn are added once more at persist.
+        storageScratch.collector_storage_ops = 0;
         const maxEvents = meta.max_events || MAX_EVENTS;
         const seenBefore = eventsSeenOf(counters);
 
@@ -370,15 +501,26 @@ export class AggregateSink {
           const n = Number.isFinite(delta.dropped_count) ? Math.max(0, Math.floor(delta.dropped_count)) : 0;
           counters.events_dropped_after_cap += n;
           meta.cap_reached = true;
+          counters.collector_storage_ops = (counters.collector_storage_ops || 0)
+            + storageScratch.collector_storage_ops;
+          storageScratch.collector_storage_ops = 0;
           await txn.put(META_KEY, meta);
           await txn.put(COUNTERS_KEY, counters);
+          const events_seen = eventsSeenOf(counters);
           return Response.json({
             acked: false,
             reason: "dropped_after_cap",
             cap_reached: true,
-            events_seen: eventsSeenOf(counters),
+            events_seen,
             events_dropped_after_cap: counters.events_dropped_after_cap,
             trigger_owned_detach: true,
+            cost_vector: costVectorFrom(counters, meta.rpc_count),
+            a2: evaluateAllSeenCapA2({
+              events_seen,
+              cap_reached: true,
+              apply_overshoot: counters.apply_overshoot,
+              counters,
+            }, { maxEvents }),
           });
         }
 
@@ -388,22 +530,38 @@ export class AggregateSink {
           // is an explicit overshoot observation (counted, not accepted).
           counters.apply_overshoot += 1;
           counters.events_rejected += 1;
+          counters.collector_storage_ops = (counters.collector_storage_ops || 0)
+            + storageScratch.collector_storage_ops;
+          storageScratch.collector_storage_ops = 0;
           await txn.put(META_KEY, meta);
           await txn.put(COUNTERS_KEY, counters);
+          const events_seen = eventsSeenOf(counters);
           return Response.json(
             {
               acked: false,
               reason: "SINK_CAP",
               cap_reached: true,
-              events_seen: eventsSeenOf(counters),
+              events_seen,
               apply_overshoot: counters.apply_overshoot,
               trigger_owned_detach: true,
+              cost_vector: costVectorFrom(counters, meta.rpc_count),
+              a2: evaluateAllSeenCapA2({
+                events_seen,
+                cap_reached: true,
+                apply_overshoot: counters.apply_overshoot,
+                counters,
+              }, { maxEvents }),
             },
             { status: 409 },
           );
         }
 
         const persist = async (result) => {
+          counters.collector_storage_ops = (counters.collector_storage_ops || 0)
+            + storageScratch.collector_storage_ops;
+          storageScratch.collector_storage_ops = 0;
+          counters.collector_do_requests = meta.rpc_count;
+          counters.collector_cpu_ms = "UNKNOWN";
           const events_seen = eventsSeenOf(counters);
           if (events_seen >= maxEvents) {
             meta.cap_reached = true;
@@ -411,6 +569,13 @@ export class AggregateSink {
             result.trigger_owned_detach = true;
           }
           result.events_seen = events_seen;
+          result.cost_vector = costVectorFrom(counters, meta.rpc_count);
+          result.a2 = evaluateAllSeenCapA2({
+            events_seen,
+            cap_reached: meta.cap_reached === true,
+            apply_overshoot: counters.apply_overshoot,
+            counters,
+          }, { maxEvents });
           await txn.put(META_KEY, meta);
           await txn.put(COUNTERS_KEY, counters);
           return Response.json(result);

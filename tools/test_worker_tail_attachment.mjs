@@ -13,6 +13,7 @@ import {
   tailConsumersSha256,
   openTailAttachmentWindow,
   armTailAttachmentRestorer,
+  createOwnedCapDetachActuator,
   recordTailAttachmentIntent,
   markTailAttachmentIssued,
   confirmTailAttachment,
@@ -82,11 +83,30 @@ function memoryAttachmentTransport(initial) {
   };
 }
 
+function fixtureCapDetachActuator(transport = null) {
+  return createOwnedCapDetachActuator({
+    transport: transport || {
+      async getTailConsumers() { return []; },
+      async patchTailConsumers() {
+        throw new Error("fixture idle cap-detach must not PATCH");
+      },
+    },
+    readCapSignal: async () => ({
+      cap_reached: false,
+      readback_ok: false,
+      reason: "fixture_idle",
+      events_seen: null,
+      apply_overshoot: null,
+    }),
+  });
+}
+
 function openArmedWindow({
   windowId = "tail-win",
   baselineConsumers = [],
   now = "2026-10-17T11:00:00.000Z",
   restorerId = "tr-1",
+  capDetachActuator = null,
 } = {}) {
   let window = openTailAttachmentWindow({
     baselineConsumers,
@@ -98,11 +118,12 @@ function openArmedWindow({
   window = armTailAttachmentRestorer(window, {
     now: "2026-10-17T11:00:01.000Z",
     restorerId,
+    capDetachActuator: capDetachActuator || fixtureCapDetachActuator(),
   });
   return window;
 }
 
-async function attachConfirmed(window, consumers, {
+function attachConfirmed(window, consumers, {
   intentAt = "2026-10-17T11:00:02.000Z",
   issuedAt = "2026-10-17T11:00:03.000Z",
   confirmAt = "2026-10-17T11:00:04.000Z",
@@ -163,7 +184,7 @@ test("openTailAttachmentWindow records baseline identity digest for empty detach
 
 test("classify: same-count foreign replacement is conflict, not owned", async () => {
   let window = openArmedWindow({ windowId: "tail-win-2" });
-  window = await attachConfirmed(window, [SANITIZER_A]);
+  window = attachConfirmed(window, [SANITIZER_A]);
   assert.equal(window.owned_sha256, tailConsumersSha256([SANITIZER_A]));
 
   const owned = classifyTailAttachment([SANITIZER_A], window);
@@ -363,7 +384,11 @@ test("negative 3: terminal restored window refuses arm and intent before any mut
     pending_mutation: null,
   };
   assert.throws(
-    () => armTailAttachmentRestorer(window, { now: "2026-10-17T11:01:00.000Z", restorerId: "tr-rearm" }),
+    () => armTailAttachmentRestorer(window, {
+      now: "2026-10-17T11:01:00.000Z",
+      restorerId: "tr-rearm",
+      capDetachActuator: fixtureCapDetachActuator(),
+    }),
     /window phase restored is closed/,
   );
   assert.throws(
@@ -536,6 +561,7 @@ test("negative 7: expired window refuses arm and attach; restore and detach stay
     () => armTailAttachmentRestorer(window, {
       now: "2026-10-17T11:01:00.000Z",
       restorerId: "tr-expired",
+      capDetachActuator: fixtureCapDetachActuator(),
     }),
     /tail attachment window has expired/,
   );
@@ -789,5 +815,69 @@ test("emergencyDetachTailAttachment store generation mismatch → 0 PATCH", asyn
   assert.equal(result.reason, "window_generation mismatch");
   assert.equal(result.patch, null);
   assert.equal(transport.calls.filter((c) => c.method === "PATCH").length, 0);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("armTailAttachmentRestorer refuses without owned cap-detach actuator", () => {
+  const window = openTailAttachmentWindow({
+    baselineConsumers: [],
+    accountIdSha256: ACCOUNT_SHA,
+    workerId: "cityscroll-cc05-r4-cpu-producer",
+    now: "2026-10-17T11:00:00.000Z",
+    windowId: "arm-refuse",
+  });
+  assert.throws(
+    () => armTailAttachmentRestorer(window, {
+      now: "2026-10-17T11:00:01.000Z",
+      restorerId: "tr-no-actuator",
+    }),
+    /refuse to arm: owned cap-detach actuator required/,
+  );
+});
+
+test("owned cap-detach actuator polls signal and runs generation-checked emergency detach", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-cap-detach-"));
+  const store = createFileTailAttachmentStore(join(dir, "window.json"));
+  let signal = { cap_reached: false, events_seen: 0, apply_overshoot: 0, a2: { pass: true } };
+  const transport = memoryAttachmentTransport([SANITIZER_A]);
+  const actuator = createOwnedCapDetachActuator({
+    transport,
+    readCapSignal: async () => structuredClone(signal),
+  });
+
+  let window = openArmedWindow({
+    windowId: "cap-detach-win",
+    restorerId: "tr-cap",
+    capDetachActuator: actuator,
+  });
+  window = attachConfirmed(window, [SANITIZER_A]);
+  window = await store.write(window);
+  assert.equal(window.restorer.cap_detach_actuator_bound, true);
+
+  const idle = await actuator.pollAndDetachIfCapped({
+    store,
+    now: "2026-10-17T11:00:10.000Z",
+  });
+  assert.equal(idle.actuated, false);
+  assert.equal(idle.reason, "cap_not_reached");
+  assert.equal(transport.calls.filter((c) => c.method === "PATCH").length, 0);
+
+  signal = {
+    cap_reached: true,
+    events_seen: 10_000,
+    apply_overshoot: 0,
+    a2: { pass: true, reason: "within_all_seen_cap" },
+  };
+  const fired = await actuator.pollAndDetachIfCapped({
+    store,
+    now: "2026-10-17T11:00:20.000Z",
+  });
+  assert.equal(fired.actuated, true);
+  assert.equal(fired.proved, true);
+  assert.ok(["restore", "restored", "already-restored"].includes(fired.action), fired.action);
+  assert.ok(transport.calls.filter((c) => c.method === "PATCH").length >= 1);
+  const after = await store.read();
+  assert.ok(["restored", "expired-restored"].includes(after.phase), after.phase);
+  assert.deepEqual(after.baseline_consumers, []);
   rmSync(dir, { recursive: true, force: true });
 });

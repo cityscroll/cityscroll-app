@@ -82,14 +82,17 @@ export function classifyCpuValue(cpuTime) {
 
 /**
  * Fixed allowlisted comparison cohorts. Keys are the only ones that may be
- * persisted. Specific RUM routes, search, nearby, cold-start flag partitions,
- * and collector stay UNKNOWN (count 0) until an allowlisted cohort tag is
- * present — never derived from URL/query/request identity.
+ * persisted. RUM is ONE weighted batch cohort (16 observations), not 16 routes.
+ * Search, nearby, cold-start flag partitions, and collector stay UNKNOWN
+ * (count 0) until an allowlisted cohort tag is present — never derived from
+ * URL/query/request identity.
  */
+export const RUM_BATCH_OBSERVATION_COUNT = 16;
+export const RUM_BATCH_COHORT_KEY = "rum_batch_16";
+
 export const FIXED_COHORT_KEYS = Object.freeze([
   "http",
-  "rum_01", "rum_02", "rum_03", "rum_04", "rum_05", "rum_06", "rum_07", "rum_08",
-  "rum_09", "rum_10", "rum_11", "rum_12", "rum_13", "rum_14", "rum_15", "rum_16",
+  RUM_BATCH_COHORT_KEY,
   "search",
   "nearby",
   "cold_start_flag_raw_0",
