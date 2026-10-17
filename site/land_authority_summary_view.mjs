@@ -1,7 +1,7 @@
 /**
  * Resident renderer for a bounded Land authority summary.
- * Accepts a precomputed summary only — it does not resolve procedure or fetch
- * a publisher. Profile, phase, geography, and published-opportunity facts stay
+ * Renders precomputed summaries without fetching a publisher.
+ * Profile, phase, geography, and published-opportunity facts stay
  * in separate DOM/data structures.
  */
 
@@ -73,15 +73,23 @@ export function attachLandAuthoritySummaries(target, payload) {
   return target;
 }
 
+export function landAuthoritySummaryCandidates(row) {
+  return [row?.authority_summary, landAuthorityLookup?.[row?.project_id]];
+}
+
 export function landAuthoritySummaryFor(row) {
-  return row?.authority_summary || landAuthorityLookup?.[row?.project_id] || null;
+  const [embedded, loaded] = landAuthoritySummaryCandidates(row);
+  if (!embedded) return loaded || null;
+  if (!loaded) return embedded;
+  return (Date.parse(loaded.freshness?.generated_at || "") || 0) > (Date.parse(embedded.freshness?.generated_at || "") || 0)
+    ? loaded : embedded;
 }
 
 export function loadLandAuthoritySummaryLookup() {
   return fetch(LAND_AUTHORITY_SUMMARY_URL, { cache: "force-cache", credentials: "omit" })
     .then((response) => response.ok ? response.json() : null)
-    .then((payload) => rememberLandAuthoritySummaries(payload))
-    .catch(() => rememberLandAuthoritySummaries(null));
+    .then((payload) => { rememberLandAuthoritySummaries(payload); return payload; })
+    .catch(() => { rememberLandAuthoritySummaries(null); return null; });
 }
 
 function clean(value) {
@@ -412,7 +420,7 @@ export function landAuthoritySummaryHTML(summary, { t, escape, payload = null } 
       <div class="land-authority-subhead">${esc(translate("land_authority_provenance"))}</div>
       <ul>
         <li data-land-authority-provenance="profile" data-registry-version="${esc(citation?.registry_version || "")}" data-procedure-id="${esc(citation?.procedure_id || "")}">${esc(translate("land_authority_provenance_profile"))}: ${profileCitation}</li>
-        <li data-land-authority-provenance="phase" data-source-field="current_milestone">${esc(translate("land_authority_provenance_phase"))}: ${esc(phaseMilestone || translate("land_authority_not_found"))}</li>
+        <li data-land-authority-provenance="phase" data-source-field="${esc(summary.source_basis?.phase?.source_field || "current_milestone")}">${esc(translate("land_authority_provenance_phase"))}: ${esc(phaseMilestone || translate("land_authority_not_found"))}</li>
         <li data-land-authority-provenance="geography" data-source-type="affected_review_body_for">${esc(translate("land_authority_provenance_geography"))}: ${geographyCitation}</li>
         <li data-land-authority-provenance="publisher" data-source-id="${esc(publisher.source_id || "")}">${esc(translate("land_authority_provenance_publisher"))}: ${esc(publisherCopy)}</li>
       </ul>

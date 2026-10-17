@@ -645,7 +645,9 @@ export function buildLandPhaseView(spine, opts = {}) {
     }),
     ...(opts.procedure_facts && typeof opts.procedure_facts === "object" ? opts.procedure_facts : {}),
   };
-  const affectedReviewBodies = procedureFacts.affected_review_body_for?.schema
+  const affectedReviewBodies = opts.affected_review_body_for?.schema
+    ? opts.affected_review_body_for
+    : procedureFacts.affected_review_body_for?.schema
     ? procedureFacts.affected_review_body_for
     : projectAffectedReviewBodies(procedureFacts, { geography: opts.geography });
   if (!Object.hasOwn(procedureFacts, "affected_review_bodies") && affectedReviewBodies?.facts) {
