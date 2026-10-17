@@ -68,6 +68,8 @@ import {
 } from "../land_filing_evidence_view.mjs";
 import { landFilingEvidenceFilterFromControls } from "../land_filing_evidence_facet.mjs";
 import { mtxHTML } from "../land_outcomes_matrix.mjs";
+import { createLandOutcomeRuntime } from "../land_outcome_runtime.mjs";
+import { escapeHtml } from "../text_clean.mjs";
 import { attachLandLotSourceDigests, landLotSourceDigestsHTML, loadLandLotSourceDigests } from "../land_lot_source_digests.mjs";
 import {
   fetchBrowseScoped,
@@ -237,20 +239,6 @@ function loadLandPropertySnapshot(){
       .then(r=>r.ok?r.json():null).catch(()=>null);
   }
   return landPropertySnapshotPromise;
-}
-function seedLandOutcomeSnapshot(snapshot){
-  const byProject=snapshot?.outcomes?.by_project||{};
-  const generatedAt=snapshot?.generated_at||null;
-  for(const [id,record] of Object.entries(byProject)){
-    if(!record || record.snapshot_state==="unavailable") continue;
-    ZAP_OUTCOMES_MEM.set(id,{
-      data:{ok:true,cached:true,static_snapshot:true,generated_at:generatedAt,record},
-      // determinism-lint: allow clock the moment this snapshot entered the session cache, read back only by the age comparison in zapOutcomesMemGet().
-      at:Date.now(),
-      generatedAt,
-      staticSnapshot:true
-    });
-  }
 }
 function loadLandUpcomingHearings(){
   if(!landUpcomingHearingsPromise){
@@ -726,8 +714,8 @@ function landRenderList(kw, kwIsTextMatch, boro, autoSelect){
     if(event.target.closest("[data-object-card-copy]")) return;
     landSelect(+el.dataset.i, el);
   }));
-  // Warm outcomes for the visible list (edge KV prewarm + session cache) so the first
-  // select paints decision docs without the cold multi-second spinner.
+  // Prefetch retained outcomes for the visible list into session cache so the first
+  // selection can paint already-materialized decision documents without another wait.
   prefetchZapOutcomesForList(lRows);
   if(autoSelect !== false) document.querySelector("#llist .row")?.click();
 }
@@ -1197,7 +1185,7 @@ function landPhaseSpineHTML(view, tools, record){
     : "";
   const cur=view.current||{};
   const phaseName=landPhaseLabel({label_key:cur.label_key});
-  const pipelineHTML=landPipelinePositionHTML(view, record);
+  const pipelineHTML=record?.evidence_stale ? null : landPipelinePositionHTML(view, record);
   let statusExtra="";
   // Skip "Public status: In Public Review" when the pipeline sentence already covers it.
   if(pipelineHTML){
@@ -1208,7 +1196,7 @@ function landPhaseSpineHTML(view, tools, record){
     statusExtra=t("land_spine_status_public_html",{status:escUiHtml(cur.public_status)});
   }
   const lead=`<div class="land-spine-lead">
-    <div class="land-spine-now-label">${t("land_spine_now_label")}</div>
+    <div class="land-spine-now-label">${record?.evidence_stale ? t("land_outcome_last_recorded") : t("land_spine_now_label")}</div>
     ${pipelineHTML||`<p class="land-spine-now-phase">${escUiHtml(phaseName)}</p>`}
     <p class="land-spine-now-detail" lang="en" dir="ltr">${escUiHtml(cur.milestone_label || "—")}${cur.since?` · ${t("land_spine_since",{date:fdate(cur.since)})}`:""}${statusExtra?`<br>${statusExtra}`:""}</p>
     ${view.next?`<p class="land-spine-next">${t("land_spine_next_html",{phase:escUiHtml(landPhaseLabel(view.next))})}</p>`:""}
@@ -1224,7 +1212,7 @@ function landPhaseSpineHTML(view, tools, record){
   const phasePanelHTML=(p)=>{
     const open=p.state==="current"||p.state==="overlap"?" open":"";
     const stateWord=p.state==="current"
-      ? t("land_spine_phase_current")
+      ? (record?.evidence_stale ? t("land_outcome_last_recorded") : t("land_spine_phase_current"))
       : p.state==="passed"
         ? t("land_spine_phase_done")
         : p.state==="overlap"
@@ -1261,7 +1249,8 @@ function landPhaseSpineHTML(view, tools, record){
     const statutory=landStatutoryDeadlineHTML(p.id, clock, p.state);
     const body=(p.aggregates||[]).map((a,idx)=>landPhaseAggregateHTML(a,p.id,idx)).join("")
       || `<div class="land-phase-row"><div class="land-phase-row-meta">${t("land_spine_phase_empty")}</div></div>`;
-    return `<details class="land-phase${p.state==="current"?" current-phase":""}${p.state==="overlap"?" overlap-phase":""}"${open} id="land-phase-${escUiHtml(p.id)}" data-land-phase-panel="${escUiHtml(p.id)}" data-land-phase-state="${escUiHtml(p.state||"")}">
+    const panelData=`data-land-phase-panel="${escUiHtml(p.id)}" data-land-phase-state="${escUiHtml(p.state||"")}"`;
+    return `<details class="land-phase${p.state==="current"?" current-phase":""}${p.state==="overlap"?" overlap-phase":""}"${open} id="land-phase-${escUiHtml(p.id)}" ${panelData}>
       <summary>
         <span class="land-phase-name">${escUiHtml(landPhaseLabel(p))}</span>
         <span class="land-phase-state">${escUiHtml(stateWord)}</span>
@@ -1450,9 +1439,10 @@ function landOutcomeRecordIsPresent(record){
 
 function landOutcomeFirstPaintHTML(r){
   const hit=r?.project_id?zapOutcomesMemGet(r.project_id):null;
-  const record=hit?.data?.record;
+  const display=landOutcomeDisplay(hit?.data);
+  const record=display.record;
   if(!record||record.snapshot_state==="absent") return "";
-  return landOutcomeSnapshotHTML(record,null);
+  return display.freshness+landOutcomeSnapshotHTML(record,null);
 }
 function landOutcomeSnapshotHTML(record,phaseTools,listRow){
   if(!record||record.snapshot_state==="absent") return "";
@@ -1469,6 +1459,17 @@ function ensureProjectConnectionsTools(){
   }
   return projectConnectionsToolsPromise;
 }
+const landOutcomeRuntime=createLandOutcomeRuntime({
+  cache:ZAP_OUTCOMES_MEM,
+  ttlMs:ZAP_OUTCOMES_MEM_TTL,
+  normalizeRecord:normalizeLandRecord,
+  translate:t,
+  formatDate:fdate,
+  escapeHTML:escapeHtml,
+  connectionTools:ensureProjectConnectionsTools,
+  fetchResponse:(id,accepts)=>workerFetch("/zap-outcomes?id="+encodeURIComponent(id),null,12000,accepts),
+});
+const seedLandOutcomeSnapshot=landOutcomeRuntime.seed;
 let lcalP=null;
 function ensureLcal(){
   if(!lcalP){
@@ -1558,46 +1559,13 @@ async function paintProjectConnections(record,selection){
   if(!host.isConnected||host!==$("#project-connections")) return;
   host.innerHTML=projectConnectionsHTML(record?.project_connections,tools);
 }
-function zapOutcomesMemGet(projectId){
-  const hit = ZAP_OUTCOMES_MEM.get(projectId);
-  if(!hit) return null;
-  if(hit.p) return hit;
-  // determinism-lint: allow clock cache age inside one page view, not a civic date; it decides whether to reuse a payload.
-  if(Date.now() - hit.at < ZAP_OUTCOMES_MEM_TTL) return hit;
-  ZAP_OUTCOMES_MEM.delete(projectId);
-  return null;
-}
-function fetchZapOutcomesPayload(projectId,{allowStatic=true}={}){
-  const id = String(projectId || "").trim();
-  if(!id) return Promise.resolve(null);
-  const existing = zapOutcomesMemGet(id);
-  if(existing?.p) return existing.p;
-  if(existing?.data && (allowStatic || !existing.staticSnapshot)) return Promise.resolve(existing.data);
-  const p = (async ()=>{
-    try{
-      const tools=await ensureProjectConnectionsTools();
-      const accepts=tools?async response=>{
-        if(!response?.ok) return false;
-        const payload=await response.json();
-        return tools.projectConnectionsPayloadState(payload,id)==="available";
-      }:null;
-      const resp = await workerFetch("/zap-outcomes?id=" + encodeURIComponent(id), null, 12000, accepts);
-      if(!resp || !resp.ok) return null;
-      const payload=await resp.json();
-      return tools?tools.normalizeProjectConnectionsPayload(payload,id):payload;
-    }catch(e){ return null; }
-  })();
-  ZAP_OUTCOMES_MEM.set(id, {p});
-  return p.then(data=>{
-    if(data && data.ok !== false && data.record){
-      // determinism-lint: allow clock the moment this payload entered the session cache, read back only by the age comparison above.
-      ZAP_OUTCOMES_MEM.set(id, {data, at: Date.now()});
-    }else{
-      ZAP_OUTCOMES_MEM.delete(id);
-    }
-    return data;
-  }).catch(()=>{ ZAP_OUTCOMES_MEM.delete(id); return null; });
-}
+/** Arrival in a browser cache never renews the publisher observation clock. */
+const landOutcomeFreshnessHTML=landOutcomeRuntime.freshnessHTML;
+const landOutcomeRecordForDisplay=landOutcomeRuntime.recordForDisplay;
+const landOutcomeDisplay=landOutcomeRuntime.display;
+const refreshLandOutcomeDisplay=landOutcomeRuntime.refreshDisplay;
+const zapOutcomesMemGet=landOutcomeRuntime.get;
+const fetchZapOutcomesPayload=landOutcomeRuntime.fetch;
 function prefetchZapOutcomesForList(rows){
   if(!Array.isArray(rows) || !rows.length) return;
   // Cap so a 40-row list does not fan out unbounded; demo + first screenful first.
@@ -1611,7 +1579,8 @@ function prefetchZapOutcomesForList(rows){
     if(ids.length >= 12) break;
   }
   for(const id of ids){
-    if(zapOutcomesMemGet(id)) continue;
+    const cached=zapOutcomesMemGet(id);
+    if(cached&&!cached.expired) continue;
     fetchZapOutcomesPayload(id);
   }
 }
@@ -1625,14 +1594,15 @@ async function loadZapOutcomes(r, el, selection){
     const [phaseTools] = await Promise.all([phaseToolsP,paintProjectConnections(warm.data.record,selection)]);
     if(selection !== undefined && selection !== landSelectionSeq) return;
     if(!document.contains(el)) return;
-    const record = normalizeLandRecord(warm.data.record);
+    const display=landOutcomeDisplay(warm.data);
+    const record=display.record;
     paintConnectedCalendar(record,selection);
-    el.innerHTML = warm.staticSnapshot
+    el.innerHTML = display.freshness+(warm.staticSnapshot
       ? landOutcomeSnapshotHTML(record,phaseTools,r)
-      : landOutcomesHTML(record,phaseTools,r);
+      : landOutcomesHTML(record,phaseTools,r));
     bindLandSpineUI(el);
     paintLandActionRail($("#land-actions"), r, record, phaseTools);
-    const generated=Date.parse(warm.generatedAt||warm.data.generated_at||"");
+    const generated=Date.parse(warm.data.record.generated_at||"");
     const connectionState=(await ensureProjectConnectionsTools())?.projectConnectionsPayloadState(
       warm.data,r.project_id
     );
@@ -1643,28 +1613,33 @@ async function loadZapOutcomes(r, el, selection){
       || connectionState!=="available"
     );
     if(landOutcomeRecordIsPresent(record)) reportLandOutcomesReady(record);
-    if(!staleStatic){
+    if(!staleStatic&&!warm.expired){
       if(!landOutcomeRecordIsPresent(record)) reportLandOutcomesReady(record);
       return;
     }
   }
-  const [data, phaseTools] = await Promise.all([
-    fetchZapOutcomesPayload(r.project_id,{allowStatic:false}),
+  const [refresh, phaseTools] = await Promise.all([
+    refreshLandOutcomeDisplay(r.project_id),
     phaseToolsP
   ]);
+  const data=refresh.payload;
   if(selection !== undefined && selection !== landSelectionSeq) return;
   if(!document.contains(el)) return;
   if(!data || data.ok === false || !data.record){
-    // Preserve a static first paint on transient freshness failures. An empty
-    // region is allowed only when this project was outside the bounded snapshot.
-    // Private telemetry can still mark an honest terminal state.
+    const display=refresh;
+    const fallback=display.record;
+    el.innerHTML=display.freshness+(fallback?landOutcomesHTML(fallback,phaseTools,r):"");
+    bindLandSpineUI(el);
+    if(fallback) paintLandActionRail($("#land-actions"),r,fallback,phaseTools);
+    // Retain useful content, but never leave a failed check looking current.
     reportLandOutcomesReady(data?.record, {
       fetchFailed: !data,
       responseOk: data ? data.ok !== false : false,
     });
     return;
   }
-  const record = normalizeLandRecord(data.record);
+  const display=refresh;
+  const record=display.record;
   await paintProjectConnections(record,selection);
   if(selection !== undefined && selection !== landSelectionSeq) return;
   if(!document.contains(el)) return;
@@ -1673,7 +1648,7 @@ async function loadZapOutcomes(r, el, selection){
     reportLandOutcomesReady(record);
     return;
   }
-  el.innerHTML = landOutcomesHTML(record, phaseTools, r);
+  el.innerHTML = display.freshness+landOutcomesHTML(record, phaseTools, r);
   bindLandSpineUI(el);
   paintLandActionRail($("#land-actions"), r, record, phaseTools);
   reportLandOutcomesReady(record);
@@ -1766,16 +1741,16 @@ async function loadNoticeLandSpine(r, el){
   };
 
   const phaseToolsP=ensureLandPhaseSpineTools();
-  const [data, phaseTools]=await Promise.all([
-    fetchZapOutcomesPayload(resolution.project_id),
+  const [display, phaseTools]=await Promise.all([
+    refreshLandOutcomeDisplay(resolution.project_id),
     phaseToolsP
   ]);
   if(!document.contains(el)) return;
-  if(!data || data.ok===false || !data.record){
+  if(!display.record){
     el.innerHTML="";
     return;
   }
-  el.innerHTML=noticeLandSpineHTML(data.record, phaseTools, {
+  el.innerHTML=display.freshness+noticeLandSpineHTML(display.record, phaseTools, {
     method:resolution.method,
     keys:resolution.keys,
     project_id:resolution.project_id

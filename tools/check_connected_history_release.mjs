@@ -37,7 +37,7 @@ import {
   historyBytesUnchanged,
   scheduledCycleStatus,
 } from "./lib/connected_history_release.mjs";
-import { resolveRepositoryRevision } from "./repository_revision.mjs";
+import { resolveRepositoryRevision, retainedMeasurementStatus } from "./repository_revision.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 export const RETAINED_PATH = "docs/evidence/connected-history-release/release-readback.json";
@@ -86,18 +86,32 @@ function requireCommit(sha, label) {
 }
 
 function parseArgs(argv) {
-  const args = { base: "https://cityscroll.org", browser: true, schedule: true, write: false, screenshotDir: null };
+  const args = { base: "https://cityscroll.org", browser: true, schedule: true, write: false,
+    refreshAlignment: false, screenshotDir: null };
   for (let index = 0; index < argv.length; index += 1) {
     const value = argv[index];
     if (value === "--base-url") args.base = argv[++index];
     else if (value === "--no-browser") args.browser = false;
     else if (value === "--no-schedule") args.schedule = false;
     else if (value === "--write") args.write = true;
+    else if (value === "--refresh-alignment") args.refreshAlignment = true;
     else if (value === "--screenshot-dir") args.screenshotDir = argv[++index];
     else throw new ReleaseRefusal(`unknown argument ${value}`);
   }
   args.base = String(args.base).replace(/\/+$/, "");
   return args;
+}
+
+export function releaseAlignment(provenance) {
+  const status = retainedMeasurementStatus(ROOT, provenance);
+  return { state: status.ok ? "current" : "stale", changed_inputs: status.changedInputs };
+}
+
+function refreshRetainedAlignment() {
+  const path = join(ROOT, RETAINED_PATH);
+  const document = JSON.parse(readFileSync(path, "utf8"));
+  document.release_alignment = releaseAlignment(document.measurement_provenance);
+  writeFileSync(path, `${JSON.stringify(document, null, 2)}\n`);
 }
 
 async function fetchServed(base, path) {
@@ -381,6 +395,7 @@ export function retainReadback(readback) {
   }
   const existing = readRetained();
   const inputs = MEASURED_INPUTS.map((path) => ({ path, sha256: sha256(readFileSync(join(ROOT, path))) }));
+  const measurementProvenance = { revision: readback.code_revision, inputs };
   const document = {
     schema: RELEASE_READBACK_SCHEMA,
     runner: "node tools/check_connected_history_release.mjs --write",
@@ -388,7 +403,8 @@ export function retainReadback(readback) {
     dossier_families: [...DOSSIER_FAMILIES],
     image_binaries_committed: false,
     policy: "Read-backs are appended, never rewritten, so original failures stay visible. Acceptance is re-derived from each read-back's facts.",
-    measurement_provenance: { revision: readback.code_revision, inputs },
+    measurement_provenance: measurementProvenance,
+    release_alignment: releaseAlignment(measurementProvenance),
     readbacks: [...(existing?.readbacks || []), readback],
   };
   writeFileSync(join(ROOT, RETAINED_PATH), `${JSON.stringify(document, null, 2)}\n`);
@@ -396,6 +412,10 @@ export function retainReadback(readback) {
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
+  if (args.refreshAlignment) {
+    refreshRetainedAlignment();
+    return;
+  }
   const readback = await readBack(args);
   if (args.write) retainReadback(readback);
   process.stdout.write(`${JSON.stringify(readback, null, 2)}\n`);

@@ -4,7 +4,6 @@
  *   node --test worker/test/zap_projects_lookup_kv.test.mjs
  */
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
 import {
@@ -166,13 +165,25 @@ test("lookup and fetchOpenDataRow consume the KV payload shape", async () => {
   assert.equal(row.lookup_path, "warehouse");
 });
 
-test("scheduled land lookup refresh is a public SODA page, not a secret-bearing path", () => {
-  const worker = readFileSync(new URL("../src/worker.mjs", import.meta.url), "utf8");
-  const lib = readFileSync(new URL("../src/lib/zap_projects_lookup_kv.mjs", import.meta.url), "utf8");
-  assert.match(worker, /event\.cron === "0 8 \* \* \*"/);
-  assert.match(worker, /refreshZapProjectsLookup\(env\)/);
-  assert.match(lib, /hgx4-8ukb/);
-  assert.match(lib, /sodaSellFacingLookupUrl/);
-  assert.equal(sodaSellFacingLookupUrl({ limit: 50 }).includes("hgx4-8ukb.json"), true);
-  assert.doesNotMatch(lib, /process\.env|SECRET|API_KEY|LEGISTAR|token=/i);
+test("land lookup refresh uses the public SODA page without credentials", async () => {
+  const requests = [];
+  const result = await refreshZapProjectsLookup(
+    { ALERT_STATE: memoryKV() },
+    {
+      now: NOW,
+      fetchImpl: async (url, init = {}) => {
+        requests.push({ url: String(url), init });
+        return { ok: true, json: async () => sodaRows() };
+      },
+    },
+  );
+  assert.equal(result.status, "success");
+  assert.equal(requests.length, 1);
+  const request = requests[0];
+  assert.equal(new URL(request.url).pathname, "/resource/hgx4-8ukb.json");
+  const headers = new Headers(request.init.headers);
+  assert.equal(headers.get("Accept"), "application/json");
+  assert.equal(headers.has("Authorization"), false);
+  assert.equal(headers.has("X-App-Token"), false);
+  assert.equal(new URL(request.url).searchParams.has("token"), false);
 });

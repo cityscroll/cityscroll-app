@@ -119,7 +119,7 @@ import { handleSemanticCandidates } from "./semantic_candidates.mjs";
 import { handleCitedPassages } from "./cited_retrieval.mjs";
 import { handleContract, handleContractsAnalysis, handleContractsBrowse } from "./contracts.mjs";
 import { handleLandDecisionPath, handleLandProject, handleLandProjectsBrowse } from "./land_projects.mjs";
-import { recordSourceAcquisitionReceipt } from "./lib/source_acquisition_receipt.mjs";
+import { startMorningZapOutcomes, withWorkerAcquisitionReceipt } from "./lib/worker_acquisition_runtime.mjs";
 import {
   beginCostControlProbe,
   canonicalCostProbeWorkload,
@@ -130,40 +130,6 @@ import { LAND_PROJECT_ID_PATTERN } from "../../capabilities/land_projects.mjs";
 import { RUM_MARKED_TRAFFIC_CLASSES, isRumProductionOrigin } from "../../site/rum_production.mjs";
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
-
-async function withWorkerAcquisitionReceipt(env, sourceContractId, runId, work, { signal } = {}) {
-  try {
-    const result = await work();
-    signal?.throwIfAborted();
-    const status = result?.status === "failed" || result?.status === "error" || result?.ok === false
-      ? "failed"
-      : "succeeded";
-    await recordSourceAcquisitionReceipt(env, {
-      source_contract_id: sourceContractId,
-      observed_at: new Date().toISOString(),
-      status,
-      run_id: runId,
-      publisher_clock_basis: status === "succeeded" && result?.publisher_updated_at ? "publisher_response" : null,
-      publisher_updated_at: status === "succeeded" ? result?.publisher_updated_at || null : null,
-      adapter: "worker-scheduled-refresh",
-    });
-    return result;
-  } catch (error) {
-    try {
-      await recordSourceAcquisitionReceipt(env, {
-        source_contract_id: sourceContractId,
-        observed_at: new Date().toISOString(),
-        status: "failed",
-        run_id: runId,
-        publisher_clock_basis: null,
-        publisher_updated_at: null,
-        adapter: "worker-scheduled-refresh",
-        exact_error: String(error?.message || error),
-      });
-    } catch { /* receipt failure must not mask the source failure */ }
-    throw error;
-  }
-}
 
 const COST_PROBE_HTTP_WORKLOADS = Object.freeze({
   health: { path: "/health", method: "GET" },
@@ -546,6 +512,12 @@ const worker = {
     // shared meeting view, route slices, Search, Now, and later alert replay
     // consume the same vintage instead of yesterday's snapshot.
     if (event.cron === "0 8 * * *") {
+      // Start independently of delivery and the other advisory acquisitions.
+      // A slow/failed digest must not strand resident land records indefinitely.
+      startMorningZapOutcomes(ctx, env, runId, refreshZapOutcomes, console, async (lookupOptions) => {
+        const r = await withWorkerAcquisitionReceipt(env, "zap-projects", runId, () => refreshZapProjectsLookup(env, lookupOptions));
+        console.log("land zap lookup:", JSON.stringify(r));
+      });
       try {
         const r = await withWorkerAcquisitionReceipt(env, "nyc-council-legistar", runId, () => refreshMeetingOutcomes(env));
         console.log("meeting outcomes:", JSON.stringify(r));
@@ -557,12 +529,6 @@ const worker = {
         console.log("hearings:", JSON.stringify(r));
       } catch (error) {
         console.error("hearing refresh failed:", String(error?.message || error));
-      }
-      try {
-        const r = await withWorkerAcquisitionReceipt(env, "zap-projects", runId, () => refreshZapProjectsLookup(env));
-        console.log("land zap lookup:", JSON.stringify(r));
-      } catch (error) {
-        console.error("land zap lookup refresh failed:", String(error?.message || error));
       }
       try {
         const r = await withWorkerAcquisitionReceipt(env, "city-record", runId, () => refreshLandUpcomingHearings(env));
@@ -842,15 +808,6 @@ const worker = {
       console.log("exact matter refresh:", JSON.stringify(r));
     } catch (e) {
       console.error("exact matter refresh failed (digest continues):", String(e?.message || e));
-    }
-    // Land ZAP outcomes: write-ahead prewarm for sell-facing project_ids (In Public Review,
-    // Noticed, Active, Filed — capped). Cold GET /zap-outcomes fans out to ZAP API + SODA and
-    // takes ~12s; warm KV hits are sub-second. Fail-soft; un-warmed ids still compute-on-miss.
-    try {
-      const r = await withWorkerAcquisitionReceipt(env, "zap-api-outcomes", runId, () => refreshZapOutcomes(env));
-      console.log("zap outcomes prewarm:", JSON.stringify(r));
-    } catch (e) {
-      console.error("zap outcomes prewarm failed (digest continues):", String(e?.message || e));
     }
     // NYC Rules: daily materialized join of City Record Agency Rules notices to NYC Rules
     // RSS lifecycle records. RSS enrichment is fail-soft — a stale or unreachable feed

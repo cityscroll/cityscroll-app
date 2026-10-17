@@ -1,7 +1,9 @@
 """Browser controls for bounded publisher activation and strict local navigation."""
 import importlib.util
+import json
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+import tempfile
 import threading
 import time
 import unittest
@@ -10,6 +12,66 @@ ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location("history_capture", ROOT / "tools/capture_documented_history_journeys.py")
 capture = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(capture)
+
+
+def resolve_pointer(document, pointer):
+    value = document
+    for token in pointer[2:].split("/"):
+        value = value[token.replace("~1", "/").replace("~0", "~")]
+    return value
+
+
+class ManifestProvenanceRoundTrip(unittest.TestCase):
+    def test_hermetic_and_production_writers_keep_pointer_ownership(self):
+        source = json.loads(capture.MANIFEST_PATH.read_text(encoding="utf-8"))
+        historical_receipt = source["production_measurement"]["run_receipt"]
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "manifest.json"
+            path.write_text(json.dumps(source), encoding="utf-8")
+            cases = [item["case"] for item in source["captures"]]
+            hermetic = {
+                "repository_revision": "a" * 40,
+                "measured_inputs": [{"path": "site/i18n.js", "sha256": "b" * 64}],
+                "captures": [{"case": case, "render_sha256": "c" * 64,
+                              "capture_sha256": None} for case in cases],
+            }
+            capture.write_hermetic_manifest(hermetic, path)
+            after_hermetic = json.loads(path.read_text(encoding="utf-8"))
+            self.assertEqual(after_hermetic["production_measurement"]["run_receipt"], historical_receipt)
+            retained = historical_receipt["retained_measurement"]
+            self.assertEqual(resolve_pointer(after_hermetic, retained["inputs_ref"]),
+                             after_hermetic["measurement_provenance"]["inputs"])
+            self.assertEqual(after_hermetic["measurement_provenance"]["revision"], retained["revision"])
+            self.assertEqual(after_hermetic["hermetic_measurement_provenance"], {
+                "revision": "a" * 40,
+                "inputs": hermetic["measured_inputs"],
+            })
+
+            production = source["production_measurement"]["run_receipt"]
+            production_receipt = {
+                "observed_at": production["observed_at"],
+                "base_url": production["origin"],
+                "repository_revision": production["repository_revision"],
+                "required_landed_commit": production["required_landed_commit"],
+                "served_revision": production["served_revision"],
+                "served_revision_after": production["served_revision_after"],
+                "data_vintage": production["data_vintage"],
+                "request_receipts": production["request_receipts"],
+                "captures": [{**item, "capture_sha256": item["sha256"]
+                              if item["hash_kind"] == "screenshot" else None}
+                             for item in production["captures"]],
+                "failure_control": {**production["failure_control"],
+                                    "capture_sha256": production["failure_control"]["sha256"]},
+            }
+            capture.write_production_manifest(production_receipt, path)
+            after_production = json.loads(path.read_text(encoding="utf-8"))
+            new_receipt = after_production["production_measurement"]["run_receipt"]
+            new_retained = new_receipt["retained_measurement"]
+            self.assertEqual(new_retained["revision"], "a" * 40)
+            self.assertEqual(resolve_pointer(after_production, new_retained["inputs_ref"]),
+                             hermetic["measured_inputs"])
+            self.assertEqual(after_production["hermetic_measurement_provenance"]["inputs"],
+                             hermetic["measured_inputs"])
 
 
 class Handler(BaseHTTPRequestHandler):

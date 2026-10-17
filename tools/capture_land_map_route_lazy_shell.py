@@ -21,6 +21,7 @@ from __future__ import annotations
 import functools
 import hashlib
 import json
+import argparse
 import subprocess
 import threading
 import time
@@ -437,6 +438,15 @@ def snapshot_vintage() -> dict:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--module-sizes-only", action="store_true")
+    args = parser.parse_args()
+    if args.module_sizes_only:
+        receipt = json.loads(RECEIPT.read_text(encoding="utf-8"))
+        receipt["module_size_gate"]["after"] = module_sizes()["after"]
+        RECEIPT.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
+        print("wrote", RECEIPT)
+        return
     OUT.mkdir(parents=True, exist_ok=True)
     with head_site_workspace(ROOT, "capture-land-map-route-lazy-shell") as site_root:
         files = capture_before(site_root)

@@ -655,6 +655,13 @@ function main() {
       if (!process.exitCode) console.log(`procurement artifacts current (${verified.rowCount} objects)`);
       return;
     }
+    // The build boundary probes before deciding to rebuild. A missing or stale
+    // receipt is not permission to run the expensive full comparison twice.
+    if (process.argv.includes("--receipt-only")) {
+      console.error("procurement check receipt unavailable; rebuild required");
+      process.exitCode = 1;
+      return;
+    }
   }
   buildAndEmit();
 }

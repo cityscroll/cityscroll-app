@@ -1,6 +1,6 @@
 /**
- * Characterization: daily write-ahead prewarm for Land ZAP outcomes.
- * Cold GET /zap-outcomes is multi-source (~12s); prewarm fills KV so public reads hit cache.
+ * Characterization: bounded write-ahead materialization for Land ZAP outcomes.
+ * Scheduled and authenticated refreshes fill KV; public GET reads only retained observations.
  *
  *   node --test worker/test/zap_outcomes_prewarm.test.mjs
  */
@@ -143,13 +143,18 @@ test("prewarmZapOutcomes: bounded, fail-soft, summary counts", async () => {
   assert.equal(summary.skipped, 1);
   assert.equal(summary.computed, 1);
   assert.equal(summary.failed, 1);
+  assert.deepEqual(summary.failure_reasons, ["upstream"]);
   assert.ok(await store.get(kvKey("B")));
 });
 
-test("refreshZapOutcomes: no-kv skip; lists + prewarms with fixture fetch", async () => {
+test("refreshZapOutcomes: no-kv failure; lists + prewarms with fixture fetch", async () => {
   const bare = await refreshZapOutcomes({});
-  assert.equal(bare.status, "skipped");
+  assert.equal(bare.status, "failed");
   assert.equal(bare.reason, "no-kv");
+
+  const unbound = await prewarmZapOutcomes({}, ["2023Q0315"]);
+  assert.equal(unbound.failed, 1);
+  assert.deepEqual(unbound.failure_reasons, ["no-kv"]);
 
   const store = kv();
   const env = { ALERT_STATE: store };
@@ -178,7 +183,7 @@ test("refreshZapOutcomes: no-kv skip; lists + prewarms with fixture fetch", asyn
   assert.equal(body.record.project_id, "2023Q0315");
 });
 
-test("handleAdminZapOutcomesRefresh: auth + no-kv skip (no network)", async () => {
+test("handleAdminZapOutcomesRefresh: auth + no-kv failure (no network)", async () => {
   const noKey = await handleAdminZapOutcomesRefresh(
     new Request("https://w/admin/zap-outcomes-refresh", { method: "POST" }),
     {},
@@ -203,7 +208,7 @@ test("handleAdminZapOutcomesRefresh: auth + no-kv skip (no network)", async () =
   );
   assert.equal(ok.status, 200);
   const body = await ok.json();
-  assert.equal(body.status, "skipped");
+  assert.equal(body.status, "failed");
   assert.equal(body.reason, "no-kv");
   assert.ok(body.triggeredAt);
 });
@@ -222,4 +227,66 @@ test("refreshZapOutcomes: explicit projectIds with injected build (no network)",
   assert.equal(r.requested, 2);
   assert.equal(r.computed, 2);
   assert.equal(r.failed, 0);
+});
+
+test("failed acquisition objects retain the last good observation and expose a separate attempt", async () => {
+  const store = kv();
+  const id = "2026K0233";
+  const previous = recordFor(id, "2026-09-28T00:00:00Z");
+  await store.put(kvKey(id), JSON.stringify(previous));
+  const result = await prewarmOneZapOutcome({ ALERT_STATE: store }, id, {
+    force: true,
+    nowMs: Date.parse("2026-10-16T19:00:00Z"),
+    build: async () => ({ project_id: id, open_data: { project_id: id },
+      join: { matched: false, reason: "Could not reach the ZAP project API for decision documents." },
+      useful: false, filled: false }),
+  });
+  assert.equal(result.status, "failed");
+  assert.deepEqual(JSON.parse(await store.get(kvKey(id))), previous);
+  const attempt = JSON.parse(await store.get(`${kvKey(id)}:attempt`));
+  assert.equal(attempt.status, "failed");
+  assert.equal(attempt.observed_at, "2026-10-16T19:00:00.000Z");
+});
+
+test("refresh distinguishes failures, partial coverage, fresh skips and empty work", async () => {
+  const env = { ALERT_STATE: kv() };
+  const build = async id => id === "BAD" ? { project_id: id, join: { matched: false } } : recordFor(id);
+  assert.equal((await refreshZapOutcomes(env, { projectIds: ["BAD"], build })).status, "failed");
+  assert.equal((await refreshZapOutcomes(env, { projectIds: ["GOOD", "BAD"], build })).status, "partial");
+  const fresh = await refreshZapOutcomes(env, { projectIds: ["GOOD"], build });
+  assert.equal(fresh.status, "skipped");
+  assert.equal(fresh.reason, "already-fresh");
+  const empty = await refreshZapOutcomes(env, { projectIds: [], build });
+  assert.equal(empty.status, "skipped");
+  assert.equal(empty.reason, "empty-roster");
+});
+
+test("refresh reports partial coverage when roster queries fail", async () => {
+  const env = { ALERT_STATE: kv() };
+  const fetchImpl = async () => ({ ok: false, status: 503 });
+  const result = await refreshZapOutcomes(env, {
+    fetchImpl,
+    demoIds: ["DEMO"],
+    statuses: ["In Public Review", "Active"],
+    build: async id => recordFor(id),
+  });
+  assert.equal(result.status, "partial");
+  assert.equal(result.reason, "roster-unavailable");
+  assert.deepEqual(result.listing, {
+    requested: 2,
+    succeeded: 0,
+    failed: 2,
+    failures: [
+      { status: "In Public Review", reason: "http-503" },
+      { status: "Active", reason: "http-503" },
+    ],
+  });
+  assert.equal(result.computed, 1);
+});
+
+test("valid thin observations are accepted while mismatched identities are rejected", async () => {
+  const env = { ALERT_STATE: kv() };
+  const thin = { ...recordFor("THIN"), filled: false, documents: [] };
+  assert.equal((await prewarmOneZapOutcome(env, "THIN", { build: async () => thin })).status, "computed");
+  assert.equal((await prewarmOneZapOutcome(env, "OTHER", { build: async () => thin })).status, "failed");
 });

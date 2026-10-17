@@ -92,6 +92,9 @@ for (const cron of CRONS) {
     await Promise.all(worker.pending);
     assert.equal(worker.calls[0], "refreshPublicSearchUsageSnapshot");
     assert.equal(worker.calls.filter((name) => name === "refreshPublicSearchUsageSnapshot").length, 1);
+    if (cron === "0 8 * * *") {
+      assert.equal(worker.calls.filter((name) => name === "startMorningZapOutcomes").length, 1);
+    }
     assert.equal(worker.pending.length, 1, "the platform retains the independent refresh");
     const published = await readPublicSearchUsage(env, { now: NOW });
     assert.equal(published.available, true);
