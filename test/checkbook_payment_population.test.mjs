@@ -92,31 +92,67 @@ describe("payment population short-page guard", () => {
     assert.equal(SHORT_PAGE_ATTEMPTS, 3);
   });
 
-  it("fails closed on a truncated fixture page instead of advancing past it", async () => {
-    await withTempDir("checkbook-payment-short-page", async (stage) => {
+  function runFixturePage(stage, pageXml, label) {
+    const base = JSON.parse(readFileSync(FIXTURE, "utf8"));
+    const fixturePath = join(stage, `${label}-fixture.json`);
+    writeFileSync(fixturePath, `${JSON.stringify({
+      ...base,
+      pages: { "fy2026:1": base.pages["fy2026:1"], "fy2026:3": pageXml },
+    }, null, 2)}\n`);
+    return spawnSync(process.execPath, [
+      "warehouse/scripts/checkbook_payment_population.mjs",
+      "--from-fixture",
+      "--fixture", fixturePath,
+      "--fiscal-years", "2026",
+      "--page-size", "2",
+      "--stage-dir", join(stage, "out"),
+      "--receipt", join(stage, "receipt.json"),
+      "--output", join(stage, "payments.csv"),
+    ], { cwd: ROOT, encoding: "utf8" });
+  }
+
+  it("fails closed on an empty fixture page instead of advancing past it", async () => {
+    await withTempDir("checkbook-payment-empty-page", async (stage) => {
       const base = JSON.parse(readFileSync(FIXTURE, "utf8"));
       const emptyPage = String(base.pages["fy2026:3"]).replace(
         /<spending_transactions>[\s\S]*?<\/spending_transactions>/,
         "<spending_transactions></spending_transactions>",
       );
-      const fixturePath = join(stage, "short-page-fixture.json");
-      writeFileSync(fixturePath, `${JSON.stringify({
-        ...base,
-        pages: { "fy2026:1": base.pages["fy2026:1"], "fy2026:3": emptyPage },
-      }, null, 2)}\n`);
-      const result = spawnSync(process.execPath, [
-        "warehouse/scripts/checkbook_payment_population.mjs",
-        "--from-fixture",
-        "--fixture", fixturePath,
-        "--fiscal-years", "2026",
-        "--page-size", "2",
-        "--stage-dir", join(stage, "out"),
-        "--receipt", join(stage, "receipt.json"),
-        "--output", join(stage, "payments.csv"),
-      ], { cwd: ROOT, encoding: "utf8" });
+      const result = runFixturePage(stage, emptyPage, "empty-page");
       assert.notEqual(result.status, 0);
       assert.match(`${result.stderr}\n${result.stdout}`, /short page for FY2026 offset 3/);
       assert.doesNotMatch(`${result.stderr}\n${result.stdout}`, /parsed row count 2 does not equal/);
+    });
+  });
+
+  it("fails closed on a partial fixture page that returns fewer rows than expected", async () => {
+    await withTempDir("checkbook-payment-partial-page", async (stage) => {
+      const base = JSON.parse(readFileSync(FIXTURE, "utf8"));
+      const full = String(base.pages["fy2026:3"]);
+      const firstTx = full.match(/<transaction>[\s\S]*?<\/transaction>/)[0];
+      const partialPage = full.replace(
+        /<spending_transactions>[\s\S]*?<\/spending_transactions>/,
+        `<spending_transactions>${firstTx}</spending_transactions>`,
+      );
+      const result = runFixturePage(stage, partialPage, "partial-page");
+      assert.notEqual(result.status, 0);
+      assert.match(`${result.stderr}\n${result.stdout}`, /short page for FY2026 offset 3: parsed 1 rows, expected 2/);
+      assert.doesNotMatch(`${result.stderr}\n${result.stdout}`, /parsed row count .* does not equal/);
+    });
+  });
+
+  it("fails closed on a malformed success page that yields no parseable transactions", async () => {
+    await withTempDir("checkbook-payment-malformed-page", async (stage) => {
+      const malformedPage = [
+        "<response><status><result>success</result></status>",
+        "<result_records><record_count>4</record_count>",
+        "<spending_transactions>NOT-A-TRANSACTION</spending_transactions>",
+        "</result_records></response>",
+      ].join("");
+      const result = runFixturePage(stage, malformedPage, "malformed-page");
+      assert.notEqual(result.status, 0);
+      assert.match(`${result.stderr}\n${result.stdout}`, /short page for FY2026 offset 3: parsed 0 rows, expected 2/);
+      assert.doesNotMatch(`${result.stderr}\n${result.stdout}`, /parsed row count .* does not equal/);
     });
   });
 
