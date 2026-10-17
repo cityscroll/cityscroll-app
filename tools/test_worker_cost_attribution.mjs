@@ -7,6 +7,8 @@ import { createNativeCostControlProbeRecord } from "../worker/src/lib/cost_contr
 import {
   REQUIRED_COST_COHORTS,
   buildWorkerCostProfile as buildWorkerCostProfileRaw,
+  coldStartFlagRawCohort,
+  parseColdStartFlagRaw,
   providerDeploymentReceiptSha256,
   sanitizeNativeInvocation as sanitizeNativeInvocationRaw,
   validateWorkerCostProfile,
@@ -109,7 +111,7 @@ function sample(cohort, cpu = 4) {
     ? nativeEvent("scheduled", cron, cpu)
     : isQueue
       ? nativeEvent("queue", "crol-cost-probe", cpu)
-      : event(cpu, cohort.endsWith(":warm") ? 0 : 1);
+      : event(cpu, parseColdStartFlagRaw(cohort) ?? 1);
   return sanitizeNativeInvocation(raw, {
     cohort,
     revision,
@@ -130,7 +132,7 @@ function sample(cohort, cpu = 4) {
 }
 
 test("owned tail events retain provider-native CPU and discard raw request material", () => {
-  const retained = sample("health:cold", 0);
+  const retained = sample("health", 0);
   assert.equal(retained.native_cpu_ms, 0);
   assert.equal(retained.native_cpu_source.field, "cpuTime");
   assert.equal("wallTime" in retained, false);
@@ -142,7 +144,7 @@ test("one failed invocation is not double-counted when it also has an exception"
   raw.outcome = "exception";
   raw.exceptions = [{ name: "Error", message: "bounded" }];
   const retained = sanitizeNativeInvocation(raw, {
-    cohort: "health:cold", revision,
+    cohort: "health", revision,
     condition: { mode: "provider-observed", source: "$metadata.coldStart", cold_start: true },
     expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
     operations: emptyOperations(),
@@ -154,7 +156,7 @@ test("provider samples must match the receipt-bound version for the health revis
   const wrongVersion = event();
   wrongVersion.scriptVersion.id = "older-provider-version";
   assert.throws(() => sanitizeNativeInvocation(wrongVersion, {
-    cohort: "health:cold", revision,
+    cohort: "health", revision,
     condition: { mode: "provider-observed", source: "$metadata.coldStart", cold_start: true },
     expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
     operations: emptyOperations(),
@@ -182,7 +184,7 @@ test("literal header, URL and method ownership are all required before persisten
     { expectedUrl: "https://example.invalid/other" },
     { expectedMethod: "POST" },
   ]) assert.throws(() => sanitizeNativeInvocation(event(), {
-    cohort: "health:cold", revision,
+    cohort: "health", revision,
     condition: { mode: "provider-observed", source: "$metadata.coldStart", cold_start: true },
     expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health", ...override,
   }));
@@ -267,11 +269,36 @@ test("complete bounded profiles cover routes, three crons, queue and collector o
     revision, observedAt: "2026-10-09T13:05:00Z", durationSeconds: 6 * 60 * 60, eventCount: samples.length,
   });
   assert.equal(profile.complete, true);
+  assert.equal(profile.window.max_seconds, 86_400);
+  assert.equal(profile.window.max_events, 10_000);
+  assert.equal(typeof profile.traffic_mix, "string");
+  assert.ok(profile.traffic_mix.trim().length > 0);
   assert.deepEqual(validateWorkerCostProfile(profile), { ok: true, complete: true });
   assert.throws(() => buildWorkerCostProfile(samples, {
     revision, observedAt: "2026-10-10T08:00:01Z", durationSeconds: 24 * 60 * 60 + 1,
     eventCount: samples.length,
   }), /24 hour bound/);
+});
+
+test("profiles require an explicit traffic_mix label on the receipt", () => {
+  const samples = REQUIRED_COST_COHORTS.map((cohort) => sample(cohort));
+  const labeled = buildWorkerCostProfile(samples, {
+    revision,
+    observedAt: "2026-10-09T13:05:00Z",
+    durationSeconds: 120,
+    eventCount: samples.length,
+    trafficMix: "fixed-controlled-v1",
+  });
+  assert.equal(labeled.traffic_mix, "fixed-controlled-v1");
+  assert.deepEqual(validateWorkerCostProfile(labeled), { ok: true, complete: true });
+
+  const blank = structuredClone(labeled);
+  blank.traffic_mix = "   ";
+  assert.throws(() => validateWorkerCostProfile(blank), /traffic_mix label is required/);
+
+  const missing = structuredClone(labeled);
+  delete missing.traffic_mix;
+  assert.throws(() => validateWorkerCostProfile(missing), /traffic_mix label is required/);
 });
 
 test("profiles retain and enforce every sample revision", () => {
@@ -283,7 +310,7 @@ test("profiles retain and enforce every sample revision", () => {
   const profile = buildWorkerCostProfile(REQUIRED_COST_COHORTS.map((cohort) => sample(cohort)), {
     revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 120, eventCount: samples.length,
   });
-  profile.cohorts["health:cold"].revision = "b".repeat(40);
+  profile.cohorts["health"].revision = "b".repeat(40);
   assert.throws(() => validateWorkerCostProfile(profile), /revision does not match/);
 });
 
@@ -292,11 +319,15 @@ test("imported profiles validate every retained sample's source and condition", 
     revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 120, eventCount: REQUIRED_COST_COHORTS.length,
   });
   const badSource = makeProfile();
-  badSource.cohorts["health:cold"].samples[0].native_cpu_source.field = "wallTime";
+  badSource.cohorts["health"].samples[0].native_cpu_source.field = "wallTime";
   assert.throws(() => validateWorkerCostProfile(badSource), /provider-native invocation CPU/);
   const badCondition = makeProfile();
-  badCondition.cohorts["health:cold"].samples[0].condition.cold_start = false;
-  assert.throws(() => validateWorkerCostProfile(badCondition), /does not match cohort/);
+  badCondition.cohorts["health"].samples[0].condition.isolate_observation.provisional_label = "warm";
+  badCondition.cohorts["health"].samples[0].condition.isolate_observation.present = false;
+  badCondition.cohorts["health"].samples[0].condition.isolate_observation.raw = null;
+  // present=false with a non-unknown label is inventing isolate state
+  badCondition.cohorts["health"].samples[0].condition.isolate_observation.provisional_label = "cold";
+  assert.throws(() => validateWorkerCostProfile(badCondition), /must not invent cold or warm/);
 });
 
 test("imported profile windows fail closed on invalid bounds", () => {
@@ -311,11 +342,11 @@ test("imported profile windows fail closed on invalid bounds", () => {
 });
 
 test("missing samples stay unknown and cannot masquerade as zero", () => {
-  const profile = buildWorkerCostProfile([sample("health:cold", 0)], {
+  const profile = buildWorkerCostProfile([sample("health", 0)], {
     revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 1, eventCount: 1,
   });
-  assert.equal(profile.cohorts["health:warm"].status, "unknown");
-  assert.equal(profile.cohorts["health:warm"].native_cpu_ms, null);
+  assert.equal(profile.cohorts["search"].status, "unknown");
+  assert.equal(profile.cohorts["search"].native_cpu_ms, null);
   assert.throws(() => validateWorkerCostProfile(profile), /unknown/);
 });
 
@@ -323,40 +354,121 @@ test("wall time without a native CPU field is rejected", () => {
   const raw = event();
   delete raw.cpuTime;
   assert.throws(() => sanitizeNativeInvocation(raw, {
-    cohort: "health:cold", revision,
+    cohort: "health", revision,
     condition: { mode: "provider-observed", source: "$metadata.coldStart", cold_start: true },
     expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
   }), /provider-native CPU/);
 });
 
-test("cold and warm labels require matching provider coldStart evidence", () => {
+test("route cohorts keep absent coldStart unknown and isolate labels stay evidence-bound", () => {
   const derived = sanitizeNativeInvocation(event(4, 1), {
-    cohort: "health:cold", revision,
+    cohort: "health", revision,
     condition: { mode: "caller-invented", source: "$metadata.coldStart", cold_start: false },
     expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
     operations: emptyOperations(),
   });
-  assert.deepEqual(derived.condition, {
-    mode: "provider-observed", source: "$metadata.coldStart", cold_start: true,
-  });
-  assert.throws(() => sanitizeNativeInvocation(event(4, 0), {
-    cohort: "health:cold", revision,
-    expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
-  }), /does not match cohort/);
+  assert.equal(derived.condition.mode, "bounded-production-execution");
+  assert.equal(derived.condition.isolate_observation.present, true);
+  assert.equal(derived.condition.isolate_observation.raw, 1);
+  assert.equal(derived.condition.isolate_observation.provisional_label, "unverified-raw");
+  assert.equal(derived.condition.isolate_observation.semantics, "unverified-provider-flag");
+  assert.equal("cold_start" in derived.condition, false);
+
   const missing = event();
   delete missing.$metadata.coldStart;
-  assert.throws(() => sanitizeNativeInvocation(missing, {
-    cohort: "health:warm", revision,
+  const absent = sanitizeNativeInvocation(missing, {
+    cohort: "health", revision,
     expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
-  }), /numeric 0 or 1/);
+    operations: emptyOperations(),
+  });
+  assert.equal(absent.condition.isolate_observation.present, false);
+  assert.equal(absent.condition.isolate_observation.raw, null);
+  assert.equal(absent.condition.isolate_observation.provisional_label, "unknown");
+  assert.equal("cold_start" in absent.condition, false);
+
+  assert.throws(() => sanitizeNativeInvocation(event(4, 0), {
+    cohort: coldStartFlagRawCohort("health", 1), revision,
+    expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
+  }), /does not match raw cohort bucket/);
+  assert.throws(() => sanitizeNativeInvocation(missing, {
+    cohort: coldStartFlagRawCohort("health", 0), revision,
+    expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
+  }), /numeric 0 or 1 flag for raw isolate-bucket cohorts/);
   assert.throws(() => sanitizeNativeInvocation(event(4, true), {
+    cohort: coldStartFlagRawCohort("health", 1), revision,
+    expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
+  }), /numeric 0 or 1 flag for raw isolate-bucket cohorts/);
+});
+
+test("raw coldStart 0/1 never becomes semantic cold_start true/false", () => {
+  const rawOne = sanitizeNativeInvocation(event(4, 1), {
+    cohort: coldStartFlagRawCohort("health", 1), revision,
+    expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
+    operations: emptyOperations(),
+  });
+  assert.equal(rawOne.condition.isolate_observation.present, true);
+  assert.equal(rawOne.condition.isolate_observation.raw, 1);
+  assert.equal(rawOne.condition.isolate_observation.provisional_label, "unverified-raw");
+  assert.equal(rawOne.condition.isolate_observation.semantics, "unverified-provider-flag");
+  assert.equal("cold_start" in rawOne.condition, false);
+  assert.notEqual(rawOne.condition.mode, "provider-observed");
+
+  const rawZero = sanitizeNativeInvocation(event(4, 0), {
+    cohort: coldStartFlagRawCohort("health", 0), revision,
+    expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
+    operations: emptyOperations(),
+  });
+  assert.equal(rawZero.condition.isolate_observation.raw, 0);
+  assert.equal(rawZero.condition.isolate_observation.provisional_label, "unverified-raw");
+  assert.equal(rawZero.condition.isolate_observation.semantics, "unverified-provider-flag");
+  assert.equal("cold_start" in rawZero.condition, false);
+
+  // Imported semantic cold_start claims fail closed under unverified semantics.
+  const profile = buildWorkerCostProfile(REQUIRED_COST_COHORTS.map((cohort) => sample(cohort)), {
+    revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 120,
+    eventCount: REQUIRED_COST_COHORTS.length,
+  });
+  profile.cohorts.health.samples[0].condition = {
+    mode: "provider-observed",
+    source: "$metadata.coldStart",
+    cold_start: true,
+    semantics: "unverified-provider-flag",
+  };
+  assert.throws(
+    () => validateWorkerCostProfile(profile),
+    /must not claim semantic cold_start from unverified/,
+  );
+});
+
+test("legacy :cold/:warm cohort names and semantic cold/warm labels are rejected", () => {
+  assert.throws(() => sanitizeNativeInvocation(event(4, 1), {
     cohort: "health:cold", revision,
     expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
-  }), /numeric 0 or 1/);
+    operations: emptyOperations(),
+  }), /unknown cost cohort/);
+  assert.throws(() => sanitizeNativeInvocation(event(4, 0), {
+    cohort: "health:warm", revision,
+    expectedHeaderValue: "owned", expectedUrl: "https://example.invalid/health",
+    operations: emptyOperations(),
+  }), /unknown cost cohort/);
+
+  const profile = buildWorkerCostProfile(REQUIRED_COST_COHORTS.map((cohort) => sample(cohort)), {
+    revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 120,
+    eventCount: REQUIRED_COST_COHORTS.length,
+  });
+  profile.cohorts.health.samples[0].condition.isolate_observation = {
+    present: true,
+    raw: 1,
+    provisional_label: "cold",
+    semantics: "unverified-provider-flag",
+  };
+  assert.throws(() => validateWorkerCostProfile(profile), /must stay unverified-raw/);
+  profile.cohorts.health.samples[0].condition.isolate_observation.provisional_label = "warm";
+  assert.throws(() => validateWorkerCostProfile(profile), /must stay unverified-raw/);
 });
 
 test("attempted writes cannot be represented as confirmed", () => {
-  const bad = sample("health:cold");
+  const bad = sample("health");
   bad.operations = { ...emptyOperations(), kv_writes: { attempted: 0, confirmed: 1 } };
   const samples = REQUIRED_COST_COHORTS.map((cohort) => sample(cohort));
   samples[0] = bad;

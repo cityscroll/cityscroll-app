@@ -1,18 +1,62 @@
 import { createHash } from "node:crypto";
 
+/**
+ * Attribution completeness uses route, cron, queue, and collector cohorts.
+ * Provider `$metadata.coldStart` is an optional numeric field whose 0/1 meaning
+ * is unverified on this account; missing or unverified values stay unknown and
+ * never become warm, cold, zero, or `cold_start` true/false. Optional warehouse
+ * cohorts are keyed only by the raw provider flag value
+ * (`:cold_start_flag_raw=0` / `:cold_start_flag_raw=1`) with semantics
+ * `unverified-provider-flag`. They are never named, labeled, or validated as
+ * cold or warm, and never set `cold_start` true/false. Contracts that require
+ * semantic cold/warm stay UNKNOWN.
+ */
+export const HTTP_ROUTE_COHORTS = Object.freeze([
+  "health", "unknown-route", "events", "rum-16", "search", "nearby",
+  "browse", "zap-bbl", "zap-project", "doing-business",
+]);
+
+export const COLD_START_FLAG_RAW_KEY = "cold_start_flag_raw";
+export const COLD_START_FLAG_RAW_SUFFIX_RE = /:cold_start_flag_raw=([01])$/;
+
+export function coldStartFlagRawCohort(base, raw) {
+  if (raw !== 0 && raw !== 1) fail("cold_start_flag_raw must be numeric 0 or 1");
+  return `${base}:cold_start_flag_raw=${raw}`;
+}
+
+export function parseColdStartFlagRaw(cohort) {
+  const match = String(cohort || "").match(COLD_START_FLAG_RAW_SUFFIX_RE);
+  return match ? Number(match[1]) : null;
+}
+
+export function baseCohortFromFlagRaw(cohort) {
+  return String(cohort || "").replace(COLD_START_FLAG_RAW_SUFFIX_RE, "");
+}
+
+export const OPTIONAL_ISOLATE_COHORTS = Object.freeze(
+  HTTP_ROUTE_COHORTS.flatMap((cohort) => [
+    coldStartFlagRawCohort(cohort, 1),
+    coldStartFlagRawCohort(cohort, 0),
+  ]),
+);
+
 export const REQUIRED_COST_COHORTS = Object.freeze([
-  "health:cold", "health:warm",
-  "unknown-route:cold", "unknown-route:warm",
-  "events:cold", "events:warm",
-  "rum-16:cold", "rum-16:warm",
-  "search:cold", "search:warm",
-  "nearby:cold", "nearby:warm",
-  "browse:cold", "browse:warm",
-  "zap-bbl:cold", "zap-bbl:warm",
-  "zap-project:cold", "zap-project:warm",
-  "doing-business:cold", "doing-business:warm",
+  ...HTTP_ROUTE_COHORTS,
   "cron:0 8 * * *", "cron:0 10 * * *", "cron:0 13 * * *", "queue", "collector-overhead",
 ]);
+
+export const ISOLATE_CONTRACT = Object.freeze({
+  source: "$metadata.coldStart",
+  semantics: "unverified-provider-flag",
+  missing_means: "unknown",
+  never_infer_from: Object.freeze([
+    "request-order",
+    "wall-time",
+    "startup-time",
+    "javascript-elapsed",
+    "absent-field",
+  ]),
+});
 
 export const COST_METERS = Object.freeze([
   "native_cpu_ms", "collector_cpu_ms", "kv_reads", "kv_writes",
@@ -193,21 +237,84 @@ function queueCondition(event, options) {
   }, operations: ownership.operations };
 }
 
-function providerColdCondition(event, cohort) {
+function providerFlagRawCondition(event, cohort) {
   const coldStart = event?.$metadata?.coldStart;
-  if (coldStart !== 0 && coldStart !== 1) fail("provider $metadata.coldStart must be the numeric 0 or 1 flag");
-  const cold = coldStart === 1;
-  if (cold !== cohort.endsWith(":cold")) fail("provider $metadata.coldStart does not match cohort");
-  return { mode: "provider-observed", source: "$metadata.coldStart", cold_start: cold };
+  if (coldStart !== 0 && coldStart !== 1) {
+    fail("provider $metadata.coldStart must be the numeric 0 or 1 flag for raw isolate-bucket cohorts");
+  }
+  const wantRaw = parseColdStartFlagRaw(cohort);
+  if (wantRaw === null) {
+    fail("cohort must be keyed by cold_start_flag_raw=0 or =1");
+  }
+  if (coldStart !== wantRaw) {
+    fail("provider $metadata.coldStart does not match raw cohort bucket");
+  }
+  // Unverified optional flag: keep raw evidence only. Never mint cold_start.
+  return providerRouteCondition(event);
+}
+
+function providerRouteCondition(event) {
+  const coldStart = event?.$metadata?.coldStart;
+  const isolate = coldStart === 0 || coldStart === 1
+    ? {
+      present: true,
+      raw: coldStart,
+      // Raw provider flag only; 0/1 is unverified and never accepted as cold/warm.
+      provisional_label: "unverified-raw",
+      semantics: ISOLATE_CONTRACT.semantics,
+    }
+    : {
+      present: false,
+      raw: null,
+      provisional_label: "unknown",
+      semantics: ISOLATE_CONTRACT.semantics,
+    };
+  return {
+    mode: "bounded-production-execution",
+    source: "owned-http-probe",
+    isolate_observation: isolate,
+  };
+}
+
+function validateIsolateObservation(isolate, path, { requirePresentRaw = null } = {}) {
+  if (!isolate || typeof isolate !== "object") fail(`${path}.isolate_observation is required`);
+  if (isolate.semantics !== ISOLATE_CONTRACT.semantics) fail(`${path}.isolate_observation.semantics is invalid`);
+  if (isolate.present === true) {
+    if (isolate.raw !== 0 && isolate.raw !== 1) fail(`${path}.isolate_observation.raw must be 0 or 1 when present`);
+    if (isolate.provisional_label !== "unverified-raw") {
+      fail(`${path}.isolate_observation.provisional_label must stay unverified-raw`);
+    }
+    if (requirePresentRaw !== null && isolate.raw !== requirePresentRaw) {
+      fail(`${path}.isolate_observation.raw does not match raw cohort bucket`);
+    }
+  } else if (isolate.present === false) {
+    if (requirePresentRaw !== null) fail(`${path}.isolate_observation must be present for raw isolate-bucket cohorts`);
+    if (isolate.raw !== null) fail(`${path}.isolate_observation.raw must be null when absent`);
+    if (isolate.provisional_label !== "unknown") fail(`${path} must not invent cold or warm from absence`);
+  } else {
+    fail(`${path}.isolate_observation.present is invalid`);
+  }
 }
 
 function validateCondition(cohort, condition, path) {
   if (!condition || typeof condition !== "object" || !condition.mode) fail(`${path} controlled condition evidence is required`);
-  if (cohort.endsWith(":cold") || cohort.endsWith(":warm")) {
-    if (condition.source !== "$metadata.coldStart" || typeof condition.cold_start !== "boolean") {
-      fail(`${path} must use provider $metadata.coldStart evidence`);
+  if ("cold_start" in condition) {
+    // Unverified optional $metadata.coldStart must never become semantic cold/warm.
+    fail(`${path} must not claim semantic cold_start from unverified $metadata.coldStart`);
+  }
+  const flagRaw = parseColdStartFlagRaw(cohort);
+  if (flagRaw !== null) {
+    if (condition.mode !== "bounded-production-execution") {
+      fail(`${path} must use bounded production execution evidence`);
     }
-    if (condition.cold_start !== cohort.endsWith(":cold")) fail(`${path} coldStart does not match cohort`);
+    validateIsolateObservation(condition.isolate_observation, path, { requirePresentRaw: flagRaw });
+  } else if (HTTP_ROUTE_COHORTS.includes(cohort) || cohort === "collector-overhead") {
+    if (condition.mode !== "bounded-production-execution") {
+      fail(`${path} must use bounded production execution evidence`);
+    }
+    if (condition.isolate_observation) {
+      validateIsolateObservation(condition.isolate_observation, path);
+    }
   } else if (cohort.startsWith("cron:")) {
     requireExactKeys(condition, [
       "mode", "source", "cron", "scheduled_time", "provider_request_id_sha256", "run_marker_sha256", "workload_digest", "instrumentation_log_count",
@@ -314,7 +421,9 @@ export function sanitizeNativeInvocation(event, {
   expectedBatchFingerprint,
   expectedBatchSize,
 } = {}) {
-  if (!REQUIRED_COST_COHORTS.includes(cohort)) fail(`unknown cost cohort ${cohort}`);
+  if (!REQUIRED_COST_COHORTS.includes(cohort) && !OPTIONAL_ISOLATE_COHORTS.includes(cohort)) {
+    fail(`unknown cost cohort ${cohort}`);
+  }
   let retainedCondition = condition;
   let retainedOperations = operations;
   if (cohort.startsWith("cron:")) {
@@ -338,7 +447,11 @@ export function sanitizeNativeInvocation(event, {
     const ownedHeader = headers["x-cityscroll-cost-probe"] || headers["X-Cityscroll-Cost-Probe"];
     if (!expectedHeaderValue || ownedHeader !== expectedHeaderValue) fail("provider event is not owned by the literal probe header");
     if (request?.url !== expectedUrl || request?.method !== expectedMethod) fail("provider event does not match the expected URL and method");
-    if (cohort.endsWith(":cold") || cohort.endsWith(":warm")) retainedCondition = providerColdCondition(event, cohort);
+    if (parseColdStartFlagRaw(cohort) !== null) {
+      retainedCondition = providerFlagRawCondition(event, cohort);
+    } else if (HTTP_ROUTE_COHORTS.includes(cohort) || cohort === "collector-overhead") {
+      retainedCondition = providerRouteCondition(event);
+    }
   }
   const provider = providerInvocation(event);
   const cpu = event?.cpuTime ?? provider.cpuTimeMs;
@@ -422,6 +535,8 @@ export function buildWorkerCostProfile(samples, {
   if (!/^[a-f0-9]{40}$/.test(String(revision || ""))) fail("profile revision must be a full commit SHA");
   finiteNonNegative(durationSeconds, "duration_seconds");
   finiteNonNegativeInteger(eventCount, "event_count");
+  // Aggregate / multi-window profiles may span up to 24h. The live enabled
+  // observability window and each live collector stay capped at 1800s separately.
   if (durationSeconds > 24 * 60 * 60) fail("collection exceeded the 24 hour bound");
   if (eventCount > 10_000) fail("collection exceeded the 10000 event bound");
   const providerVersionId = validateProviderDeployment(providerDeployment, revision, "provider_deployment");
@@ -473,6 +588,9 @@ export function validateWorkerCostProfile(profile, { requireComplete = true } = 
   finiteNonNegativeInteger(profile.window?.event_count, "profile.window.event_count");
   if (profile.window?.duration_seconds > profile.window?.max_seconds || profile.window?.max_seconds !== 86_400) fail("profile exceeds duration bound");
   if (profile.window?.event_count > profile.window?.max_events || profile.window?.max_events !== 10_000) fail("profile exceeds event bound");
+  if (typeof profile.traffic_mix !== "string" || !profile.traffic_mix.trim()) {
+    fail("profile traffic_mix label is required");
+  }
   let retainedSampleCount = 0;
   for (const name of REQUIRED_COST_COHORTS) {
     const cohort = profile.cohorts?.[name];
@@ -550,11 +668,11 @@ function normalizeProfileEvidence(evidence, label) {
 }
 
 export const WAREHOUSE_EXPERIMENT_COHORTS = Object.freeze([
-  "zap-bbl:cold", "zap-bbl:warm",
-  "zap-project:cold", "zap-project:warm",
-  "doing-business:cold", "doing-business:warm",
-  "health:cold", "health:warm",
-  "browse:cold", "browse:warm",
+  coldStartFlagRawCohort("zap-bbl", 1), coldStartFlagRawCohort("zap-bbl", 0),
+  coldStartFlagRawCohort("zap-project", 1), coldStartFlagRawCohort("zap-project", 0),
+  coldStartFlagRawCohort("doing-business", 1), coldStartFlagRawCohort("doing-business", 0),
+  coldStartFlagRawCohort("health", 1), coldStartFlagRawCohort("health", 0),
+  coldStartFlagRawCohort("browse", 1), coldStartFlagRawCohort("browse", 0),
 ]);
 export const WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT = 100;
 

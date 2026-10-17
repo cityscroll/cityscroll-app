@@ -14,6 +14,8 @@ import {
   REQUIRED_COST_COHORTS,
   WAREHOUSE_EXPERIMENT_COHORTS,
   WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+  baseCohortFromFlagRaw,
+  parseColdStartFlagRaw,
   providerDeploymentReceiptSha256,
 } from "./lib/worker_cost_control.mjs";
 import {
@@ -57,7 +59,7 @@ function deployment(revision) {
 }
 
 function expectation(cohort, revision = REVISION, index = 0) {
-  const probeCohort = cohort.replace(/:(?:cold|warm)$/, "");
+  const probeCohort = baseCohortFromFlagRaw(cohort);
   const header = `owned-${probeCohort.replaceAll(/[^a-z0-9]/g, "-")}-${index}`;
   const series = "fixed-series";
   const receipt = {
@@ -97,7 +99,9 @@ function httpEvent(owned, cohort, cpu = 2, { coldStart, extraRecord = false } = 
     },
     $metadata: {
       id: `event-${owned.header}`,
-      ...(coldStart === undefined ? { coldStart: cohort.endsWith(":cold") ? 1 : 0 } : { coldStart }),
+      ...(coldStart === undefined
+        ? { coldStart: parseColdStartFlagRaw(cohort) ?? 0 }
+        : { coldStart }),
     },
     $workers: { cpuTimeMs: cpu, outcome: "ok", scriptVersion: { id: owned.providerVersionId } },
     exceptions: [],
@@ -187,12 +191,12 @@ async function profileTransport({ corruptQueue = false, missingColdStart = false
     collectProviderEvents: async ({ execute }) => {
       await execute?.();
       const events = Object.entries(expectations).map(([cohort, owned], index) => httpEvent(owned, cohort, 2, {
-        coldStart: missingColdStart && cohort === "health:cold" ? undefined : cohort.endsWith(":cold") ? 1 : 0,
+        coldStart: missingColdStart && cohort === "health" ? undefined : parseColdStartFlagRaw(cohort) ?? 0,
         extraRecord: index === 0,
       }));
       if (missingColdStart) {
-        const coldHealth = events.find((event) => event.event.request.headers["x-cityscroll-cost-probe"].startsWith("owned-health-"));
-        delete coldHealth.$metadata.coldStart;
+        const healthEvent = events.find((event) => event.event.request.headers["x-cityscroll-cost-probe"].startsWith("owned-health-"));
+        delete healthEvent.$metadata.coldStart;
       }
       for (const [cron, time] of Object.entries(configuration.scheduled_times)) events.push(scheduledEvent(cron, time));
       const queued = await queueEvent();
@@ -219,14 +223,16 @@ test("profile acquisition binds outer requests, structured receipts, and every m
   assert.equal(await queueFingerprintFromProviderEvent(rawQueue), rawQueue.source.batch_fingerprint_sha256);
 });
 
-test("missing provider cold-start metadata remains partial", async () => {
+test("missing provider cold-start metadata keeps route cohorts measured as unknown isolate", async () => {
   const result = await acquireWorkerCostProfile({
     revision: REVISION,
     window: { from: "2026-10-09T07:55:00Z", to: "2026-10-09T08:25:00Z" },
     transport: await profileTransport({ missingColdStart: true }),
   });
-  assert.equal(result.status, "partial");
-  assert.equal(result.profile.cohorts["health:cold"].status, "unknown");
+  assert.equal(result.status, "complete");
+  assert.equal(result.profile.cohorts.health.status, "measured");
+  assert.equal(result.profile.cohorts.health.samples[0].condition.isolate_observation.present, false);
+  assert.equal(result.profile.cohorts.health.samples[0].condition.isolate_observation.provisional_label, "unknown");
 });
 
 test("unbound queue evidence remains partial instead of becoming zero", async () => {
@@ -254,7 +260,7 @@ test("profile collection coordinates future windows without serially consuming t
     transport: {
       acquireDeployment: async () => deployment(REVISION),
       measurementPlan: async () => plan(),
-      executeFixedHttpWorkloads: async () => ({ "health:cold": expectation("health:cold") }),
+      executeFixedHttpWorkloads: async () => ({ "health": expectation("health") }),
       collectProviderEvents: async ({ execute, limit }) => {
         active += 1;
         maximumActive = Math.max(maximumActive, active);
@@ -297,7 +303,7 @@ test("provider query uses official envelopes, nested parameters, and bounded cur
 });
 
 test("provider invocation envelopes merge structured logs with nested Worker requests", () => {
-  const owned = expectation("health:cold");
+  const owned = expectation("health");
   const events = providerEventsFromEnvelope({
     result: {
       invocations: {
@@ -317,7 +323,7 @@ test("provider invocation envelopes merge structured logs with nested Worker req
     },
   });
   assert.equal(events.length, 1);
-  assert.equal(selectOwnedHttpEvent(events, owned, "health:cold").$metadata.id, "event-grouped");
+  assert.equal(selectOwnedHttpEvent(events, owned, "health").$metadata.id, "event-grouped");
 });
 
 test("live-tail URLs accept secure provider schemes and reject user information", () => {
@@ -516,7 +522,7 @@ test("collection cancellation reaches in-flight workload fetches", async () => {
   const acquired = deployment(REVISION);
   const planValue = {
     series: "fixed-series",
-    http_workloads: [{ cohort: "health:cold", probe_cohort: "health", header: expectation("health:cold").header, workload_hash: WORKLOAD, body: { kind: "http", route: "health" } }],
+    http_workloads: [{ cohort: "health", probe_cohort: "health", header: expectation("health").header, workload_hash: WORKLOAD, body: { kind: "http", route: "health" } }],
   };
   await assert.rejects(transport.collectProviderEvents({
     from: "2026-10-09T08:00:00Z",
@@ -561,7 +567,7 @@ test("live transport separates telemetry authentication and targets the authenti
       }
       if (url.includes("/live-tail")) return Response.json({ success: true, result: { wsUrl: "wss://tail.example/session" } });
       if (url.endsWith("/admin/cost-control-probe")) {
-        const receipt = expectation("health:cold").receipt;
+        const receipt = expectation("health").receipt;
         return Response.json(receipt);
       }
       throw new Error(`unexpected fetch ${url}`);
@@ -572,7 +578,7 @@ test("live transport separates telemetry authentication and targets the authenti
   assert.ok(wranglerEnvironments.every((value) => !value.CLOUDFLARE_API_TOKEN && !value.CLOUDFLARE_OBSERVABILITY_TOKEN));
   const planValue = {
     series: "fixed-series",
-    http_workloads: [{ cohort: "health:cold", probe_cohort: "health", header: expectation("health:cold").header, workload_hash: WORKLOAD, body: { kind: "http", route: "health" } }],
+    http_workloads: [{ cohort: "health", probe_cohort: "health", header: expectation("health").header, workload_hash: WORKLOAD, body: { kind: "http", route: "health" } }],
   };
   let expected;
   const events = await transport.collectProviderEvents({
@@ -580,8 +586,8 @@ test("live transport separates telemetry authentication and targets the authenti
     to: "2026-10-09T08:30:00Z",
     limit: 10_000,
     execute: async () => {
-      expected = (await transport.executeFixedHttpWorkloads({ plan: planValue, deployment: acquired }))["health:cold"];
-      socket.emit("message", { data: JSON.stringify({ events: [{ events: [httpEvent(expected, "health:cold")] }] }) });
+      expected = (await transport.executeFixedHttpWorkloads({ plan: planValue, deployment: acquired })).health;
+      socket.emit("message", { data: JSON.stringify({ events: [{ events: [httpEvent(expected, "health")] }] }) });
     },
   });
   assert.equal(events.length, 1);
@@ -593,10 +599,10 @@ test("live transport separates telemetry authentication and targets the authenti
   assert.equal(workloadRequest.init.method, "POST");
 });
 
-function liveWarehouseTransport({ coldCoverage = true } = {}) {
-  const bases = [...new Set(WAREHOUSE_EXPERIMENT_COHORTS.map((cohort) => cohort.replace(/:(?:cold|warm)$/, "")))];
+function liveWarehouseTransport({ flagRaw1Coverage = true } = {}) {
+  const bases = [...new Set(WAREHOUSE_EXPERIMENT_COHORTS.map((cohort) => baseCohortFromFlagRaw(cohort)))];
   const workloads = WAREHOUSE_EXPERIMENT_COHORTS.map((cohort) => {
-    const base = cohort.replace(/:(?:cold|warm)$/, "");
+    const base = baseCohortFromFlagRaw(cohort);
     return {
       cohort,
       probe_cohort: base,
@@ -655,7 +661,7 @@ function liveWarehouseTransport({ coldCoverage = true } = {}) {
         source: receipt,
         $metadata: {
           id: `warehouse-${requests}`,
-          ...(!isCollector ? { coldStart: coldCoverage && seen < 100 ? 1 : 0 } : {}),
+          ...(!isCollector ? { coldStart: flagRaw1Coverage && seen < 100 ? 1 : 0 } : {}),
         },
         $workers: {
           cpuTimeMs: 2,
@@ -675,7 +681,7 @@ function liveWarehouseTransport({ coldCoverage = true } = {}) {
   return { transport, requestCount: () => requests };
 }
 
-test("warehouse runner samples until exact provider-observed cold and warm populations exist", async () => {
+test("warehouse runner samples until exact provider-observed cold_start_flag_raw 0/1 populations exist", async () => {
   const { transport, requestCount } = liveWarehouseTransport();
   const result = await transport.collectWarehouseRun({
     label: "baseline",
@@ -690,12 +696,19 @@ test("warehouse runner samples until exact provider-observed cold and warm popul
   assert.equal(requestCount(), 2_000);
   for (const cohort of WAREHOUSE_EXPERIMENT_COHORTS) {
     assert.equal(result.cohorts[cohort].length, 100);
-    assert.ok(result.cohorts[cohort].every((sample) => sample.condition.cold_start === cohort.endsWith(":cold")));
+    assert.ok(result.cohorts[cohort].every((sample) => {
+      const isolate = sample.condition.isolate_observation;
+      return isolate?.present === true
+        && isolate.raw === parseColdStartFlagRaw(cohort)
+        && isolate.provisional_label === "unverified-raw"
+        && isolate.semantics === "unverified-provider-flag"
+        && !("cold_start" in sample.condition);
+    }));
   }
 });
 
-test("warehouse runner reports incomplete genuine cold coverage", async () => {
-  const { transport } = liveWarehouseTransport({ coldCoverage: false });
+test("warehouse runner reports incomplete cold_start_flag_raw=1 coverage", async () => {
+  const { transport } = liveWarehouseTransport({ flagRaw1Coverage: false });
   const result = await transport.collectWarehouseRun({
     label: "baseline",
     revision: REVISION,
@@ -706,16 +719,29 @@ test("warehouse runner reports incomplete genuine cold coverage", async () => {
     maxEvents: 10_000,
   });
   assert.equal(result.status, "blocked");
-  assert.match(result.reason, /cold provider samples are incomplete/);
+  assert.match(result.reason, /cold_start_flag_raw=1 provider samples are incomplete/);
 });
 
-function warehouseSample(revision, meter = 0) {
+function warehouseIsolateCondition(raw) {
+  return {
+    mode: "bounded-production-execution",
+    source: "owned-http-probe",
+    isolate_observation: {
+      present: true,
+      raw,
+      provisional_label: "unverified-raw",
+      semantics: "unverified-provider-flag",
+    },
+  };
+}
+
+function warehouseSample(revision, meter = 0, rawColdStart = 0) {
   return {
     revision,
     native_cpu_ms: 2,
     collector_cpu_ms: 1,
     native_cpu_source: { field: "$workers.cpuTimeMs", unit: "milliseconds", precision: "integer" },
-    condition: { mode: "provider-observed", source: "$metadata.coldStart", cold_start: false },
+    condition: warehouseIsolateCondition(rawColdStart),
     script_version_id: deployment(revision).receipt.cloudflare_version.id,
     outcome: "ok",
     operations: operations(meter, 0),
@@ -734,8 +760,11 @@ test("matched warehouse acquisition retains baseline on a queue regression", asy
         observedAt: label === "baseline" ? "2026-10-09T08:00:00Z" : "2026-10-09T09:00:00Z",
         cohorts: Object.fromEntries(WAREHOUSE_EXPERIMENT_COHORTS.map((cohort) => [cohort,
           Array.from({ length: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT }, () => ({
-            ...warehouseSample(revision, label === "candidate" ? 1 : 0),
-            condition: { mode: "provider-observed", source: "$metadata.coldStart", cold_start: cohort.endsWith(":cold") },
+            ...warehouseSample(
+              revision,
+              label === "candidate" ? 1 : 0,
+              parseColdStartFlagRaw(cohort),
+            ),
           })),
         ])),
         correctness: CORRECTNESS,

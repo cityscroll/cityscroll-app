@@ -1,0 +1,1408 @@
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import test from "node:test";
+
+import {
+  PROVIDER_OBSERVABILITY_CONCURRENCY,
+  SCRIPT_LAYER_RESTORE_MODE,
+  acknowledgePrivacyFields,
+  armRestorer,
+  assertMeasurementWindow,
+  assertPrivacyArmed,
+  assertPrivacyArmedFromRawGet,
+  assertWindowMutable,
+  classifyCurrentSettings,
+  classifyExactLayerScriptOverride,
+  compareAndSwapObservability,
+  createBetaWorkerObservabilityTransport,
+  createDualViewObservabilityTransport,
+  createFileWindowStore,
+  createScriptSettingsObservabilityTransport,
+  exactScriptOverride,
+  markWindowExpiry,
+  measurementWindowObservability,
+  mutateOwnedWindowObservability,
+  normalizeObservability,
+  observabilityEquals,
+  observabilitySha256,
+  openExactLayerSettingsWindow,
+  openSettingsWindow,
+  patchBodyForScriptSettingsObservability,
+  planExactLayerRestore,
+  planSettingsRestore,
+  privacyArmedObservability,
+  confirmOwnedSettings,
+  markPendingMutationIssued,
+  recordMutationIntent,
+  restoreExactLayerSettingsWindow,
+  restoreSettingsWindow,
+  runIndependentRestorer,
+  windowRequiresExactLayerTransport,
+} from "./lib/worker_observability_settings.mjs";
+
+const ACCOUNT = "a".repeat(32);
+const ACCOUNT_SHA = createHash("sha256").update(ACCOUNT).digest("hex");
+
+const BASELINE = Object.freeze({
+  enabled: false,
+  head_sampling_rate: 1,
+  redact_query_string: false,
+  logs: {
+    enabled: false,
+    head_sampling_rate: 1,
+    invocation_logs: true,
+    persist: true,
+    destinations: [],
+  },
+  traces: {
+    enabled: false,
+    head_sampling_rate: 1,
+    persist: true,
+    destinations: [],
+    propagation_policy: "enforce",
+  },
+});
+
+function memoryTransport(initial, { patchHook } = {}) {
+  let current = structuredClone(initial);
+  const calls = [];
+  return {
+    calls,
+    async getObservability() {
+      calls.push({ method: "GET" });
+      return structuredClone(current);
+    },
+    async patchObservability(observability) {
+      calls.push({ method: "PATCH", observability: structuredClone(observability) });
+      current = normalizeObservability(observability);
+      if (typeof patchHook === "function") {
+        await patchHook({ current, observability, calls });
+      }
+      return structuredClone(current);
+    },
+    set(next) {
+      current = normalizeObservability(next);
+    },
+    snapshot() {
+      return structuredClone(current);
+    },
+  };
+}
+
+function tempStore(initialWindow) {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-obs-"));
+  const path = join(dir, "window.json");
+  const store = createFileWindowStore(path);
+  return {
+    dir,
+    path,
+    store,
+    async seed(window) {
+      await store.write(window);
+      return window;
+    },
+    async read() {
+      return store.read();
+    },
+    cleanup() {
+      rmSync(dir, { recursive: true, force: true });
+    },
+  };
+}
+
+async function seededArmedWindow(baseline = BASELINE, extras = {}) {
+  const fixture = tempStore();
+  let window = openSettingsWindow({
+    baseline,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    windowId: extras.windowId || "window-1",
+    durationSeconds: extras.durationSeconds || 1800,
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z", restorerId: "restorer-1" });
+  await fixture.seed(window);
+  return { fixture, window };
+}
+
+test("raw omit fails privacy proof while normalize invents defaults that would pass", () => {
+  const omitted = {
+    enabled: false,
+    redact_query_string: true,
+    logs: { enabled: false },
+    traces: { enabled: false },
+  };
+  assert.throws(() => assertPrivacyArmedFromRawGet(omitted), /logs.persist must be present/);
+  // Normalization invents persist:false / destinations:[]; that must never be the enable gate input.
+  const invented = normalizeObservability({
+    ...omitted,
+    logs: { enabled: false, head_sampling_rate: 1 },
+    traces: { enabled: false, head_sampling_rate: 1 },
+  });
+  assert.equal(invented.logs.persist, false);
+  assert.deepEqual(invented.logs.destinations, []);
+  assert.throws(() => assertPrivacyArmedFromRawGet({
+    enabled: false,
+    redact_query_string: true,
+    logs: { enabled: false },
+    traces: { enabled: false, persist: false, destinations: [] },
+  }), /logs.persist must be present/);
+});
+
+test("acknowledgePrivacyFields rejects omitted persist destinations and redact", () => {
+  assert.throws(
+    () => acknowledgePrivacyFields({
+      enabled: false,
+      redact_query_string: true,
+      logs: { enabled: false },
+      traces: { enabled: false },
+    }),
+    /logs.persist must be present/,
+  );
+  assert.throws(
+    () => acknowledgePrivacyFields({
+      enabled: false,
+      redact_query_string: true,
+      logs: { enabled: false, persist: false, destinations: [] },
+      traces: { enabled: false, persist: false },
+    }),
+    /traces.destinations must be present/,
+  );
+  assert.throws(
+    () => acknowledgePrivacyFields({
+      enabled: false,
+      logs: { enabled: false, persist: false, destinations: [] },
+      traces: { enabled: false, persist: false, destinations: [] },
+    }),
+    /redact_query_string must be present/,
+  );
+});
+
+test("acknowledgePrivacyFields rejects wrong types and incomplete privacy values", () => {
+  assert.throws(
+    () => acknowledgePrivacyFields({
+      enabled: false,
+      redact_query_string: "true",
+      logs: { enabled: false, persist: false, destinations: [] },
+      traces: { enabled: false, persist: false, destinations: [] },
+    }),
+    /redact_query_string must be an explicit boolean/,
+  );
+  assert.throws(
+    () => acknowledgePrivacyFields({
+      enabled: false,
+      redact_query_string: true,
+      logs: { enabled: false, persist: false, destinations: "none" },
+      traces: { enabled: false, persist: false, destinations: [] },
+    }),
+    /logs.destinations must be an explicit array/,
+  );
+  assert.throws(
+    () => assertPrivacyArmed({
+      enabled: false,
+      redact_query_string: true,
+      logs: { enabled: false, persist: true, destinations: [] },
+      traces: { enabled: false, persist: false, destinations: [] },
+    }),
+    /logs.persist must be false/,
+  );
+});
+
+test("privacy arming keeps flags disabled and preserves propagation_policy", () => {
+  const armed = privacyArmedObservability(BASELINE);
+  assertPrivacyArmed(armed);
+  assert.equal(armed.enabled, false);
+  assert.equal(armed.logs.enabled, false);
+  assert.equal(armed.traces.enabled, false);
+  assert.equal(armed.redact_query_string, true);
+  assert.equal(armed.logs.persist, false);
+  assert.equal(armed.traces.persist, false);
+  assert.deepEqual(armed.logs.destinations, []);
+  assert.deepEqual(armed.traces.destinations, []);
+  assert.equal(armed.traces.propagation_policy, "enforce");
+});
+
+test("measurement window keeps persistence off and traces disabled", () => {
+  const armed = privacyArmedObservability(BASELINE);
+  const enabled = measurementWindowObservability(armed);
+  assertMeasurementWindow(enabled);
+  assert.equal(enabled.logs.persist, false);
+  assert.equal(enabled.traces.enabled, false);
+  assert.equal(enabled.redact_query_string, true);
+  assert.equal(enabled.traces.propagation_policy, "enforce");
+});
+
+test("openSettingsWindow records concurrency limitation and null ownership", () => {
+  const window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    durationSeconds: 1800,
+    windowId: "window-open",
+  });
+  assert.equal(window.phase, "captured");
+  assert.equal(window.expires_at, "2026-10-16T00:30:00.000Z");
+  assert.equal(window.owned_observability, null);
+  assert.equal(window.pending_mutation, null);
+  assert.equal(window.concurrency_control.provider_conditional_update, false);
+  assert.match(window.concurrency_control.limitation, /no documented conditional update/i);
+  assert.deepEqual(window.concurrency_control, PROVIDER_OBSERVABILITY_CONCURRENCY);
+});
+
+test("expired window refuses arm/enable before any PATCH", async () => {
+  const fixture = tempStore();
+  const transport = memoryTransport(BASELINE);
+  let window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    durationSeconds: 60,
+    windowId: "window-expired-arm",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z" });
+  await fixture.seed(window);
+
+  assert.throws(
+    () => assertWindowMutable(window, "2026-10-16T00:02:00.000Z"),
+    /settings window has expired/,
+  );
+
+  await assert.rejects(
+    () => mutateOwnedWindowObservability({
+      transport,
+      store: fixture.store,
+      expectedSha256: window.baseline_sha256,
+      nextObservability: privacyArmedObservability(BASELINE),
+      phase: "privacy_armed",
+      now: "2026-10-16T00:02:00.000Z",
+    }),
+    /settings window has expired/,
+  );
+  assert.equal(transport.calls.filter((call) => call.method === "PATCH").length, 0);
+  assert.equal(transport.calls.filter((call) => call.method === "GET").length, 0);
+  fixture.cleanup();
+});
+
+test("confirm ownership uses RAW GET so omit-heavy readback cannot pass after PATCH", async () => {
+  const { fixture, window } = await seededArmedWindow(BASELINE, { windowId: "window-raw-confirm" });
+  const armed = privacyArmedObservability(BASELINE);
+  const transport = {
+    calls: [],
+    async getObservability() {
+      this.calls.push({ method: "GET" });
+      if (this.calls.filter((call) => call.method === "PATCH").length === 0) {
+        return structuredClone(BASELINE);
+      }
+      // Provider returns privacy-shaped values but omits persist/destinations.
+      return {
+        enabled: false,
+        head_sampling_rate: 1,
+        redact_query_string: true,
+        logs: { enabled: false, head_sampling_rate: 1, invocation_logs: true },
+        traces: {
+          enabled: false,
+          head_sampling_rate: 1,
+          propagation_policy: "enforce",
+        },
+      };
+    },
+    async patchObservability(observability) {
+      this.calls.push({ method: "PATCH", observability: structuredClone(observability) });
+      return structuredClone(observability);
+    },
+  };
+
+  await assert.rejects(
+    () => mutateOwnedWindowObservability({
+      transport,
+      store: fixture.store,
+      expectedSha256: window.baseline_sha256,
+      nextObservability: armed,
+      phase: "privacy_armed",
+      requireLiveRestorer: false,
+      now: "2026-10-16T00:01:00.000Z",
+    }),
+    /persist must be present|destinations must be present/,
+  );
+  // Write-ahead intent must remain so the restorer can reconcile.
+  const durable = await fixture.read();
+  assert.ok(durable.pending_mutation);
+  assert.equal(durable.owned_observability, null);
+  fixture.cleanup();
+});
+
+test("mutation refuses without an armed independent restorer", async () => {
+  const fixture = tempStore();
+  const transport = memoryTransport(BASELINE);
+  const window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    windowId: "window-no-restorer",
+  });
+  await fixture.seed(window);
+  await assert.rejects(
+    () => mutateOwnedWindowObservability({
+      transport,
+      store: fixture.store,
+      expectedSha256: window.baseline_sha256,
+      nextObservability: privacyArmedObservability(BASELINE),
+      phase: "privacy_armed",
+      now: "2026-10-16T00:01:00.000Z",
+    }),
+    /independent restorer must be armed/,
+  );
+  fixture.cleanup();
+});
+
+test("write-ahead intent is durable before PATCH and apply-then-throw still restores", async () => {
+  const { fixture, window } = await seededArmedWindow(BASELINE, { windowId: "window-apply-throw" });
+  let throwOnce = true;
+  let patched = false;
+  const transport = memoryTransport(BASELINE, {
+    patchHook() {
+      patched = true;
+      if (throwOnce) {
+        throwOnce = false;
+        throw new Error("transport ack failed after apply");
+      }
+    },
+  });
+
+  const result = await mutateOwnedWindowObservability({
+    transport,
+    store: fixture.store,
+    expectedSha256: window.baseline_sha256,
+    nextObservability: privacyArmedObservability(BASELINE),
+    phase: "privacy_armed",
+    requireLiveRestorer: false,
+    now: "2026-10-16T00:01:00.000Z",
+  });
+
+  assert.equal(patched, true);
+  assert.equal(result.ok, true);
+  assert.equal(result.recovered_from_patch_throw, true);
+  assertPrivacyArmed(result.after);
+  assert.equal(result.window.phase, "privacy_armed");
+  assert.equal(result.window.pending_mutation, null);
+  assert.equal(result.window.owned_sha256, observabilitySha256(privacyArmedObservability(BASELINE)));
+
+  // Durable store survived the throw path.
+  const durable = await fixture.read();
+  assert.equal(durable.phase, "privacy_armed");
+  assert.equal(durable.owned_sha256, result.window.owned_sha256);
+
+  const restored = await runIndependentRestorer({
+    store: fixture.store,
+    transport,
+    now: "2026-10-16T00:02:00.000Z",
+  });
+  assert.equal(restored.action, "restored");
+  assert.equal(restored.proved, true);
+  assert.ok(observabilityEquals(restored.after, BASELINE));
+  fixture.cleanup();
+});
+
+test("apply-then-throw with failed GET leaves pending intent that restorer reconciles", async () => {
+  const { fixture, window } = await seededArmedWindow(BASELINE, { windowId: "window-get-fail" });
+  let getCount = 0;
+  const armed = privacyArmedObservability(BASELINE);
+  const transport = {
+    calls: [],
+    async getObservability() {
+      getCount += 1;
+      this.calls.push({ method: "GET", n: getCount });
+      if (getCount === 1) return structuredClone(BASELINE);
+      if (getCount === 2) throw new Error("GET failed after PATCH");
+      return structuredClone(this.current);
+    },
+    current: structuredClone(BASELINE),
+    async patchObservability(observability) {
+      this.calls.push({ method: "PATCH" });
+      this.current = normalizeObservability(observability);
+      return structuredClone(this.current);
+    },
+  };
+
+  const result = await mutateOwnedWindowObservability({
+    transport,
+    store: fixture.store,
+    expectedSha256: window.baseline_sha256,
+    nextObservability: armed,
+    phase: "privacy_armed",
+    requireLiveRestorer: false,
+    now: "2026-10-16T00:01:00.000Z",
+  });
+  assert.equal(result.ok, false);
+  assert.equal(result.reason, "readback-failed");
+  assert.equal(result.window.pending_mutation.confirmed, false);
+  assert.equal(result.window.owned_observability, null);
+
+  const durable = await fixture.read();
+  assert.ok(durable.pending_mutation);
+  assert.equal(durable.pending_mutation.after_sha256, observabilitySha256(armed));
+
+  // Later GET sees the applied pending-after state; restorer restores own mutation.
+  const restored = await runIndependentRestorer({
+    store: fixture.store,
+    transport,
+    now: "2026-10-16T00:02:00.000Z",
+  });
+  assert.equal(restored.action, "restored");
+  assert.equal(restored.classification.class, "pending-after");
+  assert.ok(observabilityEquals(restored.after, BASELINE));
+  assert.equal((await fixture.read()).pending_mutation, null);
+  fixture.cleanup();
+});
+
+test("crash after write-ahead intent before PATCH: restorer finds pending-before and no-ops", async () => {
+  const { fixture, window } = await seededArmedWindow(BASELINE, { windowId: "window-crash-before-patch" });
+  const armed = privacyArmedObservability(BASELINE);
+  const withIntent = recordMutationIntent(window, {
+    phase: "privacy_armed",
+    beforeSha256: window.baseline_sha256,
+    intendedObservability: armed,
+    now: "2026-10-16T00:01:00.000Z",
+  });
+  await fixture.store.write(withIntent);
+
+  const transport = memoryTransport(BASELINE);
+  const restored = await runIndependentRestorer({
+    store: fixture.store,
+    transport,
+    now: "2026-10-16T00:02:00.000Z",
+  });
+  assert.equal(restored.action, "already-restored");
+  // pending-before digest equals baseline when the mutation never applied.
+  assert.ok(["baseline", "pending-before"].includes(restored.classification.class));
+  assert.equal(transport.calls.filter((call) => call.method === "PATCH").length, 0);
+  assert.ok(withIntent.pending_mutation);
+  assert.equal(withIntent.pending_mutation.before_sha256, window.baseline_sha256);
+  fixture.cleanup();
+});
+
+test("expiry still restores an unacknowledged pending-after mutation", async () => {
+  const { fixture, window } = await seededArmedWindow(BASELINE, {
+    windowId: "window-expiry-pending",
+    durationSeconds: 60,
+  });
+  const armed = privacyArmedObservability(BASELINE);
+  const withIntent = recordMutationIntent(window, {
+    phase: "privacy_armed",
+    beforeSha256: window.baseline_sha256,
+    intendedObservability: armed,
+    now: "2026-10-16T00:00:30.000Z",
+  });
+  await fixture.store.write(withIntent);
+
+  const transport = memoryTransport(armed);
+  const plan = planSettingsRestore(armed, withIntent, { now: "2026-10-16T00:02:00.000Z" });
+  assert.equal(plan.action, "restore");
+  assert.equal(plan.expired, true);
+  assert.equal(plan.classification.class, "pending-after");
+
+  const restored = await runIndependentRestorer({
+    store: fixture.store,
+    transport,
+    now: "2026-10-16T00:02:05.000Z",
+  });
+  assert.equal(restored.action, "restored");
+  assert.equal(restored.expired, true);
+  assert.equal(restored.window.phase, "expired-restored");
+  assert.ok(observabilityEquals(restored.after, BASELINE));
+  fixture.cleanup();
+});
+
+test("foreign conflict refuses restore even after expiry", async () => {
+  const { fixture, window } = await seededArmedWindow(BASELINE, {
+    windowId: "window-foreign",
+    durationSeconds: 60,
+  });
+  const transport = memoryTransport(BASELINE);
+  const armedResult = await mutateOwnedWindowObservability({
+    transport,
+    store: fixture.store,
+    expectedSha256: window.baseline_sha256,
+    nextObservability: privacyArmedObservability(BASELINE),
+    phase: "privacy_armed",
+    requireLiveRestorer: false,
+    now: "2026-10-16T00:00:30.000Z",
+  });
+  assert.equal(armedResult.ok, true);
+
+  transport.set({
+    enabled: true,
+    head_sampling_rate: 1,
+    redact_query_string: false,
+    logs: { enabled: true, persist: true, destinations: ["foreign"] },
+    traces: { enabled: true, persist: true, destinations: [] },
+  });
+
+  const restored = await runIndependentRestorer({
+    store: fixture.store,
+    transport,
+    now: "2026-10-16T00:02:00.000Z",
+  });
+  assert.equal(restored.action, "refuse-conflict");
+  assert.equal(restored.proved, false);
+  assert.equal(transport.snapshot().logs.destinations[0], "foreign");
+  fixture.cleanup();
+});
+
+test("settings-changed-underneath refuses PATCH (window-owned RMW, not provider CAS)", async () => {
+  const { fixture, window } = await seededArmedWindow(BASELINE, { windowId: "window-toc" });
+  const transport = memoryTransport(BASELINE);
+  transport.set({ ...BASELINE, redact_query_string: true });
+  const result = await mutateOwnedWindowObservability({
+    transport,
+    store: fixture.store,
+    expectedSha256: window.baseline_sha256,
+    nextObservability: privacyArmedObservability(BASELINE),
+    phase: "privacy_armed",
+    requireLiveRestorer: false,
+    now: "2026-10-16T00:01:00.000Z",
+  });
+  assert.equal(result.ok, false);
+  assert.equal(result.reason, "settings-changed-underneath");
+  assert.equal(result.concurrency_control.provider_conditional_update, false);
+  assert.equal(transport.calls.filter((call) => call.method === "PATCH").length, 0);
+  fixture.cleanup();
+});
+
+test("createFileWindowStore fsyncs write-ahead intent to disk", async () => {
+  const fixture = tempStore();
+  const window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    windowId: "window-fsync",
+  });
+  const armedWindow = armRestorer(window, { now: "2026-10-16T00:00:01.000Z" });
+  const withIntent = recordMutationIntent(armedWindow, {
+    phase: "privacy_armed",
+    beforeSha256: armedWindow.baseline_sha256,
+    intendedObservability: privacyArmedObservability(BASELINE),
+    now: "2026-10-16T00:01:00.000Z",
+  });
+  await fixture.store.write(withIntent);
+  const onDisk = JSON.parse(readFileSync(fixture.path, "utf8"));
+  assert.equal(onDisk.pending_mutation.after_sha256, withIntent.pending_mutation.after_sha256);
+  assert.equal(onDisk.pending_mutation.confirmed, false);
+  assert.equal(onDisk.restorer.armed, true);
+  fixture.cleanup();
+});
+
+test("privacy arm path proves GET before any enable", async () => {
+  const { fixture, window } = await seededArmedWindow(BASELINE, { windowId: "window-privacy" });
+  const transport = memoryTransport(BASELINE);
+  const result = await mutateOwnedWindowObservability({
+    transport,
+    store: fixture.store,
+    expectedSha256: window.baseline_sha256,
+    nextObservability: privacyArmedObservability(BASELINE),
+    phase: "privacy_armed",
+    requireLiveRestorer: false,
+    now: "2026-10-16T00:01:00.000Z",
+  });
+  assert.equal(result.ok, true);
+  assertPrivacyArmed(result.after);
+  assert.equal(result.window.phase, "privacy_armed");
+  const proved = assertPrivacyArmed(await transport.getObservability());
+  assert.equal(observabilitySha256(proved), result.window.owned_sha256);
+  assert.equal(proved.enabled, false);
+  fixture.cleanup();
+});
+
+test("compareAndSwapObservability alias requires durable store semantics", async () => {
+  const { fixture, window } = await seededArmedWindow(BASELINE, { windowId: "window-alias" });
+  const transport = memoryTransport(BASELINE);
+  const result = await compareAndSwapObservability(transport, {
+    expectedSha256: window.baseline_sha256,
+    nextObservability: privacyArmedObservability(BASELINE),
+    store: fixture.store,
+    phase: "privacy_armed",
+    requireLiveRestorer: false,
+    now: "2026-10-16T00:01:00.000Z",
+  });
+  assert.equal(result.ok, true);
+  assert.equal(result.concurrency_control.mode, "window-owned-read-modify-write");
+  fixture.cleanup();
+});
+
+test("expiry receipt records and expired owned settings still restore", async () => {
+  const { fixture, window } = await seededArmedWindow(BASELINE, {
+    windowId: "window-expiry",
+    durationSeconds: 60,
+  });
+  const transport = memoryTransport(BASELINE);
+  const armedResult = await mutateOwnedWindowObservability({
+    transport,
+    store: fixture.store,
+    expectedSha256: window.baseline_sha256,
+    nextObservability: privacyArmedObservability(BASELINE),
+    phase: "privacy_armed",
+    requireLiveRestorer: false,
+    now: "2026-10-16T00:00:30.000Z",
+  });
+  const expiry = markWindowExpiry(armedResult.window, {
+    now: "2026-10-16T00:02:00.000Z",
+    currentSha256: armedResult.window.owned_sha256,
+  });
+  assert.equal(expiry.receipt.outcome, "expired");
+  await fixture.store.write(expiry.window);
+  const restored = await restoreSettingsWindow(expiry.window, transport, {
+    now: "2026-10-16T00:02:05.000Z",
+  });
+  assert.equal(restored.action, "restored");
+  assert.equal(restored.expired, true);
+  assert.equal(restored.window.phase, "expired-restored");
+  fixture.cleanup();
+});
+
+test("planSettingsRestore classifies baseline owned pending and conflict", () => {
+  const window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    windowId: "window-plan",
+  });
+  const armed = privacyArmedObservability(BASELINE);
+  const ownedWindow = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+  };
+  assert.equal(classifyCurrentSettings(BASELINE, ownedWindow).class, "baseline");
+  assert.equal(classifyCurrentSettings(armed, ownedWindow).class, "owned");
+  assert.equal(classifyCurrentSettings({
+    ...armed,
+    redact_query_string: false,
+  }, ownedWindow).class, "conflict");
+  assert.equal(planSettingsRestore({
+    ...armed,
+    logs: { ...armed.logs, destinations: ["x"] },
+  }, ownedWindow, { now: "2026-10-16T00:01:00.000Z" }).action, "refuse-conflict");
+});
+
+test("beta transport documents endpoint and concurrency limitation", async () => {
+  const calls = [];
+  const transport = createBetaWorkerObservabilityTransport({
+    accountId: ACCOUNT,
+    token: "test-token",
+    fetchImpl: async (url, init) => {
+      calls.push({ url, method: init.method, body: init.body ? JSON.parse(init.body) : null });
+      return {
+        ok: true,
+        status: 200,
+        async json() {
+          return {
+            success: true,
+            result: {
+              observability: init.method === "PATCH"
+                ? JSON.parse(init.body).observability
+                : BASELINE,
+            },
+          };
+        },
+      };
+    },
+  });
+  assert.equal(transport.concurrency_control.provider_conditional_update, false);
+  const got = await transport.getObservability();
+  assert.ok(observabilityEquals(got, BASELINE));
+  const patched = await transport.patchObservability(privacyArmedObservability(BASELINE));
+  assertPrivacyArmed(patched);
+  assert.match(calls[0].url, /\/accounts\/[a]+\/workers\/workers\/cityscroll-worker$/);
+  assert.equal(calls[0].method, "GET");
+  assert.equal(calls[1].method, "PATCH");
+});
+
+test("beta transport records http status and redacted body on every exchange", async () => {
+  const transport = createBetaWorkerObservabilityTransport({
+    accountId: ACCOUNT,
+    token: "test-token",
+    fetchImpl: async (url, init) => ({
+      ok: true,
+      status: 200,
+      async json() {
+        return {
+          success: true,
+          result: {
+            observability: init.method === "PATCH"
+              ? JSON.parse(init.body).observability
+              : BASELINE,
+          },
+          errors: [],
+          messages: [],
+        };
+      },
+    }),
+  });
+  await transport.getObservability();
+  assert.equal(transport.last_exchange.method, "GET");
+  assert.equal(transport.last_exchange.http_status, 200);
+  assert.equal(transport.last_exchange.success, true);
+  assert.equal(transport.last_exchange.result_observability_redacted.redact_query_string, false);
+  assert.equal(transport.last_exchange.result_observability_redacted.logs.persist, true);
+
+  const intended = privacyArmedObservability(BASELINE);
+  await transport.patchObservability(intended);
+  assert.equal(transport.last_exchange.method, "PATCH");
+  assert.equal(transport.last_exchange.http_status, 200);
+  assert.equal(transport.last_exchange.content_type, "application/json");
+  assert.equal(transport.last_exchange.request_body_redacted.observability.redact_query_string, true);
+  assert.equal(transport.last_exchange.request_body_redacted.observability.logs.persist, false);
+  assert.equal(transport.last_exchange.result_observability_redacted.redact_query_string, true);
+});
+
+test("readback-mismatch receipt keeps patch http status and redacted bodies", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-exchange-"));
+  const path = join(dir, "window.json");
+  const store = createFileWindowStore(path);
+  let window = openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    windowId: "exchange-1",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z" });
+  await store.write(window);
+  const armed = privacyArmedObservability(BASELINE);
+
+  const transport = createBetaWorkerObservabilityTransport({
+    accountId: ACCOUNT,
+    token: "test-token",
+    fetchImpl: async (_url, init) => ({
+      ok: true,
+      status: 200,
+      async json() {
+        // Provider accepts PATCH (HTTP 200) but leaves effective settings unchanged.
+        return {
+          success: true,
+          result: { observability: structuredClone(BASELINE) },
+          errors: [],
+          messages: [],
+        };
+      },
+    }),
+  });
+
+  const result = await mutateOwnedWindowObservability({
+    transport,
+    store,
+    expectedSha256: window.baseline_sha256,
+    nextObservability: armed,
+    phase: "privacy_armed",
+    requireLiveRestorer: false,
+    now: "2026-10-16T00:01:00.000Z",
+  });
+  assert.equal(result.ok, false);
+  assert.equal(result.reason, "readback-mismatch");
+  assert.equal(result.provider_exchanges.patch.http_status, 200);
+  assert.equal(result.provider_exchanges.patch.success, true);
+  assert.equal(result.provider_exchanges.patch.method, "PATCH");
+  assert.equal(result.provider_exchanges.patch.request_body_redacted.observability.logs.persist, false);
+  assert.equal(result.provider_exchanges.patch.result_observability_redacted.logs.persist, true);
+  assert.equal(result.provider_exchanges.readback_get.http_status, 200);
+  assert.equal(result.after_redacted.logs.persist, true);
+  assert.equal(result.expected_after_redacted.logs.persist, false);
+  // Issued must already be durable after a completed PATCH attempt (even mismatch).
+  assert.equal(result.window.pending_mutation.issued, true);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("enable after confirmed privacy-arm classifies pending-before not owned conflict", () => {
+  const now = "2026-10-16T00:00:00.000Z";
+  let window = armRestorer(openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now,
+    windowId: "enable-after-arm",
+  }), { now, restorerId: "r-enable-after-arm" });
+  const armed = privacyArmedObservability(BASELINE);
+  window = recordMutationIntent(window, {
+    phase: "privacy_armed",
+    beforeSha256: observabilitySha256(BASELINE),
+    intendedObservability: armed,
+    now,
+  });
+  window = confirmOwnedSettings(window, armed, { now });
+  const enabled = {
+    ...armed,
+    enabled: true,
+    logs: { ...armed.logs, enabled: true },
+  };
+  window = recordMutationIntent(window, {
+    phase: "enabled",
+    beforeSha256: observabilitySha256(armed),
+    intendedObservability: enabled,
+    now,
+  });
+  // Owned digest equals pending before-sha; pending-before must win.
+  assert.equal(classifyCurrentSettings(armed, window).class, "pending-before");
+  assert.equal(classifyCurrentSettings(enabled, window).class, "pending-after");
+  assert.equal(
+    planSettingsRestore(armed, window, { now: "2026-10-16T00:01:00.000Z" }).action,
+    "restore",
+  );
+});
+
+test("mutateOwnedWindowObservability persists issued before never-settling PATCH", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-issued-before-dispatch-"));
+  const storePath = join(dir, "window.json");
+  const store = createFileWindowStore(storePath);
+  const now = "2026-10-16T00:00:00.000Z";
+  let window = armRestorer(openSettingsWindow({
+    baseline: BASELINE,
+    accountIdSha256: ACCOUNT_SHA,
+    now,
+    windowId: "issued-before-dispatch",
+  }), { now, restorerId: "r-issued-before" });
+  await store.write(window);
+  const armed = privacyArmedObservability(BASELINE);
+  let dispatched = false;
+
+  void mutateOwnedWindowObservability({
+    store,
+    transport: {
+      async getObservability() { return structuredClone(BASELINE); },
+      async patchObservability() {
+        dispatched = true;
+        return new Promise(() => {});
+      },
+    },
+    expectedSha256: observabilitySha256(BASELINE),
+    nextObservability: armed,
+    phase: "privacy_armed",
+    now,
+    requireLiveRestorer: false,
+    alreadyLocked: true,
+  });
+  await new Promise((r) => setTimeout(r, 20));
+
+  assert.equal(dispatched, true);
+  const persisted = await store.read();
+  assert.ok(persisted.pending_mutation);
+  assert.equal(persisted.pending_mutation.issued, true);
+  assert.equal(persisted.pending_mutation.after_sha256, observabilitySha256(armed));
+  // On-disk proof: re-read raw file after the fsync write-ahead boundary.
+  const raw = JSON.parse(readFileSync(storePath, "utf8"));
+  assert.equal(raw.pending_mutation.issued, true);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+// ---------------------------------------------------------------------------
+// /script-settings exact layer (null preserved; dual-view restore)
+// ---------------------------------------------------------------------------
+
+test("exactScriptOverride preserves null and never invents defaults", () => {
+  assert.equal(exactScriptOverride(null), null);
+  assert.throws(() => exactScriptOverride(undefined), /must be present/);
+  assert.throws(() => normalizeObservability(null), /must be an object/);
+  const body = patchBodyForScriptSettingsObservability(null);
+  assert.deepEqual(body, { observability: null });
+  assert.equal(Object.prototype.hasOwnProperty.call(body, "observability"), true);
+});
+
+test("script-settings transport null round-trip and metadata unchanged", async () => {
+  const calls = [];
+  let stored = {
+    logpush: false,
+    tags: ["cityscroll"],
+    tail_consumers: [],
+    observability: null,
+  };
+  const transport = createScriptSettingsObservabilityTransport({
+    accountId: ACCOUNT,
+    scriptName: "cityscroll-worker",
+    token: "test-token",
+    fetchImpl: async (url, init) => {
+      const method = init.method || "GET";
+      const body = init.body ? JSON.parse(init.body) : undefined;
+      calls.push({ method, url, body });
+      if (method === "PATCH") {
+        assert.deepEqual(Object.keys(body).sort(), ["observability"]);
+        stored = {
+          ...stored,
+          observability: body.observability === null ? null : body.observability,
+        };
+      }
+      return {
+        ok: true,
+        status: 200,
+        async json() {
+          return { success: true, errors: [], messages: [], result: structuredClone(stored) };
+        },
+      };
+    },
+  });
+
+  assert.equal(await transport.getObservability(), null);
+  assert.equal(await transport.patchObservability(null), null);
+  const armed = privacyArmedObservability(BASELINE);
+  const afterArm = await transport.patchObservability(armed);
+  assert.equal(afterArm === null, false);
+  assert.equal(await transport.patchObservability(null), null);
+  const full = await transport.getScriptSettings();
+  assert.equal(full.observability, null);
+  assert.equal(full.logpush, false);
+  assert.deepEqual(full.tags, ["cityscroll"]);
+  assert.equal(full.tail_consumers.length, 0);
+  assert.ok(calls.every((c) => c.url.includes("/script-settings")));
+  assert.ok(calls.some((c) => c.method === "PATCH" && c.body.observability === null));
+});
+
+test("dual-view exact-layer restore proves script null and beta baseline; metadata unchanged", async () => {
+  const armed = privacyArmedObservability(BASELINE);
+  let scriptStored = {
+    logpush: true,
+    tags: ["keep-me"],
+    tail_consumers: [{ service: "log-consumer" }],
+    observability: armed,
+  };
+  let effective = structuredClone(armed);
+  const scriptTransport = createScriptSettingsObservabilityTransport({
+    accountId: ACCOUNT,
+    token: "t",
+    fetchImpl: async (_url, init) => {
+      const method = init.method || "GET";
+      const body = init.body ? JSON.parse(init.body) : undefined;
+      if (method === "PATCH") {
+        scriptStored = {
+          ...scriptStored,
+          observability: body.observability === null ? null : normalizeObservability(body.observability),
+        };
+        effective = scriptStored.observability === null
+          ? structuredClone(BASELINE)
+          : structuredClone(scriptStored.observability);
+      }
+      return {
+        ok: true,
+        status: 200,
+        async json() {
+          return { success: true, errors: [], result: structuredClone(scriptStored) };
+        },
+      };
+    },
+  });
+  const betaTransport = {
+    async getObservability() { return structuredClone(effective); },
+    async patchObservability() { failBeta(); },
+  };
+  function failBeta() { throw new Error("beta PATCH must not be used for exact-layer restore"); }
+
+  const dual = createDualViewObservabilityTransport({
+    scriptSettingsTransport: scriptTransport,
+    betaTransport,
+  });
+  let window = openExactLayerSettingsWindow({
+    effectiveBaseline: BASELINE,
+    scriptOverrideBaseline: null,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    windowId: "exact-layer-1",
+  });
+  assert.equal(window.script_layer.restore_mode, SCRIPT_LAYER_RESTORE_MODE);
+  assert.equal(window.script_layer.baseline_override, null);
+  assert.equal(window.baseline_sha256, observabilitySha256(BASELINE));
+  assert.equal(windowRequiresExactLayerTransport(window), true);
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z", restorerId: "r-exact" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+    pending_mutation: null,
+  };
+
+  const before = await dual.getDualView();
+  assert.equal(before.script_override_is_null, false);
+  assert.equal(before.effective_sha256, observabilitySha256(armed));
+  assert.equal(classifyExactLayerScriptOverride(before.script_override, window).class, "owned");
+
+  const restored = await restoreExactLayerSettingsWindow(window, dual, {
+    now: "2026-10-16T00:01:00.000Z",
+  });
+  assert.equal(restored.proved, true);
+  assert.equal(restored.action, "restored");
+  assert.equal(restored.after.script_override_is_null, true);
+  assert.equal(restored.after.effective_sha256, window.baseline_sha256);
+  assert.equal(restored.metadata_unchanged, true);
+  assert.equal(restored.after.script_settings_metadata.logpush, true);
+  assert.deepEqual(restored.after.script_settings_metadata.tags, ["keep-me"]);
+  assert.equal(restored.after.script_settings_metadata.tail_consumers_len, 1);
+
+  // Fresh window while provider is already at null+baseline → already-restored.
+  let fresh = openExactLayerSettingsWindow({
+    effectiveBaseline: BASELINE,
+    scriptOverrideBaseline: null,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:02:00.000Z",
+    windowId: "exact-layer-already",
+  });
+  fresh = armRestorer(fresh, { now: "2026-10-16T00:02:01.000Z", restorerId: "r-already" });
+  const already = await restoreExactLayerSettingsWindow(fresh, dual, {
+    now: "2026-10-16T00:02:02.000Z",
+  });
+  assert.equal(already.action, "already-restored");
+  assert.equal(already.after.script_override_is_null, true);
+  assert.equal(already.metadata_unchanged, true);
+});
+
+test("restorer owns exact script layer via dual-view transport", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-exact-layer-restorer-"));
+  const armed = privacyArmedObservability(BASELINE);
+  let scriptStored = {
+    logpush: false,
+    tags: [],
+    tail_consumers: [],
+    observability: armed,
+  };
+  let effective = structuredClone(armed);
+  const scriptTransport = createScriptSettingsObservabilityTransport({
+    accountId: ACCOUNT,
+    token: "t",
+    fetchImpl: async (_url, init) => {
+      const method = init.method || "GET";
+      const body = init.body ? JSON.parse(init.body) : undefined;
+      if (method === "PATCH") {
+        scriptStored = {
+          ...scriptStored,
+          observability: body.observability === null ? null : normalizeObservability(body.observability),
+        };
+        effective = scriptStored.observability === null
+          ? structuredClone(BASELINE)
+          : structuredClone(scriptStored.observability);
+      }
+      return {
+        ok: true,
+        status: 200,
+        async json() {
+          return { success: true, errors: [], result: structuredClone(scriptStored) };
+        },
+      };
+    },
+  });
+  const dual = createDualViewObservabilityTransport({
+    scriptSettingsTransport: scriptTransport,
+    betaTransport: {
+      async getObservability() { return structuredClone(effective); },
+      async patchObservability() { throw new Error("beta PATCH forbidden"); },
+    },
+  });
+
+  const store = createFileWindowStore(join(dir, "window.json"));
+  let window = openExactLayerSettingsWindow({
+    effectiveBaseline: BASELINE,
+    scriptOverrideBaseline: null,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    durationSeconds: 60,
+    windowId: "exact-restorer-1",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z", restorerId: "r-exact-restorer" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+    pending_mutation: null,
+  };
+  await store.write(window);
+
+  const restored = await runIndependentRestorer({
+    store,
+    transport: dual,
+    now: "2026-10-16T00:02:00.000Z",
+    alreadyLocked: true,
+  });
+  assert.equal(restored.proved, true);
+  assert.ok(["restored", "already-restored"].includes(restored.action));
+  assert.equal(restored.after.script_override_is_null, true);
+  assert.equal(restored.after.effective_sha256, observabilitySha256(BASELINE));
+  assert.equal(scriptStored.observability, null);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("exact-layer foreign script override refuses restore without PATCH", async () => {
+  const armed = privacyArmedObservability(BASELINE);
+  const foreign = {
+    ...armed,
+    head_sampling_rate: 0.25,
+    logs: { ...armed.logs, head_sampling_rate: 0.25 },
+  };
+  let patchCount = 0;
+  let scriptStored = {
+    logpush: false,
+    tags: ["foreign"],
+    tail_consumers: [],
+    observability: foreign,
+  };
+  let effective = structuredClone(foreign);
+  const dual = createDualViewObservabilityTransport({
+    scriptSettingsTransport: createScriptSettingsObservabilityTransport({
+      accountId: ACCOUNT,
+      token: "t",
+      fetchImpl: async (_url, init) => {
+        const method = init?.method || "GET";
+        const body = init?.body ? JSON.parse(init.body) : undefined;
+        if (method === "PATCH") {
+          patchCount += 1;
+          scriptStored = {
+            ...scriptStored,
+            observability: body.observability === null ? null : normalizeObservability(body.observability),
+          };
+          effective = scriptStored.observability === null
+            ? structuredClone(BASELINE)
+            : structuredClone(scriptStored.observability);
+        }
+        return {
+          ok: true,
+          status: 200,
+          async json() {
+            return { success: true, errors: [], result: structuredClone(scriptStored) };
+          },
+        };
+      },
+    }),
+    betaTransport: {
+      async getObservability() { return structuredClone(effective); },
+      async patchObservability() { throw new Error("beta PATCH forbidden"); },
+    },
+  });
+
+  let window = openExactLayerSettingsWindow({
+    effectiveBaseline: BASELINE,
+    scriptOverrideBaseline: null,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    windowId: "exact-foreign-1",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z", restorerId: "r-foreign" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+    pending_mutation: null,
+  };
+
+  const before = await dual.getDualView();
+  assert.equal(classifyExactLayerScriptOverride(before.script_override, window).class, "conflict");
+  assert.equal(classifyCurrentSettings(before.effective, window).class, "conflict");
+  const plan = planExactLayerRestore(before, window, { now: "2026-10-16T00:01:00.000Z" });
+  assert.equal(plan.action, "refuse-conflict");
+  assert.equal(plan.patch, null);
+
+  const restored = await restoreExactLayerSettingsWindow(window, dual, {
+    now: "2026-10-16T00:01:00.000Z",
+  });
+  assert.equal(restored.action, "refuse-conflict");
+  assert.equal(restored.proved, false);
+  assert.equal(patchCount, 0);
+  assert.equal(scriptStored.observability.head_sampling_rate, 0.25);
+  assert.equal(restored.before.script_override.head_sampling_rate, 0.25);
+});
+
+test("exact-layer refuses silent beta fallback when dual-view is absent", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-exact-no-dual-"));
+  const armed = privacyArmedObservability(BASELINE);
+  const store = createFileWindowStore(join(dir, "window.json"));
+  let window = openExactLayerSettingsWindow({
+    effectiveBaseline: BASELINE,
+    scriptOverrideBaseline: null,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    durationSeconds: 60,
+    windowId: "exact-no-dual",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z", restorerId: "r-no-dual" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+    pending_mutation: null,
+  };
+  await store.write(window);
+
+  const betaOnly = {
+    async getObservability() { return structuredClone(armed); },
+    async patchObservability() {
+      throw new Error("beta PATCH must not run for exact-layer silent fallback");
+    },
+  };
+
+  await assert.rejects(
+    () => runIndependentRestorer({
+      store,
+      transport: betaOnly,
+      now: "2026-10-16T00:02:00.000Z",
+      alreadyLocked: true,
+    }),
+    /refusing silent beta fallback/,
+  );
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("exact-layer null script with owned effective stays await-effective and unproved", async () => {
+  const armed = privacyArmedObservability(BASELINE);
+  let patches = 0;
+  const dual = {
+    async getDualView() {
+      return {
+        script_override: null,
+        script_override_is_null: true,
+        effective: armed,
+        effective_sha256: observabilitySha256(armed),
+        script_settings_metadata: {
+          logpush: false, tags: [], tail_consumers_len: 0, top_keys: ["observability"],
+        },
+      };
+    },
+    async restoreScriptOverrideToNull() {
+      patches += 1;
+      throw new Error("must not PATCH while awaiting effective baseline");
+    },
+  };
+
+  let window = openExactLayerSettingsWindow({
+    effectiveBaseline: BASELINE,
+    scriptOverrideBaseline: null,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    windowId: "await-effective-1",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z", restorerId: "r-await" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+    pending_mutation: null,
+  };
+
+  const plan = planExactLayerRestore(await dual.getDualView(), window, {
+    now: "2026-10-16T00:31:00.000Z",
+  });
+  assert.equal(plan.action, "await-effective-baseline");
+  assert.equal(plan.patch, null);
+
+  const result = await restoreExactLayerSettingsWindow(window, dual, {
+    now: "2026-10-16T00:31:00.000Z",
+  });
+  assert.equal(result.action, "await-effective-baseline");
+  assert.equal(result.proved, false);
+  assert.equal(result.window.phase, "privacy_armed");
+  assert.equal(result.window.owned_sha256, observabilitySha256(armed));
+  assert.equal(patches, 0);
+  assert.notEqual(result.after.effective_sha256, window.baseline_sha256);
+});
+
+test("exact-layer rejects non-null scriptOverrideBaseline at open and restore entry", async () => {
+  assert.throws(
+    () => openExactLayerSettingsWindow({
+      effectiveBaseline: BASELINE,
+      scriptOverrideBaseline: BASELINE,
+      accountIdSha256: ACCOUNT_SHA,
+      now: "2026-10-16T00:00:00.000Z",
+      windowId: "non-null-baseline",
+    }),
+    /scriptOverrideBaseline must be null/,
+  );
+
+  const armed = privacyArmedObservability(BASELINE);
+  let window = openExactLayerSettingsWindow({
+    effectiveBaseline: BASELINE,
+    scriptOverrideBaseline: null,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    windowId: "persisted-non-null",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z", restorerId: "r-nn" });
+  window = {
+    ...window,
+    phase: "privacy_armed",
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+    script_layer: {
+      ...window.script_layer,
+      baseline_override: structuredClone(BASELINE),
+      baseline_override_is_null: false,
+    },
+  };
+
+  let patches = 0;
+  await assert.rejects(
+    () => restoreExactLayerSettingsWindow(window, {
+      async getDualView() {
+        return {
+          script_override: armed,
+          script_override_is_null: false,
+          effective: armed,
+          effective_sha256: observabilitySha256(armed),
+          script_settings_metadata: {
+            logpush: false, tags: [], tail_consumers_len: 0, top_keys: ["observability"],
+          },
+        };
+      },
+      async restoreScriptOverrideToNull() {
+        patches += 1;
+      },
+    }, { now: "2026-10-16T00:31:00.000Z" }),
+    /baseline_override must remain null/,
+  );
+  assert.equal(patches, 0);
+});
+
+test("exact-layer pending/issued owned effective with null script stays await-effective", async () => {
+  const armed = privacyArmedObservability(BASELINE);
+  let window = openExactLayerSettingsWindow({
+    effectiveBaseline: BASELINE,
+    scriptOverrideBaseline: null,
+    accountIdSha256: ACCOUNT_SHA,
+    now: "2026-10-16T00:00:00.000Z",
+    windowId: "await-pending-1",
+  });
+  window = armRestorer(window, { now: "2026-10-16T00:00:01.000Z", restorerId: "r-pending" });
+  window = recordMutationIntent(window, {
+    now: "2026-10-16T00:00:02.000Z",
+    phase: "privacy_armed",
+    beforeSha256: window.baseline_sha256,
+    intendedObservability: armed,
+  });
+  window = markPendingMutationIssued(window, { now: "2026-10-16T00:00:03.000Z" });
+  window = {
+    ...window,
+    owned_observability: armed,
+    owned_sha256: observabilitySha256(armed),
+  };
+
+  const dual = {
+    async getDualView() {
+      return {
+        script_override: null,
+        script_override_is_null: true,
+        effective: armed,
+        effective_sha256: observabilitySha256(armed),
+        script_settings_metadata: {
+          logpush: false, tags: [], tail_consumers_len: 0, top_keys: ["observability"],
+        },
+      };
+    },
+    async restoreScriptOverrideToNull() {
+      throw new Error("must not PATCH while awaiting effective baseline with issued pending");
+    },
+  };
+
+  const result = await restoreExactLayerSettingsWindow(window, dual, {
+    now: "2026-10-16T00:31:00.000Z",
+  });
+  assert.equal(result.action, "await-effective-baseline");
+  assert.equal(result.proved, false);
+  assert.equal(Boolean(result.window.pending_mutation?.issued), true);
+  assert.ok(result.window.owned_sha256);
+});
