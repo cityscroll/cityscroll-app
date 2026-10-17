@@ -17341,7 +17341,7 @@
         "nta2020": "26B",
         "police_precinct": "26B"
       },
-      "sha256": "e9baedc00f576722d89511360f00743afd76a0c02d350017ab4fe49fdfdf76c9"
+      "sha256": "1ccf72d41aee79b7d726b2b466201cc030c4bb4ede015a087bd68342a39c612e"
     }
   },
   "source_dates": {
@@ -17361,7 +17361,7 @@
   "generation": {
     "derivation": "node tools/build_land_place_membership.mjs",
     "content_id": "fnv1a32:42cf8f94:244",
-    "id": "e35d9be004bb11fba199d854e6a44ffc4cfd9a93dcd8501b7b3d244a9d9fe9a7",
+    "id": "96687c01fc074006add44ce941dc862ee23ccc184d18ef8c843bce4e8d054df1",
     "built_at": "2026-10-17T01:53:31.113Z"
   }
 }

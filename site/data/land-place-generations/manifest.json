@@ -1,9 +1,9 @@
 {
   "schema": "cityscroll.land_place_generation_manifest.v1",
-  "generation_id": "e35d9be004bb11fba199d854e6a44ffc4cfd9a93dcd8501b7b3d244a9d9fe9a7",
+  "generation_id": "96687c01fc074006add44ce941dc862ee23ccc184d18ef8c843bce4e8d054df1",
   "built_at": "2026-10-17T01:53:31.113Z",
   "input_hashes": {
-    "aggregate": "5be4cb0781eb5110d5f8a930fb554676fa14419706b95127c9350c359a4cc8d5",
+    "aggregate": "2dc7c6531e19829742400de00af393c0e52a0f7bd66f7967e6c74b11f4ffe012",
     "boundary_vintages": {
       "borough": "2026-05-26",
       "community_district": "2026-05-26",
@@ -31,17 +31,17 @@
   "project_count": 244,
   "consumers": {
     "index": {
-      "generation_id": "e35d9be004bb11fba199d854e6a44ffc4cfd9a93dcd8501b7b3d244a9d9fe9a7",
-      "content_sha256": "1334b25ccf8c6320e9f080583e570fffa52e3ba8dd38ebfcbc58e6098d7aca30"
+      "generation_id": "96687c01fc074006add44ce941dc862ee23ccc184d18ef8c843bce4e8d054df1",
+      "content_sha256": "b9bf79e3e76c17a5271c4b1668cabeb3dd73b34533723b1dfd916b57d9d8107d"
     },
     "evidence": {
-      "generation_id": "e35d9be004bb11fba199d854e6a44ffc4cfd9a93dcd8501b7b3d244a9d9fe9a7",
-      "content_sha256": "bcaf1047e27d218f0eb3d4b461db688d809938f0bcc8b92c189c2fffe9a44955"
+      "generation_id": "96687c01fc074006add44ce941dc862ee23ccc184d18ef8c843bce4e8d054df1",
+      "content_sha256": "3d45c49519e18edf362a5b020ecb8b376a382352f10bbb511c5296a31fece088"
     },
     "reverse": {
-      "generation_id": "e35d9be004bb11fba199d854e6a44ffc4cfd9a93dcd8501b7b3d244a9d9fe9a7",
+      "generation_id": "96687c01fc074006add44ce941dc862ee23ccc184d18ef8c843bce4e8d054df1",
       "content_sha256": "aba14e86190abf28ae6a452ec81add8387b42258e091ba8e16937ba1ab867e4e"
     }
   },
-  "active_generation": "e35d9be004bb11fba199d854e6a44ffc4cfd9a93dcd8501b7b3d244a9d9fe9a7"
+  "active_generation": "96687c01fc074006add44ce941dc862ee23ccc184d18ef8c843bce4e8d054df1"
 }
