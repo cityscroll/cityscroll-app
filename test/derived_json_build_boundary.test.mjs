@@ -85,6 +85,104 @@ test("required PR CI catches a stale keyword read model before Worker deployment
   assert.match(workflow, /name: Committed keyword search read-model freshness[\s\S]*?node tools\/build_keyword_search_index\.mjs --check/);
 });
 
+test("familyCheckCurrent reports whether a generator --check already passes", async () => {
+  const { familyCheckCurrent } = await import(path.join(ROOT, "tools/derived_json_build_boundary.mjs"));
+  const dir = mkdtempSync(path.join(os.tmpdir(), "derived-json-check-current-"));
+  try {
+    writeFileSync(path.join(dir, "ok.mjs"), "process.exit(process.argv.includes('--check') ? 0 : 1);\n");
+    writeFileSync(path.join(dir, "bad.mjs"), "process.exit(1);\n");
+    assert.equal(familyCheckCurrent(dir, "ok.mjs"), true);
+    assert.equal(familyCheckCurrent(dir, "bad.mjs"), false);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("only opt-in families may skip, and weak checks still rebuild on changed input or missing receipt", async () => {
+  const {
+    decideFamilyRebuildAction,
+    familyMaySkipWhenCheckCurrent,
+    runGeneratedFamilies,
+  } = await import(path.join(ROOT, "tools/derived_json_build_boundary.mjs"));
+  const manifest = JSON.parse(readFileSync(MANIFEST_PATH, "utf8"));
+  const procurement = manifest.generated_families.find((family) => family.id === "procurement");
+  const address = manifest.generated_families.find((family) => family.id === "address-geography-refresh");
+  const board = manifest.generated_families.find((family) => family.id === "board-neighborhood-refresh");
+  const land = manifest.generated_families.find((family) => family.id === "land-place-refresh");
+  assert.equal(familyMaySkipWhenCheckCurrent(procurement), true);
+  assert.equal(familyMaySkipWhenCheckCurrent(address), false);
+  assert.equal(familyMaySkipWhenCheckCurrent(board), false);
+  assert.equal(familyMaySkipWhenCheckCurrent(land), false);
+
+  const dir = mkdtempSync(path.join(os.tmpdir(), "derived-json-skip-path-"));
+  try {
+    mkdirSync(path.join(dir, "out"), { recursive: true });
+    writeFileSync(path.join(dir, "input.json"), '{"v":1}\n');
+    // Strong check: compares an input digest file written at build time.
+    writeFileSync(path.join(dir, "strong.mjs"), `
+      import { readFileSync, writeFileSync, existsSync } from "node:fs";
+      const input = readFileSync("input.json", "utf8");
+      const receipt = "out/strong.receipt";
+      const output = "out/strong.json";
+      if (process.argv.includes("--check")) {
+        if (!existsSync(receipt) || !existsSync(output)) process.exit(1);
+        const body = JSON.parse(readFileSync(receipt, "utf8"));
+        process.exit(body.input === input ? 0 : 1);
+      }
+      writeFileSync(output, JSON.stringify({ built: true, input }) + "\\n");
+      writeFileSync(receipt, JSON.stringify({ input }) + "\\n");
+    `);
+    // Weak check: exit 0 even when the receipt is missing (address-geography shape).
+    writeFileSync(path.join(dir, "weak.mjs"), `
+      import { writeFileSync, existsSync } from "node:fs";
+      const output = "out/weak.json";
+      if (process.argv.includes("--check")) {
+        console.log(existsSync(output) ? "ok weak" : "ok weak: no receipt yet (idle)");
+        process.exit(0);
+      }
+      writeFileSync(output, JSON.stringify({ built: true }) + "\\n");
+    `);
+
+    const strongFamily = {
+      id: "strong",
+      generator: "strong.mjs",
+      skip_when_check_current: true,
+      source_paths: ["input.json"],
+      output_paths: ["out/strong.json"],
+    };
+    const weakFamily = {
+      id: "weak",
+      generator: "weak.mjs",
+      source_paths: ["input.json"],
+      output_paths: ["out/weak.json"],
+    };
+
+    // Missing receipt: strong must build; weak check passes but is not skip-eligible → build.
+    assert.equal(decideFamilyRebuildAction(strongFamily, dir), "build");
+    assert.equal(decideFamilyRebuildAction(weakFamily, dir), "build");
+    let results = runGeneratedFamilies(dir, [strongFamily, weakFamily]);
+    assert.equal(results.find((row) => row.id === "strong").skipped, false);
+    assert.equal(results.find((row) => row.id === "weak").skipped, false);
+    assert.ok(existsSync(path.join(dir, "out/strong.json")));
+    assert.ok(existsSync(path.join(dir, "out/weak.json")));
+
+    // Current inputs: strong may skip; weak still rebuilds.
+    results = runGeneratedFamilies(dir, [strongFamily, weakFamily]);
+    assert.equal(results.find((row) => row.id === "strong").skipped, true);
+    assert.equal(results.find((row) => row.id === "weak").skipped, false);
+
+    // Changed input: strong must rebuild even though it is skip-eligible.
+    writeFileSync(path.join(dir, "input.json"), '{"v":2}\n');
+    assert.equal(decideFamilyRebuildAction(strongFamily, dir), "build");
+    assert.equal(decideFamilyRebuildAction(weakFamily, dir), "build");
+    results = runGeneratedFamilies(dir, [strongFamily, weakFamily]);
+    assert.equal(results.find((row) => row.id === "strong").skipped, false);
+    assert.equal(results.find((row) => row.id === "weak").skipped, false);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("the retained source snapshot validation fails closed before generation", async () => {
   const pinned = "2026-09-14T00:00:00.000Z";
   await withPinnedClock(pinned, () => {

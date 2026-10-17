@@ -2,24 +2,24 @@
   "schema": "cityscroll.source_acquisition_receipt.v1",
   "source_contract_id": "nyc-rules-rss",
   "source_url": "https://rules.cityofnewyork.us/feed/",
-  "attempt_at": "2026-10-09T13:51:33.061Z",
-  "result_at": "2026-10-09T13:51:33.219Z",
-  "observed_at": "2026-10-09T13:51:33.219Z",
+  "attempt_at": "2026-10-16T19:00:50.889Z",
+  "result_at": "2026-10-16T19:00:51.184Z",
+  "observed_at": "2026-10-16T19:00:51.184Z",
   "status": "succeeded",
-  "run_id": "warehouse-priority-source-observer:nyc-rules-rss:2026-10-09T13:51:33.219Z",
+  "run_id": "warehouse-priority-source-observer:nyc-rules-rss:2026-10-16T19:00:51.184Z",
   "producer": "warehouse-priority-source-observer",
   "adapter": "warehouse-priority-source-observer",
   "publisher_clock_basis": null,
   "publisher_updated_at": null,
   "clock_kind": "acquisition",
   "event_kind": "bounded-acquisition",
-  "input_vintage": "2026-10-09T12:56:13.000Z",
-  "content_hash": "sha256:b527418d33ccc77cb233630facdf485123608b324a66b0fe63eab0fe4db9e839",
+  "input_vintage": "2026-10-15T16:27:40.000Z",
+  "content_hash": "sha256:474063a170a9368367c3261f186c3af629a9d8b43595c59a24ca3228acfb15f7",
   "provenance": {
     "schema": "cityscroll.priority_source_observation_provenance.v1",
     "evidence_class": "scheduled-rail",
     "isolated": false,
-    "observed_at": "2026-10-09T13:51:33.219Z",
+    "observed_at": "2026-10-16T19:00:51.184Z",
     "producer": "warehouse-priority-source-observer",
     "source": "https://rules.cityofnewyork.us/feed/",
     "bounds": {
@@ -29,7 +29,7 @@
     "response": {
       "status": 200,
       "row_count": 50,
-      "content_sha256": "sha256:b527418d33ccc77cb233630facdf485123608b324a66b0fe63eab0fe4db9e839"
+      "content_sha256": "sha256:474063a170a9368367c3261f186c3af629a9d8b43595c59a24ca3228acfb15f7"
     }
   }
 }

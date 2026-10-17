@@ -107,6 +107,7 @@ test("a failing rebuild step still reaches the summary and pull-request steps, a
     assert.ok(step, `workflow has no step named "${title}"`);
     return step;
   };
+  assert.match(workflow, /timeout-minutes:\s*90/, "job wall must leave room after a ~47m acquisition");
   const rebuild = named("Rebuild the committed read models the refreshed datasets feed");
   assert.match(rebuild, /id:\s*rebuild/);
   assert.match(rebuild, /continue-on-error:\s*true/, "a failed rebuild step must not fail the job or skip the steps after it");
