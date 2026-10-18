@@ -807,6 +807,8 @@ export function evaluateWarehouseExperiment({ baseline, candidate, acquiredDeplo
   if (candidate.error_count > baseline.error_count) regressions.push("error_count");
   const improvements = COST_METERS.filter((meter) => candidateMeters[meter] < baselineMeters[meter]);
   const accepted = regressions.length === 0 && improvements.length > 0;
+  const baselineIdentity = warehouseExperimentArmIdentity(baseline, "baseline");
+  const candidateIdentity = warehouseExperimentArmIdentity(candidate, "candidate");
   return {
     schema: "cityscroll.warehouse_cost_experiment.v1",
     decision: accepted ? "candidate-retained" : "candidate-rejected",
@@ -814,11 +816,27 @@ export function evaluateWarehouseExperiment({ baseline, candidate, acquiredDeplo
     operation_recommendation: accepted ? "retain-candidate" : "retain-baseline",
     financial_savings_confirmed: false,
     matched_workload_count: baseline.workload_count,
+    baseline_identity: baselineIdentity,
+    candidate_identity: candidateIdentity,
     baseline_normalized: baselineMeters,
     candidate_normalized: candidateMeters,
     regressions,
     improvements,
   };
+}
+
+function warehouseExperimentArmIdentity(run, label) {
+  const providerVersionId = validateProviderDeployment(
+    run.provider_deployment,
+    run.deployed_revision,
+    `${label}.provider_deployment`,
+  );
+  return Object.freeze({
+    deployed_revision: run.deployed_revision,
+    provider_receipt_sha256: run.provider_deployment.provider_receipt_sha256,
+    script_version_id: providerVersionId,
+    evidence_source: run.provider_deployment.source,
+  });
 }
 
 export const WAREHOUSE_MATERIALIZATION_KINDS = Object.freeze([
@@ -914,56 +932,87 @@ export function buildWarehouseExperimentReport(decision, { materializationKind =
  * rolling production back to a. Binds concrete revisions in the chain
  * a → b → rollback-to-a. This is harness-level rollback evidence.
  */
-export function planWarehouseRollback({
-  originalBaselineRevision,
-  retainedCandidateRevision,
-  liveTipRevision,
-  retainedDecision,
-  followOnDecision,
-} = {}) {
-  if (!/^[a-f0-9]{40}$/.test(String(originalBaselineRevision || ""))) {
-    fail("originalBaselineRevision must be a full commit SHA");
+function requireWarehouseDecisionIdentity(decision, label) {
+  if (!decision || decision.schema !== "cityscroll.warehouse_cost_experiment.v1") {
+    fail(`${label} must be a warehouse cost experiment decision`);
   }
-  if (!/^[a-f0-9]{40}$/.test(String(retainedCandidateRevision || ""))) {
-    fail("retainedCandidateRevision must be a full commit SHA");
+  for (const arm of ["baseline_identity", "candidate_identity"]) {
+    const identity = decision[arm];
+    if (!identity || typeof identity !== "object") fail(`${label}.${arm} is required`);
+    requireExactKeys(identity, [
+      "deployed_revision", "provider_receipt_sha256", "script_version_id", "evidence_source",
+    ], `${label}.${arm}`);
+    if (!/^[a-f0-9]{40}$/.test(String(identity.deployed_revision || ""))) {
+      fail(`${label}.${arm}.deployed_revision must be a full commit SHA`);
+    }
+    if (!SHA256.test(String(identity.provider_receipt_sha256 || ""))) {
+      fail(`${label}.${arm}.provider_receipt_sha256 is invalid`);
+    }
+    if (typeof identity.script_version_id !== "string" || !identity.script_version_id.trim()) {
+      fail(`${label}.${arm}.script_version_id is required`);
+    }
+    if (identity.evidence_source !== "cloudflare-deployment-receipt+health") {
+      fail(`${label}.${arm}.evidence_source is unsupported`);
+    }
   }
-  if (!/^[a-f0-9]{40}$/.test(String(liveTipRevision || ""))) {
-    fail("liveTipRevision must be a full commit SHA");
+  if (decision.baseline_identity.deployed_revision === decision.candidate_identity.deployed_revision) {
+    fail(`${label} baseline and candidate revisions must be distinct`);
   }
-  if (originalBaselineRevision === retainedCandidateRevision) {
-    fail("rollback chain requires distinct original baseline and retained candidate revisions");
-  }
-  if (liveTipRevision !== retainedCandidateRevision) {
-    fail("live tip revision must match the previously retained candidate revision");
-  }
-  if (!retainedDecision || retainedDecision.decision !== "candidate-retained") {
+  return decision;
+}
+
+function sameWarehouseArmIdentity(left, right) {
+  return left.deployed_revision === right.deployed_revision
+    && left.provider_receipt_sha256 === right.provider_receipt_sha256
+    && left.script_version_id === right.script_version_id
+    && left.evidence_source === right.evidence_source;
+}
+
+/**
+ * After candidate b was retained over original baseline a, a follow-on
+ * evaluation that rejects the live tip (still b) against a must recommend
+ * rolling production back to a. Identities are read from the experiment
+ * decisions themselves (not free-floating SHA arguments): retained must be
+ * (A baseline, B candidate) and follow-on must be (A baseline, B candidate).
+ */
+export function planWarehouseRollback({ retainedDecision, followOnDecision } = {}) {
+  const retained = requireWarehouseDecisionIdentity(retainedDecision, "retainedDecision");
+  if (retained.decision !== "candidate-retained") {
     fail("rollback planning requires a previously retained candidate decision");
   }
-  if (!followOnDecision || followOnDecision.schema !== "cityscroll.warehouse_cost_experiment.v1") {
-    fail("rollback planning requires a follow-on warehouse experiment decision");
-  }
-  if (followOnDecision.decision !== "candidate-rejected") {
+  const followOn = requireWarehouseDecisionIdentity(followOnDecision, "followOnDecision");
+  if (followOn.decision !== "candidate-rejected") {
     fail("rollback applies when the follow-on evaluation rejects the live tip against the original baseline");
   }
-  if (!Array.isArray(followOnDecision.regressions) || followOnDecision.regressions.length < 1) {
+  if (!Array.isArray(followOn.regressions) || followOn.regressions.length < 1) {
     fail("rollback requires at least one recorded regression");
   }
-  if (followOnDecision.operation_recommendation !== "retain-baseline") {
+  if (followOn.operation_recommendation !== "retain-baseline") {
     fail("follow-on decision must recommend retain-baseline before rollback is planned");
   }
+  if (!sameWarehouseArmIdentity(retained.baseline_identity, followOn.baseline_identity)) {
+    fail("follow-on baseline identity must match the retained decision baseline (original A)");
+  }
+  if (!sameWarehouseArmIdentity(retained.candidate_identity, followOn.candidate_identity)) {
+    fail("follow-on candidate identity must match the retained live tip (B)");
+  }
+  const originalBaselineRevision = retained.baseline_identity.deployed_revision;
+  const retainedCandidateRevision = retained.candidate_identity.deployed_revision;
   return {
     schema: "cityscroll.warehouse_cost_experiment_rollback.v1",
     action: "rollback-to-baseline",
     operation_recommendation: "retain-baseline",
     restore_to_revision: originalBaselineRevision,
     prior_retained_revision: retainedCandidateRevision,
-    live_tip_revision: liveTipRevision,
+    live_tip_revision: retainedCandidateRevision,
+    baseline_identity: retained.baseline_identity,
+    candidate_identity: retained.candidate_identity,
     chain: Object.freeze([
-      { revision: originalBaselineRevision, role: "original-baseline" },
-      { revision: retainedCandidateRevision, role: "retained-candidate" },
-      { revision: originalBaselineRevision, role: "rollback-to-baseline" },
+      { revision: originalBaselineRevision, role: "original-baseline", identity: retained.baseline_identity },
+      { revision: retainedCandidateRevision, role: "retained-candidate", identity: retained.candidate_identity },
+      { revision: originalBaselineRevision, role: "rollback-to-baseline", identity: retained.baseline_identity },
     ]),
-    regressions: followOnDecision.regressions,
+    regressions: followOn.regressions,
     financial_savings_confirmed: false,
     shipped_savings_claimed: false,
   };

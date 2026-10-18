@@ -364,6 +364,10 @@ test("rollback evidence restores original baseline a after retained tip b regres
   });
   const retained = evaluate(baselineA, retainedB);
   assert.equal(retained.decision, "candidate-retained");
+  assert.equal(retained.baseline_identity.deployed_revision, revisionA);
+  assert.equal(retained.candidate_identity.deployed_revision, revisionB);
+  assert.equal(retained.baseline_identity.evidence_source, "cloudflare-deployment-receipt+health");
+  assert.match(retained.candidate_identity.provider_receipt_sha256, /^[a-f0-9]{64}$/);
 
   // Live tip is still b, but meters now regress versus original a → reject tip, restore a.
   const liveBRegressed = run({
@@ -376,11 +380,11 @@ test("rollback evidence restores original baseline a after retained tip b regres
   assert.equal(followOn.decision, "candidate-rejected");
   assert.equal(followOn.operation_recommendation, "retain-baseline");
   assert.deepEqual(followOn.regressions, ["kv_reads"]);
+  assert.equal(followOn.baseline_identity.deployed_revision, revisionA);
+  assert.equal(followOn.candidate_identity.deployed_revision, revisionB);
+  assert.equal(followOn.candidate_identity.provider_receipt_sha256, retained.candidate_identity.provider_receipt_sha256);
 
   const rollback = planWarehouseRollback({
-    originalBaselineRevision: revisionA,
-    retainedCandidateRevision: revisionB,
-    liveTipRevision: revisionB,
     retainedDecision: retained,
     followOnDecision: followOn,
   });
@@ -388,41 +392,78 @@ test("rollback evidence restores original baseline a after retained tip b regres
   assert.equal(rollback.restore_to_revision, revisionA);
   assert.equal(rollback.prior_retained_revision, revisionB);
   assert.equal(rollback.live_tip_revision, revisionB);
-  assert.deepEqual(rollback.chain, [
-    { revision: revisionA, role: "original-baseline" },
-    { revision: revisionB, role: "retained-candidate" },
-    { revision: revisionA, role: "rollback-to-baseline" },
-  ]);
+  assert.deepEqual(rollback.baseline_identity, retained.baseline_identity);
+  assert.deepEqual(rollback.candidate_identity, retained.candidate_identity);
+  assert.equal(rollback.chain[0].role, "original-baseline");
+  assert.equal(rollback.chain[1].role, "retained-candidate");
+  assert.equal(rollback.chain[2].role, "rollback-to-baseline");
+  assert.equal(rollback.chain[0].revision, revisionA);
+  assert.equal(rollback.chain[1].revision, revisionB);
+  assert.equal(rollback.chain[2].revision, revisionA);
   assert.equal(rollback.shipped_savings_claimed, false);
 
+  // Unrelated retained decision (different A'/B') cannot be paired with this follow-on.
+  const otherA = run({
+    deployed_revision: "c".repeat(40),
+    observed_at: "2026-10-08T22:00:00Z",
+    materialization: { kind: "static-baseline" },
+  });
+  const otherB = run({
+    deployed_revision: "d".repeat(40),
+    observed_at: "2026-10-08T22:10:00Z",
+    meters: { ...otherA.meters, native_cpu_ms: 80 },
+    materialization: {
+      kind: "route-scoped-shards",
+      routes: ["zap-bbl", "zap-project", "doing-business"],
+    },
+  });
+  const unrelatedRetained = evaluate(otherA, otherB);
+  assert.equal(unrelatedRetained.decision, "candidate-retained");
   assert.throws(
-    () => planWarehouseRollback({
-      originalBaselineRevision: revisionA,
-      retainedCandidateRevision: revisionB,
-      liveTipRevision: "d".repeat(40),
-      retainedDecision: retained,
-      followOnDecision: followOn,
-    }),
-    /live tip revision must match/,
+    () => planWarehouseRollback({ retainedDecision: unrelatedRetained, followOnDecision: followOn }),
+    /follow-on baseline identity must match/,
   );
+
+  // Unrelated follow-on rejecting decision for a different pair.
+  const unrelatedFollowOn = evaluate(otherA, run({
+    deployed_revision: "d".repeat(40),
+    observed_at: "2026-10-08T22:40:00Z",
+    meters: { ...otherA.meters, native_cpu_ms: 80, kv_reads: 120 },
+    materialization: otherB.materialization,
+  }));
+  assert.equal(unrelatedFollowOn.decision, "candidate-rejected");
   assert.throws(
-    () => planWarehouseRollback({
-      originalBaselineRevision: revisionA,
-      retainedCandidateRevision: revisionA,
-      liveTipRevision: revisionA,
-      retainedDecision: retained,
-      followOnDecision: followOn,
-    }),
-    /distinct original baseline/,
+    () => planWarehouseRollback({ retainedDecision: retained, followOnDecision: unrelatedFollowOn }),
+    /follow-on baseline identity must match/,
   );
+
+  // Swapped baseline/candidate on the follow-on decision object.
+  const swapped = {
+    ...followOn,
+    baseline_identity: followOn.candidate_identity,
+    candidate_identity: followOn.baseline_identity,
+  };
   assert.throws(
-    () => planWarehouseRollback({
-      originalBaselineRevision: revisionA,
-      retainedCandidateRevision: revisionB,
-      liveTipRevision: revisionB,
-      retainedDecision: followOn,
-      followOnDecision: followOn,
-    }),
+    () => planWarehouseRollback({ retainedDecision: retained, followOnDecision: swapped }),
+    /follow-on baseline identity must match|follow-on candidate identity must match/,
+  );
+
+  // Follow-on whose candidate is not the live tip B (different revision identity).
+  const otherLive = run({
+    deployed_revision: "e".repeat(40),
+    observed_at: "2026-10-08T23:50:00Z",
+    meters: { ...baselineA.meters, native_cpu_ms: 80, kv_reads: 120 },
+    materialization: retainedB.materialization,
+  });
+  const wrongTipFollowOn = evaluate(baselineA, otherLive);
+  assert.equal(wrongTipFollowOn.decision, "candidate-rejected");
+  assert.throws(
+    () => planWarehouseRollback({ retainedDecision: retained, followOnDecision: wrongTipFollowOn }),
+    /follow-on candidate identity must match/,
+  );
+
+  assert.throws(
+    () => planWarehouseRollback({ retainedDecision: followOn, followOnDecision: followOn }),
     /previously retained candidate/,
   );
 });

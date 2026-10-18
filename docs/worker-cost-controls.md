@@ -184,7 +184,8 @@ meter regresses and at least one meter improves; otherwise the baseline stays
 active. The experiment records an operational retention recommendation, never a
 financial-savings claim. Named tip fixtures cover a controlled route-scoped
 candidate, harness-level rollback after a retained tip regresses (bound chain
-original baseline a → retained tip b → rollback to a), isolate-reuse hits as
+original baseline a → retained tip b → rollback to a, with baseline/candidate
+revision and provider evidence identity recorded on each experiment decision), isolate-reuse hits as
 distinct from index-cold resets, and experiment reports that keep startup time
 UNKNOWN and separate from provider-native invocation CPU. Materialization keys
 are on the closed retained-key allowlist with fixed kind domains and
