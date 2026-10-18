@@ -289,10 +289,8 @@ function instrumentStorage(txn, counters) {
       bump();
       return txn.delete(key);
     },
-    deleteAll: async () => {
-      bump();
-      return txn.deleteAll();
-    },
+    // Intentionally omit deleteAll: SQLite DO transactions forbid it, and
+    // AggregateSink /cleanup must drop keys individually then put the tombstone.
     transaction: typeof txn.transaction === "function"
       ? (fn) => txn.transaction(fn)
       : undefined,
@@ -728,12 +726,14 @@ export class AggregateSink {
           return windowIdMismatchResponse(priorTerminal.window_id, requestWindowId);
         }
         const closedAt = Date.now();
-        if (typeof txn.deleteAll === "function") await txn.deleteAll();
-        else {
-          await txn.delete?.(META_KEY);
-          await txn.delete?.(COUNTERS_KEY);
-          await txn.delete?.(TERMINAL_KEY);
-        }
+        // Never call deleteAll() inside storage.transaction() / transactionSync().
+        // Cloudflare SQLite Durable Object transactions expose deleteAll as a
+        // function that throws ("Cannot call deleteAll() within a transaction"),
+        // which surfaced as CF 1101 on cityscroll-tail-sanitizer 7f6f3bfb and
+        // left GO #4 go4-w2 without a terminal tombstone. Drop meta/counters by
+        // key; overwrite TERMINAL_KEY with the tombstone (never delete it).
+        await txn.delete?.(META_KEY);
+        await txn.delete?.(COUNTERS_KEY);
         const tombstone = {
           closed: true,
           closed_at_ms: closedAt,
