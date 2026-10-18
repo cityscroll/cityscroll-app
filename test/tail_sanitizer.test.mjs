@@ -355,6 +355,9 @@ function createFakeStorage() {
 
 const TEST_WINDOW_ID = "test-window-1";
 const WINDOW_ID_HEADER = "x-cityscroll-tail-window-id";
+const EXPECTED_ACTIVE_WINDOW_HEADER = "x-cityscroll-expected-active-window-id";
+const EXPECTED_ACTIVE_GENERATION_HEADER = "x-cityscroll-expected-active-generation";
+const CONTROL_NAME = "cityscroll-tail-sanitizer-control";
 
 function createFakeSinkEnv(storage, {
   readbackToken = "owned-readback",
@@ -417,11 +420,31 @@ function authHeaders(token, windowId = TEST_WINDOW_ID) {
   };
 }
 
-/** Arm the control DO so worker.tail() routes to the given window_id. */
+/** Read control-plane active pointer + generation for caller-owned CAS. */
+async function readActiveWindow(env, token) {
+  const res = await workerEntrypoint.fetch(new Request("https://worker/active-window", {
+    method: "GET",
+    headers: authHeaders(token, TEST_WINDOW_ID),
+  }), env);
+  assert.equal(res.status, 200);
+  return res.json();
+}
+
+/**
+ * Arm the control DO so worker.tail() routes to the given window_id.
+ * Supplies caller-owned expected pointer + generation (no server auto-adopt).
+ */
 async function armActiveWindow(env, token, windowId = TEST_WINDOW_ID) {
+  const active = await readActiveWindow(env, token);
+  const expectedId = typeof active.window_id === "string" ? active.window_id : "";
+  const expectedGen = Number.isInteger(active.generation) ? active.generation : 0;
   const res = await workerEntrypoint.fetch(new Request("https://worker/arm", {
     method: "POST",
-    headers: authHeaders(token, windowId),
+    headers: {
+      ...authHeaders(token, windowId),
+      [EXPECTED_ACTIVE_WINDOW_HEADER]: expectedId,
+      [EXPECTED_ACTIVE_GENERATION_HEADER]: String(expectedGen),
+    },
   }), env);
   assert.equal(res.status, 200, "arm must succeed for tail routing");
   const body = await res.json();
@@ -1411,9 +1434,14 @@ test("LATE DELIVERY: Tail/apply after terminal must not reopen or increment a cl
   assert.deepEqual(instanceFor(windowId).storage.keys(), ["terminal"]);
 
   // Re-arm of a tombstoned window id must refuse (pointer unchanged).
+  const active = await readActiveWindow(env, "tok-late");
   const rearm = await workerEntrypoint.fetch(new Request("https://worker/arm", {
     method: "POST",
-    headers: authHeaders("tok-late", windowId),
+    headers: {
+      ...authHeaders("tok-late", windowId),
+      [EXPECTED_ACTIVE_WINDOW_HEADER]: typeof active.window_id === "string" ? active.window_id : "",
+      [EXPECTED_ACTIVE_GENERATION_HEADER]: String(Number.isInteger(active.generation) ? active.generation : 0),
+    },
   }), env);
   assert.equal(rearm.status, 409);
   const rearmBody = await rearm.json();
@@ -1520,11 +1548,15 @@ test("/arm refuses empty EXPECTED_DEPLOYED_REVISIONS with 0 storage writes", asy
   const writesBefore = {
     primary: storage.writeCount(),
     target: instanceFor(windowId).storage.writeCount(),
-    control: instanceFor("cityscroll-tail-sanitizer-control").storage.writeCount(),
+    control: instanceFor(CONTROL_NAME).storage.writeCount(),
   };
   const res = await workerEntrypoint.fetch(new Request("https://worker/arm", {
     method: "POST",
-    headers: authHeaders("tok-rev", windowId),
+    headers: {
+      ...authHeaders("tok-rev", windowId),
+      [EXPECTED_ACTIVE_WINDOW_HEADER]: "",
+      [EXPECTED_ACTIVE_GENERATION_HEADER]: "0",
+    },
   }), env);
   assert.equal(res.status, 409);
   const body = await res.json();
@@ -1532,10 +1564,7 @@ test("/arm refuses empty EXPECTED_DEPLOYED_REVISIONS with 0 storage writes", asy
   assert.equal(body.reason, "empty_expected_revision_allowlist");
   assert.equal(storage.writeCount(), writesBefore.primary);
   assert.equal(instanceFor(windowId).storage.writeCount(), writesBefore.target);
-  assert.equal(
-    instanceFor("cityscroll-tail-sanitizer-control").storage.writeCount(),
-    writesBefore.control,
-  );
+  assert.equal(instanceFor(CONTROL_NAME).storage.writeCount(), writesBefore.control);
 });
 
 test("/arm refuses tombstoned window and leaves active pointer on the live window", async () => {
@@ -1573,53 +1602,131 @@ test("/arm refuses tombstoned window and leaves active pointer on the live windo
   }));
   assert.equal((await deadClean.json()).tombstone, true);
 
+  const activeBefore = await readActiveWindow(env, "tok-tomb-arm");
   const refused = await workerEntrypoint.fetch(new Request("https://worker/arm", {
     method: "POST",
-    headers: authHeaders("tok-tomb-arm", winDead),
+    headers: {
+      ...authHeaders("tok-tomb-arm", winDead),
+      [EXPECTED_ACTIVE_WINDOW_HEADER]: activeBefore.window_id || "",
+      [EXPECTED_ACTIVE_GENERATION_HEADER]: String(activeBefore.generation ?? 0),
+    },
   }), env);
   assert.equal(refused.status, 409);
   const refusedBody = await refused.json();
   assert.equal(refusedBody.armed, false);
   assert.equal(refusedBody.reason, "window_tombstoned");
 
-  const active = await (await workerEntrypoint.fetch(new Request("https://worker/active-window", {
-    method: "GET",
-    headers: authHeaders("tok-tomb-arm", winLive),
-  }), env)).json();
+  const active = await readActiveWindow(env, "tok-tomb-arm");
   assert.equal(active.window_id, winLive);
   assert.equal(active.armed, true);
 });
 
-test("/arm CAS refuses when expected active pointer does not match", async () => {
+test("/arm CAS refuses when caller expected pointer does not match", async () => {
   const storage = createFakeStorage();
   const { env } = createFakeSinkEnv(storage, {
     readbackToken: "tok-cas",
     expectedRevisions: "rev-a",
   });
   await armActiveWindow(env, "tok-cas", "cas-a");
-  // Force a stale expected by racing a second arm after pointer already moved:
-  // direct control PUT with wrong expected must 409.
-  const control = env.AGG_SINK.get(env.AGG_SINK.idFromName("cityscroll-tail-sanitizer-control"));
+  // Stale caller intention: expect unset/gen 0 while cas-a is active.
+  const control = env.AGG_SINK.get(env.AGG_SINK.idFromName(CONTROL_NAME));
   const stale = await control.fetch("https://sink/active-window", {
     method: "PUT",
     headers: {
       "x-cityscroll-tail-readback-token": "tok-cas",
       [WINDOW_ID_HEADER]: "cas-b",
-      "x-cityscroll-expected-active-window-id": "", // expect unset, but cas-a is active
+      [EXPECTED_ACTIVE_WINDOW_HEADER]: "",
+      [EXPECTED_ACTIVE_GENERATION_HEADER]: "0",
       "content-type": "application/json",
     },
-    body: JSON.stringify({ window_id: "cas-b", expected_window_id: null }),
+    body: JSON.stringify({ window_id: "cas-b", expected_window_id: null, expected_generation: 0 }),
   });
   assert.equal(stale.status, 409);
   const staleBody = await stale.json();
   assert.equal(staleBody.reason, "active_window_cas_mismatch");
   assert.equal(staleBody.active_window_id, "cas-a");
 
-  const still = await (await workerEntrypoint.fetch(new Request("https://worker/active-window", {
-    method: "GET",
-    headers: authHeaders("tok-cas", "cas-a"),
-  }), env)).json();
+  // Composed /arm with stale caller expected also refuses (no auto-adopt).
+  const composed = await workerEntrypoint.fetch(new Request("https://worker/arm", {
+    method: "POST",
+    headers: {
+      ...authHeaders("tok-cas", "cas-b"),
+      [EXPECTED_ACTIVE_WINDOW_HEADER]: "",
+      [EXPECTED_ACTIVE_GENERATION_HEADER]: "0",
+    },
+  }), env);
+  assert.equal(composed.status, 409);
+  assert.equal((await composed.json()).reason, "active_window_cas_mismatch");
+
+  const still = await readActiveWindow(env, "tok-cas");
   assert.equal(still.window_id, "cas-a");
+});
+
+test("/arm refuses prior readback HTTP 500 with 0 pointer writes", async () => {
+  const storage = createFakeStorage();
+  const { env, instanceFor } = createFakeSinkEnv(storage, {
+    readbackToken: "tok-500",
+    expectedRevisions: "rev-a",
+  });
+  const windowId = "arm-500";
+  const inst = instanceFor(windowId);
+  const originalFetch = inst.stub.fetch.bind(inst.stub);
+  inst.stub.fetch = async (url, init = {}) => {
+    const u = typeof url === "string" ? url : url.url;
+    if (String(u).includes("/readback")) {
+      return new Response("internal", { status: 500 });
+    }
+    return originalFetch(url, init);
+  };
+  const controlWrites = instanceFor(CONTROL_NAME).storage.writeCount();
+  const res = await workerEntrypoint.fetch(new Request("https://worker/arm", {
+    method: "POST",
+    headers: {
+      ...authHeaders("tok-500", windowId),
+      [EXPECTED_ACTIVE_WINDOW_HEADER]: "",
+      [EXPECTED_ACTIVE_GENERATION_HEADER]: "0",
+    },
+  }), env);
+  assert.equal(res.status, 409);
+  assert.equal((await res.json()).reason, "prior_readback_not_ok");
+  assert.equal(instanceFor(CONTROL_NAME).storage.writeCount(), controlWrites);
+  const active = await readActiveWindow(env, "tok-500");
+  assert.equal(active.window_id, null);
+});
+
+test("/arm refuses malformed prior readback JSON with 0 pointer writes", async () => {
+  const storage = createFakeStorage();
+  const { env, instanceFor } = createFakeSinkEnv(storage, {
+    readbackToken: "tok-badjson",
+    expectedRevisions: "rev-a",
+  });
+  const windowId = "arm-badjson";
+  const inst = instanceFor(windowId);
+  const originalFetch = inst.stub.fetch.bind(inst.stub);
+  inst.stub.fetch = async (url, init = {}) => {
+    const u = typeof url === "string" ? url : url.url;
+    if (String(u).includes("/readback")) {
+      return new Response("{not-json", {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      });
+    }
+    return originalFetch(url, init);
+  };
+  const controlWrites = instanceFor(CONTROL_NAME).storage.writeCount();
+  const res = await workerEntrypoint.fetch(new Request("https://worker/arm", {
+    method: "POST",
+    headers: {
+      ...authHeaders("tok-badjson", windowId),
+      [EXPECTED_ACTIVE_WINDOW_HEADER]: "",
+      [EXPECTED_ACTIVE_GENERATION_HEADER]: "0",
+    },
+  }), env);
+  assert.equal(res.status, 409);
+  assert.equal((await res.json()).reason, "prior_readback_malformed");
+  assert.equal(instanceFor(CONTROL_NAME).storage.writeCount(), controlWrites);
+  const active = await readActiveWindow(env, "tok-badjson");
+  assert.equal(active.window_id, null);
 });
 
 test("cost_vector marks control DO cost UNKNOWN", async () => {

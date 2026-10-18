@@ -225,7 +225,53 @@ function costVectorFrom(counters, rpcCount = null) {
 
 /** Header: CAS expected active window (empty string means expect no active window). */
 const EXPECTED_ACTIVE_WINDOW_HEADER = "x-cityscroll-expected-active-window-id";
+/** Header: CAS expected active generation (integer; 0 when pointer unset). */
+const EXPECTED_ACTIVE_GENERATION_HEADER = "x-cityscroll-expected-active-generation";
 
+const AGGREGATE_SINK_SCHEMA = "cityscroll.tail_sanitizer_aggregate_sink.v1";
+
+function activeGenerationOf(active) {
+  const g = active?.generation;
+  return Number.isInteger(g) && g >= 0 ? g : 0;
+}
+
+/**
+ * Affirmative valid unclosed sink readback required before /arm pointer mutation.
+ * Non-ok HTTP, malformed JSON, closed, or tombstone refuse with 0 pointer writes.
+ * An already-open (collecting) window remains a valid arm target for tail routing;
+ * "fresh" in ROOT 02:00 means live unclosed admission, not opened===false.
+ */
+function classifyPriorArmReadback(res, body, requestWindowId) {
+  if (!res || typeof res.status !== "number") {
+    return { ok: false, reason: "prior_readback_unavailable" };
+  }
+  if (res.status === 401 || res.status === 403) {
+    return { ok: false, reason: "unauthorized", status: res.status };
+  }
+  if (res.status !== 200) {
+    return { ok: false, reason: "prior_readback_not_ok", status: res.status };
+  }
+  if (!body || typeof body !== "object") {
+    return { ok: false, reason: "prior_readback_malformed" };
+  }
+  if (body.ok !== true) {
+    return { ok: false, reason: "prior_readback_not_ok" };
+  }
+  if (body.schema !== AGGREGATE_SINK_SCHEMA) {
+    return { ok: false, reason: "prior_readback_invalid_schema" };
+  }
+  if (body.from_tombstone === true || body.closed === true) {
+    return { ok: false, reason: "window_tombstoned" };
+  }
+  if (
+    typeof body.window_id === "string"
+    && body.window_id
+    && body.window_id !== requestWindowId
+  ) {
+    return { ok: false, reason: "window_id_mismatch" };
+  }
+  return { ok: true };
+}
 function instrumentStorage(txn, counters) {
   const bump = () => {
     counters.collector_storage_ops = (counters.collector_storage_ops || 0) + 1;
@@ -407,18 +453,27 @@ export class AggregateSink {
             window_id: windowId,
             armed: Boolean(windowId),
             armed_at_ms: active?.armed_at_ms ?? null,
+            generation: activeGenerationOf(active),
           });
         });
       }
       if (req.method === "PUT" || req.method === "POST") {
         const windowId = windowIdFromRequest(req);
         if (!windowId) return windowIdRequiredResponse();
-        // Explicit CAS: header must be present. Empty string = expect null pointer.
+        // Explicit CAS: expected window + generation headers must be present.
+        // Empty window string = expect null pointer; generation 0 when unset.
         if (!req.headers.has(EXPECTED_ACTIVE_WINDOW_HEADER)) {
           return Response.json({
             ok: false,
             armed: false,
             reason: "expected_active_window_required",
+          }, { status: 400 });
+        }
+        if (!req.headers.has(EXPECTED_ACTIVE_GENERATION_HEADER)) {
+          return Response.json({
+            ok: false,
+            armed: false,
+            reason: "expected_active_generation_required",
           }, { status: 400 });
         }
         const expectedRaw = req.headers.get(EXPECTED_ACTIVE_WINDOW_HEADER) ?? "";
@@ -433,25 +488,44 @@ export class AggregateSink {
             }, { status: 400 });
           }
         }
+        const expectedGenRaw = req.headers.get(EXPECTED_ACTIVE_GENERATION_HEADER) ?? "";
+        const expectedGen = Number.parseInt(expectedGenRaw, 10);
+        if (!Number.isInteger(expectedGen) || expectedGen < 0 || String(expectedGen) !== expectedGenRaw.trim()) {
+          return Response.json({
+            ok: false,
+            armed: false,
+            reason: "expected_active_generation_invalid",
+          }, { status: 400 });
+        }
         return this.withStorageTransaction(async (txn) => {
           const active = await txn.get(ACTIVE_WINDOW_KEY);
           const current = typeof active?.window_id === "string" ? active.window_id : null;
-          if (current !== expectedId) {
+          const currentGen = activeGenerationOf(active);
+          if (current !== expectedId || currentGen !== expectedGen) {
             return Response.json({
               ok: false,
               armed: false,
               reason: "active_window_cas_mismatch",
               expected_window_id: expectedId,
+              expected_generation: expectedGen,
               active_window_id: current,
+              active_generation: currentGen,
             }, { status: 409 });
           }
-          const record = { window_id: windowId, armed_at_ms: Date.now() };
+          const nextGen = currentGen + 1;
+          const record = {
+            window_id: windowId,
+            armed_at_ms: Date.now(),
+            generation: nextGen,
+          };
           await txn.put(ACTIVE_WINDOW_KEY, record);
           return Response.json({
             ok: true,
             armed: true,
             window_id: windowId,
             previous_window_id: current,
+            generation: nextGen,
+            previous_generation: currentGen,
           });
         });
       }
@@ -958,8 +1032,12 @@ async function resolveActiveWindowId(env) {
 /**
  * CAS the control-plane active window pointer.
  * `expectedWindowId` null means the pointer must currently be unset.
+ * `expectedGeneration` is the caller-owned prior generation (0 when unset).
  */
-async function setActiveWindowId(env, windowId, token, { expectedWindowId = null } = {}) {
+async function setActiveWindowId(env, windowId, token, {
+  expectedWindowId = null,
+  expectedGeneration = 0,
+} = {}) {
   const stub = controlStub(env);
   return stub.fetch("https://sink/active-window", {
     method: "PUT",
@@ -967,11 +1045,13 @@ async function setActiveWindowId(env, windowId, token, { expectedWindowId = null
       [READBACK_HEADER]: token,
       [WINDOW_ID_HEADER]: windowId,
       [EXPECTED_ACTIVE_WINDOW_HEADER]: expectedWindowId == null ? "" : expectedWindowId,
+      [EXPECTED_ACTIVE_GENERATION_HEADER]: String(expectedGeneration),
       "content-type": "application/json",
     },
     body: JSON.stringify({
       window_id: windowId,
       expected_window_id: expectedWindowId,
+      expected_generation: expectedGeneration,
     }),
   });
 }
@@ -1029,7 +1109,54 @@ export default {
         }, { status: 409 });
       }
 
-      // Read the target window first; refuse a terminal/tombstoned id.
+      // Caller must supply the intended prior pointer + generation (own-window
+      // intention). Do not GET-and-adopt the observed control state as expected.
+      if (!req.headers.has(EXPECTED_ACTIVE_WINDOW_HEADER)) {
+        return Response.json({
+          ok: false,
+          armed: false,
+          reason: "expected_active_window_required",
+          window_id: windowId,
+        }, { status: 400 });
+      }
+      if (!req.headers.has(EXPECTED_ACTIVE_GENERATION_HEADER)) {
+        return Response.json({
+          ok: false,
+          armed: false,
+          reason: "expected_active_generation_required",
+          window_id: windowId,
+        }, { status: 400 });
+      }
+      const expectedRaw = req.headers.get(EXPECTED_ACTIVE_WINDOW_HEADER) ?? "";
+      let expectedWindowId = null;
+      if (expectedRaw !== "") {
+        expectedWindowId = parseWindowId(expectedRaw);
+        if (!expectedWindowId) {
+          return Response.json({
+            ok: false,
+            armed: false,
+            reason: "expected_active_window_invalid",
+            window_id: windowId,
+          }, { status: 400 });
+        }
+      }
+      const expectedGenRaw = req.headers.get(EXPECTED_ACTIVE_GENERATION_HEADER) ?? "";
+      const expectedGeneration = Number.parseInt(expectedGenRaw, 10);
+      if (
+        !Number.isInteger(expectedGeneration)
+        || expectedGeneration < 0
+        || String(expectedGeneration) !== expectedGenRaw.trim()
+      ) {
+        return Response.json({
+          ok: false,
+          armed: false,
+          reason: "expected_active_generation_invalid",
+          window_id: windowId,
+        }, { status: 400 });
+      }
+
+      // Prior readback must be affirmative, valid, and unclosed. Non-ok HTTP,
+      // malformed JSON, or tombstone/closed → refuse with 0 pointer writes.
       const stub = sinkStub(env, windowId);
       const priorRbRes = await stub.fetch("https://sink/readback", {
         method: "GET",
@@ -1038,28 +1165,35 @@ export default {
           [WINDOW_ID_HEADER]: windowId,
         },
       });
-      if (priorRbRes.status === 401) {
-        return Response.json({ ok: false, armed: false, reason: "unauthorized" }, { status: 401 });
-      }
       let priorRb = null;
+      let priorParseOk = false;
       try {
         priorRb = await priorRbRes.json();
+        priorParseOk = true;
       } catch {
         priorRb = null;
+        priorParseOk = false;
       }
-      if (priorRb && (priorRb.from_tombstone === true || priorRb.closed === true)) {
+      const priorClass = classifyPriorArmReadback(
+        priorRbRes,
+        priorParseOk ? priorRb : null,
+        windowId,
+      );
+      if (!priorClass.ok) {
+        const status = priorClass.reason === "unauthorized"
+          ? (priorClass.status || 401)
+          : 409;
         return Response.json({
           ok: false,
           armed: false,
-          reason: "window_tombstoned",
+          reason: priorClass.reason,
           window_id: windowId,
-        }, { status: 409 });
+        }, { status });
       }
 
-      // Switch the pointer only with explicit CAS from the current active id.
-      const currentId = await resolveActiveWindowId(env);
       const armed = await setActiveWindowId(env, windowId, token, {
-        expectedWindowId: currentId,
+        expectedWindowId,
+        expectedGeneration,
       });
       if (armed.status === 401) {
         return Response.json({ ok: false, armed: false, reason: "unauthorized" }, { status: 401 });
@@ -1076,7 +1210,9 @@ export default {
           armed: body?.armed === true,
           window_id: windowId,
           reason: body?.reason ?? null,
-          previous_window_id: body?.previous_window_id ?? currentId,
+          previous_window_id: body?.previous_window_id ?? expectedWindowId,
+          generation: body?.generation ?? null,
+          previous_generation: body?.previous_generation ?? expectedGeneration,
         },
         { status: armed.status },
       );
