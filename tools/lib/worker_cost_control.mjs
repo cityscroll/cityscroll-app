@@ -67,7 +67,10 @@ export const OPERATION_METERS = Object.freeze([
   "kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes", "queue_writes", "analytics_points",
 ]);
 
-const FORBIDDEN_RETAINED_KEYS = /(?:^|_)(?:url|query|headers?|body|token|credential|email|ip|account_id|user_agent|identifier)(?:_|$)/i;
+// Public CI / retained receipts must never carry private bills, account ids,
+// resident identifiers, or private session-cache material. Broaden carefully:
+// only exact key segments, never substring matches inside legitimate meter names.
+const FORBIDDEN_RETAINED_KEYS = /(?:^|_)(?:url|query|headers?|body|token|credential|email|ip|account_id|user_agent|identifier|bill|invoice|usd|session_cache|session_id|resident_id|resident_data)(?:_|$)/i;
 const SHA256 = /^[a-f0-9]{64}$/;
 
 export function workerCostEnforcementMode(value) {
