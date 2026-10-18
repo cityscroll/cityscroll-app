@@ -1179,10 +1179,37 @@ export async function readOwnedSinkAggregate({
     ? timeoutMs
     : DEFAULT_SINK_READBACK_TIMEOUT_MS;
   const controller = new AbortController();
+  let timedOut = false;
   const timer = setTimeout(() => {
+    timedOut = true;
     try { controller.abort(); } catch { /* ignore */ }
   }, boundMs);
-  try {
+
+  const timeoutFailure = () => ({
+    schema: "cityscroll.tail_sink_final_aggregate.v1",
+    kind: "final-aggregate-before-tombstone",
+    observed_at: requireIso(now, "now"),
+    window_id: windowId.trim(),
+    ok: false,
+    http_status: null,
+    events_seen: null,
+    opened: null,
+    closed: null,
+    from_tombstone: false,
+    a2: null,
+    by_event_type: null,
+    by_deployed_revision: null,
+    by_cohort_cpu: null,
+    collector_do_requests: null,
+    collector_storage_ops: null,
+    collector_cpu_ms: null,
+    label: "final aggregate before terminal tombstone",
+    reason: "readback_timeout",
+  });
+
+  // Outer hard bound covers never-resolving fetch AND never-resolving res.json —
+  // AbortSignal alone is not enough when json() ignores abort.
+  const run = async () => {
     const res = await fetchImpl(url, {
       method: "GET",
       headers: {
@@ -1241,9 +1268,18 @@ export async function readOwnedSinkAggregate({
         : null,
       label: "final aggregate before terminal tombstone",
     };
+  };
+
+  try {
+    return await Promise.race([
+      run(),
+      new Promise((resolve) => {
+        setTimeout(() => resolve(timeoutFailure()), boundMs + 25);
+      }),
+    ]);
   } catch (err) {
-    const aborted = err?.name === "AbortError";
-    return {
+    const aborted = timedOut || err?.name === "AbortError";
+    return aborted ? timeoutFailure() : {
       schema: "cityscroll.tail_sink_final_aggregate.v1",
       kind: "final-aggregate-before-tombstone",
       observed_at: requireIso(now, "now"),
@@ -1262,7 +1298,7 @@ export async function readOwnedSinkAggregate({
       collector_storage_ops: null,
       collector_cpu_ms: null,
       label: "final aggregate before terminal tombstone",
-      reason: aborted ? "readback_timeout" : "readback_error",
+      reason: "readback_error",
     };
   } finally {
     clearTimeout(timer);
@@ -3269,6 +3305,12 @@ export async function mutateOwnedTailAttachment({
   now = new Date().toISOString(),
   alreadyLocked = false,
   versionTransport = null,
+  /**
+   * Optional attach-only gate invoked after the durable window is read and
+   * before any version GET, intent write, or PATCH. Throw to refuse with 0 PATCH.
+   * Used by the READY gate (`assertRestorerReadyBeforeOwnedAttach`).
+   */
+  beforeOwnedAttach = null,
 } = {}) {
   if (!transport || typeof transport.getTailConsumers !== "function"
     || typeof transport.patchTailConsumers !== "function") {
@@ -3288,6 +3330,9 @@ export async function mutateOwnedTailAttachment({
     assertTailAttachmentVersionBound(window, { intendedConsumers, phase });
     let beforeObs = null;
     if (phase === "attach") {
+      if (typeof beforeOwnedAttach === "function") {
+        beforeOwnedAttach({ window, phase, now });
+      }
       assertTailAttachmentWindowMutable(window, now);
       // ATTACH (adds risk): fresh actual version GET REQUIRED before actuator.
       // Missing, failed, or drift → refuse with 0 PATCH.

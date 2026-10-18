@@ -30,6 +30,7 @@ import {
   cleanupUrlFromReadbackUrl,
   closeOwnedSinkWindow,
   confirmTailAttachment,
+  mutateOwnedTailAttachment,
   readOwnedSinkAggregate,
   createBetaWorkerTailConsumersTransport,
   createDeploymentsVersionTransport,
@@ -161,6 +162,32 @@ export function createSinkCloserFromEnv(env, { fetchImpl = globalThis.fetch } = 
 /** Bound for terminal final-aggregate GET so capture never stalls detach. */
 export const DEFAULT_FINAL_AGGREGATE_TIMEOUT_MS = 1_500;
 
+/**
+ * A prior final-aggregate receipt is immutable when it is a successful sample
+ * for this exact window with a non-negative measured events_seen (including 0
+ * only when explicitly ok and not a post-tombstone wipe). Non-empty measured
+ * counters must never be overwritten by a retry that reads the tombstone.
+ */
+export function isImmutableFinalAggregateSnapshot(existing, windowId) {
+  if (!existing || typeof existing !== "object") return false;
+  if (existing.window_id !== windowId) return false;
+  if (existing.ok !== true) return false;
+  if (existing.from_tombstone === true || existing.closed === true) return false;
+  if (existing.sample_kind === "last-sample-unknown") return false;
+  // Preserve any successful pre-tombstone sample (including events_seen === 0).
+  if (existing.sample_kind === "last-sample-before-tombstone") return true;
+  if (Number.isInteger(existing.events_seen) && existing.events_seen >= 0) return true;
+  return false;
+}
+
+function writeFinalAggregateReceiptOnce(path, receipt, windowId) {
+  const existing = readJsonIfPresent(path);
+  if (isImmutableFinalAggregateSnapshot(existing, windowId)) {
+    return existing;
+  }
+  return writeTailRestorerReceipt(path, receipt);
+}
+
 export function createSinkFinalAggregateCaptureFromEnv(env, { fetchImpl = globalThis.fetch } = {}) {
   const readbackUrl = env?.CITYSCROLL_TAIL_SINK_READBACK_URL;
   const token = env?.CITYSCROLL_TAIL_SINK_READBACK_TOKEN;
@@ -265,48 +292,55 @@ async function attemptOwnedSinkClose({
   // ROOT 13:20: Tail attachment restore/detach already ran before this closer
   // (deadline detach is never gated on this GET). Capture is short-bounded and
   // non-throwing; Tail arrivals between snapshot and tombstone stay UNKNOWN.
+  // Valid non-empty snapshots are write-once per exact window so a lost cleanup
+  // ACK retry cannot overwrite measured counters with a post-tombstone zero.
   if (typeof captureFinalAggregate === "function" && id && paths?.finalAggregateReceipt) {
-    try {
-      const atMs = Date.parse(at);
-      const expMs = typeof expiresAt === "string" ? Date.parse(expiresAt) : NaN;
-      // Before deadline: cap by remaining window. At/after deadline (normal
-      // terminal path): still capture with the short default bound — detach
-      // already completed; do not skip the last-sample GET.
-      let timeoutMs = DEFAULT_FINAL_AGGREGATE_TIMEOUT_MS;
-      if (Number.isFinite(expMs) && Number.isFinite(atMs) && expMs > atMs) {
-        timeoutMs = Math.min(DEFAULT_FINAL_AGGREGATE_TIMEOUT_MS, Math.max(1, expMs - atMs));
-      }
-      const finalAggregate = await captureFinalAggregate({
-        windowId: id,
-        now: at,
-        timeoutMs,
-      });
-      if (finalAggregate) {
-        writeTailRestorerReceipt(paths.finalAggregateReceipt, {
-          ...finalAggregate,
-          sample_kind: "last-sample-before-tombstone",
-          arrivals_between_snapshot_and_cleanup: "UNKNOWN",
-          detach_not_delayed_by_capture: true,
-          label: finalAggregate.label
-            || "last sample before terminal tombstone; arrivals until cleanup UNKNOWN",
-        });
-      }
-    } catch {
-      // Capture failure must not block restore/tombstone.
+    const existing = readJsonIfPresent(paths.finalAggregateReceipt);
+    if (isImmutableFinalAggregateSnapshot(existing, id)) {
+      // Keep prior evidence; still proceed to cleanup.
+    } else {
       try {
-        writeTailRestorerReceipt(paths.finalAggregateReceipt, {
-          schema: TAIL_SINK_FINAL_AGGREGATE_SCHEMA,
-          kind: "final-aggregate-before-tombstone",
-          observed_at: at,
-          window_id: id,
-          ok: false,
-          sample_kind: "last-sample-unknown",
-          label: "capture error; detach/cleanup not delayed; arrivals until tombstone UNKNOWN",
-          arrivals_between_snapshot_and_cleanup: "UNKNOWN",
-          detach_not_delayed_by_capture: true,
-          reason: "capture_error",
+        const atMs = Date.parse(at);
+        const expMs = typeof expiresAt === "string" ? Date.parse(expiresAt) : NaN;
+        // Before deadline: cap by remaining window. At/after deadline (normal
+        // terminal path): still capture with the short default bound — detach
+        // already completed; do not skip the last-sample GET.
+        let timeoutMs = DEFAULT_FINAL_AGGREGATE_TIMEOUT_MS;
+        if (Number.isFinite(expMs) && Number.isFinite(atMs) && expMs > atMs) {
+          timeoutMs = Math.min(DEFAULT_FINAL_AGGREGATE_TIMEOUT_MS, Math.max(1, expMs - atMs));
+        }
+        const finalAggregate = await captureFinalAggregate({
+          windowId: id,
+          now: at,
+          timeoutMs,
         });
-      } catch { /* receipt best-effort */ }
+        if (finalAggregate) {
+          writeFinalAggregateReceiptOnce(paths.finalAggregateReceipt, {
+            ...finalAggregate,
+            sample_kind: "last-sample-before-tombstone",
+            arrivals_between_snapshot_and_cleanup: "UNKNOWN",
+            detach_not_delayed_by_capture: true,
+            label: finalAggregate.label
+              || "last sample before terminal tombstone; arrivals until cleanup UNKNOWN",
+          }, id);
+        }
+      } catch {
+        // Capture failure must not block restore/tombstone.
+        try {
+          writeFinalAggregateReceiptOnce(paths.finalAggregateReceipt, {
+            schema: TAIL_SINK_FINAL_AGGREGATE_SCHEMA,
+            kind: "final-aggregate-before-tombstone",
+            observed_at: at,
+            window_id: id,
+            ok: false,
+            sample_kind: "last-sample-unknown",
+            label: "capture error; detach/cleanup not delayed; arrivals until tombstone UNKNOWN",
+            arrivals_between_snapshot_and_cleanup: "UNKNOWN",
+            detach_not_delayed_by_capture: true,
+            reason: "capture_error",
+          }, id);
+        } catch { /* receipt best-effort */ }
+      }
     }
   }
   writeSinkClosePendingRecord(paths, {
@@ -1505,35 +1539,101 @@ export function createBoundDeploymentsVersionTransport(env, window) {
 
 /**
  * Hard READY gate before owned self/producer attach.
- * Refuses when the restorer ready receipt is absent or not independently READY.
- * GO #5: runner attached self-Tail after child-failed-before-ready.
+ * Refuses absent, malformed, foreign, stale, or not-independent READY receipts.
+ * Requires schema, independent_process, exact window/restorer binding, and a
+ * live child pid (or an injected pidAlive probe). readyPresent:true alone is
+ * never enough.
  */
 export function assertRestorerReadyBeforeOwnedAttach({
   readyReceipt = null,
   readyPresent = null,
+  expectedWindowId = null,
+  expectedRestorerId = null,
+  expectedGeneration = null,
+  pidAlive = isProcessAlive,
   label = "restorer",
 } = {}) {
-  const present = readyPresent === true
-    || (readyReceipt && typeof readyReceipt === "object");
-  if (!present) {
+  // readyPresent alone must never authorize attach.
+  if (readyPresent === true && !(readyReceipt && typeof readyReceipt === "object")) {
+    fail(`refuse owned attach: ${label} READY receipt object is required (readyPresent alone is insufficient)`);
+  }
+  if (!readyReceipt || typeof readyReceipt !== "object") {
     fail(`refuse owned attach: ${label} READY receipt is absent`);
   }
-  const receipt = readyReceipt && typeof readyReceipt === "object" ? readyReceipt : null;
-  if (receipt) {
-    if (receipt.schema && receipt.schema !== TAIL_RESTORER_READY_SCHEMA) {
-      fail(`refuse owned attach: ${label} READY receipt schema mismatch`);
+  const receipt = readyReceipt;
+  if (receipt.schema !== TAIL_RESTORER_READY_SCHEMA) {
+    fail(`refuse owned attach: ${label} READY receipt schema mismatch`);
+  }
+  if (receipt.kind != null && receipt.kind !== "ready") {
+    fail(`refuse owned attach: ${label} READY receipt kind is not ready`);
+  }
+  if (receipt.independent_process !== true) {
+    fail(`refuse owned attach: ${label} READY is not an independent process`);
+  }
+  if (typeof expectedWindowId === "string" && expectedWindowId) {
+    if (receipt.window_id !== expectedWindowId) {
+      fail(`refuse owned attach: ${label} READY window_id does not match owned window`);
     }
-    if (receipt.independent_process === false) {
-      fail(`refuse owned attach: ${label} READY is not an independent process`);
+  } else if (typeof receipt.window_id !== "string" || !receipt.window_id) {
+    fail(`refuse owned attach: ${label} READY receipt missing window_id`);
+  }
+  if (typeof expectedRestorerId === "string" && expectedRestorerId) {
+    if (receipt.restorer_id !== expectedRestorerId) {
+      fail(`refuse owned attach: ${label} READY restorer_id does not match owned restorer`);
     }
+  } else if (typeof receipt.restorer_id !== "string" || !receipt.restorer_id) {
+    fail(`refuse owned attach: ${label} READY receipt missing restorer_id`);
+  }
+  if (expectedGeneration != null) {
+    const receiptGen = receipt.window_generation ?? receipt.generation;
+    if (receiptGen != null && receiptGen !== expectedGeneration) {
+      fail(`refuse owned attach: ${label} READY generation does not match owned window`);
+    }
+  }
+  const pid = Number.isInteger(receipt.pid) ? receipt.pid : null;
+  if (pid == null || pid <= 0) {
+    fail(`refuse owned attach: ${label} READY receipt missing live pid`);
+  }
+  const aliveProbe = typeof pidAlive === "function" ? pidAlive : isProcessAlive;
+  if (aliveProbe(pid) !== true) {
+    fail(`refuse owned attach: ${label} READY child pid is not alive`);
   }
   return {
     ok: true,
     label,
     ready_present: true,
-    independent_process: receipt?.independent_process === true ? true : null,
-    version_guard: receipt?.version_guard || null,
+    independent_process: true,
+    window_id: receipt.window_id,
+    restorer_id: receipt.restorer_id,
+    pid,
+    version_guard: receipt.version_guard || null,
   };
+}
+
+/**
+ * Attach path that enforces the READY gate inside mutateOwnedTailAttachment
+ * before any version GET, intent write, or PATCH (0 PATCH on refuse).
+ */
+export async function mutateOwnedTailAttachmentWithReadyGate({
+  readyReceipt = null,
+  pidAlive = isProcessAlive,
+  label = "restorer",
+  ...mutateArgs
+} = {}) {
+  const beforeOwnedAttach = ({ window }) => {
+    assertRestorerReadyBeforeOwnedAttach({
+      readyReceipt,
+      expectedWindowId: window?.window_id || null,
+      expectedRestorerId: window?.restorer?.restorer_id || null,
+      expectedGeneration: window?.window_generation ?? null,
+      pidAlive,
+      label,
+    });
+  };
+  return mutateOwnedTailAttachment({
+    ...mutateArgs,
+    beforeOwnedAttach,
+  });
 }
 
 /**
