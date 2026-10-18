@@ -89,7 +89,7 @@ const RETAINED_COST_STRUCTURAL_KEYS = Object.freeze(new Set([
   "sample_count", "samples", "scheduled_time", "schema", "script_version_id",
   "semantics", "source", "status", "storage_bytes", "traffic_mix", "trigger",
   "unchanged", "unit", "window", "workload_count", "workload_digest",
-  "workload_id",
+  "workload_id", "materialization", "routes",
 ]));
 const SHA256 = /^[a-f0-9]{64}$/;
 
@@ -150,6 +150,9 @@ function assertSanitized(value, path = "receipt") {
   const allow = retainedCostKeyAllowlist();
   for (const [key, child] of Object.entries(value)) {
     if (!allow.has(key)) fail(`${path}.${key} is forbidden in retained cost evidence`);
+    if (key === "materialization") {
+      validateWarehouseMaterializationObject(child, `${path}.materialization`);
+    }
     assertSanitized(child, `${path}.${key}`);
   }
 }
@@ -829,23 +832,36 @@ export const WAREHOUSE_CACHE_STATES = Object.freeze([
   "isolate-reuse-hit",
 ]);
 
-function requireWarehouseMaterialization(run, label) {
-  const kind = run?.materialization?.kind;
+/** Canonical route names allowed inside materialization.routes (HTTP route cohorts only). */
+export const WAREHOUSE_MATERIALIZATION_ROUTE_ALLOWLIST = HTTP_ROUTE_COHORTS;
+
+function validateWarehouseMaterializationObject(materialization, path = "materialization") {
+  if (!materialization || typeof materialization !== "object" || Array.isArray(materialization)) {
+    fail(`${path} must be an object`);
+  }
+  const kind = materialization.kind;
   if (!WAREHOUSE_MATERIALIZATION_KINDS.includes(kind)) {
-    fail(`${label}.materialization.kind must be one of ${WAREHOUSE_MATERIALIZATION_KINDS.join(", ")}`);
+    fail(`${path}.kind must be one of ${WAREHOUSE_MATERIALIZATION_KINDS.join(", ")}`);
   }
   if (kind === "route-scoped-shards") {
-    const routes = run.materialization?.routes;
+    requireExactKeys(materialization, ["kind", "routes"], path);
+    const routes = materialization.routes;
     if (!Array.isArray(routes) || routes.length < 1) {
-      fail(`${label}.materialization.routes must name at least one route-scoped shard`);
+      fail(`${path}.routes must name at least one canonical route-scoped shard`);
     }
     for (const route of routes) {
-      if (typeof route !== "string" || !route.trim()) {
-        fail(`${label}.materialization.routes entries must be non-empty strings`);
+      if (typeof route !== "string" || !WAREHOUSE_MATERIALIZATION_ROUTE_ALLOWLIST.includes(route)) {
+        fail(`${path}.routes entries must be canonical HTTP route cohorts`);
       }
     }
+  } else {
+    requireExactKeys(materialization, ["kind"], path);
   }
   return kind;
+}
+
+function requireWarehouseMaterialization(run, label) {
+  return validateWarehouseMaterializationObject(run?.materialization, `${label}.materialization`);
 }
 
 /**
@@ -859,6 +875,12 @@ export function buildWarehouseExperimentReport(decision, { materializationKind =
   }
   if (decision.financial_savings_confirmed !== false) {
     fail("warehouse experiment report must keep financial_savings_confirmed false");
+  }
+  if (
+    materializationKind != null
+    && !WAREHOUSE_MATERIALIZATION_KINDS.includes(materializationKind)
+  ) {
+    fail("materializationKind must be a known warehouse materialization kind");
   }
   const rejected = decision.decision === "candidate-rejected";
   return {
@@ -875,8 +897,6 @@ export function buildWarehouseExperimentReport(decision, { materializationKind =
       baseline_normalized_ms: decision.baseline_normalized?.native_cpu_ms ?? null,
       candidate_normalized_ms: decision.candidate_normalized?.native_cpu_ms ?? null,
     },
-    // Isolate construction / process startup is not Tail-observable as coldStart
-    // and must stay unknown — never filled from wall time or request order.
     startup_time: {
       status: "unknown",
       reason: "provider-capability",
@@ -889,11 +909,33 @@ export function buildWarehouseExperimentReport(decision, { materializationKind =
 }
 
 /**
- * After a candidate was retained, a follow-on regression against that retained
- * tip must recommend rolling production back to the prior baseline. This is the
- * harness-level rollback evidence (not a provider traffic mutation).
+ * After candidate b was retained over original baseline a, a follow-on
+ * evaluation that rejects the live tip (still b) against a must recommend
+ * rolling production back to a. Binds concrete revisions in the chain
+ * a → b → rollback-to-a. This is harness-level rollback evidence.
  */
-export function planWarehouseRollback({ retainedDecision, followOnDecision } = {}) {
+export function planWarehouseRollback({
+  originalBaselineRevision,
+  retainedCandidateRevision,
+  liveTipRevision,
+  retainedDecision,
+  followOnDecision,
+} = {}) {
+  if (!/^[a-f0-9]{40}$/.test(String(originalBaselineRevision || ""))) {
+    fail("originalBaselineRevision must be a full commit SHA");
+  }
+  if (!/^[a-f0-9]{40}$/.test(String(retainedCandidateRevision || ""))) {
+    fail("retainedCandidateRevision must be a full commit SHA");
+  }
+  if (!/^[a-f0-9]{40}$/.test(String(liveTipRevision || ""))) {
+    fail("liveTipRevision must be a full commit SHA");
+  }
+  if (originalBaselineRevision === retainedCandidateRevision) {
+    fail("rollback chain requires distinct original baseline and retained candidate revisions");
+  }
+  if (liveTipRevision !== retainedCandidateRevision) {
+    fail("live tip revision must match the previously retained candidate revision");
+  }
   if (!retainedDecision || retainedDecision.decision !== "candidate-retained") {
     fail("rollback planning requires a previously retained candidate decision");
   }
@@ -901,17 +943,26 @@ export function planWarehouseRollback({ retainedDecision, followOnDecision } = {
     fail("rollback planning requires a follow-on warehouse experiment decision");
   }
   if (followOnDecision.decision !== "candidate-rejected") {
-    fail("rollback applies when the follow-on evaluation rejects the live tip");
+    fail("rollback applies when the follow-on evaluation rejects the live tip against the original baseline");
   }
   if (!Array.isArray(followOnDecision.regressions) || followOnDecision.regressions.length < 1) {
     fail("rollback requires at least one recorded regression");
+  }
+  if (followOnDecision.operation_recommendation !== "retain-baseline") {
+    fail("follow-on decision must recommend retain-baseline before rollback is planned");
   }
   return {
     schema: "cityscroll.warehouse_cost_experiment_rollback.v1",
     action: "rollback-to-baseline",
     operation_recommendation: "retain-baseline",
-    prior_retained: "candidate",
-    restore_to: "baseline",
+    restore_to_revision: originalBaselineRevision,
+    prior_retained_revision: retainedCandidateRevision,
+    live_tip_revision: liveTipRevision,
+    chain: Object.freeze([
+      { revision: originalBaselineRevision, role: "original-baseline" },
+      { revision: retainedCandidateRevision, role: "retained-candidate" },
+      { revision: originalBaselineRevision, role: "rollback-to-baseline" },
+    ]),
     regressions: followOnDecision.regressions,
     financial_savings_confirmed: false,
     shipped_savings_claimed: false,

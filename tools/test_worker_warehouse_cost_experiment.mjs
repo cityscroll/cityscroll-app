@@ -11,6 +11,7 @@ import {
   WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
   WAREHOUSE_MATERIALIZATION_KINDS,
   buildWarehouseExperimentReport,
+  isAllowedRetainedCostKey,
   coldStartFlagRawCohort,
   evaluateRouteScopedWarehouseCandidate,
   evaluateWarehouseExperiment,
@@ -318,47 +319,110 @@ test("controlled route-scoped candidate is evaluated under fixed cohorts without
   assert.ok(WAREHOUSE_MATERIALIZATION_KINDS.includes("route-scoped-shards"));
 });
 
-test("rollback evidence restores the baseline after a retained candidate regresses", () => {
+test("route-scoped materialization routes must be canonical HTTP route cohorts", () => {
   const baseline = run({ materialization: { kind: "static-baseline" } });
-  const retainedCandidate = run({
-    deployed_revision: "b".repeat(40),
+  for (const bad of [
+    "https://example.invalid/zap",
+    "/zap-bbl?x=1",
+    "accountId",
+    "zap-bbl:cold_start_flag_raw=1",
+    "cron:0 8 * * *",
+  ]) {
+    const candidate = run({
+      deployed_revision: "b".repeat(40),
+      observed_at: "2026-10-08T23:10:00Z",
+      meters: { ...baseline.meters, native_cpu_ms: 80 },
+      materialization: { kind: "route-scoped-shards", routes: [bad] },
+    });
+    assert.throws(
+      () => evaluateRouteScopedWarehouseCandidate({
+        baseline,
+        candidate,
+        acquiredDeployments: acquiredDeployments(baseline, candidate),
+      }),
+      /canonical HTTP route cohorts/,
+      bad,
+    );
+  }
+});
+
+test("rollback evidence restores original baseline a after retained tip b regresses", () => {
+  const revisionA = "a".repeat(40);
+  const revisionB = "b".repeat(40);
+  const baselineA = run({
+    deployed_revision: revisionA,
+    materialization: { kind: "static-baseline" },
+  });
+  const retainedB = run({
+    deployed_revision: revisionB,
     observed_at: "2026-10-08T23:10:00Z",
-    meters: { ...baseline.meters, native_cpu_ms: 80 },
+    meters: { ...baselineA.meters, native_cpu_ms: 80 },
     materialization: {
       kind: "route-scoped-shards",
       routes: ["zap-bbl", "zap-project", "doing-business"],
     },
   });
-  const retained = evaluate(baseline, retainedCandidate);
+  const retained = evaluate(baselineA, retainedB);
   assert.equal(retained.decision, "candidate-retained");
 
-  // Follow-on: treat the retained tip as the new baseline arm and a worse tip as candidate.
-  const liveTip = run({
-    deployed_revision: "b".repeat(40),
-    observed_at: "2026-10-08T23:10:00Z",
-    meters: { ...baseline.meters, native_cpu_ms: 80 },
-    materialization: retainedCandidate.materialization,
-  });
-  const regressingTip = run({
-    deployed_revision: "d".repeat(40),
+  // Live tip is still b, but meters now regress versus original a → reject tip, restore a.
+  const liveBRegressed = run({
+    deployed_revision: revisionB,
     observed_at: "2026-10-08T23:40:00Z",
-    meters: { ...baseline.meters, native_cpu_ms: 80, kv_reads: 120 },
-    materialization: retainedCandidate.materialization,
+    meters: { ...baselineA.meters, native_cpu_ms: 80, kv_reads: 120 },
+    materialization: retainedB.materialization,
   });
-  const followOn = evaluate(liveTip, regressingTip);
+  const followOn = evaluate(baselineA, liveBRegressed);
   assert.equal(followOn.decision, "candidate-rejected");
+  assert.equal(followOn.operation_recommendation, "retain-baseline");
+  assert.deepEqual(followOn.regressions, ["kv_reads"]);
+
   const rollback = planWarehouseRollback({
+    originalBaselineRevision: revisionA,
+    retainedCandidateRevision: revisionB,
+    liveTipRevision: revisionB,
     retainedDecision: retained,
     followOnDecision: followOn,
   });
   assert.equal(rollback.action, "rollback-to-baseline");
-  assert.equal(rollback.operation_recommendation, "retain-baseline");
-  assert.equal(rollback.restore_to, "baseline");
-  assert.deepEqual(rollback.regressions, ["kv_reads"]);
+  assert.equal(rollback.restore_to_revision, revisionA);
+  assert.equal(rollback.prior_retained_revision, revisionB);
+  assert.equal(rollback.live_tip_revision, revisionB);
+  assert.deepEqual(rollback.chain, [
+    { revision: revisionA, role: "original-baseline" },
+    { revision: revisionB, role: "retained-candidate" },
+    { revision: revisionA, role: "rollback-to-baseline" },
+  ]);
   assert.equal(rollback.shipped_savings_claimed, false);
 
   assert.throws(
-    () => planWarehouseRollback({ retainedDecision: followOn, followOnDecision: followOn }),
+    () => planWarehouseRollback({
+      originalBaselineRevision: revisionA,
+      retainedCandidateRevision: revisionB,
+      liveTipRevision: "d".repeat(40),
+      retainedDecision: retained,
+      followOnDecision: followOn,
+    }),
+    /live tip revision must match/,
+  );
+  assert.throws(
+    () => planWarehouseRollback({
+      originalBaselineRevision: revisionA,
+      retainedCandidateRevision: revisionA,
+      liveTipRevision: revisionA,
+      retainedDecision: retained,
+      followOnDecision: followOn,
+    }),
+    /distinct original baseline/,
+  );
+  assert.throws(
+    () => planWarehouseRollback({
+      originalBaselineRevision: revisionA,
+      retainedCandidateRevision: revisionB,
+      liveTipRevision: revisionB,
+      retainedDecision: followOn,
+      followOnDecision: followOn,
+    }),
     /previously retained candidate/,
   );
 });
@@ -415,7 +479,50 @@ test("experiment report distinguishes startup time from invocation CPU and never
   assert.ok(report.startup_time.never_infer_from.includes("startup-time"));
   assert.equal(report.invocation_cpu.field, "cpuTime");
   assert.equal(report.invocation_cpu.candidate_normalized_ms, decision.candidate_normalized.native_cpu_ms);
-  // Startup must not be copied from invocation CPU.
   assert.notEqual(report.startup_time.status, "measured");
   assert.notEqual(report.startup_time, report.invocation_cpu);
+});
+
+test("route-scoped materialization keys pass the closed retained-key allowlist with fixed domains", () => {
+  assert.equal(isAllowedRetainedCostKey("materialization"), true);
+  assert.equal(isAllowedRetainedCostKey("routes"), true);
+  assert.equal(isAllowedRetainedCostKey("kind"), true);
+  assert.equal(isAllowedRetainedCostKey("accountId"), false);
+
+  const baseline = run({ materialization: { kind: "static-baseline" } });
+  const candidate = run({
+    deployed_revision: "b".repeat(40),
+    observed_at: "2026-10-08T23:10:00Z",
+    meters: { ...baseline.meters, native_cpu_ms: 80 },
+    materialization: {
+      kind: "route-scoped-shards",
+      routes: ["zap-bbl", "zap-project", "doing-business"],
+    },
+  });
+  // evaluateWarehouseExperiment assertSanitized must accept materialization under closed schema.
+  const decision = evaluateWarehouseExperiment({
+    baseline,
+    candidate,
+    acquiredDeployments: acquiredDeployments(baseline, candidate),
+  });
+  assert.equal(decision.decision, "candidate-retained");
+
+  const polluted = run({
+    deployed_revision: "c".repeat(40),
+    observed_at: "2026-10-08T23:20:00Z",
+    meters: { ...baseline.meters, native_cpu_ms: 80 },
+    materialization: {
+      kind: "route-scoped-shards",
+      routes: ["zap-bbl"],
+      accountId: "nope",
+    },
+  });
+  assert.throws(
+    () => evaluateWarehouseExperiment({
+      baseline,
+      candidate: polluted,
+      acquiredDeployments: acquiredDeployments(baseline, polluted),
+    }),
+    /forbidden|unsupported fields/,
+  );
 });

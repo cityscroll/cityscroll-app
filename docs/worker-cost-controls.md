@@ -183,11 +183,14 @@ only when no CPU, KV, D1, storage, Queue, Analytics Engine, collector, or error
 meter regresses and at least one meter improves; otherwise the baseline stays
 active. The experiment records an operational retention recommendation, never a
 financial-savings claim. Named tip fixtures cover a controlled route-scoped
-candidate, harness-level rollback after a retained tip regresses, isolate-reuse
-hits as distinct from index-cold resets, and experiment reports that keep
-startup time UNKNOWN and separate from provider-native invocation CPU. Those
-fixtures are never production ticks, and enforcement stays inactive until the
-release gate prerequisites land.
+candidate, harness-level rollback after a retained tip regresses (bound chain
+original baseline a → retained tip b → rollback to a), isolate-reuse hits as
+distinct from index-cold resets, and experiment reports that keep startup time
+UNKNOWN and separate from provider-native invocation CPU. Materialization keys
+are on the closed retained-key allowlist with fixed kind domains and
+canonical-only HTTP route cohorts in `routes`. Those fixtures are never
+production ticks, and enforcement stays inactive until the release gate
+prerequisites land.
 `tools/worker_cost_acquisition.mjs warehouse` owns the matched live run and
 calls the evaluator only after both authenticated versions have the fixed
 100-sample `cold_start_flag_raw=0/1` cohorts, correctness/freshness/miss
