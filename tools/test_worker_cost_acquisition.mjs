@@ -10,11 +10,16 @@ import {
   selectOwnedHttpEvent,
 } from "./lib/worker_cost_acquisition.mjs";
 import {
+  DOCUMENTED_NUMERIC_RAW_WAREHOUSE_COLD_START_FLAG_CAPABILITY,
   OPERATION_METERS,
   REQUIRED_COST_COHORTS,
+  TAIL_WAREHOUSE_COLD_START_FLAG_CAPABILITY,
+  WAREHOUSE_COLD_START_FLAG_CAPABILITIES,
+  WAREHOUSE_EXPERIMENT_BASE_ROUTES,
   WAREHOUSE_EXPERIMENT_COHORTS,
   WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
   baseCohortFromFlagRaw,
+  coldStartFlagRawCohort,
   parseColdStartFlagRaw,
   providerDeploymentReceiptSha256,
 } from "./lib/worker_cost_control.mjs";
@@ -723,6 +728,18 @@ test("warehouse runner reports incomplete cold_start_flag_raw=1 coverage", async
 });
 
 function warehouseIsolateCondition(raw) {
+  if (raw === null) {
+    return {
+      mode: "bounded-production-execution",
+      source: "owned-http-probe",
+      isolate_observation: {
+        present: false,
+        raw: null,
+        provisional_label: "unknown",
+        semantics: "unverified-provider-flag",
+      },
+    };
+  }
   return {
     mode: "bounded-production-execution",
     source: "owned-http-probe",
@@ -735,7 +752,7 @@ function warehouseIsolateCondition(raw) {
   };
 }
 
-function warehouseSample(revision, meter = 0, rawColdStart = 0) {
+function warehouseSample(revision, meter = 0, rawColdStart = null) {
   return {
     revision,
     native_cpu_ms: 2,
@@ -749,7 +766,216 @@ function warehouseSample(revision, meter = 0, rawColdStart = 0) {
   };
 }
 
-test("matched warehouse acquisition retains baseline on a queue regression", async () => {
+function liveFlaglessWarehouseTransport() {
+  const workloads = WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => ({
+    cohort,
+    probe_cohort: cohort,
+    workload_hash: createHash("sha256").update(cohort).digest("hex"),
+    body: { kind: "http", route: cohort },
+  }));
+  const measurement = {
+    run_marker: RUN,
+    workload_digest: WORKLOAD,
+    warehouse_workloads: workloads,
+    collector_workload: {
+      cohort: "collector-overhead",
+      probe_cohort: "collector-overhead",
+      workload_hash: createHash("sha256").update("collector-overhead").digest("hex"),
+      body: { kind: "collector-overhead" },
+    },
+  };
+  const events = [];
+  let requests = 0;
+  let activeDeployment = deployment(REVISION);
+  const transport = createLiveWorkerCostTransport({
+    env: {
+      CLOUDFLARE_OBSERVABILITY_TOKEN: "telemetry-only",
+      WORKER_COST_ADMIN_KEY: "admin-key",
+      CLOUDFLARE_ACCOUNT_ID: "account",
+      WORKER_HEALTH_URL: "https://worker.example/health",
+      WORKER_API_ORIGIN: "https://worker.example",
+      WORKER_COST_MEASUREMENT_PLAN: JSON.stringify(measurement),
+    },
+    warehouseAttemptsPerInput: 200,
+    now: () => Date.parse("2026-10-09T08:00:00Z"),
+    fetchImpl: async (url, init) => {
+      if (!url.endsWith("/admin/cost-control-probe")) throw new Error(`unexpected fetch ${url}`);
+      requests += 1;
+      const headers = init.headers;
+      const cohort = headers["x-cityscroll-cost-cohort"];
+      const isCollector = cohort === "collector-overhead";
+      const receipt = {
+        schema: "cityscroll.worker_cost_probe.v1",
+        tag: headers["x-cityscroll-cost-probe"],
+        series: headers["x-cityscroll-cost-series"],
+        cohort,
+        workload_hash: headers["x-cityscroll-cost-workload"],
+        execution_mode: "production-read-only-rehearsal",
+        operation_counts: operations(),
+        result: {
+          status: isCollector ? 204 : 200,
+          body_sha256: "6".repeat(64),
+          ...(!isCollector ? { correctness: CORRECTNESS } : {}),
+        },
+      };
+      events.push({
+        source: receipt,
+        // Tail TraceItem: no coldStart field.
+        $metadata: { id: `warehouse-flagless-${requests}` },
+        $workers: {
+          cpuTimeMs: 2,
+          outcome: "ok",
+          scriptVersion: { id: activeDeployment.receipt.cloudflare_version.id },
+          event: { request: { url: OUTER_URL, method: "POST", headers: { "x-cityscroll-cost-probe": receipt.tag } } },
+        },
+        exceptions: [],
+      });
+      return Response.json(receipt);
+    },
+  });
+  transport.collectProviderEvents = async ({ execute }) => {
+    events.length = 0;
+    await execute(new AbortController().signal);
+    return [...events];
+  };
+  transport.acquireSplitDeployments = async () => ({
+    baseline: deployment(REVISION),
+    candidate: deployment(CANDIDATE),
+  });
+  let arm = 0;
+  const originalCollect = transport.collectWarehouseRun.bind(transport);
+  transport.collectWarehouseRun = async (args) => {
+    activeDeployment = args.deployment;
+    const result = await originalCollect(args);
+    if (result.status !== "complete") return result;
+    arm += 1;
+    return {
+      ...result,
+      observedAt: arm === 1 ? "2026-10-09T08:00:00Z" : "2026-10-09T09:00:00Z",
+      cohorts: Object.fromEntries(Object.entries(result.cohorts).map(([name, samples]) => [
+        name,
+        samples.map((sample) => (
+          arm === 2 ? { ...sample, operations: operations(1, 0) } : sample
+        )),
+      ])),
+    };
+  };
+  return { transport, requestCount: () => requests };
+}
+
+test("matched warehouse acquisition defaults to Tail flag-less cohorts and evaluates end to end", async () => {
+  const { transport } = liveFlaglessWarehouseTransport();
+  const result = await runMatchedWarehouseExperiment({
+    baselineRevision: REVISION,
+    candidateRevision: CANDIDATE,
+    transport,
+  });
+  assert.equal(result.status, "complete");
+  assert.equal(result.baseline.cold_start_flag_capability.carries_numeric_raw, false);
+  assert.equal(result.baseline.cold_start_flag_capability.status, WAREHOUSE_COLD_START_FLAG_CAPABILITIES.ABSENT);
+  assert.deepEqual(
+    Object.keys(result.baseline.cohorts).sort(),
+    [...WAREHOUSE_EXPERIMENT_BASE_ROUTES].sort(),
+  );
+  assert.equal(
+    result.baseline.workload_count,
+    WAREHOUSE_EXPERIMENT_BASE_ROUTES.length * WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+  );
+  assert.ok(Object.values(result.baseline.cohorts).every((cohort) => (
+    cohort.samples.every((sample) => sample.condition.isolate_observation.present === false
+      && sample.condition.isolate_observation.raw === null
+      && sample.condition.isolate_observation.provisional_label === "unknown")
+  )));
+  assert.equal(result.decision.decision, "candidate-rejected");
+  assert.deepEqual(result.decision.regressions, ["queue_writes"]);
+  assert.equal(result.decision.cold_start_flag_raw.status, "unknown");
+});
+
+test("matched warehouse acquisition retains baseline on a queue regression for a documented numeric-raw source", async () => {
+  const result = await runMatchedWarehouseExperiment({
+    baselineRevision: REVISION,
+    candidateRevision: CANDIDATE,
+    coldStartFlagCapability: DOCUMENTED_NUMERIC_RAW_WAREHOUSE_COLD_START_FLAG_CAPABILITY,
+    transport: {
+      acquireSplitDeployments: async () => ({ baseline: deployment(REVISION), candidate: deployment(CANDIDATE) }),
+      collectWarehouseRun: async ({ label, revision, cohorts }) => {
+        assert.deepEqual([...cohorts].sort(), [...WAREHOUSE_EXPERIMENT_COHORTS].sort());
+        return {
+          status: "complete",
+          observedAt: label === "baseline" ? "2026-10-09T08:00:00Z" : "2026-10-09T09:00:00Z",
+          cohorts: Object.fromEntries(WAREHOUSE_EXPERIMENT_COHORTS.map((cohort) => [cohort,
+            Array.from({ length: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT }, () => ({
+              ...warehouseSample(
+                revision,
+                label === "candidate" ? 1 : 0,
+                parseColdStartFlagRaw(cohort),
+              ),
+            })),
+          ])),
+          correctness: CORRECTNESS,
+        };
+      },
+    },
+  });
+  assert.equal(result.status, "complete");
+  assert.equal(result.decision.decision, "candidate-rejected");
+  assert.deepEqual(result.decision.regressions, ["queue_writes"]);
+  assert.equal(result.baseline.cold_start_flag_capability.carries_numeric_raw, true);
+});
+
+test("matched warehouse acquisition never defaults carries_numeric_raw to true", async () => {
+  const result = await runMatchedWarehouseExperiment({
+    baselineRevision: REVISION,
+    candidateRevision: CANDIDATE,
+    transport: {
+      acquireSplitDeployments: async () => ({ baseline: deployment(REVISION), candidate: deployment(CANDIDATE) }),
+      collectWarehouseRun: async ({ label, revision, cohorts }) => {
+        assert.deepEqual([...cohorts].sort(), [...WAREHOUSE_EXPERIMENT_BASE_ROUTES].sort());
+        assert.deepEqual(TAIL_WAREHOUSE_COLD_START_FLAG_CAPABILITY.carries_numeric_raw, false);
+        return {
+          status: "complete",
+          observedAt: label === "baseline" ? "2026-10-09T08:00:00Z" : "2026-10-09T09:00:00Z",
+          cohorts: Object.fromEntries(WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => [cohort,
+            Array.from({ length: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT }, () => warehouseSample(revision)),
+          ])),
+          correctness: CORRECTNESS,
+        };
+      },
+    },
+  });
+  assert.equal(result.baseline.cold_start_flag_capability.carries_numeric_raw, false);
+  assert.equal(result.candidate.cold_start_flag_capability.carries_numeric_raw, false);
+  assert.equal(result.decision.cold_start_flag_capability.carries_numeric_raw, false);
+});
+
+test("matched warehouse acquisition fails when a flag-less source claims raw partitions", async () => {
+  await assert.rejects(
+    () => runMatchedWarehouseExperiment({
+      baselineRevision: REVISION,
+      candidateRevision: CANDIDATE,
+      transport: {
+        acquireSplitDeployments: async () => ({ baseline: deployment(REVISION), candidate: deployment(CANDIDATE) }),
+        collectWarehouseRun: async ({ label, revision }) => ({
+          status: "complete",
+          observedAt: label === "baseline" ? "2026-10-09T08:00:00Z" : "2026-10-09T09:00:00Z",
+          cohorts: Object.fromEntries([
+            ...WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => [cohort,
+              Array.from({ length: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT }, () => warehouseSample(revision)),
+            ]),
+            [coldStartFlagRawCohort("browse", 1), Array.from(
+              { length: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT },
+              () => warehouseSample(revision, 0, 1),
+            )],
+          ]),
+          correctness: CORRECTNESS,
+        }),
+      },
+    }),
+    /fabricated cold_start_flag_raw|flag-less source must not supply/,
+  );
+});
+
+test("matched warehouse acquisition stamps the same cold_start_flag_capability on both arms", async () => {
   const result = await runMatchedWarehouseExperiment({
     baselineRevision: REVISION,
     candidateRevision: CANDIDATE,
@@ -758,20 +984,16 @@ test("matched warehouse acquisition retains baseline on a queue regression", asy
       collectWarehouseRun: async ({ label, revision }) => ({
         status: "complete",
         observedAt: label === "baseline" ? "2026-10-09T08:00:00Z" : "2026-10-09T09:00:00Z",
-        cohorts: Object.fromEntries(WAREHOUSE_EXPERIMENT_COHORTS.map((cohort) => [cohort,
-          Array.from({ length: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT }, () => ({
-            ...warehouseSample(
-              revision,
-              label === "candidate" ? 1 : 0,
-              parseColdStartFlagRaw(cohort),
-            ),
-          })),
+        cohorts: Object.fromEntries(WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => [cohort,
+          Array.from({ length: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT }, () => warehouseSample(revision)),
         ])),
         correctness: CORRECTNESS,
       }),
     },
   });
-  assert.equal(result.status, "complete");
-  assert.equal(result.decision.decision, "candidate-rejected");
-  assert.deepEqual(result.decision.regressions, ["queue_writes"]);
+  assert.deepEqual(
+    result.baseline.cold_start_flag_capability,
+    result.candidate.cold_start_flag_capability,
+  );
+  assert.deepEqual(result.baseline.cold_start_flag_capability, TAIL_WAREHOUSE_COLD_START_FLAG_CAPABILITY);
 });

@@ -89,7 +89,9 @@ const RETAINED_COST_STRUCTURAL_KEYS = Object.freeze(new Set([
   "sample_count", "samples", "scheduled_time", "schema", "script_version_id",
   "semantics", "source", "status", "storage_bytes", "traffic_mix", "trigger",
   "unchanged", "unit", "window", "workload_count", "workload_digest",
-  "workload_id",
+  "workload_id", "materialization", "routes",
+  "cold_start_flag_capability", "carries_numeric_raw", "documented_source",
+  "cold_start_flag_raw",
 ]));
 const SHA256 = /^[a-f0-9]{64}$/;
 
@@ -150,6 +152,9 @@ function assertSanitized(value, path = "receipt") {
   const allow = retainedCostKeyAllowlist();
   for (const [key, child] of Object.entries(value)) {
     if (!allow.has(key)) fail(`${path}.${key} is forbidden in retained cost evidence`);
+    if (key === "materialization") {
+      validateWarehouseMaterializationObject(child, `${path}.materialization`);
+    }
     assertSanitized(child, `${path}.${key}`);
   }
 }
@@ -712,27 +717,128 @@ function normalizeProfileEvidence(evidence, label) {
   return normalized;
 }
 
-export const WAREHOUSE_EXPERIMENT_COHORTS = Object.freeze([
-  coldStartFlagRawCohort("zap-bbl", 1), coldStartFlagRawCohort("zap-bbl", 0),
-  coldStartFlagRawCohort("zap-project", 1), coldStartFlagRawCohort("zap-project", 0),
-  coldStartFlagRawCohort("doing-business", 1), coldStartFlagRawCohort("doing-business", 0),
-  coldStartFlagRawCohort("health", 1), coldStartFlagRawCohort("health", 0),
-  coldStartFlagRawCohort("browse", 1), coldStartFlagRawCohort("browse", 0),
+export const WAREHOUSE_EXPERIMENT_BASE_ROUTES = Object.freeze([
+  "zap-bbl", "zap-project", "doing-business", "health", "browse",
 ]);
+
+/** Flag-capable warehouse partitions: each base route × raw 0/1. */
+export const WAREHOUSE_EXPERIMENT_COHORTS = Object.freeze(
+  WAREHOUSE_EXPERIMENT_BASE_ROUTES.flatMap((route) => [
+    coldStartFlagRawCohort(route, 1),
+    coldStartFlagRawCohort(route, 0),
+  ]),
+);
+
 export const WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT = 100;
+
+export const WAREHOUSE_COLD_START_FLAG_CAPABILITIES = Object.freeze({
+  DOCUMENTED_NUMERIC_RAW: "documented-numeric-raw",
+  ABSENT: "absent",
+});
+
+/** Tail TraceItem has no cold-start indicator — default acquisition capability. */
+export const TAIL_WAREHOUSE_COLD_START_FLAG_CAPABILITY = Object.freeze({
+  carries_numeric_raw: false,
+  documented_source: null,
+  status: WAREHOUSE_COLD_START_FLAG_CAPABILITIES.ABSENT,
+});
+
+/** Only when the acquired source documents and carries numeric `$metadata.coldStart`. */
+export const DOCUMENTED_NUMERIC_RAW_WAREHOUSE_COLD_START_FLAG_CAPABILITY = Object.freeze({
+  carries_numeric_raw: true,
+  documented_source: ISOLATE_CONTRACT.source,
+  status: WAREHOUSE_COLD_START_FLAG_CAPABILITIES.DOCUMENTED_NUMERIC_RAW,
+});
+
+/**
+ * Resolve required warehouse cohorts from the acquired source capability.
+ * Raw 0/1 partitions are required only when the source documents and carries
+ * a numeric flag. Tail TraceItem has no cold-start indicator, so Tail-backed
+ * runs partition by route only and keep cold_start_flag_raw UNKNOWN/absent.
+ */
+export function resolveWarehouseExperimentCohorts(capability) {
+  const cap = requireWarehouseColdStartFlagCapability(capability, "cold_start_flag_capability");
+  if (cap.carries_numeric_raw) return WAREHOUSE_EXPERIMENT_COHORTS;
+  return WAREHOUSE_EXPERIMENT_BASE_ROUTES;
+}
+
+export function requireWarehouseColdStartFlagCapability(capability, path = "cold_start_flag_capability") {
+  if (!capability || typeof capability !== "object") fail(`${path} is required`);
+  requireExactKeys(capability, ["carries_numeric_raw", "documented_source", "status"], path);
+  if (capability.carries_numeric_raw === true) {
+    if (capability.status !== WAREHOUSE_COLD_START_FLAG_CAPABILITIES.DOCUMENTED_NUMERIC_RAW) {
+      fail(`${path}.status must be documented-numeric-raw when the source carries a numeric flag`);
+    }
+    if (capability.documented_source !== ISOLATE_CONTRACT.source) {
+      fail(`${path}.documented_source must be ${ISOLATE_CONTRACT.source} for numeric raw partitions`);
+    }
+  } else if (capability.carries_numeric_raw === false) {
+    if (capability.status !== WAREHOUSE_COLD_START_FLAG_CAPABILITIES.ABSENT) {
+      fail(`${path}.status must be absent when the source lacks a documented numeric flag`);
+    }
+    if (capability.documented_source !== null) {
+      fail(`${path}.documented_source must be null when the numeric flag is absent`);
+    }
+  } else {
+    fail(`${path}.carries_numeric_raw must be boolean`);
+  }
+  return capability;
+}
+
+function warehouseColdStartFlagRawRecord(capability) {
+  if (capability.carries_numeric_raw) {
+    return Object.freeze({
+      status: "partitioned",
+      source: capability.documented_source,
+      values: Object.freeze([0, 1]),
+    });
+  }
+  return Object.freeze({
+    status: "unknown",
+    reason: "source-capability",
+    source: null,
+    never_infer_from: Object.freeze([...ISOLATE_CONTRACT.never_infer_from]),
+  });
+}
+
+function assertWarehouseCohortSamplesMatchCapability(run, cohortName, capability, path) {
+  const wantRaw = parseColdStartFlagRaw(cohortName);
+  const samples = run.cohorts?.[cohortName]?.samples || [];
+  for (let index = 0; index < samples.length; index += 1) {
+    const isolate = samples[index]?.condition?.isolate_observation;
+    const samplePath = `${path}.cohorts.${cohortName}.samples[${index}].condition.isolate_observation`;
+    if (capability.carries_numeric_raw) {
+      if (wantRaw === null) fail(`${path} flag-capable cohorts must be keyed by cold_start_flag_raw=0 or =1`);
+      if (!isolate || isolate.present !== true || isolate.raw !== wantRaw) {
+        fail(`${samplePath} must present raw ${wantRaw} for a flag-capable source`);
+      }
+    } else {
+      if (wantRaw !== null) fail(`${path} flag-less sources cannot use cold_start_flag_raw cohort keys`);
+      if (!isolate || isolate.present !== false || isolate.raw !== null) {
+        fail(`${samplePath} must keep cold_start_flag_raw absent/unknown for a flag-less source`);
+      }
+      if (isolate.provisional_label !== "unknown") {
+        fail(`${samplePath}.provisional_label must stay unknown when the flag is absent`);
+      }
+    }
+  }
+}
 
 function warehouseMeterTotals(run, label) {
   const totals = Object.fromEntries(COST_METERS.map((meter) => [meter, 0]));
   let errors = 0;
   let sampleCount = 0;
+  const capability = requireWarehouseColdStartFlagCapability(run.cold_start_flag_capability, `${label}.cold_start_flag_capability`);
+  const requiredCohorts = resolveWarehouseExperimentCohorts(capability);
   const providerVersionId = validateProviderDeployment(run.provider_deployment, run.deployed_revision, `${label}.provider_deployment`);
-  for (const cohortName of WAREHOUSE_EXPERIMENT_COHORTS) {
+  for (const cohortName of requiredCohorts) {
     const cohort = run.cohorts?.[cohortName];
     if (!cohort) fail(`${label} is missing ${cohortName}`);
     if (!Array.isArray(cohort.samples) || cohort.samples.length !== WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT) {
       fail(`${label}.${cohortName}.samples must contain the fixed ${WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT}-sample cohort`);
     }
     if (cohort.sample_count !== cohort.samples.length) fail(`${label}.${cohortName}.sample_count does not match retained samples`);
+    assertWarehouseCohortSamplesMatchCapability(run, cohortName, capability, label);
     cohort.samples.forEach((sample, index) => {
       sampleCount += 1;
       const path = `${label}.${cohortName}.samples[${index}]`;
@@ -744,7 +850,15 @@ function warehouseMeterTotals(run, label) {
       errors += sample.error_count;
     });
   }
-  return { meters: totals, errors, sampleCount };
+  // Reject fabricated raw partitions on a flag-less run (extra 0/1 cohort keys).
+  if (!capability.carries_numeric_raw) {
+    for (const name of Object.keys(run.cohorts || {})) {
+      if (parseColdStartFlagRaw(name) !== null) {
+        fail(`${label} flag-less source must not supply fabricated cold_start_flag_raw partitions (${name})`);
+      }
+    }
+  }
+  return { meters: totals, errors, sampleCount, requiredCohorts, capability };
 }
 
 function normalizedMeters(run) {
@@ -772,8 +886,26 @@ export function evaluateWarehouseExperiment({ baseline, candidate, acquiredDeplo
       run.deployed_revision,
       `${label}.provider_deployment`,
     );
+    const capability = requireWarehouseColdStartFlagCapability(
+      run.cold_start_flag_capability,
+      `${label}.cold_start_flag_capability`,
+    );
+    if (label === "candidate") {
+      const baselineCapability = requireWarehouseColdStartFlagCapability(
+        baseline.cold_start_flag_capability,
+        "baseline.cold_start_flag_capability",
+      );
+      if (
+        capability.carries_numeric_raw !== baselineCapability.carries_numeric_raw
+        || capability.status !== baselineCapability.status
+        || capability.documented_source !== baselineCapability.documented_source
+      ) {
+        fail("experiment cold_start_flag_capability is not matched");
+      }
+    }
     if (run.workload_id !== baseline.workload_id || run.workload_count !== baseline.workload_count) fail("experiment workloads are not matched");
-    for (const cohort of WAREHOUSE_EXPERIMENT_COHORTS) {
+    const requiredCohorts = resolveWarehouseExperimentCohorts(capability);
+    for (const cohort of requiredCohorts) {
       const evidence = run.cohorts?.[cohort];
       if (!evidence) fail(`${label} is missing ${cohort}`);
       finiteNonNegativeInteger(evidence.sample_count, `${label}.${cohort}.sample_count`);
@@ -804,6 +936,12 @@ export function evaluateWarehouseExperiment({ baseline, candidate, acquiredDeplo
   if (candidate.error_count > baseline.error_count) regressions.push("error_count");
   const improvements = COST_METERS.filter((meter) => candidateMeters[meter] < baselineMeters[meter]);
   const accepted = regressions.length === 0 && improvements.length > 0;
+  const baselineIdentity = warehouseExperimentArmIdentity(baseline, "baseline");
+  const candidateIdentity = warehouseExperimentArmIdentity(candidate, "candidate");
+  const flagCapability = requireWarehouseColdStartFlagCapability(
+    baseline.cold_start_flag_capability,
+    "baseline.cold_start_flag_capability",
+  );
   return {
     schema: "cityscroll.warehouse_cost_experiment.v1",
     decision: accepted ? "candidate-retained" : "candidate-rejected",
@@ -811,11 +949,252 @@ export function evaluateWarehouseExperiment({ baseline, candidate, acquiredDeplo
     operation_recommendation: accepted ? "retain-candidate" : "retain-baseline",
     financial_savings_confirmed: false,
     matched_workload_count: baseline.workload_count,
+    cold_start_flag_capability: flagCapability,
+    cold_start_flag_raw: warehouseColdStartFlagRawRecord(flagCapability),
+    baseline_identity: baselineIdentity,
+    candidate_identity: candidateIdentity,
     baseline_normalized: baselineMeters,
     candidate_normalized: candidateMeters,
     regressions,
     improvements,
   };
+}
+
+function warehouseExperimentArmIdentity(run, label) {
+  const providerVersionId = validateProviderDeployment(
+    run.provider_deployment,
+    run.deployed_revision,
+    `${label}.provider_deployment`,
+  );
+  return Object.freeze({
+    deployed_revision: run.deployed_revision,
+    provider_receipt_sha256: run.provider_deployment.provider_receipt_sha256,
+    script_version_id: providerVersionId,
+    evidence_source: run.provider_deployment.source,
+  });
+}
+
+export const WAREHOUSE_MATERIALIZATION_KINDS = Object.freeze([
+  "static-baseline",
+  "whole-kv-materialization",
+  "route-scoped-shards",
+]);
+
+export const WAREHOUSE_CACHE_STATES = Object.freeze([
+  "index-cold-reset",
+  "isolate-reuse-hit",
+]);
+
+/** Canonical route names allowed inside materialization.routes (HTTP route cohorts only). */
+export const WAREHOUSE_MATERIALIZATION_ROUTE_ALLOWLIST = HTTP_ROUTE_COHORTS;
+
+function validateWarehouseMaterializationObject(materialization, path = "materialization") {
+  if (!materialization || typeof materialization !== "object" || Array.isArray(materialization)) {
+    fail(`${path} must be an object`);
+  }
+  const kind = materialization.kind;
+  if (!WAREHOUSE_MATERIALIZATION_KINDS.includes(kind)) {
+    fail(`${path}.kind must be one of ${WAREHOUSE_MATERIALIZATION_KINDS.join(", ")}`);
+  }
+  if (kind === "route-scoped-shards") {
+    requireExactKeys(materialization, ["kind", "routes"], path);
+    const routes = materialization.routes;
+    if (!Array.isArray(routes) || routes.length < 1) {
+      fail(`${path}.routes must name at least one canonical route-scoped shard`);
+    }
+    for (const route of routes) {
+      if (typeof route !== "string" || !WAREHOUSE_MATERIALIZATION_ROUTE_ALLOWLIST.includes(route)) {
+        fail(`${path}.routes entries must be canonical HTTP route cohorts`);
+      }
+    }
+  } else {
+    requireExactKeys(materialization, ["kind"], path);
+  }
+  return kind;
+}
+
+function requireWarehouseMaterialization(run, label) {
+  return validateWarehouseMaterializationObject(run?.materialization, `${label}.materialization`);
+}
+
+/**
+ * Build the operator-facing experiment report. Startup time stays UNKNOWN /
+ * separate from provider-native invocation CPU and must never be presented as
+ * CPU. A rejected experiment never claims shipped savings.
+ */
+export function buildWarehouseExperimentReport(decision, { materializationKind = null } = {}) {
+  if (!decision || decision.schema !== "cityscroll.warehouse_cost_experiment.v1") {
+    fail("warehouse experiment decision is required");
+  }
+  if (decision.financial_savings_confirmed !== false) {
+    fail("warehouse experiment report must keep financial_savings_confirmed false");
+  }
+  if (
+    materializationKind != null
+    && !WAREHOUSE_MATERIALIZATION_KINDS.includes(materializationKind)
+  ) {
+    fail("materializationKind must be a known warehouse materialization kind");
+  }
+  const rejected = decision.decision === "candidate-rejected";
+  return {
+    schema: "cityscroll.warehouse_cost_experiment_report.v1",
+    decision: decision.decision,
+    retained: decision.retained,
+    operation_recommendation: decision.operation_recommendation,
+    financial_savings_confirmed: false,
+    shipped_savings_claimed: false,
+    materialization_kind: materializationKind,
+    invocation_cpu: {
+      source: "provider-native",
+      field: "cpuTime",
+      baseline_normalized_ms: decision.baseline_normalized?.native_cpu_ms ?? null,
+      candidate_normalized_ms: decision.candidate_normalized?.native_cpu_ms ?? null,
+    },
+    startup_time: {
+      status: "unknown",
+      reason: "provider-capability",
+      never_infer_from: [...ISOLATE_CONTRACT.never_infer_from],
+    },
+    regressions: decision.regressions,
+    improvements: decision.improvements,
+    rejected,
+  };
+}
+
+/**
+ * After candidate b was retained over original baseline a, a follow-on
+ * evaluation that rejects the live tip (still b) against a must recommend
+ * rolling production back to a. Binds concrete revisions in the chain
+ * a → b → rollback-to-a. This is harness-level rollback evidence.
+ */
+function requireWarehouseDecisionIdentity(decision, label) {
+  if (!decision || decision.schema !== "cityscroll.warehouse_cost_experiment.v1") {
+    fail(`${label} must be a warehouse cost experiment decision`);
+  }
+  for (const arm of ["baseline_identity", "candidate_identity"]) {
+    const identity = decision[arm];
+    if (!identity || typeof identity !== "object") fail(`${label}.${arm} is required`);
+    requireExactKeys(identity, [
+      "deployed_revision", "provider_receipt_sha256", "script_version_id", "evidence_source",
+    ], `${label}.${arm}`);
+    if (!/^[a-f0-9]{40}$/.test(String(identity.deployed_revision || ""))) {
+      fail(`${label}.${arm}.deployed_revision must be a full commit SHA`);
+    }
+    if (!SHA256.test(String(identity.provider_receipt_sha256 || ""))) {
+      fail(`${label}.${arm}.provider_receipt_sha256 is invalid`);
+    }
+    if (typeof identity.script_version_id !== "string" || !identity.script_version_id.trim()) {
+      fail(`${label}.${arm}.script_version_id is required`);
+    }
+    if (identity.evidence_source !== "cloudflare-deployment-receipt+health") {
+      fail(`${label}.${arm}.evidence_source is unsupported`);
+    }
+  }
+  if (decision.baseline_identity.deployed_revision === decision.candidate_identity.deployed_revision) {
+    fail(`${label} baseline and candidate revisions must be distinct`);
+  }
+  return decision;
+}
+
+function sameWarehouseArmIdentity(left, right) {
+  return left.deployed_revision === right.deployed_revision
+    && left.provider_receipt_sha256 === right.provider_receipt_sha256
+    && left.script_version_id === right.script_version_id
+    && left.evidence_source === right.evidence_source;
+}
+
+/**
+ * After candidate b was retained over original baseline a, a follow-on
+ * evaluation that rejects the live tip (still b) against a must recommend
+ * rolling production back to a. Identities are read from the experiment
+ * decisions themselves (not free-floating SHA arguments): retained must be
+ * (A baseline, B candidate) and follow-on must be (A baseline, B candidate).
+ */
+export function planWarehouseRollback({ retainedDecision, followOnDecision } = {}) {
+  const retained = requireWarehouseDecisionIdentity(retainedDecision, "retainedDecision");
+  if (retained.decision !== "candidate-retained") {
+    fail("rollback planning requires a previously retained candidate decision");
+  }
+  const followOn = requireWarehouseDecisionIdentity(followOnDecision, "followOnDecision");
+  if (followOn.decision !== "candidate-rejected") {
+    fail("rollback applies when the follow-on evaluation rejects the live tip against the original baseline");
+  }
+  if (!Array.isArray(followOn.regressions) || followOn.regressions.length < 1) {
+    fail("rollback requires at least one recorded regression");
+  }
+  if (followOn.operation_recommendation !== "retain-baseline") {
+    fail("follow-on decision must recommend retain-baseline before rollback is planned");
+  }
+  if (!sameWarehouseArmIdentity(retained.baseline_identity, followOn.baseline_identity)) {
+    fail("follow-on baseline identity must match the retained decision baseline (original A)");
+  }
+  if (!sameWarehouseArmIdentity(retained.candidate_identity, followOn.candidate_identity)) {
+    fail("follow-on candidate identity must match the retained live tip (B)");
+  }
+  const originalBaselineRevision = retained.baseline_identity.deployed_revision;
+  const retainedCandidateRevision = retained.candidate_identity.deployed_revision;
+  return {
+    schema: "cityscroll.warehouse_cost_experiment_rollback.v1",
+    action: "rollback-to-baseline",
+    operation_recommendation: "retain-baseline",
+    restore_to_revision: originalBaselineRevision,
+    prior_retained_revision: retainedCandidateRevision,
+    live_tip_revision: retainedCandidateRevision,
+    baseline_identity: retained.baseline_identity,
+    candidate_identity: retained.candidate_identity,
+    chain: Object.freeze([
+      { revision: originalBaselineRevision, role: "original-baseline", identity: retained.baseline_identity },
+      { revision: retainedCandidateRevision, role: "retained-candidate", identity: retained.candidate_identity },
+      { revision: originalBaselineRevision, role: "rollback-to-baseline", identity: retained.baseline_identity },
+    ]),
+    regressions: followOn.regressions,
+    financial_savings_confirmed: false,
+    shipped_savings_claimed: false,
+  };
+}
+
+/**
+ * Isolate-reuse evidence: an explicit cache_state of isolate-reuse-hit is
+ * distinct from an index-cold-reset. Neither invents semantic cold/warm.
+ */
+export function validateWarehouseIsolateReuseSample(sample, path = "sample") {
+  if (!sample || typeof sample !== "object") fail(`${path} is required`);
+  const state = sample.cache_state;
+  if (!WAREHOUSE_CACHE_STATES.includes(state)) {
+    fail(`${path}.cache_state must be one of ${WAREHOUSE_CACHE_STATES.join(", ")}`);
+  }
+  if (sample.cold_start === true || sample.cold_start === false) {
+    fail(`${path} must not invent semantic cold_start from isolate reuse`);
+  }
+  if (sample.isolate_class === "cold" || sample.isolate_class === "warm") {
+    fail(`${path} must not invent isolate_class cold/warm from cache_state`);
+  }
+  if (Object.hasOwn(sample, "startup_time_ms") && sample.startup_time_ms != null) {
+    fail(`${path}.startup_time_ms must stay unknown; never fill from wall time`);
+  }
+  return {
+    cache_state: state,
+    isolate_reuse: state === "isolate-reuse-hit",
+    index_cold_reset: state === "index-cold-reset",
+    semantic_cold_warm: "unknown",
+  };
+}
+
+/**
+ * Controlled evaluation of a route-scoped candidate. Declares materialization
+ * kind on both arms, evaluates the tariff-free experiment, and returns the
+ * decision plus a report that separates startup time from invocation CPU.
+ */
+export function evaluateRouteScopedWarehouseCandidate({ baseline, candidate, acquiredDeployments } = {}) {
+  const baselineKind = requireWarehouseMaterialization(baseline, "baseline");
+  if (baselineKind !== "static-baseline") fail("baseline.materialization.kind must be static-baseline");
+  const candidateKind = requireWarehouseMaterialization(candidate, "candidate");
+  if (candidateKind !== "route-scoped-shards") {
+    fail("candidate.materialization.kind must be route-scoped-shards for this controlled test");
+  }
+  const decision = evaluateWarehouseExperiment({ baseline, candidate, acquiredDeployments });
+  const report = buildWarehouseExperimentReport(decision, { materializationKind: candidateKind });
+  return { decision, report };
 }
 
 export function evaluateAllMeterRelease({ baseline, candidate, acquiredDeployments } = {}) {

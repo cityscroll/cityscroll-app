@@ -176,26 +176,44 @@ separately with their own provenance.
 The fixed warehouse experiment compares the current static ZAP BBL, ZAP
 project, and Doing Business lookups with the route-scoped candidate under the
 same inputs and workload. Each valid lookup plus the unrelated health and
-browse controls uses exactly 100 `cold_start_flag_raw=1` and 100
-`cold_start_flag_raw=0` provider-observed samples. Joins, provenance, miss
+browse controls uses a fixed per-cohort sample minimum. Raw
+`cold_start_flag_raw=0|1` partitions are required only when the acquired
+source documents and carries a numeric flag (Observability `$metadata.coldStart`).
+Tail TraceItem has no cold-start indicator, so Tail-backed runs partition by
+route only and keep `cold_start_flag_raw` UNKNOWN/absent — never inventing 0,
+wall-time, order, or cache proxies. Joins, provenance, miss
 behavior, freshness, and cohort sizes must match. The candidate is retained
 only when no CPU, KV, D1, storage, Queue, Analytics Engine, collector, or error
 meter regresses and at least one meter improves; otherwise the baseline stays
 active. The experiment records an operational retention recommendation, never a
-financial-savings claim.
+financial-savings claim. Named tip fixtures cover a controlled route-scoped
+candidate, harness-level rollback after a retained tip regresses (bound chain
+original baseline a → retained tip b → rollback to a, with baseline/candidate
+revision and provider evidence identity recorded on each experiment decision), isolate-reuse hits as
+distinct from index-cold resets, and experiment reports that keep startup time
+UNKNOWN and separate from provider-native invocation CPU. Materialization keys
+are on the closed retained-key allowlist with fixed kind domains and
+canonical-only HTTP route cohorts in `routes`. Those fixtures are never
+production ticks, and enforcement stays inactive until the release gate
+prerequisites land.
 `tools/worker_cost_acquisition.mjs warehouse` owns the matched live run and
-calls the evaluator only after both authenticated versions have the fixed
-100-sample `cold_start_flag_raw=0/1` cohorts, correctness/freshness/miss
-digests, and the complete CPU, collector, KV, D1, storage, Queue, and Analytics
-Engine vector. The runner uses bounded concurrent attempts within the same
-30-minute and 10,000-event ceiling, then retains exactly 100 invocations whose
-provider metadata carries raw flag `1` and 100 whose metadata carries raw flag
-`0` for each identical input digest. Those raw buckets stay
-`unverified-provider-flag`; they do not prove semantic cold or warm execution.
-If either population is unavailable, the run is incomplete; it never relabels
-an invocation or forces a deployment to create a flag-raw sample. Cancellation
-reaches every in-flight workload request and prevents new attempts from being
-scheduled.
+selects cohorts from the acquired source's documented cold-start capability.
+The permitted Tail TraceItem source is flag-less: both arms use the five base
+routes with `cold_start_flag_raw` UNKNOWN/absent and never default
+`carries_numeric_raw` to true. Raw `cold_start_flag_raw=0/1` partitions are
+collected only when the source documents and carries numeric
+`$metadata.coldStart`. The runner calls the evaluator only after both
+authenticated versions have the capability-selected 100-sample cohorts,
+correctness/freshness/miss digests, and the complete CPU, collector, KV, D1,
+storage, Queue, and Analytics Engine vector. Bounded concurrent attempts stay
+inside the same 30-minute and 10,000-event ceiling. For a flag-capable source
+the runner retains exactly 100 invocations whose provider metadata carries raw
+flag `1` and 100 whose metadata carries raw flag `0` for each identical input
+digest; those raw buckets stay `unverified-provider-flag` and do not prove
+semantic cold or warm execution. If either required population is unavailable,
+the run is incomplete; it never relabels an invocation or forces a deployment
+to create a flag-raw sample. Cancellation reaches every in-flight workload
+request and prevents new attempts from being scheduled.
 Correctness, join, provenance, miss, and freshness digests are derived from each
 version's observed child responses and structured receipts; measurement-plan
 assertions cannot substitute for observed results.

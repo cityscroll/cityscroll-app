@@ -11,6 +11,7 @@ import {
   REQUIRED_COST_COHORTS,
   WAREHOUSE_EXPERIMENT_COHORTS,
   WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+  WAREHOUSE_COLD_START_FLAG_CAPABILITIES,
   buildWorkerCostProfile,
   coldStartFlagRawCohort,
   evaluateAllMeterRelease,
@@ -339,6 +340,11 @@ function warehouseRun(overrides = {}) {
     observed_at: "2026-10-08T23:00:00Z",
     workload_id: "fixed-zap-bbl-zap-project-doing-business-v1",
     workload_count: WAREHOUSE_EXPERIMENT_COHORTS.length * WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+    cold_start_flag_capability: {
+      carries_numeric_raw: true,
+      documented_source: "$metadata.coldStart",
+      status: WAREHOUSE_COLD_START_FLAG_CAPABILITIES.DOCUMENTED_NUMERIC_RAW,
+    },
     correctness: {
       input_digest: "inputs",
       joins_digest: "joins",

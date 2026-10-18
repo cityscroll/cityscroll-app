@@ -5,11 +5,13 @@ import {
   COST_METERS,
   OPERATION_METERS,
   REQUIRED_COST_COHORTS,
-  WAREHOUSE_EXPERIMENT_COHORTS,
+  TAIL_WAREHOUSE_COLD_START_FLAG_CAPABILITY,
   WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
   buildWorkerCostProfile,
   evaluateWarehouseExperiment,
   parseColdStartFlagRaw,
+  requireWarehouseColdStartFlagCapability,
+  resolveWarehouseExperimentCohorts,
   sanitizeNativeInvocation,
 } from "./worker_cost_control.mjs";
 
@@ -227,11 +229,41 @@ export function aggregateObservedCorrectness(expectations) {
   return result;
 }
 
-function warehouseRun({ revision, deployment, observedAt, workloadId, cohorts, correctness }) {
+function resolveWarehouseAcquisitionCapability(transport, explicit) {
+  if (explicit !== undefined && explicit !== null) {
+    return requireWarehouseColdStartFlagCapability(explicit, "cold_start_flag_capability");
+  }
+  const declared = typeof transport?.warehouseColdStartFlagCapability === "function"
+    ? transport.warehouseColdStartFlagCapability()
+    : transport?.warehouseColdStartFlagCapability;
+  if (declared !== undefined && declared !== null) {
+    return requireWarehouseColdStartFlagCapability(
+      declared,
+      "transport.warehouseColdStartFlagCapability",
+    );
+  }
+  // Permitted Tail source: never default carries_numeric_raw to true.
+  return TAIL_WAREHOUSE_COLD_START_FLAG_CAPABILITY;
+}
+
+function warehouseRun({
+  revision,
+  deployment,
+  observedAt,
+  workloadId,
+  cohorts,
+  correctness,
+  cold_start_flag_capability,
+}) {
+  const capability = requireWarehouseColdStartFlagCapability(
+    cold_start_flag_capability,
+    "cold_start_flag_capability",
+  );
+  const requiredCohorts = resolveWarehouseExperimentCohorts(capability);
   const meters = Object.fromEntries(COST_METERS.map((meter) => [meter, 0]));
   let errorCount = 0;
   let workloadCount = 0;
-  for (const cohort of WAREHOUSE_EXPERIMENT_COHORTS) {
+  for (const cohort of requiredCohorts) {
     const samples = cohorts[cohort];
     if (!Array.isArray(samples) || samples.length !== WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT) {
       throw new Error(`${cohort} does not contain the fixed sample population`);
@@ -248,26 +280,41 @@ function warehouseRun({ revision, deployment, observedAt, workloadId, cohorts, c
     schema: "cityscroll.warehouse_cost_experiment_run.v1", evidence_mode: "actual-production",
     deployed_revision: revision, observed_at: observedAt, workload_id: workloadId,
     workload_count: workloadCount, provider_deployment: deployment,
+    cold_start_flag_capability: capability,
+    // Retain every returned cohort key so fabricated raw partitions remain visible to the evaluator.
     cohorts: Object.fromEntries(Object.entries(cohorts).map(([name, samples]) => [name, { sample_count: samples.length, samples }])),
     meters, error_count: errorCount, correctness,
   };
 }
 
-export async function runMatchedWarehouseExperiment({ baselineRevision, candidateRevision, transport } = {}) {
+export async function runMatchedWarehouseExperiment({
+  baselineRevision,
+  candidateRevision,
+  transport,
+  coldStartFlagCapability,
+} = {}) {
   requireTransport(transport, ["acquireSplitDeployments", "collectWarehouseRun"]);
+  const capability = resolveWarehouseAcquisitionCapability(transport, coldStartFlagCapability);
+  const requiredCohorts = resolveWarehouseExperimentCohorts(capability);
   const deployments = await transport.acquireSplitDeployments({ baselineRevision, candidateRevision });
-  const workloadId = `fixed-warehouse-${sha256(WAREHOUSE_EXPERIMENT_COHORTS.join("\n"))}`;
+  const workloadId = `fixed-warehouse-${sha256(requiredCohorts.join("\n"))}`;
   const acquired = {};
   for (const [label, revision] of Object.entries({ baseline: baselineRevision, candidate: candidateRevision })) {
     const result = await transport.collectWarehouseRun({
       label, revision, deployment: deployments[label], workloadId,
-      cohorts: WAREHOUSE_EXPERIMENT_COHORTS, samplesPerCohort: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+      cohorts: requiredCohorts, samplesPerCohort: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
       maxEvents: MAX_COLLECTOR_EVENTS,
     });
     if (!result || result.status !== "complete") {
       return { schema: "cityscroll.warehouse_cost_acquisition.v1", status: "blocked", reason: result?.reason || `${label} evidence unavailable` };
     }
-    acquired[label] = warehouseRun({ revision, deployment: deployments[label], workloadId, ...result });
+    acquired[label] = warehouseRun({
+      revision,
+      deployment: deployments[label],
+      workloadId,
+      cold_start_flag_capability: capability,
+      ...result,
+    });
   }
   return {
     schema: "cityscroll.warehouse_cost_acquisition.v1", status: "complete",

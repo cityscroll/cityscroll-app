@@ -17,10 +17,13 @@ import {
   selectOwnedHttpEvent,
 } from "./lib/worker_cost_acquisition.mjs";
 import {
+  TAIL_WAREHOUSE_COLD_START_FLAG_CAPABILITY,
+  WAREHOUSE_EXPERIMENT_BASE_ROUTES,
   WAREHOUSE_EXPERIMENT_COHORTS,
   WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
   baseCohortFromFlagRaw,
   coldStartFlagRawCohort,
+  parseColdStartFlagRaw,
   sanitizeNativeInvocation,
 } from "./lib/worker_cost_control.mjs";
 import {
@@ -54,10 +57,38 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const WORKER_DIRECTORY = join(ROOT, "worker");
 const QUERY_PAGE_LIMIT = 2_000;
 const LIVE_TAIL_HEARTBEAT_MS = 15_000;
-const WAREHOUSE_BASE_COHORTS = Object.freeze([...new Set(WAREHOUSE_EXPERIMENT_COHORTS.map((cohort) => baseCohortFromFlagRaw(cohort)))]);
-const WAREHOUSE_COLLECTOR_SAMPLES = WAREHOUSE_EXPERIMENT_COHORTS.length * WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT;
-const WAREHOUSE_MAX_ATTEMPTS_PER_INPUT = Math.floor((MAX_COLLECTOR_EVENTS - WAREHOUSE_COLLECTOR_SAMPLES) / WAREHOUSE_BASE_COHORTS.length);
+const WAREHOUSE_BASE_COHORTS = WAREHOUSE_EXPERIMENT_BASE_ROUTES;
+const WAREHOUSE_FLAG_CAPABLE_COLLECTOR_SAMPLES = WAREHOUSE_EXPERIMENT_COHORTS.length * WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT;
+const WAREHOUSE_MAX_ATTEMPTS_PER_INPUT = Math.floor(
+  (MAX_COLLECTOR_EVENTS - WAREHOUSE_FLAG_CAPABLE_COLLECTOR_SAMPLES) / WAREHOUSE_BASE_COHORTS.length,
+);
 const WAREHOUSE_PROBE_CONCURRENCY = 32;
+
+function sameCohortSet(left, right) {
+  if (left.length !== right.length) return false;
+  const want = new Set(right);
+  return left.every((cohort) => want.has(cohort));
+}
+
+function warehouseCohortMode(cohorts) {
+  if (!Array.isArray(cohorts) || cohorts.length === 0) {
+    throw new Error("warehouse cohorts are required");
+  }
+  const rawCount = cohorts.filter((cohort) => parseColdStartFlagRaw(cohort) !== null).length;
+  if (rawCount === cohorts.length) {
+    if (!sameCohortSet(cohorts, WAREHOUSE_EXPERIMENT_COHORTS)) {
+      throw new Error("flag-capable warehouse cohorts must be the fixed raw 0/1 partition set");
+    }
+    return "flag-capable";
+  }
+  if (rawCount === 0) {
+    if (!sameCohortSet(cohorts, WAREHOUSE_EXPERIMENT_BASE_ROUTES)) {
+      throw new Error("flag-less warehouse cohorts must be the fixed base route set");
+    }
+    return "flag-less";
+  }
+  throw new Error("warehouse cohorts cannot mix raw partitions with base routes");
+}
 
 function arg(argv, name) {
   const index = argv.indexOf(name);
@@ -295,6 +326,16 @@ function warehouseWorkloadPairs(byCohort) {
   return pairs;
 }
 
+function warehouseFlaglessWorkloads(byCohort) {
+  const workloads = new Map();
+  for (const base of WAREHOUSE_BASE_COHORTS) {
+    const workload = byCohort.get(base);
+    if (!workload) throw new Error(`${base} warehouse workload is missing`);
+    workloads.set(base, workload);
+  }
+  return workloads;
+}
+
 function providerEventsByProbeHeader(events) {
   const indexed = new Map();
   for (const event of events) {
@@ -508,22 +549,32 @@ export function createLiveWorkerCostTransport({
         if (socket && typeof socket.close === "function") socket.close();
       }
     },
+    warehouseColdStartFlagCapability: TAIL_WAREHOUSE_COLD_START_FLAG_CAPABILITY,
     async collectWarehouseRun({ label, revision, deployment, workloadId, cohorts, samplesPerCohort, maxEvents }) {
       if (samplesPerCohort !== WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT || maxEvents !== MAX_COLLECTOR_EVENTS) {
         throw new Error("warehouse acquisition bounds are invalid");
       }
+      let mode;
+      try { mode = warehouseCohortMode(cohorts); }
+      catch (error) { return { status: "blocked", reason: String(error?.message || error) }; }
+      const collectorSampleCount = cohorts.length * samplesPerCohort;
       const plan = await measurementPlan();
       const byCohort = new Map((plan.warehouse_workloads || []).map((workload) => [workload.cohort, workload]));
-      if (cohorts.some((cohort) => !byCohort.has(cohort)) || !plan.collector_workload) {
+      if (!plan.collector_workload) {
         return { status: "blocked", reason: "fixed warehouse workload plan is incomplete" };
       }
-      let pairs;
-      try { pairs = warehouseWorkloadPairs(byCohort); }
-      catch (error) { return { status: "blocked", reason: String(error?.message || error) }; }
+      let workloadsByBase;
+      try {
+        workloadsByBase = mode === "flag-capable"
+          ? warehouseWorkloadPairs(byCohort)
+          : warehouseFlaglessWorkloads(byCohort);
+      } catch (error) {
+        return { status: "blocked", reason: String(error?.message || error) };
+      }
       const attempts = Array.from({ length: warehouseAttemptsPerInput }, (_, index) => (
-        [...pairs.entries()].map(([base, workload]) => ({ base, workload, index }))
+        [...workloadsByBase.entries()].map(([base, workload]) => ({ base, workload, index }))
       )).flat();
-      const collectorAttempts = Array.from({ length: WAREHOUSE_COLLECTOR_SAMPLES }, (_, index) => index);
+      const collectorAttempts = Array.from({ length: collectorSampleCount }, (_, index) => index);
       let expectations = [];
       let collectorExpectations = [];
       const started = now();
@@ -556,7 +607,7 @@ export function createLiveWorkerCostTransport({
       const retainedCorrectness = {};
       try {
         const eventIndex = providerEventsByProbeHeader(events);
-        const conditioned = Object.fromEntries(WAREHOUSE_EXPERIMENT_COHORTS.map((cohort) => [
+        const conditioned = Object.fromEntries(cohorts.map((cohort) => [
           cohort,
           selectConditionedEvents(
             eventIndex,
@@ -565,20 +616,31 @@ export function createLiveWorkerCostTransport({
             samplesPerCohort,
           ),
         ]));
-        for (const base of WAREHOUSE_BASE_COHORTS) {
-          const fingerprints = new Set([
-            ...conditioned[coldStartFlagRawCohort(base, 1)],
-            ...conditioned[coldStartFlagRawCohort(base, 0)],
-          ].map(({ expectation }) => correctnessFingerprint(expectation)));
-          if (fingerprints.size !== 1 || [...fingerprints][0].startsWith(":")) {
-            throw new Error(`${base} cold_start_flag_raw=0 and =1 responses are not matched`);
+        if (mode === "flag-capable") {
+          for (const base of WAREHOUSE_BASE_COHORTS) {
+            const fingerprints = new Set([
+              ...conditioned[coldStartFlagRawCohort(base, 1)],
+              ...conditioned[coldStartFlagRawCohort(base, 0)],
+            ].map(({ expectation }) => correctnessFingerprint(expectation)));
+            if (fingerprints.size !== 1 || [...fingerprints][0].startsWith(":")) {
+              throw new Error(`${base} cold_start_flag_raw=0 and =1 responses are not matched`);
+            }
+          }
+        } else {
+          for (const base of WAREHOUSE_BASE_COHORTS) {
+            const fingerprints = new Set(
+              conditioned[base].map(({ expectation }) => correctnessFingerprint(expectation)),
+            );
+            if (fingerprints.size !== 1 || [...fingerprints][0].startsWith(":")) {
+              throw new Error(`${base} flag-less responses are not matched`);
+            }
           }
         }
         const collectors = collectorExpectations.map((expectation) => ({
           expectation,
           event: selectOwnedHttpEvent(eventIndex.get(expectation.header) || [], expectation, "collector-overhead"),
         }));
-        if (collectors.length < WAREHOUSE_COLLECTOR_SAMPLES) throw new Error("collector-overhead provider samples are incomplete");
+        if (collectors.length < collectorSampleCount) throw new Error("collector-overhead provider samples are incomplete");
         for (const cohort of cohorts) {
           retained[cohort] = conditioned[cohort].map(({ expectation, event }, index) => {
             const collector = collectors[collectorIndex++].event;
