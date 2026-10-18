@@ -1078,6 +1078,8 @@ export async function emergencyDetachTailAttachment(window, transport, {
 }
 
 const READBACK_TOKEN_HEADER = "x-cityscroll-tail-readback-token";
+/** Per-window DO identity header (idFromName(window_id) on the sanitizer). */
+export const WINDOW_ID_HEADER = "x-cityscroll-tail-window-id";
 
 /** Default bound for AggregateSink readback polls (ms). */
 export const DEFAULT_SINK_READBACK_TIMEOUT_MS = 5_000;
@@ -1085,9 +1087,138 @@ export const DEFAULT_SINK_READBACK_TIMEOUT_MS = 5_000;
 /** AggregateSink readback schema the readiness/liveness poll accepts. */
 export const TAIL_SINK_READBACK_SCHEMA = "cityscroll.tail_sanitizer_aggregate_sink.v1";
 
-/** Configured AggregateSink Durable Object name (readback target identity). */
+/** Configured AggregateSink Durable Object product name (readback target identity). */
 export const TAIL_SINK_NAME = "cityscroll-tail-sanitizer-aggregate";
 
+/**
+ * Derive the authenticated /cleanup URL from a configured /readback URL.
+ * Guardian terminal paths POST cleanup so the sink leaves a TERMINAL tombstone
+ * instead of staying OPEN across windows.
+ */
+export function cleanupUrlFromReadbackUrl(readbackUrl) {
+  if (typeof readbackUrl !== "string" || !readbackUrl) {
+    fail("cleanupUrlFromReadbackUrl requires readback url");
+  }
+  const u = new URL(readbackUrl);
+  if (u.pathname.endsWith("/readback")) {
+    u.pathname = `${u.pathname.slice(0, -"/readback".length)}/cleanup`;
+  } else if (u.pathname.endsWith("/aggregate")) {
+    u.pathname = `${u.pathname.slice(0, -"/aggregate".length)}/cleanup`;
+  } else {
+    u.pathname = `${u.pathname.replace(/\/$/, "")}/cleanup`;
+  }
+  return u.toString();
+}
+
+/**
+ * Authenticated POST /cleanup for one owned window_id.
+ * Leaves a TERMINAL tombstone (≠ FRESH). Idempotent on an already-closed window.
+ * Never echoes the token. Returns an allowlisted scalar projection only.
+ */
+export async function closeOwnedSinkWindow({
+  url,
+  token,
+  windowId,
+  fetchImpl = globalThis.fetch,
+  timeoutMs = DEFAULT_SINK_READBACK_TIMEOUT_MS,
+} = {}) {
+  if (typeof url !== "string" || !url) fail("closeOwnedSinkWindow requires cleanup url");
+  if (typeof token !== "string" || !token || token === "unset") {
+    fail("closeOwnedSinkWindow requires readback token");
+  }
+  if (typeof windowId !== "string" || !windowId.trim()) {
+    fail("closeOwnedSinkWindow requires window_id");
+  }
+  if (typeof fetchImpl !== "function") fail("fetchImpl must be a function");
+  const boundMs = Number.isFinite(timeoutMs) && timeoutMs > 0
+    ? timeoutMs
+    : DEFAULT_SINK_READBACK_TIMEOUT_MS;
+
+  const controller = new AbortController();
+  let timer = null;
+  try {
+    const work = (async () => {
+      const res = await fetchImpl(url, {
+        method: "POST",
+        headers: {
+          [READBACK_TOKEN_HEADER]: token,
+          [WINDOW_ID_HEADER]: windowId.trim(),
+        },
+        signal: controller.signal,
+      });
+      if (!res || res.ok !== true) {
+        return {
+          ok: false,
+          cleaned: false,
+          tombstone: false,
+          closed: false,
+          window_id: windowId.trim(),
+          reason: res?.status === 401 || res?.status === 403
+            ? "unauthorized"
+            : res?.status === 409
+              ? "window_id_mismatch"
+              : res?.status === 400
+                ? "window_id_required"
+                : "cleanup_unavailable",
+          status: res?.status ?? null,
+        };
+      }
+      let body = null;
+      try {
+        body = await res.json();
+      } catch {
+        return {
+          ok: false,
+          cleaned: false,
+          tombstone: false,
+          closed: false,
+          window_id: windowId.trim(),
+          reason: "cleanup_malformed",
+          status: res.status ?? null,
+        };
+      }
+      return {
+        ok: body?.ok === true,
+        cleaned: body?.cleaned === true,
+        tombstone: body?.tombstone === true,
+        closed: body?.closed === true,
+        window_id: typeof body?.window_id === "string" ? body.window_id : windowId.trim(),
+        reason: body?.ok === true ? null : (body?.reason || "cleanup_refused"),
+        status: res.status ?? null,
+      };
+    })();
+    const timeoutPromise = new Promise((resolve) => {
+      timer = setTimeout(
+        () => {
+          try { controller.abort(); } catch { /* ignore */ }
+          resolve({
+            ok: false,
+            cleaned: false,
+            tombstone: false,
+            closed: false,
+            window_id: windowId.trim(),
+            reason: "cleanup_timeout",
+            status: null,
+          });
+        },
+        boundMs,
+      );
+    });
+    return await Promise.race([work, timeoutPromise]);
+  } catch {
+    return {
+      ok: false,
+      cleaned: false,
+      tombstone: false,
+      closed: false,
+      window_id: windowId.trim(),
+      reason: "cleanup_error",
+      status: null,
+    };
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
 /**
  * Fixed allowlisted cap-signal reason codes only. Heartbeats and receipts must
  * never persist raw URL, query, body, token, or error.message text.
@@ -1613,9 +1744,11 @@ export function createSinkReadbackCapSignal({
       }
 
       const work = (async () => {
+        const headers = { [READBACK_TOKEN_HEADER]: token };
+        if (binding.window_id) headers[WINDOW_ID_HEADER] = binding.window_id;
         const res = await fetchImpl(url, {
           method: "GET",
-          headers: { [READBACK_TOKEN_HEADER]: token },
+          headers,
           signal: controller.signal,
         });
         if (!res || res.ok !== true) {
@@ -1632,6 +1765,17 @@ export function createSinkReadbackCapSignal({
         } catch {
           return unknownCapSignal({
             reason: CAP_SIGNAL_REASON.READBACK_MALFORMED,
+            status: res.status ?? null,
+          });
+        }
+        // Server stamped window_id must match the armed identity binding.
+        if (
+          typeof body?.window_id === "string"
+          && body.window_id
+          && body.window_id !== binding.window_id
+        ) {
+          return unknownCapSignal({
+            reason: CAP_SIGNAL_REASON.IDENTITY_BINDING_UNKNOWN,
             status: res.status ?? null,
           });
         }

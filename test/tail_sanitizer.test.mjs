@@ -353,30 +353,81 @@ function createFakeStorage() {
   return api;
 }
 
+const TEST_WINDOW_ID = "test-window-1";
+const WINDOW_ID_HEADER = "x-cityscroll-tail-window-id";
+
 function createFakeSinkEnv(storage, {
   readbackToken = "owned-readback",
   expectedRevisions = "rev-a,rev-b,rev-c,rev-cpu,rev-1,getter-only-revision",
   ownedDetachActuator = null,
+  defaultWindowId = TEST_WINDOW_ID,
 } = {}) {
   const env = {
     READBACK_TOKEN: readbackToken,
     EXPECTED_DEPLOYED_REVISIONS: expectedRevisions,
   };
   if (ownedDetachActuator) env.OWNED_DETACH_ACTUATOR = ownedDetachActuator;
-  const sink = new AggregateSink({ storage }, env);
-  const stub = {
-    async fetch(url, init = {}) {
-      const req = init && init.body !== undefined
-        ? new Request(url, init)
-        : (url instanceof Request ? url : new Request(url, init));
-      return sink.fetch(req);
+
+  // Per-window DO namespace: idFromName(window_id) → independent AggregateSink storage.
+  const instances = new Map();
+  function instanceFor(name) {
+    if (!instances.has(name)) {
+      const store = name === defaultWindowId ? storage : createFakeStorage();
+      const sink = new AggregateSink({ storage: store }, env);
+      instances.set(name, {
+        name,
+        storage: store,
+        sink,
+        stub: {
+          async fetch(url, init = {}) {
+            const req = init && init.body !== undefined
+              ? new Request(url, init)
+              : (url instanceof Request ? url : new Request(url, init));
+            return sink.fetch(req);
+          },
+        },
+      });
+    }
+    return instances.get(name);
+  }
+
+  // Default sink used by direct AggregateSink unit tests.
+  const primary = instanceFor(defaultWindowId);
+  env.AGG_SINK = {
+    idFromName(name) { return { name: String(name) }; },
+    get(id) {
+      const name = id?.name ?? defaultWindowId;
+      return instanceFor(name).stub;
     },
   };
-  env.AGG_SINK = {
-    idFromName() { return { name: "cityscroll-tail-sanitizer-aggregate" }; },
-    get() { return stub; },
+  return {
+    sink: primary.sink,
+    storage: primary.storage,
+    env,
+    instances,
+    instanceFor,
+    defaultWindowId,
   };
-  return { sink, storage, env };
+}
+
+function authHeaders(token, windowId = TEST_WINDOW_ID) {
+  return {
+    "x-cityscroll-tail-readback-token": token,
+    [WINDOW_ID_HEADER]: windowId,
+  };
+}
+
+/** Arm the control DO so worker.tail() routes to the given window_id. */
+async function armActiveWindow(env, token, windowId = TEST_WINDOW_ID) {
+  const res = await workerEntrypoint.fetch(new Request("https://worker/arm", {
+    method: "POST",
+    headers: authHeaders(token, windowId),
+  }), env);
+  assert.equal(res.status, 200, "arm must succeed for tail routing");
+  const body = await res.json();
+  assert.equal(body.armed, true);
+  assert.equal(body.window_id, windowId);
+  return body;
 }
 
 function delayedJsonRequest(url, body, gate) {
@@ -426,7 +477,10 @@ test("getter-only TraceItem validates by property reads; empty {} still fails", 
 test("AggregateSink: unauthenticated readback is 401 with zero storage writes", async () => {
   const storage = createFakeStorage();
   const { sink } = createFakeSinkEnv(storage);
-  const res = await sink.fetch(new Request("https://sink/readback", { method: "GET" }));
+  const res = await sink.fetch(new Request("https://sink/readback", {
+    method: "GET",
+    headers: { [WINDOW_ID_HEADER]: TEST_WINDOW_ID },
+  }));
   assert.equal(res.status, 401);
   const body = await res.json();
   assert.equal(body.ok, false);
@@ -452,13 +506,14 @@ test("AggregateSink: authenticated FRESH/EMPTY /readback is honest unopened zero
   // Actual Worker entrypoint with fake AGG_SINK binding + storage — not a hand mock.
   const entryRes = await workerEntrypoint.fetch(new Request("https://worker/readback", {
     method: "GET",
-    headers: { "x-cityscroll-tail-readback-token": "owned-readback" },
+    headers: authHeaders("owned-readback", "bootstrap-win"),
   }), env);
   assert.equal(entryRes.status, 200);
   const body = await entryRes.json();
   assert.equal(body.ok, true);
   assert.equal(body.schema, "cityscroll.tail_sanitizer_aggregate_sink.v1");
   assert.equal(body.sink_name, "cityscroll-tail-sanitizer-aggregate");
+  assert.equal(body.window_id, "bootstrap-win");
   assert.equal(body.opened, false);
   assert.equal(body.closed, false);
   assert.equal(body.events_seen, 0);
@@ -469,6 +524,7 @@ test("AggregateSink: authenticated FRESH/EMPTY /readback is honest unopened zero
   assert.equal(body.a2.pass, null);
   assert.equal(body.a2.reason, "not_evaluated");
   // Unopened readback must not open a window or invent meta (no READY↔attach deadlock).
+  // bootstrap-win routes to its own DO (not the defaultWindowId primary storage).
   assert.deepEqual(storage.keys(), []);
 
   const accountSha = createHash("sha256").update("a".repeat(32)).digest("hex");
@@ -556,7 +612,7 @@ test("AggregateSink: authenticated FRESH/EMPTY /readback is honest unopened zero
   // Direct AggregateSink path stays consistent with the entrypoint.
   const direct = await sink.fetch(new Request("https://sink/readback", {
     method: "GET",
-    headers: { "x-cityscroll-tail-readback-token": "owned-readback" },
+    headers: authHeaders("owned-readback"),
   }));
   const directBody = await direct.json();
   assert.equal(directBody.opened, false);
@@ -610,11 +666,13 @@ test("AggregateSink: ALL-seen cap + tail() classifies all items and drops after 
     makeGetterOnlyTraceItem({ cpuTime: 2, scriptVersionId: "rev-b" }),
     makeGetterOnlyTraceItem({ cpuTime: 3, scriptVersionId: "rev-b" }),
   ];
+  await armActiveWindow(env, "owned-readback");
   const tailResult = await workerEntrypoint.tail(batch, env);
   assert.equal(tailResult.classified, 3);
   assert.ok(tailResult.dropped_after_cap >= 1);
   assert.equal(tailResult.owned_detach.actuated, true);
   assert.equal(detachCalls, 1);
+  assert.equal(tailResult.active_window_id, TEST_WINDOW_ID);
   const counters = await storage.get("counters");
   assert.equal(counters.events_accepted, 1);
   assert.ok(counters.events_rejected >= 1);
@@ -637,7 +695,7 @@ test("AggregateSink: cleanup tombstone survives; readback never reopens", async 
 
   const cleaned = await sink.fetch(new Request("https://sink/cleanup", {
     method: "POST",
-    headers: { "x-cityscroll-tail-readback-token": "tok" },
+    headers: authHeaders("tok"),
   }));
   assert.equal(cleaned.status, 200);
   const cleanedBody = await cleaned.json();
@@ -647,7 +705,7 @@ test("AggregateSink: cleanup tombstone survives; readback never reopens", async 
 
   const readback = await sink.fetch(new Request("https://sink/readback", {
     method: "GET",
-    headers: { "x-cityscroll-tail-readback-token": "tok" },
+    headers: authHeaders("tok"),
   }));
   const rb = await readback.json();
   assert.equal(rb.ok, true);
@@ -694,7 +752,7 @@ test("AggregateSink: distinct cpuTime values produce distinct sums (not class-on
   }
   const rb = await (await sink.fetch(new Request("https://sink/readback", {
     method: "GET",
-    headers: { "x-cityscroll-tail-readback-token": "tok" },
+    headers: authHeaders("tok"),
   }))).json();
   assert.equal(rb.counters.by_cpu_class.positive, 2);
   assert.equal(rb.counters.cpu_ms_sum, 101);
@@ -785,7 +843,7 @@ test("AggregateSink: cleanup versus in-flight apply keeps tombstone closed", asy
   await new Promise((r) => setTimeout(r, 20));
   const cleaned = await sink.fetch(new Request("https://sink/cleanup", {
     method: "POST",
-    headers: { "x-cityscroll-tail-readback-token": "tok" },
+    headers: authHeaders("tok"),
   }));
   assert.equal((await cleaned.json()).tombstone, true);
   release();
@@ -796,7 +854,7 @@ test("AggregateSink: cleanup versus in-flight apply keeps tombstone closed", asy
 
   const rb = await (await sink.fetch(new Request("https://sink/readback", {
     method: "GET",
-    headers: { "x-cityscroll-tail-readback-token": "tok" },
+    headers: authHeaders("tok"),
   }))).json();
   assert.equal(rb.closed, true);
   assert.equal(rb.from_tombstone, true);
@@ -883,7 +941,7 @@ test("AggregateSink cost_vector counts collector DO requests and storage ops", a
   assert.equal(applyBody.a2.pass, true);
 
   const readback = await sink.fetch(new Request("https://sink/readback", {
-    headers: { "x-cityscroll-tail-readback-token": "tok-cost" },
+    headers: authHeaders("tok-cost"),
   }));
   assert.equal(readback.status, 200);
   const body = await readback.json();
@@ -1169,7 +1227,7 @@ test("AggregateSink collector_overhead records CPU without events_seen; preserve
   assert.equal(counters.cpu_ms_sum, 3);
 
   const rb = await (await sink.fetch(new Request("https://sink/readback", {
-    headers: { "x-cityscroll-tail-readback-token": "tok-coll" },
+    headers: authHeaders("tok-coll"),
   }))).json();
   assert.equal(rb.counters.collector_cpu_ms, 12);
   assert.equal(rb.overhead.collector_cpu_ms, 12);
@@ -1182,6 +1240,7 @@ test("tail() self-observation posts collector_overhead without producer caps", a
     readbackToken: "tok-self",
     expectedRevisions: "rev-self",
   });
+  await armActiveWindow(env, "tok-self");
   const selfItem = {
     scriptName: "cityscroll-tail-sanitizer",
     outcome: "ok",
@@ -1198,6 +1257,7 @@ test("tail() self-observation posts collector_overhead without producer caps", a
   const batch = await workerEntrypoint.tail([selfItem, producerItem], env);
   assert.equal(batch.batch_size, 2);
   assert.equal(batch.classified, 2);
+  assert.equal(batch.active_window_id, TEST_WINDOW_ID);
 
   const counters = await storage.get("counters");
   assert.equal(counters.events_accepted, 1);
@@ -1207,4 +1267,100 @@ test("tail() self-observation posts collector_overhead without producer caps", a
   const dumped = JSON.stringify(counters);
   assert.equal(dumped.includes("should-never-persist"), false);
   assert.equal(dumped.includes("token="), false);
+});
+
+test("per-window DO identity: new window is FRESH; old tombstone stays readable; mismatch refuses", async () => {
+  const storage = createFakeStorage();
+  const { env, instanceFor } = createFakeSinkEnv(storage, { readbackToken: "tok-win" });
+  const winA = "window-A";
+  const winB = "window-B";
+
+  await armActiveWindow(env, "tok-win", winA);
+  const sinkA = instanceFor(winA).sink;
+  const applied = await sinkA.fetch(new Request("https://sink/apply", {
+    method: "POST",
+    headers: { "content-type": "application/json", [WINDOW_ID_HEADER]: winA },
+    body: JSON.stringify({
+      accepted: true, cpu_class: "positive", cpuTime: 4, outcome: "ok",
+      eventType: "fetch", deployed_revision: "rev-a",
+    }),
+  }));
+  assert.equal((await applied.json()).acked, true);
+
+  const cleaned = await workerEntrypoint.fetch(new Request("https://worker/cleanup", {
+    method: "POST",
+    headers: authHeaders("tok-win", winA),
+  }), env);
+  assert.equal(cleaned.status, 200);
+  assert.equal((await cleaned.json()).tombstone, true);
+
+  const oldRb = await (await workerEntrypoint.fetch(new Request("https://worker/readback", {
+    method: "GET",
+    headers: authHeaders("tok-win", winA),
+  }), env)).json();
+  assert.equal(oldRb.from_tombstone, true);
+  assert.equal(oldRb.closed, true);
+  assert.equal(oldRb.window_id, winA);
+
+  const freshRb = await (await workerEntrypoint.fetch(new Request("https://worker/readback", {
+    method: "GET",
+    headers: authHeaders("tok-win", winB),
+  }), env)).json();
+  assert.equal(freshRb.opened, false);
+  assert.equal(freshRb.closed, false);
+  assert.equal(freshRb.window_id, winB);
+  assert.equal(freshRb.a2.pass, null);
+  assert.equal(freshRb.a2.reason, "not_evaluated");
+
+  // Same DO storage with a mismatched window_id header refuses.
+  const mismatch = await sinkA.fetch(new Request("https://sink/readback", {
+    method: "GET",
+    headers: authHeaders("tok-win", winB),
+  }));
+  assert.equal(mismatch.status, 409);
+  const mismatchBody = await mismatch.json();
+  assert.equal(mismatchBody.reason, "window_id_mismatch");
+  assert.equal(mismatchBody.expected_window_id, winA);
+});
+
+test("closeOwnedSinkWindow: authenticated cleanup leaves TERMINAL tombstone", async () => {
+  const {
+    cleanupUrlFromReadbackUrl,
+    closeOwnedSinkWindow,
+  } = await import("../tools/lib/worker_tail_attachment.mjs");
+  const storage = createFakeStorage();
+  const { env, instanceFor } = createFakeSinkEnv(storage, { readbackToken: "tok-close" });
+  const windowId = "close-win-1";
+  await armActiveWindow(env, "tok-close", windowId);
+  const sink = instanceFor(windowId).sink;
+  await sink.fetch(new Request("https://sink/apply", {
+    method: "POST",
+    headers: { "content-type": "application/json", [WINDOW_ID_HEADER]: windowId },
+    body: JSON.stringify({
+      accepted: true, cpu_class: "positive", cpuTime: 2, outcome: "ok",
+      eventType: "fetch", deployed_revision: "rev-a",
+    }),
+  }));
+
+  const cleanupUrl = cleanupUrlFromReadbackUrl("https://worker/readback");
+  assert.equal(cleanupUrl, "https://worker/cleanup");
+  const closed = await closeOwnedSinkWindow({
+    url: cleanupUrl,
+    token: "tok-close",
+    windowId,
+    fetchImpl: (url, init) => workerEntrypoint.fetch(new Request(url, init), env),
+  });
+  assert.equal(closed.ok, true);
+  assert.equal(closed.cleaned, true);
+  assert.equal(closed.tombstone, true);
+  assert.equal(closed.closed, true);
+  assert.equal(closed.window_id, windowId);
+
+  const rb = await (await workerEntrypoint.fetch(new Request("https://worker/readback", {
+    method: "GET",
+    headers: authHeaders("tok-close", windowId),
+  }), env)).json();
+  assert.equal(rb.from_tombstone, true);
+  assert.equal(rb.opened == null || rb.opened === false || rb.closed === true, true);
+  assert.equal(rb.closed, true);
 });

@@ -3735,3 +3735,85 @@ test("tailAttachmentRestorerTick: unchanged-window capped signal still detaches"
   rmSync(dir, { recursive: true, force: true });
 });
 
+test("tailAttachmentRestorerTick: terminal cap-detach closes AggregateSink via /cleanup", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-sink-close-terminal-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(stateRoot, { recursive: true });
+  const transport = memoryTransport([SANITIZER]);
+  const { store, window, versionTransport } = await openStoredArmedWindow(dir, {
+    windowId: "sink-close-win",
+    restorerId: "tr-sink-close",
+    baselineConsumers: [],
+    now: "2026-10-17T12:00:00.000Z",
+    durationSeconds: 1800,
+  });
+  let owned = {
+    ...window,
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER]),
+    owned_sha256: tailConsumersSha256([SANITIZER]),
+    pending_mutation: null,
+  };
+  owned = await store.write(owned);
+
+  const closeCalls = [];
+  const closeSinkWindow = async ({ windowId }) => {
+    closeCalls.push({ windowId });
+    return {
+      ok: true,
+      cleaned: true,
+      tombstone: true,
+      closed: true,
+      window_id: windowId,
+      reason: null,
+      status: 200,
+    };
+  };
+
+  const actuator = createOwnedCapDetachActuator({
+    transport,
+    versionTransport,
+    readCapSignal: async () => ({
+      cap_reached: true,
+      readback_ok: true,
+      reason: "cap_reached",
+      events_seen: 10_000,
+      apply_overshoot: 0,
+      a2: { pass: true, reason: "within_all_seen_cap", events_seen: 10_000, apply_overshoot: 0 },
+    }),
+  });
+
+  const tick = await tailAttachmentRestorerTick({
+    store,
+    transport,
+    versionTransport,
+    capDetachActuator: actuator,
+    closeSinkWindow,
+    stateRoot,
+    now: "2026-10-17T12:00:10.000Z",
+  });
+
+  assert.ok(
+    tick.outcome === "cap-detach"
+      || ["restore", "restored", "already-restored", "cap-detach"].includes(tick.action || tick.outcome)
+      || tick.proved === true
+      || tick.terminal_receipt,
+    JSON.stringify({ outcome: tick.outcome, action: tick.action, reason: tick.reason }),
+  );
+  assert.equal(closeCalls.length, 1, "terminal path must POST sink cleanup once");
+  assert.equal(closeCalls[0].windowId, "sink-close-win");
+  assert.equal(tick.sink_close?.ok, true);
+  assert.equal(tick.sink_close?.tombstone, true);
+  assert.equal(tick.sink_close?.window_id, "sink-close-win");
+  assert.equal(tick.terminal_receipt?.sink_close?.tombstone, true);
+
+  const paths = tailRestorerPaths(stateRoot);
+  assert.ok(existsSync(paths.terminalReceipt));
+  const terminal = JSON.parse(readFileSync(paths.terminalReceipt, "utf8"));
+  assert.equal(terminal.sink_close.cleaned, true);
+  assert.equal(terminal.sink_close.tombstone, true);
+  assert.equal(terminal.window_id, "sink-close-win");
+
+  rmSync(dir, { recursive: true, force: true });
+});
+
