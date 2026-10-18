@@ -90,6 +90,8 @@ const RETAINED_COST_STRUCTURAL_KEYS = Object.freeze(new Set([
   "semantics", "source", "status", "storage_bytes", "traffic_mix", "trigger",
   "unchanged", "unit", "window", "workload_count", "workload_digest",
   "workload_id", "materialization", "routes",
+  "cold_start_flag_capability", "carries_numeric_raw", "documented_source",
+  "cold_start_flag_raw",
 ]));
 const SHA256 = /^[a-f0-9]{64}$/;
 
@@ -715,27 +717,114 @@ function normalizeProfileEvidence(evidence, label) {
   return normalized;
 }
 
-export const WAREHOUSE_EXPERIMENT_COHORTS = Object.freeze([
-  coldStartFlagRawCohort("zap-bbl", 1), coldStartFlagRawCohort("zap-bbl", 0),
-  coldStartFlagRawCohort("zap-project", 1), coldStartFlagRawCohort("zap-project", 0),
-  coldStartFlagRawCohort("doing-business", 1), coldStartFlagRawCohort("doing-business", 0),
-  coldStartFlagRawCohort("health", 1), coldStartFlagRawCohort("health", 0),
-  coldStartFlagRawCohort("browse", 1), coldStartFlagRawCohort("browse", 0),
+export const WAREHOUSE_EXPERIMENT_BASE_ROUTES = Object.freeze([
+  "zap-bbl", "zap-project", "doing-business", "health", "browse",
 ]);
+
+/** Flag-capable warehouse partitions: each base route × raw 0/1. */
+export const WAREHOUSE_EXPERIMENT_COHORTS = Object.freeze(
+  WAREHOUSE_EXPERIMENT_BASE_ROUTES.flatMap((route) => [
+    coldStartFlagRawCohort(route, 1),
+    coldStartFlagRawCohort(route, 0),
+  ]),
+);
+
 export const WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT = 100;
+
+export const WAREHOUSE_COLD_START_FLAG_CAPABILITIES = Object.freeze({
+  DOCUMENTED_NUMERIC_RAW: "documented-numeric-raw",
+  ABSENT: "absent",
+});
+
+/**
+ * Resolve required warehouse cohorts from the acquired source capability.
+ * Raw 0/1 partitions are required only when the source documents and carries
+ * a numeric flag. Tail TraceItem has no cold-start indicator, so Tail-backed
+ * runs partition by route only and keep cold_start_flag_raw UNKNOWN/absent.
+ */
+export function resolveWarehouseExperimentCohorts(capability) {
+  const cap = requireWarehouseColdStartFlagCapability(capability, "cold_start_flag_capability");
+  if (cap.carries_numeric_raw) return WAREHOUSE_EXPERIMENT_COHORTS;
+  return WAREHOUSE_EXPERIMENT_BASE_ROUTES;
+}
+
+function requireWarehouseColdStartFlagCapability(capability, path = "cold_start_flag_capability") {
+  if (!capability || typeof capability !== "object") fail(`${path} is required`);
+  requireExactKeys(capability, ["carries_numeric_raw", "documented_source", "status"], path);
+  if (capability.carries_numeric_raw === true) {
+    if (capability.status !== WAREHOUSE_COLD_START_FLAG_CAPABILITIES.DOCUMENTED_NUMERIC_RAW) {
+      fail(`${path}.status must be documented-numeric-raw when the source carries a numeric flag`);
+    }
+    if (capability.documented_source !== ISOLATE_CONTRACT.source) {
+      fail(`${path}.documented_source must be ${ISOLATE_CONTRACT.source} for numeric raw partitions`);
+    }
+  } else if (capability.carries_numeric_raw === false) {
+    if (capability.status !== WAREHOUSE_COLD_START_FLAG_CAPABILITIES.ABSENT) {
+      fail(`${path}.status must be absent when the source lacks a documented numeric flag`);
+    }
+    if (capability.documented_source !== null) {
+      fail(`${path}.documented_source must be null when the numeric flag is absent`);
+    }
+  } else {
+    fail(`${path}.carries_numeric_raw must be boolean`);
+  }
+  return capability;
+}
+
+function warehouseColdStartFlagRawRecord(capability) {
+  if (capability.carries_numeric_raw) {
+    return Object.freeze({
+      status: "partitioned",
+      source: capability.documented_source,
+      values: Object.freeze([0, 1]),
+    });
+  }
+  return Object.freeze({
+    status: "unknown",
+    reason: "source-capability",
+    source: null,
+    never_infer_from: Object.freeze([...ISOLATE_CONTRACT.never_infer_from]),
+  });
+}
+
+function assertWarehouseCohortSamplesMatchCapability(run, cohortName, capability, path) {
+  const wantRaw = parseColdStartFlagRaw(cohortName);
+  const samples = run.cohorts?.[cohortName]?.samples || [];
+  for (let index = 0; index < samples.length; index += 1) {
+    const isolate = samples[index]?.condition?.isolate_observation;
+    const samplePath = `${path}.cohorts.${cohortName}.samples[${index}].condition.isolate_observation`;
+    if (capability.carries_numeric_raw) {
+      if (wantRaw === null) fail(`${path} flag-capable cohorts must be keyed by cold_start_flag_raw=0 or =1`);
+      if (!isolate || isolate.present !== true || isolate.raw !== wantRaw) {
+        fail(`${samplePath} must present raw ${wantRaw} for a flag-capable source`);
+      }
+    } else {
+      if (wantRaw !== null) fail(`${path} flag-less sources cannot use cold_start_flag_raw cohort keys`);
+      if (!isolate || isolate.present !== false || isolate.raw !== null) {
+        fail(`${samplePath} must keep cold_start_flag_raw absent/unknown for a flag-less source`);
+      }
+      if (isolate.provisional_label !== "unknown") {
+        fail(`${samplePath}.provisional_label must stay unknown when the flag is absent`);
+      }
+    }
+  }
+}
 
 function warehouseMeterTotals(run, label) {
   const totals = Object.fromEntries(COST_METERS.map((meter) => [meter, 0]));
   let errors = 0;
   let sampleCount = 0;
+  const capability = requireWarehouseColdStartFlagCapability(run.cold_start_flag_capability, `${label}.cold_start_flag_capability`);
+  const requiredCohorts = resolveWarehouseExperimentCohorts(capability);
   const providerVersionId = validateProviderDeployment(run.provider_deployment, run.deployed_revision, `${label}.provider_deployment`);
-  for (const cohortName of WAREHOUSE_EXPERIMENT_COHORTS) {
+  for (const cohortName of requiredCohorts) {
     const cohort = run.cohorts?.[cohortName];
     if (!cohort) fail(`${label} is missing ${cohortName}`);
     if (!Array.isArray(cohort.samples) || cohort.samples.length !== WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT) {
       fail(`${label}.${cohortName}.samples must contain the fixed ${WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT}-sample cohort`);
     }
     if (cohort.sample_count !== cohort.samples.length) fail(`${label}.${cohortName}.sample_count does not match retained samples`);
+    assertWarehouseCohortSamplesMatchCapability(run, cohortName, capability, label);
     cohort.samples.forEach((sample, index) => {
       sampleCount += 1;
       const path = `${label}.${cohortName}.samples[${index}]`;
@@ -747,7 +836,15 @@ function warehouseMeterTotals(run, label) {
       errors += sample.error_count;
     });
   }
-  return { meters: totals, errors, sampleCount };
+  // Reject fabricated raw partitions on a flag-less run (extra 0/1 cohort keys).
+  if (!capability.carries_numeric_raw) {
+    for (const name of Object.keys(run.cohorts || {})) {
+      if (parseColdStartFlagRaw(name) !== null) {
+        fail(`${label} flag-less source must not supply fabricated cold_start_flag_raw partitions (${name})`);
+      }
+    }
+  }
+  return { meters: totals, errors, sampleCount, requiredCohorts, capability };
 }
 
 function normalizedMeters(run) {
@@ -776,7 +873,25 @@ export function evaluateWarehouseExperiment({ baseline, candidate, acquiredDeplo
       `${label}.provider_deployment`,
     );
     if (run.workload_id !== baseline.workload_id || run.workload_count !== baseline.workload_count) fail("experiment workloads are not matched");
-    for (const cohort of WAREHOUSE_EXPERIMENT_COHORTS) {
+    const capability = requireWarehouseColdStartFlagCapability(
+      run.cold_start_flag_capability,
+      `${label}.cold_start_flag_capability`,
+    );
+    if (label === "candidate") {
+      const baselineCapability = requireWarehouseColdStartFlagCapability(
+        baseline.cold_start_flag_capability,
+        "baseline.cold_start_flag_capability",
+      );
+      if (
+        capability.carries_numeric_raw !== baselineCapability.carries_numeric_raw
+        || capability.status !== baselineCapability.status
+        || capability.documented_source !== baselineCapability.documented_source
+      ) {
+        fail("experiment cold_start_flag_capability is not matched");
+      }
+    }
+    const requiredCohorts = resolveWarehouseExperimentCohorts(capability);
+    for (const cohort of requiredCohorts) {
       const evidence = run.cohorts?.[cohort];
       if (!evidence) fail(`${label} is missing ${cohort}`);
       finiteNonNegativeInteger(evidence.sample_count, `${label}.${cohort}.sample_count`);
@@ -809,6 +924,10 @@ export function evaluateWarehouseExperiment({ baseline, candidate, acquiredDeplo
   const accepted = regressions.length === 0 && improvements.length > 0;
   const baselineIdentity = warehouseExperimentArmIdentity(baseline, "baseline");
   const candidateIdentity = warehouseExperimentArmIdentity(candidate, "candidate");
+  const flagCapability = requireWarehouseColdStartFlagCapability(
+    baseline.cold_start_flag_capability,
+    "baseline.cold_start_flag_capability",
+  );
   return {
     schema: "cityscroll.warehouse_cost_experiment.v1",
     decision: accepted ? "candidate-retained" : "candidate-rejected",
@@ -816,6 +935,8 @@ export function evaluateWarehouseExperiment({ baseline, candidate, acquiredDeplo
     operation_recommendation: accepted ? "retain-candidate" : "retain-baseline",
     financial_savings_confirmed: false,
     matched_workload_count: baseline.workload_count,
+    cold_start_flag_capability: flagCapability,
+    cold_start_flag_raw: warehouseColdStartFlagRawRecord(flagCapability),
     baseline_identity: baselineIdentity,
     candidate_identity: candidateIdentity,
     baseline_normalized: baselineMeters,

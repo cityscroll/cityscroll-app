@@ -7,7 +7,10 @@ import test from "node:test";
 import {
   COST_METERS,
   WAREHOUSE_CACHE_STATES,
+  WAREHOUSE_EXPERIMENT_BASE_ROUTES,
   WAREHOUSE_EXPERIMENT_COHORTS,
+  WAREHOUSE_COLD_START_FLAG_CAPABILITIES,
+  resolveWarehouseExperimentCohorts,
   WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
   WAREHOUSE_MATERIALIZATION_KINDS,
   buildWarehouseExperimentReport,
@@ -23,14 +26,33 @@ import {
 import { canaryVersionTag } from "./cloudflare_deployment_binding.mjs";
 import { runWorkerCostControl } from "./worker_cost_control.mjs";
 
+function flagCapableCapability() {
+  return {
+    carries_numeric_raw: true,
+    documented_source: "$metadata.coldStart",
+    status: WAREHOUSE_COLD_START_FLAG_CAPABILITIES.DOCUMENTED_NUMERIC_RAW,
+  };
+}
+
+function flagAbsentCapability() {
+  return {
+    carries_numeric_raw: false,
+    documented_source: null,
+    status: WAREHOUSE_COLD_START_FLAG_CAPABILITIES.ABSENT,
+  };
+}
+
 function run(overrides = {}) {
+  const capability = overrides.cold_start_flag_capability || flagCapableCapability();
+  const requiredCohorts = resolveWarehouseExperimentCohorts(capability);
   const result = {
     schema: "cityscroll.warehouse_cost_experiment_run.v1",
     evidence_mode: "actual-production",
     deployed_revision: "a".repeat(40),
     observed_at: "2026-10-08T23:00:00Z",
     workload_id: "fixed-zap-bbl-zap-project-doing-business-v1",
-    workload_count: WAREHOUSE_EXPERIMENT_COHORTS.length * WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+    workload_count: requiredCohorts.length * WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+    cold_start_flag_capability: capability,
     correctness: {
       input_digest: "inputs", joins_digest: "joins", provenance_digest: "provenance",
       miss_digest: "miss", freshness_digest: "freshness",
@@ -39,6 +61,12 @@ function run(overrides = {}) {
     error_count: 0,
     ...overrides,
   };
+  result.cold_start_flag_capability = overrides.cold_start_flag_capability || capability;
+  // Recompute workload_count if caller overrode capability after spread.
+  const cohortsForCount = resolveWarehouseExperimentCohorts(result.cold_start_flag_capability);
+  if (overrides.workload_count === undefined) {
+    result.workload_count = cohortsForCount.length * WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT;
+  }
   if (!result.provider_deployment) {
     const receipt = {
       schema: "cityscroll.cloudflare_deployment_binding.v1",
@@ -53,37 +81,48 @@ function run(overrides = {}) {
       provider_receipt_sha256: providerDeploymentReceiptSha256(receipt),
     };
   }
-  result.cohorts ||= Object.fromEntries(WAREHOUSE_EXPERIMENT_COHORTS.map((name, cohortIndex) => [name, {
-    sample_count: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
-    samples: Array.from({ length: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT }, (_, sampleIndex) => {
-      const carriesTotals = cohortIndex === 0 && sampleIndex === 0;
-      return {
-        revision: result.deployed_revision,
-        native_cpu_ms: carriesTotals ? result.meters.native_cpu_ms : 0,
-        collector_cpu_ms: carriesTotals ? result.meters.collector_cpu_ms : 0,
-        native_cpu_source: { field: "cpuTime", unit: "milliseconds", precision: "provider" },
-        script_version_id: result.provider_deployment.receipt.cloudflare_version.id,
-        condition: {
-          mode: "bounded-production-execution",
-          source: "owned-http-probe",
-          isolate_observation: {
+  if (!overrides.cohorts) {
+    result.cohorts = Object.fromEntries(cohortsForCount.map((name, cohortIndex) => [name, {
+      sample_count: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+      samples: Array.from({ length: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT }, (_, sampleIndex) => {
+        const carriesTotals = cohortIndex === 0 && sampleIndex === 0;
+        const flagRaw = parseColdStartFlagRaw(name);
+        const isolate_observation = result.cold_start_flag_capability.carries_numeric_raw
+          ? {
             present: true,
-            raw: parseColdStartFlagRaw(name),
+            raw: flagRaw,
             provisional_label: "unverified-raw",
             semantics: "unverified-provider-flag",
+          }
+          : {
+            present: false,
+            raw: null,
+            provisional_label: "unknown",
+            semantics: "unverified-provider-flag",
+          };
+        return {
+          revision: result.deployed_revision,
+          native_cpu_ms: carriesTotals ? result.meters.native_cpu_ms : 0,
+          collector_cpu_ms: carriesTotals ? result.meters.collector_cpu_ms : 0,
+          native_cpu_source: { field: "cpuTime", unit: "milliseconds", precision: "provider" },
+          script_version_id: result.provider_deployment.receipt.cloudflare_version.id,
+          condition: {
+            mode: "bounded-production-execution",
+            source: "owned-http-probe",
+            isolate_observation,
           },
-        },
-        outcome: carriesTotals && result.error_count > 0 ? "exception" : "ok",
-        operations: Object.fromEntries(
-          ["kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes", "queue_writes", "analytics_points"].map((meter) => [
-            meter,
-            { attempted: carriesTotals ? result.meters[meter] : 0, confirmed: carriesTotals ? result.meters[meter] : 0 },
-          ]),
-        ),
-        error_count: carriesTotals ? result.error_count : 0,
-      };
-    }),
-  }]));
+          outcome: carriesTotals && result.error_count > 0 ? "exception" : "ok",
+          operations: Object.fromEntries(
+            ["kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes", "queue_writes", "analytics_points"].map((meter) => [
+              meter,
+              { attempted: carriesTotals ? result.meters[meter] : 0, confirmed: carriesTotals ? result.meters[meter] : 0 },
+            ]),
+          ),
+          error_count: carriesTotals ? result.error_count : 0,
+        };
+      }),
+    }]));
+  }
   return result;
 }
 
@@ -565,5 +604,76 @@ test("route-scoped materialization keys pass the closed retained-key allowlist w
       acquiredDeployments: acquiredDeployments(baseline, polluted),
     }),
     /forbidden|unsupported fields/,
+  );
+});
+
+
+test("flag-less Tail-backed warehouse runs partition by route and keep cold_start_flag_raw unknown", () => {
+  const baseline = run({ cold_start_flag_capability: flagAbsentCapability() });
+  const candidate = run({
+    cold_start_flag_capability: flagAbsentCapability(),
+    deployed_revision: "b".repeat(40),
+    observed_at: "2026-10-08T23:10:00Z",
+    meters: { ...baseline.meters, native_cpu_ms: 80 },
+  });
+  assert.deepEqual(
+    resolveWarehouseExperimentCohorts(baseline.cold_start_flag_capability),
+    [...WAREHOUSE_EXPERIMENT_BASE_ROUTES],
+  );
+  assert.equal(baseline.workload_count, WAREHOUSE_EXPERIMENT_BASE_ROUTES.length * WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT);
+  const decision = evaluate(baseline, candidate);
+  assert.equal(decision.decision, "candidate-retained");
+  assert.equal(decision.cold_start_flag_raw.status, "unknown");
+  assert.equal(decision.cold_start_flag_capability.carries_numeric_raw, false);
+  assert.equal(decision.financial_savings_confirmed, false);
+});
+
+test("flag-capable sources still require every raw 0/1 partition", () => {
+  const baseline = run(); // flag-capable default
+  const incomplete = run({
+    deployed_revision: "b".repeat(40),
+    observed_at: "2026-10-08T23:10:00Z",
+    meters: { ...baseline.meters, native_cpu_ms: 80 },
+  });
+  const missing = coldStartFlagRawCohort("browse", 0);
+  delete incomplete.cohorts[missing];
+  // Keep matched workload_count so the missing raw partition is the fail-closed signal.
+  assert.throws(() => evaluate(baseline, incomplete), /missing browse:cold_start_flag_raw=0/);
+});
+
+test("flag-less sources fail when a route cohort is missing", () => {
+  const baseline = run({ cold_start_flag_capability: flagAbsentCapability() });
+  const incomplete = run({
+    cold_start_flag_capability: flagAbsentCapability(),
+    deployed_revision: "b".repeat(40),
+    observed_at: "2026-10-08T23:10:00Z",
+    meters: { ...baseline.meters, native_cpu_ms: 80 },
+  });
+  delete incomplete.cohorts.browse;
+  // Keep matched workload_count so the missing route cohort is the fail-closed signal.
+  assert.throws(() => evaluate(baseline, incomplete), /missing browse/);
+});
+
+test("flag-less sources reject fabricated cold_start_flag_raw partitions", () => {
+  const baseline = run({ cold_start_flag_capability: flagAbsentCapability() });
+  const fabricated = run({
+    cold_start_flag_capability: flagAbsentCapability(),
+    deployed_revision: "b".repeat(40),
+    observed_at: "2026-10-08T23:10:00Z",
+    meters: { ...baseline.meters, native_cpu_ms: 80 },
+  });
+  const fakeName = coldStartFlagRawCohort("browse", 1);
+  fabricated.cohorts[fakeName] = structuredClone(fabricated.cohorts.browse);
+  for (const sample of fabricated.cohorts[fakeName].samples) {
+    sample.condition.isolate_observation = {
+      present: true,
+      raw: 1,
+      provisional_label: "unverified-raw",
+      semantics: "unverified-provider-flag",
+    };
+  }
+  assert.throws(
+    () => evaluate(baseline, fabricated),
+    /fabricated cold_start_flag_raw|flag-less source must not supply/,
   );
 });

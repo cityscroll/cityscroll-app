@@ -176,8 +176,12 @@ separately with their own provenance.
 The fixed warehouse experiment compares the current static ZAP BBL, ZAP
 project, and Doing Business lookups with the route-scoped candidate under the
 same inputs and workload. Each valid lookup plus the unrelated health and
-browse controls uses exactly 100 `cold_start_flag_raw=1` and 100
-`cold_start_flag_raw=0` provider-observed samples. Joins, provenance, miss
+browse controls uses a fixed per-cohort sample minimum. Raw
+`cold_start_flag_raw=0|1` partitions are required only when the acquired
+source documents and carries a numeric flag (Observability `$metadata.coldStart`).
+Tail TraceItem has no cold-start indicator, so Tail-backed runs partition by
+route only and keep `cold_start_flag_raw` UNKNOWN/absent — never inventing 0,
+wall-time, order, or cache proxies. Joins, provenance, miss
 behavior, freshness, and cohort sizes must match. The candidate is retained
 only when no CPU, KV, D1, storage, Queue, Analytics Engine, collector, or error
 meter regresses and at least one meter improves; otherwise the baseline stays

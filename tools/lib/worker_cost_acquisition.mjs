@@ -7,6 +7,7 @@ import {
   REQUIRED_COST_COHORTS,
   WAREHOUSE_EXPERIMENT_COHORTS,
   WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+  WAREHOUSE_COLD_START_FLAG_CAPABILITIES,
   buildWorkerCostProfile,
   evaluateWarehouseExperiment,
   parseColdStartFlagRaw,
@@ -248,6 +249,11 @@ function warehouseRun({ revision, deployment, observedAt, workloadId, cohorts, c
     schema: "cityscroll.warehouse_cost_experiment_run.v1", evidence_mode: "actual-production",
     deployed_revision: revision, observed_at: observedAt, workload_id: workloadId,
     workload_count: workloadCount, provider_deployment: deployment,
+    cold_start_flag_capability: {
+      carries_numeric_raw: true,
+      documented_source: "$metadata.coldStart",
+      status: WAREHOUSE_COLD_START_FLAG_CAPABILITIES.DOCUMENTED_NUMERIC_RAW,
+    },
     cohorts: Object.fromEntries(Object.entries(cohorts).map(([name, samples]) => [name, { sample_count: samples.length, samples }])),
     meters, error_count: errorCount, correctness,
   };
