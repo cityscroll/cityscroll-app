@@ -52,6 +52,7 @@ import {
   GUARDIAN_STARTUP_FAILURE_CODE,
   TAIL_SINK_CLOSE_PENDING_SCHEMA,
   assertDurableCapDetachRuntimeProvisioned,
+  announceTailRestorerReady,
   assertRestorerReadyBeforeOwnedAttach,
   assignTailWindowForRestorer,
   classifyGuardianStartupStderr,
@@ -62,6 +63,7 @@ import {
   isImmutableFinalAggregateSnapshot,
   mutateOwnedTailAttachmentWithReadyGate,
   observeProducerTailWindowOutcome,
+  selectPreTombstoneCollectionSample,
   readSinkClosePending,
   sinkCloseObligationRemains,
   sinkCloseProved,
@@ -4164,9 +4166,11 @@ test("§6 hard READY gate refuses attach without READY receipt", () => {
         independent_process: true,
         window_id: "win-a",
         restorer_id: "tr-a",
+        window_generation: 1,
         pid: 1,
       },
       expectedWindowId: "win-b",
+      expectedGeneration: 1,
       pidAlive: () => true,
       label: "self",
     }),
@@ -4180,14 +4184,53 @@ test("§6 hard READY gate refuses attach without READY receipt", () => {
         independent_process: true,
         window_id: "win-a",
         restorer_id: "tr-a",
+        window_generation: 1,
         pid: 999001,
       },
       expectedWindowId: "win-a",
       expectedRestorerId: "tr-a",
+      expectedGeneration: 1,
       pidAlive: () => false,
       label: "self",
     }),
     /pid is not alive/,
+  );
+  assert.throws(
+    () => assertRestorerReadyBeforeOwnedAttach({
+      readyReceipt: {
+        schema: "cityscroll.worker_tail_attachment_restorer_ready.v1",
+        kind: "ready",
+        independent_process: true,
+        window_id: "win-a",
+        restorer_id: "tr-a",
+        pid: 4242,
+      },
+      expectedWindowId: "win-a",
+      expectedRestorerId: "tr-a",
+      expectedGeneration: 3,
+      pidAlive: () => true,
+      label: "self",
+    }),
+    /READY receipt missing window_generation/,
+  );
+  assert.throws(
+    () => assertRestorerReadyBeforeOwnedAttach({
+      readyReceipt: {
+        schema: "cityscroll.worker_tail_attachment_restorer_ready.v1",
+        kind: "ready",
+        independent_process: true,
+        window_id: "win-a",
+        restorer_id: "tr-a",
+        window_generation: 2,
+        pid: 4242,
+      },
+      expectedWindowId: "win-a",
+      expectedRestorerId: "tr-a",
+      expectedGeneration: 3,
+      pidAlive: () => true,
+      label: "self",
+    }),
+    /READY generation does not match/,
   );
   const ok = assertRestorerReadyBeforeOwnedAttach({
     readyReceipt: {
@@ -4196,17 +4239,20 @@ test("§6 hard READY gate refuses attach without READY receipt", () => {
       independent_process: true,
       window_id: "win-a",
       restorer_id: "tr-a",
+      window_generation: 3,
       pid: 4242,
       version_guard: { observed_at_ready: "performed:match" },
     },
     expectedWindowId: "win-a",
     expectedRestorerId: "tr-a",
+    expectedGeneration: 3,
     pidAlive: () => true,
     label: "self",
   });
   assert.equal(ok.ok, true);
   assert.equal(ok.ready_present, true);
   assert.equal(ok.pid, 4242);
+  assert.equal(ok.window_generation, 3);
 });
 
 test("§6 restore_only + absent runtime: provision check passes; cap-bound without env fails", () => {
@@ -4497,6 +4543,7 @@ test("SOURCE REVIEW: composed READY gate — failed/absent READY yields 0 PATCH"
         independent_process: true,
         window_id: "foreign-win",
         restorer_id: "tr-ready-gate",
+        window_generation: window.window_generation,
         pid: 4242,
       },
       pidAlive: () => true,
@@ -4506,7 +4553,31 @@ test("SOURCE REVIEW: composed READY gate — failed/absent READY yields 0 PATCH"
   );
   assert.equal(patchCount, 0, "foreign READY must issue 0 attachment PATCHes");
 
-  // Positive path: matching READY + live pid allows attach (1 PATCH).
+  await assert.rejects(
+    () => mutateOwnedTailAttachmentWithReadyGate({
+      transport,
+      store,
+      intendedConsumers: [SANITIZER],
+      phase: "attach",
+      now: "2026-10-18T12:00:01.500Z",
+      versionTransport,
+      readyReceipt: {
+        schema: "cityscroll.worker_tail_attachment_restorer_ready.v1",
+        kind: "ready",
+        independent_process: true,
+        window_id: window.window_id,
+        restorer_id: window.restorer.restorer_id,
+        window_generation: window.window_generation + 9,
+        pid: 4242,
+      },
+      pidAlive: () => true,
+      label: "self",
+    }),
+    /READY generation does not match/,
+  );
+  assert.equal(patchCount, 0, "stale READY generation must issue 0 attachment PATCHes");
+
+  // Positive path: matching READY + live pid + exact generation allows attach (1 PATCH).
   const ok = await mutateOwnedTailAttachmentWithReadyGate({
     transport,
     store,
@@ -4520,6 +4591,7 @@ test("SOURCE REVIEW: composed READY gate — failed/absent READY yields 0 PATCH"
       independent_process: true,
       window_id: window.window_id,
       restorer_id: window.restorer.restorer_id,
+      window_generation: window.window_generation,
       pid: 4242,
       version_guard: { observed_at_ready: "performed:match" },
     },
@@ -4699,4 +4771,128 @@ test("SOURCE REVIEW: observeProducerTailWindowOutcome surfaces self-never-ready 
   assert.equal(observed.self?.kind, "self-never-ready");
   assert.equal(observed.restore_proven, true);
   assert.equal(observed.waits_on_self_terminal, false);
+});
+
+test("ROOT 14:20: label-only or negative proof cannot set restore_proven", () => {
+  const labelOnly = observeProducerTailWindowOutcome({
+    producerTerminal: { proved: false, action: "restored" },
+    producerBetaEmpty: true,
+    selfReadyPresent: true,
+    selfTerminal: { proved: true },
+  });
+  assert.equal(labelOnly.restore_proven, false);
+  assert.equal(labelOnly.stop_reason, "producer-restore-unproved");
+
+  const actionOnly = observeProducerTailWindowOutcome({
+    producerTerminal: { action: "restored" },
+    producerBetaEmpty: true,
+  });
+  assert.equal(actionOnly.restore_proven, false);
+  assert.equal(actionOnly.stop_reason, "producer-restore-unproved");
+
+  const foreign = observeProducerTailWindowOutcome({
+    producerTerminal: { proved: true, action: "restored", window_id: "other-win" },
+    producerBetaEmpty: true,
+    expectedWindowId: "owned-win",
+  });
+  assert.equal(foreign.restore_proven, false);
+  assert.equal(foreign.stop_reason, "producer-terminal-foreign-window");
+  assert.equal(foreign.producer.foreign_window, true);
+
+  const detachedStopsWait = observeProducerTailWindowOutcome({
+    producerTerminal: { proved: true, attachment_restore: { proved: true } },
+    producerBetaEmpty: true,
+    selfReadyPresent: true,
+    selfTerminal: null,
+    selfOwnedDetached: true,
+  });
+  assert.equal(detachedStopsWait.restore_proven, true);
+  assert.equal(detachedStopsWait.waits_on_self_terminal, false);
+  assert.equal(detachedStopsWait.self.kind, "self-owned-detached-without-terminal");
+});
+
+test("ROOT 14:20: pre-tombstone sample wins over post-cleanup zero", () => {
+  const receipt = {
+    schema: "cityscroll.tail_sink_final_aggregate.v1",
+    kind: "final-aggregate-before-tombstone",
+    window_id: "sum-win",
+    ok: true,
+    events_seen: 8697,
+    sample_kind: "last-sample-before-tombstone",
+    from_tombstone: false,
+    closed: false,
+    a2: { pass: true, reason: "within_all_seen_cap", events_seen: 8697, apply_overshoot: 0 },
+    by_event_type: { fetch: 100, scheduled: 3 },
+    by_cohort_cpu: { search: 12, nearby: 4, http_health: 1 },
+    collector_cpu_ms: "UNKNOWN",
+    arrivals_between_snapshot_and_cleanup: "UNKNOWN",
+  };
+  const postCleanup = {
+    events_seen: 0,
+    from_tombstone: true,
+    closed: true,
+    counters: {
+      by_cohort: { search: 0, nearby: 0 },
+      by_event_type: { fetch: 0 },
+      collector_cpu_ms: 0,
+    },
+  };
+  const selected = selectPreTombstoneCollectionSample({
+    finalAggregateReceipt: receipt,
+    lastLiveSample: { events_seen: 8500, from_tombstone: false },
+    postCleanupReadback: postCleanup,
+    expectedWindowId: "sum-win",
+  });
+  assert.equal(selected.source, "final-aggregate-receipt");
+  assert.equal(selected.measured, true);
+  assert.equal(selected.events_seen, 8697);
+  assert.equal(selected.by_cohort.search, 12);
+  assert.notEqual(selected.events_seen, 0);
+
+  const noReceipt = selectPreTombstoneCollectionSample({
+    finalAggregateReceipt: null,
+    lastLiveSample: null,
+    postCleanupReadback: postCleanup,
+    expectedWindowId: "sum-win",
+  });
+  assert.equal(noReceipt.measured, false);
+  assert.equal(noReceipt.events_seen, null);
+  assert.equal(noReceipt.tombstone_readback_events_seen, 0);
+  assert.equal(noReceipt.sample_kind, "last-sample-unknown");
+});
+
+test("ROOT 14:20: announceTailRestorerReady stamps window_generation", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-ready-gen-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(stateRoot, { recursive: true });
+  const { store, window, versionTransport } = await openStoredArmedWindow(dir, {
+    windowId: "ready-gen-win",
+    restorerId: "tr-ready-gen",
+    baselineConsumers: [],
+    now: "2026-10-18T12:00:00.000Z",
+    durationSeconds: 60,
+  });
+  const announced = await announceTailRestorerReady({
+    store,
+    stateRoot,
+    now: "2026-10-18T12:00:01.000Z",
+    pid: 5555,
+    versionTransport,
+  });
+  assert.equal(announced.ready.window_generation, window.window_generation);
+  const paths = tailRestorerPaths(stateRoot);
+  const ready = JSON.parse(readFileSync(paths.readyReceipt, "utf8"));
+  assert.equal(ready.window_generation, window.window_generation);
+  assert.equal(
+    assertRestorerReadyBeforeOwnedAttach({
+      readyReceipt: ready,
+      expectedWindowId: window.window_id,
+      expectedRestorerId: window.restorer.restorer_id,
+      expectedGeneration: window.window_generation,
+      pidAlive: () => true,
+      label: "producer",
+    }).ok,
+    true,
+  );
+  rmSync(dir, { recursive: true, force: true });
 });

@@ -838,6 +838,9 @@ export async function announceTailRestorerReady({
     });
     // Bound means an actual getLatestVersionEvidence call was observed.
     const versionGuardBound = readyObservation.performed === true;
+    if (!Number.isInteger(window.window_generation)) {
+      fail("cannot announce Tail restorer readiness without an integer window_generation");
+    }
     const ready = writeTailRestorerReceipt(paths.readyReceipt, {
       schema: TAIL_RESTORER_READY_SCHEMA,
       kind: "ready",
@@ -846,6 +849,7 @@ export async function announceTailRestorerReady({
       pid,
       window_id: window.window_id,
       restorer_id: window.restorer.restorer_id,
+      window_generation: window.window_generation,
       window_path: store.path,
       state_root: stateRoot,
       independent_process: true,
@@ -871,6 +875,7 @@ export async function announceTailRestorerReady({
       pid,
       window_id: window.window_id,
       restorer_id: window.restorer.restorer_id,
+      window_generation: window.window_generation,
       phase: window.phase,
       version_guard_bound: versionGuardBound,
       version_guard_observed_at_ready: readyObservation.outcome,
@@ -1584,11 +1589,16 @@ export function assertRestorerReadyBeforeOwnedAttach({
   } else if (typeof receipt.restorer_id !== "string" || !receipt.restorer_id) {
     fail(`refuse owned attach: ${label} READY receipt missing restorer_id`);
   }
-  if (expectedGeneration != null) {
-    const receiptGen = receipt.window_generation ?? receipt.generation;
-    if (receiptGen != null && receiptGen !== expectedGeneration) {
-      fail(`refuse owned attach: ${label} READY generation does not match owned window`);
-    }
+  // Mandatory exact admitted generation — missing/foreign/stale all refuse.
+  if (!Number.isInteger(expectedGeneration)) {
+    fail(`refuse owned attach: ${label} owned window_generation is required`);
+  }
+  const receiptGen = receipt.window_generation ?? receipt.generation;
+  if (!Number.isInteger(receiptGen)) {
+    fail(`refuse owned attach: ${label} READY receipt missing window_generation`);
+  }
+  if (receiptGen !== expectedGeneration) {
+    fail(`refuse owned attach: ${label} READY generation does not match owned window`);
   }
   const pid = Number.isInteger(receipt.pid) ? receipt.pid : null;
   if (pid == null || pid <= 0) {
@@ -1605,8 +1615,12 @@ export function assertRestorerReadyBeforeOwnedAttach({
     independent_process: true,
     window_id: receipt.window_id,
     restorer_id: receipt.restorer_id,
+    window_generation: receiptGen,
     pid,
     version_guard: receipt.version_guard || null,
+    // Version/consumer binding is enforced by mutateOwnedTailAttachment's
+    // versionTransport gate — this helper does not re-check it.
+    version_binding_checked_here: false,
   };
 }
 
@@ -1672,10 +1686,13 @@ export function assertDurableCapDetachRuntimeProvisioned({
 /**
  * Producer window outcome independent of a never-READY self guardian.
  * Self deviation is surfaced separately and must not poison restore_proven.
+ * An action/outcome label alone is never proof — require proved:true (or
+ * attachment_restore.proved:true). Foreign window terminals refuse.
  */
 export function observeProducerTailWindowOutcome({
   producerTerminal = null,
   producerBetaEmpty = null,
+  expectedWindowId = null,
   selfReadyPresent = null,
   selfTerminal = null,
   selfOwnedDetached = null,
@@ -1683,17 +1700,31 @@ export function observeProducerTailWindowOutcome({
   tombstoneProved = null,
   now = new Date().toISOString(),
 } = {}) {
-  const producerProved = producerTerminal
-    && typeof producerTerminal === "object"
+  const terminalObj = producerTerminal && typeof producerTerminal === "object"
+    ? producerTerminal
+    : null;
+  let foreignTerminal = false;
+  if (terminalObj && typeof expectedWindowId === "string" && expectedWindowId) {
+    const terminalWindowId = terminalObj.window_id
+      || terminalObj.attachment_restore?.window_id
+      || null;
+    if (typeof terminalWindowId === "string" && terminalWindowId
+      && terminalWindowId !== expectedWindowId) {
+      foreignTerminal = true;
+    }
+  }
+  // Label-only (action/outcome without proved:true) is NOT proof.
+  const producerProved = !foreignTerminal
+    && terminalObj
     && (
-      producerTerminal.proved === true
-      || producerTerminal.attachment_restore?.proved === true
-      || ["restored", "already-restored", "expired-restored", "cap-detach"].includes(
-        producerTerminal.action || producerTerminal.outcome,
-      )
-    );
+      terminalObj.proved === true
+      || terminalObj.attachment_restore?.proved === true
+    )
+    && terminalObj.proved !== false
+    && terminalObj.attachment_restore?.proved !== false;
   const betaEmpty = producerBetaEmpty === true;
   const selfNeverReady = selfReadyPresent !== true;
+  const selfDetached = selfOwnedDetached === true;
   const selfTerminalPresent = Boolean(selfTerminal && typeof selfTerminal === "object");
   // When self never READY / already owned-detached, do not wait on self terminal.
   const selfDeviation = selfNeverReady
@@ -1701,10 +1732,10 @@ export function observeProducerTailWindowOutcome({
       kind: "self-never-ready",
       ready_present: false,
       terminal_present: selfTerminalPresent,
-      owned_detached: selfOwnedDetached === true,
+      owned_detached: selfDetached,
       collector_cpu_ms: "UNKNOWN",
     }
-    : (selfOwnedDetached === true && !selfTerminalPresent
+    : (selfDetached && !selfTerminalPresent
       ? {
         kind: "self-owned-detached-without-terminal",
         ready_present: true,
@@ -1717,7 +1748,10 @@ export function observeProducerTailWindowOutcome({
   const restoreProven = producerProved === true && betaEmpty === true;
   let outcome = "UNKNOWN";
   let stopReason = null;
-  if (restoreProven) {
+  if (foreignTerminal) {
+    outcome = "failed";
+    stopReason = "producer-terminal-foreign-window";
+  } else if (restoreProven) {
     outcome = selfDeviation
       ? "restored-proven-producer;self-deviation"
       : "restored-proven";
@@ -1744,18 +1778,95 @@ export function observeProducerTailWindowOutcome({
       proved: producerProved === true,
       beta_empty: betaEmpty,
       action: producerTerminal?.action || producerTerminal?.outcome || null,
+      foreign_window: foreignTerminal,
     },
     self: selfDeviation || {
       kind: "self-ready",
       ready_present: true,
       terminal_present: selfTerminalPresent,
-      owned_detached: selfOwnedDetached === true,
+      owned_detached: selfDetached,
       collector_cpu_ms: null,
     },
     sink_closed: sinkClosed === true,
     tombstone_proved: tombstoneProved === true,
-    // Self never-READY must not require self terminal for producer outcome.
-    waits_on_self_terminal: selfNeverReady ? false : true,
+    // Never-READY or owned-detached self must not require self terminal.
+    waits_on_self_terminal: (selfNeverReady || selfDetached) ? false : true,
+  };
+}
+
+/**
+ * Prefer the validated pre-tombstone AggregateSink sample for measured
+ * collection summary. Post-cleanup tombstone zeros must not become measured
+ * cohort/cost values. Tombstone proof stays a separate field.
+ */
+export function selectPreTombstoneCollectionSample({
+  finalAggregateReceipt = null,
+  lastLiveSample = null,
+  postCleanupReadback = null,
+  expectedWindowId = null,
+} = {}) {
+  const receipt = finalAggregateReceipt && typeof finalAggregateReceipt === "object"
+    ? finalAggregateReceipt
+    : null;
+  const windowId = expectedWindowId
+    || receipt?.window_id
+    || lastLiveSample?.window_id
+    || null;
+  if (receipt && isImmutableFinalAggregateSnapshot(receipt, receipt.window_id || windowId)) {
+    if (!expectedWindowId || receipt.window_id === expectedWindowId) {
+      return {
+        source: "final-aggregate-receipt",
+        sample_kind: receipt.sample_kind || "last-sample-before-tombstone",
+        events_seen: Number.isInteger(receipt.events_seen) ? receipt.events_seen : null,
+        a2: receipt.a2 ?? null,
+        cost_vector: receipt.cost_vector ?? null,
+        by_cohort: receipt.by_cohort_cpu || receipt.by_cohort || null,
+        by_event_type: receipt.by_event_type ?? null,
+        by_deployed_revision: receipt.by_deployed_revision ?? null,
+        collector_cpu_ms: receipt.collector_cpu_ms ?? receipt.cost_vector?.collector_cpu_ms ?? null,
+        measured: true,
+        arrivals_between_snapshot_and_cleanup:
+          receipt.arrivals_between_snapshot_and_cleanup ?? "UNKNOWN",
+      };
+    }
+  }
+  const live = lastLiveSample && typeof lastLiveSample === "object" ? lastLiveSample : null;
+  if (live && (live.from_tombstone !== true) && (live.closed !== true)) {
+    return {
+      source: "last-live-sample",
+      sample_kind: "last-sample-before-tombstone",
+      events_seen: Number.isInteger(live.events_seen) ? live.events_seen : null,
+      a2: live.a2 ?? null,
+      cost_vector: live.cost_vector ?? null,
+      by_cohort: live.counters?.by_cohort || live.by_cohort || null,
+      by_event_type: live.counters?.by_event_type || live.by_event_type || null,
+      by_deployed_revision: live.counters?.by_deployed_revision || live.by_deployed_revision || null,
+      collector_cpu_ms: live.counters?.collector_cpu_ms
+        ?? live.cost_vector?.collector_cpu_ms
+        ?? live.collector_cpu_ms
+        ?? null,
+      measured: Number.isInteger(live.events_seen),
+      arrivals_between_snapshot_and_cleanup: "UNKNOWN",
+    };
+  }
+  // Do not promote post-cleanup tombstone zeros to measured collection.
+  const post = postCleanupReadback && typeof postCleanupReadback === "object"
+    ? postCleanupReadback
+    : null;
+  return {
+    source: "unknown",
+    sample_kind: "last-sample-unknown",
+    events_seen: null,
+    a2: null,
+    cost_vector: null,
+    by_cohort: null,
+    by_event_type: null,
+    by_deployed_revision: null,
+    collector_cpu_ms: "UNKNOWN",
+    measured: false,
+    arrivals_between_snapshot_and_cleanup: "UNKNOWN",
+    tombstone_readback_events_seen: Number.isInteger(post?.events_seen) ? post.events_seen : null,
+    note: "no validated pre-tombstone sample; post-cleanup zeros are not measured collection",
   };
 }
 
