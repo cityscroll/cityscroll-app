@@ -252,20 +252,61 @@ async function attemptOwnedSinkClose({
   paths,
   now = null,
   reason = null,
+  /**
+   * When set (ISO), remaining ms until expires_at caps the capture timeout so
+   * terminal cleanup never stalls past the detach deadline. Past-deadline →
+   * skip capture and record an honest last-sample-unknown receipt.
+   */
+  expiresAt = null,
 } = {}) {
   if (typeof closeSinkWindow !== "function") return null;
   const at = typeof now === "string" ? now : new Date().toISOString();
   const id = typeof windowId === "string" && windowId ? windowId : null;
-  // GO #5 §6: persist final aggregate BEFORE tombstone so cleanup cannot
-  // drop the last measured counters.
+  // ROOT 13:20: Tail attachment restore/detach already ran before this closer
+  // (deadline detach is never gated on this GET). Capture is short-bounded and
+  // non-throwing; Tail arrivals between snapshot and tombstone stay UNKNOWN.
   if (typeof captureFinalAggregate === "function" && id && paths?.finalAggregateReceipt) {
     try {
-      const finalAggregate = await captureFinalAggregate({ windowId: id, now: at });
+      const atMs = Date.parse(at);
+      const expMs = typeof expiresAt === "string" ? Date.parse(expiresAt) : NaN;
+      // Before deadline: cap by remaining window. At/after deadline (normal
+      // terminal path): still capture with the short default bound — detach
+      // already completed; do not skip the last-sample GET.
+      let timeoutMs = DEFAULT_FINAL_AGGREGATE_TIMEOUT_MS;
+      if (Number.isFinite(expMs) && Number.isFinite(atMs) && expMs > atMs) {
+        timeoutMs = Math.min(DEFAULT_FINAL_AGGREGATE_TIMEOUT_MS, Math.max(1, expMs - atMs));
+      }
+      const finalAggregate = await captureFinalAggregate({
+        windowId: id,
+        now: at,
+        timeoutMs,
+      });
       if (finalAggregate) {
-        writeTailRestorerReceipt(paths.finalAggregateReceipt, finalAggregate);
+        writeTailRestorerReceipt(paths.finalAggregateReceipt, {
+          ...finalAggregate,
+          sample_kind: "last-sample-before-tombstone",
+          arrivals_between_snapshot_and_cleanup: "UNKNOWN",
+          detach_not_delayed_by_capture: true,
+          label: finalAggregate.label
+            || "last sample before terminal tombstone; arrivals until cleanup UNKNOWN",
+        });
       }
     } catch {
       // Capture failure must not block restore/tombstone.
+      try {
+        writeTailRestorerReceipt(paths.finalAggregateReceipt, {
+          schema: TAIL_SINK_FINAL_AGGREGATE_SCHEMA,
+          kind: "final-aggregate-before-tombstone",
+          observed_at: at,
+          window_id: id,
+          ok: false,
+          sample_kind: "last-sample-unknown",
+          label: "capture error; detach/cleanup not delayed; arrivals until tombstone UNKNOWN",
+          arrivals_between_snapshot_and_cleanup: "UNKNOWN",
+          detach_not_delayed_by_capture: true,
+          reason: "capture_error",
+        });
+      } catch { /* receipt best-effort */ }
     }
   }
   writeSinkClosePendingRecord(paths, {
@@ -343,6 +384,8 @@ async function reconcileSinkCloseObligation({
     paths,
     now,
     reason,
+    // Retries: do not stall cleanup; short default bound inside capture helper.
+    expiresAt: null,
   });
   if (terminal) {
     writeTailRestorerReceipt(paths.terminalReceipt, {
@@ -1150,10 +1193,12 @@ export async function tailAttachmentRestorerTick({
           });
           const sinkClose = await attemptOwnedSinkClose({
             closeSinkWindow,
+            captureFinalAggregate,
             windowId: restoredWindow.window_id,
             paths,
             now: nowAfter,
             reason: "owned-cap-detach",
+            expiresAt: restoredWindow?.expires_at || window.expires_at || null,
           });
           const receipt = writeTailRestorerReceipt(paths.terminalReceipt, {
             schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
@@ -1221,6 +1266,7 @@ export async function tailAttachmentRestorerTick({
           paths,
           now: nowAfter,
           reason: "refused-conflict",
+          expiresAt: reconciled.window?.expires_at || window.expires_at || null,
         });
         const receipt = writeTailRestorerReceipt(paths.terminalReceipt, {
           ...reconciled.receipt,
@@ -1278,6 +1324,7 @@ export async function tailAttachmentRestorerTick({
           paths,
           now: nowAfter,
           reason: "refused-conflict",
+          expiresAt: reconciled.window?.expires_at || window.expires_at || null,
         });
         const receipt = writeTailRestorerReceipt(paths.terminalReceipt, {
           ...reconciled.receipt,
@@ -1352,6 +1399,7 @@ export async function tailAttachmentRestorerTick({
       paths,
       now: nowAfter,
       reason: restored.receipt?.reason || restored.action || "terminal-restore",
+      expiresAt: restored.window?.expires_at || window.expires_at || null,
     });
     const receipt = writeTailRestorerReceipt(paths.terminalReceipt, {
       schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,

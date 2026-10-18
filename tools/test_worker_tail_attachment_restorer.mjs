@@ -4092,6 +4092,9 @@ test("§6 final-aggregate-before-tombstone: capture runs before closeSinkWindow"
   const finalAgg = JSON.parse(readFileSync(paths.finalAggregateReceipt, "utf8"));
   assert.equal(finalAgg.events_seen, 42);
   assert.equal(finalAgg.kind, "final-aggregate-before-tombstone");
+  assert.equal(finalAgg.sample_kind, "last-sample-before-tombstone");
+  assert.equal(finalAgg.arrivals_between_snapshot_and_cleanup, "UNKNOWN");
+  assert.equal(finalAgg.detach_not_delayed_by_capture, true);
   rmSync(dir, { recursive: true, force: true });
 });
 
@@ -4258,5 +4261,144 @@ test("§6 restore_only armed window tick does not refuse absent cap actuator", a
     now: "2026-10-18T12:00:10.000Z",
   });
   assert.ok(tick.outcome === "idle" || tick.window, JSON.stringify(tick));
+  rmSync(dir, { recursive: true, force: true });
+});
+
+
+test("ROOT: post-detach final-aggregate uses short bound; cleanup not stalled", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-final-agg-post-detach-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(stateRoot, { recursive: true });
+  const transport = memoryTransport([SANITIZER]);
+  const { store, window, versionTransport } = await openStoredArmedWindow(dir, {
+    windowId: "post-detach-agg",
+    restorerId: "tr-post-detach",
+    baselineConsumers: [],
+    now: "2026-10-18T12:00:00.000Z",
+    durationSeconds: 60,
+  });
+  let owned = {
+    ...window,
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER]),
+    owned_sha256: tailConsumersSha256([SANITIZER]),
+    pending_mutation: null,
+  };
+  owned = await store.write(owned);
+
+  const order = [];
+  const captureFinalAggregate = async ({ timeoutMs }) => {
+    order.push("capture");
+    assert.ok(timeoutMs <= 1500, `timeoutMs=${timeoutMs}`);
+    // Respect the bound: settle quickly (real readOwnedSinkAggregate aborts).
+    await new Promise((r) => setTimeout(r, 20));
+    return {
+      schema: "cityscroll.tail_sink_final_aggregate.v1",
+      kind: "final-aggregate-before-tombstone",
+      ok: true,
+      events_seen: 8697,
+    };
+  };
+  const closeSinkWindow = async ({ windowId }) => {
+    order.push("cleanup");
+    return {
+      ok: true, cleaned: true, tombstone: true, closed: true,
+      window_id: windowId, reason: null, status: 200,
+    };
+  };
+
+  const started = Date.now();
+  const tick = await tailAttachmentRestorerTick({
+    store,
+    transport,
+    versionTransport,
+    closeSinkWindow,
+    captureFinalAggregate,
+    stateRoot,
+    // Past expires_at: normal terminal path after deadline detach.
+    now: "2026-10-18T12:05:00.000Z",
+  });
+  const elapsed = Date.now() - started;
+  assert.deepEqual(order, ["capture", "cleanup"]);
+  assert.equal(tick.sink_close?.tombstone, true);
+  assert.ok(elapsed < 2_000, `must not stall; elapsed=${elapsed}`);
+  const paths = tailRestorerPaths(stateRoot);
+  const receipt = JSON.parse(readFileSync(paths.finalAggregateReceipt, "utf8"));
+  assert.equal(receipt.sample_kind, "last-sample-before-tombstone");
+  assert.equal(receipt.arrivals_between_snapshot_and_cleanup, "UNKNOWN");
+  assert.equal(receipt.detach_not_delayed_by_capture, true);
+  assert.equal(receipt.events_seen, 8697);
+  // Provider detach (Tail restore) happens before attemptOwnedSinkClose in the tick.
+  const after = await store.read();
+  assert.ok(["restored", "expired-restored"].includes(after.phase), after.phase);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("ROOT: remaining-window caps capture timeout before cleanup", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-final-agg-stall-bound-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(stateRoot, { recursive: true });
+  const transport = memoryTransport([SANITIZER]);
+  const { store, window, versionTransport } = await openStoredArmedWindow(dir, {
+    windowId: "stall-agg",
+    restorerId: "tr-stall-agg",
+    baselineConsumers: [],
+    now: "2026-10-18T12:00:00.000Z",
+    durationSeconds: 1800,
+  });
+  // Terminal path (past expires_at) with a fixture so tick does not refuse
+  // on missing cap-detach runtime. Capture timeout is still short-bounded.
+  let owned = {
+    ...window,
+    expires_at: "2026-10-18T12:00:00.500Z",
+    restorer: {
+      ...window.restorer,
+      restore_only: true,
+      cap_detach_actuator_bound: false,
+      cap_detach_actuator_kind: null,
+    },
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER]),
+    owned_sha256: tailConsumersSha256([SANITIZER]),
+    pending_mutation: null,
+  };
+  owned = await store.write(owned);
+
+  let seenTimeout = null;
+  const captureFinalAggregate = async ({ timeoutMs }) => {
+    seenTimeout = timeoutMs;
+    assert.ok(timeoutMs <= 1500, `timeoutMs=${timeoutMs}`);
+    await new Promise((r) => setTimeout(r, 15));
+    return {
+      schema: "cityscroll.tail_sink_final_aggregate.v1",
+      kind: "final-aggregate-before-tombstone",
+      ok: false,
+      reason: "readback_timeout",
+      events_seen: null,
+    };
+  };
+  const closeSinkWindow = async ({ windowId }) => ({
+    ok: true, cleaned: true, tombstone: true, closed: true,
+    window_id: windowId, reason: null, status: 200,
+  });
+
+  const started = Date.now();
+  const tick = await tailAttachmentRestorerTick({
+    store,
+    transport,
+    versionTransport,
+    closeSinkWindow,
+    captureFinalAggregate,
+    stateRoot,
+    now: "2026-10-18T12:00:01.000Z", // past expires_at → terminal restore then capture
+  });
+  const elapsed = Date.now() - started;
+  assert.equal(tick.sink_close?.tombstone, true);
+  assert.equal(seenTimeout, 1500, "post-deadline uses default short bound");
+  assert.ok(elapsed < 2_500, `must stay within short capture bound; elapsed=${elapsed}`);
+  const paths = tailRestorerPaths(stateRoot);
+  const receipt = JSON.parse(readFileSync(paths.finalAggregateReceipt, "utf8"));
+  assert.equal(receipt.arrivals_between_snapshot_and_cleanup, "UNKNOWN");
+  assert.equal(receipt.detach_not_delayed_by_capture, true);
   rmSync(dir, { recursive: true, force: true });
 });
