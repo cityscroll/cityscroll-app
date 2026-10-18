@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.land_authority_summary_receipt.v1",
   "join_version": "ldp05_authority_summary_v1",
-  "generated_at": "2026-10-17T01:28:46.766Z",
+  "generated_at": "2026-10-18T11:54:22.297Z",
   "counts": {
     "universe": 40,
     "resolved": 24,
@@ -111,7 +111,7 @@
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_planning_commission_review",
+      "current_stage_id": "ulurp_197c.city_council_review",
       "observed_status": "observed",
       "published_next_status": "none"
     },
@@ -129,7 +129,7 @@
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.application_certification",
+      "current_stage_id": "ulurp_197c.community_board_review",
       "observed_status": "draft_only",
       "published_next_status": "published"
     },
@@ -138,7 +138,7 @@
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.application_certification",
+      "current_stage_id": "ulurp_197c.community_board_review",
       "observed_status": "draft_only",
       "published_next_status": "published"
     },
@@ -165,7 +165,7 @@
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.application_certification",
+      "current_stage_id": "ulurp_197c.community_board_review",
       "observed_status": "draft_only",
       "published_next_status": "published"
     },
@@ -201,7 +201,7 @@
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_planning_commission_review",
+      "current_stage_id": "ulurp_197c.mayoral_review",
       "observed_status": "observed",
       "published_next_status": "none"
     },
@@ -210,7 +210,7 @@
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_planning_commission_review",
+      "current_stage_id": "ulurp_197c.city_council_review",
       "observed_status": "observed",
       "published_next_status": "none"
     },
@@ -219,7 +219,7 @@
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_planning_commission_review",
+      "current_stage_id": "ulurp_197c.mayoral_review",
       "observed_status": "observed",
       "published_next_status": "none"
     },
@@ -228,7 +228,7 @@
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_planning_commission_review",
+      "current_stage_id": "ulurp_197c.city_council_review",
       "observed_status": "observed",
       "published_next_status": "none"
     },
@@ -246,7 +246,7 @@
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_planning_commission_review",
+      "current_stage_id": "ulurp_197c.city_council_review",
       "observed_status": "observed",
       "published_next_status": "none"
     },
@@ -255,7 +255,7 @@
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_planning_commission_review",
+      "current_stage_id": "ulurp_197c.mayoral_review",
       "observed_status": "observed",
       "published_next_status": "none"
     },
@@ -291,7 +291,7 @@
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_planning_commission_review",
+      "current_stage_id": "ulurp_197c.mayoral_review",
       "observed_status": "observed",
       "published_next_status": "none"
     },
@@ -300,7 +300,7 @@
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.application_certification",
+      "current_stage_id": "ulurp_197c.community_board_review",
       "observed_status": "no_observation",
       "published_next_status": "none"
     },
@@ -309,7 +309,7 @@
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_planning_commission_review",
+      "current_stage_id": "ulurp_197c.city_council_review",
       "observed_status": "observed",
       "published_next_status": "none"
     },
@@ -318,7 +318,7 @@
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_planning_commission_review",
+      "current_stage_id": "ulurp_197c.city_council_review",
       "observed_status": "observed",
       "published_next_status": "none"
     },
@@ -327,7 +327,7 @@
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_council_review",
+      "current_stage_id": "ulurp_197c.mayoral_review",
       "observed_status": "observed",
       "published_next_status": "none"
     },
@@ -336,7 +336,7 @@
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.application_certification",
+      "current_stage_id": "ulurp_197c.city_planning_commission_review",
       "observed_status": "observed",
       "published_next_status": "published"
     },
@@ -354,8 +354,8 @@
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.application_certification",
-      "observed_status": "no_observation",
+      "current_stage_id": "ulurp_197c.borough_president_review",
+      "observed_status": "observed",
       "published_next_status": "published"
     },
     {
@@ -363,7 +363,7 @@
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_planning_commission_review",
+      "current_stage_id": "ulurp_197c.mayoral_review",
       "observed_status": "observed",
       "published_next_status": "none"
     },
@@ -372,7 +372,7 @@
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.application_certification",
+      "current_stage_id": "ulurp_197c.community_board_review",
       "observed_status": "draft_only",
       "published_next_status": "published"
     },
@@ -381,7 +381,7 @@
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_council_review",
+      "current_stage_id": "ulurp_197c.mayoral_review",
       "observed_status": "observed",
       "published_next_status": "none"
     },
@@ -418,9 +418,9 @@
       "path": "site/data/land_default_ulurp.json",
       "count": 40,
       "vintage": {
-        "generated_at": "2026-10-17T01:28:46.766Z"
+        "generated_at": "2026-10-18T11:54:22.297Z"
       },
-      "sha256": "6e1ddbb7849cd379115a00c03046b0f20537774413b2913b8b744bb6d9b6e36f"
+      "sha256": "0ebc81e69535eda4e5fcfdb6f3c24aaa70de4b995a46963ba217d686127599cd"
     },
     "geography": {
       "path": "site/data/community_board_geography_lookup.json",
@@ -433,9 +433,9 @@
       "path": "site/data/land_upcoming_hearings.json",
       "count": 151,
       "vintage": {
-        "generated_at": "2026-10-17T01:37:20.074Z"
+        "generated_at": "2026-10-18T11:59:30.812Z"
       },
-      "sha256": "7c77373781766a0d49266857ad4470b882b9285c41c36d5d8189756937be5505"
+      "sha256": "43580a8d2a9324421fde9a9a1011acbbb8724203377a57859ec7b5f42a952347"
     },
     "join_keys": [
       "project_id"
@@ -444,7 +444,7 @@
   "generation": {
     "derivation": "node tools/build_land_authority_summary.mjs",
     "payload_path": "site/data/land_authority_summary.json",
-    "payload_bytes": 112245,
-    "payload_sha256": "ea52944166fb0b1ea733a2d0f0d850f82ec4f1efacb25b7b023799a6ec659917"
+    "payload_bytes": 121123,
+    "payload_sha256": "73a07e196968f463b08e71a72717ced549b25667b75bf378b4104d3e630f17c9"
   }
 }

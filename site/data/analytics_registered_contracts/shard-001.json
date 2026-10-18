@@ -4,6 +4,1950 @@
   "shard_id": "001",
   "rows": [
     {
+      "prime_contract_id": "CT184620268801908",
+      "agency": "Department of Parks and Recreation",
+      "prime_vendor": "GARDEN WORLD INC",
+      "pin": "84626C0066001",
+      "registration_date": "2025-08-12",
+      "start_date": "2025-08-22",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Goods",
+      "contract_purpose": "QNFMCP-Plants for the US Open tennis tournament",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -10,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 7377.5,
+      "original_registered_amount": 7377.5,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-22"
+        ],
+        "registration_date_observations": [
+          "2025-08-12"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT184620268801919",
+      "agency": "Department of Parks and Recreation",
+      "prime_vendor": "UNIQUE ENTERTAINMENT",
+      "pin": "84626C0058001",
+      "registration_date": "2025-08-12",
+      "start_date": "2025-08-16",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Not Classified",
+      "contract_purpose": "BXPEL-Silent Disco Event Package for Orchard Beach",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -4,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 2580,
+      "original_registered_amount": 2580,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-16"
+        ],
+        "registration_date_observations": [
+          "2025-08-12"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT184620268801922",
+      "agency": "Department of Parks and Recreation",
+      "prime_vendor": "NEW COMPUTECH INC",
+      "pin": "84626C0059001",
+      "registration_date": "2025-08-12",
+      "start_date": "2025-08-12",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Goods",
+      "contract_purpose": "CITT - APC Equipment - Orchard Beach M&O",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 0,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 9898,
+      "original_registered_amount": 9898,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-12"
+        ],
+        "registration_date_observations": [
+          "2025-08-12"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT185020268801289",
+      "agency": "Department of Design and Construction",
+      "prime_vendor": "PER SCHOLAS INCORPORATED",
+      "pin": "85026L0001001",
+      "registration_date": "2025-08-12",
+      "start_date": "2025-10-03",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "industry": "Goods",
+      "contract_purpose": "PWDNPRSCH, IT Equipment System",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -52,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 72079,
+      "original_registered_amount": 72079,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-10-03"
+        ],
+        "registration_date_observations": [
+          "2025-08-12"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT185620268801920",
+      "agency": "Department of Citywide Administrative Services",
+      "prime_vendor": "GOLDEN TOUCH CAR WASH INC",
+      "pin": "85626C0008001",
+      "registration_date": "2025-08-12",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Not Classified",
+      "contract_purpose": "Blanket Order Car Wash",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": 42,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 9500,
+      "original_registered_amount": 7000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-12"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CTA180120267200226",
+      "agency": "Department of Small Business Services",
+      "prime_vendor": "NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION",
+      "pin": "12812DOHPHL",
+      "registration_date": "2025-08-12",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "MISCELLANEOUS",
+      "industry": "Standardized Services",
+      "contract_purpose": "DOH PHL - Staff Time",
+      "document_code": "CTA1",
+      "contract_version": "2",
+      "parent_contract_id": "MMA180120258803455",
+      "registration_lag_days": 773,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 637765,
+      "original_registered_amount": 612254,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-12"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CTA184120257207098",
+      "agency": "Department of Transportation",
+      "prime_vendor": "JHK ENGINEERING, P.C.",
+      "pin": "84119P8219KXLR001",
+      "registration_date": "2025-08-12",
+      "start_date": "2025-08-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "MULTIPLE AWARDS",
+      "industry": "Professional Services",
+      "contract_purpose": "ESA-T/O #00D-105A: J. Robinson P'way Soil Boring(supplemetal",
+      "document_code": "CTA1",
+      "contract_version": "1",
+      "parent_contract_id": "MMA184120228807741",
+      "registration_lag_days": 11,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 12060,
+      "original_registered_amount": 12060,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-12"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CTA184120267200256",
+      "agency": "Department of Transportation",
+      "prime_vendor": "AKRF ENGINEERING, P.C.",
+      "pin": "84126Z8009KXL",
+      "registration_date": "2025-08-12",
+      "start_date": "2025-09-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "MULTIPLE AWARDS",
+      "industry": "Professional Services",
+      "contract_purpose": "#16 - Rezoning Flatlands Yard ULURP",
+      "document_code": "CTA1",
+      "contract_version": "2",
+      "parent_contract_id": "MMA184120228804849",
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 555417.73,
+      "original_registered_amount": 555417.73,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-09-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-12"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "MA104020269674695",
+      "agency": "Department of Education",
+      "prime_vendor": "CATAPULT LEARNING LLC",
+      "pin": null,
+      "registration_date": "2025-08-12",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Human Services",
+      "contract_purpose": "Title I Nonpublic Schools Supplemental Instructional Service",
+      "document_code": "MA1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 42,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 45700000,
+      "original_registered_amount": 45700000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-12"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "MA104020269674740",
+      "agency": "Department of Education",
+      "prime_vendor": "NATIONAL TRAINING NETWORK INC",
+      "pin": null,
+      "registration_date": "2025-08-12",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Human Services",
+      "contract_purpose": "Math Related Services and Professional Development",
+      "document_code": "MA1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 42,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 3000000,
+      "original_registered_amount": 3000000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-12"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "MA104020269674860",
+      "agency": "Department of Education",
+      "prime_vendor": "LINGUALINX LANGUAGE SOLUTIONS INC",
+      "pin": null,
+      "registration_date": "2025-08-12",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Professional Services",
+      "contract_purpose": "Component 1 - Written Translation Services",
+      "document_code": "MA1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": 42,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 1125100,
+      "original_registered_amount": 1125100,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-12"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT104020263006006",
+      "agency": "Department of Education",
+      "prime_vendor": "CONTROL BIONICS INC",
+      "pin": null,
+      "registration_date": "2025-08-11",
+      "start_date": "2025-08-11",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - WRITTEN",
+      "industry": "Goods",
+      "contract_purpose": "SOLE VENDOR-COMMODITIES",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 0,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 25000,
+      "original_registered_amount": 25000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-11"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT104020263006223",
+      "agency": "Department of Education",
+      "prime_vendor": "FMYI INC",
+      "pin": null,
+      "registration_date": "2025-08-11",
+      "start_date": "2025-08-11",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - WRITTEN",
+      "industry": "Goods",
+      "contract_purpose": "SOLE VENDOR-COMMODITIES",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 0,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 25000,
+      "original_registered_amount": 25000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-11"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT104020269656965",
+      "agency": "Department of Education",
+      "prime_vendor": "RENA DAY CARE CENTERS INC",
+      "pin": null,
+      "registration_date": "2025-08-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Human Services",
+      "contract_purpose": "Family Child Care Networks",
+      "document_code": "CT1",
+      "contract_version": "6",
+      "parent_contract_id": null,
+      "registration_lag_days": 41,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 12343741.5,
+      "original_registered_amount": 12343741.5,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT105620268801571",
+      "agency": "Police Department",
+      "prime_vendor": "TRUSTEES OF COLUMBIA UNIVERSITY IN THE CITY OF NEW YORK",
+      "pin": "05621P0001001R001",
+      "registration_date": "2025-08-11",
+      "start_date": "2025-09-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Professional Services",
+      "contract_purpose": "Police Management Institute Program",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -21,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 1498000,
+      "original_registered_amount": 1498000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-09-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT112520268801625",
+      "agency": "Department for the Aging",
+      "prime_vendor": "THE NEW YORK ACADEMY OF MEDICINE",
+      "pin": "12525R0007001",
+      "registration_date": "2025-08-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "DETERMINED BY GOV'T MANDATE",
+      "industry": "Not Classified",
+      "contract_purpose": "To evaluate the efficacy of the Anti-Ageism initiative",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": 41,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 75000,
+      "original_registered_amount": 75000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT112520268801628",
+      "agency": "Department for the Aging",
+      "prime_vendor": "IMMIGRANT SOCIAL SERVICES INC",
+      "pin": "12524L0235001",
+      "registration_date": "2025-08-11",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "industry": "Human Services",
+      "contract_purpose": "3BX - support older adult services",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 772,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 196665,
+      "original_registered_amount": 196665,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT112820268801036",
+      "agency": "OFFICE OF CRIMINAL JUSTICE",
+      "prime_vendor": "SAFE HORIZON INC",
+      "pin": "12825N0012001",
+      "registration_date": "2025-08-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "NEGOTIATED ACQUISITION AND DOE NEGOTIATED SERVICES",
+      "industry": "Human Services",
+      "contract_purpose": "FY26-FY27 Safe Horizon - Restitution",
+      "document_code": "CT1",
+      "contract_version": "4",
+      "parent_contract_id": null,
+      "registration_lag_days": 41,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 2215601,
+      "original_registered_amount": 2215601,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020268801599",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "ARAB AMERICAN ASSOCIATION OF NY INC",
+      "pin": "26026N8003KXLR001",
+      "registration_date": "2025-08-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Human Services",
+      "contract_purpose": "NDA Immigrant Services",
+      "document_code": "CT1",
+      "contract_version": "5",
+      "parent_contract_id": null,
+      "registration_lag_days": 41,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 485126,
+      "original_registered_amount": 485126,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT126020268801739",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "Riverside-Inwood Neighborhood Garden",
+      "pin": "26024L0377001",
+      "registration_date": "2025-08-11",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SM PURCHASE COUNCIL & BP NEEDS",
+      "industry": "Human Services",
+      "contract_purpose": "Fund will be used for supplies to maintain Community Garden.",
+      "document_code": "CT1",
+      "contract_version": "5",
+      "parent_contract_id": null,
+      "registration_lag_days": 772,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 18750,
+      "original_registered_amount": 18750,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020268801860",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "THE COMMITTEE FOR HISPANIC CHILDREN AND FAMILIES INC",
+      "pin": "26023L1197001",
+      "registration_date": "2025-08-11",
+      "start_date": "2022-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SM PURCHASE COUNCIL & BP NEEDS",
+      "industry": "Human Services",
+      "contract_purpose": "Support After School with STEM Community Empowerment",
+      "document_code": "CT1",
+      "contract_version": "6",
+      "parent_contract_id": null,
+      "registration_lag_days": 1137,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 10000,
+      "original_registered_amount": 10000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2022-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT180120261401996",
+      "agency": "Department of Small Business Services",
+      "prime_vendor": "ACCURATE COMMUNICATION INC",
+      "pin": null,
+      "registration_date": "2025-08-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "M/WBE SMALL PURCHASE",
+      "industry": "Professional Services",
+      "contract_purpose": "LANGUAGE ACCESS - SIGN LANGUAGE SERVICES",
+      "document_code": "CT1",
+      "contract_version": "3",
+      "parent_contract_id": null,
+      "registration_lag_days": 41,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 99955,
+      "original_registered_amount": 14905,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT181620268800189",
+      "agency": "Department of Health and Mental Hygiene",
+      "prime_vendor": "GALLAGHER & CO. ADJUSTERS INC.",
+      "pin": "81625P0001001",
+      "registration_date": "2025-08-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "REQUEST FOR PROPOSAL (RFP)",
+      "industry": "Professional Services",
+      "contract_purpose": "Filing of Petitions and Service of Legal Process and Papers",
+      "document_code": "CT1",
+      "contract_version": "3",
+      "parent_contract_id": null,
+      "registration_lag_days": 41,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 3670420,
+      "original_registered_amount": 3670420,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT182620268801211",
+      "agency": "Department of Environmental Protection",
+      "prime_vendor": "DELAWARE COUNTY SOIL & WATER CONSERVATION DISTRICT",
+      "pin": "82625T0008001E002",
+      "registration_date": "2025-08-11",
+      "start_date": "2026-01-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "GOVERNMENT TO GOVERNMENT",
+      "industry": "Professional Services",
+      "contract_purpose": "SWP-105: Stream Management Program",
+      "document_code": "CT1",
+      "contract_version": "4",
+      "parent_contract_id": null,
+      "registration_lag_days": -143,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 19320368,
+      "original_registered_amount": 19320368,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2026-01-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT183620268800320",
+      "agency": "Department of Finance",
+      "prime_vendor": "COMPULINK TECHNOLOGIES INC",
+      "pin": "83625W0021001",
+      "registration_date": "2025-08-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "M/WBE SMALL PURCHASE",
+      "industry": "Goods",
+      "contract_purpose": "Informatica Software Maintenance and Support",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 41,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 104000,
+      "original_registered_amount": 104000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT184620268801855",
+      "agency": "Department of Parks and Recreation",
+      "prime_vendor": "National Recreation and Park Association",
+      "pin": "84626C0008001",
+      "registration_date": "2025-08-11",
+      "start_date": "2025-08-12",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Goods",
+      "contract_purpose": "CTRAIN-NRPA Membership Renewal",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -1,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 6050,
+      "original_registered_amount": 6050,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-12"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT184620268801867",
+      "agency": "Department of Parks and Recreation",
+      "prime_vendor": "SEND IN THE CLOWNS ENTERTAINMENT CORP",
+      "pin": "84626C0056001",
+      "registration_date": "2025-08-11",
+      "start_date": "2025-08-14",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Not Classified",
+      "contract_purpose": "QNREC-Concessions and Entertainment for Brookville Park",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -3,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 7055.5,
+      "original_registered_amount": 7055.5,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-14"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT184620268801870",
+      "agency": "Department of Parks and Recreation",
+      "prime_vendor": "BARBARA WEINSTEIN",
+      "pin": "84626C0037001",
+      "registration_date": "2025-08-11",
+      "start_date": "2025-08-14",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Not Classified",
+      "contract_purpose": "QNREC- Just Sixties Event at Cunningham Park",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -3,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 3700,
+      "original_registered_amount": 3700,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-14"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT185620268801875",
+      "agency": "Department of Citywide Administrative Services",
+      "prime_vendor": "A TO Z AUTOMOTIVE INC",
+      "pin": "85626C0007001A001",
+      "registration_date": "2025-08-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Not Classified",
+      "contract_purpose": "Blanket Order for Vehicle Detailing",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": 41,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 8000,
+      "original_registered_amount": 6000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT185620268801881",
+      "agency": "Department of Citywide Administrative Services",
+      "prime_vendor": "BAY RIDGE WINDOW SHADE CORP AMERICAN WINDOW FASHIONS",
+      "pin": "85626W0002001",
+      "registration_date": "2025-08-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "M/WBE SMALL PURCHASE",
+      "industry": "Not Classified",
+      "contract_purpose": "Window Treatment needed for DCAS Facilities",
+      "document_code": "CT1",
+      "contract_version": "3",
+      "parent_contract_id": null,
+      "registration_lag_days": 41,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 100000,
+      "original_registered_amount": 100000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CTA100220267200241",
+      "agency": "Mayoralty",
+      "prime_vendor": "ADROIT CONSULTANTS LLC",
+      "pin": "00221P0022001",
+      "registration_date": "2025-08-11",
+      "start_date": "2025-06-20",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "MULTIPLE AWARDS",
+      "industry": "Professional Services",
+      "contract_purpose": "Value Engineering Services/Value Mgmt./Analysis Services",
+      "document_code": "CTA1",
+      "contract_version": "1",
+      "parent_contract_id": "MMA100220228800506",
+      "registration_lag_days": 52,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 224764.05,
+      "original_registered_amount": 224764.05,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-06-20"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CTA180120257207501",
+      "agency": "Department of Small Business Services",
+      "prime_vendor": "NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION",
+      "pin": "12770BATPHV",
+      "registration_date": "2025-08-11",
+      "start_date": "2024-12-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "MULTIPLE AWARDS",
+      "industry": "Construction Services",
+      "contract_purpose": "BAT Phase V- Ground Floor A - 96480004",
+      "document_code": "CTA1",
+      "contract_version": "1",
+      "parent_contract_id": "MMA180120258803498",
+      "registration_lag_days": 253,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 153435.43,
+      "original_registered_amount": 153435.43,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-12-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CTA180120267200016",
+      "agency": "Department of Small Business Services",
+      "prime_vendor": "NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION",
+      "pin": "12882BROOKLYNARMY",
+      "registration_date": "2025-08-11",
+      "start_date": "2024-12-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "MULTIPLE AWARDS",
+      "industry": "Construction Services",
+      "contract_purpose": "Brooklyn Army Terminal-96480004",
+      "document_code": "CTA1",
+      "contract_version": "2",
+      "parent_contract_id": "MMA180120258803498",
+      "registration_lag_days": 253,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 611925,
+      "original_registered_amount": 186294.38,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-12-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CTA180620267200316",
+      "agency": "Housing Preservation and Development",
+      "prime_vendor": "NEW YORK CITY HOUSING AUTHORITY",
+      "pin": null,
+      "registration_date": "2025-08-11",
+      "start_date": "2025-01-13",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "MULTIPLE AWARDS",
+      "industry": "Construction Services",
+      "contract_purpose": "FY25 Lead-Based Paint Abatement @Various Developments",
+      "document_code": "CTA1",
+      "contract_version": "1",
+      "parent_contract_id": "MMA180620256201021",
+      "registration_lag_days": 210,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 4227400,
+      "original_registered_amount": 4227400,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-01-13"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CTA184620267200106",
+      "agency": "Department of Parks and Recreation",
+      "prime_vendor": "MP ENGINEERS AND ARCHITECTS PC",
+      "pin": "84622P8004KXLR001",
+      "registration_date": "2025-08-11",
+      "start_date": "2025-08-08",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "MULTIPLE AWARDS",
+      "industry": "Professional Services",
+      "contract_purpose": "R017-319M Freshkills S Pk Comfort Station Construction WO#3R",
+      "document_code": "CTA1",
+      "contract_version": "1",
+      "parent_contract_id": "MMA184620258801159",
+      "registration_lag_days": 3,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 89190,
+      "original_registered_amount": 89190,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-08"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "MA104020269674935",
+      "agency": "Department of Education",
+      "prime_vendor": "TOPICAL REVIEW BOOK COMPANY",
+      "pin": null,
+      "registration_date": "2025-08-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "DEPT OF ED LISTING APPLICATION",
+      "industry": "Goods",
+      "contract_purpose": "Acquisition of software and digital content",
+      "document_code": "MA1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 41,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 198636,
+      "original_registered_amount": 198636,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "MA185720268801383",
+      "agency": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+      "prime_vendor": "UNITED METRO ENERGY CORP",
+      "pin": "85725B0091001",
+      "registration_date": "2025-08-11",
+      "start_date": "2025-09-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "ACCELERATED PROCUREMENT",
+      "industry": "Goods",
+      "contract_purpose": "THE PURPOSE OF THIS CONTRACT IS TO PROCURE IN BULK, FUEL OIL",
+      "document_code": "MA1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -21,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 599587.5,
+      "original_registered_amount": 599587.5,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-09-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "MA185720268801759",
+      "agency": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+      "prime_vendor": "PVS CHEMICAL SOLUTIONS INC",
+      "pin": "85725B0066001",
+      "registration_date": "2025-08-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "ACCELERATED PROCUREMENT",
+      "industry": "Goods",
+      "contract_purpose": "The purpose of this contract is to procure liquid Sodium Bis",
+      "document_code": "MA1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 41,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 2592000,
+      "original_registered_amount": 2592000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT104020263005960",
+      "agency": "Department of Education",
+      "prime_vendor": "MJ CORPORATE SALES",
+      "pin": null,
+      "registration_date": "2025-08-08",
+      "start_date": "2025-08-08",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - WRITTEN",
+      "industry": "Not Classified",
+      "contract_purpose": "3 BIDS-SERVICES-7990",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 0,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 25000,
+      "original_registered_amount": 25000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-08"
+        ],
+        "registration_date_observations": [
+          "2025-08-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT104020263005981",
+      "agency": "Department of Education",
+      "prime_vendor": "HMH EDUCATION COMPANY",
+      "pin": null,
+      "registration_date": "2025-08-08",
+      "start_date": "2025-09-12",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - WRITTEN",
+      "industry": "Not Classified",
+      "contract_purpose": "WRONG NUMBER",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": -35,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 25000,
+      "original_registered_amount": 25000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-09-12"
+        ],
+        "registration_date_observations": [
+          "2025-08-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT104020263006157",
+      "agency": "Department of Education",
+      "prime_vendor": "MEDXWASTE-NY LLC",
+      "pin": null,
+      "registration_date": "2025-08-08",
+      "start_date": "2025-08-08",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - WRITTEN",
+      "industry": "Not Classified",
+      "contract_purpose": "3 BIDS-SERVICES",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 0,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 25000,
+      "original_registered_amount": 25000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-08"
+        ],
+        "registration_date_observations": [
+          "2025-08-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT104020263006158",
+      "agency": "Department of Education",
+      "prime_vendor": "REDMONT SIGN LLC",
+      "pin": null,
+      "registration_date": "2025-08-08",
+      "start_date": "2025-08-08",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - WRITTEN",
+      "industry": "Human Services",
+      "contract_purpose": "SOLE VENDOR-COMMODITIES",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 0,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 25000,
+      "original_registered_amount": 25000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-08"
+        ],
+        "registration_date_observations": [
+          "2025-08-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT104020263006181",
+      "agency": "Department of Education",
+      "prime_vendor": "SINGAPORE MATH INC",
+      "pin": null,
+      "registration_date": "2025-08-08",
+      "start_date": "2025-08-08",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - WRITTEN",
+      "industry": "Human Services",
+      "contract_purpose": "SOLE VENDOR-COMMODITIES",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 0,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 25000,
+      "original_registered_amount": 25000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-08"
+        ],
+        "registration_date_observations": [
+          "2025-08-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT104020263006350",
+      "agency": "Department of Education",
+      "prime_vendor": "ADVANCE ASSESSMENT SYSTEMS INC",
+      "pin": null,
+      "registration_date": "2025-08-08",
+      "start_date": "2025-08-08",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - WRITTEN",
+      "industry": "Goods",
+      "contract_purpose": "SOLE VENDOR-COMMODITIES",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 0,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 25000,
+      "original_registered_amount": 25000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-08"
+        ],
+        "registration_date_observations": [
+          "2025-08-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT105620260001186",
+      "agency": "Police Department",
+      "prime_vendor": "THE MELTING POT FOUNDATION USA INC",
+      "pin": null,
+      "registration_date": "2025-08-08",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "SM PURCH GOODS SERVICES 100K",
+      "industry": "Goods",
+      "contract_purpose": "INCREASE PURCHASE ORDER, QMS 0005",
+      "document_code": "CT1",
+      "contract_version": "3",
+      "parent_contract_id": null,
+      "registration_lag_days": 38,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 100000,
+      "original_registered_amount": 100000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT105620261400016",
+      "agency": "Police Department",
+      "prime_vendor": "Sterling Corporation",
+      "pin": "264800001A",
+      "registration_date": "2025-08-08",
+      "start_date": "2025-07-09",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "SM PURCH GOODS SERVICES 100K",
+      "industry": "Goods",
+      "contract_purpose": "DECREASE PURCHASE ORDER, QMS 0058",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": 30,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 100000,
+      "original_registered_amount": 100000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-09"
+        ],
+        "registration_date_observations": [
+          "2025-08-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT106920268801276",
+      "agency": "Department of Social Services",
+      "prime_vendor": "SUNNY TRUCK DRIVING SCHOOL INC",
+      "pin": "06925W0029001",
+      "registration_date": "2025-08-08",
+      "start_date": "2025-03-03",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "M/WBE SMALL PURCHASE",
+      "industry": "Standardized Services",
+      "contract_purpose": "BPO for the Commercial Driver Permit and Driving School",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 158,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 98880,
+      "original_registered_amount": 98880,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-03-03"
+        ],
+        "registration_date_observations": [
+          "2025-08-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT110220261401966",
+      "agency": "City Council",
+      "prime_vendor": "VETERANS CENTER MANAGER LLC",
+      "pin": "10220262004744",
+      "registration_date": "2025-08-08",
+      "start_date": "2022-01-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - WRITTEN",
+      "industry": "Not Classified",
+      "contract_purpose": "2022 & 2023 TAXES FOR 2955 VETERANS ROAD W, SI NY 10309",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 1315,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 22824.02,
+      "original_registered_amount": 22824.02,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2022-01-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT112520268801627",
+      "agency": "Department for the Aging",
+      "prime_vendor": "REGIONAL AID FOR INTERIM NEEDS INC",
+      "pin": "12526R0003001",
+      "registration_date": "2025-08-08",
+      "start_date": "2024-09-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "DETERMINED BY GOV'T MANDATE",
+      "industry": "Human Services",
+      "contract_purpose": "To assist older adults with Medicare Part D enrollment",
+      "document_code": "CT1",
+      "contract_version": "5",
+      "parent_contract_id": null,
+      "registration_lag_days": 341,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 23000,
+      "original_registered_amount": 23000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-09-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT112520268801838",
+      "agency": "Department for the Aging",
+      "prime_vendor": "WAHIZZA GROUP INC",
+      "pin": "12526C0010001",
+      "registration_date": "2025-08-08",
+      "start_date": "2025-08-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Goods",
+      "contract_purpose": "Light Meals for the NYC Aging Staff Team-Building Picnic",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 7,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 6825,
+      "original_registered_amount": 6825,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020268801582",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "CASTLE HILL LITTLE LEAGUE INC",
+      "pin": "26025N0121021",
+      "registration_date": "2025-08-08",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "NEGOTIATED ACQUISITION AND DOE NEGOTIATED SERVICES",
+      "industry": "Human Services",
+      "contract_purpose": "Neighborhood Youth Team Sports FY26 NA",
+      "document_code": "CT1",
+      "contract_version": "4",
+      "parent_contract_id": null,
+      "registration_lag_days": 38,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 34000,
+      "original_registered_amount": 34000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT126020268801651",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "NEW YORK COMMITTEE FOR OCCUPATIONAL SAFETY AND HEALTH INC",
+      "pin": "26024L0866001",
+      "registration_date": "2025-08-08",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "industry": "Human Services",
+      "contract_purpose": "To support NYCOSH organizing of salon workers in NYC",
+      "document_code": "CT1",
+      "contract_version": "8",
+      "parent_contract_id": null,
+      "registration_lag_days": 769,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 581250,
+      "original_registered_amount": 581250,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020268801664",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "BROOKLYN COMMUNITY BAIL FUND INC",
+      "pin": "26023L1713001",
+      "registration_date": "2025-08-08",
+      "start_date": "2022-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "industry": "Human Services",
+      "contract_purpose": "To supports criminal justice programs and reform efforts.",
+      "document_code": "CT1",
+      "contract_version": "3",
+      "parent_contract_id": null,
+      "registration_lag_days": 1134,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 200000,
+      "original_registered_amount": 200000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2022-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT181620261401921",
+      "agency": "Department of Health and Mental Hygiene",
+      "prime_vendor": "LOCAL 30",
+      "pin": null,
+      "registration_date": "2025-08-08",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Standardized Services",
+      "contract_purpose": "Agency encumbrance to pay out Local 30 ST Engineer Annuity F",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 38,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 10596.8,
+      "original_registered_amount": 10596.8,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
       "prime_contract_id": "CT181620268801545",
       "agency": "Department of Health and Mental Hygiene",
       "prime_vendor": "NEW YORK AND PRESBYTERIAN HOSPITAL",
@@ -16855,7 +18799,7 @@
       "prime_contract_id": "CT184620258809194",
       "agency": "Department of Parks and Recreation",
       "prime_vendor": "J PIZZIRUSSO LANDSCAPING CORP",
-      "pin": "84624B0104001C001",
+      "pin": "84624B0104001C002",
       "registration_date": "2025-07-22",
       "start_date": "2025-08-19",
       "registration_fiscal_year": 2026,
@@ -69611,7 +71555,7 @@
       "prime_contract_id": "CT112520268800399",
       "agency": "Department for the Aging",
       "prime_vendor": "WEILL MEDICAL COLLEGE OF CORNELL UNIVERSITY",
-      "pin": "12525D0001001",
+      "pin": "12525D0001001A001",
       "registration_date": "2025-06-09",
       "start_date": "2025-07-01",
       "registration_fiscal_year": 2025,
@@ -336953,7 +338897,7 @@
       "prime_contract_id": "MMA185020258803512",
       "agency": "Department of Design and Construction",
       "prime_vendor": "MICHAEL BAKER ENGINEERING INC",
-      "pin": "85021P0003009A002",
+      "pin": "85021P0003009A003",
       "registration_date": "2024-11-13",
       "start_date": "2024-12-01",
       "registration_fiscal_year": 2025,
@@ -336989,7 +338933,7 @@
       "prime_contract_id": "MMA185020258803514",
       "agency": "Department of Design and Construction",
       "prime_vendor": "AI Engineers, Inc.",
-      "pin": "85021P0003006A001",
+      "pin": "85021P0003006A003",
       "registration_date": "2024-11-13",
       "start_date": "2024-12-01",
       "registration_fiscal_year": 2025,
@@ -339042,7 +340986,7 @@
       "prime_contract_id": "MMA185020258803506",
       "agency": "Department of Design and Construction",
       "prime_vendor": "POPLI ARCHITECTURE PLUS ENGINEERING & LS DPC",
-      "pin": "85021P0003012R001",
+      "pin": "85021P0003012A001",
       "registration_date": "2024-11-12",
       "start_date": "2024-12-01",
       "registration_fiscal_year": 2025,
@@ -341598,7 +343542,7 @@
       "prime_contract_id": "MMA185020258803545",
       "agency": "Department of Design and Construction",
       "prime_vendor": "COWI CONSULTING INC",
-      "pin": "85021P0003017R001",
+      "pin": "85021P0003017A001",
       "registration_date": "2024-11-07",
       "start_date": "2024-12-01",
       "registration_fiscal_year": 2025,
@@ -347502,7 +349446,7 @@
       "prime_contract_id": "MMA185020258803510",
       "agency": "Department of Design and Construction",
       "prime_vendor": "PARSONS TRANSPORTATION GROUP OF NY INC",
-      "pin": "85021P0003003A001",
+      "pin": "85021P0003003A002",
       "registration_date": "2024-10-31",
       "start_date": "2024-12-01",
       "registration_fiscal_year": 2025,
@@ -347538,7 +349482,7 @@
       "prime_contract_id": "MMA185020258803515",
       "agency": "Department of Design and Construction",
       "prime_vendor": "SJH ENGINEERING PC",
-      "pin": "85021P0003013R001",
+      "pin": "85021P0003013A001",
       "registration_date": "2024-10-31",
       "start_date": "2024-12-01",
       "registration_fiscal_year": 2025,

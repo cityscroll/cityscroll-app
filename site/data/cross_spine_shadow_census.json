@@ -1150,7 +1150,7 @@
       },
       "denominators": {
         "eligible_left_rows": 21,
-        "source_rows": 217,
+        "source_rows": 216,
         "pre_route_pairs": 94
       },
       "by_tier": {
@@ -1243,7 +1243,7 @@
         "city-council": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 1,
+            "source_rows": 0,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
