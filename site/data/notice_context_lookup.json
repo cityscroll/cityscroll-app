@@ -2,7 +2,7 @@
   "schema_version": 1,
   "delivery_tier": "resident-snapshot",
   "source": "site/data/money_resident_snapshot.json",
-  "source_generated_at": "2026-10-17T01:38:04.340Z",
+  "source_generated_at": "2026-10-18T11:59:37.509Z",
   "count": 379,
   "by_notice": {
     "20261008016": {
@@ -1712,7 +1712,7 @@
       "agency_award_count_12m": 2,
       "agency_award_total_12m": 77783,
       "agency_awards_at_or_below": 1,
-      "vendor_award_count_90d": 1,
+      "vendor_award_count_90d": 0,
       "vendor_award_total_12m": 17783
     },
     "20260713035": {
@@ -1721,7 +1721,7 @@
       "agency_award_count_12m": 2,
       "agency_award_total_12m": 198316,
       "agency_awards_at_or_below": 2,
-      "vendor_award_count_90d": 1,
+      "vendor_award_count_90d": 0,
       "vendor_award_total_12m": 128311
     },
     "20260713036": {
@@ -1730,7 +1730,7 @@
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 68015385,
       "agency_awards_at_or_below": 4,
-      "vendor_award_count_90d": 1,
+      "vendor_award_count_90d": 0,
       "vendor_award_total_12m": 450000
     },
     "20260713037": {
@@ -1748,7 +1748,7 @@
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 8,
-      "vendor_award_count_90d": 1,
+      "vendor_award_count_90d": 0,
       "vendor_award_total_12m": 1590000
     },
     "20260714006": {
@@ -1757,7 +1757,7 @@
       "agency_award_count_12m": 13,
       "agency_award_total_12m": 233144554,
       "agency_awards_at_or_below": 10,
-      "vendor_award_count_90d": 1,
+      "vendor_award_count_90d": 0,
       "vendor_award_total_12m": 12845777
     },
     "20260714007": {
@@ -1766,7 +1766,7 @@
       "agency_award_count_12m": 13,
       "agency_award_total_12m": 233144554,
       "agency_awards_at_or_below": 6,
-      "vendor_award_count_90d": 1,
+      "vendor_award_count_90d": 0,
       "vendor_award_total_12m": 7250000
     },
     "20260714008": {
@@ -1775,7 +1775,7 @@
       "agency_award_count_12m": 8,
       "agency_award_total_12m": 37380087,
       "agency_awards_at_or_below": 8,
-      "vendor_award_count_90d": 1,
+      "vendor_award_count_90d": 0,
       "vendor_award_total_12m": 26880087
     },
     "20260714009": {
@@ -1784,7 +1784,7 @@
       "agency_award_count_12m": 22,
       "agency_award_total_12m": 977567210,
       "agency_awards_at_or_below": 15,
-      "vendor_award_count_90d": 1,
+      "vendor_award_count_90d": 0,
       "vendor_award_total_12m": 9169435
     },
     "20260714010": {
@@ -1793,7 +1793,7 @@
       "agency_award_count_12m": 87,
       "agency_award_total_12m": 444696736,
       "agency_awards_at_or_below": 34,
-      "vendor_award_count_90d": 1,
+      "vendor_award_count_90d": 0,
       "vendor_award_total_12m": 2331072
     },
     "20260714011": {
@@ -1802,7 +1802,7 @@
       "agency_award_count_12m": 87,
       "agency_award_total_12m": 444696736,
       "agency_awards_at_or_below": 3,
-      "vendor_award_count_90d": 1,
+      "vendor_award_count_90d": 0,
       "vendor_award_total_12m": 50000
     },
     "20260714012": {
@@ -1811,7 +1811,7 @@
       "agency_award_count_12m": 29,
       "agency_award_total_12m": 64464965,
       "agency_awards_at_or_below": 23,
-      "vendor_award_count_90d": 1,
+      "vendor_award_count_90d": 0,
       "vendor_award_total_12m": 2423750
     },
     "20260714013": {
@@ -1820,7 +1820,7 @@
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 68015385,
       "agency_awards_at_or_below": 3,
-      "vendor_award_count_90d": 1,
+      "vendor_award_count_90d": 0,
       "vendor_award_total_12m": 300000
     },
     "20260714014": {
@@ -1829,7 +1829,7 @@
       "agency_award_count_12m": 5,
       "agency_award_total_12m": 13861508,
       "agency_awards_at_or_below": 1,
-      "vendor_award_count_90d": 1,
+      "vendor_award_count_90d": 0,
       "vendor_award_total_12m": 294880
     },
     "20260708001": {

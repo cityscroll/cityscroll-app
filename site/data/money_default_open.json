@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-10-17T01:38:04.340Z",
-  "open_as_of": "2026-10-17",
+  "generated_at": "2026-10-18T11:59:37.509Z",
+  "open_as_of": "2026-10-18",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -10,7 +10,7 @@
   },
   "query": {
     "$select": "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,selection_method_description",
-    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-10-17'",
+    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-10-18'",
     "$order": "due_date ASC",
     "$limit": "40",
     "note": "Default Money tab acquisition: open solicitations, all agencies, no keyword/method. Resident reads filter the committed snapshot."

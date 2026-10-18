@@ -32590,20 +32590,17 @@
       "procurement_id": "procurement:contract:CT104020238803876",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020238803876",
       "procurement_stages": [
-        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "city_record:20221025115",
         "passport_public_contracts:contract:04022P0673150:4800586"
       ],
-      "request_id": "20221025115",
       "start_date": "2022-07-01",
       "end_date": "2026-06-30",
       "agency_id": null,
-      "agency_name": "Education",
-      "short_title": "R1395-3K and Pre-K for All Services 2022-26",
+      "agency_name": "DEPARTMENT OF EDUCATION",
+      "short_title": "Division of Early Childhood Education",
       "pin": "04022P0673150",
       "contract_id": "CT104020238803876",
       "contract_amount": 1356184,
@@ -32611,24 +32608,12 @@
       "official_url": null,
       "selection_method_description": "Competitive Sealed Proposal",
       "process_states": [
-        "award",
         "registered"
       ],
-      "additional_description_1": "Education · KIDSLANDNY INC · $1,356,184",
-      "notice_evidence": [
-        {
-          "request_id": "20221025115",
-          "type_of_notice_description": "Award",
-          "short_title": "R1395-3K and Pre-K for All Services 2022-26",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2022-10-31",
-          "href": "/notices/20221025115"
-        }
-      ],
+      "additional_description_1": "DEPARTMENT OF EDUCATION · KIDSLANDNY INC · $1,356,184",
+      "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
-        "city_record",
         "passport_public_contracts"
       ]
     },
@@ -46284,38 +46269,6 @@
       "method_family": "ordinary_5_plus_10"
     },
     {
-      "procurement_id": "procurement:contract:CT104020263026663",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263026663",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263026663:DJ MYTE LLC:prime-vendor:2025-10-17"
-      ],
-      "start_date": "2025-10-17",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "MWBE-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263026663",
-      "contract_amount": 25000,
-      "vendor_name": "DJ MYTE LLC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · DJ MYTE LLC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
       "procurement_id": "procurement:contract:CT104020263026792",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263026792",
       "procurement_stages": [
@@ -46596,38 +46549,6 @@
         "registered"
       ],
       "additional_description_1": "Department of Education · Toolkit Tutors Inc · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263030180",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263030180",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263030180:IMAGINE LEARNING LLC:prime-vendor:2025-10-17"
-      ],
-      "start_date": "2025-10-17",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "SOLE VENDOR-COMMODITIES",
-      "pin": null,
-      "contract_id": "CT104020263030180",
-      "contract_amount": 25000,
-      "vendor_name": "IMAGINE LEARNING LLC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · IMAGINE LEARNING LLC · $25,000",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -46956,38 +46877,6 @@
       "method_family": "ordinary_5_plus_10"
     },
     {
-      "procurement_id": "procurement:contract:CT104020263033276",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263033276",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263033276:SMITH PREPARATORY,LLC:prime-vendor:2025-10-17"
-      ],
-      "start_date": "2025-10-17",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "3 BIDS-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263033276",
-      "contract_amount": 25000,
-      "vendor_name": "SMITH PREPARATORY,LLC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · SMITH PREPARATORY,LLC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
       "procurement_id": "procurement:contract:CT104020263033361",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263033361",
       "procurement_stages": [
@@ -47212,70 +47101,6 @@
       "method_family": "ordinary_5_plus_10"
     },
     {
-      "procurement_id": "procurement:contract:CT104020263034841",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263034841",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263034841:MY ROBIN INC:prime-vendor:2025-10-17"
-      ],
-      "start_date": "2025-10-17",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "MWBE-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263034841",
-      "contract_amount": 25000,
-      "vendor_name": "MY ROBIN INC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · MY ROBIN INC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263034864",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263034864",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263034864:INTERPLAY LEARNING INC:prime-vendor:2025-10-17"
-      ],
-      "start_date": "2025-10-17",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "SOLE VENDOR-COMMODITIES",
-      "pin": null,
-      "contract_id": "CT104020263034864",
-      "contract_amount": 25000,
-      "vendor_name": "INTERPLAY LEARNING INC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · INTERPLAY LEARNING INC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
       "procurement_id": "procurement:contract:CT104020263035047",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263035047",
       "procurement_stages": [
@@ -47332,134 +47157,6 @@
         "registered"
       ],
       "additional_description_1": "Department of Education · SOLVED CONSULTANCY LLC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263035185",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263035185",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263035185:UNITED STEPPERS LLC:prime-vendor:2025-10-17"
-      ],
-      "start_date": "2025-10-17",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "3 BIDS-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263035185",
-      "contract_amount": 25000,
-      "vendor_name": "UNITED STEPPERS LLC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · UNITED STEPPERS LLC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263035254",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263035254",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263035254:SKILLS ARTS FITNESS AND EMPOWERMENT LLC:prime-vendor:2025-10-17"
-      ],
-      "start_date": "2025-10-17",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "3 BIDS-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263035254",
-      "contract_amount": 25000,
-      "vendor_name": "SKILLS ARTS FITNESS AND EMPOWERMENT LLC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · SKILLS ARTS FITNESS AND EMPOWERMENT LLC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263035297",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263035297",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263035297:AWARENESS IN MOTION LLC:prime-vendor:2025-10-17"
-      ],
-      "start_date": "2025-10-17",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "NEGOTIATED SERVICES-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263035297",
-      "contract_amount": 25000,
-      "vendor_name": "AWARENESS IN MOTION LLC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · AWARENESS IN MOTION LLC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263035323",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263035323",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263035323:EXCELLENCE IN EVERY THREAD LLC:prime-vendor:2025-10-17"
-      ],
-      "start_date": "2025-10-17",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "MWBE-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263035323",
-      "contract_amount": 25000,
-      "vendor_name": "EXCELLENCE IN EVERY THREAD LLC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · EXCELLENCE IN EVERY THREAD LLC · $25,000",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -47556,38 +47253,6 @@
         "registered"
       ],
       "additional_description_1": "Department of Education · EMPIRE STRATEGIC EDUCATION CONSULTANTS LLC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263035607",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263035607",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263035607:SMASHCUT INC:prime-vendor:2025-10-17"
-      ],
-      "start_date": "2025-10-17",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "NEGOTIATED SERVICES-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263035607",
-      "contract_amount": 25000,
-      "vendor_name": "SMASHCUT INC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · SMASHCUT INC · $25,000",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -47716,102 +47381,6 @@
         "registered"
       ],
       "additional_description_1": "Department of Education · LEAH MCCONAUGHEY LLC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263035773",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263035773",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263035773:VISION 2 VISION ORGANIZING LLC:prime-vendor:2025-10-17"
-      ],
-      "start_date": "2025-10-17",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "MWBE-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263035773",
-      "contract_amount": 25000,
-      "vendor_name": "VISION 2 VISION ORGANIZING LLC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · VISION 2 VISION ORGANIZING LLC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263035810",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263035810",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263035810:FUSING MARKETING SOLUTIONS INC:prime-vendor:2025-10-17"
-      ],
-      "start_date": "2025-10-17",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "MWBE-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263035810",
-      "contract_amount": 25000,
-      "vendor_name": "FUSING MARKETING SOLUTIONS INC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · FUSING MARKETING SOLUTIONS INC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263035863",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263035863",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263035863:BROOKLYN UNITED MUSIC AND ARTS DEVELOPMENT INC:prime-vendor:2025-10-17"
-      ],
-      "start_date": "2025-10-17",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "3 BIDS-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263035863",
-      "contract_amount": 25000,
-      "vendor_name": "BROOKLYN UNITED MUSIC AND ARTS DEVELOPMENT INC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · BROOKLYN UNITED MUSIC AND ARTS DEVELOPMENT INC · $25,000",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -48036,38 +47605,6 @@
         "registered"
       ],
       "additional_description_1": "Department of Education · ALLEGHENY EDUCATIONAL SYSTEMS INC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263036218",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263036218",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263036218:SIMPLY ED:prime-vendor:2025-10-17"
-      ],
-      "start_date": "2025-10-17",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "3 BIDS-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263036218",
-      "contract_amount": 25000,
-      "vendor_name": "SIMPLY ED",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · SIMPLY ED · $25,000",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -80761,7 +80298,7 @@
       "end_date": "2026-06-30",
       "agency_id": null,
       "agency_name": "Department of Education",
-      "short_title": "FMS INTEGRATION",
+      "short_title": "NOT ABLE TO COMPLETE PROGRAM.",
       "pin": null,
       "contract_id": "CT104020263088990",
       "contract_amount": 25000,
@@ -110841,7 +110378,7 @@
       "end_date": "2026-06-30",
       "agency_id": null,
       "agency_name": "Department of Education",
-      "short_title": "COMPETITIVE GRANT-SERVICES",
+      "short_title": "DIDN'T USE ALL FUNDING.",
       "pin": null,
       "contract_id": "CT104020263146941",
       "contract_amount": 25000,
@@ -138318,6 +137855,38 @@
       "method_family": "ordinary_5_plus_10"
     },
     {
+      "procurement_id": "procurement:contract:CT104020273025645",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273025645",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273025645:SCHOOLS THAT CAN:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "3 BIDS-SERVICES",
+      "pin": null,
+      "contract_id": "CT104020273025645",
+      "contract_amount": 25000,
+      "vendor_name": "SCHOOLS THAT CAN",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · SCHOOLS THAT CAN · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
       "procurement_id": "procurement:contract:CT104020273025693",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273025693",
       "procurement_stages": [
@@ -138606,6 +138175,38 @@
       "method_family": "ordinary_5_plus_10"
     },
     {
+      "procurement_id": "procurement:contract:CT104020273026246",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273026246",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273026246:GOTHAM CITY MUSIC GROUP INC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "3 BIDS-SERVICES",
+      "pin": null,
+      "contract_id": "CT104020273026246",
+      "contract_amount": 25000,
+      "vendor_name": "GOTHAM CITY MUSIC GROUP INC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · GOTHAM CITY MUSIC GROUP INC · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
       "procurement_id": "procurement:contract:CT104020273026331",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273026331",
       "procurement_stages": [
@@ -138790,6 +138391,38 @@
         "registered"
       ],
       "additional_description_1": "Department of Education · RING OF HOPE CORPORATION · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273026666",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273026666",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273026666:UNITED STEPPERS LLC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "MWBE-SERVICES",
+      "pin": null,
+      "contract_id": "CT104020273026666",
+      "contract_amount": 25000,
+      "vendor_name": "UNITED STEPPERS LLC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · UNITED STEPPERS LLC · $25,000",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -139374,6 +139007,38 @@
       "method_family": "ordinary_5_plus_10"
     },
     {
+      "procurement_id": "procurement:contract:CT104020273027772",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273027772",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273027772:MOSAIC EDUCATION CONSULTING GROUP INC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "3 BIDS-SERVICES",
+      "pin": null,
+      "contract_id": "CT104020273027772",
+      "contract_amount": 25000,
+      "vendor_name": "MOSAIC EDUCATION CONSULTING GROUP INC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · MOSAIC EDUCATION CONSULTING GROUP INC · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
       "procurement_id": "procurement:contract:CT104020273027811",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273027811",
       "procurement_stages": [
@@ -139462,6 +139127,38 @@
         "registered"
       ],
       "additional_description_1": "Department of Education · FYREZONE ENTERTAINMENT INC · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273028063",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273028063",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273028063:AMPLIFY EDUCATION INC.:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "SOLE VENDOR-COMMODITIES",
+      "pin": null,
+      "contract_id": "CT104020273028063",
+      "contract_amount": 25000,
+      "vendor_name": "AMPLIFY EDUCATION INC.",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · AMPLIFY EDUCATION INC. · $25,000",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -139918,6 +139615,38 @@
       "method_family": "ordinary_5_plus_10"
     },
     {
+      "procurement_id": "procurement:contract:CT104020273029625",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273029625",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273029625:DRONE CADETS LLC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "MWBE-SERVICES",
+      "pin": null,
+      "contract_id": "CT104020273029625",
+      "contract_amount": 25000,
+      "vendor_name": "DRONE CADETS LLC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · DRONE CADETS LLC · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
       "procurement_id": "procurement:contract:CT104020273029642",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273029642",
       "procurement_stages": [
@@ -139982,6 +139711,38 @@
       "method_family": "ordinary_5_plus_10"
     },
     {
+      "procurement_id": "procurement:contract:CT104020273029674",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273029674",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273029674:TIKORO LLC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "MWBE-SERVICES",
+      "pin": null,
+      "contract_id": "CT104020273029674",
+      "contract_amount": 25000,
+      "vendor_name": "TIKORO LLC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · TIKORO LLC · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
       "procurement_id": "procurement:contract:CT104020273029727",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273029727",
       "procurement_stages": [
@@ -140006,6 +139767,38 @@
         "registered"
       ],
       "additional_description_1": "Department of Education · HANSON GRANT LLC · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273029745",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273029745",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273029745:ASHEENA BAEZ CONSULTING LLC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "MWBE-SERVICES",
+      "pin": null,
+      "contract_id": "CT104020273029745",
+      "contract_amount": 25000,
+      "vendor_name": "ASHEENA BAEZ CONSULTING LLC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · ASHEENA BAEZ CONSULTING LLC · $25,000",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -140078,6 +139871,38 @@
       "method_family": "ordinary_5_plus_10"
     },
     {
+      "procurement_id": "procurement:contract:CT104020273029940",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273029940",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273029940:ELEVATED YOUTH INC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "MWBE-SERVICES",
+      "pin": null,
+      "contract_id": "CT104020273029940",
+      "contract_amount": 25000,
+      "vendor_name": "ELEVATED YOUTH INC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · ELEVATED YOUTH INC · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
       "procurement_id": "procurement:contract:CT104020273029970",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273029970",
       "procurement_stages": [
@@ -140134,6 +139959,70 @@
         "registered"
       ],
       "additional_description_1": "Department of Education · O & M VENTURE CAPITAL CORPORATION · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273030070",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273030070",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273030070:LIBERATED TRANSITION SOLUTIONS LLC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "NEGOTIATED SERVICES-SERVICES",
+      "pin": null,
+      "contract_id": "CT104020273030070",
+      "contract_amount": 25000,
+      "vendor_name": "Liberated Transition Solutions LLC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · Liberated Transition Solutions LLC · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273030156",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273030156",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273030156:ENRICHEDNYC LLC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "MWBE-SERVICES",
+      "pin": null,
+      "contract_id": "CT104020273030156",
+      "contract_amount": 25000,
+      "vendor_name": "ENRICHEDNYC LLC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · ENRICHEDNYC LLC · $25,000",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -140230,6 +140119,38 @@
         "registered"
       ],
       "additional_description_1": "Department of Education · CLIFFORD A FRANCOEUR JR · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273030501",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273030501",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273030501:FUSING MARKETING SOLUTIONS INC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "3 BIDS-SERVICES-5765",
+      "pin": null,
+      "contract_id": "CT104020273030501",
+      "contract_amount": 25000,
+      "vendor_name": "FUSING MARKETING SOLUTIONS INC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · FUSING MARKETING SOLUTIONS INC · $25,000",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -140430,6 +140351,70 @@
       "method_family": "ordinary_5_plus_10"
     },
     {
+      "procurement_id": "procurement:contract:CT104020273031262",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273031262",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273031262:SEL-DM LLC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "MWBE-SERVICES",
+      "pin": null,
+      "contract_id": "CT104020273031262",
+      "contract_amount": 25000,
+      "vendor_name": "SEL-DM LLC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · SEL-DM LLC · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273031549",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273031549",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273031549:BAY RIDGE WINDOW SHADE CORP AMERICAN WINDOW FASHIONS:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "3 BIDS-SERVICES",
+      "pin": null,
+      "contract_id": "CT104020273031549",
+      "contract_amount": 25000,
+      "vendor_name": "BAY RIDGE WINDOW SHADE CORP AMERICAN WINDOW FASHIONS",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · BAY RIDGE WINDOW SHADE CORP AMERICAN WINDOW FASHIONS · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
       "procurement_id": "procurement:contract:CT104020273031689",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273031689",
       "procurement_stages": [
@@ -140454,6 +140439,230 @@
         "registered"
       ],
       "additional_description_1": "Department of Education · Avant Assessment, LLC · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273031701",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273031701",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273031701:NEW MUSEUM OF CONTEMPORARY ART (THE):prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "NEGOTIATED SERVICES-SERVICES",
+      "pin": null,
+      "contract_id": "CT104020273031701",
+      "contract_amount": 25000,
+      "vendor_name": "NEW MUSEUM OF CONTEMPORARY ART (THE)",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · NEW MUSEUM OF CONTEMPORARY ART (THE) · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273032035",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273032035",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273032035:AWARENESS IN MOTION LLC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "NEGOTIATED SERVICES-SERVICES",
+      "pin": null,
+      "contract_id": "CT104020273032035",
+      "contract_amount": 25000,
+      "vendor_name": "AWARENESS IN MOTION LLC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · AWARENESS IN MOTION LLC · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273032039",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273032039",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273032039:AWARENESS IN MOTION LLC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "NEGOTIATED SERVICES-SERVICES",
+      "pin": null,
+      "contract_id": "CT104020273032039",
+      "contract_amount": 25000,
+      "vendor_name": "AWARENESS IN MOTION LLC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · AWARENESS IN MOTION LLC · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273032042",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273032042",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273032042:AWARENESS IN MOTION LLC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "NEGOTIATED SERVICES-SERVICES",
+      "pin": null,
+      "contract_id": "CT104020273032042",
+      "contract_amount": 25000,
+      "vendor_name": "AWARENESS IN MOTION LLC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · AWARENESS IN MOTION LLC · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273032211",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273032211",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273032211:MARYPIVEN INC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "MWBE-SERVICES",
+      "pin": null,
+      "contract_id": "CT104020273032211",
+      "contract_amount": 25000,
+      "vendor_name": "MARYPIVEN INC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · MARYPIVEN INC · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273032292",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273032292",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273032292:DV7 US ACADEMY HOLDINGS LLC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "NEGOTIATED SERVICES-SERVICES",
+      "pin": null,
+      "contract_id": "CT104020273032292",
+      "contract_amount": 25000,
+      "vendor_name": "DV7 US Academy Holdings LLC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · DV7 US Academy Holdings LLC · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273032466",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273032466",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273032466:PARTY PERFECT RENTALS LLC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "3 BIDS-SERVICES-60373 & 74",
+      "pin": null,
+      "contract_id": "CT104020273032466",
+      "contract_amount": 25000,
+      "vendor_name": "PARTY PERFECT RENTALS LLC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · PARTY PERFECT RENTALS LLC · $25,000",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -167330,7 +167539,7 @@
       "end_date": "2028-06-30",
       "agency_id": null,
       "agency_name": "Department of Education",
-      "short_title": "UPK - BIRTH TO FIVE",
+      "short_title": "UPK-BTF",
       "pin": null,
       "contract_id": "CT104020279760231",
       "contract_amount": 4578540,
@@ -167361,7 +167570,7 @@
       "end_date": "2028-06-30",
       "agency_id": null,
       "agency_name": "Department of Education",
-      "short_title": "UPK - BIRTH TO FIVE",
+      "short_title": "UPK-BTF",
       "pin": null,
       "contract_id": "CT104020279760232",
       "contract_amount": 3156510,
@@ -167844,6 +168053,37 @@
       ]
     },
     {
+      "procurement_id": "procurement:contract:CT104020279760335",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279760335",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020279760335:NYC EARLY LEARNING COMPANY INC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2028-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "UPK-BTF",
+      "pin": null,
+      "contract_id": "CT104020279760335",
+      "contract_amount": 2059920,
+      "vendor_name": "NYC EARLY LEARNING COMPANY INC",
+      "official_url": null,
+      "selection_method_description": "RENEWAL OF CONTRACT",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · NYC EARLY LEARNING COMPANY INC · $2,059,920",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CT104020279760336",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279760336",
       "procurement_stages": [
@@ -168178,6 +168418,37 @@
         "registered"
       ],
       "additional_description_1": "Department of Education · ABC PRESCHOOL & KINDERGARTEN CENTER CORP. · $3,717,372",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279760428",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279760428",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020279760428:THE KINGSBRIDGE HEIGHTS COMMUNITY CENTER INC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "UPK-CTL",
+      "pin": null,
+      "contract_id": "CT104020279760428",
+      "contract_amount": 922205,
+      "vendor_name": "THE KINGSBRIDGE HEIGHTS COMMUNITY CENTER INC",
+      "official_url": null,
+      "selection_method_description": "RENEWAL OF CONTRACT",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · THE KINGSBRIDGE HEIGHTS COMMUNITY CENTER INC · $922,205",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -168588,6 +168859,37 @@
       ]
     },
     {
+      "procurement_id": "procurement:contract:CT104020279760517",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279760517",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020279760517:BEDFORD STUYVESANT EARLY CHILDHOOD DEV CTR INC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2028-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "UPK-BTF",
+      "pin": null,
+      "contract_id": "CT104020279760517",
+      "contract_amount": 2068788,
+      "vendor_name": "BEDFORD STUYVESANT EARLY CHILDHOOD DEV CTR INC",
+      "official_url": null,
+      "selection_method_description": "RENEWAL OF CONTRACT",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · BEDFORD STUYVESANT EARLY CHILDHOOD DEV CTR INC · $2,068,788",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CT104020279760530",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279760530",
       "procurement_stages": [
@@ -168643,6 +168945,37 @@
         "registered"
       ],
       "additional_description_1": "Department of Education · BAYIS ESTER · $4,441,200",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279760532",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279760532",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020279760532:RENANIM MANHATTAN INC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2028-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "Covid Impacted Neighborhoods - 3K Services",
+      "pin": null,
+      "contract_id": "CT104020279760532",
+      "contract_amount": 1213626,
+      "vendor_name": "RENANIM MANHATTAN INC",
+      "official_url": null,
+      "selection_method_description": "RENEWAL OF CONTRACT",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · RENANIM MANHATTAN INC · $1,213,626",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -169345,7 +169678,7 @@
       "end_date": "2028-06-30",
       "agency_id": null,
       "agency_name": "Department of Education",
-      "short_title": "UPK- BTF",
+      "short_title": "UPK-BTF",
       "pin": null,
       "contract_id": "CT104020279760731",
       "contract_amount": 1053360,
@@ -169356,6 +169689,37 @@
         "registered"
       ],
       "additional_description_1": "Department of Education · THE SALVATION ARMY · $1,053,360",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279760732",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279760732",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020279760732:ST PETER CATHOLIC ACADEMY:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2028-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "UPK-BTF",
+      "pin": null,
+      "contract_id": "CT104020279760732",
+      "contract_amount": 3182752,
+      "vendor_name": "ST PETER CATHOLIC ACADEMY",
+      "official_url": null,
+      "selection_method_description": "RENEWAL OF CONTRACT",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · ST PETER CATHOLIC ACADEMY · $3,182,752",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -169642,6 +170006,68 @@
       ]
     },
     {
+      "procurement_id": "procurement:contract:CT104020279760819",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279760819",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020279760819:TOLENTINE ZEISER COMMUNITY LIFE CENTER INC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2028-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "UPK-BTF",
+      "pin": null,
+      "contract_id": "CT104020279760819",
+      "contract_amount": 2361498,
+      "vendor_name": "TOLENTINE ZEISER COMMUNITY LIFE CENTER INC",
+      "official_url": null,
+      "selection_method_description": "RENEWAL OF CONTRACT",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · TOLENTINE ZEISER COMMUNITY LIFE CENTER INC · $2,361,498",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279760830",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279760830",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020279760830:KIDSLANDNY INC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2028-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "UPK-BTF",
+      "pin": "04022P0673150",
+      "contract_id": "CT104020279760830",
+      "contract_amount": 652092,
+      "vendor_name": "KIDSLANDNY INC",
+      "official_url": null,
+      "selection_method_description": "RENEWAL OF CONTRACT",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · KIDSLANDNY INC · $652,092",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CT104020279760905",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279760905",
       "procurement_stages": [
@@ -169673,6 +170099,37 @@
       ]
     },
     {
+      "procurement_id": "procurement:contract:CT104020279760921",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279760921",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020279760921:NORTHSIDE CENTER FOR CHILD DEVELOPMENT INC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "UPK-CTL",
+      "pin": null,
+      "contract_id": "CT104020279760921",
+      "contract_amount": 592476,
+      "vendor_name": "NORTHSIDE CENTER FOR CHILD DEVELOPMENT INC",
+      "official_url": null,
+      "selection_method_description": "RENEWAL OF CONTRACT",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · NORTHSIDE CENTER FOR CHILD DEVELOPMENT INC · $592,476",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CT104020279760922",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279760922",
       "procurement_stages": [
@@ -169697,6 +170154,130 @@
         "registered"
       ],
       "additional_description_1": "Department of Education · ASTORIA EARLY CHILDHOOD DEVELOPMENT CORPORATION · $1,532,964",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279761040",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279761040",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020279761040:LIL ROCKERZ DAYCARE LLC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2028-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "UPK-CIN",
+      "pin": null,
+      "contract_id": "CT104020279761040",
+      "contract_amount": 1027374,
+      "vendor_name": "LIL ROCKERZ DAYCARE LLC",
+      "official_url": null,
+      "selection_method_description": "RENEWAL OF CONTRACT",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · LIL ROCKERZ DAYCARE LLC · $1,027,374",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279761055",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279761055",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020279761055:YESHIVA KARLIN STOLIN:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2028-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "UPK-BTF",
+      "pin": null,
+      "contract_id": "CT104020279761055",
+      "contract_amount": 1884372,
+      "vendor_name": "YESHIVA KARLIN STOLIN",
+      "official_url": null,
+      "selection_method_description": "RENEWAL OF CONTRACT",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · YESHIVA KARLIN STOLIN · $1,884,372",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279761070",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279761070",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020279761070:RIVERDALE TEMPLE:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2028-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "UPK-BTF",
+      "pin": null,
+      "contract_id": "CT104020279761070",
+      "contract_amount": 3342296,
+      "vendor_name": "RIVERDALE TEMPLE",
+      "official_url": null,
+      "selection_method_description": "RENEWAL OF CONTRACT",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · RIVERDALE TEMPLE · $3,342,296",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279761071",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279761071",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020279761071:LEARNING WHEEL CHILDCARE CORP:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2028-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "UPK-BTF",
+      "pin": null,
+      "contract_id": "CT104020279761071",
+      "contract_amount": 1206460,
+      "vendor_name": "LEARNING WHEEL CHILDCARE CORP",
+      "official_url": null,
+      "selection_method_description": "RENEWAL OF CONTRACT",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · LEARNING WHEEL CHILDCARE CORP · $1,206,460",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -188378,6 +188959,37 @@
       ]
     },
     {
+      "procurement_id": "procurement:contract:CT105620271404261",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT105620271404261",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT105620271404261:EMERALD CREEK FARM LLC:prime-vendor:2026-10-07"
+      ],
+      "start_date": "2026-10-18",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Police Department",
+      "short_title": "GELDING HORSE FOR NYPD-MOUNTED UNIT-QMS#0747",
+      "pin": null,
+      "contract_id": "CT105620271404261",
+      "contract_amount": 30000,
+      "vendor_name": "Emerald Creek Farm LLC",
+      "official_url": null,
+      "selection_method_description": "SM PURCH GOODS SERVICES 100K",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Police Department · Emerald Creek Farm LLC · $30,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CT105620271404411",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT105620271404411",
       "procurement_stages": [
@@ -188402,6 +189014,70 @@
         "registered"
       ],
       "additional_description_1": "Police Department · CEN-MED ENTERPRISES INC · $14,578.5",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
+      "procurement_id": "procurement:contract:CT105620271404771",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT105620271404771",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT105620271404771:READY DATA INC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-08-12",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Police Department",
+      "short_title": "Balco Receivers Phase A - Eight locations",
+      "pin": null,
+      "contract_id": "CT105620271404771",
+      "contract_amount": 21449.25,
+      "vendor_name": "READY DATA INC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Police Department · READY DATA INC · $21,449.25",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
+      "procurement_id": "procurement:contract:CT105620271405581",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT105620271405581",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT105620271405581:T R JOY & ASSOCIATES INC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-10-14",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Police Department",
+      "short_title": "HIRSCH ACCESS CONTROL SYSTEM, QMS 0937",
+      "pin": null,
+      "contract_id": "CT105620271405581",
+      "contract_amount": 16895,
+      "vendor_name": "T R JOY & ASSOCIATES INC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Police Department · T R JOY & ASSOCIATES INC · $16,895",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -188748,8 +189424,8 @@
       "source_observation_refs": [
         "checkbook_contracts:contract:registered:CT105620278803358:SAVANT FINANCIAL TECHNOLOGIES INC:prime-vendor:2026-10-13"
       ],
-      "start_date": "2026-10-15",
-      "end_date": "2027-10-15",
+      "start_date": "2026-10-13",
+      "end_date": "2027-10-12",
       "agency_id": null,
       "agency_name": "Police Department",
       "short_title": "Cellebrite Software Upgrade",
@@ -301547,6 +302223,38 @@
       "source_systems": [
         "checkbook_contracts"
       ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT106920278802915",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT106920278802915",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT106920278802915:ABRAHAMS CONSULTING LLC:prime-vendor:2026-10-15"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Social Services",
+      "short_title": "Support SAN Switches for 1 year",
+      "pin": "06927W0007001",
+      "contract_id": "CT106920278802915",
+      "contract_amount": 67493.64,
+      "vendor_name": "ABRAHAMS CONSULTING LLC",
+      "official_url": null,
+      "selection_method_description": "M/WBE SMALL PURCHASE",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Social Services · ABRAHAMS CONSULTING LLC · $67,493.64",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
     },
     {
       "procurement_id": "procurement:contract:CT106920278803050",
@@ -477779,7 +478487,6 @@
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT180620268805545:STATEWIDE DEMOLITION CORP:prime-vendor:2026-04-09",
         "city_record:20260410012",
         "passport_public_contracts:contract:80626E0026001:5610669"
       ],
@@ -477814,8 +478521,7 @@
       "source_system": "shared_procurement_read_model",
       "source_systems": [
         "city_record",
-        "passport_public_contracts",
-        "checkbook_contracts"
+        "passport_public_contracts"
       ]
     },
     {
@@ -481830,7 +482536,6 @@
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT181020268803909:AWE-HUH CREATIVE SERVICES LLC:prime-vendor:2025-11-26",
         "city_record:20251126036",
         "passport_public_contracts:contract:81026W0003001:5533984"
       ],
@@ -481865,8 +482570,7 @@
       "source_system": "shared_procurement_read_model",
       "source_systems": [
         "city_record",
-        "passport_public_contracts",
-        "checkbook_contracts"
+        "passport_public_contracts"
       ],
       "method_family": "mwbe_small_purchase"
     },
@@ -516150,749 +516854,6 @@
           "contact_name": null,
           "start_date": "2025-01-06",
           "href": "/notices/20241231007"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258804008",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258804008",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20241122014",
-        "passport_public_contracts:contract:81625W0018001:5269121"
-      ],
-      "request_id": "20241122014",
-      "start_date": "2024-11-11",
-      "end_date": "2025-11-10",
-      "agency_id": null,
-      "agency_name": "Chief Medical Examiner",
-      "short_title": "DELIVERY OF VWR PRODUCTS ON AN AS NEEDED BASIS",
-      "pin": "81625W0018001",
-      "contract_id": "CT181620258804008",
-      "contract_amount": 100000,
-      "vendor_name": "Nifty Concepts, Inc.",
-      "official_url": null,
-      "selection_method_description": "MWBE Non Competitive Small Purchase",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Chief Medical Examiner · Nifty Concepts, Inc. · $100,000",
-      "notice_evidence": [
-        {
-          "request_id": "20241122014",
-          "type_of_notice_description": "Award",
-          "short_title": "DELIVERY OF VWR PRODUCTS ON AN AS NEEDED BASIS",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-11-29",
-          "href": "/notices/20241122014"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ],
-      "method_family": "mwbe_small_purchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258804037",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258804037",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20241122013",
-        "passport_public_contracts:contract:81625W0019001:5269124"
-      ],
-      "request_id": "20241122013",
-      "start_date": "2024-11-01",
-      "end_date": "2026-10-31",
-      "agency_id": null,
-      "agency_name": "Chief Medical Examiner",
-      "short_title": "BOP FOR ULINE CATALOG/WEBSITE ITEMS AS NEEDED",
-      "pin": "81625W0019001",
-      "contract_id": "CT181620258804037",
-      "contract_amount": 100000,
-      "vendor_name": "Itegix LLC",
-      "official_url": null,
-      "selection_method_description": "MWBE Non Competitive Small Purchase",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Chief Medical Examiner · Itegix LLC · $100,000",
-      "notice_evidence": [
-        {
-          "request_id": "20241122013",
-          "type_of_notice_description": "Award",
-          "short_title": "BOP FOR ULINE CATALOG/WEBSITE ITEMS AS NEEDED",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-11-29",
-          "href": "/notices/20241122013"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ],
-      "method_family": "mwbe_small_purchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258804063",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258804063",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20241126007",
-        "passport_public_contracts:contract:81624B0006001:5281016"
-      ],
-      "request_id": "20241126007",
-      "start_date": "2025-01-01",
-      "end_date": "2027-12-31",
-      "agency_id": null,
-      "agency_name": "Chief Medical Examiner",
-      "short_title": "UCT LLC brand extraction columns for use in the OCME labs forensic analysis",
-      "pin": "81624B0006001",
-      "contract_id": "CT181620258804063",
-      "contract_amount": 600000,
-      "vendor_name": "UCT LLC",
-      "official_url": null,
-      "selection_method_description": "Competitive Sealed Bid",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Chief Medical Examiner · UCT LLC · $600,000",
-      "notice_evidence": [
-        {
-          "request_id": "20241126007",
-          "type_of_notice_description": "Award",
-          "short_title": "UCT LLC brand extraction columns for use in the OCME labs forensic analysis",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-12-03",
-          "href": "/notices/20241126007"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258804065",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258804065",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20250203011",
-        "passport_public_contracts:contract:81625P0002001:4657228"
-      ],
-      "request_id": "20250203011",
-      "start_date": "2025-03-01",
-      "end_date": "2040-02-29",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "NY 15/15 Congregate Supportive Housing",
-      "pin": "81625P0002001",
-      "contract_id": "CT181620258804065",
-      "contract_amount": 57238950,
-      "vendor_name": "Riseboro Community Partnership Inc.",
-      "official_url": null,
-      "selection_method_description": "Competitive Sealed Proposal",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Riseboro Community Partnership Inc. · $57,238,950",
-      "notice_evidence": [
-        {
-          "request_id": "20250203011",
-          "type_of_notice_description": "Award",
-          "short_title": "NY 15/15 Congregate Supportive Housing",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2025-02-07",
-          "href": "/notices/20250203011"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258804167",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258804167",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20241204010",
-        "passport_public_contracts:contract:81621S0011002:4555114"
-      ],
-      "request_id": "20241204010",
-      "start_date": "2024-11-01",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Chief Medical Examiner",
-      "short_title": "(15) Database Likelihood Ratios (DBLR) Licenses",
-      "pin": "81621S0011002",
-      "contract_id": "CT181620258804167",
-      "contract_amount": 99828,
-      "vendor_name": "NicheVision Forensics LLC",
-      "official_url": null,
-      "selection_method_description": "Sole Source",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Chief Medical Examiner · NicheVision Forensics LLC · $99,828",
-      "notice_evidence": [
-        {
-          "request_id": "20241204010",
-          "type_of_notice_description": "Award",
-          "short_title": "(15) Database Likelihood Ratios (DBLR) Licenses",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-12-10",
-          "href": "/notices/20241204010"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258804206",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258804206",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20241213013",
-        "passport_public_contracts:contract:81625W0013001:5235225"
-      ],
-      "request_id": "20241213013",
-      "start_date": "2025-01-01",
-      "end_date": "2030-12-31",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Sprinkler and Standpipe Maintenance, Repair, Inspection and Testing Services",
-      "pin": "81625W0013001",
-      "contract_id": "CT181620258804206",
-      "contract_amount": 1500000,
-      "vendor_name": "Taylor Group Plumbing Heating & Mechanical Inc",
-      "official_url": null,
-      "selection_method_description": "MWBE Non Competitive Small Purchase",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Taylor Group Plumbing Heating & Mechanical Inc · $1,500,000",
-      "notice_evidence": [
-        {
-          "request_id": "20241213013",
-          "type_of_notice_description": "Award",
-          "short_title": "Sprinkler and Standpipe Maintenance, Repair, Inspection and Testing Services",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-12-19",
-          "href": "/notices/20241213013"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ],
-      "method_family": "mwbe_small_purchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258804234",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258804234",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20241115045",
-        "passport_public_contracts:contract:81625W0012001:5234789"
-      ],
-      "request_id": "20241115045",
-      "start_date": "2024-11-15",
-      "end_date": "2026-11-14",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Fire Alarm System Central Station Monitoring Inspection, Mai",
-      "pin": "81625W0012001",
-      "contract_id": "CT181620258804234",
-      "contract_amount": 1500000,
-      "vendor_name": "Murtaza & Khokhar Consulting Inc",
-      "official_url": null,
-      "selection_method_description": "MWBE Non Competitive Small Purchase",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Murtaza & Khokhar Consulting Inc · $1,500,000",
-      "notice_evidence": [
-        {
-          "request_id": "20241115045",
-          "type_of_notice_description": "Award",
-          "short_title": "Fire Alarm System Central Station Monitoring Inspection, Mai",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-11-22",
-          "href": "/notices/20241115045"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ],
-      "method_family": "mwbe_small_purchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258804311",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258804311",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20250124003",
-        "passport_public_contracts:contract:81625O0003001:5263515"
-      ],
-      "request_id": "20250124003",
-      "start_date": "2024-07-01",
-      "end_date": "2029-06-30",
-      "agency_id": null,
-      "agency_name": "Chief Medical Examiner",
-      "short_title": "Life Tech Preventive Maintenance and Repair Services On 7500 PCR and Genetic Analyzers",
-      "pin": "81625O0003001",
-      "contract_id": "CT181620258804311",
-      "contract_amount": 943662.6,
-      "vendor_name": "Life Technologies Corporation",
-      "official_url": null,
-      "selection_method_description": "Intergovernmental OGS",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Chief Medical Examiner · Life Technologies Corporation · $943,662.6",
-      "notice_evidence": [
-        {
-          "request_id": "20250124003",
-          "type_of_notice_description": "Award",
-          "short_title": "Life Tech Preventive Maintenance and Repair Services On 7500 PCR and Genetic Analyzers",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2025-01-30",
-          "href": "/notices/20250124003"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258804369",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258804369",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20250328028",
-        "passport_public_contracts:contract:81623P0019001:5230454"
-      ],
-      "request_id": "20250328028",
-      "start_date": "2025-03-01",
-      "end_date": "2031-02-28",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "ON-CALL DIAGNOSTIC TESTING SERVICES",
-      "pin": "81623P0019001",
-      "contract_id": "CT181620258804369",
-      "contract_amount": 10000000,
-      "vendor_name": "Patriot Medical Laboratories LLC",
-      "official_url": null,
-      "selection_method_description": "Competitive Sealed Proposal",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Patriot Medical Laboratories LLC · $10,000,000",
-      "notice_evidence": [
-        {
-          "request_id": "20250328028",
-          "type_of_notice_description": "Award",
-          "short_title": "ON-CALL DIAGNOSTIC TESTING SERVICES",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2025-04-04",
-          "href": "/notices/20250328028"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258804427",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258804427",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20241125011",
-        "passport_public_contracts:contract:81625W0009001:5227920"
-      ],
-      "request_id": "20241125011",
-      "start_date": "2024-11-01",
-      "end_date": "2027-10-31",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Archibus Software Licenses and Maintenance",
-      "pin": "81625W0009001",
-      "contract_id": "CT181620258804427",
-      "contract_amount": 1500000,
-      "vendor_name": "Robotech Cad Solutions Inc.",
-      "official_url": null,
-      "selection_method_description": "MWBE Non Competitive Small Purchase",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Robotech Cad Solutions Inc. · $1,500,000",
-      "notice_evidence": [
-        {
-          "request_id": "20241125011",
-          "type_of_notice_description": "Award",
-          "short_title": "Archibus Software Licenses and Maintenance",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-12-02",
-          "href": "/notices/20241125011"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ],
-      "method_family": "mwbe_small_purchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258804443",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258804443",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20250203010",
-        "passport_public_contracts:contract:81625U0015001:5302218"
-      ],
-      "request_id": "20250203010",
-      "start_date": "2024-11-15",
-      "end_date": "2025-12-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Education and Training Consulting Subscription",
-      "pin": "81625U0015001",
-      "contract_id": "CT181620258804443",
-      "contract_amount": 28000,
-      "vendor_name": "RELATIONSHIP & PSYCHOLOGY CONSULTING LLC",
-      "official_url": null,
-      "selection_method_description": "Subscription",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · RELATIONSHIP & PSYCHOLOGY CONSULTING LLC · $28,000",
-      "notice_evidence": [
-        {
-          "request_id": "20250203010",
-          "type_of_notice_description": "Award",
-          "short_title": "Education and Training Consulting Subscription",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2025-02-07",
-          "href": "/notices/20250203010"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258804502",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258804502",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20241219006",
-        "passport_public_contracts:contract:81624P0005001:5184564"
-      ],
-      "request_id": "20241219006",
-      "start_date": "2024-10-01",
-      "end_date": "2033-12-31",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "HOPWA Families - Supportive Housing",
-      "pin": "81624P0005001",
-      "contract_id": "CT181620258804502",
-      "contract_amount": 8577990,
-      "vendor_name": "Aids Center of Queens County Inc.",
-      "official_url": null,
-      "selection_method_description": "Competitive Sealed Proposal",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Aids Center of Queens County Inc. · $8,577,990",
-      "notice_evidence": [
-        {
-          "request_id": "20241219006",
-          "type_of_notice_description": "Award",
-          "short_title": "HOPWA Families - Supportive Housing",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-12-26",
-          "href": "/notices/20241219006"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258804527",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258804527",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20241205034",
-        "passport_public_contracts:contract:81625W0028001:5304980"
-      ],
-      "request_id": "20241205034",
-      "start_date": "2024-12-01",
-      "end_date": "2025-12-31",
-      "agency_id": null,
-      "agency_name": "Chief Medical Examiner",
-      "short_title": "BOP for Cerilliant Corp Items as needed - 25R0373",
-      "pin": "81625W0028001",
-      "contract_id": "CT181620258804527",
-      "contract_amount": 100000,
-      "vendor_name": "Neta Scientific, Inc",
-      "official_url": null,
-      "selection_method_description": "MWBE Non Competitive Small Purchase",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Chief Medical Examiner · Neta Scientific, Inc · $100,000",
-      "notice_evidence": [
-        {
-          "request_id": "20241205034",
-          "type_of_notice_description": "Award",
-          "short_title": "BOP for Cerilliant Corp Items as needed - 25R0373",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-12-12",
-          "href": "/notices/20241205034"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ],
-      "method_family": "mwbe_small_purchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258804543",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258804543",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20241220008",
-        "passport_public_contracts:contract:81625M0004001:5269129"
-      ],
-      "request_id": "20241220008",
-      "start_date": "2025-01-01",
-      "end_date": "2025-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "BVS Scanning project",
-      "pin": "81625M0004001",
-      "contract_id": "CT181620258804543",
-      "contract_amount": 75000,
-      "vendor_name": "New York State Industries For The Disabled Inc.",
-      "official_url": null,
-      "selection_method_description": "Required Method",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · New York State Industries For The Disabled Inc. · $75,000",
-      "notice_evidence": [
-        {
-          "request_id": "20241220008",
-          "type_of_notice_description": "Award",
-          "short_title": "BVS Scanning project",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-12-27",
-          "href": "/notices/20241220008"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258804558",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258804558",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20250127013",
-        "passport_public_contracts:contract:81625W0027001:5303779"
-      ],
-      "request_id": "20250127013",
-      "start_date": "2024-07-01",
-      "end_date": "2025-06-30",
-      "agency_id": null,
-      "agency_name": "Chief Medical Examiner",
-      "short_title": "NETAPP MAINTENANCE RENEWAL SERVICES",
-      "pin": "81625W0027001",
-      "contract_id": "CT181620258804558",
-      "contract_amount": 72454,
-      "vendor_name": "Storage Horse LLC",
-      "official_url": null,
-      "selection_method_description": "MWBE Non Competitive Small Purchase",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Chief Medical Examiner · Storage Horse LLC · $72,454",
-      "notice_evidence": [
-        {
-          "request_id": "20250127013",
-          "type_of_notice_description": "Award",
-          "short_title": "NETAPP MAINTENANCE RENEWAL SERVICES",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2025-01-31",
-          "href": "/notices/20250127013"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ],
-      "method_family": "mwbe_small_purchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258804646",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258804646",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20250411006",
-        "passport_public_contracts:contract:81622S0007001:4611630"
-      ],
-      "request_id": "20250411006",
-      "start_date": "2025-02-01",
-      "end_date": "2028-01-31",
-      "agency_id": null,
-      "agency_name": "Chief Medical Examiner",
-      "short_title": "ANNUAL MAINTENANCE AND REPAIR TECAN INSTRUMENTS",
-      "pin": "81622S0007001",
-      "contract_id": "CT181620258804646",
-      "contract_amount": 186222.9,
-      "vendor_name": "TECAN US INC",
-      "official_url": null,
-      "selection_method_description": "Sole Source",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Chief Medical Examiner · TECAN US INC · $186,222.9",
-      "notice_evidence": [
-        {
-          "request_id": "20250411006",
-          "type_of_notice_description": "Award",
-          "short_title": "ANNUAL MAINTENANCE AND REPAIR TECAN INSTRUMENTS",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2025-04-17",
-          "href": "/notices/20250411006"
         }
       ],
       "source_system": "shared_procurement_read_model",

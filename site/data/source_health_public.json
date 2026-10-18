@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.public_source_health.v1",
-  "generated_at": "2026-10-17T01:53:34.458Z",
+  "generated_at": "2026-10-18T12:10:06.354Z",
   "available": true,
   "source_count": 64,
   "sources": [
@@ -476,12 +476,12 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": "2026-10-17T01:23:06.178Z",
+            "at": "2026-10-18T11:49:00.894Z",
             "state": "KNOWN",
             "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": "2026-10-17T01:23:06.178Z",
+            "at": "2026-10-18T11:49:00.894Z",
             "state": "KNOWN",
             "basis": "cityscroll_materialization"
           }
@@ -498,7 +498,7 @@
           "max_date": null
         },
         "publisher_vintage": null,
-        "retrieved_at": "2026-10-17T01:23:06.178Z",
+        "retrieved_at": "2026-10-18T11:49:00.894Z",
         "expected_lag_tolerance_days": 45,
         "current_lag": {
           "value": null,
@@ -583,7 +583,7 @@
             "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": "2026-10-17T01:12:43.996Z",
+            "at": "2026-10-18T11:39:43.900Z",
             "state": "KNOWN",
             "basis": "cityscroll_materialization"
           }
@@ -3227,7 +3227,7 @@
             "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": "2026-10-17T01:53:31.113Z",
+            "at": "2026-10-18T12:10:06.354Z",
             "state": "KNOWN",
             "basis": "cityscroll_materialization"
           }
