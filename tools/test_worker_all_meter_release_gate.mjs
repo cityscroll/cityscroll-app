@@ -9,8 +9,14 @@ import { fileURLToPath } from "node:url";
 import {
   COST_METERS,
   REQUIRED_COST_COHORTS,
+  WAREHOUSE_EXPERIMENT_COHORTS,
+  WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
   buildWorkerCostProfile,
+  coldStartFlagRawCohort,
   evaluateAllMeterRelease,
+  evaluateWarehouseExperiment,
+  parseColdStartFlagRaw,
+  isAllowedRetainedCostKey,
   providerDeploymentReceiptSha256,
   workerCostEnforcementMode,
 } from "./lib/worker_cost_control.mjs";
@@ -262,4 +268,217 @@ test("release CLI gates the exact candidate revision from configured evidence", 
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
+});
+
+test("fresh baseline data must be actual production evidence, ordered before the candidate, and workload-matched", () => {
+  // Named A3 fresh-baseline fixture: baseline is actual, precedes candidate, and matches workload.
+  const ok = pair({ native_cpu_ms: 7 });
+  assert.equal(ok.baseline.evidence_mode, "actual-production");
+  assert.equal(ok.candidate.evidence_mode, "actual-production");
+  assert.ok(Date.parse(ok.candidate.observed_at) > Date.parse(ok.baseline.observed_at));
+  assert.equal(evaluateAllMeterRelease(ok).pass, true);
+
+  const fixtureBaseline = pair();
+  fixtureBaseline.baseline.evidence_mode = "fixture";
+  assert.throws(() => evaluateAllMeterRelease(fixtureBaseline), /actual production/);
+
+  const unordered = pair();
+  unordered.candidate.observed_at = unordered.baseline.observed_at;
+  assert.throws(() => evaluateAllMeterRelease(unordered), /follow baseline/);
+
+  const mismatched = pair();
+  mismatched.candidate.workload_id = "different-workload";
+  assert.throws(() => evaluateAllMeterRelease(mismatched), /workloads are not equivalent/);
+});
+
+test("account identifiers and bill values are forbidden in public all-meter gate receipts", () => {
+  for (const [key, value] of [
+    ["account_id", "8162581cb1d97e20a172031adb8a13af"],
+    ["cloudflare_account_id", "acct-private"],
+    ["bill_usd", 17.9],
+    ["invoice_amount", 17.9],
+    ["monthly_bill", { usd: 17.9 }],
+  ]) {
+    const evidence = pair();
+    evidence.candidate[key] = value;
+    assert.throws(() => evaluateAllMeterRelease(evidence), /forbidden/, key);
+  }
+});
+
+test("resident data and private session cache fields stay outside all-meter gate receipts", () => {
+  for (const [key, value] of [
+    ["session_cache", { visitor: "resident-private" }],
+    ["private_session_cache", { cookie: "x" }],
+    ["session_id", "sess-private"],
+    ["resident_id", "resident-private"],
+    ["resident_data", { neighborhood: "private" }],
+    ["resident_email", "resident@example.invalid"],
+  ]) {
+    const evidence = pair();
+    evidence.candidate[key] = value;
+    assert.throws(() => evaluateAllMeterRelease(evidence), /forbidden/, key);
+  }
+});
+
+test("fixture-mode receipts never count as production ticks for the all-meter gate", () => {
+  // Controlled fixtures prove gate behavior; they must not authenticate as production evidence.
+  assert.equal(workerCostEnforcementMode(undefined).mode, "inactive");
+  assert.equal(workerCostEnforcementMode("").mode, "inactive");
+  assert.notEqual(workerCostEnforcementMode("enabled").mode, "inactive");
+
+  const fixtureCandidate = pair();
+  fixtureCandidate.candidate.evidence_mode = "fixture";
+  assert.throws(() => evaluateAllMeterRelease(fixtureCandidate), /actual production/);
+});
+
+function warehouseRun(overrides = {}) {
+  const result = {
+    schema: "cityscroll.warehouse_cost_experiment_run.v1",
+    evidence_mode: "actual-production",
+    deployed_revision: "a".repeat(40),
+    observed_at: "2026-10-08T23:00:00Z",
+    workload_id: "fixed-zap-bbl-zap-project-doing-business-v1",
+    workload_count: WAREHOUSE_EXPERIMENT_COHORTS.length * WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+    correctness: {
+      input_digest: "inputs",
+      joins_digest: "joins",
+      provenance_digest: "provenance",
+      miss_digest: "miss",
+      freshness_digest: "freshness",
+    },
+    meters: Object.fromEntries(COST_METERS.map((meter) => [meter, 100])),
+    error_count: 0,
+    ...overrides,
+  };
+  if (!result.provider_deployment) {
+    const receipt = {
+      schema: "cityscroll.cloudflare_deployment_binding.v1",
+      evidence_mode: "actual-production",
+      observed_at: "2026-10-08T22:59:00.000Z",
+      production_health: { source: "cityscroll-production-health", revision: result.deployed_revision },
+      cloudflare_version: {
+        source: "cloudflare-versions-api",
+        id: `provider-${result.deployed_revision.slice(0, 12)}`,
+      },
+    };
+    result.provider_deployment = {
+      source: "cloudflare-deployment-receipt+health",
+      receipt,
+      provider_receipt_sha256: providerDeploymentReceiptSha256(receipt),
+    };
+  }
+  result.cohorts ||= Object.fromEntries(WAREHOUSE_EXPERIMENT_COHORTS.map((name, cohortIndex) => [name, {
+    sample_count: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+    samples: Array.from({ length: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT }, (_, sampleIndex) => {
+      const carriesTotals = cohortIndex === 0 && sampleIndex === 0;
+      return {
+        revision: result.deployed_revision,
+        native_cpu_ms: carriesTotals ? result.meters.native_cpu_ms : 0,
+        collector_cpu_ms: carriesTotals ? result.meters.collector_cpu_ms : 0,
+        native_cpu_source: { field: "cpuTime", unit: "milliseconds", precision: "provider" },
+        script_version_id: result.provider_deployment.receipt.cloudflare_version.id,
+        condition: {
+          mode: "bounded-production-execution",
+          source: "owned-http-probe",
+          isolate_observation: {
+            present: true,
+            raw: parseColdStartFlagRaw(name),
+            provisional_label: "unverified-raw",
+            semantics: "unverified-provider-flag",
+          },
+        },
+        outcome: carriesTotals && result.error_count > 0 ? "exception" : "ok",
+        operations: Object.fromEntries(
+          ["kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes", "queue_writes", "analytics_points"].map((meter) => [
+            meter,
+            { attempted: carriesTotals ? result.meters[meter] : 0, confirmed: carriesTotals ? result.meters[meter] : 0 },
+          ]),
+        ),
+        error_count: carriesTotals ? result.error_count : 0,
+      };
+    }),
+  }]));
+  return result;
+}
+
+test("rejected warehouse experiment coverage does not broaden all-meter regression budgets", () => {
+  // A3: gate suite covers rejected warehouse experiments without silently broadening budgets.
+  const baseline = warehouseRun();
+  const rejectedCandidate = warehouseRun({
+    deployed_revision: "b".repeat(40),
+    observed_at: "2026-10-08T23:10:00Z",
+    meters: { ...baseline.meters, native_cpu_ms: 80, kv_reads: 101 },
+  });
+  const warehouse = evaluateWarehouseExperiment({
+    baseline,
+    candidate: rejectedCandidate,
+    acquiredDeployments: {
+      baseline: structuredClone(baseline.provider_deployment),
+      candidate: structuredClone(rejectedCandidate.provider_deployment),
+    },
+  });
+  assert.equal(warehouse.decision, "candidate-rejected");
+  assert.equal(warehouse.financial_savings_confirmed, false);
+  assert.deepEqual(warehouse.regressions, ["kv_reads"]);
+
+  // Rejection does not widen the all-meter ratchet: a D1-savings / higher-KV candidate still fails.
+  const allMeter = evaluateAllMeterRelease(pair({ d1_rows_written: 0, kv_writes: 11 }));
+  assert.equal(allMeter.pass, false);
+  assert.deepEqual(allMeter.regressions, ["kv_writes"]);
+  assert.equal(allMeter.tariff_free, true);
+
+  // Cold-start raw cohort helpers stay available to the gate suite (no semantic cold/warm).
+  assert.equal(typeof coldStartFlagRawCohort("zap-bbl", 0), "string");
+});
+
+
+test("closed retained-key schema rejects camelCase, kebab-case, and snake_case identifier variants", () => {
+  // Closed allowlist must reject camelCase and kebab-case identifier keys, not only snake_case.
+  const variants = [
+    ["accountId", "synthetic-id"],
+    ["cloudflareAccountId", "acct-private"],
+    ["account-id", "acct-private"],
+    ["sessionId", "sess-private"],
+    ["sessionCache", { visitor: "private" }],
+    ["session-cache", { visitor: "private" }],
+    ["residentId", "resident-private"],
+    ["resident-id", "resident-private"],
+    ["residentData", { neighborhood: "private" }],
+    ["userIdentifier", "u-private"],
+    ["user-identifier", "u-private"],
+    ["identifier", "private"],
+  ];
+  for (const [key, value] of variants) {
+    const top = pair();
+    top.candidate[key] = value;
+    assert.throws(() => evaluateAllMeterRelease(top), /forbidden/, `top-level ${key}`);
+
+    const nested = pair();
+    nested.candidate.profile[key] = value;
+    assert.throws(() => evaluateAllMeterRelease(nested), /forbidden/, `nested profile.${key}`);
+
+    const deep = pair();
+    deep.candidate.publication.unchanged[key] = value;
+    assert.throws(() => evaluateAllMeterRelease(deep), /forbidden/, `deep publication.unchanged.${key}`);
+  }
+  assert.equal(isAllowedRetainedCostKey("accountId"), false);
+  assert.equal(isAllowedRetainedCostKey("sessionId"), false);
+  assert.equal(isAllowedRetainedCostKey("residentId"), false);
+  assert.equal(isAllowedRetainedCostKey("account_id"), false);
+});
+
+test("closed retained-key schema still allows legitimate meter and cohort names", () => {
+  const ok = pair({ native_cpu_ms: 7 });
+  assert.equal(evaluateAllMeterRelease(ok).pass, true);
+  for (const key of [
+    "native_cpu_ms", "collector_cpu_ms", "kv_reads", "kv_writes",
+    "d1_rows_read", "d1_rows_written", "storage_bytes", "queue_writes", "analytics_points",
+    "schema", "profile", "meters", "errors", "workload_id", "deployed_revision",
+  ]) {
+    assert.equal(isAllowedRetainedCostKey(key), true, key);
+  }
+  // Unknown top-level key outside the closed receipt schema fails even when not an identifier.
+  const extra = pair();
+  extra.candidate.unexpected_private_blob = { x: 1 };
+  assert.throws(() => evaluateAllMeterRelease(extra), /forbidden|unsupported fields/);
 });

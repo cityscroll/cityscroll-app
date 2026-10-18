@@ -8,6 +8,7 @@ import {
   REQUIRED_COST_COHORTS,
   buildWorkerCostProfile as buildWorkerCostProfileRaw,
   coldStartFlagRawCohort,
+  isAllowedRetainedCostKey,
   parseColdStartFlagRaw,
   providerDeploymentReceiptSha256,
   sanitizeNativeInvocation as sanitizeNativeInvocationRaw,
@@ -423,7 +424,10 @@ test("raw coldStart 0/1 never becomes semantic cold_start true/false", () => {
   assert.equal(rawZero.condition.isolate_observation.semantics, "unverified-provider-flag");
   assert.equal("cold_start" in rawZero.condition, false);
 
-  // Imported semantic cold_start claims fail closed under unverified semantics.
+  // Imported semantic cold_start claims fail closed: the closed retained-key
+  // allowlist rejects cold_start at every nesting level, so an unverified raw
+  // flag can never be retained as semantic cold_start true/false.
+  assert.equal(isAllowedRetainedCostKey("cold_start"), false);
   const profile = buildWorkerCostProfile(REQUIRED_COST_COHORTS.map((cohort) => sample(cohort)), {
     revision, observedAt: "2026-10-08T23:30:00Z", durationSeconds: 120,
     eventCount: REQUIRED_COST_COHORTS.length,
@@ -436,7 +440,7 @@ test("raw coldStart 0/1 never becomes semantic cold_start true/false", () => {
   };
   assert.throws(
     () => validateWorkerCostProfile(profile),
-    /must not claim semantic cold_start from unverified/,
+    /condition\.cold_start is forbidden in retained cost evidence/,
   );
 });
 

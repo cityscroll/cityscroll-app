@@ -67,8 +67,52 @@ export const OPERATION_METERS = Object.freeze([
   "kv_reads", "kv_writes", "d1_rows_read", "d1_rows_written", "storage_bytes", "queue_writes", "analytics_points",
 ]);
 
-const FORBIDDEN_RETAINED_KEYS = /(?:^|_)(?:url|query|headers?|body|token|credential|email|ip|account_id|user_agent|identifier)(?:_|$)/i;
+// Public CI / retained receipts use a closed-schema key allowlist. Unknown keys
+// (including camelCase/kebab-case account, session, resident, and identifier
+// fields) are rejected at every nesting level. Legitimate meter and cohort
+// names stay allowed by explicit membership, not by regex loopholes.
+const RETAINED_COST_STRUCTURAL_KEYS = Object.freeze(new Set([
+  "accepted", "analytics_points", "attempted", "authority", "baseline",
+  "batch_fingerprint_sha256", "batch_size", "candidate", "cloudflare_version",
+  "cohort", "cohorts", "collector_cpu_ms", "complete", "condition", "confirmed",
+  "correctness", "cron", "d1", "d1_rows_read", "d1_rows_written",
+  "deployed_revision", "duration_seconds", "error_count", "errors",
+  "event_count", "evidence_mode", "field", "freshness_digest", "full_batch",
+  "id", "input_digest", "instrumentation_log_count", "isolate_observation",
+  "joins_digest", "kind", "kv_puts", "kv_reads", "kv_writes", "manifest_puts",
+  "max_events", "max_seconds", "meters", "miss_digest", "mode", "native_cpu_ms",
+  "native_cpu_source", "observed_at", "operations", "outcome", "precision",
+  "present", "production_health", "profile", "provenance_digest",
+  "provider_deployment", "provider_receipt_sha256", "provider_request_id_sha256",
+  "provisional_label", "publication", "queue", "queue_writes", "raw", "reason",
+  "receipt", "revision", "route_key_puts", "rum", "run_marker_sha256",
+  "sample_count", "samples", "scheduled_time", "schema", "script_version_id",
+  "semantics", "source", "status", "storage_bytes", "traffic_mix", "trigger",
+  "unchanged", "unit", "window", "workload_count", "workload_digest",
+  "workload_id",
+]));
 const SHA256 = /^[a-f0-9]{64}$/;
+
+let retainedCostKeyAllowlistCache = null;
+function retainedCostKeyAllowlist() {
+  if (retainedCostKeyAllowlistCache) return retainedCostKeyAllowlistCache;
+  retainedCostKeyAllowlistCache = new Set(RETAINED_COST_STRUCTURAL_KEYS);
+  for (const key of [
+    ...COST_METERS,
+    ...OPERATION_METERS,
+    ...HTTP_ROUTE_COHORTS,
+    ...REQUIRED_COST_COHORTS,
+    ...OPTIONAL_ISOLATE_COHORTS,
+    ...WAREHOUSE_EXPERIMENT_COHORTS,
+  ]) {
+    retainedCostKeyAllowlistCache.add(key);
+  }
+  return retainedCostKeyAllowlistCache;
+}
+
+export function isAllowedRetainedCostKey(key) {
+  return retainedCostKeyAllowlist().has(key);
+}
 
 export function workerCostEnforcementMode(value) {
   return value === "enabled"
@@ -103,8 +147,9 @@ function requireActualWindow(value, label) {
 function assertSanitized(value, path = "receipt") {
   if (Array.isArray(value)) return value.forEach((entry, index) => assertSanitized(entry, `${path}[${index}]`));
   if (!value || typeof value !== "object") return;
+  const allow = retainedCostKeyAllowlist();
   for (const [key, child] of Object.entries(value)) {
-    if (FORBIDDEN_RETAINED_KEYS.test(key)) fail(`${path}.${key} is forbidden in retained cost evidence`);
+    if (!allow.has(key)) fail(`${path}.${key} is forbidden in retained cost evidence`);
     assertSanitized(child, `${path}.${key}`);
   }
 }
@@ -779,6 +824,10 @@ export function evaluateAllMeterRelease({ baseline, candidate, acquiredDeploymen
   const evidenceByLabel = {};
   for (const [label, receipt] of Object.entries({ baseline, candidate })) {
     if (receipt.schema !== "cityscroll.all_meter_release.v1") fail(`invalid ${label} all-meter receipt`);
+    requireExactKeys(receipt, [
+      "schema", "evidence_mode", "deployed_revision", "observed_at", "workload_id", "workload_count",
+      "publication", "rum", "d1", "profile", "meters", "errors",
+    ], label);
     requireActualWindow(receipt, label);
     if (receipt.d1?.authority !== "independent" || receipt.d1?.complete !== true) fail(`${label} collapses independent D1 authority`);
     validateWorkerCostProfile(receipt.profile);

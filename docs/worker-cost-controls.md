@@ -213,7 +213,15 @@ counts; the candidate must demonstrate zero-write unchanged route publication
 and at most three KV puts for a sixteen-observation RUM batch. Both sides require
 ordered actual-production windows, distinct deployed revisions, complete
 provider-native profiles, and the existing D1 delta control under its own
-authority. Provider prices and account bills are not CI inputs.
+authority. Provider prices and account bills are not CI inputs. Gate tests also
+name fresh-baseline ordering, rejected warehouse experiments that must not
+broaden regression budgets, and forbid account identifiers, bill values,
+resident identifiers, and private session-cache fields in retained receipts.
+Retained receipts use a closed-schema key allowlist at every nesting level, so
+camelCase and kebab-case variants such as `accountId`, `sessionId`, and
+`residentId` are rejected the same way as snake_case.
+Controlled fixture evidence never authenticates as a production tick;
+`WORKER_COST_ENFORCEMENT` stays inactive until deliberately enabled.
 Normalization is population-bound: native CPU uses the non-collector samples,
 collector CPU uses the collector cohort, and operation and error meters use
 every sample carrying their explicit evidence. Baseline and candidate
