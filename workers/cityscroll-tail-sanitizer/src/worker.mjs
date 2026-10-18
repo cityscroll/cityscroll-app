@@ -14,6 +14,7 @@ import {
   CPU_MS_BUCKETS,
   FIXED_COHORT_KEYS,
   FORBIDDEN_PERSIST_KEYS,
+  assertNonEmptyExpectedRevisionAllowlist,
   classifyCpuValue,
   cpuMsBucket,
   isCollectorSelfTailItem,
@@ -49,11 +50,50 @@ const EVENT_TYPE_KEYS = Object.freeze(["fetch", "scheduled", "queue", "other", "
 
 const MAX_EVENTS = 10_000;
 const DEFAULT_DEADLINE_MS = 1_800_000;
+/** Product/schema sink name (identity binding). Per-window DO ids use window_id. */
 const SINK_NAME = "cityscroll-tail-sanitizer-aggregate";
+/** Fixed control DO name: stores the currently armed active window_id for Tail routing. */
+const CONTROL_NAME = "cityscroll-tail-sanitizer-control";
 const READBACK_HEADER = "x-cityscroll-tail-readback-token";
+const WINDOW_ID_HEADER = "x-cityscroll-tail-window-id";
 const TERMINAL_KEY = "terminal";
 const META_KEY = "meta";
 const COUNTERS_KEY = "counters";
+const ACTIVE_WINDOW_KEY = "active_window";
+
+/** Bound window_id for DO naming and auth headers. */
+function parseWindowId(raw) {
+  if (typeof raw !== "string") return null;
+  const id = raw.trim();
+  if (!id || id.length > 128) return null;
+  if (!/^[A-Za-z0-9._:-]+$/.test(id)) return null;
+  // Control DO name is reserved; never treat it as a collection window.
+  if (id === CONTROL_NAME) return null;
+  return id;
+}
+
+function windowIdFromRequest(req) {
+  return parseWindowId(req.headers.get(WINDOW_ID_HEADER) || "");
+}
+
+function windowIdMismatchResponse(expected, got) {
+  return Response.json(
+    {
+      ok: false,
+      reason: "window_id_mismatch",
+      expected_window_id: expected ?? null,
+      got_window_id: got ?? null,
+    },
+    { status: 409 },
+  );
+}
+
+function windowIdRequiredResponse() {
+  return Response.json(
+    { ok: false, reason: "window_id_required" },
+    { status: 400 },
+  );
+}
 
 function emptyCpuHistogram() {
   const h = Object.create(null);
@@ -174,10 +214,64 @@ function costVectorFrom(counters, rpcCount = null) {
       ? "UNKNOWN"
       : counters.collector_cpu_ms,
     sink_rpc_count: rpcCount == null ? (counters.collector_do_requests || 0) : rpcCount,
-    note: "collector DO requests/storage ops are measured ACK lower bounds; collector_cpu_ms is self-Tail sum or UNKNOWN",
+    // Control-plane DO (active-window pointer) is not metered into the per-window
+    // AggregateSink counters; leave explicit UNKNOWN rather than inventing zero.
+    control_do_requests: "UNKNOWN",
+    control_do_storage_ops: "UNKNOWN",
+    control_do_cpu_ms: "UNKNOWN",
+    note: "collector DO requests/storage ops are measured ACK lower bounds; collector_cpu_ms is self-Tail sum or UNKNOWN; control DO cost stays UNKNOWN until metered",
   };
 }
 
+/** Header: CAS expected active window (empty string means expect no active window). */
+const EXPECTED_ACTIVE_WINDOW_HEADER = "x-cityscroll-expected-active-window-id";
+/** Header: CAS expected active generation (integer; 0 when pointer unset). */
+const EXPECTED_ACTIVE_GENERATION_HEADER = "x-cityscroll-expected-active-generation";
+
+const AGGREGATE_SINK_SCHEMA = "cityscroll.tail_sanitizer_aggregate_sink.v1";
+
+function activeGenerationOf(active) {
+  const g = active?.generation;
+  return Number.isInteger(g) && g >= 0 ? g : 0;
+}
+
+/**
+ * Affirmative valid unclosed sink readback required before /arm pointer mutation.
+ * Non-ok HTTP, malformed JSON, closed, or tombstone refuse with 0 pointer writes.
+ * An already-open (collecting) window remains a valid arm target for tail routing;
+ * "fresh" in ROOT 02:00 means live unclosed admission, not opened===false.
+ */
+function classifyPriorArmReadback(res, body, requestWindowId) {
+  if (!res || typeof res.status !== "number") {
+    return { ok: false, reason: "prior_readback_unavailable" };
+  }
+  if (res.status === 401 || res.status === 403) {
+    return { ok: false, reason: "unauthorized", status: res.status };
+  }
+  if (res.status !== 200) {
+    return { ok: false, reason: "prior_readback_not_ok", status: res.status };
+  }
+  if (!body || typeof body !== "object") {
+    return { ok: false, reason: "prior_readback_malformed" };
+  }
+  if (body.ok !== true) {
+    return { ok: false, reason: "prior_readback_not_ok" };
+  }
+  if (body.schema !== AGGREGATE_SINK_SCHEMA) {
+    return { ok: false, reason: "prior_readback_invalid_schema" };
+  }
+  if (body.from_tombstone === true || body.closed === true) {
+    return { ok: false, reason: "window_tombstoned" };
+  }
+  if (
+    typeof body.window_id === "string"
+    && body.window_id
+    && body.window_id !== requestWindowId
+  ) {
+    return { ok: false, reason: "window_id_mismatch" };
+  }
+  return { ok: true };
+}
 function instrumentStorage(txn, counters) {
   const bump = () => {
     counters.collector_storage_ops = (counters.collector_storage_ops || 0) + 1;
@@ -345,18 +439,141 @@ export class AggregateSink {
   async fetch(req) {
     const url = new URL(req.url);
 
+    // Control-plane active-window routes (same AggregateSink class, CONTROL_NAME DO).
+    if (url.pathname === "/active-window") {
+      if (!this.authorize(req)) {
+        return Response.json({ ok: false, reason: "unauthorized" }, { status: 401 });
+      }
+      if (req.method === "GET") {
+        return this.withStorageTransaction(async (txn) => {
+          const active = await txn.get(ACTIVE_WINDOW_KEY);
+          const windowId = typeof active?.window_id === "string" ? active.window_id : null;
+          return Response.json({
+            ok: true,
+            window_id: windowId,
+            armed: Boolean(windowId),
+            armed_at_ms: active?.armed_at_ms ?? null,
+            generation: activeGenerationOf(active),
+          });
+        });
+      }
+      if (req.method === "PUT" || req.method === "POST") {
+        const windowId = windowIdFromRequest(req);
+        if (!windowId) return windowIdRequiredResponse();
+        // Explicit CAS: expected window + generation headers must be present.
+        // Empty window string = expect null pointer; generation 0 when unset.
+        if (!req.headers.has(EXPECTED_ACTIVE_WINDOW_HEADER)) {
+          return Response.json({
+            ok: false,
+            armed: false,
+            reason: "expected_active_window_required",
+          }, { status: 400 });
+        }
+        if (!req.headers.has(EXPECTED_ACTIVE_GENERATION_HEADER)) {
+          return Response.json({
+            ok: false,
+            armed: false,
+            reason: "expected_active_generation_required",
+          }, { status: 400 });
+        }
+        const expectedRaw = req.headers.get(EXPECTED_ACTIVE_WINDOW_HEADER) ?? "";
+        let expectedId = null;
+        if (expectedRaw !== "") {
+          expectedId = parseWindowId(expectedRaw);
+          if (!expectedId) {
+            return Response.json({
+              ok: false,
+              armed: false,
+              reason: "expected_active_window_invalid",
+            }, { status: 400 });
+          }
+        }
+        const expectedGenRaw = req.headers.get(EXPECTED_ACTIVE_GENERATION_HEADER) ?? "";
+        const expectedGen = Number.parseInt(expectedGenRaw, 10);
+        if (!Number.isInteger(expectedGen) || expectedGen < 0 || String(expectedGen) !== expectedGenRaw.trim()) {
+          return Response.json({
+            ok: false,
+            armed: false,
+            reason: "expected_active_generation_invalid",
+          }, { status: 400 });
+        }
+        return this.withStorageTransaction(async (txn) => {
+          const active = await txn.get(ACTIVE_WINDOW_KEY);
+          const current = typeof active?.window_id === "string" ? active.window_id : null;
+          const currentGen = activeGenerationOf(active);
+          if (current !== expectedId || currentGen !== expectedGen) {
+            return Response.json({
+              ok: false,
+              armed: false,
+              reason: "active_window_cas_mismatch",
+              expected_window_id: expectedId,
+              expected_generation: expectedGen,
+              active_window_id: current,
+              active_generation: currentGen,
+            }, { status: 409 });
+          }
+          const nextGen = currentGen + 1;
+          const record = {
+            window_id: windowId,
+            armed_at_ms: Date.now(),
+            generation: nextGen,
+          };
+          await txn.put(ACTIVE_WINDOW_KEY, record);
+          return Response.json({
+            ok: true,
+            armed: true,
+            window_id: windowId,
+            previous_window_id: current,
+            generation: nextGen,
+            previous_generation: currentGen,
+          });
+        });
+      }
+      if (req.method === "DELETE") {
+        const windowId = windowIdFromRequest(req);
+        if (!windowId) return windowIdRequiredResponse();
+        return this.withStorageTransaction(async (txn) => {
+          const active = await txn.get(ACTIVE_WINDOW_KEY);
+          const current = typeof active?.window_id === "string" ? active.window_id : null;
+          if (current && current !== windowId) {
+            return Response.json({
+              ok: true,
+              cleared: false,
+              reason: "active_window_mismatch",
+              active_window_id: current,
+            });
+          }
+          if (typeof txn.delete === "function") await txn.delete(ACTIVE_WINDOW_KEY);
+          else await txn.put(ACTIVE_WINDOW_KEY, null);
+          return Response.json({ ok: true, cleared: true, window_id: windowId });
+        });
+      }
+      return Response.json({ ok: false, reason: "method_not_allowed" }, { status: 405 });
+    }
+
     // Auth-gated routes: authorize BEFORE any storage access so unauthenticated
-    // polling never opens a window or creates cost.
+    // polling never opens a window or creates cost. window_id is required so
+    // each collection window maps to its own DO (idFromName(window_id)).
     if (url.pathname === "/readback" && req.method === "GET") {
       if (!this.authorize(req)) {
         return Response.json({ ok: false, reason: "unauthorized" }, { status: 401 });
       }
+      const requestWindowId = windowIdFromRequest(req);
+      if (!requestWindowId) return windowIdRequiredResponse();
       return this.withStorageTransaction(async (rawTxn) => {
         const scratch = emptyCounters();
         const txn = instrumentStorage(rawTxn, scratch);
         const terminal = await txn.get(TERMINAL_KEY);
         if (terminal && terminal.closed === true) {
+          if (
+            typeof terminal.window_id === "string"
+            && terminal.window_id
+            && terminal.window_id !== requestWindowId
+          ) {
+            return windowIdMismatchResponse(terminal.window_id, requestWindowId);
+          }
           terminal.rpc_count = (terminal.rpc_count || 0) + 1;
+          if (!terminal.window_id) terminal.window_id = requestWindowId;
           await txn.put(TERMINAL_KEY, terminal);
           const tombCounters = emptyCounters();
           tombCounters.collector_do_requests = terminal.rpc_count;
@@ -365,6 +582,7 @@ export class AggregateSink {
             ok: true,
             schema: "cityscroll.tail_sanitizer_aggregate_sink.v1",
             sink_name: SINK_NAME,
+            window_id: terminal.window_id || requestWindowId,
             closed: true,
             from_tombstone: true,
             opened_at_ms: terminal.opened_at_ms ?? null,
@@ -395,13 +613,14 @@ export class AggregateSink {
         let meta = await txn.get(META_KEY);
         if (!meta) {
           // Honest unopened / FRESH response: configured limits + known-0
-          // counters + A2, bound to the configured sink target. Guardian READY
+          // counters + A2, bound to the requested window_id DO. Guardian READY
           // polls this before producer attach; do not require traffic or meta.
           const freshCounters = emptyCounters();
           return Response.json({
             ok: true,
             schema: "cityscroll.tail_sanitizer_aggregate_sink.v1",
             sink_name: SINK_NAME,
+            window_id: requestWindowId,
             closed: false,
             opened: false,
             deadline_ms: DEFAULT_DEADLINE_MS,
@@ -419,6 +638,14 @@ export class AggregateSink {
             note: "no window open",
           });
         }
+        if (
+          typeof meta.window_id === "string"
+          && meta.window_id
+          && meta.window_id !== requestWindowId
+        ) {
+          return windowIdMismatchResponse(meta.window_id, requestWindowId);
+        }
+        if (!meta.window_id) meta.window_id = requestWindowId;
         meta.rpc_count = (meta.rpc_count || 0) + 1;
         const counters = backfillCounters((await txn.get(COUNTERS_KEY)) || emptyCounters());
         counters.collector_do_requests = meta.rpc_count;
@@ -442,6 +669,7 @@ export class AggregateSink {
           ok: true,
           schema: "cityscroll.tail_sanitizer_aggregate_sink.v1",
           sink_name: SINK_NAME,
+          window_id: meta.window_id || requestWindowId,
           closed: meta.closed === true,
           from_tombstone: false,
           opened_at_ms: meta.opened_at_ms,
@@ -480,9 +708,25 @@ export class AggregateSink {
       if (!this.authorize(req)) {
         return Response.json({ ok: false, reason: "unauthorized" }, { status: 401 });
       }
+      const requestWindowId = windowIdFromRequest(req);
+      if (!requestWindowId) return windowIdRequiredResponse();
       return this.withStorageTransaction(async (txn) => {
         const prior = await txn.get(META_KEY);
         const priorTerminal = await txn.get(TERMINAL_KEY);
+        if (
+          typeof prior?.window_id === "string"
+          && prior.window_id
+          && prior.window_id !== requestWindowId
+        ) {
+          return windowIdMismatchResponse(prior.window_id, requestWindowId);
+        }
+        if (
+          typeof priorTerminal?.window_id === "string"
+          && priorTerminal.window_id
+          && priorTerminal.window_id !== requestWindowId
+        ) {
+          return windowIdMismatchResponse(priorTerminal.window_id, requestWindowId);
+        }
         const closedAt = Date.now();
         if (typeof txn.deleteAll === "function") await txn.deleteAll();
         else {
@@ -498,6 +742,7 @@ export class AggregateSink {
           max_events: prior?.max_events ?? priorTerminal?.max_events ?? MAX_EVENTS,
           cap_reached: prior?.cap_reached === true || priorTerminal?.cap_reached === true,
           rpc_count: ((prior?.rpc_count || priorTerminal?.rpc_count || 0) + 1),
+          window_id: prior?.window_id || priorTerminal?.window_id || requestWindowId,
           schema: "cityscroll.tail_sanitizer_terminal_tombstone.v1",
         };
         await txn.put(TERMINAL_KEY, tombstone);
@@ -507,6 +752,7 @@ export class AggregateSink {
           counters_reset: true,
           closed: true,
           tombstone: true,
+          window_id: tombstone.window_id,
         });
       });
     }
@@ -516,6 +762,7 @@ export class AggregateSink {
       // interleave mid-update across a body await.
       const delta = await req.json().catch(() => null);
       const expectedRevisions = expectedRevisionSet(this.env);
+      const applyWindowId = windowIdFromRequest(req);
 
       return this.withStorageTransaction(async (rawTxn) => {
         const storageScratch = emptyCounters();
@@ -537,7 +784,17 @@ export class AggregateSink {
             closed: false,
             cap_reached: false,
             rpc_count: 0,
+            window_id: applyWindowId || null,
           };
+        } else if (
+          applyWindowId
+          && typeof meta.window_id === "string"
+          && meta.window_id
+          && meta.window_id !== applyWindowId
+        ) {
+          return windowIdMismatchResponse(meta.window_id, applyWindowId);
+        } else if (applyWindowId && !meta.window_id) {
+          meta.window_id = applyWindowId;
         }
         meta.rpc_count = (meta.rpc_count || 0) + 1;
 
@@ -745,9 +1002,75 @@ export class AggregateSink {
   }
 }
 
-function sinkStub(env) {
-  const id = env.AGG_SINK.idFromName(SINK_NAME);
+function sinkStub(env, windowId) {
+  const id = env.AGG_SINK.idFromName(windowId);
   return env.AGG_SINK.get(id);
+}
+
+function controlStub(env) {
+  const id = env.AGG_SINK.idFromName(CONTROL_NAME);
+  return env.AGG_SINK.get(id);
+}
+
+async function resolveActiveWindowId(env) {
+  const stub = controlStub(env);
+  const token = env.READBACK_TOKEN || "";
+  const res = await stub.fetch("https://sink/active-window", {
+    method: "GET",
+    headers: { [READBACK_HEADER]: token },
+  });
+  if (!res || res.ok !== true) return null;
+  let body = null;
+  try {
+    body = await res.json();
+  } catch {
+    return null;
+  }
+  return parseWindowId(body?.window_id || "");
+}
+
+/**
+ * CAS the control-plane active window pointer.
+ * `expectedWindowId` null means the pointer must currently be unset.
+ * `expectedGeneration` is the caller-owned prior generation (0 when unset).
+ */
+async function setActiveWindowId(env, windowId, token, {
+  expectedWindowId = null,
+  expectedGeneration = 0,
+} = {}) {
+  const stub = controlStub(env);
+  return stub.fetch("https://sink/active-window", {
+    method: "PUT",
+    headers: {
+      [READBACK_HEADER]: token,
+      [WINDOW_ID_HEADER]: windowId,
+      [EXPECTED_ACTIVE_WINDOW_HEADER]: expectedWindowId == null ? "" : expectedWindowId,
+      [EXPECTED_ACTIVE_GENERATION_HEADER]: String(expectedGeneration),
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      window_id: windowId,
+      expected_window_id: expectedWindowId,
+      expected_generation: expectedGeneration,
+    }),
+  });
+}
+
+async function clearActiveWindowIdIfMatch(env, windowId, token) {
+  const stub = controlStub(env);
+  return stub.fetch("https://sink/active-window", {
+    method: "DELETE",
+    headers: {
+      [READBACK_HEADER]: token,
+      [WINDOW_ID_HEADER]: windowId,
+    },
+  });
+}
+
+function applyHeaders(windowId) {
+  const headers = { "content-type": "application/json" };
+  if (windowId) headers[WINDOW_ID_HEADER] = windowId;
+  return headers;
 }
 
 function isTerminalSinkRefusal(body) {
@@ -767,30 +1090,191 @@ export default {
         ok: true,
         worker: "cityscroll-tail-sanitizer",
         observability_config: "absent-disabled",
-        note: "use /readback with authenticated header; allowlisted aggregate only",
+        note: "use /readback with authenticated header + window_id; allowlisted aggregate only",
       });
     }
+    if (url.pathname === "/arm" && req.method === "POST") {
+      const token = req.headers.get(READBACK_HEADER) || "";
+      const windowId = windowIdFromRequest(req);
+      if (!windowId) return windowIdRequiredResponse();
+
+      // Revision gate BEFORE any pointer or storage mutation (0 writes on refuse).
+      const revGate = assertNonEmptyExpectedRevisionAllowlist(env.EXPECTED_DEPLOYED_REVISIONS);
+      if (!revGate.ok) {
+        return Response.json({
+          ok: false,
+          armed: false,
+          reason: revGate.reason || "empty_expected_revision_allowlist",
+          window_id: windowId,
+        }, { status: 409 });
+      }
+
+      // Caller must supply the intended prior pointer + generation (own-window
+      // intention). Do not GET-and-adopt the observed control state as expected.
+      if (!req.headers.has(EXPECTED_ACTIVE_WINDOW_HEADER)) {
+        return Response.json({
+          ok: false,
+          armed: false,
+          reason: "expected_active_window_required",
+          window_id: windowId,
+        }, { status: 400 });
+      }
+      if (!req.headers.has(EXPECTED_ACTIVE_GENERATION_HEADER)) {
+        return Response.json({
+          ok: false,
+          armed: false,
+          reason: "expected_active_generation_required",
+          window_id: windowId,
+        }, { status: 400 });
+      }
+      const expectedRaw = req.headers.get(EXPECTED_ACTIVE_WINDOW_HEADER) ?? "";
+      let expectedWindowId = null;
+      if (expectedRaw !== "") {
+        expectedWindowId = parseWindowId(expectedRaw);
+        if (!expectedWindowId) {
+          return Response.json({
+            ok: false,
+            armed: false,
+            reason: "expected_active_window_invalid",
+            window_id: windowId,
+          }, { status: 400 });
+        }
+      }
+      const expectedGenRaw = req.headers.get(EXPECTED_ACTIVE_GENERATION_HEADER) ?? "";
+      const expectedGeneration = Number.parseInt(expectedGenRaw, 10);
+      if (
+        !Number.isInteger(expectedGeneration)
+        || expectedGeneration < 0
+        || String(expectedGeneration) !== expectedGenRaw.trim()
+      ) {
+        return Response.json({
+          ok: false,
+          armed: false,
+          reason: "expected_active_generation_invalid",
+          window_id: windowId,
+        }, { status: 400 });
+      }
+
+      // Prior readback must be affirmative, valid, and unclosed. Non-ok HTTP,
+      // malformed JSON, or tombstone/closed → refuse with 0 pointer writes.
+      const stub = sinkStub(env, windowId);
+      const priorRbRes = await stub.fetch("https://sink/readback", {
+        method: "GET",
+        headers: {
+          [READBACK_HEADER]: token,
+          [WINDOW_ID_HEADER]: windowId,
+        },
+      });
+      let priorRb = null;
+      let priorParseOk = false;
+      try {
+        priorRb = await priorRbRes.json();
+        priorParseOk = true;
+      } catch {
+        priorRb = null;
+        priorParseOk = false;
+      }
+      const priorClass = classifyPriorArmReadback(
+        priorRbRes,
+        priorParseOk ? priorRb : null,
+        windowId,
+      );
+      if (!priorClass.ok) {
+        const status = priorClass.reason === "unauthorized"
+          ? (priorClass.status || 401)
+          : 409;
+        return Response.json({
+          ok: false,
+          armed: false,
+          reason: priorClass.reason,
+          window_id: windowId,
+        }, { status });
+      }
+
+      const armed = await setActiveWindowId(env, windowId, token, {
+        expectedWindowId,
+        expectedGeneration,
+      });
+      if (armed.status === 401) {
+        return Response.json({ ok: false, armed: false, reason: "unauthorized" }, { status: 401 });
+      }
+      let body = null;
+      try {
+        body = await armed.json();
+      } catch {
+        body = { ok: false, reason: "arm_response_unparsed" };
+      }
+      return Response.json(
+        {
+          ok: body?.ok === true,
+          armed: body?.armed === true,
+          window_id: windowId,
+          reason: body?.reason ?? null,
+          previous_window_id: body?.previous_window_id ?? expectedWindowId,
+          generation: body?.generation ?? null,
+          previous_generation: body?.previous_generation ?? expectedGeneration,
+        },
+        { status: armed.status },
+      );
+    }
     if (url.pathname === "/aggregate" || url.pathname === "/readback") {
-      const stub = sinkStub(env);
+      const windowId = windowIdFromRequest(req);
+      if (!windowId) return windowIdRequiredResponse();
+      const stub = sinkStub(env, windowId);
       const token = req.headers.get(READBACK_HEADER) || "";
       return stub.fetch("https://sink/readback", {
         method: "GET",
-        headers: { [READBACK_HEADER]: token },
+        headers: {
+          [READBACK_HEADER]: token,
+          [WINDOW_ID_HEADER]: windowId,
+        },
       });
     }
     if (url.pathname === "/cleanup" && req.method === "POST") {
-      const stub = sinkStub(env);
+      const windowId = windowIdFromRequest(req);
+      if (!windowId) return windowIdRequiredResponse();
+      const stub = sinkStub(env, windowId);
       const token = req.headers.get(READBACK_HEADER) || "";
-      return stub.fetch("https://sink/cleanup", {
+      const cleaned = await stub.fetch("https://sink/cleanup", {
         method: "POST",
-        headers: { [READBACK_HEADER]: token },
+        headers: {
+          [READBACK_HEADER]: token,
+          [WINDOW_ID_HEADER]: windowId,
+        },
+      });
+      if (cleaned.ok) {
+        // Best-effort: clear control active pointer when it still names this window.
+        await clearActiveWindowIdIfMatch(env, windowId, token);
+      }
+      return cleaned;
+    }
+    if (url.pathname === "/active-window") {
+      const stub = controlStub(env);
+      const token = req.headers.get(READBACK_HEADER) || "";
+      const windowId = req.headers.get(WINDOW_ID_HEADER) || "";
+      const headers = { [READBACK_HEADER]: token };
+      if (windowId) headers[WINDOW_ID_HEADER] = windowId;
+      return stub.fetch(`https://sink/active-window`, {
+        method: req.method,
+        headers,
+        body: req.method === "GET" || req.method === "DELETE" ? undefined : await req.text(),
       });
     }
     return Response.json({ ok: false, reason: "not_found" }, { status: 404 });
   },
 
   async tail(events, env) {
-    const stub = sinkStub(env);
+    const activeWindowId = await resolveActiveWindowId(env);
+    if (!activeWindowId) {
+      return {
+        batch_size: events.length,
+        classified: 0,
+        dropped_after_cap: 0,
+        dropped_no_active_window: true,
+        owned_detach: { actuated: false, reason: "no_active_window" },
+      };
+    }
+    const stub = sinkStub(env, activeWindowId);
     let stopFurtherApply = false;
     let droppedAfterCap = 0;
     let detachSignal = null;
@@ -843,7 +1327,7 @@ export default {
         };
         const selfRes = await stub.fetch("https://sink/apply", {
           method: "POST",
-          headers: { "content-type": "application/json" },
+          headers: applyHeaders(activeWindowId),
           body: JSON.stringify(selfDelta),
         });
         let selfBody = null;
@@ -880,7 +1364,7 @@ export default {
 
       const res = await stub.fetch("https://sink/apply", {
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: applyHeaders(activeWindowId),
         body: JSON.stringify(delta),
       });
       let body = null;
@@ -905,7 +1389,7 @@ export default {
     if (droppedAfterCap > 0) {
       await stub.fetch("https://sink/apply", {
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: applyHeaders(activeWindowId),
         body: JSON.stringify({
           accepted: false,
           reason: "dropped_after_cap",
@@ -923,6 +1407,7 @@ export default {
       batch_size: events.length,
       classified: batchResults.length,
       dropped_after_cap: droppedAfterCap,
+      active_window_id: activeWindowId,
       owned_detach: detach,
     };
   },

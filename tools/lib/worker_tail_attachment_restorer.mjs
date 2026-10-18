@@ -9,7 +9,7 @@
 import { createHash } from "node:crypto";
 import {
   chmodSync, closeSync, cpSync, existsSync, fsyncSync, mkdirSync, openSync,
-  readFileSync, renameSync, rmSync, writeFileSync,
+  readFileSync, renameSync, rmSync, unlinkSync, writeFileSync,
 } from "node:fs";
 import { dirname, join } from "node:path";
 import { spawn } from "node:child_process";
@@ -27,6 +27,8 @@ import {
   bindCapObservationToWindowSnapshot,
   capObservationMatchesLiveWindow,
   classifyTailAttachment,
+  cleanupUrlFromReadbackUrl,
+  closeOwnedSinkWindow,
   confirmTailAttachment,
   createBetaWorkerTailConsumersTransport,
   createDeploymentsVersionTransport,
@@ -42,6 +44,7 @@ import { DEFAULT_WORKER_ID, isProcessAlive } from "./worker_observability_settin
 
 export const TAIL_RESTORER_RUNTIME_SCHEMA = "cityscroll.worker_tail_attachment_restorer_runtime.v1";
 export const TAIL_RESTORER_READY_SCHEMA = "cityscroll.worker_tail_attachment_restorer_ready.v1";
+export const TAIL_SINK_CLOSE_PENDING_SCHEMA = "cityscroll.tail_sink_close_pending.v1";
 export const DEFAULT_TAIL_RESTORER_STATE_ROOT = join(
   process.env.HOME || "",
   ".local/state/cityscroll-cost-control/tail-attachment-restorer",
@@ -86,6 +89,221 @@ function projectPersistedCapSignal(signal) {
   };
 }
 
+/** Allowlisted projection of a sink-close attempt (never token/URL). */
+function projectPersistedSinkClose(result) {
+  if (!result || typeof result !== "object") return null;
+  return {
+    ok: result.ok === true,
+    cleaned: result.cleaned === true,
+    tombstone: result.tombstone === true,
+    closed: result.closed === true,
+    window_id: typeof result.window_id === "string" ? result.window_id : null,
+    reason: typeof result.reason === "string" ? result.reason : null,
+    status: Number.isInteger(result.status) ? result.status : null,
+  };
+}
+
+/** True when cleanup proved a tombstone or closed AggregateSink window. */
+export function sinkCloseProved(sinkClose) {
+  return sinkClose?.ok === true
+    && (sinkClose.tombstone === true || sinkClose.closed === true);
+}
+
+/** Allowlisted attachment-restore scalars on the terminal receipt. */
+function projectAttachmentRestore({
+  proved = null,
+  action = null,
+  outcome = null,
+  expired = null,
+  reason = null,
+} = {}) {
+  return {
+    proved: proved === true,
+    action: typeof action === "string" ? action : null,
+    outcome: typeof outcome === "string" ? outcome : null,
+    expired: typeof expired === "boolean" ? expired : null,
+    reason: typeof reason === "string" ? reason : null,
+  };
+}
+
+/**
+ * Build a closeOwnedSinkWindow binder from guardian env.
+ * Missing URL/token → null (tick skips close; tests inject closeSinkWindow).
+ */
+export function createSinkCloserFromEnv(env, { fetchImpl = globalThis.fetch } = {}) {
+  const readbackUrl = env?.CITYSCROLL_TAIL_SINK_READBACK_URL;
+  const token = env?.CITYSCROLL_TAIL_SINK_READBACK_TOKEN;
+  if (typeof readbackUrl !== "string" || !readbackUrl) return null;
+  if (typeof token !== "string" || !token || token === "unset") return null;
+  let cleanupUrl;
+  try {
+    cleanupUrl = cleanupUrlFromReadbackUrl(readbackUrl);
+  } catch {
+    return null;
+  }
+  return async function closeSinkWindow({ windowId } = {}) {
+    return closeOwnedSinkWindow({
+      url: cleanupUrl,
+      token,
+      windowId,
+      fetchImpl,
+    });
+  };
+}
+
+/**
+ * Close the AggregateSink window at guardian terminal (expiry/cap/death/cancel).
+ * Authenticated /cleanup leaves a TERMINAL tombstone. Failures are recorded;
+ * they do not unwind an already-proved detach/restore.
+ */
+async function closeSinkAtTerminal(closeSinkWindow, windowId) {
+  if (typeof closeSinkWindow !== "function") return null;
+  if (typeof windowId !== "string" || !windowId) {
+    return projectPersistedSinkClose({
+      ok: false,
+      cleaned: false,
+      tombstone: false,
+      closed: false,
+      window_id: null,
+      reason: "window_id_missing",
+      status: null,
+    });
+  }
+  try {
+    const result = await closeSinkWindow({ windowId });
+    return projectPersistedSinkClose(result);
+  } catch {
+    return projectPersistedSinkClose({
+      ok: false,
+      cleaned: false,
+      tombstone: false,
+      closed: false,
+      window_id: windowId,
+      reason: "sink_close_error",
+      status: null,
+    });
+  }
+}
+
+export function readSinkClosePending(stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT) {
+  return readJsonIfPresent(tailRestorerPaths(stateRoot).sinkClosePending);
+}
+
+function clearSinkClosePending(paths) {
+  if (existsSync(paths.sinkClosePending)) unlinkSync(paths.sinkClosePending);
+}
+
+function writeSinkClosePendingRecord(paths, record) {
+  return writeTailRestorerReceipt(paths.sinkClosePending, {
+    schema: TAIL_SINK_CLOSE_PENDING_SCHEMA,
+    kind: "sink-close-pending",
+    status: typeof record.status === "string" ? record.status : "pending",
+    window_id: typeof record.window_id === "string" ? record.window_id : null,
+    observed_at: typeof record.observed_at === "string" ? record.observed_at : null,
+    reason: typeof record.reason === "string" ? record.reason : null,
+    last_close: projectPersistedSinkClose(record.last_close),
+  });
+}
+
+/**
+ * Close AggregateSink with a durable pending obligation.
+ * Unbound closer → null and no pending file (no obligation).
+ * Writes pending before the call; leaves last_close on the pending record.
+ * Callers persist the terminal receipt, then clearPendingSinkCloseIfProved.
+ */
+async function attemptOwnedSinkClose({
+  closeSinkWindow,
+  windowId,
+  paths,
+  now = null,
+  reason = null,
+} = {}) {
+  if (typeof closeSinkWindow !== "function") return null;
+  const at = typeof now === "string" ? now : new Date().toISOString();
+  const id = typeof windowId === "string" && windowId ? windowId : null;
+  writeSinkClosePendingRecord(paths, {
+    status: "pending",
+    window_id: id,
+    observed_at: at,
+    reason,
+    last_close: null,
+  });
+  writeSinkClosePendingRecord(paths, {
+    status: "issued-unacked",
+    window_id: id,
+    observed_at: at,
+    reason,
+    last_close: null,
+  });
+  const sinkClose = await closeSinkAtTerminal(closeSinkWindow, id);
+  writeSinkClosePendingRecord(paths, {
+    status: "issued-unacked",
+    window_id: id,
+    observed_at: at,
+    reason,
+    last_close: sinkClose,
+  });
+  return sinkClose;
+}
+
+function clearPendingSinkCloseIfProved(paths, sinkClose) {
+  if (sinkCloseProved(sinkClose)) clearSinkClosePending(paths);
+}
+
+/** Open cleanup obligation when a closer is bound and pending/unproved close remains. */
+export function sinkCloseObligationRemains(stateRoot, closeSinkWindow) {
+  if (typeof closeSinkWindow !== "function") return false;
+  const paths = tailRestorerPaths(stateRoot);
+  if (existsSync(paths.sinkClosePending)) return true;
+  if (!existsSync(paths.terminalReceipt)) return false;
+  const terminal = readJsonIfPresent(paths.terminalReceipt);
+  return Boolean(terminal) && !sinkCloseProved(terminal.sink_close);
+}
+
+/**
+ * Retry idempotent sink cleanup when pending exists or terminal sink_close is unproved.
+ * Updates the terminal receipt's sink_close in place; clears pending when proved.
+ */
+async function reconcileSinkCloseObligation({
+  closeSinkWindow,
+  paths,
+  windowId = null,
+  now = null,
+  reason = "sink-close-retry",
+} = {}) {
+  if (typeof closeSinkWindow !== "function") {
+    return { attempted: false, sink_close: null };
+  }
+  const pending = readJsonIfPresent(paths.sinkClosePending);
+  const terminal = readJsonIfPresent(paths.terminalReceipt);
+  const needsRetry = Boolean(pending)
+    || (Boolean(terminal) && !sinkCloseProved(terminal.sink_close));
+  if (!needsRetry) {
+    return {
+      attempted: false,
+      sink_close: terminal ? projectPersistedSinkClose(terminal.sink_close) : null,
+    };
+  }
+  const closeWindowId = (typeof pending?.window_id === "string" && pending.window_id)
+    || (typeof terminal?.window_id === "string" && terminal.window_id)
+    || (typeof windowId === "string" && windowId)
+    || null;
+  const sinkClose = await attemptOwnedSinkClose({
+    closeSinkWindow,
+    windowId: closeWindowId,
+    paths,
+    now,
+    reason,
+  });
+  if (terminal) {
+    writeTailRestorerReceipt(paths.terminalReceipt, {
+      ...terminal,
+      sink_close: sinkClose,
+    });
+  }
+  return { attempted: true, sink_close: sinkClose };
+}
+
 function fsyncWriteJson(path, value) {
   mkdirSync(dirname(path), { recursive: true, mode: 0o700 });
   const temporary = `${path}.next`;
@@ -114,6 +332,7 @@ export function tailRestorerPaths(stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT) 
     readyReceipt: join(stateRoot, "receipts/ready.json"),
     heartbeatReceipt: join(stateRoot, "receipts/heartbeat.json"),
     terminalReceipt: join(stateRoot, "receipts/terminal.json"),
+    sinkClosePending: join(stateRoot, "receipts/sink-close-pending.json"),
     controllerDeathReceipt: join(stateRoot, "receipts/controller-death.json"),
     childExitReceipt: join(stateRoot, "receipts/child-exit.json"),
     childFailedBeforeReadyReceipt: join(stateRoot, "receipts/child-failed-before-ready.json"),
@@ -545,6 +764,7 @@ export async function runTailRestorerLoop({
   transport,
   versionTransport = null,
   capDetachActuator = null,
+  closeSinkWindow = null,
   stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT,
   pollMs = DEFAULT_TAIL_POLL_MS,
   nowFn = () => new Date().toISOString(),
@@ -574,6 +794,7 @@ export async function runTailRestorerLoop({
     cap_detach_actuator_runtime: Boolean(
       capDetachActuator && typeof capDetachActuator.pollAndDetachIfCapped === "function",
     ),
+    sink_closer_bound: typeof closeSinkWindow === "function",
   });
   writeFileSync(paths.pidFile, `${process.pid}\n`, { mode: 0o600 });
   const announced = await announceTailRestorerReady({
@@ -586,20 +807,39 @@ export async function runTailRestorerLoop({
 
   let last = announced;
   while (!shouldStop() && !killSwitchEngaged(stateRoot)) {
-    if (existsSync(paths.terminalReceipt)) break;
+    // Terminal receipt alone is not enough while sink cleanup remains unproved
+    // and a closer is bound; unbound closer means no cleanup obligation.
+    if (
+      existsSync(paths.terminalReceipt)
+      && !sinkCloseObligationRemains(stateRoot, closeSinkWindow)
+    ) {
+      break;
+    }
     const tick = await tailAttachmentRestorerTick({
       store,
       transport,
       versionTransport,
       capDetachActuator,
+      closeSinkWindow,
       stateRoot,
       now: nowFn(),
     });
     last = tick;
-    if (tick?.terminal_receipt || tick?.outcome === "kill-switch" || tick?.outcome === "already-terminal") {
+    if (tick?.outcome === "kill-switch") break;
+    const obligationOpen = sinkCloseObligationRemains(stateRoot, closeSinkWindow);
+    if (
+      (tick?.terminal_receipt || tick?.outcome === "already-terminal")
+      && !obligationOpen
+    ) {
       break;
     }
-    if (tick?.proved === true && ["restored", "already-restored", "refuse-conflict", "cap-detach"].includes(tick.action || tick.outcome)) {
+    if (
+      tick?.proved === true
+      && ["restored", "already-restored", "refuse-conflict", "cap-detach"].includes(
+        tick.action || tick.outcome,
+      )
+      && !obligationOpen
+    ) {
       break;
     }
     await sleep(pollMs);
@@ -622,6 +862,7 @@ export async function tailAttachmentRestorerTick({
   transport,
   versionTransport = null,
   capDetachActuator = null,
+  closeSinkWindow = null,
   stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT,
   now = null,
   nowFn = () => new Date().toISOString(),
@@ -720,14 +961,47 @@ export async function tailAttachmentRestorerTick({
     });
 
     if (TAIL_ATTACHMENT_TERMINAL_PHASES.includes(window.phase)) {
-      return writeTailRestorerReceipt(paths.terminalReceipt, {
+      const existingTerminal = readJsonIfPresent(paths.terminalReceipt);
+      const reconciled = await reconcileSinkCloseObligation({
+        closeSinkWindow,
+        paths,
+        windowId: window.window_id
+          || existingTerminal?.window_id
+          || null,
+        now: nowAfter,
+        reason: "already-terminal-retry",
+      });
+      const sinkClose = reconciled.attempted
+        ? reconciled.sink_close
+        : (existingTerminal
+          ? projectPersistedSinkClose(existingTerminal.sink_close)
+          : null);
+      const attachmentRestore = existingTerminal?.attachment_restore
+        && typeof existingTerminal.attachment_restore === "object"
+        ? projectAttachmentRestore(existingTerminal.attachment_restore)
+        : projectAttachmentRestore({
+          proved: true,
+          action: typeof window.phase === "string" ? window.phase : null,
+          outcome: "already-terminal",
+        });
+      const receipt = writeTailRestorerReceipt(paths.terminalReceipt, {
+        ...(existingTerminal && typeof existingTerminal === "object" ? existingTerminal : {}),
         schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
         kind: "restorer",
         outcome: "already-terminal",
         observed_at: nowAfter,
         window_id: window.window_id,
         phase: window.phase,
+        attachment_restore: attachmentRestore,
+        sink_close: sinkClose,
       });
+      clearPendingSinkCloseIfProved(paths, sinkClose);
+      return {
+        ...receipt,
+        terminal_receipt: receipt,
+        sink_close: sinkClose,
+        outcome: "already-terminal",
+      };
     }
 
     const expired = Date.parse(nowAfter) >= Date.parse(window.expires_at);
@@ -802,6 +1076,20 @@ export async function tailAttachmentRestorerTick({
         }
         if (cap?.actuated === true && (cap.proved === true || cap.action === "already-restored")) {
           const restoredWindow = cap.result?.window || (await store.read()) || window;
+          const attachmentRestore = projectAttachmentRestore({
+            proved: cap.proved === true,
+            action: cap.action || "cap-detach",
+            outcome: "cap-detach",
+            expired: false,
+            reason: "owned-cap-detach",
+          });
+          const sinkClose = await attemptOwnedSinkClose({
+            closeSinkWindow,
+            windowId: restoredWindow.window_id,
+            paths,
+            now: nowAfter,
+            reason: "owned-cap-detach",
+          });
           const receipt = writeTailRestorerReceipt(paths.terminalReceipt, {
             schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
             kind: "restorer",
@@ -822,7 +1110,10 @@ export async function tailAttachmentRestorerTick({
             cancel_requested: false,
             expired: false,
             reason: "owned-cap-detach",
+            attachment_restore: attachmentRestore,
+            sink_close: sinkClose,
           });
+          clearPendingSinkCloseIfProved(paths, sinkClose);
           return {
             ...cap.result,
             outcome: "cap-detach",
@@ -830,6 +1121,7 @@ export async function tailAttachmentRestorerTick({
             proved: cap.proved === true,
             terminal_receipt: receipt,
             window: restoredWindow,
+            sink_close: sinkClose,
           };
         }
       }
@@ -850,8 +1142,27 @@ export async function tailAttachmentRestorerTick({
       const reconciled = await reconcileTailPendingMutation({ window, transport, now: nowAfter });
       await store.write(reconciled.window, { expectedWindowId: window.window_id });
       if (reconciled.outcome === "refused-conflict") {
-        const receipt = writeTailRestorerReceipt(paths.terminalReceipt, reconciled.receipt);
-        return { ...reconciled, terminal_receipt: receipt };
+        const closeWindowId = reconciled.window?.window_id || window.window_id;
+        const attachmentRestore = projectAttachmentRestore({
+          proved: false,
+          action: "refuse-conflict",
+          outcome: "refused-conflict",
+          reason: reconciled.receipt?.reason || "refused-conflict",
+        });
+        const sinkClose = await attemptOwnedSinkClose({
+          closeSinkWindow,
+          windowId: closeWindowId,
+          paths,
+          now: nowAfter,
+          reason: "refused-conflict",
+        });
+        const receipt = writeTailRestorerReceipt(paths.terminalReceipt, {
+          ...reconciled.receipt,
+          attachment_restore: attachmentRestore,
+          sink_close: sinkClose,
+        });
+        clearPendingSinkCloseIfProved(paths, sinkClose);
+        return { ...reconciled, terminal_receipt: receipt, sink_close: sinkClose };
       }
       writeTailRestorerReceipt(paths.heartbeatReceipt, {
         schema: TAIL_RESTORER_READY_SCHEMA,
@@ -886,13 +1197,31 @@ export async function tailAttachmentRestorerTick({
         return reconciled;
       }
       if (reconciled.outcome === "refused-conflict") {
+        const closeWindowId = reconciled.window?.window_id || window.window_id;
+        const attachmentRestore = projectAttachmentRestore({
+          proved: false,
+          action: "refuse-conflict",
+          outcome: "refused-conflict",
+          expired,
+          reason: reconciled.receipt?.reason || "refused-conflict",
+        });
+        const sinkClose = await attemptOwnedSinkClose({
+          closeSinkWindow,
+          windowId: closeWindowId,
+          paths,
+          now: nowAfter,
+          reason: "refused-conflict",
+        });
         const receipt = writeTailRestorerReceipt(paths.terminalReceipt, {
           ...reconciled.receipt,
           controller_death: controllerDead,
           cancel_requested: cancelRequested,
           expired,
+          attachment_restore: attachmentRestore,
+          sink_close: sinkClose,
         });
-        return { ...reconciled, terminal_receipt: receipt };
+        clearPendingSinkCloseIfProved(paths, sinkClose);
+        return { ...reconciled, terminal_receipt: receipt, sink_close: sinkClose };
       }
     }
 
@@ -938,6 +1267,24 @@ export async function tailAttachmentRestorerTick({
       return restored;
     }
 
+    // Terminal restore (expiry / controller-death / cancel / proved restore):
+    // close the AggregateSink window so the next window starts FRESH. Pending
+    // cleanup is durable and retried on later ticks if this close is unproved.
+    const closeWindowId = restored.window?.window_id || window.window_id;
+    const attachmentRestore = projectAttachmentRestore({
+      proved: restored.proved === true,
+      action: typeof restored.action === "string" ? restored.action : null,
+      outcome: restored.proved ? restored.action : "blocked",
+      expired: restored.expired === true,
+      reason: restored.receipt?.reason || null,
+    });
+    const sinkClose = await attemptOwnedSinkClose({
+      closeSinkWindow,
+      windowId: closeWindowId,
+      paths,
+      now: nowAfter,
+      reason: restored.receipt?.reason || restored.action || "terminal-restore",
+    });
     const receipt = writeTailRestorerReceipt(paths.terminalReceipt, {
       schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
       kind: "restorer",
@@ -954,8 +1301,11 @@ export async function tailAttachmentRestorerTick({
       cancel_requested: cancelRequested,
       version_guard: versionGuard,
       fresh_get_before_and_after_actuator: freshBothSides,
+      attachment_restore: attachmentRestore,
+      sink_close: sinkClose,
     });
-    return { ...restored, terminal_receipt: receipt };
+    clearPendingSinkCloseIfProved(paths, sinkClose);
+    return { ...restored, terminal_receipt: receipt, sink_close: sinkClose };
   });
 }
 
