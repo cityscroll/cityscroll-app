@@ -16,6 +16,7 @@ import {
   evaluateAllMeterRelease,
   evaluateWarehouseExperiment,
   parseColdStartFlagRaw,
+  isAllowedRetainedCostKey,
   providerDeploymentReceiptSha256,
   workerCostEnforcementMode,
 } from "./lib/worker_cost_control.mjs";
@@ -428,4 +429,56 @@ test("rejected warehouse experiment coverage does not broaden all-meter regressi
 
   // Cold-start raw cohort helpers stay available to the gate suite (no semantic cold/warm).
   assert.equal(typeof coldStartFlagRawCohort("zap-bbl", 0), "string");
+});
+
+
+test("closed retained-key schema rejects camelCase, kebab-case, and snake_case identifier variants", () => {
+  // Closed allowlist must reject camelCase and kebab-case identifier keys, not only snake_case.
+  const variants = [
+    ["accountId", "synthetic-id"],
+    ["cloudflareAccountId", "acct-private"],
+    ["account-id", "acct-private"],
+    ["sessionId", "sess-private"],
+    ["sessionCache", { visitor: "private" }],
+    ["session-cache", { visitor: "private" }],
+    ["residentId", "resident-private"],
+    ["resident-id", "resident-private"],
+    ["residentData", { neighborhood: "private" }],
+    ["userIdentifier", "u-private"],
+    ["user-identifier", "u-private"],
+    ["identifier", "private"],
+  ];
+  for (const [key, value] of variants) {
+    const top = pair();
+    top.candidate[key] = value;
+    assert.throws(() => evaluateAllMeterRelease(top), /forbidden/, `top-level ${key}`);
+
+    const nested = pair();
+    nested.candidate.profile[key] = value;
+    assert.throws(() => evaluateAllMeterRelease(nested), /forbidden/, `nested profile.${key}`);
+
+    const deep = pair();
+    deep.candidate.publication.unchanged[key] = value;
+    assert.throws(() => evaluateAllMeterRelease(deep), /forbidden/, `deep publication.unchanged.${key}`);
+  }
+  assert.equal(isAllowedRetainedCostKey("accountId"), false);
+  assert.equal(isAllowedRetainedCostKey("sessionId"), false);
+  assert.equal(isAllowedRetainedCostKey("residentId"), false);
+  assert.equal(isAllowedRetainedCostKey("account_id"), false);
+});
+
+test("closed retained-key schema still allows legitimate meter and cohort names", () => {
+  const ok = pair({ native_cpu_ms: 7 });
+  assert.equal(evaluateAllMeterRelease(ok).pass, true);
+  for (const key of [
+    "native_cpu_ms", "collector_cpu_ms", "kv_reads", "kv_writes",
+    "d1_rows_read", "d1_rows_written", "storage_bytes", "queue_writes", "analytics_points",
+    "schema", "profile", "meters", "errors", "workload_id", "deployed_revision",
+  ]) {
+    assert.equal(isAllowedRetainedCostKey(key), true, key);
+  }
+  // Unknown top-level key outside the closed receipt schema fails even when not an identifier.
+  const extra = pair();
+  extra.candidate.unexpected_private_blob = { x: 1 };
+  assert.throws(() => evaluateAllMeterRelease(extra), /forbidden|unsupported fields/);
 });
