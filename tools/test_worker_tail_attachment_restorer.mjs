@@ -4823,7 +4823,20 @@ test("ROOT 14:20: pre-tombstone sample wins over post-cleanup zero", () => {
     closed: false,
     a2: { pass: true, reason: "within_all_seen_cap", events_seen: 8697, apply_overshoot: 0 },
     by_event_type: { fetch: 100, scheduled: 3 },
-    by_cohort_cpu: { search: 12, nearby: 4, http_health: 1 },
+    by_cohort: { search: 12, nearby: 4, http_health: 1 },
+    by_cohort_cpu: {
+      search: { cpu_ms_sum: 40, cpu_ms_count: 12, cpu_ms_unknown_count: 0 },
+      nearby: { cpu_ms_sum: 8, cpu_ms_count: 4, cpu_ms_unknown_count: 0 },
+    },
+    cost_vector: {
+      collector_do_requests: 100,
+      collector_storage_ops: 200,
+      collector_cpu_ms: "UNKNOWN",
+      sink_rpc_count: 100,
+      control_do_requests: "UNKNOWN",
+      control_do_storage_ops: "UNKNOWN",
+      control_do_cpu_ms: "UNKNOWN",
+    },
     collector_cpu_ms: "UNKNOWN",
     arrivals_between_snapshot_and_cleanup: "UNKNOWN",
   };
@@ -4847,6 +4860,8 @@ test("ROOT 14:20: pre-tombstone sample wins over post-cleanup zero", () => {
   assert.equal(selected.measured, true);
   assert.equal(selected.events_seen, 8697);
   assert.equal(selected.by_cohort.search, 12);
+  assert.equal(selected.by_cohort_cpu.search.cpu_ms_sum, 40);
+  assert.equal(selected.cost_vector.collector_do_requests, 100);
   assert.notEqual(selected.events_seen, 0);
 
   const noReceipt = selectPreTombstoneCollectionSample({
@@ -4895,4 +4910,90 @@ test("ROOT 14:20: announceTailRestorerReady stamps window_generation", async () 
     true,
   );
   rmSync(dir, { recursive: true, force: true });
+});
+
+test("ROOT 14:50: missing window_id stays unproved when ownership expected", () => {
+  const missing = observeProducerTailWindowOutcome({
+    producerTerminal: { proved: true, action: "restored" },
+    producerBetaEmpty: true,
+    expectedWindowId: "owned-win",
+  });
+  assert.equal(missing.restore_proven, false);
+  assert.equal(missing.stop_reason, "producer-terminal-missing-window-id");
+  assert.equal(missing.producer.missing_window_id, true);
+
+  const owned = observeProducerTailWindowOutcome({
+    producerTerminal: { proved: true, action: "restored", window_id: "owned-win" },
+    producerBetaEmpty: true,
+    expectedWindowId: "owned-win",
+  });
+  assert.equal(owned.restore_proven, true);
+  assert.equal(owned.producer.missing_window_id, false);
+});
+
+test("ROOT 14:50: real Window-2 receipt shape keeps by_cohort counts and by_cohort_cpu separate", () => {
+  const fixturePath = join(REPO_ROOT, "test/fixtures/tail-sanitizer/window2-lastagg-shape.json");
+  const lastAgg = JSON.parse(readFileSync(fixturePath, "utf8")).lastAgg;
+  assert.equal(typeof lastAgg.counters?.by_cohort_cpu, "object");
+  assert.equal(typeof lastAgg.cost_vector, "object");
+  assert.equal(Number.isInteger(lastAgg.events_seen), true);
+
+  // Receipt shape mirrors readOwnedSinkAggregate projection of the live sample.
+  const receipt = {
+    schema: "cityscroll.tail_sink_final_aggregate.v1",
+    kind: "final-aggregate-before-tombstone",
+    window_id: "w2-real-shape",
+    ok: true,
+    events_seen: lastAgg.events_seen,
+    sample_kind: "last-sample-before-tombstone",
+    from_tombstone: false,
+    closed: false,
+    a2: lastAgg.a2,
+    by_cohort: lastAgg.by_cohort, // null in Window-2 live shape
+    by_cohort_cpu: lastAgg.counters.by_cohort_cpu,
+    by_event_type: lastAgg.by_event_type || lastAgg.counters.by_event_type,
+    by_deployed_revision: lastAgg.by_deployed_revision || lastAgg.counters.by_deployed_revision,
+    cost_vector: lastAgg.cost_vector,
+    collector_do_requests: lastAgg.counters.collector_do_requests,
+    collector_storage_ops: lastAgg.counters.collector_storage_ops,
+    collector_cpu_ms: lastAgg.counters.collector_cpu_ms,
+    arrivals_between_snapshot_and_cleanup: "UNKNOWN",
+  };
+
+  const fromReceipt = selectPreTombstoneCollectionSample({
+    finalAggregateReceipt: receipt,
+    lastLiveSample: lastAgg,
+    postCleanupReadback: { events_seen: 0, from_tombstone: true, closed: true },
+    expectedWindowId: "w2-real-shape",
+  });
+  assert.equal(fromReceipt.source, "final-aggregate-receipt");
+  assert.equal(fromReceipt.events_seen, 8697);
+  assert.equal(fromReceipt.by_cohort, null); // live Window-2 had no typed count map
+  assert.equal(fromReceipt.by_cohort_cpu.http.cpu_ms_count, 3615);
+  assert.equal(fromReceipt.cost_vector.collector_do_requests, 11495);
+  assert.equal(fromReceipt.cost_vector.collector_storage_ops, 34485);
+  assert.equal(fromReceipt.cost_vector.collector_cpu_ms, 446);
+  // CPU object must not appear under by_cohort.
+  assert.equal(fromReceipt.by_cohort?.http?.cpu_ms_sum, undefined);
+
+  const fromLive = selectPreTombstoneCollectionSample({
+    finalAggregateReceipt: null,
+    lastLiveSample: lastAgg,
+    postCleanupReadback: { events_seen: 0, from_tombstone: true, closed: true },
+  });
+  assert.equal(fromLive.source, "last-live-sample");
+  assert.equal(fromLive.by_cohort_cpu.http.cpu_ms_sum, 188753);
+  assert.equal(fromLive.cost_vector.sink_rpc_count, 11495);
+  assert.equal(fromLive.by_cohort, null);
+
+  // Mixing a CPU map into by_cohort must be rejected (typed counts only).
+  const mixed = selectPreTombstoneCollectionSample({
+    finalAggregateReceipt: {
+      ...receipt,
+      by_cohort: lastAgg.counters.by_cohort_cpu,
+    },
+    expectedWindowId: "w2-real-shape",
+  });
+  assert.equal(mixed.by_cohort, null);
+  assert.equal(mixed.by_cohort_cpu.http.cpu_ms_count, 3615);
 });

@@ -31,6 +31,8 @@ import {
   closeOwnedSinkWindow,
   confirmTailAttachment,
   mutateOwnedTailAttachment,
+  projectAllowlistedCostVector,
+  projectTypedCohortEventCounts,
   readOwnedSinkAggregate,
   createBetaWorkerTailConsumersTransport,
   createDeploymentsVersionTransport,
@@ -1704,17 +1706,21 @@ export function observeProducerTailWindowOutcome({
     ? producerTerminal
     : null;
   let foreignTerminal = false;
+  let missingOwnership = false;
   if (terminalObj && typeof expectedWindowId === "string" && expectedWindowId) {
     const terminalWindowId = terminalObj.window_id
       || terminalObj.attachment_restore?.window_id
       || null;
-    if (typeof terminalWindowId === "string" && terminalWindowId
-      && terminalWindowId !== expectedWindowId) {
+    if (typeof terminalWindowId !== "string" || !terminalWindowId) {
+      // Missing ownership identity stays unproved (not an implicit match).
+      missingOwnership = true;
+    } else if (terminalWindowId !== expectedWindowId) {
       foreignTerminal = true;
     }
   }
   // Label-only (action/outcome without proved:true) is NOT proof.
   const producerProved = !foreignTerminal
+    && !missingOwnership
     && terminalObj
     && (
       terminalObj.proved === true
@@ -1751,6 +1757,9 @@ export function observeProducerTailWindowOutcome({
   if (foreignTerminal) {
     outcome = "failed";
     stopReason = "producer-terminal-foreign-window";
+  } else if (missingOwnership) {
+    outcome = "failed";
+    stopReason = "producer-terminal-missing-window-id";
   } else if (restoreProven) {
     outcome = selfDeviation
       ? "restored-proven-producer;self-deviation"
@@ -1779,6 +1788,7 @@ export function observeProducerTailWindowOutcome({
       beta_empty: betaEmpty,
       action: producerTerminal?.action || producerTerminal?.outcome || null,
       foreign_window: foreignTerminal,
+      missing_window_id: missingOwnership,
     },
     self: selfDeviation || {
       kind: "self-ready",
@@ -1819,8 +1829,16 @@ export function selectPreTombstoneCollectionSample({
         sample_kind: receipt.sample_kind || "last-sample-before-tombstone",
         events_seen: Number.isInteger(receipt.events_seen) ? receipt.events_seen : null,
         a2: receipt.a2 ?? null,
-        cost_vector: receipt.cost_vector ?? null,
-        by_cohort: receipt.by_cohort_cpu || receipt.by_cohort || null,
+        // Keep typed event counts and CPU distributions SEPARATE — never mix.
+        by_cohort: projectTypedCohortEventCounts(receipt.by_cohort),
+        by_cohort_cpu: receipt.by_cohort_cpu && typeof receipt.by_cohort_cpu === "object"
+          ? receipt.by_cohort_cpu
+          : null,
+        cost_vector: projectAllowlistedCostVector(receipt.cost_vector, {
+          collector_do_requests: receipt.collector_do_requests,
+          collector_storage_ops: receipt.collector_storage_ops,
+          collector_cpu_ms: receipt.collector_cpu_ms,
+        }),
         by_event_type: receipt.by_event_type ?? null,
         by_deployed_revision: receipt.by_deployed_revision ?? null,
         collector_cpu_ms: receipt.collector_cpu_ms ?? receipt.cost_vector?.collector_cpu_ms ?? null,
@@ -1832,16 +1850,21 @@ export function selectPreTombstoneCollectionSample({
   }
   const live = lastLiveSample && typeof lastLiveSample === "object" ? lastLiveSample : null;
   if (live && (live.from_tombstone !== true) && (live.closed !== true)) {
+    const liveCounters = live.counters && typeof live.counters === "object" ? live.counters : null;
     return {
       source: "last-live-sample",
       sample_kind: "last-sample-before-tombstone",
       events_seen: Number.isInteger(live.events_seen) ? live.events_seen : null,
       a2: live.a2 ?? null,
-      cost_vector: live.cost_vector ?? null,
-      by_cohort: live.counters?.by_cohort || live.by_cohort || null,
-      by_event_type: live.counters?.by_event_type || live.by_event_type || null,
-      by_deployed_revision: live.counters?.by_deployed_revision || live.by_deployed_revision || null,
-      collector_cpu_ms: live.counters?.collector_cpu_ms
+      by_cohort: projectTypedCohortEventCounts(live.by_cohort ?? liveCounters?.by_cohort),
+      by_cohort_cpu: (liveCounters?.by_cohort_cpu || live.by_cohort_cpu)
+        && typeof (liveCounters?.by_cohort_cpu || live.by_cohort_cpu) === "object"
+        ? (liveCounters?.by_cohort_cpu || live.by_cohort_cpu)
+        : null,
+      cost_vector: projectAllowlistedCostVector(live.cost_vector, liveCounters),
+      by_event_type: liveCounters?.by_event_type || live.by_event_type || null,
+      by_deployed_revision: liveCounters?.by_deployed_revision || live.by_deployed_revision || null,
+      collector_cpu_ms: liveCounters?.collector_cpu_ms
         ?? live.cost_vector?.collector_cpu_ms
         ?? live.collector_cpu_ms
         ?? null,
@@ -1860,6 +1883,7 @@ export function selectPreTombstoneCollectionSample({
     a2: null,
     cost_vector: null,
     by_cohort: null,
+    by_cohort_cpu: null,
     by_event_type: null,
     by_deployed_revision: null,
     collector_cpu_ms: "UNKNOWN",

@@ -1159,6 +1159,47 @@ export function cleanupUrlFromReadbackUrl(readbackUrl) {
  * tombstone (GO #5 §6: cleanup must not drop counters before capture).
  * Returns an allowlisted projection only — never token/URL/raw body dump.
  */
+
+/** Allowlisted AggregateSink cost vector (DO ACK lower bounds + UNKNOWN). */
+export function projectAllowlistedCostVector(costVector = null, counters = null) {
+  const src = costVector && typeof costVector === "object" ? costVector : null;
+  const c = counters && typeof counters === "object" ? counters : null;
+  const pick = (key) => {
+    const v = src?.[key] ?? c?.[key];
+    if (v === "UNKNOWN") return "UNKNOWN";
+    if (Number.isFinite(v)) return v;
+    return null;
+  };
+  const out = {
+    collector_do_requests: pick("collector_do_requests"),
+    collector_storage_ops: pick("collector_storage_ops"),
+    collector_cpu_ms: pick("collector_cpu_ms"),
+    sink_rpc_count: pick("sink_rpc_count"),
+    control_do_requests: pick("control_do_requests") ?? "UNKNOWN",
+    control_do_storage_ops: pick("control_do_storage_ops") ?? "UNKNOWN",
+    control_do_cpu_ms: pick("control_do_cpu_ms") ?? "UNKNOWN",
+  };
+  if (typeof src?.note === "string" && src.note) out.note = src.note;
+  const hasMeasured = ["collector_do_requests", "collector_storage_ops", "collector_cpu_ms", "sink_rpc_count"]
+    .some((k) => out[k] != null);
+  return hasMeasured || src ? out : null;
+}
+
+/**
+ * Typed cohort event counts only. CPU distribution objects (cpu_ms_sum/count)
+ * must never be returned here — those belong in by_cohort_cpu.
+ */
+export function projectTypedCohortEventCounts(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  const entries = Object.entries(value);
+  if (entries.length === 0) return null;
+  for (const [, v] of entries) {
+    if (v != null && typeof v === "object") return null; // CPU / nested shape
+    if (v != null && v !== "UNKNOWN" && !Number.isFinite(v)) return null;
+  }
+  return value;
+}
+
 export async function readOwnedSinkAggregate({
   url,
   token,
@@ -1199,7 +1240,9 @@ export async function readOwnedSinkAggregate({
     a2: null,
     by_event_type: null,
     by_deployed_revision: null,
+    by_cohort: null,
     by_cohort_cpu: null,
+    cost_vector: null,
     collector_do_requests: null,
     collector_storage_ops: null,
     collector_cpu_ms: null,
@@ -1253,9 +1296,12 @@ export async function readOwnedSinkAggregate({
         && typeof counters.by_deployed_revision === "object"
         ? counters.by_deployed_revision
         : null,
+      // Typed event counts only — never CPU distribution objects.
+      by_cohort: projectTypedCohortEventCounts(body?.by_cohort ?? counters?.by_cohort),
       by_cohort_cpu: counters?.by_cohort_cpu && typeof counters.by_cohort_cpu === "object"
         ? counters.by_cohort_cpu
         : null,
+      cost_vector: projectAllowlistedCostVector(body?.cost_vector, counters),
       collector_do_requests: Number.isInteger(counters?.collector_do_requests)
         ? counters.collector_do_requests
         : null,
@@ -1293,7 +1339,9 @@ export async function readOwnedSinkAggregate({
       a2: null,
       by_event_type: null,
       by_deployed_revision: null,
+      by_cohort: null,
       by_cohort_cpu: null,
+      cost_vector: null,
       collector_do_requests: null,
       collector_storage_ops: null,
       collector_cpu_ms: null,

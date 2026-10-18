@@ -8,11 +8,18 @@ headings per state — a global "no duplicate heading text in the DOM" check wou
 flag headings that legitimately share text while their tabs are mutually exclusive.
 Also asserts exactly one visible h1 and one <main> landmark per state (retiring the
 standing axe 'landmark-one-main'/'region' moderates over time). Hermetic: no live network.
+
+cs-heading-uniqueness-nav-race: after a tab click, SPA navigation can destroy the
+execution context between wait_for_function and evaluate. Wait for a stable URL +
+load state, then retry evaluate on context-destroyed — never drop heading/h1/main
+assertions.
 """
 import os
 import pathlib
 import sys
+import time
 
+from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import sync_playwright
 
 ROOT = pathlib.Path(__file__).parents[2]
@@ -42,13 +49,53 @@ STATE_JS = """() => {
   return {headings, h1Count: headings.filter(h => h.tag === 'H1').length, mainCount: mains.length};
 }"""
 
+CONTEXT_DESTROYED_MARKERS = (
+    "Execution context was destroyed",
+    "Cannot find context with specified id",
+    "most likely because of a navigation",
+)
+
 
 def step(tag, name, detail=""):
     print(f"{tag} {name}" + (f" -> {detail}" if detail else ""), flush=True)
 
 
+def _is_context_destroyed(err):
+    msg = str(err)
+    return any(marker in msg for marker in CONTEXT_DESTROYED_MARKERS)
+
+
+def wait_for_stable_document(page, *, timeout_ms=10000):
+    """Wait until navigation/load settles so evaluate is not racing a destroy."""
+    page.wait_for_load_state("domcontentloaded", timeout=timeout_ms)
+    try:
+        page.wait_for_load_state("load", timeout=min(timeout_ms, 5000))
+    except PlaywrightError:
+        # Some SPA tab switches never re-fire full load; domcontentloaded is enough.
+        pass
+    # URL string access forces a post-navigation frame binding.
+    _ = page.url
+
+
+def evaluate_state(page, *, retries=3, timeout_ms=10000):
+    """Evaluate STATE_JS with bounded retries on navigation context destruction."""
+    last_err = None
+    for attempt in range(retries):
+        try:
+            wait_for_stable_document(page, timeout_ms=timeout_ms)
+            return page.evaluate(STATE_JS)
+        except PlaywrightError as err:
+            last_err = err
+            if not _is_context_destroyed(err) or attempt + 1 >= retries:
+                raise
+            # Brief backoff so the next document can bind before re-evaluate.
+            time.sleep(0.05 * (attempt + 1))
+            wait_for_stable_document(page, timeout_ms=timeout_ms)
+    raise last_err
+
+
 def check_state(page, state_name, failures):
-    state = page.evaluate(STATE_JS)
+    state = evaluate_state(page)
     texts = [h["text"] for h in state["headings"] if h["text"]]
     dupes = sorted({t for t in texts if texts.count(t) > 1})
     if dupes:
@@ -61,6 +108,28 @@ def check_state(page, state_name, failures):
         step("OK", state_name, f"{len(texts)} unique heading(s), 1 h1, 1 main")
 
 
+def activate_tab(page, selector):
+    page.click(selector)
+    page.wait_for_selector("main h1, h1", timeout=10000)
+    page.wait_for_function(
+        """() => {
+          const h1 = [...document.querySelectorAll('h1')].find((el) => {
+            if (!el.offsetParent && getComputedStyle(el).position !== 'fixed') return false;
+            const r = el.getBoundingClientRect();
+            return r.width > 0 && r.height > 0;
+          });
+          const main = [...document.querySelectorAll('main')].find((el) => {
+            if (!el.offsetParent && getComputedStyle(el).position !== 'fixed') return false;
+            const r = el.getBoundingClientRect();
+            return r.width > 0 && r.height > 0;
+          });
+          return Boolean(h1 && main);
+        }""",
+        timeout=10000,
+    )
+    wait_for_stable_document(page)
+
+
 def main():
     failures = []
     with sync_playwright() as pw:
@@ -70,31 +139,14 @@ def main():
             page = ctx.new_page()
             install_routes(page)
             page.goto(BASE + path, timeout=30000)
-            page.wait_for_load_state("load", timeout=20000)
+            wait_for_stable_document(page, timeout_ms=20000)
             page.wait_for_timeout(1200)
             name = path or "index.html"
             check_state(page, name, failures)
 
             if path in ("", "index.html"):
                 for tab, selector in TABS:
-                    page.click(selector)
-                    page.wait_for_selector("main h1, h1", timeout=10000)
-                    page.wait_for_function(
-                        """() => {
-                          const h1 = [...document.querySelectorAll('h1')].find((el) => {
-                            if (!el.offsetParent && getComputedStyle(el).position !== 'fixed') return false;
-                            const r = el.getBoundingClientRect();
-                            return r.width > 0 && r.height > 0;
-                          });
-                          const main = [...document.querySelectorAll('main')].find((el) => {
-                            if (!el.offsetParent && getComputedStyle(el).position !== 'fixed') return false;
-                            const r = el.getBoundingClientRect();
-                            return r.width > 0 && r.height > 0;
-                          });
-                          return Boolean(h1 && main);
-                        }""",
-                        timeout=10000,
-                    )
+                    activate_tab(page, selector)
                     check_state(page, f"{name} [tab:{tab}]", failures)
             ctx.close()
         browser.close()
