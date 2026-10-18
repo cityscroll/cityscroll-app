@@ -10,7 +10,7 @@ invocation aggregates. It is separate from `cityscroll-worker`.
 - Drop URLs, query strings, headers, bodies, and identifiers before any
   persistence. Fetch cohorts use pathname-only prefixes (`/search`,
   `/near-you`, `/performance-events` → `rum_batch_16`, `/events` → `http_events`,
-  `/health` and other → `http`).
+  `/health` → `http_health`; unmatched fetch → `http_unknown`).
 - Optional top-level numeric `coldStart` 0|1 dual-records into
   `cold_start_flag_raw_*` without inventing warm/cold labels; absent stays
   unpartitioned.

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
-import { chmodSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { chmodSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, unlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -28,6 +28,7 @@ import {
   extractLatestDeploymentVersions,
   mapBetaTailConsumerNameOnly,
   mutateOwnedTailAttachment,
+  readOwnedSinkAggregate,
   observeVersionGuard,
   openTailAttachmentWindow,
   armTailAttachmentRestorer,
@@ -50,12 +51,19 @@ import {
 import {
   GUARDIAN_STARTUP_FAILURE_CODE,
   TAIL_SINK_CLOSE_PENDING_SCHEMA,
+  assertDurableCapDetachRuntimeProvisioned,
+  announceTailRestorerReady,
+  assertRestorerReadyBeforeOwnedAttach,
   assignTailWindowForRestorer,
   classifyGuardianStartupStderr,
   composeGuardianChildEnv,
   createBoundDeploymentsVersionTransport,
   createBoundDualViewTailConsumersTransport,
   installDurableTailRestorerRunner,
+  isImmutableFinalAggregateSnapshot,
+  mutateOwnedTailAttachmentWithReadyGate,
+  observeProducerTailWindowOutcome,
+  selectPreTombstoneCollectionSample,
   readSinkClosePending,
   sinkCloseObligationRemains,
   sinkCloseProved,
@@ -4024,3 +4032,968 @@ test("sink_close: one failed cleanup then retry proves tombstone", async () => {
   rmSync(dir, { recursive: true, force: true });
 });
 
+
+
+test("§6 final-aggregate-before-tombstone: capture runs before closeSinkWindow", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-final-agg-before-tombstone-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(stateRoot, { recursive: true });
+  const transport = memoryTransport([SANITIZER]);
+  const { store, window, versionTransport } = await openStoredArmedWindow(dir, {
+    windowId: "final-agg-win",
+    restorerId: "tr-final-agg",
+    baselineConsumers: [],
+    now: "2026-10-18T12:00:00.000Z",
+    durationSeconds: 60,
+  });
+  let owned = {
+    ...window,
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER]),
+    owned_sha256: tailConsumersSha256([SANITIZER]),
+    pending_mutation: null,
+  };
+  owned = await store.write(owned);
+
+  const order = [];
+  const captureFinalAggregate = async ({ windowId }) => {
+    order.push("capture");
+    return {
+      schema: "cityscroll.tail_sink_final_aggregate.v1",
+      kind: "final-aggregate-before-tombstone",
+      window_id: windowId,
+      ok: true,
+      events_seen: 42,
+      by_cohort_cpu: { nearby: { cpu_ms_sum: 10, cpu_ms_count: 2 } },
+    };
+  };
+  const closeSinkWindow = async ({ windowId }) => {
+    order.push("cleanup");
+    return {
+      ok: true,
+      cleaned: true,
+      tombstone: true,
+      closed: true,
+      window_id: windowId,
+      reason: null,
+      status: 200,
+    };
+  };
+
+  const tick = await tailAttachmentRestorerTick({
+    store,
+    transport,
+    versionTransport,
+    closeSinkWindow,
+    captureFinalAggregate,
+    stateRoot,
+    now: "2026-10-18T12:05:00.000Z", // past expiry
+  });
+
+  assert.deepEqual(order, ["capture", "cleanup"]);
+  assert.equal(tick.sink_close?.tombstone, true);
+  const paths = tailRestorerPaths(stateRoot);
+  assert.ok(existsSync(paths.finalAggregateReceipt));
+  const finalAgg = JSON.parse(readFileSync(paths.finalAggregateReceipt, "utf8"));
+  assert.equal(finalAgg.events_seen, 42);
+  assert.equal(finalAgg.kind, "final-aggregate-before-tombstone");
+  assert.equal(finalAgg.sample_kind, "last-sample-before-tombstone");
+  assert.equal(finalAgg.arrivals_between_snapshot_and_cleanup, "UNKNOWN");
+  assert.equal(finalAgg.detach_not_delayed_by_capture, true);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("§6 final-aggregate capture failure must not block tombstone", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-final-agg-fail-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(stateRoot, { recursive: true });
+  const transport = memoryTransport([SANITIZER]);
+  const { store, window, versionTransport } = await openStoredArmedWindow(dir, {
+    windowId: "final-agg-fail-win",
+    restorerId: "tr-final-agg-fail",
+    baselineConsumers: [],
+    now: "2026-10-18T12:00:00.000Z",
+    durationSeconds: 60,
+  });
+  let owned = {
+    ...window,
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER]),
+    owned_sha256: tailConsumersSha256([SANITIZER]),
+    pending_mutation: null,
+  };
+  owned = await store.write(owned);
+
+  const captureFinalAggregate = async () => {
+    throw new Error("readback stalled");
+  };
+  const closeSinkWindow = async ({ windowId }) => ({
+    ok: true, cleaned: true, tombstone: true, closed: true,
+    window_id: windowId, reason: null, status: 200,
+  });
+
+  const tick = await tailAttachmentRestorerTick({
+    store,
+    transport,
+    versionTransport,
+    closeSinkWindow,
+    captureFinalAggregate,
+    stateRoot,
+    now: "2026-10-18T12:05:00.000Z",
+  });
+  assert.equal(tick.sink_close?.tombstone, true);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("§6 hard READY gate refuses attach without READY receipt", () => {
+  assert.throws(
+    () => assertRestorerReadyBeforeOwnedAttach({ readyReceipt: null, label: "self" }),
+    /READY receipt is absent/,
+  );
+  assert.throws(
+    () => assertRestorerReadyBeforeOwnedAttach({ readyPresent: true, label: "self" }),
+    /readyPresent alone is insufficient/,
+  );
+  assert.throws(
+    () => assertRestorerReadyBeforeOwnedAttach({ readyReceipt: {}, label: "self" }),
+    /schema mismatch/,
+  );
+  assert.throws(
+    () => assertRestorerReadyBeforeOwnedAttach({
+      readyReceipt: {
+        schema: "cityscroll.worker_tail_attachment_restorer_ready.v1",
+        kind: "ready",
+        independent_process: true,
+        window_id: "win-a",
+        restorer_id: "tr-a",
+        window_generation: 1,
+        pid: 1,
+      },
+      expectedWindowId: "win-b",
+      expectedGeneration: 1,
+      pidAlive: () => true,
+      label: "self",
+    }),
+    /window_id does not match/,
+  );
+  assert.throws(
+    () => assertRestorerReadyBeforeOwnedAttach({
+      readyReceipt: {
+        schema: "cityscroll.worker_tail_attachment_restorer_ready.v1",
+        kind: "ready",
+        independent_process: true,
+        window_id: "win-a",
+        restorer_id: "tr-a",
+        window_generation: 1,
+        pid: 999001,
+      },
+      expectedWindowId: "win-a",
+      expectedRestorerId: "tr-a",
+      expectedGeneration: 1,
+      pidAlive: () => false,
+      label: "self",
+    }),
+    /pid is not alive/,
+  );
+  assert.throws(
+    () => assertRestorerReadyBeforeOwnedAttach({
+      readyReceipt: {
+        schema: "cityscroll.worker_tail_attachment_restorer_ready.v1",
+        kind: "ready",
+        independent_process: true,
+        window_id: "win-a",
+        restorer_id: "tr-a",
+        pid: 4242,
+      },
+      expectedWindowId: "win-a",
+      expectedRestorerId: "tr-a",
+      expectedGeneration: 3,
+      pidAlive: () => true,
+      label: "self",
+    }),
+    /READY receipt missing window_generation/,
+  );
+  assert.throws(
+    () => assertRestorerReadyBeforeOwnedAttach({
+      readyReceipt: {
+        schema: "cityscroll.worker_tail_attachment_restorer_ready.v1",
+        kind: "ready",
+        independent_process: true,
+        window_id: "win-a",
+        restorer_id: "tr-a",
+        window_generation: 2,
+        pid: 4242,
+      },
+      expectedWindowId: "win-a",
+      expectedRestorerId: "tr-a",
+      expectedGeneration: 3,
+      pidAlive: () => true,
+      label: "self",
+    }),
+    /READY generation does not match/,
+  );
+  const ok = assertRestorerReadyBeforeOwnedAttach({
+    readyReceipt: {
+      schema: "cityscroll.worker_tail_attachment_restorer_ready.v1",
+      kind: "ready",
+      independent_process: true,
+      window_id: "win-a",
+      restorer_id: "tr-a",
+      window_generation: 3,
+      pid: 4242,
+      version_guard: { observed_at_ready: "performed:match" },
+    },
+    expectedWindowId: "win-a",
+    expectedRestorerId: "tr-a",
+    expectedGeneration: 3,
+    pidAlive: () => true,
+    label: "self",
+  });
+  assert.equal(ok.ok, true);
+  assert.equal(ok.ready_present, true);
+  assert.equal(ok.pid, 4242);
+  assert.equal(ok.window_generation, 3);
+});
+
+test("§6 restore_only + absent runtime: provision check passes; cap-bound without env fails", () => {
+  const restoreOnlyWindow = {
+    restorer: { armed: true, restore_only: true, cap_detach_actuator_bound: false },
+  };
+  const ok = assertDurableCapDetachRuntimeProvisioned({
+    window: restoreOnlyWindow,
+    env: {},
+  });
+  assert.equal(ok.ok, true);
+  assert.equal(ok.restore_only, true);
+
+  const capBound = {
+    restorer: { armed: true, restore_only: false, cap_detach_actuator_bound: true },
+  };
+  assert.throws(
+    () => assertDurableCapDetachRuntimeProvisioned({ window: capBound, env: {} }),
+    /runtime actuator is absent/,
+  );
+  // Classified failure code for child stderr
+  assert.equal(
+    classifyGuardianStartupStderr(
+      "Error: refuse to run: window armed with cap-detach actuator but runtime actuator is absent",
+    ),
+    GUARDIAN_STARTUP_FAILURE_CODE.CAP_DETACH_RUNTIME_ABSENT,
+  );
+});
+
+test("§6 observeProducerTailWindowOutcome independent of never-READY self", () => {
+  const producerTerminal = {
+    proved: true,
+    action: "restored",
+    attachment_restore: { proved: true, action: "restored" },
+  };
+  const observed = observeProducerTailWindowOutcome({
+    producerTerminal,
+    producerBetaEmpty: true,
+    selfReadyPresent: false,
+    selfTerminal: null,
+    selfOwnedDetached: true,
+    sinkClosed: true,
+    tombstoneProved: true,
+    now: "2026-10-18T13:08:00.747Z",
+  });
+  assert.equal(observed.restore_proven, true);
+  assert.match(observed.outcome, /restored-proven/);
+  assert.equal(observed.waits_on_self_terminal, false);
+  assert.equal(observed.self.kind, "self-never-ready");
+  assert.equal(observed.self.collector_cpu_ms, "UNKNOWN");
+  assert.equal(observed.stop_reason, null);
+
+  const poisonedOld = Boolean(null) && true; // old runner required selfTerminal
+  assert.equal(poisonedOld, false);
+
+  const failed = observeProducerTailWindowOutcome({
+    producerTerminal: null,
+    producerBetaEmpty: true,
+    selfReadyPresent: false,
+  });
+  assert.equal(failed.restore_proven, false);
+  assert.equal(failed.outcome, "failed");
+  assert.equal(failed.stop_reason, "producer-guardian-terminal-timeout");
+});
+
+test("§6 restore_only armed window tick does not refuse absent cap actuator", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-restore-only-tick-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(stateRoot, { recursive: true });
+  const transport = memoryTransport([]);
+  // openStoredArmedWindow arms with cap actuator; rewrite as restore_only
+  const { store, window, versionTransport } = await openStoredArmedWindow(dir, {
+    windowId: "restore-only-tick",
+    restorerId: "tr-ro-tick",
+    baselineConsumers: [],
+    now: "2026-10-18T12:00:00.000Z",
+    durationSeconds: 1800,
+  });
+  let owned = {
+    ...window,
+    restorer: {
+      ...window.restorer,
+      cap_detach_actuator_bound: false,
+      restore_only: true,
+      cap_detach_actuator_kind: null,
+    },
+    phase: "attached",
+    owned_consumers: [],
+    owned_sha256: window.baseline_sha256,
+    pending_mutation: null,
+  };
+  owned = await store.write(owned);
+
+  const tick = await tailAttachmentRestorerTick({
+    store,
+    transport,
+    versionTransport,
+    capDetachActuator: null,
+    stateRoot,
+    now: "2026-10-18T12:00:10.000Z",
+  });
+  assert.ok(tick.outcome === "idle" || tick.window, JSON.stringify(tick));
+  rmSync(dir, { recursive: true, force: true });
+});
+
+
+test("ROOT: post-detach final-aggregate uses short bound; cleanup not stalled", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-final-agg-post-detach-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(stateRoot, { recursive: true });
+  const transport = memoryTransport([SANITIZER]);
+  const { store, window, versionTransport } = await openStoredArmedWindow(dir, {
+    windowId: "post-detach-agg",
+    restorerId: "tr-post-detach",
+    baselineConsumers: [],
+    now: "2026-10-18T12:00:00.000Z",
+    durationSeconds: 60,
+  });
+  let owned = {
+    ...window,
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER]),
+    owned_sha256: tailConsumersSha256([SANITIZER]),
+    pending_mutation: null,
+  };
+  owned = await store.write(owned);
+
+  const order = [];
+  const captureFinalAggregate = async ({ timeoutMs }) => {
+    order.push("capture");
+    assert.ok(timeoutMs <= 1500, `timeoutMs=${timeoutMs}`);
+    // Respect the bound: settle quickly (real readOwnedSinkAggregate aborts).
+    await new Promise((r) => setTimeout(r, 20));
+    return {
+      schema: "cityscroll.tail_sink_final_aggregate.v1",
+      kind: "final-aggregate-before-tombstone",
+      ok: true,
+      events_seen: 8697,
+    };
+  };
+  const closeSinkWindow = async ({ windowId }) => {
+    order.push("cleanup");
+    return {
+      ok: true, cleaned: true, tombstone: true, closed: true,
+      window_id: windowId, reason: null, status: 200,
+    };
+  };
+
+  const started = Date.now();
+  const tick = await tailAttachmentRestorerTick({
+    store,
+    transport,
+    versionTransport,
+    closeSinkWindow,
+    captureFinalAggregate,
+    stateRoot,
+    // Past expires_at: normal terminal path after deadline detach.
+    now: "2026-10-18T12:05:00.000Z",
+  });
+  const elapsed = Date.now() - started;
+  assert.deepEqual(order, ["capture", "cleanup"]);
+  assert.equal(tick.sink_close?.tombstone, true);
+  assert.ok(elapsed < 2_000, `must not stall; elapsed=${elapsed}`);
+  const paths = tailRestorerPaths(stateRoot);
+  const receipt = JSON.parse(readFileSync(paths.finalAggregateReceipt, "utf8"));
+  assert.equal(receipt.sample_kind, "last-sample-before-tombstone");
+  assert.equal(receipt.arrivals_between_snapshot_and_cleanup, "UNKNOWN");
+  assert.equal(receipt.detach_not_delayed_by_capture, true);
+  assert.equal(receipt.events_seen, 8697);
+  // Provider detach (Tail restore) happens before attemptOwnedSinkClose in the tick.
+  const after = await store.read();
+  assert.ok(["restored", "expired-restored"].includes(after.phase), after.phase);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("ROOT: remaining-window caps capture timeout before cleanup", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-final-agg-stall-bound-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(stateRoot, { recursive: true });
+  const transport = memoryTransport([SANITIZER]);
+  const { store, window, versionTransport } = await openStoredArmedWindow(dir, {
+    windowId: "stall-agg",
+    restorerId: "tr-stall-agg",
+    baselineConsumers: [],
+    now: "2026-10-18T12:00:00.000Z",
+    durationSeconds: 1800,
+  });
+  // Terminal path (past expires_at) with a fixture so tick does not refuse
+  // on missing cap-detach runtime. Capture timeout is still short-bounded.
+  let owned = {
+    ...window,
+    expires_at: "2026-10-18T12:00:00.500Z",
+    restorer: {
+      ...window.restorer,
+      restore_only: true,
+      cap_detach_actuator_bound: false,
+      cap_detach_actuator_kind: null,
+    },
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER]),
+    owned_sha256: tailConsumersSha256([SANITIZER]),
+    pending_mutation: null,
+  };
+  owned = await store.write(owned);
+
+  let seenTimeout = null;
+  const captureFinalAggregate = async ({ timeoutMs }) => {
+    seenTimeout = timeoutMs;
+    assert.ok(timeoutMs <= 1500, `timeoutMs=${timeoutMs}`);
+    await new Promise((r) => setTimeout(r, 15));
+    return {
+      schema: "cityscroll.tail_sink_final_aggregate.v1",
+      kind: "final-aggregate-before-tombstone",
+      ok: false,
+      reason: "readback_timeout",
+      events_seen: null,
+    };
+  };
+  const closeSinkWindow = async ({ windowId }) => ({
+    ok: true, cleaned: true, tombstone: true, closed: true,
+    window_id: windowId, reason: null, status: 200,
+  });
+
+  const started = Date.now();
+  const tick = await tailAttachmentRestorerTick({
+    store,
+    transport,
+    versionTransport,
+    closeSinkWindow,
+    captureFinalAggregate,
+    stateRoot,
+    now: "2026-10-18T12:00:01.000Z", // past expires_at → terminal restore then capture
+  });
+  const elapsed = Date.now() - started;
+  assert.equal(tick.sink_close?.tombstone, true);
+  assert.equal(seenTimeout, 1500, "post-deadline uses default short bound");
+  assert.ok(elapsed < 2_500, `must stay within short capture bound; elapsed=${elapsed}`);
+  const paths = tailRestorerPaths(stateRoot);
+  const receipt = JSON.parse(readFileSync(paths.finalAggregateReceipt, "utf8"));
+  assert.equal(receipt.arrivals_between_snapshot_and_cleanup, "UNKNOWN");
+  assert.equal(receipt.detach_not_delayed_by_capture, true);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("SOURCE REVIEW: composed READY gate — failed/absent READY yields 0 PATCH", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-ready-composed-"));
+  const { store, window, versionTransport } = await openStoredArmedWindow(dir, {
+    windowId: "ready-gate-win",
+    restorerId: "tr-ready-gate",
+    baselineConsumers: [],
+    now: "2026-10-18T12:00:00.000Z",
+    durationSeconds: 120,
+  });
+  let patchCount = 0;
+  const transport = memoryTransport([]);
+  const origPatch = transport.patchTailConsumers.bind(transport);
+  transport.patchTailConsumers = async (next) => {
+    patchCount += 1;
+    return origPatch(next);
+  };
+
+  await assert.rejects(
+    () => mutateOwnedTailAttachmentWithReadyGate({
+      transport,
+      store,
+      intendedConsumers: [SANITIZER],
+      phase: "attach",
+      now: "2026-10-18T12:00:01.000Z",
+      versionTransport,
+      readyReceipt: null,
+      label: "self",
+    }),
+    /READY receipt is absent/,
+  );
+  assert.equal(patchCount, 0, "absent READY must issue 0 attachment PATCHes");
+
+  await assert.rejects(
+    () => mutateOwnedTailAttachmentWithReadyGate({
+      transport,
+      store,
+      intendedConsumers: [SANITIZER],
+      phase: "attach",
+      now: "2026-10-18T12:00:01.000Z",
+      versionTransport,
+      readyReceipt: {
+        schema: "cityscroll.worker_tail_attachment_restorer_ready.v1",
+        kind: "ready",
+        independent_process: true,
+        window_id: "foreign-win",
+        restorer_id: "tr-ready-gate",
+        window_generation: window.window_generation,
+        pid: 4242,
+      },
+      pidAlive: () => true,
+      label: "self",
+    }),
+    /window_id does not match/,
+  );
+  assert.equal(patchCount, 0, "foreign READY must issue 0 attachment PATCHes");
+
+  await assert.rejects(
+    () => mutateOwnedTailAttachmentWithReadyGate({
+      transport,
+      store,
+      intendedConsumers: [SANITIZER],
+      phase: "attach",
+      now: "2026-10-18T12:00:01.500Z",
+      versionTransport,
+      readyReceipt: {
+        schema: "cityscroll.worker_tail_attachment_restorer_ready.v1",
+        kind: "ready",
+        independent_process: true,
+        window_id: window.window_id,
+        restorer_id: window.restorer.restorer_id,
+        window_generation: window.window_generation + 9,
+        pid: 4242,
+      },
+      pidAlive: () => true,
+      label: "self",
+    }),
+    /READY generation does not match/,
+  );
+  assert.equal(patchCount, 0, "stale READY generation must issue 0 attachment PATCHes");
+
+  // Positive path: matching READY + live pid + exact generation allows attach (1 PATCH).
+  const ok = await mutateOwnedTailAttachmentWithReadyGate({
+    transport,
+    store,
+    intendedConsumers: [SANITIZER],
+    phase: "attach",
+    now: "2026-10-18T12:00:02.000Z",
+    versionTransport,
+    readyReceipt: {
+      schema: "cityscroll.worker_tail_attachment_restorer_ready.v1",
+      kind: "ready",
+      independent_process: true,
+      window_id: window.window_id,
+      restorer_id: window.restorer.restorer_id,
+      window_generation: window.window_generation,
+      pid: 4242,
+      version_guard: { observed_at_ready: "performed:match" },
+    },
+    pidAlive: () => true,
+    label: "producer",
+  });
+  assert.equal(ok.ok, true);
+  assert.equal(patchCount, 1);
+
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("SOURCE REVIEW: final-aggregate write-once survives lost cleanup ACK retry", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-final-agg-once-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(stateRoot, { recursive: true });
+  const transport = memoryTransport([SANITIZER]);
+  const { store, window, versionTransport } = await openStoredArmedWindow(dir, {
+    windowId: "final-agg-once-win",
+    restorerId: "tr-final-agg-once",
+    baselineConsumers: [],
+    now: "2026-10-18T12:00:00.000Z",
+    durationSeconds: 60,
+  });
+  let owned = {
+    ...window,
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER]),
+    owned_sha256: tailConsumersSha256([SANITIZER]),
+    pending_mutation: null,
+  };
+  owned = await store.write(owned);
+
+  let captureCalls = 0;
+  const captureFinalAggregate = async ({ windowId }) => {
+    captureCalls += 1;
+    if (captureCalls === 1) {
+      return {
+        schema: "cityscroll.tail_sink_final_aggregate.v1",
+        kind: "final-aggregate-before-tombstone",
+        observed_at: "2026-10-18T12:00:50.000Z",
+        window_id: windowId,
+        ok: true,
+        events_seen: 8697,
+        opened: true,
+        closed: false,
+        from_tombstone: false,
+        a2: { pass: true, reason: "within_all_seen_cap", events_seen: 8697, apply_overshoot: 0 },
+      };
+    }
+    // Retry after lost ACK would see tombstone zeros — must not overwrite.
+    return {
+      schema: "cityscroll.tail_sink_final_aggregate.v1",
+      kind: "final-aggregate-before-tombstone",
+      observed_at: "2026-10-18T12:00:51.000Z",
+      window_id: windowId,
+      ok: true,
+      events_seen: 0,
+      opened: false,
+      closed: true,
+      from_tombstone: true,
+      a2: { pass: null, reason: "not_evaluated", events_seen: 0, apply_overshoot: 0 },
+    };
+  };
+  let closeCalls = 0;
+  const closeSinkWindow = async ({ windowId }) => {
+    closeCalls += 1;
+    return {
+      ok: true, cleaned: true, tombstone: true, closed: true,
+      window_id: windowId, reason: null, status: 200,
+    };
+  };
+
+  // First terminal tick: capture 8697 then cleanup.
+  await tailAttachmentRestorerTick({
+    store,
+    transport,
+    versionTransport,
+    closeSinkWindow,
+    captureFinalAggregate,
+    stateRoot,
+    now: "2026-10-18T12:01:00.000Z",
+  });
+  const paths = tailRestorerPaths(stateRoot);
+  const first = JSON.parse(readFileSync(paths.finalAggregateReceipt, "utf8"));
+  assert.equal(first.events_seen, 8697);
+  assert.equal(first.sample_kind, "last-sample-before-tombstone");
+  assert.equal(isImmutableFinalAggregateSnapshot(first, "final-agg-once-win"), true);
+
+  // Simulate lost ACK: leave pending, clear terminal so tick retries close.
+  // Re-open attached phase for a second terminal path.
+  if (existsSync(paths.terminalReceipt)) {
+    // Keep terminal — instead call attempt path via a fresh tick with sink_close
+    // obligation remaining: write pending and invoke tick after resetting phase.
+  }
+  // Directly re-enter closer by writing pending + running another tick after
+  // restoring an attached phase with past expires so restore runs again.
+  let again = await store.read();
+  again = {
+    ...again,
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER]),
+    owned_sha256: tailConsumersSha256([SANITIZER]),
+    expires_at: "2026-10-18T11:59:00.000Z",
+    pending_mutation: null,
+  };
+  // Remove terminal so tick is not short-circuited.
+  if (existsSync(paths.terminalReceipt)) unlinkSync(paths.terminalReceipt);
+  again = await store.write(again);
+  await transport.patchTailConsumers([SANITIZER]);
+
+  await tailAttachmentRestorerTick({
+    store,
+    transport,
+    versionTransport,
+    closeSinkWindow,
+    captureFinalAggregate,
+    stateRoot,
+    now: "2026-10-18T12:01:05.000Z",
+  });
+  const second = JSON.parse(readFileSync(paths.finalAggregateReceipt, "utf8"));
+  assert.equal(second.events_seen, 8697, "retry must not overwrite immutable snapshot");
+  assert.equal(second.from_tombstone === true, false);
+  assert.ok(closeCalls >= 1);
+
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("SOURCE REVIEW: never-resolving fetch/json cannot block final-aggregate bound", async () => {
+  const neverFetch = async () => new Promise(() => { /* never resolves */ });
+  const started = Date.now();
+  const result = await readOwnedSinkAggregate({
+    url: "https://example.test/readback",
+    token: "test-token",
+    windowId: "stall-win",
+    fetchImpl: neverFetch,
+    timeoutMs: 80,
+    now: "2026-10-18T12:00:00.000Z",
+  });
+  const elapsed = Date.now() - started;
+  assert.equal(result.ok, false);
+  assert.equal(result.reason, "readback_timeout");
+  assert.ok(elapsed < 500, `never-resolving fetch must bound (elapsed=${elapsed})`);
+
+  const hangJson = async () => ({
+    ok: true,
+    status: 200,
+    json: async () => new Promise(() => { /* never resolves */ }),
+  });
+  const startedJson = Date.now();
+  const resultJson = await readOwnedSinkAggregate({
+    url: "https://example.test/readback",
+    token: "test-token",
+    windowId: "stall-json-win",
+    fetchImpl: hangJson,
+    timeoutMs: 80,
+    now: "2026-10-18T12:00:00.000Z",
+  });
+  const elapsedJson = Date.now() - startedJson;
+  assert.equal(resultJson.ok, false);
+  assert.equal(resultJson.reason, "readback_timeout");
+  assert.ok(elapsedJson < 500, `never-resolving json must bound (elapsed=${elapsedJson})`);
+});
+
+test("SOURCE REVIEW: observeProducerTailWindowOutcome surfaces self-never-ready deviation", () => {
+  const observed = observeProducerTailWindowOutcome({
+    producerTerminal: { proved: true, action: "restored" },
+    producerBetaEmpty: true,
+    selfReadyPresent: false,
+    selfTerminal: null,
+    selfOwnedDetached: true,
+    sinkClosed: true,
+    tombstoneProved: true,
+    now: "2026-10-18T13:08:01.000Z",
+  });
+  assert.equal(observed.outcome, "restored-proven-producer;self-deviation");
+  assert.equal(observed.self?.kind, "self-never-ready");
+  assert.equal(observed.restore_proven, true);
+  assert.equal(observed.waits_on_self_terminal, false);
+});
+
+test("ROOT 14:20: label-only or negative proof cannot set restore_proven", () => {
+  const labelOnly = observeProducerTailWindowOutcome({
+    producerTerminal: { proved: false, action: "restored" },
+    producerBetaEmpty: true,
+    selfReadyPresent: true,
+    selfTerminal: { proved: true },
+  });
+  assert.equal(labelOnly.restore_proven, false);
+  assert.equal(labelOnly.stop_reason, "producer-restore-unproved");
+
+  const actionOnly = observeProducerTailWindowOutcome({
+    producerTerminal: { action: "restored" },
+    producerBetaEmpty: true,
+  });
+  assert.equal(actionOnly.restore_proven, false);
+  assert.equal(actionOnly.stop_reason, "producer-restore-unproved");
+
+  const foreign = observeProducerTailWindowOutcome({
+    producerTerminal: { proved: true, action: "restored", window_id: "other-win" },
+    producerBetaEmpty: true,
+    expectedWindowId: "owned-win",
+  });
+  assert.equal(foreign.restore_proven, false);
+  assert.equal(foreign.stop_reason, "producer-terminal-foreign-window");
+  assert.equal(foreign.producer.foreign_window, true);
+
+  const detachedStopsWait = observeProducerTailWindowOutcome({
+    producerTerminal: { proved: true, attachment_restore: { proved: true } },
+    producerBetaEmpty: true,
+    selfReadyPresent: true,
+    selfTerminal: null,
+    selfOwnedDetached: true,
+  });
+  assert.equal(detachedStopsWait.restore_proven, true);
+  assert.equal(detachedStopsWait.waits_on_self_terminal, false);
+  assert.equal(detachedStopsWait.self.kind, "self-owned-detached-without-terminal");
+});
+
+test("ROOT 14:20: pre-tombstone sample wins over post-cleanup zero", () => {
+  const receipt = {
+    schema: "cityscroll.tail_sink_final_aggregate.v1",
+    kind: "final-aggregate-before-tombstone",
+    window_id: "sum-win",
+    ok: true,
+    events_seen: 8697,
+    sample_kind: "last-sample-before-tombstone",
+    from_tombstone: false,
+    closed: false,
+    a2: { pass: true, reason: "within_all_seen_cap", events_seen: 8697, apply_overshoot: 0 },
+    by_event_type: { fetch: 100, scheduled: 3 },
+    by_cohort: { search: 12, nearby: 4, http_health: 1 },
+    by_cohort_cpu: {
+      search: { cpu_ms_sum: 40, cpu_ms_count: 12, cpu_ms_unknown_count: 0 },
+      nearby: { cpu_ms_sum: 8, cpu_ms_count: 4, cpu_ms_unknown_count: 0 },
+    },
+    cost_vector: {
+      collector_do_requests: 100,
+      collector_storage_ops: 200,
+      collector_cpu_ms: "UNKNOWN",
+      sink_rpc_count: 100,
+      control_do_requests: "UNKNOWN",
+      control_do_storage_ops: "UNKNOWN",
+      control_do_cpu_ms: "UNKNOWN",
+    },
+    collector_cpu_ms: "UNKNOWN",
+    arrivals_between_snapshot_and_cleanup: "UNKNOWN",
+  };
+  const postCleanup = {
+    events_seen: 0,
+    from_tombstone: true,
+    closed: true,
+    counters: {
+      by_cohort: { search: 0, nearby: 0 },
+      by_event_type: { fetch: 0 },
+      collector_cpu_ms: 0,
+    },
+  };
+  const selected = selectPreTombstoneCollectionSample({
+    finalAggregateReceipt: receipt,
+    lastLiveSample: { events_seen: 8500, from_tombstone: false },
+    postCleanupReadback: postCleanup,
+    expectedWindowId: "sum-win",
+  });
+  assert.equal(selected.source, "final-aggregate-receipt");
+  assert.equal(selected.measured, true);
+  assert.equal(selected.events_seen, 8697);
+  assert.equal(selected.by_cohort.search, 12);
+  assert.equal(selected.by_cohort_cpu.search.cpu_ms_sum, 40);
+  assert.equal(selected.cost_vector.collector_do_requests, 100);
+  assert.notEqual(selected.events_seen, 0);
+
+  const noReceipt = selectPreTombstoneCollectionSample({
+    finalAggregateReceipt: null,
+    lastLiveSample: null,
+    postCleanupReadback: postCleanup,
+    expectedWindowId: "sum-win",
+  });
+  assert.equal(noReceipt.measured, false);
+  assert.equal(noReceipt.events_seen, null);
+  assert.equal(noReceipt.tombstone_readback_events_seen, 0);
+  assert.equal(noReceipt.sample_kind, "last-sample-unknown");
+});
+
+test("ROOT 14:20: announceTailRestorerReady stamps window_generation", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-ready-gen-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(stateRoot, { recursive: true });
+  const { store, window, versionTransport } = await openStoredArmedWindow(dir, {
+    windowId: "ready-gen-win",
+    restorerId: "tr-ready-gen",
+    baselineConsumers: [],
+    now: "2026-10-18T12:00:00.000Z",
+    durationSeconds: 60,
+  });
+  const announced = await announceTailRestorerReady({
+    store,
+    stateRoot,
+    now: "2026-10-18T12:00:01.000Z",
+    pid: 5555,
+    versionTransport,
+  });
+  assert.equal(announced.ready.window_generation, window.window_generation);
+  const paths = tailRestorerPaths(stateRoot);
+  const ready = JSON.parse(readFileSync(paths.readyReceipt, "utf8"));
+  assert.equal(ready.window_generation, window.window_generation);
+  assert.equal(
+    assertRestorerReadyBeforeOwnedAttach({
+      readyReceipt: ready,
+      expectedWindowId: window.window_id,
+      expectedRestorerId: window.restorer.restorer_id,
+      expectedGeneration: window.window_generation,
+      pidAlive: () => true,
+      label: "producer",
+    }).ok,
+    true,
+  );
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("ROOT 14:50: missing window_id stays unproved when ownership expected", () => {
+  const missing = observeProducerTailWindowOutcome({
+    producerTerminal: { proved: true, action: "restored" },
+    producerBetaEmpty: true,
+    expectedWindowId: "owned-win",
+  });
+  assert.equal(missing.restore_proven, false);
+  assert.equal(missing.stop_reason, "producer-terminal-missing-window-id");
+  assert.equal(missing.producer.missing_window_id, true);
+
+  const owned = observeProducerTailWindowOutcome({
+    producerTerminal: { proved: true, action: "restored", window_id: "owned-win" },
+    producerBetaEmpty: true,
+    expectedWindowId: "owned-win",
+  });
+  assert.equal(owned.restore_proven, true);
+  assert.equal(owned.producer.missing_window_id, false);
+});
+
+test("ROOT 14:50: real Window-2 receipt shape keeps by_cohort counts and by_cohort_cpu separate", () => {
+  const fixturePath = join(REPO_ROOT, "test/fixtures/tail-sanitizer/window2-lastagg-shape.json");
+  const lastAgg = JSON.parse(readFileSync(fixturePath, "utf8")).lastAgg;
+  assert.equal(typeof lastAgg.counters?.by_cohort_cpu, "object");
+  assert.equal(typeof lastAgg.cost_vector, "object");
+  assert.equal(Number.isInteger(lastAgg.events_seen), true);
+
+  // Receipt shape mirrors readOwnedSinkAggregate projection of the live sample.
+  const receipt = {
+    schema: "cityscroll.tail_sink_final_aggregate.v1",
+    kind: "final-aggregate-before-tombstone",
+    window_id: "w2-real-shape",
+    ok: true,
+    events_seen: lastAgg.events_seen,
+    sample_kind: "last-sample-before-tombstone",
+    from_tombstone: false,
+    closed: false,
+    a2: lastAgg.a2,
+    by_cohort: lastAgg.by_cohort, // null in Window-2 live shape
+    by_cohort_cpu: lastAgg.counters.by_cohort_cpu,
+    by_event_type: lastAgg.by_event_type || lastAgg.counters.by_event_type,
+    by_deployed_revision: lastAgg.by_deployed_revision || lastAgg.counters.by_deployed_revision,
+    cost_vector: lastAgg.cost_vector,
+    collector_do_requests: lastAgg.counters.collector_do_requests,
+    collector_storage_ops: lastAgg.counters.collector_storage_ops,
+    collector_cpu_ms: lastAgg.counters.collector_cpu_ms,
+    arrivals_between_snapshot_and_cleanup: "UNKNOWN",
+  };
+
+  const fromReceipt = selectPreTombstoneCollectionSample({
+    finalAggregateReceipt: receipt,
+    lastLiveSample: lastAgg,
+    postCleanupReadback: { events_seen: 0, from_tombstone: true, closed: true },
+    expectedWindowId: "w2-real-shape",
+  });
+  assert.equal(fromReceipt.source, "final-aggregate-receipt");
+  assert.equal(fromReceipt.events_seen, 8697);
+  assert.equal(fromReceipt.by_cohort, null); // live Window-2 had no typed count map
+  assert.equal(fromReceipt.by_cohort_cpu.http.cpu_ms_count, 3615);
+  assert.equal(fromReceipt.cost_vector.collector_do_requests, 11495);
+  assert.equal(fromReceipt.cost_vector.collector_storage_ops, 34485);
+  assert.equal(fromReceipt.cost_vector.collector_cpu_ms, 446);
+  // CPU object must not appear under by_cohort.
+  assert.equal(fromReceipt.by_cohort?.http?.cpu_ms_sum, undefined);
+
+  const fromLive = selectPreTombstoneCollectionSample({
+    finalAggregateReceipt: null,
+    lastLiveSample: lastAgg,
+    postCleanupReadback: { events_seen: 0, from_tombstone: true, closed: true },
+  });
+  assert.equal(fromLive.source, "last-live-sample");
+  assert.equal(fromLive.by_cohort_cpu.http.cpu_ms_sum, 188753);
+  assert.equal(fromLive.cost_vector.sink_rpc_count, 11495);
+  assert.equal(fromLive.by_cohort, null);
+
+  // Mixing a CPU map into by_cohort must be rejected (typed counts only).
+  const mixed = selectPreTombstoneCollectionSample({
+    finalAggregateReceipt: {
+      ...receipt,
+      by_cohort: lastAgg.counters.by_cohort_cpu,
+    },
+    expectedWindowId: "w2-real-shape",
+  });
+  assert.equal(mixed.by_cohort, null);
+  assert.equal(mixed.by_cohort_cpu.http.cpu_ms_count, 3615);
+});

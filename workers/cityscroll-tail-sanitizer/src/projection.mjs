@@ -84,8 +84,11 @@ export function classifyCpuValue(cpuTime) {
  * Fixed allowlisted comparison cohorts. Keys are the only ones that may be
  * persisted. RUM is ONE weighted batch cohort (16 observations), not 16 routes.
  * Fetch routes map via PATHNAME_COHORT_PREFIXES (pathname only — never URL,
- * query, or headers). Cold-start raw partitions are dual-recorded only when a
- * documented numeric 0|1 flag is present; absent stays unpartitioned.
+ * query, or headers). `/health` → http_health; unmatched fetch → http_unknown;
+ * remaining matched producer routes keep their fixed keys; `http` remains for
+ * legacy/allowlist compatibility. Cold-start raw partitions are dual-recorded
+ * only when a documented numeric 0|1 flag is present; absent stays unpartitioned.
+ * Tail TraceItem has no coldStart (workerd api/trace.h); Tail cold/warm is UNKNOWN.
  * Collector cohort is for self-Tail overhead only.
  */
 export const RUM_BATCH_OBSERVATION_COUNT = 16;
@@ -93,6 +96,8 @@ export const RUM_BATCH_COHORT_KEY = "rum_batch_16";
 
 export const FIXED_COHORT_KEYS = Object.freeze([
   "http",
+  "http_health",
+  "http_unknown",
   "http_events",
   RUM_BATCH_COHORT_KEY,
   "search",
@@ -125,7 +130,7 @@ export const PATHNAME_COHORT_PREFIXES = Object.freeze([
   Object.freeze({ prefix: "/near-you", cohort: "nearby" }),
   Object.freeze({ prefix: "/performance-events", cohort: RUM_BATCH_COHORT_KEY }),
   Object.freeze({ prefix: "/events", cohort: "http_events" }),
-  Object.freeze({ prefix: "/health", cohort: "http" }),
+  Object.freeze({ prefix: "/health", cohort: "http_health" }),
 ]);
 
 export const DEFAULT_COLLECTOR_SCRIPT_NAME = "cityscroll-tail-sanitizer";
@@ -138,16 +143,25 @@ export const KNOWN_CRON_TO_COHORT = Object.freeze({
 });
 
 /**
- * Pathname-only cohort key from the fixed prefix table. Unknown → http.
+ * Pathname-only cohort key from the fixed prefix table.
+ * /health → http_health; unmatched fetch path → http_unknown.
+ * Matched non-health routes keep their fixed cohort (search/nearby/…).
  * Does not accept query strings; callers must pass URL.pathname only.
+ *
+ * Cold/warm capability (A1): workerd TraceItem (api/trace.h) exposes cpuTime /
+ * wallTime / outcome / event / logs / exceptions / scriptName / … and has NO
+ * coldStart property. Observability `$metadata.coldStart` is a separate optional
+ * numeric flag with unverified 0/1 semantics. Tail-based cold/warm stays UNKNOWN;
+ * do not invent a measurement from absence. Projection still dual-records raw
+ * 0|1 only if a documented numeric flag is present on an item.
  */
 export function cohortFromFetchPathname(pathname) {
-  if (typeof pathname !== "string" || pathname.length === 0) return "http";
+  if (typeof pathname !== "string" || pathname.length === 0) return "http_unknown";
   for (const entry of PATHNAME_COHORT_PREFIXES) {
     const { prefix, cohort } = entry;
     if (pathname === prefix || pathname.startsWith(`${prefix}/`)) return cohort;
   }
-  return "http";
+  return "http_unknown";
 }
 
 /**
@@ -174,7 +188,7 @@ export function mapFixedCohort({ eventType = null, cron = null, cohort = null } 
   if (typeof cron === "string" && KNOWN_CRON_TO_COHORT[cron]) return KNOWN_CRON_TO_COHORT[cron];
   if (eventType === "scheduled") return "cron_unknown";
   if (eventType === "queue") return "queue";
-  if (eventType === "fetch") return "http";
+  if (eventType === "fetch") return "http_unknown";
   return "unknown";
 }
 

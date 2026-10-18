@@ -30,6 +30,10 @@ import {
   cleanupUrlFromReadbackUrl,
   closeOwnedSinkWindow,
   confirmTailAttachment,
+  mutateOwnedTailAttachment,
+  projectAllowlistedCostVector,
+  projectTypedCohortEventCounts,
+  readOwnedSinkAggregate,
   createBetaWorkerTailConsumersTransport,
   createDeploymentsVersionTransport,
   createDualViewTailConsumersTransport,
@@ -45,6 +49,8 @@ import { DEFAULT_WORKER_ID, isProcessAlive } from "./worker_observability_settin
 export const TAIL_RESTORER_RUNTIME_SCHEMA = "cityscroll.worker_tail_attachment_restorer_runtime.v1";
 export const TAIL_RESTORER_READY_SCHEMA = "cityscroll.worker_tail_attachment_restorer_ready.v1";
 export const TAIL_SINK_CLOSE_PENDING_SCHEMA = "cityscroll.tail_sink_close_pending.v1";
+export const TAIL_SINK_FINAL_AGGREGATE_SCHEMA = "cityscroll.tail_sink_final_aggregate.v1";
+export const TAIL_PRODUCER_OUTCOME_SCHEMA = "cityscroll.tail_producer_window_outcome.v1";
 export const DEFAULT_TAIL_RESTORER_STATE_ROOT = join(
   process.env.HOME || "",
   ".local/state/cityscroll-cost-control/tail-attachment-restorer",
@@ -152,6 +158,63 @@ export function createSinkCloserFromEnv(env, { fetchImpl = globalThis.fetch } = 
 }
 
 /**
+ * Authenticated AggregateSink /readback capture for guardian terminal.
+ * Persists allowlisted counters BEFORE /cleanup tombstone.
+ */
+/** Bound for terminal final-aggregate GET so capture never stalls detach. */
+export const DEFAULT_FINAL_AGGREGATE_TIMEOUT_MS = 1_500;
+
+/**
+ * A prior final-aggregate receipt is immutable when it is a successful sample
+ * for this exact window with a non-negative measured events_seen (including 0
+ * only when explicitly ok and not a post-tombstone wipe). Non-empty measured
+ * counters must never be overwritten by a retry that reads the tombstone.
+ */
+export function isImmutableFinalAggregateSnapshot(existing, windowId) {
+  if (!existing || typeof existing !== "object") return false;
+  if (existing.window_id !== windowId) return false;
+  if (existing.ok !== true) return false;
+  if (existing.from_tombstone === true || existing.closed === true) return false;
+  if (existing.sample_kind === "last-sample-unknown") return false;
+  // Preserve any successful pre-tombstone sample (including events_seen === 0).
+  if (existing.sample_kind === "last-sample-before-tombstone") return true;
+  if (Number.isInteger(existing.events_seen) && existing.events_seen >= 0) return true;
+  return false;
+}
+
+function writeFinalAggregateReceiptOnce(path, receipt, windowId) {
+  const existing = readJsonIfPresent(path);
+  if (isImmutableFinalAggregateSnapshot(existing, windowId)) {
+    return existing;
+  }
+  return writeTailRestorerReceipt(path, receipt);
+}
+
+export function createSinkFinalAggregateCaptureFromEnv(env, { fetchImpl = globalThis.fetch } = {}) {
+  const readbackUrl = env?.CITYSCROLL_TAIL_SINK_READBACK_URL;
+  const token = env?.CITYSCROLL_TAIL_SINK_READBACK_TOKEN;
+  if (typeof readbackUrl !== "string" || !readbackUrl) return null;
+  if (typeof token !== "string" || !token || token === "unset") return null;
+  return async function captureFinalAggregate({
+    windowId,
+    now = new Date().toISOString(),
+    timeoutMs = DEFAULT_FINAL_AGGREGATE_TIMEOUT_MS,
+  } = {}) {
+    return readOwnedSinkAggregate({
+      url: readbackUrl,
+      token,
+      windowId,
+      fetchImpl,
+      now,
+      // Never delay automatic detach: short hard bound; failures are non-blocking.
+      timeoutMs: Number.isFinite(timeoutMs) && timeoutMs > 0
+        ? Math.min(timeoutMs, DEFAULT_FINAL_AGGREGATE_TIMEOUT_MS)
+        : DEFAULT_FINAL_AGGREGATE_TIMEOUT_MS,
+    });
+  };
+}
+
+/**
  * Close the AggregateSink window at guardian terminal (expiry/cap/death/cancel).
  * Authenticated /cleanup leaves a TERMINAL tombstone. Failures are recorded;
  * they do not unwind an already-proved detach/restore.
@@ -213,14 +276,75 @@ function writeSinkClosePendingRecord(paths, record) {
  */
 async function attemptOwnedSinkClose({
   closeSinkWindow,
+  captureFinalAggregate = null,
   windowId,
   paths,
   now = null,
   reason = null,
+  /**
+   * When set (ISO), remaining ms until expires_at caps the capture timeout so
+   * terminal cleanup never stalls past the detach deadline. Past-deadline →
+   * skip capture and record an honest last-sample-unknown receipt.
+   */
+  expiresAt = null,
 } = {}) {
   if (typeof closeSinkWindow !== "function") return null;
   const at = typeof now === "string" ? now : new Date().toISOString();
   const id = typeof windowId === "string" && windowId ? windowId : null;
+  // ROOT 13:20: Tail attachment restore/detach already ran before this closer
+  // (deadline detach is never gated on this GET). Capture is short-bounded and
+  // non-throwing; Tail arrivals between snapshot and tombstone stay UNKNOWN.
+  // Valid non-empty snapshots are write-once per exact window so a lost cleanup
+  // ACK retry cannot overwrite measured counters with a post-tombstone zero.
+  if (typeof captureFinalAggregate === "function" && id && paths?.finalAggregateReceipt) {
+    const existing = readJsonIfPresent(paths.finalAggregateReceipt);
+    if (isImmutableFinalAggregateSnapshot(existing, id)) {
+      // Keep prior evidence; still proceed to cleanup.
+    } else {
+      try {
+        const atMs = Date.parse(at);
+        const expMs = typeof expiresAt === "string" ? Date.parse(expiresAt) : NaN;
+        // Before deadline: cap by remaining window. At/after deadline (normal
+        // terminal path): still capture with the short default bound — detach
+        // already completed; do not skip the last-sample GET.
+        let timeoutMs = DEFAULT_FINAL_AGGREGATE_TIMEOUT_MS;
+        if (Number.isFinite(expMs) && Number.isFinite(atMs) && expMs > atMs) {
+          timeoutMs = Math.min(DEFAULT_FINAL_AGGREGATE_TIMEOUT_MS, Math.max(1, expMs - atMs));
+        }
+        const finalAggregate = await captureFinalAggregate({
+          windowId: id,
+          now: at,
+          timeoutMs,
+        });
+        if (finalAggregate) {
+          writeFinalAggregateReceiptOnce(paths.finalAggregateReceipt, {
+            ...finalAggregate,
+            sample_kind: "last-sample-before-tombstone",
+            arrivals_between_snapshot_and_cleanup: "UNKNOWN",
+            detach_not_delayed_by_capture: true,
+            label: finalAggregate.label
+              || "last sample before terminal tombstone; arrivals until cleanup UNKNOWN",
+          }, id);
+        }
+      } catch {
+        // Capture failure must not block restore/tombstone.
+        try {
+          writeFinalAggregateReceiptOnce(paths.finalAggregateReceipt, {
+            schema: TAIL_SINK_FINAL_AGGREGATE_SCHEMA,
+            kind: "final-aggregate-before-tombstone",
+            observed_at: at,
+            window_id: id,
+            ok: false,
+            sample_kind: "last-sample-unknown",
+            label: "capture error; detach/cleanup not delayed; arrivals until tombstone UNKNOWN",
+            arrivals_between_snapshot_and_cleanup: "UNKNOWN",
+            detach_not_delayed_by_capture: true,
+            reason: "capture_error",
+          }, id);
+        } catch { /* receipt best-effort */ }
+      }
+    }
+  }
   writeSinkClosePendingRecord(paths, {
     status: "pending",
     window_id: id,
@@ -266,6 +390,7 @@ export function sinkCloseObligationRemains(stateRoot, closeSinkWindow) {
  */
 async function reconcileSinkCloseObligation({
   closeSinkWindow,
+  captureFinalAggregate = null,
   paths,
   windowId = null,
   now = null,
@@ -290,10 +415,13 @@ async function reconcileSinkCloseObligation({
     || null;
   const sinkClose = await attemptOwnedSinkClose({
     closeSinkWindow,
+    captureFinalAggregate,
     windowId: closeWindowId,
     paths,
     now,
     reason,
+    // Retries: do not stall cleanup; short default bound inside capture helper.
+    expiresAt: null,
   });
   if (terminal) {
     writeTailRestorerReceipt(paths.terminalReceipt, {
@@ -333,6 +461,7 @@ export function tailRestorerPaths(stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT) 
     heartbeatReceipt: join(stateRoot, "receipts/heartbeat.json"),
     terminalReceipt: join(stateRoot, "receipts/terminal.json"),
     sinkClosePending: join(stateRoot, "receipts/sink-close-pending.json"),
+    finalAggregateReceipt: join(stateRoot, "receipts/final-aggregate-before-tombstone.json"),
     controllerDeathReceipt: join(stateRoot, "receipts/controller-death.json"),
     childExitReceipt: join(stateRoot, "receipts/child-exit.json"),
     childFailedBeforeReadyReceipt: join(stateRoot, "receipts/child-failed-before-ready.json"),
@@ -351,6 +480,7 @@ export const GUARDIAN_STARTUP_FAILURE_CODE = Object.freeze({
   WINDOW_MISSING: "window_missing",
   TRANSPORT_TARGET_MISMATCH: "transport_target_mismatch",
   VERSION_EVIDENCE_MISSING: "version_evidence_missing",
+  CAP_DETACH_RUNTIME_ABSENT: "cap_detach_runtime_absent",
   SPAWN_ERROR: "spawn_error",
   UNKNOWN_STARTUP_FAILURE: "unknown_startup_failure",
   NONE: "none",
@@ -383,6 +513,9 @@ export function classifyGuardianStartupStderr(sampleText = "") {
   if (/version evidence|version_evidence|deployments version/i.test(text)
     && /required|missing|unproved|refusing/i.test(text)) {
     return GUARDIAN_STARTUP_FAILURE_CODE.VERSION_EVIDENCE_MISSING;
+  }
+  if (/cap-detach actuator but runtime actuator is absent|armed with cap-detach but runtime actuator absent/i.test(text)) {
+    return GUARDIAN_STARTUP_FAILURE_CODE.CAP_DETACH_RUNTIME_ABSENT;
   }
   if (text.trim()) return GUARDIAN_STARTUP_FAILURE_CODE.UNKNOWN_STARTUP_FAILURE;
   return GUARDIAN_STARTUP_FAILURE_CODE.NONE;
@@ -707,6 +840,9 @@ export async function announceTailRestorerReady({
     });
     // Bound means an actual getLatestVersionEvidence call was observed.
     const versionGuardBound = readyObservation.performed === true;
+    if (!Number.isInteger(window.window_generation)) {
+      fail("cannot announce Tail restorer readiness without an integer window_generation");
+    }
     const ready = writeTailRestorerReceipt(paths.readyReceipt, {
       schema: TAIL_RESTORER_READY_SCHEMA,
       kind: "ready",
@@ -715,6 +851,7 @@ export async function announceTailRestorerReady({
       pid,
       window_id: window.window_id,
       restorer_id: window.restorer.restorer_id,
+      window_generation: window.window_generation,
       window_path: store.path,
       state_root: stateRoot,
       independent_process: true,
@@ -740,6 +877,7 @@ export async function announceTailRestorerReady({
       pid,
       window_id: window.window_id,
       restorer_id: window.restorer.restorer_id,
+      window_generation: window.window_generation,
       phase: window.phase,
       version_guard_bound: versionGuardBound,
       version_guard_observed_at_ready: readyObservation.outcome,
@@ -765,6 +903,7 @@ export async function runTailRestorerLoop({
   versionTransport = null,
   capDetachActuator = null,
   closeSinkWindow = null,
+  captureFinalAggregate = null,
   stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT,
   pollMs = DEFAULT_TAIL_POLL_MS,
   nowFn = () => new Date().toISOString(),
@@ -772,7 +911,10 @@ export async function runTailRestorerLoop({
 } = {}) {
   const paths = tailRestorerPaths(stateRoot);
   const initial = await store.read();
-  if (initial?.restorer?.cap_detach_actuator_bound === true) {
+  if (
+    initial?.restorer?.cap_detach_actuator_bound === true
+    && initial?.restorer?.restore_only !== true
+  ) {
     if (!capDetachActuator || typeof capDetachActuator.pollAndDetachIfCapped !== "function") {
       fail(
         "refuse to run: window armed with cap-detach actuator but runtime actuator is absent",
@@ -821,6 +963,7 @@ export async function runTailRestorerLoop({
       versionTransport,
       capDetachActuator,
       closeSinkWindow,
+      captureFinalAggregate,
       stateRoot,
       now: nowFn(),
     });
@@ -863,6 +1006,7 @@ export async function tailAttachmentRestorerTick({
   versionTransport = null,
   capDetachActuator = null,
   closeSinkWindow = null,
+  captureFinalAggregate = null,
   stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT,
   now = null,
   nowFn = () => new Date().toISOString(),
@@ -905,6 +1049,7 @@ export async function tailAttachmentRestorerTick({
     && !snapControllerDead
     && !snapCancelRequested
     && snapshot.restorer?.cap_detach_actuator_bound === true
+    && snapshot.restorer?.restore_only !== true
   ) {
     if (!capDetachActuator || typeof capDetachActuator.pollAndDetachIfCapped !== "function") {
       fail("refuse: window armed with cap-detach but runtime actuator absent");
@@ -964,6 +1109,7 @@ export async function tailAttachmentRestorerTick({
       const existingTerminal = readJsonIfPresent(paths.terminalReceipt);
       const reconciled = await reconcileSinkCloseObligation({
         closeSinkWindow,
+        captureFinalAggregate,
         paths,
         windowId: window.window_id
           || existingTerminal?.window_id
@@ -1018,7 +1164,10 @@ export async function tailAttachmentRestorerTick({
     // below still run on later ticks. A stale observation (A ≠ B) refuses
     // actuation with 0 PATCH — never invent B's binding or re-poll under lock.
     if (owned && !pending && !expired && !controllerDead && !cancelRequested) {
-      if (window.restorer?.cap_detach_actuator_bound === true) {
+      if (
+        window.restorer?.cap_detach_actuator_bound === true
+        && window.restorer?.restore_only !== true
+      ) {
         if (!capDetachActuator || typeof capDetachActuator.pollAndDetachIfCapped !== "function") {
           fail("refuse: window armed with cap-detach but runtime actuator absent");
         }
@@ -1085,10 +1234,12 @@ export async function tailAttachmentRestorerTick({
           });
           const sinkClose = await attemptOwnedSinkClose({
             closeSinkWindow,
+            captureFinalAggregate,
             windowId: restoredWindow.window_id,
             paths,
             now: nowAfter,
             reason: "owned-cap-detach",
+            expiresAt: restoredWindow?.expires_at || window.expires_at || null,
           });
           const receipt = writeTailRestorerReceipt(paths.terminalReceipt, {
             schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
@@ -1151,10 +1302,12 @@ export async function tailAttachmentRestorerTick({
         });
         const sinkClose = await attemptOwnedSinkClose({
           closeSinkWindow,
+          captureFinalAggregate,
           windowId: closeWindowId,
           paths,
           now: nowAfter,
           reason: "refused-conflict",
+          expiresAt: reconciled.window?.expires_at || window.expires_at || null,
         });
         const receipt = writeTailRestorerReceipt(paths.terminalReceipt, {
           ...reconciled.receipt,
@@ -1207,10 +1360,12 @@ export async function tailAttachmentRestorerTick({
         });
         const sinkClose = await attemptOwnedSinkClose({
           closeSinkWindow,
+          captureFinalAggregate,
           windowId: closeWindowId,
           paths,
           now: nowAfter,
           reason: "refused-conflict",
+          expiresAt: reconciled.window?.expires_at || window.expires_at || null,
         });
         const receipt = writeTailRestorerReceipt(paths.terminalReceipt, {
           ...reconciled.receipt,
@@ -1280,10 +1435,12 @@ export async function tailAttachmentRestorerTick({
     });
     const sinkClose = await attemptOwnedSinkClose({
       closeSinkWindow,
+      captureFinalAggregate,
       windowId: closeWindowId,
       paths,
       now: nowAfter,
       reason: restored.receipt?.reason || restored.action || "terminal-restore",
+      expiresAt: restored.window?.expires_at || window.expires_at || null,
     });
     const receipt = writeTailRestorerReceipt(paths.terminalReceipt, {
       schema: WORKER_TAIL_ATTACHMENT_RECEIPT_SCHEMA,
@@ -1386,6 +1543,357 @@ export function createBoundDeploymentsVersionTransport(env, window) {
   return transport;
 }
 
+
+/**
+ * Hard READY gate before owned self/producer attach.
+ * Refuses absent, malformed, foreign, stale, or not-independent READY receipts.
+ * Requires schema, independent_process, exact window/restorer binding, and a
+ * live child pid (or an injected pidAlive probe). readyPresent:true alone is
+ * never enough.
+ */
+export function assertRestorerReadyBeforeOwnedAttach({
+  readyReceipt = null,
+  readyPresent = null,
+  expectedWindowId = null,
+  expectedRestorerId = null,
+  expectedGeneration = null,
+  pidAlive = isProcessAlive,
+  label = "restorer",
+} = {}) {
+  // readyPresent alone must never authorize attach.
+  if (readyPresent === true && !(readyReceipt && typeof readyReceipt === "object")) {
+    fail(`refuse owned attach: ${label} READY receipt object is required (readyPresent alone is insufficient)`);
+  }
+  if (!readyReceipt || typeof readyReceipt !== "object") {
+    fail(`refuse owned attach: ${label} READY receipt is absent`);
+  }
+  const receipt = readyReceipt;
+  if (receipt.schema !== TAIL_RESTORER_READY_SCHEMA) {
+    fail(`refuse owned attach: ${label} READY receipt schema mismatch`);
+  }
+  if (receipt.kind != null && receipt.kind !== "ready") {
+    fail(`refuse owned attach: ${label} READY receipt kind is not ready`);
+  }
+  if (receipt.independent_process !== true) {
+    fail(`refuse owned attach: ${label} READY is not an independent process`);
+  }
+  if (typeof expectedWindowId === "string" && expectedWindowId) {
+    if (receipt.window_id !== expectedWindowId) {
+      fail(`refuse owned attach: ${label} READY window_id does not match owned window`);
+    }
+  } else if (typeof receipt.window_id !== "string" || !receipt.window_id) {
+    fail(`refuse owned attach: ${label} READY receipt missing window_id`);
+  }
+  if (typeof expectedRestorerId === "string" && expectedRestorerId) {
+    if (receipt.restorer_id !== expectedRestorerId) {
+      fail(`refuse owned attach: ${label} READY restorer_id does not match owned restorer`);
+    }
+  } else if (typeof receipt.restorer_id !== "string" || !receipt.restorer_id) {
+    fail(`refuse owned attach: ${label} READY receipt missing restorer_id`);
+  }
+  // Mandatory exact admitted generation — missing/foreign/stale all refuse.
+  if (!Number.isInteger(expectedGeneration)) {
+    fail(`refuse owned attach: ${label} owned window_generation is required`);
+  }
+  const receiptGen = receipt.window_generation ?? receipt.generation;
+  if (!Number.isInteger(receiptGen)) {
+    fail(`refuse owned attach: ${label} READY receipt missing window_generation`);
+  }
+  if (receiptGen !== expectedGeneration) {
+    fail(`refuse owned attach: ${label} READY generation does not match owned window`);
+  }
+  const pid = Number.isInteger(receipt.pid) ? receipt.pid : null;
+  if (pid == null || pid <= 0) {
+    fail(`refuse owned attach: ${label} READY receipt missing live pid`);
+  }
+  const aliveProbe = typeof pidAlive === "function" ? pidAlive : isProcessAlive;
+  if (aliveProbe(pid) !== true) {
+    fail(`refuse owned attach: ${label} READY child pid is not alive`);
+  }
+  return {
+    ok: true,
+    label,
+    ready_present: true,
+    independent_process: true,
+    window_id: receipt.window_id,
+    restorer_id: receipt.restorer_id,
+    window_generation: receiptGen,
+    pid,
+    version_guard: receipt.version_guard || null,
+    // Version/consumer binding is enforced by mutateOwnedTailAttachment's
+    // versionTransport gate — this helper does not re-check it.
+    version_binding_checked_here: false,
+  };
+}
+
+/**
+ * Attach path that enforces the READY gate inside mutateOwnedTailAttachment
+ * before any version GET, intent write, or PATCH (0 PATCH on refuse).
+ */
+export async function mutateOwnedTailAttachmentWithReadyGate({
+  readyReceipt = null,
+  pidAlive = isProcessAlive,
+  label = "restorer",
+  ...mutateArgs
+} = {}) {
+  const beforeOwnedAttach = ({ window }) => {
+    assertRestorerReadyBeforeOwnedAttach({
+      readyReceipt,
+      expectedWindowId: window?.window_id || null,
+      expectedRestorerId: window?.restorer?.restorer_id || null,
+      expectedGeneration: window?.window_generation ?? null,
+      pidAlive,
+      label,
+    });
+  };
+  return mutateOwnedTailAttachment({
+    ...mutateArgs,
+    beforeOwnedAttach,
+  });
+}
+
+/**
+ * Pre-spawn / pre-loop check: when the window is armed with a durable
+ * cap-detach actuator, the child env must provision the runtime actuator.
+ * restore_only windows skip this (no durable cap-detach expected).
+ */
+export function assertDurableCapDetachRuntimeProvisioned({
+  window = null,
+  env = process.env,
+  capDetachActuator = null,
+} = {}) {
+  if (window?.restorer?.restore_only === true) {
+    return { ok: true, restore_only: true, required: false };
+  }
+  if (window?.restorer?.cap_detach_actuator_bound !== true) {
+    return { ok: true, restore_only: false, required: false };
+  }
+  if (capDetachActuator && typeof capDetachActuator.pollAndDetachIfCapped === "function") {
+    return { ok: true, restore_only: false, required: true, runtime_present: true };
+  }
+  if (env?.CITYSCROLL_TAIL_ATTACHMENT_RESTORER_CAP_DETACH_MODULE) {
+    return { ok: true, restore_only: false, required: true, runtime_present: "module" };
+  }
+  const readbackUrl = env?.CITYSCROLL_TAIL_SINK_READBACK_URL;
+  const readbackToken = env?.CITYSCROLL_TAIL_SINK_READBACK_TOKEN;
+  if (typeof readbackUrl === "string" && readbackUrl
+    && typeof readbackToken === "string" && readbackToken && readbackToken !== "unset") {
+    return { ok: true, restore_only: false, required: true, runtime_present: "env-readback" };
+  }
+  fail(
+    "refuse to run: window armed with cap-detach actuator but runtime actuator is absent",
+  );
+}
+
+/**
+ * Producer window outcome independent of a never-READY self guardian.
+ * Self deviation is surfaced separately and must not poison restore_proven.
+ * An action/outcome label alone is never proof — require proved:true (or
+ * attachment_restore.proved:true). Foreign window terminals refuse.
+ */
+export function observeProducerTailWindowOutcome({
+  producerTerminal = null,
+  producerBetaEmpty = null,
+  expectedWindowId = null,
+  selfReadyPresent = null,
+  selfTerminal = null,
+  selfOwnedDetached = null,
+  sinkClosed = null,
+  tombstoneProved = null,
+  now = new Date().toISOString(),
+} = {}) {
+  const terminalObj = producerTerminal && typeof producerTerminal === "object"
+    ? producerTerminal
+    : null;
+  let foreignTerminal = false;
+  let missingOwnership = false;
+  if (terminalObj && typeof expectedWindowId === "string" && expectedWindowId) {
+    const terminalWindowId = terminalObj.window_id
+      || terminalObj.attachment_restore?.window_id
+      || null;
+    if (typeof terminalWindowId !== "string" || !terminalWindowId) {
+      // Missing ownership identity stays unproved (not an implicit match).
+      missingOwnership = true;
+    } else if (terminalWindowId !== expectedWindowId) {
+      foreignTerminal = true;
+    }
+  }
+  // Label-only (action/outcome without proved:true) is NOT proof.
+  const producerProved = !foreignTerminal
+    && !missingOwnership
+    && terminalObj
+    && (
+      terminalObj.proved === true
+      || terminalObj.attachment_restore?.proved === true
+    )
+    && terminalObj.proved !== false
+    && terminalObj.attachment_restore?.proved !== false;
+  const betaEmpty = producerBetaEmpty === true;
+  const selfNeverReady = selfReadyPresent !== true;
+  const selfDetached = selfOwnedDetached === true;
+  const selfTerminalPresent = Boolean(selfTerminal && typeof selfTerminal === "object");
+  // When self never READY / already owned-detached, do not wait on self terminal.
+  const selfDeviation = selfNeverReady
+    ? {
+      kind: "self-never-ready",
+      ready_present: false,
+      terminal_present: selfTerminalPresent,
+      owned_detached: selfDetached,
+      collector_cpu_ms: "UNKNOWN",
+    }
+    : (selfDetached && !selfTerminalPresent
+      ? {
+        kind: "self-owned-detached-without-terminal",
+        ready_present: true,
+        terminal_present: false,
+        owned_detached: true,
+        collector_cpu_ms: "UNKNOWN",
+      }
+      : null);
+
+  const restoreProven = producerProved === true && betaEmpty === true;
+  let outcome = "UNKNOWN";
+  let stopReason = null;
+  if (foreignTerminal) {
+    outcome = "failed";
+    stopReason = "producer-terminal-foreign-window";
+  } else if (missingOwnership) {
+    outcome = "failed";
+    stopReason = "producer-terminal-missing-window-id";
+  } else if (restoreProven) {
+    outcome = selfDeviation
+      ? "restored-proven-producer;self-deviation"
+      : "restored-proven";
+  } else if (producerTerminal == null) {
+    outcome = "failed";
+    stopReason = "producer-guardian-terminal-timeout";
+  } else if (!betaEmpty) {
+    outcome = "failed";
+    stopReason = "producer-beta-not-empty";
+  } else {
+    outcome = "failed";
+    stopReason = "producer-restore-unproved";
+  }
+
+  return {
+    schema: TAIL_PRODUCER_OUTCOME_SCHEMA,
+    kind: "producer-tail-window-outcome",
+    observed_at: typeof now === "string" ? now : new Date().toISOString(),
+    outcome,
+    stop_reason: stopReason,
+    restore_proven: restoreProven,
+    producer: {
+      terminal_present: Boolean(producerTerminal),
+      proved: producerProved === true,
+      beta_empty: betaEmpty,
+      action: producerTerminal?.action || producerTerminal?.outcome || null,
+      foreign_window: foreignTerminal,
+      missing_window_id: missingOwnership,
+    },
+    self: selfDeviation || {
+      kind: "self-ready",
+      ready_present: true,
+      terminal_present: selfTerminalPresent,
+      owned_detached: selfDetached,
+      collector_cpu_ms: null,
+    },
+    sink_closed: sinkClosed === true,
+    tombstone_proved: tombstoneProved === true,
+    // Never-READY or owned-detached self must not require self terminal.
+    waits_on_self_terminal: (selfNeverReady || selfDetached) ? false : true,
+  };
+}
+
+/**
+ * Prefer the validated pre-tombstone AggregateSink sample for measured
+ * collection summary. Post-cleanup tombstone zeros must not become measured
+ * cohort/cost values. Tombstone proof stays a separate field.
+ */
+export function selectPreTombstoneCollectionSample({
+  finalAggregateReceipt = null,
+  lastLiveSample = null,
+  postCleanupReadback = null,
+  expectedWindowId = null,
+} = {}) {
+  const receipt = finalAggregateReceipt && typeof finalAggregateReceipt === "object"
+    ? finalAggregateReceipt
+    : null;
+  const windowId = expectedWindowId
+    || receipt?.window_id
+    || lastLiveSample?.window_id
+    || null;
+  if (receipt && isImmutableFinalAggregateSnapshot(receipt, receipt.window_id || windowId)) {
+    if (!expectedWindowId || receipt.window_id === expectedWindowId) {
+      return {
+        source: "final-aggregate-receipt",
+        sample_kind: receipt.sample_kind || "last-sample-before-tombstone",
+        events_seen: Number.isInteger(receipt.events_seen) ? receipt.events_seen : null,
+        a2: receipt.a2 ?? null,
+        // Keep typed event counts and CPU distributions SEPARATE — never mix.
+        by_cohort: projectTypedCohortEventCounts(receipt.by_cohort),
+        by_cohort_cpu: receipt.by_cohort_cpu && typeof receipt.by_cohort_cpu === "object"
+          ? receipt.by_cohort_cpu
+          : null,
+        cost_vector: projectAllowlistedCostVector(receipt.cost_vector, {
+          collector_do_requests: receipt.collector_do_requests,
+          collector_storage_ops: receipt.collector_storage_ops,
+          collector_cpu_ms: receipt.collector_cpu_ms,
+        }),
+        by_event_type: receipt.by_event_type ?? null,
+        by_deployed_revision: receipt.by_deployed_revision ?? null,
+        collector_cpu_ms: receipt.collector_cpu_ms ?? receipt.cost_vector?.collector_cpu_ms ?? null,
+        measured: true,
+        arrivals_between_snapshot_and_cleanup:
+          receipt.arrivals_between_snapshot_and_cleanup ?? "UNKNOWN",
+      };
+    }
+  }
+  const live = lastLiveSample && typeof lastLiveSample === "object" ? lastLiveSample : null;
+  if (live && (live.from_tombstone !== true) && (live.closed !== true)) {
+    const liveCounters = live.counters && typeof live.counters === "object" ? live.counters : null;
+    return {
+      source: "last-live-sample",
+      sample_kind: "last-sample-before-tombstone",
+      events_seen: Number.isInteger(live.events_seen) ? live.events_seen : null,
+      a2: live.a2 ?? null,
+      by_cohort: projectTypedCohortEventCounts(live.by_cohort ?? liveCounters?.by_cohort),
+      by_cohort_cpu: (liveCounters?.by_cohort_cpu || live.by_cohort_cpu)
+        && typeof (liveCounters?.by_cohort_cpu || live.by_cohort_cpu) === "object"
+        ? (liveCounters?.by_cohort_cpu || live.by_cohort_cpu)
+        : null,
+      cost_vector: projectAllowlistedCostVector(live.cost_vector, liveCounters),
+      by_event_type: liveCounters?.by_event_type || live.by_event_type || null,
+      by_deployed_revision: liveCounters?.by_deployed_revision || live.by_deployed_revision || null,
+      collector_cpu_ms: liveCounters?.collector_cpu_ms
+        ?? live.cost_vector?.collector_cpu_ms
+        ?? live.collector_cpu_ms
+        ?? null,
+      measured: Number.isInteger(live.events_seen),
+      arrivals_between_snapshot_and_cleanup: "UNKNOWN",
+    };
+  }
+  // Do not promote post-cleanup tombstone zeros to measured collection.
+  const post = postCleanupReadback && typeof postCleanupReadback === "object"
+    ? postCleanupReadback
+    : null;
+  return {
+    source: "unknown",
+    sample_kind: "last-sample-unknown",
+    events_seen: null,
+    a2: null,
+    cost_vector: null,
+    by_cohort: null,
+    by_cohort_cpu: null,
+    by_event_type: null,
+    by_deployed_revision: null,
+    collector_cpu_ms: "UNKNOWN",
+    measured: false,
+    arrivals_between_snapshot_and_cleanup: "UNKNOWN",
+    tombstone_readback_events_seen: Number.isInteger(post?.events_seen) ? post.events_seen : null,
+    note: "no validated pre-tombstone sample; post-cleanup zeros are not measured collection",
+  };
+}
+
 /**
  * Start a supervised Tail restorer child against a durable runner copy.
  * Tests may pass a runnerPath override that imports the repo modules.
@@ -1420,6 +1928,11 @@ export function startSupervisedTailRestorerProcess({
   if (!existsSync(runner)) {
     fail(`durable Tail restorer runner missing at ${runner}`);
   }
+
+  // Cap-detach runtime provision is enforced in the durable child main /
+  // runTailRestorerLoop (and by callers via assertDurableCapDetachRuntimeProvisioned)
+  // so intentional child-failure diagnosis tests can still spawn. restore_only
+  // windows skip the bound-actuator requirement at arm time.
 
   const composed = skipCredentialCompose
     ? {

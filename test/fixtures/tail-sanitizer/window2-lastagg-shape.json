@@ -1,0 +1,296 @@
+{
+  "schema": "cityscroll.tail_window2_lastagg_shape_fixture.v1",
+  "note": "Redacted Window-2 AggregateSink lastAgg shape for hermetic ROOT 14:50 tests. Attempt ids, window ids, paths, timestamps, and revision ids replaced; aggregate counts preserved.",
+  "lastAgg": {
+    "at": "1970-01-01T00:00:00.000Z",
+    "http_status": 200,
+    "opened": null,
+    "closed": false,
+    "events_seen": 8697,
+    "cap_reached": false,
+    "a2": {
+      "pass": true,
+      "reason": "within_all_seen_cap",
+      "events_seen": 8697,
+      "apply_overshoot": 0
+    },
+    "counters": {
+      "events_accepted": 8697,
+      "events_rejected": 0,
+      "events_dropped_after_cap": 0,
+      "deltas_acked": 8697,
+      "apply_overshoot": 0,
+      "collector_do_requests": 11495,
+      "collector_storage_ops": 34485,
+      "collector_cpu_ms": 446,
+      "by_cpu_class": {
+        "undefined": 0,
+        "null": 0,
+        "nan": 0,
+        "zero": 1671,
+        "positive": 7026,
+        "negative": 0,
+        "nonfinite": 0,
+        "type_other": 0
+      },
+      "by_event_type": {
+        "fetch": 8684,
+        "scheduled": 1,
+        "queue": 12,
+        "other": 0,
+        "unknown": 0
+      },
+      "by_outcome": {
+        "ok": 8578,
+        "canceled": 114,
+        "exception": 0,
+        "unknown": 0,
+        "kill": 0,
+        "exceededCpu": 0,
+        "exceededMemory": 5,
+        "loadShed": 0,
+        "responseStreamDisconnected": 0,
+        "scriptStartupFailed": 0,
+        "other": 0,
+        "null": 0
+      },
+      "by_deployed_revision": {
+        "rev-fixture-1": 7297,
+        "rev-fixture-2": 1400,
+        "rev-fixture-3": 0
+      },
+      "cpu_ms_sum": 1101052,
+      "cpu_ms_count": 8697,
+      "cpu_ms_unknown_count": 0,
+      "cpu_ms_histogram": {
+        "0": 1671,
+        "0_1": 615,
+        "1_10": 1146,
+        "10_100": 1630,
+        "100_1000": 3567,
+        "1000_plus": 68
+      },
+      "by_cohort_cpu": {
+        "http": {
+          "cpu_ms_sum": 188753,
+          "cpu_ms_count": 3615,
+          "cpu_ms_unknown_count": 0,
+          "cpu_ms_histogram": {
+            "0": 725,
+            "0_1": 465,
+            "1_10": 1097,
+            "10_100": 827,
+            "100_1000": 489,
+            "1000_plus": 12
+          }
+        },
+        "http_events": {
+          "cpu_ms_sum": 162,
+          "cpu_ms_count": 991,
+          "cpu_ms_unknown_count": 0,
+          "cpu_ms_histogram": {
+            "0": 861,
+            "0_1": 105,
+            "1_10": 25,
+            "10_100": 0,
+            "100_1000": 0,
+            "1000_plus": 0
+          }
+        },
+        "rum_batch_16": {
+          "cpu_ms_sum": 36,
+          "cpu_ms_count": 20,
+          "cpu_ms_unknown_count": 0,
+          "cpu_ms_histogram": {
+            "0": 0,
+            "0_1": 11,
+            "1_10": 9,
+            "10_100": 0,
+            "100_1000": 0,
+            "1000_plus": 0
+          }
+        },
+        "search": {
+          "cpu_ms_sum": 216,
+          "cpu_ms_count": 120,
+          "cpu_ms_unknown_count": 0,
+          "cpu_ms_histogram": {
+            "0": 80,
+            "0_1": 24,
+            "1_10": 10,
+            "10_100": 6,
+            "100_1000": 0,
+            "1000_plus": 0
+          }
+        },
+        "nearby": {
+          "cpu_ms_sum": 906680,
+          "cpu_ms_count": 3938,
+          "cpu_ms_unknown_count": 0,
+          "cpu_ms_histogram": {
+            "0": 5,
+            "0_1": 9,
+            "1_10": 5,
+            "10_100": 790,
+            "100_1000": 3074,
+            "1000_plus": 55
+          }
+        },
+        "cold_start_flag_raw_0": {
+          "cpu_ms_sum": 0,
+          "cpu_ms_count": 0,
+          "cpu_ms_unknown_count": 0,
+          "cpu_ms_histogram": {
+            "0": 0,
+            "0_1": 0,
+            "1_10": 0,
+            "10_100": 0,
+            "100_1000": 0,
+            "1000_plus": 0
+          }
+        },
+        "cold_start_flag_raw_1": {
+          "cpu_ms_sum": 0,
+          "cpu_ms_count": 0,
+          "cpu_ms_unknown_count": 0,
+          "cpu_ms_histogram": {
+            "0": 0,
+            "0_1": 0,
+            "1_10": 0,
+            "10_100": 0,
+            "100_1000": 0,
+            "1000_plus": 0
+          }
+        },
+        "cold_start_unknown": {
+          "cpu_ms_sum": 0,
+          "cpu_ms_count": 0,
+          "cpu_ms_unknown_count": 0,
+          "cpu_ms_histogram": {
+            "0": 0,
+            "0_1": 0,
+            "1_10": 0,
+            "10_100": 0,
+            "100_1000": 0,
+            "1000_plus": 0
+          }
+        },
+        "cron_0800": {
+          "cpu_ms_sum": 0,
+          "cpu_ms_count": 0,
+          "cpu_ms_unknown_count": 0,
+          "cpu_ms_histogram": {
+            "0": 0,
+            "0_1": 0,
+            "1_10": 0,
+            "10_100": 0,
+            "100_1000": 0,
+            "1000_plus": 0
+          }
+        },
+        "cron_1000": {
+          "cpu_ms_sum": 0,
+          "cpu_ms_count": 0,
+          "cpu_ms_unknown_count": 0,
+          "cpu_ms_histogram": {
+            "0": 0,
+            "0_1": 0,
+            "1_10": 0,
+            "10_100": 0,
+            "100_1000": 0,
+            "1000_plus": 0
+          }
+        },
+        "cron_1300": {
+          "cpu_ms_sum": 1566,
+          "cpu_ms_count": 1,
+          "cpu_ms_unknown_count": 0,
+          "cpu_ms_histogram": {
+            "0": 0,
+            "0_1": 0,
+            "1_10": 0,
+            "10_100": 0,
+            "100_1000": 0,
+            "1000_plus": 1
+          }
+        },
+        "cron_unknown": {
+          "cpu_ms_sum": 0,
+          "cpu_ms_count": 0,
+          "cpu_ms_unknown_count": 0,
+          "cpu_ms_histogram": {
+            "0": 0,
+            "0_1": 0,
+            "1_10": 0,
+            "10_100": 0,
+            "100_1000": 0,
+            "1000_plus": 0
+          }
+        },
+        "queue": {
+          "cpu_ms_sum": 3639,
+          "cpu_ms_count": 12,
+          "cpu_ms_unknown_count": 0,
+          "cpu_ms_histogram": {
+            "0": 0,
+            "0_1": 1,
+            "1_10": 0,
+            "10_100": 7,
+            "100_1000": 4,
+            "1000_plus": 0
+          }
+        },
+        "collector": {
+          "cpu_ms_sum": 446,
+          "cpu_ms_count": 1042,
+          "cpu_ms_unknown_count": 0,
+          "cpu_ms_histogram": {
+            "0": 745,
+            "0_1": 199,
+            "1_10": 98,
+            "10_100": 0,
+            "100_1000": 0,
+            "1000_plus": 0
+          }
+        },
+        "unknown": {
+          "cpu_ms_sum": 0,
+          "cpu_ms_count": 0,
+          "cpu_ms_unknown_count": 0,
+          "cpu_ms_histogram": {
+            "0": 0,
+            "0_1": 0,
+            "1_10": 0,
+            "10_100": 0,
+            "100_1000": 0,
+            "1000_plus": 0
+          }
+        }
+      },
+      "events_seen": 8697
+    },
+    "cost_vector": {
+      "collector_do_requests": 11495,
+      "collector_storage_ops": 34485,
+      "collector_cpu_ms": 446,
+      "sink_rpc_count": 11495,
+      "control_do_requests": "UNKNOWN",
+      "control_do_storage_ops": "UNKNOWN",
+      "control_do_cpu_ms": "UNKNOWN",
+      "note": "collector DO requests/storage ops are measured ACK lower bounds; collector_cpu_ms is self-Tail sum or UNKNOWN; control DO cost stays UNKNOWN until metered"
+    },
+    "by_cohort": null,
+    "by_deployed_revision": {
+      "rev-fixture-1": 7297,
+      "rev-fixture-2": 1400,
+      "rev-fixture-3": 0
+    },
+    "by_event_type": {
+      "fetch": 8684,
+      "scheduled": 1,
+      "queue": 12,
+      "other": 0,
+      "unknown": 0
+    }
+  }
+}
