@@ -818,6 +818,150 @@ export function evaluateWarehouseExperiment({ baseline, candidate, acquiredDeplo
   };
 }
 
+export const WAREHOUSE_MATERIALIZATION_KINDS = Object.freeze([
+  "static-baseline",
+  "whole-kv-materialization",
+  "route-scoped-shards",
+]);
+
+export const WAREHOUSE_CACHE_STATES = Object.freeze([
+  "index-cold-reset",
+  "isolate-reuse-hit",
+]);
+
+function requireWarehouseMaterialization(run, label) {
+  const kind = run?.materialization?.kind;
+  if (!WAREHOUSE_MATERIALIZATION_KINDS.includes(kind)) {
+    fail(`${label}.materialization.kind must be one of ${WAREHOUSE_MATERIALIZATION_KINDS.join(", ")}`);
+  }
+  if (kind === "route-scoped-shards") {
+    const routes = run.materialization?.routes;
+    if (!Array.isArray(routes) || routes.length < 1) {
+      fail(`${label}.materialization.routes must name at least one route-scoped shard`);
+    }
+    for (const route of routes) {
+      if (typeof route !== "string" || !route.trim()) {
+        fail(`${label}.materialization.routes entries must be non-empty strings`);
+      }
+    }
+  }
+  return kind;
+}
+
+/**
+ * Build the operator-facing experiment report. Startup time stays UNKNOWN /
+ * separate from provider-native invocation CPU and must never be presented as
+ * CPU. A rejected experiment never claims shipped savings.
+ */
+export function buildWarehouseExperimentReport(decision, { materializationKind = null } = {}) {
+  if (!decision || decision.schema !== "cityscroll.warehouse_cost_experiment.v1") {
+    fail("warehouse experiment decision is required");
+  }
+  if (decision.financial_savings_confirmed !== false) {
+    fail("warehouse experiment report must keep financial_savings_confirmed false");
+  }
+  const rejected = decision.decision === "candidate-rejected";
+  return {
+    schema: "cityscroll.warehouse_cost_experiment_report.v1",
+    decision: decision.decision,
+    retained: decision.retained,
+    operation_recommendation: decision.operation_recommendation,
+    financial_savings_confirmed: false,
+    shipped_savings_claimed: false,
+    materialization_kind: materializationKind,
+    invocation_cpu: {
+      source: "provider-native",
+      field: "cpuTime",
+      baseline_normalized_ms: decision.baseline_normalized?.native_cpu_ms ?? null,
+      candidate_normalized_ms: decision.candidate_normalized?.native_cpu_ms ?? null,
+    },
+    // Isolate construction / process startup is not Tail-observable as coldStart
+    // and must stay unknown — never filled from wall time or request order.
+    startup_time: {
+      status: "unknown",
+      reason: "provider-capability",
+      never_infer_from: [...ISOLATE_CONTRACT.never_infer_from],
+    },
+    regressions: decision.regressions,
+    improvements: decision.improvements,
+    rejected,
+  };
+}
+
+/**
+ * After a candidate was retained, a follow-on regression against that retained
+ * tip must recommend rolling production back to the prior baseline. This is the
+ * harness-level rollback evidence (not a provider traffic mutation).
+ */
+export function planWarehouseRollback({ retainedDecision, followOnDecision } = {}) {
+  if (!retainedDecision || retainedDecision.decision !== "candidate-retained") {
+    fail("rollback planning requires a previously retained candidate decision");
+  }
+  if (!followOnDecision || followOnDecision.schema !== "cityscroll.warehouse_cost_experiment.v1") {
+    fail("rollback planning requires a follow-on warehouse experiment decision");
+  }
+  if (followOnDecision.decision !== "candidate-rejected") {
+    fail("rollback applies when the follow-on evaluation rejects the live tip");
+  }
+  if (!Array.isArray(followOnDecision.regressions) || followOnDecision.regressions.length < 1) {
+    fail("rollback requires at least one recorded regression");
+  }
+  return {
+    schema: "cityscroll.warehouse_cost_experiment_rollback.v1",
+    action: "rollback-to-baseline",
+    operation_recommendation: "retain-baseline",
+    prior_retained: "candidate",
+    restore_to: "baseline",
+    regressions: followOnDecision.regressions,
+    financial_savings_confirmed: false,
+    shipped_savings_claimed: false,
+  };
+}
+
+/**
+ * Isolate-reuse evidence: an explicit cache_state of isolate-reuse-hit is
+ * distinct from an index-cold-reset. Neither invents semantic cold/warm.
+ */
+export function validateWarehouseIsolateReuseSample(sample, path = "sample") {
+  if (!sample || typeof sample !== "object") fail(`${path} is required`);
+  const state = sample.cache_state;
+  if (!WAREHOUSE_CACHE_STATES.includes(state)) {
+    fail(`${path}.cache_state must be one of ${WAREHOUSE_CACHE_STATES.join(", ")}`);
+  }
+  if (sample.cold_start === true || sample.cold_start === false) {
+    fail(`${path} must not invent semantic cold_start from isolate reuse`);
+  }
+  if (sample.isolate_class === "cold" || sample.isolate_class === "warm") {
+    fail(`${path} must not invent isolate_class cold/warm from cache_state`);
+  }
+  if (Object.hasOwn(sample, "startup_time_ms") && sample.startup_time_ms != null) {
+    fail(`${path}.startup_time_ms must stay unknown; never fill from wall time`);
+  }
+  return {
+    cache_state: state,
+    isolate_reuse: state === "isolate-reuse-hit",
+    index_cold_reset: state === "index-cold-reset",
+    semantic_cold_warm: "unknown",
+  };
+}
+
+/**
+ * Controlled evaluation of a route-scoped candidate. Declares materialization
+ * kind on both arms, evaluates the tariff-free experiment, and returns the
+ * decision plus a report that separates startup time from invocation CPU.
+ */
+export function evaluateRouteScopedWarehouseCandidate({ baseline, candidate, acquiredDeployments } = {}) {
+  const baselineKind = requireWarehouseMaterialization(baseline, "baseline");
+  if (baselineKind !== "static-baseline") fail("baseline.materialization.kind must be static-baseline");
+  const candidateKind = requireWarehouseMaterialization(candidate, "candidate");
+  if (candidateKind !== "route-scoped-shards") {
+    fail("candidate.materialization.kind must be route-scoped-shards for this controlled test");
+  }
+  const decision = evaluateWarehouseExperiment({ baseline, candidate, acquiredDeployments });
+  const report = buildWarehouseExperimentReport(decision, { materializationKind: candidateKind });
+  return { decision, report };
+}
+
 export function evaluateAllMeterRelease({ baseline, candidate, acquiredDeployments } = {}) {
   if (!baseline || !candidate) fail("baseline and candidate release evidence are required");
   assertSanitized({ baseline, candidate });

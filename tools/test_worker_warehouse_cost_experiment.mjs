@@ -6,12 +6,18 @@ import test from "node:test";
 
 import {
   COST_METERS,
+  WAREHOUSE_CACHE_STATES,
   WAREHOUSE_EXPERIMENT_COHORTS,
   WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+  WAREHOUSE_MATERIALIZATION_KINDS,
+  buildWarehouseExperimentReport,
   coldStartFlagRawCohort,
+  evaluateRouteScopedWarehouseCandidate,
   evaluateWarehouseExperiment,
   parseColdStartFlagRaw,
+  planWarehouseRollback,
   providerDeploymentReceiptSha256,
+  validateWarehouseIsolateReuseSample,
 } from "./lib/worker_cost_control.mjs";
 import { canaryVersionTag } from "./cloudflare_deployment_binding.mjs";
 import { runWorkerCostControl } from "./worker_cost_control.mjs";
@@ -268,4 +274,148 @@ test("warehouse command acquires provider status and version-targeted health its
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
+});
+
+test("controlled route-scoped candidate is evaluated under fixed cohorts without inventing savings", () => {
+  const baseline = run({
+    materialization: { kind: "static-baseline" },
+  });
+  const candidate = run({
+    deployed_revision: "b".repeat(40),
+    observed_at: "2026-10-08T23:10:00Z",
+    meters: { ...baseline.meters, native_cpu_ms: 80 },
+    materialization: {
+      kind: "route-scoped-shards",
+      routes: ["zap-bbl", "zap-project", "doing-business"],
+    },
+  });
+  const { decision, report } = evaluateRouteScopedWarehouseCandidate({
+    baseline,
+    candidate,
+    acquiredDeployments: acquiredDeployments(baseline, candidate),
+  });
+  assert.equal(decision.decision, "candidate-retained");
+  assert.equal(decision.financial_savings_confirmed, false);
+  assert.equal(report.materialization_kind, "route-scoped-shards");
+  assert.equal(report.shipped_savings_claimed, false);
+  assert.equal(report.startup_time.status, "unknown");
+  assert.equal(report.invocation_cpu.field, "cpuTime");
+  assert.notEqual(report.startup_time.status, report.invocation_cpu.source);
+
+  const wholeKv = run({
+    deployed_revision: "c".repeat(40),
+    observed_at: "2026-10-08T23:20:00Z",
+    materialization: { kind: "whole-kv-materialization" },
+  });
+  assert.throws(
+    () => evaluateRouteScopedWarehouseCandidate({
+      baseline,
+      candidate: wholeKv,
+      acquiredDeployments: acquiredDeployments(baseline, wholeKv),
+    }),
+    /route-scoped-shards/,
+  );
+  assert.ok(WAREHOUSE_MATERIALIZATION_KINDS.includes("route-scoped-shards"));
+});
+
+test("rollback evidence restores the baseline after a retained candidate regresses", () => {
+  const baseline = run({ materialization: { kind: "static-baseline" } });
+  const retainedCandidate = run({
+    deployed_revision: "b".repeat(40),
+    observed_at: "2026-10-08T23:10:00Z",
+    meters: { ...baseline.meters, native_cpu_ms: 80 },
+    materialization: {
+      kind: "route-scoped-shards",
+      routes: ["zap-bbl", "zap-project", "doing-business"],
+    },
+  });
+  const retained = evaluate(baseline, retainedCandidate);
+  assert.equal(retained.decision, "candidate-retained");
+
+  // Follow-on: treat the retained tip as the new baseline arm and a worse tip as candidate.
+  const liveTip = run({
+    deployed_revision: "b".repeat(40),
+    observed_at: "2026-10-08T23:10:00Z",
+    meters: { ...baseline.meters, native_cpu_ms: 80 },
+    materialization: retainedCandidate.materialization,
+  });
+  const regressingTip = run({
+    deployed_revision: "d".repeat(40),
+    observed_at: "2026-10-08T23:40:00Z",
+    meters: { ...baseline.meters, native_cpu_ms: 80, kv_reads: 120 },
+    materialization: retainedCandidate.materialization,
+  });
+  const followOn = evaluate(liveTip, regressingTip);
+  assert.equal(followOn.decision, "candidate-rejected");
+  const rollback = planWarehouseRollback({
+    retainedDecision: retained,
+    followOnDecision: followOn,
+  });
+  assert.equal(rollback.action, "rollback-to-baseline");
+  assert.equal(rollback.operation_recommendation, "retain-baseline");
+  assert.equal(rollback.restore_to, "baseline");
+  assert.deepEqual(rollback.regressions, ["kv_reads"]);
+  assert.equal(rollback.shipped_savings_claimed, false);
+
+  assert.throws(
+    () => planWarehouseRollback({ retainedDecision: followOn, followOnDecision: followOn }),
+    /previously retained candidate/,
+  );
+});
+
+test("isolate reuse is distinct from index-cold reset and never invents cold or warm", () => {
+  const reuse = validateWarehouseIsolateReuseSample({
+    cache_state: "isolate-reuse-hit",
+    native_cpu_ms: 2,
+  });
+  assert.equal(reuse.isolate_reuse, true);
+  assert.equal(reuse.index_cold_reset, false);
+  assert.equal(reuse.semantic_cold_warm, "unknown");
+
+  const reset = validateWarehouseIsolateReuseSample({
+    cache_state: "index-cold-reset",
+    native_cpu_ms: 40,
+  });
+  assert.equal(reset.isolate_reuse, false);
+  assert.equal(reset.index_cold_reset, true);
+  assert.equal(reset.semantic_cold_warm, "unknown");
+
+  assert.throws(
+    () => validateWarehouseIsolateReuseSample({ cache_state: "isolate-reuse-hit", cold_start: true }),
+    /cold_start/,
+  );
+  assert.throws(
+    () => validateWarehouseIsolateReuseSample({ cache_state: "isolate-reuse-hit", isolate_class: "warm" }),
+    /isolate_class/,
+  );
+  assert.throws(
+    () => validateWarehouseIsolateReuseSample({ cache_state: "isolate-reuse-hit", startup_time_ms: 12 }),
+    /startup_time_ms/,
+  );
+  assert.ok(WAREHOUSE_CACHE_STATES.includes("isolate-reuse-hit"));
+});
+
+test("experiment report distinguishes startup time from invocation CPU and never claims shipped savings", () => {
+  const baseline = run();
+  const rejectedCandidate = run({
+    deployed_revision: "b".repeat(40),
+    observed_at: "2026-10-08T23:10:00Z",
+    meters: { ...baseline.meters, native_cpu_ms: 80, kv_reads: 101 },
+  });
+  const decision = evaluate(baseline, rejectedCandidate);
+  assert.equal(decision.decision, "candidate-rejected");
+  const report = buildWarehouseExperimentReport(decision, {
+    materializationKind: "whole-kv-materialization",
+  });
+  assert.equal(report.rejected, true);
+  assert.equal(report.shipped_savings_claimed, false);
+  assert.equal(report.financial_savings_confirmed, false);
+  assert.equal(report.startup_time.status, "unknown");
+  assert.equal(report.startup_time.reason, "provider-capability");
+  assert.ok(report.startup_time.never_infer_from.includes("startup-time"));
+  assert.equal(report.invocation_cpu.field, "cpuTime");
+  assert.equal(report.invocation_cpu.candidate_normalized_ms, decision.candidate_normalized.native_cpu_ms);
+  // Startup must not be copied from invocation CPU.
+  assert.notEqual(report.startup_time.status, "measured");
+  assert.notEqual(report.startup_time, report.invocation_cpu);
 });
