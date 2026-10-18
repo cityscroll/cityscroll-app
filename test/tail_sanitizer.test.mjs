@@ -353,6 +353,51 @@ function createFakeStorage() {
   return api;
 }
 
+/**
+ * Cloudflare SQLite Durable Object storage.transaction() exposes deleteAll as a
+ * function that throws "Cannot call deleteAll() within a transaction" (error
+ * 1101 on cityscroll-tail-sanitizer 7f6f3bfb). Top-level storage.deleteAll still
+ * exists; only the in-transaction call is forbidden.
+ */
+function createSqliteStyleFakeStorage() {
+  const map = new Map();
+  let writes = 0;
+  let txnChain = Promise.resolve();
+  const storage = {
+    async get(key) {
+      if (!map.has(key)) return undefined;
+      return structuredClone(map.get(key));
+    },
+    async put(key, value) {
+      writes += 1;
+      map.set(key, structuredClone(value));
+    },
+    async delete(key) {
+      map.delete(key);
+    },
+    async deleteAll() {
+      writes += 1;
+      map.clear();
+    },
+    async transaction(fn) {
+      const txn = {
+        get: (key) => storage.get(key),
+        put: (key, value) => storage.put(key, value),
+        delete: (key) => storage.delete(key),
+        async deleteAll() {
+          throw new Error("Cannot call deleteAll() within a transaction");
+        },
+      };
+      const run = txnChain.then(() => fn(txn));
+      txnChain = run.then(() => undefined, () => undefined);
+      return run;
+    },
+    writeCount() { return writes; },
+    keys() { return [...map.keys()].sort(); },
+  };
+  return storage;
+}
+
 const TEST_WINDOW_ID = "test-window-1";
 const WINDOW_ID_HEADER = "x-cityscroll-tail-window-id";
 const EXPECTED_ACTIVE_WINDOW_HEADER = "x-cityscroll-expected-active-window-id";
@@ -748,6 +793,106 @@ test("AggregateSink: cleanup tombstone survives; readback never reopens", async 
   }));
   assert.equal(stale.status, 409);
   assert.equal((await stale.json()).reason, "SINK_CLOSED");
+  assert.deepEqual(storage.keys(), ["terminal"]);
+});
+
+test("AggregateSink: /cleanup on SQLite-style txn never calls deleteAll (repro CF 1101)", async () => {
+  // Production 7f6f3bfb: wrangler tail showed
+  // "Cannot call deleteAll() within a transaction" when /cleanup ran inside
+  // storage.transaction(). Reproduce against the ACTUAL AggregateSink class
+  // with a txn whose deleteAll throws like Cloudflare SQLite DOs.
+  const storage = createSqliteStyleFakeStorage();
+  const sink = new AggregateSink({ storage }, {
+    READBACK_TOKEN: "tok",
+    EXPECTED_DEPLOYED_REVISIONS: "rev-a",
+  });
+  const windowId = "go4-w2-sqlite-cleanup-repro";
+
+  // Never-opened window (GO #4 go4-w2 state): cleanup must still write a tombstone.
+  const cleanedEmpty = await sink.fetch(new Request("https://sink/cleanup", {
+    method: "POST",
+    headers: authHeaders("tok", windowId),
+  }));
+  assert.equal(cleanedEmpty.status, 200, "cleanup must not throw/500 on SQLite-style txn");
+  const emptyBody = await cleanedEmpty.json();
+  assert.equal(emptyBody.ok, true);
+  assert.equal(emptyBody.closed, true);
+  assert.equal(emptyBody.tombstone, true);
+  assert.equal(emptyBody.window_id, windowId);
+  assert.deepEqual(storage.keys(), ["terminal"]);
+  assert.equal(storage.keys().includes("meta"), false);
+  assert.equal(storage.keys().includes("counters"), false);
+
+  const rbEmpty = await (await sink.fetch(new Request("https://sink/readback", {
+    method: "GET",
+    headers: authHeaders("tok", windowId),
+  }))).json();
+  assert.equal(rbEmpty.ok, true);
+  assert.equal(rbEmpty.closed, true);
+  assert.equal(rbEmpty.from_tombstone, true);
+
+  // Idempotent second cleanup keeps the terminal tombstone (never deletes it).
+  const cleanedAgain = await sink.fetch(new Request("https://sink/cleanup", {
+    method: "POST",
+    headers: authHeaders("tok", windowId),
+  }));
+  assert.equal(cleanedAgain.status, 200);
+  assert.equal((await cleanedAgain.json()).tombstone, true);
+  assert.deepEqual(storage.keys(), ["terminal"]);
+  const terminal = await storage.get("terminal");
+  assert.equal(terminal.closed, true);
+  assert.equal(terminal.window_id, windowId);
+  assert.equal(terminal.schema, "cityscroll.tail_sanitizer_terminal_tombstone.v1");
+});
+
+test("AggregateSink: /cleanup after apply on SQLite-style txn drops counters, keeps tombstone", async () => {
+  const storage = createSqliteStyleFakeStorage();
+  const sink = new AggregateSink({ storage }, {
+    READBACK_TOKEN: "tok",
+    EXPECTED_DEPLOYED_REVISIONS: "rev-a",
+  });
+  const windowId = "go4-w2-sqlite-cleanup-after-apply";
+
+  const applied = await sink.fetch(new Request("https://sink/apply", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      ...authHeaders("tok", windowId),
+    },
+    body: JSON.stringify({
+      accepted: true, cpu_class: "positive", cpuTime: 10, outcome: "ok",
+      eventType: "fetch", deployed_revision: "rev-a",
+    }),
+  }));
+  assert.equal((await applied.json()).acked, true);
+  assert.ok(storage.keys().includes("meta"));
+  assert.ok(storage.keys().includes("counters"));
+
+  const cleaned = await sink.fetch(new Request("https://sink/cleanup", {
+    method: "POST",
+    headers: authHeaders("tok", windowId),
+  }));
+  assert.equal(cleaned.status, 200);
+  const body = await cleaned.json();
+  assert.equal(body.closed, true);
+  assert.equal(body.tombstone, true);
+  assert.deepEqual(storage.keys(), ["terminal"]);
+  assert.equal(storage.keys().includes("meta"), false);
+  assert.equal(storage.keys().includes("counters"), false);
+
+  const stale = await sink.fetch(new Request("https://sink/apply", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      ...authHeaders("tok", windowId),
+    },
+    body: JSON.stringify({
+      accepted: true, cpu_class: "positive", cpuTime: 1, outcome: "ok",
+      eventType: "fetch", deployed_revision: "rev-a",
+    }),
+  }));
+  assert.equal(stale.status, 409);
+  assert.equal((await stale.json()).from_tombstone, true);
   assert.deepEqual(storage.keys(), ["terminal"]);
 });
 
