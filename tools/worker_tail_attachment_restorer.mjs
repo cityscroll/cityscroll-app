@@ -28,6 +28,7 @@ import {
   createBoundDualViewTailConsumersTransport,
   createBoundScriptSettingsTailTransport,
   createSinkCloserFromEnv,
+  createSinkFinalAggregateCaptureFromEnv,
   runTailRestorerLoop,
   tailRestorerPaths,
 } from "./lib/worker_tail_attachment_restorer.mjs";
@@ -190,6 +191,7 @@ async function main(argv = process.argv.slice(2), env = process.env) {
     versionTransport,
   });
   const closeSinkWindow = createSinkCloserFromEnv(env);
+  const captureFinalAggregate = createSinkFinalAggregateCaptureFromEnv(env);
   // Touch createScriptSettingsTailConsumersTransport so durable copy keeps the import.
   if (typeof createScriptSettingsTailConsumersTransport !== "function") {
     throw new Error("script-settings Tail transport is unavailable");
@@ -201,6 +203,7 @@ async function main(argv = process.argv.slice(2), env = process.env) {
     versionTransport,
     capDetachActuator,
     closeSinkWindow,
+    captureFinalAggregate,
     stateRoot,
     pollMs: Number.isFinite(pollMs) && pollMs > 0 ? pollMs : DEFAULT_TAIL_POLL_MS,
   });

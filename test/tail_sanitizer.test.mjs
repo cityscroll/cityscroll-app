@@ -927,7 +927,7 @@ test("AggregateSink: distinct cpuTime values produce distinct sums (not class-on
   assert.equal(rb.counters.cpu_ms_count, 2);
   assert.equal(rb.counters.cpu_ms_histogram["0_1"], 1);
   assert.equal(rb.counters.cpu_ms_histogram["10_100"], 1);
-  assert.equal(rb.counters.by_cohort_cpu.http.cpu_ms_sum, 101);
+  assert.equal(rb.counters.by_cohort_cpu.http_unknown.cpu_ms_sum, 101);
   assert.equal(rb.counters.by_deployed_revision["rev-cpu"], 2);
   assert.equal(cpuMsBucket(1), "0_1");
   assert.equal(cpuMsBucket(100), "10_100");
@@ -1071,7 +1071,7 @@ test("AggregateSink: revision keys stay on expected allowlist; unknown cohort st
   assert.equal(mapPersistedRevision("rev-a", expected), "rev-a");
   assert.equal(mapPersistedRevision("foreign-rev", expected), "other");
   assert.equal(mapPersistedRevision("rev-a", new Set()), "unknown");
-  assert.equal(mapFixedCohort({ eventType: "fetch" }), "http");
+  assert.equal(mapFixedCohort({ eventType: "fetch" }), "http_unknown");
   assert.equal(mapFixedCohort({ eventType: "scheduled", cron: "0 8 * * *" }), "cron_0800");
   assert.equal(mapFixedCohort({ eventType: "scheduled", cron: "0 1 * * *" }), "cron_unknown");
   assert.equal(mapFixedCohort({ eventType: "queue" }), "queue");
@@ -1164,9 +1164,11 @@ test("actuateOwnedDetachFromCapSignal requires binding and signal", async () => 
   assert.equal(called, true);
 });
 
-test("pathname cohort prefixes map search/nearby/performance-events/events/health; unknown → http", () => {
+test("pathname cohort prefixes map search/nearby/performance-events/events/health; unknown → http_unknown", () => {
   assert.ok(Object.isFrozen(PATHNAME_COHORT_PREFIXES));
   assert.ok(FIXED_COHORT_KEYS.includes("http_events"));
+  assert.ok(FIXED_COHORT_KEYS.includes("http_health"));
+  assert.ok(FIXED_COHORT_KEYS.includes("http_unknown"));
   assert.equal(cohortFromFetchPathname("/search"), "search");
   assert.equal(cohortFromFetchPathname("/search/housing"), "search");
   assert.equal(cohortFromFetchPathname("/search/candidates"), "search");
@@ -1176,10 +1178,10 @@ test("pathname cohort prefixes map search/nearby/performance-events/events/healt
   assert.equal(cohortFromFetchPathname("/performance-events/batch"), "rum_batch_16");
   assert.equal(cohortFromFetchPathname("/events"), "http_events");
   assert.equal(cohortFromFetchPathname("/events/batch"), "http_events");
-  assert.equal(cohortFromFetchPathname("/health"), "http");
-  assert.equal(cohortFromFetchPathname("/agencies"), "http");
-  assert.equal(cohortFromFetchPathname("/searching"), "http");
-  assert.equal(cohortFromFetchPathname(""), "http");
+  assert.equal(cohortFromFetchPathname("/health"), "http_health");
+  assert.equal(cohortFromFetchPathname("/agencies"), "http_unknown");
+  assert.equal(cohortFromFetchPathname("/searching"), "http_unknown");
+  assert.equal(cohortFromFetchPathname(""), "http_unknown");
 });
 
 test("PATHNAME_COHORT_PREFIXES are real producer routes in worker/src/worker.mjs", () => {
@@ -1264,14 +1266,38 @@ test("hostile query/path/header values never reach AggregateSink storage JSON", 
   assert.equal(counters.by_cohort_cpu.nearby.cpu_ms_sum, 4);
   assert.equal(counters.by_cohort_cpu.http.cpu_ms_count, 0);
 });
-test("unknown fetch path → http cohort", () => {
-  const projected = projectAllowlistedTailEvent({
+test("unknown fetch path → http_unknown cohort; /health → http_health", () => {
+  const unknown = projectAllowlistedTailEvent({
     outcome: "ok",
     event: { request: { url: "https://cityscroll.org/agencies/office-of-the-mayor/" } },
     cpuTime: 2,
   });
-  assert.equal(projected.cohort, "http");
-  assert.equal(serializeAllowlistedDelta(projected).cohort, "http");
+  assert.equal(unknown.cohort, "http_unknown");
+  assert.equal(serializeAllowlistedDelta(unknown).cohort, "http_unknown");
+  const health = projectAllowlistedTailEvent({
+    outcome: "ok",
+    event: { request: { url: "https://cityscroll.org/health" } },
+    cpuTime: 1,
+  });
+  assert.equal(health.cohort, "http_health");
+  assert.equal(serializeAllowlistedDelta(health).cohort, "http_health");
+});
+
+
+test("A1 cold/warm capability: absent Tail coldStart stays unpartitioned; never mint cold_start", () => {
+  // Capability: current workerd TraceItem has no coldStart property (api/trace.h).
+  // Observability `$metadata.coldStart` is a separate unverified optional flag.
+  // Tail-based cold/warm therefore stays UNKNOWN; projection must not invent it.
+  const absent = projectAllowlistedTailEvent({
+    outcome: "ok",
+    event: { request: { url: "https://cityscroll.org/search" } },
+    cpuTime: 3,
+  });
+  assert.equal(Object.prototype.hasOwnProperty.call(absent, "cold_start_flag_raw"), false);
+  assert.equal("cold_start" in absent, false);
+  assert.equal(absent.cohort, "search");
+  assert.ok(FIXED_COHORT_KEYS.includes("cold_start_flag_raw_0"));
+  assert.ok(FIXED_COHORT_KEYS.includes("cold_start_flag_raw_1"));
 });
 
 test("coldStart 0|1 dual-records cold cohort without inventing absent zeros", async () => {

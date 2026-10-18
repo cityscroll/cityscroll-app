@@ -1603,3 +1603,76 @@ test("planCollectorSelfTailAttachment restores sanitizer consumers to []", () =>
   assert.equal(plan.attach_consumers[0].service, "cityscroll-tail-sanitizer");
   assert.match(plan.note, /never wall time/);
 });
+
+
+test("armTailAttachmentRestorer restoreOnly: true skips durable cap-detach binding", () => {
+  const window = openTailAttachmentWindow({
+    baselineConsumers: [],
+    accountIdSha256: "a".repeat(64),
+    workerId: "cityscroll-tail-sanitizer",
+    now: "2026-10-18T12:00:00.000Z",
+    durationSeconds: 1800,
+    windowId: "restore-only-win",
+  });
+  const armed = armTailAttachmentRestorer(window, {
+    now: "2026-10-18T12:00:01.000Z",
+    restorerId: "tr-restore-only",
+    restoreOnly: true,
+    strictProductionArm: false,
+  });
+  assert.equal(armed.restorer.armed, true);
+  assert.equal(armed.restorer.cap_detach_actuator_bound, false);
+  assert.equal(armed.restorer.restore_only, true);
+  assert.equal(armed.restorer.cap_detach_actuator_kind, null);
+});
+
+test("emergencyDetach already-restored persists durable phase via store CAS", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-already-restored-persist-"));
+  const storePath = join(dir, "tail-window.json");
+  const store = createFileTailAttachmentStore(storePath);
+  let window = openTailAttachmentWindow({
+    baselineConsumers: [],
+    accountIdSha256: "b".repeat(64),
+    workerId: "cityscroll-worker",
+    now: "2026-10-18T12:00:00.000Z",
+    durationSeconds: 1800,
+    windowId: "already-restored-persist",
+  });
+  window = armTailAttachmentRestorer(window, {
+    now: "2026-10-18T12:00:01.000Z",
+    restorerId: "tr-arp",
+    restoreOnly: true,
+    strictProductionArm: false,
+  });
+  window = {
+    ...window,
+    phase: "attached",
+    owned_consumers: [],
+    owned_sha256: window.baseline_sha256,
+    pending_mutation: null,
+  };
+  window = await store.write(window);
+  const genBefore = window.window_generation;
+  assert.equal(window.phase, "attached");
+
+  const transport = {
+    async getTailConsumers() { return []; },
+    async patchTailConsumers() {
+      throw new Error("already-restored must not PATCH");
+    },
+  };
+  const result = await emergencyDetachTailAttachment(window, transport, {
+    store,
+    now: "2026-10-18T12:05:00.000Z",
+  });
+  assert.equal(result.action, "already-restored");
+  assert.equal(result.proved, true);
+  assert.equal(result.durable_phase_persisted, true);
+  assert.ok(["restored", "expired-restored"].includes(result.window.phase), result.window.phase);
+
+  const onDisk = await store.read();
+  assert.ok(["restored", "expired-restored"].includes(onDisk.phase), onDisk.phase);
+  assert.equal(onDisk.owned_sha256, null);
+  assert.ok(onDisk.window_generation > genBefore);
+  rmSync(dir, { recursive: true, force: true });
+});

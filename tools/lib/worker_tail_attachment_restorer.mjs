@@ -30,6 +30,7 @@ import {
   cleanupUrlFromReadbackUrl,
   closeOwnedSinkWindow,
   confirmTailAttachment,
+  readOwnedSinkAggregate,
   createBetaWorkerTailConsumersTransport,
   createDeploymentsVersionTransport,
   createDualViewTailConsumersTransport,
@@ -45,6 +46,8 @@ import { DEFAULT_WORKER_ID, isProcessAlive } from "./worker_observability_settin
 export const TAIL_RESTORER_RUNTIME_SCHEMA = "cityscroll.worker_tail_attachment_restorer_runtime.v1";
 export const TAIL_RESTORER_READY_SCHEMA = "cityscroll.worker_tail_attachment_restorer_ready.v1";
 export const TAIL_SINK_CLOSE_PENDING_SCHEMA = "cityscroll.tail_sink_close_pending.v1";
+export const TAIL_SINK_FINAL_AGGREGATE_SCHEMA = "cityscroll.tail_sink_final_aggregate.v1";
+export const TAIL_PRODUCER_OUTCOME_SCHEMA = "cityscroll.tail_producer_window_outcome.v1";
 export const DEFAULT_TAIL_RESTORER_STATE_ROOT = join(
   process.env.HOME || "",
   ".local/state/cityscroll-cost-control/tail-attachment-restorer",
@@ -152,6 +155,37 @@ export function createSinkCloserFromEnv(env, { fetchImpl = globalThis.fetch } = 
 }
 
 /**
+ * Authenticated AggregateSink /readback capture for guardian terminal.
+ * Persists allowlisted counters BEFORE /cleanup tombstone.
+ */
+/** Bound for terminal final-aggregate GET so capture never stalls detach. */
+export const DEFAULT_FINAL_AGGREGATE_TIMEOUT_MS = 1_500;
+
+export function createSinkFinalAggregateCaptureFromEnv(env, { fetchImpl = globalThis.fetch } = {}) {
+  const readbackUrl = env?.CITYSCROLL_TAIL_SINK_READBACK_URL;
+  const token = env?.CITYSCROLL_TAIL_SINK_READBACK_TOKEN;
+  if (typeof readbackUrl !== "string" || !readbackUrl) return null;
+  if (typeof token !== "string" || !token || token === "unset") return null;
+  return async function captureFinalAggregate({
+    windowId,
+    now = new Date().toISOString(),
+    timeoutMs = DEFAULT_FINAL_AGGREGATE_TIMEOUT_MS,
+  } = {}) {
+    return readOwnedSinkAggregate({
+      url: readbackUrl,
+      token,
+      windowId,
+      fetchImpl,
+      now,
+      // Never delay automatic detach: short hard bound; failures are non-blocking.
+      timeoutMs: Number.isFinite(timeoutMs) && timeoutMs > 0
+        ? Math.min(timeoutMs, DEFAULT_FINAL_AGGREGATE_TIMEOUT_MS)
+        : DEFAULT_FINAL_AGGREGATE_TIMEOUT_MS,
+    });
+  };
+}
+
+/**
  * Close the AggregateSink window at guardian terminal (expiry/cap/death/cancel).
  * Authenticated /cleanup leaves a TERMINAL tombstone. Failures are recorded;
  * they do not unwind an already-proved detach/restore.
@@ -213,6 +247,7 @@ function writeSinkClosePendingRecord(paths, record) {
  */
 async function attemptOwnedSinkClose({
   closeSinkWindow,
+  captureFinalAggregate = null,
   windowId,
   paths,
   now = null,
@@ -221,6 +256,18 @@ async function attemptOwnedSinkClose({
   if (typeof closeSinkWindow !== "function") return null;
   const at = typeof now === "string" ? now : new Date().toISOString();
   const id = typeof windowId === "string" && windowId ? windowId : null;
+  // GO #5 §6: persist final aggregate BEFORE tombstone so cleanup cannot
+  // drop the last measured counters.
+  if (typeof captureFinalAggregate === "function" && id && paths?.finalAggregateReceipt) {
+    try {
+      const finalAggregate = await captureFinalAggregate({ windowId: id, now: at });
+      if (finalAggregate) {
+        writeTailRestorerReceipt(paths.finalAggregateReceipt, finalAggregate);
+      }
+    } catch {
+      // Capture failure must not block restore/tombstone.
+    }
+  }
   writeSinkClosePendingRecord(paths, {
     status: "pending",
     window_id: id,
@@ -266,6 +313,7 @@ export function sinkCloseObligationRemains(stateRoot, closeSinkWindow) {
  */
 async function reconcileSinkCloseObligation({
   closeSinkWindow,
+  captureFinalAggregate = null,
   paths,
   windowId = null,
   now = null,
@@ -290,6 +338,7 @@ async function reconcileSinkCloseObligation({
     || null;
   const sinkClose = await attemptOwnedSinkClose({
     closeSinkWindow,
+    captureFinalAggregate,
     windowId: closeWindowId,
     paths,
     now,
@@ -333,6 +382,7 @@ export function tailRestorerPaths(stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT) 
     heartbeatReceipt: join(stateRoot, "receipts/heartbeat.json"),
     terminalReceipt: join(stateRoot, "receipts/terminal.json"),
     sinkClosePending: join(stateRoot, "receipts/sink-close-pending.json"),
+    finalAggregateReceipt: join(stateRoot, "receipts/final-aggregate-before-tombstone.json"),
     controllerDeathReceipt: join(stateRoot, "receipts/controller-death.json"),
     childExitReceipt: join(stateRoot, "receipts/child-exit.json"),
     childFailedBeforeReadyReceipt: join(stateRoot, "receipts/child-failed-before-ready.json"),
@@ -351,6 +401,7 @@ export const GUARDIAN_STARTUP_FAILURE_CODE = Object.freeze({
   WINDOW_MISSING: "window_missing",
   TRANSPORT_TARGET_MISMATCH: "transport_target_mismatch",
   VERSION_EVIDENCE_MISSING: "version_evidence_missing",
+  CAP_DETACH_RUNTIME_ABSENT: "cap_detach_runtime_absent",
   SPAWN_ERROR: "spawn_error",
   UNKNOWN_STARTUP_FAILURE: "unknown_startup_failure",
   NONE: "none",
@@ -383,6 +434,9 @@ export function classifyGuardianStartupStderr(sampleText = "") {
   if (/version evidence|version_evidence|deployments version/i.test(text)
     && /required|missing|unproved|refusing/i.test(text)) {
     return GUARDIAN_STARTUP_FAILURE_CODE.VERSION_EVIDENCE_MISSING;
+  }
+  if (/cap-detach actuator but runtime actuator is absent|armed with cap-detach but runtime actuator absent/i.test(text)) {
+    return GUARDIAN_STARTUP_FAILURE_CODE.CAP_DETACH_RUNTIME_ABSENT;
   }
   if (text.trim()) return GUARDIAN_STARTUP_FAILURE_CODE.UNKNOWN_STARTUP_FAILURE;
   return GUARDIAN_STARTUP_FAILURE_CODE.NONE;
@@ -765,6 +819,7 @@ export async function runTailRestorerLoop({
   versionTransport = null,
   capDetachActuator = null,
   closeSinkWindow = null,
+  captureFinalAggregate = null,
   stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT,
   pollMs = DEFAULT_TAIL_POLL_MS,
   nowFn = () => new Date().toISOString(),
@@ -772,7 +827,10 @@ export async function runTailRestorerLoop({
 } = {}) {
   const paths = tailRestorerPaths(stateRoot);
   const initial = await store.read();
-  if (initial?.restorer?.cap_detach_actuator_bound === true) {
+  if (
+    initial?.restorer?.cap_detach_actuator_bound === true
+    && initial?.restorer?.restore_only !== true
+  ) {
     if (!capDetachActuator || typeof capDetachActuator.pollAndDetachIfCapped !== "function") {
       fail(
         "refuse to run: window armed with cap-detach actuator but runtime actuator is absent",
@@ -821,6 +879,7 @@ export async function runTailRestorerLoop({
       versionTransport,
       capDetachActuator,
       closeSinkWindow,
+      captureFinalAggregate,
       stateRoot,
       now: nowFn(),
     });
@@ -863,6 +922,7 @@ export async function tailAttachmentRestorerTick({
   versionTransport = null,
   capDetachActuator = null,
   closeSinkWindow = null,
+  captureFinalAggregate = null,
   stateRoot = DEFAULT_TAIL_RESTORER_STATE_ROOT,
   now = null,
   nowFn = () => new Date().toISOString(),
@@ -905,6 +965,7 @@ export async function tailAttachmentRestorerTick({
     && !snapControllerDead
     && !snapCancelRequested
     && snapshot.restorer?.cap_detach_actuator_bound === true
+    && snapshot.restorer?.restore_only !== true
   ) {
     if (!capDetachActuator || typeof capDetachActuator.pollAndDetachIfCapped !== "function") {
       fail("refuse: window armed with cap-detach but runtime actuator absent");
@@ -964,6 +1025,7 @@ export async function tailAttachmentRestorerTick({
       const existingTerminal = readJsonIfPresent(paths.terminalReceipt);
       const reconciled = await reconcileSinkCloseObligation({
         closeSinkWindow,
+        captureFinalAggregate,
         paths,
         windowId: window.window_id
           || existingTerminal?.window_id
@@ -1018,7 +1080,10 @@ export async function tailAttachmentRestorerTick({
     // below still run on later ticks. A stale observation (A ≠ B) refuses
     // actuation with 0 PATCH — never invent B's binding or re-poll under lock.
     if (owned && !pending && !expired && !controllerDead && !cancelRequested) {
-      if (window.restorer?.cap_detach_actuator_bound === true) {
+      if (
+        window.restorer?.cap_detach_actuator_bound === true
+        && window.restorer?.restore_only !== true
+      ) {
         if (!capDetachActuator || typeof capDetachActuator.pollAndDetachIfCapped !== "function") {
           fail("refuse: window armed with cap-detach but runtime actuator absent");
         }
@@ -1151,6 +1216,7 @@ export async function tailAttachmentRestorerTick({
         });
         const sinkClose = await attemptOwnedSinkClose({
           closeSinkWindow,
+          captureFinalAggregate,
           windowId: closeWindowId,
           paths,
           now: nowAfter,
@@ -1207,6 +1273,7 @@ export async function tailAttachmentRestorerTick({
         });
         const sinkClose = await attemptOwnedSinkClose({
           closeSinkWindow,
+          captureFinalAggregate,
           windowId: closeWindowId,
           paths,
           now: nowAfter,
@@ -1280,6 +1347,7 @@ export async function tailAttachmentRestorerTick({
     });
     const sinkClose = await attemptOwnedSinkClose({
       closeSinkWindow,
+      captureFinalAggregate,
       windowId: closeWindowId,
       paths,
       now: nowAfter,
@@ -1386,6 +1454,163 @@ export function createBoundDeploymentsVersionTransport(env, window) {
   return transport;
 }
 
+
+/**
+ * Hard READY gate before owned self/producer attach.
+ * Refuses when the restorer ready receipt is absent or not independently READY.
+ * GO #5: runner attached self-Tail after child-failed-before-ready.
+ */
+export function assertRestorerReadyBeforeOwnedAttach({
+  readyReceipt = null,
+  readyPresent = null,
+  label = "restorer",
+} = {}) {
+  const present = readyPresent === true
+    || (readyReceipt && typeof readyReceipt === "object");
+  if (!present) {
+    fail(`refuse owned attach: ${label} READY receipt is absent`);
+  }
+  const receipt = readyReceipt && typeof readyReceipt === "object" ? readyReceipt : null;
+  if (receipt) {
+    if (receipt.schema && receipt.schema !== TAIL_RESTORER_READY_SCHEMA) {
+      fail(`refuse owned attach: ${label} READY receipt schema mismatch`);
+    }
+    if (receipt.independent_process === false) {
+      fail(`refuse owned attach: ${label} READY is not an independent process`);
+    }
+  }
+  return {
+    ok: true,
+    label,
+    ready_present: true,
+    independent_process: receipt?.independent_process === true ? true : null,
+    version_guard: receipt?.version_guard || null,
+  };
+}
+
+/**
+ * Pre-spawn / pre-loop check: when the window is armed with a durable
+ * cap-detach actuator, the child env must provision the runtime actuator.
+ * restore_only windows skip this (no durable cap-detach expected).
+ */
+export function assertDurableCapDetachRuntimeProvisioned({
+  window = null,
+  env = process.env,
+  capDetachActuator = null,
+} = {}) {
+  if (window?.restorer?.restore_only === true) {
+    return { ok: true, restore_only: true, required: false };
+  }
+  if (window?.restorer?.cap_detach_actuator_bound !== true) {
+    return { ok: true, restore_only: false, required: false };
+  }
+  if (capDetachActuator && typeof capDetachActuator.pollAndDetachIfCapped === "function") {
+    return { ok: true, restore_only: false, required: true, runtime_present: true };
+  }
+  if (env?.CITYSCROLL_TAIL_ATTACHMENT_RESTORER_CAP_DETACH_MODULE) {
+    return { ok: true, restore_only: false, required: true, runtime_present: "module" };
+  }
+  const readbackUrl = env?.CITYSCROLL_TAIL_SINK_READBACK_URL;
+  const readbackToken = env?.CITYSCROLL_TAIL_SINK_READBACK_TOKEN;
+  if (typeof readbackUrl === "string" && readbackUrl
+    && typeof readbackToken === "string" && readbackToken && readbackToken !== "unset") {
+    return { ok: true, restore_only: false, required: true, runtime_present: "env-readback" };
+  }
+  fail(
+    "refuse to run: window armed with cap-detach actuator but runtime actuator is absent",
+  );
+}
+
+/**
+ * Producer window outcome independent of a never-READY self guardian.
+ * Self deviation is surfaced separately and must not poison restore_proven.
+ */
+export function observeProducerTailWindowOutcome({
+  producerTerminal = null,
+  producerBetaEmpty = null,
+  selfReadyPresent = null,
+  selfTerminal = null,
+  selfOwnedDetached = null,
+  sinkClosed = null,
+  tombstoneProved = null,
+  now = new Date().toISOString(),
+} = {}) {
+  const producerProved = producerTerminal
+    && typeof producerTerminal === "object"
+    && (
+      producerTerminal.proved === true
+      || producerTerminal.attachment_restore?.proved === true
+      || ["restored", "already-restored", "expired-restored", "cap-detach"].includes(
+        producerTerminal.action || producerTerminal.outcome,
+      )
+    );
+  const betaEmpty = producerBetaEmpty === true;
+  const selfNeverReady = selfReadyPresent !== true;
+  const selfTerminalPresent = Boolean(selfTerminal && typeof selfTerminal === "object");
+  // When self never READY / already owned-detached, do not wait on self terminal.
+  const selfDeviation = selfNeverReady
+    ? {
+      kind: "self-never-ready",
+      ready_present: false,
+      terminal_present: selfTerminalPresent,
+      owned_detached: selfOwnedDetached === true,
+      collector_cpu_ms: "UNKNOWN",
+    }
+    : (selfOwnedDetached === true && !selfTerminalPresent
+      ? {
+        kind: "self-owned-detached-without-terminal",
+        ready_present: true,
+        terminal_present: false,
+        owned_detached: true,
+        collector_cpu_ms: "UNKNOWN",
+      }
+      : null);
+
+  const restoreProven = producerProved === true && betaEmpty === true;
+  let outcome = "UNKNOWN";
+  let stopReason = null;
+  if (restoreProven) {
+    outcome = selfDeviation
+      ? "restored-proven-producer;self-deviation"
+      : "restored-proven";
+  } else if (producerTerminal == null) {
+    outcome = "failed";
+    stopReason = "producer-guardian-terminal-timeout";
+  } else if (!betaEmpty) {
+    outcome = "failed";
+    stopReason = "producer-beta-not-empty";
+  } else {
+    outcome = "failed";
+    stopReason = "producer-restore-unproved";
+  }
+
+  return {
+    schema: TAIL_PRODUCER_OUTCOME_SCHEMA,
+    kind: "producer-tail-window-outcome",
+    observed_at: typeof now === "string" ? now : new Date().toISOString(),
+    outcome,
+    stop_reason: stopReason,
+    restore_proven: restoreProven,
+    producer: {
+      terminal_present: Boolean(producerTerminal),
+      proved: producerProved === true,
+      beta_empty: betaEmpty,
+      action: producerTerminal?.action || producerTerminal?.outcome || null,
+    },
+    self: selfDeviation || {
+      kind: "self-ready",
+      ready_present: true,
+      terminal_present: selfTerminalPresent,
+      owned_detached: selfOwnedDetached === true,
+      collector_cpu_ms: null,
+    },
+    sink_closed: sinkClosed === true,
+    tombstone_proved: tombstoneProved === true,
+    // Self never-READY must not require self terminal for producer outcome.
+    waits_on_self_terminal: selfNeverReady ? false : true,
+  };
+}
+
 /**
  * Start a supervised Tail restorer child against a durable runner copy.
  * Tests may pass a runnerPath override that imports the repo modules.
@@ -1420,6 +1645,11 @@ export function startSupervisedTailRestorerProcess({
   if (!existsSync(runner)) {
     fail(`durable Tail restorer runner missing at ${runner}`);
   }
+
+  // Cap-detach runtime provision is enforced in the durable child main /
+  // runTailRestorerLoop (and by callers via assertDurableCapDetachRuntimeProvisioned)
+  // so intentional child-failure diagnosis tests can still spawn. restore_only
+  // windows skip the bound-actuator requirement at arm time.
 
   const composed = skipCredentialCompose
     ? {

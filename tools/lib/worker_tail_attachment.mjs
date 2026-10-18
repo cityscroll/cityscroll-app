@@ -377,9 +377,18 @@ export function armTailAttachmentRestorer(window, {
   strictProductionArm = true,
   expectedDeployedRevisions = null,
   kvBindingProof = null,
+  /**
+   * Restore-only / collector-self windows: do not bind a durable cap-detach
+   * actuator. GO #5 self-Tail failed before READY because the window was armed
+   * with cap_detach_actuator_bound while the durable child had no runtime
+   * actuator (no READBACK env / CAP_DETACH_MODULE).
+   */
+  restoreOnly = false,
 } = {}) {
   assertTailAttachmentWindowMutable(window, now);
-  assertOwnedCapDetachActuator(capDetachActuator);
+  if (restoreOnly !== true) {
+    assertOwnedCapDetachActuator(capDetachActuator);
+  }
   let revisionBound = false;
   let kvAbsentProved = false;
   if (strictProductionArm) {
@@ -390,14 +399,18 @@ export function armTailAttachmentRestorer(window, {
     revisionBound = pre.revision_allowlist_bound === true;
     kvAbsentProved = pre.kv_absent_proved === true;
   }
+  const capBound = restoreOnly !== true;
   return {
     ...window,
     restorer: {
       armed: true,
       restorer_id: restorerId,
       armed_at: requireIso(now, "now"),
-      cap_detach_actuator_bound: true,
-      cap_detach_actuator_kind: capDetachActuator.kind || "owned-window-cas-detach",
+      cap_detach_actuator_bound: capBound,
+      cap_detach_actuator_kind: capBound
+        ? (capDetachActuator.kind || "owned-window-cas-detach")
+        : null,
+      restore_only: restoreOnly === true,
       strict_production_arm: strictProductionArm === true,
       expected_deployed_revisions_bound: revisionBound,
       kv_absent_proved: kvAbsentProved,
@@ -1050,10 +1063,40 @@ export async function emergencyDetachTailAttachment(window, transport, {
   // consumer-bound versionTransport is observed with truthful performed/UNKNOWN
   // labels. Drift never blocks detach; an absent guard stays not_performed.
   if (plan.action === "already-restored" || plan.action === "restore") {
-    return restoreTailAttachmentWindow(active, transport, {
+    const restored = await restoreTailAttachmentWindow(active, transport, {
       now: at,
       versionTransport,
     });
+    // GO #5 ROOT: when an idempotent restore observes baseline while durable
+    // phase is still attached, persist truthful restored/terminal state via
+    // exact-generation own-window CAS (preserve foreign entries).
+    if (
+      store
+      && typeof store.write === "function"
+      && restored?.window
+      && restored.window.schema === WORKER_TAIL_ATTACHMENT_WINDOW_SCHEMA
+    ) {
+      const expectedGeneration = Number.isInteger(active.window_generation)
+        ? active.window_generation
+        : (Number.isInteger(restored.window.window_generation)
+          ? restored.window.window_generation
+          : null);
+      try {
+        const written = await store.write(restored.window, {
+          expectedWindowId: active.window_id,
+          ...(expectedGeneration != null ? { expectedGeneration } : {}),
+        });
+        return { ...restored, window: written || restored.window, durable_phase_persisted: true };
+      } catch (err) {
+        // CAS race: return in-memory restored window; caller may retry.
+        return {
+          ...restored,
+          durable_phase_persisted: false,
+          durable_phase_persist_error: String(err?.message || err).slice(0, 200),
+        };
+      }
+    }
+    return { ...restored, durable_phase_persisted: false };
   }
 
   // confirm-pending and other non-restore plans: never blank-patch; do not claim
@@ -1108,6 +1151,122 @@ export function cleanupUrlFromReadbackUrl(readbackUrl) {
     u.pathname = `${u.pathname.replace(/\/$/, "")}/cleanup`;
   }
   return u.toString();
+}
+
+/**
+ * Authenticated GET /readback for one owned window_id.
+ * Used by the guardian terminal to persist the final aggregate BEFORE /cleanup
+ * tombstone (GO #5 §6: cleanup must not drop counters before capture).
+ * Returns an allowlisted projection only — never token/URL/raw body dump.
+ */
+export async function readOwnedSinkAggregate({
+  url,
+  token,
+  windowId,
+  fetchImpl = globalThis.fetch,
+  timeoutMs = DEFAULT_SINK_READBACK_TIMEOUT_MS,
+  now = new Date().toISOString(),
+} = {}) {
+  if (typeof url !== "string" || !url) fail("sink readback url is required");
+  if (typeof token !== "string" || !token || token === "unset") {
+    fail("sink readback token is required");
+  }
+  if (typeof windowId !== "string" || !windowId.trim()) {
+    fail("windowId is required for sink aggregate readback");
+  }
+  if (typeof fetchImpl !== "function") fail("fetchImpl must be a function");
+  const boundMs = Number.isFinite(timeoutMs) && timeoutMs > 0
+    ? timeoutMs
+    : DEFAULT_SINK_READBACK_TIMEOUT_MS;
+  const controller = new AbortController();
+  const timer = setTimeout(() => {
+    try { controller.abort(); } catch { /* ignore */ }
+  }, boundMs);
+  try {
+    const res = await fetchImpl(url, {
+      method: "GET",
+      headers: {
+        [READBACK_TOKEN_HEADER]: token,
+        [WINDOW_ID_HEADER]: windowId.trim(),
+      },
+      signal: controller.signal,
+    });
+    let body = null;
+    try {
+      body = await res.json();
+    } catch {
+      body = null;
+    }
+    const counters = body && typeof body.counters === "object" && body.counters
+      ? body.counters
+      : null;
+    return {
+      schema: "cityscroll.tail_sink_final_aggregate.v1",
+      kind: "final-aggregate-before-tombstone",
+      observed_at: requireIso(now, "now"),
+      window_id: windowId.trim(),
+      ok: res?.ok === true && body?.ok === true,
+      http_status: Number.isInteger(res?.status) ? res.status : null,
+      events_seen: Number.isInteger(body?.events_seen) ? body.events_seen : null,
+      opened: typeof body?.opened === "boolean" ? body.opened : null,
+      closed: typeof body?.closed === "boolean" ? body.closed : null,
+      from_tombstone: body?.from_tombstone === true,
+      a2: body?.a2 && typeof body.a2 === "object"
+        ? {
+          pass: body.a2.pass === true ? true : (body.a2.pass === false ? false : null),
+          reason: typeof body.a2.reason === "string" ? body.a2.reason : null,
+          events_seen: Number.isInteger(body.a2.events_seen) ? body.a2.events_seen : null,
+          apply_overshoot: Number.isInteger(body.a2.apply_overshoot) ? body.a2.apply_overshoot : null,
+        }
+        : null,
+      by_event_type: counters?.by_event_type && typeof counters.by_event_type === "object"
+        ? counters.by_event_type
+        : null,
+      by_deployed_revision: counters?.by_deployed_revision
+        && typeof counters.by_deployed_revision === "object"
+        ? counters.by_deployed_revision
+        : null,
+      by_cohort_cpu: counters?.by_cohort_cpu && typeof counters.by_cohort_cpu === "object"
+        ? counters.by_cohort_cpu
+        : null,
+      collector_do_requests: Number.isInteger(counters?.collector_do_requests)
+        ? counters.collector_do_requests
+        : null,
+      collector_storage_ops: Number.isInteger(counters?.collector_storage_ops)
+        ? counters.collector_storage_ops
+        : null,
+      collector_cpu_ms: counters?.collector_cpu_ms === "UNKNOWN"
+        || Number.isFinite(counters?.collector_cpu_ms)
+        ? counters.collector_cpu_ms
+        : null,
+      label: "final aggregate before terminal tombstone",
+    };
+  } catch (err) {
+    const aborted = err?.name === "AbortError";
+    return {
+      schema: "cityscroll.tail_sink_final_aggregate.v1",
+      kind: "final-aggregate-before-tombstone",
+      observed_at: requireIso(now, "now"),
+      window_id: windowId.trim(),
+      ok: false,
+      http_status: null,
+      events_seen: null,
+      opened: null,
+      closed: null,
+      from_tombstone: false,
+      a2: null,
+      by_event_type: null,
+      by_deployed_revision: null,
+      by_cohort_cpu: null,
+      collector_do_requests: null,
+      collector_storage_ops: null,
+      collector_cpu_ms: null,
+      label: "final aggregate before terminal tombstone",
+      reason: aborted ? "readback_timeout" : "readback_error",
+    };
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 /**
@@ -1986,7 +2145,8 @@ export function createOwnedCapDetachActuator({
         versionTransport,
       });
       if (
-        result.proved === true
+        result.durable_phase_persisted !== true
+        && result.proved === true
         && result.window
         && typeof store.write === "function"
         && result.window !== window

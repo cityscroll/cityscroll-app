@@ -50,12 +50,15 @@ import {
 import {
   GUARDIAN_STARTUP_FAILURE_CODE,
   TAIL_SINK_CLOSE_PENDING_SCHEMA,
+  assertDurableCapDetachRuntimeProvisioned,
+  assertRestorerReadyBeforeOwnedAttach,
   assignTailWindowForRestorer,
   classifyGuardianStartupStderr,
   composeGuardianChildEnv,
   createBoundDeploymentsVersionTransport,
   createBoundDualViewTailConsumersTransport,
   installDurableTailRestorerRunner,
+  observeProducerTailWindowOutcome,
   readSinkClosePending,
   sinkCloseObligationRemains,
   sinkCloseProved,
@@ -4024,3 +4027,236 @@ test("sink_close: one failed cleanup then retry proves tombstone", async () => {
   rmSync(dir, { recursive: true, force: true });
 });
 
+
+
+test("§6 final-aggregate-before-tombstone: capture runs before closeSinkWindow", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-final-agg-before-tombstone-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(stateRoot, { recursive: true });
+  const transport = memoryTransport([SANITIZER]);
+  const { store, window, versionTransport } = await openStoredArmedWindow(dir, {
+    windowId: "final-agg-win",
+    restorerId: "tr-final-agg",
+    baselineConsumers: [],
+    now: "2026-10-18T12:00:00.000Z",
+    durationSeconds: 60,
+  });
+  let owned = {
+    ...window,
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER]),
+    owned_sha256: tailConsumersSha256([SANITIZER]),
+    pending_mutation: null,
+  };
+  owned = await store.write(owned);
+
+  const order = [];
+  const captureFinalAggregate = async ({ windowId }) => {
+    order.push("capture");
+    return {
+      schema: "cityscroll.tail_sink_final_aggregate.v1",
+      kind: "final-aggregate-before-tombstone",
+      window_id: windowId,
+      ok: true,
+      events_seen: 42,
+      by_cohort_cpu: { nearby: { cpu_ms_sum: 10, cpu_ms_count: 2 } },
+    };
+  };
+  const closeSinkWindow = async ({ windowId }) => {
+    order.push("cleanup");
+    return {
+      ok: true,
+      cleaned: true,
+      tombstone: true,
+      closed: true,
+      window_id: windowId,
+      reason: null,
+      status: 200,
+    };
+  };
+
+  const tick = await tailAttachmentRestorerTick({
+    store,
+    transport,
+    versionTransport,
+    closeSinkWindow,
+    captureFinalAggregate,
+    stateRoot,
+    now: "2026-10-18T12:05:00.000Z", // past expiry
+  });
+
+  assert.deepEqual(order, ["capture", "cleanup"]);
+  assert.equal(tick.sink_close?.tombstone, true);
+  const paths = tailRestorerPaths(stateRoot);
+  assert.ok(existsSync(paths.finalAggregateReceipt));
+  const finalAgg = JSON.parse(readFileSync(paths.finalAggregateReceipt, "utf8"));
+  assert.equal(finalAgg.events_seen, 42);
+  assert.equal(finalAgg.kind, "final-aggregate-before-tombstone");
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("§6 final-aggregate capture failure must not block tombstone", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-final-agg-fail-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(stateRoot, { recursive: true });
+  const transport = memoryTransport([SANITIZER]);
+  const { store, window, versionTransport } = await openStoredArmedWindow(dir, {
+    windowId: "final-agg-fail-win",
+    restorerId: "tr-final-agg-fail",
+    baselineConsumers: [],
+    now: "2026-10-18T12:00:00.000Z",
+    durationSeconds: 60,
+  });
+  let owned = {
+    ...window,
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER]),
+    owned_sha256: tailConsumersSha256([SANITIZER]),
+    pending_mutation: null,
+  };
+  owned = await store.write(owned);
+
+  const captureFinalAggregate = async () => {
+    throw new Error("readback stalled");
+  };
+  const closeSinkWindow = async ({ windowId }) => ({
+    ok: true, cleaned: true, tombstone: true, closed: true,
+    window_id: windowId, reason: null, status: 200,
+  });
+
+  const tick = await tailAttachmentRestorerTick({
+    store,
+    transport,
+    versionTransport,
+    closeSinkWindow,
+    captureFinalAggregate,
+    stateRoot,
+    now: "2026-10-18T12:05:00.000Z",
+  });
+  assert.equal(tick.sink_close?.tombstone, true);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("§6 hard READY gate refuses attach without READY receipt", () => {
+  assert.throws(
+    () => assertRestorerReadyBeforeOwnedAttach({ readyReceipt: null, label: "self" }),
+    /READY receipt is absent/,
+  );
+  assert.throws(
+    () => assertRestorerReadyBeforeOwnedAttach({ readyPresent: false, label: "self" }),
+    /READY receipt is absent/,
+  );
+  const ok = assertRestorerReadyBeforeOwnedAttach({
+    readyReceipt: {
+      schema: "cityscroll.worker_tail_attachment_restorer_ready.v1",
+      independent_process: true,
+      version_guard: { observed_at_ready: "performed:match" },
+    },
+    label: "self",
+  });
+  assert.equal(ok.ok, true);
+  assert.equal(ok.ready_present, true);
+});
+
+test("§6 restore_only + absent runtime: provision check passes; cap-bound without env fails", () => {
+  const restoreOnlyWindow = {
+    restorer: { armed: true, restore_only: true, cap_detach_actuator_bound: false },
+  };
+  const ok = assertDurableCapDetachRuntimeProvisioned({
+    window: restoreOnlyWindow,
+    env: {},
+  });
+  assert.equal(ok.ok, true);
+  assert.equal(ok.restore_only, true);
+
+  const capBound = {
+    restorer: { armed: true, restore_only: false, cap_detach_actuator_bound: true },
+  };
+  assert.throws(
+    () => assertDurableCapDetachRuntimeProvisioned({ window: capBound, env: {} }),
+    /runtime actuator is absent/,
+  );
+  // Classified failure code for child stderr
+  assert.equal(
+    classifyGuardianStartupStderr(
+      "Error: refuse to run: window armed with cap-detach actuator but runtime actuator is absent",
+    ),
+    GUARDIAN_STARTUP_FAILURE_CODE.CAP_DETACH_RUNTIME_ABSENT,
+  );
+});
+
+test("§6 observeProducerTailWindowOutcome independent of never-READY self", () => {
+  const producerTerminal = {
+    proved: true,
+    action: "restored",
+    attachment_restore: { proved: true, action: "restored" },
+  };
+  const observed = observeProducerTailWindowOutcome({
+    producerTerminal,
+    producerBetaEmpty: true,
+    selfReadyPresent: false,
+    selfTerminal: null,
+    selfOwnedDetached: true,
+    sinkClosed: true,
+    tombstoneProved: true,
+    now: "2026-10-18T13:08:00.747Z",
+  });
+  assert.equal(observed.restore_proven, true);
+  assert.match(observed.outcome, /restored-proven/);
+  assert.equal(observed.waits_on_self_terminal, false);
+  assert.equal(observed.self.kind, "self-never-ready");
+  assert.equal(observed.self.collector_cpu_ms, "UNKNOWN");
+  assert.equal(observed.stop_reason, null);
+
+  const poisonedOld = Boolean(null) && true; // old runner required selfTerminal
+  assert.equal(poisonedOld, false);
+
+  const failed = observeProducerTailWindowOutcome({
+    producerTerminal: null,
+    producerBetaEmpty: true,
+    selfReadyPresent: false,
+  });
+  assert.equal(failed.restore_proven, false);
+  assert.equal(failed.outcome, "failed");
+  assert.equal(failed.stop_reason, "producer-guardian-terminal-timeout");
+});
+
+test("§6 restore_only armed window tick does not refuse absent cap actuator", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-restore-only-tick-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(stateRoot, { recursive: true });
+  const transport = memoryTransport([]);
+  // openStoredArmedWindow arms with cap actuator; rewrite as restore_only
+  const { store, window, versionTransport } = await openStoredArmedWindow(dir, {
+    windowId: "restore-only-tick",
+    restorerId: "tr-ro-tick",
+    baselineConsumers: [],
+    now: "2026-10-18T12:00:00.000Z",
+    durationSeconds: 1800,
+  });
+  let owned = {
+    ...window,
+    restorer: {
+      ...window.restorer,
+      cap_detach_actuator_bound: false,
+      restore_only: true,
+      cap_detach_actuator_kind: null,
+    },
+    phase: "attached",
+    owned_consumers: [],
+    owned_sha256: window.baseline_sha256,
+    pending_mutation: null,
+  };
+  owned = await store.write(owned);
+
+  const tick = await tailAttachmentRestorerTick({
+    store,
+    transport,
+    versionTransport,
+    capDetachActuator: null,
+    stateRoot,
+    now: "2026-10-18T12:00:10.000Z",
+  });
+  assert.ok(tick.outcome === "idle" || tick.window, JSON.stringify(tick));
+  rmSync(dir, { recursive: true, force: true });
+});
