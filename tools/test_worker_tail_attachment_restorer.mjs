@@ -49,12 +49,16 @@ import {
 } from "./lib/worker_tail_attachment.mjs";
 import {
   GUARDIAN_STARTUP_FAILURE_CODE,
+  TAIL_SINK_CLOSE_PENDING_SCHEMA,
   assignTailWindowForRestorer,
   classifyGuardianStartupStderr,
   composeGuardianChildEnv,
   createBoundDeploymentsVersionTransport,
   createBoundDualViewTailConsumersTransport,
   installDurableTailRestorerRunner,
+  readSinkClosePending,
+  sinkCloseObligationRemains,
+  sinkCloseProved,
   startSupervisedTailRestorerProcess,
   stopSupervisedTailRestorerProcess,
   tailAttachmentRestorerTick,
@@ -3813,6 +3817,209 @@ test("tailAttachmentRestorerTick: terminal cap-detach closes AggregateSink via /
   assert.equal(terminal.sink_close.cleaned, true);
   assert.equal(terminal.sink_close.tombstone, true);
   assert.equal(terminal.window_id, "sink-close-win");
+  assert.equal(terminal.attachment_restore?.proved, true);
+  assert.equal(existsSync(paths.sinkClosePending), false, "proved close clears pending");
+
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("sink_close: crash after restore before cleanup retries on next tick", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-sink-close-crash-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(join(stateRoot, "receipts"), { recursive: true, mode: 0o700 });
+  const transport = memoryTransport([]);
+  const { store, window, versionTransport } = await openStoredArmedWindow(dir, {
+    windowId: "sink-crash-win",
+    restorerId: "tr-sink-crash",
+    baselineConsumers: [],
+    now: "2026-10-17T13:00:00.000Z",
+    durationSeconds: 1800,
+  });
+  // Simulate proved attachment restore already persisted, cleanup never finished.
+  let restored = {
+    ...window,
+    phase: "restored",
+    owned_consumers: null,
+    owned_sha256: null,
+    pending_mutation: null,
+  };
+  restored = await store.write(restored);
+  assignTailWindowForRestorer({
+    windowPath: store.path,
+    windowId: restored.window_id,
+    stateRoot,
+  });
+
+  const paths = tailRestorerPaths(stateRoot);
+  writeTailRestorerReceipt(paths.sinkClosePending, {
+    schema: TAIL_SINK_CLOSE_PENDING_SCHEMA,
+    kind: "sink-close-pending",
+    status: "issued-unacked",
+    window_id: restored.window_id,
+    observed_at: "2026-10-17T13:00:10.000Z",
+    reason: "terminal-restore",
+    last_close: null,
+  });
+  writeTailRestorerReceipt(paths.terminalReceipt, {
+    schema: "cityscroll.worker_tail_attachment_receipt.v1",
+    kind: "restorer",
+    outcome: "restored",
+    observed_at: "2026-10-17T13:00:10.000Z",
+    window_id: restored.window_id,
+    proved: true,
+    expired: false,
+    attachment_restore: {
+      proved: true,
+      action: "restored",
+      outcome: "restored",
+      expired: false,
+      reason: null,
+    },
+    sink_close: null,
+  });
+
+  assert.equal(sinkCloseProved(null), false);
+  assert.equal(sinkCloseObligationRemains(stateRoot, async () => ({})), true);
+  assert.ok(readSinkClosePending(stateRoot));
+
+  const closeCalls = [];
+  const closeSinkWindow = async ({ windowId }) => {
+    closeCalls.push({ windowId });
+    return {
+      ok: true,
+      cleaned: true,
+      tombstone: true,
+      closed: true,
+      window_id: windowId,
+      reason: null,
+      status: 200,
+    };
+  };
+
+  const tick = await tailAttachmentRestorerTick({
+    store,
+    transport,
+    versionTransport,
+    closeSinkWindow,
+    stateRoot,
+    now: "2026-10-17T13:00:20.000Z",
+  });
+
+  assert.equal(tick.outcome, "already-terminal");
+  assert.equal(closeCalls.length, 1, "restart must retry owned sink cleanup");
+  assert.equal(closeCalls[0].windowId, restored.window_id);
+  assert.equal(sinkCloseProved(tick.sink_close), true);
+  assert.equal(tick.sink_close?.tombstone, true);
+  assert.equal(existsSync(paths.sinkClosePending), false, "proved retry clears pending");
+
+  const terminal = JSON.parse(readFileSync(paths.terminalReceipt, "utf8"));
+  assert.equal(terminal.attachment_restore?.proved, true);
+  assert.equal(terminal.sink_close?.tombstone, true);
+  assert.equal(terminal.sink_close?.ok, true);
+  assert.equal(sinkCloseObligationRemains(stateRoot, closeSinkWindow), false);
+
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("sink_close: one failed cleanup then retry proves tombstone", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc05-sink-close-retry-"));
+  const stateRoot = join(dir, "restorer");
+  mkdirSync(stateRoot, { recursive: true });
+  const transport = memoryTransport([SANITIZER]);
+  const { store, window, versionTransport } = await openStoredArmedWindow(dir, {
+    windowId: "sink-retry-win",
+    restorerId: "tr-sink-retry",
+    baselineConsumers: [],
+    now: "2026-10-17T14:00:00.000Z",
+    durationSeconds: 60,
+  });
+  let owned = {
+    ...window,
+    phase: "attached",
+    owned_consumers: canonicalizeTailConsumers([SANITIZER]),
+    owned_sha256: tailConsumersSha256([SANITIZER]),
+    pending_mutation: null,
+  };
+  owned = await store.write(owned);
+  assignTailWindowForRestorer({
+    windowPath: store.path,
+    windowId: owned.window_id,
+    stateRoot,
+  });
+
+  const closeCalls = [];
+  const closeSinkWindow = async ({ windowId }) => {
+    closeCalls.push({ windowId });
+    if (closeCalls.length === 1) {
+      return {
+        ok: false,
+        cleaned: false,
+        tombstone: false,
+        closed: false,
+        window_id: windowId,
+        reason: "cleanup_timeout",
+        status: 504,
+      };
+    }
+    return {
+      ok: true,
+      cleaned: true,
+      tombstone: true,
+      closed: true,
+      window_id: windowId,
+      reason: null,
+      status: 200,
+    };
+  };
+
+  const first = await tailAttachmentRestorerTick({
+    store,
+    transport,
+    versionTransport,
+    closeSinkWindow,
+    stateRoot,
+    now: "2026-10-17T14:02:00.000Z", // past expiry → terminal restore
+  });
+
+  assert.equal(first.proved, true);
+  assert.ok(first.terminal_receipt, "first tick writes terminal despite failed close");
+  assert.equal(sinkCloseProved(first.sink_close), false);
+  assert.equal(first.sink_close?.ok, false);
+  assert.equal(first.terminal_receipt.attachment_restore?.proved, true);
+
+  const paths = tailRestorerPaths(stateRoot);
+  assert.ok(existsSync(paths.sinkClosePending), "failed close leaves sink-close-pending");
+  const pending = readSinkClosePending(stateRoot);
+  assert.equal(pending.schema, TAIL_SINK_CLOSE_PENDING_SCHEMA);
+  assert.equal(pending.status, "issued-unacked");
+  assert.equal(pending.window_id, owned.window_id);
+  assert.equal(pending.last_close?.reason, "cleanup_timeout");
+  assert.equal(sinkCloseObligationRemains(stateRoot, closeSinkWindow), true);
+
+  const terminalAfterFail = JSON.parse(readFileSync(paths.terminalReceipt, "utf8"));
+  assert.equal(terminalAfterFail.attachment_restore?.proved, true);
+  assert.equal(sinkCloseProved(terminalAfterFail.sink_close), false);
+  // Loop exit must stay open while closer is bound and sink_close is unproved.
+  assert.equal(sinkCloseObligationRemains(stateRoot, closeSinkWindow), true);
+  assert.equal(sinkCloseObligationRemains(stateRoot, null), false);
+
+  const second = await tailAttachmentRestorerTick({
+    store,
+    transport,
+    versionTransport,
+    closeSinkWindow,
+    stateRoot,
+    now: "2026-10-17T14:02:05.000Z",
+  });
+
+  assert.equal(second.outcome, "already-terminal");
+  assert.equal(closeCalls.length, 2, "second tick retries sink cleanup");
+  assert.equal(sinkCloseProved(second.sink_close), true);
+  assert.equal(existsSync(paths.sinkClosePending), false);
+  const terminal = JSON.parse(readFileSync(paths.terminalReceipt, "utf8"));
+  assert.equal(terminal.attachment_restore?.proved, true);
+  assert.equal(terminal.sink_close?.tombstone, true);
+  assert.equal(sinkCloseObligationRemains(stateRoot, closeSinkWindow), false);
 
   rmSync(dir, { recursive: true, force: true });
 });

@@ -14,6 +14,7 @@ import {
   CPU_MS_BUCKETS,
   FIXED_COHORT_KEYS,
   FORBIDDEN_PERSIST_KEYS,
+  assertNonEmptyExpectedRevisionAllowlist,
   classifyCpuValue,
   cpuMsBucket,
   isCollectorSelfTailItem,
@@ -213,9 +214,17 @@ function costVectorFrom(counters, rpcCount = null) {
       ? "UNKNOWN"
       : counters.collector_cpu_ms,
     sink_rpc_count: rpcCount == null ? (counters.collector_do_requests || 0) : rpcCount,
-    note: "collector DO requests/storage ops are measured ACK lower bounds; collector_cpu_ms is self-Tail sum or UNKNOWN",
+    // Control-plane DO (active-window pointer) is not metered into the per-window
+    // AggregateSink counters; leave explicit UNKNOWN rather than inventing zero.
+    control_do_requests: "UNKNOWN",
+    control_do_storage_ops: "UNKNOWN",
+    control_do_cpu_ms: "UNKNOWN",
+    note: "collector DO requests/storage ops are measured ACK lower bounds; collector_cpu_ms is self-Tail sum or UNKNOWN; control DO cost stays UNKNOWN until metered",
   };
 }
+
+/** Header: CAS expected active window (empty string means expect no active window). */
+const EXPECTED_ACTIVE_WINDOW_HEADER = "x-cityscroll-expected-active-window-id";
 
 function instrumentStorage(txn, counters) {
   const bump = () => {
@@ -404,10 +413,46 @@ export class AggregateSink {
       if (req.method === "PUT" || req.method === "POST") {
         const windowId = windowIdFromRequest(req);
         if (!windowId) return windowIdRequiredResponse();
+        // Explicit CAS: header must be present. Empty string = expect null pointer.
+        if (!req.headers.has(EXPECTED_ACTIVE_WINDOW_HEADER)) {
+          return Response.json({
+            ok: false,
+            armed: false,
+            reason: "expected_active_window_required",
+          }, { status: 400 });
+        }
+        const expectedRaw = req.headers.get(EXPECTED_ACTIVE_WINDOW_HEADER) ?? "";
+        let expectedId = null;
+        if (expectedRaw !== "") {
+          expectedId = parseWindowId(expectedRaw);
+          if (!expectedId) {
+            return Response.json({
+              ok: false,
+              armed: false,
+              reason: "expected_active_window_invalid",
+            }, { status: 400 });
+          }
+        }
         return this.withStorageTransaction(async (txn) => {
+          const active = await txn.get(ACTIVE_WINDOW_KEY);
+          const current = typeof active?.window_id === "string" ? active.window_id : null;
+          if (current !== expectedId) {
+            return Response.json({
+              ok: false,
+              armed: false,
+              reason: "active_window_cas_mismatch",
+              expected_window_id: expectedId,
+              active_window_id: current,
+            }, { status: 409 });
+          }
           const record = { window_id: windowId, armed_at_ms: Date.now() };
           await txn.put(ACTIVE_WINDOW_KEY, record);
-          return Response.json({ ok: true, armed: true, window_id: windowId });
+          return Response.json({
+            ok: true,
+            armed: true,
+            window_id: windowId,
+            previous_window_id: current,
+          });
         });
       }
       if (req.method === "DELETE") {
@@ -910,16 +955,24 @@ async function resolveActiveWindowId(env) {
   return parseWindowId(body?.window_id || "");
 }
 
-async function setActiveWindowId(env, windowId, token) {
+/**
+ * CAS the control-plane active window pointer.
+ * `expectedWindowId` null means the pointer must currently be unset.
+ */
+async function setActiveWindowId(env, windowId, token, { expectedWindowId = null } = {}) {
   const stub = controlStub(env);
   return stub.fetch("https://sink/active-window", {
     method: "PUT",
     headers: {
       [READBACK_HEADER]: token,
       [WINDOW_ID_HEADER]: windowId,
+      [EXPECTED_ACTIVE_WINDOW_HEADER]: expectedWindowId == null ? "" : expectedWindowId,
       "content-type": "application/json",
     },
-    body: JSON.stringify({ window_id: windowId }),
+    body: JSON.stringify({
+      window_id: windowId,
+      expected_window_id: expectedWindowId,
+    }),
   });
 }
 
@@ -964,20 +1017,53 @@ export default {
       const token = req.headers.get(READBACK_HEADER) || "";
       const windowId = windowIdFromRequest(req);
       if (!windowId) return windowIdRequiredResponse();
-      // Authorize via control DO (same token contract as readback).
-      const armed = await setActiveWindowId(env, windowId, token);
-      if (armed.status === 401) {
-        return Response.json({ ok: false, reason: "unauthorized" }, { status: 401 });
+
+      // Revision gate BEFORE any pointer or storage mutation (0 writes on refuse).
+      const revGate = assertNonEmptyExpectedRevisionAllowlist(env.EXPECTED_DEPLOYED_REVISIONS);
+      if (!revGate.ok) {
+        return Response.json({
+          ok: false,
+          armed: false,
+          reason: revGate.reason || "empty_expected_revision_allowlist",
+          window_id: windowId,
+        }, { status: 409 });
       }
-      // Touch the per-window DO so a subsequent readback is FRESH for this id.
+
+      // Read the target window first; refuse a terminal/tombstoned id.
       const stub = sinkStub(env, windowId);
-      await stub.fetch("https://sink/readback", {
+      const priorRbRes = await stub.fetch("https://sink/readback", {
         method: "GET",
         headers: {
           [READBACK_HEADER]: token,
           [WINDOW_ID_HEADER]: windowId,
         },
       });
+      if (priorRbRes.status === 401) {
+        return Response.json({ ok: false, armed: false, reason: "unauthorized" }, { status: 401 });
+      }
+      let priorRb = null;
+      try {
+        priorRb = await priorRbRes.json();
+      } catch {
+        priorRb = null;
+      }
+      if (priorRb && (priorRb.from_tombstone === true || priorRb.closed === true)) {
+        return Response.json({
+          ok: false,
+          armed: false,
+          reason: "window_tombstoned",
+          window_id: windowId,
+        }, { status: 409 });
+      }
+
+      // Switch the pointer only with explicit CAS from the current active id.
+      const currentId = await resolveActiveWindowId(env);
+      const armed = await setActiveWindowId(env, windowId, token, {
+        expectedWindowId: currentId,
+      });
+      if (armed.status === 401) {
+        return Response.json({ ok: false, armed: false, reason: "unauthorized" }, { status: 401 });
+      }
       let body = null;
       try {
         body = await armed.json();
@@ -985,7 +1071,13 @@ export default {
         body = { ok: false, reason: "arm_response_unparsed" };
       }
       return Response.json(
-        { ok: body?.ok === true, armed: body?.armed === true, window_id: windowId },
+        {
+          ok: body?.ok === true,
+          armed: body?.armed === true,
+          window_id: windowId,
+          reason: body?.reason ?? null,
+          previous_window_id: body?.previous_window_id ?? currentId,
+        },
         { status: armed.status },
       );
     }
