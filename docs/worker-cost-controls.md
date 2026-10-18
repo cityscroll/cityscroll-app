@@ -197,18 +197,23 @@ canonical-only HTTP route cohorts in `routes`. Those fixtures are never
 production ticks, and enforcement stays inactive until the release gate
 prerequisites land.
 `tools/worker_cost_acquisition.mjs warehouse` owns the matched live run and
-calls the evaluator only after both authenticated versions have the fixed
-100-sample `cold_start_flag_raw=0/1` cohorts, correctness/freshness/miss
-digests, and the complete CPU, collector, KV, D1, storage, Queue, and Analytics
-Engine vector. The runner uses bounded concurrent attempts within the same
-30-minute and 10,000-event ceiling, then retains exactly 100 invocations whose
-provider metadata carries raw flag `1` and 100 whose metadata carries raw flag
-`0` for each identical input digest. Those raw buckets stay
-`unverified-provider-flag`; they do not prove semantic cold or warm execution.
-If either population is unavailable, the run is incomplete; it never relabels
-an invocation or forces a deployment to create a flag-raw sample. Cancellation
-reaches every in-flight workload request and prevents new attempts from being
-scheduled.
+selects cohorts from the acquired source's documented cold-start capability.
+The permitted Tail TraceItem source is flag-less: both arms use the five base
+routes with `cold_start_flag_raw` UNKNOWN/absent and never default
+`carries_numeric_raw` to true. Raw `cold_start_flag_raw=0/1` partitions are
+collected only when the source documents and carries numeric
+`$metadata.coldStart`. The runner calls the evaluator only after both
+authenticated versions have the capability-selected 100-sample cohorts,
+correctness/freshness/miss digests, and the complete CPU, collector, KV, D1,
+storage, Queue, and Analytics Engine vector. Bounded concurrent attempts stay
+inside the same 30-minute and 10,000-event ceiling. For a flag-capable source
+the runner retains exactly 100 invocations whose provider metadata carries raw
+flag `1` and 100 whose metadata carries raw flag `0` for each identical input
+digest; those raw buckets stay `unverified-provider-flag` and do not prove
+semantic cold or warm execution. If either required population is unavailable,
+the run is incomplete; it never relabels an invocation or forces a deployment
+to create a flag-raw sample. Cancellation reaches every in-flight workload
+request and prevents new attempts from being scheduled.
 Correctness, join, provenance, miss, and freshness digests are derived from each
 version's observed child responses and structured receipts; measurement-plan
 assertions cannot substitute for observed results.

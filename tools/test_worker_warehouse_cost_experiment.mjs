@@ -677,3 +677,17 @@ test("flag-less sources reject fabricated cold_start_flag_raw partitions", () =>
     /fabricated cold_start_flag_raw|flag-less source must not supply/,
   );
 });
+
+test("experiment arms fail closed when cold_start_flag_capability values diverge", () => {
+  const baseline = run({ cold_start_flag_capability: flagAbsentCapability() });
+  const candidate = run({
+    cold_start_flag_capability: flagCapableCapability(),
+    deployed_revision: "b".repeat(40),
+    observed_at: "2026-10-08T23:10:00Z",
+    meters: { ...baseline.meters, native_cpu_ms: 80 },
+  });
+  assert.throws(
+    () => evaluate(baseline, candidate),
+    /cold_start_flag_capability is not matched/,
+  );
+});

@@ -736,6 +736,20 @@ export const WAREHOUSE_COLD_START_FLAG_CAPABILITIES = Object.freeze({
   ABSENT: "absent",
 });
 
+/** Tail TraceItem has no cold-start indicator — default acquisition capability. */
+export const TAIL_WAREHOUSE_COLD_START_FLAG_CAPABILITY = Object.freeze({
+  carries_numeric_raw: false,
+  documented_source: null,
+  status: WAREHOUSE_COLD_START_FLAG_CAPABILITIES.ABSENT,
+});
+
+/** Only when the acquired source documents and carries numeric `$metadata.coldStart`. */
+export const DOCUMENTED_NUMERIC_RAW_WAREHOUSE_COLD_START_FLAG_CAPABILITY = Object.freeze({
+  carries_numeric_raw: true,
+  documented_source: ISOLATE_CONTRACT.source,
+  status: WAREHOUSE_COLD_START_FLAG_CAPABILITIES.DOCUMENTED_NUMERIC_RAW,
+});
+
 /**
  * Resolve required warehouse cohorts from the acquired source capability.
  * Raw 0/1 partitions are required only when the source documents and carries
@@ -748,7 +762,7 @@ export function resolveWarehouseExperimentCohorts(capability) {
   return WAREHOUSE_EXPERIMENT_BASE_ROUTES;
 }
 
-function requireWarehouseColdStartFlagCapability(capability, path = "cold_start_flag_capability") {
+export function requireWarehouseColdStartFlagCapability(capability, path = "cold_start_flag_capability") {
   if (!capability || typeof capability !== "object") fail(`${path} is required`);
   requireExactKeys(capability, ["carries_numeric_raw", "documented_source", "status"], path);
   if (capability.carries_numeric_raw === true) {
@@ -872,7 +886,6 @@ export function evaluateWarehouseExperiment({ baseline, candidate, acquiredDeplo
       run.deployed_revision,
       `${label}.provider_deployment`,
     );
-    if (run.workload_id !== baseline.workload_id || run.workload_count !== baseline.workload_count) fail("experiment workloads are not matched");
     const capability = requireWarehouseColdStartFlagCapability(
       run.cold_start_flag_capability,
       `${label}.cold_start_flag_capability`,
@@ -890,6 +903,7 @@ export function evaluateWarehouseExperiment({ baseline, candidate, acquiredDeplo
         fail("experiment cold_start_flag_capability is not matched");
       }
     }
+    if (run.workload_id !== baseline.workload_id || run.workload_count !== baseline.workload_count) fail("experiment workloads are not matched");
     const requiredCohorts = resolveWarehouseExperimentCohorts(capability);
     for (const cohort of requiredCohorts) {
       const evidence = run.cohorts?.[cohort];
