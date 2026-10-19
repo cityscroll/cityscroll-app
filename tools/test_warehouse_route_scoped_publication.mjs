@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -7,17 +7,24 @@ import test from "node:test";
 import {
   WAREHOUSE_ROUTE_SCOPED_CONTROL_ROUTES,
   WAREHOUSE_ROUTE_SCOPED_PUBLICATION_LEDGER_SCHEMA,
+  WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_SCHEMA,
+  buildWarehouseRouteScopedPublishIntent,
   cleanupWarehouseRouteScopedShards,
   loadShardPublicationLedger,
+  loadWarehouseRouteScopedPublishIntent,
   makeShardPublicationLedger,
   markShardAcked,
   markShardIssued,
+  ownedValuesFromPublishIntent,
   persistShardPublicationLedger,
+  persistWarehouseRouteScopedPublishIntent,
   planExactValueShardClear,
   planWarehouseRouteScopedCleanup,
   planWarehouseRouteScopedPublication,
   preflightWarehouseRouteScopedPublicationReadonly,
   publishWarehouseRouteScopedShards,
+  recoveryLedgerFromPublishIntent,
+  verifyWarehouseRouteScopedPublishIntent,
 } from "./lib/warehouse_route_scoped_publication.mjs";
 import {
   WAREHOUSE_ROUTE_SCOPED_LOOKUP_ROUTES,
@@ -370,7 +377,106 @@ test("CI workflow is workflow_dispatch-only and never push-triggered", () => {
   assert.doesNotMatch(yaml, /^\s+schedule:\s*$/m);
   assert.doesNotMatch(yaml, /^\s+merge_group:\s*$/m);
   assert.match(yaml, /CLOUDFLARE_API_TOKEN: \$\{\{ secrets\.CLOUDFLARE_API_TOKEN \}\}/);
-  assert.match(yaml, /max 3 keys|≤3|shard_puts|Publish revision shards/);
   assert.match(yaml, /GO-cc06-A1-publish EXECUTE/);
   assert.match(yaml, /GO-cc06-A1-cleanup EXECUTE/);
+  assert.match(yaml, /GO-cc06-A1-dry-run/);
+  // Cross-run artifact download must use run-id + github-token (not github-run-id).
+  assert.match(yaml, /run-id: \$\{\{ inputs\.intent_run_id \}\}/);
+  assert.match(yaml, /github-token: \$\{\{ github\.token \}\}/);
+  assert.doesNotMatch(yaml, /github-run-id:/);
+  // Intent upload must appear before the publish KV put step.
+  const intentUploadAt = yaml.indexOf("Upload durable intent artifact (before any KV put)");
+  const publishAt = yaml.indexOf("Publish revision shards");
+  assert.ok(intentUploadAt > 0 && publishAt > intentUploadAt, "intent upload must precede KV publish step");
+  assert.match(yaml, /if: \$\{\{ always\(\)/);
+});
+
+test("publish intent is durable before ACK and recovers cleanup without final ledger", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc06-intent-"));
+  const intentPath = join(dir, "publish-intent.json");
+  const plan = planWarehouseRouteScopedPublication({
+    deployed_revision: REVISION,
+    materializations: tinyMaterializations(),
+  });
+  try {
+    const intent = buildWarehouseRouteScopedPublishIntent({
+      plan,
+      attempt_id: "attempt-fixture-intent",
+    });
+    assert.equal(intent.schema, WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_SCHEMA);
+    persistWarehouseRouteScopedPublishIntent(intentPath, intent);
+    const loaded = loadWarehouseRouteScopedPublishIntent(intentPath);
+    const verification = verifyWarehouseRouteScopedPublishIntent(loaded, { plan });
+    assert.equal(verification.status, "verified");
+    assert.equal(verification.provider_writes, 0);
+
+    // Simulate publisher death after issued put, before final ACK artifact.
+    const remote = fakeWrangler({ failAtPut: 2 });
+    await assert.rejects(
+      () => publishWarehouseRouteScopedShards({
+        plan,
+        invoke: remote.invoke,
+        ledgerPath: join(dir, "partial-ledger.json"),
+        attempt_id: "attempt-fixture-intent",
+      }),
+      /injected put failure/,
+    );
+
+    // Recovery uses intent only (no final ACK ledger).
+    const recovered = recoveryLedgerFromPublishIntent(loaded);
+    const phases = Object.values(recovered.entries).map((entry) => entry.phase);
+    assert.equal(phases.length, 3);
+    assert.ok(phases.every((phase) => phase === "unknown"));
+    const owned = ownedValuesFromPublishIntent(loaded);
+    assert.equal(Object.keys(owned).length, 3);
+
+    const cleanupPlan = planWarehouseRouteScopedCleanup({
+      deployed_revision: REVISION,
+      owned_entries: owned,
+      live_values: Object.fromEntries(Object.entries(owned)),
+      active_revision: ROLLBACK_REVISION,
+    });
+    const cleanupRemote = fakeWrangler({ seed: new Map(Object.entries(owned)) });
+    const receipt = await cleanupWarehouseRouteScopedShards({
+      plan: cleanupPlan,
+      invoke: cleanupRemote.invoke,
+      owned_values: owned,
+      ledger: recovered,
+    });
+    assert.equal(receipt.decision, "cleaned");
+    assert.equal(receipt.confirmed.shard_deletes, 3);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("cross-run dry-run readback verifies intent without provider writes", () => {
+  const runA = mkdtempSync(join(tmpdir(), "cc06-dryrun-a-"));
+  const runB = mkdtempSync(join(tmpdir(), "cc06-dryrun-b-"));
+  try {
+    const plan = planWarehouseRouteScopedPublication({
+      deployed_revision: REVISION,
+      materializations: tinyMaterializations(),
+    });
+    const intent = buildWarehouseRouteScopedPublishIntent({
+      plan,
+      attempt_id: "attempt-dry-run-a",
+    });
+    const intentPathA = join(runA, "publish-intent.json");
+    persistWarehouseRouteScopedPublishIntent(intentPathA, intent);
+
+    // Simulate cross-run artifact handoff: B only sees A's intent file.
+    const intentPathB = join(runB, "prior-intent", "publish-intent.json");
+    mkdirSync(join(runB, "prior-intent"), { recursive: true });
+    writeFileSync(intentPathB, readFileSync(intentPathA, "utf8"));
+
+    const loaded = loadWarehouseRouteScopedPublishIntent(intentPathB);
+    const verification = verifyWarehouseRouteScopedPublishIntent(loaded, { plan });
+    assert.equal(verification.status, "verified");
+    assert.equal(verification.provider_writes, 0);
+    assert.equal(verification.shard_count, 3);
+  } finally {
+    rmSync(runA, { recursive: true, force: true });
+    rmSync(runB, { recursive: true, force: true });
+  }
 });

@@ -40,6 +40,8 @@ export const WAREHOUSE_ROUTE_SCOPED_CLEANUP_PLAN_SCHEMA =
   "cityscroll.warehouse_route_scoped_cleanup_plan.v1";
 export const WAREHOUSE_ROUTE_SCOPED_PREFLIGHT_SCHEMA =
   "cityscroll.warehouse_route_scoped_publication_preflight.v1";
+export const WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_SCHEMA =
+  "cityscroll.warehouse_route_scoped_publish_intent.v1";
 
 /** Control routes never receive shards. */
 export const WAREHOUSE_ROUTE_SCOPED_CONTROL_ROUTES = Object.freeze([
@@ -844,6 +846,188 @@ export function preflightWarehouseRouteScopedPublicationReadonly({
 /**
  * Build materializations map from on-disk tip (or fixture) paths.
  */
+/**
+ * Durable publish intent written and uploaded BEFORE any KV put.
+ * Cleanup can recover from this artifact by run-id even when the publisher
+ * dies before the final ACK ledger. Digests alone are enough to refuse a
+ * foreign live value; exact owned values enable exact-value delete.
+ */
+export function buildWarehouseRouteScopedPublishIntent({
+  plan,
+  attempt_id = null,
+  baseline_absence = null,
+  created_at = null,
+  nowIso = nowIsoDefault,
+} = {}) {
+  if (!plan || plan.schema !== WAREHOUSE_ROUTE_SCOPED_PUBLICATION_PLAN_SCHEMA) {
+    fail("publication plan is required to build intent");
+  }
+  const at = created_at || nowIso();
+  const shards = plan.shards.map((shard) => ({
+    route: shard.route,
+    key: shard.key,
+    deployed_revision: shard.deployed_revision,
+    value: shard.value,
+    value_sha256: shard.value_sha256,
+    row_count: shard.row_count,
+  }));
+  return {
+    schema: WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_SCHEMA,
+    attempt_id,
+    deployed_revision: plan.deployed_revision,
+    active_revision: plan.active_revision,
+    rollback_revision: plan.rollback_revision,
+    control_routes: [...plan.control_routes],
+    lookup_routes: [...plan.lookup_routes],
+    created_at: at,
+    baseline_absence: baseline_absence == null
+      ? null
+      : Object.freeze({ ...baseline_absence }),
+    shards: Object.freeze(shards.map((row) => Object.freeze({ ...row }))),
+    planned: plan.planned,
+    abort_rules: plan.abort_rules,
+    activation: plan.activation,
+    financial_savings_confirmed: false,
+    shipped_savings_claimed: false,
+  };
+}
+
+export function persistWarehouseRouteScopedPublishIntent(intentPath, intent, {
+  writeFileSyncFn = writeFileSync,
+} = {}) {
+  if (typeof intentPath !== "string" || !intentPath) {
+    fail("persistWarehouseRouteScopedPublishIntent: intentPath required");
+  }
+  if (!intent || intent.schema !== WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_SCHEMA) {
+    fail("publish intent schema required");
+  }
+  mkdirSync(dirname(intentPath), { recursive: true, mode: 0o700 });
+  writeFileSyncFn(intentPath, `${JSON.stringify(intent, null, 2)}\n`, { mode: 0o600 });
+  return intent;
+}
+
+export function loadWarehouseRouteScopedPublishIntent(intentPath, {
+  readFileSyncFn = readFileSync,
+} = {}) {
+  const intent = JSON.parse(readFileSyncFn(intentPath, "utf8"));
+  if (intent?.schema !== WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_SCHEMA) {
+    fail("unsupported publish intent schema");
+  }
+  return intent;
+}
+
+/**
+ * Verify a recovered intent against a freshly planned tip (or itself).
+ * Used by dry-run cross-run readback and cleanup recovery.
+ */
+export function verifyWarehouseRouteScopedPublishIntent(intent, {
+  plan = null,
+  require_values = true,
+} = {}) {
+  if (!intent || intent.schema !== WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_SCHEMA) {
+    fail("publish intent required");
+  }
+  if (!Array.isArray(intent.shards) || intent.shards.length !== MAX_SHARD_PUTS_PER_REVISION) {
+    fail(`intent must name exactly ${MAX_SHARD_PUTS_PER_REVISION} shards`);
+  }
+  const keys = new Set();
+  for (const shard of intent.shards) {
+    requireLookupRoute(shard.route);
+    if (!REVISION_RE.test(String(shard.deployed_revision || ""))) {
+      fail("intent shard revision must be a full commit SHA");
+    }
+    if (shard.deployed_revision !== intent.deployed_revision) {
+      fail("intent shard revision must match intent.deployed_revision");
+    }
+    if (shard.key !== warehouseRouteScopedShardKey(shard.route, intent.deployed_revision)) {
+      fail(`intent key mismatch for ${shard.route}`);
+    }
+    if (keys.has(shard.key)) fail(`duplicate intent key ${shard.key}`);
+    keys.add(shard.key);
+    if (require_values) {
+      if (typeof shard.value !== "string" || !shard.value) {
+        fail(`intent missing exact owned value for ${shard.key}`);
+      }
+      if (sha256Text(shard.value) !== shard.value_sha256) {
+        fail(`intent value_sha256 mismatch for ${shard.key}`);
+      }
+    }
+    for (const control of intent.control_routes || WAREHOUSE_ROUTE_SCOPED_CONTROL_ROUTES) {
+      if (shard.key.includes(`:${control}:`)) {
+        fail(`intent must not include control route ${control}`);
+      }
+    }
+  }
+  if (plan) {
+    if (plan.deployed_revision !== intent.deployed_revision) {
+      fail("intent revision does not match plan");
+    }
+    if (plan.shards.length !== intent.shards.length) {
+      fail("intent shard count does not match plan");
+    }
+    for (let i = 0; i < plan.shards.length; i += 1) {
+      if (plan.shards[i].key !== intent.shards[i].key) {
+        fail("intent key order/identity does not match plan");
+      }
+      if (plan.shards[i].value_sha256 !== intent.shards[i].value_sha256) {
+        fail("intent digest does not match plan (tip materialization drifted)");
+      }
+    }
+  }
+  return {
+    schema: WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_SCHEMA,
+    status: "verified",
+    deployed_revision: intent.deployed_revision,
+    shard_count: intent.shards.length,
+    keys: Object.freeze([...keys]),
+    provider_writes: 0,
+  };
+}
+
+/**
+ * Build owned_values map from a recovered intent for exact-value cleanup when
+ * the final ACK ledger artifact is missing.
+ */
+export function ownedValuesFromPublishIntent(intent) {
+  verifyWarehouseRouteScopedPublishIntent(intent, { require_values: true });
+  const owned = {};
+  for (const shard of intent.shards) {
+    owned[shard.key] = shard.value;
+  }
+  return owned;
+}
+
+/**
+ * Seed a recovery ledger from intent with phase=unknown for each shard when
+ * the publisher may have issued puts without an ACK receipt.
+ */
+export function recoveryLedgerFromPublishIntent(intent, {
+  attempt_id = intent?.attempt_id || null,
+  at = null,
+  nowIso = nowIsoDefault,
+} = {}) {
+  verifyWarehouseRouteScopedPublishIntent(intent, { require_values: true });
+  const issuedAt = at || nowIso();
+  const ledger = makeShardPublicationLedger({
+    attempt_id,
+    deployed_revision: intent.deployed_revision,
+    active_revision: intent.active_revision,
+    rollback_revision: intent.rollback_revision,
+  });
+  for (const shard of intent.shards) {
+    const entry = makeShardPublicationEntry({
+      route: shard.route,
+      key: shard.key,
+      deployed_revision: shard.deployed_revision,
+    });
+    markShardIssued(entry, { value: shard.value, value_sha256: shard.value_sha256 }, issuedAt);
+    // No ACK receipt → UNKNOWN ownership honesty for recovery.
+    markShardUnknown(entry, "recovered-from-intent-without-final-ack", issuedAt);
+    ledger.entries[shard.key] = entry;
+  }
+  return ledger;
+}
+
 export function loadWarehouseRouteScopedMaterializations({
   root = process.cwd(),
   paths = WAREHOUSE_ROUTE_SCOPED_MATERIALIZATION_PATHS,

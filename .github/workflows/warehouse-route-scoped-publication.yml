@@ -5,15 +5,21 @@ name: Warehouse route-scoped shard publication
 # deploy-worker.yml KV access). Never runs on push, pull_request, schedule, or
 # merge_group — workflow_dispatch only. Publishing does not enable
 # WAREHOUSE_ROUTE_SCOPED_SHARDS and does not stage traffic.
+#
+# Durable intent is uploaded BEFORE the first KV put. Cleanup recovers from the
+# intent artifact by run-id (+ github-token) even when the publisher dies before
+# the final ACK ledger. dry-run / dry-run-readback write no KV.
 
 on:
   workflow_dispatch:
     inputs:
       action:
-        description: "publish | cleanup | preflight-readonly"
+        description: "publish | cleanup | preflight-readonly | dry-run | dry-run-readback"
         required: true
         type: choice
         options:
+          - dry-run
+          - dry-run-readback
           - preflight-readonly
           - publish
           - cleanup
@@ -32,16 +38,16 @@ on:
         type: string
         default: ""
       execute_code:
-        description: One-time C6-<8 hex> code (required for publish/cleanup; ignored for preflight-readonly)
+        description: One-time C6-<8 hex> code (required for publish/cleanup; ignored for dry-run/preflight)
         required: false
         type: string
         default: ""
       confirmation:
-        description: Exact phrase — GO-cc06-A1-publish EXECUTE | GO-cc06-A1-cleanup EXECUTE | GO-cc06-A1-preflight
+        description: Exact phrase — GO-cc06-A1-publish EXECUTE | GO-cc06-A1-cleanup EXECUTE | GO-cc06-A1-preflight | GO-cc06-A1-dry-run | GO-cc06-A1-dry-run-readback
         required: true
         type: string
-      ledger_run_id:
-        description: Prior workflow run id whose publication-ledger artifact cleanup should reuse (cleanup only)
+      intent_run_id:
+        description: Prior workflow run id whose cc06-route-scoped-intent artifact to reuse (cleanup / dry-run-readback)
         required: false
         type: string
         default: ""
@@ -78,6 +84,7 @@ jobs:
           REVISION: ${{ inputs.revision }}
           CONFIRMATION: ${{ inputs.confirmation }}
           EXECUTE_CODE: ${{ inputs.execute_code }}
+          INTENT_RUN_ID: ${{ inputs.intent_run_id }}
         run: |
           set -euo pipefail
           if [[ ! "$REVISION" =~ ^[a-f0-9]{40}$ ]]; then
@@ -85,6 +92,16 @@ jobs:
             exit 2
           fi
           case "$ACTION" in
+            dry-run)
+              test "$CONFIRMATION" = "GO-cc06-A1-dry-run"
+              ;;
+            dry-run-readback)
+              test "$CONFIRMATION" = "GO-cc06-A1-dry-run-readback"
+              if [[ -z "${INTENT_RUN_ID:-}" ]]; then
+                echo "dry-run-readback requires intent_run_id of a prior dry-run/publish run" >&2
+                exit 2
+              fi
+              ;;
             preflight-readonly)
               test "$CONFIRMATION" = "GO-cc06-A1-preflight"
               ;;
@@ -101,6 +118,10 @@ jobs:
                 echo "cleanup requires execute_code C6-<8 hex>" >&2
                 exit 2
               fi
+              if [[ -z "${INTENT_RUN_ID:-}" ]]; then
+                echo "cleanup requires intent_run_id of a prior publish/dry-run intent artifact" >&2
+                exit 2
+              fi
               ;;
             *)
               echo "unsupported action=$ACTION" >&2
@@ -114,15 +135,80 @@ jobs:
           mkdir -p "$RUNNER_TEMP/cc06-route-scoped"
           echo "artifact_dir=$RUNNER_TEMP/cc06-route-scoped" >> "$GITHUB_ENV"
 
-      - name: Download prior publication ledger (cleanup)
-        if: ${{ inputs.action == 'cleanup' && inputs.ledger_run_id != '' }}
+      - name: Download prior publish intent (cross-run)
+        if: ${{ (inputs.action == 'cleanup' || inputs.action == 'dry-run-readback') && inputs.intent_run_id != '' }}
         uses: actions/download-artifact@v4
         with:
-          name: cc06-route-scoped-ledger
-          github-run-id: ${{ inputs.ledger_run_id }}
-          path: ${{ runner.temp }}/cc06-route-scoped/prior-ledger
+          name: cc06-route-scoped-intent
+          run-id: ${{ inputs.intent_run_id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/cc06-route-scoped/prior-intent
 
-      - name: Preflight readonly (no provider writes beyond optional KV GETs)
+      - name: Dry-run readback of prior intent (no KV)
+        if: ${{ inputs.action == 'dry-run-readback' }}
+        env:
+          REVISION: ${{ inputs.revision }}
+          INTENT_RUN_ID: ${{ inputs.intent_run_id }}
+        run: |
+          set -euo pipefail
+          intent="$artifact_dir/prior-intent/publish-intent.json"
+          if [ ! -f "$intent" ]; then
+            echo "intent_run_id=$INTENT_RUN_ID did not yield publish-intent.json" >&2
+            ls -laR "$artifact_dir/prior-intent" >&2 || true
+            exit 2
+          fi
+          node tools/warehouse_route_scoped_publication.mjs dry-run-readback \
+            --intent "$intent" \
+            --revision "$REVISION" \
+            --out "$artifact_dir/receipt.json"
+          cp "$intent" "$artifact_dir/publish-intent.json"
+
+      - name: Prepare durable publish intent (no KV writes)
+        if: ${{ inputs.action == 'dry-run' || inputs.action == 'publish' }}
+        env:
+          REVISION: ${{ inputs.revision }}
+          ACTIVE: ${{ inputs.active_revision }}
+          ROLLBACK: ${{ inputs.rollback_revision }}
+          RUN_ID: ${{ github.run_id }}
+          ACTION: ${{ inputs.action }}
+        run: |
+          set -euo pipefail
+          attempt_id="attempt-ci-${RUN_ID}-cc06-a1-${ACTION}"
+          if [ "$ACTION" = "dry-run" ]; then
+            cmd=dry-run
+          else
+            cmd=prepare-intent
+          fi
+          args=(
+            node tools/warehouse_route_scoped_publication.mjs
+            "$cmd"
+            --revision "$REVISION"
+            --intent "$artifact_dir/publish-intent.json"
+            --attempt-id "$attempt_id"
+            --out "$artifact_dir/intent-receipt.json"
+          )
+          if [ -n "${ACTIVE:-}" ]; then
+            args+=(--active "$ACTIVE")
+          fi
+          if [ -n "${ROLLBACK:-}" ]; then
+            args+=(--rollback "$ROLLBACK")
+          fi
+          "${args[@]}"
+          printf '%s\n' "$attempt_id" > "$artifact_dir/attempt-id.txt"
+          printf '%s\n' "$REVISION" > "$artifact_dir/revision.txt"
+          if [ "$ACTION" = "dry-run" ]; then
+            cp "$artifact_dir/intent-receipt.json" "$artifact_dir/receipt.json"
+          fi
+
+      - name: Upload durable intent artifact (before any KV put)
+        if: ${{ inputs.action == 'dry-run' || inputs.action == 'publish' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: cc06-route-scoped-intent
+          path: ${{ runner.temp }}/cc06-route-scoped/publish-intent.json
+          if-no-files-found: error
+
+      - name: Preflight readonly (optional live KV GETs only)
         if: ${{ inputs.action == 'preflight-readonly' }}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -139,7 +225,7 @@ jobs:
             --out "$artifact_dir/preflight.json"
           cp "$artifact_dir/preflight.json" "$artifact_dir/receipt.json"
 
-      - name: Publish revision shards (≤3 keys)
+      - name: Publish revision shards (≤3 KV puts; intent already uploaded)
         if: ${{ inputs.action == 'publish' }}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -158,10 +244,15 @@ jobs:
           if [ "$ALLOW_OVERLAP" = "true" ]; then
             export CC06_ALLOW_WINDOW_OVERLAP=1
           fi
-          attempt_id="attempt-ci-${RUN_ID}-cc06-a1-publish"
+          if [ ! -f "$artifact_dir/publish-intent.json" ]; then
+            echo "refusing publish without durable intent file" >&2
+            exit 2
+          fi
+          attempt_id="$(cat "$artifact_dir/attempt-id.txt")"
           args=(
             node tools/warehouse_route_scoped_publication.mjs publish
             --revision "$REVISION"
+            --intent "$artifact_dir/publish-intent.json"
             --ledger "$artifact_dir/publication-ledger.json"
             --attempt-id "$attempt_id"
             --out "$artifact_dir/receipt.json"
@@ -173,10 +264,8 @@ jobs:
             args+=(--rollback "$ROLLBACK")
           fi
           "${args[@]}"
-          printf '%s\n' "$attempt_id" > "$artifact_dir/attempt-id.txt"
-          printf '%s\n' "$REVISION" > "$artifact_dir/revision.txt"
 
-      - name: Cleanup owned revision shards (exact-value only)
+      - name: Cleanup owned revision shards (exact-value from intent)
         if: ${{ inputs.action == 'cleanup' }}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -184,7 +273,7 @@ jobs:
           REVISION: ${{ inputs.revision }}
           ACTIVE: ${{ inputs.active_revision }}
           ROLLBACK: ${{ inputs.rollback_revision }}
-          LEDGER_RUN_ID: ${{ inputs.ledger_run_id }}
+          INTENT_RUN_ID: ${{ inputs.intent_run_id }}
           ALLOW_OVERLAP: ${{ inputs.allow_window_overlap }}
         run: |
           set -euo pipefail
@@ -195,21 +284,18 @@ jobs:
           if [ "$ALLOW_OVERLAP" = "true" ]; then
             export CC06_ALLOW_WINDOW_OVERLAP=1
           fi
-          ledger="$artifact_dir/publication-ledger.json"
-          prior="$artifact_dir/prior-ledger/publication-ledger.json"
-          if [ -f "$prior" ]; then
-            cp "$prior" "$ledger"
-          elif [ -n "${LEDGER_RUN_ID:-}" ]; then
-            echo "ledger_run_id=$LEDGER_RUN_ID was set but publication-ledger.json was not in the artifact" >&2
-            exit 2
-          else
-            echo "cleanup requires ledger_run_id pointing at a prior publish artifact that holds publication-ledger.json" >&2
+          intent="$artifact_dir/prior-intent/publish-intent.json"
+          if [ ! -f "$intent" ]; then
+            echo "intent_run_id=$INTENT_RUN_ID did not yield publish-intent.json" >&2
+            ls -laR "$artifact_dir/prior-intent" >&2 || true
             exit 2
           fi
+          cp "$intent" "$artifact_dir/publish-intent.json"
           args=(
             node tools/warehouse_route_scoped_publication.mjs cleanup
             --revision "$REVISION"
-            --ledger "$ledger"
+            --intent "$artifact_dir/publish-intent.json"
+            --ledger "$artifact_dir/publication-ledger.json"
             --out "$artifact_dir/receipt.json"
           )
           if [ -n "${ACTIVE:-}" ]; then
@@ -221,7 +307,7 @@ jobs:
           "${args[@]}"
 
       - name: Summarize receipt
-        if: ${{ !cancelled() }}
+        if: ${{ always() && !cancelled() }}
         run: |
           set -euo pipefail
           if [ -f "$artifact_dir/receipt.json" ]; then
@@ -232,7 +318,7 @@ jobs:
           keep = {k: data.get(k) for k in (
               "schema", "outcome", "decision", "mode", "deployed_revision",
               "planned", "attempted", "confirmed", "provider_writes", "checks",
-              "go_code", "actions", "shards",
+              "go_code", "actions", "shards", "verification", "attempt_id",
           ) if k in data}
           print(json.dumps(keep, indent=2))
           pathlib.Path(os.environ["artifact_dir"], "receipt-summary.json").write_text(
@@ -241,21 +327,18 @@ jobs:
           PY
           else
             echo "no receipt.json produced" >&2
+            # dry-run/publish that failed before receipt still may have intent
+            if [ -f "$artifact_dir/publish-intent.json" ]; then
+              echo "publish-intent.json present for recovery" >&2
+              exit 0
+            fi
             exit 1
           fi
 
-      - name: Upload receipt artifact
-        if: ${{ !cancelled() }}
+      - name: Upload receipt artifact (always when present)
+        if: ${{ always() && !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
           name: cc06-route-scoped-${{ inputs.action }}-${{ github.run_id }}
           path: ${{ runner.temp }}/cc06-route-scoped
-          if-no-files-found: error
-
-      - name: Upload durable ledger artifact (publish)
-        if: ${{ inputs.action == 'publish' && success() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: cc06-route-scoped-ledger
-          path: ${{ runner.temp }}/cc06-route-scoped/publication-ledger.json
-          if-no-files-found: error
+          if-no-files-found: warn

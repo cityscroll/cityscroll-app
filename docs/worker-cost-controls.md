@@ -237,10 +237,11 @@ publication and exact-value cleanup. Live provider writes run only from the
 `.github/workflows/warehouse-route-scoped-publication.yml`, using the existing
 repo `CLOUDFLARE_API_TOKEN` secret (the same secret `deploy-worker.yml` already
 uses for `ALERT_STATE` KV). Ordinary push/PR/schedule never publish. The Action
-requires `GO-cc06-A1-publish EXECUTE` (or cleanup/preflight confirmation) plus a
-one-time `C6-<8hex>` execute code, writes a receipt artifact, and keeps a
-durable ledger artifact for exact-value cleanup. Plan and local
-`preflight-readonly` never put or delete. Publishing shards does not enable
+accepts `dry-run`, `dry-run-readback`, `preflight-readonly`, `publish`, and
+`cleanup`. Publish and cleanup require `GO-cc06-A1-publish EXECUTE` /
+`GO-cc06-A1-cleanup EXECUTE` plus a one-time `C6-<8hex>` execute code. Dry-run
+and dry-run-readback confirm with `GO-cc06-A1-dry-run` /
+`GO-cc06-A1-dry-run-readback` and write no KV. Publishing shards does not enable
 `WAREHOUSE_ROUTE_SCOPED_SHARDS`.
 
 1. **Owner.** The publisher builds one immutable shard document per lookup route
@@ -249,23 +250,37 @@ durable ledger artifact for exact-value cleanup. Plan and local
    GIT_COMMIT_SHA`. Ownership uses an issue-before-ack ledger
    (`null → issued → acked | unknown`) with durable recovery on disk, matching
    the binding-ledger honesty rules.
-2. **Keys.** Write only
+2. **Durable intent before first put.** Publish writes a
+   `cityscroll.warehouse_route_scoped_publish_intent.v1` artifact (revision,
+   exact keys, exact values/digests, baseline absence) and uploads it as
+   `cc06-route-scoped-intent` before any `kv key put`. The final ACK receipt /
+   ledger uploads separately (`if: always()`). Cleanup and dry-run-readback
+   download that intent by prior `intent_run_id` using
+   `actions/download-artifact@v4` with `run-id` plus `github-token`
+   (`permissions: actions: read`). An issued-but-unconfirmed put stays
+   `unknown`; cleanup clears only exact matching values recovered from the
+   intent even when the publisher died before the final ledger.
+3. **Keys.** Write only
    `warehouse:route-scoped:v1:{zap-bbl|zap-project|doing-business}:{40-hex}` into
    the existing `ALERT_STATE` binding. No whole-KV warehouse blob; health and
    browse never receive shards.
-3. **Bounds.** At most three puts per deploy revision (one per lookup route).
+4. **Bounds.** At most three puts per deploy revision (one per lookup route).
    Payload is the route materialization only. Refuse publish when revision is
    missing/invalid. No runtime SODA fill-in for shard bodies. Receipts keep
    planned, attempted, and confirmed KV op counts separate.
-4. **Activation.** Publishing shards does not change serving behavior until
+5. **Activation.** Publishing shards does not change serving behavior until
    `WAREHOUSE_ROUTE_SCOPED_SHARDS=enabled` on that same revision. Enabling the
    flag and publishing shards are separate steps; live A1/A3 measurement still
    needs its own GO.
-5. **Cleanup.** Exact-value only: delete a key only when the live value equals
-   the ledger-owned value. Foreign values abort as `leave-foreign`. Never delete
-   the active serving revision or the retained rollback revision. Fixtures and
-   tip harness keys never become production ticks.
-6. **Enforcement.** `WORKER_COST_ENFORCEMENT` stays inactive. A1 (live controlled
+6. **Cleanup.** Exact-value only: delete a key only when the live value equals
+   the intent-/ledger-owned value. Foreign values abort as `leave-foreign`.
+   Never delete the active serving revision or the retained rollback revision.
+   Fixtures and tip harness keys never become production ticks.
+7. **Cross-run proof.** Before any live publish GO, prove intent handoff with a
+   no-KV dry-run dispatch, then a dry-run-readback dispatch that loads the prior
+   run's intent artifact by `intent_run_id`. Offline fixtures cover failure
+   before ACK, cancellation, and recovery with no final ledger artifact.
+8. **Enforcement.** `WORKER_COST_ENFORCEMENT` stays inactive. A1 (live controlled
    materialization plus health/browse controls) and A3 (live rollback / isolate
    reuse) remain open until an explicit GO. Never overlap a frozen measurement
    window.

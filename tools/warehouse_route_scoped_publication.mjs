@@ -4,9 +4,12 @@
  *
  * Commands:
  *   plan                 — build a local publication plan (no provider I/O)
+ *   prepare-intent       — write durable intent (exact keys/values/digests); no KV
+ *   dry-run              — prepare-intent + receipt; no KV (CI proof path)
+ *   dry-run-readback     — load prior intent by path; verify; no KV
  *   preflight-readonly   — plan + optional live KV GETs; never puts/deletes
  *   publish              — GO-gated; requires CC06_PUBLISH_EXECUTE_CODE=C6-<8hex>
- *   cleanup              — GO-gated exact-value cleanup; same code env
+ *   cleanup              — GO-gated exact-value cleanup; ledger and/or --intent
  *
  * Publishing shards does not enable WAREHOUSE_ROUTE_SCOPED_SHARDS.
  * Live measure/stage remain separate GOs. Never overlap the frozen cc-05
@@ -20,14 +23,20 @@ import { fileURLToPath } from "node:url";
 import { createWranglerInvoker } from "./lib/wrangler_exec.mjs";
 import {
   WAREHOUSE_ROUTE_SCOPED_CONTROL_ROUTES,
+  buildWarehouseRouteScopedPublishIntent,
   cleanupWarehouseRouteScopedShards,
   loadShardPublicationLedger,
   loadWarehouseRouteScopedMaterializations,
+  loadWarehouseRouteScopedPublishIntent,
+  ownedValuesFromPublishIntent,
   persistShardPublicationLedger,
+  persistWarehouseRouteScopedPublishIntent,
   planWarehouseRouteScopedCleanup,
   planWarehouseRouteScopedPublication,
   preflightWarehouseRouteScopedPublicationReadonly,
   publishWarehouseRouteScopedShards,
+  recoveryLedgerFromPublishIntent,
+  verifyWarehouseRouteScopedPublishIntent,
 } from "./lib/warehouse_route_scoped_publication.mjs";
 import { warehouseRouteScopedShardKey } from "../worker/src/lib/warehouse_route_scoped_shards.mjs";
 import { WAREHOUSE_ROUTE_SCOPED_LOOKUP_ROUTES } from "../worker/src/lib/warehouse_route_scoped_shards.mjs";
@@ -47,10 +56,13 @@ function hasFlag(name) {
 function usage() {
   return `usage:
   node tools/warehouse_route_scoped_publication.mjs plan --revision <40-hex> [--out <path>]
+  node tools/warehouse_route_scoped_publication.mjs prepare-intent --revision <40-hex> --intent <path> [--attempt-id <id>] [--out <path>]
+  node tools/warehouse_route_scoped_publication.mjs dry-run --revision <40-hex> --intent <path> [--attempt-id <id>] [--out <path>]
+  node tools/warehouse_route_scoped_publication.mjs dry-run-readback --intent <path> [--revision <40-hex>] [--out <path>]
   node tools/warehouse_route_scoped_publication.mjs preflight-readonly --revision <40-hex> [--live-kv] [--health-commit <40-hex>] [--out <path>]
-  node tools/warehouse_route_scoped_publication.mjs publish --revision <40-hex> --ledger <path> --attempt-id <id>
+  node tools/warehouse_route_scoped_publication.mjs publish --revision <40-hex> --ledger <path> --attempt-id <id> [--intent <path>]
       (requires CC06_PUBLISH_EXECUTE_CODE=C6-<8hex> and GO-cc06-A1-publish EXECUTE)
-  node tools/warehouse_route_scoped_publication.mjs cleanup --revision <40-hex> --ledger <path>
+  node tools/warehouse_route_scoped_publication.mjs cleanup --revision <40-hex> (--ledger <path> | --intent <path>)
       (requires CC06_PUBLISH_EXECUTE_CODE=C6-<8hex>; exact-value only; protects --active/--rollback)`;
 }
 
@@ -95,7 +107,7 @@ if (!command || hasFlag("--help") || hasFlag("-h")) {
 }
 
 const revision = arg("--revision");
-if (!revision) {
+if (!revision && command !== "dry-run-readback") {
   console.error("--revision <40-hex> is required");
   console.error(usage());
   process.exit(2);
@@ -132,6 +144,84 @@ if (command === "plan") {
   };
   writeJson(outPath, summary);
   console.log(JSON.stringify(summary, null, 2));
+  process.exit(0);
+}
+
+if (command === "prepare-intent" || command === "dry-run") {
+  const intentPath = arg("--intent");
+  if (!intentPath) throw new Error("--intent is required");
+  const attemptId = arg("--attempt-id") || `attempt-local-${Date.now()}-cc06-intent`;
+  const materializations = loadWarehouseRouteScopedMaterializations({ root: ROOT });
+  const plan = planWarehouseRouteScopedPublication({
+    deployed_revision: revision,
+    materializations,
+    active_revision: activeRevision,
+    rollback_revision: rollbackRevision,
+  });
+  const intent = buildWarehouseRouteScopedPublishIntent({
+    plan,
+    attempt_id: attemptId,
+    baseline_absence: null,
+  });
+  persistWarehouseRouteScopedPublishIntent(intentPath, intent);
+  const verification = verifyWarehouseRouteScopedPublishIntent(intent, { plan });
+  const receipt = {
+    schema: "cityscroll.warehouse_route_scoped_publication_receipt.v1",
+    decision: command === "dry-run" ? "dry-run-intent-ready" : "intent-prepared",
+    mode: command === "dry-run" ? "dry-run" : "prepare-intent",
+    deployed_revision: intent.deployed_revision,
+    attempt_id: attemptId,
+    intent_path: intentPath,
+    planned: plan.planned,
+    verification,
+    shards: intent.shards.map((shard) => ({
+      route: shard.route,
+      key: shard.key,
+      value_sha256: shard.value_sha256,
+      row_count: shard.row_count,
+    })),
+    provider_writes: 0,
+    activation: plan.activation,
+    financial_savings_confirmed: false,
+    shipped_savings_claimed: false,
+  };
+  writeJson(outPath, receipt);
+  console.log(JSON.stringify(receipt, null, 2));
+  process.exit(0);
+}
+
+if (command === "dry-run-readback") {
+  const intentPath = arg("--intent");
+  if (!intentPath) throw new Error("--intent is required for dry-run-readback");
+  const intent = loadWarehouseRouteScopedPublishIntent(intentPath);
+  let plan = null;
+  if (revision) {
+    const materializations = loadWarehouseRouteScopedMaterializations({ root: ROOT });
+    plan = planWarehouseRouteScopedPublication({
+      deployed_revision: revision,
+      materializations,
+      active_revision: activeRevision,
+      rollback_revision: rollbackRevision,
+    });
+  }
+  const verification = verifyWarehouseRouteScopedPublishIntent(intent, {
+    plan,
+    require_values: true,
+  });
+  const receipt = {
+    schema: "cityscroll.warehouse_route_scoped_publication_receipt.v1",
+    decision: "dry-run-readback-verified",
+    mode: "dry-run-readback",
+    deployed_revision: intent.deployed_revision,
+    attempt_id: intent.attempt_id,
+    intent_path: intentPath,
+    verification,
+    provider_writes: 0,
+    financial_savings_confirmed: false,
+    shipped_savings_claimed: false,
+  };
+  writeJson(outPath, receipt);
+  console.log(JSON.stringify(receipt, null, 2));
   process.exit(0);
 }
 
@@ -192,6 +282,11 @@ if (command === "publish") {
     active_revision: activeRevision,
     rollback_revision: rollbackRevision,
   });
+  const intentPath = arg("--intent");
+  if (intentPath) {
+    const intent = loadWarehouseRouteScopedPublishIntent(intentPath);
+    verifyWarehouseRouteScopedPublishIntent(intent, { plan, require_values: true });
+  }
   const invoke = createWranglerInvoker({ cwd: ROOT, wranglerVersion: "4.126.0" });
   try {
     const receipt = await publishWarehouseRouteScopedShards({
@@ -228,11 +323,32 @@ if (command === "cleanup") {
   refuseWindowOverlap();
   const goCode = requireGoCode("cleanup");
   const ledgerPath = arg("--ledger");
-  if (!ledgerPath) throw new Error("--ledger is required for cleanup");
-  const ledger = loadShardPublicationLedger(ledgerPath);
-  const ownedValues = {};
-  for (const [key, entry] of Object.entries(ledger.entries || {})) {
-    if (entry?.value) ownedValues[key] = entry.value;
+  const intentPath = arg("--intent");
+  if (!ledgerPath && !intentPath) {
+    throw new Error("cleanup requires --ledger and/or --intent");
+  }
+  let ledger;
+  let ownedValues = {};
+  if (ledgerPath) {
+    try {
+      ledger = loadShardPublicationLedger(ledgerPath);
+      for (const [key, entry] of Object.entries(ledger.entries || {})) {
+        if (entry?.value) ownedValues[key] = entry.value;
+      }
+    } catch (error) {
+      if (!intentPath) throw error;
+      ledger = null;
+    }
+  }
+  if (intentPath && Object.keys(ownedValues).length === 0) {
+    const intent = loadWarehouseRouteScopedPublishIntent(intentPath);
+    ownedValues = ownedValuesFromPublishIntent(intent);
+    ledger = recoveryLedgerFromPublishIntent(intent, {
+      attempt_id: intent.attempt_id,
+    });
+    if (ledgerPath) {
+      persistShardPublicationLedger(ledgerPath, ledger);
+    }
   }
   const plan = planWarehouseRouteScopedCleanup({
     deployed_revision: revision,
