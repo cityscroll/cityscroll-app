@@ -258,6 +258,7 @@ and revision-keyed:
    `WORKER_COST_ENFORCEMENT` stays inactive. A1 (live controlled materialization
    plus health/browse controls) and A3 (live rollback / isolate reuse) remain
    open until an explicit GO.
+
 `tools/worker_cost_acquisition.mjs warehouse` owns the matched live run and
 selects cohorts from the acquired source's documented cold-start capability.
 The permitted Tail TraceItem source is flag-less: both arms use the five base

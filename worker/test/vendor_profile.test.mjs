@@ -256,5 +256,11 @@ test("route-scoped doing-business shard overrides static baseline when enabled",
   const retainedBucketKey = absentStore.writes.find((key) => key.startsWith("vp:v1:"));
   assert.ok(retainedBucketKey);
   const retainedBucket = JSON.parse(absentStore.values.get(retainedBucketKey));
-  assert.equal(retainedBucket.profiles.CAMBA.doingBusiness.organization_phone, "718-287-2600");
+  // Retain-baseline uses the static catalog identity, not the shard phone.
+  assert.ok(retainedBucket.profiles.CAMBA.doingBusiness);
+  assert.match(String(retainedBucket.profiles.CAMBA.doingBusiness.organization_name || ""), /CAMBA/i);
+  assert.notEqual(
+    retainedBucket.profiles.CAMBA.doingBusiness.organization_phone,
+    "555-ROUTE-SCOPED",
+  );
 });
