@@ -20,6 +20,7 @@ import { extractUlurpKeys } from "./lib/ulurp_recommendations_join.mjs";
 import { lookupZapFromWarehouseMaterialization, warehouseZapMaterializationMeta } from "./lib/zap_warehouse_lookup.mjs";
 import { committedZapProjectsLookupFloor, loadZapProjectsLookup, shapeZapLookupRow } from "./lib/zap_projects_lookup_kv.mjs";
 import { lookupZapBblsFromWarehouseMaterialization, warehouseZapBblMaterializationMeta } from "./lib/zap_bbl_warehouse_lookup.mjs";
+import { resolveWarehouseRouteScopedLookup } from "./lib/warehouse_route_scoped_shards.mjs";
 import { attachUlurpStatutoryPredictions } from "./lib/ulurp_statutory_predictions.mjs";
 import zoningStatistics from "./data/zoning_statistics.json" with { type: "json" };
 import { attachZoningStatistics } from "./lib/zoning_statistics.mjs";
@@ -620,7 +621,7 @@ export async function refreshZapOutcomes(env, opts = {}) {
   let build = opts.build;
   if (!build) {
     const lookupDoc = opts.lookupDoc || (await loadZapProjectsLookup(env)).record;
-    build = (id) => buildZapOutcomeRecord(id, { lookupDoc });
+    build = (id) => buildZapOutcomeRecord(id, { lookupDoc, env });
   }
   const summary = await prewarmZapOutcomes(env, projectIds, {
     build,
@@ -701,20 +702,43 @@ async function fetchJson(url, timeoutMs = 12000) {
 }
 
 /**
+ * Resolve an optional route-scoped shard doc when the caller did not pass an
+ * explicit override. Flag-off / abort leaves doc undefined so the baseline
+ * static import remains the lookup floor.
+ */
+async function resolveRouteScopedLookupDoc(env, route, explicitDoc) {
+  if (explicitDoc !== undefined || !env) {
+    return { doc: explicitDoc, resolve: null };
+  }
+  const resolve = await resolveWarehouseRouteScopedLookup(env, { route });
+  if (resolve.path === "route-scoped-shards" && resolve.materialization) {
+    return { doc: resolve.materialization, resolve };
+  }
+  return { doc: undefined, resolve };
+}
+
+/**
  * ZAP Open Data project row: warehouse materialization first (WH-05), then live SODA.
  * Returns the SODA-shaped row (always includes project_id). Attaches lookup_path when known.
+ * When env is provided and WAREHOUSE_ROUTE_SCOPED_SHARDS=enabled, prefers the
+ * versioned zap-project shard; otherwise keeps the static baseline import.
  */
-export async function fetchOpenDataRow(projectId, { lookupDoc, observedAt = new Date().toISOString() } = {}) {
+export async function fetchOpenDataRow(projectId, {
+  lookupDoc,
+  env,
+  observedAt = new Date().toISOString(),
+} = {}) {
   const id = String(projectId || "").trim();
+  const { doc } = await resolveRouteScopedLookupDoc(env, "zap-project", lookupDoc);
   // WH-05: instant hit from live KV lookup (or committed twin) before live SODA.
-  const wh = lookupZapFromWarehouseMaterialization(id, lookupDoc);
+  const wh = lookupZapFromWarehouseMaterialization(id, doc);
   if (wh.hit && wh.row) {
     const observation = wh.row.source_observation;
-    const materialization = warehouseZapMaterializationMeta(lookupDoc);
+    const materialization = warehouseZapMaterializationMeta(doc);
     const floorObservedAt = committedZapProjectsLookupFloor().materialized_at || null;
     const observedAt = observation && Object.hasOwn(observation, "observed_at")
       ? observation.observed_at
-      : lookupDoc?.source === "soda" && materialization.materialized_at !== floorObservedAt
+      : doc?.source === "soda" && materialization.materialized_at !== floorObservedAt
         ? null
         : materialization.materialized_at;
     return markSourceAcquisition({ ...wh.row, lookup_path: "warehouse" }, "ok", observedAt);
@@ -783,16 +807,23 @@ async function fetchCityRecordCandidates(openData, projectName) {
  * ZAP BBL tax lots: warehouse materialization first (WH-06), then live SODA.
  * Returns BBL strings (max 25). Attaches lookup_path via array property when useful
  * for tests — callers that only need ids can ignore it.
+ * When env is provided and WAREHOUSE_ROUTE_SCOPED_SHARDS=enabled, prefers the
+ * versioned zap-bbl shard; otherwise keeps the static baseline import.
  */
-export async function fetchBbls(projectId, { observedAt = new Date().toISOString() } = {}) {
+export async function fetchBbls(projectId, {
+  bblDoc,
+  env,
+  observedAt = new Date().toISOString(),
+} = {}) {
   const id = String(projectId || "").trim();
+  const { doc } = await resolveRouteScopedLookupDoc(env, "zap-bbl", bblDoc);
   // WH-06: instant hit from warehouse materialization index (no network).
-  const wh = lookupZapBblsFromWarehouseMaterialization(id);
+  const wh = lookupZapBblsFromWarehouseMaterialization(id, doc);
   if (wh.hit) {
     // Hit with empty list is still a warehouse answer (project known, no lots).
     const bbls = (wh.bbls || []).slice(0, 25);
     bbls.lookup_path = "warehouse";
-    return markSourceAcquisition(bbls, "ok", warehouseZapBblMaterializationMeta().materialized_at);
+    return markSourceAcquisition(bbls, "ok", warehouseZapBblMaterializationMeta(doc).materialized_at);
   }
 
   // Live SODA fallback when the materialization lacks this project_id.
@@ -836,8 +867,16 @@ async function fetchDobForBbls(bbls, { observedAt = new Date().toISOString() } =
 
 /**
  * Build one outcome record for a project_id (Open Data + ZAP API + optional DOB).
+ * Threads env so route-scoped shard resolution can override static baseline docs
+ * when WAREHOUSE_ROUTE_SCOPED_SHARDS=enabled.
  */
-export async function buildZapOutcomeRecord(projectId, { fetchBbl = true, lookupDoc, now = () => new Date().toISOString() } = {}) {
+export async function buildZapOutcomeRecord(projectId, {
+  fetchBbl = true,
+  lookupDoc,
+  bblDoc,
+  env,
+  now = () => new Date().toISOString(),
+} = {}) {
   const id = String(projectId || "").trim();
   if (!id) {
     return {
@@ -849,7 +888,7 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true, lookup
   }
 
   const acquisitionAt = now();
-  const openData = await fetchOpenDataRow(id, { lookupDoc, observedAt: acquisitionAt });
+  const openData = await fetchOpenDataRow(id, { lookupDoc, env, observedAt: acquisitionAt });
   let apiPayload = null;
   try {
     apiPayload = await fetchJson(
@@ -893,7 +932,7 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true, lookup
   let dobStatus = "not_requested";
   let dobObservedAt = null;
   if (fetchBbl) {
-    bbls = await fetchBbls(id, { observedAt: acquisitionAt });
+    bbls = await fetchBbls(id, { bblDoc, env, observedAt: acquisitionAt });
     bblStatus = sourceAcquisitionState.get(bbls) || "unavailable";
     if (!bbls.length) {
       dob = {

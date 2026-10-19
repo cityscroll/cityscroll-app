@@ -200,7 +200,13 @@ prerequisites land.
 The route-scoped Worker candidate lives in
 `worker/src/lib/warehouse_route_scoped_shards.mjs`. It loads one versioned KV
 shard per lookup route (`zap-bbl`, `zap-project`, `doing-business`) on demand and
-caches it per isolate. The static JSON imports in the three baseline lookup
+caches it per isolate. Real warehouse lookup callers
+(`worker/src/zap_outcomes.mjs`, `worker/src/vendor_profile.mjs`,
+`worker/src/land_projects.mjs`) call `resolveWarehouseRouteScopedLookup` and use
+the returned shard materialization only when the candidate is enabled; otherwise
+they keep the static JSON baseline. Revision identity is `env.GIT_COMMIT_SHA`
+(40-hex); a missing or invalid revision aborts to retain-baseline and never
+invents an identity. The static JSON imports in the three baseline lookup
 modules remain the default production path; the candidate path turns on only
 when `WAREHOUSE_ROUTE_SCOPED_SHARDS=enabled` (unrelated to
 `WORKER_COST_ENFORCEMENT`, which stays inactive). Health and browse stay control
@@ -209,9 +215,49 @@ rehearsal (`planWarehouseCacheResetReuseRehearsal` /
 `validateWarehouseCacheResetReuseRehearsal`) labels samples only as
 `index-cold-reset` or `isolate-reuse-hit` — never semantic cold/warm or
 `startup_time_ms`. Absent, failed, or invalid shards abort to retain-baseline;
-rollback identity after a retained tip regresses reuses `planWarehouseRollback`
-via `planWarehouseRouteScopedRollbackOrAbort`. This is a safe planned rehearsal,
-not induced harm, and never claims shipped savings.
+KV read failures stay distinct from absent keys (`failed` / `kv-read-error` vs
+`absent`). Rollback identity after a retained tip regresses reuses
+`planWarehouseRollback` via `planWarehouseRouteScopedRollbackOrAbort`. This is a
+safe planned rehearsal, not induced harm, and never claims shipped savings.
+
+**Footprint honesty.** The candidate module itself does not statically import
+any `warehouse_lookup.json` payload. This change does **not** drop those static
+JSON files from the overall Worker dependency path: the three baseline lookup
+modules remain imported for flag-off and abort-retain-baseline fallback, so the
+Worker still constructs those indexes on the modules that import them. Do not
+treat route-scoped enablement as a shipped bundle-size or cold-start saving
+while that fallback path remains.
+
+### Route-scoped shard publication plan (doc only)
+
+Live publication and cleanup are **not** enabled by this candidate. When a later
+GO authorizes deploy-time shard writes, publication should be owned, bounded,
+and revision-keyed:
+
+1. **Owner.** A single deploy-time publisher (alongside existing Worker deploy /
+   route-data publication) builds one immutable shard document per lookup route
+   from the same materialization the baseline JSON currently embeds, using
+   `buildWarehouseRouteScopedShardDocument` with `deployed_revision =
+   GIT_COMMIT_SHA`.
+2. **Keys.** Write only
+   `warehouse:route-scoped:v1:{zap-bbl|zap-project|doing-business}:{40-hex}` into
+   the existing `ALERT_STATE` binding. No whole-KV warehouse blob; health and
+   browse never receive shards.
+3. **Bounds.** At most three puts per deploy revision (one per lookup route).
+   Payload is the route materialization only. Refuse publish when revision is
+   missing/invalid. No runtime SODA fill-in for shard bodies.
+4. **Activation.** Publishing shards does not change serving behavior until
+   `WAREHOUSE_ROUTE_SCOPED_SHARDS=enabled` on that same revision. Enabling the
+   flag and publishing shards are separate steps; live A1/A3 measurement still
+   needs its own GO.
+5. **Cleanup.** After a deploy, delete or expire shard keys for revisions that
+   are neither the active serving revision nor the retained rollback revision.
+   Cleanup is best-effort and must not delete the active or rollback identities.
+   Fixtures and tip harness keys never become production ticks.
+6. **Out of scope here.** No provider KV writes land with this documentation.
+   `WORKER_COST_ENFORCEMENT` stays inactive. A1 (live controlled materialization
+   plus health/browse controls) and A3 (live rollback / isolate reuse) remain
+   open until an explicit GO.
 `tools/worker_cost_acquisition.mjs warehouse` owns the matched live run and
 selects cohorts from the acquired source's documented cold-start capability.
 The permitted Tail TraceItem source is flag-less: both arms use the five base

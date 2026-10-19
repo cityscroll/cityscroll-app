@@ -5,14 +5,14 @@
  * isolate. Default production path stays the static JSON imports in the three
  * baseline lookup modules until a later promotion GO. This module never
  * statically imports those JSON payloads, so health/browse control routes that
- * do not call it do not pay warehouse construction cost.
+ * do not call it do not pay warehouse construction cost. Baseline modules remain
+ * imported for flag-off and abort fallback, so the overall Worker dependency
+ * path still carries the static JSON until a later cutover.
  *
  * cache_state is only index-cold-reset or isolate-reuse-hit. Never invents
  * semantic cold/warm or startup_time_ms. Absent/failed/invalid shards abort to
  * retain-baseline. WORKER_COST_ENFORCEMENT is unrelated and stays inactive.
  */
-
-import { readKvValue } from "./preset_fallback_kv.mjs";
 
 export const WAREHOUSE_ROUTE_SCOPED_FLAG = "WAREHOUSE_ROUTE_SCOPED_SHARDS";
 export const WAREHOUSE_ROUTE_SCOPED_ENABLED = "enabled";
@@ -39,6 +39,12 @@ const isolateShardCache = new Map();
 
 export function warehouseRouteScopedShardsEnabled(env) {
   return env?.[WAREHOUSE_ROUTE_SCOPED_FLAG] === WAREHOUSE_ROUTE_SCOPED_ENABLED;
+}
+
+/** Normalize env.GIT_COMMIT_SHA to a 40-hex revision, or null when unusable. */
+export function warehouseRouteScopedRevisionFromEnv(env, revision = env?.GIT_COMMIT_SHA) {
+  const text = String(revision || "").trim().toLowerCase();
+  return REVISION_RE.test(text) ? text : null;
 }
 
 export function warehouseRouteScopedShardKey(route, revision) {
@@ -207,9 +213,12 @@ export async function loadWarehouseRouteScopedShard(env, {
     return abortRetainBaseline("absent", "no-kv");
   }
 
+  // Call kv.get directly so thrown store errors stay failed/kv-read-error.
+  // preset_fallback_kv.readKvValue swallows errors as null and would collapse
+  // failed into absent.
   let raw;
   try {
-    raw = await readKvValue(kv, warehouseRouteScopedShardKey(route, revision));
+    raw = await kv.get(warehouseRouteScopedShardKey(route, revision));
   } catch {
     return abortRetainBaseline("failed", "kv-read-error", { kv_reads: 1 });
   }
@@ -238,10 +247,12 @@ export async function loadWarehouseRouteScopedShard(env, {
 /**
  * Candidate-facing resolve: static baseline unless the explicit enable flag is
  * set. Flag-off never reads KV and never claims route-scoped materialization.
+ * When enabled, revision defaults to env.GIT_COMMIT_SHA; missing/invalid
+ * revision aborts to retain-baseline (never invents an identity).
  */
 export async function resolveWarehouseRouteScopedLookup(env, {
   route,
-  revision,
+  revision = env?.GIT_COMMIT_SHA,
   kv = env?.ALERT_STATE,
 } = {}) {
   if (!warehouseRouteScopedShardsEnabled(env)) {
@@ -259,7 +270,18 @@ export async function resolveWarehouseRouteScopedLookup(env, {
       shipped_savings_claimed: false,
     };
   }
-  const loaded = await loadWarehouseRouteScopedShard(env, { route, revision, kv });
+  const normalizedRevision = warehouseRouteScopedRevisionFromEnv(env, revision);
+  if (!normalizedRevision) {
+    return {
+      path: "abort-retain-baseline",
+      ...abortRetainBaseline("failed", "revision-missing-or-invalid"),
+    };
+  }
+  const loaded = await loadWarehouseRouteScopedShard(env, {
+    route,
+    revision: normalizedRevision,
+    kv,
+  });
   if (loaded.abort) {
     return { path: "abort-retain-baseline", ...loaded };
   }

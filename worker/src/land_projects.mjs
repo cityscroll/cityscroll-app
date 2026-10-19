@@ -12,6 +12,7 @@ import { landProjectUrl } from "../../site/land_project_route.mjs";
 import { filterLandSnapshot } from "../../site/resident_snapshot_queries.mjs";
 import { getZapWarehouseIndex } from "./lib/zap_warehouse_lookup.mjs";
 import { loadZapProjectsLookup } from "./lib/zap_projects_lookup_kv.mjs";
+import { resolveWarehouseRouteScopedLookup } from "./lib/warehouse_route_scoped_shards.mjs";
 import landDefaultUlurp from "../../site/data/land_default_ulurp.json" with { type: "json" };
 import { readZapOutcomeRecord, outcomeCacheIsFresh } from "./zap_outcomes.mjs";
 import landExpeditedCorpus from "./data/land_expedited_corpus.json" with { type: "json" };
@@ -105,7 +106,15 @@ export async function completeLandProjectPopulation(env) {
     };
   }
 
-  const floor = getZapWarehouseIndex();
+  // Route-scoped zap-project shard when enabled; otherwise static baseline floor.
+  let warehouseDoc;
+  const resolved = await resolveWarehouseRouteScopedLookup(env, { route: "zap-project" });
+  if (resolved.path === "route-scoped-shards" && resolved.materialization) {
+    warehouseDoc = resolved.materialization;
+  }
+  const floor = warehouseDoc !== undefined
+    ? getZapWarehouseIndex(warehouseDoc)
+    : getZapWarehouseIndex();
   const byId = new Map();
   for (const row of floor.byProjectId.values()) byId.set(row.project_id, row);
   for (const row of Array.isArray(landDefaultUlurp?.projects) ? landDefaultUlurp.projects : []) {
