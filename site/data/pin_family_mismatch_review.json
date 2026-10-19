@@ -2,19 +2,19 @@
   "schema_version": 1,
   "version": "pin_family_mismatch_review_v1",
   "title": "PIN-family Checkbook ↔ PASSPort contract-id mismatches",
-  "observed_on": "2026-10-17",
-  "generated_at": "2026-10-17T01:23:06.178Z",
+  "observed_on": "2026-10-19",
+  "generated_at": "2026-10-19T14:04:00.436Z",
   "sources": {
     "crosswalk": "site/data/passport_checkbook_crosswalk.json",
     "spine": "site/data/procurement_spine_sources.json"
   },
   "metrics": {
-    "pin_family_id_mismatches": 146,
-    "auto_related_instrument": 136,
+    "pin_family_id_mismatches": 149,
+    "auto_related_instrument": 139,
     "needs_review": 10,
     "auto_same_contract": 0,
     "by_rule": {
-      "successor_term": 62,
+      "successor_term": 65,
       "later_term_renewal": 12,
       "fms_document_type_mismatch": 62
     },
@@ -431,6 +431,65 @@
           "passport": "CHILDCARE"
         },
         "amount_ratio": 0.5033038892149166,
+        "term_gap_days": 1
+      }
+    },
+    {
+      "pair_id": "pf:CT104020279760830::CT1-040-20238803876",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "04022P0673150",
+        "epin": "04022P0673150",
+        "join_method": "pin_epin_exact",
+        "checkbook": {
+          "contract_id": "CT104020279760830",
+          "subject_ref": "contract:CT104020279760830",
+          "source_record_id": "checkbook:contract:CT104020279760830",
+          "vendor": "KIDSLANDNY INC",
+          "agency": "Department of Education",
+          "current_amount": 652092,
+          "original_amount": 652092,
+          "spent_amount": 0,
+          "start": "2026-07-01",
+          "end": "2028-06-30",
+          "registered": "2026-10-15",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "040",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-040-20238803876",
+          "subject_ref": "contract:CT1-040-20238803876",
+          "source_record_id": "passport:contract:CT1-040-20238803876",
+          "vendor": "KIDSLANDNY INC",
+          "agency": "DEPARTMENT OF EDUCATION",
+          "current_amount": 1356184,
+          "award_amount": 1356184,
+          "paid_amount": 1239472.65,
+          "start": "2022-07-01",
+          "end": "2026-06-30",
+          "registered": "2022-10-24",
+          "status": "Registered",
+          "title": null,
+          "procurement_method": "Competitive Sealed Proposal",
+          "fms": {
+            "type": "CT1",
+            "agency": "040",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "KIDSLANDNY",
+          "passport": "KIDSLANDNY"
+        },
+        "amount_ratio": 0.4808285601363827,
         "term_gap_days": 1
       }
     },
@@ -1632,7 +1691,7 @@
           "agency": "Department for the Aging",
           "current_amount": 3071819,
           "original_amount": 3071819,
-          "spent_amount": 1343268.56,
+          "spent_amount": 1583098.74,
           "start": "2026-07-01",
           "end": "2027-06-30",
           "registered": "2026-06-16",
@@ -1809,7 +1868,7 @@
           "agency": "Department for the Aging",
           "current_amount": 1450710,
           "original_amount": 1450710,
-          "spent_amount": 687477.95,
+          "spent_amount": 781983.55,
           "start": "2026-07-01",
           "end": "2027-06-30",
           "registered": "2026-06-05",
@@ -3621,6 +3680,124 @@
       }
     },
     {
+      "pair_id": "pf:CT185020278803106::CT1-850-20248802577",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "85023B0055001R001",
+        "epin": "85023B0055001",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "CT185020278803106",
+          "subject_ref": "contract:CT185020278803106",
+          "source_record_id": "checkbook:contract:CT185020278803106",
+          "vendor": "D & S RESTORATION, INC",
+          "agency": "Department of Design and Construction",
+          "current_amount": 1500000,
+          "original_amount": 1500000,
+          "spent_amount": 0,
+          "start": "2026-07-25",
+          "end": "2028-07-24",
+          "registered": "2026-10-16",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "850",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-850-20248802577",
+          "subject_ref": "contract:CT1-850-20248802577",
+          "source_record_id": "passport:contract:CT1-850-20248802577",
+          "vendor": "D & S RESTORATION, INC",
+          "agency": "DEPARTMENT OF DESIGN AND CONSTRUCTION",
+          "current_amount": 2616925,
+          "award_amount": 2616925,
+          "paid_amount": 1941649,
+          "start": "2023-07-25",
+          "end": "2026-07-24",
+          "registered": "2023-09-15",
+          "status": "Registered",
+          "title": null,
+          "procurement_method": "Competitive Sealed Bid",
+          "fms": {
+            "type": "CT1",
+            "agency": "850",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "D S RESTORATION",
+          "passport": "D S RESTORATION"
+        },
+        "amount_ratio": 0.5731918186421086,
+        "term_gap_days": 1
+      }
+    },
+    {
+      "pair_id": "pf:CT185020278803107::CT1-850-20238808871",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "85023B0058001R001",
+        "epin": "85023B0058001",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "CT185020278803107",
+          "subject_ref": "contract:CT185020278803107",
+          "source_record_id": "checkbook:contract:CT185020278803107",
+          "vendor": "D & S RESTORATION, INC",
+          "agency": "Department of Design and Construction",
+          "current_amount": 1500000,
+          "original_amount": 1500000,
+          "spent_amount": 0,
+          "start": "2026-07-15",
+          "end": "2028-07-14",
+          "registered": "2026-10-16",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "850",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-850-20238808871",
+          "subject_ref": "contract:CT1-850-20238808871",
+          "source_record_id": "passport:contract:CT1-850-20238808871",
+          "vendor": "D & S RESTORATION, INC",
+          "agency": "DEPARTMENT OF DESIGN AND CONSTRUCTION",
+          "current_amount": 2596825,
+          "award_amount": 2295140,
+          "paid_amount": 929684.23,
+          "start": "2023-07-14",
+          "end": "2026-07-14",
+          "registered": "2023-07-26",
+          "status": "Registered",
+          "title": null,
+          "procurement_method": "Competitive Sealed Bid",
+          "fms": {
+            "type": "CT1",
+            "agency": "850",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "D S RESTORATION",
+          "passport": "D S RESTORATION"
+        },
+        "amount_ratio": 0.5776284501265969,
+        "term_gap_days": 1
+      }
+    },
+    {
       "pair_id": "pf:CT185620268808956::CT1-856-20258806929",
       "identity_class": "related_instrument",
       "label_source": "rule",
@@ -4051,7 +4228,7 @@
           "agency": "Department of Consumer & Worker Protection",
           "current_amount": 5990335,
           "original_amount": 5990335,
-          "spent_amount": 928874,
+          "spent_amount": 1250399.41,
           "start": "2026-07-01",
           "end": "2029-06-30",
           "registered": "2026-08-10",
@@ -4582,7 +4759,7 @@
           "agency": "Fire Department",
           "current_amount": 400000,
           "original_amount": 400000,
-          "spent_amount": 517.38,
+          "spent_amount": 681.18,
           "start": "2025-12-01",
           "end": "2030-11-30",
           "registered": "2026-04-30",
@@ -7827,7 +8004,7 @@
           "agency": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
           "current_amount": 37720544.89,
           "original_amount": 37720544.89,
-          "spent_amount": 7971136.99,
+          "spent_amount": 8419059.82,
           "start": "2026-05-01",
           "end": "2028-04-30",
           "registered": "2026-03-09",

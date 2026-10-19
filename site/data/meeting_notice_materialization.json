@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.city_record_meeting_notice_materialization.v1",
-  "generated_at": "2026-10-17T01:37:21.987Z",
-  "as_of": "2026-10-17",
+  "generated_at": "2026-10-19T14:18:44.296Z",
+  "as_of": "2026-10-19",
   "source": {
     "system": "city_record",
     "dataset_id": "dg92-zbpx",
@@ -17,7 +17,7 @@
     "agency_rules_type": "Public Hearings",
     "requires_event_date": true
   },
-  "row_count": 34,
+  "row_count": 37,
   "rows": [
     {
       "request_id": "20260921008",
@@ -134,6 +134,26 @@
       ]
     },
     {
+      "request_id": "20261013004",
+      "start_date": "2026-10-19T00:00:00.000",
+      "event_date": "2026-10-20T11:00:00.000",
+      "agency_name": "Business Integrity Commission",
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "BUSINESS INTEGRITY COMMISSION MEETING",
+      "street_address_1": "100 Church Street",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10007",
+      "additional_description_1": "Title: BUSINESS INTEGRITY COMMISSION MEETING Public Hearings and Meetings Section Business Integrity Commission (BIC) Agency Name 100 Church Street New York, NY 10007 Event Location 10/20/2026 11:00 AM Event Date and Time Current Status 10/19/2026 Publication Date Meeting Notice Type Attachments 1 BUSINESS INTEGRITY COMMISSION MEETING",
+      "source_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261013004&requestStatus=Current&documentId=44764"
+      ],
+      "document_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261013004&requestStatus=Current&documentId=44764"
+      ]
+    },
+    {
       "request_id": "20260922032",
       "start_date": "2026-09-30T00:00:00.000",
       "event_date": "2026-10-21T11:00:00.000",
@@ -227,6 +247,20 @@
       "state": "NY",
       "zip_code": "10007",
       "additional_description_1": "<p><span style='font-size:12pt'><span style='font-family:' times='' new='' roman',serif'=''>The City of New York Audit Committee Meeting is scheduled for Monday, October 26, 2026 at 9:30 am at 1 Centre Street, Room 1005 North, New York, NY 10007. The meeting will be open to the General Public.</span></span></p>"
+    },
+    {
+      "request_id": "20260922017",
+      "start_date": "2026-10-19T00:00:00.000",
+      "event_date": "2026-10-27T10:30:00.000",
+      "agency_name": "Board of Education Retirement System",
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "BERS EXECUTIVE COMMITTEE MEETING",
+      "street_address_1": "55 Water Street",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10041",
+      "additional_description_1": "<p>Our next Executive Committee Meeting will be held in-person at our 55 Water Street office (50th Floor), Tuesday, October 27, 2026, from 10:30 AM - 4:00 PM. If you would like to attend this meeting, please reach out to Salil Mehta at smehta8@bers.nyc.gov</p>"
     },
     {
       "request_id": "20260929021",
@@ -430,6 +464,21 @@
       "document_links": [
         "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20261006029&requestStatus=Archived&documentId=44708"
       ]
+    },
+    {
+      "request_id": "20261009013",
+      "start_date": "2026-10-19T00:00:00.000",
+      "event_date": "2026-11-09T10:00:00.000",
+      "agency_name": "Board of Standards and Appeals",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "Board of Standards and Appeals Public Hearing Notice",
+      "street_address_1": "22 Reade Street",
+      "street_address_2": "Spector Hall",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10007",
+      "additional_description_1": "<p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>November 9<sup>th</sup>, 2026, and November 10<sup>th</sup>, 2026, 10:00 A.M. and 2:00 P.M.</span></span></strong></span></span></p><p> </p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>      <strong>NOTICE IS HEREBY GIVEN</strong> of teleconference public hearings, Monday November 9<sup>th</sup>, 2026, at 10:00 A.M. and 2:00 P.M., and Tuesday November 10<sup>th</sup>, 2026, at 10:00 A.M. and 2:00 P.M., to be streamed live through the Board\u001as website (www.nyc.gov/bsa), with remote public participation and in-person portion, on the following matters:</span></span></span></span></p><p> </p><p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>SPECIAL ORDER CALENDAR</span></span></strong></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>85-99-BZVI</span></span></strong></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>APPLICANT \u001a Walter T. Gorman, P.E., P.C., for Juana J. Scanlon, owner.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>SUBJECT \u001a Application September 10, 2026 \u001a Extension of Time to Obtain a Certificate of Occupancy of a previously approved Variance (§72-21) permitting, the operation of an automotive service station which expired on June 8, 2026; Waiver of the Board\u001as Rule.  R6 zoning district.         </span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>PREMISES AFFECTED \u001a 1106 Metcalf Avenue, Block 3747, Lot 88, Borough of Bronx.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>COMMUNITY BOARD #9BX</span></span></strong></span></span></p><p style='text-align:justify'> </p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>2016-4353-AIV</span></span></strong></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>APPLICANT \u001a Davidoff Hutcher & Citron LLP, for T Squared Group LLC, owner.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>SUBJECT \u001a Application September 26, 2026 \u001a  Extension of Time to Complete Construction of a previous approval to construction a four-story, three family residential building partially within the bed of a mapped street, pursuant to Article 3 of General City Law §35 which expired on August 7, 2027.  R6B zoning district.         </span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>PREMISES AFFECTED \u001a  84-75 57th Road, Block 2882, Lot 21, Borough of Queens.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>COMMUNITY BOARD #4Q</span></span></strong></span></span></p><p style='text-align:justify'> </p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>2020-67-AII</span></span></strong></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>APPLICANT \u001a Rothkrug Rothkrug & Spector, for Joseph Perotto, owner.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>SUBJECT \u001a Application September 29, 2026\u001a  Extension of Time to Obtain of Occupancy of a previously approved of a waiver of the General City Law (\u001aGCL\u001a) §35, to allow the proposed development of a property within the mapped but unbuilt portion of a street; Waiver of the applicable height and setback regulations pursuant to 72-01 (g) which expires on October 17, 2026   R3X Special Richmond Special Purpose District.          </span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>PREMISES AFFECTED \u001a  1 Ballard Avenue, Block 6046, Lot 3, Borough of Staten Island.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>COMMUNITY BOARD #3SI</span></span></strong></span></span></p><p style='text-align:justify'> </p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>2022-23-BZII</span></span></strong></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>APPLICANT \u001a Gerald J. Caliendo, RA, AIA, for KKS Group LLC/Edward Kowlessar, owners.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>SUBJECT \u001a Application August 12, 2026 \u001a Amendment of a previously approved Variance (§72-21) permitting the construction of a two-story, with cellar, two-family detached residence.  R3-2 zoning district.         </span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>PREMISES AFFECTED \u001a 1520 East 56th Street, Block 7900, Lot 53, Borough of Brooklyn.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>COMMUNITY BOARD #18BK</span></span></strong></span></span></p><p style='text-align:justify'> </p><p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>ZONING CALENDAR</span></span></strong></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>2026-30-BZ</span></span></strong></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>APPLICANT \u001a Eric Palatnik, P.C., for Toy Chen, owner.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>SUBJECT \u001a Application July 30, 2026 \u001a Special Permit 73-66 to allow for the development which exceed the height regulations around airports, contrary to §61-20. C4-2 zoning district.          </span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>PREMISES AFFECTED \u001a 133-34 36th Road, Block 4970, Lot 20, Borough of Queens.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>COMMUNITY BOARD #7Q</span></span></strong></span></span></p><p style='text-align:right'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><em><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>Shampa Chanda, Chair/Commissioner</span></span></em></strong></span></span></p>"
     },
     {
       "request_id": "20261002028",
