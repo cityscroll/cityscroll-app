@@ -1504,5 +1504,13 @@
         "sha256": "8c632daadbb8a3a620379d7677931124e62f45e13f0b1feabbfa1253061cb6f6"
       }
     ]
+  },
+  "release_alignment": {
+    "state": "stale",
+    "changed_inputs": [
+      "site/analytics_surface_taxonomy.mjs",
+      "site/beta-flags.json",
+      "site/i18n.js"
+    ]
   }
 }

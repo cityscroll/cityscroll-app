@@ -396,6 +396,7 @@
 /site/contract_award_search_producer.mjs
 /site/contract_result_inspection.mjs
 /site/contract_search_bridge.mjs
+/site/contracts-capability-compare.html
 /site/contracts_analysis_projection.mjs
 /site/contracts_rum.mjs
 /site/council_district_lookup.mjs
@@ -758,7 +759,9 @@
 /site/procurement_browse_population_shards.mjs
 /site/procurement_browse_query.mjs
 /site/procurement_browse_read_path.mjs
+/site/procurement_capability_compare.css
 /site/procurement_capability_comparison.mjs
+/site/procurement_capability_journey.mjs
 /site/procurement_contract_service_geography.mjs
 /site/procurement_contract_substance.css
 /site/procurement_contract_substance.mjs

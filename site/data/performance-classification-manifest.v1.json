@@ -2,7 +2,7 @@
   "schema": "cityscroll.performance.browser_manifest.v1",
   "manifest_version": "rum-surfaces-v1",
   "registry_version": "1.0.0",
-  "registry_hash": "d04f6a0a87f6869a361bc228bf0c8d2bf7bcdc9a690c172a80b1cba88c8c09bb",
+  "registry_hash": "1a06875472125f285e640709f5960adc9819a73efc7a5cbd773d4cf4b0042a56",
   "collector": {
     "collector_version": "rum-browser-v1",
     "library_name": "web-vitals",
@@ -474,6 +474,31 @@
           "retired_version": "1.0.0"
         }
       ],
+      "introduced_version": "1.0.0"
+    },
+    {
+      "surface_id": "capability-compare",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "information-capability-compare",
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/contracts-capability-compare.html"
+        }
+      ],
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
       "introduced_version": "1.0.0"
     },
     {
