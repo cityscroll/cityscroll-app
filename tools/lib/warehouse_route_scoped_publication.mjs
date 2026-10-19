@@ -472,10 +472,13 @@ export async function probeWarehouseRouteScopedBaselineAbsence({
   }
   const probedAt = nowIso();
   const keys = {};
-  let kvReads = 0;
+  let attemptedReads = 0;
+  let confirmedReads = 0;
+  let unknownReads = 0;
   let allAbsent = true;
   for (const shard of plan.shards) {
-    kvReads += 1;
+    // Count attempted only when the GET is actually invoked.
+    attemptedReads += 1;
     let status = "unknown";
     let liveValue = null;
     let liveSha = null;
@@ -493,13 +496,17 @@ export async function probeWarehouseRouteScopedBaselineAbsence({
         liveSha = sha256Text(liveValue);
         allAbsent = false;
       }
+      // Observed response (present or absent) is confirmed; timeouts/errors are not.
+      confirmedReads += 1;
     } catch (error) {
       if (isMissingKvValue(error)) {
         status = "absent";
         liveValue = null;
+        confirmedReads += 1;
       } else {
         status = "unknown";
         errorMessage = String(error?.message || error);
+        unknownReads += 1;
         allAbsent = false;
       }
     }
@@ -515,7 +522,11 @@ export async function probeWarehouseRouteScopedBaselineAbsence({
     schema: "cityscroll.warehouse_route_scoped_baseline_absence.v1",
     probed_at: probedAt,
     deployed_revision: plan.deployed_revision,
-    kv_reads: kvReads,
+    // Legacy alias = attempted (invokes started). Prefer confirmed/unknown fields.
+    kv_reads: attemptedReads,
+    attempted_kv_reads: attemptedReads,
+    confirmed_kv_reads: confirmedReads,
+    unknown_kv_reads: unknownReads,
     all_absent: allAbsent,
     keys: Object.freeze(keys),
   };
@@ -582,9 +593,11 @@ export async function publishWarehouseRouteScopedShards({
     configPath,
     nowIso,
   });
-  attempted.kv_reads += probed.kv_reads || 0;
-  // Successful baseline GET responses (including absent) are confirmed reads.
-  confirmed.kv_reads += probed.kv_reads || 0;
+  attempted.kv_reads += probed.attempted_kv_reads ?? probed.kv_reads ?? 0;
+  // Confirmed only for observed present/absent responses; timeouts/errors → unknown.
+  confirmed.kv_reads += probed.confirmed_kv_reads ?? 0;
+  const unknown = emptyUnknownOpCounts();
+  unknown.kv_reads += probed.unknown_kv_reads ?? 0;
   try {
     assertBaselineAbsenceAllowsPublish(probed);
   } catch (error) {
@@ -595,6 +608,7 @@ export async function publishWarehouseRouteScopedShards({
       planned: plan.planned,
       attempted,
       confirmed,
+      unknown,
       baseline_absence: probed,
       shards: [],
       state_advanced: false,
@@ -677,6 +691,7 @@ export async function publishWarehouseRouteScopedShards({
             planned: plan.planned,
             attempted,
             confirmed,
+            unknown,
             baseline_absence: probed,
             shards: shardReceipts,
             failed_key: shard.key,
@@ -710,6 +725,7 @@ export async function publishWarehouseRouteScopedShards({
       } catch (error) {
         const unknownAt = nowIso();
         markShardUnknown(entry, error?.message || error, unknownAt);
+        unknown.shard_puts += 1;
         if (intent) {
           markIntentShardUnknown(intent, shard.key, error?.message || error, unknownAt);
           if (intentPath) persistWarehouseRouteScopedPublishIntent(intentPath, intent);
@@ -722,12 +738,16 @@ export async function publishWarehouseRouteScopedShards({
           planned: plan.planned,
           attempted,
           confirmed,
+          unknown,
           baseline_absence: probed,
           shards: shardReceipts,
           failed_key: shard.key,
           ledger_phase: entry.phase,
           // Checkpoint was uploaded; ownership is externally recoverable as UNKNOWN.
           checkpoint_uploaded: true,
+          // PUT may have been applied; ACK is lost — not an acknowledged write count.
+          acknowledged_provider_writes_lower_bound: confirmed.shard_puts,
+          provider_write_outcome: "UNKNOWN",
           state_advanced: false,
         };
         throw error;
@@ -742,6 +762,7 @@ export async function publishWarehouseRouteScopedShards({
       planned: plan.planned,
       attempted,
       confirmed,
+      unknown,
       baseline_absence: probed,
       shards: shardReceipts,
       ledger: ownership,

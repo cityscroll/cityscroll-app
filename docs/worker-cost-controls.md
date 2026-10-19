@@ -259,12 +259,17 @@ and dry-run-readback confirm with `GO-cc06-A1-dry-run` /
    before any `kv key put`. Per-key issued markers are written durably only
    immediately before each PUT (`purpose=publish` + unique `attempt_id`).
    Planned, possibly-issued (`unknown`), and acknowledged stay distinct; never
-   invent timestamps for never-issued keys. The final ACK receipt / ledger
-   uploads separately (`if: always()`). Cleanup owns only publish attempts with
-   per-key issued markers (ledger or intent); dry-run / prepare / never-issued
-   intents are refused. Download prior ownership by `intent_run_id` using
-   `actions/download-artifact@v4` with `run-id` plus `github-token`
-   (`permissions: actions: read`).
+   invent timestamps for never-issued keys. A checkpoint without a put receipt
+   is possibly-issued UNKNOWN (the provider may have applied the PUT before the
+   process died); it is not proof the PUT was never sent. Baseline GETs confirm
+   only observed present/absent responses; timeouts and errors stay UNKNOWN. A
+   failure receipt reports an acknowledged lower bound of 0 with outcome
+   UNKNOWN rather than claiming `provider_writes: 0` as fact. The final ACK
+   receipt / ledger uploads separately (`if: always()`). Cleanup owns only
+   publish attempts with per-key issued markers (ledger or intent); dry-run /
+   prepare / never-issued intents are refused. Download prior ownership by
+   `intent_run_id` using `actions/download-artifact@v4` with `run-id` plus
+   `github-token` (`permissions: actions: read`).
 3. **Keys.** Write only
    `warehouse:route-scoped:v1:{zap-bbl|zap-project|doing-business}:{40-hex}` into
    the existing `ALERT_STATE` binding. No whole-KV warehouse blob; health and

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -34,6 +34,7 @@ import {
   planWarehouseRouteScopedCleanup,
   planWarehouseRouteScopedPublication,
   preflightWarehouseRouteScopedPublicationReadonly,
+  probeWarehouseRouteScopedBaselineAbsence,
   publishWarehouseRouteScopedShards,
   recoveryLedgerFromPublishIntent,
   verifyIssuedCheckpoint,
@@ -78,10 +79,17 @@ function tinyMaterializations() {
   };
 }
 
-function fakeWrangler({ failAtPut = null, failAtDelete = null, seed = new Map() } = {}) {
+function fakeWrangler({
+  failAtPut = null,
+  loseAckAtPut = null,
+  failAtGet = null,
+  failAtDelete = null,
+  seed = new Map(),
+} = {}) {
   const values = new Map(seed);
   const calls = [];
   let puts = 0;
+  let gets = 0;
   let deletes = 0;
   return {
     values,
@@ -89,6 +97,12 @@ function fakeWrangler({ failAtPut = null, failAtDelete = null, seed = new Map() 
     async invoke(args) {
       calls.push([...args]);
       if (args[0] === "kv" && args[1] === "key" && args[2] === "get") {
+        gets += 1;
+        if (failAtGet != null && gets === failAtGet) {
+          const error = new Error("injected GET timeout");
+          error.code = "ETIMEDOUT";
+          throw error;
+        }
         const key = args[3];
         if (!values.has(key)) {
           const error = new Error("Value not found");
@@ -106,6 +120,9 @@ function fakeWrangler({ failAtPut = null, failAtDelete = null, seed = new Map() 
         const key = args[3];
         const path = args[args.indexOf("--path") + 1];
         values.set(key, readFileSync(path, "utf8"));
+        if (loseAckAtPut != null && puts === loseAckAtPut) {
+          throw new Error("injected lost ACK after applied PUT");
+        }
         return { stdout: "" };
       }
       if (args[0] === "kv" && args[1] === "key" && args[2] === "delete") {
@@ -196,7 +213,10 @@ test("publish issues-before-ack, accounts KV ops, and persists durable ledger", 
     // 3 pre-write GETs + 3 puts.
     assert.deepEqual(receipt.attempted, { kv_reads: 3, shard_puts: 3, shard_deletes: 0 });
     assert.deepEqual(receipt.confirmed, { kv_reads: 3, shard_puts: 3, shard_deletes: 0 });
+    assert.deepEqual(receipt.unknown, { kv_reads: 0, shard_puts: 0, shard_deletes: 0 });
     assert.equal(receipt.baseline_absence.all_absent, true);
+    assert.equal(receipt.baseline_absence.confirmed_kv_reads, 3);
+    assert.equal(receipt.baseline_absence.unknown_kv_reads, 0);
     assert.equal(receipt.shards.length, 3);
     assert.equal(remote.values.size, 3);
     // One external checkpoint uploaded per key before its PUT.
@@ -235,16 +255,28 @@ test("publish marks unknown and keeps durable recovery when put response is lost
     materializations: tinyMaterializations(),
   });
   try {
-    await assert.rejects(
-      () => publishWarehouseRouteScopedShards({
+    let caught = null;
+    try {
+      await publishWarehouseRouteScopedShards({
         plan,
         invoke: remote.invoke,
         ledgerPath,
         attempt_id: "attempt-fixture-unknown",
         uploadIssuedCheckpoint: store.upload,
-      }),
-      /injected put failure/,
-    );
+      });
+    } catch (error) {
+      caught = error;
+    }
+    assert.ok(caught);
+    assert.match(String(caught.message || caught), /injected put failure/);
+    const failureReceipt = caught.publication_receipt;
+    assert.equal(failureReceipt.decision, "publish-failed");
+    assert.equal(failureReceipt.confirmed.shard_puts, 1);
+    assert.equal(failureReceipt.unknown.shard_puts, 1);
+    assert.equal(failureReceipt.acknowledged_provider_writes_lower_bound, 1);
+    assert.equal(failureReceipt.provider_write_outcome, "UNKNOWN");
+    // Must not claim provider_writes:0 as a fact when ACK is lost.
+    assert.equal(Object.hasOwn(failureReceipt, "provider_writes"), false);
     const ledger = loadShardPublicationLedger(ledgerPath);
     // First put acked, second unknown (failed at response), third never issued.
     const entries = Object.values(ledger.entries);
@@ -256,6 +288,24 @@ test("publish marks unknown and keeps durable recovery when put response is lost
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
+});
+
+test("probeBaseline confirms only observed present/absent; GET timeout stays UNKNOWN", async () => {
+  const plan = planWarehouseRouteScopedPublication({
+    deployed_revision: REVISION,
+    materializations: tinyMaterializations(),
+  });
+  const remote = fakeWrangler({ failAtGet: 2 });
+  const baseline = await probeWarehouseRouteScopedBaselineAbsence({
+    plan,
+    invoke: remote.invoke,
+  });
+  assert.equal(baseline.attempted_kv_reads, 3);
+  assert.equal(baseline.confirmed_kv_reads, 2);
+  assert.equal(baseline.unknown_kv_reads, 1);
+  assert.equal(baseline.all_absent, false);
+  const statuses = Object.values(baseline.keys).map((row) => row.status).sort();
+  assert.deepEqual(statuses, ["absent", "absent", "unknown"]);
 });
 
 test("publish refuses PUT when external checkpoint upload is missing or fails", async () => {
@@ -1064,6 +1114,9 @@ test("real CLI: PUT failure writes failed-attempt receipt; assemble keeps UNKNOW
     assert.equal(failed.confirmed.shard_puts, 0);
     assert.equal(failed.unknown.shard_puts, 1);
     assert.equal(failed.checkpoint_uploaded, true);
+    assert.equal(failed.acknowledged_provider_writes_lower_bound, 0);
+    assert.equal(failed.provider_write_outcome, "UNKNOWN");
+    assert.equal(Object.hasOwn(failed, "provider_writes"), false);
 
     writeFileSync(join(dir, "attempt-id.txt"), `${attemptId}\n`);
     writeFileSync(join(dir, "revision.txt"), `${REVISION}\n`);
@@ -1077,6 +1130,8 @@ test("real CLI: PUT failure writes failed-attempt receipt; assemble keeps UNKNOW
     assert.equal(assembled.attempted.shard_puts, 1);
     assert.equal(assembled.confirmed.shard_puts, 0);
     assert.equal(assembled.unknown.shard_puts, 1);
+    assert.equal(assembled.acknowledged_provider_writes_lower_bound, 0);
+    assert.equal(assembled.provider_write_outcome, "UNKNOWN");
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
@@ -1147,7 +1202,7 @@ test("real CLI: foreign live value is left alone during cleanup from checkpoints
       "--attempt-id", attemptId, "--out", join(dir, "checkpoint-receipt.json"),
     ]);
     copyFileSync(checkpointPath, join(store, `${issuedCheckpointArtifactName(route)}.json`));
-    // Checkpoint uploaded but PUT never sent. Seed a foreign value under another key.
+    // Checkpoint uploaded; PUT truly never sent. Seed a foreign value under another key.
     const plan = planWarehouseRouteScopedPublication({
       deployed_revision: REVISION,
       materializations: tinyMaterializations(),
@@ -1165,6 +1220,238 @@ test("real CLI: foreign live value is left alone during cleanup from checkpoints
       "--out", join(dir, "cleanup-receipt.json"),
     ], { env: { CC06_OFFLINE_KV_STORE: kv } });
     const cleanup = JSON.parse(readFileSync(join(dir, "cleanup-receipt.json"), "utf8"));
+    assert.ok(["cleaned", "already-clean"].includes(cleanup.decision));
+    assert.equal(cleanup.confirmed.shard_deletes, 0);
+    assert.equal(
+      readFileSync(join(kv, Buffer.from(foreign.key).toString("base64url")), "utf8"),
+      '{"foreign":true}',
+    );
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("real CLI (a): applied PUT + lost ACK → UNKNOWN then exact owned cleanup", () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc06-cli-lose-ack-"));
+  const kv = join(dir, "kv");
+  const store = join(dir, "checkpoint-store");
+  mkdirSync(kv, { recursive: true });
+  mkdirSync(store, { recursive: true });
+  mkdirSync(join(dir, "checkpoints"), { recursive: true });
+  try {
+    const intentPath = join(dir, "publish-intent.json");
+    const ledgerPath = join(dir, "ledger.json");
+    const attemptId = "attempt-cli-lose-ack";
+    runCli([
+      "prepare-intent", "--revision", REVISION, "--intent", intentPath,
+      "--attempt-id", attemptId, "--out", join(dir, "prepare.json"),
+    ]);
+    runCli([
+      "probe-baseline", "--revision", REVISION, "--intent", intentPath,
+      "--attempt-id", attemptId, "--out", join(dir, "baseline-receipt.json"),
+    ], { env: { CC06_OFFLINE_KV_STORE: kv } });
+
+    const route = "zap-bbl";
+    const checkpointPath = join(dir, "checkpoints", `${route}.json`);
+    runCli([
+      "write-issued-checkpoint", "--revision", REVISION, "--intent", intentPath,
+      "--ledger", ledgerPath, "--checkpoint", checkpointPath, "--route", route,
+      "--attempt-id", attemptId, "--out", join(dir, "checkpoint-receipt.json"),
+    ]);
+    copyFileSync(checkpointPath, join(store, `${issuedCheckpointArtifactName(route)}.json`));
+    runCli([
+      "put-one", "--revision", REVISION, "--intent", intentPath,
+      "--ledger", ledgerPath, "--checkpoint", checkpointPath, "--route", route,
+      "--attempt-id", attemptId, "--out", join(dir, `put-${route}-receipt.json`),
+    ], {
+      env: { CC06_OFFLINE_KV_STORE: kv, CC06_OFFLINE_KV_LOSE_ACK_AT_PUT: "1" },
+      expectStatus: 1,
+    });
+    const failed = JSON.parse(readFileSync(join(dir, `put-${route}-receipt.json`), "utf8"));
+    assert.equal(failed.decision, "put-one-failed-attempt");
+    assert.equal(failed.provider_write_outcome, "UNKNOWN");
+    assert.equal(failed.acknowledged_provider_writes_lower_bound, 0);
+    assert.equal(failed.unknown.shard_puts, 1);
+    // Provider applied the write even though ACK was lost — use checkpoint value.
+    const checkpoint = loadIssuedCheckpoint(checkpointPath);
+    assert.equal(
+      readFileSync(join(kv, Buffer.from(checkpoint.key).toString("base64url")), "utf8"),
+      checkpoint.value,
+    );
+
+    runCli([
+      "cleanup", "--revision", REVISION, "--intent", intentPath,
+      "--checkpoint-dir", store, "--active", ROLLBACK_REVISION,
+      "--out", join(dir, "cleanup-receipt.json"),
+    ], { env: { CC06_OFFLINE_KV_STORE: kv } });
+    const cleanup = JSON.parse(readFileSync(join(dir, "cleanup-receipt.json"), "utf8"));
+    assert.equal(cleanup.decision, "cleaned");
+    assert.equal(cleanup.confirmed.shard_deletes, 1);
+    assert.equal(
+      existsSync(join(kv, Buffer.from(checkpoint.key).toString("base64url"))),
+      false,
+    );
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("real CLI (b): die with checkpoint + no put receipt → artifact recovery clears owned value", () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc06-cli-die-no-receipt-"));
+  const kv = join(dir, "kv");
+  const store = join(dir, "checkpoint-store");
+  mkdirSync(kv, { recursive: true });
+  mkdirSync(store, { recursive: true });
+  mkdirSync(join(dir, "checkpoints"), { recursive: true });
+  try {
+    const intentPath = join(dir, "publish-intent.json");
+    const ledgerPath = join(dir, "ledger.json");
+    const attemptId = "attempt-cli-die-no-receipt";
+    runCli([
+      "prepare-intent", "--revision", REVISION, "--intent", intentPath,
+      "--attempt-id", attemptId, "--out", join(dir, "prepare.json"),
+    ]);
+    runCli([
+      "probe-baseline", "--revision", REVISION, "--intent", intentPath,
+      "--attempt-id", attemptId, "--out", join(dir, "baseline-receipt.json"),
+    ], { env: { CC06_OFFLINE_KV_STORE: kv } });
+
+    const route = "zap-project";
+    const checkpointPath = join(dir, "checkpoints", `${route}.json`);
+    runCli([
+      "write-issued-checkpoint", "--revision", REVISION, "--intent", intentPath,
+      "--ledger", ledgerPath, "--checkpoint", checkpointPath, "--route", route,
+      "--attempt-id", attemptId, "--out", join(dir, "checkpoint-receipt.json"),
+    ]);
+    copyFileSync(checkpointPath, join(store, `${issuedCheckpointArtifactName(route)}.json`));
+
+    // Simulate: PUT applied at provider, process dies before writing put receipt.
+    // Seed the exact owned checkpoint value (CLI materializations, not tiny fixtures).
+    const checkpoint = loadIssuedCheckpoint(checkpointPath);
+    writeFileSync(
+      join(kv, Buffer.from(checkpoint.key).toString("base64url")),
+      checkpoint.value,
+      { mode: 0o600 },
+    );
+
+    writeFileSync(join(dir, "attempt-id.txt"), `${attemptId}\n`);
+    writeFileSync(join(dir, "revision.txt"), `${REVISION}\n`);
+    runCli([
+      "assemble-attempt-receipt", "--artifact-dir", dir, "--out", join(dir, "receipt.json"),
+    ], { expectStatus: 1 });
+    const assembled = JSON.parse(readFileSync(join(dir, "receipt.json"), "utf8"));
+    assert.equal(assembled.decision, "publish-attempt-partial");
+    // Checkpoint without put receipt → possibly-issued UNKNOWN (not "PUT never sent").
+    assert.equal(assembled.attempted.shard_puts, 0);
+    assert.equal(assembled.confirmed.shard_puts, 0);
+    assert.equal(assembled.unknown.shard_puts, 1);
+    assert.deepEqual(assembled.possibly_issued_routes, [route]);
+    assert.equal(assembled.acknowledged_provider_writes_lower_bound, 0);
+    assert.equal(assembled.provider_write_outcome, "UNKNOWN");
+
+    runCli([
+      "cleanup", "--revision", REVISION, "--intent", intentPath,
+      "--checkpoint-dir", store, "--active", ROLLBACK_REVISION,
+      "--out", join(dir, "cleanup-receipt.json"),
+    ], { env: { CC06_OFFLINE_KV_STORE: kv } });
+    const cleanup = JSON.parse(readFileSync(join(dir, "cleanup-receipt.json"), "utf8"));
+    assert.equal(cleanup.decision, "cleaned");
+    assert.equal(cleanup.confirmed.shard_deletes, 1);
+    assert.equal(existsSync(join(kv, Buffer.from(checkpoint.key).toString("base64url"))), false);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("real CLI (c): GET timeout on probe-baseline is UNKNOWN, not confirmed", () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc06-cli-get-timeout-"));
+  const kv = join(dir, "kv");
+  mkdirSync(kv, { recursive: true });
+  try {
+    const intentPath = join(dir, "publish-intent.json");
+    const attemptId = "attempt-cli-get-timeout";
+    runCli([
+      "prepare-intent", "--revision", REVISION, "--intent", intentPath,
+      "--attempt-id", attemptId, "--out", join(dir, "prepare.json"),
+    ]);
+    runCli([
+      "probe-baseline", "--revision", REVISION, "--intent", intentPath,
+      "--attempt-id", attemptId, "--out", join(dir, "baseline-receipt.json"),
+    ], {
+      env: { CC06_OFFLINE_KV_STORE: kv, CC06_OFFLINE_KV_FAIL_AT_GET: "2" },
+      expectStatus: 2,
+    });
+    const baseline = JSON.parse(readFileSync(join(dir, "baseline-receipt.json"), "utf8"));
+    assert.equal(baseline.decision, "baseline-blocked");
+    assert.equal(baseline.attempted.kv_reads, 3);
+    assert.equal(baseline.confirmed.kv_reads, 2);
+    assert.equal(baseline.unknown.kv_reads, 1);
+    assert.equal(baseline.baseline_absence.unknown_kv_reads, 1);
+    assert.equal(baseline.baseline_absence.confirmed_kv_reads, 2);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("real CLI (d): checkpoint without PUT stays possibly-issued until absent readback; foreign held", () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc06-cli-possibly-issued-"));
+  const kv = join(dir, "kv");
+  const store = join(dir, "checkpoint-store");
+  mkdirSync(kv, { recursive: true });
+  mkdirSync(store, { recursive: true });
+  mkdirSync(join(dir, "checkpoints"), { recursive: true });
+  try {
+    const intentPath = join(dir, "publish-intent.json");
+    const ledgerPath = join(dir, "ledger.json");
+    const attemptId = "attempt-cli-possibly-issued";
+    runCli([
+      "prepare-intent", "--revision", REVISION, "--intent", intentPath,
+      "--attempt-id", attemptId, "--out", join(dir, "prepare.json"),
+    ]);
+    runCli([
+      "probe-baseline", "--revision", REVISION, "--intent", intentPath,
+      "--attempt-id", attemptId, "--out", join(dir, "baseline-receipt.json"),
+    ], { env: { CC06_OFFLINE_KV_STORE: kv } });
+
+    const route = "doing-business";
+    const checkpointPath = join(dir, "checkpoints", `${route}.json`);
+    runCli([
+      "write-issued-checkpoint", "--revision", REVISION, "--intent", intentPath,
+      "--ledger", ledgerPath, "--checkpoint", checkpointPath, "--route", route,
+      "--attempt-id", attemptId, "--out", join(dir, "checkpoint-receipt.json"),
+    ]);
+    copyFileSync(checkpointPath, join(store, `${issuedCheckpointArtifactName(route)}.json`));
+    // PUT truly never sent. Seed a foreign value under a different key.
+    const plan = planWarehouseRouteScopedPublication({
+      deployed_revision: REVISION,
+      materializations: tinyMaterializations(),
+    });
+    const foreign = plan.shards.find((s) => s.route === "zap-bbl");
+    writeFileSync(
+      join(kv, Buffer.from(foreign.key).toString("base64url")),
+      '{"foreign":true}',
+      { mode: 0o600 },
+    );
+
+    writeFileSync(join(dir, "attempt-id.txt"), `${attemptId}\n`);
+    writeFileSync(join(dir, "revision.txt"), `${REVISION}\n`);
+    runCli([
+      "assemble-attempt-receipt", "--artifact-dir", dir, "--out", join(dir, "receipt.json"),
+    ], { expectStatus: 1 });
+    const assembled = JSON.parse(readFileSync(join(dir, "receipt.json"), "utf8"));
+    assert.equal(assembled.unknown.shard_puts, 1);
+    assert.equal(assembled.attempted.shard_puts, 0);
+    assert.equal(assembled.confirmed.shard_puts, 0);
+    assert.deepEqual(assembled.possibly_issued_routes, [route]);
+    assert.equal(assembled.provider_write_outcome, "UNKNOWN");
+
+    runCli([
+      "cleanup", "--revision", REVISION, "--intent", intentPath,
+      "--checkpoint-dir", store, "--active", ROLLBACK_REVISION,
+      "--out", join(dir, "cleanup-receipt.json"),
+    ], { env: { CC06_OFFLINE_KV_STORE: kv } });
+    const cleanup = JSON.parse(readFileSync(join(dir, "cleanup-receipt.json"), "utf8"));
+    // Owned key absent on readback → already-clear; foreign never owned → held.
     assert.ok(["cleaned", "already-clean"].includes(cleanup.decision));
     assert.equal(cleanup.confirmed.shard_deletes, 0);
     assert.equal(

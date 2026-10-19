@@ -135,17 +135,30 @@ function createCheckpointUploader({ storeDir = null } = {}) {
 
 /**
  * Offline / injected provider for real CLI entrypoint tests.
- * Set CC06_OFFLINE_KV_STORE=<dir>. Optional CC06_OFFLINE_KV_FAIL_AT_PUT=<n>
- * fails the Nth PUT (1-based) after the attempt is recorded.
+ * Set CC06_OFFLINE_KV_STORE=<dir>.
+ * Optional CC06_OFFLINE_KV_FAIL_AT_PUT=<n> fails the Nth PUT (1-based) before apply.
+ * Optional CC06_OFFLINE_KV_LOSE_ACK_AT_PUT=<n> applies the Nth PUT then loses the ACK.
+ * Optional CC06_OFFLINE_KV_FAIL_AT_GET=<n> times out the Nth GET (1-based).
  */
 function createOfflineKvInvoker(storeDir) {
   mkdirSync(storeDir, { recursive: true, mode: 0o700 });
   let puts = 0;
+  let gets = 0;
   const failAtRaw = process.env.CC06_OFFLINE_KV_FAIL_AT_PUT;
   const failAtPut = failAtRaw ? Number(failAtRaw) : null;
+  const loseAckRaw = process.env.CC06_OFFLINE_KV_LOSE_ACK_AT_PUT;
+  const loseAckAtPut = loseAckRaw ? Number(loseAckRaw) : null;
+  const failGetRaw = process.env.CC06_OFFLINE_KV_FAIL_AT_GET;
+  const failAtGet = failGetRaw ? Number(failGetRaw) : null;
   const keyPath = (key) => join(storeDir, Buffer.from(String(key)).toString("base64url"));
   return async (args) => {
     if (args[0] === "kv" && args[1] === "key" && args[2] === "get") {
+      gets += 1;
+      if (Number.isFinite(failAtGet) && gets === failAtGet) {
+        const error = new Error("injected GET timeout");
+        error.code = "ETIMEDOUT";
+        throw error;
+      }
       const path = keyPath(args[3]);
       if (!existsSync(path)) {
         const error = new Error("Value not found");
@@ -163,6 +176,10 @@ function createOfflineKvInvoker(storeDir) {
       const pathIdx = args.indexOf("--path");
       if (pathIdx < 0) throw new Error("offline put requires --path");
       writeFileSync(keyPath(args[3]), readFileSync(args[pathIdx + 1], "utf8"), { mode: 0o600 });
+      if (Number.isFinite(loseAckAtPut) && puts === loseAckAtPut) {
+        // Provider applied the write; local ACK is lost — actual writes UNKNOWN.
+        throw new Error("injected lost ACK after applied PUT");
+      }
       return { stdout: "", stderr: "", status: 0 };
     }
     if (args[0] === "kv" && args[1] === "key" && args[2] === "delete") {
@@ -337,6 +354,9 @@ if (command === "probe-baseline") {
   intent.baseline_absence = baseline;
   persistWarehouseRouteScopedPublishIntent(intentPath, intent);
   const plannedReads = (intent.shards || []).length || 3;
+  const attemptedReads = baseline.attempted_kv_reads ?? baseline.kv_reads ?? 0;
+  const confirmedReads = baseline.confirmed_kv_reads ?? 0;
+  const unknownReads = baseline.unknown_kv_reads ?? 0;
   const receipt = {
     schema: "cityscroll.warehouse_route_scoped_publication_receipt.v1",
     decision: baseline.all_absent ? "baseline-absent" : "baseline-blocked",
@@ -346,11 +366,13 @@ if (command === "probe-baseline") {
     deployed_revision: intent.deployed_revision,
     baseline_absence: baseline,
     planned: { ...emptyOps(), kv_reads: plannedReads },
-    attempted: { ...emptyOps(), kv_reads: baseline.kv_reads },
-    confirmed: { ...emptyOps(), kv_reads: baseline.kv_reads },
-    unknown: emptyOps(),
-    provider_writes: 0,
-    kv_reads: baseline.kv_reads,
+    attempted: { ...emptyOps(), kv_reads: attemptedReads },
+    // Confirmed only for observed present/absent; timeouts/errors stay UNKNOWN.
+    confirmed: { ...emptyOps(), kv_reads: confirmedReads },
+    unknown: { ...emptyOps(), kv_reads: unknownReads },
+    // Probe never writes; do not invent a billed write total.
+    acknowledged_provider_writes_lower_bound: 0,
+    kv_reads: attemptedReads,
   };
   writeJson(outPath, receipt);
   console.log(JSON.stringify(receipt, null, 2));
@@ -466,44 +488,68 @@ if (command === "assemble-attempt-receipt") {
     }
   };
   const baseline = readJsonIf(join(artifactDir, "baseline-receipt.json"));
-  const putReceipts = [];
+  const putReceiptByRoute = new Map();
   for (const route of routes) {
     const receipt = readJsonIf(join(artifactDir, `put-${route}-receipt.json`));
-    if (receipt) putReceipts.push(receipt);
+    if (receipt) putReceiptByRoute.set(route, receipt);
   }
+  const putReceipts = [...putReceiptByRoute.values()];
   const planned = emptyOps();
   const attempted = emptyOps();
   const confirmed = emptyOps();
   const unknown = emptyOps();
 
-  // Baseline GETs (probe-baseline): planned = shard count; confirmed when response observed.
+  // Baseline GETs: missing baseline receipt is not proof of zero operations.
   planned.kv_reads = Number(baseline?.planned?.kv_reads ?? routes.length);
-  attempted.kv_reads = Number(baseline?.attempted?.kv_reads ?? baseline?.kv_reads ?? 0);
-  confirmed.kv_reads = Number(baseline?.confirmed?.kv_reads ?? baseline?.kv_reads ?? 0);
-  unknown.kv_reads = Number(baseline?.unknown?.kv_reads ?? 0);
+  const baselineMissing = !baseline;
+  if (baseline) {
+    attempted.kv_reads = Number(baseline.attempted?.kv_reads ?? baseline.kv_reads ?? 0);
+    confirmed.kv_reads = Number(baseline.confirmed?.kv_reads ?? 0);
+    unknown.kv_reads = Number(baseline.unknown?.kv_reads ?? 0);
+  }
 
   planned.shard_puts = routes.length;
-  for (const receipt of putReceipts) {
-    attempted.shard_puts += Number(receipt.attempted?.shard_puts ?? 1);
-    confirmed.shard_puts += Number(
-      receipt.confirmed?.shard_puts ?? (receipt.decision === "put-one-acked" ? 1 : 0),
-    );
-    unknown.shard_puts += Number(
-      receipt.unknown?.shard_puts ?? (receipt.decision === "put-one-failed-attempt" ? 1 : 0),
-    );
-  }
-  // Checkpoints present without put receipts → issued but PUT never sent (0 attempted put).
   const checkpointDir = join(artifactDir, "checkpoints");
-  let checkpointCount = 0;
+  const checkpointRoutes = new Set();
   try {
-    checkpointCount = readdirSync(checkpointDir).filter((name) => name.endsWith(".json")).length;
+    for (const name of readdirSync(checkpointDir)) {
+      if (!name.endsWith(".json")) continue;
+      const route = name.replace(/\.json$/, "");
+      if (routes.includes(route)) checkpointRoutes.add(route);
+    }
   } catch {
-    checkpointCount = 0;
+    // no checkpoint dir
+  }
+  const possiblyIssuedRoutes = [];
+  for (const route of routes) {
+    const putReceipt = putReceiptByRoute.get(route);
+    if (putReceipt) {
+      // Attempted only from real put receipts — never invent from planned/checkpoints.
+      attempted.shard_puts += Number(putReceipt.attempted?.shard_puts ?? 1);
+      confirmed.shard_puts += Number(
+        putReceipt.confirmed?.shard_puts ?? (putReceipt.decision === "put-one-acked" ? 1 : 0),
+      );
+      unknown.shard_puts += Number(
+        putReceipt.unknown?.shard_puts
+          ?? (putReceipt.decision === "put-one-failed-attempt" ? 1 : 0),
+      );
+      continue;
+    }
+    // Checkpoint without put receipt ≠ "PUT never sent": process may have died
+    // after the provider applied the PUT. Treat as possibly-issued UNKNOWN.
+    // Confirmed ACK lower bound stays 0; attempted stays only from real receipts.
+    if (checkpointRoutes.has(route)) {
+      unknown.shard_puts += 1;
+      possiblyIssuedRoutes.push(route);
+    }
+    // Planned-only (no checkpoint, no put receipt) is never counted as attempted/unknown.
   }
 
   const anyFailed = putReceipts.some((r) => r.decision === "put-one-failed-attempt");
+  const anyUnknownPuts = unknown.shard_puts > 0;
   const allAcked = putReceipts.length === routes.length
-    && putReceipts.every((r) => r.decision === "put-one-acked");
+    && putReceipts.every((r) => r.decision === "put-one-acked")
+    && possiblyIssuedRoutes.length === 0;
   let attemptIdText = null;
   try {
     attemptIdText = readFileSync(join(artifactDir, "attempt-id.txt"), "utf8").trim();
@@ -521,7 +567,7 @@ if (command === "assemble-attempt-receipt") {
     schema: "cityscroll.warehouse_route_scoped_publication_receipt.v1",
     decision: allAcked
       ? "published"
-      : (anyFailed || putReceipts.length > 0 || checkpointCount > 0)
+      : (anyFailed || anyUnknownPuts || putReceipts.length > 0 || checkpointRoutes.size > 0)
         ? "publish-attempt-partial"
         : "publish-attempt-empty",
     mode: "assemble-attempt-receipt",
@@ -531,14 +577,21 @@ if (command === "assemble-attempt-receipt") {
     attempted,
     confirmed,
     unknown,
+    // Confirmed ACK lower bound; actual applied writes may be higher when ACK was lost.
+    acknowledged_provider_writes_lower_bound: confirmed.shard_puts,
+    provider_write_outcome: anyUnknownPuts || anyFailed
+      ? "UNKNOWN"
+      : (allAcked ? "ACKNOWLEDGED" : "NONE"),
     baseline_absence: baseline?.baseline_absence || null,
+    baseline_receipt_missing: baselineMissing,
     shards: putReceipts,
-    checkpoint_count: checkpointCount,
+    checkpoint_count: checkpointRoutes.size,
+    possibly_issued_routes: possiblyIssuedRoutes,
     // No billed or provider cost totals — operation counts only.
   };
   writeJson(outPath || join(artifactDir, "receipt.json"), receipt);
   console.log(JSON.stringify(receipt, null, 2));
-  process.exit(anyFailed ? 1 : 0);
+  process.exit(anyFailed || anyUnknownPuts ? 1 : 0);
 }
 
 if (command === "put-one") {
@@ -601,7 +654,8 @@ if (command === "put-one") {
       attempted,
       confirmed: { ...emptyOps(), shard_puts: 1 },
       unknown: emptyOps(),
-      provider_writes: 1,
+      acknowledged_provider_writes_lower_bound: 1,
+      provider_write_outcome: "ACKNOWLEDGED",
     };
     writeJson(outPath, receipt);
     console.log(JSON.stringify(receipt, null, 2));
@@ -613,6 +667,7 @@ if (command === "put-one") {
     persistWarehouseRouteScopedPublishIntent(intentPath, intent);
     // Always write a failed-attempt receipt so an early PUT failure never
     // reads as zero operations when the final assembler runs.
+    // PUT may have been applied; ACK is lost — do not claim provider_writes:0 as fact.
     const failedReceipt = {
       schema: "cityscroll.warehouse_route_scoped_publication_receipt.v1",
       decision: "put-one-failed-attempt",
@@ -628,7 +683,8 @@ if (command === "put-one") {
       confirmed: emptyOps(),
       unknown: { ...emptyOps(), shard_puts: 1 },
       last_error: String(error?.message || error),
-      provider_writes: 0,
+      acknowledged_provider_writes_lower_bound: 0,
+      provider_write_outcome: "UNKNOWN",
       checkpoint_uploaded: true,
     };
     writeJson(outPath, failedReceipt);
