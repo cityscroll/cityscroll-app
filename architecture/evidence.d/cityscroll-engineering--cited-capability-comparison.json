@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/cited-capability-comparison",
+  "status": "implemented",
+  "fingerprint": "cited-capability-comparison.v1",
+  "updated_at": "2026-10-20T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "procurement-capability-comparison-contract",
+      "path": "site/procurement_capability_comparison.mjs"
+    },
+    {
+      "id": "procurement-capability-comparison-tests",
+      "path": "test/procurement_capability_comparison.test.mjs"
+    }
+  ]
+}
