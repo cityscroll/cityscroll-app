@@ -232,10 +232,16 @@ while that fallback path remains.
 
 `tools/lib/warehouse_route_scoped_publication.mjs` and
 `tools/warehouse_route_scoped_publication.mjs` own bounded, revision-keyed shard
-publication and exact-value cleanup. Live provider writes stay GO-gated
-(`CC06_PUBLISH_EXECUTE_CODE=C6-<8hex>` after an explicit
-`GO-cc06-A1-publish EXECUTE`); plan and `preflight-readonly` never put or
-delete. Publishing shards does not enable `WAREHOUSE_ROUTE_SCOPED_SHARDS`.
+publication and exact-value cleanup. Live provider writes run only from the
+`workflow_dispatch`-only GitHub Action
+`.github/workflows/warehouse-route-scoped-publication.yml`, using the existing
+repo `CLOUDFLARE_API_TOKEN` secret (the same secret `deploy-worker.yml` already
+uses for `ALERT_STATE` KV). Ordinary push/PR/schedule never publish. The Action
+requires `GO-cc06-A1-publish EXECUTE` (or cleanup/preflight confirmation) plus a
+one-time `C6-<8hex>` execute code, writes a receipt artifact, and keeps a
+durable ledger artifact for exact-value cleanup. Plan and local
+`preflight-readonly` never put or delete. Publishing shards does not enable
+`WAREHOUSE_ROUTE_SCOPED_SHARDS`.
 
 1. **Owner.** The publisher builds one immutable shard document per lookup route
    from the same materialization the baseline JSON currently embeds, using

@@ -1,0 +1,261 @@
+name: Warehouse route-scoped shard publication
+
+# GO-gated ALERT_STATE shard publish/cleanup for the route-scoped warehouse
+# candidate. Uses the existing repo CLOUDFLARE_API_TOKEN (same secret as
+# deploy-worker.yml KV access). Never runs on push, pull_request, schedule, or
+# merge_group — workflow_dispatch only. Publishing does not enable
+# WAREHOUSE_ROUTE_SCOPED_SHARDS and does not stage traffic.
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "publish | cleanup | preflight-readonly"
+        required: true
+        type: choice
+        options:
+          - preflight-readonly
+          - publish
+          - cleanup
+      revision:
+        description: Full 40-hex deployed_revision (GIT_COMMIT_SHA) for the shard keys
+        required: true
+        type: string
+      active_revision:
+        description: Active serving revision to protect from cleanup (optional)
+        required: false
+        type: string
+        default: ""
+      rollback_revision:
+        description: Retained rollback revision to protect from cleanup (optional)
+        required: false
+        type: string
+        default: ""
+      execute_code:
+        description: One-time C6-<8 hex> code (required for publish/cleanup; ignored for preflight-readonly)
+        required: false
+        type: string
+        default: ""
+      confirmation:
+        description: Exact phrase — GO-cc06-A1-publish EXECUTE | GO-cc06-A1-cleanup EXECUTE | GO-cc06-A1-preflight
+        required: true
+        type: string
+      ledger_run_id:
+        description: Prior workflow run id whose publication-ledger artifact cleanup should reuse (cleanup only)
+        required: false
+        type: string
+        default: ""
+      allow_window_overlap:
+        description: Allow publish/cleanup during the frozen cc-05 window buffer (drills only)
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: warehouse-route-scoped-publication
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  run:
+    name: Route-scoped shard ${{ inputs.action }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate revision and confirmation
+        env:
+          ACTION: ${{ inputs.action }}
+          REVISION: ${{ inputs.revision }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+          EXECUTE_CODE: ${{ inputs.execute_code }}
+        run: |
+          set -euo pipefail
+          if [[ ! "$REVISION" =~ ^[a-f0-9]{40}$ ]]; then
+            echo "revision must be a full lowercase 40-hex commit SHA" >&2
+            exit 2
+          fi
+          case "$ACTION" in
+            preflight-readonly)
+              test "$CONFIRMATION" = "GO-cc06-A1-preflight"
+              ;;
+            publish)
+              test "$CONFIRMATION" = "GO-cc06-A1-publish EXECUTE"
+              if [[ ! "$EXECUTE_CODE" =~ ^C6-[0-9a-fA-F]{8}$ ]]; then
+                echo "publish requires execute_code C6-<8 hex>" >&2
+                exit 2
+              fi
+              ;;
+            cleanup)
+              test "$CONFIRMATION" = "GO-cc06-A1-cleanup EXECUTE"
+              if [[ ! "$EXECUTE_CODE" =~ ^C6-[0-9a-fA-F]{8}$ ]]; then
+                echo "cleanup requires execute_code C6-<8 hex>" >&2
+                exit 2
+              fi
+              ;;
+            *)
+              echo "unsupported action=$ACTION" >&2
+              exit 2
+              ;;
+          esac
+
+      - name: Prepare artifact directory
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/cc06-route-scoped"
+          echo "artifact_dir=$RUNNER_TEMP/cc06-route-scoped" >> "$GITHUB_ENV"
+
+      - name: Download prior publication ledger (cleanup)
+        if: ${{ inputs.action == 'cleanup' && inputs.ledger_run_id != '' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: cc06-route-scoped-ledger
+          github-run-id: ${{ inputs.ledger_run_id }}
+          path: ${{ runner.temp }}/cc06-route-scoped/prior-ledger
+
+      - name: Preflight readonly (no provider writes beyond optional KV GETs)
+        if: ${{ inputs.action == 'preflight-readonly' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          REVISION: ${{ inputs.revision }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+            echo "CLOUDFLARE_API_TOKEN is not configured" >&2
+            exit 2
+          fi
+          node tools/warehouse_route_scoped_publication.mjs preflight-readonly \
+            --revision "$REVISION" \
+            --live-kv \
+            --out "$artifact_dir/preflight.json"
+          cp "$artifact_dir/preflight.json" "$artifact_dir/receipt.json"
+
+      - name: Publish revision shards (≤3 keys)
+        if: ${{ inputs.action == 'publish' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CC06_PUBLISH_EXECUTE_CODE: ${{ inputs.execute_code }}
+          REVISION: ${{ inputs.revision }}
+          ACTIVE: ${{ inputs.active_revision }}
+          ROLLBACK: ${{ inputs.rollback_revision }}
+          RUN_ID: ${{ github.run_id }}
+          ALLOW_OVERLAP: ${{ inputs.allow_window_overlap }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+            echo "CLOUDFLARE_API_TOKEN is not configured" >&2
+            exit 2
+          fi
+          if [ "$ALLOW_OVERLAP" = "true" ]; then
+            export CC06_ALLOW_WINDOW_OVERLAP=1
+          fi
+          attempt_id="attempt-ci-${RUN_ID}-cc06-a1-publish"
+          args=(
+            node tools/warehouse_route_scoped_publication.mjs publish
+            --revision "$REVISION"
+            --ledger "$artifact_dir/publication-ledger.json"
+            --attempt-id "$attempt_id"
+            --out "$artifact_dir/receipt.json"
+          )
+          if [ -n "${ACTIVE:-}" ]; then
+            args+=(--active "$ACTIVE")
+          fi
+          if [ -n "${ROLLBACK:-}" ]; then
+            args+=(--rollback "$ROLLBACK")
+          fi
+          "${args[@]}"
+          printf '%s\n' "$attempt_id" > "$artifact_dir/attempt-id.txt"
+          printf '%s\n' "$REVISION" > "$artifact_dir/revision.txt"
+
+      - name: Cleanup owned revision shards (exact-value only)
+        if: ${{ inputs.action == 'cleanup' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CC06_PUBLISH_EXECUTE_CODE: ${{ inputs.execute_code }}
+          REVISION: ${{ inputs.revision }}
+          ACTIVE: ${{ inputs.active_revision }}
+          ROLLBACK: ${{ inputs.rollback_revision }}
+          LEDGER_RUN_ID: ${{ inputs.ledger_run_id }}
+          ALLOW_OVERLAP: ${{ inputs.allow_window_overlap }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+            echo "CLOUDFLARE_API_TOKEN is not configured" >&2
+            exit 2
+          fi
+          if [ "$ALLOW_OVERLAP" = "true" ]; then
+            export CC06_ALLOW_WINDOW_OVERLAP=1
+          fi
+          ledger="$artifact_dir/publication-ledger.json"
+          prior="$artifact_dir/prior-ledger/publication-ledger.json"
+          if [ -f "$prior" ]; then
+            cp "$prior" "$ledger"
+          elif [ -n "${LEDGER_RUN_ID:-}" ]; then
+            echo "ledger_run_id=$LEDGER_RUN_ID was set but publication-ledger.json was not in the artifact" >&2
+            exit 2
+          else
+            echo "cleanup requires ledger_run_id pointing at a prior publish artifact that holds publication-ledger.json" >&2
+            exit 2
+          fi
+          args=(
+            node tools/warehouse_route_scoped_publication.mjs cleanup
+            --revision "$REVISION"
+            --ledger "$ledger"
+            --out "$artifact_dir/receipt.json"
+          )
+          if [ -n "${ACTIVE:-}" ]; then
+            args+=(--active "$ACTIVE")
+          fi
+          if [ -n "${ROLLBACK:-}" ]; then
+            args+=(--rollback "$ROLLBACK")
+          fi
+          "${args[@]}"
+
+      - name: Summarize receipt
+        if: ${{ !cancelled() }}
+        run: |
+          set -euo pipefail
+          if [ -f "$artifact_dir/receipt.json" ]; then
+            python3 - <<'PY'
+          import json, os, pathlib
+          path = pathlib.Path(os.environ["artifact_dir"]) / "receipt.json"
+          data = json.loads(path.read_text())
+          keep = {k: data.get(k) for k in (
+              "schema", "outcome", "decision", "mode", "deployed_revision",
+              "planned", "attempted", "confirmed", "provider_writes", "checks",
+              "go_code", "actions", "shards",
+          ) if k in data}
+          print(json.dumps(keep, indent=2))
+          pathlib.Path(os.environ["artifact_dir"], "receipt-summary.json").write_text(
+              json.dumps(keep, indent=2) + "\n"
+          )
+          PY
+          else
+            echo "no receipt.json produced" >&2
+            exit 1
+          fi
+
+      - name: Upload receipt artifact
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: cc06-route-scoped-${{ inputs.action }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/cc06-route-scoped
+          if-no-files-found: error
+
+      - name: Upload durable ledger artifact (publish)
+        if: ${{ inputs.action == 'publish' && success() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: cc06-route-scoped-ledger
+          path: ${{ runner.temp }}/cc06-route-scoped/publication-ledger.json
+          if-no-files-found: error

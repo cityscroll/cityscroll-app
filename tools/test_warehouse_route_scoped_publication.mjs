@@ -361,3 +361,16 @@ test("durable ledger round-trip preserves issued/acked phases", () => {
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test("CI workflow is workflow_dispatch-only and never push-triggered", () => {
+  const yaml = readFileSync(new URL("../.github/workflows/warehouse-route-scoped-publication.yml", import.meta.url), "utf8");
+  assert.match(yaml, /workflow_dispatch:/);
+  assert.doesNotMatch(yaml, /^\s+push:\s*$/m);
+  assert.doesNotMatch(yaml, /^\s+pull_request:\s*$/m);
+  assert.doesNotMatch(yaml, /^\s+schedule:\s*$/m);
+  assert.doesNotMatch(yaml, /^\s+merge_group:\s*$/m);
+  assert.match(yaml, /CLOUDFLARE_API_TOKEN: \$\{\{ secrets\.CLOUDFLARE_API_TOKEN \}\}/);
+  assert.match(yaml, /max 3 keys|≤3|shard_puts|Publish revision shards/);
+  assert.match(yaml, /GO-cc06-A1-publish EXECUTE/);
+  assert.match(yaml, /GO-cc06-A1-cleanup EXECUTE/);
+});
