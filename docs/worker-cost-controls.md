@@ -252,14 +252,19 @@ and dry-run-readback confirm with `GO-cc06-A1-dry-run` /
    the binding-ledger honesty rules.
 2. **Durable intent before first put.** Publish writes a
    `cityscroll.warehouse_route_scoped_publish_intent.v1` artifact (revision,
-   exact keys, exact values/digests, baseline absence) and uploads it as
-   `cc06-route-scoped-intent` before any `kv key put`. The final ACK receipt /
-   ledger uploads separately (`if: always()`). Cleanup and dry-run-readback
-   download that intent by prior `intent_run_id` using
+   exact keys, exact values/digests) then runs real pre-write GETs for every
+   target key. Any pre-existing value (including one identical to the planned
+   body) or an unknown/failed GET aborts with zero PUTs. The intent records
+   that baseline absence proof and uploads as `cc06-route-scoped-intent`
+   before any `kv key put`. Per-key issued markers are written durably only
+   immediately before each PUT (`purpose=publish` + unique `attempt_id`).
+   Planned, possibly-issued (`unknown`), and acknowledged stay distinct; never
+   invent timestamps for never-issued keys. The final ACK receipt / ledger
+   uploads separately (`if: always()`). Cleanup owns only publish attempts with
+   per-key issued markers (ledger or intent); dry-run / prepare / never-issued
+   intents are refused. Download prior ownership by `intent_run_id` using
    `actions/download-artifact@v4` with `run-id` plus `github-token`
-   (`permissions: actions: read`). An issued-but-unconfirmed put stays
-   `unknown`; cleanup clears only exact matching values recovered from the
-   intent even when the publisher died before the final ledger.
+   (`permissions: actions: read`).
 3. **Keys.** Write only
    `warehouse:route-scoped:v1:{zap-bbl|zap-project|doing-business}:{40-hex}` into
    the existing `ALERT_STATE` binding. No whole-KV warehouse blob; health and

@@ -135,14 +135,24 @@ jobs:
           mkdir -p "$RUNNER_TEMP/cc06-route-scoped"
           echo "artifact_dir=$RUNNER_TEMP/cc06-route-scoped" >> "$GITHUB_ENV"
 
-      - name: Download prior publish intent (cross-run)
-        if: ${{ (inputs.action == 'cleanup' || inputs.action == 'dry-run-readback') && inputs.intent_run_id != '' }}
+      - name: Download prior dry-run intent (cross-run readback)
+        if: ${{ inputs.action == 'dry-run-readback' && inputs.intent_run_id != '' }}
         uses: actions/download-artifact@v4
         with:
           name: cc06-route-scoped-intent
           run-id: ${{ inputs.intent_run_id }}
           github-token: ${{ github.token }}
           path: ${{ runner.temp }}/cc06-route-scoped/prior-intent
+
+      - name: Download prior publish ownership artifacts (cleanup)
+        if: ${{ inputs.action == 'cleanup' && inputs.intent_run_id != '' }}
+        uses: actions/download-artifact@v4
+        with:
+          # Receipt dir includes ledger + intent with per-key issued markers.
+          name: cc06-route-scoped-publish-${{ inputs.intent_run_id }}
+          run-id: ${{ inputs.intent_run_id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/cc06-route-scoped/prior-ownership
 
       - name: Dry-run readback of prior intent (no KV)
         if: ${{ inputs.action == 'dry-run-readback' }}
@@ -199,6 +209,35 @@ jobs:
           if [ "$ACTION" = "dry-run" ]; then
             cp "$artifact_dir/intent-receipt.json" "$artifact_dir/receipt.json"
           fi
+
+      - name: Probe baseline absence (real GETs; zero PUTs)
+        if: ${{ inputs.action == 'publish' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          REVISION: ${{ inputs.revision }}
+          ACTIVE: ${{ inputs.active_revision }}
+          ROLLBACK: ${{ inputs.rollback_revision }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+            echo "CLOUDFLARE_API_TOKEN is not configured" >&2
+            exit 2
+          fi
+          attempt_id="$(cat "$artifact_dir/attempt-id.txt")"
+          args=(
+            node tools/warehouse_route_scoped_publication.mjs probe-baseline
+            --revision "$REVISION"
+            --intent "$artifact_dir/publish-intent.json"
+            --attempt-id "$attempt_id"
+            --out "$artifact_dir/baseline-receipt.json"
+          )
+          if [ -n "${ACTIVE:-}" ]; then
+            args+=(--active "$ACTIVE")
+          fi
+          if [ -n "${ROLLBACK:-}" ]; then
+            args+=(--rollback "$ROLLBACK")
+          fi
+          "${args[@]}"
 
       - name: Upload durable intent artifact (before any KV put)
         if: ${{ inputs.action == 'dry-run' || inputs.action == 'publish' }}
@@ -284,20 +323,32 @@ jobs:
           if [ "$ALLOW_OVERLAP" = "true" ]; then
             export CC06_ALLOW_WINDOW_OVERLAP=1
           fi
-          intent="$artifact_dir/prior-intent/publish-intent.json"
-          if [ ! -f "$intent" ]; then
-            echo "intent_run_id=$INTENT_RUN_ID did not yield publish-intent.json" >&2
-            ls -laR "$artifact_dir/prior-intent" >&2 || true
+          # Prefer ledger/intent from the publish receipt (per-key issued markers).
+          prior="$artifact_dir/prior-ownership"
+          ledger="$prior/publication-ledger.json"
+          intent="$prior/publish-intent.json"
+          if [ ! -f "$ledger" ] && [ ! -f "$intent" ]; then
+            echo "intent_run_id=$INTENT_RUN_ID did not yield publish ownership artifacts" >&2
+            ls -laR "$prior" >&2 || true
             exit 2
           fi
-          cp "$intent" "$artifact_dir/publish-intent.json"
+          if [ -f "$intent" ]; then
+            cp "$intent" "$artifact_dir/publish-intent.json"
+          fi
+          if [ -f "$ledger" ]; then
+            cp "$ledger" "$artifact_dir/publication-ledger.json"
+          fi
           args=(
             node tools/warehouse_route_scoped_publication.mjs cleanup
             --revision "$REVISION"
-            --intent "$artifact_dir/publish-intent.json"
-            --ledger "$artifact_dir/publication-ledger.json"
             --out "$artifact_dir/receipt.json"
           )
+          if [ -f "$artifact_dir/publication-ledger.json" ]; then
+            args+=(--ledger "$artifact_dir/publication-ledger.json")
+          fi
+          if [ -f "$artifact_dir/publish-intent.json" ]; then
+            args+=(--intent "$artifact_dir/publish-intent.json")
+          fi
           if [ -n "${ACTIVE:-}" ]; then
             args+=(--active "$ACTIVE")
           fi

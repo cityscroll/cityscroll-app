@@ -8,6 +8,7 @@ import {
   WAREHOUSE_ROUTE_SCOPED_CONTROL_ROUTES,
   WAREHOUSE_ROUTE_SCOPED_PUBLICATION_LEDGER_SCHEMA,
   WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_SCHEMA,
+  assertPublishOwnershipForCleanup,
   buildWarehouseRouteScopedPublishIntent,
   cleanupWarehouseRouteScopedShards,
   loadShardPublicationLedger,
@@ -163,8 +164,10 @@ test("publish issues-before-ack, accounts KV ops, and persists durable ledger", 
       attempt_id: "attempt-fixture-publish",
     });
     assert.equal(receipt.decision, "published");
-    assert.deepEqual(receipt.attempted, { kv_reads: 0, shard_puts: 3, shard_deletes: 0 });
+    // 3 pre-write GETs + 3 puts.
+    assert.deepEqual(receipt.attempted, { kv_reads: 3, shard_puts: 3, shard_deletes: 0 });
     assert.deepEqual(receipt.confirmed, { shard_puts: 3, shard_deletes: 0 });
+    assert.equal(receipt.baseline_absence.all_absent, true);
     assert.equal(receipt.shards.length, 3);
     assert.equal(remote.values.size, 3);
 
@@ -384,16 +387,106 @@ test("CI workflow is workflow_dispatch-only and never push-triggered", () => {
   assert.match(yaml, /run-id: \$\{\{ inputs\.intent_run_id \}\}/);
   assert.match(yaml, /github-token: \$\{\{ github\.token \}\}/);
   assert.doesNotMatch(yaml, /github-run-id:/);
-  // Intent upload must appear before the publish KV put step.
+  // Real pre-write GETs before intent upload and before KV puts.
+  const probeAt = yaml.indexOf("Probe baseline absence (real GETs; zero PUTs)");
   const intentUploadAt = yaml.indexOf("Upload durable intent artifact (before any KV put)");
   const publishAt = yaml.indexOf("Publish revision shards");
+  assert.ok(probeAt > 0 && intentUploadAt > probeAt, "baseline probe must precede intent upload");
   assert.ok(intentUploadAt > 0 && publishAt > intentUploadAt, "intent upload must precede KV publish step");
+  assert.match(yaml, /probe-baseline/);
+  assert.match(yaml, /cc06-route-scoped-publish-\$\{\{ inputs\.intent_run_id \}\}/);
   assert.match(yaml, /if: \$\{\{ always\(\)/);
 });
 
-test("publish intent is durable before ACK and recovers cleanup without final ledger", async () => {
-  const dir = mkdtempSync(join(tmpdir(), "cc06-intent-"));
+test("pre-existing identical or foreign value aborts publish with zero PUTs", async () => {
+  const plan = planWarehouseRouteScopedPublication({
+    deployed_revision: REVISION,
+    materializations: tinyMaterializations(),
+  });
+  const identicalSeed = new Map(plan.shards.map((s) => [s.key, s.value]));
+  const identicalRemote = fakeWrangler({ seed: identicalSeed });
+  await assert.rejects(
+    () => publishWarehouseRouteScopedShards({
+      plan,
+      invoke: identicalRemote.invoke,
+      attempt_id: "attempt-preexisting-identical",
+    }),
+    /pre-existing or unknown/,
+  );
+  assert.equal(
+    identicalRemote.calls.filter((args) => args[2] === "put").length,
+    0,
+  );
+  assert.equal(
+    identicalRemote.calls.filter((args) => args[2] === "delete").length,
+    0,
+  );
+  assert.equal(
+    identicalRemote.calls.filter((args) => args[2] === "get").length,
+    3,
+  );
+
+  const foreignKey = plan.shards[0].key;
+  const foreignRemote = fakeWrangler({ seed: new Map([[foreignKey, '{"foreign":true}']]) });
+  await assert.rejects(
+    () => publishWarehouseRouteScopedShards({
+      plan,
+      invoke: foreignRemote.invoke,
+      attempt_id: "attempt-preexisting-foreign",
+    }),
+    /pre-existing or unknown/,
+  );
+  assert.equal(foreignRemote.calls.filter((args) => args[2] === "put").length, 0);
+});
+
+test("cleanup refuses dry-run and never-issued publish intents", () => {
+  const plan = planWarehouseRouteScopedPublication({
+    deployed_revision: REVISION,
+    materializations: tinyMaterializations(),
+  });
+  const dryRun = buildWarehouseRouteScopedPublishIntent({
+    plan,
+    attempt_id: "attempt-dry-run",
+    purpose: "dry-run",
+  });
+  assert.throws(
+    () => assertPublishOwnershipForCleanup(dryRun),
+    /purpose=dry-run/,
+  );
+  assert.throws(
+    () => ownedValuesFromPublishIntent(dryRun),
+    /purpose=dry-run/,
+  );
+
+  const prepareOnly = buildWarehouseRouteScopedPublishIntent({
+    plan,
+    attempt_id: "attempt-prepare",
+    purpose: "prepare",
+  });
+  assert.throws(
+    () => assertPublishOwnershipForCleanup(prepareOnly),
+    /purpose=prepare/,
+  );
+
+  const neverIssued = buildWarehouseRouteScopedPublishIntent({
+    plan,
+    attempt_id: "attempt-publish-never-issued",
+    purpose: "publish",
+  });
+  assert.throws(
+    () => assertPublishOwnershipForCleanup(neverIssued),
+    /never-issued/,
+  );
+  assert.throws(
+    () => recoveryLedgerFromPublishIntent(neverIssued),
+    /never-issued/,
+  );
+});
+
+test("crash after issued PUT with lost ACK recovers only that exact own value", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc06-intent-issued-"));
   const intentPath = join(dir, "publish-intent.json");
+  const ledgerPath = join(dir, "partial-ledger.json");
   const plan = planWarehouseRouteScopedPublication({
     deployed_revision: REVISION,
     materializations: tinyMaterializations(),
@@ -401,38 +494,47 @@ test("publish intent is durable before ACK and recovers cleanup without final le
   try {
     const intent = buildWarehouseRouteScopedPublishIntent({
       plan,
-      attempt_id: "attempt-fixture-intent",
+      attempt_id: "attempt-fixture-partial-issue",
+      purpose: "publish",
     });
-    assert.equal(intent.schema, WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_SCHEMA);
     persistWarehouseRouteScopedPublishIntent(intentPath, intent);
-    const loaded = loadWarehouseRouteScopedPublishIntent(intentPath);
-    const verification = verifyWarehouseRouteScopedPublishIntent(loaded, { plan });
-    assert.equal(verification.status, "verified");
-    assert.equal(verification.provider_writes, 0);
 
-    // Simulate publisher death after issued put, before final ACK artifact.
     const remote = fakeWrangler({ failAtPut: 2 });
     await assert.rejects(
       () => publishWarehouseRouteScopedShards({
         plan,
         invoke: remote.invoke,
-        ledgerPath: join(dir, "partial-ledger.json"),
-        attempt_id: "attempt-fixture-intent",
+        ledgerPath,
+        intent,
+        intentPath,
+        attempt_id: "attempt-fixture-partial-issue",
       }),
       /injected put failure/,
     );
 
-    // Recovery uses intent only (no final ACK ledger).
+    const loaded = loadWarehouseRouteScopedPublishIntent(intentPath);
+    // First key issued+acked (or unknown if fail was on response); second issued+unknown;
+    // third never issued.
+    const issued = loaded.shards.filter((s) => s.issued_at);
+    assert.equal(issued.length, 2);
+    assert.equal(loaded.shards.filter((s) => !s.issued_at).length, 1);
+    assert.ok(issued.every((s) => typeof s.issued_at === "string" && s.issued_at.length > 0));
+
+    const ownership = assertPublishOwnershipForCleanup(loaded);
+    assert.equal(ownership.issued_count, 2);
+
     const recovered = recoveryLedgerFromPublishIntent(loaded);
-    const phases = Object.values(recovered.entries).map((entry) => entry.phase);
-    assert.equal(phases.length, 3);
-    assert.ok(phases.every((phase) => phase === "unknown"));
+    assert.equal(Object.keys(recovered.entries).length, 2);
+    assert.ok(Object.values(recovered.entries).every((e) => e.issued_at));
+    // Never invent a third entry for the planned-only key.
+    assert.equal(Object.keys(recovered.entries).includes(plan.shards[2].key), false);
+
     const owned = ownedValuesFromPublishIntent(loaded);
-    assert.equal(Object.keys(owned).length, 3);
+    assert.equal(Object.keys(owned).length, 2);
 
     const cleanupPlan = planWarehouseRouteScopedCleanup({
       deployed_revision: REVISION,
-      owned_entries: owned,
+      owned_entries: recovered.entries,
       live_values: Object.fromEntries(Object.entries(owned)),
       active_revision: ROLLBACK_REVISION,
     });
@@ -444,7 +546,9 @@ test("publish intent is durable before ACK and recovers cleanup without final le
       ledger: recovered,
     });
     assert.equal(receipt.decision, "cleaned");
-    assert.equal(receipt.confirmed.shard_deletes, 3);
+    assert.equal(receipt.confirmed.shard_deletes, 2);
+    // The never-issued third key was never written and is not deleted.
+    assert.equal(cleanupRemote.calls.filter((args) => args[2] === "delete").length, 2);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
@@ -461,6 +565,7 @@ test("cross-run dry-run readback verifies intent without provider writes", () =>
     const intent = buildWarehouseRouteScopedPublishIntent({
       plan,
       attempt_id: "attempt-dry-run-a",
+      purpose: "dry-run",
     });
     const intentPathA = join(runA, "publish-intent.json");
     persistWarehouseRouteScopedPublishIntent(intentPathA, intent);
@@ -471,10 +576,13 @@ test("cross-run dry-run readback verifies intent without provider writes", () =>
     writeFileSync(intentPathB, readFileSync(intentPathA, "utf8"));
 
     const loaded = loadWarehouseRouteScopedPublishIntent(intentPathB);
+    assert.equal(loaded.purpose, "dry-run");
     const verification = verifyWarehouseRouteScopedPublishIntent(loaded, { plan });
     assert.equal(verification.status, "verified");
     assert.equal(verification.provider_writes, 0);
     assert.equal(verification.shard_count, 3);
+    // Dry-run intent must not own cleanup.
+    assert.throws(() => assertPublishOwnershipForCleanup(loaded), /purpose=dry-run/);
   } finally {
     rmSync(runA, { recursive: true, force: true });
     rmSync(runB, { recursive: true, force: true });

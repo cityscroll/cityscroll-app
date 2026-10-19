@@ -43,6 +43,13 @@ export const WAREHOUSE_ROUTE_SCOPED_PREFLIGHT_SCHEMA =
 export const WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_SCHEMA =
   "cityscroll.warehouse_route_scoped_publish_intent.v1";
 
+/** Intent purpose: only purpose=publish with per-key issued markers owns cleanup. */
+export const WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_PURPOSES = Object.freeze([
+  "dry-run",
+  "prepare",
+  "publish",
+]);
+
 /** Control routes never receive shards. */
 export const WAREHOUSE_ROUTE_SCOPED_CONTROL_ROUTES = Object.freeze([
   "health",
@@ -428,18 +435,104 @@ export function planWarehouseRouteScopedPublication({
 }
 
 /**
+ * Real pre-write GETs for every planned shard key. Records absent / present /
+ * unknown per key. Any present value (including one identical to ours) or an
+ * unknown/failed GET must abort publish with zero PUTs.
+ */
+export async function probeWarehouseRouteScopedBaselineAbsence({
+  plan,
+  invoke,
+  configPath = "worker/wrangler.toml",
+  nowIso = nowIsoDefault,
+} = {}) {
+  if (typeof invoke !== "function") fail("probeWarehouseRouteScopedBaselineAbsence requires a Wrangler invoker");
+  if (!plan || plan.schema !== WAREHOUSE_ROUTE_SCOPED_PUBLICATION_PLAN_SCHEMA) {
+    fail("publication plan is required");
+  }
+  const probedAt = nowIso();
+  const keys = {};
+  let kvReads = 0;
+  let allAbsent = true;
+  for (const shard of plan.shards) {
+    kvReads += 1;
+    let status = "unknown";
+    let liveValue = null;
+    let liveSha = null;
+    let errorMessage = null;
+    try {
+      const result = await invoke([
+        "kv", "key", "get", shard.key,
+        ...kvArgs(configPath), "--text",
+      ]);
+      liveValue = parseKvGet(result?.stdout);
+      if (liveValue == null) {
+        status = "absent";
+      } else {
+        status = "present";
+        liveSha = sha256Text(liveValue);
+        allAbsent = false;
+      }
+    } catch (error) {
+      if (isMissingKvValue(error)) {
+        status = "absent";
+        liveValue = null;
+      } else {
+        status = "unknown";
+        errorMessage = String(error?.message || error);
+        allAbsent = false;
+      }
+    }
+    keys[shard.key] = Object.freeze({
+      route: shard.route,
+      status,
+      live_value_sha256: liveSha,
+      matches_planned_value: liveSha != null && liveSha === shard.value_sha256,
+      error: errorMessage,
+    });
+  }
+  return {
+    schema: "cityscroll.warehouse_route_scoped_baseline_absence.v1",
+    probed_at: probedAt,
+    deployed_revision: plan.deployed_revision,
+    kv_reads: kvReads,
+    all_absent: allAbsent,
+    keys: Object.freeze(keys),
+  };
+}
+
+export function assertBaselineAbsenceAllowsPublish(baseline) {
+  if (!baseline || baseline.schema !== "cityscroll.warehouse_route_scoped_baseline_absence.v1") {
+    fail("baseline absence probe receipt is required before publish");
+  }
+  if (!baseline.all_absent) {
+    const blockers = Object.entries(baseline.keys || {})
+      .filter(([, row]) => row.status !== "absent")
+      .map(([key, row]) => `${key}:${row.status}${row.matches_planned_value ? "(identical)" : ""}`);
+    fail(
+      `refusing publish: pre-write GET found pre-existing or unknown keys `
+      + `(${blockers.join(", ")}); zero PUTs`,
+    );
+  }
+  return baseline;
+}
+
+/**
  * Publish planned shards with issue-before-ack ledger + KV op accounting.
- * Caller must already hold an explicit publish GO; this function does not
- * check GO codes (the launch/CLI boundary does).
+ * Real pre-write GETs run before the first PUT; any present/unknown aborts
+ * with zero PUTs. Per-key issued markers are written durably only immediately
+ * before that key's PUT. Caller must already hold an explicit publish GO.
  */
 export async function publishWarehouseRouteScopedShards({
   plan,
   invoke,
   ledgerPath = null,
   ledger = null,
+  intent = null,
+  intentPath = null,
   configPath = "worker/wrangler.toml",
   attempt_id = null,
   nowIso = nowIsoDefault,
+  baseline = null,
 } = {}) {
   if (typeof invoke !== "function") fail("publishWarehouseRouteScopedShards requires a Wrangler invoker");
   if (!plan || plan.schema !== WAREHOUSE_ROUTE_SCOPED_PUBLICATION_PLAN_SCHEMA) {
@@ -452,6 +545,42 @@ export async function publishWarehouseRouteScopedShards({
 
   const attempted = emptyOpCounts();
   const confirmed = emptyConfirmedCounts();
+
+  // Pre-write GETs: refuse any pre-existing value (including identical) or unknown.
+  const probed = baseline || await probeWarehouseRouteScopedBaselineAbsence({
+    plan,
+    invoke,
+    configPath,
+    nowIso,
+  });
+  attempted.kv_reads += probed.kv_reads || 0;
+  try {
+    assertBaselineAbsenceAllowsPublish(probed);
+  } catch (error) {
+    error.publication_receipt = {
+      schema: WAREHOUSE_ROUTE_SCOPED_PUBLICATION_RECEIPT_SCHEMA,
+      decision: "publish-aborted-preexisting",
+      deployed_revision: plan.deployed_revision,
+      planned: plan.planned,
+      attempted,
+      confirmed,
+      baseline_absence: probed,
+      shards: [],
+      state_advanced: false,
+    };
+    throw error;
+  }
+
+  if (intent) {
+    if (intent.purpose && intent.purpose !== "publish") {
+      fail(`publish requires intent.purpose=publish (got ${intent.purpose})`);
+    }
+    intent.purpose = "publish";
+    if (attempt_id && !intent.attempt_id) intent.attempt_id = attempt_id;
+    intent.baseline_absence = probed;
+    if (intentPath) persistWarehouseRouteScopedPublishIntent(intentPath, intent);
+  }
+
   const ownership = ledger || makeShardPublicationLedger({
     attempt_id,
     deployed_revision: plan.deployed_revision,
@@ -470,9 +599,17 @@ export async function publishWarehouseRouteScopedShards({
         key: shard.key,
         deployed_revision: shard.deployed_revision,
       });
+      // Durable issued marker BEFORE the PUT leaves this process.
       markShardIssued(entry, { value: shard.value, value_sha256: shard.value_sha256 }, at);
       ownership.entries[shard.key] = entry;
       if (ledgerPath) persistShardPublicationLedger(ledgerPath, ownership, { nowIso: () => at });
+      if (intent) {
+        markIntentShardIssued(intent, shard.key, {
+          value: shard.value,
+          value_sha256: shard.value_sha256,
+        }, at);
+        if (intentPath) persistWarehouseRouteScopedPublishIntent(intentPath, intent);
+      }
 
       const path = join(temp, `${shard.route}.json`);
       writeFileSync(path, shard.value);
@@ -481,17 +618,26 @@ export async function publishWarehouseRouteScopedShards({
         await invoke(["kv", "key", "put", shard.key, "--path", path, ...kvArgs(configPath)]);
         const ackedAt = nowIso();
         markShardAcked(entry, ackedAt);
+        if (intent) {
+          markIntentShardAcked(intent, shard.key, ackedAt);
+          if (intentPath) persistWarehouseRouteScopedPublishIntent(intentPath, intent);
+        }
         confirmed.shard_puts += 1;
         shardReceipts.push({
           route: shard.route,
           key: shard.key,
           value_sha256: shard.value_sha256,
           phase: entry.phase,
+          issued_at: entry.issued_at,
           row_count: shard.row_count,
         });
       } catch (error) {
         const unknownAt = nowIso();
         markShardUnknown(entry, error?.message || error, unknownAt);
+        if (intent) {
+          markIntentShardUnknown(intent, shard.key, error?.message || error, unknownAt);
+          if (intentPath) persistWarehouseRouteScopedPublishIntent(intentPath, intent);
+        }
         if (ledgerPath) persistShardPublicationLedger(ledgerPath, ownership, { nowIso: () => unknownAt });
         error.publication_receipt = {
           schema: WAREHOUSE_ROUTE_SCOPED_PUBLICATION_RECEIPT_SCHEMA,
@@ -500,6 +646,7 @@ export async function publishWarehouseRouteScopedShards({
           planned: plan.planned,
           attempted,
           confirmed,
+          baseline_absence: probed,
           shards: shardReceipts,
           failed_key: shard.key,
           ledger_phase: entry.phase,
@@ -517,8 +664,10 @@ export async function publishWarehouseRouteScopedShards({
       planned: plan.planned,
       attempted,
       confirmed,
+      baseline_absence: probed,
       shards: shardReceipts,
       ledger: ownership,
+      intent,
       activation: plan.activation,
       financial_savings_confirmed: false,
       shipped_savings_claimed: false,
@@ -848,19 +997,27 @@ export function preflightWarehouseRouteScopedPublicationReadonly({
  */
 /**
  * Durable publish intent written and uploaded BEFORE any KV put.
- * Cleanup can recover from this artifact by run-id even when the publisher
- * dies before the final ACK ledger. Digests alone are enough to refuse a
- * foreign live value; exact owned values enable exact-value delete.
+ * purpose=dry-run|prepare never owns cleanup. purpose=publish plus per-key
+ * issued markers (written only immediately before each PUT) bind ownership.
+ * Digests refuse foreign live values; exact owned values enable exact-value
+ * delete for keys that were actually issued.
  */
 export function buildWarehouseRouteScopedPublishIntent({
   plan,
   attempt_id = null,
+  purpose = "prepare",
   baseline_absence = null,
   created_at = null,
   nowIso = nowIsoDefault,
 } = {}) {
   if (!plan || plan.schema !== WAREHOUSE_ROUTE_SCOPED_PUBLICATION_PLAN_SCHEMA) {
     fail("publication plan is required to build intent");
+  }
+  if (!WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_PURPOSES.includes(purpose)) {
+    fail(`intent purpose must be one of ${WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_PURPOSES.join(", ")}`);
+  }
+  if (purpose === "publish" && !attempt_id) {
+    fail("purpose=publish requires a unique attempt_id");
   }
   const at = created_at || nowIso();
   const shards = plan.shards.map((shard) => ({
@@ -870,9 +1027,16 @@ export function buildWarehouseRouteScopedPublishIntent({
     value: shard.value,
     value_sha256: shard.value_sha256,
     row_count: shard.row_count,
+    // Planned until a real publish attempt writes issued immediately before PUT.
+    phase: null,
+    issued_at: null,
+    acked_at: null,
+    unknown_at: null,
+    last_error: null,
   }));
   return {
     schema: WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_SCHEMA,
+    purpose,
     attempt_id,
     deployed_revision: plan.deployed_revision,
     active_revision: plan.active_revision,
@@ -882,13 +1046,97 @@ export function buildWarehouseRouteScopedPublishIntent({
     created_at: at,
     baseline_absence: baseline_absence == null
       ? null
-      : Object.freeze({ ...baseline_absence }),
-    shards: Object.freeze(shards.map((row) => Object.freeze({ ...row }))),
+      : baseline_absence,
+    shards,
     planned: plan.planned,
     abort_rules: plan.abort_rules,
     activation: plan.activation,
     financial_savings_confirmed: false,
     shipped_savings_claimed: false,
+  };
+}
+
+function intentShardByKey(intent, key) {
+  const shard = (intent.shards || []).find((row) => row.key === key);
+  if (!shard) fail(`intent missing shard for key ${key}`);
+  return shard;
+}
+
+/** Record issued on the intent shard only when that PUT is about to be sent. */
+export function markIntentShardIssued(intent, key, { value, value_sha256 }, at) {
+  if (!intent || intent.schema !== WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_SCHEMA) {
+    fail("publish intent required");
+  }
+  if (intent.purpose !== "publish") {
+    fail("only purpose=publish intent may record issued markers");
+  }
+  const shard = intentShardByKey(intent, key);
+  shard.phase = "issued";
+  shard.value = value;
+  shard.value_sha256 = value_sha256;
+  shard.issued_at = at;
+  shard.acked_at = null;
+  shard.unknown_at = null;
+  shard.last_error = null;
+  return shard;
+}
+
+export function markIntentShardAcked(intent, key, at) {
+  const shard = intentShardByKey(intent, key);
+  if (shard.phase !== "issued" && shard.phase !== "acked") {
+    fail(`cannot ack intent shard ${key} in phase ${shard.phase}`);
+  }
+  shard.phase = "acked";
+  shard.acked_at = at;
+  shard.last_error = null;
+  return shard;
+}
+
+export function markIntentShardUnknown(intent, key, error, at) {
+  const shard = intentShardByKey(intent, key);
+  if (!shard.issued_at) {
+    fail(`cannot mark unknown on never-issued intent shard ${key}`);
+  }
+  shard.phase = "unknown";
+  shard.unknown_at = at;
+  shard.last_error = String(error || "response-lost-or-errored");
+  return shard;
+}
+
+/**
+ * Ownership for cleanup: purpose=publish + unique attempt_id + at least one
+ * per-key issued marker with a real issued_at. Dry-run / prepare / never-issued
+ * intents are refused.
+ */
+export function assertPublishOwnershipForCleanup(intent) {
+  if (!intent || intent.schema !== WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_SCHEMA) {
+    fail("publish intent required for cleanup ownership");
+  }
+  if (intent.purpose !== "publish") {
+    fail(
+      `cleanup refuses intent.purpose=${intent.purpose || "missing"}; `
+      + "only a real purpose=publish attempt owns cleanup",
+    );
+  }
+  if (!intent.attempt_id) {
+    fail("cleanup refuses publish intent without attempt_id");
+  }
+  const issued = (intent.shards || []).filter(
+    (shard) => shard.issued_at && (shard.phase === "issued" || shard.phase === "acked" || shard.phase === "unknown"),
+  );
+  if (issued.length === 0) {
+    fail("cleanup refuses never-issued publish intent (no per-key issued markers)");
+  }
+  for (const shard of issued) {
+    if (typeof shard.issued_at !== "string" || !shard.issued_at) {
+      fail(`cleanup refuses invented or missing issued_at for ${shard.key}`);
+    }
+  }
+  return {
+    status: "publish-owned",
+    attempt_id: intent.attempt_id,
+    issued_keys: issued.map((shard) => shard.key),
+    issued_count: issued.length,
   };
 }
 
@@ -986,28 +1234,31 @@ export function verifyWarehouseRouteScopedPublishIntent(intent, {
 
 /**
  * Build owned_values map from a recovered intent for exact-value cleanup when
- * the final ACK ledger artifact is missing.
+ * the final ACK ledger artifact is missing. Only keys with a real per-key
+ * issued marker are owned; dry-run / prepare / never-issued intents refuse.
  */
 export function ownedValuesFromPublishIntent(intent) {
   verifyWarehouseRouteScopedPublishIntent(intent, { require_values: true });
+  assertPublishOwnershipForCleanup(intent);
   const owned = {};
   for (const shard of intent.shards) {
+    if (!shard.issued_at) continue;
+    if (shard.phase !== "issued" && shard.phase !== "acked" && shard.phase !== "unknown") continue;
     owned[shard.key] = shard.value;
   }
   return owned;
 }
 
 /**
- * Seed a recovery ledger from intent with phase=unknown for each shard when
- * the publisher may have issued puts without an ACK receipt.
+ * Seed a recovery ledger from intent for keys that were actually issued.
+ * Never invents issued_at or marks planned-only shards as issued/unknown.
+ * Acked keys stay acked; issued/unknown without final ACK stay unknown.
  */
 export function recoveryLedgerFromPublishIntent(intent, {
   attempt_id = intent?.attempt_id || null,
-  at = null,
-  nowIso = nowIsoDefault,
 } = {}) {
   verifyWarehouseRouteScopedPublishIntent(intent, { require_values: true });
-  const issuedAt = at || nowIso();
+  assertPublishOwnershipForCleanup(intent);
   const ledger = makeShardPublicationLedger({
     attempt_id,
     deployed_revision: intent.deployed_revision,
@@ -1015,15 +1266,28 @@ export function recoveryLedgerFromPublishIntent(intent, {
     rollback_revision: intent.rollback_revision,
   });
   for (const shard of intent.shards) {
+    if (!shard.issued_at) continue;
+    if (shard.phase !== "issued" && shard.phase !== "acked" && shard.phase !== "unknown") continue;
     const entry = makeShardPublicationEntry({
       route: shard.route,
       key: shard.key,
       deployed_revision: shard.deployed_revision,
     });
-    markShardIssued(entry, { value: shard.value, value_sha256: shard.value_sha256 }, issuedAt);
-    // No ACK receipt → UNKNOWN ownership honesty for recovery.
-    markShardUnknown(entry, "recovered-from-intent-without-final-ack", issuedAt);
+    markShardIssued(entry, { value: shard.value, value_sha256: shard.value_sha256 }, shard.issued_at);
+    if (shard.phase === "acked" && shard.acked_at) {
+      markShardAcked(entry, shard.acked_at);
+    } else {
+      // Issued or unknown without a durable ACK → UNKNOWN for recovery honesty.
+      markShardUnknown(
+        entry,
+        shard.last_error || "recovered-from-intent-without-final-ack",
+        shard.unknown_at || shard.issued_at,
+      );
+    }
     ledger.entries[shard.key] = entry;
+  }
+  if (Object.keys(ledger.entries).length === 0) {
+    fail("recovery ledger empty: intent has no per-key issued markers");
   }
   return ledger;
 }

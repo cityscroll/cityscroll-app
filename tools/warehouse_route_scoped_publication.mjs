@@ -4,12 +4,13 @@
  *
  * Commands:
  *   plan                 — build a local publication plan (no provider I/O)
- *   prepare-intent       — write durable intent (exact keys/values/digests); no KV
- *   dry-run              — prepare-intent + receipt; no KV (CI proof path)
+ *   prepare-intent       — write durable intent (purpose=prepare); no KV
+ *   dry-run              — write durable intent (purpose=dry-run); no KV
  *   dry-run-readback     — load prior intent by path; verify; no KV
+ *   probe-baseline       — real GETs of planned keys; record baseline_absence; no PUTs
  *   preflight-readonly   — plan + optional live KV GETs; never puts/deletes
- *   publish              — GO-gated; requires CC06_PUBLISH_EXECUTE_CODE=C6-<8hex>
- *   cleanup              — GO-gated exact-value cleanup; ledger and/or --intent
+ *   publish              — GO-gated; pre-write GETs then issue-before-PUT; C6-<8hex>
+ *   cleanup              — GO-gated exact-value; requires publish-owned issued keys
  *
  * Publishing shards does not enable WAREHOUSE_ROUTE_SCOPED_SHARDS.
  * Live measure/stage remain separate GOs. Never overlap the frozen cc-05
@@ -23,6 +24,8 @@ import { fileURLToPath } from "node:url";
 import { createWranglerInvoker } from "./lib/wrangler_exec.mjs";
 import {
   WAREHOUSE_ROUTE_SCOPED_CONTROL_ROUTES,
+  assertBaselineAbsenceAllowsPublish,
+  assertPublishOwnershipForCleanup,
   buildWarehouseRouteScopedPublishIntent,
   cleanupWarehouseRouteScopedShards,
   loadShardPublicationLedger,
@@ -34,6 +37,7 @@ import {
   planWarehouseRouteScopedCleanup,
   planWarehouseRouteScopedPublication,
   preflightWarehouseRouteScopedPublicationReadonly,
+  probeWarehouseRouteScopedBaselineAbsence,
   publishWarehouseRouteScopedShards,
   recoveryLedgerFromPublishIntent,
   verifyWarehouseRouteScopedPublishIntent,
@@ -59,11 +63,12 @@ function usage() {
   node tools/warehouse_route_scoped_publication.mjs prepare-intent --revision <40-hex> --intent <path> [--attempt-id <id>] [--out <path>]
   node tools/warehouse_route_scoped_publication.mjs dry-run --revision <40-hex> --intent <path> [--attempt-id <id>] [--out <path>]
   node tools/warehouse_route_scoped_publication.mjs dry-run-readback --intent <path> [--revision <40-hex>] [--out <path>]
+  node tools/warehouse_route_scoped_publication.mjs probe-baseline --revision <40-hex> --intent <path> [--out <path>]
   node tools/warehouse_route_scoped_publication.mjs preflight-readonly --revision <40-hex> [--live-kv] [--health-commit <40-hex>] [--out <path>]
   node tools/warehouse_route_scoped_publication.mjs publish --revision <40-hex> --ledger <path> --attempt-id <id> [--intent <path>]
       (requires CC06_PUBLISH_EXECUTE_CODE=C6-<8hex> and GO-cc06-A1-publish EXECUTE)
   node tools/warehouse_route_scoped_publication.mjs cleanup --revision <40-hex> (--ledger <path> | --intent <path>)
-      (requires CC06_PUBLISH_EXECUTE_CODE=C6-<8hex>; exact-value only; protects --active/--rollback)`;
+      (requires CC06_PUBLISH_EXECUTE_CODE=C6-<8hex>; publish-owned issued keys only; protects --active/--rollback)`;
 }
 
 function requireGoCode(command) {
@@ -150,7 +155,8 @@ if (command === "plan") {
 if (command === "prepare-intent" || command === "dry-run") {
   const intentPath = arg("--intent");
   if (!intentPath) throw new Error("--intent is required");
-  const attemptId = arg("--attempt-id") || `attempt-local-${Date.now()}-cc06-intent`;
+  const purpose = command === "dry-run" ? "dry-run" : "prepare";
+  const attemptId = arg("--attempt-id") || `attempt-local-${Date.now()}-cc06-${purpose}`;
   const materializations = loadWarehouseRouteScopedMaterializations({ root: ROOT });
   const plan = planWarehouseRouteScopedPublication({
     deployed_revision: revision,
@@ -161,6 +167,9 @@ if (command === "prepare-intent" || command === "dry-run") {
   const intent = buildWarehouseRouteScopedPublishIntent({
     plan,
     attempt_id: attemptId,
+    purpose,
+    // No provider GET on dry-run/prepare; baseline_absence stays null until
+    // probe-baseline / publish records real pre-write GETs.
     baseline_absence: null,
   });
   persistWarehouseRouteScopedPublishIntent(intentPath, intent);
@@ -169,6 +178,7 @@ if (command === "prepare-intent" || command === "dry-run") {
     schema: "cityscroll.warehouse_route_scoped_publication_receipt.v1",
     decision: command === "dry-run" ? "dry-run-intent-ready" : "intent-prepared",
     mode: command === "dry-run" ? "dry-run" : "prepare-intent",
+    purpose,
     deployed_revision: intent.deployed_revision,
     attempt_id: attemptId,
     intent_path: intentPath,
@@ -179,6 +189,7 @@ if (command === "prepare-intent" || command === "dry-run") {
       key: shard.key,
       value_sha256: shard.value_sha256,
       row_count: shard.row_count,
+      phase: shard.phase,
     })),
     provider_writes: 0,
     activation: plan.activation,
@@ -187,6 +198,48 @@ if (command === "prepare-intent" || command === "dry-run") {
   };
   writeJson(outPath, receipt);
   console.log(JSON.stringify(receipt, null, 2));
+  process.exit(0);
+}
+
+if (command === "probe-baseline") {
+  const intentPath = arg("--intent");
+  if (!intentPath) throw new Error("--intent is required for probe-baseline");
+  const intent = loadWarehouseRouteScopedPublishIntent(intentPath);
+  const materializations = loadWarehouseRouteScopedMaterializations({ root: ROOT });
+  const plan = planWarehouseRouteScopedPublication({
+    deployed_revision: revision,
+    materializations,
+    active_revision: activeRevision,
+    rollback_revision: rollbackRevision,
+  });
+  verifyWarehouseRouteScopedPublishIntent(intent, { plan, require_values: true });
+  // Promote to publish purpose once we are about to bind a real attempt.
+  const attemptId = arg("--attempt-id") || intent.attempt_id;
+  if (!attemptId) throw new Error("probe-baseline requires --attempt-id (unique publish attempt)");
+  intent.purpose = "publish";
+  intent.attempt_id = attemptId;
+  const invoke = createWranglerInvoker({ cwd: ROOT, wranglerVersion: "4.126.0" });
+  const baseline = await probeWarehouseRouteScopedBaselineAbsence({ plan, invoke });
+  intent.baseline_absence = baseline;
+  persistWarehouseRouteScopedPublishIntent(intentPath, intent);
+  const receipt = {
+    schema: "cityscroll.warehouse_route_scoped_publication_receipt.v1",
+    decision: baseline.all_absent ? "baseline-absent" : "baseline-blocked",
+    mode: "probe-baseline",
+    purpose: intent.purpose,
+    attempt_id: attemptId,
+    deployed_revision: intent.deployed_revision,
+    baseline_absence: baseline,
+    provider_writes: 0,
+    kv_reads: baseline.kv_reads,
+  };
+  writeJson(outPath, receipt);
+  console.log(JSON.stringify(receipt, null, 2));
+  try {
+    assertBaselineAbsenceAllowsPublish(baseline);
+  } catch (error) {
+    process.exit(2);
+  }
   process.exit(0);
 }
 
@@ -283,9 +336,18 @@ if (command === "publish") {
     rollback_revision: rollbackRevision,
   });
   const intentPath = arg("--intent");
+  let intent = null;
   if (intentPath) {
-    const intent = loadWarehouseRouteScopedPublishIntent(intentPath);
+    intent = loadWarehouseRouteScopedPublishIntent(intentPath);
     verifyWarehouseRouteScopedPublishIntent(intent, { plan, require_values: true });
+    intent.purpose = "publish";
+    intent.attempt_id = attemptId;
+  } else {
+    intent = buildWarehouseRouteScopedPublishIntent({
+      plan,
+      attempt_id: attemptId,
+      purpose: "publish",
+    });
   }
   const invoke = createWranglerInvoker({ cwd: ROOT, wranglerVersion: "4.126.0" });
   try {
@@ -294,10 +356,13 @@ if (command === "publish") {
       invoke,
       ledgerPath,
       attempt_id: attemptId,
+      intent,
+      intentPath: intentPath || null,
     });
-    const out = { ...receipt, go_code: goCode, ledger: undefined };
+    const out = { ...receipt, go_code: goCode, ledger: undefined, intent: undefined };
     // Persist full ledger separately; stdout keeps receipt without raw shard bodies.
     persistShardPublicationLedger(ledgerPath, receipt.ledger);
+    if (intentPath) persistWarehouseRouteScopedPublishIntent(intentPath, intent);
     writeJson(outPath, out);
     console.log(JSON.stringify({
       schema: out.schema,
@@ -327,29 +392,46 @@ if (command === "cleanup") {
   if (!ledgerPath && !intentPath) {
     throw new Error("cleanup requires --ledger and/or --intent");
   }
-  let ledger;
+  let ledger = null;
   let ownedValues = {};
+  let ownershipSource = null;
+
   if (ledgerPath) {
     try {
       ledger = loadShardPublicationLedger(ledgerPath);
       for (const [key, entry] of Object.entries(ledger.entries || {})) {
-        if (entry?.value) ownedValues[key] = entry.value;
+        // Only entries that were actually issued own cleanup.
+        if (entry?.value && entry?.issued_at && (entry.phase === "issued" || entry.phase === "acked" || entry.phase === "unknown")) {
+          ownedValues[key] = entry.value;
+        }
       }
+      if (Object.keys(ownedValues).length > 0) ownershipSource = "ledger";
     } catch (error) {
       if (!intentPath) throw error;
       ledger = null;
     }
   }
+
   if (intentPath && Object.keys(ownedValues).length === 0) {
     const intent = loadWarehouseRouteScopedPublishIntent(intentPath);
+    assertPublishOwnershipForCleanup(intent);
     ownedValues = ownedValuesFromPublishIntent(intent);
     ledger = recoveryLedgerFromPublishIntent(intent, {
       attempt_id: intent.attempt_id,
     });
+    ownershipSource = "intent-issued";
     if (ledgerPath) {
       persistShardPublicationLedger(ledgerPath, ledger);
     }
   }
+
+  if (!ledger || Object.keys(ownedValues).length === 0) {
+    throw new Error(
+      "cleanup refuses: no publish-owned issued keys "
+      + "(need ledger with issued markers, or purpose=publish intent with per-key issued)",
+    );
+  }
+
   const plan = planWarehouseRouteScopedCleanup({
     deployed_revision: revision,
     owned_entries: ledger.entries,
@@ -365,7 +447,12 @@ if (command === "cleanup") {
       ledger,
       ledgerPath,
     });
-    writeJson(outPath, { ...receipt, go_code: goCode, ledger: undefined });
+    writeJson(outPath, {
+      ...receipt,
+      go_code: goCode,
+      ownership_source: ownershipSource,
+      ledger: undefined,
+    });
     console.log(JSON.stringify({
       schema: receipt.schema,
       decision: receipt.decision,
@@ -375,6 +462,7 @@ if (command === "cleanup") {
       attempted: receipt.attempted,
       confirmed: receipt.confirmed,
       actions: receipt.actions,
+      ownership_source: ownershipSource,
       go_code: goCode,
     }, null, 2));
   } catch (error) {
