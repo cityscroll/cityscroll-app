@@ -228,36 +228,41 @@ Worker still constructs those indexes on the modules that import them. Do not
 treat route-scoped enablement as a shipped bundle-size or cold-start saving
 while that fallback path remains.
 
-### Route-scoped shard publication plan (doc only)
+### Route-scoped shard publication
 
-Live publication and cleanup are **not** enabled by this candidate. When a later
-GO authorizes deploy-time shard writes, publication should be owned, bounded,
-and revision-keyed:
+`tools/lib/warehouse_route_scoped_publication.mjs` and
+`tools/warehouse_route_scoped_publication.mjs` own bounded, revision-keyed shard
+publication and exact-value cleanup. Live provider writes stay GO-gated
+(`CC06_PUBLISH_EXECUTE_CODE=C6-<8hex>` after an explicit
+`GO-cc06-A1-publish EXECUTE`); plan and `preflight-readonly` never put or
+delete. Publishing shards does not enable `WAREHOUSE_ROUTE_SCOPED_SHARDS`.
 
-1. **Owner.** A single deploy-time publisher (alongside existing Worker deploy /
-   route-data publication) builds one immutable shard document per lookup route
+1. **Owner.** The publisher builds one immutable shard document per lookup route
    from the same materialization the baseline JSON currently embeds, using
    `buildWarehouseRouteScopedShardDocument` with `deployed_revision =
-   GIT_COMMIT_SHA`.
+   GIT_COMMIT_SHA`. Ownership uses an issue-before-ack ledger
+   (`null → issued → acked | unknown`) with durable recovery on disk, matching
+   the binding-ledger honesty rules.
 2. **Keys.** Write only
    `warehouse:route-scoped:v1:{zap-bbl|zap-project|doing-business}:{40-hex}` into
    the existing `ALERT_STATE` binding. No whole-KV warehouse blob; health and
    browse never receive shards.
 3. **Bounds.** At most three puts per deploy revision (one per lookup route).
    Payload is the route materialization only. Refuse publish when revision is
-   missing/invalid. No runtime SODA fill-in for shard bodies.
+   missing/invalid. No runtime SODA fill-in for shard bodies. Receipts keep
+   planned, attempted, and confirmed KV op counts separate.
 4. **Activation.** Publishing shards does not change serving behavior until
    `WAREHOUSE_ROUTE_SCOPED_SHARDS=enabled` on that same revision. Enabling the
    flag and publishing shards are separate steps; live A1/A3 measurement still
    needs its own GO.
-5. **Cleanup.** After a deploy, delete or expire shard keys for revisions that
-   are neither the active serving revision nor the retained rollback revision.
-   Cleanup is best-effort and must not delete the active or rollback identities.
-   Fixtures and tip harness keys never become production ticks.
-6. **Out of scope here.** No provider KV writes land with this documentation.
-   `WORKER_COST_ENFORCEMENT` stays inactive. A1 (live controlled materialization
-   plus health/browse controls) and A3 (live rollback / isolate reuse) remain
-   open until an explicit GO.
+5. **Cleanup.** Exact-value only: delete a key only when the live value equals
+   the ledger-owned value. Foreign values abort as `leave-foreign`. Never delete
+   the active serving revision or the retained rollback revision. Fixtures and
+   tip harness keys never become production ticks.
+6. **Enforcement.** `WORKER_COST_ENFORCEMENT` stays inactive. A1 (live controlled
+   materialization plus health/browse controls) and A3 (live rollback / isolate
+   reuse) remain open until an explicit GO. Never overlap a frozen measurement
+   window.
 
 `tools/worker_cost_acquisition.mjs warehouse` owns the matched live run and
 selects cohorts from the acquired source's documented cold-start capability.
