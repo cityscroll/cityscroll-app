@@ -228,36 +228,72 @@ Worker still constructs those indexes on the modules that import them. Do not
 treat route-scoped enablement as a shipped bundle-size or cold-start saving
 while that fallback path remains.
 
-### Route-scoped shard publication plan (doc only)
+### Route-scoped shard publication
 
-Live publication and cleanup are **not** enabled by this candidate. When a later
-GO authorizes deploy-time shard writes, publication should be owned, bounded,
-and revision-keyed:
+`tools/lib/warehouse_route_scoped_publication.mjs` and
+`tools/warehouse_route_scoped_publication.mjs` own bounded, revision-keyed shard
+publication and exact-value cleanup. Live provider writes run only from the
+`workflow_dispatch`-only GitHub Action
+`.github/workflows/warehouse-route-scoped-publication.yml`, using the existing
+repo `CLOUDFLARE_API_TOKEN` secret (the same secret `deploy-worker.yml` already
+uses for `ALERT_STATE` KV). Ordinary push/PR/schedule never publish. The Action
+accepts `dry-run`, `dry-run-readback`, `preflight-readonly`, `publish`, and
+`cleanup`. Publish and cleanup require `GO-cc06-A1-publish EXECUTE` /
+`GO-cc06-A1-cleanup EXECUTE` plus a one-time `C6-<8hex>` execute code. Dry-run
+and dry-run-readback confirm with `GO-cc06-A1-dry-run` /
+`GO-cc06-A1-dry-run-readback` and write no KV. Publishing shards does not enable
+`WAREHOUSE_ROUTE_SCOPED_SHARDS`.
 
-1. **Owner.** A single deploy-time publisher (alongside existing Worker deploy /
-   route-data publication) builds one immutable shard document per lookup route
+1. **Owner.** The publisher builds one immutable shard document per lookup route
    from the same materialization the baseline JSON currently embeds, using
    `buildWarehouseRouteScopedShardDocument` with `deployed_revision =
-   GIT_COMMIT_SHA`.
-2. **Keys.** Write only
+   GIT_COMMIT_SHA`. Ownership uses an issue-before-ack ledger
+   (`null → issued → acked | unknown`) with durable recovery on disk, matching
+   the binding-ledger honesty rules.
+2. **Durable intent before first put.** Publish writes a
+   `cityscroll.warehouse_route_scoped_publish_intent.v1` artifact (revision,
+   exact keys, exact values/digests) then runs real pre-write GETs for every
+   target key. Any pre-existing value (including one identical to the planned
+   body) or an unknown/failed GET aborts with zero PUTs. The intent records
+   that baseline absence proof and uploads as `cc06-route-scoped-intent`
+   before any `kv key put`. Per-key issued markers are written durably only
+   immediately before each PUT (`purpose=publish` + unique `attempt_id`).
+   Planned, possibly-issued (`unknown`), and acknowledged stay distinct; never
+   invent timestamps for never-issued keys. A checkpoint without a put receipt
+   is possibly-issued UNKNOWN (the provider may have applied the PUT before the
+   process died); it is not proof the PUT was never sent. Baseline GETs confirm
+   only observed present/absent responses; timeouts and errors stay UNKNOWN. A
+   failure receipt reports an acknowledged lower bound of 0 with outcome
+   UNKNOWN rather than claiming `provider_writes: 0` as fact. The final ACK
+   receipt / ledger uploads separately (`if: always()`). Cleanup owns only
+   publish attempts with per-key issued markers (ledger or intent); dry-run /
+   prepare / never-issued intents are refused. Download prior ownership by
+   `intent_run_id` using `actions/download-artifact@v4` with `run-id` plus
+   `github-token` (`permissions: actions: read`).
+3. **Keys.** Write only
    `warehouse:route-scoped:v1:{zap-bbl|zap-project|doing-business}:{40-hex}` into
    the existing `ALERT_STATE` binding. No whole-KV warehouse blob; health and
    browse never receive shards.
-3. **Bounds.** At most three puts per deploy revision (one per lookup route).
+4. **Bounds.** At most three puts per deploy revision (one per lookup route).
    Payload is the route materialization only. Refuse publish when revision is
-   missing/invalid. No runtime SODA fill-in for shard bodies.
-4. **Activation.** Publishing shards does not change serving behavior until
+   missing/invalid. No runtime SODA fill-in for shard bodies. Receipts keep
+   planned, attempted, and confirmed KV op counts separate.
+5. **Activation.** Publishing shards does not change serving behavior until
    `WAREHOUSE_ROUTE_SCOPED_SHARDS=enabled` on that same revision. Enabling the
    flag and publishing shards are separate steps; live A1/A3 measurement still
    needs its own GO.
-5. **Cleanup.** After a deploy, delete or expire shard keys for revisions that
-   are neither the active serving revision nor the retained rollback revision.
-   Cleanup is best-effort and must not delete the active or rollback identities.
+6. **Cleanup.** Exact-value only: delete a key only when the live value equals
+   the intent-/ledger-owned value. Foreign values abort as `leave-foreign`.
+   Never delete the active serving revision or the retained rollback revision.
    Fixtures and tip harness keys never become production ticks.
-6. **Out of scope here.** No provider KV writes land with this documentation.
-   `WORKER_COST_ENFORCEMENT` stays inactive. A1 (live controlled materialization
-   plus health/browse controls) and A3 (live rollback / isolate reuse) remain
-   open until an explicit GO.
+7. **Cross-run proof.** Before any live publish GO, prove intent handoff with a
+   no-KV dry-run dispatch, then a dry-run-readback dispatch that loads the prior
+   run's intent artifact by `intent_run_id`. Offline fixtures cover failure
+   before ACK, cancellation, and recovery with no final ledger artifact.
+8. **Enforcement.** `WORKER_COST_ENFORCEMENT` stays inactive. A1 (live controlled
+   materialization plus health/browse controls) and A3 (live rollback / isolate
+   reuse) remain open until an explicit GO. Never overlap a frozen measurement
+   window.
 
 `tools/worker_cost_acquisition.mjs warehouse` owns the matched live run and
 selects cohorts from the acquired source's documented cold-start capability.

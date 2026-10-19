@@ -1,0 +1,589 @@
+name: Warehouse route-scoped shard publication
+
+# GO-gated ALERT_STATE shard publish/cleanup for the route-scoped warehouse
+# candidate. Uses the existing repo CLOUDFLARE_API_TOKEN (same secret as
+# deploy-worker.yml KV access). Never runs on push, pull_request, schedule, or
+# merge_group — workflow_dispatch only. Publishing does not enable
+# WAREHOUSE_ROUTE_SCOPED_SHARDS and does not stage traffic.
+#
+# Durability contract:
+#   - Initial intent is uploaded BEFORE any KV put.
+#   - Before EACH key's PUT, an external per-key issued checkpoint artifact
+#     (cc06-route-scoped-issued-{route}) is uploaded and must succeed first.
+#   - Cleanup recovers from the initial intent + per-key checkpoints by
+#     run-id (+ github.token) even when no final receipt/ledger artifact exists.
+#   - Possibly-issued keys stay UNKNOWN; planned-only keys are never marked issued.
+#   - dry-run / dry-run-readback write no KV.
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "publish | cleanup | preflight-readonly | dry-run | dry-run-readback"
+        required: true
+        type: choice
+        options:
+          - dry-run
+          - dry-run-readback
+          - preflight-readonly
+          - publish
+          - cleanup
+      revision:
+        description: Full 40-hex deployed_revision (GIT_COMMIT_SHA) for the shard keys
+        required: true
+        type: string
+      active_revision:
+        description: Active serving revision to protect from cleanup (optional)
+        required: false
+        type: string
+        default: ""
+      rollback_revision:
+        description: Retained rollback revision to protect from cleanup (optional)
+        required: false
+        type: string
+        default: ""
+      execute_code:
+        description: One-time C6-<8 hex> code (required for publish/cleanup; ignored for dry-run/preflight)
+        required: false
+        type: string
+        default: ""
+      confirmation:
+        description: Exact phrase — GO-cc06-A1-publish EXECUTE | GO-cc06-A1-cleanup EXECUTE | GO-cc06-A1-preflight | GO-cc06-A1-dry-run | GO-cc06-A1-dry-run-readback
+        required: true
+        type: string
+      intent_run_id:
+        description: Prior workflow run id whose intent + issued checkpoints to reuse (cleanup / dry-run-readback)
+        required: false
+        type: string
+        default: ""
+      allow_window_overlap:
+        description: Allow publish/cleanup during the frozen cc-05 window buffer (drills only)
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: warehouse-route-scoped-publication
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  run:
+    name: Route-scoped shard ${{ inputs.action }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate revision and confirmation
+        env:
+          ACTION: ${{ inputs.action }}
+          REVISION: ${{ inputs.revision }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+          EXECUTE_CODE: ${{ inputs.execute_code }}
+          INTENT_RUN_ID: ${{ inputs.intent_run_id }}
+        run: |
+          set -euo pipefail
+          if [[ ! "$REVISION" =~ ^[a-f0-9]{40}$ ]]; then
+            echo "revision must be a full lowercase 40-hex commit SHA" >&2
+            exit 2
+          fi
+          case "$ACTION" in
+            dry-run)
+              test "$CONFIRMATION" = "GO-cc06-A1-dry-run"
+              ;;
+            dry-run-readback)
+              test "$CONFIRMATION" = "GO-cc06-A1-dry-run-readback"
+              if [[ -z "${INTENT_RUN_ID:-}" ]]; then
+                echo "dry-run-readback requires intent_run_id of a prior dry-run/publish run" >&2
+                exit 2
+              fi
+              ;;
+            preflight-readonly)
+              test "$CONFIRMATION" = "GO-cc06-A1-preflight"
+              ;;
+            publish)
+              test "$CONFIRMATION" = "GO-cc06-A1-publish EXECUTE"
+              if [[ ! "$EXECUTE_CODE" =~ ^C6-[0-9a-fA-F]{8}$ ]]; then
+                echo "publish requires execute_code C6-<8 hex>" >&2
+                exit 2
+              fi
+              ;;
+            cleanup)
+              test "$CONFIRMATION" = "GO-cc06-A1-cleanup EXECUTE"
+              if [[ ! "$EXECUTE_CODE" =~ ^C6-[0-9a-fA-F]{8}$ ]]; then
+                echo "cleanup requires execute_code C6-<8 hex>" >&2
+                exit 2
+              fi
+              if [[ -z "${INTENT_RUN_ID:-}" ]]; then
+                echo "cleanup requires intent_run_id of a prior publish run (intent + issued checkpoints)" >&2
+                exit 2
+              fi
+              ;;
+            *)
+              echo "unsupported action=$ACTION" >&2
+              exit 2
+              ;;
+          esac
+
+      - name: Prepare artifact directory
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/cc06-route-scoped/checkpoints"
+          echo "artifact_dir=$RUNNER_TEMP/cc06-route-scoped" >> "$GITHUB_ENV"
+
+      - name: Download prior dry-run intent (cross-run readback)
+        if: ${{ inputs.action == 'dry-run-readback' && inputs.intent_run_id != '' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: cc06-route-scoped-intent
+          run-id: ${{ inputs.intent_run_id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/cc06-route-scoped/prior-intent
+
+      - name: Download prior publish intent (cleanup; no final required)
+        if: ${{ inputs.action == 'cleanup' && inputs.intent_run_id != '' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: cc06-route-scoped-intent
+          run-id: ${{ inputs.intent_run_id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/cc06-route-scoped/prior-intent
+
+      - name: Download prior per-key issued checkpoints (cleanup; no final required)
+        if: ${{ inputs.action == 'cleanup' && inputs.intent_run_id != '' }}
+        uses: actions/download-artifact@v4
+        with:
+          pattern: cc06-route-scoped-issued-*
+          run-id: ${{ inputs.intent_run_id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/cc06-route-scoped/prior-checkpoints
+          merge-multiple: true
+
+      - name: Dry-run readback of prior intent (no KV)
+        if: ${{ inputs.action == 'dry-run-readback' }}
+        env:
+          REVISION: ${{ inputs.revision }}
+          INTENT_RUN_ID: ${{ inputs.intent_run_id }}
+        run: |
+          set -euo pipefail
+          intent="$artifact_dir/prior-intent/publish-intent.json"
+          if [ ! -f "$intent" ]; then
+            echo "intent_run_id=$INTENT_RUN_ID did not yield publish-intent.json" >&2
+            ls -laR "$artifact_dir/prior-intent" >&2 || true
+            exit 2
+          fi
+          node tools/warehouse_route_scoped_publication.mjs dry-run-readback \
+            --intent "$intent" \
+            --revision "$REVISION" \
+            --out "$artifact_dir/receipt.json"
+          cp "$intent" "$artifact_dir/publish-intent.json"
+
+      - name: Prepare durable publish intent (no KV writes)
+        if: ${{ inputs.action == 'dry-run' || inputs.action == 'publish' }}
+        env:
+          REVISION: ${{ inputs.revision }}
+          ACTIVE: ${{ inputs.active_revision }}
+          ROLLBACK: ${{ inputs.rollback_revision }}
+          RUN_ID: ${{ github.run_id }}
+          ACTION: ${{ inputs.action }}
+        run: |
+          set -euo pipefail
+          attempt_id="attempt-ci-${RUN_ID}-cc06-a1-${ACTION}"
+          if [ "$ACTION" = "dry-run" ]; then
+            cmd=dry-run
+          else
+            cmd=prepare-intent
+          fi
+          args=(
+            node tools/warehouse_route_scoped_publication.mjs
+            "$cmd"
+            --revision "$REVISION"
+            --intent "$artifact_dir/publish-intent.json"
+            --attempt-id "$attempt_id"
+            --out "$artifact_dir/intent-receipt.json"
+          )
+          if [ -n "${ACTIVE:-}" ]; then
+            args+=(--active "$ACTIVE")
+          fi
+          if [ -n "${ROLLBACK:-}" ]; then
+            args+=(--rollback "$ROLLBACK")
+          fi
+          "${args[@]}"
+          printf '%s\n' "$attempt_id" > "$artifact_dir/attempt-id.txt"
+          printf '%s\n' "$REVISION" > "$artifact_dir/revision.txt"
+          if [ "$ACTION" = "dry-run" ]; then
+            cp "$artifact_dir/intent-receipt.json" "$artifact_dir/receipt.json"
+          fi
+
+      - name: Probe baseline absence (real GETs; zero PUTs)
+        if: ${{ inputs.action == 'publish' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          REVISION: ${{ inputs.revision }}
+          ACTIVE: ${{ inputs.active_revision }}
+          ROLLBACK: ${{ inputs.rollback_revision }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+            echo "CLOUDFLARE_API_TOKEN is not configured" >&2
+            exit 2
+          fi
+          attempt_id="$(cat "$artifact_dir/attempt-id.txt")"
+          args=(
+            node tools/warehouse_route_scoped_publication.mjs probe-baseline
+            --revision "$REVISION"
+            --intent "$artifact_dir/publish-intent.json"
+            --attempt-id "$attempt_id"
+            --out "$artifact_dir/baseline-receipt.json"
+          )
+          if [ -n "${ACTIVE:-}" ]; then
+            args+=(--active "$ACTIVE")
+          fi
+          if [ -n "${ROLLBACK:-}" ]; then
+            args+=(--rollback "$ROLLBACK")
+          fi
+          "${args[@]}"
+
+      - name: Upload durable intent artifact (before any KV put)
+        if: ${{ inputs.action == 'dry-run' || inputs.action == 'publish' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: cc06-route-scoped-intent
+          path: ${{ runner.temp }}/cc06-route-scoped/publish-intent.json
+          if-no-files-found: error
+
+      - name: Preflight readonly (optional live KV GETs only)
+        if: ${{ inputs.action == 'preflight-readonly' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          REVISION: ${{ inputs.revision }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+            echo "CLOUDFLARE_API_TOKEN is not configured" >&2
+            exit 2
+          fi
+          node tools/warehouse_route_scoped_publication.mjs preflight-readonly \
+            --revision "$REVISION" \
+            --live-kv \
+            --out "$artifact_dir/preflight.json"
+          cp "$artifact_dir/preflight.json" "$artifact_dir/receipt.json"
+
+      # Per-key issued checkpoint → upload artifact → PUT. Each route is a
+      # separate upload so cleanup can recover without any final receipt.
+      - name: Issue+upload+PUT zap-bbl
+        if: ${{ inputs.action == 'publish' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CC06_PUBLISH_EXECUTE_CODE: ${{ inputs.execute_code }}
+          REVISION: ${{ inputs.revision }}
+          ACTIVE: ${{ inputs.active_revision }}
+          ROLLBACK: ${{ inputs.rollback_revision }}
+          ALLOW_OVERLAP: ${{ inputs.allow_window_overlap }}
+          ROUTE: zap-bbl
+        run: |
+          set -euo pipefail
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+            echo "CLOUDFLARE_API_TOKEN is not configured" >&2
+            exit 2
+          fi
+          if [ "$ALLOW_OVERLAP" = "true" ]; then
+            export CC06_ALLOW_WINDOW_OVERLAP=1
+          fi
+          attempt_id="$(cat "$artifact_dir/attempt-id.txt")"
+          mkdir -p "$artifact_dir/checkpoints"
+          checkpoint="$artifact_dir/checkpoints/${ROUTE}.json"
+          args=(
+            node tools/warehouse_route_scoped_publication.mjs write-issued-checkpoint
+            --revision "$REVISION"
+            --intent "$artifact_dir/publish-intent.json"
+            --ledger "$artifact_dir/publication-ledger.json"
+            --checkpoint "$checkpoint"
+            --route "$ROUTE"
+            --attempt-id "$attempt_id"
+            --out "$artifact_dir/checkpoint-${ROUTE}-receipt.json"
+          )
+          if [ -n "${ACTIVE:-}" ]; then
+            args+=(--active "$ACTIVE")
+          fi
+          if [ -n "${ROLLBACK:-}" ]; then
+            args+=(--rollback "$ROLLBACK")
+          fi
+          "${args[@]}"
+
+      - name: Upload issued checkpoint zap-bbl (before PUT)
+        if: ${{ inputs.action == 'publish' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: cc06-route-scoped-issued-zap-bbl
+          path: ${{ runner.temp }}/cc06-route-scoped/checkpoints/zap-bbl.json
+          if-no-files-found: error
+
+      - name: PUT zap-bbl (after checkpoint upload)
+        if: ${{ inputs.action == 'publish' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CC06_PUBLISH_EXECUTE_CODE: ${{ inputs.execute_code }}
+          REVISION: ${{ inputs.revision }}
+          ALLOW_OVERLAP: ${{ inputs.allow_window_overlap }}
+          ROUTE: zap-bbl
+        run: |
+          set -euo pipefail
+          if [ "$ALLOW_OVERLAP" = "true" ]; then
+            export CC06_ALLOW_WINDOW_OVERLAP=1
+          fi
+          attempt_id="$(cat "$artifact_dir/attempt-id.txt")"
+          node tools/warehouse_route_scoped_publication.mjs put-one \
+            --revision "$REVISION" \
+            --intent "$artifact_dir/publish-intent.json" \
+            --ledger "$artifact_dir/publication-ledger.json" \
+            --checkpoint "$artifact_dir/checkpoints/${ROUTE}.json" \
+            --route "$ROUTE" \
+            --attempt-id "$attempt_id" \
+            --out "$artifact_dir/put-${ROUTE}-receipt.json"
+
+      - name: Issue+upload+PUT zap-project
+        if: ${{ inputs.action == 'publish' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CC06_PUBLISH_EXECUTE_CODE: ${{ inputs.execute_code }}
+          REVISION: ${{ inputs.revision }}
+          ACTIVE: ${{ inputs.active_revision }}
+          ROLLBACK: ${{ inputs.rollback_revision }}
+          ALLOW_OVERLAP: ${{ inputs.allow_window_overlap }}
+          ROUTE: zap-project
+        run: |
+          set -euo pipefail
+          if [ "$ALLOW_OVERLAP" = "true" ]; then
+            export CC06_ALLOW_WINDOW_OVERLAP=1
+          fi
+          attempt_id="$(cat "$artifact_dir/attempt-id.txt")"
+          checkpoint="$artifact_dir/checkpoints/${ROUTE}.json"
+          args=(
+            node tools/warehouse_route_scoped_publication.mjs write-issued-checkpoint
+            --revision "$REVISION"
+            --intent "$artifact_dir/publish-intent.json"
+            --ledger "$artifact_dir/publication-ledger.json"
+            --checkpoint "$checkpoint"
+            --route "$ROUTE"
+            --attempt-id "$attempt_id"
+            --out "$artifact_dir/checkpoint-${ROUTE}-receipt.json"
+          )
+          if [ -n "${ACTIVE:-}" ]; then
+            args+=(--active "$ACTIVE")
+          fi
+          if [ -n "${ROLLBACK:-}" ]; then
+            args+=(--rollback "$ROLLBACK")
+          fi
+          "${args[@]}"
+
+      - name: Upload issued checkpoint zap-project (before PUT)
+        if: ${{ inputs.action == 'publish' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: cc06-route-scoped-issued-zap-project
+          path: ${{ runner.temp }}/cc06-route-scoped/checkpoints/zap-project.json
+          if-no-files-found: error
+
+      - name: PUT zap-project (after checkpoint upload)
+        if: ${{ inputs.action == 'publish' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CC06_PUBLISH_EXECUTE_CODE: ${{ inputs.execute_code }}
+          REVISION: ${{ inputs.revision }}
+          ALLOW_OVERLAP: ${{ inputs.allow_window_overlap }}
+          ROUTE: zap-project
+        run: |
+          set -euo pipefail
+          if [ "$ALLOW_OVERLAP" = "true" ]; then
+            export CC06_ALLOW_WINDOW_OVERLAP=1
+          fi
+          attempt_id="$(cat "$artifact_dir/attempt-id.txt")"
+          node tools/warehouse_route_scoped_publication.mjs put-one \
+            --revision "$REVISION" \
+            --intent "$artifact_dir/publish-intent.json" \
+            --ledger "$artifact_dir/publication-ledger.json" \
+            --checkpoint "$artifact_dir/checkpoints/${ROUTE}.json" \
+            --route "$ROUTE" \
+            --attempt-id "$attempt_id" \
+            --out "$artifact_dir/put-${ROUTE}-receipt.json"
+
+      - name: Issue+upload+PUT doing-business
+        if: ${{ inputs.action == 'publish' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CC06_PUBLISH_EXECUTE_CODE: ${{ inputs.execute_code }}
+          REVISION: ${{ inputs.revision }}
+          ACTIVE: ${{ inputs.active_revision }}
+          ROLLBACK: ${{ inputs.rollback_revision }}
+          ALLOW_OVERLAP: ${{ inputs.allow_window_overlap }}
+          ROUTE: doing-business
+        run: |
+          set -euo pipefail
+          if [ "$ALLOW_OVERLAP" = "true" ]; then
+            export CC06_ALLOW_WINDOW_OVERLAP=1
+          fi
+          attempt_id="$(cat "$artifact_dir/attempt-id.txt")"
+          checkpoint="$artifact_dir/checkpoints/${ROUTE}.json"
+          args=(
+            node tools/warehouse_route_scoped_publication.mjs write-issued-checkpoint
+            --revision "$REVISION"
+            --intent "$artifact_dir/publish-intent.json"
+            --ledger "$artifact_dir/publication-ledger.json"
+            --checkpoint "$checkpoint"
+            --route "$ROUTE"
+            --attempt-id "$attempt_id"
+            --out "$artifact_dir/checkpoint-${ROUTE}-receipt.json"
+          )
+          if [ -n "${ACTIVE:-}" ]; then
+            args+=(--active "$ACTIVE")
+          fi
+          if [ -n "${ROLLBACK:-}" ]; then
+            args+=(--rollback "$ROLLBACK")
+          fi
+          "${args[@]}"
+
+      - name: Upload issued checkpoint doing-business (before PUT)
+        if: ${{ inputs.action == 'publish' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: cc06-route-scoped-issued-doing-business
+          path: ${{ runner.temp }}/cc06-route-scoped/checkpoints/doing-business.json
+          if-no-files-found: error
+
+      - name: PUT doing-business (after checkpoint upload)
+        if: ${{ inputs.action == 'publish' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CC06_PUBLISH_EXECUTE_CODE: ${{ inputs.execute_code }}
+          REVISION: ${{ inputs.revision }}
+          ALLOW_OVERLAP: ${{ inputs.allow_window_overlap }}
+          ROUTE: doing-business
+        run: |
+          set -euo pipefail
+          if [ "$ALLOW_OVERLAP" = "true" ]; then
+            export CC06_ALLOW_WINDOW_OVERLAP=1
+          fi
+          attempt_id="$(cat "$artifact_dir/attempt-id.txt")"
+          node tools/warehouse_route_scoped_publication.mjs put-one \
+            --revision "$REVISION" \
+            --intent "$artifact_dir/publish-intent.json" \
+            --ledger "$artifact_dir/publication-ledger.json" \
+            --checkpoint "$artifact_dir/checkpoints/${ROUTE}.json" \
+            --route "$ROUTE" \
+            --attempt-id "$attempt_id" \
+            --out "$artifact_dir/put-${ROUTE}-receipt.json"
+
+      - name: Assemble honest attempt receipt (always; no final required for cleanup)
+        if: ${{ always() && !cancelled() && inputs.action == 'publish' }}
+        run: |
+          set -euo pipefail
+          # Combines baseline GETs + per-key put receipts into planned/attempted/
+          # confirmed/unknown. Unacked puts stay UNKNOWN. No billed totals.
+          node tools/warehouse_route_scoped_publication.mjs assemble-attempt-receipt \
+            --artifact-dir "$artifact_dir" \
+            --out "$artifact_dir/receipt.json" || true
+          if [ -f "$artifact_dir/receipt.json" ]; then
+            python3 - <<'PY'
+          import json, os, pathlib
+          data = json.loads((pathlib.Path(os.environ["artifact_dir"]) / "receipt.json").read_text())
+          for key in ("planned", "attempted", "confirmed", "unknown"):
+              print(f"{key}={json.dumps(data.get(key))}")
+          print(f"decision={data.get('decision')}")
+          PY
+          fi
+
+      - name: Cleanup from intent + per-key issued checkpoints (no final required)
+        if: ${{ inputs.action == 'cleanup' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CC06_PUBLISH_EXECUTE_CODE: ${{ inputs.execute_code }}
+          REVISION: ${{ inputs.revision }}
+          ACTIVE: ${{ inputs.active_revision }}
+          ROLLBACK: ${{ inputs.rollback_revision }}
+          INTENT_RUN_ID: ${{ inputs.intent_run_id }}
+          ALLOW_OVERLAP: ${{ inputs.allow_window_overlap }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+            echo "CLOUDFLARE_API_TOKEN is not configured" >&2
+            exit 2
+          fi
+          if [ "$ALLOW_OVERLAP" = "true" ]; then
+            export CC06_ALLOW_WINDOW_OVERLAP=1
+          fi
+          intent="$artifact_dir/prior-intent/publish-intent.json"
+          checkpoints="$artifact_dir/prior-checkpoints"
+          if [ ! -f "$intent" ]; then
+            echo "intent_run_id=$INTENT_RUN_ID did not yield publish-intent.json" >&2
+            ls -laR "$artifact_dir/prior-intent" >&2 || true
+            exit 2
+          fi
+          if [ ! -d "$checkpoints" ] || [ -z "$(find "$checkpoints" -name '*.json' 2>/dev/null | head -1)" ]; then
+            echo "intent_run_id=$INTENT_RUN_ID yielded no per-key issued checkpoints" >&2
+            ls -laR "$checkpoints" >&2 || true
+            exit 2
+          fi
+          cp "$intent" "$artifact_dir/publish-intent.json"
+          args=(
+            node tools/warehouse_route_scoped_publication.mjs cleanup
+            --revision "$REVISION"
+            --intent "$artifact_dir/publish-intent.json"
+            --checkpoint-dir "$checkpoints"
+            --ledger "$artifact_dir/publication-ledger.json"
+            --out "$artifact_dir/receipt.json"
+          )
+          if [ -n "${ACTIVE:-}" ]; then
+            args+=(--active "$ACTIVE")
+          fi
+          if [ -n "${ROLLBACK:-}" ]; then
+            args+=(--rollback "$ROLLBACK")
+          fi
+          "${args[@]}"
+
+      - name: Summarize receipt
+        if: ${{ always() && !cancelled() }}
+        run: |
+          set -euo pipefail
+          if [ -f "$artifact_dir/receipt.json" ]; then
+            python3 - <<'PY'
+          import json, os, pathlib
+          path = pathlib.Path(os.environ["artifact_dir"]) / "receipt.json"
+          data = json.loads(path.read_text())
+          keep = {k: data.get(k) for k in (
+              "schema", "outcome", "decision", "mode", "deployed_revision",
+              "planned", "attempted", "confirmed", "unknown", "provider_writes", "checks",
+              "go_code", "actions", "shards", "verification", "attempt_id",
+              "ownership_source", "planned_unissued_keys", "checkpoint_count",
+          ) if k in data}
+          print(json.dumps(keep, indent=2))
+          pathlib.Path(os.environ["artifact_dir"], "receipt-summary.json").write_text(
+              json.dumps(keep, indent=2) + "\n"
+          )
+          PY
+          else
+            echo "no receipt.json produced" >&2
+            # Intent and/or per-key checkpoints may still exist for recovery.
+            if [ -f "$artifact_dir/publish-intent.json" ] || [ -d "$artifact_dir/checkpoints" ]; then
+              echo "durable intent/checkpoints present for recovery" >&2
+              exit 0
+            fi
+            exit 1
+          fi
+
+      - name: Upload receipt artifact (always when present; optional for cleanup)
+        if: ${{ always() && !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: cc06-route-scoped-${{ inputs.action }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/cc06-route-scoped
+          if-no-files-found: warn
