@@ -22,12 +22,30 @@ function flagIsOn() {
 }
 
 function mountOffState(root) {
-  root.innerHTML = `<section class="capability-journey" data-capability-journey-off>
-  <h1>Compare capabilities</h1>
-  <p>This bounded historical-award comparison is an opt-in experiment and stays off by default.</p>
-  <p><a href="?beta=${CAPABILITY_COMPARE_BETA_SLUG}">Turn on the capability-compare experiment</a> to inspect three retained public award descriptions beside an explicit capability form.</p>
-  <p><a href="/browse/contracts/">Back to Contracts Browse</a></p>
-</section>`;
+  const section = document.createElement("section");
+  section.className = "capability-journey";
+  section.dataset.capabilityJourneyOff = "";
+
+  const title = document.createElement("h1");
+  title.textContent = t("capability_compare_title");
+
+  const deck = document.createElement("p");
+  deck.textContent = t("capability_compare_off_deck");
+
+  const turnOn = document.createElement("p");
+  const turnOnLink = document.createElement("a");
+  turnOnLink.href = `?beta=${CAPABILITY_COMPARE_BETA_SLUG}`;
+  turnOnLink.textContent = t("capability_compare_turn_on");
+  turnOn.append(turnOnLink, document.createTextNode(t("capability_compare_turn_on_suffix")));
+
+  const back = document.createElement("p");
+  const backLink = document.createElement("a");
+  backLink.href = "/browse/contracts/";
+  backLink.textContent = t("capability_compare_back");
+  back.append(backLink);
+
+  section.append(title, deck, turnOn, back);
+  root.replaceChildren(section);
 }
 
 async function loadCorpus() {

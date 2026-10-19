@@ -189,7 +189,7 @@ function syncCapabilityCompareEntry(){
     entry.className="capability-compare-entry";
     const link=document.createElement("a");
     link.href="/contracts-capability-compare.html?beta=capability-compare";
-    link.textContent="Compare capabilities on three historical awards";
+    link.textContent=t("capability_compare_entry");
     entry.append(link);
     host.append(entry);
   }
