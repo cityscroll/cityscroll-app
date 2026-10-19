@@ -2293,6 +2293,7 @@ worker/src/lib/ulurp_statutory_predictions.mjs
 worker/src/lib/upcoming_council_meetings.mjs
 worker/src/lib/upstream_failure.mjs
 worker/src/lib/usage.mjs
+worker/src/lib/warehouse_route_scoped_shards.mjs
 worker/src/lib/watch_query_revision.mjs
 worker/src/lib/watch_seen_membership.mjs
 worker/src/lib/watch_text_query_meetings.mjs
