@@ -196,6 +196,22 @@ are on the closed retained-key allowlist with fixed kind domains and
 canonical-only HTTP route cohorts in `routes`. Those fixtures are never
 production ticks, and enforcement stays inactive until the release gate
 prerequisites land.
+
+The route-scoped Worker candidate lives in
+`worker/src/lib/warehouse_route_scoped_shards.mjs`. It loads one versioned KV
+shard per lookup route (`zap-bbl`, `zap-project`, `doing-business`) on demand and
+caches it per isolate. The static JSON imports in the three baseline lookup
+modules remain the default production path; the candidate path turns on only
+when `WAREHOUSE_ROUTE_SCOPED_SHARDS=enabled` (unrelated to
+`WORKER_COST_ENFORCEMENT`, which stays inactive). Health and browse stay control
+cohorts and never own warehouse shards. A controlled cache-reset / isolate-reuse
+rehearsal (`planWarehouseCacheResetReuseRehearsal` /
+`validateWarehouseCacheResetReuseRehearsal`) labels samples only as
+`index-cold-reset` or `isolate-reuse-hit` — never semantic cold/warm or
+`startup_time_ms`. Absent, failed, or invalid shards abort to retain-baseline;
+rollback identity after a retained tip regresses reuses `planWarehouseRollback`
+via `planWarehouseRouteScopedRollbackOrAbort`. This is a safe planned rehearsal,
+not induced harm, and never claims shipped savings.
 `tools/worker_cost_acquisition.mjs warehouse` owns the matched live run and
 selects cohorts from the acquired source's documented cold-start capability.
 The permitted Tail TraceItem source is flag-less: both arms use the five base
