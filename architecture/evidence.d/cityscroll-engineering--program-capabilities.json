@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/program-capabilities",
+  "status": "implemented",
+  "fingerprint": "program-capabilities.v1",
+  "updated_at": "2026-10-20T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "procurement-program-capabilities-contract",
+      "path": "site/procurement_program_capabilities.mjs"
+    },
+    {
+      "id": "procurement-program-capabilities-corpus",
+      "path": "site/data/procurement_program_capabilities_corpus.json"
+    },
+    {
+      "id": "procurement-program-capabilities-tests",
+      "path": "test/procurement_program_capabilities.test.mjs"
+    }
+  ]
+}

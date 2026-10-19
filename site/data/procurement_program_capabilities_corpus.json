@@ -1,0 +1,57 @@
+{
+  "schema": "cityscroll.procurement_program_capabilities_corpus.v1",
+  "default_off": true,
+  "source_role": "award_description",
+  "records": [
+    {
+      "request_id": "20220719104",
+      "start_date": "2022-07-25T00:00:00.000",
+      "end_date": "2022-07-25T00:00:00.000",
+      "agency_name": "Small Business Services",
+      "type_of_notice_description": "Award",
+      "category_description": "Services (other than human services)",
+      "short_title": "TO PROVIDE COOLROOFS TRAINING PROGRAM",
+      "selection_method_description": "Renewal",
+      "section_name": "Procurement",
+      "pin": "80121X8003KXLR002",
+      "contract_amount": "876250",
+      "additional_description_1": "<p>CONTRACT RENEWAL - NYC COOLROOFS TRAINING PROGRAM ADMINISTRATION</p>",
+      "vendor_name": "The Hope Program Inc.",
+      "source_url": "https://cityscroll.org/notices/20220719104/"
+    },
+    {
+      "request_id": "20240417107",
+      "start_date": "2024-04-23T00:00:00.000",
+      "end_date": "2024-04-23T00:00:00.000",
+      "agency_name": "Small Business Services",
+      "type_of_notice_description": "Award",
+      "category_description": "Human Services/Client Services",
+      "short_title": "NYC CoolRoofs Training Program Administration",
+      "selection_method_description": "Competitive Sealed Proposals/Pre-Qualified List",
+      "section_name": "Procurement",
+      "pin": "80123P0010001",
+      "contract_amount": "2191278",
+      "additional_description_1": "<p>SBS is seeking a qualified vendor(s) or consortium of qualified vendors to deliver the NYC CoolRoofs program. NYC CoolRoofs is a City initiative that supports local jobseekers through a paid and transitional work-based learning experience to cool New York City rooftops with a white, reflective coating that reduces building energy consumption and citywide greenhouse gas emissions. Participants work in teams to complete cool roof installations for individual buildings, and, along with performing the physical labor involved with coating a rooftop, receive skill-building and professional development training and support to advance in a career path in the construction sector. The Program supports the Citymitment to reach carbon neutrality by 2050.</p>",
+      "other_info_1": "Responses will require specific expertise by respondents to the RFP and therefore will require judgement in the review of those responses and a balancing of price, quality and other factors set forth in the RFP to ensure that the selected response meets the overall objectives set forth in the RFP.",
+      "vendor_name": "The Hope Program Inc.",
+      "source_url": "https://cityscroll.org/notices/20240417107/"
+    },
+    {
+      "request_id": "20260708004",
+      "start_date": "2026-07-14T00:00:00.000",
+      "end_date": "2026-07-14T00:00:00.000",
+      "agency_name": "Small Business Services",
+      "type_of_notice_description": "Award",
+      "category_description": "Human Services/Client Services",
+      "short_title": "NYC CoolRoofs Training Program Administration",
+      "selection_method_description": "Renewal",
+      "section_name": "Procurement",
+      "pin": "80123P0010001R001",
+      "contract_amount": "1867888",
+      "additional_description_1": "<p>NYC CoolRoofs is a City initiative that supports local jobseekers through a paid and transitional work-based learning experience to cool New York City rooftops with a white, reflective coating that reduces building energy consumption and citywide greenhouse gas emissions.\u00a0</p>",
+      "vendor_name": "The Hope Program Inc.",
+      "source_url": "https://cityscroll.org/notices/20260708004/"
+    }
+  ],
+  "corpus_bounds": "bounded-historical-program-capability"
+}
