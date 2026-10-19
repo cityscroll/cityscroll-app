@@ -17,7 +17,7 @@
     "schema": "cityscroll.performance.operator_inventory.v1",
     "manifest_version": "rum-surfaces-v1",
     "registry_version": "1.0.0",
-    "registry_hash": "d04f6a0a87f6869a361bc228bf0c8d2bf7bcdc9a690c172a80b1cba88c8c09bb",
+    "registry_hash": "1a06875472125f285e640709f5960adc9819a73efc7a5cbd773d4cf4b0042a56",
     "metrics": [
       {
         "metric_id": "cls_score",
@@ -578,6 +578,39 @@
         ],
         "introduced_version": "1.0.0",
         "owner_source_path": "site/browse_view.mjs"
+      },
+      {
+        "surface_id": "capability-compare",
+        "operator_label": "Capability compare (opt-in)",
+        "kind": "surface",
+        "parent": null,
+        "route_family": "information-capability-compare",
+        "architecture_container_ref": "browser_site",
+        "delivery_class": "static",
+        "applicable_metric_ids": [
+          "cls_score",
+          "content_ready_ms",
+          "fcp_ms",
+          "inp_ms",
+          "lcp_ms",
+          "ttfb_ms"
+        ],
+        "semantic_readiness": {
+          "contract_id": "page-content-ready-v1",
+          "metric_id": "content_ready_ms",
+          "terminal_result_states": [
+            "content",
+            "empty",
+            "unavailable",
+            "error"
+          ],
+          "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+        },
+        "lifecycle_state": "planned",
+        "aliases": [],
+        "supersedes": [],
+        "introduced_version": "1.0.0",
+        "owner_source_path": "site/contracts-capability-compare.html"
       },
       {
         "surface_id": "changelog",
@@ -2010,11 +2043,11 @@
   "coverage": {
     "status": "available",
     "registered": {
-      "surface_count": 39,
+      "surface_count": 40,
       "component_count": 20,
       "surfaces_by_state": {
-        "planned": 33,
-        "instrumented": 6
+        "instrumented": 6,
+        "planned": 34
       },
       "components_by_state": {
         "instrumented": 10,
