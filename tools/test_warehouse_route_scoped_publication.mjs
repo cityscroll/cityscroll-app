@@ -6,17 +6,23 @@ import test from "node:test";
 
 import {
   WAREHOUSE_ROUTE_SCOPED_CONTROL_ROUTES,
+  WAREHOUSE_ROUTE_SCOPED_ISSUED_CHECKPOINT_SCHEMA,
   WAREHOUSE_ROUTE_SCOPED_PUBLICATION_LEDGER_SCHEMA,
   WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_SCHEMA,
   assertPublishOwnershipForCleanup,
+  buildIssuedCheckpoint,
   buildWarehouseRouteScopedPublishIntent,
   cleanupWarehouseRouteScopedShards,
+  issuedCheckpointArtifactName,
+  loadIssuedCheckpoint,
   loadShardPublicationLedger,
   loadWarehouseRouteScopedPublishIntent,
   makeShardPublicationLedger,
   markShardAcked,
   markShardIssued,
+  mergeOwnershipFromIntentAndCheckpoints,
   ownedValuesFromPublishIntent,
+  persistIssuedCheckpoint,
   persistShardPublicationLedger,
   persistWarehouseRouteScopedPublishIntent,
   planExactValueShardClear,
@@ -109,6 +115,21 @@ function fakeWrangler({ failAtPut = null, failAtDelete = null, seed = new Map() 
   };
 }
 
+/** External checkpoint store for offline proofs (simulates CI upload-artifact). */
+function fakeCheckpointStore(root) {
+  const uploaded = [];
+  mkdirSync(root, { recursive: true, mode: 0o700 });
+  return {
+    uploaded,
+    async upload(checkpoint, { path, artifactName }) {
+      const dest = join(root, `${artifactName}.json`);
+      writeFileSync(dest, readFileSync(path, "utf8"), { mode: 0o600 });
+      uploaded.push({ artifactName, path: dest, key: checkpoint.key, route: checkpoint.route });
+      return { store: "dir", dest, artifactName };
+    },
+  };
+}
+
 test("publication plan emits exactly three lookup shards and excludes health/browse", () => {
   const plan = planWarehouseRouteScopedPublication({
     deployed_revision: REVISION,
@@ -151,6 +172,7 @@ test("publication plan refuses invalid revision and control-route collision", ()
 test("publish issues-before-ack, accounts KV ops, and persists durable ledger", async () => {
   const dir = mkdtempSync(join(tmpdir(), "cc06-pub-"));
   const ledgerPath = join(dir, "ledger.json");
+  const store = fakeCheckpointStore(join(dir, "checkpoints"));
   const remote = fakeWrangler();
   const plan = planWarehouseRouteScopedPublication({
     deployed_revision: REVISION,
@@ -162,6 +184,7 @@ test("publish issues-before-ack, accounts KV ops, and persists durable ledger", 
       invoke: remote.invoke,
       ledgerPath,
       attempt_id: "attempt-fixture-publish",
+      uploadIssuedCheckpoint: store.upload,
     });
     assert.equal(receipt.decision, "published");
     // 3 pre-write GETs + 3 puts.
@@ -170,6 +193,16 @@ test("publish issues-before-ack, accounts KV ops, and persists durable ledger", 
     assert.equal(receipt.baseline_absence.all_absent, true);
     assert.equal(receipt.shards.length, 3);
     assert.equal(remote.values.size, 3);
+    // One external checkpoint uploaded per key before its PUT.
+    assert.equal(store.uploaded.length, 3);
+    assert.deepEqual(
+      store.uploaded.map((row) => row.artifactName).sort(),
+      [
+        "cc06-route-scoped-issued-doing-business",
+        "cc06-route-scoped-issued-zap-bbl",
+        "cc06-route-scoped-issued-zap-project",
+      ],
+    );
 
     const ledger = loadShardPublicationLedger(ledgerPath);
     assert.equal(ledger.schema, WAREHOUSE_ROUTE_SCOPED_PUBLICATION_LEDGER_SCHEMA);
@@ -189,6 +222,7 @@ test("publish issues-before-ack, accounts KV ops, and persists durable ledger", 
 test("publish marks unknown and keeps durable recovery when put response is lost", async () => {
   const dir = mkdtempSync(join(tmpdir(), "cc06-pub-unknown-"));
   const ledgerPath = join(dir, "ledger.json");
+  const store = fakeCheckpointStore(join(dir, "checkpoints"));
   const remote = fakeWrangler({ failAtPut: 2 });
   const plan = planWarehouseRouteScopedPublication({
     deployed_revision: REVISION,
@@ -201,6 +235,7 @@ test("publish marks unknown and keeps durable recovery when put response is lost
         invoke: remote.invoke,
         ledgerPath,
         attempt_id: "attempt-fixture-unknown",
+        uploadIssuedCheckpoint: store.upload,
       }),
       /injected put failure/,
     );
@@ -210,9 +245,44 @@ test("publish marks unknown and keeps durable recovery when put response is lost
     assert.equal(entries.length, 2);
     assert.equal(entries.filter((e) => e.phase === "acked").length, 1);
     assert.equal(entries.filter((e) => e.phase === "unknown").length, 1);
+    // Checkpoint for the failed key was uploaded before the PUT was sent.
+    assert.equal(store.uploaded.length, 2);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
+});
+
+test("publish refuses PUT when external checkpoint upload is missing or fails", async () => {
+  const plan = planWarehouseRouteScopedPublication({
+    deployed_revision: REVISION,
+    materializations: tinyMaterializations(),
+  });
+  const remote = fakeWrangler();
+  await assert.rejects(
+    () => publishWarehouseRouteScopedShards({
+      plan,
+      invoke: remote.invoke,
+      attempt_id: "attempt-no-uploader",
+    }),
+    /uploadIssuedCheckpoint/,
+  );
+  assert.equal(remote.calls.filter((args) => args[2] === "put").length, 0);
+
+  const failingRemote = fakeWrangler();
+  await assert.rejects(
+    () => publishWarehouseRouteScopedShards({
+      plan,
+      invoke: failingRemote.invoke,
+      attempt_id: "attempt-upload-fail",
+      uploadIssuedCheckpoint: async () => {
+        throw new Error("artifact upload failed");
+      },
+    }),
+    /artifact upload failed/,
+  );
+  assert.equal(failingRemote.calls.filter((args) => args[2] === "put").length, 0);
+  // Baseline GETs still ran; zero PUTs.
+  assert.equal(failingRemote.calls.filter((args) => args[2] === "get").length, 3);
 });
 
 test("exact-value clear: owned match clears; foreign aborts; absent is already-clear", () => {
@@ -387,14 +457,22 @@ test("CI workflow is workflow_dispatch-only and never push-triggered", () => {
   assert.match(yaml, /run-id: \$\{\{ inputs\.intent_run_id \}\}/);
   assert.match(yaml, /github-token: \$\{\{ github\.token \}\}/);
   assert.doesNotMatch(yaml, /github-run-id:/);
-  // Real pre-write GETs before intent upload and before KV puts.
+  // Real pre-write GETs before intent upload; per-key checkpoint upload before each PUT.
   const probeAt = yaml.indexOf("Probe baseline absence (real GETs; zero PUTs)");
   const intentUploadAt = yaml.indexOf("Upload durable intent artifact (before any KV put)");
-  const publishAt = yaml.indexOf("Publish revision shards");
+  const checkpointUploadAt = yaml.indexOf("Upload issued checkpoint zap-bbl (before PUT)");
+  const putAt = yaml.indexOf("PUT zap-bbl (after checkpoint upload)");
   assert.ok(probeAt > 0 && intentUploadAt > probeAt, "baseline probe must precede intent upload");
-  assert.ok(intentUploadAt > 0 && publishAt > intentUploadAt, "intent upload must precede KV publish step");
+  assert.ok(intentUploadAt > 0 && checkpointUploadAt > intentUploadAt, "intent upload precedes per-key checkpoints");
+  assert.ok(checkpointUploadAt > 0 && putAt > checkpointUploadAt, "checkpoint upload must precede PUT");
   assert.match(yaml, /probe-baseline/);
-  assert.match(yaml, /cc06-route-scoped-publish-\$\{\{ inputs\.intent_run_id \}\}/);
+  assert.match(yaml, /write-issued-checkpoint/);
+  assert.match(yaml, /put-one/);
+  assert.match(yaml, /cc06-route-scoped-issued-zap-bbl/);
+  assert.match(yaml, /cc06-route-scoped-issued-zap-project/);
+  assert.match(yaml, /cc06-route-scoped-issued-doing-business/);
+  assert.match(yaml, /pattern: cc06-route-scoped-issued-\*/);
+  assert.match(yaml, /--checkpoint-dir/);
   assert.match(yaml, /if: \$\{\{ always\(\)/);
 });
 
@@ -410,6 +488,7 @@ test("pre-existing identical or foreign value aborts publish with zero PUTs", as
       plan,
       invoke: identicalRemote.invoke,
       attempt_id: "attempt-preexisting-identical",
+      uploadIssuedCheckpoint: async () => ({ store: "mock" }),
     }),
     /pre-existing or unknown/,
   );
@@ -433,6 +512,7 @@ test("pre-existing identical or foreign value aborts publish with zero PUTs", as
       plan,
       invoke: foreignRemote.invoke,
       attempt_id: "attempt-preexisting-foreign",
+      uploadIssuedCheckpoint: async () => ({ store: "mock" }),
     }),
     /pre-existing or unknown/,
   );
@@ -487,6 +567,7 @@ test("crash after issued PUT with lost ACK recovers only that exact own value", 
   const dir = mkdtempSync(join(tmpdir(), "cc06-intent-issued-"));
   const intentPath = join(dir, "publish-intent.json");
   const ledgerPath = join(dir, "partial-ledger.json");
+  const store = fakeCheckpointStore(join(dir, "checkpoints"));
   const plan = planWarehouseRouteScopedPublication({
     deployed_revision: REVISION,
     materializations: tinyMaterializations(),
@@ -508,6 +589,7 @@ test("crash after issued PUT with lost ACK recovers only that exact own value", 
         intent,
         intentPath,
         attempt_id: "attempt-fixture-partial-issue",
+        uploadIssuedCheckpoint: store.upload,
       }),
       /injected put failure/,
     );
@@ -552,6 +634,199 @@ test("crash after issued PUT with lost ACK recovers only that exact own value", 
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
+});
+
+test("runner death after PUT with no final artifact recovers from external checkpoints only", async () => {
+  // Simulates: intent uploaded, two checkpoints uploaded + PUTs acked, runner dies
+  // before final receipt. Cleanup sees only initial intent + checkpoint artifacts.
+  const publisher = mkdtempSync(join(tmpdir(), "cc06-pub-run-"));
+  const recovery = mkdtempSync(join(tmpdir(), "cc06-cleanup-run-"));
+  const plan = planWarehouseRouteScopedPublication({
+    deployed_revision: REVISION,
+    materializations: tinyMaterializations(),
+  });
+  try {
+    const attemptId = "attempt-death-no-final";
+    const intent = buildWarehouseRouteScopedPublishIntent({
+      plan,
+      attempt_id: attemptId,
+      purpose: "publish",
+    });
+    const intentPath = join(publisher, "publish-intent.json");
+    persistWarehouseRouteScopedPublishIntent(intentPath, intent);
+
+    // Only first two routes got checkpoints + PUTs before death.
+    const ownedShards = plan.shards.slice(0, 2);
+    const checkpointDir = join(recovery, "prior-checkpoints");
+    mkdirSync(checkpointDir, { recursive: true });
+    const checkpoints = [];
+    const seed = new Map();
+    for (const shard of ownedShards) {
+      const checkpoint = buildIssuedCheckpoint({
+        attempt_id: attemptId,
+        route: shard.route,
+        key: shard.key,
+        deployed_revision: shard.deployed_revision,
+        value: shard.value,
+        value_sha256: shard.value_sha256,
+        issued_at: "2026-10-19T16:00:00.000Z",
+        row_count: shard.row_count,
+      });
+      assert.equal(checkpoint.schema, WAREHOUSE_ROUTE_SCOPED_ISSUED_CHECKPOINT_SCHEMA);
+      const path = join(checkpointDir, `${issuedCheckpointArtifactName(shard.route)}.json`);
+      persistIssuedCheckpoint(path, checkpoint);
+      assert.equal(loadIssuedCheckpoint(path).key, shard.key);
+      checkpoints.push(checkpoint);
+      seed.set(shard.key, shard.value);
+    }
+
+    // Cross-run handoff: recovery runner only has initial (unissued) intent + checkpoints.
+    const recoveryIntentPath = join(recovery, "prior-intent", "publish-intent.json");
+    mkdirSync(join(recovery, "prior-intent"), { recursive: true });
+    // Initial intent has no local issued markers (as uploaded before first PUT).
+    const initialIntent = buildWarehouseRouteScopedPublishIntent({
+      plan,
+      attempt_id: attemptId,
+      purpose: "publish",
+    });
+    persistWarehouseRouteScopedPublishIntent(recoveryIntentPath, initialIntent);
+    assert.equal(initialIntent.shards.filter((s) => s.issued_at).length, 0);
+
+    const ownership = mergeOwnershipFromIntentAndCheckpoints({
+      intent: loadWarehouseRouteScopedPublishIntent(recoveryIntentPath),
+      checkpoints,
+    });
+    assert.equal(ownership.status, "publish-owned-from-checkpoints");
+    assert.equal(ownership.issued_count, 2);
+    assert.equal(ownership.planned_unissued_keys.length, 1);
+    assert.equal(ownership.planned_unissued_keys[0], plan.shards[2].key);
+    // Possibly-issued stays UNKNOWN (no final ACK).
+    for (const entry of Object.values(ownership.ledger.entries)) {
+      assert.equal(entry.phase, "unknown");
+      assert.ok(entry.issued_at);
+    }
+
+    const cleanupPlan = planWarehouseRouteScopedCleanup({
+      deployed_revision: REVISION,
+      owned_entries: ownership.ledger.entries,
+      live_values: Object.fromEntries(Object.entries(ownership.owned_values)),
+      active_revision: ROLLBACK_REVISION,
+    });
+    const cleanupRemote = fakeWrangler({ seed });
+    const receipt = await cleanupWarehouseRouteScopedShards({
+      plan: cleanupPlan,
+      invoke: cleanupRemote.invoke,
+      owned_values: ownership.owned_values,
+      ledger: ownership.ledger,
+    });
+    assert.equal(receipt.decision, "cleaned");
+    assert.equal(receipt.confirmed.shard_deletes, 2);
+    assert.equal(cleanupRemote.values.size, 0);
+    // Never-issued third key was never written and is not deleted.
+    assert.equal(cleanupRemote.calls.filter((args) => args[2] === "delete").length, 2);
+  } finally {
+    rmSync(publisher, { recursive: true, force: true });
+    rmSync(recovery, { recursive: true, force: true });
+  }
+});
+
+test("checkpoint uploaded but PUT never sent: cleanup finds absent, deletes nothing foreign", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc06-checkpoint-no-put-"));
+  const plan = planWarehouseRouteScopedPublication({
+    deployed_revision: REVISION,
+    materializations: tinyMaterializations(),
+  });
+  try {
+    const attemptId = "attempt-checkpoint-no-put";
+    const intent = buildWarehouseRouteScopedPublishIntent({
+      plan,
+      attempt_id: attemptId,
+      purpose: "publish",
+    });
+    const shard = plan.shards[0];
+    const checkpoint = buildIssuedCheckpoint({
+      attempt_id: attemptId,
+      route: shard.route,
+      key: shard.key,
+      deployed_revision: shard.deployed_revision,
+      value: shard.value,
+      value_sha256: shard.value_sha256,
+      issued_at: "2026-10-19T16:05:00.000Z",
+    });
+    const ownership = mergeOwnershipFromIntentAndCheckpoints({
+      intent,
+      checkpoints: [checkpoint],
+    });
+    assert.equal(ownership.issued_count, 1);
+    assert.equal(ownership.planned_unissued_keys.length, 2);
+
+    // Key never made it to KV (PUT never sent). Foreign key is present.
+    const foreignKey = plan.shards[1].key;
+    const foreignValue = '{"foreign":true}';
+    const cleanupPlan = planWarehouseRouteScopedCleanup({
+      deployed_revision: REVISION,
+      owned_entries: ownership.ledger.entries,
+      live_values: {
+        [shard.key]: null,
+        [foreignKey]: foreignValue,
+      },
+      active_revision: ROLLBACK_REVISION,
+    });
+    const cleanupRemote = fakeWrangler({
+      seed: new Map([[foreignKey, foreignValue]]),
+    });
+    const receipt = await cleanupWarehouseRouteScopedShards({
+      plan: cleanupPlan,
+      invoke: cleanupRemote.invoke,
+      owned_values: ownership.owned_values,
+      ledger: ownership.ledger,
+    });
+    // Owned key absent → already-clear; foreign key never owned → never deleted.
+    assert.ok(["cleaned", "already-clean"].includes(receipt.decision));
+    assert.equal(receipt.confirmed.shard_deletes, 0);
+    assert.equal(cleanupRemote.values.get(foreignKey), foreignValue);
+    assert.equal(cleanupRemote.calls.filter((args) => args[2] === "delete").length, 0);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("mergeOwnership refuses zero checkpoints and dry-run intent", () => {
+  const plan = planWarehouseRouteScopedPublication({
+    deployed_revision: REVISION,
+    materializations: tinyMaterializations(),
+  });
+  const publishIntent = buildWarehouseRouteScopedPublishIntent({
+    plan,
+    attempt_id: "attempt-no-checkpoints",
+    purpose: "publish",
+  });
+  assert.throws(
+    () => mergeOwnershipFromIntentAndCheckpoints({ intent: publishIntent, checkpoints: [] }),
+    /no external per-key issued checkpoints/,
+  );
+  const dryRun = buildWarehouseRouteScopedPublishIntent({
+    plan,
+    attempt_id: "attempt-dry",
+    purpose: "dry-run",
+  });
+  assert.throws(
+    () => mergeOwnershipFromIntentAndCheckpoints({
+      intent: dryRun,
+      checkpoints: [
+        buildIssuedCheckpoint({
+          attempt_id: "attempt-dry",
+          route: plan.shards[0].route,
+          key: plan.shards[0].key,
+          deployed_revision: plan.shards[0].deployed_revision,
+          value: plan.shards[0].value,
+          value_sha256: plan.shards[0].value_sha256,
+          issued_at: "2026-10-19T16:00:00.000Z",
+        }),
+      ],
+    }),
+    /purpose=dry-run/,
+  );
 });
 
 test("cross-run dry-run readback verifies intent without provider writes", () => {

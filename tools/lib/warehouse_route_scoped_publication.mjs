@@ -42,6 +42,8 @@ export const WAREHOUSE_ROUTE_SCOPED_PREFLIGHT_SCHEMA =
   "cityscroll.warehouse_route_scoped_publication_preflight.v1";
 export const WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_SCHEMA =
   "cityscroll.warehouse_route_scoped_publish_intent.v1";
+export const WAREHOUSE_ROUTE_SCOPED_ISSUED_CHECKPOINT_SCHEMA =
+  "cityscroll.warehouse_route_scoped_issued_checkpoint.v1";
 
 /** Intent purpose: only purpose=publish with per-key issued markers owns cleanup. */
 export const WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_PURPOSES = Object.freeze([
@@ -49,6 +51,12 @@ export const WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_PURPOSES = Object.freeze([
   "prepare",
   "publish",
 ]);
+
+/** External artifact name for a per-key issued checkpoint (upload before PUT). */
+export function issuedCheckpointArtifactName(route) {
+  requireLookupRoute(route);
+  return `cc06-route-scoped-issued-${route}`;
+}
 
 /** Control routes never receive shards. */
 export const WAREHOUSE_ROUTE_SCOPED_CONTROL_ROUTES = Object.freeze([
@@ -533,6 +541,14 @@ export async function publishWarehouseRouteScopedShards({
   attempt_id = null,
   nowIso = nowIsoDefault,
   baseline = null,
+  /**
+   * Required for durable ownership: upload the per-key issued checkpoint to an
+   * external store (CI artifact) and resolve only after that upload succeeds.
+   * Local disk alone is not durable across runner death.
+   */
+  uploadIssuedCheckpoint = null,
+  requireExternalCheckpointUpload = true,
+  checkpointDir = null,
 } = {}) {
   if (typeof invoke !== "function") fail("publishWarehouseRouteScopedShards requires a Wrangler invoker");
   if (!plan || plan.schema !== WAREHOUSE_ROUTE_SCOPED_PUBLICATION_PLAN_SCHEMA) {
@@ -589,7 +605,16 @@ export async function publishWarehouseRouteScopedShards({
   });
   if (attempt_id && !ownership.attempt_id) ownership.attempt_id = attempt_id;
 
+  if (requireExternalCheckpointUpload && typeof uploadIssuedCheckpoint !== "function") {
+    fail(
+      "publish requires uploadIssuedCheckpoint (external per-key artifact upload) "
+      + "before any PUT; local files alone are not durable",
+    );
+  }
+
   const temp = mkdtempSync(join(tmpdir(), "cityscroll-route-scoped-pub-"));
+  const checkpointRoot = checkpointDir || join(temp, "checkpoints");
+  mkdirSync(checkpointRoot, { recursive: true, mode: 0o700 });
   const shardReceipts = [];
   try {
     for (const shard of plan.shards) {
@@ -599,7 +624,7 @@ export async function publishWarehouseRouteScopedShards({
         key: shard.key,
         deployed_revision: shard.deployed_revision,
       });
-      // Durable issued marker BEFORE the PUT leaves this process.
+      // Local issued marker, then EXTERNAL checkpoint upload, then PUT.
       markShardIssued(entry, { value: shard.value, value_sha256: shard.value_sha256 }, at);
       ownership.entries[shard.key] = entry;
       if (ledgerPath) persistShardPublicationLedger(ledgerPath, ownership, { nowIso: () => at });
@@ -609,6 +634,41 @@ export async function publishWarehouseRouteScopedShards({
           value_sha256: shard.value_sha256,
         }, at);
         if (intentPath) persistWarehouseRouteScopedPublishIntent(intentPath, intent);
+      }
+
+      const checkpoint = buildIssuedCheckpoint({
+        attempt_id: ownership.attempt_id || attempt_id,
+        route: shard.route,
+        key: shard.key,
+        deployed_revision: shard.deployed_revision,
+        value: shard.value,
+        value_sha256: shard.value_sha256,
+        issued_at: at,
+        row_count: shard.row_count,
+      });
+      const checkpointPath = join(checkpointRoot, `${shard.route}.json`);
+      persistIssuedCheckpoint(checkpointPath, checkpoint);
+      if (requireExternalCheckpointUpload) {
+        try {
+          await uploadIssuedCheckpoint(checkpoint, {
+            path: checkpointPath,
+            artifactName: issuedCheckpointArtifactName(shard.route),
+          });
+        } catch (error) {
+          error.publication_receipt = {
+            schema: WAREHOUSE_ROUTE_SCOPED_PUBLICATION_RECEIPT_SCHEMA,
+            decision: "publish-aborted-checkpoint-upload",
+            deployed_revision: plan.deployed_revision,
+            planned: plan.planned,
+            attempted,
+            confirmed,
+            baseline_absence: probed,
+            shards: shardReceipts,
+            failed_key: shard.key,
+            state_advanced: false,
+          };
+          throw error;
+        }
       }
 
       const path = join(temp, `${shard.route}.json`);
@@ -629,6 +689,7 @@ export async function publishWarehouseRouteScopedShards({
           value_sha256: shard.value_sha256,
           phase: entry.phase,
           issued_at: entry.issued_at,
+          checkpoint_artifact: issuedCheckpointArtifactName(shard.route),
           row_count: shard.row_count,
         });
       } catch (error) {
@@ -650,6 +711,8 @@ export async function publishWarehouseRouteScopedShards({
           shards: shardReceipts,
           failed_key: shard.key,
           ledger_phase: entry.phase,
+          // Checkpoint was uploaded; ownership is externally recoverable as UNKNOWN.
+          checkpoint_uploaded: true,
           state_advanced: false,
         };
         throw error;
@@ -1106,7 +1169,8 @@ export function markIntentShardUnknown(intent, key, error, at) {
 /**
  * Ownership for cleanup: purpose=publish + unique attempt_id + at least one
  * per-key issued marker with a real issued_at. Dry-run / prepare / never-issued
- * intents are refused.
+ * intents are refused. Prefer mergeOwnershipFromIntentAndCheckpoints when
+ * recovering from external per-key checkpoint artifacts.
  */
 export function assertPublishOwnershipForCleanup(intent) {
   if (!intent || intent.schema !== WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_SCHEMA) {
@@ -1137,6 +1201,196 @@ export function assertPublishOwnershipForCleanup(intent) {
     attempt_id: intent.attempt_id,
     issued_keys: issued.map((shard) => shard.key),
     issued_count: issued.length,
+  };
+}
+
+/**
+ * Per-key issued checkpoint uploaded to an external artifact store BEFORE the
+ * matching PUT. Local runner files alone are not durable across runner death.
+ */
+export function buildIssuedCheckpoint({
+  attempt_id,
+  route,
+  key,
+  deployed_revision,
+  value,
+  value_sha256,
+  issued_at,
+  row_count = null,
+  nowIso = nowIsoDefault,
+} = {}) {
+  if (!attempt_id) fail("issued checkpoint requires attempt_id");
+  requireLookupRoute(route);
+  const revision = requireRevision(deployed_revision);
+  if (key !== warehouseRouteScopedShardKey(route, revision)) {
+    fail(`issued checkpoint key mismatch for ${route}`);
+  }
+  if (typeof value !== "string" || !value) fail("issued checkpoint requires exact owned value");
+  const digest = value_sha256 || sha256Text(value);
+  if (sha256Text(value) !== digest) fail("issued checkpoint value_sha256 mismatch");
+  const at = issued_at || nowIso();
+  return {
+    schema: WAREHOUSE_ROUTE_SCOPED_ISSUED_CHECKPOINT_SCHEMA,
+    purpose: "publish",
+    attempt_id,
+    route,
+    key,
+    deployed_revision: revision,
+    value,
+    value_sha256: digest,
+    row_count,
+    phase: "issued",
+    issued_at: at,
+    artifact_name: issuedCheckpointArtifactName(route),
+  };
+}
+
+export function persistIssuedCheckpoint(checkpointPath, checkpoint, {
+  writeFileSyncFn = writeFileSync,
+} = {}) {
+  if (!checkpointPath) fail("persistIssuedCheckpoint: path required");
+  if (!checkpoint || checkpoint.schema !== WAREHOUSE_ROUTE_SCOPED_ISSUED_CHECKPOINT_SCHEMA) {
+    fail("issued checkpoint schema required");
+  }
+  mkdirSync(dirname(checkpointPath), { recursive: true, mode: 0o700 });
+  writeFileSyncFn(checkpointPath, `${JSON.stringify(checkpoint, null, 2)}\n`, { mode: 0o600 });
+  return checkpoint;
+}
+
+export function loadIssuedCheckpoint(checkpointPath, {
+  readFileSyncFn = readFileSync,
+} = {}) {
+  const checkpoint = JSON.parse(readFileSyncFn(checkpointPath, "utf8"));
+  if (checkpoint?.schema !== WAREHOUSE_ROUTE_SCOPED_ISSUED_CHECKPOINT_SCHEMA) {
+    fail("unsupported issued checkpoint schema");
+  }
+  return checkpoint;
+}
+
+export function verifyIssuedCheckpoint(checkpoint, { intent = null } = {}) {
+  if (!checkpoint || checkpoint.schema !== WAREHOUSE_ROUTE_SCOPED_ISSUED_CHECKPOINT_SCHEMA) {
+    fail("issued checkpoint required");
+  }
+  if (checkpoint.purpose !== "publish") {
+    fail(`issued checkpoint purpose must be publish (got ${checkpoint.purpose})`);
+  }
+  if (!checkpoint.attempt_id) fail("issued checkpoint missing attempt_id");
+  requireLookupRoute(checkpoint.route);
+  if (!REVISION_RE.test(String(checkpoint.deployed_revision || ""))) {
+    fail("issued checkpoint revision must be a full commit SHA");
+  }
+  if (checkpoint.key !== warehouseRouteScopedShardKey(checkpoint.route, checkpoint.deployed_revision)) {
+    fail("issued checkpoint key mismatch");
+  }
+  if (typeof checkpoint.value !== "string" || !checkpoint.value) {
+    fail("issued checkpoint missing exact owned value");
+  }
+  if (sha256Text(checkpoint.value) !== checkpoint.value_sha256) {
+    fail("issued checkpoint value_sha256 mismatch");
+  }
+  if (typeof checkpoint.issued_at !== "string" || !checkpoint.issued_at) {
+    fail("issued checkpoint missing issued_at");
+  }
+  if (checkpoint.phase !== "issued" && checkpoint.phase !== "unknown" && checkpoint.phase !== "acked") {
+    fail(`issued checkpoint has invalid phase ${checkpoint.phase}`);
+  }
+  if (intent) {
+    if (intent.purpose !== "publish") fail("checkpoint intent purpose must be publish");
+    if (intent.attempt_id && intent.attempt_id !== checkpoint.attempt_id) {
+      fail("checkpoint attempt_id does not match intent");
+    }
+    if (intent.deployed_revision !== checkpoint.deployed_revision) {
+      fail("checkpoint revision does not match intent");
+    }
+    const planned = (intent.shards || []).find((row) => row.key === checkpoint.key);
+    if (!planned) fail("checkpoint key not present on intent");
+    if (planned.value_sha256 !== checkpoint.value_sha256) {
+      fail("checkpoint digest does not match intent planned value");
+    }
+  }
+  return {
+    status: "verified",
+    key: checkpoint.key,
+    route: checkpoint.route,
+    attempt_id: checkpoint.attempt_id,
+    provider_writes: 0,
+  };
+}
+
+/**
+ * Build cleanup ownership from the initial intent plus externally uploaded
+ * per-key issued checkpoints. Works when no final receipt/ledger artifact
+ * exists. Planned-only keys (no checkpoint) are never marked issued.
+ * Checkpointed keys without ACK stay UNKNOWN (possibly-issued).
+ */
+export function mergeOwnershipFromIntentAndCheckpoints({
+  intent,
+  checkpoints = [],
+} = {}) {
+  if (!intent || intent.schema !== WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_SCHEMA) {
+    fail("publish intent required");
+  }
+  if (intent.purpose !== "publish") {
+    fail(
+      `cleanup refuses intent.purpose=${intent.purpose || "missing"}; `
+      + "only a real purpose=publish attempt owns cleanup",
+    );
+  }
+  if (!intent.attempt_id) fail("cleanup refuses publish intent without attempt_id");
+  verifyWarehouseRouteScopedPublishIntent(intent, { require_values: true });
+
+  const byKey = new Map();
+  for (const checkpoint of checkpoints) {
+    verifyIssuedCheckpoint(checkpoint, { intent });
+    if (checkpoint.attempt_id !== intent.attempt_id) {
+      fail(`checkpoint attempt_id ${checkpoint.attempt_id} != intent ${intent.attempt_id}`);
+    }
+    byKey.set(checkpoint.key, checkpoint);
+  }
+  if (byKey.size === 0) {
+    fail(
+      "cleanup refuses: no external per-key issued checkpoints "
+      + "(local intent markers alone are not durable across runner death)",
+    );
+  }
+
+  const ledger = makeShardPublicationLedger({
+    attempt_id: intent.attempt_id,
+    deployed_revision: intent.deployed_revision,
+    active_revision: intent.active_revision,
+    rollback_revision: intent.rollback_revision,
+  });
+  const owned_values = {};
+  for (const checkpoint of byKey.values()) {
+    const entry = makeShardPublicationEntry({
+      route: checkpoint.route,
+      key: checkpoint.key,
+      deployed_revision: checkpoint.deployed_revision,
+    });
+    markShardIssued(
+      entry,
+      { value: checkpoint.value, value_sha256: checkpoint.value_sha256 },
+      checkpoint.issued_at,
+    );
+    // No final ACK artifact → possibly-issued stays UNKNOWN.
+    markShardUnknown(entry, "recovered-from-external-issued-checkpoint", checkpoint.issued_at);
+    ledger.entries[checkpoint.key] = entry;
+    owned_values[checkpoint.key] = checkpoint.value;
+  }
+
+  return {
+    status: "publish-owned-from-checkpoints",
+    attempt_id: intent.attempt_id,
+    issued_count: byKey.size,
+    issued_keys: Object.freeze([...byKey.keys()]),
+    owned_values,
+    ledger,
+    // Planned keys without checkpoints remain unowned.
+    planned_unissued_keys: Object.freeze(
+      (intent.shards || [])
+        .map((shard) => shard.key)
+        .filter((key) => !byKey.has(key)),
+    ),
   };
 }
 

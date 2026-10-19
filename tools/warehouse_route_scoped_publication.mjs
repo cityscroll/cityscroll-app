@@ -8,30 +8,45 @@
  *   dry-run              — write durable intent (purpose=dry-run); no KV
  *   dry-run-readback     — load prior intent by path; verify; no KV
  *   probe-baseline       — real GETs of planned keys; record baseline_absence; no PUTs
+ *   write-issued-checkpoint — mark one key issued + write checkpoint file (no PUT)
+ *   put-one              — PUT one key after its external checkpoint artifact exists
  *   preflight-readonly   — plan + optional live KV GETs; never puts/deletes
- *   publish              — GO-gated; pre-write GETs then issue-before-PUT; C6-<8hex>
- *   cleanup              — GO-gated exact-value; requires publish-owned issued keys
+ *   publish              — GO-gated; pre-write GETs then checkpoint-upload-before-PUT
+ *   cleanup              — GO-gated; intent + external per-key checkpoints (no final needed)
  *
  * Publishing shards does not enable WAREHOUSE_ROUTE_SCOPED_SHARDS.
  * Live measure/stage remain separate GOs. Never overlap the frozen cc-05
  * measurement window (finish+restore before 06:30Z or run after that window).
  */
 
-import { mkdirSync, writeFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { copyFileSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { createWranglerInvoker } from "./lib/wrangler_exec.mjs";
+
 import {
   WAREHOUSE_ROUTE_SCOPED_CONTROL_ROUTES,
   assertBaselineAbsenceAllowsPublish,
-  assertPublishOwnershipForCleanup,
+  buildIssuedCheckpoint,
   buildWarehouseRouteScopedPublishIntent,
   cleanupWarehouseRouteScopedShards,
+  issuedCheckpointArtifactName,
+  loadIssuedCheckpoint,
   loadShardPublicationLedger,
   loadWarehouseRouteScopedMaterializations,
   loadWarehouseRouteScopedPublishIntent,
-  ownedValuesFromPublishIntent,
+  markIntentShardAcked,
+  markIntentShardIssued,
+  markIntentShardUnknown,
+  markShardAcked,
+  markShardIssued,
+  markShardUnknown,
+  makeShardPublicationEntry,
+  makeShardPublicationLedger,
+  mergeOwnershipFromIntentAndCheckpoints,
+  persistIssuedCheckpoint,
   persistShardPublicationLedger,
   persistWarehouseRouteScopedPublishIntent,
   planWarehouseRouteScopedCleanup,
@@ -39,7 +54,7 @@ import {
   preflightWarehouseRouteScopedPublicationReadonly,
   probeWarehouseRouteScopedBaselineAbsence,
   publishWarehouseRouteScopedShards,
-  recoveryLedgerFromPublishIntent,
+  verifyIssuedCheckpoint,
   verifyWarehouseRouteScopedPublishIntent,
 } from "./lib/warehouse_route_scoped_publication.mjs";
 import { warehouseRouteScopedShardKey } from "../worker/src/lib/warehouse_route_scoped_shards.mjs";
@@ -64,11 +79,48 @@ function usage() {
   node tools/warehouse_route_scoped_publication.mjs dry-run --revision <40-hex> --intent <path> [--attempt-id <id>] [--out <path>]
   node tools/warehouse_route_scoped_publication.mjs dry-run-readback --intent <path> [--revision <40-hex>] [--out <path>]
   node tools/warehouse_route_scoped_publication.mjs probe-baseline --revision <40-hex> --intent <path> [--out <path>]
+  node tools/warehouse_route_scoped_publication.mjs write-issued-checkpoint --revision <40-hex> --intent <path> --route <route> --checkpoint <path> --ledger <path> --attempt-id <id>
+  node tools/warehouse_route_scoped_publication.mjs put-one --revision <40-hex> --intent <path> --route <route> --checkpoint <path> --ledger <path> --attempt-id <id>
   node tools/warehouse_route_scoped_publication.mjs preflight-readonly --revision <40-hex> [--live-kv] [--health-commit <40-hex>] [--out <path>]
-  node tools/warehouse_route_scoped_publication.mjs publish --revision <40-hex> --ledger <path> --attempt-id <id> [--intent <path>]
-      (requires CC06_PUBLISH_EXECUTE_CODE=C6-<8hex> and GO-cc06-A1-publish EXECUTE)
-  node tools/warehouse_route_scoped_publication.mjs cleanup --revision <40-hex> (--ledger <path> | --intent <path>)
-      (requires CC06_PUBLISH_EXECUTE_CODE=C6-<8hex>; publish-owned issued keys only; protects --active/--rollback)`;
+  node tools/warehouse_route_scoped_publication.mjs publish --revision <40-hex> --ledger <path> --attempt-id <id> [--intent <path>] [--checkpoint-dir <path>]
+      (requires CC06_PUBLISH_EXECUTE_CODE=C6-<8hex>; CC06_CHECKPOINT_STORE_DIR or upload helper)
+  node tools/warehouse_route_scoped_publication.mjs cleanup --revision <40-hex> --intent <path> [--checkpoint-dir <path>] [--ledger <path>]
+      (requires CC06_PUBLISH_EXECUTE_CODE=C6-<8hex>; external checkpoints; protects --active/--rollback)`;
+}
+
+/**
+ * External durability for per-key issued checkpoints. Prefers an explicit
+ * durable store directory (tests / local rehearsal) or a helper command
+ * (CI). Local intent/ledger files alone are not enough.
+ */
+function createCheckpointUploader({ storeDir = null } = {}) {
+  const dir = storeDir || process.env.CC06_CHECKPOINT_STORE_DIR || null;
+  const helper = process.env.CC06_CHECKPOINT_UPLOAD_HELPER || null;
+  if (!dir && !helper) {
+    throw new Error(
+      "publish requires CC06_CHECKPOINT_STORE_DIR or CC06_CHECKPOINT_UPLOAD_HELPER "
+      + "so each issued checkpoint is externalized before PUT",
+    );
+  }
+  return async (checkpoint, { path, artifactName }) => {
+    if (dir) {
+      mkdirSync(dir, { recursive: true, mode: 0o700 });
+      const dest = join(dir, `${artifactName}.json`);
+      copyFileSync(path, dest);
+      return { store: "dir", dest, artifactName };
+    }
+    const result = spawnSync(helper, [path, artifactName], {
+      encoding: "utf8",
+      env: process.env,
+    });
+    if (result.status !== 0) {
+      throw new Error(
+        `checkpoint upload helper failed for ${artifactName}: `
+        + `${result.stderr || result.stdout || result.status}`,
+      );
+    }
+    return { store: "helper", artifactName };
+  };
 }
 
 function requireGoCode(command) {
@@ -243,6 +295,162 @@ if (command === "probe-baseline") {
   process.exit(0);
 }
 
+if (command === "write-issued-checkpoint") {
+  refuseWindowOverlap();
+  const goCode = requireGoCode("write-issued-checkpoint");
+  const intentPath = arg("--intent");
+  const ledgerPath = arg("--ledger");
+  const checkpointPath = arg("--checkpoint");
+  const route = arg("--route");
+  const attemptId = arg("--attempt-id");
+  if (!intentPath || !ledgerPath || !checkpointPath || !route || !attemptId) {
+    throw new Error("write-issued-checkpoint requires --intent --ledger --checkpoint --route --attempt-id");
+  }
+  if (!WAREHOUSE_ROUTE_SCOPED_LOOKUP_ROUTES.includes(route)) {
+    throw new Error(`route must be one of ${WAREHOUSE_ROUTE_SCOPED_LOOKUP_ROUTES.join(", ")}`);
+  }
+  const intent = loadWarehouseRouteScopedPublishIntent(intentPath);
+  const materializations = loadWarehouseRouteScopedMaterializations({ root: ROOT });
+  const plan = planWarehouseRouteScopedPublication({
+    deployed_revision: revision,
+    materializations,
+    active_revision: activeRevision,
+    rollback_revision: rollbackRevision,
+  });
+  verifyWarehouseRouteScopedPublishIntent(intent, { plan, require_values: true });
+  if (intent.purpose !== "publish") {
+    throw new Error("write-issued-checkpoint requires purpose=publish intent (run probe-baseline first)");
+  }
+  intent.attempt_id = attemptId;
+  const shard = plan.shards.find((row) => row.route === route);
+  if (!shard) throw new Error(`plan missing route ${route}`);
+  assertBaselineAbsenceAllowsPublish(intent.baseline_absence);
+
+  let ledger;
+  try {
+    ledger = loadShardPublicationLedger(ledgerPath);
+  } catch {
+    ledger = makeShardPublicationLedger({
+      attempt_id: attemptId,
+      deployed_revision: plan.deployed_revision,
+      active_revision: plan.active_revision,
+      rollback_revision: plan.rollback_revision,
+    });
+  }
+  ledger.attempt_id = attemptId;
+  const at = new Date().toISOString();
+  const entry = makeShardPublicationEntry({
+    route: shard.route,
+    key: shard.key,
+    deployed_revision: shard.deployed_revision,
+  });
+  markShardIssued(entry, { value: shard.value, value_sha256: shard.value_sha256 }, at);
+  ledger.entries[shard.key] = entry;
+  persistShardPublicationLedger(ledgerPath, ledger, { nowIso: () => at });
+  markIntentShardIssued(intent, shard.key, {
+    value: shard.value,
+    value_sha256: shard.value_sha256,
+  }, at);
+  persistWarehouseRouteScopedPublishIntent(intentPath, intent);
+
+  const checkpoint = buildIssuedCheckpoint({
+    attempt_id: attemptId,
+    route: shard.route,
+    key: shard.key,
+    deployed_revision: shard.deployed_revision,
+    value: shard.value,
+    value_sha256: shard.value_sha256,
+    issued_at: at,
+    row_count: shard.row_count,
+  });
+  persistIssuedCheckpoint(checkpointPath, checkpoint);
+  const receipt = {
+    schema: "cityscroll.warehouse_route_scoped_publication_receipt.v1",
+    decision: "issued-checkpoint-written",
+    mode: "write-issued-checkpoint",
+    go_code: goCode,
+    attempt_id: attemptId,
+    route,
+    key: shard.key,
+    value_sha256: shard.value_sha256,
+    issued_at: at,
+    checkpoint_path: checkpointPath,
+    artifact_name: issuedCheckpointArtifactName(route),
+    provider_writes: 0,
+  };
+  writeJson(outPath, receipt);
+  console.log(JSON.stringify(receipt, null, 2));
+  process.exit(0);
+}
+
+if (command === "put-one") {
+  refuseWindowOverlap();
+  const goCode = requireGoCode("put-one");
+  const intentPath = arg("--intent");
+  const ledgerPath = arg("--ledger");
+  const checkpointPath = arg("--checkpoint");
+  const route = arg("--route");
+  const attemptId = arg("--attempt-id");
+  if (!intentPath || !ledgerPath || !checkpointPath || !route || !attemptId) {
+    throw new Error("put-one requires --intent --ledger --checkpoint --route --attempt-id");
+  }
+  const intent = loadWarehouseRouteScopedPublishIntent(intentPath);
+  const checkpoint = loadIssuedCheckpoint(checkpointPath);
+  verifyIssuedCheckpoint(checkpoint, { intent });
+  if (checkpoint.route !== route) {
+    throw new Error(`checkpoint route ${checkpoint.route} != --route ${route}`);
+  }
+  if (checkpoint.attempt_id !== attemptId) {
+    throw new Error("checkpoint attempt_id does not match --attempt-id");
+  }
+  const ledger = loadShardPublicationLedger(ledgerPath);
+  const entry = ledger.entries?.[checkpoint.key];
+  if (!entry?.issued_at) {
+    throw new Error(`ledger missing issued marker for ${checkpoint.key}`);
+  }
+  const invoke = createWranglerInvoker({ cwd: ROOT, wranglerVersion: "4.126.0" });
+  const tempDir = join(dirname(checkpointPath), ".put-one-tmp");
+  mkdirSync(tempDir, { recursive: true, mode: 0o700 });
+  const bodyPath = join(tempDir, `${route}.json`);
+  writeFileSync(bodyPath, checkpoint.value, { mode: 0o600 });
+  try {
+    await invoke([
+      "kv", "key", "put", checkpoint.key,
+      "--path", bodyPath,
+      "--binding", "ALERT_STATE",
+      "--remote",
+      "--config", "worker/wrangler.toml",
+    ]);
+    const ackedAt = new Date().toISOString();
+    markShardAcked(entry, ackedAt);
+    persistShardPublicationLedger(ledgerPath, ledger, { nowIso: () => ackedAt });
+    markIntentShardAcked(intent, checkpoint.key, ackedAt);
+    persistWarehouseRouteScopedPublishIntent(intentPath, intent);
+    const receipt = {
+      schema: "cityscroll.warehouse_route_scoped_publication_receipt.v1",
+      decision: "put-one-acked",
+      mode: "put-one",
+      go_code: goCode,
+      attempt_id: attemptId,
+      route,
+      key: checkpoint.key,
+      value_sha256: checkpoint.value_sha256,
+      phase: "acked",
+      provider_writes: 1,
+    };
+    writeJson(outPath, receipt);
+    console.log(JSON.stringify(receipt, null, 2));
+  } catch (error) {
+    const unknownAt = new Date().toISOString();
+    markShardUnknown(entry, error?.message || error, unknownAt);
+    persistShardPublicationLedger(ledgerPath, ledger, { nowIso: () => unknownAt });
+    markIntentShardUnknown(intent, checkpoint.key, error?.message || error, unknownAt);
+    persistWarehouseRouteScopedPublishIntent(intentPath, intent);
+    throw error;
+  }
+  process.exit(0);
+}
+
 if (command === "dry-run-readback") {
   const intentPath = arg("--intent");
   if (!intentPath) throw new Error("--intent is required for dry-run-readback");
@@ -320,11 +528,47 @@ if (command === "preflight-readonly") {
   process.exit(report.outcome === "preflight-readonly-passed" ? 0 : 1);
 }
 
+/**
+ * Load externally uploaded per-key issued checkpoints from a directory
+ * (CI download-artifact merge of cc06-route-scoped-issued-* artifacts).
+ */
+function loadCheckpointsFromDir(checkpointDir) {
+  if (!checkpointDir) return [];
+  const checkpoints = [];
+  const stack = [checkpointDir];
+  while (stack.length) {
+    const dir = stack.pop();
+    let entries;
+    try {
+      entries = readdirSync(dir, { withFileTypes: true });
+    } catch {
+      continue;
+    }
+    for (const entry of entries) {
+      const full = join(dir, entry.name);
+      if (entry.isDirectory()) {
+        stack.push(full);
+        continue;
+      }
+      if (!entry.isFile() || !entry.name.endsWith(".json")) continue;
+      try {
+        const checkpoint = loadIssuedCheckpoint(full);
+        verifyIssuedCheckpoint(checkpoint);
+        checkpoints.push(checkpoint);
+      } catch {
+        // Skip non-checkpoint JSON (receipts, summaries).
+      }
+    }
+  }
+  return checkpoints;
+}
+
 if (command === "publish") {
   refuseWindowOverlap();
   const goCode = requireGoCode("publish");
   const ledgerPath = arg("--ledger");
   const attemptId = arg("--attempt-id");
+  const checkpointDir = arg("--checkpoint-dir");
   if (!ledgerPath) throw new Error("--ledger is required for publish");
   if (!attemptId) throw new Error("--attempt-id is required for publish");
 
@@ -349,6 +593,10 @@ if (command === "publish") {
       purpose: "publish",
     });
   }
+  // External durability: each issued checkpoint must leave the runner before PUT.
+  const uploadIssuedCheckpoint = createCheckpointUploader({
+    storeDir: checkpointDir || process.env.CC06_CHECKPOINT_STORE_DIR || null,
+  });
   const invoke = createWranglerInvoker({ cwd: ROOT, wranglerVersion: "4.126.0" });
   try {
     const receipt = await publishWarehouseRouteScopedShards({
@@ -358,6 +606,8 @@ if (command === "publish") {
       attempt_id: attemptId,
       intent,
       intentPath: intentPath || null,
+      uploadIssuedCheckpoint,
+      checkpointDir: checkpointDir || null,
     });
     const out = { ...receipt, go_code: goCode, ledger: undefined, intent: undefined };
     // Persist full ledger separately; stdout keeps receipt without raw shard bodies.
@@ -389,46 +639,62 @@ if (command === "cleanup") {
   const goCode = requireGoCode("cleanup");
   const ledgerPath = arg("--ledger");
   const intentPath = arg("--intent");
-  if (!ledgerPath && !intentPath) {
-    throw new Error("cleanup requires --ledger and/or --intent");
+  const checkpointDir = arg("--checkpoint-dir");
+  if (!intentPath && !checkpointDir && !ledgerPath) {
+    throw new Error(
+      "cleanup requires --intent + --checkpoint-dir (preferred; works with no final artifact), "
+      + "or a ledger recovered from external issued checkpoints",
+    );
   }
+
   let ledger = null;
   let ownedValues = {};
   let ownershipSource = null;
+  let plannedUnissued = [];
 
-  if (ledgerPath) {
+  // Preferred durable path: initial intent + externally uploaded per-key checkpoints.
+  // Works when the publisher died before any final receipt/ledger artifact.
+  if (intentPath && checkpointDir) {
+    const intent = loadWarehouseRouteScopedPublishIntent(intentPath);
+    const checkpoints = loadCheckpointsFromDir(checkpointDir);
+    const ownership = mergeOwnershipFromIntentAndCheckpoints({ intent, checkpoints });
+    ownedValues = ownership.owned_values;
+    ledger = ownership.ledger;
+    ownershipSource = ownership.status;
+    plannedUnissued = [...ownership.planned_unissued_keys];
+    if (ledgerPath) {
+      persistShardPublicationLedger(ledgerPath, ledger);
+    }
+  } else if (checkpointDir && !intentPath) {
+    throw new Error("cleanup --checkpoint-dir requires --intent (initial publish intent artifact)");
+  } else if (ledgerPath) {
+    // Ledger must itself have been recovered from external checkpoints / prior
+    // durable ownership — local invent-from-intent alone is refused below.
     try {
       ledger = loadShardPublicationLedger(ledgerPath);
       for (const [key, entry] of Object.entries(ledger.entries || {})) {
-        // Only entries that were actually issued own cleanup.
         if (entry?.value && entry?.issued_at && (entry.phase === "issued" || entry.phase === "acked" || entry.phase === "unknown")) {
           ownedValues[key] = entry.value;
         }
       }
       if (Object.keys(ownedValues).length > 0) ownershipSource = "ledger";
     } catch (error) {
-      if (!intentPath) throw error;
-      ledger = null;
+      throw error;
     }
   }
 
-  if (intentPath && Object.keys(ownedValues).length === 0) {
-    const intent = loadWarehouseRouteScopedPublishIntent(intentPath);
-    assertPublishOwnershipForCleanup(intent);
-    ownedValues = ownedValuesFromPublishIntent(intent);
-    ledger = recoveryLedgerFromPublishIntent(intent, {
-      attempt_id: intent.attempt_id,
-    });
-    ownershipSource = "intent-issued";
-    if (ledgerPath) {
-      persistShardPublicationLedger(ledgerPath, ledger);
-    }
+  // Refuse local-only intent markers: they are not durable across runner death.
+  if (intentPath && !checkpointDir && Object.keys(ownedValues).length === 0) {
+    throw new Error(
+      "cleanup refuses local-only intent markers; provide --checkpoint-dir with "
+      + "externally uploaded per-key issued checkpoints (cc06-route-scoped-issued-*)",
+    );
   }
 
   if (!ledger || Object.keys(ownedValues).length === 0) {
     throw new Error(
-      "cleanup refuses: no publish-owned issued keys "
-      + "(need ledger with issued markers, or purpose=publish intent with per-key issued)",
+      "cleanup refuses: no publish-owned issued keys from external checkpoints "
+      + "(need intent + per-key issued checkpoint artifacts; final receipt optional)",
     );
   }
 
@@ -451,6 +717,7 @@ if (command === "cleanup") {
       ...receipt,
       go_code: goCode,
       ownership_source: ownershipSource,
+      planned_unissued_keys: plannedUnissued,
       ledger: undefined,
     });
     console.log(JSON.stringify({
@@ -463,6 +730,7 @@ if (command === "cleanup") {
       confirmed: receipt.confirmed,
       actions: receipt.actions,
       ownership_source: ownershipSource,
+      planned_unissued_keys: plannedUnissued,
       go_code: goCode,
     }, null, 2));
   } catch (error) {
