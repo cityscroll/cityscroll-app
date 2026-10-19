@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-10-17T01:38:04.340Z",
-  "open_as_of": "2026-10-17",
+  "generated_at": "2026-10-19T14:19:23.838Z",
+  "open_as_of": "2026-10-19",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -10,7 +10,7 @@
   },
   "query": {
     "$select": "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,selection_method_description",
-    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-10-17'",
+    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-10-19'",
     "$order": "due_date ASC",
     "$limit": "40",
     "note": "Default Money tab acquisition: open solicitations, all agencies, no keyword/method. Resident reads filter the committed snapshot."
@@ -190,6 +190,17 @@
       "category_description": "Goods and Services",
       "short_title": "Request for Proposals (RFP) for the Renovation, Operation and Maintenance of a Snack Bar at the John Street Service Building at the East River Waterfront Esplanade, Manhattan",
       "pin": "M391-SB-2026",
+      "due_date": "2026-10-21T15:00:00.000",
+      "selection_method_description": "Competitive Sealed Proposals"
+    },
+    {
+      "request_id": "20261013005",
+      "start_date": "2026-10-19T00:00:00.000",
+      "agency_name": "School Construction Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods and Services",
+      "short_title": "IT SOFTWARE SUBSCRIPTION AND HARDWARE MAINTENANCE",
+      "pin": "SCA-2701P",
       "due_date": "2026-10-21T15:00:00.000",
       "selection_method_description": "Competitive Sealed Proposals"
     },
@@ -442,17 +453,6 @@
       "short_title": "Renovation, operation & maintenance of a carousel, snack bar & family amusement venue at Forest Park & the renovation, operation & maintenance of the carousel, mobile food & souvenir units,& children's amusement rides at Flushing Meadows Corona Park",
       "pin": "Q15-Q99-SB-C-CL-2026",
       "due_date": "2026-10-30T15:00:00.000",
-      "selection_method_description": "Request for Proposals"
-    },
-    {
-      "request_id": "20260911021",
-      "start_date": "2026-09-17T00:00:00.000",
-      "agency_name": "Economic Development Corporation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods and Services",
-      "short_title": "NYC Mass Timber Studio: Accelerating Housing Development RFA",
-      "pin": "10474",
-      "due_date": "2026-10-30T16:00:00.000",
       "selection_method_description": "Request for Proposals"
     }
   ]

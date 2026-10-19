@@ -2,8 +2,8 @@
   "schema": "cityscroll.analytics_payments.v1",
   "projection_contract": "cityscroll.analytical_projection.v1",
   "fact": "payment",
-  "generated_at": "2026-10-17T01:12:43.996Z",
-  "snapshot_date": "2026-10-17T01:12:43.996Z",
+  "generated_at": "2026-10-19T13:53:52.662Z",
+  "snapshot_date": "2026-10-19T13:53:52.662Z",
   "population_definition": "AP-08 independent Checkbook Spending contract-payment population; grouped by agency, payee, and payment fiscal year.",
   "dimensions": [
     "agency",
@@ -21,19 +21,19 @@
     "fiscal_years": [
       2026
     ],
-    "publisher_record_count": 1784794,
-    "source_net_check_amount": 52377359074.6,
+    "publisher_record_count": 1784800,
+    "source_net_check_amount": 52377604355.08,
     "source_receipt": "warehouse/receipts/proof/checkbook_payment_population_latest.json",
     "input": "payments.csv"
   },
   "population": {
-    "source_rows": 1784794,
-    "grouped_rows": 28517,
-    "transaction_count": 1784794,
-    "unique_transaction_count": 1635128,
-    "actual_payment_amount": 52377359074.6,
+    "source_rows": 1784800,
+    "grouped_rows": 28518,
+    "transaction_count": 1784800,
+    "unique_transaction_count": 1635134,
+    "actual_payment_amount": 52377604355.08,
     "duplicate_transaction_rows": 149666,
-    "reversal_rows": 1676
+    "reversal_rows": 1677
   },
   "rows": [
     {
@@ -15120,9 +15120,9 @@
       "agency": "Campaign Finance Board",
       "payee_name": "DELL MARKETING LP",
       "fiscal_year": 2026,
-      "transaction_count": 14,
-      "unique_transaction_count": 14,
-      "actual_payment_amount": 338359.36,
+      "transaction_count": 15,
+      "unique_transaction_count": 15,
+      "actual_payment_amount": 338306,
       "contract_count": 3,
       "contract_id": null
     },
@@ -44410,9 +44410,9 @@
       "agency": "Department of Buildings",
       "payee_name": "Core Scaffold Systems Inc",
       "fiscal_year": 2026,
-      "transaction_count": 3,
-      "unique_transaction_count": 3,
-      "actual_payment_amount": 72100,
+      "transaction_count": 5,
+      "unique_transaction_count": 5,
+      "actual_payment_amount": 137150,
       "contract_count": 1,
       "contract_id": "CT181020248807295"
     },
@@ -175228,6 +175228,16 @@
     },
     {
       "agency": "Department of Environmental Protection",
+      "payee_name": "OLORI CRANE SERVICE INC",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 132144.58,
+      "contract_count": 1,
+      "contract_id": "CT182620228805224"
+    },
+    {
+      "agency": "Department of Environmental Protection",
       "payee_name": "OORAH CATSKILL RETREAT, LLC",
       "fiscal_year": 2026,
       "transaction_count": 6,
@@ -176420,10 +176430,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "RESEARCH FOUNDATION OF THE STATE UNIVERSITY OF NEW YORK",
       "fiscal_year": 2026,
-      "transaction_count": 7,
-      "unique_transaction_count": 7,
-      "actual_payment_amount": 33212.44,
-      "contract_count": 2,
+      "transaction_count": 9,
+      "unique_transaction_count": 9,
+      "actual_payment_amount": 81351.7,
+      "contract_count": 3,
       "contract_id": null
     },
     {

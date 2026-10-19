@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "kind": "land_upcoming_hearings_materialization",
-  "observed_at": "2026-10-17T01:37:20.074Z",
+  "observed_at": "2026-10-19T14:18:42.573Z",
   "method": "zap_published_hearing_sweep_v2",
   "mode": "live",
   "projects_listed": 235,
@@ -39,11 +39,11 @@
     "2022X0393",
     "2023K0231",
     "2023Q0177",
-    "2023Q0211",
     "2024K0274",
-    "2024K0369",
     "2024M0267",
-    "2025M0395"
+    "2025M0395",
+    "2025Q0304",
+    "2025Q0331"
   ],
   "reviewed_false_positive_sample": [
     {
