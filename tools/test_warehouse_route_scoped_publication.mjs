@@ -1,15 +1,20 @@
 import assert from "node:assert/strict";
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
+import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+
 import {
   WAREHOUSE_ROUTE_SCOPED_CONTROL_ROUTES,
+  WAREHOUSE_ROUTE_SCOPED_FIXTURE_CHECKPOINT_PURPOSE,
   WAREHOUSE_ROUTE_SCOPED_ISSUED_CHECKPOINT_SCHEMA,
   WAREHOUSE_ROUTE_SCOPED_PUBLICATION_LEDGER_SCHEMA,
   WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_SCHEMA,
   assertPublishOwnershipForCleanup,
+  buildFixtureNonOwnershipCheckpoint,
   buildIssuedCheckpoint,
   buildWarehouseRouteScopedPublishIntent,
   cleanupWarehouseRouteScopedShards,
@@ -31,6 +36,7 @@ import {
   preflightWarehouseRouteScopedPublicationReadonly,
   publishWarehouseRouteScopedShards,
   recoveryLedgerFromPublishIntent,
+  verifyIssuedCheckpoint,
   verifyWarehouseRouteScopedPublishIntent,
 } from "./lib/warehouse_route_scoped_publication.mjs";
 import {
@@ -189,7 +195,7 @@ test("publish issues-before-ack, accounts KV ops, and persists durable ledger", 
     assert.equal(receipt.decision, "published");
     // 3 pre-write GETs + 3 puts.
     assert.deepEqual(receipt.attempted, { kv_reads: 3, shard_puts: 3, shard_deletes: 0 });
-    assert.deepEqual(receipt.confirmed, { shard_puts: 3, shard_deletes: 0 });
+    assert.deepEqual(receipt.confirmed, { kv_reads: 3, shard_puts: 3, shard_deletes: 0 });
     assert.equal(receipt.baseline_absence.all_absent, true);
     assert.equal(receipt.shards.length, 3);
     assert.equal(remote.values.size, 3);
@@ -473,6 +479,8 @@ test("CI workflow is workflow_dispatch-only and never push-triggered", () => {
   assert.match(yaml, /cc06-route-scoped-issued-doing-business/);
   assert.match(yaml, /pattern: cc06-route-scoped-issued-\*/);
   assert.match(yaml, /--checkpoint-dir/);
+  assert.match(yaml, /assemble-attempt-receipt/);
+  assert.match(yaml, /Assemble honest attempt receipt/);
   assert.match(yaml, /if: \$\{\{ always\(\)/);
 });
 
@@ -861,5 +869,309 @@ test("cross-run dry-run readback verifies intent without provider writes", () =>
   } finally {
     rmSync(runA, { recursive: true, force: true });
     rmSync(runB, { recursive: true, force: true });
+  }
+});
+
+const CLI = fileURLToPath(new URL("./warehouse_route_scoped_publication.mjs", import.meta.url));
+const GO = "C6-abcdef12";
+
+function runCli(args, { env = {}, expectStatus = 0 } = {}) {
+  const result = spawnSync(process.execPath, [CLI, ...args], {
+    encoding: "utf8",
+    env: {
+      ...process.env,
+      CC06_PUBLISH_EXECUTE_CODE: GO,
+      CC06_ALLOW_WINDOW_OVERLAP: "1",
+      ...env,
+    },
+  });
+  if (expectStatus === 0 && result.status !== 0) {
+    throw new Error(
+      `cli failed status=${result.status}\nstdout=${result.stdout}\nstderr=${result.stderr}`,
+    );
+  }
+  if (expectStatus !== 0) {
+    assert.notEqual(result.status, 0);
+  } else {
+    assert.equal(result.status, 0);
+  }
+  return result;
+}
+
+test("fixture-non-ownership-drill checkpoint is refused by cleanup ownership", () => {
+  const plan = planWarehouseRouteScopedPublication({
+    deployed_revision: REVISION,
+    materializations: tinyMaterializations(),
+  });
+  const intent = buildWarehouseRouteScopedPublishIntent({
+    plan,
+    attempt_id: "attempt-fixture-drill",
+    purpose: "publish",
+  });
+  const shard = plan.shards[0];
+  const fixture = buildFixtureNonOwnershipCheckpoint({
+    attempt_id: "attempt-fixture-drill",
+    route: shard.route,
+    key: shard.key,
+    deployed_revision: shard.deployed_revision,
+    value: shard.value,
+    value_sha256: shard.value_sha256,
+    issued_at: "2026-10-19T17:00:00.000Z",
+  });
+  assert.equal(fixture.purpose, WAREHOUSE_ROUTE_SCOPED_FIXTURE_CHECKPOINT_PURPOSE);
+  assert.equal(fixture.fixture_label, "cc06-fixture-non-ownership-drill");
+  assert.throws(
+    () => verifyIssuedCheckpoint(fixture, { intent }),
+    /fixture-non-ownership-drill/,
+  );
+  assert.throws(
+    () => mergeOwnershipFromIntentAndCheckpoints({ intent, checkpoints: [fixture] }),
+    /fixture-non-ownership-drill|purpose/,
+  );
+});
+
+test("real CLI entrypoints: write-issued-checkpoint → put-one → cleanup with offline KV", () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc06-cli-happy-"));
+  const kv = join(dir, "kv");
+  const store = join(dir, "checkpoint-store");
+  mkdirSync(kv, { recursive: true });
+  mkdirSync(store, { recursive: true });
+  try {
+    const intentPath = join(dir, "publish-intent.json");
+    const ledgerPath = join(dir, "ledger.json");
+    const attemptId = "attempt-cli-happy";
+    runCli([
+      "prepare-intent",
+      "--revision", REVISION,
+      "--intent", intentPath,
+      "--attempt-id", attemptId,
+      "--out", join(dir, "prepare.json"),
+    ]);
+    // Promote purpose + baseline via probe-baseline against empty offline KV.
+    runCli([
+      "probe-baseline",
+      "--revision", REVISION,
+      "--intent", intentPath,
+      "--attempt-id", attemptId,
+      "--out", join(dir, "baseline-receipt.json"),
+    ], { env: { CC06_OFFLINE_KV_STORE: kv } });
+    const baseline = JSON.parse(readFileSync(join(dir, "baseline-receipt.json"), "utf8"));
+    assert.equal(baseline.attempted.kv_reads, 3);
+    assert.equal(baseline.confirmed.kv_reads, 3);
+    assert.equal(baseline.unknown.kv_reads, 0);
+
+    for (const route of ["zap-bbl", "zap-project", "doing-business"]) {
+      const checkpointPath = join(dir, "checkpoints", `${route}.json`);
+      mkdirSync(join(dir, "checkpoints"), { recursive: true });
+      runCli([
+        "write-issued-checkpoint",
+        "--revision", REVISION,
+        "--intent", intentPath,
+        "--ledger", ledgerPath,
+        "--checkpoint", checkpointPath,
+        "--route", route,
+        "--attempt-id", attemptId,
+        "--out", join(dir, `checkpoint-${route}-receipt.json`),
+      ]);
+      // Externalize before PUT (store dir simulates upload-artifact).
+      copyFileSync(
+        checkpointPath,
+        join(store, `${issuedCheckpointArtifactName(route)}.json`),
+      );
+      runCli([
+        "put-one",
+        "--revision", REVISION,
+        "--intent", intentPath,
+        "--ledger", ledgerPath,
+        "--checkpoint", checkpointPath,
+        "--route", route,
+        "--attempt-id", attemptId,
+        "--out", join(dir, `put-${route}-receipt.json`),
+      ], { env: { CC06_OFFLINE_KV_STORE: kv } });
+      const putReceipt = JSON.parse(readFileSync(join(dir, `put-${route}-receipt.json`), "utf8"));
+      assert.equal(putReceipt.decision, "put-one-acked");
+      assert.equal(putReceipt.confirmed.shard_puts, 1);
+      assert.equal(putReceipt.unknown.shard_puts, 0);
+    }
+
+    runCli([
+      "assemble-attempt-receipt",
+      "--artifact-dir", dir,
+      "--out", join(dir, "receipt.json"),
+    ]);
+    const assembled = JSON.parse(readFileSync(join(dir, "receipt.json"), "utf8"));
+    assert.equal(assembled.decision, "published");
+    assert.deepEqual(assembled.planned, { kv_reads: 3, shard_puts: 3, shard_deletes: 0 });
+    assert.deepEqual(assembled.attempted, { kv_reads: 3, shard_puts: 3, shard_deletes: 0 });
+    assert.deepEqual(assembled.confirmed, { kv_reads: 3, shard_puts: 3, shard_deletes: 0 });
+    assert.deepEqual(assembled.unknown, { kv_reads: 0, shard_puts: 0, shard_deletes: 0 });
+
+    runCli([
+      "cleanup",
+      "--revision", REVISION,
+      "--intent", intentPath,
+      "--checkpoint-dir", store,
+      "--ledger", join(dir, "cleanup-ledger.json"),
+      "--active", ROLLBACK_REVISION,
+      "--out", join(dir, "cleanup-receipt.json"),
+    ], { env: { CC06_OFFLINE_KV_STORE: kv } });
+    const cleanup = JSON.parse(readFileSync(join(dir, "cleanup-receipt.json"), "utf8"));
+    assert.equal(cleanup.decision, "cleaned");
+    assert.equal(cleanup.confirmed.shard_deletes, 3);
+    assert.ok(cleanup.confirmed.kv_reads >= 3);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("real CLI: PUT failure writes failed-attempt receipt; assemble keeps UNKNOWN", () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc06-cli-fail-"));
+  const kv = join(dir, "kv");
+  mkdirSync(kv, { recursive: true });
+  mkdirSync(join(dir, "checkpoints"), { recursive: true });
+  try {
+    const intentPath = join(dir, "publish-intent.json");
+    const ledgerPath = join(dir, "ledger.json");
+    const attemptId = "attempt-cli-fail";
+    runCli([
+      "prepare-intent", "--revision", REVISION, "--intent", intentPath,
+      "--attempt-id", attemptId, "--out", join(dir, "prepare.json"),
+    ]);
+    runCli([
+      "probe-baseline", "--revision", REVISION, "--intent", intentPath,
+      "--attempt-id", attemptId, "--out", join(dir, "baseline-receipt.json"),
+    ], { env: { CC06_OFFLINE_KV_STORE: kv } });
+
+    const route = "zap-bbl";
+    const checkpointPath = join(dir, "checkpoints", `${route}.json`);
+    runCli([
+      "write-issued-checkpoint", "--revision", REVISION, "--intent", intentPath,
+      "--ledger", ledgerPath, "--checkpoint", checkpointPath, "--route", route,
+      "--attempt-id", attemptId, "--out", join(dir, `checkpoint-${route}-receipt.json`),
+    ]);
+    runCli([
+      "put-one", "--revision", REVISION, "--intent", intentPath,
+      "--ledger", ledgerPath, "--checkpoint", checkpointPath, "--route", route,
+      "--attempt-id", attemptId, "--out", join(dir, `put-${route}-receipt.json`),
+    ], {
+      env: { CC06_OFFLINE_KV_STORE: kv, CC06_OFFLINE_KV_FAIL_AT_PUT: "1" },
+      expectStatus: 1,
+    });
+    const failed = JSON.parse(readFileSync(join(dir, `put-${route}-receipt.json`), "utf8"));
+    assert.equal(failed.decision, "put-one-failed-attempt");
+    assert.equal(failed.phase, "unknown");
+    assert.equal(failed.attempted.shard_puts, 1);
+    assert.equal(failed.confirmed.shard_puts, 0);
+    assert.equal(failed.unknown.shard_puts, 1);
+    assert.equal(failed.checkpoint_uploaded, true);
+
+    writeFileSync(join(dir, "attempt-id.txt"), `${attemptId}\n`);
+    writeFileSync(join(dir, "revision.txt"), `${REVISION}\n`);
+    runCli([
+      "assemble-attempt-receipt", "--artifact-dir", dir, "--out", join(dir, "receipt.json"),
+    ], { expectStatus: 1 });
+    const assembled = JSON.parse(readFileSync(join(dir, "receipt.json"), "utf8"));
+    assert.equal(assembled.decision, "publish-attempt-partial");
+    assert.equal(assembled.attempted.kv_reads, 3);
+    assert.equal(assembled.confirmed.kv_reads, 3);
+    assert.equal(assembled.attempted.shard_puts, 1);
+    assert.equal(assembled.confirmed.shard_puts, 0);
+    assert.equal(assembled.unknown.shard_puts, 1);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("real CLI: dry-run intent refused by cleanup; fixture checkpoint refused", () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc06-cli-refuse-"));
+  const kv = join(dir, "kv");
+  mkdirSync(kv, { recursive: true });
+  try {
+    const intentPath = join(dir, "publish-intent.json");
+    runCli([
+      "dry-run", "--revision", REVISION, "--intent", intentPath,
+      "--attempt-id", "attempt-dry-cli", "--out", join(dir, "dry.json"),
+    ]);
+    const fixtureDir = join(dir, "fixture-checkpoints");
+    mkdirSync(fixtureDir, { recursive: true });
+    const plan = planWarehouseRouteScopedPublication({
+      deployed_revision: REVISION,
+      materializations: tinyMaterializations(),
+    });
+    const shard = plan.shards[0];
+    const fixture = buildFixtureNonOwnershipCheckpoint({
+      attempt_id: "attempt-dry-cli",
+      route: shard.route,
+      key: shard.key,
+      deployed_revision: shard.deployed_revision,
+      value: shard.value,
+      value_sha256: shard.value_sha256,
+      issued_at: "2026-10-19T17:05:00.000Z",
+    });
+    persistIssuedCheckpoint(join(fixtureDir, "fixture.json"), fixture);
+
+    runCli([
+      "cleanup", "--revision", REVISION, "--intent", intentPath,
+      "--checkpoint-dir", fixtureDir, "--out", join(dir, "cleanup.json"),
+    ], { env: { CC06_OFFLINE_KV_STORE: kv }, expectStatus: 1 });
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("real CLI: foreign live value is left alone during cleanup from checkpoints", () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc06-cli-foreign-"));
+  const kv = join(dir, "kv");
+  const store = join(dir, "checkpoints-ext");
+  mkdirSync(kv, { recursive: true });
+  mkdirSync(store, { recursive: true });
+  try {
+    const intentPath = join(dir, "publish-intent.json");
+    const ledgerPath = join(dir, "ledger.json");
+    const attemptId = "attempt-cli-foreign";
+    runCli([
+      "prepare-intent", "--revision", REVISION, "--intent", intentPath,
+      "--attempt-id", attemptId, "--out", join(dir, "prepare.json"),
+    ]);
+    runCli([
+      "probe-baseline", "--revision", REVISION, "--intent", intentPath,
+      "--attempt-id", attemptId, "--out", join(dir, "baseline-receipt.json"),
+    ], { env: { CC06_OFFLINE_KV_STORE: kv } });
+
+    const route = "zap-bbl";
+    const checkpointPath = join(dir, "checkpoints", `${route}.json`);
+    mkdirSync(join(dir, "checkpoints"), { recursive: true });
+    runCli([
+      "write-issued-checkpoint", "--revision", REVISION, "--intent", intentPath,
+      "--ledger", ledgerPath, "--checkpoint", checkpointPath, "--route", route,
+      "--attempt-id", attemptId, "--out", join(dir, "checkpoint-receipt.json"),
+    ]);
+    copyFileSync(checkpointPath, join(store, `${issuedCheckpointArtifactName(route)}.json`));
+    // Checkpoint uploaded but PUT never sent. Seed a foreign value under another key.
+    const plan = planWarehouseRouteScopedPublication({
+      deployed_revision: REVISION,
+      materializations: tinyMaterializations(),
+    });
+    const foreign = plan.shards[1];
+    writeFileSync(
+      join(kv, Buffer.from(foreign.key).toString("base64url")),
+      '{"foreign":true}',
+      { mode: 0o600 },
+    );
+
+    runCli([
+      "cleanup", "--revision", REVISION, "--intent", intentPath,
+      "--checkpoint-dir", store, "--active", ROLLBACK_REVISION,
+      "--out", join(dir, "cleanup-receipt.json"),
+    ], { env: { CC06_OFFLINE_KV_STORE: kv } });
+    const cleanup = JSON.parse(readFileSync(join(dir, "cleanup-receipt.json"), "utf8"));
+    assert.ok(["cleaned", "already-clean"].includes(cleanup.decision));
+    assert.equal(cleanup.confirmed.shard_deletes, 0);
+    assert.equal(
+      readFileSync(join(kv, Buffer.from(foreign.key).toString("base64url")), "utf8"),
+      '{"foreign":true}',
+    );
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
   }
 });

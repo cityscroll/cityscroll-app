@@ -10,6 +10,7 @@
  *   probe-baseline       — real GETs of planned keys; record baseline_absence; no PUTs
  *   write-issued-checkpoint — mark one key issued + write checkpoint file (no PUT)
  *   put-one              — PUT one key after its external checkpoint artifact exists
+ *   assemble-attempt-receipt — honest planned/attempted/confirmed/unknown from step receipts
  *   preflight-readonly   — plan + optional live KV GETs; never puts/deletes
  *   publish              — GO-gated; pre-write GETs then checkpoint-upload-before-PUT
  *   cleanup              — GO-gated; intent + external per-key checkpoints (no final needed)
@@ -20,7 +21,15 @@
  */
 
 import { spawnSync } from "node:child_process";
-import { copyFileSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
+import {
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  unlinkSync,
+  writeFileSync,
+} from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -81,6 +90,7 @@ function usage() {
   node tools/warehouse_route_scoped_publication.mjs probe-baseline --revision <40-hex> --intent <path> [--out <path>]
   node tools/warehouse_route_scoped_publication.mjs write-issued-checkpoint --revision <40-hex> --intent <path> --route <route> --checkpoint <path> --ledger <path> --attempt-id <id>
   node tools/warehouse_route_scoped_publication.mjs put-one --revision <40-hex> --intent <path> --route <route> --checkpoint <path> --ledger <path> --attempt-id <id>
+  node tools/warehouse_route_scoped_publication.mjs assemble-attempt-receipt --artifact-dir <path> [--out <path>]
   node tools/warehouse_route_scoped_publication.mjs preflight-readonly --revision <40-hex> [--live-kv] [--health-commit <40-hex>] [--out <path>]
   node tools/warehouse_route_scoped_publication.mjs publish --revision <40-hex> --ledger <path> --attempt-id <id> [--intent <path>] [--checkpoint-dir <path>]
       (requires CC06_PUBLISH_EXECUTE_CODE=C6-<8hex>; CC06_CHECKPOINT_STORE_DIR or upload helper)
@@ -121,6 +131,58 @@ function createCheckpointUploader({ storeDir = null } = {}) {
     }
     return { store: "helper", artifactName };
   };
+}
+
+/**
+ * Offline / injected provider for real CLI entrypoint tests.
+ * Set CC06_OFFLINE_KV_STORE=<dir>. Optional CC06_OFFLINE_KV_FAIL_AT_PUT=<n>
+ * fails the Nth PUT (1-based) after the attempt is recorded.
+ */
+function createOfflineKvInvoker(storeDir) {
+  mkdirSync(storeDir, { recursive: true, mode: 0o700 });
+  let puts = 0;
+  const failAtRaw = process.env.CC06_OFFLINE_KV_FAIL_AT_PUT;
+  const failAtPut = failAtRaw ? Number(failAtRaw) : null;
+  const keyPath = (key) => join(storeDir, Buffer.from(String(key)).toString("base64url"));
+  return async (args) => {
+    if (args[0] === "kv" && args[1] === "key" && args[2] === "get") {
+      const path = keyPath(args[3]);
+      if (!existsSync(path)) {
+        const error = new Error("Value not found");
+        error.status = 1;
+        error.stdout = "Value not found";
+        throw error;
+      }
+      return { stdout: readFileSync(path, "utf8"), stderr: "", status: 0 };
+    }
+    if (args[0] === "kv" && args[1] === "key" && args[2] === "put") {
+      puts += 1;
+      if (Number.isFinite(failAtPut) && puts === failAtPut) {
+        throw new Error("injected put failure");
+      }
+      const pathIdx = args.indexOf("--path");
+      if (pathIdx < 0) throw new Error("offline put requires --path");
+      writeFileSync(keyPath(args[3]), readFileSync(args[pathIdx + 1], "utf8"), { mode: 0o600 });
+      return { stdout: "", stderr: "", status: 0 };
+    }
+    if (args[0] === "kv" && args[1] === "key" && args[2] === "delete") {
+      const path = keyPath(args[3]);
+      if (existsSync(path)) unlinkSync(path);
+      return { stdout: "", stderr: "", status: 0 };
+    }
+    throw new Error(`offline invoker unexpected args: ${args.join(" ")}`);
+  };
+}
+
+function createCliInvoker() {
+  const offlineDir = process.env.CC06_OFFLINE_KV_STORE || "";
+  if (offlineDir) return createOfflineKvInvoker(offlineDir);
+  return createWranglerInvoker({ cwd: ROOT, wranglerVersion: "4.126.0" });
+}
+
+/** Honest empty op counters for attempt receipts (no billed/provider totals). */
+function emptyOps() {
+  return { kv_reads: 0, shard_puts: 0, shard_deletes: 0 };
 }
 
 function requireGoCode(command) {
@@ -164,7 +226,7 @@ if (!command || hasFlag("--help") || hasFlag("-h")) {
 }
 
 const revision = arg("--revision");
-if (!revision && command !== "dry-run-readback") {
+if (!revision && command !== "dry-run-readback" && command !== "assemble-attempt-receipt") {
   console.error("--revision <40-hex> is required");
   console.error(usage());
   process.exit(2);
@@ -270,10 +332,11 @@ if (command === "probe-baseline") {
   if (!attemptId) throw new Error("probe-baseline requires --attempt-id (unique publish attempt)");
   intent.purpose = "publish";
   intent.attempt_id = attemptId;
-  const invoke = createWranglerInvoker({ cwd: ROOT, wranglerVersion: "4.126.0" });
+  const invoke = createCliInvoker();
   const baseline = await probeWarehouseRouteScopedBaselineAbsence({ plan, invoke });
   intent.baseline_absence = baseline;
   persistWarehouseRouteScopedPublishIntent(intentPath, intent);
+  const plannedReads = (intent.shards || []).length || 3;
   const receipt = {
     schema: "cityscroll.warehouse_route_scoped_publication_receipt.v1",
     decision: baseline.all_absent ? "baseline-absent" : "baseline-blocked",
@@ -282,6 +345,10 @@ if (command === "probe-baseline") {
     attempt_id: attemptId,
     deployed_revision: intent.deployed_revision,
     baseline_absence: baseline,
+    planned: { ...emptyOps(), kv_reads: plannedReads },
+    attempted: { ...emptyOps(), kv_reads: baseline.kv_reads },
+    confirmed: { ...emptyOps(), kv_reads: baseline.kv_reads },
+    unknown: emptyOps(),
     provider_writes: 0,
     kv_reads: baseline.kv_reads,
   };
@@ -376,11 +443,102 @@ if (command === "write-issued-checkpoint") {
     issued_at: at,
     checkpoint_path: checkpointPath,
     artifact_name: issuedCheckpointArtifactName(route),
+    planned: emptyOps(),
+    attempted: emptyOps(),
+    confirmed: emptyOps(),
+    unknown: emptyOps(),
     provider_writes: 0,
   };
   writeJson(outPath, receipt);
   console.log(JSON.stringify(receipt, null, 2));
   process.exit(0);
+}
+
+if (command === "assemble-attempt-receipt") {
+  const artifactDir = arg("--artifact-dir");
+  if (!artifactDir) throw new Error("--artifact-dir is required for assemble-attempt-receipt");
+  const routes = ["zap-bbl", "zap-project", "doing-business"];
+  const readJsonIf = (path) => {
+    try {
+      return JSON.parse(readFileSync(path, "utf8"));
+    } catch {
+      return null;
+    }
+  };
+  const baseline = readJsonIf(join(artifactDir, "baseline-receipt.json"));
+  const putReceipts = [];
+  for (const route of routes) {
+    const receipt = readJsonIf(join(artifactDir, `put-${route}-receipt.json`));
+    if (receipt) putReceipts.push(receipt);
+  }
+  const planned = emptyOps();
+  const attempted = emptyOps();
+  const confirmed = emptyOps();
+  const unknown = emptyOps();
+
+  // Baseline GETs (probe-baseline): planned = shard count; confirmed when response observed.
+  planned.kv_reads = Number(baseline?.planned?.kv_reads ?? routes.length);
+  attempted.kv_reads = Number(baseline?.attempted?.kv_reads ?? baseline?.kv_reads ?? 0);
+  confirmed.kv_reads = Number(baseline?.confirmed?.kv_reads ?? baseline?.kv_reads ?? 0);
+  unknown.kv_reads = Number(baseline?.unknown?.kv_reads ?? 0);
+
+  planned.shard_puts = routes.length;
+  for (const receipt of putReceipts) {
+    attempted.shard_puts += Number(receipt.attempted?.shard_puts ?? 1);
+    confirmed.shard_puts += Number(
+      receipt.confirmed?.shard_puts ?? (receipt.decision === "put-one-acked" ? 1 : 0),
+    );
+    unknown.shard_puts += Number(
+      receipt.unknown?.shard_puts ?? (receipt.decision === "put-one-failed-attempt" ? 1 : 0),
+    );
+  }
+  // Checkpoints present without put receipts → issued but PUT never sent (0 attempted put).
+  const checkpointDir = join(artifactDir, "checkpoints");
+  let checkpointCount = 0;
+  try {
+    checkpointCount = readdirSync(checkpointDir).filter((name) => name.endsWith(".json")).length;
+  } catch {
+    checkpointCount = 0;
+  }
+
+  const anyFailed = putReceipts.some((r) => r.decision === "put-one-failed-attempt");
+  const allAcked = putReceipts.length === routes.length
+    && putReceipts.every((r) => r.decision === "put-one-acked");
+  let attemptIdText = null;
+  try {
+    attemptIdText = readFileSync(join(artifactDir, "attempt-id.txt"), "utf8").trim();
+  } catch {
+    attemptIdText = putReceipts[0]?.attempt_id || baseline?.attempt_id || null;
+  }
+  let revisionText = revision;
+  try {
+    revisionText = readFileSync(join(artifactDir, "revision.txt"), "utf8").trim() || revision;
+  } catch {
+    revisionText = revision || baseline?.deployed_revision || null;
+  }
+
+  const receipt = {
+    schema: "cityscroll.warehouse_route_scoped_publication_receipt.v1",
+    decision: allAcked
+      ? "published"
+      : (anyFailed || putReceipts.length > 0 || checkpointCount > 0)
+        ? "publish-attempt-partial"
+        : "publish-attempt-empty",
+    mode: "assemble-attempt-receipt",
+    attempt_id: attemptIdText,
+    deployed_revision: revisionText,
+    planned,
+    attempted,
+    confirmed,
+    unknown,
+    baseline_absence: baseline?.baseline_absence || null,
+    shards: putReceipts,
+    checkpoint_count: checkpointCount,
+    // No billed or provider cost totals — operation counts only.
+  };
+  writeJson(outPath || join(artifactDir, "receipt.json"), receipt);
+  console.log(JSON.stringify(receipt, null, 2));
+  process.exit(anyFailed ? 1 : 0);
 }
 
 if (command === "put-one") {
@@ -408,12 +566,15 @@ if (command === "put-one") {
   if (!entry?.issued_at) {
     throw new Error(`ledger missing issued marker for ${checkpoint.key}`);
   }
-  const invoke = createWranglerInvoker({ cwd: ROOT, wranglerVersion: "4.126.0" });
+  const invoke = createCliInvoker();
   const tempDir = join(dirname(checkpointPath), ".put-one-tmp");
   mkdirSync(tempDir, { recursive: true, mode: 0o700 });
   const bodyPath = join(tempDir, `${route}.json`);
   writeFileSync(bodyPath, checkpoint.value, { mode: 0o600 });
+  const planned = { ...emptyOps(), shard_puts: 1 };
   try {
+    // Attempt is counted when the PUT is sent; ACK confirms; lost/error → UNKNOWN.
+    const attempted = { ...emptyOps(), shard_puts: 1 };
     await invoke([
       "kv", "key", "put", checkpoint.key,
       "--path", bodyPath,
@@ -436,6 +597,10 @@ if (command === "put-one") {
       key: checkpoint.key,
       value_sha256: checkpoint.value_sha256,
       phase: "acked",
+      planned,
+      attempted,
+      confirmed: { ...emptyOps(), shard_puts: 1 },
+      unknown: emptyOps(),
       provider_writes: 1,
     };
     writeJson(outPath, receipt);
@@ -446,6 +611,29 @@ if (command === "put-one") {
     persistShardPublicationLedger(ledgerPath, ledger, { nowIso: () => unknownAt });
     markIntentShardUnknown(intent, checkpoint.key, error?.message || error, unknownAt);
     persistWarehouseRouteScopedPublishIntent(intentPath, intent);
+    // Always write a failed-attempt receipt so an early PUT failure never
+    // reads as zero operations when the final assembler runs.
+    const failedReceipt = {
+      schema: "cityscroll.warehouse_route_scoped_publication_receipt.v1",
+      decision: "put-one-failed-attempt",
+      mode: "put-one",
+      go_code: goCode,
+      attempt_id: attemptId,
+      route,
+      key: checkpoint.key,
+      value_sha256: checkpoint.value_sha256,
+      phase: "unknown",
+      planned,
+      attempted: { ...emptyOps(), shard_puts: 1 },
+      confirmed: emptyOps(),
+      unknown: { ...emptyOps(), shard_puts: 1 },
+      last_error: String(error?.message || error),
+      provider_writes: 0,
+      checkpoint_uploaded: true,
+    };
+    writeJson(outPath, failedReceipt);
+    error.publication_receipt = failedReceipt;
+    console.error(JSON.stringify(failedReceipt, null, 2));
     throw error;
   }
   process.exit(0);
@@ -490,7 +678,7 @@ if (command === "preflight-readonly") {
   const materializations = loadWarehouseRouteScopedMaterializations({ root: ROOT });
   let liveShardValues = null;
   if (hasFlag("--live-kv")) {
-    const invoke = createWranglerInvoker({ cwd: ROOT, wranglerVersion: "4.126.0" });
+    const invoke = createCliInvoker();
     liveShardValues = {};
     for (const route of WAREHOUSE_ROUTE_SCOPED_LOOKUP_ROUTES) {
       const key = warehouseRouteScopedShardKey(route, revision.toLowerCase());
@@ -551,11 +739,24 @@ function loadCheckpointsFromDir(checkpointDir) {
         continue;
       }
       if (!entry.isFile() || !entry.name.endsWith(".json")) continue;
+      let parsed;
+      try {
+        parsed = JSON.parse(readFileSync(full, "utf8"));
+      } catch {
+        continue;
+      }
+      if (parsed?.purpose === "fixture-non-ownership-drill") {
+        throw new Error(
+          `cleanup refuses fixture-non-ownership-drill checkpoint at ${full} `
+          + "(labeled fixture is not publish ownership)",
+        );
+      }
       try {
         const checkpoint = loadIssuedCheckpoint(full);
         verifyIssuedCheckpoint(checkpoint);
         checkpoints.push(checkpoint);
-      } catch {
+      } catch (error) {
+        if (/fixture-non-ownership-drill/.test(String(error?.message || error))) throw error;
         // Skip non-checkpoint JSON (receipts, summaries).
       }
     }
@@ -597,7 +798,7 @@ if (command === "publish") {
   const uploadIssuedCheckpoint = createCheckpointUploader({
     storeDir: checkpointDir || process.env.CC06_CHECKPOINT_STORE_DIR || null,
   });
-  const invoke = createWranglerInvoker({ cwd: ROOT, wranglerVersion: "4.126.0" });
+  const invoke = createCliInvoker();
   try {
     const receipt = await publishWarehouseRouteScopedShards({
       plan,
@@ -704,7 +905,7 @@ if (command === "cleanup") {
     active_revision: activeRevision || ledger.active_revision,
     rollback_revision: rollbackRevision || ledger.rollback_revision,
   });
-  const invoke = createWranglerInvoker({ cwd: ROOT, wranglerVersion: "4.126.0" });
+  const invoke = createCliInvoker();
   try {
     const receipt = await cleanupWarehouseRouteScopedShards({
       plan,

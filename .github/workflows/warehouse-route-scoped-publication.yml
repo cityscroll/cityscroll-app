@@ -482,26 +482,25 @@ jobs:
             --route "$ROUTE" \
             --attempt-id "$attempt_id" \
             --out "$artifact_dir/put-${ROUTE}-receipt.json"
-          # Final publish receipt (optional; cleanup must not require it).
-          python3 - <<'PY'
+
+      - name: Assemble honest attempt receipt (always; no final required for cleanup)
+        if: ${{ always() && !cancelled() && inputs.action == 'publish' }}
+        run: |
+          set -euo pipefail
+          # Combines baseline GETs + per-key put receipts into planned/attempted/
+          # confirmed/unknown. Unacked puts stay UNKNOWN. No billed totals.
+          node tools/warehouse_route_scoped_publication.mjs assemble-attempt-receipt \
+            --artifact-dir "$artifact_dir" \
+            --out "$artifact_dir/receipt.json" || true
+          if [ -f "$artifact_dir/receipt.json" ]; then
+            python3 - <<'PY'
           import json, os, pathlib
-          art = pathlib.Path(os.environ["artifact_dir"])
-          puts = []
-          for route in ("zap-bbl", "zap-project", "doing-business"):
-              p = art / f"put-{route}-receipt.json"
-              if p.exists():
-                  puts.append(json.loads(p.read_text()))
-          receipt = {
-              "schema": "cityscroll.warehouse_route_scoped_publication_receipt.v1",
-              "decision": "published",
-              "mode": "publish-per-key-checkpoint",
-              "attempt_id": (art / "attempt-id.txt").read_text().strip(),
-              "deployed_revision": (art / "revision.txt").read_text().strip(),
-              "confirmed": {"shard_puts": len(puts), "kv_reads": 0, "shard_deletes": 0},
-              "shards": puts,
-          }
-          (art / "receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
+          data = json.loads((pathlib.Path(os.environ["artifact_dir"]) / "receipt.json").read_text())
+          for key in ("planned", "attempted", "confirmed", "unknown"):
+              print(f"{key}={json.dumps(data.get(key))}")
+          print(f"decision={data.get('decision')}")
           PY
+          fi
 
       - name: Cleanup from intent + per-key issued checkpoints (no final required)
         if: ${{ inputs.action == 'cleanup' }}
@@ -562,9 +561,9 @@ jobs:
           data = json.loads(path.read_text())
           keep = {k: data.get(k) for k in (
               "schema", "outcome", "decision", "mode", "deployed_revision",
-              "planned", "attempted", "confirmed", "provider_writes", "checks",
+              "planned", "attempted", "confirmed", "unknown", "provider_writes", "checks",
               "go_code", "actions", "shards", "verification", "attempt_id",
-              "ownership_source", "planned_unissued_keys",
+              "ownership_source", "planned_unissued_keys", "checkpoint_count",
           ) if k in data}
           print(json.dumps(keep, indent=2))
           pathlib.Path(os.environ["artifact_dir"], "receipt-summary.json").write_text(

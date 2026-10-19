@@ -45,6 +45,13 @@ export const WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_SCHEMA =
 export const WAREHOUSE_ROUTE_SCOPED_ISSUED_CHECKPOINT_SCHEMA =
   "cityscroll.warehouse_route_scoped_issued_checkpoint.v1";
 
+/**
+ * Clearly labeled fixture purpose for the no-KV checkpoint drill.
+ * Cleanup must refuse these as non-ownership (gates any live KV GO).
+ */
+export const WAREHOUSE_ROUTE_SCOPED_FIXTURE_CHECKPOINT_PURPOSE =
+  "fixture-non-ownership-drill";
+
 /** Intent purpose: only purpose=publish with per-key issued markers owns cleanup. */
 export const WAREHOUSE_ROUTE_SCOPED_PUBLISH_INTENT_PURPOSES = Object.freeze([
   "dry-run",
@@ -113,7 +120,13 @@ function emptyOpCounts() {
 }
 
 function emptyConfirmedCounts() {
-  return { shard_puts: 0, shard_deletes: 0 };
+  // Confirmed GETs are counted when a provider response is observed
+  // (including "Value not found"). Unacked outcomes stay in unknown counts.
+  return { kv_reads: 0, shard_puts: 0, shard_deletes: 0 };
+}
+
+export function emptyUnknownOpCounts() {
+  return { kv_reads: 0, shard_puts: 0, shard_deletes: 0 };
 }
 
 function requireRevision(revision, label = "deployed_revision") {
@@ -570,6 +583,8 @@ export async function publishWarehouseRouteScopedShards({
     nowIso,
   });
   attempted.kv_reads += probed.kv_reads || 0;
+  // Successful baseline GET responses (including absent) are confirmed reads.
+  confirmed.kv_reads += probed.kv_reads || 0;
   try {
     assertBaselineAbsenceAllowsPublish(probed);
   } catch (error) {
@@ -881,9 +896,12 @@ export async function cleanupWarehouseRouteScopedShards({
           ...kvArgs(configPath), "--text",
         ]);
         liveValue = parseKvGet(result?.stdout);
+        confirmed.kv_reads += 1;
       } catch (error) {
         if (!isMissingKvValue(error)) throw error;
         liveValue = null;
+        // Provider answered with absence — confirmed read, not UNKNOWN.
+        confirmed.kv_reads += 1;
       }
       const ownedValue = owned_values?.[action.key] ?? null;
       decision = planExactValueShardClear({ ownedValue, liveValue });
@@ -1245,6 +1263,20 @@ export function buildIssuedCheckpoint({
   };
 }
 
+/**
+ * Clearly labeled fixture checkpoint for the no-KV ownership drill.
+ * Uploading/fetching this artifact must never grant cleanup ownership.
+ */
+export function buildFixtureNonOwnershipCheckpoint(args = {}) {
+  const checkpoint = buildIssuedCheckpoint(args);
+  return {
+    ...checkpoint,
+    purpose: WAREHOUSE_ROUTE_SCOPED_FIXTURE_CHECKPOINT_PURPOSE,
+    fixture_label: "cc06-fixture-non-ownership-drill",
+    ownership: "none",
+  };
+}
+
 export function persistIssuedCheckpoint(checkpointPath, checkpoint, {
   writeFileSyncFn = writeFileSync,
 } = {}) {
@@ -1270,6 +1302,12 @@ export function loadIssuedCheckpoint(checkpointPath, {
 export function verifyIssuedCheckpoint(checkpoint, { intent = null } = {}) {
   if (!checkpoint || checkpoint.schema !== WAREHOUSE_ROUTE_SCOPED_ISSUED_CHECKPOINT_SCHEMA) {
     fail("issued checkpoint required");
+  }
+  if (checkpoint.purpose === WAREHOUSE_ROUTE_SCOPED_FIXTURE_CHECKPOINT_PURPOSE) {
+    fail(
+      "cleanup refuses fixture-non-ownership-drill checkpoint "
+      + "(labeled fixture is not publish ownership)",
+    );
   }
   if (checkpoint.purpose !== "publish") {
     fail(`issued checkpoint purpose must be publish (got ${checkpoint.purpose})`);
