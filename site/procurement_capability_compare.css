@@ -1,0 +1,138 @@
+.capability-journey {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 1rem 1.25rem 2.5rem;
+  color: var(--ink, #1a1a1a);
+  font: 16px/1.55 ui-sans-serif, system-ui, sans-serif;
+}
+
+.capability-journey h2 {
+  margin: 0 0 0.5rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.55rem;
+}
+
+.capability-profile-form fieldset {
+  border: 1px solid var(--rule, #c9c2b4);
+  border-radius: 8px;
+  padding: 0.85rem 1rem 1rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.capability-profile-form legend {
+  padding: 0 0.35rem;
+  font-weight: 650;
+}
+
+.capability-form-help {
+  margin: 0 0 0.75rem;
+  color: var(--ink-soft, #4a463c);
+  font-size: 0.95rem;
+}
+
+.capability-profile-form label {
+  display: block;
+  margin: 0.65rem 0;
+}
+
+.capability-profile-form input,
+.capability-profile-form select {
+  display: block;
+  width: 100%;
+  max-width: 28rem;
+  margin-top: 0.25rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--rule, #c9c2b4);
+  border-radius: 6px;
+  background: var(--paper, #fff);
+  color: inherit;
+  font: inherit;
+}
+
+.capability-profile-form button,
+.capability-journey [data-capability-retry] {
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.9rem;
+  border: 0;
+  border-radius: 6px;
+  background: var(--oxblood, #7a1f2b);
+  color: #fff;
+  font: 650 0.95rem/1.2 ui-sans-serif, system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.capability-records {
+  display: grid;
+  gap: 1rem;
+}
+
+.capability-record {
+  border: 1px solid var(--rule, #c9c2b4);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  background: var(--paper, #fff);
+}
+
+.capability-record h3 {
+  margin: 0.15rem 0 0.35rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.15rem;
+}
+
+.capability-record-meta,
+.capability-source-role {
+  margin: 0;
+  color: var(--ink-soft, #4a463c);
+  font-size: 0.92rem;
+}
+
+.capability-assessments,
+.capability-actions {
+  margin: 0.85rem 0 0;
+  padding-left: 1.15rem;
+}
+
+.capability-assessment {
+  margin: 0.55rem 0;
+}
+
+.capability-assessment-state {
+  margin: 0 0 0.2rem;
+}
+
+.capability-assessment-wording,
+.capability-assessment-citation {
+  margin: 0.15rem 0;
+  color: var(--ink-soft, #4a463c);
+  font-size: 0.95rem;
+}
+
+.capability-assessment[data-state="stated_capability_gap"] {
+  border-left: 3px solid #a15c07;
+  padding-left: 0.65rem;
+}
+
+.capability-assessment[data-state="supported_overlap"] {
+  border-left: 3px solid #2f6b3a;
+  padding-left: 0.65rem;
+}
+
+.capability-assessment[data-state="document_review_needed"],
+.capability-assessment[data-state="unspecified"] {
+  border-left: 3px solid #5b6570;
+  padding-left: 0.65rem;
+}
+
+.capability-load-error {
+  color: #7a1f2b;
+}
+
+@media (max-width: 420px) {
+  .capability-journey {
+    padding: 0.75rem 0.85rem 2rem;
+  }
+
+  .capability-record {
+    padding: 0.85rem;
+  }
+}

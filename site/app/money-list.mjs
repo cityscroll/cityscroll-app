@@ -171,6 +171,28 @@ function syncMoneyDiscoveryCopy(){
   if(deck) deck.textContent=t(moneyIntroKey(modeKey));
   const signpost=document.getElementById("money-awards-signpost");
   if(signpost) signpost.hidden=modeKey==="award";
+  syncCapabilityCompareEntry();
+}
+function syncCapabilityCompareEntry(){
+  const host=document.getElementById("money-intro") || document.getElementById("money-intro-deck")?.parentElement;
+  if(!host) return;
+  let entry=document.getElementById("capability-compare-entry");
+  const enabled=globalThis.CROL_BETA_FLAG==="capability-compare"
+    || document.documentElement?.dataset?.betaFlag==="capability-compare";
+  if(!enabled){
+    entry?.remove();
+    return;
+  }
+  if(!entry){
+    entry=document.createElement("p");
+    entry.id="capability-compare-entry";
+    entry.className="capability-compare-entry";
+    const link=document.createElement("a");
+    link.href="/contracts-capability-compare.html?beta=capability-compare";
+    link.textContent="Compare capabilities on three historical awards";
+    entry.append(link);
+    host.append(entry);
+  }
 }
 async function initializeMoneyLocationFilters(){
   const tools=await moneyActionLocationTools();
