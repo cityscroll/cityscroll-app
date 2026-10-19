@@ -1197,6 +1197,242 @@ export function evaluateRouteScopedWarehouseCandidate({ baseline, candidate, acq
   return { decision, report };
 }
 
+/** Lookup routes that own route-scoped shards; health/browse stay control cohorts. */
+export const WAREHOUSE_LOOKUP_ROUTES = Object.freeze([
+  "zap-bbl", "zap-project", "doing-business",
+]);
+
+export const WAREHOUSE_CACHE_REHEARSAL_SCHEMA = "cityscroll.warehouse_cache_reset_reuse_rehearsal.v1";
+export const WAREHOUSE_CANDIDATE_ABORT_STATUSES = Object.freeze([
+  "absent", "failed", "invalid",
+]);
+const REVISION_RE_FULL = /^[a-f0-9]{40}$/;
+
+/**
+ * Abort rules for the route-scoped candidate: failed, absent, or invalid
+ * materializations retain the static baseline. Never invents semantic
+ * cold/warm or startup_time_ms, and never claims shipped savings.
+ */
+export function evaluateWarehouseRouteScopedAbort({
+  materialization_status,
+  cache_state = null,
+  cold_start,
+  isolate_class,
+  startup_time_ms,
+} = {}) {
+  if (cold_start === true || cold_start === false) {
+    fail("abort evaluation must not invent semantic cold_start");
+  }
+  if (isolate_class === "cold" || isolate_class === "warm") {
+    fail("abort evaluation must not invent isolate_class cold/warm");
+  }
+  if (startup_time_ms != null) {
+    fail("abort evaluation must keep startup_time_ms unknown");
+  }
+  if (cache_state != null && !WAREHOUSE_CACHE_STATES.includes(cache_state)) {
+    fail(`cache_state must be one of ${WAREHOUSE_CACHE_STATES.join(", ")}`);
+  }
+  const status = materialization_status;
+  if (status === "ok") {
+    return {
+      abort: false,
+      materialization_status: status,
+      operation_recommendation: null,
+      financial_savings_confirmed: false,
+      shipped_savings_claimed: false,
+      cache_state,
+      semantic_cold_warm: "unknown",
+      startup_time: { status: "unknown", reason: "provider-capability" },
+    };
+  }
+  if (!WAREHOUSE_CANDIDATE_ABORT_STATUSES.includes(status)) {
+    fail("materialization_status must be ok, absent, failed, or invalid");
+  }
+  return {
+    abort: true,
+    materialization_status: status,
+    operation_recommendation: "retain-baseline",
+    reason: `materialization-${status}`,
+    financial_savings_confirmed: false,
+    shipped_savings_claimed: false,
+    cache_state: null,
+    semantic_cold_warm: "unknown",
+    startup_time: { status: "unknown", reason: "provider-capability" },
+  };
+}
+
+/**
+ * Controlled cache-reset / isolate-reuse rehearsal protocol.
+ * For each lookup route: explicit reset → index-cold-reset sample, then reuse
+ * → isolate-reuse-hit sample. Never invents semantic cold/warm or
+ * startup_time_ms. Abort rules retain baseline on failed materialization.
+ * Rollback identity is the planWarehouseRollback chain when a retained tip
+ * later regresses — this planner only records the bound abort + rollback hooks.
+ */
+export function planWarehouseCacheResetReuseRehearsal({
+  routes = WAREHOUSE_LOOKUP_ROUTES,
+  deployed_revision,
+  control_routes = ["health", "browse"],
+} = {}) {
+  if (!REVISION_RE_FULL.test(String(deployed_revision || ""))) {
+    fail("deployed_revision must be a full commit SHA");
+  }
+  if (!Array.isArray(routes) || routes.length < 1) fail("routes must name at least one lookup route");
+  for (const route of routes) {
+    if (!WAREHOUSE_LOOKUP_ROUTES.includes(route)) {
+      fail(`rehearsal routes must be lookup routes (${WAREHOUSE_LOOKUP_ROUTES.join(", ")})`);
+    }
+  }
+  for (const route of control_routes) {
+    if (!WAREHOUSE_EXPERIMENT_BASE_ROUTES.includes(route)) {
+      fail("control_routes must be warehouse experiment base routes");
+    }
+    if (WAREHOUSE_LOOKUP_ROUTES.includes(route)) {
+      fail("control_routes must not include lookup shard routes");
+    }
+  }
+  const steps = [];
+  for (const route of routes) {
+    steps.push({
+      route,
+      action: "reset-cache",
+      expect_cache_state: null,
+      note: "explicit isolate index reset; not isolate cold start",
+    });
+    steps.push({
+      route,
+      action: "load",
+      expect_cache_state: "index-cold-reset",
+      note: "first load after reset",
+    });
+    steps.push({
+      route,
+      action: "load",
+      expect_cache_state: "isolate-reuse-hit",
+      note: "reuse without reset",
+    });
+  }
+  return {
+    schema: WAREHOUSE_CACHE_REHEARSAL_SCHEMA,
+    kind: "route-scoped-shards",
+    deployed_revision,
+    routes: Object.freeze([...routes]),
+    control_routes: Object.freeze([...control_routes]),
+    steps: Object.freeze(steps.map((step) => Object.freeze({ ...step }))),
+    abort_rules: Object.freeze({
+      on_materialization_absent: "retain-baseline",
+      on_materialization_failed: "retain-baseline",
+      on_materialization_invalid: "retain-baseline",
+      never_invent: Object.freeze(["cold_start", "isolate_class", "startup_time_ms", "semantic-cold-warm"]),
+    }),
+    rollback: Object.freeze({
+      planner: "planWarehouseRollback",
+      requires: Object.freeze(["candidate-retained", "follow-on-candidate-rejected", "matching-arm-identities"]),
+      chain_roles: Object.freeze(["original-baseline", "retained-candidate", "rollback-to-baseline"]),
+    }),
+    financial_savings_confirmed: false,
+    shipped_savings_claimed: false,
+    enforcement: workerCostEnforcementMode(null),
+  };
+}
+
+/**
+ * Validate observed rehearsal samples against a plan. Each load step must carry
+ * the expected cache_state via validateWarehouseIsolateReuseSample. An aborting
+ * materialization status short-circuits with retain-baseline.
+ */
+export function validateWarehouseCacheResetReuseRehearsal({ plan, observations } = {}) {
+  if (!plan || plan.schema !== WAREHOUSE_CACHE_REHEARSAL_SCHEMA) {
+    fail("warehouse cache reset/reuse rehearsal plan is required");
+  }
+  if (!Array.isArray(observations)) fail("observations must be an array");
+  const loadSteps = plan.steps.filter((step) => step.action === "load");
+  if (observations.length !== loadSteps.length) {
+    fail(`observations must cover every load step (${loadSteps.length})`);
+  }
+  const samples = [];
+  for (let index = 0; index < loadSteps.length; index += 1) {
+    const step = loadSteps[index];
+    const observation = observations[index];
+    const path = `observations[${index}]`;
+    if (!observation || typeof observation !== "object") fail(`${path} is required`);
+    if (observation.route !== step.route) fail(`${path}.route must match plan step`);
+    if (WAREHOUSE_CANDIDATE_ABORT_STATUSES.includes(observation.materialization_status)) {
+      const abort = evaluateWarehouseRouteScopedAbort({
+        materialization_status: observation.materialization_status,
+      });
+      return {
+        schema: WAREHOUSE_CACHE_REHEARSAL_SCHEMA,
+        status: "aborted",
+        operation_recommendation: "retain-baseline",
+        abort,
+        samples,
+        financial_savings_confirmed: false,
+        shipped_savings_claimed: false,
+        rollback: plan.rollback,
+      };
+    }
+    if (observation.materialization_status !== "ok") {
+      fail(`${path}.materialization_status must be ok or an abort status`);
+    }
+    if (observation.cache_state !== step.expect_cache_state) {
+      fail(`${path}.cache_state must be ${step.expect_cache_state}`);
+    }
+    samples.push(validateWarehouseIsolateReuseSample({
+      cache_state: observation.cache_state,
+      cold_start: observation.cold_start,
+      isolate_class: observation.isolate_class,
+      startup_time_ms: observation.startup_time_ms,
+    }, path));
+  }
+  return {
+    schema: WAREHOUSE_CACHE_REHEARSAL_SCHEMA,
+    status: "complete",
+    operation_recommendation: null,
+    abort: null,
+    samples,
+    financial_savings_confirmed: false,
+    shipped_savings_claimed: false,
+    rollback: plan.rollback,
+  };
+}
+
+/**
+ * Bind a route-scoped abort (or follow-on rejection) to rollback identity.
+ * Safe rehearsal only: plans rollback via planWarehouseRollback when a prior
+ * retain exists; otherwise records retain-baseline without inducing harm.
+ */
+export function planWarehouseRouteScopedRollbackOrAbort({
+  abort = null,
+  retainedDecision = null,
+  followOnDecision = null,
+} = {}) {
+  if (abort?.abort === true) {
+    return {
+      schema: "cityscroll.warehouse_route_scoped_rollback_or_abort.v1",
+      action: "retain-baseline",
+      operation_recommendation: "retain-baseline",
+      reason: abort.reason || `materialization-${abort.materialization_status}`,
+      rollback: null,
+      financial_savings_confirmed: false,
+      shipped_savings_claimed: false,
+    };
+  }
+  if (retainedDecision && followOnDecision) {
+    const rollback = planWarehouseRollback({ retainedDecision, followOnDecision });
+    return {
+      schema: "cityscroll.warehouse_route_scoped_rollback_or_abort.v1",
+      action: rollback.action,
+      operation_recommendation: rollback.operation_recommendation,
+      reason: "follow-on-regression",
+      rollback,
+      financial_savings_confirmed: false,
+      shipped_savings_claimed: false,
+    };
+  }
+  fail("provide an abort result or a retained+follow-on decision pair for rollback identity");
+}
+
 export function evaluateAllMeterRelease({ baseline, candidate, acquiredDeployments } = {}) {
   if (!baseline || !candidate) fail("baseline and candidate release evidence are required");
   assertSanitized({ baseline, candidate });

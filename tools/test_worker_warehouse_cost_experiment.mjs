@@ -10,6 +10,8 @@ import {
   WAREHOUSE_EXPERIMENT_BASE_ROUTES,
   WAREHOUSE_EXPERIMENT_COHORTS,
   WAREHOUSE_COLD_START_FLAG_CAPABILITIES,
+  WAREHOUSE_LOOKUP_ROUTES,
+  WAREHOUSE_CACHE_REHEARSAL_SCHEMA,
   resolveWarehouseExperimentCohorts,
   WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
   WAREHOUSE_MATERIALIZATION_KINDS,
@@ -18,13 +20,29 @@ import {
   coldStartFlagRawCohort,
   evaluateRouteScopedWarehouseCandidate,
   evaluateWarehouseExperiment,
+  evaluateWarehouseRouteScopedAbort,
   parseColdStartFlagRaw,
   planWarehouseRollback,
+  planWarehouseCacheResetReuseRehearsal,
+  planWarehouseRouteScopedRollbackOrAbort,
   providerDeploymentReceiptSha256,
+  validateWarehouseCacheResetReuseRehearsal,
   validateWarehouseIsolateReuseSample,
+  workerCostEnforcementMode,
 } from "./lib/worker_cost_control.mjs";
 import { canaryVersionTag } from "./cloudflare_deployment_binding.mjs";
 import { runWorkerCostControl } from "./worker_cost_control.mjs";
+import {
+  WAREHOUSE_ROUTE_SCOPED_ENABLED,
+  WAREHOUSE_ROUTE_SCOPED_FLAG,
+  WAREHOUSE_ROUTE_SCOPED_LOOKUP_ROUTES,
+  buildWarehouseRouteScopedShardDocument,
+  loadWarehouseRouteScopedShard,
+  resetWarehouseRouteScopedShardCache,
+  resolveWarehouseRouteScopedLookup,
+  warehouseRouteScopedShardKey,
+  warehouseRouteScopedShardsEnabled,
+} from "../worker/src/lib/warehouse_route_scoped_shards.mjs";
 
 function flagCapableCapability() {
   return {
@@ -690,4 +708,204 @@ test("experiment arms fail closed when cold_start_flag_capability values diverge
     () => evaluate(baseline, candidate),
     /cold_start_flag_capability is not matched/,
   );
+});
+
+function mockKv(store = new Map()) {
+  return {
+    async get(key) {
+      return store.has(key) ? store.get(key) : null;
+    },
+    async put(key, value) {
+      store.set(key, value);
+    },
+    _store: store,
+  };
+}
+
+test("route-scoped candidate loads versioned KV shards per lookup route behind an explicit flag", async () => {
+  resetWarehouseRouteScopedShardCache();
+  const revision = "c".repeat(40);
+  const kv = mockKv();
+  for (const route of WAREHOUSE_ROUTE_SCOPED_LOOKUP_ROUTES) {
+    const shard = buildWarehouseRouteScopedShardDocument(route, {
+      schema_version: 1,
+      mode: "fixture",
+      materialized_at: "2026-10-19T00:00:00Z",
+      rows: [{ project_id: "2022M0258", organization_name: "CAMBA  INC" }],
+    }, { deployed_revision: revision });
+    await kv.put(warehouseRouteScopedShardKey(route, revision), JSON.stringify(shard));
+  }
+
+  assert.equal(warehouseRouteScopedShardsEnabled({}), false);
+  assert.equal(warehouseRouteScopedShardsEnabled({ [WAREHOUSE_ROUTE_SCOPED_FLAG]: "no" }), false);
+  const disabled = await resolveWarehouseRouteScopedLookup({
+    [WAREHOUSE_ROUTE_SCOPED_FLAG]: "no",
+    ALERT_STATE: kv,
+  }, { route: "zap-bbl", revision });
+  assert.equal(disabled.path, "static-baseline");
+  assert.equal(disabled.kv_reads, 0);
+  assert.equal(disabled.cache_state, null);
+
+  const env = {
+    [WAREHOUSE_ROUTE_SCOPED_FLAG]: WAREHOUSE_ROUTE_SCOPED_ENABLED,
+    ALERT_STATE: kv,
+  };
+  assert.equal(warehouseRouteScopedShardsEnabled(env), true);
+
+  const first = await loadWarehouseRouteScopedShard(env, { route: "zap-bbl", revision });
+  assert.equal(first.status, "ok");
+  assert.equal(first.cache_state, "index-cold-reset");
+  assert.equal(first.kv_reads, 1);
+  assert.equal(first.abort, false);
+  assert.equal(first.doc.kind, "route-scoped-shards");
+  assert.equal(first.doc.route, "zap-bbl");
+
+  const reuse = await loadWarehouseRouteScopedShard(env, { route: "zap-bbl", revision });
+  assert.equal(reuse.cache_state, "isolate-reuse-hit");
+  assert.equal(reuse.kv_reads, 0);
+
+  // Loading zap-bbl must not populate other route caches (route-scoped, not whole-KV).
+  const projectFirst = await loadWarehouseRouteScopedShard(env, { route: "zap-project", revision });
+  assert.equal(projectFirst.cache_state, "index-cold-reset");
+  assert.equal(projectFirst.kv_reads, 1);
+
+  const resolved = await resolveWarehouseRouteScopedLookup(env, { route: "doing-business", revision });
+  assert.equal(resolved.path, "route-scoped-shards");
+  assert.equal(resolved.cache_state, "index-cold-reset");
+
+  assert.deepEqual([...WAREHOUSE_LOOKUP_ROUTES], [...WAREHOUSE_ROUTE_SCOPED_LOOKUP_ROUTES]);
+  assert.ok(WAREHOUSE_EXPERIMENT_BASE_ROUTES.includes("health"));
+  assert.ok(WAREHOUSE_EXPERIMENT_BASE_ROUTES.includes("browse"));
+  assert.equal(workerCostEnforcementMode(null).mode, "inactive");
+});
+
+test("absent or failed route-scoped materialization aborts to retain-baseline", async () => {
+  resetWarehouseRouteScopedShardCache();
+  const revision = "d".repeat(40);
+  const env = {
+    [WAREHOUSE_ROUTE_SCOPED_FLAG]: WAREHOUSE_ROUTE_SCOPED_ENABLED,
+    ALERT_STATE: mockKv(),
+  };
+  const absent = await loadWarehouseRouteScopedShard(env, { route: "zap-bbl", revision });
+  assert.equal(absent.status, "absent");
+  assert.equal(absent.abort, true);
+  assert.equal(absent.operation_recommendation, "retain-baseline");
+  assert.equal(absent.financial_savings_confirmed, false);
+  assert.equal(absent.shipped_savings_claimed, false);
+
+  const abort = evaluateWarehouseRouteScopedAbort({ materialization_status: "absent" });
+  assert.equal(abort.abort, true);
+  assert.equal(abort.operation_recommendation, "retain-baseline");
+  assert.equal(abort.shipped_savings_claimed, false);
+  assert.equal(abort.semantic_cold_warm, "unknown");
+  assert.equal(abort.startup_time.status, "unknown");
+
+  assert.throws(
+    () => evaluateWarehouseRouteScopedAbort({ materialization_status: "ok", cold_start: true }),
+    /cold_start/,
+  );
+  assert.throws(
+    () => evaluateWarehouseRouteScopedAbort({ materialization_status: "failed", startup_time_ms: 3 }),
+    /startup_time_ms/,
+  );
+
+  const bound = planWarehouseRouteScopedRollbackOrAbort({ abort });
+  assert.equal(bound.action, "retain-baseline");
+  assert.equal(bound.rollback, null);
+  assert.equal(bound.shipped_savings_claimed, false);
+});
+
+test("controlled cache-reset reuse rehearsal distinguishes index-cold-reset from isolate-reuse-hit", () => {
+  const revision = "e".repeat(40);
+  const plan = planWarehouseCacheResetReuseRehearsal({
+    deployed_revision: revision,
+    routes: [...WAREHOUSE_LOOKUP_ROUTES],
+  });
+  assert.equal(plan.schema, WAREHOUSE_CACHE_REHEARSAL_SCHEMA);
+  assert.equal(plan.kind, "route-scoped-shards");
+  assert.deepEqual(plan.control_routes, ["health", "browse"]);
+  assert.equal(plan.financial_savings_confirmed, false);
+  assert.equal(plan.enforcement.mode, "inactive");
+  assert.equal(plan.rollback.planner, "planWarehouseRollback");
+  assert.ok(plan.abort_rules.never_invent.includes("startup_time_ms"));
+
+  const loadSteps = plan.steps.filter((step) => step.action === "load");
+  assert.equal(loadSteps.length, WAREHOUSE_LOOKUP_ROUTES.length * 2);
+  assert.equal(loadSteps[0].expect_cache_state, "index-cold-reset");
+  assert.equal(loadSteps[1].expect_cache_state, "isolate-reuse-hit");
+
+  const observations = loadSteps.map((step) => ({
+    route: step.route,
+    materialization_status: "ok",
+    cache_state: step.expect_cache_state,
+  }));
+  const complete = validateWarehouseCacheResetReuseRehearsal({ plan, observations });
+  assert.equal(complete.status, "complete");
+  assert.equal(complete.samples.length, loadSteps.length);
+  assert.equal(complete.samples[0].index_cold_reset, true);
+  assert.equal(complete.samples[1].isolate_reuse, true);
+  assert.equal(complete.shipped_savings_claimed, false);
+
+  const aborted = validateWarehouseCacheResetReuseRehearsal({
+    plan,
+    observations: [
+      { route: "zap-bbl", materialization_status: "failed" },
+      ...observations.slice(1),
+    ],
+  });
+  assert.equal(aborted.status, "aborted");
+  assert.equal(aborted.operation_recommendation, "retain-baseline");
+  assert.equal(aborted.abort.abort, true);
+
+  assert.throws(
+    () => validateWarehouseCacheResetReuseRehearsal({
+      plan,
+      observations: observations.map((row, index) => (
+        index === 0 ? { ...row, cold_start: false } : row
+      )),
+    }),
+    /cold_start/,
+  );
+});
+
+test("route-scoped rollback identity reuses planWarehouseRollback after a retained tip regresses", () => {
+  const revisionA = "a".repeat(40);
+  const revisionB = "b".repeat(40);
+  const baselineA = run({
+    deployed_revision: revisionA,
+    materialization: { kind: "static-baseline" },
+  });
+  const retainedB = run({
+    deployed_revision: revisionB,
+    observed_at: "2026-10-08T23:10:00Z",
+    meters: { ...baselineA.meters, native_cpu_ms: 80 },
+    materialization: {
+      kind: "route-scoped-shards",
+      routes: [...WAREHOUSE_LOOKUP_ROUTES],
+    },
+  });
+  const retained = evaluateRouteScopedWarehouseCandidate({
+    baseline: baselineA,
+    candidate: retainedB,
+    acquiredDeployments: acquiredDeployments(baselineA, retainedB),
+  }).decision;
+  assert.equal(retained.decision, "candidate-retained");
+
+  const liveBRegressed = run({
+    deployed_revision: revisionB,
+    observed_at: "2026-10-08T23:40:00Z",
+    meters: { ...baselineA.meters, native_cpu_ms: 80, kv_reads: 120 },
+    materialization: retainedB.materialization,
+  });
+  const followOn = evaluate(baselineA, liveBRegressed);
+  const bound = planWarehouseRouteScopedRollbackOrAbort({
+    retainedDecision: retained,
+    followOnDecision: followOn,
+  });
+  assert.equal(bound.action, "rollback-to-baseline");
+  assert.equal(bound.rollback.restore_to_revision, revisionA);
+  assert.equal(bound.rollback.prior_retained_revision, revisionB);
+  assert.equal(bound.rollback.chain[2].role, "rollback-to-baseline");
+  assert.equal(bound.shipped_savings_claimed, false);
+  assert.equal(bound.financial_savings_confirmed, false);
 });

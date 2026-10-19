@@ -170,3 +170,97 @@ test("cron refresh writes versioned buckets before publishing the manifest", asy
   const manifest = JSON.parse(store.values.get("vp:manifest:v1"));
   assert.equal(manifest.schema, 3);
 });
+
+test("route-scoped doing-business shard overrides static baseline when enabled", async () => {
+  const {
+    WAREHOUSE_ROUTE_SCOPED_ENABLED,
+    WAREHOUSE_ROUTE_SCOPED_FLAG,
+    buildWarehouseRouteScopedShardDocument,
+    resetWarehouseRouteScopedShardCache,
+    warehouseRouteScopedShardKey,
+  } = await import("../src/lib/warehouse_route_scoped_shards.mjs");
+
+  resetWarehouseRouteScopedShardCache();
+  const revision = "a".repeat(40);
+  const forecast = [{
+    source: "checkbook",
+    vendor_name: "Camba Inc.",
+    expiration_date: "2027-03-01",
+  }];
+  const store = kvStore({ "fc:CAMBA": JSON.stringify(forecast) });
+  const shard = buildWarehouseRouteScopedShardDocument("doing-business", {
+    schema_version: 1,
+    mode: "fixture",
+    materialized_at: "2026-10-19T14:00:00.000Z",
+    phase: "WH-05",
+    rows: [{
+      organization_name: "CAMBA  INC",
+      ownership_structure_code: "COR",
+      organization_phone: "555-ROUTE-SCOPED",
+      doing_business_start_date: "2009-05-16",
+    }],
+  }, { deployed_revision: revision });
+  await store.put(
+    warehouseRouteScopedShardKey("doing-business", revision),
+    JSON.stringify(shard),
+  );
+
+  let doingBusinessSodaPages = 0;
+  const fetchImpl = async (url) => {
+    const href = String(url);
+    let body;
+    if (href.includes("72mk-a8z7")) {
+      doingBusinessSodaPages += 1;
+      body = CAMBA_DOING_BUSINESS;
+    } else if (new URL(href).searchParams.get("$group")) body = CAMBA_ROWS;
+    else body = CAMBA_NOTICES;
+    return new Response(JSON.stringify(body), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  };
+
+  const result = await refreshVendorProfiles(
+    {
+      ALERT_STATE: store,
+      DB: entityEnv.DB,
+      [WAREHOUSE_ROUTE_SCOPED_FLAG]: WAREHOUSE_ROUTE_SCOPED_ENABLED,
+      GIT_COMMIT_SHA: revision,
+    },
+    { fetchImpl, now: new Date("2026-07-27T13:00:00.000Z") },
+  );
+  assert.equal(result.cronCost.doingBusinessRequests, 0);
+  assert.equal(doingBusinessSodaPages, 0);
+  assert.equal(result.included.doingBusiness, 1);
+
+  const bucketKey = store.writes.find((key) => key.startsWith("vp:v1:"));
+  assert.ok(bucketKey);
+  const bucket = JSON.parse(store.values.get(bucketKey));
+  assert.equal(bucket.profiles.CAMBA.doingBusiness.organization_phone, "555-ROUTE-SCOPED");
+
+  // Absent shard aborts to the static full-catalog baseline (still no SODA).
+  resetWarehouseRouteScopedShardCache();
+  doingBusinessSodaPages = 0;
+  const absentStore = kvStore({ "fc:CAMBA": JSON.stringify(forecast) });
+  const retained = await refreshVendorProfiles(
+    {
+      ALERT_STATE: absentStore,
+      DB: entityEnv.DB,
+      [WAREHOUSE_ROUTE_SCOPED_FLAG]: WAREHOUSE_ROUTE_SCOPED_ENABLED,
+      GIT_COMMIT_SHA: revision,
+    },
+    { fetchImpl, now: new Date("2026-07-27T13:00:00.000Z") },
+  );
+  assert.equal(retained.cronCost.doingBusinessRequests, 0);
+  assert.equal(doingBusinessSodaPages, 0);
+  const retainedBucketKey = absentStore.writes.find((key) => key.startsWith("vp:v1:"));
+  assert.ok(retainedBucketKey);
+  const retainedBucket = JSON.parse(absentStore.values.get(retainedBucketKey));
+  // Retain-baseline uses the static catalog identity, not the shard phone.
+  assert.ok(retainedBucket.profiles.CAMBA.doingBusiness);
+  assert.match(String(retainedBucket.profiles.CAMBA.doingBusiness.organization_name || ""), /CAMBA/i);
+  assert.notEqual(
+    retainedBucket.profiles.CAMBA.doingBusiness.organization_phone,
+    "555-ROUTE-SCOPED",
+  );
+});

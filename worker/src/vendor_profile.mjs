@@ -16,6 +16,7 @@ import {
   joinVendorToDoingBusiness,
 } from "./lib/doing_business_join.mjs";
 import { attachDoingBusinessFromWarehouse } from "./lib/doing_business_warehouse_lookup.mjs";
+import { resolveWarehouseRouteScopedLookup } from "./lib/warehouse_route_scoped_shards.mjs";
 import { precomputedVendorFootprint } from "./entity_intelligence.mjs";
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
@@ -266,10 +267,20 @@ async function attachForecasts(profiles, kv) {
  *     (full bulk pack skips SODA entirely).
  * Failure is non-fatal: profiles keep doingBusiness=null so the cron still publishes.
  */
-async function attachDoingBusiness(profiles, fetchImpl) {
+async function attachDoingBusiness(profiles, fetchImpl, env = null) {
   const profileList = Object.values(profiles || {});
   // Warehouse materialization path — instant stem index, zero SODA catalog pages when complete.
-  const fromWh = attachDoingBusinessFromWarehouse(profiles);
+  // Route-scoped shard when WAREHOUSE_ROUTE_SCOPED_SHARDS=enabled; else static baseline.
+  let warehouseDoc;
+  if (env) {
+    const resolved = await resolveWarehouseRouteScopedLookup(env, { route: "doing-business" });
+    if (resolved.path === "route-scoped-shards" && resolved.materialization) {
+      warehouseDoc = resolved.materialization;
+    }
+  }
+  const fromWh = warehouseDoc !== undefined
+    ? attachDoingBusinessFromWarehouse(profiles, warehouseDoc)
+    : attachDoingBusinessFromWarehouse(profiles);
   const allMatched =
     fromWh.used &&
     profileList.length > 0 &&
@@ -360,7 +371,7 @@ export async function refreshVendorProfiles(env, options = {}) {
 
   let doingBusiness = { requests: 0, rows: 0, matched: 0, indexSize: 0 };
   try {
-    doingBusiness = await attachDoingBusiness(profiles, fetchImpl);
+    doingBusiness = await attachDoingBusiness(profiles, fetchImpl, env);
   } catch (err) {
     // Non-fatal: still publish award/forecast profiles without Doing Business enrichment.
     console.error(
