@@ -96,6 +96,12 @@ export const PROGRAM_IDENTITY_PASSAGES = Object.freeze([
   }),
 ]);
 
+/**
+ * Reviewed buyer agencies for program-history admission in this bounded pilot.
+ * Program-identity passages on a different agency do not admit the record.
+ */
+export const PROGRAM_BUYER_AGENCIES = Object.freeze(["Small Business Services"]);
+
 function text(value) {
   const s = String(value ?? "").trim();
   return s || null;
@@ -202,6 +208,24 @@ export function hasProgramIdentityEvidence(record = {}) {
   return false;
 }
 
+/** True when the record's agency is a reviewed buyer for this program pilot. */
+export function hasReviewedProgramBuyer(record = {}) {
+  const agency = text(record.agency_name);
+  if (!agency) return false;
+  return PROGRAM_BUYER_AGENCIES.some(
+    (allowed) => allowed.toLowerCase() === agency.toLowerCase(),
+  );
+}
+
+/**
+ * Admit a record into related program history only when both reviewed
+ * program-identity evidence and a reviewed buyer agency are present.
+ * Same-vendor, amount, or purchase method alone never admit.
+ */
+export function admitsProgramHistory(record = {}) {
+  return hasProgramIdentityEvidence(record) && hasReviewedProgramBuyer(record);
+}
+
 function profileRequestsCapability(profile, vocab) {
   for (const key of vocab.profile_keys) {
     if (profile?.[key] === true) return true;
@@ -258,16 +282,17 @@ export function matchProgramRecords({ profile, records } = {}) {
 }
 
 /**
- * Group retained awards that carry reviewed program-identity evidence.
- * Exact predecessor links come only from exactIdentityBasis. Same-buyer or
- * same-vendor alone never admits a record. Employer placement is never a
- * required duty without a supporting citation on that record.
+ * Group retained awards that carry reviewed program-identity evidence and a
+ * reviewed buyer agency. Exact predecessor links come only from
+ * exactIdentityBasis. Same-buyer or same-vendor alone never admits a record.
+ * Employer placement is never a required duty without a supporting citation
+ * on that record.
  */
 export function groupProgramHistory({ records } = {}) {
   const list = Array.isArray(records) ? records : [];
   const admitted = [];
   for (const record of list) {
-    if (!hasProgramIdentityEvidence(record)) continue;
+    if (!admitsProgramHistory(record)) continue;
     const capabilities = extractProgramCapabilities(record);
     admitted.push(
       Object.freeze({
@@ -308,6 +333,7 @@ export function groupProgramHistory({ records } = {}) {
     relations: Object.freeze(relations),
     future_opening_predicted: false,
     program_admission_from_awardee_alone: false,
+    program_admission_requires_buyer: true,
   });
 }
 
