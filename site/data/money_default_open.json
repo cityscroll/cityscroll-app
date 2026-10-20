@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-10-17T01:38:04.340Z",
-  "open_as_of": "2026-10-17",
+  "generated_at": "2026-10-20T12:27:04.689Z",
+  "open_as_of": "2026-10-20",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -10,35 +10,13 @@
   },
   "query": {
     "$select": "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,selection_method_description",
-    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-10-17'",
+    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-10-20'",
     "$order": "due_date ASC",
     "$limit": "40",
     "note": "Default Money tab acquisition: open solicitations, all agencies, no keyword/method. Resident reads filter the committed snapshot."
   },
   "count": 40,
   "notices": [
-    {
-      "request_id": "20260909021",
-      "start_date": "2026-09-17T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods",
-      "short_title": "Bid Extension: SMPD Materials Plumbing Supplies such as pipes, elbows etc.",
-      "pin": "528362",
-      "due_date": "2026-10-19T12:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260902007",
-      "start_date": "2026-09-15T00:00:00.000",
-      "agency_name": "Transportation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction Related Services",
-      "short_title": "Develop, Deploy, Support and Maintain Existing and Future Citywide Transit Signal Priority (TSP)",
-      "pin": "84126P0001",
-      "due_date": "2026-10-19T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Proposals"
-    },
     {
       "request_id": "20260917004",
       "start_date": "2026-09-25T00:00:00.000",
@@ -190,6 +168,17 @@
       "category_description": "Goods and Services",
       "short_title": "Request for Proposals (RFP) for the Renovation, Operation and Maintenance of a Snack Bar at the John Street Service Building at the East River Waterfront Esplanade, Manhattan",
       "pin": "M391-SB-2026",
+      "due_date": "2026-10-21T15:00:00.000",
+      "selection_method_description": "Competitive Sealed Proposals"
+    },
+    {
+      "request_id": "20261013005",
+      "start_date": "2026-10-19T00:00:00.000",
+      "agency_name": "School Construction Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods and Services",
+      "short_title": "IT SOFTWARE SUBSCRIPTION AND HARDWARE MAINTENANCE",
+      "pin": "SCA-2701P",
       "due_date": "2026-10-21T15:00:00.000",
       "selection_method_description": "Competitive Sealed Proposals"
     },
@@ -454,6 +443,17 @@
       "pin": "10474",
       "due_date": "2026-10-30T16:00:00.000",
       "selection_method_description": "Request for Proposals"
+    },
+    {
+      "request_id": "20260923001",
+      "start_date": "2026-09-29T00:00:00.000",
+      "agency_name": "Campaign Finance Board",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "Community and Stakeholder Mapping within Priority Neighborhoods",
+      "pin": "004202700003",
+      "due_date": "2026-10-30T17:00:00.000",
+      "selection_method_description": "M/WBE Noncompetitive Small Purchase"
     }
   ]
 }

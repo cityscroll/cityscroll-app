@@ -4,12 +4,12 @@
     "annual-examination-schedule",
     "active-civil-service-list"
   ],
-  "verified_at": "2026-10-17",
+  "verified_at": "2026-10-20",
   "join": {
     "method": "exact_exam_number_zero_pad",
     "schedule_rows": 1271,
     "distinct_schedule_exams": 1271,
-    "distinct_list_aggregate_exams": 874,
+    "distinct_list_aggregate_exams": 876,
     "matched_pairs": 452,
     "misses": {
       "no_list_aggregate": 761,

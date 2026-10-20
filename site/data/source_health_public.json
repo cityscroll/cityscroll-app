@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.public_source_health.v1",
-  "generated_at": "2026-10-17T01:53:34.458Z",
+  "generated_at": "2026-10-20T12:40:23.781Z",
   "available": true,
   "source_count": 64,
   "sources": [
@@ -476,12 +476,12 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": "2026-10-17T01:23:06.178Z",
+            "at": "2026-10-20T12:15:17.043Z",
             "state": "KNOWN",
             "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": "2026-10-17T01:23:06.178Z",
+            "at": "2026-10-20T12:15:17.043Z",
             "state": "KNOWN",
             "basis": "cityscroll_materialization"
           }
@@ -498,7 +498,7 @@
           "max_date": null
         },
         "publisher_vintage": null,
-        "retrieved_at": "2026-10-17T01:23:06.178Z",
+        "retrieved_at": "2026-10-20T12:15:17.043Z",
         "expected_lag_tolerance_days": 45,
         "current_lag": {
           "value": null,
@@ -583,7 +583,7 @@
             "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": "2026-10-17T01:12:43.996Z",
+            "at": "2026-10-20T12:04:51.602Z",
             "state": "KNOWN",
             "basis": "cityscroll_materialization"
           }
@@ -1490,12 +1490,12 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": "2026-10-05T16:22:36.637Z",
+            "at": "2026-10-19T14:58:11.038Z",
             "state": "KNOWN",
             "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": "2026-10-05T16:22:37.014Z",
+            "at": "2026-10-19T14:58:11.249Z",
             "state": "KNOWN",
             "basis": "cityscroll_materialization"
           }
@@ -1512,7 +1512,7 @@
           "max_date": null
         },
         "publisher_vintage": null,
-        "retrieved_at": "2026-10-05T16:22:36.637Z",
+        "retrieved_at": "2026-10-19T14:58:11.038Z",
         "expected_lag_tolerance_days": 400,
         "current_lag": {
           "value": null,
@@ -3227,7 +3227,7 @@
             "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": "2026-10-17T01:53:31.113Z",
+            "at": "2026-10-20T12:40:23.781Z",
             "state": "KNOWN",
             "basis": "cityscroll_materialization"
           }
