@@ -397,6 +397,7 @@
 /site/contract_result_inspection.mjs
 /site/contract_search_bridge.mjs
 /site/contracts-capability-compare.html
+/site/contracts-program-history.html
 /site/contracts_analysis_projection.mjs
 /site/contracts_rum.mjs
 /site/council_district_lookup.mjs
@@ -794,6 +795,8 @@
 /site/procurement_process_state_vocabulary.mjs
 /site/procurement_process_watch.mjs
 /site/procurement_program_capabilities.mjs
+/site/procurement_program_history.css
+/site/procurement_program_journey.mjs
 /site/procurement_project_context.css
 /site/procurement_project_context.mjs
 /site/procurement_project_history.mjs

@@ -13,10 +13,11 @@
  * the amount benchmark; this module only classifies and renders.
  *
  * Reused, not reinvented:
- *   - pinBase() / usablePin() (../worker/src/lib/lineage.mjs) is the same
+ *   - pinBase() / usablePin() (./procurement_pin.mjs) is the same
  *     PIN-renewal-suffix convention already treated elsewhere in this
  *     codebase as an explicit predecessor link -- a declared City Record PIN
- *     numbering convention, never a text-similarity inference.
+ *     numbering convention, never a text-similarity inference. The Worker twin
+ *     in worker/src/lib/lineage.mjs stays dual-implemented for server paths.
  *   - AWARD_RANK_SMALL_N_POLICY (./comparative_award_rank.mjs) is imported
  *     verbatim as the amount-benchmark small-population policy: a cohort
  *     below its rank floor is omitted entirely, a cohort below its
@@ -31,7 +32,7 @@
  */
 
 import { AWARD_RANK_SMALL_N_POLICY } from "./comparative_award_rank.mjs";
-import { pinBase, usablePin } from "../worker/src/lib/lineage.mjs";
+import { pinBase, usablePin } from "./procurement_pin.mjs";
 
 export const PROCUREMENT_RELATED_CONTEXT_SCHEMA = "cityscroll.procurement_related_context.v1";
 

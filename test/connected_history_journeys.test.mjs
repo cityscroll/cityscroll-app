@@ -392,7 +392,7 @@ test("A3: production instrumentation pins the landed Pages revision and served d
 
 test("capture writers preserve production pointers across hermetic and production rounds", () => {
   const result = spawnSync(
-    "python3",
+    process.env.CITYSCROLL_BROWSER_PYTHON || "python3",
     ["-m", "unittest", "tests.test_documented_history_navigation.ManifestProvenanceRoundTrip"],
     { cwd: ROOT, encoding: "utf8", timeout: 30_000 },
   );
@@ -413,7 +413,7 @@ test("A4: a missing fixed case is reported rather than replaced", () => {
 
 test("external publisher activation remains bounded and local navigation remains strict", () => {
   const result = spawnSync(
-    "python3",
+    process.env.CITYSCROLL_BROWSER_PYTHON || "python3",
     ["-m", "unittest", "tests.test_documented_history_navigation"],
     { cwd: ROOT, encoding: "utf8", timeout: 120_000 },
   );

@@ -6,16 +6,45 @@
  * know what a PIN's base identifier is, so the rule lives in one module rather
  * than inside the Contracts lens. `worker/src/lib/lineage.mjs` holds the
  * server-side twin; `test/contract/pin_lineage.test.mjs` proves they agree.
+ *
+ * Browser client modules must import these helpers from this site module, not
+ * from the Worker twin, so the public site graph stays free of Worker paths.
  */
+
+const JUNK_PINS = new Set([
+  "NOPINFOUND",
+  "SEE BELOW",
+  "LINE 17 BELOW",
+  "TBD",
+  "N/A",
+  "NONE",
+  "VARIOUS",
+  "SEE ATTACHED",
+  "123456",
+]);
+const JUNK_PIN_TEXT_RE =
+  /\bsee\b|\bbelow\b|\bline\s*17\b|\bn\/?a\b|\btbd\b|\bvarious\b|\bpending\b|\battached\b/i;
 
 /** Renewal cycles append this suffix to the base PIN. */
 const RENEWAL_SUFFIX_RE = /R0\d+$/;
 
+/** True when a PIN is concrete enough to join a renewal chain. */
+function usablePin(p) {
+  if (!p) return false;
+  const s = String(p).trim();
+  if (s.length < 4) return false;
+  if (!/[A-Za-z0-9]/.test(s)) return false;
+  if (/^[0\W_]+$/.test(s)) return false;
+  if (JUNK_PINS.has(s.toUpperCase())) return false;
+  if (JUNK_PIN_TEXT_RE.test(s)) return false;
+  return true;
+}
+
 /** The base PIN a renewal cycle was issued against, or null when there is none. */
-function pinBase(pin){
-  const s = String(pin||"").trim();
+function pinBase(pin) {
+  const s = String(pin || "").trim();
   const m = s.match(RENEWAL_SUFFIX_RE);
   return m ? s.slice(0, m.index) : null;
 }
 
-export { RENEWAL_SUFFIX_RE, pinBase };
+export { RENEWAL_SUFFIX_RE, pinBase, usablePin };
