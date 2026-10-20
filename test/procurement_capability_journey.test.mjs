@@ -211,6 +211,100 @@ test("standalone compare page ships with noscript source links", () => {
   assert.match(html, /app\/capability-compare\.mjs/);
 });
 
+test("classic capability-profile-scrub.js precedes analytics.js and clarity.js in the HTML", () => {
+  const html = readFileSync(
+    fileURLToPath(new URL("../site/contracts-capability-compare.html", import.meta.url)),
+    "utf8",
+  );
+  const scrubIdx = html.indexOf('src="capability-profile-scrub.js"');
+  const analyticsIdx = html.indexOf('src="analytics.js');
+  const clarityIdx = html.indexOf('src="clarity.js');
+  assert.ok(scrubIdx > 0, "scrub script tag missing");
+  assert.ok(analyticsIdx > 0, "analytics.js tag missing");
+  assert.ok(clarityIdx > 0, "clarity.js tag missing");
+  assert.ok(
+    scrubIdx < analyticsIdx,
+    "capability-profile-scrub.js must precede analytics.js so Clarity/analytics never see legacy profile params",
+  );
+  assert.ok(
+    scrubIdx < clarityIdx,
+    "capability-profile-scrub.js must precede clarity.js so Clarity never sees legacy profile params",
+  );
+  // Classic sync — no defer/async/module on the scrub tag itself.
+  const scrubTagMatch = html.match(/<script\b[^>]*src="capability-profile-scrub\.js"[^>]*>\s*<\/script>/);
+  assert.ok(scrubTagMatch, "scrub script element missing");
+  assert.doesNotMatch(scrubTagMatch[0], /\bdefer\b|\basync\b|type="module"/);
+});
+
+test("classic scrub cleans legacy profile params before analytics or clarity would run", () => {
+  const scrubSource = readFileSync(
+    fileURLToPath(new URL("../site/capability-profile-scrub.js", import.meta.url)),
+    "utf8",
+  );
+  const storage = new Map();
+  const url = new URL(
+    "https://cityscroll.org/contracts-capability-compare.html?beta=capability-compare&capability_keywords=pre-clarity-secret&jet_vac_truck=true",
+  );
+  const loc = {
+    get href() {
+      return url.href;
+    },
+  };
+  const hist = {
+    state: null,
+    replaceState(nextState, _title, nextUrl) {
+      this.state = nextState;
+      const resolved = new URL(nextUrl, url.origin);
+      url.href = resolved.href;
+    },
+  };
+  // Run the classic IIFE against a fake window before any analytics/clarity stub.
+  const ranAnalytics = { value: false };
+  const ranClarity = { value: false };
+  const fakeWindow = {
+    location: loc,
+    history: hist,
+    sessionStorage: {
+      getItem(key) {
+        return storage.has(key) ? storage.get(key) : null;
+      },
+      setItem(key, value) {
+        storage.set(key, String(value));
+      },
+    },
+    URL,
+  };
+  // eslint-disable-next-line no-new-func
+  const runScrub = new Function(
+    "window",
+    "location",
+    "history",
+    "sessionStorage",
+    "URL",
+    `${scrubSource}\n; return { href: location.href, state: history.state };`,
+  );
+  const afterScrub = runScrub(
+    fakeWindow,
+    fakeWindow.location,
+    fakeWindow.history,
+    fakeWindow.sessionStorage,
+    URL,
+  );
+  assert.equal(afterScrub.href.includes("pre-clarity-secret"), false);
+  assert.equal(afterScrub.href.includes("capability_keywords"), false);
+  assert.equal(afterScrub.href.includes("jet_vac_truck"), false);
+  assert.match(afterScrub.href, /[?&]beta=capability-compare/);
+  assert.equal(ranAnalytics.value, false, "analytics must not have run yet");
+  assert.equal(ranClarity.value, false, "clarity must not have run yet");
+  // Simulate collectors reading href only after the sync scrub.
+  ranAnalytics.value = true;
+  ranClarity.value = true;
+  assert.equal(url.href.includes("pre-clarity-secret"), false);
+  assert.deepEqual(hist.state?.capabilityCompareProfile?.capability_keywords, [
+    "pre-clarity-secret",
+  ]);
+});
+
 test("capability profile persists across sessionStorage remount (Back)", () => {
   const storage = new FakeStorage();
   const typed = profileFromFormValues({
