@@ -4,7 +4,11 @@ import { test } from "node:test";
 import {
   createDigestShadowRebuild,
   handleDigestShadowRebuildQueueMessage,
+  isDigestShadowStartedRecoveryDisabled,
   normalizeDigestShadowRebuildScope,
+  normalizeRebuildRunDay,
+  recoverStalledDigestShadowRuns,
+  startedRecoveryReceiptKey,
 } from "../src/digest_shadow_rebuild.mjs";
 
 const NOW = new Date("2026-09-21T14:00:00.000Z");
@@ -40,6 +44,13 @@ class Statement {
       if (this.sql.includes("digest_id >")) return items.filter((item) => item.digest_id > this.args[1])
         .sort((a, b) => a.digest_id.localeCompare(b.digest_id))[0] || null;
       return items.find((item) => item.digest_id === this.args[1]) || null;
+    }
+    if (this.sql.includes("digest_shadow_rebuild_runs")
+      && this.sql.includes("run_day = ?")
+      && this.sql.includes("NOT IN")) {
+      return [...this.db.runs.values()].find((run) => (
+        run.run_day === this.args[0] && !new Set(["complete", "failed"]).has(run.status)
+      )) || null;
     }
     if (this.sql.includes("digest_shadow_rebuild_runs")) return this.db.runs.get(this.args[0]) || null;
     if (this.sql.includes("FROM digest_shadow_runs")) return this.db.mainRuns.get(this.args[0]) || null;
@@ -1109,4 +1120,207 @@ test('interrupted expansion resumes its sealed manifest and finalizes only after
       runTargetFn: async () => ({ previewId: message.digest_id, skipped: 'no-new' }) });
     assert.equal(f.sqlite.prepare('SELECT status FROM digest_shadow_rebuild_runs').get().status, 'complete');
   } finally { f.sqlite.close(); }
+});
+
+test("normalizeRebuildRunDay accepts YYYY-MM-DD and defaults to now", () => {
+  assert.equal(normalizeRebuildRunDay(null, NOW), "2026-09-21");
+  assert.equal(normalizeRebuildRunDay("2026-10-19", NOW), "2026-10-19");
+  assert.throws(() => normalizeRebuildRunDay("10-19", NOW), /YYYY-MM-DD/);
+});
+
+test("createDigestShadowRebuild can target a historical run day", async () => {
+  const DB = new FakeD1();
+  const queueMessages = [];
+  DB.mainRuns.set("2026-10-19", {
+    run_day: "2026-10-19",
+    status: "STARTED",
+    ran_at: "2026-10-19T10:00:14.810Z",
+    summary_json: JSON.stringify({
+      run_day: "2026-10-19",
+      status: "STARTED",
+      phase: "account_builds",
+      complete: false,
+      ran_at: "2026-10-19T10:00:14.810Z",
+      invocation_id: "digest-shadow:0 10 * * *:2026-10-19T10:00:14.810Z",
+    }),
+  });
+  const env = {
+    DB,
+    ALERT_STATE: kv(),
+    DIGEST_SHADOW_QUEUE: { async send(message) { queueMessages.push(message); } },
+  };
+  const created = await createDigestShadowRebuild(env, {
+    now: new Date("2026-10-20T13:00:00.000Z"),
+    runDay: "2026-10-19",
+  });
+  assert.equal(created.run_day, "2026-10-19");
+  assert.equal(created.status, "queued");
+  const run = DB.runs.get(created.run_id);
+  assert.equal(run.run_day, "2026-10-19");
+  assert.equal(run.created_at, "2026-10-19T10:00:00.000Z");
+  assert.equal(queueMessages[0].type, "expand");
+});
+
+test("recoverStalledDigestShadowRuns enqueues unscoped rebuild after grace", async () => {
+  const DB = new FakeD1();
+  const ALERT_STATE = kv();
+  const queueMessages = [];
+  DB.mainRuns.set("2026-10-19", {
+    run_day: "2026-10-19",
+    status: "STARTED",
+    ran_at: "2026-10-19T10:00:14.810Z",
+    summary_json: JSON.stringify({
+      run_day: "2026-10-19",
+      status: "STARTED",
+      phase: "account_builds",
+      evaluated_count: 2,
+      complete: false,
+      ran_at: "2026-10-19T10:00:14.810Z",
+      progress_at: "2026-10-19T10:03:15.741Z",
+      invocation_id: "digest-shadow:0 10 * * *:2026-10-19T10:00:14.810Z",
+    }),
+  });
+  const env = {
+    DB,
+    ALERT_STATE,
+    DIGEST_SHADOW_QUEUE: { async send(message) { queueMessages.push(message); } },
+  };
+  const result = await recoverStalledDigestShadowRuns(env, {
+    now: new Date("2026-10-19T10:20:00.000Z"),
+  });
+  assert.equal(result.ok, true);
+  assert.equal(result.disabled, false);
+  const enqueued = result.actions.find((row) => row.action === "enqueued");
+  assert.ok(enqueued);
+  assert.equal(enqueued.run_day, "2026-10-19");
+  assert.equal(enqueued.receipt.attempts, 1);
+  assert.equal(enqueued.receipt.schema, "cityscroll.digest-shadow-started-recovery.v1");
+  assert.equal(queueMessages.length, 1);
+  assert.equal(DB.runs.get(enqueued.queued.run_id).run_day, "2026-10-19");
+  const stored = JSON.parse(ALERT_STATE.values.get(startedRecoveryReceiptKey("2026-10-19")));
+  assert.equal(stored.rebuild_run_id, enqueued.queued.run_id);
+});
+
+test("recoverStalledDigestShadowRuns respects grace, kill switch, backoff, and concurrency", async () => {
+  assert.equal(isDigestShadowStartedRecoveryDisabled({}), false);
+  assert.equal(isDigestShadowStartedRecoveryDisabled({ DIGEST_SHADOW_STARTED_RECOVERY_DISABLED: "1" }), true);
+
+  const DB = new FakeD1();
+  const ALERT_STATE = kv();
+  DB.mainRuns.set("2026-10-19", {
+    run_day: "2026-10-19",
+    status: "STARTED",
+    ran_at: "2026-10-19T10:00:14.810Z",
+    summary_json: JSON.stringify({
+      run_day: "2026-10-19",
+      status: "STARTED",
+      ran_at: "2026-10-19T10:00:14.810Z",
+      invocation_id: "shadow:monday",
+    }),
+  });
+  const env = {
+    DB,
+    ALERT_STATE,
+    DIGEST_SHADOW_QUEUE: { async send() {} },
+  };
+
+  const withinGrace = await recoverStalledDigestShadowRuns(env, {
+    now: new Date("2026-10-19T10:05:00.000Z"),
+  });
+  assert.equal(withinGrace.actions.find((row) => row.run_day === "2026-10-19")?.reason, "within-grace");
+
+  const disabled = await recoverStalledDigestShadowRuns({
+    ...env,
+    DIGEST_SHADOW_STARTED_RECOVERY_DISABLED: "true",
+  }, { now: new Date("2026-10-19T10:20:00.000Z") });
+  assert.equal(disabled.disabled, true);
+
+  const first = await recoverStalledDigestShadowRuns(env, {
+    now: new Date("2026-10-19T10:20:00.000Z"),
+  });
+  const firstQueued = first.actions.find((row) => row.action === "enqueued");
+  assert.equal(firstQueued?.receipt.attempts, 1);
+
+  // Finish the first rebuild attempt so backoff (not concurrency) is what blocks.
+  DB.runs.get(firstQueued.queued.run_id).status = "failed";
+  const backoff = await recoverStalledDigestShadowRuns(env, {
+    now: new Date("2026-10-19T10:25:00.000Z"),
+  });
+  assert.equal(backoff.actions.find((row) => row.run_day === "2026-10-19")?.reason, "backoff");
+
+  // Past backoff, open a live rebuild to exercise the concurrency guard.
+  const second = await recoverStalledDigestShadowRuns(env, {
+    now: new Date("2026-10-19T10:40:00.000Z"),
+  });
+  const secondQueued = second.actions.find((row) => row.action === "enqueued");
+  assert.equal(secondQueued?.receipt.attempts, 2);
+  DB.runs.get(secondQueued.queued.run_id).status = "running";
+  const busy = await recoverStalledDigestShadowRuns(env, {
+    now: new Date("2026-10-19T11:00:00.000Z"),
+  });
+  assert.equal(busy.actions.find((row) => row.run_day === "2026-10-19")?.reason, "rebuild-in-flight");
+});
+
+test("recoverStalledDigestShadowRuns marks recovered when STARTED clears and escalates when attempts exhaust", async () => {
+  const DB = new FakeD1();
+  const ALERT_STATE = kv();
+  const env = {
+    DB,
+    ALERT_STATE,
+    DIGEST_SHADOW_QUEUE: { async send() {} },
+  };
+
+  ALERT_STATE.values.set(startedRecoveryReceiptKey("2026-10-19"), JSON.stringify({
+    schema: "cityscroll.digest-shadow-started-recovery.v1",
+    run_day: "2026-10-19",
+    status: "queued",
+    attempts: 1,
+    max_attempts: 3,
+    last_attempt_at: "2026-10-19T10:20:00.000Z",
+    rebuild_run_id: "digest-shadow-rebuild:prior",
+  }));
+  DB.mainRuns.set("2026-10-19", {
+    run_day: "2026-10-19",
+    status: "READY",
+    summary_json: JSON.stringify({ run_day: "2026-10-19", status: "READY", complete: true }),
+  });
+  const recovered = await recoverStalledDigestShadowRuns(env, {
+    now: new Date("2026-10-19T13:00:00.000Z"),
+  });
+  assert.equal(recovered.actions.find((row) => row.action === "recovered")?.run_day, "2026-10-19");
+  assert.equal(JSON.parse(ALERT_STATE.values.get(startedRecoveryReceiptKey("2026-10-19"))).status, "recovered");
+
+  DB.mainRuns.set("2026-10-12", {
+    run_day: "2026-10-12",
+    status: "STARTED",
+    ran_at: "2026-10-12T10:00:14.810Z",
+    summary_json: JSON.stringify({
+      run_day: "2026-10-12",
+      status: "STARTED",
+      ran_at: "2026-10-12T10:00:14.810Z",
+      invocation_id: "shadow:old-monday",
+    }),
+  });
+  ALERT_STATE.values.set(startedRecoveryReceiptKey("2026-10-12"), JSON.stringify({
+    schema: "cityscroll.digest-shadow-started-recovery.v1",
+    run_day: "2026-10-12",
+    status: "queued_final",
+    attempts: 3,
+    max_attempts: 3,
+    last_attempt_at: "2026-10-12T12:00:00.000Z",
+    rebuild_run_id: "digest-shadow-rebuild:final",
+  }));
+  const failureCalls = [];
+  const exhausted = await recoverStalledDigestShadowRuns(env, {
+    now: new Date("2026-10-12T13:00:00.000Z"),
+    persistFailureFn: async (_env, error, options) => {
+      failureCalls.push({ error: String(error?.message || error), options });
+      return { status: "NEEDS_ATTENTION", write_accepted: true };
+    },
+  });
+  assert.equal(exhausted.actions.find((row) => row.action === "exhausted")?.run_day, "2026-10-12");
+  assert.equal(failureCalls.length, 1);
+  assert.match(failureCalls[0].error, /recovery attempts exhausted/);
+  assert.equal(failureCalls[0].options.invocationId, "shadow:old-monday");
+  assert.equal(JSON.parse(ALERT_STATE.values.get(startedRecoveryReceiptKey("2026-10-12"))).status, "exhausted");
 });

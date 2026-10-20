@@ -110,7 +110,12 @@ import {
   runBudgetedNoticeFreshness,
   runDigestShadow,
 } from "./digest_shadow.mjs";
-import { handleDigestShadowRebuildQueueMessage, handleDigestShadowRebuildDeadLetter, reconcileStaleDigestShadowRebuilds } from "./digest_shadow_rebuild.mjs";
+import {
+  handleDigestShadowRebuildQueueMessage,
+  handleDigestShadowRebuildDeadLetter,
+  reconcileStaleDigestShadowRebuilds,
+  recoverStalledDigestShadowRuns,
+} from "./digest_shadow_rebuild.mjs";
 import { handleNearYou } from "./near_you.mjs";
 import { isNearYouDeferredPath, isNearYouDocumentPath } from "../../site/near_you_scope_runtime.mjs";
 import { handleFollowing } from "./following.mjs";
@@ -507,7 +512,21 @@ const worker = {
     const shadowReconciliation = reconcileStaleDigestShadowRebuilds(env).catch((error) => {
       console.error("digest shadow stale reconciliation failed", String(error?.message || error));
     });
-    ctx.waitUntil(Promise.all([searchUsageRefresh, shadowReconciliation]));
+    // Aged STARTED rehearsals (Monday-stall shape) enqueue the existing checkpointed
+    // rebuild queue. Runs beside stale-rebuild reconciliation on every cron window.
+    const shadowStartedRecovery = recoverStalledDigestShadowRuns(env).then((result) => {
+      if (result?.disabled) return;
+      const noteworthy = (result?.actions || []).filter((row) => row.action !== "skipped");
+      if (noteworthy.length) {
+        console.log("digest shadow started recovery:", JSON.stringify({
+          ok: result.ok,
+          actions: noteworthy,
+        }));
+      }
+    }).catch((error) => {
+      console.error("digest shadow started recovery failed", String(error?.message || error));
+    });
+    ctx.waitUntil(Promise.all([searchUsageRefresh, shadowReconciliation, shadowStartedRecovery]));
     // Morning live-derived caches. Council Events acquisition runs first so the
     // shared meeting view, route slices, Search, Now, and later alert replay
     // consume the same vintage instead of yesterday's snapshot.

@@ -114,6 +114,7 @@ import { readDigestShadow } from "./digest_shadow.mjs";
 import {
   createDigestShadowRebuild,
   normalizeDigestShadowRebuildScope,
+  normalizeRebuildRunDay,
   readDigestShadowRebuildStatus,
 } from "./digest_shadow_rebuild.mjs";
 import { handlePrivateStats } from "./stats.mjs";
@@ -1876,7 +1877,13 @@ export async function handleAdminDigestShadow(req, env, {
       } catch (error) {
         return json({ error: "invalid-affected-digest-ids", detail: String(error?.message || error) }, 400);
       }
-      const queued = await enqueueRebuild(env, { affectedDigestIds, now });
+      let runDay;
+      try {
+        runDay = normalizeRebuildRunDay(body.day, now);
+      } catch (error) {
+        return json({ error: "invalid-day", detail: String(error?.message || error) }, 400);
+      }
+      const queued = await enqueueRebuild(env, { affectedDigestIds, now, runDay });
       const statusUrl = new URL(req.url);
       statusUrl.search = "";
       statusUrl.searchParams.set("run_id", queued.run_id);
