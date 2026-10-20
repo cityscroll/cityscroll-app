@@ -22,6 +22,22 @@ export const PROCUREMENT_PROGRAM_JOURNEY_SCHEMA =
 
 export const PROGRAM_HISTORY_BETA_SLUG = "program-history";
 
+/** Retained corpus notices always offered when the live corpus cannot load. */
+export const PROGRAM_HISTORY_SOURCE_LINKS = Object.freeze([
+  Object.freeze({
+    notice_id: "20220719104",
+    href: "https://cityscroll.org/notices/20220719104/",
+  }),
+  Object.freeze({
+    notice_id: "20240417107",
+    href: "https://cityscroll.org/notices/20240417107/",
+  }),
+  Object.freeze({
+    notice_id: "20260708004",
+    href: "https://cityscroll.org/notices/20260708004/",
+  }),
+]);
+
 export const DEFAULT_TRAINING_PROFILE = Object.freeze({
   name: "Workforce training nonprofit",
   capability_keywords: Object.freeze(["job training", "employer placement"]),
@@ -121,6 +137,7 @@ export function buildProgramJourney({
       source_role: PROGRAM_SOURCE_ROLE,
       load_error: String(loadError),
       retry_available: true,
+      source_links: PROGRAM_HISTORY_SOURCE_LINKS,
       records: Object.freeze([]),
       relations: Object.freeze([]),
       open_bid_cta: false,
@@ -256,12 +273,28 @@ function renderProfileForm(profile) {
 </form>`;
 }
 
+function renderSourceLinks(links = PROGRAM_HISTORY_SOURCE_LINKS) {
+  const items = (links || [])
+    .map(
+      (link) =>
+        `<li><a href="${esc(link.href)}" rel="noopener noreferrer">${esc(link.notice_id)}</a></li>`,
+    )
+    .join("\n");
+  return `<div class="program-source-links" data-program-source-links>
+  <p>Published award notices remain available while the corpus is unreachable:</p>
+  <ul>
+${items}
+  </ul>
+</div>`;
+}
+
 export function renderProgramJourneyHtml(journey, { headingId = "program-history-heading" } = {}) {
   if (journey.load_error) {
-    return `<section class="program-journey" data-program-journey data-open-bid-cta="false" aria-labelledby="${esc(headingId)}">
+    return `<section class="program-journey" data-program-journey data-open-bid-cta="false" data-load-error="true" aria-labelledby="${esc(headingId)}">
   ${renderProfileForm(journey.profile)}
-  <p role="alert">Could not load the award corpus (${esc(journey.load_error)}).</p>
+  <p role="alert">Could not load the award corpus (${esc(journey.load_error)}). Your profile answers are preserved.</p>
   <p><button type="button" data-program-retry>Retry</button></p>
+  ${renderSourceLinks(journey.source_links || PROGRAM_HISTORY_SOURCE_LINKS)}
   <p><a href="/browse/contracts/">Back to Contracts Browse</a></p>
 </section>`;
   }
