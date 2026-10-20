@@ -311,20 +311,27 @@ export function writeCapabilityProfileToStorage(storage, profile) {
   }
 }
 
+/** Query keys that must never carry capability-profile answers (Clarity sees the URL). */
+export const CAPABILITY_PROFILE_QUERY_KEYS = Object.freeze([
+  "capability_keywords",
+  "jet_vac_truck",
+  "landscaping",
+]);
+
+/** history.state field for the capability-compare form across Back. */
+export const CAPABILITY_COMPARE_HISTORY_STATE_KEY = "capabilityCompareProfile";
+
 /**
  * True when the search params carry at least one explicit profile field.
  */
 export function searchParamsHaveCapabilityProfile(params) {
   if (!params || typeof params.get !== "function") return false;
-  return (
-    params.has("capability_keywords") ||
-    params.has("jet_vac_truck") ||
-    params.has("landscaping")
-  );
+  return CAPABILITY_PROFILE_QUERY_KEYS.some((key) => params.has(key));
 }
 
 /**
  * Build a profile from URL search params when profile fields are present.
+ * Legacy bookmarks only — new writes must not put answers in the URL.
  */
 export function capabilityProfileFromSearchParams(params) {
   if (!searchParamsHaveCapabilityProfile(params)) return null;
@@ -336,8 +343,19 @@ export function capabilityProfileFromSearchParams(params) {
 }
 
 /**
+ * Remove profile fields from URL search params (mutates and returns params).
+ * Keeps non-profile params such as beta=.
+ */
+export function stripCapabilityProfileFromSearchParams(params) {
+  if (!params || typeof params.delete !== "function") return params;
+  for (const key of CAPABILITY_PROFILE_QUERY_KEYS) params.delete(key);
+  return params;
+}
+
+/**
  * Copy profile fields onto URL search params (mutates and returns params).
- * Keeps existing non-profile params such as beta=.
+ * Kept for regression tests that prove stripping undoes a legacy write.
+ * Production boot must never call this for persistence.
  */
 export function applyCapabilityProfileToSearchParams(params, profile) {
   if (!params || typeof params.set !== "function") return params;
@@ -358,21 +376,111 @@ export function applyCapabilityProfileToSearchParams(params, profile) {
 }
 
 /**
- * Resolve the initial profile: URL wins, then sessionStorage, then the default.
+ * Read a profile from history.state when present.
+ */
+export function capabilityProfileFromHistoryState(historyState) {
+  if (!historyState || typeof historyState !== "object") return null;
+  return parseCapabilityProfile(historyState[CAPABILITY_COMPARE_HISTORY_STATE_KEY]);
+}
+
+/**
+ * Merge a profile into a history.state object (does not touch the URL).
+ */
+export function applyCapabilityProfileToHistoryState(historyState, profile) {
+  const base =
+    historyState && typeof historyState === "object" && !Array.isArray(historyState)
+      ? { ...historyState }
+      : {};
+  base[CAPABILITY_COMPARE_HISTORY_STATE_KEY] = {
+    capability_keywords: Array.isArray(profile?.capability_keywords)
+      ? profile.capability_keywords.map((kw) => String(kw).trim()).filter(Boolean)
+      : [],
+    jet_vac_truck: profile?.jet_vac_truck == null ? null : Boolean(profile.jet_vac_truck),
+    landscaping: profile?.landscaping == null ? null : Boolean(profile.landscaping),
+  };
+  return base;
+}
+
+/**
+ * Migrate any legacy profile query params into sessionStorage + history.state,
+ * then strip them from the URL via replaceState before analytics can read them.
+ * Returns true when the URL had profile fields that were stripped.
+ */
+export function scrubCapabilityProfileFromLocation({
+  location: loc = globalThis.location,
+  history: hist = globalThis.history,
+  storage = null,
+} = {}) {
+  if (!loc || !hist || typeof hist.replaceState !== "function") return false;
+  let url;
+  try {
+    url = new URL(loc.href);
+  } catch {
+    return false;
+  }
+  if (!searchParamsHaveCapabilityProfile(url.searchParams)) return false;
+  const migrated = capabilityProfileFromSearchParams(url.searchParams);
+  if (migrated) {
+    writeCapabilityProfileToStorage(storage, migrated);
+  }
+  stripCapabilityProfileFromSearchParams(url.searchParams);
+  const nextState = applyCapabilityProfileToHistoryState(
+    hist.state,
+    migrated || readCapabilityProfileFromStorage(storage) || DEFAULT_DRAIN_PROFILE,
+  );
+  const nextUrl = `${url.pathname}${url.search}${url.hash}`;
+  hist.replaceState(nextState, "", nextUrl);
+  return true;
+}
+
+/**
+ * Resolve the initial profile: history.state, then sessionStorage, then the default.
+ * Call scrubCapabilityProfileFromLocation first so legacy URL answers never stay in href.
  */
 export function resolveInitialCapabilityProfile({
-  searchParams = null,
+  historyState = null,
   storage = null,
   fallback = DEFAULT_DRAIN_PROFILE,
 } = {}) {
-  const fromUrl = capabilityProfileFromSearchParams(searchParams);
-  if (fromUrl) return fromUrl;
+  const fromHistory = capabilityProfileFromHistoryState(historyState);
+  if (fromHistory) return fromHistory;
   const fromStorage = readCapabilityProfileFromStorage(storage);
   if (fromStorage) return fromStorage;
   return {
     ...fallback,
     capability_keywords: [...(fallback.capability_keywords || [])],
   };
+}
+
+/**
+ * Persist profile to sessionStorage + history.state and ensure the URL has no
+ * profile query fields. Never writes answers into location.search.
+ */
+export function persistCapabilityProfilePrivately({
+  profile,
+  storage = null,
+  location: loc = globalThis.location,
+  history: hist = globalThis.history,
+  ensureBeta = true,
+} = {}) {
+  writeCapabilityProfileToStorage(storage, profile);
+  if (!loc || !hist || typeof hist.replaceState !== "function") {
+    return { href: loc?.href ?? null, state: hist?.state ?? null };
+  }
+  let url;
+  try {
+    url = new URL(loc.href);
+  } catch {
+    return { href: loc.href, state: hist.state };
+  }
+  stripCapabilityProfileFromSearchParams(url.searchParams);
+  if (ensureBeta && !url.searchParams.get("beta")) {
+    url.searchParams.set("beta", CAPABILITY_COMPARE_BETA_SLUG);
+  }
+  const nextState = applyCapabilityProfileToHistoryState(hist.state, profile);
+  const nextUrl = `${url.pathname}${url.search}${url.hash}`;
+  hist.replaceState(nextState, "", nextUrl);
+  return { href: nextUrl, state: nextState };
 }
 
 /**

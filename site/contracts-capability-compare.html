@@ -23,6 +23,9 @@
 <link rel="stylesheet" href="brand.css">
 <link rel="stylesheet" href="procurement_capability_compare.css" data-route-style="procurement_capability_compare.css">
 <script src="i18n.js?v=__I18N_ASSET_VERSION__"></script>
+<!-- Classic sync scrub BEFORE analytics/clarity so legacy profile query params
+     are stripped from location.href before those collectors can read it. -->
+<script src="capability-profile-scrub.js"></script>
 <script defer src="beta_flags.js?v=1.0.0"></script>
 <script type="module" src="analytics.js?v=1.4.0"></script>
 <script defer src="clarity.js?v=1.0.0"></script>

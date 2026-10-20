@@ -2,15 +2,19 @@
  * Browser boot for the opt-in capability-compare pilot page.
  * Default off: without the beta flag the page explains how to enable it and
  * does not run the comparison. Pursuit notes and watches are never touched.
+ *
+ * Capability answers stay in sessionStorage + history.state only — never the URL —
+ * so session analytics that post location.href cannot collect the form.
  */
 
 import {
   CAPABILITY_COMPARE_BETA_SLUG,
-  applyCapabilityProfileToSearchParams,
   buildCapabilityJourney,
+  persistCapabilityProfilePrivately,
   profileFromFormValues,
   renderCapabilityJourneyHtml,
   resolveInitialCapabilityProfile,
+  scrubCapabilityProfileFromLocation,
   writeCapabilityProfileToStorage,
 } from "../procurement_capability_journey.mjs";
 
@@ -25,16 +29,17 @@ function sessionStore() {
 }
 
 function persistProfile(profile) {
-  writeCapabilityProfileToStorage(sessionStore(), profile);
   try {
-    const url = new URL(location.href);
-    applyCapabilityProfileToSearchParams(url.searchParams, profile);
-    if (!url.searchParams.get("beta")) {
-      url.searchParams.set("beta", CAPABILITY_COMPARE_BETA_SLUG);
-    }
-    history.replaceState(history.state, "", `${url.pathname}${url.search}${url.hash}`);
+    persistCapabilityProfilePrivately({
+      profile,
+      storage: sessionStore(),
+      location: globalThis.location,
+      history: globalThis.history,
+      ensureBeta: true,
+    });
   } catch {
-    // History/URL sync is best-effort; sessionStorage is the Back remount source.
+    // History sync is best-effort; sessionStorage remains the Back remount source.
+    writeCapabilityProfileToStorage(sessionStore(), profile);
   }
 }
 
@@ -146,13 +151,17 @@ export async function bootCapabilityCompare(root = document.getElementById("capa
     mountOffState(root);
     return { active: false };
   }
-  const searchParams = new URLSearchParams(location.search);
-  const profile = resolveInitialCapabilityProfile({
-    searchParams,
+  // Strip legacy profile query params synchronously before any await / analytics.
+  scrubCapabilityProfileFromLocation({
+    location: globalThis.location,
+    history: globalThis.history,
     storage: sessionStore(),
   });
-  // Mirror the resolved profile into sessionStorage so a later Back remount
-  // still restores when the URL was stripped of profile fields.
+  const profile = resolveInitialCapabilityProfile({
+    historyState: globalThis.history?.state,
+    storage: sessionStore(),
+  });
+  // Mirror into sessionStorage so a later Back remount restores without the URL.
   writeCapabilityProfileToStorage(sessionStore(), profile);
   const state = {
     profile,

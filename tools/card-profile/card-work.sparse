@@ -278,6 +278,7 @@
 /site/calendar_occurrence.mjs
 /site/calendar_subscription.mjs
 /site/canonical_entity_interpretation.mjs
+/site/capability-profile-scrub.js
 /site/capability_discovery_contract.mjs
 /site/cardinality_adaptive_facets.mjs
 /site/carto_basemap.mjs

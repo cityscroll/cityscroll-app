@@ -145,6 +145,7 @@
     "site/calendar_subscription.mjs",
     "site/canonical_entity_interpretation.mjs",
     "site/capability_discovery_contract.mjs",
+    "site/capability-profile-scrub.js",
     "site/cardinality_adaptive_facets.mjs",
     "site/carto_basemap.mjs",
     "site/ccrb_board_calendar.mjs",
