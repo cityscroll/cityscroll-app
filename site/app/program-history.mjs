@@ -2,20 +2,49 @@
  * Browser boot for the opt-in program-history pilot page.
  * Default off: without the beta flag the page explains how to enable it.
  * Pursuit notes and watches are never touched.
+ *
+ * Capability answers stay in sessionStorage + history.state only — never the URL —
+ * so session analytics that post location.href cannot collect the form, and Back
+ * remount restores the typed profile.
  */
 
 import {
   PROGRAM_HISTORY_BETA_SLUG,
-  DEFAULT_TRAINING_PROFILE,
   buildProgramJourney,
+  persistProgramProfilePrivately,
   profileFromFormValues,
   renderProgramJourneyHtml,
+  resolveInitialProgramProfile,
+  scrubProgramProfileFromLocation,
+  writeProgramProfileToStorage,
 } from "../procurement_program_journey.mjs";
 
 const CORPUS_URL = new URL(
   "../data/procurement_program_capabilities_corpus.json",
   import.meta.url,
 );
+
+function sessionStore() {
+  try {
+    return globalThis.sessionStorage ?? null;
+  } catch {
+    return null;
+  }
+}
+
+function persistProfile(profile) {
+  try {
+    persistProgramProfilePrivately({
+      profile,
+      storage: sessionStore(),
+      location: globalThis.location,
+      history: globalThis.history,
+      ensureBeta: true,
+    });
+  } catch {
+    writeProgramProfileToStorage(sessionStore(), profile);
+  }
+}
 
 function flagIsOn() {
   if (globalThis.CROL_BETA_FLAG === PROGRAM_HISTORY_BETA_SLUG) return true;
@@ -75,6 +104,7 @@ function bindForm(root, state, redraw) {
       employer_placement: data.get("employer_placement"),
       roof_installation_crew: data.get("roof_installation_crew"),
     });
+    persistProfile(state.profile);
     redraw();
   });
   const retry = root.querySelector("[data-program-retry]");
@@ -124,8 +154,19 @@ export async function bootProgramHistory(
     mountOffState(root);
     return { active: false };
   }
+  // Strip legacy profile query params synchronously before any await / analytics.
+  scrubProgramProfileFromLocation({
+    location: globalThis.location,
+    history: globalThis.history,
+    storage: sessionStore(),
+  });
+  const profile = resolveInitialProgramProfile({
+    historyState: globalThis.history?.state,
+    storage: sessionStore(),
+  });
+  writeProgramProfileToStorage(sessionStore(), profile);
   const state = {
-    profile: { ...DEFAULT_TRAINING_PROFILE },
+    profile,
     records: [],
     loadError: null,
   };

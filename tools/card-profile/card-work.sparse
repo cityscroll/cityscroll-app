@@ -756,6 +756,7 @@
 /site/preview_federated_form_factor.mjs
 /site/primary_document_view.mjs
 /site/process_conformance.mjs
+/site/program-history-profile-scrub.js
 /site/procurement_alert_atom.mjs
 /site/procurement_browse_capability_index.mjs
 /site/procurement_browse_population_shards.mjs

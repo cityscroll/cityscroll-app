@@ -607,6 +607,7 @@
     "site/product_updates_delivery.mjs",
     "site/product_updates_honesty.mjs",
     "site/product_updates_source.mjs",
+    "site/program-history-profile-scrub.js",
     "site/project_calendar.mjs",
     "site/project_connections.mjs",
     "site/property_action_character.mjs",
