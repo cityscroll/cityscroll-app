@@ -7,11 +7,19 @@ import { fileURLToPath } from "node:url";
 
 import {
   CAPABILITY_COMPARE_BETA_SLUG,
+  CAPABILITY_COMPARE_PROFILE_STORAGE_KEY,
   DEFAULT_DRAIN_PROFILE,
+  applyCapabilityProfileToSearchParams,
   buildCapabilityJourney,
+  capabilityProfileFromSearchParams,
   journeyHtmlOmitsOpenBidCta,
+  parseCapabilityProfile,
   profileFromFormValues,
+  readCapabilityProfileFromStorage,
   renderCapabilityJourneyHtml,
+  resolveInitialCapabilityProfile,
+  serializeCapabilityProfile,
+  writeCapabilityProfileToStorage,
 } from "../site/procurement_capability_journey.mjs";
 
 import {
@@ -195,4 +203,70 @@ test("standalone compare page ships with noscript source links", () => {
   assert.match(html, /notices\/20251008021/);
   assert.match(html, /beta_flags\.js/);
   assert.match(html, /app\/capability-compare\.mjs/);
+});
+
+test("capability profile persists across sessionStorage remount (Back)", () => {
+  const storage = new FakeStorage();
+  const typed = profileFromFormValues({
+    capability_keywords: "jet vac, catch basin",
+    jet_vac_truck: "true",
+    landscaping: "false",
+  });
+  assert.equal(writeCapabilityProfileToStorage(storage, typed), true);
+  assert.ok(storage.getItem(CAPABILITY_COMPARE_PROFILE_STORAGE_KEY));
+
+  const restored = readCapabilityProfileFromStorage(storage);
+  assert.deepEqual(restored.capability_keywords, ["jet vac", "catch basin"]);
+  assert.equal(restored.jet_vac_truck, true);
+  assert.equal(restored.landscaping, false);
+
+  // Remount path: URL has only beta, storage carries the typed form.
+  const remount = resolveInitialCapabilityProfile({
+    searchParams: new URLSearchParams("beta=capability-compare"),
+    storage,
+  });
+  assert.deepEqual(remount.capability_keywords, ["jet vac", "catch basin"]);
+  assert.equal(remount.jet_vac_truck, true);
+  assert.equal(remount.landscaping, false);
+});
+
+test("URL profile fields win over sessionStorage and round-trip", () => {
+  const storage = new FakeStorage();
+  writeCapabilityProfileToStorage(
+    storage,
+    profileFromFormValues({
+      capability_keywords: "from-storage",
+      jet_vac_truck: "false",
+      landscaping: "false",
+    }),
+  );
+  const params = new URLSearchParams(
+    "beta=capability-compare&capability_keywords=from-url%2C+hydro&jet_vac_truck=true",
+  );
+  const fromUrl = capabilityProfileFromSearchParams(params);
+  assert.deepEqual(fromUrl.capability_keywords, ["from-url", "hydro"]);
+  assert.equal(fromUrl.jet_vac_truck, true);
+
+  const resolved = resolveInitialCapabilityProfile({ searchParams: params, storage });
+  assert.deepEqual(resolved.capability_keywords, ["from-url", "hydro"]);
+  assert.equal(resolved.jet_vac_truck, true);
+
+  const next = new URLSearchParams("beta=capability-compare");
+  applyCapabilityProfileToSearchParams(next, resolved);
+  assert.equal(next.get("beta"), "capability-compare");
+  assert.match(next.get("capability_keywords"), /from-url/);
+  assert.equal(next.get("jet_vac_truck"), "true");
+
+  const roundTrip = parseCapabilityProfile(serializeCapabilityProfile(resolved));
+  assert.deepEqual(roundTrip.capability_keywords, ["from-url", "hydro"]);
+});
+
+test("resolveInitialCapabilityProfile falls back to the drain default", () => {
+  const profile = resolveInitialCapabilityProfile({
+    searchParams: new URLSearchParams("beta=capability-compare"),
+    storage: new FakeStorage(),
+  });
+  assert.deepEqual(profile.capability_keywords, [...DEFAULT_DRAIN_PROFILE.capability_keywords]);
+  assert.equal(profile.jet_vac_truck, false);
+  assert.equal(profile.landscaping, false);
 });

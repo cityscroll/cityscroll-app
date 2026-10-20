@@ -6,13 +6,37 @@
 
 import {
   CAPABILITY_COMPARE_BETA_SLUG,
-  DEFAULT_DRAIN_PROFILE,
+  applyCapabilityProfileToSearchParams,
   buildCapabilityJourney,
   profileFromFormValues,
   renderCapabilityJourneyHtml,
+  resolveInitialCapabilityProfile,
+  writeCapabilityProfileToStorage,
 } from "../procurement_capability_journey.mjs";
 
 const CORPUS_URL = new URL("../data/procurement_capability_compare_corpus.json", import.meta.url);
+
+function sessionStore() {
+  try {
+    return globalThis.sessionStorage ?? null;
+  } catch {
+    return null;
+  }
+}
+
+function persistProfile(profile) {
+  writeCapabilityProfileToStorage(sessionStore(), profile);
+  try {
+    const url = new URL(location.href);
+    applyCapabilityProfileToSearchParams(url.searchParams, profile);
+    if (!url.searchParams.get("beta")) {
+      url.searchParams.set("beta", CAPABILITY_COMPARE_BETA_SLUG);
+    }
+    history.replaceState(history.state, "", `${url.pathname}${url.search}${url.hash}`);
+  } catch {
+    // History/URL sync is best-effort; sessionStorage is the Back remount source.
+  }
+}
 
 function flagIsOn() {
   if (globalThis.CROL_BETA_FLAG === CAPABILITY_COMPARE_BETA_SLUG) return true;
@@ -71,6 +95,7 @@ function bindForm(root, state, redraw) {
       jet_vac_truck: data.get("jet_vac_truck"),
       landscaping: data.get("landscaping"),
     });
+    persistProfile(state.profile);
     redraw();
   });
   const retry = root.querySelector("[data-capability-retry]");
@@ -121,8 +146,16 @@ export async function bootCapabilityCompare(root = document.getElementById("capa
     mountOffState(root);
     return { active: false };
   }
+  const searchParams = new URLSearchParams(location.search);
+  const profile = resolveInitialCapabilityProfile({
+    searchParams,
+    storage: sessionStore(),
+  });
+  // Mirror the resolved profile into sessionStorage so a later Back remount
+  // still restores when the URL was stripped of profile fields.
+  writeCapabilityProfileToStorage(sessionStore(), profile);
   const state = {
-    profile: { ...DEFAULT_DRAIN_PROFILE },
+    profile,
     records: [],
     loadError: null,
   };

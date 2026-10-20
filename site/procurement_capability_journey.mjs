@@ -26,6 +26,10 @@ export const DEFAULT_DRAIN_PROFILE = Object.freeze({
   landscaping: false,
 });
 
+/** sessionStorage key for the capability-compare form across Back / remount. */
+export const CAPABILITY_COMPARE_PROFILE_STORAGE_KEY =
+  "crol:capability-compare:profile.v1";
+
 function esc(value) {
   return String(value ?? "")
     .replace(/&/g, "&amp;")
@@ -240,6 +244,134 @@ export function profileFromFormValues(values = {}) {
     capability_keywords: keywordsRaw.map((kw) => kw.trim()).filter(Boolean),
     jet_vac_truck: ternary(values.jet_vac_truck),
     landscaping: ternary(values.landscaping),
+  };
+}
+
+function ternaryParam(raw) {
+  if (raw === "true" || raw === true) return true;
+  if (raw === "false" || raw === false) return false;
+  return null;
+}
+
+/**
+ * Serialize a profile for sessionStorage (JSON). Omits the display name.
+ */
+export function serializeCapabilityProfile(profile = {}) {
+  return JSON.stringify({
+    capability_keywords: Array.isArray(profile.capability_keywords)
+      ? profile.capability_keywords.map((kw) => String(kw).trim()).filter(Boolean)
+      : [],
+    jet_vac_truck: profile.jet_vac_truck == null ? null : Boolean(profile.jet_vac_truck),
+    landscaping: profile.landscaping == null ? null : Boolean(profile.landscaping),
+  });
+}
+
+/**
+ * Parse a stored JSON profile. Returns null when the payload is missing or invalid.
+ */
+export function parseCapabilityProfile(raw) {
+  if (raw == null || raw === "") return null;
+  try {
+    const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
+    if (!parsed || typeof parsed !== "object") return null;
+    return profileFromFormValues({
+      capability_keywords: Array.isArray(parsed.capability_keywords)
+        ? parsed.capability_keywords.join(", ")
+        : parsed.capability_keywords,
+      jet_vac_truck: parsed.jet_vac_truck,
+      landscaping: parsed.landscaping,
+    });
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Read a persisted profile from a Storage-like object. Returns null when absent.
+ */
+export function readCapabilityProfileFromStorage(storage) {
+  if (!storage || typeof storage.getItem !== "function") return null;
+  try {
+    return parseCapabilityProfile(storage.getItem(CAPABILITY_COMPARE_PROFILE_STORAGE_KEY));
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Write a profile to a Storage-like object. No-ops when storage is unavailable.
+ */
+export function writeCapabilityProfileToStorage(storage, profile) {
+  if (!storage || typeof storage.setItem !== "function") return false;
+  try {
+    storage.setItem(CAPABILITY_COMPARE_PROFILE_STORAGE_KEY, serializeCapabilityProfile(profile));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * True when the search params carry at least one explicit profile field.
+ */
+export function searchParamsHaveCapabilityProfile(params) {
+  if (!params || typeof params.get !== "function") return false;
+  return (
+    params.has("capability_keywords") ||
+    params.has("jet_vac_truck") ||
+    params.has("landscaping")
+  );
+}
+
+/**
+ * Build a profile from URL search params when profile fields are present.
+ */
+export function capabilityProfileFromSearchParams(params) {
+  if (!searchParamsHaveCapabilityProfile(params)) return null;
+  return profileFromFormValues({
+    capability_keywords: params.get("capability_keywords") ?? "",
+    jet_vac_truck: ternaryParam(params.get("jet_vac_truck")),
+    landscaping: ternaryParam(params.get("landscaping")),
+  });
+}
+
+/**
+ * Copy profile fields onto URL search params (mutates and returns params).
+ * Keeps existing non-profile params such as beta=.
+ */
+export function applyCapabilityProfileToSearchParams(params, profile) {
+  if (!params || typeof params.set !== "function") return params;
+  const keywords = Array.isArray(profile?.capability_keywords)
+    ? profile.capability_keywords.join(", ")
+    : "";
+  if (keywords) params.set("capability_keywords", keywords);
+  else params.delete("capability_keywords");
+
+  const writeTernary = (key, value) => {
+    if (value === true) params.set(key, "true");
+    else if (value === false) params.set(key, "false");
+    else params.delete(key);
+  };
+  writeTernary("jet_vac_truck", profile?.jet_vac_truck);
+  writeTernary("landscaping", profile?.landscaping);
+  return params;
+}
+
+/**
+ * Resolve the initial profile: URL wins, then sessionStorage, then the default.
+ */
+export function resolveInitialCapabilityProfile({
+  searchParams = null,
+  storage = null,
+  fallback = DEFAULT_DRAIN_PROFILE,
+} = {}) {
+  const fromUrl = capabilityProfileFromSearchParams(searchParams);
+  if (fromUrl) return fromUrl;
+  const fromStorage = readCapabilityProfileFromStorage(storage);
+  if (fromStorage) return fromStorage;
+  return {
+    ...fallback,
+    capability_keywords: [...(fallback.capability_keywords || [])],
   };
 }
 
