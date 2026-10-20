@@ -49,6 +49,7 @@ It is included by every top-level site document and by the search shell:
 - `site/api.html`
 - `site/changelog.html`
 - `site/contracts-capability-compare.html`
+- `site/contracts-program-history.html`
 - `site/data.html`
 - `site/index.html`
 - `site/standards.html`

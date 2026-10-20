@@ -2,25 +2,25 @@
   "schema": "cityscroll.architecture.watermark-shard.v1",
   "id": "performance-observability",
   "owner": "performance-observability",
-  "updated_at": "2026-10-20T00:56:48Z",
-  "commit": "39af3c947221c00e8018feaa3dd98a4d63118c7b",
+  "updated_at": "2026-10-19T23:26:36-04:00",
+  "commit": "4db928196a77ec85e337b2526323fb044c204291",
   "value": {
     "catalog": {
       "schema": "cityscroll.performance_observability.v1",
       "version": "1.0.0",
       "metric_count": 13,
-      "registry_hash": "1a06875472125f285e640709f5960adc9819a73efc7a5cbd773d4cf4b0042a56"
+      "registry_hash": "7b160cf1bf494633efa34f11c4e8ec5ab027182fbf5f9557f1498f46ab84bde9"
     },
     "registry": {
       "version": "1.0.0",
       "manifest_version": "rum-surfaces-v1",
-      "surface_count": 40,
+      "surface_count": 41,
       "component_count": 20,
       "classifications": {
         "surfaces": {
           "instrumented": 6,
           "registered_no_data": 0,
-          "planned": 34,
+          "planned": 35,
           "not_user_facing": 0,
           "not_performance_relevant": 0,
           "intentionally_unmeasured": 0,

@@ -1,0 +1,313 @@
+/**
+ * Opt-in program-history journey for retained public awards (default off).
+ *
+ * Composes program-capability retrieval with a session-local profile form.
+ * Shows distinct award events, cited training and coating duties, and a
+ * sourced consortium route. Never forecasts a future opening, never sums
+ * award spend, never mutates pursuit notes, and never offers an open-bid CTA.
+ */
+
+import {
+  PROGRAM_SOURCE_ROLE,
+  PROGRAM_RELATION,
+  normalizeProgramProfile,
+  extractProgramCapabilities,
+  matchProgramRecords,
+  groupProgramHistory,
+  relationBetween,
+} from "./procurement_program_capabilities.mjs";
+
+export const PROCUREMENT_PROGRAM_JOURNEY_SCHEMA =
+  "cityscroll.procurement_program_journey.v1";
+
+export const PROGRAM_HISTORY_BETA_SLUG = "program-history";
+
+export const DEFAULT_TRAINING_PROFILE = Object.freeze({
+  name: "Workforce training nonprofit",
+  capability_keywords: Object.freeze(["job training", "employer placement"]),
+  job_training: true,
+  employer_placement: true,
+  roof_installation_crew: false,
+});
+
+function esc(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+function text(value) {
+  const s = String(value ?? "").trim();
+  return s || null;
+}
+
+function publishDate(record) {
+  const raw = text(record?.start_date) || text(record?.published_on);
+  if (!raw) return null;
+  return raw.slice(0, 10);
+}
+
+function assessCapabilities(profile, capabilities) {
+  const assessments = [];
+  for (const cap of capabilities) {
+    let state = "document_review_needed";
+    let wording = `Review the cited ${cap.label} passage in the published notice.`;
+    let service_gap = null;
+
+    if (cap.capability_id === "consortium_delivery") {
+      state = "document_review_needed";
+      wording =
+        "A consortium delivery route is cited on this award. Lead eligibility and staffing requirements stay document-review questions.";
+    } else if (
+      cap.kind === "program_identity" ||
+      cap.capability_id === "jobseeker_training"
+    ) {
+      if (profile.job_training === true) {
+        state = "supported_overlap";
+        wording = `Your stated job-training capability overlaps the cited ${cap.label} passage.`;
+      } else if (profile.job_training === false) {
+        state = "stated_capability_gap";
+        service_gap = cap.label;
+        wording = `You marked job training unavailable; this award cites ${cap.label}.`;
+      } else {
+        state = "unspecified";
+        wording = `Job training is unspecified for the cited ${cap.label} passage.`;
+      }
+    } else if (cap.capability_id === "reflective_coating") {
+      if (profile.roof_installation_crew === true) {
+        state = "supported_overlap";
+        wording =
+          "Your stated roof-installation capability overlaps the cited reflective coating passage.";
+      } else if (profile.roof_installation_crew === false) {
+        state = "stated_capability_gap";
+        service_gap = "physical roof coating delivery";
+        wording =
+          "You marked roof-installation crew unavailable; this award cites white, reflective coating delivery.";
+      } else {
+        state = "unspecified";
+        wording =
+          "Roof-installation capability is unspecified for the cited coating passage.";
+      }
+    }
+
+    assessments.push(
+      Object.freeze({
+        capability_id: cap.capability_id,
+        label: cap.label,
+        state,
+        service_gap,
+        wording,
+        citation: cap.citation,
+        ownership_required: null,
+        overall_eligibility: null,
+      }),
+    );
+  }
+  return Object.freeze(assessments);
+}
+
+export function buildProgramJourney({
+  profile = DEFAULT_TRAINING_PROFILE,
+  records = [],
+  loadError = null,
+} = {}) {
+  const normalized = normalizeProgramProfile(profile);
+  if (loadError) {
+    return Object.freeze({
+      schema: PROCUREMENT_PROGRAM_JOURNEY_SCHEMA,
+      profile: normalized,
+      source_role: PROGRAM_SOURCE_ROLE,
+      load_error: String(loadError),
+      retry_available: true,
+      records: Object.freeze([]),
+      relations: Object.freeze([]),
+      open_bid_cta: false,
+      combined_spend: null,
+      future_opening_predicted: false,
+      automatic_qualification: false,
+      pursuit_notes_mutated: false,
+    });
+  }
+
+  const match = matchProgramRecords({ profile: normalized, records });
+  const group = groupProgramHistory({ records });
+  const byId = Object.fromEntries(
+    (group.members || []).map((m) => [m.notice_id, m]),
+  );
+
+  const rows = (match.matches || []).map((m) => {
+    const member = byId[m.notice_id];
+    const record = m.record;
+    const capabilities = member?.capabilities || extractProgramCapabilities(record);
+    return Object.freeze({
+      notice_id: m.notice_id,
+      source_url: m.source_url,
+      agency_name: text(record.agency_name),
+      short_title: text(record.short_title),
+      award_status: text(record.type_of_notice_description) || "Award",
+      published_on: publishDate(record),
+      category_description: text(record.category_description),
+      pin: text(record.pin),
+      source_role: PROGRAM_SOURCE_ROLE,
+      assessments: assessCapabilities(normalized, capabilities),
+      preparation_actions: Object.freeze([
+        Object.freeze({
+          kind: "source_review",
+          label: "Review published notice",
+          href: m.source_url,
+        }),
+        Object.freeze({
+          kind: "preparation_question",
+          label: "Keep a preparation note for this buyer (local only)",
+          href: null,
+        }),
+      ]),
+    });
+  });
+
+  return Object.freeze({
+    schema: PROCUREMENT_PROGRAM_JOURNEY_SCHEMA,
+    profile: normalized,
+    source_role: PROGRAM_SOURCE_ROLE,
+    load_error: null,
+    retry_available: false,
+    records: Object.freeze(rows),
+    relations: group.relations,
+    open_bid_cta: false,
+    combined_spend: null,
+    future_opening_predicted: false,
+    automatic_qualification: false,
+    pursuit_notes_mutated: false,
+  });
+}
+
+function stateLabel(state) {
+  switch (state) {
+    case "supported_overlap":
+      return "Supported overlap";
+    case "stated_capability_gap":
+      return "Stated capability gap";
+    case "document_review_needed":
+      return "Document review needed";
+    case "unspecified":
+      return "Capability unspecified";
+    default:
+      return "Assessment";
+  }
+}
+
+function renderAssessment(assessment) {
+  const citation = assessment.citation || {};
+  return `<li class="program-assessment" data-state="${esc(assessment.state)}" data-capability="${esc(assessment.capability_id)}">
+  <p class="program-assessment-state"><strong>${esc(stateLabel(assessment.state))}</strong>${assessment.service_gap ? ` · ${esc(assessment.service_gap)}` : ""}</p>
+  <p class="program-assessment-wording">${esc(assessment.wording)}</p>
+  <p class="program-assessment-citation">Cited from <code>${esc(citation.field)}</code>: “${esc(citation.passage)}” · <a href="${esc(citation.url)}">${esc(citation.notice_id)}</a></p>
+</li>`;
+}
+
+function renderRecordCard(row) {
+  const assessments = (row.assessments || []).map(renderAssessment).join("\n");
+  const actions = (row.preparation_actions || [])
+    .map((action) => {
+      if (action.href) {
+        return `<li><a href="${esc(action.href)}" rel="noopener noreferrer">${esc(action.label)}</a></li>`;
+      }
+      return `<li><span>${esc(action.label)}</span></li>`;
+    })
+    .join("\n");
+  return `<article class="program-record" data-notice-id="${esc(row.notice_id)}" data-source-role="${esc(row.source_role)}">
+  <header>
+    <p class="program-record-meta">${esc(row.award_status)} · ${esc(row.category_description || "category not published")} · published ${esc(row.published_on || "date not published")}</p>
+    <h3>${esc(row.short_title)}</h3>
+    <p class="program-record-pin">PIN ${esc(row.pin || "not published")}</p>
+  </header>
+  <ul class="program-assessments">
+${assessments}
+  </ul>
+  <ul class="program-actions">
+${actions}
+  </ul>
+</article>`;
+}
+
+function renderProfileForm(profile) {
+  const keywords = (profile.capability_keywords || []).join(", ");
+  const yn = (value, name) => {
+    const yes = value === true ? "checked" : "";
+    const no = value === false ? "checked" : "";
+    return `<fieldset class="program-yn">
+  <legend>${esc(name.replaceAll("_", " "))}</legend>
+  <label><input type="radio" name="${esc(name)}" value="true" ${yes}> Yes</label>
+  <label><input type="radio" name="${esc(name)}" value="false" ${no}> No</label>
+</fieldset>`;
+  };
+  return `<form class="program-profile-form" data-program-profile-form>
+  <h2 id="program-history-heading">Program history comparison</h2>
+  <p class="program-form-help">Answers stay in this browser session. They do not change published award facts, predict a future opening, or alter any pursuit note you already saved.</p>
+  <label>Capability keywords
+    <input name="capability_keywords" value="${esc(keywords)}" />
+  </label>
+  ${yn(profile.job_training, "job_training")}
+  ${yn(profile.employer_placement, "employer_placement")}
+  ${yn(profile.roof_installation_crew, "roof_installation_crew")}
+  <button type="submit">Update comparison</button>
+</form>`;
+}
+
+export function renderProgramJourneyHtml(journey, { headingId = "program-history-heading" } = {}) {
+  if (journey.load_error) {
+    return `<section class="program-journey" data-program-journey data-open-bid-cta="false" aria-labelledby="${esc(headingId)}">
+  ${renderProfileForm(journey.profile)}
+  <p role="alert">Could not load the award corpus (${esc(journey.load_error)}).</p>
+  <p><button type="button" data-program-retry>Retry</button></p>
+  <p><a href="/browse/contracts/">Back to Contracts Browse</a></p>
+</section>`;
+  }
+  const cards = (journey.records || []).map(renderRecordCard).join("\n");
+  const relationBits = (journey.relations || [])
+    .map(
+      (r) =>
+        `<li data-relation="${esc(r.relation)}">${esc(r.a)} ↔ ${esc(r.b)}: ${esc(r.relation)}</li>`,
+    )
+    .join("\n");
+  return `<section class="program-journey" data-program-journey data-open-bid-cta="false" data-future-opening="false" aria-labelledby="${esc(headingId)}">
+  ${renderProfileForm(journey.profile)}
+  <ul class="program-relations" aria-label="Program relations">
+${relationBits}
+  </ul>
+  <div class="program-records">
+${cards}
+  </div>
+  <p><a href="/browse/contracts/">Back to Contracts Browse</a></p>
+</section>`;
+}
+
+export function profileFromFormValues(values = {}) {
+  const parseYn = (v) => {
+    if (v === true || v === "true") return true;
+    if (v === false || v === "false") return false;
+    return null;
+  };
+  const keywords = String(values.capability_keywords || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  return normalizeProgramProfile({
+    capability_keywords: keywords,
+    job_training: parseYn(values.job_training),
+    employer_placement: parseYn(values.employer_placement),
+    roof_installation_crew: parseYn(values.roof_installation_crew),
+  });
+}
+
+export function journeyHtmlOmitsOpenBidCta(html) {
+  const s = String(html || "").toLowerCase();
+  if (s.includes("open bid") || s.includes("submit a bid") || s.includes("bid now")) {
+    return false;
+  }
+  return true;
+}
+
+export { relationBetween, PROGRAM_RELATION };

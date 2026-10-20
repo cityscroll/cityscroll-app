@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/program-history-journey",
+  "status": "implemented",
+  "fingerprint": "program-history-journey.v1",
+  "updated_at": "2026-10-20T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "procurement-program-journey-contract",
+      "path": "site/procurement_program_journey.mjs"
+    },
+    {
+      "id": "procurement-program-journey-boot",
+      "path": "site/app/program-history.mjs"
+    },
+    {
+      "id": "procurement-program-journey-tests",
+      "path": "test/procurement_program_journey.test.mjs"
+    },
+    {
+      "id": "procurement-program-capabilities-corpus",
+      "path": "site/data/procurement_program_capabilities_corpus.json"
+    }
+  ]
+}

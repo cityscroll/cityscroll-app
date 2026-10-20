@@ -172,6 +172,7 @@ function syncMoneyDiscoveryCopy(){
   const signpost=document.getElementById("money-awards-signpost");
   if(signpost) signpost.hidden=modeKey==="award";
   syncCapabilityCompareEntry();
+  syncProgramHistoryEntry();
 }
 function syncCapabilityCompareEntry(){
   const host=document.getElementById("money-intro") || document.getElementById("money-intro-deck")?.parentElement;
@@ -190,6 +191,27 @@ function syncCapabilityCompareEntry(){
     const link=document.createElement("a");
     link.href="/contracts-capability-compare.html?beta=capability-compare";
     link.textContent=t("capability_compare_entry");
+    entry.append(link);
+    host.append(entry);
+  }
+}
+function syncProgramHistoryEntry(){
+  const host=document.getElementById("money-intro") || document.getElementById("money-intro-deck")?.parentElement;
+  if(!host) return;
+  let entry=document.getElementById("program-history-entry");
+  const enabled=globalThis.CROL_BETA_FLAG==="program-history"
+    || document.documentElement?.dataset?.betaFlag==="program-history";
+  if(!enabled){
+    entry?.remove();
+    return;
+  }
+  if(!entry){
+    entry=document.createElement("p");
+    entry.id="program-history-entry";
+    entry.className="program-history-entry";
+    const link=document.createElement("a");
+    link.href="/contracts-program-history.html?beta=program-history";
+    link.textContent=t("program_history_entry");
     entry.append(link);
     host.append(entry);
   }

@@ -117,6 +117,7 @@ export const PAGE_FAMILY_AI_CONTEXT = Object.freeze([
   Object.freeze({ surface_id: "browse-staffing", handoff: "general", family: null, reason: "Staffing browse has no exact public MCP tool binding." }),
   Object.freeze({ surface_id: "browse-zoning", handoff: "exact", family: "land", kind: "browse_land_projects", tools: Object.freeze(["browse_land_projects"]) }),
   Object.freeze({ surface_id: "capability-compare", handoff: "general", family: null, reason: "Capability compare is an opt-in award reading surface without an exact MCP identity." }),
+  Object.freeze({ surface_id: "program-history", handoff: "general", family: null, reason: "Program history is an opt-in award reading surface without an exact MCP identity." }),
   Object.freeze({ surface_id: "changelog", handoff: "general", family: null, reason: "Release notes are not a research scope." }),
   Object.freeze({ surface_id: "committee", handoff: "exact", family: "entities", kind: "entity", tools: Object.freeze(["get_entity_dossier", "get_person_or_organization"]) }),
   Object.freeze({ surface_id: "community-board", handoff: "exact", family: "entities", kind: "entity", tools: Object.freeze(["get_entity_dossier", "get_person_or_organization"]) }),

@@ -1,0 +1,47 @@
+.program-journey {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 1rem 1.25rem 2rem;
+}
+.program-form-help,
+.program-record-meta,
+.program-assessment-citation {
+  color: #444;
+}
+.program-profile-form label,
+.program-yn {
+  display: block;
+  margin: 0.75rem 0;
+}
+.program-records {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+.program-record {
+  border: 1px solid #d0d7de;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+}
+.program-assessments,
+.program-actions,
+.program-relations {
+  padding-left: 1.25rem;
+}
+.program-assessment[data-state="stated_capability_gap"] {
+  border-left: 3px solid #b54708;
+  padding-left: 0.5rem;
+}
+.program-assessment[data-state="supported_overlap"] {
+  border-left: 3px solid #1a7f37;
+  padding-left: 0.5rem;
+}
+.program-assessment[data-state="document_review_needed"] {
+  border-left: 3px solid #0969da;
+  padding-left: 0.5rem;
+}
+@media (max-width: 420px) {
+  .program-journey {
+    padding: 0.75rem;
+  }
+}
