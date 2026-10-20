@@ -5,14 +5,14 @@
     "dataset_id": "vx8i-nprf",
     "url": "https://data.cityofnewyork.us/resource/vx8i-nprf.json",
     "landing_page": "https://data.cityofnewyork.us/d/vx8i-nprf",
-    "fetched_at": "2026-10-17",
+    "fetched_at": "2026-10-20",
     "refresh_cadence": "Daily",
     "stale_after_days": 3,
     "privacy": "Per-applicant rows and names are never retained. Only exam-level counts and list dates from group-by."
   },
   "summary": {
-    "distinct_exams": 874,
-    "total_list_rows_sum": 406857,
+    "distinct_exams": 876,
+    "total_list_rows_sum": 407000,
     "latest_established": "2026-10-14"
   },
   "records": [
@@ -5705,6 +5705,14 @@
       "title_count": 1
     },
     {
+      "exam_number": "5625",
+      "exam_no_raw": "5625",
+      "list_count": 68,
+      "established_date": "2026-10-14",
+      "extension_date": null,
+      "title_count": 1
+    },
+    {
       "exam_number": "5627",
       "exam_no_raw": "5627",
       "list_count": 6,
@@ -6163,7 +6171,7 @@
     {
       "exam_number": "6068",
       "exam_no_raw": "6068",
-      "list_count": 93,
+      "list_count": 94,
       "established_date": "2026-07-01",
       "extension_date": null,
       "title_count": 1
@@ -6781,6 +6789,14 @@
       "exam_no_raw": "6607",
       "list_count": 8,
       "established_date": "2026-09-16",
+      "extension_date": null,
+      "title_count": 1
+    },
+    {
+      "exam_number": "6610",
+      "exam_no_raw": "6610",
+      "list_count": 74,
+      "established_date": "2026-10-14",
       "extension_date": null,
       "title_count": 1
     },

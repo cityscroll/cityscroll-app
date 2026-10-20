@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.upcoming_council_meetings.v1",
   "schema_version": 1,
-  "generated_at": "2026-10-17T01:50:31.852Z",
+  "generated_at": "2026-10-20T12:39:31.254Z",
   "source": {
     "name": "NYC Council Legistar (authenticated Web API)",
     "dataset": "Events",
@@ -15,38 +15,38 @@
   "discovery": {
     "basis": "shared authenticated Events acquisition of the daily refresh (no additional Events request)",
     "horizon_days": 120,
-    "window_start": "2026-10-17",
-    "window_end": "2027-02-14",
+    "window_start": "2026-10-20",
+    "window_end": "2027-02-17",
     "events_pages": 2,
     "events_page_truncated": false,
     "item_events_max": 60,
     "item_concurrency": 6,
-    "item_events_attempted": 56,
+    "item_events_attempted": 55,
     "item_events_deferred": 0,
     "item_discovery_truncated": false
   },
   "source_health": {
     "status": "healthy",
     "basis": "authenticated-events-acquisition",
-    "observed_at": "2026-10-17T01:50:31.852Z",
-    "events_observed": 397,
-    "last_successful_observation": "2026-10-17T01:50:31.852Z",
-    "upcoming": 56,
-    "standalone": 56,
+    "observed_at": "2026-10-20T12:39:31.254Z",
+    "events_observed": 385,
+    "last_successful_observation": "2026-10-20T12:39:31.254Z",
+    "upcoming": 55,
+    "standalone": 55,
     "exactly_joined": 0,
     "collection_suppressed": 0,
     "truncated": 0
   },
   "counts": {
-    "eligible_events": 56,
-    "meetings": 56,
-    "agenda_items": 201,
-    "events_with_items": 56,
+    "eligible_events": 55,
+    "meetings": 55,
+    "agenda_items": 192,
+    "events_with_items": 55,
     "events_no_published_items": 0,
     "events_items_deferred": 0,
     "events_items_unavailable": 0,
     "events_items_truncated": 0,
-    "standalone": 56,
+    "standalone": 55,
     "exactly_joined": 0
   },
   "meetings": [
@@ -100,7 +100,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOg7rKU=",
         "last_modified_utc": "2026-06-01T17:28:30.67",
         "agenda_last_published_utc": "2026-06-01T17:28:30.657"
@@ -156,7 +156,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOg7rHY=",
         "last_modified_utc": "2026-06-01T17:27:54.433",
         "agenda_last_published_utc": "2026-06-01T17:27:54.357"
@@ -212,7 +212,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhSDLg=",
         "last_modified_utc": "2026-10-13T21:03:42.353",
         "agenda_last_published_utc": "2026-10-13T21:03:42.263"
@@ -268,7 +268,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOg7rEc=",
         "last_modified_utc": "2026-06-01T17:26:53.917",
         "agenda_last_published_utc": "2026-06-01T17:26:53.87"
@@ -330,7 +330,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhSC0A=",
         "last_modified_utc": "2026-10-13T20:32:47.703",
         "agenda_last_published_utc": "2026-10-13T20:32:47.61"
@@ -392,7 +392,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhREOE=",
         "last_modified_utc": "2026-10-07T17:57:42.373",
         "agenda_last_published_utc": "2026-10-07T17:57:42.343"
@@ -448,7 +448,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOg7q+w=",
         "last_modified_utc": "2026-06-01T17:23:34.313",
         "agenda_last_published_utc": "2026-06-01T17:23:34.267"
@@ -504,7 +504,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhLafo=",
         "last_modified_utc": "2026-09-11T19:26:04.783",
         "agenda_last_published_utc": "2026-09-11T19:26:04.753"
@@ -560,7 +560,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhLasQ=",
         "last_modified_utc": "2026-09-11T19:26:46.037",
         "agenda_last_published_utc": "2026-09-11T19:26:46.007"
@@ -639,7 +639,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhRwX4=",
         "last_modified_utc": "2026-10-09T20:11:03.55",
         "agenda_last_published_utc": "2026-10-09T20:11:03.503"
@@ -712,7 +712,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhQdfQ=",
         "last_modified_utc": "2026-10-05T18:05:10.113",
         "agenda_last_published_utc": "2026-10-05T18:05:10.067"
@@ -785,7 +785,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhQdbY=",
         "last_modified_utc": "2026-10-05T18:04:29.66",
         "agenda_last_published_utc": "2026-10-05T18:04:29.613"
@@ -858,7 +858,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhQdRw=",
         "last_modified_utc": "2026-10-05T18:03:59.167",
         "agenda_last_published_utc": "2026-10-05T18:03:59.057"
@@ -982,7 +982,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhSorM=",
         "last_modified_utc": "2026-10-16T18:19:46.093",
         "agenda_last_published_utc": "2026-10-16T18:19:46.063"
@@ -1106,7 +1106,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhSonw=",
         "last_modified_utc": "2026-10-16T18:19:14.17",
         "agenda_last_published_utc": "2026-10-16T18:19:14.153"
@@ -1196,7 +1196,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhM7ek=",
         "last_modified_utc": "2026-09-22T23:07:54.56",
         "agenda_last_published_utc": "2026-09-22T23:07:54.383"
@@ -1286,7 +1286,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhM7i0=",
         "last_modified_utc": "2026-09-22T23:10:20.163",
         "agenda_last_published_utc": "2026-09-22T23:10:20.053"
@@ -1416,7 +1416,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhSWxU=",
         "last_modified_utc": "2026-10-15T16:36:25.247",
         "agenda_last_published_utc": "2026-10-15T16:36:25.137"
@@ -1471,7 +1471,7 @@
           {
             "agenda_item_id": "443160",
             "agenda_number": null,
-            "title": "A Local Law to amend the New York city charter and the administrative code of the city of New York, in relation to amending and eliminating certain reporting requirements, to amend section 5 of such charter, relating to an annual statement to the council, to repeal section 17 of such charter, relating to a strategic policy statement, to repeal section 20-e of such charter, relating to a committee on city healthcare services, to amend subdivision g of section 20-m of such charter, relating to a report identifying critical gaps in mental health care, to amend subdivision c of section 2301 of such charter, relating to membership of the New York city taxi and limousine commission, to amend subdivision a of section 2302 of such charter, relating to an annual report by the New York city taxi and limousine commission, to amend paragraph 6 of subdivision b of section 2903 of such charter, relating to a report on the condition of all bridges and tunnels operated and maintained by the department of transportation, to amend the opening paragraph of section 3-181 of such code, relating to a report on domestic violence initiatives, indicators, and factors, to amend the opening paragraph of subdivision b of section 3-194 of such code, relating to a report on involuntary removals, to repeal section 14-175 of such code, relating to a marijuana enforcement report, to amend paragraph 2 of subdivision b of section 17-190 of such code, relating to a report on the deaths of homeless persons and homeless shelter residents, to amend subdivision i of section 17-191 of such code, relating to a report on child fatality cases, to amend the opening paragraph of subdivision e of section 17-194 of such code, relating to a report on drinking water tank inspections, to amend the opening paragraph of section 17-198 of such code, relating to a report on identifying and preventing the spread of hepatitis B and hepatitis C, to amend subdivision b of section 17-199.20 of such code, relating to a report on a citywide diabetes reduction plan, to amend section 17-325.2 of such code, relating to a report on food vendor license and food vending pushcart and vehicle permit renewals, suspensions, and revocations, to amend subdivision b of section 17-1208 of such code, relating to a report on pesticide use by city agencies, to amend subdivision c of section 17-1505 of such code, relating to a report on the activities of the food service establishment inspection ombuds office, to amend subdivision l of section 19-107.1 of such code, relating to a report evaluating the open streets program, to amend subdivision c of section 19-194 of such code, relating to a report on bike share program financial data, to amend subdivision m of section 19-506 of such code, relating to a report on enforcement against illegal operation of vehicles for hire, to amend section 19-529.7 of such code, relating to a report on safety in the commuter van industry, to amend subdivision f of section 31-112 of such code, relating to a report on LGBTQ veterans’ services, and to amend subdivision c of section 1 of local law number 118 for the year 2023, relating to a report on establishing crisis respite centers",
+            "title": "A Local Law to amend the New York city charter and the administrative code of the city of New York, in relation to amending and eliminating certain reporting requirements, to amend section 5 of such charter, relating to an annual statement to the council, to repeal section 17 of such charter, relating to a strategic policy statement, to repeal section 20-e of such charter, relating to a committee on city healthcare services, to amend subdivision g of section 20-m of such charter, relating to a report identifying critical gaps in mental health care, to repeal section 1054 of such charter, relating to a voter assistance advisory committee, to amend subdivision c of section 2301 of such charter, relating to membership of the New York city taxi and limousine commission, to amend subdivision a of section 2302 of such charter, relating to an annual report by the New York city taxi and limousine commission, to amend paragraph 6 of subdivision b of section 2903 of such charter, relating to a report on the condition of all bridges and tunnels operated and maintained by the department of transportation, to amend the opening paragraph of section 3-181 of such code, relating to a report on domestic violence initiatives, indicators, and factors, to amend the opening paragraph of subdivision b of section 3-194 of such code, relating to a report on involuntary removals, to repeal section 14-175 of such code, relating to a marijuana enforcement report, to amend paragraph 2 of subdivision b of section 17-190 of such code, relating to a report on the deaths of homeless persons and homeless shelter residents, to amend subdivision i of section 17-191 of such code, relating to a report on child fatality cases, to amend the opening paragraph of subdivision e of section 17-194 of such code, relating to a report on drinking water tank inspections, to amend the opening paragraph of section 17-198 of such code, relating to a report on identifying and preventing the spread of hepatitis B and hepatitis C, to amend subdivision b of section 17-199.20 of such code, relating to a report on a citywide diabetes reduction plan, to amend section 17-325.2 of such code, relating to a report on food vendor license and food vending pushcart and vehicle permit renewals, suspensions, and revocations, to amend subdivision b of section 17-1208 of such code, relating to a report on pesticide use by city agencies, to amend subdivision c of section 17-1505 of such code, relating to a report on the activities of the food service establishment inspection ombuds office, to amend subdivision l of section 19-107.1 of such code, relating to a report evaluating the open streets program, to amend subdivision c of section 19-194 of such code, relating to a report on bike share program financial data, to amend subdivision m of section 19-506 of such code, relating to a report on enforcement against illegal operation of vehicles for hire, to amend section 19-529.7 of such code, relating to a report on safety in the commuter van industry, to amend subdivision f of section 31-112 of such code, relating to a report on LGBTQ veterans’ services, and to amend subdivision c of section 1 of local law number 118 for the year 2023, relating to a report on establishing crisis respite centers",
             "body_text": null,
             "matter": {
               "matter_id": "78280",
@@ -1520,7 +1520,7 @@
             }
           }
         ],
-        "search_text": "Oversight - Mayor's Office of Ethnic & Community Media and Government Spending on Advertisements. | T2026-2608 | A Local Law to amend the New York city charter and the administrative code of the city of New York, in relation to amending and eliminating certain reporting requirements, to amend section 5 of such charter, relating to an annual statement to the council, to repeal section 17 of such charter, relating to a strategic policy statement, to repeal section 20-e of such charter, relating to a committee on city healthcare services, to amend subdivision g of section 20-m of such charter, relating to a report identifying critical gaps in mental health care, to amend subdivision c of section 2301 of such charter, relating to membership of the New York city taxi and limousine commission, to amend subdivision a of section 2302 of such charter, relating to an annual report by the New York city taxi and limousine commission, to amend paragraph 6 of subdivision b of section 2903 of such charter, relating to a report on the condition of all bridges and tunnels operated and maintained by the department of transportation, to amend the opening paragraph of section 3-181 of such code, relating to a report on domestic violence initiatives, indicators, and factors, to amend the opening paragraph of subdivision b of section 3-194 of such code, relating to a report on involuntary removals, to repeal section 14-175 of such code, relating to a marijuana enforcement report, to amend paragraph 2 of subdivision b of section 17-190 of such code, relating to a report on the deaths of homeless persons and homeless shelter residents, to amend subdivision i of section 17-191 of such code, relating to a report on child fatality cases, to amend the opening paragraph of subdivision e of section 17-194 of such code, relating to a report on drinking water tank inspections, to amend the opening paragraph of section 17-198 of such code, relating to a report on identifying and preventing the spread of hepatitis B and hepatitis C, to amend subdivision b of section 17-199.20 of such code, relating to a report on a citywide diabetes reduction plan, to amend section 17-325.2 of such code, relating to a report on food vendor license and food vending pushcart and vehicle permit renewals, suspensions, and revocations, to amend subdivision b of section 17-1208 of such code, relating to a report on pesticide use by city agencies, to amend subdivision c of section 17-1505 of such code, relating to a report on the activities of the food service establishment inspection ombuds office, to amend subdivision l of section 19-107.1 of such code, relating to a report evaluating the open streets program, to amend subdivision c of section 19-194 of such code, relating to a report on bike share program financial data, to amend subdivision m of section 19-506 of such code, relating to a report on enforcement against illegal operation of vehicles for hire, to amend section 19-529.7 of such code, relating to a report on safety in the commuter van industry, to amend subdivision f of section 31-112 of such code, relating to a report on LGBTQ veterans’ services, and to amend subdivision c of section 1 of local law number 118 for the year 2023, relating to a report on establishing crisis respite centers | Amending and eliminating certain reporting requirements within the New York city charter and the administrative code of the city of New York. | Int 1127-2026 | A Local Law to amend the New York city charter, in relation to the due dates of agency reports to the council | The due dates of agency reports to the council. | Int 1128-2026 | A Local Law to amend the New York city charter, in relation to agency transmissions of reports and attestations of compliance with operational requirements | Agency transmissions of reports and attestations of compliance with operational requirements. | Int 1129-2026"
+        "search_text": "Oversight - Mayor's Office of Ethnic & Community Media and Government Spending on Advertisements. | T2026-2608 | A Local Law to amend the New York city charter and the administrative code of the city of New York, in relation to amending and eliminating certain reporting requirements, to amend section 5 of such charter, relating to an annual statement to the council, to repeal section 17 of such charter, relating to a strategic policy statement, to repeal section 20-e of such charter, relating to a committee on city healthcare services, to amend subdivision g of section 20-m of such charter, relating to a report identifying critical gaps in mental health care, to repeal section 1054 of such charter, relating to a voter assistance advisory committee, to amend subdivision c of section 2301 of such charter, relating to membership of the New York city taxi and limousine commission, to amend subdivision a of section 2302 of such charter, relating to an annual report by the New York city taxi and limousine commission, to amend paragraph 6 of subdivision b of section 2903 of such charter, relating to a report on the condition of all bridges and tunnels operated and maintained by the department of transportation, to amend the opening paragraph of section 3-181 of such code, relating to a report on domestic violence initiatives, indicators, and factors, to amend the opening paragraph of subdivision b of section 3-194 of such code, relating to a report on involuntary removals, to repeal section 14-175 of such code, relating to a marijuana enforcement report, to amend paragraph 2 of subdivision b of section 17-190 of such code, relating to a report on the deaths of homeless persons and homeless shelter residents, to amend subdivision i of section 17-191 of such code, relating to a report on child fatality cases, to amend the opening paragraph of subdivision e of section 17-194 of such code, relating to a report on drinking water tank inspections, to amend the opening paragraph of section 17-198 of such code, relating to a report on identifying and preventing the spread of hepatitis B and hepatitis C, to amend subdivision b of section 17-199.20 of such code, relating to a report on a citywide diabetes reduction plan, to amend section 17-325.2 of such code, relating to a report on food vendor license and food vending pushcart and vehicle permit renewals, suspensions, and revocations, to amend subdivision b of section 17-1208 of such code, relating to a report on pesticide use by city agencies, to amend subdivision c of section 17-1505 of such code, relating to a report on the activities of the food service establishment inspection ombuds office, to amend subdivision l of section 19-107.1 of such code, relating to a report evaluating the open streets program, to amend subdivision c of section 19-194 of such code, relating to a report on bike share program financial data, to amend subdivision m of section 19-506 of such code, relating to a report on enforcement against illegal operation of vehicles for hire, to amend section 19-529.7 of such code, relating to a report on safety in the commuter van industry, to amend subdivision f of section 31-112 of such code, relating to a report on LGBTQ veterans’ services, and to amend subdivision c of section 1 of local law number 118 for the year 2023, relating to a report on establishing crisis respite centers | Amending and eliminating certain reporting requirements within the New York city charter and the administrative code of the city of New York. | Int 1127-2026 | A Local Law to amend the New York city charter, in relation to the due dates of agency reports to the council | The due dates of agency reports to the council. | Int 1128-2026 | A Local Law to amend the New York city charter, in relation to agency transmissions of reports and attestations of compliance with operational requirements | Agency transmissions of reports and attestations of compliance with operational requirements. | Int 1129-2026"
       },
       "city_record_notice": {
         "matched_in_window": false,
@@ -1529,7 +1529,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhRhRE=",
         "last_modified_utc": "2026-10-08T18:09:35.33",
         "agenda_last_published_utc": "2026-10-08T18:09:35.22"
@@ -1772,7 +1772,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhRwDA=",
         "last_modified_utc": "2026-10-09T20:01:55.92",
         "agenda_last_published_utc": "2026-10-09T20:01:55.87"
@@ -2015,7 +2015,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhRvk4=",
         "last_modified_utc": "2026-10-09T19:58:21.957",
         "agenda_last_published_utc": "2026-10-09T19:58:21.927"
@@ -2077,7 +2077,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhRD5w=",
         "last_modified_utc": "2026-10-07T17:44:32.057",
         "agenda_last_published_utc": "2026-10-07T17:44:31.933"
@@ -2173,7 +2173,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhSYPQ=",
         "last_modified_utc": "2026-10-15T17:32:44.87",
         "agenda_last_published_utc": "2026-10-15T17:32:44.847"
@@ -2263,7 +2263,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhQKpM=",
         "last_modified_utc": "2026-10-01T20:09:39.963",
         "agenda_last_published_utc": "2026-10-01T20:09:39.863"
@@ -2353,7 +2353,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhQEb0=",
         "last_modified_utc": "2026-10-01T16:54:13.867",
         "agenda_last_published_utc": "2026-10-01T16:54:13.82"
@@ -2483,7 +2483,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhQMlQ=",
         "last_modified_utc": "2026-10-01T20:48:21.913",
         "agenda_last_published_utc": "2026-10-01T20:48:21.5"
@@ -2602,9 +2602,26 @@
               "name": null,
               "passed_flag": null
             }
+          },
+          {
+            "agenda_item_id": "443357",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to establishing a demonstration program for the installation and maintenance of intelligent speed assistance devices",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79662",
+              "matter_file": "T2026-2709",
+              "matter_name": "Establishing a demonstration program for the installation and maintenance of intelligent speed assistance devices.",
+              "matter_type": "Introduction",
+              "matter_status": "Introduced"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
           }
         ],
-        "search_text": "A Local Law to amend the administrative code of the city of New York, in relation to installing child with autism warning plaques on streets | Installing child with autism warning plaques on streets. | Int 0046-2026 | A Local Law to amend the administrative code of the city of New York, in relation to the installation of protected bicycle lanes | Installation of protected bicycle lanes. | Int 0613-2026 | A Local Law to amend the administrative code of the city of New York, in relation to requiring a study of dangerous driving | Requiring a study of dangerous driving. | Int 0113-2026 | A Local Law in relation to establishing a low-traffic neighborhood pilot program | Establishing a low-traffic neighborhood pilot program. | Int 1070-2026 | Oversight - Vision Zero: Evaluating NYC's Street Safety Strategy. | T2026-2614"
+        "search_text": "A Local Law to amend the administrative code of the city of New York, in relation to installing child with autism warning plaques on streets | Installing child with autism warning plaques on streets. | Int 0046-2026 | A Local Law to amend the administrative code of the city of New York, in relation to the installation of protected bicycle lanes | Installation of protected bicycle lanes. | Int 0613-2026 | A Local Law to amend the administrative code of the city of New York, in relation to requiring a study of dangerous driving | Requiring a study of dangerous driving. | Int 0113-2026 | A Local Law in relation to establishing a low-traffic neighborhood pilot program | Establishing a low-traffic neighborhood pilot program. | Int 1070-2026 | Oversight - Vision Zero: Evaluating NYC's Street Safety Strategy. | T2026-2614 | A Local Law to amend the administrative code of the city of New York, in relation to establishing a demonstration program for the installation and maintenance of intelligent speed assistance devices | Establishing a demonstration program for the installation and maintenance of intelligent speed assistance devices. | T2026-2709"
       },
       "city_record_notice": {
         "matched_in_window": false,
@@ -2613,10 +2630,10 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
-        "row_version": "AAAAAOhOW0c=",
-        "last_modified_utc": "2026-09-30T12:49:39.277",
-        "agenda_last_published_utc": "2026-09-30T12:49:39.003"
+        "observed_at": "2026-10-20T12:39:31.254Z",
+        "row_version": "AAAAAOhS4yw=",
+        "last_modified_utc": "2026-10-19T16:59:03.413",
+        "agenda_last_published_utc": "2026-10-19T16:59:03.35"
       }
     },
     {
@@ -2726,9 +2743,26 @@
               "name": null,
               "passed_flag": null
             }
+          },
+          {
+            "agenda_item_id": "443361",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to requiring a report regarding an analysis of gender-based violence in the city",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79514",
+              "matter_file": "T2026-2561",
+              "matter_name": "Requiring a report regarding an analysis of gender-based violence in the city.",
+              "matter_type": "Introduction",
+              "matter_status": "Introduced"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
           }
         ],
-        "search_text": "Oversight - Maternal Health and Criminal Justice. | T2026-2616 | Jointly with the Committee on Criminal Justice | Resolution calling on the New York State Legislature to pass, and the Governor to sign, legislation to postpone court proceedings as requested by individuals in the later stages of pregnancy | Postpone court proceedings for individuals in the later stages of pregnancy. | Res 0498-2026 | Resolution calling on the New York State Legislature to pass, and the Governor to sign, legislation recognizing postpartum mental illness as a mitigating factor in criminal sentencing | Recognizing postpartum mental illness as a mitigating factor in criminal sentencing. | Res 0464-2026 | A Local Law to amend the administrative code of the city of New York, in relation to mental health protocols for pregnant and postpartum individuals in the custody of the department of correction | Mental health protocols for pregnant and postpartum individuals in the custody of the department of correction. | Int 0902-2026"
+        "search_text": "Oversight - Maternal Health and Criminal Justice. | T2026-2616 | Jointly with the Committee on Criminal Justice | Resolution calling on the New York State Legislature to pass, and the Governor to sign, legislation to postpone court proceedings as requested by individuals in the later stages of pregnancy | Postpone court proceedings for individuals in the later stages of pregnancy. | Res 0498-2026 | Resolution calling on the New York State Legislature to pass, and the Governor to sign, legislation recognizing postpartum mental illness as a mitigating factor in criminal sentencing | Recognizing postpartum mental illness as a mitigating factor in criminal sentencing. | Res 0464-2026 | A Local Law to amend the administrative code of the city of New York, in relation to mental health protocols for pregnant and postpartum individuals in the custody of the department of correction | Mental health protocols for pregnant and postpartum individuals in the custody of the department of correction. | Int 0902-2026 | A Local Law to amend the administrative code of the city of New York, in relation to requiring a report regarding an analysis of gender-based violence in the city | Requiring a report regarding an analysis of gender-based violence in the city. | T2026-2561"
       },
       "city_record_notice": {
         "matched_in_window": false,
@@ -2737,10 +2771,10 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
-        "row_version": "AAAAAOhQFCk=",
-        "last_modified_utc": "2026-10-01T17:32:03.797",
-        "agenda_last_published_utc": "2026-10-01T17:32:03.737"
+        "observed_at": "2026-10-20T12:39:31.254Z",
+        "row_version": "AAAAAOhS9yI=",
+        "last_modified_utc": "2026-10-19T19:37:10.547",
+        "agenda_last_published_utc": "2026-10-19T19:37:10.5"
       }
     },
     {
@@ -2850,9 +2884,26 @@
               "name": null,
               "passed_flag": null
             }
+          },
+          {
+            "agenda_item_id": "443362",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to requiring a report regarding an analysis of gender-based violence in the city",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79514",
+              "matter_file": "T2026-2561",
+              "matter_name": "Requiring a report regarding an analysis of gender-based violence in the city.",
+              "matter_type": "Introduction",
+              "matter_status": "Introduced"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
           }
         ],
-        "search_text": "Oversight - Maternal Health and Criminal Justice. | T2026-2617 | Jointly with the Committee on Women and Gender Equity | A Local Law to amend the administrative code of the city of New York, in relation to mental health protocols for pregnant and postpartum individuals in the custody of the department of correction | Mental health protocols for pregnant and postpartum individuals in the custody of the department of correction. | Int 0902-2026 | Resolution calling on the New York State Legislature to pass, and the Governor to sign, legislation recognizing postpartum mental illness as a mitigating factor in criminal sentencing | Recognizing postpartum mental illness as a mitigating factor in criminal sentencing. | Res 0464-2026 | Resolution calling on the New York State Legislature to pass, and the Governor to sign, legislation to postpone court proceedings as requested by individuals in the later stages of pregnancy | Postpone court proceedings for individuals in the later stages of pregnancy. | Res 0498-2026"
+        "search_text": "Oversight - Maternal Health and Criminal Justice. | T2026-2617 | Jointly with the Committee on Women and Gender Equity | A Local Law to amend the administrative code of the city of New York, in relation to mental health protocols for pregnant and postpartum individuals in the custody of the department of correction | Mental health protocols for pregnant and postpartum individuals in the custody of the department of correction. | Int 0902-2026 | Resolution calling on the New York State Legislature to pass, and the Governor to sign, legislation recognizing postpartum mental illness as a mitigating factor in criminal sentencing | Recognizing postpartum mental illness as a mitigating factor in criminal sentencing. | Res 0464-2026 | Resolution calling on the New York State Legislature to pass, and the Governor to sign, legislation to postpone court proceedings as requested by individuals in the later stages of pregnancy | Postpone court proceedings for individuals in the later stages of pregnancy. | Res 0498-2026 | A Local Law to amend the administrative code of the city of New York, in relation to requiring a report regarding an analysis of gender-based violence in the city | Requiring a report regarding an analysis of gender-based violence in the city. | T2026-2561"
       },
       "city_record_notice": {
         "matched_in_window": false,
@@ -2861,10 +2912,10 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
-        "row_version": "AAAAAOhQFL8=",
-        "last_modified_utc": "2026-10-01T17:33:46.527",
-        "agenda_last_published_utc": "2026-10-01T17:33:45.763"
+        "observed_at": "2026-10-20T12:39:31.254Z",
+        "row_version": "AAAAAOhS93A=",
+        "last_modified_utc": "2026-10-19T19:37:32.57",
+        "agenda_last_published_utc": "2026-10-19T19:37:32.537"
       }
     },
     {
@@ -2923,7 +2974,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhQgEI=",
         "last_modified_utc": "2026-10-05T20:59:10.933",
         "agenda_last_published_utc": "2026-10-05T20:59:10.81"
@@ -3019,7 +3070,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhSYPU=",
         "last_modified_utc": "2026-10-15T17:31:44.943",
         "agenda_last_published_utc": "2026-10-15T17:31:44.787"
@@ -3098,7 +3149,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhSpUw=",
         "last_modified_utc": "2026-10-16T19:00:51.133",
         "agenda_last_published_utc": "2026-10-16T19:00:51.093"
@@ -3154,7 +3205,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOg7q7w=",
         "last_modified_utc": "2026-06-01T17:22:20.627",
         "agenda_last_published_utc": "2026-06-01T17:22:20.6"
@@ -3318,7 +3369,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhSqoc=",
         "last_modified_utc": "2026-10-16T19:39:10.673",
         "agenda_last_published_utc": "2026-10-16T19:39:10.623"
@@ -3380,7 +3431,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhSoUg=",
         "last_modified_utc": "2026-10-16T18:14:19.653",
         "agenda_last_published_utc": "2026-10-16T18:14:19.573"
@@ -3442,10 +3493,72 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhSnAY=",
         "last_modified_utc": "2026-10-16T17:30:44.9",
         "agenda_last_published_utc": "2026-10-16T17:30:44.85"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22805",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22805",
+        "event_guid": "95C58BF9-86A6-4BB0-A966-AE0A96506FB6"
+      },
+      "governing_body": {
+        "name": "Committee on Housing and Buildings",
+        "body_id": "16"
+      },
+      "date": "2026-10-22",
+      "wall_time": "2026-10-22T11:00:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "Council Chambers - City Hall"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22805&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/10/22805_A_Committee_on_Housing_and_Buildings_26-10-22_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "443261",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to giving qualified entities a first opportunity to submit a statement of interest and a first opportunity to purchase certain properties",
+            "body_text": null,
+            "matter": {
+              "matter_id": "78838",
+              "matter_file": "Int 0905-2026",
+              "matter_name": "Giving qualified entities a first opportunity to submit a statement of interest and a first opportunity to purchase certain properties.",
+              "matter_type": "Introduction",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "search_text": "A Local Law to amend the administrative code of the city of New York, in relation to giving qualified entities a first opportunity to submit a statement of interest and a first opportunity to purchase certain properties | Giving qualified entities a first opportunity to submit a statement of interest and a first opportunity to purchase certain properties. | Int 0905-2026"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-10-20T12:39:31.254Z",
+        "row_version": "AAAAAOhS2lE=",
+        "last_modified_utc": "2026-10-19T16:29:27.45",
+        "agenda_last_published_utc": "2026-10-19T16:29:27.403"
       }
     },
     {
@@ -3504,7 +3617,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhSpdQ=",
         "last_modified_utc": "2026-10-16T17:48:14.817",
         "agenda_last_published_utc": "2026-10-16T17:48:14.787"
@@ -3583,7 +3696,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhSrQY=",
         "last_modified_utc": "2026-10-16T19:57:06.63",
         "agenda_last_published_utc": "2026-10-16T19:57:06.583"
@@ -3747,7 +3860,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhSoMM=",
         "last_modified_utc": "2026-10-16T18:10:03.65",
         "agenda_last_published_utc": "2026-10-16T18:10:03.57"
@@ -3809,7 +3922,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhOWdE=",
         "last_modified_utc": "2026-09-30T03:52:56.84",
         "agenda_last_published_utc": "2026-09-30T03:52:56.747"
@@ -3905,7 +4018,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhSnCw=",
         "last_modified_utc": "2026-10-16T17:32:42.613",
         "agenda_last_published_utc": "2026-10-16T17:32:42.55"
@@ -4046,7 +4159,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhQedU=",
         "last_modified_utc": "2026-10-05T18:38:04.053",
         "agenda_last_published_utc": "2026-10-05T18:38:04.023"
@@ -4187,7 +4300,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhQeYA=",
         "last_modified_utc": "2026-10-05T18:37:20.5",
         "agenda_last_published_utc": "2026-10-05T18:37:20.407"
@@ -4300,10 +4413,72 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhQt+g=",
         "last_modified_utc": "2026-10-06T18:59:15.18",
         "agenda_last_published_utc": "2026-10-06T18:59:15.1"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22804",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22804",
+        "event_guid": "5E73AC4A-899F-41FF-862D-A8AD41C02B56"
+      },
+      "governing_body": {
+        "name": "Committee on Women and Gender Equity",
+        "body_id": "5244"
+      },
+      "date": "2026-10-21",
+      "wall_time": "2026-10-21T12:30:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22804&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/10/22804_A_Committee_on_Women_and_Gender_Equity_26-10-21_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "443260",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to increasing access to data regarding gender-based violence",
+            "body_text": null,
+            "matter": {
+              "matter_id": "77546",
+              "matter_file": "Int 0296-2026",
+              "matter_name": "Increasing access to data around gender-based violence.",
+              "matter_type": "Introduction",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "search_text": "A Local Law to amend the administrative code of the city of New York, in relation to increasing access to data regarding gender-based violence | Increasing access to data around gender-based violence. | Int 0296-2026"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-10-20T12:39:31.254Z",
+        "row_version": "AAAAAOhStUQ=",
+        "last_modified_utc": "2026-10-19T13:28:55.283",
+        "agenda_last_published_utc": "2026-10-19T13:28:55.173"
       }
     },
     {
@@ -4464,7 +4639,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhQmYk=",
         "last_modified_utc": "2026-10-06T15:57:19.837",
         "agenda_last_published_utc": "2026-10-06T15:57:19.807"
@@ -4543,7 +4718,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhSlHc=",
         "last_modified_utc": "2026-10-16T15:29:40.157",
         "agenda_last_published_utc": "2026-10-16T15:29:40.137"
@@ -4690,7 +4865,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhSlGY=",
         "last_modified_utc": "2026-10-16T15:29:16.307",
         "agenda_last_published_utc": "2026-10-16T15:29:16.26"
@@ -4831,7 +5006,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhOAjs=",
         "last_modified_utc": "2026-09-28T14:10:55.09",
         "agenda_last_published_utc": "2026-09-28T14:10:55.03"
@@ -4972,7 +5147,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhOmSg=",
         "last_modified_utc": "2026-10-01T13:18:15.833",
         "agenda_last_published_utc": "2026-10-01T13:18:15.673"
@@ -5113,7 +5288,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhSVfI=",
         "last_modified_utc": "2026-10-15T15:47:03.34",
         "agenda_last_published_utc": "2026-10-15T15:47:03.21"
@@ -5254,7 +5429,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhSVio=",
         "last_modified_utc": "2026-10-15T15:47:19.287",
         "agenda_last_published_utc": "2026-10-15T15:47:19.253"
@@ -5344,7 +5519,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhMzeQ=",
         "last_modified_utc": "2026-09-22T18:40:35.307",
         "agenda_last_published_utc": "2026-09-22T18:40:35.233"
@@ -5434,383 +5609,10 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
+        "observed_at": "2026-10-20T12:39:31.254Z",
         "row_version": "AAAAAOhMzlc=",
         "last_modified_utc": "2026-09-22T18:41:43.303",
         "agenda_last_published_utc": "2026-09-22T18:41:43.193"
-      }
-    },
-    {
-      "meeting_id": "meeting:nyc_legistar_events:22710",
-      "identity": {
-        "source_system": "nyc_legistar_events",
-        "event_id": "22710",
-        "event_guid": "AEE79013-5766-450C-A067-001C4AB60BFF"
-      },
-      "governing_body": {
-        "name": "Committee on Criminal Justice",
-        "body_id": "5237"
-      },
-      "date": "2026-10-19",
-      "wall_time": "2026-10-19T10:00:00",
-      "time_zone": "America/New_York",
-      "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
-      },
-      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22710&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-      "agenda_status": "Deferred",
-      "documents": [
-        {
-          "url": "https://nyc.legistar1.com/nyc/meetings/2026/10/22710_A_Committee_on_Criminal_Justice_26-10-19_Committee_Agenda.pdf",
-          "name": "Agenda",
-          "category": "Agenda"
-        }
-      ],
-      "agenda": {
-        "status": "items",
-        "items": [
-          {
-            "agenda_item_id": "441517",
-            "agenda_number": null,
-            "title": "Oversight - The Organizational Strategy of the Department of Probation.",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79467",
-              "matter_file": "T2026-2514",
-              "matter_name": "Oversight - The Organizational Strategy of the Department of Probation.",
-              "matter_type": "Oversight",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          }
-        ],
-        "search_text": "Oversight - The Organizational Strategy of the Department of Probation. | T2026-2514"
-      },
-      "city_record_notice": {
-        "matched_in_window": false,
-        "request_id": null,
-        "method": null
-      },
-      "source_receipt": {
-        "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
-        "row_version": "AAAAAOhSEw8=",
-        "last_modified_utc": "2026-10-14T12:55:49.677",
-        "agenda_last_published_utc": "2026-10-14T12:55:49.46"
-      }
-    },
-    {
-      "meeting_id": "meeting:nyc_legistar_events:22723",
-      "identity": {
-        "source_system": "nyc_legistar_events",
-        "event_id": "22723",
-        "event_guid": "C546798D-A943-443C-890C-D879C3D4DE5D"
-      },
-      "governing_body": {
-        "name": "Committee on Cultural Affairs, Libraries and International Relations",
-        "body_id": "5316"
-      },
-      "date": "2026-10-19",
-      "wall_time": "2026-10-19T13:00:00",
-      "time_zone": "America/New_York",
-      "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
-      },
-      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22723&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-      "agenda_status": "Final",
-      "documents": [
-        {
-          "url": "https://nyc.legistar1.com/nyc/meetings/2026/10/22723_A_Committee_on_Cultural_Affairs%2C_Libraries_and_International_Relations_26-10-19_Committee_Agenda.pdf",
-          "name": "Agenda",
-          "category": "Agenda"
-        }
-      ],
-      "agenda": {
-        "status": "items",
-        "items": [
-          {
-            "agenda_item_id": "441718",
-            "agenda_number": null,
-            "title": "Oversight – What’s Next for CreateNYC?",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79493",
-              "matter_file": "T2026-2540",
-              "matter_name": "Oversight – What’s Next for CreateNYC?",
-              "matter_type": "Oversight",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "442971",
-            "agenda_number": null,
-            "title": "Resolution calling on the New York State Legislature to pass, and the Governor to sign, legislation to designate Kwanzaa as a public holiday in New York",
-            "body_text": null,
-            "matter": {
-              "matter_id": "77674",
-              "matter_file": "Res 0164-2026",
-              "matter_name": "Designate Kwanzaa as a public holiday in New York.",
-              "matter_type": "Resolution",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "442972",
-            "agenda_number": null,
-            "title": "Resolution declaring October as Reggaeton Heritage Month in the City of New York to honor the legacy of reggaeton as a prominent expression of Afro-Caribbean and Latin American identity and to recognize New York’s pivotal role in facilitating the blend of cultures that is at the heart of this grassroots musical genre",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79425",
-              "matter_file": "Res 0625-2026",
-              "matter_name": "Declaring October as Reggaeton Heritage Month.",
-              "matter_type": "Resolution",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "442973",
-            "agenda_number": null,
-            "title": "Resolution designating the fourth week of November as The Shangri-Las Week in the City of New York and celebrating The Shangri-Las’ indelible impact on the music of the 1960s and ever since",
-            "body_text": null,
-            "matter": {
-              "matter_id": "77657",
-              "matter_file": "Res 0163-2026",
-              "matter_name": "Designating the fourth week of November as The Shangri-Las Week.",
-              "matter_type": "Resolution",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "443265",
-            "agenda_number": null,
-            "title": "Resolution designating November 28 annually as Albanian Independence Day in the City of New York",
-            "body_text": null,
-            "matter": {
-              "matter_id": "75141",
-              "matter_file": "Res 0186-2026",
-              "matter_name": "Designating November 28 annually as Albanian Independence Day in the City of New York.",
-              "matter_type": "Resolution",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          }
-        ],
-        "search_text": "Oversight – What’s Next for CreateNYC? | T2026-2540 | Resolution calling on the New York State Legislature to pass, and the Governor to sign, legislation to designate Kwanzaa as a public holiday in New York | Designate Kwanzaa as a public holiday in New York. | Res 0164-2026 | Resolution declaring October as Reggaeton Heritage Month in the City of New York to honor the legacy of reggaeton as a prominent expression of Afro-Caribbean and Latin American identity and to recognize New York’s pivotal role in facilitating the blend of cultures that is at the heart of this grassroots musical genre | Declaring October as Reggaeton Heritage Month. | Res 0625-2026 | Resolution designating the fourth week of November as The Shangri-Las Week in the City of New York and celebrating The Shangri-Las’ indelible impact on the music of the 1960s and ever since | Designating the fourth week of November as The Shangri-Las Week. | Res 0163-2026 | Resolution designating November 28 annually as Albanian Independence Day in the City of New York | Designating November 28 annually as Albanian Independence Day in the City of New York. | Res 0186-2026"
-      },
-      "city_record_notice": {
-        "matched_in_window": false,
-        "request_id": null,
-        "method": null
-      },
-      "source_receipt": {
-        "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
-        "row_version": "AAAAAOhSajs=",
-        "last_modified_utc": "2026-10-15T19:45:53.797",
-        "agenda_last_published_utc": "2026-10-15T19:45:53.763"
-      }
-    },
-    {
-      "meeting_id": "meeting:nyc_legistar_events:22766",
-      "identity": {
-        "source_system": "nyc_legistar_events",
-        "event_id": "22766",
-        "event_guid": "06FC718A-063D-442E-A7D3-8CFF35EBAA0B"
-      },
-      "governing_body": {
-        "name": "Committee on Health",
-        "body_id": "14"
-      },
-      "date": "2026-10-19",
-      "wall_time": "2026-10-19T10:00:00",
-      "time_zone": "America/New_York",
-      "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
-      },
-      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22766&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-      "agenda_status": "Final",
-      "documents": [
-        {
-          "url": "https://nyc.legistar1.com/nyc/meetings/2026/10/22766_A_Committee_on_Health_26-10-19_Committee_Agenda.pdf",
-          "name": "Agenda",
-          "category": "Agenda"
-        }
-      ],
-      "agenda": {
-        "status": "items",
-        "items": [
-          {
-            "agenda_item_id": "442569",
-            "agenda_number": null,
-            "title": "Oversight - Food Service Establishment Inspections in New York City.",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79498",
-              "matter_file": "T2026-2545",
-              "matter_name": "Oversight - Food Service Establishment Inspections in New York City.",
-              "matter_type": "Oversight",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "442570",
-            "agenda_number": null,
-            "title": "A Local Law to amend the administrative code of the city of New York, in relation to digital verification of food protection certificates and penalties for failure to maintain a physical certificate on premises",
-            "body_text": null,
-            "matter": {
-              "matter_id": "78362",
-              "matter_file": "Int 0908-2026",
-              "matter_name": "Digital verification of food protection certificates and penalties for failure to maintain a physical certificate on premises.",
-              "matter_type": "Introduction",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "442571",
-            "agenda_number": null,
-            "title": "A Local Law to amend the administrative code of the city of New York, in relation to the operation of tobacco bars",
-            "body_text": null,
-            "matter": {
-              "matter_id": "78973",
-              "matter_file": "Int 0947-2026",
-              "matter_name": "The operation of tobacco bars.",
-              "matter_type": "Introduction",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "442572",
-            "agenda_number": null,
-            "title": "Resolution calling on the New York State Legislature to pass, and the Governor to sign, S.1239A/A.1556A, to prohibit certain food additives, to prohibit the sale of food containing certain color additives at schools, and to prohibit the use of substances “Generally Recognized as Safe” in food unless certain reporting requirements are met",
-            "body_text": null,
-            "matter": {
-              "matter_id": "77720",
-              "matter_file": "Res 0152-2026",
-              "matter_name": "Prohibit certain food additives, to prohibit the sale of food containing certain color additives at schools, and to prohibit the use of substances “Generally Recognized as Safe” in food unless certain reporting requirements are met (S.1239A/A.1556A).",
-              "matter_type": "Resolution",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "442709",
-            "agenda_number": null,
-            "title": "A Local Law to amend the administrative code of the city of New York, in relation to requiring the reapplication of food protection course certification every 5 years",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79587",
-              "matter_file": "Int 1124-2026",
-              "matter_name": "Requiring the reapplication of food protection course certification every 5 years.",
-              "matter_type": "Introduction",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "443046",
-            "agenda_number": null,
-            "title": "A Local Law to amend the administrative code of the city of New York, in relation to reporting Legionella test results to the department of health and mental hygiene",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79516",
-              "matter_file": "Int 1094-2026",
-              "matter_name": "Reporting Legionella test results to the department of health and mental hygiene.",
-              "matter_type": "Introduction",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "443191",
-            "agenda_number": null,
-            "title": "A Local Law to amend the administrative code of the city of New York, in relation to requiring that notices of violation issued by the department of health and mental hygiene during inspections of food service establishments include photographs or video recordings of each violation cited in such notice",
-            "body_text": null,
-            "matter": {
-              "matter_id": "77509",
-              "matter_file": "Int 0189-2026",
-              "matter_name": "Requiring that notices of violation issued by the department of health and mental hygiene during inspections of food service establishments include photographs or video recordings of each violation cited in such notice.",
-              "matter_type": "Introduction",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "443194",
-            "agenda_number": null,
-            "title": "A Local Law to amend the administrative code of the city of New York, in relation to nutrition standards and beverage options for children’s meals served in food service establishments",
-            "body_text": null,
-            "matter": {
-              "matter_id": "77137",
-              "matter_file": "Int 0405-2026",
-              "matter_name": "Nutrition standards and beverage options for children’s meals served in food service establishments.",
-              "matter_type": "Introduction",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          }
-        ],
-        "search_text": "Oversight - Food Service Establishment Inspections in New York City. | T2026-2545 | A Local Law to amend the administrative code of the city of New York, in relation to digital verification of food protection certificates and penalties for failure to maintain a physical certificate on premises | Digital verification of food protection certificates and penalties for failure to maintain a physical certificate on premises. | Int 0908-2026 | A Local Law to amend the administrative code of the city of New York, in relation to the operation of tobacco bars | The operation of tobacco bars. | Int 0947-2026 | Resolution calling on the New York State Legislature to pass, and the Governor to sign, S.1239A/A.1556A, to prohibit certain food additives, to prohibit the sale of food containing certain color additives at schools, and to prohibit the use of substances “Generally Recognized as Safe” in food unless certain reporting requirements are met | Prohibit certain food additives, to prohibit the sale of food containing certain color additives at schools, and to prohibit the use of substances “Generally Recognized as Safe” in food unless certain reporting requirements are met (S.1239A/A.1556A). | Res 0152-2026 | A Local Law to amend the administrative code of the city of New York, in relation to requiring the reapplication of food protection course certification every 5 years | Requiring the reapplication of food protection course certification every 5 years. | Int 1124-2026 | A Local Law to amend the administrative code of the city of New York, in relation to reporting Legionella test results to the department of health and mental hygiene | Reporting Legionella test results to the department of health and mental hygiene. | Int 1094-2026 | A Local Law to amend the administrative code of the city of New York, in relation to requiring that notices of violation issued by the department of health and mental hygiene during inspections of food service establishments include photographs or video recordings of each violation cited in such notice | Requiring that notices of violation issued by the department of health and mental hygiene during inspections of food service establishments include photographs or video recordings of each violation cited in such notice. | Int 0189-2026 | A Local Law to amend the administrative code of the city of New York, in relation to nutrition standards and beverage options for children’s meals served in food service establishments | Nutrition standards and beverage options for children’s meals served in food service establishments. | Int 0405-2026"
-      },
-      "city_record_notice": {
-        "matched_in_window": false,
-        "request_id": null,
-        "method": null
-      },
-      "source_receipt": {
-        "source_system": "nyc_legistar_events",
-        "observed_at": "2026-10-17T01:50:31.852Z",
-        "row_version": "AAAAAOhRw9M=",
-        "last_modified_utc": "2026-10-09T21:02:53.373",
-        "agenda_last_published_utc": "2026-10-09T21:02:53.34"
       }
     }
   ]
