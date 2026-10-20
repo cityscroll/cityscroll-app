@@ -9,6 +9,7 @@
  *   dry-run-readback     — load prior intent by path; verify; no KV
  *   probe-baseline       — real GETs of planned keys; record baseline_absence; no PUTs
  *   write-issued-checkpoint — mark one key issued + write checkpoint file (no PUT)
+ *   write-fixture-checkpoint — labeled non-owning fixture checkpoint (no KV; cleanup must refuse)
  *   put-one              — PUT one key after its external checkpoint artifact exists
  *   assemble-attempt-receipt — honest planned/attempted/confirmed/unknown from step receipts
  *   preflight-readonly   — plan + optional live KV GETs; never puts/deletes
@@ -38,6 +39,7 @@ import { createWranglerInvoker } from "./lib/wrangler_exec.mjs";
 import {
   WAREHOUSE_ROUTE_SCOPED_CONTROL_ROUTES,
   assertBaselineAbsenceAllowsPublish,
+  buildFixtureNonOwnershipCheckpoint,
   buildIssuedCheckpoint,
   buildWarehouseRouteScopedPublishIntent,
   cleanupWarehouseRouteScopedShards,
@@ -89,6 +91,7 @@ function usage() {
   node tools/warehouse_route_scoped_publication.mjs dry-run-readback --intent <path> [--revision <40-hex>] [--out <path>]
   node tools/warehouse_route_scoped_publication.mjs probe-baseline --revision <40-hex> --intent <path> [--out <path>]
   node tools/warehouse_route_scoped_publication.mjs write-issued-checkpoint --revision <40-hex> --intent <path> --route <route> --checkpoint <path> --ledger <path> --attempt-id <id>
+  node tools/warehouse_route_scoped_publication.mjs write-fixture-checkpoint --revision <40-hex> --checkpoint <path> [--route <route>] [--attempt-id <id>] [--out <path>]
   node tools/warehouse_route_scoped_publication.mjs put-one --revision <40-hex> --intent <path> --route <route> --checkpoint <path> --ledger <path> --attempt-id <id>
   node tools/warehouse_route_scoped_publication.mjs assemble-attempt-receipt --artifact-dir <path> [--out <path>]
   node tools/warehouse_route_scoped_publication.mjs preflight-readonly --revision <40-hex> [--live-kv] [--health-commit <40-hex>] [--out <path>]
@@ -465,6 +468,63 @@ if (command === "write-issued-checkpoint") {
     issued_at: at,
     checkpoint_path: checkpointPath,
     artifact_name: issuedCheckpointArtifactName(route),
+    planned: emptyOps(),
+    attempted: emptyOps(),
+    confirmed: emptyOps(),
+    unknown: emptyOps(),
+    provider_writes: 0,
+  };
+  writeJson(outPath, receipt);
+  console.log(JSON.stringify(receipt, null, 2));
+  process.exit(0);
+}
+
+if (command === "write-fixture-checkpoint") {
+  // Labeled non-owning fixture only. No GO code, no KV, no ownership.
+  const checkpointPath = arg("--checkpoint");
+  if (!checkpointPath) {
+    throw new Error("write-fixture-checkpoint requires --checkpoint");
+  }
+  const route = arg("--route", WAREHOUSE_ROUTE_SCOPED_LOOKUP_ROUTES[0]);
+  if (!WAREHOUSE_ROUTE_SCOPED_LOOKUP_ROUTES.includes(route)) {
+    throw new Error(`route must be one of ${WAREHOUSE_ROUTE_SCOPED_LOOKUP_ROUTES.join(", ")}`);
+  }
+  const attemptId = arg("--attempt-id", `attempt-fixture-${Date.now()}`);
+  const materializations = loadWarehouseRouteScopedMaterializations({ root: ROOT });
+  const plan = planWarehouseRouteScopedPublication({
+    deployed_revision: revision,
+    materializations,
+    active_revision: activeRevision,
+    rollback_revision: rollbackRevision,
+  });
+  const shard = plan.shards.find((row) => row.route === route);
+  if (!shard) throw new Error(`plan missing route ${route}`);
+  const at = new Date().toISOString();
+  const fixture = buildFixtureNonOwnershipCheckpoint({
+    attempt_id: attemptId,
+    route: shard.route,
+    key: shard.key,
+    deployed_revision: shard.deployed_revision,
+    value: shard.value,
+    value_sha256: shard.value_sha256,
+    issued_at: at,
+    row_count: shard.row_count,
+  });
+  persistIssuedCheckpoint(checkpointPath, fixture);
+  const receipt = {
+    schema: "cityscroll.warehouse_route_scoped_publication_receipt.v1",
+    decision: "fixture-checkpoint-written",
+    mode: "write-fixture-checkpoint",
+    attempt_id: attemptId,
+    route: shard.route,
+    key: shard.key,
+    value_sha256: shard.value_sha256,
+    issued_at: at,
+    checkpoint_path: checkpointPath,
+    artifact_name: "cc06-fixture-non-ownership-drill",
+    purpose: fixture.purpose,
+    fixture_label: fixture.fixture_label,
+    ownership: fixture.ownership,
     planned: emptyOps(),
     attempted: emptyOps(),
     confirmed: emptyOps(),

@@ -509,6 +509,13 @@ test("CI workflow is workflow_dispatch-only and never push-triggered", () => {
   assert.match(yaml, /GO-cc06-A1-publish EXECUTE/);
   assert.match(yaml, /GO-cc06-A1-cleanup EXECUTE/);
   assert.match(yaml, /GO-cc06-A1-dry-run/);
+  assert.match(yaml, /GO-cc06-A1-fixture-non-ownership/);
+  assert.match(yaml, /fixture-non-ownership/);
+  assert.match(yaml, /write-fixture-checkpoint/);
+  assert.match(yaml, /cc06-fixture-non-ownership-drill/);
+  assert.match(yaml, /Upload fixture-non-ownership checkpoint artifact/);
+  assert.match(yaml, /Fetch fixture-non-ownership checkpoint artifact/);
+  assert.match(yaml, /Cleanup refuses fetched fixture as non-ownership/);
   // Cross-run artifact download must use run-id + github-token (not github-run-id).
   assert.match(yaml, /run-id: \$\{\{ inputs\.intent_run_id \}\}/);
   assert.match(yaml, /github-token: \$\{\{ github\.token \}\}/);
@@ -532,6 +539,15 @@ test("CI workflow is workflow_dispatch-only and never push-triggered", () => {
   assert.match(yaml, /assemble-attempt-receipt/);
   assert.match(yaml, /Assemble honest attempt receipt/);
   assert.match(yaml, /if: \$\{\{ always\(\)/);
+  // Fixture upload must precede local wipe and fetch; cleanup refusal follows fetch.
+  const fixtureWriteAt = yaml.indexOf("Write labeled fixture-non-ownership checkpoint (no KV)");
+  const fixtureUploadAt = yaml.indexOf("Upload fixture-non-ownership checkpoint artifact");
+  const fixtureWipeAt = yaml.indexOf("Remove local fixture copy before fetch proof");
+  const fixtureFetchAt = yaml.indexOf("Fetch fixture-non-ownership checkpoint artifact");
+  const fixtureRefuseAt = yaml.indexOf("Cleanup refuses fetched fixture as non-ownership (no KV)");
+  assert.ok(fixtureWriteAt > 0 && fixtureUploadAt > fixtureWriteAt, "write precedes upload");
+  assert.ok(fixtureWipeAt > fixtureUploadAt && fixtureFetchAt > fixtureWipeAt, "wipe precedes fetch");
+  assert.ok(fixtureRefuseAt > fixtureFetchAt, "cleanup refusal follows artifact fetch");
 });
 
 test("pre-existing identical or foreign value aborts publish with zero PUTs", async () => {
@@ -1169,6 +1185,53 @@ test("real CLI: dry-run intent refused by cleanup; fixture checkpoint refused", 
       "cleanup", "--revision", REVISION, "--intent", intentPath,
       "--checkpoint-dir", fixtureDir, "--out", join(dir, "cleanup.json"),
     ], { env: { CC06_OFFLINE_KV_STORE: kv }, expectStatus: 1 });
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("real CLI: write-fixture-checkpoint labels non-ownership and cleanup refuses it", () => {
+  const dir = mkdtempSync(join(tmpdir(), "cc06-cli-fixture-write-"));
+  const kv = join(dir, "kv");
+  mkdirSync(kv, { recursive: true });
+  try {
+    const intentPath = join(dir, "publish-intent.json");
+    runCli([
+      "prepare-intent", "--revision", REVISION, "--intent", intentPath,
+      "--attempt-id", "attempt-fixture-cli", "--out", join(dir, "prepare.json"),
+    ]);
+    // Promote so refusal attributes to the fixture label, not purpose=prepare.
+    const intent = JSON.parse(readFileSync(intentPath, "utf8"));
+    intent.purpose = "publish";
+    writeFileSync(intentPath, `${JSON.stringify(intent, null, 2)}\n`);
+
+    const checkpointPath = join(dir, "checkpoints", "fixture.json");
+    mkdirSync(join(dir, "checkpoints"), { recursive: true });
+    const written = runCli([
+      "write-fixture-checkpoint",
+      "--revision", REVISION,
+      "--checkpoint", checkpointPath,
+      "--attempt-id", "attempt-fixture-cli",
+      "--out", join(dir, "fixture-write.json"),
+    ]);
+    const receipt = JSON.parse(written.stdout);
+    assert.equal(receipt.decision, "fixture-checkpoint-written");
+    assert.equal(receipt.purpose, WAREHOUSE_ROUTE_SCOPED_FIXTURE_CHECKPOINT_PURPOSE);
+    assert.equal(receipt.fixture_label, "cc06-fixture-non-ownership-drill");
+    assert.equal(receipt.ownership, "none");
+    assert.equal(receipt.provider_writes, 0);
+    assert.equal(receipt.artifact_name, "cc06-fixture-non-ownership-drill");
+
+    const onDisk = JSON.parse(readFileSync(checkpointPath, "utf8"));
+    assert.equal(onDisk.purpose, WAREHOUSE_ROUTE_SCOPED_FIXTURE_CHECKPOINT_PURPOSE);
+    assert.equal(onDisk.ownership, "none");
+
+    const refused = runCli([
+      "cleanup", "--revision", REVISION, "--intent", intentPath,
+      "--checkpoint-dir", join(dir, "checkpoints"),
+      "--out", join(dir, "cleanup.json"),
+    ], { env: { CC06_OFFLINE_KV_STORE: kv }, expectStatus: 1 });
+    assert.match(String(refused.stderr || ""), /fixture-non-ownership-drill/);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
