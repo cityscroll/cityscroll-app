@@ -218,7 +218,7 @@ export function renderCapabilityJourneyHtml(journey, { headingId = "capability-c
   const cards = (journey.records || []).map(renderRecordCard).join("\n");
   return `<section class="capability-journey" data-capability-journey data-open-bid-cta="false" aria-labelledby="${esc(headingId)}">
   <h2 id="${esc(headingId)}">Compare capabilities</h2>
-  <p>Bounded pilot over ${journey.records.length} historical award description${journey.records.length === 1 ? "" : "s"}. Source role remains award description; this is preparation, not an open solicitation.</p>
+  <p>Bounded pilot over ${journey.records.length} historical award description${journey.records.length === 1 ? "" : "s"}. Each card cites the published award description so you can review capability overlap and gaps before pursuing related work.</p>
   ${renderProfileForm(journey.profile)}
   <div class="capability-records">
 ${cards}
