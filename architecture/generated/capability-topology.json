@@ -3097,6 +3097,13 @@
         "ai_entry": "backhome"
       },
       {
+        "surface_id": "program-history",
+        "route_family": "information-program-history",
+        "disposition": "standalone_link",
+        "render_owner": "site/contracts-program-history.html",
+        "ai_entry": "backhome"
+      },
+      {
         "surface_id": "changelog",
         "route_family": "information-changelog",
         "disposition": "standalone_link",

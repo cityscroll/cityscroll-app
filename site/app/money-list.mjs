@@ -171,25 +171,27 @@ function syncMoneyDiscoveryCopy(){
   if(deck) deck.textContent=t(moneyIntroKey(modeKey));
   const signpost=document.getElementById("money-awards-signpost");
   if(signpost) signpost.hidden=modeKey==="award";
-  syncCapabilityCompareEntry();
+  syncBetaPilotEntry("capability-compare","capability_compare_entry","/contracts-capability-compare.html");
+  syncBetaPilotEntry("program-history","program_history_entry","/contracts-program-history.html");
 }
-function syncCapabilityCompareEntry(){
+function syncBetaPilotEntry(slug,copyKey,path){
   const host=document.getElementById("money-intro") || document.getElementById("money-intro-deck")?.parentElement;
   if(!host) return;
-  let entry=document.getElementById("capability-compare-entry");
-  const enabled=globalThis.CROL_BETA_FLAG==="capability-compare"
-    || document.documentElement?.dataset?.betaFlag==="capability-compare";
+  const id=`${slug}-entry`;
+  let entry=document.getElementById(id);
+  const enabled=globalThis.CROL_BETA_FLAG===slug
+    || document.documentElement?.dataset?.betaFlag===slug;
   if(!enabled){
     entry?.remove();
     return;
   }
   if(!entry){
     entry=document.createElement("p");
-    entry.id="capability-compare-entry";
-    entry.className="capability-compare-entry";
+    entry.id=id;
+    entry.className=id;
     const link=document.createElement("a");
-    link.href="/contracts-capability-compare.html?beta=capability-compare";
-    link.textContent=t("capability_compare_entry");
+    link.href=`${path}?beta=${slug}`;
+    link.textContent=t(copyKey);
     entry.append(link);
     host.append(entry);
   }

@@ -21,14 +21,25 @@
       "raw": true,
       "derived": false,
       "description": "Elapsed navigation start to first response byte.",
-      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "numeric_domain": {
+        "finite": true,
+        "minimum": 0,
+        "measured_zero_valid": true
+      },
       "lifecycle": {
         "scope": "page",
         "start_landmark": "navigation_start",
         "end_landmark": "response_start",
         "finalize_condition": "the lifecycle-aware field-vital callback reports a value",
-        "valid_when": ["both landmarks exist and are finite", "navigation_start is not after response_start"],
-        "non_measurement_states": ["missing", "unsupported", "background"]
+        "valid_when": [
+          "both landmarks exist and are finite",
+          "navigation_start is not after response_start"
+        ],
+        "non_measurement_states": [
+          "missing",
+          "unsupported",
+          "background"
+        ]
       },
       "derived_from": [],
       "synthetic_mapping": {
@@ -36,7 +47,10 @@
         "names": [
           {
             "name": "ttfbMs",
-            "fixture_scope": ["home.cold", "home.warm"],
+            "fixture_scope": [
+              "home.cold",
+              "home.warm"
+            ],
             "compatibility_condition": "responseStart - startTime with an available navigation entry"
           }
         ],
@@ -51,14 +65,25 @@
       "raw": true,
       "derived": false,
       "description": "Elapsed navigation start to first contentful paint.",
-      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "numeric_domain": {
+        "finite": true,
+        "minimum": 0,
+        "measured_zero_valid": true
+      },
       "lifecycle": {
         "scope": "page",
         "start_landmark": "navigation_start",
         "end_landmark": "first_contentful_paint",
         "finalize_condition": "the lifecycle-aware field-vital callback reports a value",
-        "valid_when": ["both landmarks exist and are finite", "navigation_start is not after first_contentful_paint"],
-        "non_measurement_states": ["missing", "unsupported", "background"]
+        "valid_when": [
+          "both landmarks exist and are finite",
+          "navigation_start is not after first_contentful_paint"
+        ],
+        "non_measurement_states": [
+          "missing",
+          "unsupported",
+          "background"
+        ]
       },
       "derived_from": [],
       "synthetic_mapping": {
@@ -66,7 +91,9 @@
         "names": [
           {
             "name": "fcpMs",
-            "fixture_scope": ["home.cold"],
+            "fixture_scope": [
+              "home.cold"
+            ],
             "compatibility_condition": "first-contentful-paint startTime exists"
           }
         ],
@@ -81,14 +108,25 @@
       "raw": true,
       "derived": false,
       "description": "Elapsed navigation start to the lifecycle-final largest contentful paint.",
-      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "numeric_domain": {
+        "finite": true,
+        "minimum": 0,
+        "measured_zero_valid": true
+      },
       "lifecycle": {
         "scope": "page",
         "start_landmark": "navigation_start",
         "end_landmark": "largest_contentful_paint",
         "finalize_condition": "the lifecycle-aware field-vital callback finalizes the value",
-        "valid_when": ["both landmarks exist and are finite", "navigation_start is not after largest_contentful_paint"],
-        "non_measurement_states": ["missing", "unsupported", "background"]
+        "valid_when": [
+          "both landmarks exist and are finite",
+          "navigation_start is not after largest_contentful_paint"
+        ],
+        "non_measurement_states": [
+          "missing",
+          "unsupported",
+          "background"
+        ]
       },
       "derived_from": [],
       "synthetic_mapping": {
@@ -96,7 +134,10 @@
         "names": [
           {
             "name": "lcpMs",
-            "fixture_scope": ["home.cold", "home.warm"],
+            "fixture_scope": [
+              "home.cold",
+              "home.warm"
+            ],
             "compatibility_condition": "a buffered LCP entry exists; the synthetic zero default is absence, not a measurement"
           }
         ],
@@ -111,14 +152,25 @@
       "raw": true,
       "derived": false,
       "description": "Lifecycle-final cumulative layout shift score excluding shifts after recent input.",
-      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "numeric_domain": {
+        "finite": true,
+        "minimum": 0,
+        "measured_zero_valid": true
+      },
       "lifecycle": {
         "scope": "page",
         "start_landmark": "navigation_start",
         "end_landmark": "page_lifecycle_end",
         "finalize_condition": "the lifecycle-aware field-vital callback finalizes the value",
-        "valid_when": ["layout-shift observation is supported", "only shifts without recent input contribute"],
-        "non_measurement_states": ["missing", "unsupported", "background"]
+        "valid_when": [
+          "layout-shift observation is supported",
+          "only shifts without recent input contribute"
+        ],
+        "non_measurement_states": [
+          "missing",
+          "unsupported",
+          "background"
+        ]
       },
       "derived_from": [],
       "synthetic_mapping": {
@@ -126,7 +178,10 @@
         "names": [
           {
             "name": "cls",
-            "fixture_scope": ["home.cold", "home.warm"],
+            "fixture_scope": [
+              "home.cold",
+              "home.warm"
+            ],
             "compatibility_condition": "the value accumulates layout shifts without recent input"
           }
         ],
@@ -141,20 +196,34 @@
       "raw": true,
       "derived": false,
       "description": "Lifecycle-final interaction to next paint value for the page.",
-      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "numeric_domain": {
+        "finite": true,
+        "minimum": 0,
+        "measured_zero_valid": true
+      },
       "lifecycle": {
         "scope": "page",
         "start_landmark": "qualifying_interaction_start",
         "end_landmark": "qualifying_interaction_next_paint",
         "finalize_condition": "the lifecycle-aware field-vital callback finalizes the value",
-        "valid_when": ["Event Timing is supported", "at least one qualifying interaction occurred"],
-        "non_measurement_states": ["missing", "unsupported", "background", "no_interaction"]
+        "valid_when": [
+          "Event Timing is supported",
+          "at least one qualifying interaction occurred"
+        ],
+        "non_measurement_states": [
+          "missing",
+          "unsupported",
+          "background",
+          "no_interaction"
+        ]
       },
       "derived_from": [],
       "synthetic_mapping": {
         "status": "none",
         "names": [],
-        "incompatible_names": ["eventDurationMs"],
+        "incompatible_names": [
+          "eventDurationMs"
+        ],
         "reason": "The synthetic maximum event duration is diagnostic evidence, not INP."
       }
     },
@@ -165,14 +234,26 @@
       "raw": false,
       "derived": true,
       "description": "Elapsed navigation start until the surface presents meaningful content or an honest terminal empty, unavailable, or error state.",
-      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "numeric_domain": {
+        "finite": true,
+        "minimum": 0,
+        "measured_zero_valid": true
+      },
       "lifecycle": {
         "scope": "page",
         "start_landmark": "navigation_start",
         "end_landmark": "semantic_content_ready",
         "finalize_condition": "the surface owner reports its first semantic terminal state",
-        "valid_when": ["both landmarks exist and are finite", "navigation_start is not after semantic_content_ready", "the terminal state is meaningful content or honest empty, unavailable, or error"],
-        "non_measurement_states": ["missing", "unsupported", "background"]
+        "valid_when": [
+          "both landmarks exist and are finite",
+          "navigation_start is not after semantic_content_ready",
+          "the terminal state is meaningful content or honest empty, unavailable, or error"
+        ],
+        "non_measurement_states": [
+          "missing",
+          "unsupported",
+          "background"
+        ]
       },
       "derived_from": [],
       "synthetic_mapping": {
@@ -189,14 +270,26 @@
       "raw": false,
       "derived": true,
       "description": "Elapsed component activation until that component presents useful content or an honest terminal empty, unavailable, or error state.",
-      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "numeric_domain": {
+        "finite": true,
+        "minimum": 0,
+        "measured_zero_valid": true
+      },
       "lifecycle": {
         "scope": "component",
         "start_landmark": "component_activation",
         "end_landmark": "semantic_component_ready",
         "finalize_condition": "the component owner reports its first semantic terminal state",
-        "valid_when": ["both landmarks exist and are finite", "component_activation is not after semantic_component_ready", "the terminal state is useful content or honest empty, unavailable, or error"],
-        "non_measurement_states": ["missing", "unsupported", "background"]
+        "valid_when": [
+          "both landmarks exist and are finite",
+          "component_activation is not after semantic_component_ready",
+          "the terminal state is useful content or honest empty, unavailable, or error"
+        ],
+        "non_measurement_states": [
+          "missing",
+          "unsupported",
+          "background"
+        ]
       },
       "derived_from": [],
       "synthetic_mapping": {
@@ -204,7 +297,9 @@
         "names": [
           {
             "name": "settledMs",
-            "fixture_scope": ["land.outcomes-first-paint:present"],
+            "fixture_scope": [
+              "land.outcomes-first-paint:present"
+            ],
             "compatibility_condition": "the named Land outcome component reaches its present first-paint marker"
           }
         ],
@@ -219,20 +314,34 @@
       "raw": false,
       "derived": true,
       "description": "Elapsed interaction start until the first visible acknowledgement of that action.",
-      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "numeric_domain": {
+        "finite": true,
+        "minimum": 0,
+        "measured_zero_valid": true
+      },
       "lifecycle": {
         "scope": "interaction",
         "start_landmark": "interaction_start",
         "end_landmark": "visible_feedback",
         "finalize_condition": "the interaction owner reports its first visible feedback landmark",
-        "valid_when": ["both landmarks exist and are finite", "interaction_start is not after visible_feedback"],
-        "non_measurement_states": ["missing", "unsupported", "background", "no_interaction"]
+        "valid_when": [
+          "both landmarks exist and are finite",
+          "interaction_start is not after visible_feedback"
+        ],
+        "non_measurement_states": [
+          "missing",
+          "unsupported",
+          "background",
+          "no_interaction"
+        ]
       },
       "derived_from": [],
       "synthetic_mapping": {
         "status": "none",
         "names": [],
-        "incompatible_names": ["visualResponseMs"],
+        "incompatible_names": [
+          "visualResponseMs"
+        ],
         "reason": "Synchronous click-handler duration is not a visible feedback landmark."
       }
     },
@@ -243,14 +352,27 @@
       "raw": false,
       "derived": true,
       "description": "Elapsed interaction start until the resulting component reaches its semantic settled state.",
-      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "numeric_domain": {
+        "finite": true,
+        "minimum": 0,
+        "measured_zero_valid": true
+      },
       "lifecycle": {
         "scope": "interaction",
         "start_landmark": "interaction_start",
         "end_landmark": "interaction_settled",
         "finalize_condition": "the interaction owner reports the resulting semantic terminal state",
-        "valid_when": ["both landmarks exist and are finite", "interaction_start is not after interaction_settled", "the terminal state is useful content or honest empty, unavailable, or error"],
-        "non_measurement_states": ["missing", "unsupported", "background", "no_interaction"]
+        "valid_when": [
+          "both landmarks exist and are finite",
+          "interaction_start is not after interaction_settled",
+          "the terminal state is useful content or honest empty, unavailable, or error"
+        ],
+        "non_measurement_states": [
+          "missing",
+          "unsupported",
+          "background",
+          "no_interaction"
+        ]
       },
       "derived_from": [],
       "synthetic_mapping": {
@@ -258,11 +380,15 @@
         "names": [
           {
             "name": "settledMs",
-            "fixture_scope": ["contracts.keyword-housing"],
+            "fixture_scope": [
+              "contracts.keyword-housing"
+            ],
             "compatibility_condition": "input begins the action and canonical query plus row-or-empty result ends it"
           }
         ],
-        "incompatible_names": ["settledMs:land.outcomes-first-paint"],
+        "incompatible_names": [
+          "settledMs:land.outcomes-first-paint"
+        ],
         "reason": "Only the Contracts keyword fixture has the same action-to-settled landmarks."
       }
     },
@@ -273,20 +399,38 @@
       "raw": false,
       "derived": true,
       "description": "Elapsed first visible interaction feedback until the resulting component reaches its semantic settled state.",
-      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "numeric_domain": {
+        "finite": true,
+        "minimum": 0,
+        "measured_zero_valid": true
+      },
       "lifecycle": {
         "scope": "interaction",
         "start_landmark": "visible_feedback",
         "end_landmark": "interaction_settled",
         "finalize_condition": "both ordered interaction landmarks are available in the browser",
-        "valid_when": ["both landmarks exist and are finite", "visible_feedback is not after interaction_settled"],
-        "non_measurement_states": ["missing", "unsupported", "background", "no_interaction"]
+        "valid_when": [
+          "both landmarks exist and are finite",
+          "visible_feedback is not after interaction_settled"
+        ],
+        "non_measurement_states": [
+          "missing",
+          "unsupported",
+          "background",
+          "no_interaction"
+        ]
       },
-      "derived_from": ["interaction_feedback_ms", "interaction_settled_ms"],
+      "derived_from": [
+        "interaction_feedback_ms",
+        "interaction_settled_ms"
+      ],
       "synthetic_mapping": {
         "status": "none",
         "names": [],
-        "incompatible_names": ["visualResponseMs", "settledMs"],
+        "incompatible_names": [
+          "visualResponseMs",
+          "settledMs"
+        ],
         "reason": "The synthetic harness has no distinct visible-feedback timestamp paired with settlement."
       }
     },
@@ -297,16 +441,30 @@
       "raw": false,
       "derived": true,
       "description": "Elapsed first response byte to first contentful paint.",
-      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "numeric_domain": {
+        "finite": true,
+        "minimum": 0,
+        "measured_zero_valid": true
+      },
       "lifecycle": {
         "scope": "page",
         "start_landmark": "response_start",
         "end_landmark": "first_contentful_paint",
         "finalize_condition": "all ordered load-decomposition landmarks are available in the browser",
-        "valid_when": ["all load landmarks exist and are finite", "navigation_start through semantic_content_ready are ordered"],
-        "non_measurement_states": ["missing", "unsupported", "background"]
+        "valid_when": [
+          "all load landmarks exist and are finite",
+          "navigation_start through semantic_content_ready are ordered"
+        ],
+        "non_measurement_states": [
+          "missing",
+          "unsupported",
+          "background"
+        ]
       },
-      "derived_from": ["ttfb_ms", "fcp_ms"],
+      "derived_from": [
+        "ttfb_ms",
+        "fcp_ms"
+      ],
       "synthetic_mapping": {
         "status": "none",
         "names": [],
@@ -321,16 +479,30 @@
       "raw": false,
       "derived": true,
       "description": "Elapsed first contentful paint to largest contentful paint.",
-      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "numeric_domain": {
+        "finite": true,
+        "minimum": 0,
+        "measured_zero_valid": true
+      },
       "lifecycle": {
         "scope": "page",
         "start_landmark": "first_contentful_paint",
         "end_landmark": "largest_contentful_paint",
         "finalize_condition": "all ordered load-decomposition landmarks are available in the browser",
-        "valid_when": ["all load landmarks exist and are finite", "navigation_start through semantic_content_ready are ordered"],
-        "non_measurement_states": ["missing", "unsupported", "background"]
+        "valid_when": [
+          "all load landmarks exist and are finite",
+          "navigation_start through semantic_content_ready are ordered"
+        ],
+        "non_measurement_states": [
+          "missing",
+          "unsupported",
+          "background"
+        ]
       },
-      "derived_from": ["fcp_ms", "lcp_ms"],
+      "derived_from": [
+        "fcp_ms",
+        "lcp_ms"
+      ],
       "synthetic_mapping": {
         "status": "none",
         "names": [],
@@ -345,16 +517,30 @@
       "raw": false,
       "derived": true,
       "description": "Elapsed largest contentful paint to semantic content readiness.",
-      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "numeric_domain": {
+        "finite": true,
+        "minimum": 0,
+        "measured_zero_valid": true
+      },
       "lifecycle": {
         "scope": "page",
         "start_landmark": "largest_contentful_paint",
         "end_landmark": "semantic_content_ready",
         "finalize_condition": "all ordered load-decomposition landmarks are available in the browser",
-        "valid_when": ["all load landmarks exist and are finite", "navigation_start through semantic_content_ready are ordered"],
-        "non_measurement_states": ["missing", "unsupported", "background"]
+        "valid_when": [
+          "all load landmarks exist and are finite",
+          "navigation_start through semantic_content_ready are ordered"
+        ],
+        "non_measurement_states": [
+          "missing",
+          "unsupported",
+          "background"
+        ]
       },
-      "derived_from": ["lcp_ms", "content_ready_ms"],
+      "derived_from": [
+        "lcp_ms",
+        "content_ready_ms"
+      ],
       "synthetic_mapping": {
         "status": "none",
         "names": [],
@@ -371,7 +557,11 @@
       "end_landmark": "response_start",
       "operation": "end_minus_start",
       "derive_in": "browser",
-      "preconditions": ["all_landmarks_present", "all_landmarks_finite", "landmarks_ordered"],
+      "preconditions": [
+        "all_landmarks_present",
+        "all_landmarks_finite",
+        "landmarks_ordered"
+      ],
       "invalid_result": "omit",
       "negative_result": "omit_never_clamp"
     },
@@ -382,7 +572,11 @@
       "end_landmark": "first_contentful_paint",
       "operation": "end_minus_start",
       "derive_in": "browser",
-      "preconditions": ["all_landmarks_present", "all_landmarks_finite", "landmarks_ordered"],
+      "preconditions": [
+        "all_landmarks_present",
+        "all_landmarks_finite",
+        "landmarks_ordered"
+      ],
       "invalid_result": "omit",
       "negative_result": "omit_never_clamp"
     },
@@ -393,7 +587,11 @@
       "end_landmark": "largest_contentful_paint",
       "operation": "end_minus_start",
       "derive_in": "browser",
-      "preconditions": ["all_landmarks_present", "all_landmarks_finite", "landmarks_ordered"],
+      "preconditions": [
+        "all_landmarks_present",
+        "all_landmarks_finite",
+        "landmarks_ordered"
+      ],
       "invalid_result": "omit",
       "negative_result": "omit_never_clamp"
     },
@@ -404,7 +602,11 @@
       "end_landmark": "semantic_content_ready",
       "operation": "end_minus_start",
       "derive_in": "browser",
-      "preconditions": ["all_landmarks_present", "all_landmarks_finite", "landmarks_ordered"],
+      "preconditions": [
+        "all_landmarks_present",
+        "all_landmarks_finite",
+        "landmarks_ordered"
+      ],
       "invalid_result": "omit",
       "negative_result": "omit_never_clamp"
     },
@@ -415,7 +617,11 @@
       "end_landmark": "visible_feedback",
       "operation": "end_minus_start",
       "derive_in": "browser",
-      "preconditions": ["all_landmarks_present", "all_landmarks_finite", "landmarks_ordered"],
+      "preconditions": [
+        "all_landmarks_present",
+        "all_landmarks_finite",
+        "landmarks_ordered"
+      ],
       "invalid_result": "omit",
       "negative_result": "omit_never_clamp"
     },
@@ -426,7 +632,11 @@
       "end_landmark": "interaction_settled",
       "operation": "end_minus_start",
       "derive_in": "browser",
-      "preconditions": ["all_landmarks_present", "all_landmarks_finite", "landmarks_ordered"],
+      "preconditions": [
+        "all_landmarks_present",
+        "all_landmarks_finite",
+        "landmarks_ordered"
+      ],
       "invalid_result": "omit",
       "negative_result": "omit_never_clamp"
     },
@@ -437,7 +647,11 @@
       "end_landmark": "interaction_settled",
       "operation": "end_minus_start",
       "derive_in": "browser",
-      "preconditions": ["all_landmarks_present", "all_landmarks_finite", "landmarks_ordered"],
+      "preconditions": [
+        "all_landmarks_present",
+        "all_landmarks_finite",
+        "landmarks_ordered"
+      ],
       "invalid_result": "omit",
       "negative_result": "omit_never_clamp"
     }
@@ -449,9 +663,28 @@
     "library_name": "web-vitals",
     "library_version": "6.0.1",
     "library_build": "standard",
-    "field_metric_ids": ["cls_score", "fcp_ms", "inp_ms", "lcp_ms", "ttfb_ms"],
-    "device_classes": ["desktop", "mobile", "tablet", "unknown"],
-    "navigation_types": ["back-forward", "back-forward-cache", "navigate", "prerender", "reload", "restore", "unknown"],
+    "field_metric_ids": [
+      "cls_score",
+      "fcp_ms",
+      "inp_ms",
+      "lcp_ms",
+      "ttfb_ms"
+    ],
+    "device_classes": [
+      "desktop",
+      "mobile",
+      "tablet",
+      "unknown"
+    ],
+    "navigation_types": [
+      "back-forward",
+      "back-forward-cache",
+      "navigate",
+      "prerender",
+      "reload",
+      "restore",
+      "unknown"
+    ],
     "production_enabled": true
   },
   "description": "Canonical human-edited registry for public-safe performance surface and component identity. Generated browser, Worker, and operator projections must never be edited as inventories.",
@@ -518,116 +751,148 @@
   },
   "surfaces": [
     {
-      "surface_id": "home",
-      "operator_label": "Home",
+      "surface_id": "about",
+      "operator_label": "About",
       "kind": "surface",
       "parent": null,
-      "route_family": "home",
+      "route_family": "information-about",
       "public_safe_matcher": [
-        { "kind": "exact", "pathname": "/" },
-        { "kind": "exact", "pathname": "/index.html" }
+        {
+          "kind": "exact",
+          "pathname": "/about.html"
+        }
       ],
       "architecture_container_ref": "browser_site",
       "delivery_class": "static",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "instrumented",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "site/index.html",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "now",
-      "operator_label": "Now",
-      "kind": "surface",
-      "parent": null,
-      "route_family": "task-now",
-      "public_safe_matcher": [{ "kind": "exact", "pathname": "/now" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "static",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
       "semantic_readiness_contract": "page-content-ready-v1",
       "lifecycle_state": "planned",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
-      "owner_source_path": "tools/build_primary_documents.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "owner_source_path": "site/about.html",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
-      "surface_id": "near-you",
-      "operator_label": "Near You",
+      "surface_id": "agency",
+      "operator_label": "Agency profile",
       "kind": "surface",
       "parent": null,
-      "route_family": "place-near-you",
+      "route_family": "entity-agency",
       "public_safe_matcher": [
-        { "kind": "exact", "pathname": "/near-you" },
-        { "kind": "segment_template", "pathname": "/near-you/lens/{lens}" },
-        { "kind": "segment_template", "pathname": "/near-you/borough/{borough}" },
-        { "kind": "segment_template", "pathname": "/near-you/borough/{borough}/{lens}" }
+        {
+          "kind": "exact",
+          "pathname": "/agencies"
+        },
+        {
+          "kind": "segment_template",
+          "pathname": "/agencies/{record}"
+        }
       ],
       "architecture_container_ref": "browser_site",
       "delivery_class": "hybrid",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
       "semantic_readiness_contract": "page-content-ready-v1",
       "lifecycle_state": "instrumented",
-      "aliases": [
-        {
-          "alias_id": "map",
-          "introduced_version": "0.1.0",
-          "retired_version": "1.0.0",
-          "reason": "Legacy hash-route name retained for historical observations."
-        }
-      ],
-      "supersedes": ["map"],
+      "aliases": [],
+      "supersedes": [],
       "introduced_version": "1.0.0",
-      "owner_source_path": "site/near_you_view.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "owner_source_path": "tools/build_agency_documents.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
-      "surface_id": "following",
-      "operator_label": "Following",
+      "surface_id": "api-guide",
+      "operator_label": "API guide",
       "kind": "surface",
       "parent": null,
-      "route_family": "stateful-following",
-      "public_safe_matcher": [{ "kind": "exact", "pathname": "/following" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "hybrid",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "instrumented",
-      "aliases": [
+      "route_family": "information-api",
+      "public_safe_matcher": [
         {
-          "alias_id": "alerts",
-          "introduced_version": "0.1.0",
-          "retired_version": "1.0.0",
-          "reason": "Legacy hash-route name retained for historical observations."
+          "kind": "exact",
+          "pathname": "/api.html"
         }
       ],
-      "supersedes": ["alerts"],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
       "introduced_version": "1.0.0",
-      "owner_source_path": "site/following_view.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "owner_source_path": "site/api.html",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
-      "surface_id": "following-pack",
-      "operator_label": "Following / monitor pack",
+      "surface_id": "assertion",
+      "operator_label": "Assertion inspector",
       "kind": "surface",
-      "parent": "surface:following",
-      "route_family": "stateful-following-pack",
-      "public_safe_matcher": [{ "kind": "segment_template", "pathname": "/following/packs/{record}" }],
+      "parent": null,
+      "route_family": "record-assertion",
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/assertions"
+        },
+        {
+          "kind": "segment_template",
+          "pathname": "/assertions/{record}"
+        }
+      ],
       "architecture_container_ref": "browser_site",
       "delivery_class": "pages_edge",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
       "semantic_readiness_contract": "page-content-ready-v1",
       "lifecycle_state": "planned",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
-      "owner_source_path": "site/pages_edge.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "owner_source_path": "site/assertion_inspector.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "surface_id": "browse",
@@ -635,17 +900,33 @@
       "kind": "surface",
       "parent": null,
       "route_family": "browse",
-      "public_safe_matcher": [{ "kind": "exact", "pathname": "/browse" }],
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/browse"
+        }
+      ],
       "architecture_container_ref": "browser_site",
       "delivery_class": "static",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
       "semantic_readiness_contract": "page-content-ready-v1",
       "lifecycle_state": "planned",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "tools/build_primary_documents.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "surface_id": "browse-contracts",
@@ -653,10 +934,22 @@
       "kind": "surface",
       "parent": "surface:browse",
       "route_family": "browse-contracts",
-      "public_safe_matcher": [{ "kind": "exact", "pathname": "/browse/contracts" }],
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/browse/contracts"
+        }
+      ],
       "architecture_container_ref": "browser_site",
       "delivery_class": "hybrid",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
       "semantic_readiness_contract": "page-content-ready-v1",
       "lifecycle_state": "instrumented",
       "aliases": [
@@ -667,46 +960,16 @@
           "reason": "Legacy lens name retained for historical observations."
         }
       ],
-      "supersedes": ["browse-money"],
+      "supersedes": [
+        "browse-money"
+      ],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/browse_view.mjs",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "browse-people",
-      "operator_label": "Browse / People + organizations",
-      "kind": "surface",
-      "parent": "surface:browse",
-      "route_family": "browse-people",
-      "public_safe_matcher": [{ "kind": "exact", "pathname": "/browse/people" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "static",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "site/people_organizations_surface.mjs",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "browse-staffing",
-      "operator_label": "Browse / Staffing",
-      "kind": "surface",
-      "parent": "surface:browse",
-      "route_family": "browse-staffing",
-      "public_safe_matcher": [{ "kind": "exact", "pathname": "/browse/staffing" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "hybrid",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "site/staffing_surface.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "surface_id": "browse-exams",
@@ -714,17 +977,237 @@
       "kind": "surface",
       "parent": "surface:browse",
       "route_family": "browse-exams",
-      "public_safe_matcher": [{ "kind": "exact", "pathname": "/browse/exams" }],
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/browse/exams"
+        }
+      ],
       "architecture_container_ref": "browser_site",
       "delivery_class": "static",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
       "semantic_readiness_contract": "page-content-ready-v1",
       "lifecycle_state": "planned",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/exams_surface.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "browse-meetings",
+      "operator_label": "Browse / Meetings",
+      "kind": "surface",
+      "parent": "surface:browse",
+      "route_family": "browse-meetings",
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/browse/meetings"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/browse_view.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "browse-people",
+      "operator_label": "Browse / People + organizations",
+      "kind": "surface",
+      "parent": "surface:browse",
+      "route_family": "browse-people",
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/browse/people"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/people_organizations_surface.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "browse-places",
+      "operator_label": "Browse / Places",
+      "kind": "surface",
+      "parent": "surface:browse",
+      "route_family": "browse-places",
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/browse/places"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/browse_concept_view.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "browse-property",
+      "operator_label": "Browse / Property",
+      "kind": "surface",
+      "parent": "surface:browse",
+      "route_family": "browse-property",
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/browse/property"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/browse_view.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "browse-rules",
+      "operator_label": "Browse / Rules",
+      "kind": "surface",
+      "parent": "surface:browse",
+      "route_family": "browse-rules",
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/browse/rules"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/browse_view.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "browse-staffing",
+      "operator_label": "Browse / Staffing",
+      "kind": "surface",
+      "parent": "surface:browse",
+      "route_family": "browse-staffing",
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/browse/staffing"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/staffing_surface.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "surface_id": "browse-zoning",
@@ -732,10 +1215,22 @@
       "kind": "surface",
       "parent": "surface:browse",
       "route_family": "browse-zoning",
-      "public_safe_matcher": [{ "kind": "exact", "pathname": "/browse/zoning" }],
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/browse/zoning"
+        }
+      ],
       "architecture_container_ref": "browser_site",
       "delivery_class": "hybrid",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
       "semantic_readiness_contract": "page-content-ready-v1",
       "lifecycle_state": "planned",
       "aliases": [
@@ -746,247 +1241,84 @@
           "reason": "The public route family was renamed from Land to Zoning without erasing historical observations."
         }
       ],
-      "supersedes": ["browse-land"],
+      "supersedes": [
+        "browse-land"
+      ],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/browse_view.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
-      "surface_id": "browse-property",
-      "operator_label": "Browse / Property",
-      "kind": "surface",
-      "parent": "surface:browse",
-      "route_family": "browse-property",
-      "public_safe_matcher": [{ "kind": "exact", "pathname": "/browse/property" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "hybrid",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "site/browse_view.mjs",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "browse-rules",
-      "operator_label": "Browse / Rules",
-      "kind": "surface",
-      "parent": "surface:browse",
-      "route_family": "browse-rules",
-      "public_safe_matcher": [{ "kind": "exact", "pathname": "/browse/rules" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "hybrid",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "site/browse_view.mjs",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "rulemaking",
-      "operator_label": "Rulemaking case file",
+      "surface_id": "capability-compare",
+      "operator_label": "Capability compare (opt-in)",
       "kind": "surface",
       "parent": null,
-      "route_family": "rulemaking",
-      "public_safe_matcher": [{ "kind": "segment_template", "pathname": "/rules/{record}" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "pages_edge",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "site/rulemaking_document.mjs",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "browse-meetings",
-      "operator_label": "Browse / Meetings",
-      "kind": "surface",
-      "parent": "surface:browse",
-      "route_family": "browse-meetings",
-      "public_safe_matcher": [{ "kind": "exact", "pathname": "/browse/meetings" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "hybrid",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "site/browse_view.mjs",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "browse-places",
-      "operator_label": "Browse / Places",
-      "kind": "surface",
-      "parent": "surface:browse",
-      "route_family": "browse-places",
-      "public_safe_matcher": [{ "kind": "exact", "pathname": "/browse/places" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "static",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "site/browse_concept_view.mjs",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "search",
-      "operator_label": "Universal search",
-      "kind": "surface",
-      "parent": null,
-      "route_family": "search",
-      "public_safe_matcher": [{ "kind": "exact", "pathname": "/search" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "worker_backed",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "site/search/index.html",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "notice",
-      "operator_label": "Notice document",
-      "kind": "surface",
-      "parent": null,
-      "route_family": "record-notice",
-      "public_safe_matcher": [{ "kind": "segment_template", "pathname": "/notices/{record}" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "pages_edge",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "instrumented",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "site/pages_edge.mjs",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "mandate",
-      "operator_label": "Mandate document",
-      "kind": "surface",
-      "parent": null,
-      "route_family": "record-mandate",
-      "public_safe_matcher": [{ "kind": "segment_template", "pathname": "/mandates/{record}" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "pages_edge",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "site/mandate_document.mjs",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "meeting",
-      "operator_label": "Meeting document",
-      "kind": "surface",
-      "parent": null,
-      "route_family": "record-meeting",
-      "public_safe_matcher": [{ "kind": "segment_template", "pathname": "/meetings/{record}" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "pages_edge",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "site/meeting_document.mjs",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "procurement",
-      "operator_label": "Procurement document",
-      "kind": "surface",
-      "parent": null,
-      "route_family": "record-procurement",
-      "public_safe_matcher": [{ "kind": "segment_template", "pathname": "/procurements/{record}" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "pages_edge",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "site/procurement_document.mjs",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "agency",
-      "operator_label": "Agency profile",
-      "kind": "surface",
-      "parent": null,
-      "route_family": "entity-agency",
+      "route_family": "information-capability-compare",
       "public_safe_matcher": [
-        { "kind": "exact", "pathname": "/agencies" },
-        { "kind": "segment_template", "pathname": "/agencies/{record}" }
+        {
+          "kind": "exact",
+          "pathname": "/contracts-capability-compare.html"
+        }
       ],
       "architecture_container_ref": "browser_site",
-      "delivery_class": "hybrid",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "instrumented",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "tools/build_agency_documents.mjs",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "vendor",
-      "operator_label": "Vendor profile",
-      "kind": "surface",
-      "parent": null,
-      "route_family": "entity-vendor",
-      "public_safe_matcher": [{ "kind": "segment_template", "pathname": "/vendors/{record}" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "pages_edge",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
       "semantic_readiness_contract": "page-content-ready-v1",
       "lifecycle_state": "planned",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
-      "owner_source_path": "site/pages_edge.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "owner_source_path": "site/contracts-capability-compare.html",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
-      "surface_id": "official",
-      "operator_label": "Official profile",
+      "surface_id": "changelog",
+      "operator_label": "Changelog",
       "kind": "surface",
       "parent": null,
-      "route_family": "entity-official",
-      "public_safe_matcher": [{ "kind": "segment_template", "pathname": "/officials/{record}" }],
+      "route_family": "information-changelog",
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/changelog.html"
+        }
+      ],
       "architecture_container_ref": "browser_site",
-      "delivery_class": "pages_edge",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
       "semantic_readiness_contract": "page-content-ready-v1",
       "lifecycle_state": "planned",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
-      "owner_source_path": "site/pages_edge.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "owner_source_path": "site/changelog.html",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "surface_id": "committee",
@@ -994,17 +1326,33 @@
       "kind": "surface",
       "parent": null,
       "route_family": "entity-committee",
-      "public_safe_matcher": [{ "kind": "segment_template", "pathname": "/committees/{record}" }],
+      "public_safe_matcher": [
+        {
+          "kind": "segment_template",
+          "pathname": "/committees/{record}"
+        }
+      ],
       "architecture_container_ref": "browser_site",
       "delivery_class": "pages_edge",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
       "semantic_readiness_contract": "page-content-ready-v1",
       "lifecycle_state": "planned",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/committee_document.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "surface_id": "community-board",
@@ -1013,184 +1361,36 @@
       "parent": null,
       "route_family": "entity-community-board",
       "public_safe_matcher": [
-        { "kind": "exact", "pathname": "/community-boards" },
-        { "kind": "segment_template", "pathname": "/community-boards/{record}" }
+        {
+          "kind": "exact",
+          "pathname": "/community-boards"
+        },
+        {
+          "kind": "segment_template",
+          "pathname": "/community-boards/{record}"
+        }
       ],
       "architecture_container_ref": "browser_site",
       "delivery_class": "static",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
       "semantic_readiness_contract": "page-content-ready-v1",
       "lifecycle_state": "planned",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "tools/build_community_board_constellation_documents.mjs",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "exam",
-      "operator_label": "Exam document",
-      "kind": "surface",
-      "parent": null,
-      "route_family": "record-exam",
-      "public_safe_matcher": [{ "kind": "segment_template", "pathname": "/exams/{record}" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "hybrid",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "tools/build_exam_documents.mjs",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "parcel",
-      "operator_label": "Parcel document",
-      "kind": "surface",
-      "parent": null,
-      "route_family": "record-parcel",
-      "public_safe_matcher": [{ "kind": "segment_template", "pathname": "/parcels/{record}" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "static",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "tools/build_composed_object_documents.mjs",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "assertion",
-      "operator_label": "Assertion inspector",
-      "kind": "surface",
-      "parent": null,
-      "route_family": "record-assertion",
-      "public_safe_matcher": [
-        { "kind": "exact", "pathname": "/assertions" },
-        { "kind": "segment_template", "pathname": "/assertions/{record}" }
-      ],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "pages_edge",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "site/assertion_inspector.mjs",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "district-digest",
-      "operator_label": "Council district digest",
-      "kind": "surface",
-      "parent": "surface:following",
-      "route_family": "district-digest",
-      "public_safe_matcher": [{ "kind": "segment_template", "pathname": "/districts/council/{district}/digest" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "static",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "tools/build_composed_object_documents.mjs",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "public-stats",
-      "operator_label": "Public corpus statistics",
-      "kind": "surface",
-      "parent": null,
-      "route_family": "information-stats",
-      "public_safe_matcher": [{ "kind": "exact", "pathname": "/stats.html" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "hybrid",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "site/stats.html",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "data-health",
-      "operator_label": "Public data health",
-      "kind": "surface",
-      "parent": null,
-      "route_family": "information-data-health",
-      "public_safe_matcher": [{ "kind": "exact", "pathname": "/data-health" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "static",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "site/data_health_page.mjs",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "about",
-      "operator_label": "About",
-      "kind": "surface",
-      "parent": null,
-      "route_family": "information-about",
-      "public_safe_matcher": [{ "kind": "exact", "pathname": "/about.html" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "static",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "site/about.html",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "guide",
-      "operator_label": "Guide home",
-      "kind": "surface",
-      "parent": null,
-      "route_family": "information-guide",
-      "public_safe_matcher": [{ "kind": "exact", "pathname": "/guide" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "static",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "tools/build_guide_documents.mjs",
-      "projections": ["browser", "worker", "operator"]
-    },
-    {
-      "surface_id": "guide-article",
-      "operator_label": "Guide article",
-      "kind": "surface",
-      "parent": null,
-      "route_family": "information-guide",
-      "public_safe_matcher": [{ "kind": "segment_template", "pathname": "/guide/{section}/{article}" }],
-      "architecture_container_ref": "browser_site",
-      "delivery_class": "static",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
-      "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
-      "aliases": [],
-      "supersedes": [],
-      "introduced_version": "1.0.0",
-      "owner_source_path": "tools/build_guide_documents.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "surface_id": "data-guide",
@@ -1198,87 +1398,747 @@
       "kind": "surface",
       "parent": null,
       "route_family": "information-data",
-      "public_safe_matcher": [{ "kind": "exact", "pathname": "/data.html" }],
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/data.html"
+        }
+      ],
       "architecture_container_ref": "browser_site",
       "delivery_class": "static",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
       "semantic_readiness_contract": "page-content-ready-v1",
       "lifecycle_state": "planned",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/data.html",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
-      "surface_id": "api-guide",
-      "operator_label": "API guide",
+      "surface_id": "data-health",
+      "operator_label": "Public data health",
       "kind": "surface",
       "parent": null,
-      "route_family": "information-api",
-      "public_safe_matcher": [{ "kind": "exact", "pathname": "/api.html" }],
+      "route_family": "information-data-health",
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/data-health"
+        }
+      ],
       "architecture_container_ref": "browser_site",
       "delivery_class": "static",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
       "semantic_readiness_contract": "page-content-ready-v1",
       "lifecycle_state": "planned",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
-      "owner_source_path": "site/api.html",
-      "projections": ["browser", "worker", "operator"]
+      "owner_source_path": "site/data_health_page.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
-      {
-    "surface_id": "capability-compare",
-    "operator_label": "Capability compare (opt-in)",
-    "kind": "surface",
-    "parent": null,
-    "route_family": "information-capability-compare",
-    "public_safe_matcher": [
-      {
-        "kind": "exact",
-        "pathname": "/contracts-capability-compare.html"
-      }
-    ],
-    "architecture_container_ref": "browser_site",
-    "delivery_class": "static",
-    "applicable_metric_ids": [
-      "ttfb_ms",
-      "fcp_ms",
-      "lcp_ms",
-      "cls_score",
-      "inp_ms",
-      "content_ready_ms"
-    ],
-    "semantic_readiness_contract": "page-content-ready-v1",
-    "lifecycle_state": "planned",
-    "aliases": [],
-    "supersedes": [],
-    "introduced_version": "1.0.0",
-    "owner_source_path": "site/contracts-capability-compare.html",
-    "projections": [
-      "browser",
-      "worker",
-      "operator"
-    ]
-  },
-  {
-      "surface_id": "changelog",
-      "operator_label": "Changelog",
+    {
+      "surface_id": "district-digest",
+      "operator_label": "Council district digest",
       "kind": "surface",
-      "parent": null,
-      "route_family": "information-changelog",
-      "public_safe_matcher": [{ "kind": "exact", "pathname": "/changelog.html" }],
+      "parent": "surface:following",
+      "route_family": "district-digest",
+      "public_safe_matcher": [
+        {
+          "kind": "segment_template",
+          "pathname": "/districts/council/{district}/digest"
+        }
+      ],
       "architecture_container_ref": "browser_site",
       "delivery_class": "static",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
       "semantic_readiness_contract": "page-content-ready-v1",
       "lifecycle_state": "planned",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
-      "owner_source_path": "site/changelog.html",
-      "projections": ["browser", "worker", "operator"]
+      "owner_source_path": "tools/build_composed_object_documents.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "exam",
+      "operator_label": "Exam document",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "record-exam",
+      "public_safe_matcher": [
+        {
+          "kind": "segment_template",
+          "pathname": "/exams/{record}"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "tools/build_exam_documents.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "following",
+      "operator_label": "Following",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "stateful-following",
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/following"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "instrumented",
+      "aliases": [
+        {
+          "alias_id": "alerts",
+          "introduced_version": "0.1.0",
+          "retired_version": "1.0.0",
+          "reason": "Legacy hash-route name retained for historical observations."
+        }
+      ],
+      "supersedes": [
+        "alerts"
+      ],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/following_view.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "following-pack",
+      "operator_label": "Following / monitor pack",
+      "kind": "surface",
+      "parent": "surface:following",
+      "route_family": "stateful-following-pack",
+      "public_safe_matcher": [
+        {
+          "kind": "segment_template",
+          "pathname": "/following/packs/{record}"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/pages_edge.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "guide",
+      "operator_label": "Guide home",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "information-guide",
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/guide"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "tools/build_guide_documents.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "guide-article",
+      "operator_label": "Guide article",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "information-guide",
+      "public_safe_matcher": [
+        {
+          "kind": "segment_template",
+          "pathname": "/guide/{section}/{article}"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "tools/build_guide_documents.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "home",
+      "operator_label": "Home",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "home",
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/"
+        },
+        {
+          "kind": "exact",
+          "pathname": "/index.html"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "instrumented",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/index.html",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "mandate",
+      "operator_label": "Mandate document",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "record-mandate",
+      "public_safe_matcher": [
+        {
+          "kind": "segment_template",
+          "pathname": "/mandates/{record}"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/mandate_document.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "meeting",
+      "operator_label": "Meeting document",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "record-meeting",
+      "public_safe_matcher": [
+        {
+          "kind": "segment_template",
+          "pathname": "/meetings/{record}"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/meeting_document.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "near-you",
+      "operator_label": "Near You",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "place-near-you",
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/near-you"
+        },
+        {
+          "kind": "segment_template",
+          "pathname": "/near-you/lens/{lens}"
+        },
+        {
+          "kind": "segment_template",
+          "pathname": "/near-you/borough/{borough}"
+        },
+        {
+          "kind": "segment_template",
+          "pathname": "/near-you/borough/{borough}/{lens}"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "instrumented",
+      "aliases": [
+        {
+          "alias_id": "map",
+          "introduced_version": "0.1.0",
+          "retired_version": "1.0.0",
+          "reason": "Legacy hash-route name retained for historical observations."
+        }
+      ],
+      "supersedes": [
+        "map"
+      ],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/near_you_view.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "notice",
+      "operator_label": "Notice document",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "record-notice",
+      "public_safe_matcher": [
+        {
+          "kind": "segment_template",
+          "pathname": "/notices/{record}"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "instrumented",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/pages_edge.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "now",
+      "operator_label": "Now",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "task-now",
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/now"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "tools/build_primary_documents.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "official",
+      "operator_label": "Official profile",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "entity-official",
+      "public_safe_matcher": [
+        {
+          "kind": "segment_template",
+          "pathname": "/officials/{record}"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/pages_edge.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "parcel",
+      "operator_label": "Parcel document",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "record-parcel",
+      "public_safe_matcher": [
+        {
+          "kind": "segment_template",
+          "pathname": "/parcels/{record}"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "tools/build_composed_object_documents.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "procurement",
+      "operator_label": "Procurement document",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "record-procurement",
+      "public_safe_matcher": [
+        {
+          "kind": "segment_template",
+          "pathname": "/procurements/{record}"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/procurement_document.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "program-history",
+      "operator_label": "Program history (opt-in)",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "information-program-history",
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/contracts-program-history.html"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/contracts-program-history.html",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "public-stats",
+      "operator_label": "Public corpus statistics",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "information-stats",
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/stats.html"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/stats.html",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "rulemaking",
+      "operator_label": "Rulemaking case file",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "rulemaking",
+      "public_safe_matcher": [
+        {
+          "kind": "segment_template",
+          "pathname": "/rules/{record}"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/rulemaking_document.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "search",
+      "operator_label": "Universal search",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "search",
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/search"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "worker_backed",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/search/index.html",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "surface_id": "standards",
@@ -1286,17 +2146,67 @@
       "kind": "surface",
       "parent": null,
       "route_family": "information-standards",
-      "public_safe_matcher": [{ "kind": "exact", "pathname": "/standards.html" }],
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/standards.html"
+        }
+      ],
       "architecture_container_ref": "browser_site",
       "delivery_class": "static",
-      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
       "semantic_readiness_contract": "page-content-ready-v1",
       "lifecycle_state": "planned",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/standards.html",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
+    },
+    {
+      "surface_id": "vendor",
+      "operator_label": "Vendor profile",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "entity-vendor",
+      "public_safe_matcher": [
+        {
+          "kind": "segment_template",
+          "pathname": "/vendors/{record}"
+        }
+      ],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "ttfb_ms",
+        "fcp_ms",
+        "lcp_ms",
+        "cls_score",
+        "inp_ms",
+        "content_ready_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/pages_edge.mjs",
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     }
   ],
   "components": [
@@ -1306,17 +2216,26 @@
       "kind": "component",
       "parent": "surface:home",
       "route_family": "home",
-      "public_safe_matcher": { "kind": "semantic_marker", "marker": "home-topic-entry" },
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "home-topic-entry"
+      },
       "architecture_container_ref": "browser_site",
       "delivery_class": "static",
-      "applicable_metric_ids": ["component_ready_ms"],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
       "semantic_readiness_contract": "component-ready-v1",
       "lifecycle_state": "instrumented",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/home_entry.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "component_id": "home-search-submit",
@@ -1324,17 +2243,28 @@
       "kind": "interaction",
       "parent": "component:home-topic-entry",
       "route_family": "home",
-      "public_safe_matcher": { "kind": "semantic_marker", "marker": "home-search-submit" },
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "home-search-submit"
+      },
       "architecture_container_ref": "browser_site",
       "delivery_class": "static",
-      "applicable_metric_ids": ["interaction_feedback_ms", "interaction_settled_ms", "feedback_to_settled_ms"],
+      "applicable_metric_ids": [
+        "interaction_feedback_ms",
+        "interaction_settled_ms",
+        "feedback_to_settled_ms"
+      ],
       "semantic_readiness_contract": "interaction-settled-v1",
       "lifecycle_state": "planned",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/home_entry.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "component_id": "near-you-map",
@@ -1342,17 +2272,26 @@
       "kind": "component",
       "parent": "surface:near-you",
       "route_family": "place-near-you",
-      "public_safe_matcher": { "kind": "semantic_marker", "marker": "near-you-map" },
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "near-you-map"
+      },
       "architecture_container_ref": "browser_site",
       "delivery_class": "hybrid",
-      "applicable_metric_ids": ["component_ready_ms"],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
       "semantic_readiness_contract": "component-ready-v1",
       "lifecycle_state": "instrumented",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/near_you_view.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "component_id": "near-you-borough",
@@ -1360,17 +2299,26 @@
       "kind": "component",
       "parent": "surface:near-you",
       "route_family": "place-near-you",
-      "public_safe_matcher": { "kind": "semantic_marker", "marker": "place-scope-borough" },
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "place-scope-borough"
+      },
       "architecture_container_ref": "browser_site",
       "delivery_class": "hybrid",
-      "applicable_metric_ids": ["component_ready_ms"],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
       "semantic_readiness_contract": "component-ready-v1",
       "lifecycle_state": "planned",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/near_you_scope_runtime.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "component_id": "near-you-community-district",
@@ -1378,10 +2326,15 @@
       "kind": "component",
       "parent": "surface:near-you",
       "route_family": "place-near-you",
-      "public_safe_matcher": { "kind": "semantic_marker", "marker": "place-scope-community-district" },
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "place-scope-community-district"
+      },
       "architecture_container_ref": "browser_site",
       "delivery_class": "hybrid",
-      "applicable_metric_ids": ["component_ready_ms"],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
       "semantic_readiness_contract": "component-ready-v1",
       "lifecycle_state": "planned",
       "aliases": [
@@ -1392,10 +2345,16 @@
           "reason": "Expanded abbreviation retained as identity history."
         }
       ],
-      "supersedes": ["near-you-cd"],
+      "supersedes": [
+        "near-you-cd"
+      ],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/near_you_scope_runtime.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "component_id": "near-you-council-district",
@@ -1403,17 +2362,26 @@
       "kind": "component",
       "parent": "surface:near-you",
       "route_family": "place-near-you",
-      "public_safe_matcher": { "kind": "semantic_marker", "marker": "place-scope-council-district" },
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "place-scope-council-district"
+      },
       "architecture_container_ref": "browser_site",
       "delivery_class": "hybrid",
-      "applicable_metric_ids": ["component_ready_ms"],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
       "semantic_readiness_contract": "component-ready-v1",
       "lifecycle_state": "planned",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/near_you_scope_runtime.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "component_id": "near-you-scope-change",
@@ -1421,17 +2389,28 @@
       "kind": "interaction",
       "parent": "component:near-you-map",
       "route_family": "place-near-you",
-      "public_safe_matcher": { "kind": "semantic_marker", "marker": "near-you-scope-change" },
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "near-you-scope-change"
+      },
       "architecture_container_ref": "browser_site",
       "delivery_class": "hybrid",
-      "applicable_metric_ids": ["interaction_feedback_ms", "interaction_settled_ms", "feedback_to_settled_ms"],
+      "applicable_metric_ids": [
+        "interaction_feedback_ms",
+        "interaction_settled_ms",
+        "feedback_to_settled_ms"
+      ],
       "semantic_readiness_contract": "interaction-settled-v1",
       "lifecycle_state": "planned",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/near_you_scope_runtime.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "component_id": "following-watch-list",
@@ -1439,17 +2418,26 @@
       "kind": "component",
       "parent": "surface:following",
       "route_family": "stateful-following",
-      "public_safe_matcher": { "kind": "semantic_marker", "marker": "following-watch-list" },
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "following-watch-list"
+      },
       "architecture_container_ref": "browser_site",
       "delivery_class": "hybrid",
-      "applicable_metric_ids": ["component_ready_ms"],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
       "semantic_readiness_contract": "component-ready-v1",
       "lifecycle_state": "instrumented",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/following_view.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "component_id": "following-watch-change",
@@ -1457,17 +2445,28 @@
       "kind": "interaction",
       "parent": "component:following-watch-list",
       "route_family": "stateful-following",
-      "public_safe_matcher": { "kind": "semantic_marker", "marker": "following-watch-change" },
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "following-watch-change"
+      },
       "architecture_container_ref": "browser_site",
       "delivery_class": "hybrid",
-      "applicable_metric_ids": ["interaction_feedback_ms", "interaction_settled_ms", "feedback_to_settled_ms"],
+      "applicable_metric_ids": [
+        "interaction_feedback_ms",
+        "interaction_settled_ms",
+        "feedback_to_settled_ms"
+      ],
       "semantic_readiness_contract": "interaction-settled-v1",
       "lifecycle_state": "planned",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/following_view.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "component_id": "browse-results",
@@ -1475,17 +2474,26 @@
       "kind": "component",
       "parent": "surface:browse",
       "route_family": "browse",
-      "public_safe_matcher": { "kind": "semantic_marker", "marker": "browse-results" },
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "browse-results"
+      },
       "architecture_container_ref": "browser_site",
       "delivery_class": "hybrid",
-      "applicable_metric_ids": ["component_ready_ms"],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
       "semantic_readiness_contract": "component-ready-v1",
       "lifecycle_state": "planned",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/browse_view.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "component_id": "browse-filter-apply",
@@ -1493,17 +2501,28 @@
       "kind": "interaction",
       "parent": "component:browse-results",
       "route_family": "browse",
-      "public_safe_matcher": { "kind": "semantic_marker", "marker": "browse-filter-apply" },
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "browse-filter-apply"
+      },
       "architecture_container_ref": "browser_site",
       "delivery_class": "hybrid",
-      "applicable_metric_ids": ["interaction_feedback_ms", "interaction_settled_ms", "feedback_to_settled_ms"],
+      "applicable_metric_ids": [
+        "interaction_feedback_ms",
+        "interaction_settled_ms",
+        "feedback_to_settled_ms"
+      ],
       "semantic_readiness_contract": "interaction-settled-v1",
       "lifecycle_state": "planned",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/app/feed-actions.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "component_id": "browse-contracts-results",
@@ -1511,17 +2530,26 @@
       "kind": "component",
       "parent": "surface:browse-contracts",
       "route_family": "browse-contracts",
-      "public_safe_matcher": { "kind": "semantic_marker", "marker": "browse-contracts-results" },
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "browse-contracts-results"
+      },
       "architecture_container_ref": "browser_site",
       "delivery_class": "hybrid",
-      "applicable_metric_ids": ["component_ready_ms"],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
       "semantic_readiness_contract": "component-ready-v1",
       "lifecycle_state": "instrumented",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/app/money-list.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "component_id": "browse-contracts-filter-apply",
@@ -1529,17 +2557,28 @@
       "kind": "interaction",
       "parent": "component:browse-contracts-results",
       "route_family": "browse-contracts",
-      "public_safe_matcher": { "kind": "semantic_marker", "marker": "browse-contracts-filter-apply" },
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "browse-contracts-filter-apply"
+      },
       "architecture_container_ref": "browser_site",
       "delivery_class": "hybrid",
-      "applicable_metric_ids": ["interaction_feedback_ms", "interaction_settled_ms", "feedback_to_settled_ms"],
+      "applicable_metric_ids": [
+        "interaction_feedback_ms",
+        "interaction_settled_ms",
+        "feedback_to_settled_ms"
+      ],
       "semantic_readiness_contract": "interaction-settled-v1",
       "lifecycle_state": "instrumented",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/app/money-list.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "component_id": "search-results",
@@ -1547,17 +2586,26 @@
       "kind": "component",
       "parent": "surface:search",
       "route_family": "search",
-      "public_safe_matcher": { "kind": "semantic_marker", "marker": "search-results" },
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "search-results"
+      },
       "architecture_container_ref": "browser_site",
       "delivery_class": "worker_backed",
-      "applicable_metric_ids": ["component_ready_ms"],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
       "semantic_readiness_contract": "component-ready-v1",
       "lifecycle_state": "planned",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/search/index.html",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "component_id": "search-submit",
@@ -1565,17 +2613,28 @@
       "kind": "interaction",
       "parent": "component:search-results",
       "route_family": "search",
-      "public_safe_matcher": { "kind": "semantic_marker", "marker": "search-submit" },
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "search-submit"
+      },
       "architecture_container_ref": "browser_site",
       "delivery_class": "worker_backed",
-      "applicable_metric_ids": ["interaction_feedback_ms", "interaction_settled_ms", "feedback_to_settled_ms"],
+      "applicable_metric_ids": [
+        "interaction_feedback_ms",
+        "interaction_settled_ms",
+        "feedback_to_settled_ms"
+      ],
       "semantic_readiness_contract": "interaction-settled-v1",
       "lifecycle_state": "planned",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/search/index.html",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "component_id": "notice-context",
@@ -1583,17 +2642,26 @@
       "kind": "component",
       "parent": "surface:notice",
       "route_family": "record-notice",
-      "public_safe_matcher": { "kind": "semantic_marker", "marker": "notice-context" },
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "notice-context"
+      },
       "architecture_container_ref": "browser_site",
       "delivery_class": "pages_edge",
-      "applicable_metric_ids": ["component_ready_ms"],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
       "semantic_readiness_contract": "component-ready-v1",
       "lifecycle_state": "instrumented",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/app/notice-context.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "component_id": "near-you-map-data",
@@ -1601,17 +2669,26 @@
       "kind": "component",
       "parent": "component:near-you-map",
       "route_family": "place-near-you",
-      "public_safe_matcher": { "kind": "semantic_marker", "marker": "near-you-map-data" },
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "near-you-map-data"
+      },
       "architecture_container_ref": "browser_site",
       "delivery_class": "hybrid",
-      "applicable_metric_ids": ["component_ready_ms"],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
       "semantic_readiness_contract": "component-ready-v1",
       "lifecycle_state": "instrumented",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/app/map.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "component_id": "agency-identity",
@@ -1619,17 +2696,26 @@
       "kind": "component",
       "parent": "surface:agency",
       "route_family": "entity-agency",
-      "public_safe_matcher": { "kind": "semantic_marker", "marker": "agency-identity" },
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "agency-identity"
+      },
       "architecture_container_ref": "browser_site",
       "delivery_class": "hybrid",
-      "applicable_metric_ids": ["component_ready_ms"],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
       "semantic_readiness_contract": "component-ready-v1",
       "lifecycle_state": "instrumented",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/civic_time_ledger_runtime.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "component_id": "agency-relationships",
@@ -1637,17 +2723,26 @@
       "kind": "component",
       "parent": "component:agency-identity",
       "route_family": "entity-agency",
-      "public_safe_matcher": { "kind": "semantic_marker", "marker": "agency-relationships" },
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "agency-relationships"
+      },
       "architecture_container_ref": "browser_site",
       "delivery_class": "hybrid",
-      "applicable_metric_ids": ["component_ready_ms"],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
       "semantic_readiness_contract": "component-ready-v1",
       "lifecycle_state": "instrumented",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/civic_time_ledger_runtime.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     },
     {
       "component_id": "land-outcomes",
@@ -1655,17 +2750,26 @@
       "kind": "component",
       "parent": "surface:browse-zoning",
       "route_family": "browse-zoning",
-      "public_safe_matcher": { "kind": "semantic_marker", "marker": "land-outcomes" },
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "land-outcomes"
+      },
       "architecture_container_ref": "browser_site",
       "delivery_class": "hybrid",
-      "applicable_metric_ids": ["component_ready_ms"],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
       "semantic_readiness_contract": "component-ready-v1",
       "lifecycle_state": "instrumented",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/app/land.mjs",
-      "projections": ["browser", "worker", "operator"]
+      "projections": [
+        "browser",
+        "worker",
+        "operator"
+      ]
     }
   ]
 }

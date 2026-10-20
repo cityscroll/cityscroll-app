@@ -160,6 +160,13 @@ export const ANALYTICS_ROUTE_SURFACES = Object.freeze([
     served_aliases: Object.freeze(["/contracts-capability-compare"]),
   }),
   Object.freeze({
+    surface: "program-history",
+    route_surface_id: "program-history",
+    route_family: "information-program-history",
+    patterns: Object.freeze(["/contracts-program-history.html"]),
+    served_aliases: Object.freeze(["/contracts-program-history"]),
+  }),
+  Object.freeze({
     surface: "changelog",
     route_surface_id: "changelog",
     route_family: "information-changelog",
@@ -394,6 +401,7 @@ export const ANALYTICS_COLLECTOR_SURFACES = Object.freeze([
   "browse-staffing",
   "browse-zoning",
   "capability-compare",
+  "program-history",
   "changelog",
   "data",
   "data-health",

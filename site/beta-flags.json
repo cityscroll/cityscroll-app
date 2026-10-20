@@ -39,6 +39,27 @@
           "test/beta_flags.test.mjs"
         ]
       }
+    },
+    {
+      "slug": "program-history",
+      "default_off": true,
+      "owner": "site-owner",
+      "introduced_on": "2026-10-20",
+      "removal_date": "2027-01-18",
+      "affected_surfaces": [
+        "contracts-program-history.html",
+        "browse/contracts"
+      ],
+      "tests": {
+        "on": [
+          "test/procurement_program_journey.test.mjs",
+          "test/beta_flags.test.mjs"
+        ],
+        "off": [
+          "test/procurement_program_journey.test.mjs",
+          "test/beta_flags.test.mjs"
+        ]
+      }
     }
   ]
 }

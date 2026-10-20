@@ -2,11 +2,11 @@
   "schema": "cityscroll.architecture.watermark-shard.v1",
   "id": "canary:performance-observability-builder",
   "owner": "canary:performance-observability-builder",
-  "updated_at": "2026-10-20T00:56:48Z",
-  "commit": "39af3c947221c00e8018feaa3dd98a4d63118c7b",
+  "updated_at": "2026-10-19T23:26:36-04:00",
+  "commit": "4db928196a77ec85e337b2526323fb044c204291",
   "value": {
     "path": "tools/build_performance_observability.mjs",
     "count": 3,
-    "fingerprint": "1c96398fedbf16fa059ae6bb8bf4ff02c41aa8ac59309e3b050c9eb14fdbb90c"
+    "fingerprint": "a98f047167fe3c72c82eb2dbf7d090ad8f46c7db3b6b1b57f4adec74e2f1d11c"
   }
 }

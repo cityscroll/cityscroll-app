@@ -4,6 +4,11 @@ import {
   externalActionLink as renderExternalActionLink,
   installObjectCardCopyLinks,
 } from "../affordance_grammar.mjs";
+import {
+  JUNK_PINS,
+  JUNK_PIN_TEXT_RE,
+  usablePin,
+} from "../procurement_pin.mjs";
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const PAY  = "https://data.cityofnewyork.us/resource/k397-673e.json";
@@ -69,12 +74,8 @@ installObjectCardCopyLinks(document, {
   failureLabel: () => t("copy_failed"),
 });
 const STAGE_RANK = {"Solicitation":0,"Intent to Negotiate":1,"Vendor List":2,"Intent to Award":3,"Award":4};
-const JUNK_PINS = new Set(["NOPINFOUND","SEE BELOW","LINE 17 BELOW","TBD","N/A","NONE","VARIOUS","SEE ATTACHED","123456"]); // compared UPPERCASED — entries must be uppercase (unit-tested); "123456" is a confirmed placeholder default value, not a real PIN
-// Looser second pass alongside JUNK_PINS above: the exact-match set misses common real-world
-// phrasings of the same "see the list below" placeholder (measured 37.7% miss rate on a 300-row
-// sample). \b keeps this from matching inside a real alphanumeric PIN -- digits and letters are
-// both \w, so "SEE12345" never has a word boundary after "see" and is left alone.
-const JUNK_PIN_TEXT_RE = /\bsee\b|\bbelow\b|\bline\s*17\b|\bn\/?a\b|\btbd\b|\bvarious\b|\bpending\b|\battached\b/i;
+// PIN honesty (JUNK_PINS / usablePin) lives in ../procurement_pin.mjs — the site twin of
+// worker/src/lib/lineage.mjs — so the app shell and the Contracts lens share one declaration.
 // other_info_1 is fetched alongside additional_description_1 for the same reason
 // worker/src/ingest.mjs picks up both -- some notices (e.g. request_id 20260709010, a DYCD
 // COMPASS afterschool award) carry all their explanatory text in other_info_1 and leave
@@ -186,16 +187,6 @@ const SEQ = {};
 function staleGuard(lens){ const my = (SEQ[lens]||0) + 1; SEQ[lens] = my; return ()=> SEQ[lens] !== my; }
 function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t = setTimeout(()=>fn(...a), ms); }; }
 
-function usablePin(p){
-  if(!p) return false;
-  const s = String(p).trim();
-  if(s.length < 4) return false;
-  if(!/[A-Za-z0-9]/.test(s)) return false;
-  if(/^[0\W_]+$/.test(s)) return false;
-  if(JUNK_PINS.has(s.toUpperCase())) return false;
-  if(JUNK_PIN_TEXT_RE.test(s)) return false;
-  return true;
-}
 // Hand-synced with site/text_clean.mjs cleanNoticeText: strip tags, decode entities, collapse
 // whitespace. Returns plain Unicode — HTML sinks must escape once (escUiHtml / excerptHtml).
 // Incomplete decode left &ldquo; in feed/hearing paths; escUiHtml then re-escaped to the literal
