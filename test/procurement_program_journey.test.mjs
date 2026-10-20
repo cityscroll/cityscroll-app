@@ -155,6 +155,29 @@ test("failed source load preserves profile and offers retry", () => {
   assert.match(html, /data-program-retry/);
 });
 
+test("failed source load also offers existing notice source links", () => {
+  const journey = buildProgramJourney({
+    profile: DEFAULT_TRAINING_PROFILE,
+    loadError: "HTTP 503",
+  });
+  assert.equal(journey.source_links.length, 3);
+  assert.deepEqual(
+    journey.source_links.map((link) => link.notice_id),
+    ["20220719104", "20240417107", "20260708004"],
+  );
+  const html = renderProgramJourneyHtml(journey);
+  assert.match(html, /data-program-source-links/);
+  assert.match(html, /data-program-retry/);
+  assert.match(html, /href="https:\/\/cityscroll\.org\/notices\/20220719104\/"/);
+  assert.match(html, /href="https:\/\/cityscroll\.org\/notices\/20240417107\/"/);
+  assert.match(html, /href="https:\/\/cityscroll\.org\/notices\/20260708004\/"/);
+  // Browse back-link alone must not be the only navigational affordance.
+  const noticeHrefs = [...html.matchAll(/href="(https:\/\/cityscroll\.org\/notices\/[^"]+)"/g)].map(
+    (m) => m[1],
+  );
+  assert.equal(noticeHrefs.length, 3);
+});
+
 test("profileFromFormValues round-trips training answers", () => {
   const profile = profileFromFormValues({
     capability_keywords: "job training, employer placement",
