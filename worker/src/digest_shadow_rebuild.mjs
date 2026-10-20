@@ -2,6 +2,7 @@ import {
   DIGEST_SHADOW_ATTENTION,
   DIGEST_SHADOW_DEGRADED_UPSTREAM,
   DIGEST_SHADOW_READY,
+  applyFreshnessDegradation,
   compactDigestShadowResult,
   validateDigestShadowRun,
   validateDigestShadowTargets,
@@ -283,7 +284,7 @@ async function mergeCompletedSummary(env, run, items, now, contentRedlines) {
       now: evaluationNow, renderedContentRedlines: contentRedlines,
     });
     const finalizationId = crypto.randomUUID();
-    const merged = {
+    let merged = {
       ...validated,
       phase: "finalized",
       complete: true,
@@ -293,9 +294,14 @@ async function mergeCompletedSummary(env, run, items, now, contentRedlines) {
       result_revision: finalizationId,
       repair: {
         ...(validated.repair || {}),
+        state: "none",
         rerun_scope: "checkpointed_digest_queue",
       },
     };
+    // Preserve advisory freshness degradation stamped on the STARTED handoff row.
+    if (currentSummary?.freshness?.degraded) {
+      merged = applyFreshnessDegradation(merged, currentSummary.freshness);
+    }
     const publicSummary = { ...merged };
     delete publicSummary._rendered_previews;
     const statements = [env.DB.prepare(`INSERT INTO digest_shadow_runs

@@ -279,6 +279,7 @@ A stale source contract is decided from the live verifier's own two-clock findin
 | `source-contract-stale` | the contract is registered, and the live check names our acquisition as the stale side rather than the publisher | where the retained evidence is host state, re-run the contract's acquisition path once | re-run the live source-contract check for that one contract | the publisher is the stale side, no retained vintage is declared, the retained evidence is a repository file, or the contract declares no acquisition tool |
 | `missed-slot` | the monitor is still a registered scheduled job and the slot has no recorded result | re-run the slot once under its original slot key | the slot has a recorded result afterwards | the finding names a monitor this cycle no longer carries |
 | `digest-shadow-upstream` | the digest rehearsal is still a registered scheduled job | wait a bounded backoff, then re-run the rehearsal once | the re-run rehearsal reports READY | the rehearsal is no longer registered; continued upstream failures are deferred |
+| `digest-shadow-started-stall` | the digest rehearsal row is still STARTED past the monitor deadline | wait a bounded backoff, then POST an idempotent unscoped checkpointed rebuild for that day | the rehearsal leaves STARTED, or a rebuild_run_id is recorded for the next observation | no digest-shadow rebuild API is wired for this cycle |
 | `freshness-stale` | a scheduled publication path that publishes acquisition receipts is registered for the watchdog's reason, and its own receipt has not advanced | re-run that publication path's scheduled command once | re-run the freshness watchdog for that one source contract | the publication path ran recently and the evidence still did not advance, or no scheduled path is registered for the reason — for which the summary names why there is none rather than reporting a run that never happened |
 
 #### What the freshness watchdog reports, and what it does not
@@ -296,9 +297,7 @@ The clock `acquisition-missing` measures is `acquired_at`, except where the cont
 The `digest-shadow-upstream` playbook waits its bounded backoff and retries once; it defers when
 the upstream is still failing after the bounded retry. This includes the runner's explicit
 `fault_domain: "upstream_source"` result as well as gateway errors recorded inside digest redlines.
-The `source-contract-outage` playbook rechecks one source contract and defers when
-the publisher check still reports an outage. These are the only playbooks reclassified;
-`source-contract-stale`, `stats-snapshot-missing`, and `freshness-stale` keep their owner-decision rules.
+The `digest-shadow-started-stall` playbook waits its bounded backoff, then POSTs an idempotent checkpointed rebuild for the stalled day; it defers when a rebuild is already queued within grace, the kill switch is on, or the enqueue is waiting to finalize. Set `DIGEST_SHADOW_STARTED_RECOVERY_DISABLED=1` to stop automatic enqueue without changing delivery policy or alert recipients. The `source-contract-outage` playbook rechecks one source contract and defers when the publisher check still reports an outage. These are the only playbooks reclassified; `source-contract-stale`, `stats-snapshot-missing`, and `freshness-stale` keep their owner-decision rules.
 
 The Worker stores `state: "waiting_upstream"`, `consecutive_deferrals`, and `first_deferred_at`.
 A waiting item remains open and re-enters pickup only on a newer scheduled observation of the

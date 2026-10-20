@@ -103,14 +103,13 @@ import { handlePublicRelationshipGraph } from "./public_relationship_graph.mjs";
 import { handleEntityIntelligence } from "./entity_intelligence.mjs";
 import { handleAdminAttachmentMetadata, handleAttachmentMetadata } from "./attachment_metadata.mjs";
 import {
-  applyFreshnessDegradation,
-  finalizeDigestShadowRun,
+  markDigestShadowRebuildQueued,
   persistDigestShadowFailure,
   persistDigestShadowStarted,
   runBudgetedNoticeFreshness,
-  runDigestShadow,
 } from "./digest_shadow.mjs";
 import {
+  createDigestShadowRebuild,
   handleDigestShadowRebuildQueueMessage,
   handleDigestShadowRebuildDeadLetter,
   reconcileStaleDigestShadowRebuilds,
@@ -563,14 +562,38 @@ const worker = {
       }
       return;
     }
-    // 06:00 ET rehearsal: the real digest builders run inline against live data, but delivery,
-    // watermarks, send counters, and the 09:00 queue path remain untouched.
-    // Order: STARTED receipt → budgeted advisory freshness → rehearsal → finalize. A killed
-    // isolate after STARTED reads as STARTED_NOT_FINISHED, never MISSING_RUN. Freshness has a
-    // hard time/subrequest budget; exhaustion records DEGRADED_UPSTREAM and the rehearsal still runs.
+    // 06:00 ET rehearsal: delivery-free. Order: STARTED → budgeted advisory freshness →
+    // enqueue the checkpointed DIGEST_SHADOW_QUEUE rebuild (one digest per invocation).
+    // Mondays expand weekly subscriptions; forceInline account_builds in one isolate was the
+    // STARTED_NOT_FINISHED stall. Queue handoff is the path that completed 2026-10-12.
+    // A killed isolate after STARTED still reads as STARTED_NOT_FINISHED, never MISSING_RUN.
     if (event.cron === "0 10 * * *") {
       const shadowNow = new Date(event.scheduledTime ?? Date.now());
+      const shadowDay = shadowNow.toISOString().slice(0, 10);
       const shadowInvocationId = `digest-shadow:${event.cron}:${shadowNow.toISOString()}`;
+      // Claim overwrites STARTED summary_json. If this day already handed off to
+      // DIGEST_SHADOW_QUEUE, leave that stamp alone and skip freshness/enqueue.
+      try {
+        const existing = await env.DB?.prepare?.(
+          "SELECT status, summary_json FROM digest_shadow_runs WHERE run_day = ?",
+        )?.bind(shadowDay)?.first?.();
+        if (existing?.status === "STARTED" && existing?.summary_json) {
+          const prior = JSON.parse(existing.summary_json);
+          if (prior?.phase === "rebuild_queued" && prior?.rebuild_run_id) {
+            if (event.costProbe !== true) {
+              console.log("digest shadow rebuild already queued:", JSON.stringify({
+                run_day: shadowDay,
+                rebuild_run_id: prior.rebuild_run_id,
+                phase: prior.phase,
+              }));
+            }
+            return;
+          }
+        }
+      } catch (error) {
+        // Unreadable prior row must not block a fresh claim.
+        console.error("digest shadow prior-row check failed:", String(error?.message || error));
+      }
       try {
         const started = await persistDigestShadowStarted(env, {
           now: shadowNow,
@@ -595,7 +618,7 @@ const worker = {
           }),
         });
         if (freshness.degraded) {
-          console.error("digest shadow freshness degraded (rehearsal continues):", JSON.stringify({
+          console.error("digest shadow freshness degraded (rebuild continues):", JSON.stringify({
             reason: freshness.reason,
             code: freshness.code || null,
             elapsed_ms: freshness.elapsed_ms,
@@ -613,34 +636,38 @@ const worker = {
           degraded: true,
           reason: String(error?.message || error),
         };
-        console.error("digest shadow freshness failed (rehearsal continues):", freshness.reason);
+        console.error("digest shadow freshness failed (rebuild continues):", freshness.reason);
       }
 
       try {
-        let summary = await runDigestShadow(env, {
+        const queued = await createDigestShadowRebuild(env, {
           now: shadowNow,
-          invocationId: shadowInvocationId,
-          suppressPersonalizedLogs: true,
+          runDay: shadowDay,
         });
-        // Await so schedule-harness stubs (async wrappers) and a future async helper both land.
-        if (freshness.degraded) summary = await applyFreshnessDegradation(summary, freshness);
-        const finalized = await finalizeDigestShadowRun(env, summary, {
+        const stamped = await markDigestShadowRebuildQueued(env, {
+          day: shadowDay,
+          rebuildRunId: queued.run_id,
+          invocationId: shadowInvocationId,
           now: shadowNow,
-          invocationId: shadowInvocationId,
+          freshness,
         });
-        if (finalized?.write_accepted === false) return;
+        if (stamped?.write_accepted === false) {
+          console.error("digest shadow rebuild queue stamp rejected:", JSON.stringify({
+            run_day: shadowDay,
+            rebuild_run_id: queued.run_id,
+            reason: stamped?.reason || null,
+          }));
+        }
         if (event.costProbe !== true) {
-          const publicSummary = { ...summary };
-          delete publicSummary._rendered_previews;
-          console.log("digest shadow:", JSON.stringify(publicSummary, (key, value) => {
-            if (typeof value !== "string") return value;
-            if (key === "recipient") return redactEmail(value);
-            if (key === "recipient_redacted" && value.includes("@") && !value.includes("***")) return redactEmail(value);
-            return value;
+          console.log("digest shadow rebuild queued:", JSON.stringify({
+            run_day: shadowDay,
+            rebuild_run_id: queued.run_id,
+            status: queued.status,
+            freshness_degraded: Boolean(freshness.degraded),
           }));
         }
       } catch (error) {
-        console.error("digest shadow failed:", String(error?.message || error));
+        console.error("digest shadow rebuild enqueue failed:", String(error?.message || error));
         try {
           const failed = await persistDigestShadowFailure(env, error, {
             now: shadowNow,

@@ -142,6 +142,7 @@ export async function runDigestShadowJob(job, context) {
   const redlines = Array.isArray(summary.redlines) ? summary.redlines : [];
   const incidents = Array.isArray(summary.upstream_incidents) ? summary.upstream_incidents : [];
   const unreachable = digestShadowUnreachableReason({ response, report, summary, parseFailure, today });
+  const startedNotFinished = observed === "STARTED" && summary.run_day === today;
   const degradedReason = healthy
     ? null
     : upstream
@@ -150,7 +151,9 @@ export async function runDigestShadowJob(job, context) {
         ? unreachable.reason
         : response.status === 401 || response.status === 403
           ? "admin-credential-rejected"
-          : "rehearsal-not-ready";
+          : startedNotFinished
+            ? "rehearsal-started-not-finished"
+            : "rehearsal-not-ready";
   const fingerprint = digestShadowObservationFingerprint(summary, { degraded_reason: degradedReason });
   const observationMark = observationMarker(fingerprint);
   const previousPath = lastObservationPath(context.stateDir, job.id);

@@ -12,6 +12,9 @@ import {
   REPAIR_DISPATCH_BUDGET_MS,
   REPAIR_JUDGMENT_CLASSES,
   REPAIR_PLAYBOOKS,
+  STARTED_STALL_BACKOFF_MS,
+  STARTED_STALL_REBUILD_GRACE_MS,
+  STARTED_STALL_VERIFY_MS,
   UPSTREAM_BACKOFF_MS,
   acquisitionCommand,
   repairPlaybookRegistry,
@@ -57,7 +60,14 @@ function committedContract(overrides = {}) {
  * is the benign answer, so each case states only the fact it is about.
  */
 function stubContext(overrides = {}) {
-  const calls = { ranJobs: [], slept: [], verified: 0, evaluated: 0 };
+  const calls = {
+    ranJobs: [],
+    slept: [],
+    verified: 0,
+    evaluated: 0,
+    digestReads: 0,
+    digestEnqueues: 0,
+  };
   const context = {
     signature: overrides.signature || "monitor:source-contracts-live:source-contract-stale:host-state-source",
     monitor: overrides.monitor || "source-contracts-live",
@@ -117,6 +127,28 @@ function stubContext(overrides = {}) {
       },
     },
   };
+  if ("digestShadow" in overrides) {
+    context.digestShadow = overrides.digestShadow;
+  } else if (overrides.digestStatus || overrides.digestEnqueue) {
+    const statuses = Array.isArray(overrides.digestStatus)
+      ? overrides.digestStatus
+      : [overrides.digestStatus].filter(Boolean);
+    context.digestShadow = {
+      async readStatus() {
+        calls.digestReads += 1;
+        if (!statuses.length) return { summary: {} };
+        return statuses[Math.min(calls.digestReads - 1, statuses.length - 1)];
+      },
+      async enqueueRebuild(options = {}) {
+        calls.digestEnqueues += 1;
+        if (typeof overrides.digestEnqueue === "function") {
+          return overrides.digestEnqueue(options);
+        }
+        if (overrides.digestEnqueue instanceof Error) throw overrides.digestEnqueue;
+        return overrides.digestEnqueue || { run_id: "digest-shadow-rebuild:test", status: "queued" };
+      },
+    };
+  }
   return context;
 }
 
@@ -410,6 +442,134 @@ test("a rehearsal that comes back degraded for a non-upstream reason is a plain 
   const result = await playbook("digest-shadow-upstream").run(context);
   assert.equal(result.outcome, "failed");
   assert.match(result.summary, /NEEDS_ATTENTION/);
+});
+
+/* --- (c2) digest rehearsal STARTED stall → checkpointed rebuild ---------- */
+
+test("a STARTED stall enqueues one idempotent checkpointed rebuild after backoff", async () => {
+  const context = stubContext({
+    signature: "monitor:digest-shadow-monitor:digest-shadow-started-stall",
+    monitor: "digest-shadow-monitor",
+    subject: null,
+    digestStatus: [
+      {
+        summary: {
+          status: "STARTED",
+          run_day: "2026-09-07",
+          phase: "account_builds",
+          progress_at: "2026-09-07T10:03:15.000Z",
+          evaluated_count: 2,
+        },
+      },
+      {
+        summary: {
+          status: "STARTED",
+          run_day: "2026-09-07",
+          phase: "rebuild_queued",
+          rebuild_run_id: "digest-shadow-rebuild:test",
+          progress_at: "2026-09-07T12:01:00.000Z",
+        },
+      },
+    ],
+    digestEnqueue: { run_id: "digest-shadow-rebuild:test", status: "queued" },
+  });
+  const result = await playbook("digest-shadow-started-stall").run(context);
+  assert.equal(result.outcome, "deferred");
+  assert.match(result.summary, /enqueued checkpointed rebuild/);
+  assert.deepEqual(context.calls.slept, [STARTED_STALL_BACKOFF_MS, STARTED_STALL_VERIFY_MS]);
+  assert.equal(context.calls.digestEnqueues, 1);
+  assert.equal(context.calls.digestReads, 2);
+});
+
+test("a STARTED stall that finalizes during verify reports repaired", async () => {
+  const context = stubContext({
+    signature: "monitor:digest-shadow-monitor:digest-shadow-started-stall",
+    monitor: "digest-shadow-monitor",
+    subject: null,
+    digestStatus: [
+      {
+        summary: {
+          status: "STARTED",
+          run_day: "2026-09-07",
+          phase: "account_builds",
+          progress_at: "2026-09-07T10:03:15.000Z",
+        },
+      },
+      {
+        summary: {
+          status: "READY",
+          run_day: "2026-09-07",
+          rebuild_run_id: "digest-shadow-rebuild:done",
+        },
+      },
+    ],
+    digestEnqueue: { run_id: "digest-shadow-rebuild:done", status: "queued" },
+  });
+  const result = await playbook("digest-shadow-started-stall").run(context);
+  assert.equal(result.outcome, "repaired");
+  assert.match(result.summary, /READY/);
+});
+
+test("a rebuild already queued within grace defers without a second enqueue", async () => {
+  const progressAt = new Date(NOW.getTime() - Math.floor(STARTED_STALL_REBUILD_GRACE_MS / 2)).toISOString();
+  const context = stubContext({
+    signature: "monitor:digest-shadow-monitor:digest-shadow-started-stall",
+    monitor: "digest-shadow-monitor",
+    subject: null,
+    digestStatus: {
+      summary: {
+        status: "STARTED",
+        run_day: "2026-09-07",
+        phase: "rebuild_queued",
+        rebuild_run_id: "digest-shadow-rebuild:already",
+        progress_at: progressAt,
+      },
+    },
+  });
+  const result = await playbook("digest-shadow-started-stall").run(context);
+  assert.equal(result.outcome, "deferred");
+  assert.match(result.summary, /already queued/);
+  assert.equal(context.calls.digestEnqueues, 0);
+  assert.deepEqual(context.calls.slept, []);
+});
+
+test("a STARTED stall without a rebuild API is judgment", async () => {
+  const context = stubContext({
+    signature: "monitor:digest-shadow-monitor:digest-shadow-started-stall",
+    monitor: "digest-shadow-monitor",
+    subject: null,
+    digestShadow: null,
+  });
+  const result = await playbook("digest-shadow-started-stall").run(context);
+  assert.equal(result.outcome, "judgment");
+  assert.match(result.summary, /no digest-shadow rebuild API/);
+});
+
+test("DIGEST_SHADOW_STARTED_RECOVERY_DISABLED defers without enqueue", async () => {
+  const previous = process.env.DIGEST_SHADOW_STARTED_RECOVERY_DISABLED;
+  process.env.DIGEST_SHADOW_STARTED_RECOVERY_DISABLED = "1";
+  try {
+    const context = stubContext({
+      signature: "monitor:digest-shadow-monitor:digest-shadow-started-stall",
+      monitor: "digest-shadow-monitor",
+      subject: null,
+      digestStatus: {
+        summary: {
+          status: "STARTED",
+          run_day: "2026-09-07",
+          phase: "account_builds",
+          progress_at: "2026-09-07T10:03:15.000Z",
+        },
+      },
+    });
+    const result = await playbook("digest-shadow-started-stall").run(context);
+    assert.equal(result.outcome, "deferred");
+    assert.match(result.summary, /kill switch/);
+    assert.equal(context.calls.digestEnqueues, 0);
+  } finally {
+    if (previous == null) delete process.env.DIGEST_SHADOW_STARTED_RECOVERY_DISABLED;
+    else process.env.DIGEST_SHADOW_STARTED_RECOVERY_DISABLED = previous;
+  }
 });
 
 /* --- (d) freshness watchdog ---------------------------------------------- */

@@ -56,6 +56,7 @@ export const REPAIR_FAILURE_CLASSES = Object.freeze([
   "digest-shadow-upstream",
   "digest-shadow-credential",
   "digest-shadow-degraded",
+  "digest-shadow-started-stall",
   "action-link-degraded",
   "stats-snapshot-missing",
   "missed-slot",
@@ -207,6 +208,7 @@ export function upstreamFailureEvidence(result) {
 export function digestShadowFailureClass(result) {
   const reason = String(result?.degraded_reason || "");
   if (reason === "admin-credential-missing" || reason === "admin-credential-rejected") return "digest-shadow-credential";
+  if (reason === "rehearsal-started-not-finished") return "digest-shadow-started-stall";
   if (upstreamFailureEvidence(result)) return "digest-shadow-upstream";
   return "digest-shadow-degraded";
 }
@@ -221,6 +223,7 @@ const DIGEST_SHADOW_CLASSES = Object.freeze([
   "digest-shadow-upstream",
   "digest-shadow-credential",
   "digest-shadow-degraded",
+  "digest-shadow-started-stall",
 ]);
 
 function bound({ findings, recovered }) {
