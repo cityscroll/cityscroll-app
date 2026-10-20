@@ -11,6 +11,8 @@ import {
   normalizeProgramProfile,
   extractProgramCapabilities,
   hasProgramIdentityEvidence,
+  hasReviewedProgramBuyer,
+  admitsProgramHistory,
   matchProgramRecords,
   groupProgramHistory,
   relationBetween,
@@ -95,6 +97,25 @@ const GENERIC_ROOF = Object.freeze({
   source_url: "https://cityscroll.org/notices/20190101001/",
 });
 
+/**
+ * Wrong-buyer control: CoolRoofs program-identity passages on a non-reviewed
+ * agency. Identity evidence alone must not admit the record.
+ */
+const WRONG_BUYER_COOLROOFS = Object.freeze({
+  request_id: "20239999001",
+  agency_name: "Department of Transportation",
+  type_of_notice_description: "Award",
+  category_description: "Human Services/Client Services",
+  short_title: "NYC CoolRoofs Training Program Administration",
+  selection_method_description: "Competitive Sealed Proposals/Pre-Qualified List",
+  pin: "84123P0099001",
+  contract_amount: "1000000",
+  additional_description_1:
+    "<p>NYC CoolRoofs is a City initiative that supports local jobseekers through a paid and transitional work-based learning experience to cool New York City rooftops with a white, reflective coating.</p>",
+  vendor_name: "The Hope Program Inc.",
+  source_url: "https://cityscroll.org/notices/20239999001/",
+});
+
 const TRAINING_PROFILE = Object.freeze({
   name: "Workforce training nonprofit",
   capability_keywords: ["job training", "employer placement"],
@@ -158,6 +179,9 @@ test("A2 / C2-C3: only 2024/2026 keep exact_predecessor_link; 2022 is program_re
   );
   assert.equal(hasProgramIdentityEvidence(UNRELATED_HOPE), false);
   assert.equal(hasProgramIdentityEvidence(GENERIC_ROOF), false);
+  assert.equal(admitsProgramHistory(UNRELATED_HOPE), false);
+  assert.equal(admitsProgramHistory(GENERIC_ROOF), false);
+  assert.equal(group.program_admission_requires_buyer, true);
 });
 
 // A3: 2024 coating/consortium stay on 2024; sparse 2022; no invented placement duty; no future opening
@@ -183,21 +207,116 @@ test("A3 / C4-C6: 2024 coating and consortium stay on 2024; sparse 2022; no inve
   assert.equal(group.program_admission_from_awardee_alone, false);
 });
 
-test("A4 controls: passage removal and identity mutation drop matches; exact lineage unchanged", () => {
-  const mutated = {
+// A4 isolated controls: buyer-aware admission, wrong-buyer, passage-removal,
+// identity mutation, per-record duties, exact lineage unchanged.
+
+test("A4 isolated: buyer-aware admission requires reviewed buyer and identity", () => {
+  assert.equal(hasReviewedProgramBuyer(SBS_2024), true);
+  assert.equal(hasProgramIdentityEvidence(SBS_2024), true);
+  assert.equal(admitsProgramHistory(SBS_2024), true);
+  assert.equal(admitsProgramHistory(SBS_2022), true);
+  assert.equal(admitsProgramHistory(SBS_2026), true);
+
+  const buyerOnly = {
+    ...UNRELATED_HOPE,
+    vendor_name: "The Hope Program Inc.",
+    agency_name: "Small Business Services",
+  };
+  assert.equal(hasReviewedProgramBuyer(buyerOnly), true);
+  assert.equal(hasProgramIdentityEvidence(buyerOnly), false);
+  assert.equal(admitsProgramHistory(buyerOnly), false);
+});
+
+test("A4 isolated: wrong-buyer with CoolRoofs passages fails program admission", () => {
+  assert.equal(hasProgramIdentityEvidence(WRONG_BUYER_COOLROOFS), true);
+  assert.equal(hasReviewedProgramBuyer(WRONG_BUYER_COOLROOFS), false);
+  assert.equal(admitsProgramHistory(WRONG_BUYER_COOLROOFS), false);
+
+  const group = groupProgramHistory({
+    records: [SBS_2022, SBS_2024, SBS_2026, WRONG_BUYER_COOLROOFS],
+  });
+  assert.deepEqual(
+    group.members.map((m) => m.notice_id).sort(),
+    ["20220719104", "20240417107", "20260708004"],
+  );
+  assert.equal(
+    group.members.some((m) => m.notice_id === "20239999001"),
+    false,
+  );
+});
+
+test("A4 isolated: passage removal drops capability matches only for that record", () => {
+  const passageRemoved = {
+    ...SBS_2024,
+    additional_description_1: "<p>Unrelated administrative services.</p>",
+  };
+  // Title still carries program identity; description passages are gone.
+  assert.equal(hasProgramIdentityEvidence(passageRemoved), true);
+  assert.equal(admitsProgramHistory(passageRemoved), true);
+  const caps = extractProgramCapabilities(passageRemoved);
+  assert.ok(!caps.some((c) => c.capability_id === "reflective_coating"));
+  assert.ok(!caps.some((c) => c.capability_id === "consortium_delivery"));
+  assert.ok(!caps.some((c) => c.capability_id === "jobseeker_training"));
+
+  const result = matchProgramRecords({
+    profile: TRAINING_PROFILE,
+    records: [passageRemoved, SBS_2022, SBS_2026],
+  });
+  // Title-based program identity can still match; description duties do not.
+  const hit = result.matches.find((m) => m.notice_id === "20240417107");
+  assert.ok(hit);
+  assert.ok(
+    hit.capabilities.every(
+      (c) =>
+        c.capability_id === "coolroofs_training_program_title" ||
+        c.capability_id === "coolroofs_training_program",
+    ),
+  );
+  assert.deepEqual(
+    result.matches.map((m) => m.notice_id).sort(),
+    ["20220719104", "20240417107", "20260708004"],
+  );
+});
+
+test("A4 isolated: identity mutation refuses admission; exact lineage unchanged", () => {
+  const identityMutated = {
     ...SBS_2024,
     additional_description_1: "<p>Unrelated administrative services.</p>",
     short_title: "Administrative services",
   };
-  assert.equal(hasProgramIdentityEvidence(mutated), false);
+  assert.equal(hasProgramIdentityEvidence(identityMutated), false);
+  assert.equal(hasReviewedProgramBuyer(identityMutated), true);
+  assert.equal(admitsProgramHistory(identityMutated), false);
+
   const result = matchProgramRecords({
     profile: TRAINING_PROFILE,
-    records: [mutated, SBS_2022, SBS_2026],
+    records: [identityMutated, SBS_2022, SBS_2026],
   });
   assert.deepEqual(
     result.matches.map((m) => m.notice_id).sort(),
     ["20220719104", "20260708004"],
   );
-  // exact lineage seam still works on originals
+
+  const group = groupProgramHistory({
+    records: [identityMutated, SBS_2022, SBS_2026],
+  });
+  assert.deepEqual(
+    group.members.map((m) => m.notice_id).sort(),
+    ["20220719104", "20260708004"],
+  );
+
+  // Exact lineage seam still works on unmodified originals.
   assert.equal(exactIdentityBasis(SBS_2024, SBS_2026), "exact_predecessor_link");
+});
+
+test("A4 isolated: per-record duties stay on their supporting award", () => {
+  const caps2024 = extractProgramCapabilities(SBS_2024);
+  const caps2022 = extractProgramCapabilities(SBS_2022);
+  assert.ok(caps2024.some((c) => c.capability_id === "consortium_delivery"));
+  assert.ok(caps2024.some((c) => c.capability_id === "reflective_coating"));
+  assert.ok(!caps2022.some((c) => c.capability_id === "consortium_delivery"));
+  assert.ok(!caps2022.some((c) => c.capability_id === "reflective_coating"));
+  for (const cap of caps2024) {
+    assert.equal(cap.citation.notice_id, "20240417107");
+  }
 });
