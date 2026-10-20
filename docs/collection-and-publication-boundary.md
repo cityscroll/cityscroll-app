@@ -48,6 +48,7 @@ It is included by every top-level site document and by the search shell:
 - `site/about.html`
 - `site/api.html`
 - `site/changelog.html`
+- `site/contracts-capability-compare.html`
 - `site/data.html`
 - `site/index.html`
 - `site/standards.html`

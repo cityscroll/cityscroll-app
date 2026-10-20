@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/capability-compare-journey",
+  "status": "implemented",
+  "fingerprint": "capability-compare-journey.v1",
+  "updated_at": "2026-10-20T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "procurement-capability-journey-contract",
+      "path": "site/procurement_capability_journey.mjs"
+    },
+    {
+      "id": "procurement-capability-journey-boot",
+      "path": "site/app/capability-compare.mjs"
+    },
+    {
+      "id": "procurement-capability-journey-tests",
+      "path": "test/procurement_capability_journey.test.mjs"
+    },
+    {
+      "id": "procurement-capability-compare-corpus",
+      "path": "site/data/procurement_capability_compare_corpus.json"
+    }
+  ]
+}

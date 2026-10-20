@@ -3090,6 +3090,13 @@
         "ai_entry": "mast"
       },
       {
+        "surface_id": "capability-compare",
+        "route_family": "information-capability-compare",
+        "disposition": "standalone_link",
+        "render_owner": "site/contracts-capability-compare.html",
+        "ai_entry": "backhome"
+      },
+      {
         "surface_id": "changelog",
         "route_family": "information-changelog",
         "disposition": "standalone_link",

@@ -92,6 +92,7 @@ export const PAGE_FAMILY_DISCOVERY = Object.freeze([
   Object.freeze({ surface_id: "public-stats", route_family: "information-stats", disposition: "standalone_link", render_owner: "site/stats.html", ai_entry: "backhome" }),
   Object.freeze({ surface_id: "data-guide", route_family: "information-data", disposition: "standalone_link", render_owner: "site/data.html", ai_entry: "body" }),
   Object.freeze({ surface_id: "data-health", route_family: "information-data-health", disposition: "inherited_chrome", render_owner: "site/civic_document_chrome.mjs", ai_entry: "mast" }),
+  Object.freeze({ surface_id: "capability-compare", route_family: "information-capability-compare", disposition: "standalone_link", render_owner: "site/contracts-capability-compare.html", ai_entry: "backhome" }),
   Object.freeze({ surface_id: "changelog", route_family: "information-changelog", disposition: "standalone_link", render_owner: "site/changelog.html", ai_entry: "body" }),
   Object.freeze({ surface_id: "standards", route_family: "information-standards", disposition: "standalone_link", render_owner: "site/standards.html", ai_entry: "body" }),
   Object.freeze({ surface_id: "agency", route_family: "entity-agency", disposition: "inherited_chrome", render_owner: "site/civic_document_chrome.mjs", ai_entry: "mast" }),

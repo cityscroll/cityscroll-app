@@ -1,0 +1,56 @@
+{
+  "schema": "cityscroll.procurement_capability_compare_corpus.v1",
+  "default_off": true,
+  "source_role": "award_description",
+  "records": [
+    {
+      "request_id": "20230807115",
+      "start_date": "2023-08-11T00:00:00.000",
+      "end_date": "2023-08-11T00:00:00.000",
+      "agency_name": "Fire Department",
+      "type_of_notice_description": "Award",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Building Drain Blockage Removal Services",
+      "selection_method_description": "M/WBE Noncompetitive Small Purchase",
+      "section_name": "Procurement",
+      "pin": "05723W0035001",
+      "contract_amount": "1000000",
+      "additional_description_1": "<p>The Fire Department of the City of New York seeks the services of a qualified Contractor to remove blockages from building drain lines, plumbing fixtures, vent and leader stack lines, and yard and storm drains; perform maintenance of sanitary systems; provide pump truck, jet vacuum and video camera inspectional services; and clean and disinfect sanitary system back-ups in Fire Department facilities throughout the five (5) boroughs of New York City.</p>",
+      "vendor_name": "Dirty Gloves Drain Services LLC",
+      "source_url": "https://cityscroll.org/notices/20230807115/"
+    },
+    {
+      "request_id": "20231220107",
+      "start_date": "2023-12-26T00:00:00.000",
+      "end_date": "2023-12-26T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "category_description": "Services (other than human services)",
+      "short_title": "GARBAGE REMOVAL and VEGETATION TRIMMING - BRONX, MANHATTAN",
+      "selection_method_description": "M/WBE Noncompetitive Small Purchase",
+      "section_name": "Procurement",
+      "pin": "84124W0031001",
+      "contract_amount": "634000",
+      "additional_description_1": null,
+      "vendor_name": "Dirty Gloves Drain Services LLC",
+      "source_url": "https://cityscroll.org/notices/20231220107/"
+    },
+    {
+      "request_id": "20251008021",
+      "start_date": "2025-10-15T00:00:00.000",
+      "end_date": "2025-10-15T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "category_description": "Construction Related Services",
+      "short_title": "Sewer Line Clean Up at Farm Colony Staten Island",
+      "selection_method_description": "M/WBE Noncompetitive Small Purchase",
+      "section_name": "Procurement",
+      "pin": "85626W0014001",
+      "contract_amount": "100000",
+      "additional_description_1": "<p>General Requirement and Specifications for furnishing all labor, equipment and materials necessary and required for Sewer Line Clean Up at Farm Colony Staten Island.\u00a0</p>",
+      "vendor_name": "Dirty Gloves Drain Services LLC",
+      "source_url": "https://cityscroll.org/notices/20251008021/"
+    }
+  ],
+  "corpus_bounds": "bounded-historical-award-comparison"
+}
