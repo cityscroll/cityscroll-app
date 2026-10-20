@@ -11,40 +11,35 @@
  * from the Worker twin, so the public site graph stays free of Worker paths.
  */
 
-const JUNK_PINS = new Set([
-  "NOPINFOUND",
-  "SEE BELOW",
-  "LINE 17 BELOW",
-  "TBD",
-  "N/A",
-  "NONE",
-  "VARIOUS",
-  "SEE ATTACHED",
-  "123456",
-]);
-const JUNK_PIN_TEXT_RE =
-  /\bsee\b|\bbelow\b|\bline\s*17\b|\bn\/?a\b|\btbd\b|\bvarious\b|\bpending\b|\battached\b/i;
+// compared UPPERCASED — entries must be uppercase (unit-tested); "123456" is a confirmed
+// placeholder default value, not a real PIN. Keep the Set on one line so source-extracting
+// contract/unit tests that slice this declaration still match.
+const JUNK_PINS = new Set(["NOPINFOUND", "SEE BELOW", "LINE 17 BELOW", "TBD", "N/A", "NONE", "VARIOUS", "SEE ATTACHED", "123456"]);
+// Looser second pass alongside JUNK_PINS above: the exact-match set misses common real-world
+// phrasings of the same "see the list below" placeholder. \b keeps this from matching inside
+// a real alphanumeric PIN — digits and letters are both \w, so "SEE12345" is left alone.
+const JUNK_PIN_TEXT_RE = /\bsee\b|\bbelow\b|\bline\s*17\b|\bn\/?a\b|\btbd\b|\bvarious\b|\bpending\b|\battached\b/i;
 
 /** Renewal cycles append this suffix to the base PIN. */
 const RENEWAL_SUFFIX_RE = /R0\d+$/;
 
 /** True when a PIN is concrete enough to join a renewal chain. */
-function usablePin(p) {
-  if (!p) return false;
+function usablePin(p){
+  if(!p) return false;
   const s = String(p).trim();
-  if (s.length < 4) return false;
-  if (!/[A-Za-z0-9]/.test(s)) return false;
-  if (/^[0\W_]+$/.test(s)) return false;
-  if (JUNK_PINS.has(s.toUpperCase())) return false;
-  if (JUNK_PIN_TEXT_RE.test(s)) return false;
+  if(s.length < 4) return false;
+  if(!/[A-Za-z0-9]/.test(s)) return false;
+  if(/^[0\W_]+$/.test(s)) return false;
+  if(JUNK_PINS.has(s.toUpperCase())) return false;
+  if(JUNK_PIN_TEXT_RE.test(s)) return false;
   return true;
 }
 
 /** The base PIN a renewal cycle was issued against, or null when there is none. */
-function pinBase(pin) {
-  const s = String(pin || "").trim();
+function pinBase(pin){
+  const s = String(pin||"").trim();
   const m = s.match(RENEWAL_SUFFIX_RE);
   return m ? s.slice(0, m.index) : null;
 }
 
-export { RENEWAL_SUFFIX_RE, pinBase, usablePin };
+export { RENEWAL_SUFFIX_RE, pinBase, usablePin, JUNK_PINS, JUNK_PIN_TEXT_RE };
