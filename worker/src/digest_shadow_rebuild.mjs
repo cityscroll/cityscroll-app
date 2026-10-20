@@ -2,6 +2,7 @@ import {
   DIGEST_SHADOW_ATTENTION,
   DIGEST_SHADOW_DEGRADED_UPSTREAM,
   DIGEST_SHADOW_READY,
+  applyFreshnessDegradation,
   compactDigestShadowResult,
   validateDigestShadowRun,
   validateDigestShadowTargets,
@@ -22,6 +23,18 @@ export const DIGEST_SHADOW_REBUILD_SCHEMA = "cityscroll.digest-shadow-rebuild.v1
 export const DIGEST_SHADOW_REBUILD_RUN_TABLE = "digest_shadow_rebuild_runs";
 export const DIGEST_SHADOW_REBUILD_ITEM_TABLE = "digest_shadow_rebuild_items";
 
+// Automatic recovery for a same-day STARTED row that never finalized (Monday-stall shape).
+// Reuses the checkpointed rebuild queue; does not send subscriber mail.
+export const DIGEST_SHADOW_STARTED_RECOVERY_SCHEMA = "cityscroll.digest-shadow-started-recovery.v1";
+export const DIGEST_SHADOW_STARTED_RECOVERY_GRACE_MS = 12 * 60 * 1000;
+export const DIGEST_SHADOW_STARTED_RECOVERY_MAX_ATTEMPTS = 3;
+export const DIGEST_SHADOW_STARTED_RECOVERY_LOOKBACK_DAYS = 3;
+export const DIGEST_SHADOW_STARTED_RECOVERY_BACKOFF_MS = Object.freeze([
+  0,
+  15 * 60 * 1000,
+  45 * 60 * 1000,
+]);
+
 const MAX_DIGEST_IDS = 100;
 const MAX_DIGEST_ID_LENGTH = 160;
 
@@ -31,6 +44,52 @@ function iso(value) {
 
 function day(value) {
   return iso(value).slice(0, 10);
+}
+
+export function startedRecoveryReceiptKey(runDay) {
+  return `digest:shadow:started-recovery:${runDay}`;
+}
+
+export function isDigestShadowStartedRecoveryDisabled(env) {
+  const raw = String(env?.DIGEST_SHADOW_STARTED_RECOVERY_DISABLED ?? "").trim().toLowerCase();
+  return raw === "1" || raw === "true" || raw === "yes";
+}
+
+/** Accept YYYY-MM-DD or default to the UTC day of `now`. */
+export function normalizeRebuildRunDay(runDay, now = new Date()) {
+  if (runDay == null || runDay === "") return day(now);
+  const value = String(runDay).trim();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    throw new TypeError("run_day must be YYYY-MM-DD");
+  }
+  return value;
+}
+
+function lookbackDaysFrom(now, lookbackDays) {
+  const today = day(now);
+  const start = Date.parse(`${today}T00:00:00.000Z`);
+  const out = [];
+  for (let i = 0; i < lookbackDays; i += 1) {
+    out.push(new Date(start - i * 86_400_000).toISOString().slice(0, 10));
+  }
+  return out;
+}
+
+async function readStartedRecoveryReceipt(store, runDay) {
+  if (!store?.get) return null;
+  const raw = await store.get(startedRecoveryReceiptKey(runDay));
+  if (!raw) return null;
+  try {
+    const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
+    return parsed?.schema === DIGEST_SHADOW_STARTED_RECOVERY_SCHEMA ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+async function writeStartedRecoveryReceipt(store, receipt) {
+  if (!store?.put || !receipt?.run_day) return;
+  await store.put(startedRecoveryReceiptKey(receipt.run_day), JSON.stringify(receipt));
 }
 
 function json(value) {
@@ -225,7 +284,7 @@ async function mergeCompletedSummary(env, run, items, now, contentRedlines) {
       now: evaluationNow, renderedContentRedlines: contentRedlines,
     });
     const finalizationId = crypto.randomUUID();
-    const merged = {
+    let merged = {
       ...validated,
       phase: "finalized",
       complete: true,
@@ -235,9 +294,14 @@ async function mergeCompletedSummary(env, run, items, now, contentRedlines) {
       result_revision: finalizationId,
       repair: {
         ...(validated.repair || {}),
+        state: "none",
         rerun_scope: "checkpointed_digest_queue",
       },
     };
+    // Preserve advisory freshness degradation stamped on the STARTED handoff row.
+    if (currentSummary?.freshness?.degraded) {
+      merged = applyFreshnessDegradation(merged, currentSummary.freshness);
+    }
     const publicSummary = { ...merged };
     delete publicSummary._rendered_previews;
     const statements = [env.DB.prepare(`INSERT INTO digest_shadow_runs
@@ -376,27 +440,233 @@ async function mergeCompletedSummary(env, run, items, now, contentRedlines) {
   return persistMergedSideEffects(env, run, merged, evaluationNow);
 }
 
-export async function createDigestShadowRebuild(env, { affectedDigestIds = null, now = new Date() } = {}) {
+export async function createDigestShadowRebuild(env, {
+  affectedDigestIds = null,
+  now = new Date(),
+  runDay = null,
+} = {}) {
   if (!env?.DB?.prepare || !env?.DIGEST_SHADOW_QUEUE?.send) throw new Error("digest shadow rebuild queue unavailable");
   const requested = normalizeDigestShadowRebuildScope(affectedDigestIds);
+  const targetDay = normalizeRebuildRunDay(runDay, now);
   const at = iso(now);
+  // Same-day rebuilds keep the enqueue clock (existing freeze-across-midnight contract).
+  // Historical-day repair freezes at that day's 10:00 UTC so Monday weekly semantics hold.
+  const evaluationAt = targetDay === day(now) ? at : `${targetDay}T10:00:00.000Z`;
   const runId = `digest-shadow-rebuild:${at}:${crypto.randomUUID()}`;
   const baseRow = await env.DB.prepare(
     "SELECT summary_json FROM digest_shadow_runs WHERE run_day = ?",
-  ).bind(day(now)).first();
+  ).bind(targetDay).first();
   const baseSummaryJson = baseRow?.summary_json || null;
   await env.DB.prepare(`INSERT INTO ${DIGEST_SHADOW_REBUILD_RUN_TABLE}
     (run_id, run_day, requested_digest_ids_json, base_summary_json, status, total_count, completed_count,
      failed_count, receipt_json, error, created_at, updated_at)
     VALUES (?, ?, ?, ?, 'queued', 0, 0, 0, NULL, NULL, ?, ?)`)
-    .bind(runId, day(now), json(requested), baseSummaryJson, at, at).run();
+    .bind(runId, targetDay, json(requested), baseSummaryJson, evaluationAt, at).run();
   try {
     await env.DIGEST_SHADOW_QUEUE.send({ type: "expand", run_id: runId });
   } catch (error) {
     await updateRun(env.DB, runId, { status: "failed", error: String(error?.message || error), updated_at: iso(now) });
     throw error;
   }
-  return { run_id: runId, status: "queued", requested_digest_ids: requested };
+  return {
+    run_id: runId,
+    status: "queued",
+    run_day: targetDay,
+    requested_digest_ids: requested,
+  };
+}
+
+async function readShadowRunRow(db, runDay) {
+  if (!db?.prepare || !runDay) return null;
+  return db.prepare(
+    "SELECT run_day, status, ran_at, summary_json FROM digest_shadow_runs WHERE run_day = ?",
+  ).bind(runDay).first();
+}
+
+async function hasActiveRebuildForDay(db, runDay) {
+  if (!db?.prepare || !runDay) return false;
+  const row = await db.prepare(
+    `SELECT run_id FROM ${DIGEST_SHADOW_REBUILD_RUN_TABLE}
+      WHERE run_day = ? AND status NOT IN ('complete', 'failed')
+      ORDER BY created_at DESC LIMIT 1`,
+  ).bind(runDay).first();
+  return Boolean(row?.run_id);
+}
+
+/**
+ * When a rehearsal left STARTED past the isolate grace window, enqueue the existing
+ * checkpointed rebuild queue (unscoped) with bounded retries, backoff, a kill switch,
+ * receipts, and terminal escalation. Delivery policy stays fail-open; no subscriber mail.
+ */
+export async function recoverStalledDigestShadowRuns(env, {
+  now = new Date(),
+  graceMs = DIGEST_SHADOW_STARTED_RECOVERY_GRACE_MS,
+  maxAttempts = DIGEST_SHADOW_STARTED_RECOVERY_MAX_ATTEMPTS,
+  backoffMs = DIGEST_SHADOW_STARTED_RECOVERY_BACKOFF_MS,
+  lookbackDays = DIGEST_SHADOW_STARTED_RECOVERY_LOOKBACK_DAYS,
+  enqueueRebuild = createDigestShadowRebuild,
+  persistFailureFn = null,
+} = {}) {
+  const at = new Date(now);
+  const actions = [];
+  if (isDigestShadowStartedRecoveryDisabled(env)) {
+    return { ok: true, disabled: true, actions };
+  }
+  if (!env?.DB?.prepare || !env?.DIGEST_SHADOW_QUEUE?.send) {
+    return { ok: false, error: "rebuild queue unavailable", actions };
+  }
+
+  const { persistDigestShadowFailure } = persistFailureFn
+    ? { persistDigestShadowFailure: persistFailureFn }
+    : await import("./digest_shadow.mjs");
+
+  for (const runDay of lookbackDaysFrom(at, lookbackDays)) {
+    const row = await readShadowRunRow(env.DB, runDay);
+    const prior = await readStartedRecoveryReceipt(env.ALERT_STATE, runDay);
+
+    if (!row || row.status !== "STARTED") {
+      if (prior && prior.status !== "recovered" && prior.status !== "exhausted") {
+        const recovered = {
+          ...prior,
+          schema: DIGEST_SHADOW_STARTED_RECOVERY_SCHEMA,
+          status: "recovered",
+          recovered_at: iso(at),
+          observation: row
+            ? `rehearsal for ${runDay} is now ${row.status}`
+            : `rehearsal row for ${runDay} is absent`,
+        };
+        await writeStartedRecoveryReceipt(env.ALERT_STATE, recovered);
+        actions.push({ run_day: runDay, action: "recovered", receipt: recovered });
+      }
+      continue;
+    }
+
+    let summary = {};
+    try {
+      summary = row.summary_json ? JSON.parse(row.summary_json) : {};
+    } catch {
+      summary = {};
+    }
+    const startedAtMs = Date.parse(summary.ran_at || row.ran_at || summary.progress_at || "");
+    if (!Number.isFinite(startedAtMs)) {
+      actions.push({ run_day: runDay, action: "skipped", reason: "started-at-unreadable" });
+      continue;
+    }
+    if (at.getTime() - startedAtMs < graceMs) {
+      actions.push({ run_day: runDay, action: "skipped", reason: "within-grace" });
+      continue;
+    }
+
+    if (await hasActiveRebuildForDay(env.DB, runDay)) {
+      const busy = {
+        schema: DIGEST_SHADOW_STARTED_RECOVERY_SCHEMA,
+        run_day: runDay,
+        status: "running",
+        attempts: prior?.attempts || 0,
+        max_attempts: maxAttempts,
+        last_attempt_at: prior?.last_attempt_at || null,
+        next_eligible_at: prior?.next_eligible_at || null,
+        rebuild_run_id: prior?.rebuild_run_id || null,
+        observed_at: iso(at),
+        observation: "an active rebuild already covers this day",
+      };
+      await writeStartedRecoveryReceipt(env.ALERT_STATE, busy);
+      actions.push({ run_day: runDay, action: "skipped", reason: "rebuild-in-flight", receipt: busy });
+      continue;
+    }
+
+    const attempts = Number(prior?.attempts) || 0;
+    if (prior?.status === "exhausted" || attempts >= maxAttempts) {
+      if (prior?.status !== "exhausted") {
+        const failureNow = new Date(`${runDay}T12:00:00.000Z`);
+        const invocationId = summary.invocation_id || null;
+        let failure = null;
+        if (invocationId) {
+          try {
+            failure = await persistDigestShadowFailure(
+              env,
+              new Error("started rehearsal recovery attempts exhausted"),
+              { now: failureNow, invocationId },
+            );
+          } catch (error) {
+            failure = { error: String(error?.message || error) };
+          }
+        }
+        const exhausted = {
+          schema: DIGEST_SHADOW_STARTED_RECOVERY_SCHEMA,
+          run_day: runDay,
+          status: "exhausted",
+          attempts,
+          max_attempts: maxAttempts,
+          last_attempt_at: prior?.last_attempt_at || null,
+          next_eligible_at: null,
+          rebuild_run_id: prior?.rebuild_run_id || null,
+          observed_at: iso(at),
+          escalated_at: iso(at),
+          failure_status: failure?.status || null,
+          observation: "recovery attempts exhausted; terminal failure receipt written when owned",
+        };
+        await writeStartedRecoveryReceipt(env.ALERT_STATE, exhausted);
+        actions.push({ run_day: runDay, action: "exhausted", receipt: exhausted });
+      } else {
+        actions.push({ run_day: runDay, action: "skipped", reason: "already-exhausted" });
+      }
+      continue;
+    }
+
+    const delay = backoffMs[Math.min(attempts, backoffMs.length - 1)] ?? backoffMs.at(-1) ?? 0;
+    const lastAttemptMs = Date.parse(prior?.last_attempt_at || "");
+    if (Number.isFinite(lastAttemptMs) && at.getTime() < lastAttemptMs + delay) {
+      actions.push({
+        run_day: runDay,
+        action: "skipped",
+        reason: "backoff",
+        next_eligible_at: new Date(lastAttemptMs + delay).toISOString(),
+      });
+      continue;
+    }
+
+    try {
+      const queued = await enqueueRebuild(env, {
+        affectedDigestIds: null,
+        now: at,
+        runDay,
+      });
+      const nextAttempts = attempts + 1;
+      const nextDelay = backoffMs[Math.min(nextAttempts, backoffMs.length - 1)] ?? backoffMs.at(-1) ?? 0;
+      const receipt = {
+        schema: DIGEST_SHADOW_STARTED_RECOVERY_SCHEMA,
+        run_day: runDay,
+        status: nextAttempts >= maxAttempts ? "queued_final" : "queued",
+        attempts: nextAttempts,
+        max_attempts: maxAttempts,
+        last_attempt_at: iso(at),
+        next_eligible_at: new Date(at.getTime() + nextDelay).toISOString(),
+        rebuild_run_id: queued.run_id,
+        observed_at: iso(at),
+        observation: "enqueued unscoped checkpointed rebuild for stalled STARTED rehearsal",
+      };
+      await writeStartedRecoveryReceipt(env.ALERT_STATE, receipt);
+      actions.push({ run_day: runDay, action: "enqueued", receipt, queued });
+    } catch (error) {
+      const failed = {
+        schema: DIGEST_SHADOW_STARTED_RECOVERY_SCHEMA,
+        run_day: runDay,
+        status: "enqueue_failed",
+        attempts: attempts + 1,
+        max_attempts: maxAttempts,
+        last_attempt_at: iso(at),
+        next_eligible_at: new Date(at.getTime() + (backoffMs[Math.min(attempts + 1, backoffMs.length - 1)] ?? 0)).toISOString(),
+        rebuild_run_id: prior?.rebuild_run_id || null,
+        observed_at: iso(at),
+        observation: String(error?.message || error),
+      };
+      await writeStartedRecoveryReceipt(env.ALERT_STATE, failed);
+      actions.push({ run_day: runDay, action: "enqueue_failed", receipt: failed });
+    }
+  }
+
+  return { ok: true, disabled: false, actions };
 }
 
 async function expandRun(env, runId, now) {

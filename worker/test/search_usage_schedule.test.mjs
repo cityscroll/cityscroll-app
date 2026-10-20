@@ -150,24 +150,33 @@ test("cost probe schedule suppresses edge-cache writes", async () => {
   assert.equal(received.find(([name]) => name === "stats")[2].skipCacheWrite, true);
 });
 
-test("digest shadow logs exclude rendered previews and cost probes suppress the summary", async () => {
+test("digest shadow queue handoff logs stay free of rendered bodies; cost probes suppress the summary", async () => {
   const privateSubject = "CityScroll: still watching — tenant coalition";
   const overrides = {
     persistDigestShadowStarted: () => ({ status: "STARTED", write_accepted: true }),
-    runDigestShadow: () => ({ status: "READY", _rendered_previews: [{ subject: privateSubject }] }),
+    createDigestShadowRebuild: () => ({
+      run_id: "digest-shadow-rebuild:test",
+      status: "queued",
+      run_day: "2026-09-09",
+      // Rendered bodies must never reach scheduled logs even if a stub leaks them.
+      _rendered_previews: [{ subject: privateSubject }],
+    }),
+    markDigestShadowRebuildQueued: () => ({ write_accepted: true }),
   };
   const normal = scheduledWorker({ overrides });
   await normal.run("0 10 * * *", productionEnv());
-  assert.ok(normal.calls.includes("runDigestShadow"));
-  const summaries = normal.logs.filter(([label]) => label === "digest shadow:");
+  assert.ok(normal.calls.includes("createDigestShadowRebuild"));
+  assert.ok(normal.calls.includes("markDigestShadowRebuildQueued"));
+  assert.equal(normal.calls.includes("runDigestShadow"), false);
+  const summaries = normal.logs.filter(([label]) => label === "digest shadow rebuild queued:");
   assert.equal(summaries.length, 1);
-  assert.equal(JSON.parse(summaries[0][1]).status, "READY");
+  assert.equal(JSON.parse(summaries[0][1]).rebuild_run_id, "digest-shadow-rebuild:test");
   assert.equal(normal.logs.some((args) => args.join(" ").includes(privateSubject)), false);
 
   const probe = scheduledWorker({ overrides });
   await probe.run("0 10 * * *", productionEnv(), { costProbe: true });
-  assert.ok(probe.calls.includes("runDigestShadow"));
-  assert.equal(probe.logs.some(([label]) => label === "digest shadow:"), false);
+  assert.ok(probe.calls.includes("createDigestShadowRebuild"));
+  assert.equal(probe.logs.some(([label]) => label === "digest shadow rebuild queued:"), false);
   assert.equal(probe.logs.some((args) => args.join(" ").includes(privateSubject)), false);
 });
 

@@ -45,6 +45,7 @@ import {
 } from "./source_health_observations.mjs";
 import { runScheduledJob } from "./external_schedule_runner.mjs";
 import { parseRepairSignature, upstreamFailureEvidence } from "./repair_findings.mjs";
+import { resolveCredential } from "./lib/credential_files.mjs";
 import {
   REPAIR_DISPATCH_BUDGET_MS,
   selectRepairPlaybook,
@@ -134,6 +135,49 @@ function run(command, args, { cwd = ROOT, timeoutMs = LOCAL_COMMAND_TIMEOUT_MS }
  * rather than a general escape hatch, so the registry's tests exercise the same
  * shape the scheduler host supplies.
  */
+function digestShadowAdminKey() {
+  return resolveCredential({
+    inlineVars: ["CITYSCROLL_ADMIN_KEY", "ADMIN_KEY"],
+    fileVars: ["CITYSCROLL_ADMIN_KEY_FILE"],
+  });
+}
+
+function createDigestShadowRepairApi({ fetchImpl = globalThis.fetch } = {}) {
+  const baseUrl = process.env.CITYSCROLL_DIGEST_SHADOW_URL || "https://api.cityscroll.org/admin/digest-shadow";
+  return {
+    async readStatus({ day = null } = {}) {
+      const key = digestShadowAdminKey();
+      if (!key) throw new Error("digest shadow admin credential missing");
+      const url = new URL(baseUrl);
+      if (day) url.searchParams.set("day", day);
+      const response = await fetchImpl(url, { headers: { Authorization: `Bearer ${key}` } });
+      let body = {};
+      try { body = await response.json(); } catch { body = {}; }
+      return { http_status: response.status, summary: body.summary || (body.status ? body : {}), body };
+    },
+    async enqueueRebuild({ day = null } = {}) {
+      const key = digestShadowAdminKey();
+      if (!key) throw new Error("digest shadow admin credential missing");
+      const payload = { action: "rerun" };
+      if (day) payload.day = day;
+      const response = await fetchImpl(baseUrl, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${key}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      let body = {};
+      try { body = await response.json(); } catch { body = {}; }
+      if (!response.ok) {
+        throw new Error(body.detail || body.error || `digest shadow rebuild HTTP ${response.status}`);
+      }
+      return body;
+    },
+  };
+}
+
 export function createDispatchContext({
   signature,
   monitor,
@@ -144,6 +188,8 @@ export function createDispatchContext({
   stateDir = stateDirectory(),
   jobsPath = JOBS_PATH,
   sleep = (ms) => new Promise((settle) => { setTimeout(settle, ms); }),
+  fetchImpl = globalThis.fetch,
+  digestShadow = null,
 } = {}) {
   let jobsCache = null;
   const jobs = async () => {
@@ -163,6 +209,7 @@ export function createDispatchContext({
     stateDir,
     sleep,
     upstreamEvidence: upstreamFailureEvidence,
+    digestShadow: digestShadow || createDigestShadowRepairApi({ fetchImpl }),
 
     repository: {
       // Read-only, and it answers exactly one question: is this path a file the

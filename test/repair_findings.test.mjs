@@ -148,6 +148,34 @@ test("an upstream gateway error inside a redline is read as an upstream fault", 
 
   assert.equal(digestShadowFailureClass({ degraded_reason: "admin-credential-missing" }), "digest-shadow-credential");
   assert.equal(digestShadowFailureClass({ http_status: 503 }), "digest-shadow-upstream");
+  assert.equal(
+    digestShadowFailureClass({ degraded_reason: "rehearsal-started-not-finished" }),
+    "digest-shadow-started-stall",
+  );
+});
+
+test("a same-day STARTED rehearsal files the started-stall repair class", () => {
+  const observed = monitorRepairFindings(DIGEST_JOB, {
+    result: {
+      observed_at: OBSERVED,
+      status: "degraded",
+      http_status: 200,
+      degraded_reason: "rehearsal-started-not-finished",
+      summary: {
+        status: "STARTED",
+        run_day: "2026-09-07",
+        phase: "account_builds",
+        evaluated_count: 2,
+        progress_at: "2026-09-07T10:03:15.000Z",
+      },
+    },
+  });
+  assert.equal(observed.findings.length, 1);
+  assert.equal(observed.findings[0].signature, "monitor:digest-shadow-monitor:digest-shadow-started-stall");
+  const stall = observed.recovered.find((row) => row.prefix.endsWith("digest-shadow-started-stall"));
+  assert.ok(stall.still_failing.length > 0);
+  const upstream = observed.recovered.find((row) => row.prefix.endsWith("digest-shadow-upstream"));
+  assert.deepEqual(upstream.still_failing, []);
 });
 
 test("a stale freshness watchdog files one item per source and one scope for the rest", () => {

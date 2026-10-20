@@ -1141,6 +1141,69 @@ export async function recordDigestShadowProgress(db, day, progress, now = new Da
       invocationId, invocationId, progress.evaluated_count).run();
 }
 
+/**
+ * After STARTED + budgeted freshness, stamp the in-flight row with the checkpointed
+ * rebuild run id so operators see queue handoff instead of a silent inline stall.
+ * Keeps status STARTED until the rebuild finalizes the day.
+ */
+export async function markDigestShadowRebuildQueued(env, {
+  day,
+  rebuildRunId,
+  invocationId,
+  now = new Date(),
+  freshness = null,
+} = {}) {
+  if (!env?.DB?.prepare || !day || !rebuildRunId || !invocationId) {
+    throw new Error("digest shadow rebuild queue stamp requires DB, day, rebuildRunId, and invocationId");
+  }
+  const row = await env.DB.prepare(
+    "SELECT summary_json FROM digest_shadow_runs WHERE run_day = ? AND status = 'STARTED'",
+  ).bind(day).first();
+  if (!row?.summary_json) return { write_accepted: false, reason: "started-row-absent" };
+  let summary;
+  try {
+    summary = JSON.parse(row.summary_json);
+  } catch {
+    return { write_accepted: false, reason: "started-row-unreadable" };
+  }
+  if (summary.invocation_id && summary.invocation_id !== invocationId) {
+    return { write_accepted: false, reason: "invocation-mismatch" };
+  }
+  let next = {
+    ...summary,
+    status: DIGEST_SHADOW_STARTED,
+    phase: "rebuild_queued",
+    progress_at: new Date(now).toISOString(),
+    rebuild_run_id: rebuildRunId,
+    rebuild_complete: false,
+    repair: {
+      ...(summary.repair || {}),
+      state: "rebuild_queued",
+      affected_digest_ids: summary.repair?.affected_digest_ids || [],
+      rerun_method: "POST /admin/digest-shadow",
+      rerun_scope: "checkpointed_digest_queue",
+      rebuild_run_id: rebuildRunId,
+    },
+  };
+  // Attach advisory freshness for the later rebuild merge, but keep STARTED so
+  // hold/monitor still see an in-flight handoff rather than a terminal status.
+  if (freshness?.degraded) {
+    const degraded = applyFreshnessDegradation(next, freshness);
+    next = {
+      ...degraded,
+      status: DIGEST_SHADOW_STARTED,
+    };
+  }
+  const write = await env.DB.prepare(`UPDATE digest_shadow_runs SET summary_json = ?
+    WHERE run_day = ? AND status = 'STARTED'
+    AND json_extract(summary_json, '$.invocation_id') = ?`)
+    .bind(JSON.stringify(next), day, invocationId).run();
+  return {
+    write_accepted: Number(write?.meta?.changes) > 0,
+    summary: next,
+  };
+}
+
 /** Run the real digest builders with delivery, queue fan-out, and state advancement disabled. */
 export async function runDigestShadow(env, {
   now = new Date(),

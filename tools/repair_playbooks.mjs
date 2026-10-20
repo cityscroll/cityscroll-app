@@ -48,6 +48,9 @@ export const REPAIR_PLAYBOOK_REGISTRY_SCHEMA = "cityscroll.repair-playbook-regis
 export const REPAIR_DISPATCH_BUDGET_MS = 9 * 60 * 1000;
 /** How long the upstream playbook waits before its single retry. */
 export const UPSTREAM_BACKOFF_MS = 60 * 1000;
+export const STARTED_STALL_BACKOFF_MS = 60 * 1000;
+export const STARTED_STALL_VERIFY_MS = 30 * 1000;
+export const STARTED_STALL_REBUILD_GRACE_MS = 12 * 60 * 1000;
 
 export const REPAIR_OUTCOMES = Object.freeze(["repaired", "judgment", "failed", "deferred"]);
 
@@ -64,6 +67,11 @@ export const REPAIR_JUDGMENT_CLASSES = Object.freeze({
   "action-link-degraded": "an outbound action link changed on the publisher's side; choosing a replacement destination is an editorial decision",
   "stats-snapshot-missing": "the daily snapshot did not publish, and the remedy is a change to the publication path in this repository",
 });
+
+function startedStallKillSwitchOn() {
+  const raw = String(process.env.DIGEST_SHADOW_STARTED_RECOVERY_DISABLED || "").trim().toLowerCase();
+  return raw === "1" || raw === "true" || raw === "yes";
+}
 
 const SECOND = 1000;
 
@@ -224,6 +232,82 @@ async function digestShadowUpstream(context) {
   return outcome("failed", `re-ran the digest rehearsal after a bounded backoff and it reported ${result.summary?.status || result.degraded_reason || "a degraded rehearsal"}`, { ok: false, detail: clamp(result.degraded_reason || "the rehearsal is still degraded", 120) });
 }
 
+/**
+ * STARTED-not-finalized past the monitor deadline: enqueue the same checkpointed
+ * rebuild path that completed 2026-10-12. Idempotent POST; no subscriber mail.
+ */
+async function digestShadowStartedStall(context) {
+  if (startedStallKillSwitchOn()) {
+    return outcome("deferred", "started-stall recovery kill switch is on (DIGEST_SHADOW_STARTED_RECOVERY_DISABLED); no rebuild was enqueued");
+  }
+  const api = context.digestShadow;
+  if (!api?.readStatus || !api?.enqueueRebuild) {
+    return outcome("judgment", "no digest-shadow rebuild API is wired for this repair cycle, so a STARTED stall cannot be enqueued from here");
+  }
+
+  const before = await api.readStatus({ now: context.now });
+  const summary = before?.summary || {};
+  if (summary.status && summary.status !== "STARTED") {
+    return outcome("repaired", `the rehearsal is already ${summary.status}; nothing was enqueued`, {
+      ok: true,
+      detail: `status ${summary.status}`,
+    });
+  }
+  if (summary.status !== "STARTED") {
+    return outcome("judgment", "the rehearsal probe did not report a STARTED row, so this is not the started-stall condition");
+  }
+
+  const stampedAt = Date.parse(summary.progress_at || summary.ran_at || "");
+  const ageMs = Number.isFinite(stampedAt) ? context.now.getTime() - stampedAt : null;
+  if (
+    summary.phase === "rebuild_queued"
+    && summary.rebuild_run_id
+    && ageMs != null
+    && ageMs < STARTED_STALL_REBUILD_GRACE_MS
+  ) {
+    return outcome("deferred", `a checkpointed rebuild is already queued (${summary.rebuild_run_id}); waiting for it to finalize within grace`, {
+      ok: false,
+      detail: "rebuild already queued",
+    });
+  }
+
+  await context.sleep(STARTED_STALL_BACKOFF_MS);
+  let queued;
+  try {
+    queued = await api.enqueueRebuild({
+      day: summary.run_day,
+      now: context.now,
+    });
+  } catch (error) {
+    return outcome("failed", `enqueueing the checkpointed rebuild failed: ${clamp(error?.message || error, 160)}`, {
+      ok: false,
+      detail: "rebuild enqueue failed",
+    });
+  }
+
+  await context.sleep(STARTED_STALL_VERIFY_MS);
+  const after = await api.readStatus({ day: summary.run_day, now: context.now });
+  const afterSummary = after?.summary || {};
+  if (afterSummary.status && afterSummary.status !== "STARTED") {
+    return outcome("repaired", `enqueued checkpointed rebuild ${queued?.run_id || "unknown"} and the rehearsal is now ${afterSummary.status}`, {
+      ok: true,
+      detail: `status ${afterSummary.status}`,
+      rebuild_run_id: queued?.run_id || null,
+    });
+  }
+  if (afterSummary.rebuild_run_id || afterSummary.phase === "rebuild_queued" || queued?.run_id) {
+    return outcome("deferred", `enqueued checkpointed rebuild ${queued?.run_id || afterSummary.rebuild_run_id || "unknown"}; the next scheduled observation verifies completion`, {
+      ok: false,
+      detail: "rebuild enqueued; awaiting finalize",
+      rebuild_run_id: queued?.run_id || afterSummary.rebuild_run_id || null,
+    });
+  }
+  return outcome("failed", "enqueued a rebuild but the rehearsal is still STARTED without a rebuild receipt", {
+    ok: false,
+    detail: "started without rebuild receipt",
+  });
+}
+
 /* ------------------------------------------------------------------------- */
 /* (d) A freshness watchdog that reports a source's evidence stale.           */
 /* ------------------------------------------------------------------------- */
@@ -334,6 +418,18 @@ export const REPAIR_PLAYBOOKS = Object.freeze([
     judgment_when: "the rehearsal is no longer registered; continued upstream failures are deferred",
     deferred_when: "the upstream is still failing after the bounded retry",
     run: digestShadowUpstream,
+  }),
+  Object.freeze({
+    id: "digest-shadow-started-stall",
+    monitor: "digest-shadow-monitor",
+    failure_class: "digest-shadow-started-stall",
+    budget_ms: 5 * 60 * SECOND,
+    precondition: "the digest rehearsal row is still STARTED past the monitor deadline",
+    remedy: "wait a bounded backoff, then POST an idempotent unscoped checkpointed rebuild for that day",
+    verification: "the rehearsal leaves STARTED, or a rebuild_run_id is recorded for the next observation",
+    judgment_when: "no digest-shadow rebuild API is wired for this cycle",
+    deferred_when: "a rebuild is already queued within grace, the kill switch is on, or the enqueue is waiting to finalize",
+    run: digestShadowStartedStall,
   }),
   Object.freeze({
     id: "freshness-stale",
