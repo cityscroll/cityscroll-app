@@ -7,18 +7,24 @@ import { fileURLToPath } from "node:url";
 
 import {
   CAPABILITY_COMPARE_BETA_SLUG,
+  CAPABILITY_COMPARE_HISTORY_STATE_KEY,
   CAPABILITY_COMPARE_PROFILE_STORAGE_KEY,
   DEFAULT_DRAIN_PROFILE,
+  applyCapabilityProfileToHistoryState,
   applyCapabilityProfileToSearchParams,
   buildCapabilityJourney,
+  capabilityProfileFromHistoryState,
   capabilityProfileFromSearchParams,
   journeyHtmlOmitsOpenBidCta,
   parseCapabilityProfile,
+  persistCapabilityProfilePrivately,
   profileFromFormValues,
   readCapabilityProfileFromStorage,
   renderCapabilityJourneyHtml,
   resolveInitialCapabilityProfile,
+  scrubCapabilityProfileFromLocation,
   serializeCapabilityProfile,
+  stripCapabilityProfileFromSearchParams,
   writeCapabilityProfileToStorage,
 } from "../site/procurement_capability_journey.mjs";
 
@@ -220,9 +226,9 @@ test("capability profile persists across sessionStorage remount (Back)", () => {
   assert.equal(restored.jet_vac_truck, true);
   assert.equal(restored.landscaping, false);
 
-  // Remount path: URL has only beta, storage carries the typed form.
+  // Remount path: no profile in the URL; storage carries the typed form.
   const remount = resolveInitialCapabilityProfile({
-    searchParams: new URLSearchParams("beta=capability-compare"),
+    historyState: null,
     storage,
   });
   assert.deepEqual(remount.capability_keywords, ["jet vac", "catch basin"]);
@@ -230,7 +236,7 @@ test("capability profile persists across sessionStorage remount (Back)", () => {
   assert.equal(remount.landscaping, false);
 });
 
-test("URL profile fields win over sessionStorage and round-trip", () => {
+test("history.state profile wins over sessionStorage for Back restoration", () => {
   const storage = new FakeStorage();
   writeCapabilityProfileToStorage(
     storage,
@@ -240,6 +246,21 @@ test("URL profile fields win over sessionStorage and round-trip", () => {
       landscaping: "false",
     }),
   );
+  const historyState = applyCapabilityProfileToHistoryState(null, {
+    capability_keywords: ["from-history", "hydro"],
+    jet_vac_truck: true,
+    landscaping: false,
+  });
+  const fromHistory = capabilityProfileFromHistoryState(historyState);
+  assert.deepEqual(fromHistory.capability_keywords, ["from-history", "hydro"]);
+  assert.equal(fromHistory.jet_vac_truck, true);
+
+  const resolved = resolveInitialCapabilityProfile({ historyState, storage });
+  assert.deepEqual(resolved.capability_keywords, ["from-history", "hydro"]);
+  assert.equal(resolved.jet_vac_truck, true);
+});
+
+test("legacy URL profile fields can be read then stripped without staying in href", () => {
   const params = new URLSearchParams(
     "beta=capability-compare&capability_keywords=from-url%2C+hydro&jet_vac_truck=true",
   );
@@ -247,23 +268,108 @@ test("URL profile fields win over sessionStorage and round-trip", () => {
   assert.deepEqual(fromUrl.capability_keywords, ["from-url", "hydro"]);
   assert.equal(fromUrl.jet_vac_truck, true);
 
-  const resolved = resolveInitialCapabilityProfile({ searchParams: params, storage });
-  assert.deepEqual(resolved.capability_keywords, ["from-url", "hydro"]);
-  assert.equal(resolved.jet_vac_truck, true);
-
+  // Prove strip undoes a legacy apply write.
   const next = new URLSearchParams("beta=capability-compare");
-  applyCapabilityProfileToSearchParams(next, resolved);
-  assert.equal(next.get("beta"), "capability-compare");
+  applyCapabilityProfileToSearchParams(next, fromUrl);
   assert.match(next.get("capability_keywords"), /from-url/);
-  assert.equal(next.get("jet_vac_truck"), "true");
+  stripCapabilityProfileFromSearchParams(next);
+  assert.equal(next.get("beta"), "capability-compare");
+  assert.equal(next.get("capability_keywords"), null);
+  assert.equal(next.get("jet_vac_truck"), null);
+  assert.equal(next.get("landscaping"), null);
+});
 
-  const roundTrip = parseCapabilityProfile(serializeCapabilityProfile(resolved));
-  assert.deepEqual(roundTrip.capability_keywords, ["from-url", "hydro"]);
+function fakeLocationAndHistory(href, state = null) {
+  const url = new URL(href);
+  const loc = {
+    get href() {
+      return url.href;
+    },
+    get pathname() {
+      return url.pathname;
+    },
+    get search() {
+      return url.search;
+    },
+    get hash() {
+      return url.hash;
+    },
+  };
+  const hist = {
+    state,
+    replaceState(nextState, _title, nextUrl) {
+      this.state = nextState;
+      const resolved = new URL(nextUrl, url.origin);
+      url.href = resolved.href;
+    },
+  };
+  return { loc, hist, url };
+}
+
+test("filling the form never puts profile or keywords into location.href", () => {
+  const storage = new FakeStorage();
+  const { loc, hist } = fakeLocationAndHistory(
+    "https://cityscroll.org/contracts-capability-compare.html?beta=capability-compare",
+  );
+  const typed = profileFromFormValues({
+    capability_keywords: "secret-jet-vac, catch basin",
+    jet_vac_truck: "true",
+    landscaping: "false",
+  });
+  const result = persistCapabilityProfilePrivately({
+    profile: typed,
+    storage,
+    location: loc,
+    history: hist,
+  });
+  assert.equal(result.href.includes("capability_keywords"), false);
+  assert.equal(result.href.includes("secret-jet-vac"), false);
+  assert.equal(result.href.includes("catch%20basin"), false);
+  assert.equal(result.href.includes("jet_vac_truck"), false);
+  assert.equal(result.href.includes("landscaping"), false);
+  assert.match(result.href, /[?&]beta=capability-compare/);
+  assert.ok(hist.state?.[CAPABILITY_COMPARE_HISTORY_STATE_KEY]);
+  assert.deepEqual(
+    hist.state[CAPABILITY_COMPARE_HISTORY_STATE_KEY].capability_keywords,
+    ["secret-jet-vac", "catch basin"],
+  );
+  // Back remount reads history.state / storage, still with a clean href.
+  const afterBack = resolveInitialCapabilityProfile({
+    historyState: hist.state,
+    storage,
+  });
+  assert.deepEqual(afterBack.capability_keywords, ["secret-jet-vac", "catch basin"]);
+  assert.equal(loc.href.includes("secret-jet-vac"), false);
+  assert.equal(loc.search.includes("capability_keywords"), false);
+});
+
+test("scrub migrates legacy query profile then strips it before analytics can read href", () => {
+  const storage = new FakeStorage();
+  const { loc, hist } = fakeLocationAndHistory(
+    "https://cityscroll.org/contracts-capability-compare.html?beta=capability-compare&capability_keywords=legacy-hydro&jet_vac_truck=true",
+  );
+  assert.equal(loc.href.includes("legacy-hydro"), true);
+  const stripped = scrubCapabilityProfileFromLocation({
+    location: loc,
+    history: hist,
+    storage,
+  });
+  assert.equal(stripped, true);
+  assert.equal(loc.href.includes("legacy-hydro"), false);
+  assert.equal(loc.href.includes("capability_keywords"), false);
+  assert.equal(loc.href.includes("jet_vac_truck"), false);
+  assert.match(loc.href, /[?&]beta=capability-compare/);
+  const restored = resolveInitialCapabilityProfile({
+    historyState: hist.state,
+    storage,
+  });
+  assert.deepEqual(restored.capability_keywords, ["legacy-hydro"]);
+  assert.equal(restored.jet_vac_truck, true);
 });
 
 test("resolveInitialCapabilityProfile falls back to the drain default", () => {
   const profile = resolveInitialCapabilityProfile({
-    searchParams: new URLSearchParams("beta=capability-compare"),
+    historyState: null,
     storage: new FakeStorage(),
   });
   assert.deepEqual(profile.capability_keywords, [...DEFAULT_DRAIN_PROFILE.capability_keywords]);
