@@ -7,11 +7,19 @@ import { fileURLToPath } from "node:url";
 
 import {
   PROGRAM_HISTORY_BETA_SLUG,
+  PROGRAM_HISTORY_HISTORY_STATE_KEY,
+  PROGRAM_HISTORY_PROFILE_STORAGE_KEY,
   DEFAULT_TRAINING_PROFILE,
+  applyProgramProfileToHistoryState,
   buildProgramJourney,
   journeyHtmlOmitsOpenBidCta,
+  persistProgramProfilePrivately,
   profileFromFormValues,
+  readProgramProfileFromStorage,
   renderProgramJourneyHtml,
+  resolveInitialProgramProfile,
+  scrubProgramProfileFromLocation,
+  writeProgramProfileToStorage,
   PROGRAM_RELATION,
 } from "../site/procurement_program_journey.mjs";
 
@@ -215,4 +223,216 @@ test("standalone program-history page ships with noscript source links", () => {
   assert.match(html, /notices\/20260708004/);
   assert.match(html, /beta_flags\.js/);
   assert.match(html, /app\/program-history\.mjs/);
+});
+
+test("classic program-history-profile-scrub.js precedes analytics.js and clarity.js", () => {
+  const html = readFileSync(
+    fileURLToPath(new URL("../site/contracts-program-history.html", import.meta.url)),
+    "utf8",
+  );
+  const scrubIdx = html.indexOf('src="program-history-profile-scrub.js"');
+  const analyticsIdx = html.indexOf('src="analytics.js');
+  const clarityIdx = html.indexOf('src="clarity.js');
+  assert.ok(scrubIdx > 0, "scrub script tag missing");
+  assert.ok(analyticsIdx > scrubIdx, "scrub must precede analytics.js");
+  assert.ok(clarityIdx > scrubIdx, "scrub must precede clarity.js");
+  const scrubTagMatch = html.match(
+    /<script\b[^>]*src="program-history-profile-scrub\.js"[^>]*>\s*<\/script>/,
+  );
+  assert.ok(scrubTagMatch, "scrub script element missing");
+  assert.doesNotMatch(scrubTagMatch[0], /\bdefer\b|\basync\b|type="module"/);
+});
+
+test("program profile persists across sessionStorage remount (Back restores keywords)", () => {
+  const storage = new FakeStorage();
+  const typed = profileFromFormValues({
+    capability_keywords: "back-restore-keywords, youth apprenticeship",
+    job_training: "true",
+    employer_placement: "false",
+    roof_installation_crew: "false",
+  });
+  assert.equal(writeProgramProfileToStorage(storage, typed), true);
+  assert.ok(storage.getItem(PROGRAM_HISTORY_PROFILE_STORAGE_KEY));
+
+  const remount = resolveInitialProgramProfile({
+    historyState: null,
+    storage,
+  });
+  assert.deepEqual(remount.capability_keywords, [
+    "back-restore-keywords",
+    "youth apprenticeship",
+  ].sort((a, b) => a.localeCompare(b)));
+  assert.equal(remount.job_training, true);
+  assert.equal(remount.employer_placement, false);
+});
+
+test("history.state profile wins over sessionStorage for Back restoration", () => {
+  const storage = new FakeStorage();
+  writeProgramProfileToStorage(
+    storage,
+    profileFromFormValues({
+      capability_keywords: "from-storage",
+      job_training: "false",
+      employer_placement: "false",
+      roof_installation_crew: "false",
+    }),
+  );
+  const historyState = applyProgramProfileToHistoryState(null, {
+    capability_keywords: ["from-history", "hydro"],
+    job_training: true,
+    employer_placement: true,
+    roof_installation_crew: false,
+  });
+  const resolved = resolveInitialProgramProfile({ historyState, storage });
+  assert.deepEqual(resolved.capability_keywords, ["from-history", "hydro"]);
+  assert.equal(resolved.job_training, true);
+});
+
+function fakeLocationAndHistory(href, state = null) {
+  const url = new URL(href);
+  const loc = {
+    get href() {
+      return url.href;
+    },
+    get pathname() {
+      return url.pathname;
+    },
+    get search() {
+      return url.search;
+    },
+    get hash() {
+      return url.hash;
+    },
+  };
+  const hist = {
+    state,
+    replaceState(nextState, _title, nextUrl) {
+      this.state = nextState;
+      const resolved = new URL(nextUrl, url.origin);
+      url.href = resolved.href;
+    },
+  };
+  return { loc, hist, url };
+}
+
+test("filling the form never puts profile or keywords into location.href", () => {
+  const storage = new FakeStorage();
+  const { loc, hist } = fakeLocationAndHistory(
+    "https://cityscroll.org/contracts-program-history.html?beta=program-history",
+  );
+  const typed = profileFromFormValues({
+    capability_keywords: "secret-program-keywords, catch basin",
+    job_training: "true",
+    employer_placement: "true",
+    roof_installation_crew: "false",
+  });
+  const result = persistProgramProfilePrivately({
+    profile: typed,
+    storage,
+    location: loc,
+    history: hist,
+  });
+  assert.equal(result.href.includes("capability_keywords"), false);
+  assert.equal(result.href.includes("secret-program-keywords"), false);
+  assert.equal(result.href.includes("job_training"), false);
+  assert.equal(result.href.includes("employer_placement"), false);
+  assert.equal(result.href.includes("roof_installation_crew"), false);
+  assert.match(result.href, /[?&]beta=program-history/);
+  assert.ok(hist.state?.[PROGRAM_HISTORY_HISTORY_STATE_KEY]);
+  const afterBack = resolveInitialProgramProfile({
+    historyState: hist.state,
+    storage,
+  });
+  assert.deepEqual(
+    afterBack.capability_keywords,
+    ["secret-program-keywords", "catch basin"].sort((a, b) => a.localeCompare(b)),
+  );
+  assert.equal(loc.href.includes("secret-program-keywords"), false);
+});
+
+test("scrub migrates legacy query profile then strips it before analytics can read href", () => {
+  const storage = new FakeStorage();
+  const { loc, hist } = fakeLocationAndHistory(
+    "https://cityscroll.org/contracts-program-history.html?beta=program-history&capability_keywords=legacy-program&job_training=true",
+  );
+  assert.equal(loc.href.includes("legacy-program"), true);
+  const stripped = scrubProgramProfileFromLocation({
+    location: loc,
+    history: hist,
+    storage,
+  });
+  assert.equal(stripped, true);
+  assert.equal(loc.href.includes("legacy-program"), false);
+  assert.equal(loc.href.includes("capability_keywords"), false);
+  assert.equal(loc.href.includes("job_training"), false);
+  assert.match(loc.href, /[?&]beta=program-history/);
+  const restored = resolveInitialProgramProfile({
+    historyState: hist.state,
+    storage,
+  });
+  assert.deepEqual(restored.capability_keywords, ["legacy-program"]);
+  assert.equal(restored.job_training, true);
+  assert.ok(readProgramProfileFromStorage(storage));
+});
+
+test("classic scrub cleans legacy profile params before analytics or clarity would run", () => {
+  const scrubSource = readFileSync(
+    fileURLToPath(new URL("../site/program-history-profile-scrub.js", import.meta.url)),
+    "utf8",
+  );
+  const storage = new Map();
+  const url = new URL(
+    "https://cityscroll.org/contracts-program-history.html?beta=program-history&capability_keywords=pre-clarity-program&job_training=true",
+  );
+  const loc = {
+    get href() {
+      return url.href;
+    },
+  };
+  const hist = {
+    state: null,
+    replaceState(nextState, _title, nextUrl) {
+      this.state = nextState;
+      const resolved = new URL(nextUrl, url.origin);
+      url.href = resolved.href;
+    },
+  };
+  const ranAnalytics = { value: false };
+  const ranClarity = { value: false };
+  const runScrub = new Function(
+    "window",
+    "location",
+    "history",
+    "sessionStorage",
+    "URL",
+    `${scrubSource}\n; return { href: location.href, state: history.state };`,
+  );
+  const afterScrub = runScrub(
+    { location: loc, history: hist, sessionStorage: {
+      getItem(key) {
+        return storage.has(key) ? storage.get(key) : null;
+      },
+      setItem(key, value) {
+        storage.set(key, String(value));
+      },
+    }, URL },
+    loc,
+    hist,
+    {
+      getItem(key) {
+        return storage.has(key) ? storage.get(key) : null;
+      },
+      setItem(key, value) {
+        storage.set(key, String(value));
+      },
+    },
+    URL,
+  );
+  assert.equal(afterScrub.href.includes("pre-clarity-program"), false);
+  assert.equal(afterScrub.href.includes("capability_keywords"), false);
+  assert.equal(ranAnalytics.value, false);
+  assert.equal(ranClarity.value, false);
+  assert.deepEqual(hist.state?.programHistoryProfile?.capability_keywords, [
+    "pre-clarity-program",
+  ]);
 });

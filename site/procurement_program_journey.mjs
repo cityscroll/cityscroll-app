@@ -335,6 +335,202 @@ export function profileFromFormValues(values = {}) {
   });
 }
 
+/** sessionStorage key for the program-history form across Back / remount. */
+export const PROGRAM_HISTORY_PROFILE_STORAGE_KEY = "crol:program-history:profile.v1";
+
+/** history.state field for the program-history form across Back. */
+export const PROGRAM_HISTORY_HISTORY_STATE_KEY = "programHistoryProfile";
+
+/** Query keys that must never carry program-history answers (Clarity sees the URL). */
+export const PROGRAM_HISTORY_PROFILE_QUERY_KEYS = Object.freeze([
+  "capability_keywords",
+  "job_training",
+  "employer_placement",
+  "roof_installation_crew",
+]);
+
+function ternaryParam(raw) {
+  if (raw === "true" || raw === true) return true;
+  if (raw === "false" || raw === false) return false;
+  return null;
+}
+
+/**
+ * Serialize a profile for sessionStorage (JSON). Omits the display name.
+ */
+export function serializeProgramProfile(profile = {}) {
+  return JSON.stringify({
+    capability_keywords: Array.isArray(profile.capability_keywords)
+      ? profile.capability_keywords.map((kw) => String(kw).trim()).filter(Boolean)
+      : [],
+    job_training: profile.job_training == null ? null : Boolean(profile.job_training),
+    employer_placement:
+      profile.employer_placement == null ? null : Boolean(profile.employer_placement),
+    roof_installation_crew:
+      profile.roof_installation_crew == null ? null : Boolean(profile.roof_installation_crew),
+  });
+}
+
+/**
+ * Parse a stored JSON profile. Returns null when the payload is missing or invalid.
+ */
+export function parseProgramProfile(raw) {
+  if (raw == null || raw === "") return null;
+  try {
+    const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
+    if (!parsed || typeof parsed !== "object") return null;
+    return profileFromFormValues({
+      capability_keywords: Array.isArray(parsed.capability_keywords)
+        ? parsed.capability_keywords.join(", ")
+        : parsed.capability_keywords,
+      job_training: parsed.job_training,
+      employer_placement: parsed.employer_placement,
+      roof_installation_crew: parsed.roof_installation_crew,
+    });
+  } catch {
+    return null;
+  }
+}
+
+export function readProgramProfileFromStorage(storage) {
+  if (!storage || typeof storage.getItem !== "function") return null;
+  try {
+    return parseProgramProfile(storage.getItem(PROGRAM_HISTORY_PROFILE_STORAGE_KEY));
+  } catch {
+    return null;
+  }
+}
+
+export function writeProgramProfileToStorage(storage, profile) {
+  if (!storage || typeof storage.setItem !== "function") return false;
+  try {
+    storage.setItem(PROGRAM_HISTORY_PROFILE_STORAGE_KEY, serializeProgramProfile(profile));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function searchParamsHaveProgramProfile(params) {
+  if (!params || typeof params.get !== "function") return false;
+  return PROGRAM_HISTORY_PROFILE_QUERY_KEYS.some((key) => params.has(key));
+}
+
+export function programProfileFromSearchParams(params) {
+  if (!searchParamsHaveProgramProfile(params)) return null;
+  return profileFromFormValues({
+    capability_keywords: params.get("capability_keywords") ?? "",
+    job_training: ternaryParam(params.get("job_training")),
+    employer_placement: ternaryParam(params.get("employer_placement")),
+    roof_installation_crew: ternaryParam(params.get("roof_installation_crew")),
+  });
+}
+
+export function stripProgramProfileFromSearchParams(params) {
+  if (!params || typeof params.delete !== "function") return params;
+  for (const key of PROGRAM_HISTORY_PROFILE_QUERY_KEYS) params.delete(key);
+  return params;
+}
+
+export function programProfileFromHistoryState(historyState) {
+  if (!historyState || typeof historyState !== "object") return null;
+  return parseProgramProfile(historyState[PROGRAM_HISTORY_HISTORY_STATE_KEY]);
+}
+
+export function applyProgramProfileToHistoryState(historyState, profile) {
+  const base =
+    historyState && typeof historyState === "object" && !Array.isArray(historyState)
+      ? { ...historyState }
+      : {};
+  base[PROGRAM_HISTORY_HISTORY_STATE_KEY] = {
+    capability_keywords: Array.isArray(profile?.capability_keywords)
+      ? profile.capability_keywords.map((kw) => String(kw).trim()).filter(Boolean)
+      : [],
+    job_training: profile?.job_training == null ? null : Boolean(profile.job_training),
+    employer_placement:
+      profile?.employer_placement == null ? null : Boolean(profile.employer_placement),
+    roof_installation_crew:
+      profile?.roof_installation_crew == null ? null : Boolean(profile.roof_installation_crew),
+  };
+  return base;
+}
+
+/**
+ * Migrate any legacy profile query params into sessionStorage + history.state,
+ * then strip them from the URL via replaceState before analytics can read them.
+ */
+export function scrubProgramProfileFromLocation({
+  location: loc = globalThis.location,
+  history: hist = globalThis.history,
+  storage = null,
+} = {}) {
+  if (!loc || !hist || typeof hist.replaceState !== "function") return false;
+  let url;
+  try {
+    url = new URL(loc.href);
+  } catch {
+    return false;
+  }
+  if (!searchParamsHaveProgramProfile(url.searchParams)) return false;
+  const migrated = programProfileFromSearchParams(url.searchParams);
+  if (migrated) writeProgramProfileToStorage(storage, migrated);
+  stripProgramProfileFromSearchParams(url.searchParams);
+  const nextState = applyProgramProfileToHistoryState(
+    hist.state,
+    migrated || readProgramProfileFromStorage(storage) || DEFAULT_TRAINING_PROFILE,
+  );
+  hist.replaceState(nextState, "", `${url.pathname}${url.search}${url.hash}`);
+  return true;
+}
+
+/**
+ * Resolve the initial profile: history.state, then sessionStorage, then the default.
+ */
+export function resolveInitialProgramProfile({
+  historyState = null,
+  storage = null,
+  fallback = DEFAULT_TRAINING_PROFILE,
+} = {}) {
+  const fromHistory = programProfileFromHistoryState(historyState);
+  if (fromHistory) return fromHistory;
+  const fromStorage = readProgramProfileFromStorage(storage);
+  if (fromStorage) return fromStorage;
+  return {
+    ...fallback,
+    capability_keywords: [...(fallback.capability_keywords || [])],
+  };
+}
+
+/**
+ * Persist profile to sessionStorage + history.state. Never writes answers into the URL.
+ */
+export function persistProgramProfilePrivately({
+  profile,
+  storage = null,
+  location: loc = globalThis.location,
+  history: hist = globalThis.history,
+  ensureBeta = true,
+} = {}) {
+  writeProgramProfileToStorage(storage, profile);
+  if (!loc || !hist || typeof hist.replaceState !== "function") {
+    return { href: loc?.href ?? null, state: hist?.state ?? null };
+  }
+  let url;
+  try {
+    url = new URL(loc.href);
+  } catch {
+    return { href: loc.href, state: hist.state };
+  }
+  stripProgramProfileFromSearchParams(url.searchParams);
+  if (ensureBeta && !url.searchParams.get("beta")) {
+    url.searchParams.set("beta", PROGRAM_HISTORY_BETA_SLUG);
+  }
+  const nextState = applyProgramProfileToHistoryState(hist.state, profile);
+  const nextUrl = `${url.pathname}${url.search}${url.hash}`;
+  hist.replaceState(nextState, "", nextUrl);
+  return { href: nextUrl, state: nextState };
+}
+
 export function journeyHtmlOmitsOpenBidCta(html) {
   const s = String(html || "").toLowerCase();
   if (s.includes("open bid") || s.includes("submit a bid") || s.includes("bid now")) {
