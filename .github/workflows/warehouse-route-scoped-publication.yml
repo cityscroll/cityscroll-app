@@ -14,17 +14,21 @@ name: Warehouse route-scoped shard publication
 #     run-id (+ github.token) even when no final receipt/ledger artifact exists.
 #   - Possibly-issued keys stay UNKNOWN; planned-only keys are never marked issued.
 #   - dry-run / dry-run-readback write no KV.
+#   - fixture-non-ownership uploads a labeled non-owning fixture checkpoint,
+#     fetches it back through the Actions artifact store, and proves cleanup
+#     refuses it. Reuses a prior dry-run intent run; never redispatches intent.
 
 on:
   workflow_dispatch:
     inputs:
       action:
-        description: "publish | cleanup | preflight-readonly | dry-run | dry-run-readback"
+        description: "publish | cleanup | preflight-readonly | dry-run | dry-run-readback | fixture-non-ownership"
         required: true
         type: choice
         options:
           - dry-run
           - dry-run-readback
+          - fixture-non-ownership
           - preflight-readonly
           - publish
           - cleanup
@@ -43,16 +47,16 @@ on:
         type: string
         default: ""
       execute_code:
-        description: One-time C6-<8 hex> code (required for publish/cleanup; ignored for dry-run/preflight)
+        description: One-time C6-<8 hex> code (required for publish/cleanup; ignored for dry-run/preflight/fixture)
         required: false
         type: string
         default: ""
       confirmation:
-        description: Exact phrase — GO-cc06-A1-publish EXECUTE | GO-cc06-A1-cleanup EXECUTE | GO-cc06-A1-preflight | GO-cc06-A1-dry-run | GO-cc06-A1-dry-run-readback
+        description: Exact phrase — GO-cc06-A1-publish EXECUTE | GO-cc06-A1-cleanup EXECUTE | GO-cc06-A1-preflight | GO-cc06-A1-dry-run | GO-cc06-A1-dry-run-readback | GO-cc06-A1-fixture-non-ownership
         required: true
         type: string
       intent_run_id:
-        description: Prior workflow run id whose intent + issued checkpoints to reuse (cleanup / dry-run-readback)
+        description: Prior workflow run id whose intent + issued checkpoints to reuse (cleanup / dry-run-readback / fixture-non-ownership)
         required: false
         type: string
         default: ""
@@ -107,6 +111,13 @@ jobs:
                 exit 2
               fi
               ;;
+            fixture-non-ownership)
+              test "$CONFIRMATION" = "GO-cc06-A1-fixture-non-ownership"
+              if [[ -z "${INTENT_RUN_ID:-}" ]]; then
+                echo "fixture-non-ownership requires intent_run_id of a prior dry-run intent run" >&2
+                exit 2
+              fi
+              ;;
             preflight-readonly)
               test "$CONFIRMATION" = "GO-cc06-A1-preflight"
               ;;
@@ -141,7 +152,7 @@ jobs:
           echo "artifact_dir=$RUNNER_TEMP/cc06-route-scoped" >> "$GITHUB_ENV"
 
       - name: Download prior dry-run intent (cross-run readback)
-        if: ${{ inputs.action == 'dry-run-readback' && inputs.intent_run_id != '' }}
+        if: ${{ (inputs.action == 'dry-run-readback' || inputs.action == 'fixture-non-ownership') && inputs.intent_run_id != '' }}
         uses: actions/download-artifact@v4
         with:
           name: cc06-route-scoped-intent
@@ -186,6 +197,125 @@ jobs:
             --revision "$REVISION" \
             --out "$artifact_dir/receipt.json"
           cp "$intent" "$artifact_dir/publish-intent.json"
+
+      # Non-owning fixture drill: reuse prior dry-run intent, upload a labeled
+      # fixture checkpoint through Actions artifacts, fetch it back, prove cleanup
+      # refuses it. No KV writes. Does not redispatch the intent run.
+      - name: Write labeled fixture-non-ownership checkpoint (no KV)
+        if: ${{ inputs.action == 'fixture-non-ownership' }}
+        env:
+          REVISION: ${{ inputs.revision }}
+          INTENT_RUN_ID: ${{ inputs.intent_run_id }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          prior="$artifact_dir/prior-intent/publish-intent.json"
+          if [ ! -f "$prior" ]; then
+            echo "intent_run_id=$INTENT_RUN_ID did not yield publish-intent.json" >&2
+            ls -laR "$artifact_dir/prior-intent" >&2 || true
+            exit 2
+          fi
+          # Promote a local publish-shaped copy so refusal attributes to the
+          # fixture label, not purpose=dry-run.
+          python3 - <<'PY'
+          import json, os, pathlib
+          prior = pathlib.Path(os.environ["artifact_dir"]) / "prior-intent" / "publish-intent.json"
+          intent = json.loads(prior.read_text())
+          intent["purpose"] = "publish"
+          intent["attempt_id"] = f"attempt-ci-{os.environ['RUN_ID']}-cc06-fixture"
+          out = pathlib.Path(os.environ["artifact_dir"]) / "publish-intent.json"
+          out.write_text(json.dumps(intent, indent=2) + "\n")
+          print(json.dumps({"ok": True, "attempt_id": intent["attempt_id"], "from_intent_run_id": os.environ["INTENT_RUN_ID"]}))
+          PY
+          mkdir -p "$artifact_dir/fixture-upload"
+          node tools/warehouse_route_scoped_publication.mjs write-fixture-checkpoint \
+            --revision "$REVISION" \
+            --checkpoint "$artifact_dir/fixture-upload/cc06-fixture-non-ownership-drill.json" \
+            --attempt-id "attempt-ci-${RUN_ID}-cc06-fixture" \
+            --out "$artifact_dir/fixture-write-receipt.json"
+          cp "$artifact_dir/fixture-write-receipt.json" "$artifact_dir/receipt.json"
+
+      - name: Upload fixture-non-ownership checkpoint artifact
+        if: ${{ inputs.action == 'fixture-non-ownership' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: cc06-fixture-non-ownership-drill
+          path: ${{ runner.temp }}/cc06-route-scoped/fixture-upload/cc06-fixture-non-ownership-drill.json
+          if-no-files-found: error
+
+      - name: Remove local fixture copy before fetch proof
+        if: ${{ inputs.action == 'fixture-non-ownership' }}
+        run: |
+          set -euo pipefail
+          rm -rf "$artifact_dir/fixture-upload"
+          mkdir -p "$artifact_dir/fixture-fetched"
+
+      - name: Fetch fixture-non-ownership checkpoint artifact
+        if: ${{ inputs.action == 'fixture-non-ownership' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: cc06-fixture-non-ownership-drill
+          path: ${{ runner.temp }}/cc06-route-scoped/fixture-fetched
+
+      - name: Cleanup refuses fetched fixture as non-ownership (no KV)
+        if: ${{ inputs.action == 'fixture-non-ownership' }}
+        env:
+          REVISION: ${{ inputs.revision }}
+          # Drill-only code: fixture refusal exits before any provider call.
+          CC06_PUBLISH_EXECUTE_CODE: C6-cafef00d
+          CC06_ALLOW_WINDOW_OVERLAP: "1"
+        run: |
+          set -euo pipefail
+          intent="$artifact_dir/publish-intent.json"
+          fetched="$artifact_dir/fixture-fetched"
+          if [ ! -f "$intent" ]; then
+            echo "missing promoted publish-intent.json" >&2
+            exit 2
+          fi
+          if [ -z "$(find "$fetched" -name '*.json' 2>/dev/null | head -1)" ]; then
+            echo "fixture artifact fetch yielded no json" >&2
+            ls -laR "$fetched" >&2 || true
+            exit 2
+          fi
+          set +e
+          node tools/warehouse_route_scoped_publication.mjs cleanup \
+            --revision "$REVISION" \
+            --intent "$intent" \
+            --checkpoint-dir "$fetched" \
+            --out "$artifact_dir/cleanup-refused.json" \
+            2>"$artifact_dir/cleanup-refused.err"
+          rc=$?
+          set -e
+          if [ "$rc" -eq 0 ]; then
+            echo "FAILED: cleanup accepted fixture checkpoint as ownership" >&2
+            cat "$artifact_dir/cleanup-refused.err" >&2 || true
+            exit 2
+          fi
+          if ! grep -q "fixture-non-ownership-drill" "$artifact_dir/cleanup-refused.err"; then
+            echo "FAILED: cleanup refused for unexpected reason:" >&2
+            cat "$artifact_dir/cleanup-refused.err" >&2
+            exit 2
+          fi
+          python3 - <<'PY'
+          import json, os, pathlib
+          err = (pathlib.Path(os.environ["artifact_dir"]) / "cleanup-refused.err").read_text()
+          receipt = {
+              "schema": "cityscroll.warehouse_route_scoped_publication_receipt.v1",
+              "decision": "fixture-non-ownership-refused",
+              "mode": "fixture-non-ownership",
+              "provider_writes": 0,
+              "checks": {
+                  "fixture_artifact_uploaded": True,
+                  "fixture_artifact_fetched": True,
+                  "cleanup_refused_fixture": True,
+                  "refusal_matched_fixture_label": "fixture-non-ownership-drill" in err,
+              },
+              "refusal_excerpt": err.strip().splitlines()[-1] if err.strip() else "",
+          }
+          path = pathlib.Path(os.environ["artifact_dir"]) / "receipt.json"
+          path.write_text(json.dumps(receipt, indent=2) + "\n")
+          print(json.dumps(receipt, indent=2))
+          PY
 
       - name: Prepare durable publish intent (no KV writes)
         if: ${{ inputs.action == 'dry-run' || inputs.action == 'publish' }}
