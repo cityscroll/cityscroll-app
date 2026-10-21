@@ -305,7 +305,18 @@ collected only when the source documents and carries numeric
 authenticated versions have the capability-selected 100-sample cohorts,
 correctness/freshness/miss digests, and the complete CPU, collector, KV, D1,
 storage, Queue, and Analytics Engine vector. Bounded concurrent attempts stay
-inside the same 30-minute and 10,000-event ceiling. For a flag-capable source
+inside the same 30-minute and 10,000-event ceiling. The collector-overhead
+cohort oversamples adaptively: it attempts until the required retained count
+is visible in the live-tail buffer, bounded by leftover room under the
+10,000-event ceiling after the required retained base-route samples. The
+adaptive path requires that live buffer and blocks when it is unavailable.
+Perfect retention early-stops at exactly the retained count; low wrangler-tail
+retention continues within that leftover budget and still fails incomplete
+when the budget cannot retain enough samples. Owned HTTP probes on each arm
+target the arm's exact `deployment.receipt.cloudflare_version.id` through the
+`Cloudflare-Workers-Version-Overrides` request header; matching also requires
+`scriptVersion.id` equality. Candidate-arm samples therefore do not depend on
+the staged 5 percent traffic split. For a flag-capable source
 the runner retains exactly 100 invocations whose provider metadata carries raw
 flag `1` and 100 whose metadata carries raw flag `0` for each identical input
 digest; those raw buckets stay `unverified-provider-flag` and do not prove
