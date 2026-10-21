@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.bsa_calendar_materialization.v1",
-  "generated_at": "2026-10-17T01:23:08.783Z",
+  "generated_at": "2026-10-21T12:30:07.356Z",
   "source": {
     "system": "bsa_calendar",
     "url": "https://www.nyc.gov/site/bsa/public-hearings/upcoming-hearing-info.page",
@@ -78,7 +78,7 @@
             "schema": "cityscroll.document_processing_receipt.v1",
             "status": "ok",
             "parser": "bsa_agenda_sections_v1",
-            "publication_date": "2026-10-17",
+            "publication_date": "2026-10-21",
             "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/october_19_20_2026_public_hearing.pdf"
           }
         }
@@ -286,7 +286,7 @@
         "schema": "cityscroll.document_processing_receipt.v1",
         "status": "ok",
         "parser": "bsa_agenda_sections_v1",
-        "publication_date": "2026-10-17",
+        "publication_date": "2026-10-21",
         "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/october_19_20_2026_public_hearing.pdf"
       },
       "join_status": "unknown",
@@ -308,7 +308,7 @@
         "start": 21,
         "end": 714
       },
-      "publication_date": "2026-10-17",
+      "publication_date": "2026-10-21",
       "notice_id": null,
       "remote_registration_url": "https://www.zoomgov.com/webinar/register/WN_HK0ydi5rRKWX-ArxkKBrjQ",
       "source_entry_evidence": {
@@ -392,7 +392,7 @@
             "schema": "cityscroll.document_processing_receipt.v1",
             "status": "ok",
             "parser": "bsa_agenda_sections_v1",
-            "publication_date": "2026-10-17",
+            "publication_date": "2026-10-21",
             "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/october_19_20_2026_public_hearing.pdf"
           }
         }
@@ -520,7 +520,7 @@
         "schema": "cityscroll.document_processing_receipt.v1",
         "status": "ok",
         "parser": "bsa_agenda_sections_v1",
-        "publication_date": "2026-10-17",
+        "publication_date": "2026-10-21",
         "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/october_19_20_2026_public_hearing.pdf"
       },
       "join_status": "unknown",
@@ -542,7 +542,7 @@
         "start": 21,
         "end": 0
       },
-      "publication_date": "2026-10-17",
+      "publication_date": "2026-10-21",
       "notice_id": null,
       "remote_registration_url": "https://www.zoomgov.com/webinar/register/WN_k52Eh9jETvi__lxPowk7GA",
       "source_entry_evidence": {
