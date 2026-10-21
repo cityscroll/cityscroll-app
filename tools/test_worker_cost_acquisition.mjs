@@ -854,6 +854,25 @@ test("adaptive collector early-stops at N under perfect retention (same request 
   assert.equal(requestCount(), baseProbes + collectorTarget);
 });
 
+test("adaptive collector fails closed without a live event buffer", async () => {
+  const { transport } = liveFlaglessCollectorRetentionTransport({ warehouseAttemptsPerInput: 200 });
+  transport.collectProviderEvents = async ({ execute }) => {
+    await execute(new AbortController().signal);
+    return [];
+  };
+  const result = await transport.collectWarehouseRun({
+    label: "baseline",
+    revision: REVISION,
+    deployment: deployment(REVISION),
+    workloadId: "fixed-warehouse-test",
+    cohorts: WAREHOUSE_EXPERIMENT_BASE_ROUTES,
+    samplesPerCohort: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+    maxEvents: 10_000,
+  });
+  assert.equal(result.status, "blocked");
+  assert.equal(result.reason, "warehouse collector live event buffer is unavailable");
+});
+
 test("adaptive collector oversamples until N retained under synthetic low retention", async () => {
   // retainEveryK=5 ≈ 0.20 retention; 500 retained need ~2500 collector sends.
   const { transport, collectorSends, collectorRetained } = liveFlaglessCollectorRetentionTransport({

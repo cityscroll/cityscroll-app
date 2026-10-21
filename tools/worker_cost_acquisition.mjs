@@ -628,19 +628,8 @@ export function createLiveWorkerCostTransport({
             expectations = await mapConcurrent(attempts, WAREHOUSE_PROBE_CONCURRENCY, signal, ({ base, workload, index }) => (
               executeWorkload(workload, workloadId, deployment, `cost-${label}-${base}-${index}`, signal)
             ));
-            // Adaptive collector: attempt-until-N retained within leftover event
-            // budget. When the transport exposes the live events buffer, peek it
-            // so perfect retention early-stops at collectorSampleCount sends.
-            // When events only appear after settle (live wrangler-tail), matched
-            // stays low during execute and the loop oversamples up to the cap.
-            const liveEvents = Array.isArray(live.events) ? live.events : null;
-            if (!liveEvents) {
-              const fill = Array.from({ length: collectorMaxAttempts }, (_, index) => index);
-              collectorExpectations = await mapConcurrent(fill, WAREHOUSE_PROBE_CONCURRENCY, signal, (index) => (
-                executeWorkload(plan.collector_workload, workloadId, deployment, `cost-${label}-collector-${index}`, signal)
-              ));
-              return;
-            }
+            if (!Array.isArray(live.events)) throw new Error("warehouse collector live event buffer is unavailable");
+            const liveEvents = live.events;
             let nextIndex = 0;
             while (nextIndex < collectorMaxAttempts) {
               if (signal?.aborted) throw new Error("cost workload collection was cancelled");
