@@ -494,6 +494,82 @@ test("admin shadow endpoint fails closed and returns non-ok HTTP for machine pol
   assert.equal(body.summary.redlines[0].digest_id, "sub:er***");
 });
 
+test("GET digest-shadow exposes read-only started_recovery and current rebuild owner without writes", async () => {
+  // Historical day skips live hold resolution so this stays a pure read of the
+  // STARTED-recovery receipt and current rebuild owner.
+  const day = "2026-08-03";
+  const started = {
+    run_day: day,
+    status: "STARTED",
+    phase: "rebuild_queued",
+    complete: false,
+    ok: true,
+    rebuild_run_id: "digest-shadow-rebuild:owner",
+    rebuild_complete: false,
+    progress_at: `${day}T10:20:00.000Z`,
+    previews: [],
+    redlines: [],
+    upstream_incidents: [],
+  };
+  const recoveryReceipt = {
+    schema: "cityscroll.digest-shadow-started-recovery.v1",
+    run_day: day,
+    status: "queued",
+    attempts: 1,
+    max_attempts: 3,
+    last_attempt_at: `${day}T10:20:00.000Z`,
+    next_eligible_at: `${day}T10:35:00.000Z`,
+    rebuild_run_id: "digest-shadow-rebuild:owner",
+    observed_at: `${day}T10:20:00.000Z`,
+    observation: "enqueued unscoped checkpointed rebuild for stalled STARTED rehearsal",
+    subscriber_email: "must-not-leak@example.com",
+  };
+  const writes = [];
+  const alertState = {
+    async get(key) {
+      if (key === `digest:shadow:started-recovery:${day}`) {
+        return JSON.stringify(recoveryReceipt);
+      }
+      return null;
+    },
+    async put(...args) { writes.push(["put", ...args]); },
+    async delete(...args) { writes.push(["delete", ...args]); },
+  };
+  const response = await handleAdminDigestShadow(
+    new Request(`https://w/admin/digest-shadow?day=${day}`, {
+      headers: { authorization: "Bearer secret" },
+    }),
+    { ADMIN_KEY: "secret", DB: readDb(started), ALERT_STATE: alertState },
+    { now: NOW },
+  );
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.deepEqual(body.started_recovery, {
+    schema: "cityscroll.digest-shadow-started-recovery.v1",
+    run_day: day,
+    status: "queued",
+    attempts: 1,
+    max_attempts: 3,
+    last_attempt_at: `${day}T10:20:00.000Z`,
+    next_eligible_at: `${day}T10:35:00.000Z`,
+    rebuild_run_id: "digest-shadow-rebuild:owner",
+    observed_at: `${day}T10:20:00.000Z`,
+    recovered_at: null,
+    escalated_at: null,
+  });
+  assert.equal(Object.hasOwn(body.started_recovery, "subscriber_email"), false);
+  assert.equal(Object.hasOwn(body.started_recovery, "observation"), false);
+  assert.deepEqual(body.current_rebuild_owner, {
+    status: "STARTED",
+    phase: "rebuild_queued",
+    rebuild_run_id: "digest-shadow-rebuild:owner",
+    rebuild_complete: false,
+    rebuild_finalization_id: null,
+    progress_at: `${day}T10:20:00.000Z`,
+  });
+  assert.deepEqual(writes, []);
+});
+
 test("shadow status exposes an open degraded-path receipt and wakes machine pollers", async () => {
   const clean = summary([result()]);
   const receipt = {

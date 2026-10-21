@@ -75,7 +75,7 @@ function lookbackDaysFrom(now, lookbackDays) {
   return out;
 }
 
-async function readStartedRecoveryReceipt(store, runDay) {
+export async function readStartedRecoveryReceipt(store, runDay) {
   if (!store?.get) return null;
   const raw = await store.get(startedRecoveryReceiptKey(runDay));
   if (!raw) return null;
@@ -90,6 +90,46 @@ async function readStartedRecoveryReceipt(store, runDay) {
 async function writeStartedRecoveryReceipt(store, receipt) {
   if (!store?.put || !receipt?.run_day) return;
   await store.put(startedRecoveryReceiptKey(receipt.run_day), JSON.stringify(receipt));
+}
+
+/**
+ * Public operator view of a STARTED-recovery ALERT_STATE receipt. Allowlisted
+ * fields only — never echoes subscription ids, digests, or private payloads.
+ */
+export function projectStartedRecoveryView(receipt) {
+  if (!receipt || receipt.schema !== DIGEST_SHADOW_STARTED_RECOVERY_SCHEMA) return null;
+  return {
+    schema: DIGEST_SHADOW_STARTED_RECOVERY_SCHEMA,
+    run_day: receipt.run_day || null,
+    status: receipt.status || null,
+    attempts: Number.isFinite(Number(receipt.attempts)) ? Number(receipt.attempts) : 0,
+    max_attempts: Number.isFinite(Number(receipt.max_attempts))
+      ? Number(receipt.max_attempts)
+      : DIGEST_SHADOW_STARTED_RECOVERY_MAX_ATTEMPTS,
+    last_attempt_at: receipt.last_attempt_at || null,
+    next_eligible_at: receipt.next_eligible_at || null,
+    rebuild_run_id: receipt.rebuild_run_id || null,
+    observed_at: receipt.observed_at || null,
+    recovered_at: receipt.recovered_at || null,
+    escalated_at: receipt.escalated_at || null,
+  };
+}
+
+/**
+ * Public operator view of the day's current rebuild owner from the STARTED
+ * handoff summary. Allowlisted ownership fields only.
+ */
+export function projectCurrentRebuildOwner(summary) {
+  if (!summary || typeof summary !== "object") return null;
+  if (!summary.rebuild_run_id && !summary.phase && summary.status !== "STARTED") return null;
+  return {
+    status: summary.status || null,
+    phase: summary.phase || null,
+    rebuild_run_id: summary.rebuild_run_id || null,
+    rebuild_complete: summary.rebuild_complete === true,
+    rebuild_finalization_id: summary.rebuild_finalization_id || null,
+    progress_at: summary.progress_at || null,
+  };
 }
 
 function json(value) {

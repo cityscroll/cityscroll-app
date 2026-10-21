@@ -1,12 +1,17 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
+import { markDigestShadowRebuildQueued } from "../src/digest_shadow.mjs";
+import { handleAdminDigestShadow } from "../src/admin.mjs";
 import {
+  claimStartedRebuildOwnership,
   createDigestShadowRebuild,
   handleDigestShadowRebuildQueueMessage,
   isDigestShadowStartedRecoveryDisabled,
   normalizeDigestShadowRebuildScope,
   normalizeRebuildRunDay,
+  projectCurrentRebuildOwner,
+  projectStartedRecoveryView,
   recoverStalledDigestShadowRuns,
   startedRecoveryReceiptKey,
 } from "../src/digest_shadow_rebuild.mjs";
@@ -1104,6 +1109,361 @@ test("recovery rebuild transfers STARTED ownership and finalizes over an earlier
   assert.match(refused.error, /changed during rebuild finalization/);
   assert.equal(afterRefuse.rebuild_run_id, recovery.run_id);
   assert.equal(afterRefuse.rebuild_finalization_id, undefined);
+});
+
+async function completeOneDigestRebuild(env, runId, now) {
+  const run = env.DB.runs.get(runId);
+  run.status = "running";
+  run.total_count = 1;
+  env.DB.items.set(`${runId}:digest:one`, {
+    run_id: runId, digest_id: "digest:one",
+    job_json: JSON.stringify({ type: "sub", key: "sub:one" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  return handleDigestShadowRebuildQueueMessage(env, {
+    type: "digest", run_id: runId, digest_id: "digest:one",
+  }, {
+    now,
+    runTargetFn: async () => ({
+      previewId: "digest:one",
+      skipped: "no-new",
+      _rendered_previews: [],
+    }),
+  });
+}
+
+test("lifecycle: cron enqueue, refused finalize, recovery transfer, then finalize", async () => {
+  // Cron stamps ownership; a foreign owner then takes the handoff so cron finalize
+  // is refused; Worker STARTED recovery enqueues, transfers ownership, and finalizes.
+  const DB = new FakeD1();
+  const ALERT_STATE = kv();
+  ALERT_STATE.values.set("digest:daylog:2026-09-20", JSON.stringify({
+    day: "2026-09-20",
+    entries: [{ day: "2026-09-20", id: "sub:one", noticeCount: 1, forecasts: 0 }],
+  }));
+  const invocationId = "digest-shadow:0 10 * * *:2026-09-21T10:00:00.000Z";
+  const hold = {
+    source_status: "DARK_PERIOD",
+    delivery_policy: "ALL_DIGESTS_HELD",
+    hold_all: true,
+    active_count: 0,
+  };
+  const freshness = { degraded: true, reason: "freshness time budget exhausted" };
+  DB.mainRuns.set("2026-09-21", {
+    run_day: "2026-09-21",
+    status: "STARTED",
+    ran_at: "2026-09-21T10:00:00.000Z",
+    summary_json: JSON.stringify({
+      run_day: "2026-09-21",
+      status: "STARTED",
+      phase: "started",
+      complete: false,
+      ran_at: "2026-09-21T10:00:00.000Z",
+      invocation_id: invocationId,
+      hold,
+      previews: [],
+      redlines: [],
+      upstream_incidents: [],
+    }),
+  });
+  const env = { DB, ALERT_STATE, DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const cron = await createDigestShadowRebuild(env, {
+    now: new Date("2026-09-21T10:03:00.000Z"),
+  });
+  const stamped = await markDigestShadowRebuildQueued(env, {
+    day: "2026-09-21",
+    rebuildRunId: cron.run_id,
+    invocationId,
+    now: new Date("2026-09-21T10:03:00.000Z"),
+    freshness,
+  });
+  assert.equal(stamped.write_accepted, true);
+  assert.equal(JSON.parse(DB.mainRuns.get("2026-09-21").summary_json).rebuild_run_id, cron.run_id);
+  assert.equal(JSON.parse(DB.mainRuns.get("2026-09-21").summary_json).hold?.source_status, "DARK_PERIOD");
+  assert.equal(JSON.parse(DB.mainRuns.get("2026-09-21").summary_json).freshness?.degraded, true);
+
+  // Foreign owner steals the handoff before cron finalize.
+  DB.mainRuns.set("2026-09-21", {
+    run_day: "2026-09-21",
+    status: "STARTED",
+    ran_at: "2026-09-21T10:00:00.000Z",
+    summary_json: JSON.stringify({
+      run_day: "2026-09-21",
+      status: "STARTED",
+      phase: "rebuild_queued",
+      complete: false,
+      ran_at: "2026-09-21T10:00:00.000Z",
+      invocation_id: invocationId,
+      progress_at: "2026-09-21T10:03:00.000Z",
+      rebuild_run_id: "digest-shadow-rebuild:foreign-owner",
+      rebuild_complete: false,
+      hold,
+      freshness,
+      previews: [],
+      redlines: [],
+      upstream_incidents: [],
+    }),
+  });
+  const cronRefused = await completeOneDigestRebuild(
+    env, cron.run_id, new Date("2026-09-21T10:15:00.000Z"),
+  );
+  assert.equal(cronRefused.status, "failed");
+  assert.match(cronRefused.error, /changed during rebuild finalization/);
+
+  // Mark cron failed so recovery sees no in-flight rebuild, then recover past grace.
+  DB.runs.get(cron.run_id).status = "failed";
+  // Restore ownership to the failed cron handoff (production stall shape).
+  DB.mainRuns.set("2026-09-21", {
+    run_day: "2026-09-21",
+    status: "STARTED",
+    ran_at: "2026-09-21T10:00:00.000Z",
+    summary_json: JSON.stringify({
+      run_day: "2026-09-21",
+      status: "STARTED",
+      phase: "rebuild_queued",
+      complete: false,
+      ran_at: "2026-09-21T10:00:00.000Z",
+      invocation_id: invocationId,
+      progress_at: "2026-09-21T10:03:00.000Z",
+      rebuild_run_id: cron.run_id,
+      rebuild_complete: false,
+      hold,
+      freshness,
+      previews: [],
+      redlines: [],
+      upstream_incidents: [],
+    }),
+  });
+  const recoveryNow = new Date("2026-09-21T10:20:00.000Z");
+  const recovered = await recoverStalledDigestShadowRuns(env, {
+    now: recoveryNow,
+    graceMs: 12 * 60 * 1000,
+    lookbackDays: 1,
+  });
+  const enqueued = recovered.actions.find((a) => a.action === "enqueued");
+  assert.ok(enqueued, "recovery should enqueue");
+  const owned = JSON.parse(DB.mainRuns.get("2026-09-21").summary_json);
+  assert.equal(owned.rebuild_run_id, enqueued.queued.run_id);
+  assert.equal(owned.hold?.source_status, "DARK_PERIOD");
+  assert.equal(owned.freshness?.degraded, true);
+
+  const finished = await completeOneDigestRebuild(env, enqueued.queued.run_id, recoveryNow);
+  const summary = JSON.parse(DB.mainRuns.get("2026-09-21").summary_json);
+  assert.equal(finished.status, "complete");
+  assert.equal(summary.rebuild_run_id, enqueued.queued.run_id);
+  assert.ok(summary.rebuild_finalization_id);
+  assert.equal(summary.hold?.source_status, "DARK_PERIOD");
+  assert.equal(summary.freshness?.degraded, true);
+  assert.equal(summary.complete, true);
+});
+
+test("lifecycle: admin POST rebuild transfers ownership and finalizes after refused cron owner", async () => {
+  const DB = new FakeD1();
+  const ALERT_STATE = kv();
+  ALERT_STATE.values.set("digest:daylog:2026-09-20", JSON.stringify({
+    day: "2026-09-20",
+    entries: [{ day: "2026-09-20", id: "sub:one", noticeCount: 1, forecasts: 0 }],
+  }));
+  const hold = {
+    source_status: "DARK_PERIOD",
+    delivery_policy: "ALL_DIGESTS_HELD",
+    hold_all: true,
+    active_count: 0,
+  };
+  const cronOwner = "digest-shadow-rebuild:2026-09-21T10:00:00.000Z:cron";
+  DB.mainRuns.set("2026-09-21", {
+    run_day: "2026-09-21",
+    status: "STARTED",
+    summary_json: JSON.stringify({
+      run_day: "2026-09-21",
+      status: "STARTED",
+      phase: "rebuild_queued",
+      complete: false,
+      rebuild_run_id: cronOwner,
+      rebuild_complete: false,
+      hold,
+      previews: [],
+      redlines: [],
+      upstream_incidents: [],
+    }),
+  });
+  DB.runs.set(cronOwner, {
+    run_id: cronOwner,
+    run_day: "2026-09-21",
+    requested_digest_ids_json: "null",
+    base_summary_json: null,
+    status: "failed",
+    total_count: 1,
+    completed_count: 0,
+    failed_count: 1,
+    receipt_json: null,
+    error: "isolate killed",
+    created_at: "2026-09-21T10:00:00.000Z",
+    updated_at: "2026-09-21T10:12:00.000Z",
+  });
+  const env = {
+    DB,
+    ALERT_STATE,
+    ADMIN_KEY: "secret",
+    DIGEST_SHADOW_QUEUE: { async send() {} },
+  };
+  const post = await handleAdminDigestShadow(new Request("https://w/admin/digest-shadow", {
+    method: "POST",
+    headers: {
+      authorization: "Bearer secret",
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({ action: "rerun", day: "2026-09-21" }),
+  }), env, { now: NOW });
+  assert.equal(post.status, 202);
+  const queued = await post.json();
+  const owned = JSON.parse(DB.mainRuns.get("2026-09-21").summary_json);
+  assert.equal(owned.rebuild_run_id, queued.run_id);
+  assert.equal(owned.hold?.source_status, "DARK_PERIOD");
+
+  const finished = await completeOneDigestRebuild(env, queued.run_id, NOW);
+  const summary = JSON.parse(DB.mainRuns.get("2026-09-21").summary_json);
+  assert.equal(finished.status, "complete");
+  assert.equal(summary.rebuild_run_id, queued.run_id);
+  assert.ok(summary.rebuild_finalization_id);
+  assert.equal(summary.hold?.source_status, "DARK_PERIOD");
+});
+
+test("ownership transfer is idempotent and does not double-finalize", async () => {
+  const DB = new FakeD1();
+  const ALERT_STATE = kv();
+  ALERT_STATE.values.set("digest:daylog:2026-09-20", JSON.stringify({
+    day: "2026-09-20",
+    entries: [{ day: "2026-09-20", id: "sub:one", noticeCount: 1, forecasts: 0 }],
+  }));
+  const hold = { source_status: "DARK_PERIOD", delivery_policy: "ALL_DIGESTS_HELD", hold_all: true };
+  DB.mainRuns.set("2026-09-21", {
+    run_day: "2026-09-21",
+    status: "STARTED",
+    summary_json: JSON.stringify({
+      run_day: "2026-09-21",
+      status: "STARTED",
+      phase: "started",
+      complete: false,
+      hold,
+      previews: [],
+      redlines: [],
+      upstream_incidents: [],
+    }),
+  });
+  const env = { DB, ALERT_STATE, DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const first = await createDigestShadowRebuild(env, { now: NOW });
+  const ownedOnce = JSON.parse(DB.mainRuns.get("2026-09-21").summary_json);
+  assert.equal(ownedOnce.rebuild_run_id, first.run_id);
+
+  const again = await claimStartedRebuildOwnership(env, {
+    runDay: "2026-09-21",
+    rebuildRunId: first.run_id,
+    now: NOW,
+  });
+  assert.equal(again.write_accepted, true);
+  assert.equal(again.reason, "already-owned");
+  assert.equal(JSON.parse(DB.mainRuns.get("2026-09-21").summary_json).rebuild_run_id, first.run_id);
+
+  const finished = await completeOneDigestRebuild(env, first.run_id, NOW);
+  assert.equal(finished.status, "complete");
+  const afterFirst = JSON.parse(DB.mainRuns.get("2026-09-21").summary_json);
+  assert.ok(afterFirst.rebuild_finalization_id);
+  const finalizationId = afterFirst.rebuild_finalization_id;
+
+  // After finalize the day is no longer STARTED, so a late claim is a no-op and
+  // cannot rewrite the accepted finalization id.
+  assert.notEqual(DB.mainRuns.get("2026-09-21").status, "STARTED");
+  const refusedTransfer = await claimStartedRebuildOwnership(env, {
+    runDay: "2026-09-21",
+    rebuildRunId: "digest-shadow-rebuild:late",
+    now: new Date("2026-09-21T15:00:00.000Z"),
+  });
+  assert.equal(refusedTransfer.write_accepted, false);
+  assert.equal(refusedTransfer.reason, "started-row-absent");
+  assert.equal(
+    JSON.parse(DB.mainRuns.get("2026-09-21").summary_json).rebuild_finalization_id,
+    finalizationId,
+  );
+  assert.equal(
+    JSON.parse(DB.mainRuns.get("2026-09-21").summary_json).rebuild_run_id,
+    first.run_id,
+  );
+
+  // STARTED-but-already-finalized fence (defensive): claim refuses without rewrite.
+  DB.mainRuns.set("2026-09-21", {
+    run_day: "2026-09-21",
+    status: "STARTED",
+    summary_json: JSON.stringify({
+      ...afterFirst,
+      status: "STARTED",
+      rebuild_finalization_id: finalizationId,
+    }),
+  });
+  const fenced = await claimStartedRebuildOwnership(env, {
+    runDay: "2026-09-21",
+    rebuildRunId: "digest-shadow-rebuild:late",
+    now: new Date("2026-09-21T15:01:00.000Z"),
+  });
+  assert.equal(fenced.write_accepted, false);
+  assert.equal(fenced.reason, "already-finalized");
+  assert.equal(
+    JSON.parse(DB.mainRuns.get("2026-09-21").summary_json).rebuild_finalization_id,
+    finalizationId,
+  );
+});
+
+test("started recovery and current rebuild owner projections redact private fields", () => {
+  const view = projectStartedRecoveryView({
+    schema: "cityscroll.digest-shadow-started-recovery.v1",
+    run_day: "2026-09-21",
+    status: "queued",
+    attempts: 1,
+    max_attempts: 3,
+    last_attempt_at: "2026-09-21T10:20:00.000Z",
+    next_eligible_at: "2026-09-21T10:35:00.000Z",
+    rebuild_run_id: "digest-shadow-rebuild:abc",
+    observed_at: "2026-09-21T10:20:00.000Z",
+    observation: "enqueued unscoped checkpointed rebuild for stalled STARTED rehearsal",
+    subscriber_email: "must-not-leak@example.com",
+    digest_ids: ["sub:private"],
+  });
+  assert.deepEqual(view, {
+    schema: "cityscroll.digest-shadow-started-recovery.v1",
+    run_day: "2026-09-21",
+    status: "queued",
+    attempts: 1,
+    max_attempts: 3,
+    last_attempt_at: "2026-09-21T10:20:00.000Z",
+    next_eligible_at: "2026-09-21T10:35:00.000Z",
+    rebuild_run_id: "digest-shadow-rebuild:abc",
+    observed_at: "2026-09-21T10:20:00.000Z",
+    recovered_at: null,
+    escalated_at: null,
+  });
+  assert.equal(Object.hasOwn(view, "subscriber_email"), false);
+  assert.equal(Object.hasOwn(view, "digest_ids"), false);
+  assert.equal(Object.hasOwn(view, "observation"), false);
+
+  const owner = projectCurrentRebuildOwner({
+    status: "STARTED",
+    phase: "rebuild_queued",
+    rebuild_run_id: "digest-shadow-rebuild:abc",
+    rebuild_complete: false,
+    progress_at: "2026-09-21T10:20:00.000Z",
+    previews: [{ digest_id: "sub:private" }],
+    hold: { source_status: "DARK_PERIOD" },
+  });
+  assert.deepEqual(owner, {
+    status: "STARTED",
+    phase: "rebuild_queued",
+    rebuild_run_id: "digest-shadow-rebuild:abc",
+    rebuild_complete: false,
+    rebuild_finalization_id: null,
+    progress_at: "2026-09-21T10:20:00.000Z",
+  });
+  assert.equal(Object.hasOwn(owner, "previews"), false);
+  assert.equal(Object.hasOwn(owner, "hold"), false);
 });
 
 test("rebuild evaluation remains frozen when queue work crosses UTC midnight", async () => {
