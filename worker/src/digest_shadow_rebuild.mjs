@@ -298,21 +298,30 @@ async function mergeCompletedSummary(env, run, items, now, contentRedlines) {
         rerun_scope: "checkpointed_digest_queue",
       },
     };
-    // Preserve advisory freshness degradation stamped on the STARTED handoff row.
+    // Preserve hold / degraded-decision and advisory freshness stamped on the
+    // STARTED handoff after the rebuild's base snapshot (queue stamp, freshness).
+    if (currentSummary?.hold) {
+      merged = { ...merged, hold: currentSummary.hold };
+    }
     if (currentSummary?.freshness?.degraded) {
       merged = applyFreshnessDegradation(merged, currentSummary.freshness);
     }
     const publicSummary = { ...merged };
     delete publicSummary._rendered_previews;
+    // Ownership CAS: accept when this rebuild still owns the day's STARTED
+    // handoff and no other finalization has landed. Whole-JSON equality rejects
+    // legitimate post-base stamps (hold, freshness, rebuild_queued fields).
     const statements = [env.DB.prepare(`INSERT INTO digest_shadow_runs
       (run_day, ran_at, status, digest_count, total_items, summary_json)
       VALUES (?, ?, ?, ?, ?, ?)
       ON CONFLICT(run_day) DO UPDATE SET ran_at = excluded.ran_at, status = excluded.status,
       digest_count = excluded.digest_count, total_items = excluded.total_items,
       summary_json = excluded.summary_json
-      WHERE ? IS NOT NULL AND digest_shadow_runs.summary_json = ?`)
+      WHERE digest_shadow_runs.status = 'STARTED'
+        AND json_extract(digest_shadow_runs.summary_json, '$.rebuild_run_id') = ?
+        AND json_extract(digest_shadow_runs.summary_json, '$.rebuild_finalization_id') IS NULL`)
       .bind(run.run_day, merged.ran_at, merged.status, merged.digest_count, merged.total_items,
-        json(publicSummary), run.base_summary_json, run.base_summary_json)];
+        json(publicSummary), run.run_id)];
     statements.push(env.DB.prepare(`DELETE FROM digest_shadow_previews WHERE run_day = ?
       AND EXISTS (SELECT 1 FROM digest_shadow_runs WHERE run_day = ?
         AND json_extract(summary_json, '$.rebuild_finalization_id') = ?)`)

@@ -86,9 +86,27 @@ class Statement {
     }
     if (this.sql.includes("INSERT INTO digest_shadow_runs")) {
       const [run_day, ran_at, status, digest_count, total_items, summary_json] = this.args;
-      const expectedSummary = this.args.at(-1);
       const current = this.db.mainRuns.get(run_day);
-      if (!current || current.summary_json === expectedSummary) {
+      if (!current) {
+        this.db.mainRuns.set(run_day, { run_day, ran_at, status, digest_count, total_items, summary_json });
+        return { success: true, meta: { changes: 1 } };
+      }
+      // Ownership CAS: STARTED handoff owned by this rebuild_run_id, not yet finalized.
+      if (this.sql.includes("$.rebuild_run_id") && this.sql.includes("$.rebuild_finalization_id")) {
+        const rebuildRunId = this.args.at(-1);
+        const currentSummary = JSON.parse(current.summary_json || "null");
+        const owned = current.status === "STARTED"
+          && currentSummary?.rebuild_run_id === rebuildRunId
+          && currentSummary?.rebuild_finalization_id == null;
+        if (owned) {
+          this.db.mainRuns.set(run_day, { run_day, ran_at, status, digest_count, total_items, summary_json });
+          return { success: true, meta: { changes: 1 } };
+        }
+        return { success: true, meta: { changes: 0 } };
+      }
+      // Scoped / legacy byte-equality CAS against the rebuild base snapshot.
+      const expectedSummary = this.args.at(-1);
+      if (current.summary_json === expectedSummary) {
         this.db.mainRuns.set(run_day, { run_day, ran_at, status, digest_count, total_items, summary_json });
         return { success: true, meta: { changes: 1 } };
       }
@@ -698,17 +716,29 @@ test("full rebuild reuses scheduled history validation and evaluated count", asy
     day: "2026-09-20",
     entries: [{ day: "2026-09-20", id: "sub:quiet", noticeCount: 3, forecasts: 0 }],
   }));
+  const startedSummary = {
+    run_day: "2026-09-21", status: "STARTED", phase: "started", complete: false,
+    previews: [], redlines: [], upstream_incidents: [],
+  };
   DB.mainRuns.set("2026-09-21", {
     run_day: "2026-09-21",
     status: "STARTED",
-    summary_json: JSON.stringify({
-      run_day: "2026-09-21", status: "STARTED", phase: "started", complete: false,
-      previews: [], redlines: [], upstream_incidents: [],
-    }),
+    summary_json: JSON.stringify(startedSummary),
   });
   const env = { DB, ALERT_STATE, DIGEST_SHADOW_QUEUE: { async send() {} } };
   const created = await createDigestShadowRebuild(env, { now: NOW });
   const run = DB.runs.get(created.run_id);
+  // Cron handoff stamps rebuild ownership on the STARTED row after the base snapshot.
+  DB.mainRuns.set(run.run_day, {
+    run_day: run.run_day,
+    status: "STARTED",
+    summary_json: JSON.stringify({
+      ...startedSummary,
+      phase: "rebuild_queued",
+      rebuild_run_id: created.run_id,
+      rebuild_complete: false,
+    }),
+  });
   run.status = "running";
   run.total_count = 1;
   DB.items.set(`${created.run_id}:digest:quiet`, {
@@ -744,20 +774,186 @@ test("full rebuild reuses scheduled history validation and evaluated count", asy
   assert.ok(summary.redlines.some((finding) => finding.code === "historical_watch_zero"));
 });
 
-test("rebuild evaluation remains frozen when queue work crosses UTC midnight", async () => {
+test("full rebuild finalizes when STARTED row gains hold and freshness after the base snapshot", async () => {
   const DB = new FakeD1();
+  const ALERT_STATE = kv();
+  ALERT_STATE.values.set("digest:daylog:2026-09-20", JSON.stringify({
+    day: "2026-09-20",
+    entries: [{ day: "2026-09-20", id: "sub:quiet", noticeCount: 3, forecasts: 0 }],
+  }));
+  const started = {
+    run_day: "2026-09-21",
+    status: "STARTED",
+    phase: "started",
+    complete: false,
+    invocation_id: "digest-shadow:0 10 * * *:2026-09-21T10:00:00.000Z",
+    result_revision: "digest-shadow:0 10 * * *:2026-09-21T10:00:00.000Z:started",
+    previews: [],
+    redlines: [],
+    upstream_incidents: [],
+  };
   DB.mainRuns.set("2026-09-21", {
     run_day: "2026-09-21",
     status: "STARTED",
-    summary_json: JSON.stringify({
-      run_day: "2026-09-21", status: "STARTED", phase: "started", complete: false,
-      previews: [], redlines: [], upstream_incidents: [],
+    summary_json: JSON.stringify(started),
+  });
+  const env = { DB, ALERT_STATE, DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, { now: NOW });
+  const run = DB.runs.get(created.run_id);
+  assert.equal(run.base_summary_json, JSON.stringify(started));
+
+  // Production handoff stamps hold / freshness / rebuild ownership after the base snapshot.
+  const stamped = {
+    ...started,
+    phase: "rebuild_queued",
+    progress_at: "2026-09-21T10:00:30.000Z",
+    rebuild_run_id: created.run_id,
+    rebuild_complete: false,
+    hold: {
+      source_status: "DARK_PERIOD",
+      delivery_policy: "ALL_DIGESTS_HELD",
+      degraded_receipt: { decision: "HOLD_ALL_DARK_PERIOD" },
+    },
+    freshness: {
+      degraded: true,
+      reason: "digest shadow freshness time budget exhausted (90000ms)",
+    },
+    repair: {
+      state: "rebuild_queued",
+      affected_digest_ids: [],
+      rerun_method: "POST /admin/digest-shadow",
+      rerun_scope: "checkpointed_digest_queue",
+      rebuild_run_id: created.run_id,
+    },
+  };
+  assert.notEqual(JSON.stringify(stamped), run.base_summary_json);
+  DB.mainRuns.set(run.run_day, {
+    run_day: run.run_day,
+    status: "STARTED",
+    summary_json: JSON.stringify(stamped),
+  });
+
+  run.status = "running";
+  run.total_count = 1;
+  DB.items.set(`${created.run_id}:digest:quiet`, {
+    run_id: created.run_id, digest_id: "digest:quiet",
+    job_json: JSON.stringify({ type: "sub", key: "sub:quiet" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  const finished = await handleDigestShadowRebuildQueueMessage(env, {
+    type: "digest", run_id: created.run_id, digest_id: "digest:quiet",
+  }, {
+    now: NOW,
+    runTargetFn: async () => ({
+      sub: "sub:quiet",
+      previewId: "digest:quiet",
+      kind: "subscription",
+      found: 0,
+      new: 0,
+      forecasts: 0,
+      action: "heartbeat",
+      emailRedacted: "qu***@example.test",
+      preview: {
+        subject: "Quiet",
+        html: '<a href="https://cityscroll.org/context">Context</a><a href="https://cityscroll.org/unsubscribe">Unsubscribe</a>',
+        listUnsubscribe: "<https://cityscroll.org/unsubscribe>",
+      },
     }),
+  });
+  const summary = JSON.parse(DB.mainRuns.get(run.run_day).summary_json);
+  assert.equal(finished.status, "complete");
+  assert.ok(finished.receipt);
+  assert.equal(summary.complete, true);
+  assert.equal(summary.rebuild_complete, true);
+  assert.equal(summary.rebuild_run_id, created.run_id);
+  assert.ok(summary.rebuild_finalization_id);
+  assert.equal(summary.hold?.source_status, "DARK_PERIOD");
+  assert.equal(summary.hold?.delivery_policy, "ALL_DIGESTS_HELD");
+  assert.equal(summary.hold?.degraded_receipt?.decision, "HOLD_ALL_DARK_PERIOD");
+  assert.equal(summary.freshness?.degraded, true);
+  assert.match(summary.freshness?.reason || "", /freshness time budget exhausted/);
+});
+
+test("full rebuild ownership CAS rejects a STARTED handoff owned by another rebuild", async () => {
+  const DB = new FakeD1();
+  const ALERT_STATE = kv();
+  const started = {
+    run_day: "2026-09-21",
+    status: "STARTED",
+    phase: "started",
+    complete: false,
+    previews: [],
+    redlines: [],
+    upstream_incidents: [],
+  };
+  DB.mainRuns.set("2026-09-21", {
+    run_day: "2026-09-21",
+    status: "STARTED",
+    summary_json: JSON.stringify(started),
+  });
+  const env = { DB, ALERT_STATE, DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, { now: NOW });
+  const run = DB.runs.get(created.run_id);
+  DB.mainRuns.set(run.run_day, {
+    run_day: run.run_day,
+    status: "STARTED",
+    summary_json: JSON.stringify({
+      ...started,
+      phase: "rebuild_queued",
+      rebuild_run_id: "digest-shadow-rebuild:other-owner",
+      rebuild_complete: false,
+    }),
+  });
+  run.status = "running";
+  run.total_count = 1;
+  DB.items.set(`${created.run_id}:digest:one`, {
+    run_id: created.run_id, digest_id: "digest:one",
+    job_json: JSON.stringify({ type: "sub", key: "sub:one" }),
+    status: "queued", attempt_count: 0, result_json: null, error: null,
+  });
+  const finished = await handleDigestShadowRebuildQueueMessage(env, {
+    type: "digest", run_id: created.run_id, digest_id: "digest:one",
+  }, {
+    now: NOW,
+    runTargetFn: async () => ({
+      previewId: "digest:one",
+      skipped: "no-new",
+      _rendered_previews: [],
+    }),
+  });
+  const stored = JSON.parse(DB.mainRuns.get(run.run_day).summary_json);
+  assert.equal(finished.status, "failed");
+  assert.match(finished.error, /changed during rebuild finalization/);
+  assert.equal(stored.rebuild_run_id, "digest-shadow-rebuild:other-owner");
+  assert.equal(stored.rebuild_finalization_id, undefined);
+  assert.equal(ALERT_STATE.values.size, 0);
+});
+
+test("rebuild evaluation remains frozen when queue work crosses UTC midnight", async () => {
+  const DB = new FakeD1();
+  const startedSummary = {
+    run_day: "2026-09-21", status: "STARTED", phase: "started", complete: false,
+    previews: [], redlines: [], upstream_incidents: [],
+  };
+  DB.mainRuns.set("2026-09-21", {
+    run_day: "2026-09-21",
+    status: "STARTED",
+    summary_json: JSON.stringify(startedSummary),
   });
   const ALERT_STATE = kv();
   const env = { DB, ALERT_STATE, DIGEST_SHADOW_QUEUE: { async send() {} } };
   const created = await createDigestShadowRebuild(env, { now: NOW });
   const run = DB.runs.get(created.run_id);
+  DB.mainRuns.set(run.run_day, {
+    run_day: run.run_day,
+    status: "STARTED",
+    summary_json: JSON.stringify({
+      ...startedSummary,
+      phase: "rebuild_queued",
+      rebuild_run_id: created.run_id,
+      rebuild_complete: false,
+    }),
+  });
   run.status = "running";
   run.total_count = 1;
   DB.items.set(`${created.run_id}:digest:one`, {
