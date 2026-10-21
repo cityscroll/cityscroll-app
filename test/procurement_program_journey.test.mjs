@@ -436,3 +436,21 @@ test("classic scrub cleans legacy profile params before analytics or clarity wou
     "pre-clarity-program",
   ]);
 });
+
+test('program presentation groups training evidence without losing passages or relationship meaning', () => {
+  const journey = buildProgramJourney({ records: corpus.records });
+  const html = renderProgramJourneyHtml(journey);
+  const visible = html.replace(/<details\b[^>]*>[\s\S]*?<\/details>/g, '').replace(/<[^>]*>/g, '');
+  assert.doesNotMatch(visible, /exact_predecessor_link|program_related|additional_description_1|short_title/);
+  assert.match(html, /Connected by a renewal/);
+  assert.match(html, /Related program award/);
+  assert.equal((html.match(/data-capability="training"/g) || []).length, 3);
+  for (const row of journey.records) {
+    const card = html.match(new RegExp(`<article[^>]+data-notice-id="${row.notice_id}"[\\s\\S]*?</article>`))[0];
+    for (const a of row.assessments) {
+      const escaped = a.citation.passage.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+      assert.ok(card.includes(escaped), a.citation.passage);
+    }
+  }
+  assert.match(visible, /Lead eligibility and staffing requirements/);
+});

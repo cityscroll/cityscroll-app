@@ -173,7 +173,7 @@ test("A3: rendered journey omits open-bid CTA and includes source citations", ()
   assert.match(html, /20230807115/);
   assert.match(html, /pump truck, jet vacuum and video camera inspectional services/);
   assert.match(html, /VEGETATION TRIMMING/);
-  assert.match(html, /document review needed/i);
+  assert.match(html, /Check the requirements/);
   assert.match(html, /capability-profile-form/);
 });
 
@@ -469,4 +469,12 @@ test("resolveInitialCapabilityProfile falls back to the drain default", () => {
   assert.deepEqual(profile.capability_keywords, [...DEFAULT_DRAIN_PROFILE.capability_keywords]);
   assert.equal(profile.jet_vac_truck, false);
   assert.equal(profile.landscaping, false);
+});
+
+test('maintenance presentation names capabilities without exposing implementation fields', () => {
+  const html = renderCapabilityJourneyHtml(buildCapabilityJourney({records: corpus.records}));
+  const visible = html.replace(/<details\b[^>]*>[\s\S]*?<\/details>/g, '').replace(/<[^>]*>/g, '');
+  assert.doesNotMatch(visible, /jet_vac_truck|landscaping=false|drain_cleaning|additional_description_1|short_title|award_description/);
+  assert.match(visible, /Ownership of equipment is not established/);
+  assert.match(html, /pump truck, jet vacuum and video camera inspectional services/);
 });

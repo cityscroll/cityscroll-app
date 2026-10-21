@@ -45,3 +45,36 @@
     padding: 0.75rem;
   }
 }
+
+/* Match the companion comparison page while keeping native disclosure controls. */
+.program-journey {
+  color: var(--ink, #1a1a1a);
+  font: 16px/1.55 ui-sans-serif, system-ui, sans-serif;
+}
+.program-profile-form {
+  padding: 1rem;
+  border: 1px solid #d0d7de;
+  border-radius: 0.5rem;
+}
+.program-profile-form input:not([type="radio"]) {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 32rem;
+  padding: 0.6rem;
+  font: inherit;
+}
+.program-yn { border: 0; padding: 0; }
+.program-yn label { display: inline-block; margin: 0.25rem 1rem 0.25rem 0; }
+.program-profile-form button,
+[data-program-retry] {
+  padding: 0.6rem 1rem;
+  font: inherit;
+  cursor: pointer;
+}
+.program-history-links { margin-top: 1rem; }
+.program-assessment { margin: 1rem 0; }
+.program-assessment p { margin: 0.35rem 0; }
+.program-journey summary { cursor: pointer; color: #0969da; }
+.program-assessment-citation li { margin: 0.5rem 0; overflow-wrap: anywhere; }
+.program-journey :focus-visible { outline: 3px solid #0969da; outline-offset: 3px; }
