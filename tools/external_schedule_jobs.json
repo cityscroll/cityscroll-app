@@ -36,6 +36,7 @@
    "id": "digest-shadow-monitor",
    "schedule": [
     "10 10 * * *",
+    "25 10 * * *",
     "10 13 * * *"
    ],
    "runner": "digest-shadow",

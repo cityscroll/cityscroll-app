@@ -28,7 +28,7 @@ import {
 import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 const WATCHDOG = { id: "source-freshness-watchdog", schedule: ["30 10 * * *"], runner: "source-freshness" };
-const DIGEST = { id: "digest-shadow-monitor", schedule: ["10 10 * * *", "10 13 * * *"], runner: "digest-shadow" };
+const DIGEST = { id: "digest-shadow-monitor", schedule: ["10 10 * * *", "25 10 * * *", "10 13 * * *"], runner: "digest-shadow" };
 
 function ledgerAt(slot) {
   return { last_slot: slot };
@@ -119,17 +119,22 @@ test("a skipped slot is recorded rather than dropped when a later slot supersede
       now: new Date("2026-09-07T13:10:20.000Z"),
       run: async () => ({ result: { status: "healthy" } }),
     });
-    // Both of the day's slots were owed. Monitors report present state, so the
-    // later one is run and the earlier one is written down rather than replayed.
+    // All earlier slots of the day were owed. Monitors report present state, so
+    // the later one is run and the earlier ones are written down rather than
+    // replayed.
     assert.equal(settled.summary.slot, "2026-09-07T13-10");
     assert.deepEqual(settled.missed, [
       { id: DIGEST.id, slot: "2026-09-07T10-10", reason: MISSED_SUPERSEDED },
+      { id: DIGEST.id, slot: "2026-09-07T10-25", reason: MISSED_SUPERSEDED },
     ]);
     const record = JSON.parse(await readFile(join(stateDir, "missed", DIGEST.id, "2026-09-07T10-10.json"), "utf8"));
     assert.equal(record.job_id, DIGEST.id);
     assert.equal(record.slot, "2026-09-07T10-10");
     assert.equal(record.reason, MISSED_SUPERSEDED);
     assert.ok(Date.parse(record.observed_at) > 0, "a missed record carries when it was written");
+    const midMorning = JSON.parse(await readFile(join(stateDir, "missed", DIGEST.id, "2026-09-07T10-25.json"), "utf8"));
+    assert.equal(midMorning.slot, "2026-09-07T10-25");
+    assert.equal(midMorning.reason, MISSED_SUPERSEDED);
   });
 });
 
@@ -214,7 +219,7 @@ test("the heartbeat carries the slots a cycle did not run", async () => {
 
 test("every declared slot of a job is enumerable within the catch-up window", () => {
   const slots = slotsBetween(DIGEST, new Date("2026-09-06T13:10:00Z"), new Date("2026-09-07T13:10:00Z"));
-  assert.deepEqual(slots.map(slotKey), ["2026-09-07T10-10", "2026-09-07T13-10"]);
+  assert.deepEqual(slots.map(slotKey), ["2026-09-07T10-10", "2026-09-07T10-25", "2026-09-07T13-10"]);
   // The window is wide enough that a daily job recovers on the first cycle
   // after an outage rather than waiting a further day.
   assert.ok(SLOT_CATCH_UP_MINUTES >= 24 * 60, "the catch-up window is narrower than a daily slot");

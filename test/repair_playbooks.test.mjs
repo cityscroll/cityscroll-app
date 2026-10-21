@@ -533,6 +533,43 @@ test("a rebuild already queued within grace defers without a second enqueue", as
   assert.deepEqual(context.calls.slept, []);
 });
 
+test("a rebuild still STARTED past grace enqueues one recovery attempt", async () => {
+  // Post-grace observation (the 10:25 slot): the first rebuild_queued stamp is
+  // older than STARTED_STALL_REBUILD_GRACE_MS, so this cycle may enqueue once.
+  const progressAt = new Date(NOW.getTime() - STARTED_STALL_REBUILD_GRACE_MS - 60_000).toISOString();
+  const context = stubContext({
+    signature: "monitor:digest-shadow-monitor:digest-shadow-started-stall",
+    monitor: "digest-shadow-monitor",
+    subject: null,
+    digestStatus: [
+      {
+        summary: {
+          status: "STARTED",
+          run_day: "2026-09-07",
+          phase: "rebuild_queued",
+          rebuild_run_id: "digest-shadow-rebuild:stale",
+          progress_at: progressAt,
+        },
+      },
+      {
+        summary: {
+          status: "STARTED",
+          run_day: "2026-09-07",
+          phase: "rebuild_queued",
+          rebuild_run_id: "digest-shadow-rebuild:recovery",
+          progress_at: NOW.toISOString(),
+        },
+      },
+    ],
+    digestEnqueue: { run_id: "digest-shadow-rebuild:recovery", status: "queued" },
+  });
+  const result = await playbook("digest-shadow-started-stall").run(context);
+  assert.equal(result.outcome, "deferred");
+  assert.match(result.summary, /enqueued checkpointed rebuild/);
+  assert.equal(context.calls.digestEnqueues, 1);
+  assert.deepEqual(context.calls.slept, [STARTED_STALL_BACKOFF_MS, STARTED_STALL_VERIFY_MS]);
+});
+
 test("a STARTED stall without a rebuild API is judgment", async () => {
   const context = stubContext({
     signature: "monitor:digest-shadow-monitor:digest-shadow-started-stall",

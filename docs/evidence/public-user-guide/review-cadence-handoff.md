@@ -15,7 +15,7 @@ daily:
 | Outbound action-link integrity | `tools/external_schedule_jobs.json` (`action-links-live`) | daily |
 | Live source-contract drift | `tools/external_schedule_jobs.json` (`source-contracts-live`) | daily |
 | Source evidence freshness | `tools/external_schedule_jobs.json` (`source-freshness-watchdog`) | daily |
-| Digest shadow monitor | `tools/external_schedule_jobs.json` (`digest-shadow-monitor`) | twice daily |
+| Digest shadow monitor | `tools/external_schedule_jobs.json` (`digest-shadow-monitor`) | three times daily |
 | Daily search-use snapshot | `tools/external_schedule_jobs.json` (`stats-daily-snapshot-monitor`) | daily |
 
 The scheduler for those jobs is declared `independent` in the same manifest, and

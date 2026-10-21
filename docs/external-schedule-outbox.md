@@ -299,6 +299,8 @@ the upstream is still failing after the bounded retry. This includes the runner'
 `fault_domain: "upstream_source"` result as well as gateway errors recorded inside digest redlines.
 The `digest-shadow-started-stall` playbook waits its bounded backoff, then POSTs an idempotent checkpointed rebuild for the stalled day; it defers when a rebuild is already queued within grace, the kill switch is on, or the enqueue is waiting to finalize. Set `DIGEST_SHADOW_STARTED_RECOVERY_DISABLED=1` to stop automatic enqueue without changing delivery policy or alert recipients. The `source-contract-outage` playbook rechecks one source contract and defers when the publisher check still reports an outage. These are the only playbooks reclassified; `source-contract-stale`, `stats-snapshot-missing`, and `freshness-stale` keep their owner-decision rules.
 
+`digest-shadow-monitor` observes at 10:10, 10:25, and 13:10 UTC. The 10:25 slot is the post-grace recovery observation: a 10:00 handoff that is still STARTED after the playbook's 12-minute rebuild grace reopens a deferred started-stall item and can enqueue one bounded recovery before the 12:45 UTC hold cutoff. The 13:10 slot remains the afternoon backstop.
+
 The Worker stores `state: "waiting_upstream"`, `consecutive_deferrals`, and `first_deferred_at`.
 A waiting item remains open and re-enters pickup only on a newer scheduled observation of the
 same finding. Heartbeats and duplicate reports do not trigger retries or advance the counter.
