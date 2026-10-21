@@ -19,15 +19,42 @@ import {
   scanCliEmissionSurfaces,
   scanCostControlActionsSources,
 } from "./lib/worker_cost_actions_log_guard.mjs";
+import {
+  CLI_SAFE_ERROR_CODES,
+  formatGuardedCliError,
+  guardCliResultPayload,
+} from "./worker_cost_control.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DEPLOY_WORKER = join(ROOT, ".github/workflows/deploy-worker.yml");
+const CLI = join(ROOT, "tools/worker_cost_control.mjs");
 
 /** Distinctive synthetic 32-hex account id — never a real Cloudflare account. */
 const SYNTHETIC_ACCOUNT = "0123456789abcdef0123456789abcdef";
 /** Distinctive bill sentinel used only to prove value-free diagnostics. */
 const BILL_SENTINEL = "91731.55";
 const ACCOUNT_SENTINEL = "f00dcafe0123456789abcdef01234567";
+/** Path-segment sentinel proving ENOENT diagnostics stay value-free. */
+const PATH_SENTINEL = "ZZZLEAKSENTINEL999";
+
+function runCli(args, { cwd = ROOT } = {}) {
+  return spawnSync(process.execPath, [CLI, ...args], {
+    cwd,
+    encoding: "utf8",
+    env: { ...process.env },
+  });
+}
+
+function assertCombinedOmitsSentinels(run, sentinels) {
+  const combined = `${run.stdout || ""}\n${run.stderr || ""}`;
+  for (const sentinel of sentinels) {
+    assert.equal(
+      combined.includes(sentinel),
+      false,
+      `CLI output must not contain sentinel ${sentinel}; got: ${combined.slice(0, 240)}`,
+    );
+  }
+}
 
 /**
  * Synthetic clean release-evaluate stdout. Deliberately does not call
@@ -172,53 +199,89 @@ test("CLI emission surface scanner covers stdout stderr and diagnostics", () => 
   assert.ok(paths.has("release-evaluate#stderr") || paths.has("release-evaluate#diagnostics"));
 });
 
-test("release-evaluate CLI refuses to echo a polluted result payload", () => {
-  // Drive the real CLI entrypoint with a tiny stub command that returns a
-  // polluted object through runWorkerCostControl by invoking a child that
-  // imports emit behaviour: spawn the real CLI against env evidence that
-  // evaluateAllMeterRelease rejects before emission. The rejection path must
-  // stay value-free for distinctive sentinels.
+test("shared CLI result guard refuses a polluted payload without echoing sentinels", () => {
+  const polluted = {
+    pass: true,
+    bill_usd: Number(BILL_SENTINEL),
+    account_id: ACCOUNT_SENTINEL,
+  };
+  const guarded = guardCliResultPayload(polluted);
+  assert.equal(guarded.ok, false);
+  assert.equal(guarded.stream, "stderr");
+  assert.equal(guarded.text.includes(ACCOUNT_SENTINEL), false);
+  assert.equal(guarded.text.includes(BILL_SENTINEL), false);
+  assert.match(guarded.text, /emission refused/);
+  const diagnostic = JSON.parse(guarded.text);
+  assert.equal(diagnostic.ok, false);
+  assert.equal(diagnostic.code, "emission_refused_result");
+  assertFindingsValueFree(diagnostic.findings, [ACCOUNT_SENTINEL, BILL_SENTINEL]);
+});
+
+test("real CLI missing-input path with sentinel stays value-free on stderr", () => {
   const dir = mkdtempSync(join(tmpdir(), "cityscroll-actions-log-cli-"));
   try {
-    // Minimal invalid acquired-split file forces a deterministic CLI error
-    // without embedding sentinels. Separately, a child script proves the
-    // emission guard refuses a polluted in-process result.
-    const child = join(dir, "emit-polluted.mjs");
-    writeFileSync(child, `
-import { scanActionsLogForBillAccountLeaks } from ${JSON.stringify(join(ROOT, "tools/lib/worker_cost_actions_log_guard.mjs"))};
-
-const polluted = {
-  pass: true,
-  bill_usd: ${BILL_SENTINEL},
-  account_id: ${JSON.stringify(ACCOUNT_SENTINEL)},
-};
-const payload = JSON.stringify(polluted, null, 2);
-const scan = scanActionsLogForBillAccountLeaks(payload, { path: "worker_cost_control:stdout" });
-if (!scan.ok) {
-  console.error(JSON.stringify({
-    ok: false,
-    error: "worker_cost_control emission refused: bill or account identifiers in result",
-    findings: scan.findings,
-  }));
-  process.exitCode = 1;
-} else {
-  console.log(payload);
-}
-`);
-    const run = spawnSync(process.execPath, [child], {
-      cwd: ROOT,
-      encoding: "utf8",
-      env: { ...process.env },
-    });
+    const missing = join(dir, `absent-${PATH_SENTINEL}.json`);
+    const run = runCli(["profile-check", "--input", missing]);
     assert.notEqual(run.status, 0);
-    const combined = `${run.stdout || ""}\n${run.stderr || ""}`;
-    assert.equal(combined.includes(ACCOUNT_SENTINEL), false);
-    assert.equal(combined.includes(BILL_SENTINEL), false);
-    assert.match(run.stderr || "", /emission refused/);
-    const diagnostic = JSON.parse((run.stderr || "").trim().split("\n").at(-1));
+    assert.equal((run.stdout || "").trim(), "");
+    assertCombinedOmitsSentinels(run, [PATH_SENTINEL, missing, dir]);
+    const diagnostic = JSON.parse((run.stderr || "").trim());
     assert.equal(diagnostic.ok, false);
-    assertFindingsValueFree(diagnostic.findings, [ACCOUNT_SENTINEL, BILL_SENTINEL]);
+    assert.equal(diagnostic.code, "input_unreadable");
+    assert.equal(diagnostic.error, CLI_SAFE_ERROR_CODES.input_unreadable);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
+});
+
+test("real CLI malformed JSON stays value-free on stderr", () => {
+  const dir = mkdtempSync(join(tmpdir(), "cityscroll-actions-log-cli-"));
+  try {
+    const bad = join(dir, `malformed-${PATH_SENTINEL}.json`);
+    writeFileSync(bad, `{"account_id":"${ACCOUNT_SENTINEL}","bill_usd":${BILL_SENTINEL},`);
+    const run = runCli(["profile-check", "--input", bad]);
+    assert.notEqual(run.status, 0);
+    assert.equal((run.stdout || "").trim(), "");
+    assertCombinedOmitsSentinels(run, [PATH_SENTINEL, ACCOUNT_SENTINEL, BILL_SENTINEL, bad]);
+    const diagnostic = JSON.parse((run.stderr || "").trim());
+    assert.equal(diagnostic.ok, false);
+    assert.equal(diagnostic.code, "input_invalid_json");
+    assert.equal(diagnostic.error, CLI_SAFE_ERROR_CODES.input_invalid_json);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("real CLI evaluator rejection stays value-free on stderr", () => {
+  const dir = mkdtempSync(join(tmpdir(), "cityscroll-actions-log-cli-"));
+  try {
+    const input = join(dir, `reject-${PATH_SENTINEL}.json`);
+    writeFileSync(
+      input,
+      JSON.stringify({
+        schema_version: 1,
+        account_id: ACCOUNT_SENTINEL,
+        bill_usd: Number(BILL_SENTINEL),
+      }),
+    );
+    const run = runCli(["profile-check", "--input", input]);
+    assert.notEqual(run.status, 0);
+    assert.equal((run.stdout || "").trim(), "");
+    assertCombinedOmitsSentinels(run, [PATH_SENTINEL, ACCOUNT_SENTINEL, BILL_SENTINEL, input]);
+    const diagnostic = JSON.parse((run.stderr || "").trim());
+    assert.equal(diagnostic.ok, false);
+    assert.equal(diagnostic.code, "evaluator_rejected");
+    assert.equal(diagnostic.error, CLI_SAFE_ERROR_CODES.evaluator_rejected);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("formatGuardedCliError never echoes a raw Error message with a sentinel", () => {
+  const raw = new Error(`ENOENT: no such file or directory, open '/tmp/absent-${PATH_SENTINEL}.json'`);
+  raw.code = "ENOENT";
+  const diagnostic = formatGuardedCliError(raw);
+  assert.equal(diagnostic.ok, false);
+  assert.equal(diagnostic.code, "input_unreadable");
+  assert.equal(JSON.stringify(diagnostic).includes(PATH_SENTINEL), false);
 });

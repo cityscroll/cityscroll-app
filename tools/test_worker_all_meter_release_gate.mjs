@@ -259,14 +259,19 @@ test("release CLI gates the exact candidate revision from configured evidence", 
     assert.equal(run(candidate.deployed_revision).status, 0);
     const mismatch = run("c".repeat(40));
     assert.notEqual(mismatch.status, 0);
-    assert.match(mismatch.stderr, /does not match the release revision/);
+    const mismatchDiag = JSON.parse((mismatch.stderr || "").trim());
+    assert.equal(mismatchDiag.code, "release_revision_mismatch");
+    assert.match(mismatchDiag.error, /does not match the release revision/);
     const unrelated = structuredClone(acquiredDeployments);
     unrelated.baseline.receipt.cloudflare_version.id = "historical-unrelated-version";
     unrelated.baseline.provider_receipt_sha256 = providerDeploymentReceiptSha256(unrelated.baseline.receipt);
     writeFileSync(acquiredPath, JSON.stringify(unrelated));
     const wrongRollback = run(candidate.deployed_revision);
     assert.notEqual(wrongRollback.status, 0);
-    assert.match(wrongRollback.stderr, /supplied deployment evidence/);
+    // Evaluator detail stays off stderr; public CLI emits the allowlisted code only.
+    const wrongDiag = JSON.parse((wrongRollback.stderr || "").trim());
+    assert.equal(wrongDiag.code, "evaluator_rejected");
+    assert.match(wrongDiag.error, /evaluator rejected/);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
