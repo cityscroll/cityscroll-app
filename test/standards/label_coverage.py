@@ -7,12 +7,19 @@ because several offending fields are hidden at load (behind an inactive .tabpane
 by JS only once a tab/panel is activated) — a static grep can't see them and axe itself
 skips display:none nodes. Hermetic: no live network (test/functional/assets/i18n_fixtures.py
 stubs every upstream), so it runs in CI on every PR.
+
+cs-label-coverage-flake / same class as cs-heading-uniqueness-nav-race: after goto or a
+tab/hash transition, SPA navigation can destroy the execution context between the settle
+wait and page.evaluate(CENSUS_JS). Wait for a stable URL + load state, then retry evaluate
+on context-destroyed — never drop the unlabeled-field assertions.
 """
 import json
 import os
 import pathlib
 import sys
+import time
 
+from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import sync_playwright
 
 ROOT = pathlib.Path(__file__).parents[2]
@@ -51,13 +58,52 @@ CENSUS_JS = """() => {
   });
 }"""
 
+CONTEXT_DESTROYED_MARKERS = (
+    "Execution context was destroyed",
+    "Cannot find context with specified id",
+    "most likely because of a navigation",
+)
+
 
 def step(tag, name, detail=""):
     print(f"{tag} {name}" + (f" -> {detail}" if detail else ""), flush=True)
 
 
+def _is_context_destroyed(err):
+    msg = str(err)
+    return any(marker in msg for marker in CONTEXT_DESTROYED_MARKERS)
+
+
+def wait_for_stable_document(page, *, timeout_ms=10000):
+    """Wait until navigation/load settles so evaluate is not racing a destroy."""
+    page.wait_for_load_state("domcontentloaded", timeout=timeout_ms)
+    try:
+        page.wait_for_load_state("load", timeout=min(timeout_ms, 5000))
+    except PlaywrightError:
+        # Some SPA tab/hash switches never re-fire full load; domcontentloaded is enough.
+        pass
+    # URL string access forces a post-navigation frame binding.
+    _ = page.url
+
+
+def evaluate_census(page, *, retries=3, timeout_ms=10000):
+    """Evaluate CENSUS_JS with bounded retries on navigation context destruction."""
+    last_err = None
+    for attempt in range(retries):
+        try:
+            wait_for_stable_document(page, timeout_ms=timeout_ms)
+            return page.evaluate(CENSUS_JS)
+        except PlaywrightError as err:
+            last_err = err
+            if not _is_context_destroyed(err) or attempt + 1 >= retries:
+                raise
+            time.sleep(0.05 * (attempt + 1))
+            wait_for_stable_document(page, timeout_ms=timeout_ms)
+    raise last_err
+
+
 def census(page, state_name, failures):
-    fields = page.evaluate(CENSUS_JS)
+    fields = evaluate_census(page)
     unnamed = [f for f in fields if not f["named"]]
     for f in unnamed:
         desc = f"{f['tag']}#{f['id'] or '(no id)'}"
@@ -79,7 +125,7 @@ def main():
             page = ctx.new_page()
             install_routes(page)
             page.goto(BASE + path, timeout=30000)
-            page.wait_for_load_state("load", timeout=20000)
+            wait_for_stable_document(page, timeout_ms=20000)
             page.wait_for_timeout(1200)
             name = path or "index.html"
             census(page, name, failures)
@@ -87,9 +133,11 @@ def main():
             if path in ("", "index.html"):  # topic SPA: walk every source tab plus the investigation route
                 for tab, selector in TABS:
                     page.click(selector)
+                    wait_for_stable_document(page)
                     page.wait_for_timeout(400)
                     census(page, f"{name} [tab:{tab}]", failures)
                 page.evaluate("location.hash = '#investigation'")
+                wait_for_stable_document(page)
                 page.wait_for_timeout(800)
                 census(page, f"{name} [investigation-workspace]", failures)
             ctx.close()

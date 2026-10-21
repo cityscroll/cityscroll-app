@@ -115,7 +115,10 @@ import {
   createDigestShadowRebuild,
   normalizeDigestShadowRebuildScope,
   normalizeRebuildRunDay,
+  projectCurrentRebuildOwner,
+  projectStartedRecoveryView,
   readDigestShadowRebuildStatus,
+  readStartedRecoveryReceipt,
 } from "./digest_shadow_rebuild.mjs";
 import { handlePrivateStats } from "./stats.mjs";
 import { readOwedBacklog, scanSubscriberMetadata, scheduledTimes } from "./owed_backlog.mjs";
@@ -1909,11 +1912,25 @@ export async function handleAdminDigestShadow(req, env, {
     const out = await readDigestShadow(env.DB, { day, digestId });
     const statusDay = day || new Date(now).toISOString().slice(0, 10);
     const degradedReceipt = await readDigestShadowDegradedReceipt(env.ALERT_STATE, { day: statusDay });
+    // Read-only STARTED-recovery receipt + current rebuild owner (no ALERT_STATE writes).
+    const startedRecoveryRaw = await readStartedRecoveryReceipt(env.ALERT_STATE, statusDay);
+    const startedRecovery = projectStartedRecoveryView(startedRecoveryRaw);
     if (!out) {
-      return json({ error: "not-run", degraded_receipt: degradedReceipt },
-        degradedReceipt?.attention_status === "open" ? 503 : 404);
+      return json({
+        error: "not-run",
+        degraded_receipt: degradedReceipt,
+        started_recovery: startedRecovery,
+        current_rebuild_owner: null,
+      }, degradedReceipt?.attention_status === "open" ? 503 : 404);
     }
-    if (digestId && !out.preview) return json({ ...out, error: "preview-not-found" }, 404);
+    if (digestId && !out.preview) {
+      return json({
+        ...out,
+        error: "preview-not-found",
+        started_recovery: startedRecovery,
+        current_rebuild_owner: projectCurrentRebuildOwner(out.summary),
+      }, 404);
+    }
     const hold = day && day !== new Date(now).toISOString().slice(0, 10) ? null : await resolveDigestShadowHold(env.DB, {
       now,
       receiptStore: env.ALERT_STATE,
@@ -1921,7 +1938,13 @@ export async function handleAdminDigestShadow(req, env, {
     const receipt = projectDigestShadowDegradedReceipt(hold?.degraded_receipt || degradedReceipt, out.summary, hold);
     const attention = out.summary?.ok === false || receipt?.attention_status === "open"
       || (hold?.source_status === "READY" && hold.pending_catch_up_status !== "absent");
-    return json({ ...out, hold, degraded_receipt: receipt || null }, attention ? 503 : 200);
+    return json({
+      ...out,
+      hold,
+      degraded_receipt: receipt || null,
+      started_recovery: startedRecovery,
+      current_rebuild_owner: projectCurrentRebuildOwner(out.summary),
+    }, attention ? 503 : 200);
   } catch (error) {
     return json({ error: "shadow-read-failed", detail: String(error?.message || error) }, 503);
   }
