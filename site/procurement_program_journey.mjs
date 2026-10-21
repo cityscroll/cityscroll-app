@@ -203,29 +203,52 @@ export function buildProgramJourney({
 function stateLabel(state) {
   switch (state) {
     case "supported_overlap":
-      return "Supported overlap";
+      return "Matches your capabilities";
     case "stated_capability_gap":
-      return "Stated capability gap";
+      return "Capability to arrange";
     case "document_review_needed":
-      return "Document review needed";
+      return "Check the requirements";
     case "unspecified":
-      return "Capability unspecified";
+      return "Tell us more";
     default:
       return "Assessment";
   }
 }
 
+// Group only equivalent training assessments within one award and state.
+// Every distinct source passage remains available in the evidence disclosure.
+function presentationAssessments(assessments) {
+  const training = new Set(["coolroofs_training_program", "coolroofs_training_program_title", "jobseeker_training", "coolroofs_program_admin_desc"]);
+  const groups = new Map();
+  for (const assessment of assessments) {
+    const isTraining = training.has(assessment.capability_id);
+    const key = `${isTraining ? "training" : assessment.capability_id}:${assessment.state}`;
+    if (!groups.has(key)) {
+      const wording = isTraining ? ({
+        supported_overlap: "Your job-training capability matches the training work described in this award.",
+        stated_capability_gap: "This award includes job training, which you marked as unavailable.",
+        unspecified: "Tell us whether you provide job training to compare this part of the work.",
+      }[assessment.state] || assessment.wording) : assessment.wording;
+      groups.set(key, { ...assessment, capability_id: isTraining ? "training" : assessment.capability_id, wording, citations: [] });
+    }
+    const citations = groups.get(key).citations;
+    if (!citations.some(c => c.field === assessment.citation.field && c.passage === assessment.citation.passage && c.url === assessment.citation.url)) citations.push(assessment.citation);
+  }
+  return [...groups.values()];
+}
+
 function renderAssessment(assessment) {
-  const citation = assessment.citation || {};
+  const citations = assessment.citations || [assessment.citation];
+  const evidence = citations.map(c => `<li>“${esc(c.passage)}” <a href="${esc(c.url)}">Read award notice</a></li>`).join("\n");
   return `<li class="program-assessment" data-state="${esc(assessment.state)}" data-capability="${esc(assessment.capability_id)}">
   <p class="program-assessment-state"><strong>${esc(stateLabel(assessment.state))}</strong>${assessment.service_gap ? ` · ${esc(assessment.service_gap)}` : ""}</p>
   <p class="program-assessment-wording">${esc(assessment.wording)}</p>
-  <p class="program-assessment-citation">Cited from <code>${esc(citation.field)}</code>: “${esc(citation.passage)}” · <a href="${esc(citation.url)}">${esc(citation.notice_id)}</a></p>
+  <details class="program-assessment-citation"><summary>Source evidence${citations.length > 1 ? ` · ${citations.length} passages` : ""}</summary><ul>${evidence}</ul></details>
 </li>`;
 }
 
 function renderRecordCard(row) {
-  const assessments = (row.assessments || []).map(renderAssessment).join("\n");
+  const assessments = presentationAssessments(row.assessments || []).map(renderAssessment).join("\n");
   const actions = (row.preparation_actions || [])
     .map((action) => {
       if (action.href) {
@@ -255,7 +278,7 @@ function renderProfileForm(profile) {
     const yes = value === true ? "checked" : "";
     const no = value === false ? "checked" : "";
     return `<fieldset class="program-yn">
-  <legend>${esc(name.replaceAll("_", " "))}</legend>
+  <legend>${esc(({job_training: "Do you provide job training?", employer_placement: "Do you help people find jobs?", roof_installation_crew: "Do you have a roof-installation crew?"}[name] || "Capability"))}</legend>
   <label><input type="radio" name="${esc(name)}" value="true" ${yes}> Yes</label>
   <label><input type="radio" name="${esc(name)}" value="false" ${no}> No</label>
 </fieldset>`;
@@ -281,7 +304,7 @@ function renderSourceLinks(links = PROGRAM_HISTORY_SOURCE_LINKS) {
     )
     .join("\n");
   return `<div class="program-source-links" data-program-source-links>
-  <p>Published award notices remain available while the corpus is unreachable:</p>
+  <p>You can still review the published award notices:</p>
   <ul>
 ${items}
   </ul>
@@ -292,24 +315,33 @@ export function renderProgramJourneyHtml(journey, { headingId = "program-history
   if (journey.load_error) {
     return `<section class="program-journey" data-program-journey data-open-bid-cta="false" data-load-error="true" aria-labelledby="${esc(headingId)}">
   ${renderProfileForm(journey.profile)}
-  <p role="alert">Could not load the award corpus (${esc(journey.load_error)}). Your profile answers are preserved.</p>
+  <p role="alert">Could not load the awards. Your answers are preserved.</p>
+  <details><summary>Error details</summary>${esc(journey.load_error)}</details>
   <p><button type="button" data-program-retry>Retry</button></p>
   ${renderSourceLinks(journey.source_links || PROGRAM_HISTORY_SOURCE_LINKS)}
   <p><a href="/browse/contracts/">Back to Contracts Browse</a></p>
 </section>`;
   }
   const cards = (journey.records || []).map(renderRecordCard).join("\n");
-  const relationBits = (journey.relations || [])
-    .map(
-      (r) =>
-        `<li data-relation="${esc(r.relation)}">${esc(r.a)} ↔ ${esc(r.b)}: ${esc(r.relation)}</li>`,
-    )
-    .join("\n");
+  const rowsById = new Map((journey.records || []).map(row => [row.notice_id, row]));
+  const awardLabel = id => {
+    const date = rowsById.get(id)?.published_on;
+    return date ? `${date.slice(0, 4)} award` : "Award (date not published)";
+  };
+  const relationBits = (journey.relations || []).map(r => {
+    const label = r.relation === PROGRAM_RELATION.EXACT_PREDECESSOR_LINK
+      ? `${awardLabel(r.a)} and ${awardLabel(r.b)}: Connected by a renewal.`
+      : r.relation === PROGRAM_RELATION.PROGRAM_RELATED
+        ? `${awardLabel(r.a)} and ${awardLabel(r.b)}: Related program awards; not an established renewal link.`
+        : "Relationship not established.";
+    return `<li data-relation="${esc(r.relation)}">${esc(label)}</li>`;
+  }).join("\n");
   return `<section class="program-journey" data-program-journey data-open-bid-cta="false" data-future-opening="false" aria-labelledby="${esc(headingId)}">
   ${renderProfileForm(journey.profile)}
+  <details class="program-history-links"><summary>How awards connect</summary>
   <ul class="program-relations" aria-label="Program relations">
 ${relationBits}
-  </ul>
+  </ul></details>
   <div class="program-records">
 ${cards}
   </div>

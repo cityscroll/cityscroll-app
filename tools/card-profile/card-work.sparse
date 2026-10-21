@@ -756,7 +756,6 @@
 /site/preview_federated_form_factor.mjs
 /site/primary_document_view.mjs
 /site/process_conformance.mjs
-/site/program-history-profile-scrub.js
 /site/procurement_alert_atom.mjs
 /site/procurement_browse_capability_index.mjs
 /site/procurement_browse_population_shards.mjs
@@ -822,6 +821,7 @@
 /site/product_updates_delivery.mjs
 /site/product_updates_honesty.mjs
 /site/product_updates_source.mjs
+/site/program-history-profile-scrub.js
 /site/project_calendar.mjs
 /site/project_connections.mjs
 /site/property-a11y-ratchet.json

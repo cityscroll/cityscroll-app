@@ -128,13 +128,13 @@ export function buildCapabilityJourney({
 function stateLabel(state) {
   switch (state) {
     case CAPABILITY_ASSESSMENT_STATE.SUPPORTED_OVERLAP:
-      return "Supported overlap";
+      return "Matches your capabilities";
     case CAPABILITY_ASSESSMENT_STATE.STATED_CAPABILITY_GAP:
-      return "Stated capability gap";
+      return "Capability to arrange";
     case CAPABILITY_ASSESSMENT_STATE.DOCUMENT_REVIEW_NEEDED:
-      return "Document review needed";
+      return "Check the requirements";
     case CAPABILITY_ASSESSMENT_STATE.UNSPECIFIED:
-      return "Capability unspecified";
+      return "Tell us more";
     default:
       return "Assessment";
   }
@@ -142,10 +142,19 @@ function stateLabel(state) {
 
 function renderAssessment(assessment) {
   const citation = assessment.citation || {};
+  const wording = assessment.wording
+    .replaceAll("jet_vac_truck=false", "that jet-vac service is unavailable")
+    .replaceAll("jet_vac_truck=true", "that jet-vac service is available")
+    .replaceAll("landscaping=false", "that vegetation trimming is unavailable")
+    .replaceAll("landscaping=true", "that vegetation trimming is available")
+    .replaceAll("jet_vac_truck", "jet-vac service")
+    .replaceAll("drain_cleaning", "drain-cleaning capability")
+    .replaceAll("additional_description_1", "award description")
+    .replaceAll("short_title", "award title");
   return `<li class="capability-assessment" data-state="${esc(assessment.state)}" data-duty="${esc(assessment.duty_id)}">
   <p class="capability-assessment-state"><strong>${esc(stateLabel(assessment.state))}</strong>${assessment.service_gap ? ` · ${esc(assessment.service_gap)}` : ""}</p>
-  <p class="capability-assessment-wording">${esc(assessment.wording)}</p>
-  <p class="capability-assessment-citation">Cited from <code>${esc(citation.field)}</code>: “${esc(citation.passage)}” · <a href="${esc(citation.url)}">${esc(citation.notice_id)}</a></p>
+  <p class="capability-assessment-wording">${esc(wording)}</p>
+  <details class="capability-assessment-citation"><summary>Source evidence</summary><p>“${esc(citation.passage)}” · <a href="${esc(citation.url)}">Read award notice</a></p></details>
 </li>`;
 }
 
@@ -164,7 +173,7 @@ function renderRecordCard(row) {
     <p class="capability-record-meta">${esc(row.award_status)} · published ${esc(row.published_on || "date not published")}</p>
     <h3>${esc(row.short_title)}</h3>
     <p>${esc(row.agency_name)}${row.pin ? ` · PIN ${esc(row.pin)}` : ""}${row.contract_amount ? ` · ${esc(row.contract_amount)}` : ""}</p>
-    <p class="capability-source-role">Source role: ${esc(row.source_role)} (award description, not a full specification).</p>
+    <p class="capability-source-role">Based on the published award description, not the full specifications.</p>
   </header>
   <ul class="capability-assessments">
 ${assessments || "    <li>No cited duties matched the reviewed vocabulary on this award description.</li>"}
@@ -214,7 +223,8 @@ export function renderCapabilityJourneyHtml(journey, { headingId = "capability-c
     return `<section class="capability-journey" data-capability-journey data-load-error="true" aria-labelledby="${esc(headingId)}">
   <h2 id="${esc(headingId)}">Compare capabilities</h2>
   ${renderProfileForm(journey.profile)}
-  <p class="capability-load-error" role="alert">The comparison corpus could not be loaded (${esc(journey.load_error)}). Your profile answers are preserved.</p>
+  <p class="capability-load-error" role="alert">Could not load the awards. Your answers are preserved.</p>
+  <details><summary>Error details</summary>${esc(journey.load_error)}</details>
   <p><button type="button" data-capability-retry>Retry loading awards</button></p>
 </section>`;
   }
@@ -222,7 +232,7 @@ export function renderCapabilityJourneyHtml(journey, { headingId = "capability-c
   const cards = (journey.records || []).map(renderRecordCard).join("\n");
   return `<section class="capability-journey" data-capability-journey data-open-bid-cta="false" aria-labelledby="${esc(headingId)}">
   <h2 id="${esc(headingId)}">Compare capabilities</h2>
-  <p>Bounded pilot over ${journey.records.length} historical award description${journey.records.length === 1 ? "" : "s"}. Each card cites the published award description so you can review capability overlap and gaps before pursuing related work.</p>
+  <p>Compare your services with ${journey.records.length} past award${journey.records.length === 1 ? "" : "s"}. Each card cites the published award description so you can review capability overlap and gaps before pursuing related work.</p>
   ${renderProfileForm(journey.profile)}
   <div class="capability-records">
 ${cards}
