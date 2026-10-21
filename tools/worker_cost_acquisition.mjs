@@ -13,9 +13,18 @@ import {
   acquireWorkerCostProfile,
   aggregateObservedCorrectness,
   httpOperationsFromProviderEvent,
+  normalizeWranglerTailEvent,
+  parseWranglerTailJsonStream,
+  providerEventsFromWranglerTailStream,
   runMatchedWarehouseExperiment,
   selectOwnedHttpEvent,
 } from "./lib/worker_cost_acquisition.mjs";
+
+export {
+  normalizeWranglerTailEvent,
+  parseWranglerTailJsonStream,
+  providerEventsFromWranglerTailStream,
+};
 import {
   TAIL_WAREHOUSE_COLD_START_FLAG_CAPABILITY,
   WAREHOUSE_EXPERIMENT_BASE_ROUTES,
