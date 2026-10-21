@@ -338,7 +338,7 @@ export function renderProgramJourneyHtml(journey, { headingId = "program-history
   }).join("\n");
   return `<section class="program-journey" data-program-journey data-open-bid-cta="false" data-future-opening="false" aria-labelledby="${esc(headingId)}">
   ${renderProfileForm(journey.profile)}
-  <details class="program-history-links"><summary>How these awards are connected</summary>
+  <details class="program-history-links"><summary>How awards connect</summary>
   <ul class="program-relations" aria-label="Program relations">
 ${relationBits}
   </ul></details>
