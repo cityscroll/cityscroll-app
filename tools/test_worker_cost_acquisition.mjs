@@ -680,10 +680,10 @@ function liveWarehouseTransport({ flagRaw1Coverage = true } = {}) {
     },
   });
   transport.collectProviderEvents = async ({ execute }) => {
-    await execute(new AbortController().signal);
+    await execute(new AbortController().signal, { events });
     return events;
   };
-  return { transport, requestCount: () => requests };
+  return { transport, requestCount: () => requests, events };
 }
 
 test("warehouse runner samples until exact provider-observed cold_start_flag_raw 0/1 populations exist", async () => {
@@ -725,6 +725,231 @@ test("warehouse runner reports incomplete cold_start_flag_raw=1 coverage", async
   });
   assert.equal(result.status, "blocked");
   assert.match(result.reason, /cold_start_flag_raw=1 provider samples are incomplete/);
+});
+
+/**
+ * Flag-less warehouse transport with synthetic collector retention.
+ * retainEveryK=1 → perfect retention (every collector probe becomes a tail event).
+ * retainEveryK=K → keep only every K-th collector probe (approx retention 1/K).
+ */
+function liveFlaglessCollectorRetentionTransport({
+  retainEveryK = 1,
+  warehouseAttemptsPerInput = 200,
+  versionId = deployment(REVISION).receipt.cloudflare_version.id,
+} = {}) {
+  const workloads = WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => ({
+    cohort,
+    probe_cohort: cohort,
+    workload_hash: createHash("sha256").update(cohort).digest("hex"),
+    body: { kind: "http", route: cohort },
+  }));
+  const measurement = {
+    run_marker: RUN,
+    workload_digest: WORKLOAD,
+    warehouse_workloads: workloads,
+    collector_workload: {
+      cohort: "collector-overhead",
+      probe_cohort: "collector-overhead",
+      workload_hash: createHash("sha256").update("collector-overhead").digest("hex"),
+      body: { kind: "collector-overhead" },
+    },
+  };
+  const events = [];
+  let requests = 0;
+  let collectorSends = 0;
+  let collectorRetained = 0;
+  const overrideHeaders = [];
+  const transport = createLiveWorkerCostTransport({
+    env: {
+      CLOUDFLARE_OBSERVABILITY_TOKEN: "telemetry-only",
+      WORKER_COST_ADMIN_KEY: "admin-key",
+      CLOUDFLARE_ACCOUNT_ID: "account",
+      WORKER_HEALTH_URL: "https://worker.example/health",
+      WORKER_API_ORIGIN: "https://worker.example",
+      WORKER_COST_MEASUREMENT_PLAN: JSON.stringify(measurement),
+    },
+    warehouseAttemptsPerInput,
+    now: () => Date.parse("2026-10-09T08:00:00Z"),
+    fetchImpl: async (url, init) => {
+      if (!url.endsWith("/admin/cost-control-probe")) throw new Error(`unexpected fetch ${url}`);
+      requests += 1;
+      const headers = init.headers;
+      overrideHeaders.push(headers["Cloudflare-Workers-Version-Overrides"]);
+      const cohort = headers["x-cityscroll-cost-cohort"];
+      const isCollector = cohort === "collector-overhead";
+      const receipt = {
+        schema: "cityscroll.worker_cost_probe.v1",
+        tag: headers["x-cityscroll-cost-probe"],
+        series: headers["x-cityscroll-cost-series"],
+        cohort,
+        workload_hash: headers["x-cityscroll-cost-workload"],
+        execution_mode: "production-read-only-rehearsal",
+        operation_counts: operations(),
+        result: {
+          status: isCollector ? 204 : 200,
+          body_sha256: "6".repeat(64),
+          ...(!isCollector ? { correctness: CORRECTNESS } : {}),
+        },
+      };
+      let retain = true;
+      if (isCollector) {
+        collectorSends += 1;
+        retain = retainEveryK <= 1 || (collectorSends % retainEveryK === 0);
+        if (retain) collectorRetained += 1;
+      }
+      if (retain) {
+        events.push({
+          source: receipt,
+          $metadata: { id: `warehouse-retention-${requests}` },
+          $workers: {
+            cpuTimeMs: 2,
+            outcome: "ok",
+            scriptVersion: { id: versionId },
+            event: { request: { url: OUTER_URL, method: "POST", headers: { "x-cityscroll-cost-probe": receipt.tag } } },
+          },
+          exceptions: [],
+        });
+      }
+      return Response.json(receipt);
+    },
+  });
+  transport.collectProviderEvents = async ({ execute }) => {
+    await execute(new AbortController().signal, { events });
+    return events;
+  };
+  return {
+    transport,
+    requestCount: () => requests,
+    collectorSends: () => collectorSends,
+    collectorRetained: () => collectorRetained,
+    overrideHeaders: () => overrideHeaders,
+  };
+}
+
+test("adaptive collector early-stops at N under perfect retention (same request count)", async () => {
+  const { transport, requestCount, collectorSends } = liveFlaglessCollectorRetentionTransport({
+    retainEveryK: 1,
+    warehouseAttemptsPerInput: 200,
+  });
+  const result = await transport.collectWarehouseRun({
+    label: "baseline",
+    revision: REVISION,
+    deployment: deployment(REVISION),
+    workloadId: "fixed-warehouse-test",
+    cohorts: WAREHOUSE_EXPERIMENT_BASE_ROUTES,
+    samplesPerCohort: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+    maxEvents: 10_000,
+  });
+  assert.equal(result.status, "complete");
+  const baseProbes = 200 * WAREHOUSE_EXPERIMENT_BASE_ROUTES.length;
+  const collectorTarget = WAREHOUSE_EXPERIMENT_BASE_ROUTES.length * WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT;
+  assert.equal(collectorSends(), collectorTarget);
+  assert.equal(requestCount(), baseProbes + collectorTarget);
+});
+
+test("adaptive collector oversamples until N retained under synthetic low retention", async () => {
+  // retainEveryK=5 ≈ 0.20 retention; leftover budget after 200*5 base = 9000
+  // need 500 retained → ~2500 collector sends, well under 9000.
+  const { transport, collectorSends, collectorRetained } = liveFlaglessCollectorRetentionTransport({
+    retainEveryK: 5,
+    warehouseAttemptsPerInput: 200,
+  });
+  const result = await transport.collectWarehouseRun({
+    label: "baseline",
+    revision: REVISION,
+    deployment: deployment(REVISION),
+    workloadId: "fixed-warehouse-test",
+    cohorts: WAREHOUSE_EXPERIMENT_BASE_ROUTES,
+    samplesPerCohort: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+    maxEvents: 10_000,
+  });
+  assert.equal(result.status, "complete");
+  const collectorTarget = WAREHOUSE_EXPERIMENT_BASE_ROUTES.length * WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT;
+  assert.ok(collectorSends() > collectorTarget, `expected oversample sends > ${collectorTarget}, got ${collectorSends()}`);
+  assert.ok(collectorRetained() >= collectorTarget);
+  for (const cohort of WAREHOUSE_EXPERIMENT_BASE_ROUTES) {
+    assert.equal(result.cohorts[cohort].length, WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT);
+  }
+});
+
+test("adaptive collector blocks when oversample budget cannot retain N", async () => {
+  // retainEveryK=50 ≈ 0.02 retention; with attempts=200, leftover=9000 → ~180 retained < 500.
+  const { transport, collectorSends } = liveFlaglessCollectorRetentionTransport({
+    retainEveryK: 50,
+    warehouseAttemptsPerInput: 200,
+  });
+  const result = await transport.collectWarehouseRun({
+    label: "baseline",
+    revision: REVISION,
+    deployment: deployment(REVISION),
+    workloadId: "fixed-warehouse-test",
+    cohorts: WAREHOUSE_EXPERIMENT_BASE_ROUTES,
+    samplesPerCohort: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+    maxEvents: 10_000,
+  });
+  assert.equal(result.status, "blocked");
+  assert.match(result.reason, /collector-overhead provider samples are incomplete/);
+  const baseProbes = 200 * WAREHOUSE_EXPERIMENT_BASE_ROUTES.length;
+  const leftover = 10_000 - baseProbes;
+  assert.equal(collectorSends(), leftover);
+});
+
+test("owned warehouse probes target exact provider version via Cloudflare-Workers-Version-Overrides", async () => {
+  const baselineVersion = "23e487f5-ea8f-4bfb-ae54-608f21434574";
+  const candidateVersion = "87a8d418-cd78-4de6-8e13-0ee0082a9ec2";
+  const baselineDeployment = {
+    ...deployment(REVISION),
+    receipt: {
+      ...deployment(REVISION).receipt,
+      cloudflare_version: { source: "cloudflare-versions-api", id: baselineVersion },
+    },
+  };
+  baselineDeployment.provider_receipt_sha256 = providerDeploymentReceiptSha256(baselineDeployment.receipt);
+  const candidateDeployment = {
+    ...deployment(CANDIDATE),
+    receipt: {
+      ...deployment(CANDIDATE).receipt,
+      cloudflare_version: { source: "cloudflare-versions-api", id: candidateVersion },
+      production_health: { source: "cityscroll-production-health", revision: CANDIDATE },
+    },
+  };
+  candidateDeployment.provider_receipt_sha256 = providerDeploymentReceiptSha256(candidateDeployment.receipt);
+
+  const seen = { baseline: new Set(), candidate: new Set() };
+  for (const [arm, dep, versionId] of [
+    ["baseline", baselineDeployment, baselineVersion],
+    ["candidate", candidateDeployment, candidateVersion],
+  ]) {
+    const { transport, overrideHeaders } = liveFlaglessCollectorRetentionTransport({
+      retainEveryK: 1,
+      warehouseAttemptsPerInput: 200,
+      versionId,
+    });
+    const result = await transport.collectWarehouseRun({
+      label: arm,
+      revision: dep.receipt.production_health.revision,
+      deployment: dep,
+      workloadId: "version-target-proof",
+      cohorts: WAREHOUSE_EXPERIMENT_BASE_ROUTES,
+      samplesPerCohort: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+      maxEvents: 10_000,
+    });
+    assert.equal(result.status, "complete", `${arm} collect failed: ${result.reason}`);
+    const expected = `cityscroll-worker="${versionId}"`;
+    assert.ok(overrideHeaders().length > 0);
+    assert.ok(overrideHeaders().every((value) => value === expected), `${arm} probes must all carry ${expected}`);
+    for (const value of overrideHeaders()) seen[arm].add(value);
+    // Retained samples must bind the targeted script version, not a split percentage.
+    for (const cohort of WAREHOUSE_EXPERIMENT_BASE_ROUTES) {
+      assert.ok(result.cohorts[cohort].every((sample) => sample.script_version_id === versionId));
+    }
+  }
+  assert.equal(seen.baseline.size, 1);
+  assert.equal(seen.candidate.size, 1);
+  assert.equal([...seen.baseline][0], `cityscroll-worker="${baselineVersion}"`);
+  assert.equal([...seen.candidate][0], `cityscroll-worker="${candidateVersion}"`);
+  // Candidate targeting is the Version-Overrides header on the arm deployment id;
+  // it does not depend on the staged 5% traffic split.
 });
 
 function warehouseIsolateCondition(raw) {
@@ -835,7 +1060,7 @@ function liveFlaglessWarehouseTransport() {
   });
   transport.collectProviderEvents = async ({ execute }) => {
     events.length = 0;
-    await execute(new AbortController().signal);
+    await execute(new AbortController().signal, { events });
     return [...events];
   };
   transport.acquireSplitDeployments = async () => ({

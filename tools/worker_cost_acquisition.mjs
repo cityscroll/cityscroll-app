@@ -368,6 +368,30 @@ function selectConditionedEvents(eventIndex, expectations, cohort, count) {
   return selected;
 }
 
+/** Count how many collector expectations already have exactly one owned provider event. */
+function countMatchedCollectorExpectations(events, expectations) {
+  if (!Array.isArray(events) || expectations.length === 0) return 0;
+  const eventIndex = providerEventsByProbeHeader(events);
+  let matched = 0;
+  for (const expectation of expectations) {
+    try {
+      selectOwnedHttpEvent(eventIndex.get(expectation.header) || [], expectation, "collector-overhead");
+      matched += 1;
+    } catch {}
+  }
+  return matched;
+}
+
+/**
+ * Collector oversample budget: attempt until N retained, bounded by leftover
+ * event-cap room after base probe sends (optimistic 1:1). Perfect retention
+ * early-stops at N via live event peek during execute.
+ */
+function collectorOversampleMaxAttempts({ collectorSampleCount, baseProbeCount, maxEvents }) {
+  const leftover = Math.max(0, maxEvents - baseProbeCount);
+  return Math.max(collectorSampleCount, leftover);
+}
+
 function correctnessFingerprint(expectation) {
   const correctness = expectation?.receipt?.result?.correctness;
   return ["input_digest", "joins_digest", "provenance_digest", "miss_digest", "freshness_digest"]
@@ -537,7 +561,10 @@ export function createLiveWorkerCostTransport({
         });
         await heartbeat();
         scheduleHeartbeat();
-        await execute?.(controller.signal);
+        // Second arg exposes the live events buffer so adaptive collectors can
+        // early-stop once N owned matches are already visible (perfect-retention
+        // tests keep the same request count; live low-retention oversamples).
+        await execute?.(controller.signal, { events });
         const requestedRemaining = Math.max(0, endsAt - now());
         const settle = execute
           ? Math.min(Number(env.WORKER_COST_LIVE_TAIL_SETTLE_MS || 10_000), MAX_COLLECTOR_SECONDS * 1000)
@@ -583,7 +610,11 @@ export function createLiveWorkerCostTransport({
       const attempts = Array.from({ length: warehouseAttemptsPerInput }, (_, index) => (
         [...workloadsByBase.entries()].map(([base, workload]) => ({ base, workload, index }))
       )).flat();
-      const collectorAttempts = Array.from({ length: collectorSampleCount }, (_, index) => index);
+      const collectorMaxAttempts = collectorOversampleMaxAttempts({
+        collectorSampleCount,
+        baseProbeCount: attempts.length,
+        maxEvents,
+      });
       let expectations = [];
       let collectorExpectations = [];
       const started = now();
@@ -593,13 +624,42 @@ export function createLiveWorkerCostTransport({
           from: new Date(started).toISOString(),
           to: new Date(started + MAX_COLLECTOR_SECONDS * 1000).toISOString(),
           limit: maxEvents,
-          execute: async (signal) => {
+          execute: async (signal, live = {}) => {
             expectations = await mapConcurrent(attempts, WAREHOUSE_PROBE_CONCURRENCY, signal, ({ base, workload, index }) => (
               executeWorkload(workload, workloadId, deployment, `cost-${label}-${base}-${index}`, signal)
             ));
-            collectorExpectations = await mapConcurrent(collectorAttempts, WAREHOUSE_PROBE_CONCURRENCY, signal, (index) => (
-              executeWorkload(plan.collector_workload, workloadId, deployment, `cost-${label}-collector-${index}`, signal)
-            ));
+            // Adaptive collector: attempt-until-N retained within leftover event
+            // budget. When the transport exposes the live events buffer, peek it
+            // so perfect retention early-stops at collectorSampleCount sends.
+            // When events only appear after settle (live wrangler-tail), matched
+            // stays low during execute and the loop oversamples up to the cap.
+            const liveEvents = Array.isArray(live.events) ? live.events : null;
+            if (!liveEvents) {
+              const fill = Array.from({ length: collectorMaxAttempts }, (_, index) => index);
+              collectorExpectations = await mapConcurrent(fill, WAREHOUSE_PROBE_CONCURRENCY, signal, (index) => (
+                executeWorkload(plan.collector_workload, workloadId, deployment, `cost-${label}-collector-${index}`, signal)
+              ));
+              return;
+            }
+            let nextIndex = 0;
+            while (nextIndex < collectorMaxAttempts) {
+              if (signal?.aborted) throw new Error("cost workload collection was cancelled");
+              const matched = countMatchedCollectorExpectations(liveEvents, collectorExpectations);
+              if (matched >= collectorSampleCount) break;
+              const shortfall = Math.max(collectorSampleCount - matched, 1);
+              const batchSize = Math.min(
+                WAREHOUSE_PROBE_CONCURRENCY,
+                shortfall,
+                collectorMaxAttempts - nextIndex,
+              );
+              if (batchSize <= 0) break;
+              const batchIndexes = Array.from({ length: batchSize }, (_, offset) => nextIndex + offset);
+              const batch = await mapConcurrent(batchIndexes, WAREHOUSE_PROBE_CONCURRENCY, signal, (index) => (
+                executeWorkload(plan.collector_workload, workloadId, deployment, `cost-${label}-collector-${index}`, signal)
+              ));
+              collectorExpectations.push(...batch);
+              nextIndex += batchSize;
+            }
           },
         });
       } catch (error) {
@@ -645,11 +705,13 @@ export function createLiveWorkerCostTransport({
             }
           }
         }
-        const collectors = collectorExpectations.map((expectation) => ({
-          expectation,
-          event: selectOwnedHttpEvent(eventIndex.get(expectation.header) || [], expectation, "collector-overhead"),
-        }));
-        if (collectors.length < collectorSampleCount) throw new Error("collector-overhead provider samples are incomplete");
+        // Select first N matched collector events (oversample sends may exceed N).
+        const collectors = selectConditionedEvents(
+          eventIndex,
+          collectorExpectations,
+          "collector-overhead",
+          collectorSampleCount,
+        );
         for (const cohort of cohorts) {
           retained[cohort] = conditioned[cohort].map(({ expectation, event }, index) => {
             const collector = collectors[collectorIndex++].event;
