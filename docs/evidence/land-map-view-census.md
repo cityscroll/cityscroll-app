@@ -27,7 +27,7 @@ Unmapped project ids: 2020M0385, 2020K0444, 2024Q0135, P2012X0048, 2020Q0317, 20
 | publisher_point | 0 |
 | property_coordinate | 0 |
 | geometry_representative_point | 0 |
-| List snapshot bytes | 342573 |
+| List snapshot bytes | 1766892 |
 | New publisher work | false |
 
 Exact-BBL projects without a retained centroid: 2020M0385, 2020K0444, 2024Q0135, P2012X0048, 2020Q0317, 2023M0452.
@@ -42,7 +42,7 @@ Projects with no retained WH-06 BBL: 2025M0252.
 
 | Artifact | Vintage / identity | SHA-256 |
 | --- | --- | --- |
-| `site/data/land_default_ulurp.json` | 2026-10-17T01:28:46.766Z | `6e1ddbb7849cd379115a00c03046b0f20537774413b2913b8b744bb6d9b6e36f` |
+| `site/data/land_default_ulurp.json` | 2026-10-21T12:36:39.325Z | `7729c5278a16826148fd7c74ab19a6bc577cfe8a80ea9ec4c39256c1a18386bf` |
 | `site/data/zap_bbl_warehouse_lookup.json` | 2026-10-05T17:35:26.970Z (WH-06, 2iga-a6mk) | `86d7a10e1c00935ae172780f4f25c1c447c0b48ce49b1614be7b2acc15c0257e` |
 | `site/data/bbl_mappluto_centroids_lookup.json` | 2026-10-09T18:54:04.150Z (mappluto_pluto_csv) | `d81945e19d2549be8ff619912c1c051238ee50ad6da4df677c93875dc35781c5` |
 

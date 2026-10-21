@@ -1,9 +1,9 @@
 {
   "schema": "cityscroll.land_place_generation_manifest.v1",
-  "generation_id": "96687c01fc074006add44ce941dc862ee23ccc184d18ef8c843bce4e8d054df1",
-  "built_at": "2026-10-17T01:53:31.113Z",
+  "generation_id": "6948c7b15b746cb27d73f5f28675b43e878a81b5b22af1a06fffdd8cf6500946",
+  "built_at": "2026-10-21T12:51:06.712Z",
   "input_hashes": {
-    "aggregate": "2dc7c6531e19829742400de00af393c0e52a0f7bd66f7967e6c74b11f4ffe012",
+    "aggregate": "bb282a00fdaa15ce5f67a0a0bdcf1fb9ecb6bdf047d6711ef393a314ed00d769",
     "boundary_vintages": {
       "borough": "2026-05-26",
       "community_district": "2026-05-26",
@@ -15,9 +15,9 @@
     "address_index_identity": "8e09a17cbe4b957e7d2905852cb10b7295ddf814f7defdceccca75685550687b"
   },
   "source_dates": {
-    "catalog_content_id": "fnv1a32:199a18c8:244",
-    "catalog_materialized_at": "2026-10-17T01:53:31.113Z",
-    "catalog_generated_at": "2026-10-17T01:28:46.766Z",
+    "catalog_content_id": "fnv1a32:50285f23:244",
+    "catalog_materialized_at": "2026-10-21T12:51:06.712Z",
+    "catalog_generated_at": "2026-10-21T12:36:39.325Z",
     "bbl_materialized_at": "2026-10-05T17:35:26.970Z",
     "parcel_coordinate_vintage": "pluto_25v4",
     "boundary_vintages": {
@@ -31,17 +31,17 @@
   "project_count": 244,
   "consumers": {
     "index": {
-      "generation_id": "96687c01fc074006add44ce941dc862ee23ccc184d18ef8c843bce4e8d054df1",
-      "content_sha256": "5320157df8a69585e0cbc79d6f991810cfeded9b91f0cd10b6a840f069e5b525"
+      "generation_id": "6948c7b15b746cb27d73f5f28675b43e878a81b5b22af1a06fffdd8cf6500946",
+      "content_sha256": "d303bc4169c2c62eadc77ae23567867be163c3d74429bec842e8cdb61725d81d"
     },
     "evidence": {
-      "generation_id": "96687c01fc074006add44ce941dc862ee23ccc184d18ef8c843bce4e8d054df1",
-      "content_sha256": "3d45c49519e18edf362a5b020ecb8b376a382352f10bbb511c5296a31fece088"
+      "generation_id": "6948c7b15b746cb27d73f5f28675b43e878a81b5b22af1a06fffdd8cf6500946",
+      "content_sha256": "7f78c9f4eba3f62e05abe374918a1d666e9c02a6753cf7a810a93e3a2dd65269"
     },
     "reverse": {
-      "generation_id": "96687c01fc074006add44ce941dc862ee23ccc184d18ef8c843bce4e8d054df1",
+      "generation_id": "6948c7b15b746cb27d73f5f28675b43e878a81b5b22af1a06fffdd8cf6500946",
       "content_sha256": "aba14e86190abf28ae6a452ec81add8387b42258e091ba8e16937ba1ab867e4e"
     }
   },
-  "active_generation": "96687c01fc074006add44ce941dc862ee23ccc184d18ef8c843bce4e8d054df1"
+  "active_generation": "6948c7b15b746cb27d73f5f28675b43e878a81b5b22af1a06fffdd8cf6500946"
 }
