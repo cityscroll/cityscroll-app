@@ -115,6 +115,99 @@ function httpRequest(event) {
   return event?.event?.request || event?.$workers?.event?.request || event?.request;
 }
 
+/**
+ * Normalize classic `wrangler tail --format json` invocation objects into the
+ * `$workers`-shaped envelope selectOwnedHttpEvent / sanitizeNativeInvocation expect.
+ * Observability live-tail events that already carry `$workers.scriptVersion.id` pass through.
+ */
+export function normalizeWranglerTailEvent(raw) {
+  if (!raw || typeof raw !== "object") return null;
+  if (raw.$workers?.scriptVersion?.id) return raw;
+  const scriptVersion = raw.scriptVersion || null;
+  if (!scriptVersion?.id) return null;
+  const event = raw.event || null;
+  const cpuTime = raw.cpuTime;
+  return {
+    ...raw,
+    $workers: {
+      cpuTimeMs: cpuTime,
+      outcome: raw.outcome,
+      scriptVersion,
+      event,
+      eventType: raw.eventType || (event?.request ? "fetch" : undefined),
+    },
+    $metadata: raw.$metadata || {},
+    logs: raw.logs || [],
+    exceptions: raw.exceptions || [],
+    event,
+    scriptVersion,
+    cpuTime,
+    outcome: raw.outcome,
+  };
+}
+
+/**
+ * Extract complete JSON values from a wrangler tail stdout buffer.
+ * wrangler@4.x `--format json` may emit pretty-printed multi-line objects; a
+ * line-oriented JSON.parse yields zero complete events (C6 Path B failure mode).
+ * Accepts NDJSON one-object-per-line as well.
+ */
+export function parseWranglerTailJsonStream(text) {
+  if (typeof text !== "string" || !text) return [];
+  const values = [];
+  let i = 0;
+  while (i < text.length) {
+    while (i < text.length && /\s/.test(text[i])) i += 1;
+    if (i >= text.length) break;
+    if (text[i] !== "{" && text[i] !== "[") {
+      // Skip non-JSON noise (wrangler banners) until the next value.
+      const next = text.indexOf("{", i);
+      if (next < 0) break;
+      i = next;
+      continue;
+    }
+    const start = i;
+    let depth = 0;
+    let inString = false;
+    let escape = false;
+    for (; i < text.length; i += 1) {
+      const ch = text[i];
+      if (inString) {
+        if (escape) escape = false;
+        else if (ch === "\\") escape = true;
+        else if (ch === "\"") inString = false;
+        continue;
+      }
+      if (ch === "\"") {
+        inString = true;
+        continue;
+      }
+      if (ch === "{" || ch === "[") depth += 1;
+      else if (ch === "}" || ch === "]") {
+        depth -= 1;
+        if (depth === 0) {
+          i += 1;
+          try {
+            values.push(JSON.parse(text.slice(start, i)));
+          } catch {
+            /* skip malformed fragment */
+          }
+          break;
+        }
+      }
+    }
+    if (depth !== 0) break; // truncated trailing object
+  }
+  return values;
+}
+
+/** Parse + normalize a wrangler tail stdout capture into owned-matcher events. */
+export function providerEventsFromWranglerTailStream(text) {
+  return parseWranglerTailJsonStream(text)
+    .map((raw) => normalizeWranglerTailEvent(raw))
+    .filter(Boolean);
+}
+
 export function selectOwnedHttpEvent(events, expectation, cohort) {
   const coldStart = parseColdStartFlagRaw(cohort);
   const matches = events.filter((event) => {

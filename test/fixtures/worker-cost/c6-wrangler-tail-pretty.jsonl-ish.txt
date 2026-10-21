@@ -1,0 +1,138 @@
+{
+    "wallTime": 3,
+    "cpuTime": 3,
+    "truncated": false,
+    "executionModel": "stateless",
+    "outcome": "ok",
+    "scriptVersion": {
+        "id": "16d47215-d0ae-470a-a9c6-8b1d3c6c0508"
+    },
+    "scriptName": "cityscroll-worker",
+    "exceptions": [],
+    "logs": [
+        {
+            "message": [
+                "{\"schema\":\"cityscroll.worker_cost_probe.v1\",\"tag\":\"cost-c6-synth-health-00\",\"series\":\"cost-c6-synth-series\",\"cohort\":\"health\",\"workload_hash\":\"dd9ed3be54c85e658548ec662466484940764a9c6f250ef3a0f7c75fbcb8c696\",\"execution_mode\":\"production-request\",\"elapsed_ms\":0,\"operations\":{\"kv_reads\":0,\"kv_writes\":0,\"d1_rows_read\":0,\"d1_rows_written\":0,\"queue_writes\":0,\"analytics_points\":0},\"attempted_writes\":{\"kv_writes\":0,\"d1_writes\":0,\"queue_writes\":0,\"analytics_points\":0},\"operation_counts\":{\"kv_reads\":{\"attempted\":0,\"confirmed\":0},\"kv_writes\":{\"attempted\":0,\"confirmed\":0},\"d1_rows_read\":{\"attempted\":0,\"confirmed\":0},\"d1_rows_written\":{\"attempted\":0,\"confirmed\":0},\"storage_bytes\":{\"attempted\":0,\"confirmed\":0},\"queue_writes\":{\"attempted\":0,\"confirmed\":0},\"analytics_points\":{\"attempted\":0,\"confirmed\":0}},\"result\":{\"status\":200,\"body_sha256\":\"26c0382fcae19fe16cebafc9fb5596dfd97e0fb6eae68a6dc1d1ab324b74a420\",\"correctness\":{\"input_digest\":\"5e1fa424a1ad87cddbcbb8fa813ecfd258c62e4a5b9b940bc8f106c6d0015571\",\"joins_digest\":\"2919bcb8934bf2aefe3858aa5bb4c1bc29b0e294fbb370107bff550b76579d17\",\"provenance_digest\":\"e22180b36ef9166ef495c4df82944f06406eb6f2e7780140b1eedc05f3c605d4\",\"miss_digest\":\"775d21a9f77e613b3b245908a1c45421e8f3913f84f21db6c0e09f26878444a7\",\"freshness_digest\":\"474309dfd6fae5557bae5dd5b3e6c4877f7a0582f37674c95a2ca9fabeb0d001\"}}}"
+            ],
+            "level": "log",
+            "timestamp": 1792548295904
+        }
+    ],
+    "eventTimestamp": 1792548294609,
+    "event": {
+        "request": {
+            "url": "https://api.cityscroll.org/admin/cost-control-probe",
+            "method": "POST",
+            "headers": {
+                "accept": "*/*",
+                "accept-encoding": "gzip, br",
+                "authorization": "REDACTED",
+                "cf-connecting-ip": "REDACTED",
+                "cf-ipcountry": "US",
+                "cf-ray": "REDACTED_RAY",
+                "cf-visitor": "{\"scheme\":\"https\"}",
+                "cloudflare-workers-version-overrides": "cityscroll-worker=\"16d47215-d0ae-470a-a9c6-8b1d3c6c0508\"",
+                "connection": "Keep-Alive",
+                "content-type": "application/json",
+                "host": "api.cityscroll.org",
+                "user-agent": "curl/8.7.1",
+                "x-cityscroll-cost-cohort": "health",
+                "x-cityscroll-cost-probe": "cost-c6-synth-health-00",
+                "x-cityscroll-cost-series": "cost-c6-synth-series",
+                "x-cityscroll-cost-workload": "dd9ed3be54c85e658548ec662466484940764a9c6f250ef3a0f7c75fbcb8c696",
+                "x-forwarded-proto": "https",
+                "x-real-ip": "REDACTED"
+            },
+            "cf": {
+                "httpProtocol": "HTTP/2",
+                "requestHeaderNames": [
+                    ":method",
+                    ":scheme",
+                    ":authority",
+                    ":path",
+                    "user-agent",
+                    "accept",
+                    "authorization",
+                    "content-type",
+                    "cloudflare-workers-version-overrides",
+                    "x-cityscroll-cost-probe",
+                    "x-cityscroll-cost-cohort",
+                    "x-cityscroll-cost-workload",
+                    "x-cityscroll-cost-series"
+                ]
+            }
+        },
+        "response": {
+            "status": 200
+        }
+    }
+}
+{
+    "wallTime": 1,
+    "cpuTime": 0,
+    "truncated": false,
+    "executionModel": "stateless",
+    "outcome": "ok",
+    "scriptVersion": {
+        "id": "16d47215-d0ae-470a-a9c6-8b1d3c6c0508"
+    },
+    "scriptName": "cityscroll-worker",
+    "exceptions": [],
+    "logs": [
+        {
+            "message": [
+                "{\"schema\":\"cityscroll.worker_cost_probe.v1\",\"tag\":\"cost-c6-synth-health-00\",\"series\":\"cost-c6-synth-series\",\"cohort\":\"health\",\"workload_hash\":\"dd9ed3be54c85e658548ec662466484940764a9c6f250ef3a0f7c75fbcb8c696\",\"execution_mode\":\"production-request\",\"elapsed_ms\":0,\"operations\":{\"kv_reads\":0,\"kv_writes\":0,\"d1_rows_read\":0,\"d1_rows_written\":0,\"queue_writes\":0,\"analytics_points\":0},\"attempted_writes\":{\"kv_writes\":0,\"d1_writes\":0,\"queue_writes\":0,\"analytics_points\":0},\"operation_counts\":{\"kv_reads\":{\"attempted\":0,\"confirmed\":0},\"kv_writes\":{\"attempted\":0,\"confirmed\":0},\"d1_rows_read\":{\"attempted\":0,\"confirmed\":0},\"d1_rows_written\":{\"attempted\":0,\"confirmed\":0},\"storage_bytes\":{\"attempted\":0,\"confirmed\":0},\"queue_writes\":{\"attempted\":0,\"confirmed\":0},\"analytics_points\":{\"attempted\":0,\"confirmed\":0}},\"result\":{\"status\":200,\"body_sha256\":\"26c0382fcae19fe16cebafc9fb5596dfd97e0fb6eae68a6dc1d1ab324b74a420\",\"correctness\":{\"input_digest\":\"5e1fa424a1ad87cddbcbb8fa813ecfd258c62e4a5b9b940bc8f106c6d0015571\",\"joins_digest\":\"2919bcb8934bf2aefe3858aa5bb4c1bc29b0e294fbb370107bff550b76579d17\",\"provenance_digest\":\"e22180b36ef9166ef495c4df82944f06406eb6f2e7780140b1eedc05f3c605d4\",\"miss_digest\":\"775d21a9f77e613b3b245908a1c45421e8f3913f84f21db6c0e09f26878444a7\",\"freshness_digest\":\"474309dfd6fae5557bae5dd5b3e6c4877f7a0582f37674c95a2ca9fabeb0d001\"}}}"
+            ],
+            "level": "log",
+            "timestamp": 1792548296830
+        }
+    ],
+    "eventTimestamp": 1792548296830,
+    "event": {
+        "request": {
+            "url": "https://api.cityscroll.org/admin/cost-control-probe",
+            "method": "POST",
+            "headers": {
+                "accept": "*/*",
+                "accept-encoding": "gzip, br",
+                "authorization": "REDACTED",
+                "cf-connecting-ip": "REDACTED",
+                "cf-ipcountry": "US",
+                "cf-ray": "REDACTED_RAY",
+                "cf-visitor": "{\"scheme\":\"https\"}",
+                "cloudflare-workers-version-overrides": "cityscroll-worker=\"16d47215-d0ae-470a-a9c6-8b1d3c6c0508\"",
+                "connection": "Keep-Alive",
+                "content-type": "application/json",
+                "host": "api.cityscroll.org",
+                "user-agent": "curl/8.7.1",
+                "x-cityscroll-cost-cohort": "health",
+                "x-cityscroll-cost-probe": "cost-c6-synth-health-00",
+                "x-cityscroll-cost-series": "cost-c6-synth-series",
+                "x-cityscroll-cost-workload": "dd9ed3be54c85e658548ec662466484940764a9c6f250ef3a0f7c75fbcb8c696",
+                "x-forwarded-proto": "https",
+                "x-real-ip": "REDACTED"
+            },
+            "cf": {
+                "httpProtocol": "HTTP/2",
+                "requestHeaderNames": [
+                    ":method",
+                    ":scheme",
+                    ":authority",
+                    ":path",
+                    "user-agent",
+                    "accept",
+                    "authorization",
+                    "content-type",
+                    "cloudflare-workers-version-overrides",
+                    "x-cityscroll-cost-probe",
+                    "x-cityscroll-cost-cohort",
+                    "x-cityscroll-cost-workload",
+                    "x-cityscroll-cost-series"
+                ]
+            }
+        },
+        "response": {
+            "status": 200
+        }
+    }
+}
