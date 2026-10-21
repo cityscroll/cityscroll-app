@@ -737,6 +737,7 @@ function liveFlaglessCollectorRetentionTransport({
   baseRetainEveryK = 1,
   warehouseAttemptsPerInput = 1_800,
   versionId = deployment(REVISION).receipt.cloudflare_version.id,
+  collectorMillisecondsPerSend = 0,
 } = {}) {
   const workloads = WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => ({
     cohort,
@@ -759,6 +760,7 @@ function liveFlaglessCollectorRetentionTransport({
   let requests = 0;
   let collectorSends = 0;
   let collectorRetained = 0;
+  let currentTime = Date.parse("2026-10-09T08:00:00Z");
   const baseSends = new Map();
   const overrideHeaders = [];
   const transport = createLiveWorkerCostTransport({
@@ -771,7 +773,7 @@ function liveFlaglessCollectorRetentionTransport({
       WORKER_COST_MEASUREMENT_PLAN: JSON.stringify(measurement),
     },
     warehouseAttemptsPerInput,
-    now: () => Date.parse("2026-10-09T08:00:00Z"),
+    now: () => currentTime,
     fetchImpl: async (url, init) => {
       if (!url.endsWith("/admin/cost-control-probe")) throw new Error(`unexpected fetch ${url}`);
       requests += 1;
@@ -796,6 +798,7 @@ function liveFlaglessCollectorRetentionTransport({
       let retain = true;
       if (isCollector) {
         collectorSends += 1;
+        currentTime += collectorMillisecondsPerSend;
         retain = retainEveryK <= 1 || (collectorSends % retainEveryK === 0);
         if (retain) collectorRetained += 1;
       } else {
@@ -941,6 +944,27 @@ test("adaptive collector blocks when oversample budget cannot retain N", async (
   const retainedBaseSamples = WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT * WAREHOUSE_EXPERIMENT_BASE_ROUTES.length;
   const leftover = 10_000 - retainedBaseSamples;
   assert.equal(collectorSends(), leftover);
+});
+
+test("adaptive collector stops when the 30-minute collection deadline is reached", async () => {
+  const { transport, collectorSends } = liveFlaglessCollectorRetentionTransport({
+    retainEveryK: 50_000,
+    warehouseAttemptsPerInput: 200,
+    collectorMillisecondsPerSend: 1_000,
+  });
+  const result = await transport.collectWarehouseRun({
+    label: "baseline",
+    revision: REVISION,
+    deployment: deployment(REVISION),
+    workloadId: "fixed-warehouse-test",
+    cohorts: WAREHOUSE_EXPERIMENT_BASE_ROUTES,
+    samplesPerCohort: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+    maxEvents: 10_000,
+  });
+  assert.equal(result.status, "blocked");
+  assert.equal(result.reason, "warehouse collector exceeded 30 minutes");
+  assert.ok(collectorSends() >= 1_800 && collectorSends() <= 1_832,
+    `deadline should stop within one concurrency batch, got ${collectorSends()} sends`);
 });
 
 test("owned warehouse probes target exact provider version via Cloudflare-Workers-Version-Overrides", async () => {
