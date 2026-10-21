@@ -55,10 +55,10 @@ function cleanReleaseEvaluateStdout() {
 test("Actions-log scanner flags bill and account-id leakage fixtures", () => {
   const leaked = [
     "release-evaluate wrote bill_usd: 17.9 into the step log",
-    'candidate cloudflare_account_id="8162581cb1d97e20a172031adb8a13af"',
+    'candidate cloudflare_account_id="0123456789abcdef0123456789abcdef"',
     "invoice_amount: 42.50 printed for operators",
     'monthly_bill={"usd":17.9}',
-    "Cloudflare account 8162581cb1d97e20a172031adb8a13af appeared in stdout",
+    "Cloudflare account 0123456789abcdef0123456789abcdef appeared in stdout",
     "Monthly bill total $19.99 from the cost gate",
   ];
   for (const line of leaked) {
@@ -79,7 +79,7 @@ test("Actions-log scanner rejects a release-evaluate echo that still carries bil
   const polluted = {
     pass: true,
     bill_usd: 17.9,
-    account_id: "8162581cb1d97e20a172031adb8a13af",
+    account_id: "0123456789abcdef0123456789abcdef",
   };
   const result = scanActionsLogForBillAccountLeaks(JSON.stringify(polluted, null, 2));
   assert.equal(result.ok, false);
