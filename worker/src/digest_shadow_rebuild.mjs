@@ -449,6 +449,66 @@ async function mergeCompletedSummary(env, run, items, now, contentRedlines) {
   return persistMergedSideEffects(env, run, merged, evaluationNow);
 }
 
+/**
+ * When an unscoped rebuild is enqueued for a STARTED, not-yet-finalized day
+ * (Worker STARTED recovery or admin POST), atomically transfer day ownership to
+ * that rebuild so finalize's rebuild_run_id CAS can accept it. Preserves hold
+ * and freshness stamps. No-ops when the row is absent, terminal, or already
+ * finalized. Does not require cron invocation_id match — recovery has none.
+ */
+export async function claimStartedRebuildOwnership(env, {
+  runDay,
+  rebuildRunId,
+  now = new Date(),
+} = {}) {
+  if (!env?.DB?.prepare || !runDay || !rebuildRunId) {
+    return { write_accepted: false, reason: "missing-args" };
+  }
+  const row = await env.DB.prepare(
+    "SELECT status, summary_json FROM digest_shadow_runs WHERE run_day = ?",
+  ).bind(runDay).first();
+  if (!row || row.status !== "STARTED" || !row.summary_json) {
+    return { write_accepted: false, reason: "started-row-absent" };
+  }
+  let summary;
+  try {
+    summary = JSON.parse(row.summary_json);
+  } catch {
+    return { write_accepted: false, reason: "started-row-unreadable" };
+  }
+  if (summary.rebuild_finalization_id) {
+    return { write_accepted: false, reason: "already-finalized" };
+  }
+  if (summary.rebuild_run_id === rebuildRunId && summary.phase === "rebuild_queued") {
+    return { write_accepted: true, reason: "already-owned", summary };
+  }
+  const next = {
+    ...summary,
+    status: "STARTED",
+    phase: "rebuild_queued",
+    progress_at: iso(now),
+    rebuild_run_id: rebuildRunId,
+    rebuild_complete: false,
+    repair: {
+      ...(summary.repair || {}),
+      state: "rebuild_queued",
+      affected_digest_ids: summary.repair?.affected_digest_ids || [],
+      rerun_method: "POST /admin/digest-shadow",
+      rerun_scope: "checkpointed_digest_queue",
+      rebuild_run_id: rebuildRunId,
+    },
+  };
+  // Keep hold / freshness / invocation_id from the prior STARTED handoff.
+  const write = await env.DB.prepare(`UPDATE digest_shadow_runs SET summary_json = ?
+    WHERE run_day = ? AND status = 'STARTED'
+    AND json_extract(summary_json, '$.rebuild_finalization_id') IS NULL`)
+    .bind(JSON.stringify(next), runDay).run();
+  return {
+    write_accepted: Number(write?.meta?.changes) > 0,
+    summary: next,
+  };
+}
+
 export async function createDigestShadowRebuild(env, {
   affectedDigestIds = null,
   now = new Date(),
@@ -476,6 +536,15 @@ export async function createDigestShadowRebuild(env, {
   } catch (error) {
     await updateRun(env.DB, runId, { status: "failed", error: String(error?.message || error), updated_at: iso(now) });
     throw error;
+  }
+  // Unscoped rebuilds for a STARTED day (recovery / admin POST) must own the
+  // handoff before finalize; cron already stamps via markDigestShadowRebuildQueued.
+  if (requested == null) {
+    await claimStartedRebuildOwnership(env, {
+      runDay: targetDay,
+      rebuildRunId: runId,
+      now,
+    });
   }
   return {
     run_id: runId,
