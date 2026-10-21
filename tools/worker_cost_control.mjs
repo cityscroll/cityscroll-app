@@ -11,6 +11,7 @@ import {
   validateWorkerCostProfile,
   workerCostEnforcementMode,
 } from "./lib/worker_cost_control.mjs";
+import { scanActionsLogForBillAccountLeaks } from "./lib/worker_cost_actions_log_guard.mjs";
 import { acquireSplitDeploymentBindings } from "./cloudflare_deployment_binding.mjs";
 
 const WORKER_DIRECTORY = join(dirname(fileURLToPath(import.meta.url)), "..", "worker");
@@ -116,8 +117,47 @@ export async function runWorkerCostControl(argv, {
   return result;
 }
 
-if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
-  const result = await runWorkerCostControl(process.argv.slice(2));
-  console.log(JSON.stringify(result, null, 2));
+/**
+ * Emit CLI JSON only after the Actions-log bill/account guard accepts it.
+ * On refusal, print a value-free diagnostic (rule/path only) and exit non-zero
+ * so public Actions logs never receive the polluted payload.
+ */
+function emitGuardedCliResult(result, { path = "worker_cost_control:stdout" } = {}) {
+  const payload = JSON.stringify(result, null, 2);
+  const scan = scanActionsLogForBillAccountLeaks(payload, { path });
+  if (!scan.ok) {
+    console.error(JSON.stringify({
+      ok: false,
+      error: "worker_cost_control emission refused: bill or account identifiers in result",
+      findings: scan.findings,
+    }));
+    process.exitCode = 1;
+    return;
+  }
+  console.log(payload);
   if (result?.pass === false) process.exitCode = 1;
+}
+
+function emitGuardedCliError(err, { path = "worker_cost_control:stderr" } = {}) {
+  const message = err instanceof Error ? err.message : String(err);
+  const scan = scanActionsLogForBillAccountLeaks(message, { path });
+  if (!scan.ok) {
+    console.error(JSON.stringify({
+      ok: false,
+      error: "worker_cost_control emission refused: bill or account identifiers in error",
+      findings: scan.findings,
+    }));
+  } else {
+    console.error(message);
+  }
+  process.exitCode = 1;
+}
+
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+  try {
+    const result = await runWorkerCostControl(process.argv.slice(2));
+    emitGuardedCliResult(result);
+  } catch (err) {
+    emitGuardedCliError(err);
+  }
 }

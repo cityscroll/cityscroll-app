@@ -21,6 +21,7 @@ import {
   providerDeploymentReceiptSha256,
   workerCostEnforcementMode,
 } from "./lib/worker_cost_control.mjs";
+import { scanCliEmissionSurfaces } from "./lib/worker_cost_actions_log_guard.mjs";
 
 const revision = "b".repeat(40);
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -271,6 +272,66 @@ test("release CLI gates the exact candidate revision from configured evidence", 
   }
 });
 
+test("release-evaluate CLI stdout and stderr stay free of bill and account identifiers", () => {
+  // Real emission-path boundary: spawn the same CLI the deploy-worker step runs,
+  // then scan stdout/stderr (clean pass + adversarial reject). Findings must be
+  // value-free so a distinctive sentinel never reappears in diagnostics.
+  const ACCOUNT_SENTINEL = "f00dcafe0123456789abcdef01234567";
+  const BILL_SENTINEL = 91731.55;
+  const { baseline, candidate, acquiredDeployments } = pair({ native_cpu_ms: 7 });
+  const dir = mkdtempSync(join(tmpdir(), "cityscroll-release-cli-emission-"));
+  const acquiredPath = join(dir, "split.json");
+  try {
+    writeFileSync(acquiredPath, JSON.stringify(acquiredDeployments));
+    const runCli = (candidateEvidence) => spawnSync(process.execPath, [
+      "tools/worker_cost_control.mjs", "release-evaluate",
+      "--baseline-env", "TEST_WORKER_COST_BASELINE",
+      "--candidate-env", "TEST_WORKER_COST_CANDIDATE",
+      "--acquired-split-deployments", acquiredPath,
+      "--expected-candidate-revision", candidate.deployed_revision,
+    ], {
+      cwd: ROOT,
+      encoding: "utf8",
+      env: {
+        ...process.env,
+        TEST_WORKER_COST_BASELINE: JSON.stringify(baseline),
+        TEST_WORKER_COST_CANDIDATE: JSON.stringify(candidateEvidence),
+      },
+    });
+
+    const clean = runCli(candidate);
+    assert.equal(clean.status, 0, clean.stderr);
+    const cleanScan = scanCliEmissionSurfaces({
+      stdout: clean.stdout || "",
+      stderr: clean.stderr || "",
+      path: "release-evaluate:clean",
+    });
+    assert.equal(cleanScan.ok, true, JSON.stringify(cleanScan.findings));
+    assert.equal((clean.stdout || "").includes("bill_usd"), false);
+    assert.equal((clean.stdout || "").includes("account_id"), false);
+
+    const adversarial = structuredClone(candidate);
+    adversarial.bill_usd = BILL_SENTINEL;
+    adversarial.account_id = ACCOUNT_SENTINEL;
+    const rejected = runCli(adversarial);
+    assert.notEqual(rejected.status, 0);
+    const combined = `${rejected.stdout || ""}\n${rejected.stderr || ""}`;
+    assert.equal(combined.includes(ACCOUNT_SENTINEL), false);
+    assert.equal(combined.includes(String(BILL_SENTINEL)), false);
+    const rejectScan = scanCliEmissionSurfaces({
+      stdout: rejected.stdout || "",
+      stderr: rejected.stderr || "",
+      path: "release-evaluate:rejected",
+    });
+    assert.equal(rejectScan.ok, true, JSON.stringify(rejectScan.findings));
+    for (const finding of rejectScan.findings) {
+      assert.equal(Object.hasOwn(finding, "excerpt"), false);
+    }
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("fresh baseline data must be actual production evidence, ordered before the candidate, and workload-matched", () => {
   // Named A3 fresh-baseline fixture: baseline is actual, precedes candidate, and matches workload.
   const ok = pair({ native_cpu_ms: 7 });
@@ -294,7 +355,7 @@ test("fresh baseline data must be actual production evidence, ordered before the
 
 test("account identifiers and bill values are forbidden in public all-meter gate receipts", () => {
   for (const [key, value] of [
-    ["account_id", "8162581cb1d97e20a172031adb8a13af"],
+    ["account_id", "0123456789abcdef0123456789abcdef"],
     ["cloudflare_account_id", "acct-private"],
     ["bill_usd", 17.9],
     ["invoice_amount", 17.9],
