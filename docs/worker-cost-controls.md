@@ -308,7 +308,7 @@ storage, Queue, and Analytics Engine vector. Bounded concurrent attempts stay
 inside the same 30-minute and 10,000-event ceiling. The collector-overhead
 cohort oversamples adaptively: it attempts until the required retained count
 is visible in the live-tail buffer, bounded by leftover room under the
-10,000-event ceiling after base-route probe sends. Perfect retention
+10,000-event ceiling after the required retained base-route samples. Perfect retention
 early-stops at exactly the retained count; low wrangler-tail retention
 continues within that leftover budget and still fails incomplete when the
 budget cannot retain enough samples. Owned HTTP probes on each arm target the

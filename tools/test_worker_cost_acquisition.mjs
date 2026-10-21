@@ -734,7 +734,8 @@ test("warehouse runner reports incomplete cold_start_flag_raw=1 coverage", async
  */
 function liveFlaglessCollectorRetentionTransport({
   retainEveryK = 1,
-  warehouseAttemptsPerInput = 200,
+  baseRetainEveryK = 1,
+  warehouseAttemptsPerInput = 1_800,
   versionId = deployment(REVISION).receipt.cloudflare_version.id,
 } = {}) {
   const workloads = WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => ({
@@ -758,6 +759,7 @@ function liveFlaglessCollectorRetentionTransport({
   let requests = 0;
   let collectorSends = 0;
   let collectorRetained = 0;
+  const baseSends = new Map();
   const overrideHeaders = [];
   const transport = createLiveWorkerCostTransport({
     env: {
@@ -796,6 +798,10 @@ function liveFlaglessCollectorRetentionTransport({
         collectorSends += 1;
         retain = retainEveryK <= 1 || (collectorSends % retainEveryK === 0);
         if (retain) collectorRetained += 1;
+      } else {
+        const cohortSends = (baseSends.get(cohort) || 0) + 1;
+        baseSends.set(cohort, cohortSends);
+        retain = baseRetainEveryK <= 1 || (cohortSends % baseRetainEveryK === 0);
       }
       if (retain) {
         events.push({
@@ -822,6 +828,7 @@ function liveFlaglessCollectorRetentionTransport({
     requestCount: () => requests,
     collectorSends: () => collectorSends,
     collectorRetained: () => collectorRetained,
+    eventCount: () => events.length,
     overrideHeaders: () => overrideHeaders,
   };
 }
@@ -848,8 +855,7 @@ test("adaptive collector early-stops at N under perfect retention (same request 
 });
 
 test("adaptive collector oversamples until N retained under synthetic low retention", async () => {
-  // retainEveryK=5 ≈ 0.20 retention; leftover budget after 200*5 base = 9000
-  // need 500 retained → ~2500 collector sends, well under 9000.
+  // retainEveryK=5 ≈ 0.20 retention; 500 retained need ~2500 collector sends.
   const { transport, collectorSends, collectorRetained } = liveFlaglessCollectorRetentionTransport({
     retainEveryK: 5,
     warehouseAttemptsPerInput: 200,
@@ -872,8 +878,32 @@ test("adaptive collector oversamples until N retained under synthetic low retent
   }
 });
 
+test("adaptive collector completes at production attempts under observed tail retention", async () => {
+  const { transport, collectorSends, collectorRetained, eventCount } = liveFlaglessCollectorRetentionTransport({
+    retainEveryK: 17,
+    baseRetainEveryK: 17,
+  });
+  const result = await transport.collectWarehouseRun({
+    label: "baseline",
+    revision: REVISION,
+    deployment: deployment(REVISION),
+    workloadId: "fixed-warehouse-test",
+    cohorts: WAREHOUSE_EXPERIMENT_BASE_ROUTES,
+    samplesPerCohort: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+    maxEvents: 10_000,
+  });
+  assert.equal(result.status, "complete", result.reason);
+  const collectorTarget = WAREHOUSE_EXPERIMENT_BASE_ROUTES.length * WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT;
+  assert.equal(collectorRetained(), collectorTarget);
+  assert.equal(collectorSends(), collectorTarget * 17);
+  assert.ok(eventCount() <= 10_000);
+  for (const cohort of WAREHOUSE_EXPERIMENT_BASE_ROUTES) {
+    assert.equal(result.cohorts[cohort].length, WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT);
+  }
+});
+
 test("adaptive collector blocks when oversample budget cannot retain N", async () => {
-  // retainEveryK=50 ≈ 0.02 retention; with attempts=200, leftover=9000 → ~180 retained < 500.
+  // retainEveryK=50 ≈ 0.02 retention; the 9500-send budget retains ~190 < 500.
   const { transport, collectorSends } = liveFlaglessCollectorRetentionTransport({
     retainEveryK: 50,
     warehouseAttemptsPerInput: 200,
@@ -889,8 +919,8 @@ test("adaptive collector blocks when oversample budget cannot retain N", async (
   });
   assert.equal(result.status, "blocked");
   assert.match(result.reason, /collector-overhead provider samples are incomplete/);
-  const baseProbes = 200 * WAREHOUSE_EXPERIMENT_BASE_ROUTES.length;
-  const leftover = 10_000 - baseProbes;
+  const retainedBaseSamples = WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT * WAREHOUSE_EXPERIMENT_BASE_ROUTES.length;
+  const leftover = 10_000 - retainedBaseSamples;
   assert.equal(collectorSends(), leftover);
 });
 

@@ -383,12 +383,12 @@ function countMatchedCollectorExpectations(events, expectations) {
 }
 
 /**
- * Collector oversample budget: attempt until N retained, bounded by leftover
- * event-cap room after base probe sends (optimistic 1:1). Perfect retention
- * early-stops at N via live event peek during execute.
+ * Collector oversample budget: attempt until N retained, bounded by event-cap
+ * room after the required retained base samples. Perfect retention early-stops
+ * at N via live event peek during execute.
  */
-function collectorOversampleMaxAttempts({ collectorSampleCount, baseProbeCount, maxEvents }) {
-  const leftover = Math.max(0, maxEvents - baseProbeCount);
+function collectorOversampleMaxAttempts({ collectorSampleCount, baseRetainedSampleCount, maxEvents }) {
+  const leftover = Math.max(0, maxEvents - baseRetainedSampleCount);
   return Math.max(collectorSampleCount, leftover);
 }
 
@@ -612,7 +612,7 @@ export function createLiveWorkerCostTransport({
       )).flat();
       const collectorMaxAttempts = collectorOversampleMaxAttempts({
         collectorSampleCount,
-        baseProbeCount: attempts.length,
+        baseRetainedSampleCount: workloadsByBase.size * samplesPerCohort,
         maxEvents,
       });
       let expectations = [];
@@ -644,6 +644,8 @@ export function createLiveWorkerCostTransport({
             let nextIndex = 0;
             while (nextIndex < collectorMaxAttempts) {
               if (signal?.aborted) throw new Error("cost workload collection was cancelled");
+              if (now() >= started + MAX_COLLECTOR_SECONDS * 1000) break;
+              if (liveEvents.length >= maxEvents) break;
               const matched = countMatchedCollectorExpectations(liveEvents, collectorExpectations);
               if (matched >= collectorSampleCount) break;
               const shortfall = Math.max(collectorSampleCount - matched, 1);
@@ -651,6 +653,7 @@ export function createLiveWorkerCostTransport({
                 WAREHOUSE_PROBE_CONCURRENCY,
                 shortfall,
                 collectorMaxAttempts - nextIndex,
+                maxEvents - liveEvents.length,
               );
               if (batchSize <= 0) break;
               const batchIndexes = Array.from({ length: batchSize }, (_, offset) => nextIndex + offset);
