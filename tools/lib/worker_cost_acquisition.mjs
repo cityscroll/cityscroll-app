@@ -380,38 +380,327 @@ function warehouseRun({
   };
 }
 
+/**
+ * Matched warehouse experiment: ONE shared 30 min / 10,000-event budget across
+ * BOTH arms (baseline then candidate). Remaining time/events are passed into
+ * each collectWarehouseRun with the same AbortSignal. Exhausted budget is
+ * blocked/UNKNOWN (fail closed), never a silent per-arm 60m/20k sum.
+ */
+
+function abortError(message = "shared warehouse collector budget exhausted") {
+  const err = new Error(message);
+  err.name = "AbortError";
+  return err;
+}
+
+/**
+ * Bounded race: a never-resolving callee must still stop when the signal
+ * aborts. Passing signal alone is insufficient when the callee ignores it
+ * (shared-deadline residual — race acquireSplitDeployments).
+ */
+export function raceAbortable(promise, signal) {
+  if (signal?.aborted) return Promise.reject(abortError("deployment acquisition was cancelled"));
+  if (!signal) return promise;
+  return new Promise((resolve, reject) => {
+    let settled = false;
+    const onAbort = () => {
+      if (settled) return;
+      settled = true;
+      reject(abortError("deployment acquisition was cancelled"));
+    };
+    signal.addEventListener("abort", onAbort, { once: true });
+    Promise.resolve(promise).then(
+      (value) => {
+        if (settled) return;
+        settled = true;
+        signal.removeEventListener("abort", onAbort);
+        resolve(value);
+      },
+      (error) => {
+        if (settled) return;
+        settled = true;
+        signal.removeEventListener("abort", onAbort);
+        reject(error);
+      },
+    );
+  });
+}
+
+/**
+ * Resolve provider event usage for the shared budget.
+ * UNKNOWN is never coerced to zero.
+ * Returns { kind: "known"|"lower_bound"|"unknown", used: number|null }.
+ */
+export function resolveProviderEventUsage(result) {
+  if (!result || typeof result !== "object") {
+    return { kind: "unknown", used: null };
+  }
+  const status = result.provider_event_count_status;
+  if (status === "unknown") {
+    const lower = result.provider_event_count_lower_bound;
+    if (Number.isInteger(lower) && lower >= 0) {
+      return { kind: "lower_bound", used: lower };
+    }
+    return { kind: "unknown", used: null };
+  }
+  if (result.provider_event_count == null && result.event_count == null
+    && !Array.isArray(result.events)) {
+    // Missing count after a blocked/incomplete arm: UNKNOWN, never invent 0.
+    if (result.status && result.status !== "complete") {
+      const lower = result.provider_event_count_lower_bound;
+      if (Number.isInteger(lower) && lower >= 0) {
+        return { kind: "lower_bound", used: lower };
+      }
+      return { kind: "unknown", used: null };
+    }
+  }
+  const raw = result.provider_event_count
+    ?? result.event_count
+    ?? (Array.isArray(result.events) ? result.events.length : null);
+  if (raw == null) return { kind: "unknown", used: null };
+  const used = Number(raw);
+  if (!Number.isFinite(used) || used < 0 || !Number.isInteger(used)) {
+    return { kind: "unknown", used: null };
+  }
+  return { kind: "known", used };
+}
+
 export async function runMatchedWarehouseExperiment({
   baselineRevision,
   candidateRevision,
   transport,
   coldStartFlagCapability,
+  signal: externalSignal = null,
+  nowFn = () => Date.now(),
+  maxCollectorSeconds = MAX_COLLECTOR_SECONDS,
+  maxCollectorEvents = MAX_COLLECTOR_EVENTS,
 } = {}) {
   requireTransport(transport, ["acquireSplitDeployments", "collectWarehouseRun"]);
+  if (!Number.isFinite(maxCollectorSeconds) || maxCollectorSeconds <= 0 || maxCollectorSeconds > MAX_COLLECTOR_SECONDS) {
+    throw new Error("shared warehouse collector time budget is invalid");
+  }
+  if (!Number.isInteger(maxCollectorEvents) || maxCollectorEvents <= 0 || maxCollectorEvents > MAX_COLLECTOR_EVENTS) {
+    throw new Error("shared warehouse collector event budget is invalid");
+  }
+
+  // Whole-window deadline measured from invocation — controller/listener/timer
+  // exist BEFORE acquisition so an abort during acquire cannot grant a fresh window.
+  const startedMs = nowFn();
+  const deadlineMs = startedMs + maxCollectorSeconds * 1000;
+  const controller = new AbortController();
+  const onExternalAbort = () => {
+    try { controller.abort(); } catch { /* ignore */ }
+  };
+  if (externalSignal?.aborted) {
+    return {
+      schema: "cityscroll.warehouse_cost_acquisition.v1",
+      status: "blocked",
+      reason: "shared warehouse collector budget exhausted (cancelled before start)",
+      shared_budget: {
+        max_collector_seconds: maxCollectorSeconds,
+        max_collector_events: maxCollectorEvents,
+        events_remaining: maxCollectorEvents,
+        deadline_at: new Date(deadlineMs).toISOString(),
+        ledger: [],
+        started_at: new Date(startedMs).toISOString(),
+      },
+    };
+  }
+
+  // Resolve capability/cohorts BEFORE attaching the external abort listener or
+  // creating the ref'd deadline timer so a throw cannot leak either (T1/L1).
   const capability = resolveWarehouseAcquisitionCapability(transport, coldStartFlagCapability);
   const requiredCohorts = resolveWarehouseExperimentCohorts(capability);
-  const deployments = await transport.acquireSplitDeployments({ baselineRevision, candidateRevision });
   const workloadId = `fixed-warehouse-${sha256(requiredCohorts.join("\n"))}`;
-  const acquired = {};
-  for (const [label, revision] of Object.entries({ baseline: baselineRevision, candidate: candidateRevision })) {
-    const result = await transport.collectWarehouseRun({
-      label, revision, deployment: deployments[label], workloadId,
-      cohorts: requiredCohorts, samplesPerCohort: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
-      maxEvents: MAX_COLLECTOR_EVENTS,
-    });
-    if (!result || result.status !== "complete") {
-      return { schema: "cityscroll.warehouse_cost_acquisition.v1", status: "blocked", reason: result?.reason || `${label} evidence unavailable` };
+  const budgetBase = () => ({
+    max_collector_seconds: maxCollectorSeconds,
+    max_collector_events: maxCollectorEvents,
+    deadline_at: new Date(deadlineMs).toISOString(),
+    started_at: new Date(startedMs).toISOString(),
+  });
+
+  // Listener + deadline timer are created inside try so finally always clears
+  // both. Keep the deadline ref'd: while a signal-ignoring acquire is pending
+  // it is the only handle that can settle the shared window (C1).
+  let deadlineTimer = null;
+  let externalListenerAttached = false;
+  try {
+    if (externalSignal?.addEventListener) {
+      externalSignal.addEventListener("abort", onExternalAbort, { once: true });
+      externalListenerAttached = true;
     }
-    acquired[label] = warehouseRun({
-      revision,
-      deployment: deployments[label],
-      workloadId,
-      cold_start_flag_capability: capability,
-      ...result,
-    });
+    deadlineTimer = setTimeout(() => {
+      try { controller.abort(); } catch { /* ignore */ }
+    }, Math.max(0, deadlineMs - nowFn()));
+
+    let deployments;
+    try {
+      if (controller.signal.aborted || nowFn() >= deadlineMs) {
+        return {
+          schema: "cityscroll.warehouse_cost_acquisition.v1",
+          status: "blocked",
+          reason: "shared warehouse collector budget exhausted during deployment acquisition",
+          shared_budget: { ...budgetBase(), events_remaining: maxCollectorEvents, ledger: [] },
+        };
+      }
+      // Race the await against controller.signal so a signal-ignoring
+      // transport cannot hang past the whole-window deadline.
+      deployments = await raceAbortable(
+        transport.acquireSplitDeployments({
+          baselineRevision,
+          candidateRevision,
+          signal: controller.signal,
+        }),
+        controller.signal,
+      );
+    } catch (error) {
+      return {
+        schema: "cityscroll.warehouse_cost_acquisition.v1",
+        status: "blocked",
+        reason: controller.signal.aborted || /cancelled|aborted/i.test(String(error?.message || error))
+          ? "shared warehouse collector budget exhausted during deployment acquisition"
+          : String(error?.message || error),
+        shared_budget: { ...budgetBase(), events_remaining: maxCollectorEvents, ledger: [] },
+      };
+    }
+    // Abort during acquisition ⇒ NO arm starts.
+    if (controller.signal.aborted || nowFn() >= deadlineMs) {
+      return {
+        schema: "cityscroll.warehouse_cost_acquisition.v1",
+        status: "blocked",
+        reason: "shared warehouse collector budget exhausted during deployment acquisition",
+        shared_budget: { ...budgetBase(), events_remaining: maxCollectorEvents, ledger: [] },
+      };
+    }
+
+    // Reserve matched cohort samples for later arms so baseline cannot consume the whole 10k.
+    const minReservedPerArm = requiredCohorts.length * WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT;
+    const arms = [
+      ["baseline", baselineRevision],
+      ["candidate", candidateRevision],
+    ];
+    const acquired = {};
+    let eventsRemaining = maxCollectorEvents;
+    const budgetLedger = [];
+
+    for (let index = 0; index < arms.length; index += 1) {
+      const [label, revision] = arms[index];
+      if (controller.signal.aborted || nowFn() >= deadlineMs) {
+        return {
+          schema: "cityscroll.warehouse_cost_acquisition.v1",
+          status: "blocked",
+          reason: `shared warehouse collector budget exhausted before ${label}`,
+          shared_budget: {
+            ...budgetBase(),
+            events_remaining: eventsRemaining,
+            ledger: budgetLedger,
+          },
+        };
+      }
+      const laterArms = arms.length - index - 1;
+      const reservedForLater = laterArms * minReservedPerArm;
+      const armMaxEvents = eventsRemaining - reservedForLater;
+      if (armMaxEvents < minReservedPerArm) {
+        return {
+          schema: "cityscroll.warehouse_cost_acquisition.v1",
+          status: "blocked",
+          reason: `shared warehouse collector event budget insufficient for ${label}`,
+          shared_budget: {
+            ...budgetBase(),
+            events_remaining: eventsRemaining,
+            reserved_for_later: reservedForLater,
+            min_reserved_per_arm: minReservedPerArm,
+            ledger: budgetLedger,
+          },
+        };
+      }
+
+      const result = await transport.collectWarehouseRun({
+        label,
+        revision,
+        deployment: deployments[label],
+        workloadId,
+        cohorts: requiredCohorts,
+        samplesPerCohort: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+        maxEvents: armMaxEvents,
+        signal: controller.signal,
+        deadlineAt: deadlineMs,
+      });
+      const usage = resolveProviderEventUsage(result);
+      if (usage.kind === "unknown") {
+        budgetLedger.push({
+          label,
+          max_events: armMaxEvents,
+          provider_event_count: null,
+          provider_event_count_status: "unknown",
+          events_remaining_after: eventsRemaining,
+          status: result?.status || null,
+        });
+        return {
+          schema: "cityscroll.warehouse_cost_acquisition.v1",
+          status: "blocked",
+          reason: result?.reason
+            ? `${result.reason}; provider event count UNKNOWN (fail-closed)`
+            : `${label} provider event count UNKNOWN (fail-closed)`,
+          shared_budget: {
+            ...budgetBase(),
+            events_remaining: eventsRemaining,
+            ledger: budgetLedger,
+          },
+        };
+      }
+      const usedEvents = usage.used;
+      eventsRemaining = Math.max(0, eventsRemaining - usedEvents);
+      budgetLedger.push({
+        label,
+        max_events: armMaxEvents,
+        provider_event_count: usedEvents,
+        provider_event_count_status: usage.kind,
+        events_remaining_after: eventsRemaining,
+        status: result?.status || null,
+      });
+
+      if (!result || result.status !== "complete") {
+        return {
+          schema: "cityscroll.warehouse_cost_acquisition.v1",
+          status: "blocked",
+          reason: result?.reason || `${label} evidence unavailable`,
+          shared_budget: {
+            ...budgetBase(),
+            events_remaining: eventsRemaining,
+            ledger: budgetLedger,
+          },
+        };
+      }
+      acquired[label] = warehouseRun({
+        revision,
+        deployment: deployments[label],
+        workloadId,
+        cold_start_flag_capability: capability,
+        ...result,
+      });
+    }
+
+    return {
+      schema: "cityscroll.warehouse_cost_acquisition.v1",
+      status: "complete",
+      baseline: acquired.baseline,
+      candidate: acquired.candidate,
+      decision: evaluateWarehouseExperiment({
+        baseline: acquired.baseline,
+        candidate: acquired.candidate,
+        acquiredDeployments: deployments,
+      }),
+      shared_budget: {
+        ...budgetBase(),
+        events_remaining: eventsRemaining,
+        ledger: budgetLedger,
+      },
+    };
+  } finally {
+    if (deadlineTimer) clearTimeout(deadlineTimer);
+    if (externalListenerAttached) {
+      externalSignal.removeEventListener("abort", onExternalAbort);
+    }
   }
-  return {
-    schema: "cityscroll.warehouse_cost_acquisition.v1", status: "complete",
-    baseline: acquired.baseline, candidate: acquired.candidate,
-    decision: evaluateWarehouseExperiment({ baseline: acquired.baseline, candidate: acquired.candidate, acquiredDeployments: deployments }),
-  };
 }

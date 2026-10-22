@@ -57,16 +57,76 @@ function processHasExited(child) {
 }
 
 /**
+ * Signal a child, or its whole process group when spawned detached.
+ * Group kill drains npx wrappers and TERM-ignoring grandchildren.
+ */
+function signalChild(child, sig, { processGroup = false } = {}) {
+  if (!child) return;
+  try {
+    if (processGroup && process.platform !== "win32" && child.pid) {
+      process.kill(-child.pid, sig);
+      return;
+    }
+  } catch {
+    // Fall through to leader-only kill when the group is already gone.
+  }
+  try {
+    child.kill(sig);
+  } catch {
+    // Child may already be gone.
+  }
+}
+
+/**
  * Idempotent termination: one TERM/KILL timer chain per child. Always awaits
  * the shared close promise — never returns early just because exitCode is set
  * (exit can precede stdio close). Clears the SIGKILL timer when close wins.
  */
-function terminateChild(child, { termTimeoutMs = 1000 } = {}) {
+function terminateChild(child, { termTimeoutMs = 1000, processGroup = false } = {}) {
   if (!child) return Promise.resolve();
   if (child[TERMINATE_PROMISE]) return child[TERMINATE_PROMISE];
 
-  child[TERMINATE_PROMISE] = (async () => {
+  // Assign the promise slot synchronously before any await so concurrent
+  // terminateChild callers share one chain (abort + stream + finally).
+  let settle;
+  const gate = new Promise((resolve, reject) => {
+    settle = { resolve, reject };
+  });
+  child[TERMINATE_PROMISE] = gate;
+
+  (async () => {
     const closed = observeChildClose(child);
+    // Process-group path: TERM the leader only (cooperative exit / stdio
+    // close), wait a REF'D grace window, then SIGKILL the whole group so
+    // TERM-ignoring grandchildren are drained. Group-wide TERM first has
+    // left Darwin descendants alive after a follow-on group SIGKILL; leader
+    // TERM then group SIGKILL matches the proven drain. Keep the grace
+    // timer ref'd until it fires (T2). When already exited (success/finally),
+    // only best-effort SIGKILL leftovers.
+    if (processGroup) {
+      const pgid = child.pid;
+      if (!processHasExited(child)) {
+        try { child.kill("SIGTERM"); } catch { /* leader may already be gone */ }
+        let graceTimer = null;
+        try {
+          await new Promise((resolve) => {
+            graceTimer = setTimeout(resolve, termTimeoutMs);
+          });
+        } finally {
+          if (graceTimer) clearTimeout(graceTimer);
+        }
+      }
+      if (pgid) {
+        try {
+          process.kill(-pgid, "SIGKILL");
+        } catch {
+          // Group may already be gone.
+        }
+      }
+      await closed;
+      return;
+    }
+
     let timer = null;
     const timedOut = new Promise((resolve) => {
       timer = setTimeout(() => resolve(true), termTimeoutMs);
@@ -74,11 +134,7 @@ function terminateChild(child, { termTimeoutMs = 1000 } = {}) {
     });
     // Send TERM only while the OS process may still be alive.
     if (!processHasExited(child)) {
-      try {
-        child.kill("SIGTERM");
-      } catch {
-        // Child may already be gone.
-      }
+      signalChild(child, "SIGTERM", { processGroup: false });
     }
     const winner = await Promise.race([
       closed.then(() => "closed"),
@@ -87,15 +143,11 @@ function terminateChild(child, { termTimeoutMs = 1000 } = {}) {
     if (timer) clearTimeout(timer);
     if (winner === "timeout") {
       if (!processHasExited(child)) {
-        try {
-          child.kill("SIGKILL");
-        } catch {
-          // Ignore.
-        }
+        signalChild(child, "SIGKILL", { processGroup: false });
       }
       await closed;
     }
-  })();
+  })().then(settle.resolve, settle.reject);
 
   return child[TERMINATE_PROMISE];
 }
@@ -115,7 +167,7 @@ async function streamToFile(readable, path, createWriteStreamFn) {
 
 /**
  * @param {string[]} args wrangler argv after the package name (e.g. ["d1","execute",…])
- * @param {{ wranglerVersion?: string, cwd?: string, env?: NodeJS.ProcessEnv, maxBytes?: number, command?: string, commandArgs?: string[], createWriteStreamFn?: typeof createWriteStream, termTimeoutMs?: number, onSpawn?: Function }} [options]
+ * @param {{ wranglerVersion?: string, cwd?: string, env?: NodeJS.ProcessEnv, maxBytes?: number, command?: string, commandArgs?: string[], createWriteStreamFn?: typeof createWriteStream, termTimeoutMs?: number, onSpawn?: Function, signal?: AbortSignal|null, processGroup?: boolean }} [options]
  * @returns {Promise<{ stdout: string, stderr: string, status: number }>}
  */
 export async function runWrangler(args, {
@@ -129,28 +181,46 @@ export async function runWrangler(args, {
   createWriteStreamFn = createWriteStream,
   termTimeoutMs = 1000,
   onSpawn = null,
+  signal = null,
+  // Opt-in process-group drain. Default false preserves the shipped
+  // non-detached behavior for D1 publishing adapters and other callers.
+  // Warehouse acquisition passes true via invokeWranglerAbortable.
+  processGroup = false,
 } = {}) {
   if (!Array.isArray(args)) fail("runWrangler requires an args array");
+  if (signal?.aborted) {
+    const error = new Error("deployment acquisition was cancelled");
+    error.name = "AbortError";
+    throw error;
+  }
   const argv = commandArgs || [`wrangler@${wranglerVersion}`, ...args];
   const dir = mkdtempSync(join(tmpdir(), "wrangler-exec-"));
   const stdoutPath = join(dir, "stdout.txt");
   const stderrPath = join(dir, "stderr.txt");
   let child = null;
   let streamError = null;
+  let aborted = false;
+  const onAbort = () => {
+    aborted = true;
+    void terminateChild(child, { termTimeoutMs, processGroup });
+  };
+  signal?.addEventListener?.("abort", onAbort, { once: true });
   try {
     child = spawn(command, argv, {
       cwd,
       env,
       stdio: ["ignore", "pipe", "pipe"],
+      detached: processGroup,
     });
     const closed = observeChildClose(child);
     if (typeof onSpawn === "function") onSpawn(child, dir);
+    if (signal?.aborted) onAbort();
 
     // Await close and stream finishes together. A write EIO/ENOSPC must kill the
     // child so close fires — awaiting close first hangs when the producer blocks
     // on a full pipe after the capture stream stops draining.
     const kickTerminate = () => {
-      void terminateChild(child, { termTimeoutMs });
+      void terminateChild(child, { termTimeoutMs, processGroup });
     };
     const stdoutDone = streamToFile(child.stdout, stdoutPath, createWriteStreamFn).catch((error) => {
       streamError = streamError || error;
@@ -162,10 +232,15 @@ export async function runWrangler(args, {
       kickTerminate();
       throw error;
     });
-    const closedStatus = closed.then(({ code, signal }) => {
-      if (signal) {
-        const error = new Error(`${command} killed by signal ${signal}`);
-        error.signal = signal;
+    const closedStatus = closed.then(({ code, signal: exitSignal }) => {
+      if (aborted || signal?.aborted) {
+        const error = new Error("deployment acquisition was cancelled");
+        error.name = "AbortError";
+        throw error;
+      }
+      if (exitSignal) {
+        const error = new Error(`${command} killed by signal ${exitSignal}`);
+        error.signal = exitSignal;
         throw error;
       }
       return code ?? 1;
@@ -175,7 +250,13 @@ export async function runWrangler(args, {
       const settled = await Promise.all([closedStatus, stdoutDone, stderrDone]);
       status = settled[0];
     } catch (error) {
-      await terminateChild(child, { termTimeoutMs });
+      await terminateChild(child, { termTimeoutMs, processGroup });
+      if (aborted || signal?.aborted) {
+        const cancel = new Error("deployment acquisition was cancelled");
+        cancel.name = "AbortError";
+        cancel.cause = streamError || error;
+        throw cancel;
+      }
       // Prefer the stream failure (ENOSPC/EIO) over a follow-on signal rejection.
       throw streamError || error;
     }
@@ -210,8 +291,9 @@ export async function runWrangler(args, {
     }
     return { stdout, stderr, status };
   } finally {
+    signal?.removeEventListener?.("abort", onAbort);
     try {
-      await terminateChild(child, { termTimeoutMs });
+      await terminateChild(child, { termTimeoutMs, processGroup });
     } finally {
       rmSync(dir, { recursive: true, force: true });
     }

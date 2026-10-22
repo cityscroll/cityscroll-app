@@ -5,7 +5,9 @@ import test from "node:test";
 import { queueBatchFingerprint } from "../worker/src/lib/cost_control_probe.mjs";
 import {
   acquireWorkerCostProfile,
+  MAX_COLLECTOR_EVENTS,
   queueFingerprintFromProviderEvent,
+  raceAbortable,
   runMatchedWarehouseExperiment,
   selectOwnedHttpEvent,
 } from "./lib/worker_cost_acquisition.mjs";
@@ -25,6 +27,7 @@ import {
 } from "./lib/worker_cost_control.mjs";
 import {
   createLiveWorkerCostTransport,
+  invokeWranglerAbortable,
   providerEventsFromEnvelope,
   queryProviderEvents,
   secureWebSocketUrl,
@@ -962,7 +965,7 @@ test("adaptive collector stops when the 30-minute collection deadline is reached
     maxEvents: 10_000,
   });
   assert.equal(result.status, "blocked");
-  assert.equal(result.reason, "warehouse collector exceeded 30 minutes");
+  assert.match(result.reason, /warehouse collector exceeded (shared deadline|30 minutes)/);
   assert.ok(collectorSends() >= 1_800 && collectorSends() <= 1_832,
     `deadline should stop within one concurrency batch, got ${collectorSends()} sends`);
 });
@@ -1211,6 +1214,8 @@ test("matched warehouse acquisition retains baseline on a queue regression for a
             })),
           ])),
           correctness: CORRECTNESS,
+          provider_event_count: 100,
+          provider_event_count_status: "known",
         };
       },
     },
@@ -1237,6 +1242,8 @@ test("matched warehouse acquisition never defaults carries_numeric_raw to true",
             Array.from({ length: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT }, () => warehouseSample(revision)),
           ])),
           correctness: CORRECTNESS,
+          provider_event_count: 100,
+          provider_event_count_status: "known",
         };
       },
     },
@@ -1266,6 +1273,8 @@ test("matched warehouse acquisition fails when a flag-less source claims raw par
             )],
           ]),
           correctness: CORRECTNESS,
+          provider_event_count: 100,
+          provider_event_count_status: "known",
         }),
       },
     }),
@@ -1286,6 +1295,8 @@ test("matched warehouse acquisition stamps the same cold_start_flag_capability o
           Array.from({ length: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT }, () => warehouseSample(revision)),
         ])),
         correctness: CORRECTNESS,
+        provider_event_count: 100,
+        provider_event_count_status: "known",
       }),
     },
   });
@@ -1294,4 +1305,356 @@ test("matched warehouse acquisition stamps the same cold_start_flag_capability o
     result.candidate.cold_start_flag_capability,
   );
   assert.deepEqual(result.baseline.cold_start_flag_capability, TAIL_WAREHOUSE_COLD_START_FLAG_CAPABILITY);
+});
+
+test("matched warehouse races signal-ignoring acquire — blocked within elapsed bound, no arms", async () => {
+  const calls = [];
+  const started = Date.now();
+  const maxSeconds = 1;
+  const transport = {
+    acquireSplitDeployments: async () => {
+      calls.push("acquire");
+      // Never settles and ignores AbortSignal entirely.
+      await new Promise(() => {});
+    },
+    collectWarehouseRun: async (args) => {
+      calls.push(`arm:${args.label}`);
+      return {
+        status: "complete",
+        observedAt: "2026-10-09T08:00:00Z",
+        cohorts: Object.fromEntries(WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => [cohort,
+          Array.from({ length: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT }, () => warehouseSample(
+            args.label === "baseline" ? REVISION : CANDIDATE,
+          )),
+        ])),
+        correctness: CORRECTNESS,
+        provider_event_count: 10,
+        provider_event_count_status: "known",
+      };
+    },
+  };
+  const result = await runMatchedWarehouseExperiment({
+    baselineRevision: REVISION,
+    candidateRevision: CANDIDATE,
+    transport,
+    maxCollectorSeconds: maxSeconds,
+    maxCollectorEvents: MAX_COLLECTOR_EVENTS,
+  });
+  const elapsedMs = Date.now() - started;
+  assert.equal(result.status, "blocked");
+  assert.match(result.reason, /during deployment acquisition/);
+  assert.deepEqual(calls, ["acquire"]);
+  assert.ok(!calls.some((c) => String(c).startsWith("arm:")), "no collectWarehouseRun arm may start");
+  assert.ok(elapsedMs < (maxSeconds + 2.5) * 1000, `elapsed ${elapsedMs}ms exceeds ${maxSeconds}s+slack`);
+  assert.deepEqual(result.shared_budget?.ledger, []);
+});
+
+test("raceAbortable rejects a never-settling promise when the signal aborts", async () => {
+  const ac = new AbortController();
+  // Keep the abort timer ref'd — it is the settlement mechanism for this race,
+  // not a test keepalive. An unref'd abort with a never-settling promise lets
+  // Node exit the loop with the race still pending.
+  setTimeout(() => ac.abort(), 40);
+  const started = Date.now();
+  await assert.rejects(
+    () => raceAbortable(new Promise(() => {}), ac.signal),
+    /cancelled|aborted|exhausted/i,
+  );
+  assert.ok(Date.now() - started < 1500);
+});
+
+test("capability throw before deadline timer exits promptly (T1)", async () => {
+  const started = Date.now();
+  await assert.rejects(
+    () => runMatchedWarehouseExperiment({
+      baselineRevision: REVISION,
+      candidateRevision: CANDIDATE,
+      coldStartFlagCapability: { bad: true },
+      transport: {
+        acquireSplitDeployments: async () => { throw new Error("acquire must not run"); },
+        collectWarehouseRun: async () => { throw new Error("arm must not run"); },
+      },
+      maxCollectorSeconds: 30 * 60,
+      maxCollectorEvents: MAX_COLLECTOR_EVENTS,
+    }),
+    /unsupported fields/i,
+  );
+  assert.ok(Date.now() - started < 500, "capability throw must not leave a leaked deadline timer");
+});
+
+test("invalid capability leaves no owned external abort listener (L1)", async () => {
+  const listeners = new Set();
+  const fakeSignal = {
+    aborted: false,
+    addEventListener(type, fn) {
+      if (type === "abort") listeners.add(fn);
+    },
+    removeEventListener(type, fn) {
+      if (type === "abort") listeners.delete(fn);
+    },
+  };
+  await assert.rejects(
+    () => runMatchedWarehouseExperiment({
+      baselineRevision: REVISION,
+      candidateRevision: CANDIDATE,
+      coldStartFlagCapability: { bad: true },
+      signal: fakeSignal,
+      transport: {
+        acquireSplitDeployments: async () => { throw new Error("acquire must not run"); },
+        collectWarehouseRun: async () => { throw new Error("arm must not run"); },
+      },
+      maxCollectorSeconds: 30 * 60,
+      maxCollectorEvents: MAX_COLLECTOR_EVENTS,
+    }),
+    /unsupported fields/i,
+  );
+  assert.equal(listeners.size, 0, "capability throw must not attach an owned abort listener");
+});
+
+test("external abort still cancels after listener is attached inside try (L1)", async () => {
+  const external = new AbortController();
+  const started = Date.now();
+  setTimeout(() => external.abort(), 40);
+  const result = await runMatchedWarehouseExperiment({
+    baselineRevision: REVISION,
+    candidateRevision: CANDIDATE,
+    signal: external.signal,
+    transport: {
+      acquireSplitDeployments: async () => { await new Promise(() => {}); },
+      collectWarehouseRun: async () => { throw new Error("arm must not run"); },
+    },
+    maxCollectorSeconds: 5,
+    maxCollectorEvents: MAX_COLLECTOR_EVENTS,
+  });
+  assert.equal(result.status, "blocked");
+  assert.match(result.reason, /during deployment acquisition|cancelled before start/i);
+  assert.ok(Date.now() - started < 3000);
+});
+
+test("shared deadline stays ref'd so signal-ignoring acquire settles under isolated node --test (C1)", async () => {
+  // Isolated reproduction of the CI cancelledByParent failure: with the
+  // deadline timer unref'd, Node exits while the race is still pending.
+  // Child process has no test-harness keepalive — only the owned deadline
+  // timer may keep the event loop alive until abort settles the race.
+  const { spawnSync } = await import("node:child_process");
+  const libHref = new URL("./lib/worker_cost_acquisition.mjs", import.meta.url).href;
+  const child = spawnSync(
+    process.execPath,
+    [
+      "--input-type=module",
+      "-e",
+      `
+        import { runMatchedWarehouseExperiment, MAX_COLLECTOR_EVENTS } from ${JSON.stringify(libHref)};
+        const started = Date.now();
+        const result = await runMatchedWarehouseExperiment({
+          baselineRevision: ${JSON.stringify(REVISION)},
+          candidateRevision: ${JSON.stringify(CANDIDATE)},
+          transport: {
+            acquireSplitDeployments: async () => { await new Promise(() => {}); },
+            collectWarehouseRun: async () => { throw new Error("arm must not start"); },
+          },
+          maxCollectorSeconds: 1,
+          maxCollectorEvents: MAX_COLLECTOR_EVENTS,
+        });
+        if (result.status !== "blocked") {
+          console.error("unexpected_status", result.status, result.reason);
+          process.exit(2);
+        }
+        if (!/during deployment acquisition/.test(String(result.reason || ""))) {
+          console.error("unexpected_reason", result.reason);
+          process.exit(3);
+        }
+        const elapsed = Date.now() - started;
+        if (elapsed >= 3500) {
+          console.error("elapsed_too_long", elapsed);
+          process.exit(4);
+        }
+        console.log("c1_deadline_ref_settled", elapsed);
+      `,
+    ],
+    {
+      encoding: "utf8",
+      timeout: 15_000,
+      env: process.env,
+    },
+  );
+  assert.equal(
+    child.status,
+    0,
+    `isolated deadline proof failed (status=${child.status}):\n${child.stdout}\n${child.stderr}`,
+  );
+  assert.match(child.stdout, /c1_deadline_ref_settled/);
+});
+
+test("invokeWranglerAbortable rejects malformed JSON immediately after settle (W2)", async () => {
+  const started = Date.now();
+  await assert.rejects(
+    () => invokeWranglerAbortable(["deployments", "status", "--json"], process.env, {
+      runWranglerFn: async () => ({ stdout: "{not-json", stderr: "", status: 0 }),
+    }),
+    (error) => {
+      assert.match(String(error?.message || error), /malformed JSON/i);
+      return true;
+    },
+  );
+  assert.ok(Date.now() - started < 1000, "malformed JSON must reject immediately, not hang");
+});
+
+test("invokeWranglerAbortable reuses runWrangler lifecycle and forwards AbortSignal (W1)", async () => {
+  const seen = [];
+  const ac = new AbortController();
+  await assert.rejects(
+    () => invokeWranglerAbortable(["versions", "list", "--json"], { FOO: "1" }, {
+      cwd: "/tmp",
+      signal: ac.signal,
+      maxBuffer: 1024,
+      runWranglerFn: async (args, options) => {
+        seen.push({ args, options });
+        assert.equal(options.signal, ac.signal);
+        assert.equal(options.maxBytes, 1024);
+        assert.equal(options.cwd, "/tmp");
+        assert.equal(options.wranglerVersion, "4.126.0");
+        assert.equal(
+          options.processGroup,
+          process.platform !== "win32",
+          "invokeWranglerAbortable must opt in to processGroup",
+        );
+        const error = new Error("deployment acquisition was cancelled");
+        error.name = "AbortError";
+        throw error;
+      },
+    }),
+    /cancelled/i,
+  );
+  assert.equal(seen.length, 1);
+  assert.deepEqual(seen[0].args, ["versions", "list", "--json"]);
+});
+
+test("invokeWranglerAbortable through actual runWrangler with injected command (C2 spawn boundary)", async () => {
+  const { runWrangler } = await import("./lib/wrangler_exec.mjs");
+  let spawned = false;
+  const payload = { ok: true, source: "c2-spawn-boundary" };
+  const result = await invokeWranglerAbortable(["deployments", "status", "--json"], process.env, {
+    runWranglerFn: (args, options) => runWrangler(args, {
+      ...options,
+      command: process.execPath,
+      commandArgs: ["-e", `process.stdout.write(${JSON.stringify(JSON.stringify(payload))})`],
+      onSpawn() { spawned = true; },
+    }),
+  });
+  assert.equal(spawned, true, "actual runWrangler must spawn the injected command");
+  assert.deepEqual(result, payload);
+});
+
+test("invokeWranglerAbortable does not import a private spawn lifecycle", async () => {
+  const { readFileSync } = await import("node:fs");
+  const text = readFileSync(new URL("./worker_cost_acquisition.mjs", import.meta.url), "utf8");
+  assert.match(text, /from "\.\/lib\/wrangler_exec\.mjs"/);
+  assert.match(text, /runWrangler/);
+  assert.doesNotMatch(text, /from "node:child_process"/);
+  assert.doesNotMatch(text, /spawn\(/);
+});
+
+test("failure counts stay UNKNOWN, never fabricated 0 (R2/W1 proof floor)", async () => {
+  const { resolveProviderEventUsage } = await import("./lib/worker_cost_acquisition.mjs");
+  for (const result of [
+    { status: "blocked", reason: "collector failed", provider_event_count_status: "unknown" },
+    { status: "blocked", reason: "collector failed", provider_event_count: null },
+    { status: "incomplete", reason: "deadline", provider_event_count_status: "unknown", provider_event_count: null },
+  ]) {
+    const usage = resolveProviderEventUsage(result);
+    assert.equal(usage.kind, "unknown");
+    assert.equal(usage.used, null);
+    assert.notEqual(usage.used, 0);
+  }
+
+  const calls = [];
+  const transport = {
+    acquireSplitDeployments: async () => {
+      calls.push("acquire");
+      return { baseline: deployment(REVISION), candidate: deployment(CANDIDATE) };
+    },
+    collectWarehouseRun: async (args) => {
+      calls.push(`arm:${args.label}`);
+      return {
+        status: "blocked",
+        reason: "live-tail emitted an invalid event envelope",
+        provider_event_count: null,
+        provider_event_count_status: "unknown",
+      };
+    },
+  };
+  const result = await runMatchedWarehouseExperiment({
+    baselineRevision: REVISION,
+    candidateRevision: CANDIDATE,
+    transport,
+    maxCollectorSeconds: 30,
+    maxCollectorEvents: MAX_COLLECTOR_EVENTS,
+  });
+  assert.equal(result.status, "blocked");
+  assert.match(result.reason, /UNKNOWN/i);
+  assert.ok(!/"provider_event_count"\s*:\s*0/.test(JSON.stringify(result)));
+  assert.equal(result.shared_budget?.ledger?.[0]?.provider_event_count_status, "unknown");
+  assert.equal(result.shared_budget?.ledger?.[0]?.provider_event_count, null);
+  assert.deepEqual(calls, ["acquire", "arm:baseline"]);
+});
+
+test("production transport acquire uses invokeWranglerAbortable — malformed JSON rejects (W2 boundary)", async () => {
+  const started = Date.now();
+  const transport = createLiveWorkerCostTransport({
+    env: {
+      CLOUDFLARE_OBSERVABILITY_TOKEN: "telemetry-fixture",
+      WORKER_COST_ADMIN_KEY: "admin-fixture",
+      CLOUDFLARE_ACCOUNT_ID: "account-fixture",
+      WORKER_HEALTH_URL: "https://example.test/health",
+      WORKER_API_ORIGIN: "https://api.example.test",
+      WORKER_NAME: "cityscroll-worker",
+      WORKER_COST_MEASUREMENT_PLAN: JSON.stringify({
+        run_marker: "w2-boundary",
+        workload_digest: "a".repeat(64),
+        warehouse_workloads: [],
+        collector_workload: { cohort: "collector-overhead" },
+      }),
+    },
+    fetchImpl: async () => {
+      throw new Error("fetch must not run during malformed-JSON acquire");
+    },
+    invokeWrangler: (args, env, signal) => invokeWranglerAbortable(args, env, {
+      signal,
+      runWranglerFn: async () => ({ stdout: "{not-json", stderr: "", status: 0 }),
+    }),
+  });
+  await assert.rejects(
+    () => transport.acquireSplitDeployments({
+      baselineRevision: REVISION,
+      candidateRevision: CANDIDATE,
+    }),
+    /malformed JSON/i,
+  );
+  assert.ok(Date.now() - started < 1000, "malformed JSON acquire must reject immediately");
+});
+
+test("collectWarehouseRun forwards external signal into collectProviderEvents", async () => {
+  const ac = new AbortController();
+  let seenSignal = null;
+  const { transport } = liveFlaglessCollectorRetentionTransport({ warehouseAttemptsPerInput: 200 });
+  transport.collectProviderEvents = async ({ signal, from, to, limit }) => {
+    seenSignal = signal;
+    assert.equal(signal, ac.signal);
+    assert.ok(from && to && limit > 0);
+    throw new Error("cost workload collection was cancelled");
+  };
+  const result = await transport.collectWarehouseRun({
+    label: "baseline",
+    revision: REVISION,
+    deployment: deployment(REVISION),
+    workloadId: "fixed-warehouse-test",
+    cohorts: WAREHOUSE_EXPERIMENT_BASE_ROUTES,
+    samplesPerCohort: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+    maxEvents: 10_000,
+    signal: ac.signal,
+  });
+  assert.equal(seenSignal, ac.signal);
+  assert.equal(result.status, "blocked");
+  assert.match(result.reason, /cancelled/);
 });
