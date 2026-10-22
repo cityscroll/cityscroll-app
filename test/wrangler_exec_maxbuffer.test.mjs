@@ -68,6 +68,39 @@ test("runWrangler fails closed when retained stdout exceeds the 32 MiB bound", a
   );
 });
 
+test("runWrangler tears down the child when a stdio write fails with ENOSPC", async () => {
+  // Defect: awaiting child close before stream promises left a full-disk write
+  // hanging (producer blocked on a full pipe; close never fired). Fail closed
+  // on stream EIO/ENOSPC and kill the child instead.
+  const { Writable } = await import("node:stream");
+  const enospc = Object.assign(new Error("ENOSPC: no space left on device, write"), {
+    code: "ENOSPC",
+  });
+  const createWriteStreamFn = () => new Writable({
+    write(_chunk, _enc, cb) {
+      cb(enospc);
+    },
+  });
+
+  const started = Date.now();
+  await assert.rejects(
+    () => runWrangler([], {
+      command: process.execPath,
+      // Keep writing forever so a hang would outlive the assertion timeout.
+      commandArgs: ["-e", "setInterval(() => process.stdout.write('x'.repeat(65536)), 0)"],
+      createWriteStreamFn,
+    }),
+    (error) => {
+      assert.equal(error?.code, "ENOSPC");
+      return true;
+    },
+  );
+  assert.ok(
+    Date.now() - started < 5000,
+    "ENOSPC on stdio write must reject promptly instead of hanging on child close",
+  );
+});
+
 test("D1 wrangler adapters use the shared invoker instead of bare execFileAsync", async () => {
   const { readFileSync } = await import("node:fs");
   const paths = [

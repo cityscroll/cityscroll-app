@@ -32,15 +32,22 @@ function fail(message) {
   throw new Error(message);
 }
 
-async function streamToFile(readable, path) {
-  const out = createWriteStream(path);
+async function streamToFile(readable, path, createWriteStreamFn) {
+  const out = createWriteStreamFn(path);
   readable.pipe(out);
-  await finished(out);
+  try {
+    await finished(out);
+  } catch (error) {
+    readable.unpipe(out);
+    readable.destroy();
+    out.destroy();
+    throw error;
+  }
 }
 
 /**
  * @param {string[]} args wrangler argv after the package name (e.g. ["d1","execute",…])
- * @param {{ wranglerVersion?: string, cwd?: string, env?: NodeJS.ProcessEnv, maxBytes?: number, command?: string, commandArgs?: string[] }} [options]
+ * @param {{ wranglerVersion?: string, cwd?: string, env?: NodeJS.ProcessEnv, maxBytes?: number, command?: string, commandArgs?: string[], createWriteStreamFn?: typeof createWriteStream }} [options]
  * @returns {Promise<{ stdout: string, stderr: string, status: number }>}
  */
 export async function runWrangler(args, {
@@ -51,28 +58,63 @@ export async function runWrangler(args, {
   // Test seams: run an arbitrary command with the same stream-to-file capture.
   command = "npx",
   commandArgs = null,
+  createWriteStreamFn = createWriteStream,
 } = {}) {
   if (!Array.isArray(args)) fail("runWrangler requires an args array");
   const argv = commandArgs || [`wrangler@${wranglerVersion}`, ...args];
   const dir = mkdtempSync(join(tmpdir(), "wrangler-exec-"));
   const stdoutPath = join(dir, "stdout.txt");
   const stderrPath = join(dir, "stderr.txt");
+  let child = null;
+  const killChild = () => {
+    if (!child || child.killed || child.exitCode != null) return;
+    try {
+      child.kill("SIGTERM");
+    } catch {
+      // Child may already be gone.
+    }
+    setTimeout(() => {
+      if (!child || child.killed || child.exitCode != null) return;
+      try {
+        child.kill("SIGKILL");
+      } catch {
+        // Ignore.
+      }
+    }, 1000).unref?.();
+  };
   try {
-    const child = spawn(command, argv, {
+    child = spawn(command, argv, {
       cwd,
       env,
       stdio: ["ignore", "pipe", "pipe"],
     });
-    const stdoutDone = streamToFile(child.stdout, stdoutPath);
-    const stderrDone = streamToFile(child.stderr, stderrPath);
-    const status = await new Promise((resolve, reject) => {
+    // Await close and stream finishes together. A write EIO/ENOSPC must kill the
+    // child so close fires — awaiting close first hangs when the producer blocks
+    // on a full pipe after the capture stream stops draining.
+    const stdoutDone = streamToFile(child.stdout, stdoutPath, createWriteStreamFn).catch((error) => {
+      killChild();
+      throw error;
+    });
+    const stderrDone = streamToFile(child.stderr, stderrPath, createWriteStreamFn).catch((error) => {
+      killChild();
+      throw error;
+    });
+    const closed = new Promise((resolve, reject) => {
       child.on("error", reject);
       child.on("close", (code, signal) => {
         if (signal) reject(new Error(`${command} killed by signal ${signal}`));
         else resolve(code ?? 1);
       });
     });
-    await Promise.all([stdoutDone, stderrDone]);
+    let status;
+    try {
+      const settled = await Promise.all([closed, stdoutDone, stderrDone]);
+      status = settled[0];
+    } catch (error) {
+      killChild();
+      // Prefer the stream failure (ENOSPC/EIO) over a follow-on signal rejection.
+      throw error;
+    }
 
     const stdoutBytes = statSync(stdoutPath).size;
     const stderrBytes = statSync(stderrPath).size;
@@ -104,6 +146,7 @@ export async function runWrangler(args, {
     }
     return { stdout, stderr, status };
   } finally {
+    killChild();
     rmSync(dir, { recursive: true, force: true });
   }
 }
