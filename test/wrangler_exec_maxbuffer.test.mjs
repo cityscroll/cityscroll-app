@@ -236,3 +236,100 @@ test("D1 wrangler adapters use the shared invoker instead of bare execFileAsync"
     assert.doesNotMatch(text, /from "node:child_process"/, `${path} should not import child_process directly`);
   }
 });
+
+test("runWrangler abort drains a TERM-ignoring descendant process group", async () => {
+  // W1: npx-like leader + grandchild that ignores SIGTERM must be group-killed.
+  if (process.platform === "win32") return;
+
+  const { writeFileSync, mkdtempSync, rmSync } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const { join } = await import("node:path");
+  const dir = mkdtempSync(join(tmpdir(), "wrangler-pg-"));
+  const marker = join(dir, "alive");
+  const leaderScript = join(dir, "leader.mjs");
+  // Grandchild stays in the leader's process group (like npx→wrangler),
+  // ignores SIGTERM, and keeps touching an alive marker until SIGKILL.
+  writeFileSync(leaderScript, `
+    import { spawn } from "node:child_process";
+    const child = spawn(process.execPath, ["-e", ${JSON.stringify(`
+      import { writeFileSync } from "node:fs";
+      process.on("SIGTERM", () => {});
+      const marker = process.env.ALIVE_MARKER;
+      const tick = () => { try { writeFileSync(marker, String(Date.now())); } catch {} };
+      tick();
+      setInterval(tick, 50);
+    `)}], {
+      env: { ...process.env, ALIVE_MARKER: ${JSON.stringify(marker)} },
+      stdio: "ignore",
+      // Inherit the leader process group — do not detach into a new one.
+      detached: false,
+    });
+    child.unref();
+    setInterval(() => process.stdout.write("."), 100);
+  `);
+
+  const ac = new AbortController();
+  let leaderPid = null;
+  const started = performance.now(); // test-clock: allow-real-clock abort drain bound
+  const run = runWrangler([], {
+    command: process.execPath,
+    commandArgs: [leaderScript],
+    signal: ac.signal,
+    termTimeoutMs: 80,
+    processGroup: true,
+    onSpawn(child) {
+      leaderPid = child.pid;
+      setTimeout(() => ac.abort(), 120).unref?.(); // test-clock: allow-real-clock abort after spawn
+    },
+  });
+
+  await assert.rejects(
+    () => run,
+    (error) => {
+      assert.match(String(error?.message || error), /cancelled|aborted/i);
+      return true;
+    },
+  );
+  assert.ok(performance.now() - started < 5000, "abort must settle promptly"); // test-clock: allow-real-clock
+  assert.ok(leaderPid, "leader pid observed");
+  assert.throws(
+    () => process.kill(leaderPid, 0),
+    (error) => error?.code === "ESRCH",
+    `leader pid ${leaderPid} must be reaped`,
+  );
+  // Descendant must stop refreshing the alive marker after group drain.
+  await new Promise((r) => setTimeout(r, 200)); // test-clock: allow-real-clock quiet window
+  let before;
+  try {
+    before = Number((await import("node:fs")).readFileSync(marker, "utf8"));
+  } catch {
+    before = null;
+  }
+  await new Promise((r) => setTimeout(r, 250)); // test-clock: allow-real-clock quiet window
+  let after;
+  try {
+    after = Number((await import("node:fs")).readFileSync(marker, "utf8"));
+  } catch {
+    after = null;
+  }
+  assert.ok(
+    before == null || after == null || after === before,
+    `TERM-ignoring descendant must be quiet after group drain (before=${before} after=${after})`,
+  );
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("runWrangler bounds stderr the same way as stdout", async () => {
+  const overBound = WRANGLER_STDIO_MAX_BYTES + 1;
+  await assert.rejects(
+    () => runWrangler([], {
+      command: process.execPath,
+      commandArgs: ["-e", `process.stderr.write("y".repeat(${overBound}))`],
+    }),
+    (error) => {
+      assert.match(String(error?.message || error), /wrangler stderr exceeded bound/);
+      assert.match(String(error?.message || error), new RegExp(`limit=${WRANGLER_STDIO_MAX_BYTES}`));
+      return true;
+    },
+  );
+});

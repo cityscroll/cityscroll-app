@@ -27,6 +27,7 @@ import {
 } from "./lib/worker_cost_control.mjs";
 import {
   createLiveWorkerCostTransport,
+  invokeWranglerAbortable,
   providerEventsFromEnvelope,
   queryProviderEvents,
   secureWebSocketUrl,
@@ -1357,6 +1358,133 @@ test("raceAbortable rejects a never-settling promise when the signal aborts", as
     /cancelled|aborted|exhausted/i,
   );
   assert.ok(Date.now() - started < 1500);
+});
+
+test("invokeWranglerAbortable rejects malformed JSON immediately after settle (W2)", async () => {
+  const started = Date.now();
+  await assert.rejects(
+    () => invokeWranglerAbortable(["deployments", "status", "--json"], process.env, {
+      runWranglerFn: async () => ({ stdout: "{not-json", stderr: "", status: 0 }),
+    }),
+    (error) => {
+      assert.match(String(error?.message || error), /malformed JSON/i);
+      return true;
+    },
+  );
+  assert.ok(Date.now() - started < 1000, "malformed JSON must reject immediately, not hang");
+});
+
+test("invokeWranglerAbortable reuses runWrangler lifecycle and forwards AbortSignal (W1)", async () => {
+  const seen = [];
+  const ac = new AbortController();
+  await assert.rejects(
+    () => invokeWranglerAbortable(["versions", "list", "--json"], { FOO: "1" }, {
+      cwd: "/tmp",
+      signal: ac.signal,
+      maxBuffer: 1024,
+      runWranglerFn: async (args, options) => {
+        seen.push({ args, options });
+        assert.equal(options.signal, ac.signal);
+        assert.equal(options.maxBytes, 1024);
+        assert.equal(options.cwd, "/tmp");
+        assert.equal(options.wranglerVersion, "4.126.0");
+        const error = new Error("deployment acquisition was cancelled");
+        error.name = "AbortError";
+        throw error;
+      },
+    }),
+    /cancelled/i,
+  );
+  assert.equal(seen.length, 1);
+  assert.deepEqual(seen[0].args, ["versions", "list", "--json"]);
+});
+
+test("invokeWranglerAbortable does not import a private spawn lifecycle", async () => {
+  const { readFileSync } = await import("node:fs");
+  const text = readFileSync(new URL("./worker_cost_acquisition.mjs", import.meta.url), "utf8");
+  assert.match(text, /from "\.\/lib\/wrangler_exec\.mjs"/);
+  assert.match(text, /runWrangler/);
+  assert.doesNotMatch(text, /from "node:child_process"/);
+  assert.doesNotMatch(text, /spawn\(/);
+});
+
+test("failure counts stay UNKNOWN, never fabricated 0 (R2/W1 proof floor)", async () => {
+  const { resolveProviderEventUsage } = await import("./lib/worker_cost_acquisition.mjs");
+  for (const result of [
+    { status: "blocked", reason: "collector failed", provider_event_count_status: "unknown" },
+    { status: "blocked", reason: "collector failed", provider_event_count: null },
+    { status: "incomplete", reason: "deadline", provider_event_count_status: "unknown", provider_event_count: null },
+  ]) {
+    const usage = resolveProviderEventUsage(result);
+    assert.equal(usage.kind, "unknown");
+    assert.equal(usage.used, null);
+    assert.notEqual(usage.used, 0);
+  }
+
+  const calls = [];
+  const transport = {
+    acquireSplitDeployments: async () => {
+      calls.push("acquire");
+      return { baseline: deployment(REVISION), candidate: deployment(CANDIDATE) };
+    },
+    collectWarehouseRun: async (args) => {
+      calls.push(`arm:${args.label}`);
+      return {
+        status: "blocked",
+        reason: "live-tail emitted an invalid event envelope",
+        provider_event_count: null,
+        provider_event_count_status: "unknown",
+      };
+    },
+  };
+  const result = await runMatchedWarehouseExperiment({
+    baselineRevision: REVISION,
+    candidateRevision: CANDIDATE,
+    transport,
+    maxCollectorSeconds: 30,
+    maxCollectorEvents: MAX_COLLECTOR_EVENTS,
+  });
+  assert.equal(result.status, "blocked");
+  assert.match(result.reason, /UNKNOWN/i);
+  assert.ok(!/"provider_event_count"\s*:\s*0/.test(JSON.stringify(result)));
+  assert.equal(result.shared_budget?.ledger?.[0]?.provider_event_count_status, "unknown");
+  assert.equal(result.shared_budget?.ledger?.[0]?.provider_event_count, null);
+  assert.deepEqual(calls, ["acquire", "arm:baseline"]);
+});
+
+test("production transport acquire uses invokeWranglerAbortable — malformed JSON rejects (W2 boundary)", async () => {
+  const started = Date.now();
+  const transport = createLiveWorkerCostTransport({
+    env: {
+      CLOUDFLARE_OBSERVABILITY_TOKEN: "telemetry-fixture",
+      WORKER_COST_ADMIN_KEY: "admin-fixture",
+      CLOUDFLARE_ACCOUNT_ID: "account-fixture",
+      WORKER_HEALTH_URL: "https://example.test/health",
+      WORKER_API_ORIGIN: "https://api.example.test",
+      WORKER_NAME: "cityscroll-worker",
+      WORKER_COST_MEASUREMENT_PLAN: JSON.stringify({
+        run_marker: "w2-boundary",
+        workload_digest: "a".repeat(64),
+        warehouse_workloads: [],
+        collector_workload: { cohort: "collector-overhead" },
+      }),
+    },
+    fetchImpl: async () => {
+      throw new Error("fetch must not run during malformed-JSON acquire");
+    },
+    invokeWrangler: (args, env, signal) => invokeWranglerAbortable(args, env, {
+      signal,
+      runWranglerFn: async () => ({ stdout: "{not-json", stderr: "", status: 0 }),
+    }),
+  });
+  await assert.rejects(
+    () => transport.acquireSplitDeployments({
+      baselineRevision: REVISION,
+      candidateRevision: CANDIDATE,
+    }),
+    /malformed JSON/i,
+  );
+  assert.ok(Date.now() - started < 1000, "malformed JSON acquire must reject immediately");
 });
 
 test("collectWarehouseRun forwards external signal into collectProviderEvents", async () => {

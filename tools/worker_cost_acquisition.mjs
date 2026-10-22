@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import { createHash } from "node:crypto";
-import { execFileSync, spawn } from "node:child_process";
 import { readFileSync, writeFileSync, mkdirSync, statSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -19,6 +18,10 @@ import {
   runMatchedWarehouseExperiment,
   selectOwnedHttpEvent,
 } from "./lib/worker_cost_acquisition.mjs";
+import {
+  WRANGLER_STDIO_MAX_BYTES,
+  runWrangler,
+} from "./lib/wrangler_exec.mjs";
 
 export {
   normalizeWranglerTailEvent,
@@ -114,66 +117,41 @@ function secret(env, name) {
 }
 
 /**
- * Abortable wrangler subprocess. Sync execFileSync cannot be cancelled
- * mid-flight; spawn + kill on AbortSignal bounds acquisition inside the
- * shared whole-window deadline.
+ * Abortable wrangler subprocess for deployment acquisition.
+ * Reuses tools/lib/wrangler_exec.mjs lifecycle: stream-to-file caps, close
+ * await, TERM→KILL timer clear, and (non-Windows) detached process-group
+ * drain so npx wrappers and TERM-ignoring grandchildren are reaped.
+ * JSON is parsed only after runWrangler settles so malformed stdout rejects
+ * instead of leaving the caller promise pending.
  */
-export function invokeWranglerAbortable(args, env, {
+export async function invokeWranglerAbortable(args, env, {
   cwd = WORKER_DIRECTORY,
   signal = null,
-  maxBuffer = 8 * 1024 * 1024,
+  maxBuffer = WRANGLER_STDIO_MAX_BYTES,
+  runWranglerFn = runWrangler,
 } = {}) {
   if (signal?.aborted) {
-    return Promise.reject(new Error("deployment acquisition was cancelled"));
+    const error = new Error("deployment acquisition was cancelled");
+    error.name = "AbortError";
+    throw error;
   }
-  return new Promise((resolvePromise, rejectPromise) => {
-    const child = spawn("npx", ["wrangler@4.126.0", ...args], {
-      cwd,
-      env,
-      stdio: ["ignore", "pipe", "pipe"],
-    });
-    let stdout = "";
-    let stderr = "";
-    let settled = false;
-    const finish = (fn) => {
-      if (settled) return;
-      settled = true;
-      signal?.removeEventListener?.("abort", onAbort);
-      fn();
-    };
-    const onAbort = () => {
-      try { child.kill("SIGTERM"); } catch { /* ignore */ }
-      setTimeout(() => {
-        try { child.kill("SIGKILL"); } catch { /* ignore */ }
-      }, 500).unref?.();
-      finish(() => rejectPromise(new Error("deployment acquisition was cancelled")));
-    };
-    signal?.addEventListener?.("abort", onAbort, { once: true });
-    child.stdout.on("data", (chunk) => {
-      stdout += chunk;
-      if (stdout.length > maxBuffer) {
-        try { child.kill("SIGKILL"); } catch { /* ignore */ }
-        finish(() => rejectPromise(new Error("wrangler stdout exceeded bound")));
-      }
-    });
-    child.stderr.on("data", (chunk) => { stderr += chunk; });
-    child.on("error", (error) => finish(() => rejectPromise(error)));
-    child.on("exit", (code) => {
-      if (signal?.aborted) {
-        return finish(() => rejectPromise(new Error("deployment acquisition was cancelled")));
-      }
-      if (code !== 0) {
-        return finish(() => rejectPromise(new Error(
-          `wrangler exited ${code}: ${String(stderr || stdout).slice(0, 200)}`,
-        )));
-      }
-      try {
-        finish(() => resolvePromise(JSON.parse(stdout)));
-      } catch (error) {
-        finish(() => rejectPromise(error));
-      }
-    });
+  const { stdout } = await runWranglerFn(args, {
+    cwd,
+    env,
+    signal,
+    maxBytes: maxBuffer,
+    wranglerVersion: "4.126.0",
   });
+  // W2: parse after the subprocess lifecycle has fully settled.
+  try {
+    return JSON.parse(stdout);
+  } catch (error) {
+    const wrapped = new Error(
+      `wrangler returned malformed JSON: ${String(error?.message || error)}`,
+    );
+    wrapped.cause = error;
+    throw wrapped;
+  }
 }
 
 function defaultWrangler(args, env, signal = null) {
