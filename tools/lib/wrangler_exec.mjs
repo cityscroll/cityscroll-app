@@ -86,24 +86,42 @@ function terminateChild(child, { termTimeoutMs = 1000, processGroup = false } = 
   if (!child) return Promise.resolve();
   if (child[TERMINATE_PROMISE]) return child[TERMINATE_PROMISE];
 
-  child[TERMINATE_PROMISE] = (async () => {
+  // Assign the promise slot synchronously before any await so concurrent
+  // terminateChild callers share one chain (abort + stream + finally).
+  let settle;
+  const gate = new Promise((resolve, reject) => {
+    settle = { resolve, reject };
+  });
+  child[TERMINATE_PROMISE] = gate;
+
+  (async () => {
     const closed = observeChildClose(child);
-    // Process-group path: leaders can exit on TERM while TERM-ignoring
-    // grandchildren remain. When the leader is still alive, wait the grace
-    // window then SIGKILL the group. When already exited (success/finally),
-    // only best-effort SIGKILL any leftover group members — no grace wait.
+    // Process-group path: TERM the leader only (cooperative exit / stdio
+    // close), wait a REF'D grace window, then SIGKILL the whole group so
+    // TERM-ignoring grandchildren are drained. Group-wide TERM first has
+    // left Darwin descendants alive after a follow-on group SIGKILL; leader
+    // TERM then group SIGKILL matches the proven drain. Keep the grace
+    // timer ref'd until it fires (T2). When already exited (success/finally),
+    // only best-effort SIGKILL leftovers.
     if (processGroup) {
+      const pgid = child.pid;
       if (!processHasExited(child)) {
-        signalChild(child, "SIGTERM", { processGroup: true });
-        await new Promise((resolve) => {
-          const timer = setTimeout(resolve, termTimeoutMs);
-          timer.unref?.();
-        });
+        try { child.kill("SIGTERM"); } catch { /* leader may already be gone */ }
+        let graceTimer = null;
+        try {
+          await new Promise((resolve) => {
+            graceTimer = setTimeout(resolve, termTimeoutMs);
+          });
+        } finally {
+          if (graceTimer) clearTimeout(graceTimer);
+        }
       }
-      try {
-        signalChild(child, "SIGKILL", { processGroup: true });
-      } catch {
-        // Group may already be gone.
+      if (pgid) {
+        try {
+          process.kill(-pgid, "SIGKILL");
+        } catch {
+          // Group may already be gone.
+        }
       }
       await closed;
       return;
@@ -129,7 +147,7 @@ function terminateChild(child, { termTimeoutMs = 1000, processGroup = false } = 
       }
       await closed;
     }
-  })();
+  })().then(settle.resolve, settle.reject);
 
   return child[TERMINATE_PROMISE];
 }
@@ -164,8 +182,10 @@ export async function runWrangler(args, {
   termTimeoutMs = 1000,
   onSpawn = null,
   signal = null,
-  // Detached process-group leader so abort drains wrappers/grandchildren.
-  processGroup = process.platform !== "win32",
+  // Opt-in process-group drain. Default false preserves the shipped
+  // non-detached behavior for D1 publishing adapters and other callers.
+  // Warehouse acquisition passes true via invokeWranglerAbortable.
+  processGroup = false,
 } = {}) {
   if (!Array.isArray(args)) fail("runWrangler requires an args array");
   if (signal?.aborted) {

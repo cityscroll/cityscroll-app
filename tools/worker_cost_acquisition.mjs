@@ -141,6 +141,8 @@ export async function invokeWranglerAbortable(args, env, {
     signal,
     maxBytes: maxBuffer,
     wranglerVersion: "4.126.0",
+    // Opt-in process-group drain for abortable warehouse acquisition only.
+    processGroup: process.platform !== "win32",
   });
   // W2: parse after the subprocess lifecycle has fully settled.
   try {

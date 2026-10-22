@@ -506,12 +506,9 @@ export async function runMatchedWarehouseExperiment({
       },
     };
   }
-  externalSignal?.addEventListener?.("abort", onExternalAbort, { once: true });
-  const deadlineTimer = setTimeout(() => {
-    try { controller.abort(); } catch { /* ignore */ }
-  }, Math.max(0, deadlineMs - nowFn()));
-  deadlineTimer.unref?.();
 
+  // Resolve capability/cohorts BEFORE attaching the external abort listener or
+  // creating the ref'd deadline timer so a throw cannot leak either (T1/L1).
   const capability = resolveWarehouseAcquisitionCapability(transport, coldStartFlagCapability);
   const requiredCohorts = resolveWarehouseExperimentCohorts(capability);
   const workloadId = `fixed-warehouse-${sha256(requiredCohorts.join("\n"))}`;
@@ -522,7 +519,20 @@ export async function runMatchedWarehouseExperiment({
     started_at: new Date(startedMs).toISOString(),
   });
 
+  // Listener + deadline timer are created inside try so finally always clears
+  // both. Keep the deadline ref'd: while a signal-ignoring acquire is pending
+  // it is the only handle that can settle the shared window (C1).
+  let deadlineTimer = null;
+  let externalListenerAttached = false;
   try {
+    if (externalSignal?.addEventListener) {
+      externalSignal.addEventListener("abort", onExternalAbort, { once: true });
+      externalListenerAttached = true;
+    }
+    deadlineTimer = setTimeout(() => {
+      try { controller.abort(); } catch { /* ignore */ }
+    }, Math.max(0, deadlineMs - nowFn()));
+
     let deployments;
     try {
       if (controller.signal.aborted || nowFn() >= deadlineMs) {
@@ -688,7 +698,9 @@ export async function runMatchedWarehouseExperiment({
       },
     };
   } finally {
-    clearTimeout(deadlineTimer);
-    externalSignal?.removeEventListener?.("abort", onExternalAbort);
+    if (deadlineTimer) clearTimeout(deadlineTimer);
+    if (externalListenerAttached) {
+      externalSignal.removeEventListener("abort", onExternalAbort);
+    }
   }
 }

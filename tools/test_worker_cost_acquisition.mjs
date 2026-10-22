@@ -1351,13 +1351,139 @@ test("matched warehouse races signal-ignoring acquire — blocked within elapsed
 
 test("raceAbortable rejects a never-settling promise when the signal aborts", async () => {
   const ac = new AbortController();
-  setTimeout(() => ac.abort(), 40).unref?.();
+  // Keep the abort timer ref'd — it is the settlement mechanism for this race,
+  // not a test keepalive. An unref'd abort with a never-settling promise lets
+  // Node exit the loop with the race still pending.
+  setTimeout(() => ac.abort(), 40);
   const started = Date.now();
   await assert.rejects(
     () => raceAbortable(new Promise(() => {}), ac.signal),
     /cancelled|aborted|exhausted/i,
   );
   assert.ok(Date.now() - started < 1500);
+});
+
+test("capability throw before deadline timer exits promptly (T1)", async () => {
+  const started = Date.now();
+  await assert.rejects(
+    () => runMatchedWarehouseExperiment({
+      baselineRevision: REVISION,
+      candidateRevision: CANDIDATE,
+      coldStartFlagCapability: { bad: true },
+      transport: {
+        acquireSplitDeployments: async () => { throw new Error("acquire must not run"); },
+        collectWarehouseRun: async () => { throw new Error("arm must not run"); },
+      },
+      maxCollectorSeconds: 30 * 60,
+      maxCollectorEvents: MAX_COLLECTOR_EVENTS,
+    }),
+    /unsupported fields/i,
+  );
+  assert.ok(Date.now() - started < 500, "capability throw must not leave a leaked deadline timer");
+});
+
+test("invalid capability leaves no owned external abort listener (L1)", async () => {
+  const listeners = new Set();
+  const fakeSignal = {
+    aborted: false,
+    addEventListener(type, fn) {
+      if (type === "abort") listeners.add(fn);
+    },
+    removeEventListener(type, fn) {
+      if (type === "abort") listeners.delete(fn);
+    },
+  };
+  await assert.rejects(
+    () => runMatchedWarehouseExperiment({
+      baselineRevision: REVISION,
+      candidateRevision: CANDIDATE,
+      coldStartFlagCapability: { bad: true },
+      signal: fakeSignal,
+      transport: {
+        acquireSplitDeployments: async () => { throw new Error("acquire must not run"); },
+        collectWarehouseRun: async () => { throw new Error("arm must not run"); },
+      },
+      maxCollectorSeconds: 30 * 60,
+      maxCollectorEvents: MAX_COLLECTOR_EVENTS,
+    }),
+    /unsupported fields/i,
+  );
+  assert.equal(listeners.size, 0, "capability throw must not attach an owned abort listener");
+});
+
+test("external abort still cancels after listener is attached inside try (L1)", async () => {
+  const external = new AbortController();
+  const started = Date.now();
+  setTimeout(() => external.abort(), 40);
+  const result = await runMatchedWarehouseExperiment({
+    baselineRevision: REVISION,
+    candidateRevision: CANDIDATE,
+    signal: external.signal,
+    transport: {
+      acquireSplitDeployments: async () => { await new Promise(() => {}); },
+      collectWarehouseRun: async () => { throw new Error("arm must not run"); },
+    },
+    maxCollectorSeconds: 5,
+    maxCollectorEvents: MAX_COLLECTOR_EVENTS,
+  });
+  assert.equal(result.status, "blocked");
+  assert.match(result.reason, /during deployment acquisition|cancelled before start/i);
+  assert.ok(Date.now() - started < 3000);
+});
+
+test("shared deadline stays ref'd so signal-ignoring acquire settles under isolated node --test (C1)", async () => {
+  // Isolated reproduction of the CI cancelledByParent failure: with the
+  // deadline timer unref'd, Node exits while the race is still pending.
+  // Child process has no test-harness keepalive — only the owned deadline
+  // timer may keep the event loop alive until abort settles the race.
+  const { spawnSync } = await import("node:child_process");
+  const libHref = new URL("./lib/worker_cost_acquisition.mjs", import.meta.url).href;
+  const child = spawnSync(
+    process.execPath,
+    [
+      "--input-type=module",
+      "-e",
+      `
+        import { runMatchedWarehouseExperiment, MAX_COLLECTOR_EVENTS } from ${JSON.stringify(libHref)};
+        const started = Date.now();
+        const result = await runMatchedWarehouseExperiment({
+          baselineRevision: ${JSON.stringify(REVISION)},
+          candidateRevision: ${JSON.stringify(CANDIDATE)},
+          transport: {
+            acquireSplitDeployments: async () => { await new Promise(() => {}); },
+            collectWarehouseRun: async () => { throw new Error("arm must not start"); },
+          },
+          maxCollectorSeconds: 1,
+          maxCollectorEvents: MAX_COLLECTOR_EVENTS,
+        });
+        if (result.status !== "blocked") {
+          console.error("unexpected_status", result.status, result.reason);
+          process.exit(2);
+        }
+        if (!/during deployment acquisition/.test(String(result.reason || ""))) {
+          console.error("unexpected_reason", result.reason);
+          process.exit(3);
+        }
+        const elapsed = Date.now() - started;
+        if (elapsed >= 3500) {
+          console.error("elapsed_too_long", elapsed);
+          process.exit(4);
+        }
+        console.log("c1_deadline_ref_settled", elapsed);
+      `,
+    ],
+    {
+      encoding: "utf8",
+      timeout: 15_000,
+      env: process.env,
+    },
+  );
+  assert.equal(
+    child.status,
+    0,
+    `isolated deadline proof failed (status=${child.status}):\n${child.stdout}\n${child.stderr}`,
+  );
+  assert.match(child.stdout, /c1_deadline_ref_settled/);
 });
 
 test("invokeWranglerAbortable rejects malformed JSON immediately after settle (W2)", async () => {
@@ -1388,6 +1514,11 @@ test("invokeWranglerAbortable reuses runWrangler lifecycle and forwards AbortSig
         assert.equal(options.maxBytes, 1024);
         assert.equal(options.cwd, "/tmp");
         assert.equal(options.wranglerVersion, "4.126.0");
+        assert.equal(
+          options.processGroup,
+          process.platform !== "win32",
+          "invokeWranglerAbortable must opt in to processGroup",
+        );
         const error = new Error("deployment acquisition was cancelled");
         error.name = "AbortError";
         throw error;
@@ -1397,6 +1528,22 @@ test("invokeWranglerAbortable reuses runWrangler lifecycle and forwards AbortSig
   );
   assert.equal(seen.length, 1);
   assert.deepEqual(seen[0].args, ["versions", "list", "--json"]);
+});
+
+test("invokeWranglerAbortable through actual runWrangler with injected command (C2 spawn boundary)", async () => {
+  const { runWrangler } = await import("./lib/wrangler_exec.mjs");
+  let spawned = false;
+  const payload = { ok: true, source: "c2-spawn-boundary" };
+  const result = await invokeWranglerAbortable(["deployments", "status", "--json"], process.env, {
+    runWranglerFn: (args, options) => runWrangler(args, {
+      ...options,
+      command: process.execPath,
+      commandArgs: ["-e", `process.stdout.write(${JSON.stringify(JSON.stringify(payload))})`],
+      onSpawn() { spawned = true; },
+    }),
+  });
+  assert.equal(spawned, true, "actual runWrangler must spawn the injected command");
+  assert.deepEqual(result, payload);
 });
 
 test("invokeWranglerAbortable does not import a private spawn lifecycle", async () => {

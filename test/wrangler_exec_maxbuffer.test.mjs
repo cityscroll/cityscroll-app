@@ -237,6 +237,177 @@ test("D1 wrangler adapters use the shared invoker instead of bare execFileAsync"
   }
 });
 
+test("runWrangler default processGroup stays non-detached (opt-in only)", async () => {
+  const { execFileSync } = await import("node:child_process");
+  const { readFileSync } = await import("node:fs");
+  let observed = null;
+  const result = await runWrangler([], {
+    command: process.execPath,
+    // Stay alive long enough for onSpawn to read the process group.
+    commandArgs: ["-e", "setTimeout(() => {}, 400); process.stdout.write(\"ok\")"],
+    onSpawn(child) {
+      let childPgid = null;
+      let parentPgid = null;
+      if (process.platform !== "win32") {
+        childPgid = Number(execFileSync("ps", ["-o", "pgid=", "-p", String(child.pid)], {
+          encoding: "utf8",
+        }).trim());
+        parentPgid = Number(execFileSync("ps", ["-o", "pgid=", "-p", String(process.pid)], {
+          encoding: "utf8",
+        }).trim());
+      }
+      observed = { pid: child.pid, childPgid, parentPgid };
+    },
+  });
+  assert.equal(result.status, 0);
+  assert.equal(result.stdout, "ok");
+  assert.ok(observed?.pid);
+  if (process.platform !== "win32") {
+    assert.ok(Number.isFinite(observed.childPgid));
+    assert.ok(Number.isFinite(observed.parentPgid));
+    assert.equal(
+      observed.childPgid,
+      observed.parentPgid,
+      "default runWrangler must keep the child in the parent process group (non-detached)",
+    );
+  }
+  // Source-level: default parameter must be false (not platform-gated true).
+  const src = readFileSync(new URL("../tools/lib/wrangler_exec.mjs", import.meta.url), "utf8");
+  assert.match(src, /processGroup\s*=\s*false/);
+  assert.doesNotMatch(src, /processGroup\s*=\s*process\.platform\s*!==\s*"win32"/);
+});
+
+test("isolated runWrangler abort: TERM-exit leader + TERM-ignore descendant settles via ref'd grace (T2)", async () => {
+  // T2/L2: processGroup grace timer must stay ref'd. Require a READY marker
+  // with the real descendant PID (+ pgid) after the TERM trap is installed,
+  // then abort. Assert that PID existed and was reaped. No null-as-success.
+  if (process.platform === "win32") return;
+  const { spawnSync } = await import("node:child_process");
+  const { mkdtempSync, writeFileSync, rmSync } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const { join } = await import("node:path");
+  const dir = mkdtempSync(join(tmpdir(), "t2-pg-grace-"));
+  const readyPath = join(dir, "ready");
+  const descPath = join(dir, "desc.mjs");
+  const leaderPath = join(dir, "leader.mjs");
+  const runnerPath = join(dir, "runner.mjs");
+  const wranglerHref = new URL("../tools/lib/wrangler_exec.mjs", import.meta.url).href;
+
+  writeFileSync(descPath, `
+    import { writeFileSync } from "node:fs";
+    import { execFileSync } from "node:child_process";
+    process.on("SIGTERM", () => {});
+    const pgid = execFileSync("ps", ["-o", "pgid=", "-p", String(process.pid)], { encoding: "utf8" }).trim();
+    writeFileSync(process.env.READY_PATH, JSON.stringify({ pid: process.pid, pgid: Number(pgid) }));
+    setInterval(() => {}, 40);
+  `);
+  writeFileSync(leaderPath, `
+    import { spawn } from "node:child_process";
+    const g = spawn(process.execPath, [${JSON.stringify(descPath)}], {
+      env: process.env,
+      stdio: "ignore",
+      detached: false,
+    });
+    g.unref();
+    setInterval(() => process.stdout.write("."), 80);
+  `);
+  writeFileSync(runnerPath, `
+    import { readFileSync, existsSync } from "node:fs";
+    import { execFileSync } from "node:child_process";
+    import { runWrangler } from ${JSON.stringify(wranglerHref)};
+    const readyPath = ${JSON.stringify(readyPath)};
+    const leaderPath = ${JSON.stringify(leaderPath)};
+    const ac = new AbortController();
+    const waitReady = async (timeoutMs = 3000) => {
+      const start = Date.now();
+      while (Date.now() - start < timeoutMs) {
+        if (existsSync(readyPath)) {
+          const info = JSON.parse(readFileSync(readyPath, "utf8"));
+          if (Number.isInteger(info.pid) && info.pid > 0 && Number.isInteger(info.pgid) && info.pgid > 0) {
+            return info;
+          }
+        }
+        await new Promise((r) => setTimeout(r, 20));
+      }
+      throw new Error("descendant READY marker missing");
+    };
+    let leaderPid = null;
+    const childEnv = { ...process.env, READY_PATH: readyPath };
+    const run = runWrangler([], {
+      command: process.execPath,
+      commandArgs: [leaderPath],
+      env: childEnv,
+      signal: ac.signal,
+      termTimeoutMs: 200,
+      processGroup: true,
+      onSpawn(child) {
+        leaderPid = child.pid;
+        waitReady().then((info) => {
+          if (info.pgid !== leaderPid) {
+            console.error("pgid_mismatch", info, "leader", leaderPid);
+            process.exit(7);
+          }
+          console.log("t2_descendant_ready", info.pid, "pgid", info.pgid);
+          ac.abort();
+        }).catch((error) => {
+          console.error("t2_ready_failed", error);
+          process.exit(5);
+        });
+      },
+    });
+    try {
+      await run;
+      console.error("expected_reject");
+      process.exit(2);
+    } catch (error) {
+      if (!/cancelled|aborted/i.test(String(error?.message || error))) {
+        console.error("unexpected_error", error);
+        process.exit(3);
+      }
+    }
+    const info = JSON.parse(readFileSync(readyPath, "utf8"));
+    if (!Number.isInteger(info.pid) || info.pid <= 0) {
+      console.error("missing_descendant_pid", info);
+      process.exit(6);
+    }
+    // Small settle after teardown before the liveness probe.
+    await new Promise((r) => setTimeout(r, 50));
+    let alive = true;
+    try { process.kill(info.pid, 0); }
+    catch (error) {
+      if (error?.code === "ESRCH") alive = false;
+      else throw error;
+    }
+    if (alive) {
+      try {
+        console.error("descendant_ps", execFileSync("ps", ["-o", "pid,pgid,state,command", "-p", String(info.pid)], { encoding: "utf8" }));
+      } catch (e) {
+        console.error("descendant_ps_err", e.message);
+      }
+      // Last-resort evidence: force-kill and still fail the proof.
+      try { process.kill(-info.pgid, "SIGKILL"); } catch { /* ignore */ }
+      try { process.kill(info.pid, "SIGKILL"); } catch { /* ignore */ }
+      console.error("descendant_pid_still_alive", info.pid);
+      process.exit(4);
+    }
+    console.log("t2_pg_grace_settled", info.pid);
+  `);
+
+  const child = spawnSync(process.execPath, [runnerPath], {
+    encoding: "utf8",
+    timeout: 20_000,
+    env: { ...process.env, READY_PATH: readyPath },
+  });
+  rmSync(dir, { recursive: true, force: true });
+  assert.equal(
+    child.status,
+    0,
+    `T2 isolated grace proof failed (status=${child.status}):\n${child.stdout}\n${child.stderr}`,
+  );
+  assert.match(child.stdout, /t2_descendant_ready \d+/);
+  assert.match(child.stdout, /t2_pg_grace_settled \d+/);
+});
+
 test("runWrangler abort drains a TERM-ignoring descendant process group", async () => {
   // W1: npx-like leader + grandchild that ignores SIGTERM must be group-killed.
   if (process.platform === "win32") return;
