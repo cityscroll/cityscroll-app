@@ -190,8 +190,14 @@ def check_fixture(browser, width: int, height: int) -> None:
         page.locator(".land-map-selected-detail").tap()
         page.wait_for_function(
             "(id) => location.hash.includes(`#land/${id}`)", arg=ANCHOR_SPECIMEN, timeout=20_000)
+        # Poll until the card exists and is shown. A bare `.hidden` read throws
+        # TypeError while the SPA is mid-transition (card briefly absent), which
+        # Playwright treats as failure instead of continuing to wait.
         page.wait_for_function(
-            "() => document.getElementById('land-item-card').hidden === false", timeout=30_000)
+            "() => { const el = document.getElementById('land-item-card'); "
+            "return Boolean(el) && el.hidden === false; }",
+            timeout=30_000,
+        )
         page.go_back()
         wait_for_map(page)
         page.wait_for_selector("#land-map-selected", timeout=20_000)
