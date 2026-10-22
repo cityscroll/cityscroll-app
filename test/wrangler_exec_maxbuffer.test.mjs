@@ -68,11 +68,16 @@ test("runWrangler fails closed when retained stdout exceeds the 32 MiB bound", a
   );
 });
 
-test("runWrangler tears down the child when a stdio write fails with ENOSPC", async () => {
-  // Defect: awaiting child close before stream promises left a full-disk write
-  // hanging (producer blocked on a full pipe; close never fired). Fail closed
-  // on stream EIO/ENOSPC and kill the child instead.
+test("runWrangler reaps a SIGTERM-ignoring child after ENOSPC and preserves the stream error", async () => {
+  // Defects:
+  // 1) awaiting child close before stream promises hung on full-disk writes;
+  // 2) killChild skipped SIGKILL once child.killed was true after SIGTERM
+  //    (Node: killed means signal sent, not that the process exited);
+  // 3) finally removed the temp dir and returned before the child was reaped.
+  // Keep the 32 MiB bound. Fail closed on ENOSPC/EIO with the original stream
+  // error, escalate to SIGKILL, await close, then clean up.
   const { Writable } = await import("node:stream");
+  const { existsSync } = await import("node:fs");
   const enospc = Object.assign(new Error("ENOSPC: no space left on device, write"), {
     code: "ENOSPC",
   });
@@ -82,22 +87,47 @@ test("runWrangler tears down the child when a stdio write fails with ENOSPC", as
     },
   });
 
-  const started = Date.now();
+  let spawnedPid = null;
+  let captureDir = null;
+  const started = performance.now(); // test-clock: allow-real-clock hang bound for teardown
   await assert.rejects(
     () => runWrangler([], {
       command: process.execPath,
-      // Keep writing forever so a hang would outlive the assertion timeout.
-      commandArgs: ["-e", "setInterval(() => process.stdout.write('x'.repeat(65536)), 0)"],
+      // Ignore SIGTERM; swallow EPIPE; keep writing so a hang would outlive us.
+      commandArgs: ["-e", `
+        process.on("SIGTERM", () => {});
+        process.stdout.on("error", () => {});
+        setInterval(() => {
+          try { process.stdout.write("x".repeat(65536)); } catch (_) {}
+        }, 0);
+      `],
       createWriteStreamFn,
+      termTimeoutMs: 50,
+      onSpawn(child, dir) {
+        spawnedPid = child.pid;
+        captureDir = dir;
+      },
     }),
     (error) => {
-      assert.equal(error?.code, "ENOSPC");
+      assert.equal(error?.code, "ENOSPC", `must preserve stream error, got ${error}`);
       return true;
     },
   );
   assert.ok(
-    Date.now() - started < 5000,
-    "ENOSPC on stdio write must reject promptly instead of hanging on child close",
+    performance.now() - started < 5000, // test-clock: allow-real-clock hang bound for teardown
+    "ENOSPC must reject promptly instead of hanging on child close",
+  );
+  assert.ok(spawnedPid, "onSpawn must observe the child pid");
+  // Child must be reaped — kill(pid, 0) throws ESRCH when gone.
+  assert.throws(
+    () => process.kill(spawnedPid, 0),
+    (error) => error?.code === "ESRCH",
+    `child pid ${spawnedPid} must be reaped after ENOSPC teardown`,
+  );
+  assert.equal(
+    captureDir && existsSync(captureDir),
+    false,
+    "temp capture dir must be removed only after the child is reaped",
   );
 });
 

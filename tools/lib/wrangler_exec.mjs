@@ -10,6 +10,11 @@
  * optional maxBytes ceiling fails closed with the measured size if a command
  * somehow exceeds the bound (defense in depth; streaming itself has no
  * maxBuffer).
+ *
+ * On stream write EIO/ENOSPC: tear down the child (SIGTERM, then SIGKILL),
+ * await close/reap, preserve the original stream error, and only then remove
+ * the temp capture directory. Do not treat `child.killed` as "exited" — in
+ * Node it only means a signal was sent.
  */
 
 import { spawn } from "node:child_process";
@@ -32,6 +37,49 @@ function fail(message) {
   throw new Error(message);
 }
 
+function childAlreadyClosed(child) {
+  return child != null && (child.exitCode != null || child.signalCode != null);
+}
+
+function waitForClose(child) {
+  return new Promise((resolve) => {
+    if (childAlreadyClosed(child)) {
+      resolve({ code: child.exitCode, signal: child.signalCode });
+      return;
+    }
+    child.once("close", (code, signal) => resolve({ code, signal }));
+  });
+}
+
+/**
+ * SIGTERM, then SIGKILL if still alive after termTimeoutMs. Await close either
+ * way. Track liveness via exitCode/signalCode — never via child.killed.
+ */
+async function terminateChild(child, { termTimeoutMs = 1000 } = {}) {
+  if (!child || childAlreadyClosed(child)) return;
+  const closed = waitForClose(child);
+  try {
+    child.kill("SIGTERM");
+  } catch {
+    // Child may already be gone.
+  }
+  const timedOut = await Promise.race([
+    closed.then(() => false),
+    new Promise((resolve) => {
+      const timer = setTimeout(() => resolve(true), termTimeoutMs);
+      timer.unref?.();
+    }),
+  ]);
+  if (timedOut && !childAlreadyClosed(child)) {
+    try {
+      child.kill("SIGKILL");
+    } catch {
+      // Ignore.
+    }
+  }
+  await closed;
+}
+
 async function streamToFile(readable, path, createWriteStreamFn) {
   const out = createWriteStreamFn(path);
   readable.pipe(out);
@@ -47,7 +95,7 @@ async function streamToFile(readable, path, createWriteStreamFn) {
 
 /**
  * @param {string[]} args wrangler argv after the package name (e.g. ["d1","execute",…])
- * @param {{ wranglerVersion?: string, cwd?: string, env?: NodeJS.ProcessEnv, maxBytes?: number, command?: string, commandArgs?: string[], createWriteStreamFn?: typeof createWriteStream }} [options]
+ * @param {{ wranglerVersion?: string, cwd?: string, env?: NodeJS.ProcessEnv, maxBytes?: number, command?: string, commandArgs?: string[], createWriteStreamFn?: typeof createWriteStream, termTimeoutMs?: number, onSpawn?: Function }} [options]
  * @returns {Promise<{ stdout: string, stderr: string, status: number }>}
  */
 export async function runWrangler(args, {
@@ -59,6 +107,8 @@ export async function runWrangler(args, {
   command = "npx",
   commandArgs = null,
   createWriteStreamFn = createWriteStream,
+  termTimeoutMs = 1000,
+  onSpawn = null,
 } = {}) {
   if (!Array.isArray(args)) fail("runWrangler requires an args array");
   const argv = commandArgs || [`wrangler@${wranglerVersion}`, ...args];
@@ -66,37 +116,27 @@ export async function runWrangler(args, {
   const stdoutPath = join(dir, "stdout.txt");
   const stderrPath = join(dir, "stderr.txt");
   let child = null;
-  const killChild = () => {
-    if (!child || child.killed || child.exitCode != null) return;
-    try {
-      child.kill("SIGTERM");
-    } catch {
-      // Child may already be gone.
-    }
-    setTimeout(() => {
-      if (!child || child.killed || child.exitCode != null) return;
-      try {
-        child.kill("SIGKILL");
-      } catch {
-        // Ignore.
-      }
-    }, 1000).unref?.();
-  };
+  let streamError = null;
   try {
     child = spawn(command, argv, {
       cwd,
       env,
       stdio: ["ignore", "pipe", "pipe"],
     });
+    if (typeof onSpawn === "function") onSpawn(child, dir);
+
     // Await close and stream finishes together. A write EIO/ENOSPC must kill the
     // child so close fires — awaiting close first hangs when the producer blocks
     // on a full pipe after the capture stream stops draining.
     const stdoutDone = streamToFile(child.stdout, stdoutPath, createWriteStreamFn).catch((error) => {
-      killChild();
+      streamError = streamError || error;
+      // Kick termination; the outer catch/finally awaits the reap.
+      void terminateChild(child, { termTimeoutMs });
       throw error;
     });
     const stderrDone = streamToFile(child.stderr, stderrPath, createWriteStreamFn).catch((error) => {
-      killChild();
+      streamError = streamError || error;
+      void terminateChild(child, { termTimeoutMs });
       throw error;
     });
     const closed = new Promise((resolve, reject) => {
@@ -111,9 +151,9 @@ export async function runWrangler(args, {
       const settled = await Promise.all([closed, stdoutDone, stderrDone]);
       status = settled[0];
     } catch (error) {
-      killChild();
+      await terminateChild(child, { termTimeoutMs });
       // Prefer the stream failure (ENOSPC/EIO) over a follow-on signal rejection.
-      throw error;
+      throw streamError || error;
     }
 
     const stdoutBytes = statSync(stdoutPath).size;
@@ -146,8 +186,11 @@ export async function runWrangler(args, {
     }
     return { stdout, stderr, status };
   } finally {
-    killChild();
-    rmSync(dir, { recursive: true, force: true });
+    try {
+      await terminateChild(child, { termTimeoutMs });
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   }
 }
 
