@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 import { createHash } from "node:crypto";
-import { execFileSync } from "node:child_process";
-import { readFileSync, statSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { execFileSync, spawn } from "node:child_process";
+import { readFileSync, writeFileSync, mkdirSync, statSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { acquireDeploymentBinding, acquireSplitDeploymentBindings } from "./cloudflare_deployment_binding.mjs";
 import {
@@ -113,14 +113,71 @@ function secret(env, name) {
   return readFileSync(path, "utf8").trim();
 }
 
-function defaultWrangler(args, env) {
-  return JSON.parse(execFileSync("npx", ["wrangler@4.126.0", ...args], {
-    cwd: WORKER_DIRECTORY,
-    env,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"],
-    maxBuffer: 8 * 1024 * 1024,
-  }));
+/**
+ * Abortable wrangler subprocess. Sync execFileSync cannot be cancelled
+ * mid-flight; spawn + kill on AbortSignal bounds acquisition inside the
+ * shared whole-window deadline.
+ */
+export function invokeWranglerAbortable(args, env, {
+  cwd = WORKER_DIRECTORY,
+  signal = null,
+  maxBuffer = 8 * 1024 * 1024,
+} = {}) {
+  if (signal?.aborted) {
+    return Promise.reject(new Error("deployment acquisition was cancelled"));
+  }
+  return new Promise((resolvePromise, rejectPromise) => {
+    const child = spawn("npx", ["wrangler@4.126.0", ...args], {
+      cwd,
+      env,
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+    let stdout = "";
+    let stderr = "";
+    let settled = false;
+    const finish = (fn) => {
+      if (settled) return;
+      settled = true;
+      signal?.removeEventListener?.("abort", onAbort);
+      fn();
+    };
+    const onAbort = () => {
+      try { child.kill("SIGTERM"); } catch { /* ignore */ }
+      setTimeout(() => {
+        try { child.kill("SIGKILL"); } catch { /* ignore */ }
+      }, 500).unref?.();
+      finish(() => rejectPromise(new Error("deployment acquisition was cancelled")));
+    };
+    signal?.addEventListener?.("abort", onAbort, { once: true });
+    child.stdout.on("data", (chunk) => {
+      stdout += chunk;
+      if (stdout.length > maxBuffer) {
+        try { child.kill("SIGKILL"); } catch { /* ignore */ }
+        finish(() => rejectPromise(new Error("wrangler stdout exceeded bound")));
+      }
+    });
+    child.stderr.on("data", (chunk) => { stderr += chunk; });
+    child.on("error", (error) => finish(() => rejectPromise(error)));
+    child.on("exit", (code) => {
+      if (signal?.aborted) {
+        return finish(() => rejectPromise(new Error("deployment acquisition was cancelled")));
+      }
+      if (code !== 0) {
+        return finish(() => rejectPromise(new Error(
+          `wrangler exited ${code}: ${String(stderr || stdout).slice(0, 200)}`,
+        )));
+      }
+      try {
+        finish(() => resolvePromise(JSON.parse(stdout)));
+      } catch (error) {
+        finish(() => rejectPromise(error));
+      }
+    });
+  });
+}
+
+function defaultWrangler(args, env, signal = null) {
+  return invokeWranglerAbortable(args, env, { signal });
 }
 
 function eventIdentifier(event) {
@@ -424,9 +481,14 @@ export function createLiveWorkerCostTransport({
   delete deploymentEnv.CLOUDFLARE_API_TOKEN_FILE;
   delete deploymentEnv.CLOUDFLARE_OBSERVABILITY_TOKEN;
   delete deploymentEnv.CLOUDFLARE_OBSERVABILITY_TOKEN_FILE;
-  const providerState = () => ({
-    providerStatus: invokeWrangler(["deployments", "status", "--json"], deploymentEnv),
-    providerVersions: invokeWrangler(["versions", "list", "--json"], deploymentEnv),
+  const callInvokeWrangler = async (args, signal) => {
+    if (signal?.aborted) throw new Error("deployment acquisition was cancelled");
+    // Support sync mocks (tests) and async abortable default/private invoke.
+    return await Promise.resolve(invokeWrangler(args, deploymentEnv, signal));
+  };
+  const providerState = async (signal) => ({
+    providerStatus: await callInvokeWrangler(["deployments", "status", "--json"], signal),
+    providerVersions: await callInvokeWrangler(["versions", "list", "--json"], signal),
   });
   const measurementPlan = async () => {
     const raw = env.WORKER_COST_MEASUREMENT_PLAN;
@@ -474,12 +536,24 @@ export function createLiveWorkerCostTransport({
 
   return {
     measurementPlan,
-    async acquireDeployment(revision) {
-      return acquireDeploymentBinding({ ...providerState(), healthUrl, workerName, expectedRevision: revision, fetchImpl });
+    async acquireDeployment(revision, { signal } = {}) {
+      return acquireDeploymentBinding({
+        ...await providerState(signal),
+        healthUrl,
+        workerName,
+        expectedRevision: revision,
+        fetchImpl,
+      });
     },
-    async acquireSplitDeployments({ baselineRevision, candidateRevision }) {
+    async acquireSplitDeployments({ baselineRevision, candidateRevision, signal } = {}) {
+      if (signal?.aborted) throw new Error("deployment acquisition was cancelled");
       return acquireSplitDeploymentBindings({
-        ...providerState(), healthUrl, workerName, baselineRevision, candidateRevision, fetchImpl,
+        ...await providerState(signal),
+        healthUrl,
+        workerName,
+        baselineRevision,
+        candidateRevision,
+        fetchImpl,
       });
     },
     async executeFixedHttpWorkloads({ plan, deployment, signal }) {
@@ -586,8 +660,16 @@ export function createLiveWorkerCostTransport({
       }
     },
     warehouseColdStartFlagCapability: TAIL_WAREHOUSE_COLD_START_FLAG_CAPABILITY,
-    async collectWarehouseRun({ label, revision, deployment, workloadId, cohorts, samplesPerCohort, maxEvents }) {
-      if (samplesPerCohort !== WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT || maxEvents !== MAX_COLLECTOR_EVENTS) {
+    async collectWarehouseRun({
+      label, revision, deployment, workloadId, cohorts, samplesPerCohort, maxEvents, signal, deadlineAt = null,
+    } = {}) {
+      // Shared two-arm budget may pass a remaining maxEvents < MAX_COLLECTOR_EVENTS.
+      if (
+        samplesPerCohort !== WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT
+        || !Number.isInteger(maxEvents)
+        || maxEvents <= 0
+        || maxEvents > MAX_COLLECTOR_EVENTS
+      ) {
         throw new Error("warehouse acquisition bounds are invalid");
       }
       let mode;
@@ -618,22 +700,29 @@ export function createLiveWorkerCostTransport({
       let expectations = [];
       let collectorExpectations = [];
       const started = now();
+      const endsAtMs = deadlineAt == null
+        ? (started + MAX_COLLECTOR_SECONDS * 1000)
+        : Number(deadlineAt);
+      if (!Number.isFinite(endsAtMs) || endsAtMs <= started) {
+        return { status: "blocked", reason: "shared warehouse collector deadline is invalid" };
+      }
       let events;
       try {
         events = await this.collectProviderEvents({
           from: new Date(started).toISOString(),
-          to: new Date(started + MAX_COLLECTOR_SECONDS * 1000).toISOString(),
+          to: new Date(endsAtMs).toISOString(),
           limit: maxEvents,
-          execute: async (signal, live = {}) => {
-            expectations = await mapConcurrent(attempts, WAREHOUSE_PROBE_CONCURRENCY, signal, ({ base, workload, index }) => (
-              executeWorkload(workload, workloadId, deployment, `cost-${label}-${base}-${index}`, signal)
+          signal,
+          execute: async (collectorSignal, live = {}) => {
+            expectations = await mapConcurrent(attempts, WAREHOUSE_PROBE_CONCURRENCY, collectorSignal, ({ base, workload, index }) => (
+              executeWorkload(workload, workloadId, deployment, `cost-${label}-${base}-${index}`, collectorSignal)
             ));
             if (!Array.isArray(live.events)) throw new Error("warehouse collector live event buffer is unavailable");
             const liveEvents = live.events;
             let nextIndex = 0;
             while (nextIndex < collectorMaxAttempts) {
-              if (signal?.aborted) throw new Error("cost workload collection was cancelled");
-              if (now() >= started + MAX_COLLECTOR_SECONDS * 1000) break;
+              if (collectorSignal?.aborted || signal?.aborted) throw new Error("cost workload collection was cancelled");
+              if (now() >= endsAtMs) break;
               if (liveEvents.length >= maxEvents) break;
               const matched = countMatchedCollectorExpectations(liveEvents, collectorExpectations);
               if (matched >= collectorSampleCount) break;
@@ -646,8 +735,8 @@ export function createLiveWorkerCostTransport({
               );
               if (batchSize <= 0) break;
               const batchIndexes = Array.from({ length: batchSize }, (_, offset) => nextIndex + offset);
-              const batch = await mapConcurrent(batchIndexes, WAREHOUSE_PROBE_CONCURRENCY, signal, (index) => (
-                executeWorkload(plan.collector_workload, workloadId, deployment, `cost-${label}-collector-${index}`, signal)
+              const batch = await mapConcurrent(batchIndexes, WAREHOUSE_PROBE_CONCURRENCY, collectorSignal, (index) => (
+                executeWorkload(plan.collector_workload, workloadId, deployment, `cost-${label}-collector-${index}`, collectorSignal)
               ));
               collectorExpectations.push(...batch);
               nextIndex += batchSize;
@@ -655,13 +744,29 @@ export function createLiveWorkerCostTransport({
           },
         });
       } catch (error) {
-        return { status: "blocked", reason: String(error?.message || error) };
+        // Collection was issued; a missing count is UNKNOWN, never fabricated 0.
+        return {
+          status: "blocked",
+          reason: String(error?.message || error),
+          provider_event_count: null,
+          provider_event_count_status: "unknown",
+        };
       }
-      if (now() - started > MAX_COLLECTOR_SECONDS * 1000) {
-        return { status: "blocked", reason: "warehouse collector exceeded 30 minutes" };
+      if (now() > endsAtMs) {
+        return {
+          status: "blocked",
+          reason: "warehouse collector exceeded shared deadline",
+          provider_event_count: Array.isArray(events) ? events.length : null,
+          provider_event_count_status: Array.isArray(events) ? "known" : "unknown",
+        };
       }
       if (!Array.isArray(events) || events.length > maxEvents) {
-        return { status: "blocked", reason: "warehouse provider event collection exceeded its bound" };
+        return {
+          status: "blocked",
+          reason: "warehouse provider event collection exceeded its bound",
+          provider_event_count: Array.isArray(events) ? events.length : null,
+          provider_event_count_status: Array.isArray(events) ? "known" : "unknown",
+        };
       }
       const retained = {};
       let collectorIndex = 0;
@@ -723,13 +828,20 @@ export function createLiveWorkerCostTransport({
           });
         }
       } catch (error) {
-        return { status: "blocked", reason: String(error?.message || error) };
+        return {
+          status: "blocked",
+          reason: String(error?.message || error),
+          provider_event_count: Array.isArray(events) ? events.length : null,
+          provider_event_count_status: Array.isArray(events) ? "known" : "unknown",
+        };
       }
       return {
         status: "complete",
         observedAt: new Date(now()).toISOString(),
         cohorts: retained,
         correctness: aggregateObservedCorrectness(retainedCorrectness),
+        provider_event_count: events.length,
+        provider_event_count_status: "known",
       };
     },
   };
@@ -763,6 +875,17 @@ function settingsTransportFromEnv(env) {
 
 export async function runObservabilitySettingsCommand(argv, { env = process.env, transport } = {}) {
   const command = argv[0];
+  // profile/warehouse (and unknown) must not construct a live settings transport —
+  // zero-provider warehouse proofs scrub credentials and have no CLOUDFLARE_ACCOUNT_ID.
+  if (![
+    "observability-get",
+    "observability-window-open",
+    "observability-privacy-arm",
+    "observability-enable",
+    "observability-restore",
+  ].includes(command)) {
+    return null;
+  }
   const settings = transport || settingsTransportFromEnv(env);
   const windowPath = arg(argv, "--window-state");
   const accountId = env.CLOUDFLARE_ACCOUNT_ID || "";
@@ -957,11 +1080,72 @@ export async function runObservabilitySettingsCommand(argv, { env = process.env,
   return null;
 }
 
+function sha256FileSync(path) {
+  return createHash("sha256").update(readFileSync(path)).digest("hex");
+}
+
+/** Child-recorded binding of files this CLI process actually loaded + pins. */
+export function writeCliLoadedArtifactBinding(outDir, {
+  pin,
+  rollback,
+  candidate,
+  liveAcquisitionPath = fileURLToPath(import.meta.url),
+  libAcquisitionPath = join(dirname(fileURLToPath(import.meta.url)), "lib/worker_cost_acquisition.mjs"),
+} = {}) {
+  if (!outDir) throw new Error("MEASURE_OUT or WORKER_COST_BINDING_OUT required for loaded-artifact binding");
+  mkdirSync(outDir, { recursive: true, mode: 0o700 });
+  const binding = {
+    schema: "cityscroll.cc06_loaded_artifact_binding.v1",
+    written_at: new Date().toISOString(),
+    pid: process.pid,
+    entry: "selected_runtime_cli_warehouse",
+    pins: { pin, rollback, candidate },
+    loaded_artifacts: [
+      { role: "selected_runtime", path: liveAcquisitionPath, sha256: sha256FileSync(liveAcquisitionPath) },
+      { role: "lib_matched_experiment", path: libAcquisitionPath, sha256: sha256FileSync(libAcquisitionPath) },
+    ],
+  };
+  writeFileSync(join(outDir, "loaded-artifact-binding.json"), `${JSON.stringify(binding, null, 2)}\n`, { mode: 0o600 });
+  return binding;
+}
+
+async function loadZeroProviderTransport(env) {
+  const modulePath = env.WORKER_COST_ZERO_PROVIDER_TRANSPORT || env.CC06_ZERO_PROVIDER_TRANSPORT;
+  if (!modulePath) return null;
+  const mod = await import(pathToFileURL(resolve(modulePath)).href);
+  if (typeof mod.createTransport !== "function") {
+    throw new Error("zero-provider transport module must export createTransport(env)");
+  }
+  // Scrub provider credential env names so a mistaken live path cannot authenticate.
+  for (const key of [
+    "CLOUDFLARE_API_TOKEN",
+    "__GO_CLOUDFLARE_API_TOKEN",
+    "CLOUDFLARE_OBSERVABILITY_TOKEN",
+    "WORKER_COST_ADMIN_KEY",
+  ]) {
+    delete env[key];
+  }
+  return mod.createTransport(env);
+}
+
+function resolveSharedCollectorBudgetFromEnv(env) {
+  const secondsRaw = Number(env.CC06_MAX_COLLECTOR_SECONDS ?? env.WORKER_COST_MAX_COLLECTOR_SECONDS);
+  const eventsRaw = Number(env.CC06_MAX_COLLECTOR_EVENTS ?? env.WORKER_COST_MAX_COLLECTOR_EVENTS);
+  const maxCollectorSeconds = Number.isFinite(secondsRaw) && secondsRaw > 0
+    ? Math.min(secondsRaw, MAX_COLLECTOR_SECONDS)
+    : MAX_COLLECTOR_SECONDS;
+  const maxCollectorEvents = Number.isInteger(eventsRaw) && eventsRaw > 0
+    ? Math.min(eventsRaw, MAX_COLLECTOR_EVENTS)
+    : MAX_COLLECTOR_EVENTS;
+  return { maxCollectorSeconds, maxCollectorEvents };
+}
+
 export async function runWorkerCostAcquisition(argv, { env = process.env, transport } = {}) {
   const command = argv[0];
   const settingsResult = await runObservabilitySettingsCommand(argv, { env, transport: transport?.observability });
   if (settingsResult) return settingsResult;
-  const live = transport || createLiveWorkerCostTransport({ env });
+  const injected = transport || await loadZeroProviderTransport(env);
+  const live = injected || createLiveWorkerCostTransport({ env });
   if (command === "profile") {
     const configuredWindows = env.WORKER_COST_COLLECTION_WINDOWS;
     return acquireWorkerCostProfile({
@@ -973,11 +1157,52 @@ export async function runWorkerCostAcquisition(argv, { env = process.env, transp
     });
   }
   if (command === "warehouse") {
-    return runMatchedWarehouseExperiment({
-      baselineRevision: arg(argv, "--baseline-revision"),
-      candidateRevision: arg(argv, "--candidate-revision"),
-      transport: live,
-    });
+    // Shared 30m/10k budget across both arms; AbortSignal reaches collectWarehouseRun.
+    const { maxCollectorSeconds, maxCollectorEvents } = resolveSharedCollectorBudgetFromEnv(env);
+    const baselineRevision = arg(argv, "--baseline-revision");
+    const candidateRevision = arg(argv, "--candidate-revision");
+    const bindingOut = env.MEASURE_OUT || env.WORKER_COST_BINDING_OUT;
+    let loadedBinding = null;
+    if (bindingOut) {
+      loadedBinding = writeCliLoadedArtifactBinding(bindingOut, {
+        pin: baselineRevision,
+        rollback: env.ROLLBACK_VERSION_ID || env.CC06_ROLLBACK_VERSION_ID || null,
+        candidate: env.CANDIDATE_VERSION_ID || env.CC06_CANDIDATE_VERSION_ID || candidateRevision,
+      });
+    }
+    const measureAbort = new AbortController();
+    const onSigTerm = () => {
+      try { measureAbort.abort(); } catch { /* ignore */ }
+    };
+    process.on("SIGTERM", onSigTerm);
+    process.on("SIGINT", onSigTerm);
+    const timer = setTimeout(() => {
+      try { measureAbort.abort(); } catch { /* ignore */ }
+    }, maxCollectorSeconds * 1000);
+    timer.unref?.();
+    try {
+      const result = await runMatchedWarehouseExperiment({
+        baselineRevision,
+        candidateRevision,
+        transport: live,
+        signal: measureAbort.signal,
+        maxCollectorSeconds,
+        maxCollectorEvents,
+      });
+      if (loadedBinding && result && typeof result === "object") {
+        result.loaded_artifact_binding = loadedBinding;
+        result.zero_provider_mode = Boolean(env.WORKER_COST_ZERO_PROVIDER_TRANSPORT || env.CC06_ZERO_PROVIDER_TRANSPORT);
+        result.shared_budget_caps = { max_collector_seconds: maxCollectorSeconds, max_collector_events: maxCollectorEvents };
+        if (bindingOut) {
+          writeFileSync(join(bindingOut, "warehouse-result.json"), `${JSON.stringify(result, null, 2)}\n`, { mode: 0o600 });
+        }
+      }
+      return result;
+    } finally {
+      clearTimeout(timer);
+      process.off("SIGTERM", onSigTerm);
+      process.off("SIGINT", onSigTerm);
+    }
   }
   throw new Error("usage: worker_cost_acquisition.mjs <profile|warehouse|observability-get|observability-window-open|observability-privacy-arm|observability-enable|observability-restore> [options]");
 }

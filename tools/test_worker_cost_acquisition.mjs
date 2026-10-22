@@ -5,7 +5,9 @@ import test from "node:test";
 import { queueBatchFingerprint } from "../worker/src/lib/cost_control_probe.mjs";
 import {
   acquireWorkerCostProfile,
+  MAX_COLLECTOR_EVENTS,
   queueFingerprintFromProviderEvent,
+  raceAbortable,
   runMatchedWarehouseExperiment,
   selectOwnedHttpEvent,
 } from "./lib/worker_cost_acquisition.mjs";
@@ -962,7 +964,7 @@ test("adaptive collector stops when the 30-minute collection deadline is reached
     maxEvents: 10_000,
   });
   assert.equal(result.status, "blocked");
-  assert.equal(result.reason, "warehouse collector exceeded 30 minutes");
+  assert.match(result.reason, /warehouse collector exceeded (shared deadline|30 minutes)/);
   assert.ok(collectorSends() >= 1_800 && collectorSends() <= 1_832,
     `deadline should stop within one concurrency batch, got ${collectorSends()} sends`);
 });
@@ -1211,6 +1213,8 @@ test("matched warehouse acquisition retains baseline on a queue regression for a
             })),
           ])),
           correctness: CORRECTNESS,
+          provider_event_count: 100,
+          provider_event_count_status: "known",
         };
       },
     },
@@ -1237,6 +1241,8 @@ test("matched warehouse acquisition never defaults carries_numeric_raw to true",
             Array.from({ length: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT }, () => warehouseSample(revision)),
           ])),
           correctness: CORRECTNESS,
+          provider_event_count: 100,
+          provider_event_count_status: "known",
         };
       },
     },
@@ -1266,6 +1272,8 @@ test("matched warehouse acquisition fails when a flag-less source claims raw par
             )],
           ]),
           correctness: CORRECTNESS,
+          provider_event_count: 100,
+          provider_event_count_status: "known",
         }),
       },
     }),
@@ -1286,6 +1294,8 @@ test("matched warehouse acquisition stamps the same cold_start_flag_capability o
           Array.from({ length: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT }, () => warehouseSample(revision)),
         ])),
         correctness: CORRECTNESS,
+        provider_event_count: 100,
+        provider_event_count_status: "known",
       }),
     },
   });
@@ -1294,4 +1304,82 @@ test("matched warehouse acquisition stamps the same cold_start_flag_capability o
     result.candidate.cold_start_flag_capability,
   );
   assert.deepEqual(result.baseline.cold_start_flag_capability, TAIL_WAREHOUSE_COLD_START_FLAG_CAPABILITY);
+});
+
+test("matched warehouse races signal-ignoring acquire — blocked within elapsed bound, no arms", async () => {
+  const calls = [];
+  const started = Date.now();
+  const maxSeconds = 1;
+  const transport = {
+    acquireSplitDeployments: async () => {
+      calls.push("acquire");
+      // Never settles and ignores AbortSignal entirely.
+      await new Promise(() => {});
+    },
+    collectWarehouseRun: async (args) => {
+      calls.push(`arm:${args.label}`);
+      return {
+        status: "complete",
+        observedAt: "2026-10-09T08:00:00Z",
+        cohorts: Object.fromEntries(WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => [cohort,
+          Array.from({ length: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT }, () => warehouseSample(
+            args.label === "baseline" ? REVISION : CANDIDATE,
+          )),
+        ])),
+        correctness: CORRECTNESS,
+        provider_event_count: 10,
+        provider_event_count_status: "known",
+      };
+    },
+  };
+  const result = await runMatchedWarehouseExperiment({
+    baselineRevision: REVISION,
+    candidateRevision: CANDIDATE,
+    transport,
+    maxCollectorSeconds: maxSeconds,
+    maxCollectorEvents: MAX_COLLECTOR_EVENTS,
+  });
+  const elapsedMs = Date.now() - started;
+  assert.equal(result.status, "blocked");
+  assert.match(result.reason, /during deployment acquisition/);
+  assert.deepEqual(calls, ["acquire"]);
+  assert.ok(!calls.some((c) => String(c).startsWith("arm:")), "no collectWarehouseRun arm may start");
+  assert.ok(elapsedMs < (maxSeconds + 2.5) * 1000, `elapsed ${elapsedMs}ms exceeds ${maxSeconds}s+slack`);
+  assert.deepEqual(result.shared_budget?.ledger, []);
+});
+
+test("raceAbortable rejects a never-settling promise when the signal aborts", async () => {
+  const ac = new AbortController();
+  setTimeout(() => ac.abort(), 40).unref?.();
+  const started = Date.now();
+  await assert.rejects(
+    () => raceAbortable(new Promise(() => {}), ac.signal),
+    /cancelled|aborted|exhausted/i,
+  );
+  assert.ok(Date.now() - started < 1500);
+});
+
+test("collectWarehouseRun forwards external signal into collectProviderEvents", async () => {
+  const ac = new AbortController();
+  let seenSignal = null;
+  const { transport } = liveFlaglessCollectorRetentionTransport({ warehouseAttemptsPerInput: 200 });
+  transport.collectProviderEvents = async ({ signal, from, to, limit }) => {
+    seenSignal = signal;
+    assert.equal(signal, ac.signal);
+    assert.ok(from && to && limit > 0);
+    throw new Error("cost workload collection was cancelled");
+  };
+  const result = await transport.collectWarehouseRun({
+    label: "baseline",
+    revision: REVISION,
+    deployment: deployment(REVISION),
+    workloadId: "fixed-warehouse-test",
+    cohorts: WAREHOUSE_EXPERIMENT_BASE_ROUTES,
+    samplesPerCohort: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+    maxEvents: 10_000,
+    signal: ac.signal,
+  });
+  assert.equal(seenSignal, ac.signal);
+  assert.equal(result.status, "blocked");
+  assert.match(result.reason, /cancelled/);
 });
