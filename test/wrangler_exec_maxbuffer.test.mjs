@@ -131,6 +131,92 @@ test("runWrangler reaps a SIGTERM-ignoring child after ENOSPC and preserves the 
   );
 });
 
+test("runWrangler awaits stdio close even when the child has already exited", async () => {
+  // exitCode/signalCode are set on `exit`, which can precede stdio `close`.
+  // Teardown must await the shared close promise — not return early on exit —
+  // before removing the temp capture directory.
+  const { createWriteStream, existsSync } = await import("node:fs");
+  let pendingWrites = 0;
+  let streamFinished = false;
+  const createWriteStreamFn = (path) => {
+    const out = createWriteStream(path);
+    const originalWrite = out._write.bind(out);
+    const originalFinal = out._final ? out._final.bind(out) : (_cb) => _cb();
+    out._write = (chunk, enc, cb) => {
+      pendingWrites += 1;
+      // Delay drain so process.exit can race ahead of pipe close.
+      setTimeout(() => { // test-clock: allow-real-clock delayed drain for exit-before-close
+        originalWrite(chunk, enc, (error) => {
+          pendingWrites -= 1;
+          cb(error);
+        });
+      }, 40);
+    };
+    out._final = (cb) => {
+      setTimeout(() => { // test-clock: allow-real-clock delayed final for exit-before-close
+        originalFinal((error) => {
+          streamFinished = true;
+          cb(error);
+        });
+      }, 40);
+    };
+    return out;
+  };
+
+  let childRef = null;
+  let captureDir = null;
+  let exitSeen = false;
+  let closeSeen = false;
+  const resultPromise = runWrangler([], {
+    command: process.execPath,
+    commandArgs: [
+      "-e",
+      'process.stdout.write("x".repeat(200000)); process.stderr.write("ok"); process.exit(0);',
+    ],
+    createWriteStreamFn,
+    onSpawn(child, dir) {
+      childRef = child;
+      captureDir = dir;
+      child.once("exit", () => {
+        exitSeen = true;
+      });
+      child.once("close", () => {
+        closeSeen = true;
+      });
+    },
+  });
+
+  // Wait until the OS process has exited while streams may still be draining.
+  await new Promise((resolve, reject) => {
+    if (!childRef) {
+      reject(new Error("onSpawn did not run"));
+      return;
+    }
+    if (childRef.exitCode != null || childRef.signalCode != null) {
+      resolve();
+      return;
+    }
+    childRef.once("exit", () => resolve());
+    childRef.once("error", reject);
+  });
+  assert.equal(exitSeen, true);
+  assert.ok(
+    !streamFinished || pendingWrites > 0,
+    "stdio should still be draining after process exit",
+  );
+
+  const result = await resultPromise;
+  assert.equal(result.status, 0);
+  assert.equal(closeSeen, true);
+  assert.equal(streamFinished, true);
+  assert.equal(pendingWrites, 0);
+  assert.equal(
+    captureDir && existsSync(captureDir),
+    false,
+    "temp capture dir must be removed only after stdio close",
+  );
+});
+
 test("D1 wrangler adapters use the shared invoker instead of bare execFileAsync", async () => {
   const { readFileSync } = await import("node:fs");
   const paths = [

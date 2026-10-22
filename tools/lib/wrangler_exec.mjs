@@ -12,9 +12,10 @@
  * maxBuffer).
  *
  * On stream write EIO/ENOSPC: tear down the child (SIGTERM, then SIGKILL),
- * await close/reap, preserve the original stream error, and only then remove
- * the temp capture directory. Do not treat `child.killed` as "exited" — in
- * Node it only means a signal was sent.
+ * await the real stdio `close` (not merely process `exit`), preserve the
+ * original stream error, and only then remove the temp capture directory.
+ * Do not treat `child.killed` as "exited" — in Node it only means a signal
+ * was sent. exitCode/signalCode can be set on `exit` before stdio `close`.
  */
 
 import { spawn } from "node:child_process";
@@ -33,51 +34,70 @@ export const NODE_DEFAULT_STDIO_MAX_BUFFER_BYTES = 1024 * 1024;
  */
 export const WRANGLER_STDIO_MAX_BYTES = 32 * 1024 * 1024;
 
+const CLOSE_PROMISE = Symbol("cityscroll.wranglerClosePromise");
+const TERMINATE_PROMISE = Symbol("cityscroll.wranglerTerminatePromise");
+
 function fail(message) {
   throw new Error(message);
 }
 
-function childAlreadyClosed(child) {
+/** One shared promise per child that resolves on stdio `close` (after exit). */
+function observeChildClose(child) {
+  if (!child) return Promise.resolve({ code: null, signal: null });
+  if (child[CLOSE_PROMISE]) return child[CLOSE_PROMISE];
+  child[CLOSE_PROMISE] = new Promise((resolve, reject) => {
+    child.once("error", reject);
+    child.once("close", (code, signal) => resolve({ code, signal }));
+  });
+  return child[CLOSE_PROMISE];
+}
+
+function processHasExited(child) {
   return child != null && (child.exitCode != null || child.signalCode != null);
 }
 
-function waitForClose(child) {
-  return new Promise((resolve) => {
-    if (childAlreadyClosed(child)) {
-      resolve({ code: child.exitCode, signal: child.signalCode });
-      return;
-    }
-    child.once("close", (code, signal) => resolve({ code, signal }));
-  });
-}
-
 /**
- * SIGTERM, then SIGKILL if still alive after termTimeoutMs. Await close either
- * way. Track liveness via exitCode/signalCode — never via child.killed.
+ * Idempotent termination: one TERM/KILL timer chain per child. Always awaits
+ * the shared close promise — never returns early just because exitCode is set
+ * (exit can precede stdio close). Clears the SIGKILL timer when close wins.
  */
-async function terminateChild(child, { termTimeoutMs = 1000 } = {}) {
-  if (!child || childAlreadyClosed(child)) return;
-  const closed = waitForClose(child);
-  try {
-    child.kill("SIGTERM");
-  } catch {
-    // Child may already be gone.
-  }
-  const timedOut = await Promise.race([
-    closed.then(() => false),
-    new Promise((resolve) => {
-      const timer = setTimeout(() => resolve(true), termTimeoutMs);
+function terminateChild(child, { termTimeoutMs = 1000 } = {}) {
+  if (!child) return Promise.resolve();
+  if (child[TERMINATE_PROMISE]) return child[TERMINATE_PROMISE];
+
+  child[TERMINATE_PROMISE] = (async () => {
+    const closed = observeChildClose(child);
+    let timer = null;
+    const timedOut = new Promise((resolve) => {
+      timer = setTimeout(() => resolve(true), termTimeoutMs);
       timer.unref?.();
-    }),
-  ]);
-  if (timedOut && !childAlreadyClosed(child)) {
-    try {
-      child.kill("SIGKILL");
-    } catch {
-      // Ignore.
+    });
+    // Send TERM only while the OS process may still be alive.
+    if (!processHasExited(child)) {
+      try {
+        child.kill("SIGTERM");
+      } catch {
+        // Child may already be gone.
+      }
     }
-  }
-  await closed;
+    const winner = await Promise.race([
+      closed.then(() => "closed"),
+      timedOut.then(() => "timeout"),
+    ]);
+    if (timer) clearTimeout(timer);
+    if (winner === "timeout") {
+      if (!processHasExited(child)) {
+        try {
+          child.kill("SIGKILL");
+        } catch {
+          // Ignore.
+        }
+      }
+      await closed;
+    }
+  })();
+
+  return child[TERMINATE_PROMISE];
 }
 
 async function streamToFile(readable, path, createWriteStreamFn) {
@@ -123,32 +143,36 @@ export async function runWrangler(args, {
       env,
       stdio: ["ignore", "pipe", "pipe"],
     });
+    const closed = observeChildClose(child);
     if (typeof onSpawn === "function") onSpawn(child, dir);
 
     // Await close and stream finishes together. A write EIO/ENOSPC must kill the
     // child so close fires — awaiting close first hangs when the producer blocks
     // on a full pipe after the capture stream stops draining.
+    const kickTerminate = () => {
+      void terminateChild(child, { termTimeoutMs });
+    };
     const stdoutDone = streamToFile(child.stdout, stdoutPath, createWriteStreamFn).catch((error) => {
       streamError = streamError || error;
-      // Kick termination; the outer catch/finally awaits the reap.
-      void terminateChild(child, { termTimeoutMs });
+      kickTerminate();
       throw error;
     });
     const stderrDone = streamToFile(child.stderr, stderrPath, createWriteStreamFn).catch((error) => {
       streamError = streamError || error;
-      void terminateChild(child, { termTimeoutMs });
+      kickTerminate();
       throw error;
     });
-    const closed = new Promise((resolve, reject) => {
-      child.on("error", reject);
-      child.on("close", (code, signal) => {
-        if (signal) reject(new Error(`${command} killed by signal ${signal}`));
-        else resolve(code ?? 1);
-      });
+    const closedStatus = closed.then(({ code, signal }) => {
+      if (signal) {
+        const error = new Error(`${command} killed by signal ${signal}`);
+        error.signal = signal;
+        throw error;
+      }
+      return code ?? 1;
     });
     let status;
     try {
-      const settled = await Promise.all([closed, stdoutDone, stderrDone]);
+      const settled = await Promise.all([closedStatus, stdoutDone, stderrDone]);
       status = settled[0];
     } catch (error) {
       await terminateChild(child, { termTimeoutMs });
