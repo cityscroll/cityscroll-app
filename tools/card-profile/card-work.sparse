@@ -565,6 +565,7 @@
 /site/land_authority_hydration.mjs
 /site/land_authority_labels.mjs
 /site/land_authority_summary.mjs
+/site/land_authority_summary_materialize.mjs
 /site/land_authority_summary_view.mjs
 /site/land_catalog_generation.mjs
 /site/land_decision_path.mjs
@@ -590,6 +591,8 @@
 /site/land_nta_watch_scope.mjs
 /site/land_outcome_runtime.mjs
 /site/land_outcomes_matrix.mjs
+/site/land_outcomes_merge.mjs
+/site/land_outcomes_seed_runtime.mjs
 /site/land_phase_label.mjs
 /site/land_phase_spine.mjs
 /site/land_place_membership.mjs
@@ -756,7 +759,6 @@
 /site/preview_federated_form_factor.mjs
 /site/primary_document_view.mjs
 /site/process_conformance.mjs
-/site/program-history-profile-scrub.js
 /site/procurement_alert_atom.mjs
 /site/procurement_browse_capability_index.mjs
 /site/procurement_browse_population_shards.mjs
@@ -822,6 +824,7 @@
 /site/product_updates_delivery.mjs
 /site/product_updates_honesty.mjs
 /site/product_updates_source.mjs
+/site/program-history-profile-scrub.js
 /site/project_calendar.mjs
 /site/project_connections.mjs
 /site/property-a11y-ratchet.json
