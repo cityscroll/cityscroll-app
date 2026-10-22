@@ -11,6 +11,7 @@ import { test } from "node:test";
 import {
   buildDataPageSnapshot,
   buildLandDefaultSnapshot,
+  buildLandOutcomesSeed,
   buildMoneyAgenciesSnapshot,
   buildMoneyDefaultOpenSnapshot,
   buildStaffingHiresSnapshot,
@@ -21,7 +22,9 @@ import {
   isDefaultLandSearch,
   isDefaultMoneySearch,
   normalizeDataPageRows,
+  partitionLandOutcomeForListSnapshot,
   yearAgoISO,
+  ZAP_OUTCOME_SEED_FIELDS,
 } from "../tools/lib/batch_precompute_snapshots.mjs";
 import {
   PROPERTY_LIST_DROP_FIELDS,
@@ -80,6 +83,46 @@ test("buildLandDefaultSnapshot keeps project_id order and caps count", () => {
   assert.equal(snap.outcomes.by_project[projects[0].project_id].snapshot_state, "absent");
   assert.equal(snap.outcomes.missing_count, projects.length - 1);
   assert.match(snap.query.$where, /ULURP/);
+});
+
+test("land list snapshot keeps light fields while the seed carries rich outcome evidence", () => {
+  const compact = compactZapOutcomeRecord({
+    project_id: "2026K9999",
+    filled: true,
+    join: { matched: true, method: "exact_project_id" },
+    public_status: "In Public Review",
+    portal_url: "https://zap.planning.nyc.gov/projects/2026K9999",
+    spine: { events: [{ id: "e1", label: "Community Board Referral" }] },
+    milestones: [{ name: "Community Board Referral" }],
+    statutory_clock: { days_remaining: 12 },
+    source_observations: { zap_api: { observed_at: "2026-08-01T00:00:00Z" } },
+    actions: [{ action: "ZM", status: "Certified" }],
+    approved_actions: [{ action: "ZM", status: "Approved" }],
+    dispositions: [{ body: "CB", value: "Favorable" }],
+    documents: [{ name: "Decision", url: "https://example.invalid/decision.pdf" }],
+    n_documents: 1,
+    generated_at: "2026-08-01T12:00:00Z",
+  });
+  const { listRecord, seedRecord } = partitionLandOutcomeForListSnapshot(compact);
+  assert.equal(listRecord.snapshot_state, "present");
+  assert.equal(listRecord.public_status, "In Public Review");
+  for (const key of ZAP_OUTCOME_SEED_FIELDS) {
+    assert.equal(Object.hasOwn(listRecord, key), false, `list must not keep ${key}`);
+    if (compact[key] !== undefined) {
+      assert.ok(Object.hasOwn(seedRecord, key), `seed must keep ${key}`);
+    }
+  }
+  const snap = buildLandDefaultSnapshot(
+    [{ project_id: "2026K9999", public_status: "In Public Review", actions: "ZM", ulurp_numbers: "2026K9999", ulurp_non: "ULURP" }],
+    { now: new Date("2026-08-01T12:00:00Z"), outcomesByProject: { "2026K9999": compact } },
+  );
+  assert.equal(Object.hasOwn(snap.outcomes.by_project["2026K9999"], "spine"), false);
+  const seed = buildLandOutcomesSeed(
+    { "2026K9999": compact },
+    { now: new Date("2026-08-01T12:00:00Z"), projectIds: ["2026K9999"] },
+  );
+  assert.equal(seed.count, 1);
+  assert.deepEqual(seed.by_project["2026K9999"].spine, compact.spine);
 });
 
 test("isDefaultLandSearch is only the unfiltered Active ULURP tab", () => {

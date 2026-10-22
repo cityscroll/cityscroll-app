@@ -70,6 +70,7 @@ import {
 import { landFilingEvidenceFilterFromControls } from "../land_filing_evidence_facet.mjs";
 import { mtxHTML } from "../land_outcomes_matrix.mjs";
 import { createLandOutcomeRuntime } from "../land_outcome_runtime.mjs";
+import { createLandOutcomesSeedRuntime } from "../land_outcomes_seed_runtime.mjs";
 import { escapeHtml } from "../text_clean.mjs";
 import { attachLandLotSourceDigests, landLotSourceDigestsHTML, loadLandLotSourceDigests } from "../land_lot_source_digests.mjs";
 import {
@@ -1569,6 +1570,7 @@ const landOutcomeDisplay=landOutcomeRuntime.display;
 const refreshLandOutcomeDisplay=landOutcomeRuntime.refreshDisplay;
 const zapOutcomesMemGet=landOutcomeRuntime.get;
 const fetchZapOutcomesPayload=landOutcomeRuntime.fetch;
+const enrichStaticOutcomeFromSeed=createLandOutcomesSeedRuntime({getCached:zapOutcomesMemGet,enrichStatic:landOutcomeRuntime.enrichStatic}).enrichStaticFromSeed;
 function prefetchZapOutcomesForList(rows){
   if(!Array.isArray(rows) || !rows.length) return;
   // Cap so a 40-row list does not fan out unbounded; demo + first screenful first.
@@ -1598,6 +1600,7 @@ function paintLandAuthority(row, display) {
 async function loadZapOutcomes(r, el, selection){
   if(!el || !r || !r.project_id) return;
   const phaseToolsP = ensureLandPhaseSpineTools();
+  await enrichStaticOutcomeFromSeed(r.project_id);
   const warm = zapOutcomesMemGet(r.project_id);
   if(warm?.data?.ok !== false && warm?.data?.record){
     if(selection !== undefined && selection !== landSelectionSeq) return;

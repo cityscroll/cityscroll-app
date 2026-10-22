@@ -436,6 +436,39 @@ const ZAP_OUTCOME_SNAPSHOT_FIELDS = Object.freeze([
   "generated_at",
 ]);
 
+/** Light fields kept on the first-paint Land List snapshot (byte budget). */
+export const ZAP_OUTCOME_LIST_SNAPSHOT_FIELDS = Object.freeze([
+  "project_id",
+  "public_status",
+  "portal_url",
+  "join",
+  "filled",
+  "stage_observation",
+  "generated_at",
+  "open_data",
+  "snapshot_state",
+]);
+
+/**
+ * Heavy outcome fields published once in land_outcomes_seed.json so the list
+ * snapshot stays inside its fixed byte budget while authority summaries and
+ * detail surfaces can still merge the rich evidence back.
+ */
+export const ZAP_OUTCOME_SEED_FIELDS = Object.freeze([
+  "spine",
+  "milestones",
+  "statutory_clock",
+  "source_observations",
+  "actions",
+  "approved_actions",
+  "dispositions",
+  "documents",
+  "n_documents",
+  "freshness",
+]);
+
+export const LAND_OUTCOMES_SEED_SCHEMA = "cityscroll.land_outcomes_seed.v1";
+
 const ZAP_OUTCOME_OPEN_DATA_SNAPSHOT_FIELDS = Object.freeze([
   "project_id",
   "public_status",
@@ -469,6 +502,54 @@ export function compactZapOutcomeRecord(record) {
   return out;
 }
 
+/** Split a compact outcome into list-snapshot and seed halves. */
+export function partitionLandOutcomeForListSnapshot(record) {
+  if (!record || typeof record !== "object") {
+    return { listRecord: null, seedRecord: null };
+  }
+  const listRecord = {};
+  const seedRecord = { project_id: record.project_id };
+  for (const key of ZAP_OUTCOME_LIST_SNAPSHOT_FIELDS) {
+    if (record[key] !== undefined) listRecord[key] = record[key];
+  }
+  let seeded = false;
+  for (const key of ZAP_OUTCOME_SEED_FIELDS) {
+    if (record[key] !== undefined) {
+      seedRecord[key] = record[key];
+      seeded = true;
+    }
+  }
+  if (listRecord.snapshot_state == null) {
+    listRecord.snapshot_state = record.snapshot_state
+      || (record.filled || record.spine?.events?.length ? "present" : "absent");
+  }
+  return { listRecord, seedRecord: seeded ? seedRecord : null };
+}
+
+export function buildLandOutcomesSeed(
+  outcomesByProject = {},
+  { now = new Date(), projectIds = null } = {},
+) {
+  const ids = Array.isArray(projectIds)
+    ? projectIds
+    : Object.keys(outcomesByProject || {});
+  const byProject = {};
+  for (const rawId of ids) {
+    const id = String(rawId || "").trim();
+    if (!id) continue;
+    const compact = compactZapOutcomeRecord(outcomesByProject[id]);
+    if (!compact) continue;
+    const { seedRecord } = partitionLandOutcomeForListSnapshot(compact);
+    if (seedRecord) byProject[id] = seedRecord;
+  }
+  return {
+    schema: LAND_OUTCOMES_SEED_SCHEMA,
+    generated_at: now.toISOString(),
+    count: Object.keys(byProject).length,
+    by_project: byProject,
+  };
+}
+
 export function buildLandDefaultSnapshot(
   projects,
   { now = new Date(), outcomesByProject = {} } = {},
@@ -485,8 +566,9 @@ export function buildLandDefaultSnapshot(
     if (!id) continue;
     const outcome = compactZapOutcomeRecord(outcomesByProject[id]);
     if (outcome) {
-      byProject[id] = outcome;
-      if (outcome.snapshot_state === "present") presentCount += 1;
+      const { listRecord } = partitionLandOutcomeForListSnapshot(outcome);
+      byProject[id] = listRecord;
+      if (listRecord.snapshot_state === "present") presentCount += 1;
       else absentCount += 1;
     } else {
       byProject[id] = { project_id: id, snapshot_state: "unavailable" };
@@ -504,7 +586,7 @@ export function buildLandDefaultSnapshot(
     },
     query: {
       ...landDefaultQuery(),
-      note: "Default Land tab: Active ULURP, all boroughs, no keyword/geo. The brief is reduced at build time to a cited regulatory-effect stamp.",
+      note: "Default Land tab: Active ULURP, all boroughs, no keyword/geo. The brief is reduced at build time to a cited regulatory-effect stamp. Rich outcome evidence ships in land_outcomes_seed.json so this list snapshot stays inside its fixed byte budget.",
     },
     count: rows.length,
     projects: rows,

@@ -5,7 +5,10 @@
  * in separate DOM/data structures.
  */
 
-import { resolveLandAuthoritySourceBasis } from "./land_authority_summary.mjs";
+import {
+  resolveLandAuthoritySourceBasis,
+  resolveLandAuthoritySummary,
+} from "./land_authority_summary.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
 import { calendarNativeSubscriptionUrl } from "./calendar_subscription.mjs";
 import {
@@ -39,9 +42,11 @@ const ADVISORY_BODY_PREFIXES = Object.freeze([
 ]);
 
 let landAuthorityLookup = null;
+let landAuthorityPayload = null;
 let landAuthorityReliability = null;
 
 export function rememberLandAuthoritySummaries(payload) {
+  landAuthorityPayload = payload && typeof payload === "object" ? payload : null;
   landAuthorityLookup = payload?.summaries && typeof payload.summaries === "object" ? payload.summaries : {};
   landAuthorityReliability = null;
   return landAuthorityLookup;
@@ -79,10 +84,19 @@ export function landAuthoritySummaryCandidates(row) {
 
 export function landAuthoritySummaryFor(row) {
   const [embedded, loaded] = landAuthoritySummaryCandidates(row);
-  if (!embedded) return loaded || null;
-  if (!loaded) return embedded;
-  return (Date.parse(loaded.freshness?.generated_at || "") || 0) > (Date.parse(embedded.freshness?.generated_at || "") || 0)
-    ? loaded : embedded;
+  const payload = landAuthorityPayload || row?.authority_payload || null;
+  let chosen;
+  if (!embedded) chosen = loaded || null;
+  else if (!loaded) chosen = embedded;
+  else {
+    const loadedResolved = resolveLandAuthoritySummary(loaded, payload);
+    const embeddedResolved = resolveLandAuthoritySummary(embedded, payload);
+    chosen = (Date.parse(loadedResolved?.freshness?.generated_at || "") || 0)
+      > (Date.parse(embeddedResolved?.freshness?.generated_at || "") || 0)
+      ? loaded
+      : embedded;
+  }
+  return resolveLandAuthoritySummary(chosen, payload);
 }
 
 export function loadLandAuthoritySummaryLookup() {

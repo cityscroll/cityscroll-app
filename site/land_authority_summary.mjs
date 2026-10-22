@@ -26,8 +26,26 @@ import { buildLandPhaseView, mapMilestoneToPhase } from "./land_phase_spine.mjs"
 
 export const LAND_AUTHORITY_SUMMARY_SCHEMA = "cityscroll.land_authority_summary.v1";
 export const LAND_AUTHORITY_SUMMARY_RECEIPT_SCHEMA = "cityscroll.land_authority_summary_receipt.v1";
-export const LAND_AUTHORITY_SUMMARY_JOIN_VERSION = "ldp05_authority_summary_v1";
+export const LAND_AUTHORITY_SUMMARY_JOIN_VERSION = "ldp06_authority_summary_v1";
 export const LAND_AUTHORITY_SUMMARY_MAX_BYTES = 128 * 1024;
+
+// Per-stage facts that are the same wherever a stage appears. Published once
+// per stage on the payload (stage_facts_by_stage) and merged back by
+// resolveLandAuthoritySummary, the same way legal_basis_by_stage carries a
+// stage's citation once. A summary read on its own still resolves them from
+// the reviewed registry.
+export function stageFactsForStage(stageId) {
+  for (const profile of LAND_PROCEDURE_PROFILE_REGISTRY.profiles || []) {
+    for (const stage of profile.stages || []) {
+      if (stage.stage_id !== stageId) continue;
+      const facts = {};
+      if (stage.role) facts.role = stage.role;
+      if (stage.effect) facts.effect = stage.effect;
+      return Object.keys(facts).length ? facts : null;
+    }
+  }
+  return null;
+}
 
 export const LAND_AUTHORITY_SUMMARY_SPECIMENS = Object.freeze({
   council: "2026Q0210",
@@ -95,13 +113,13 @@ const TIER_A_KEYS = Object.freeze([
   "freshness",
 ]);
 
-function clean(value) {
+export function clean(value) {
   if (value == null) return null;
   const text = String(value).replace(/\s+/g, " ").trim();
   return text || null;
 }
 
-function asObject(value) {
+export function asObject(value) {
   return value && typeof value === "object" && !Array.isArray(value) ? value : {};
 }
 
@@ -292,7 +310,7 @@ function observedFromDispositions(dispositions = [], affected = null) {
   return { status: "no_observation", recommendations: [] };
 }
 
-function hearingsList(publishedOpportunities) {
+export function hearingsList(publishedOpportunities) {
   if (Array.isArray(publishedOpportunities)) return publishedOpportunities;
   if (Array.isArray(publishedOpportunities?.hearings)) return publishedOpportunities.hearings;
   return null;
@@ -426,7 +444,7 @@ function unknownSummary({
  * resolveLandAuthoritySourceBasis, which is what every reader should use.
  */
 /** The legal citation the reviewed registry records for one stage. */
-function legalBasisForStage(stageId) {
+export function legalBasisForStage(stageId) {
   for (const profile of LAND_PROCEDURE_PROFILE_REGISTRY.profiles || []) {
     for (const stage of profile.stages || []) {
       if (stage.stage_id !== stageId) continue;
@@ -457,6 +475,50 @@ export const LAND_AUTHORITY_SOURCE_BASIS_DEFAULTS = Object.freeze({
     source_type: "published_hearing",
   }),
 });
+
+/**
+ * One summary with the payload's shared constants merged back in: stage
+ * role/effect, the uniform freshness envelope, and the uniform shape of a
+ * checked "no published opportunity". Every reader of a bounded summary
+ * should read it through this resolver, exactly as it reads provenance
+ * through resolveLandAuthoritySourceBasis.
+ */
+export function resolveLandAuthoritySummary(summary, payload = null) {
+  if (!summary || typeof summary !== "object") return summary;
+  const out = { ...summary };
+  const stageId = out.current_stage?.stage_id || out.source_basis?.profile?.stage_id || null;
+  if (stageId && (out.current_role == null || out.effect == null)) {
+    const facts = (payload?.stage_facts_by_stage && payload.stage_facts_by_stage[stageId])
+      || stageFactsForStage(stageId) || {};
+    if (out.current_role == null && facts.role != null) out.current_role = facts.role;
+    if (out.effect == null && facts.effect != null) out.effect = facts.effect;
+  }
+  if (payload?.freshness_defaults) {
+    const defaults = payload.freshness_defaults;
+    const freshness = { ...out.freshness };
+    if (freshness.generated_at == null && defaults.generated_at != null) freshness.generated_at = defaults.generated_at;
+    if (freshness.as_of == null && defaults.as_of != null) freshness.as_of = defaults.as_of;
+    if (defaults.source_vintages || freshness.source_vintages) {
+      freshness.source_vintages = { ...defaults.source_vintages, ...freshness.source_vintages };
+    }
+    out.freshness = freshness;
+  }
+  // published_next_defaults are the shared "none" shape only. Applying them to
+  // unknown/stale/scheduled/published would invent checked:true and a "No
+  // published opportunity" label on statuses that must keep their own meaning.
+  if (payload?.published_next_defaults) {
+    const defaults = payload.published_next_defaults;
+    const published = out.published_next_opportunity;
+    if (published && typeof published === "object" && published.status === "none") {
+      const merged = { ...defaults, ...published };
+      for (const [key, value] of Object.entries(merged)) {
+        if (value == null && defaults[key] == null && published[key] === undefined) delete merged[key];
+      }
+      out.published_next_opportunity = merged;
+    }
+  }
+  return out;
+}
 
 /**
  * One summary's provenance, with the shared defaults merged back in.
@@ -676,7 +738,7 @@ export function stampLandAuthoritySummary(row, opts = {}) {
   return row;
 }
 
-function projectUniverse(landDefault) {
+export function projectUniverse(landDefault) {
   const projects = Array.isArray(landDefault?.projects) ? landDefault.projects : [];
   const seen = new Set();
   const out = [];
@@ -689,7 +751,7 @@ function projectUniverse(landDefault) {
   return out;
 }
 
-function hearingsByProject(publishedOpportunities) {
+export function hearingsByProject(publishedOpportunities) {
   const list = hearingsList(publishedOpportunities) || [];
   const byProject = new Map();
   for (const row of list) {
@@ -702,142 +764,12 @@ function hearingsByProject(publishedOpportunities) {
   return byProject;
 }
 
-function stripToTierA(summary) {
+export function stripToTierA(summary) {
   const out = {};
   for (const key of TIER_A_KEYS) {
     if (Object.hasOwn(summary, key)) out[key] = summary[key];
   }
   return out;
-}
-
-export function materializeLandAuthoritySummaries(inputs = {}) {
-  const landDefault = asObject(inputs.landDefault);
-  const geography = inputs.geography || null;
-  const publishedOpportunities = asObject(inputs.publishedOpportunities);
-  const hashes = asObject(inputs.artifactHashes);
-  const asOf = inputs.asOf || landDefault.generated_at || publishedOpportunities.generated_at || null;
-  const generatedAt = inputs.generatedAt || asOf;
-  const universe = projectUniverse(landDefault);
-  const hearingsIndex = hearingsByProject(publishedOpportunities);
-  const outcomesByProject = asObject(landDefault.outcomes?.by_project);
-  const summaries = {};
-  const outcomes = [];
-  const counts = {
-    universe: universe.length,
-    resolved: 0,
-    unknown: 0,
-  };
-
-  for (const project of universe) {
-    const projectId = clean(project.project_id);
-    const outcomeRecord = outcomesByProject[projectId] || {};
-    const hearings = hearingsIndex.get(projectId) || [];
-    const summary = stripToTierA(buildLandAuthoritySummary({
-      project,
-      geography,
-      outcomes: {
-        ...outcomeRecord,
-        generated_at: outcomeRecord.generated_at || landDefault.generated_at,
-      },
-      publishedOpportunities: {
-        hearings,
-        generated_at: publishedOpportunities.generated_at,
-        materialization: publishedOpportunities.materialization,
-      },
-      asOf,
-      generatedAt,
-    }));
-    summaries[projectId] = summary;
-    const bucket = summary.status === LAND_AUTHORITY_SUMMARY_STATUSES.RESOLVED ? "resolved" : "unknown";
-    counts[bucket] += 1;
-    outcomes.push({
-      project_id: projectId,
-      status: summary.status,
-      reason: summary.reason,
-      procedure_resolution: summary.procedure_resolution,
-      current_stage_id: summary.current_stage?.stage_id || null,
-      observed_status: summary.observed?.status || null,
-      published_next_status: summary.published_next_opportunity?.status || null,
-    });
-  }
-
-  // The legal citation for a stage is the same wherever that stage appears, so
-  // it is published once per stage rather than once per project.
-  // A vintage that is the same on every summary is a property of the build, not
-  // of a project, so it is hoisted into the defaults rather than repeated. One
-  // that differs stays where it is.
-  const hoistUniform = (group, key) => {
-    const values = new Set(Object.values(summaries)
-      .map((summary) => summary?.source_basis?.[group]?.[key])
-      .filter((value) => value != null));
-    if (values.size !== 1) return null;
-    const [only] = values;
-    for (const summary of Object.values(summaries)) {
-      if (summary?.source_basis?.[group]) delete summary.source_basis[group][key];
-    }
-    return only;
-  };
-  const boundaryVintage = hoistUniform("geography", "boundary_vintage");
-  const checkedVintage = hoistUniform("publisher", "checked_vintage");
-  const sourceBasisDefaults = {
-    ...LAND_AUTHORITY_SOURCE_BASIS_DEFAULTS,
-    geography: {
-      ...LAND_AUTHORITY_SOURCE_BASIS_DEFAULTS.geography,
-      ...(boundaryVintage ? { boundary_vintage: boundaryVintage } : {}),
-    },
-    publisher: {
-      ...LAND_AUTHORITY_SOURCE_BASIS_DEFAULTS.publisher,
-      ...(checkedVintage ? { checked_vintage: checkedVintage } : {}),
-    },
-  };
-  const legalBasisByStage = {};
-  for (const stageId of new Set(Object.values(summaries)
-    .map((summary) => summary?.source_basis?.profile?.stage_id)
-    .filter(Boolean))) {
-    const citation = legalBasisForStage(stageId);
-    if (citation) legalBasisByStage[stageId] = citation;
-  }
-  const payload = {
-    schema: LAND_AUTHORITY_SUMMARY_SCHEMA,
-    join_version: LAND_AUTHORITY_SUMMARY_JOIN_VERSION,
-    generated_at: generatedAt,
-    source_basis_defaults: sourceBasisDefaults,
-    legal_basis_by_stage: legalBasisByStage,
-    summaries,
-  };
-  const receipt = {
-    schema: LAND_AUTHORITY_SUMMARY_RECEIPT_SCHEMA,
-    join_version: LAND_AUTHORITY_SUMMARY_JOIN_VERSION,
-    generated_at: generatedAt,
-    counts,
-    resolved_project_ids: outcomes.filter((row) => row.status === "resolved").map((row) => row.project_id),
-    unknown_project_ids: outcomes.filter((row) => row.status === "unknown").map((row) => row.project_id),
-    outcomes,
-    inputs: {
-      land_default: {
-        path: "site/data/land_default_ulurp.json",
-        count: universe.length,
-        vintage: { generated_at: landDefault.generated_at || null },
-        sha256: hashes.land_default || null,
-      },
-      geography: {
-        path: "site/data/community_board_geography_lookup.json",
-        vintage: { boundary_vintage: geography?.boundary_vintage || null },
-        sha256: hashes.geography || null,
-      },
-      upcoming_hearings: {
-        path: "site/data/land_upcoming_hearings.json",
-        count: (hearingsList(publishedOpportunities) || []).length,
-        vintage: { generated_at: publishedOpportunities.generated_at || null },
-        sha256: hashes.upcoming_hearings || null,
-      },
-      join_keys: ["project_id"],
-    },
-    generation: {
-      derivation: "node tools/build_land_authority_summary.mjs",
-    },
-  };
-  return { payload, receipt };
 }
 
 export function landAuthoritySummaryFindings(payload, receipt, opts = {}) {

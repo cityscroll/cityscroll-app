@@ -8,6 +8,8 @@ import {
 } from "../site/rum_collector.mjs";
 import { scheduleTestOnlyRumCollector } from "../site/rum_bootstrap.mjs";
 import {
+  RUM_COMPRESSOR_PROFILE,
+  assertRumCompressorProfile,
   buildRumCollectorOverheadEvidence,
   loadRumCollectorOverheadEvidence,
 } from "../tools/measure_rum_collector_overhead.mjs";
@@ -360,9 +362,12 @@ test("non-notice observations stamp the none cache-outcome sentinel", async () =
 });
 
 test("committed overhead receipt matches source bytes and records deferred production loading", () => {
+  assertRumCompressorProfile();
   const measured = buildRumCollectorOverheadEvidence();
   const committed = loadRumCollectorOverheadEvidence();
   assert.deepEqual(committed, measured);
+  assert.deepEqual(measured.compressor_profile, RUM_COMPRESSOR_PROFILE);
+  assert.equal(measured.compressor_profile.zlib, process.versions.zlib);
   assert.equal(measured.production_default.collector_requested, true);
   assert.equal(measured.production_default.network_write_implementation, true);
   assert.equal(measured.scheduling.after_load, true);

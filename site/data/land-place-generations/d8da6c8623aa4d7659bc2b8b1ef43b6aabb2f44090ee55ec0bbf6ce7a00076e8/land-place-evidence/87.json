@@ -1,0 +1,28 @@
+{
+  "schema": "cityscroll.land_place_evidence_shard.v1",
+  "key": "87",
+  "association_kind": "published_project_lot",
+  "generation_id": "d8da6c8623aa4d7659bc2b8b1ef43b6aabb2f44090ee55ec0bbf6ce7a00076e8",
+  "project_count": 1,
+  "projects": {
+    "2026X0464": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbls": [],
+      "invalid_bbls": [],
+      "bbls": {},
+      "places": {
+        "borough": {},
+        "community_district": {},
+        "council_district": {},
+        "nta2020": {},
+        "police_precinct": {}
+      },
+      "publisher_geography": {
+        "borough": "Bronx",
+        "community_district": null,
+        "council_district": null
+      }
+    }
+  }
+}

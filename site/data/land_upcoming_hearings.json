@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-17T01:37:20.074Z",
+  "generated_at": "2026-10-22T20:14:02.361Z",
   "sources": [
     "zap-api-dispositions",
     "zap-api-milestones"
@@ -9,17 +9,17 @@
   "materialization": {
     "method": "zap_published_hearing_sweep_v2",
     "mode": "live",
-    "today": "2026-10-17",
+    "today": "2026-10-22",
     "projects_listed": 235,
     "projects_fetched": 234,
     "projects_failed": 1,
     "unavailable_project_ids": [
       "2026X0464"
     ],
-    "hearings_extracted": 419,
-    "disposition_hearings_extracted": 95,
+    "hearings_extracted": 423,
+    "disposition_hearings_extracted": 99,
     "milestone_hearings_extracted": 324,
-    "disposition_upcoming_count": 3,
+    "disposition_upcoming_count": 2,
     "milestone_upcoming_count": 148,
     "incremental_milestone_count": 148,
     "accepted_milestone_classes": {
@@ -28,7 +28,7 @@
     },
     "published_meeting_dates_evaluated": 897,
     "hearing_shaped_candidates_reviewed": 846,
-    "upcoming_count": 151,
+    "upcoming_count": 150,
     "statuses": [
       "In Public Review",
       "Noticed",
@@ -38,104 +38,6 @@
     "polite_delay_ms": 350
   },
   "hearings": [
-    {
-      "schema_version": 1,
-      "source": "zap-api-dispositions",
-      "project_id": "2023K0148",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2023K0148",
-      "borough": "Brooklyn",
-      "disposition_id": "72e61ad0-90ca-ee11-907a-001dd804eab2",
-      "disposition_name": "2023K0148_ZM_BK CB4",
-      "representing": "Community Board",
-      "phase_id": "community_board",
-      "hearing_date": "2026-10-21",
-      "hearing_at": "2026-10-21T22:00:00.000Z",
-      "hearing_location_raw": "Hope Gardens Older Adult Center (195 Linden Street, Brooklyn, NY 11221)",
-      "venue_address": "Hope Gardens Older Adult Center (195 Linden Street, Brooklyn, NY 11221)",
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [
-        "in_person"
-      ],
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=Hope%20Gardens%20Older%20Adult%20Center%20(195%20Linden%20Street%2C%20Brooklyn%2C%20NY%2011221)%2C%20New%20York%2C%20NY",
-      "parse_status": "partial",
-      "provenance": {
-        "field": "dcp-publichearinglocation",
-        "source": "zap-api-dispositions",
-        "derived": [
-          {
-            "field": "venue_address",
-            "method": "address_shaped_raw",
-            "excerpt": "Hope Gardens Older Adult Center (195 Linden Street, Brooklyn, NY 11221)"
-          }
-        ],
-        "hearing_at": {
-          "field": "dcp-dateofpublichearing",
-          "source": "zap-api-dispositions",
-          "value": "2026-10-21T22:00:00.000Z"
-        },
-        "representing": {
-          "field": "dcp-representing",
-          "source": "zap-api-dispositions",
-          "value": "Community Board"
-        }
-      },
-      "project_name": "460 Troutman Street",
-      "public_status": "In Public Review",
-      "community_district": "K04",
-      "cc_district": "34",
-      "latitude": null,
-      "longitude": null
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-dispositions",
-      "project_id": "2026M0164",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2026M0164",
-      "borough": "Manhattan",
-      "disposition_id": "3276b105-7154-f111-bec6-001dd80f20e8",
-      "disposition_name": "2026M0164_CM_MN CB8",
-      "representing": "Community Board",
-      "phase_id": "community_board",
-      "hearing_date": "2026-10-21",
-      "hearing_at": "2026-10-21T22:30:00.000Z",
-      "hearing_location_raw": "Courtyard by Marriott - 410 E 92nd St, New York, NY 10128",
-      "venue_address": "Courtyard by Marriott - 410 E 92nd St, New York, NY 10128",
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [
-        "in_person"
-      ],
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=Courtyard%20by%20Marriott%20-%20410%20E%2092nd%20St%2C%20New%20York%2C%20NY%2010128%2C%20New%20York%2C%20NY",
-      "parse_status": "partial",
-      "provenance": {
-        "field": "dcp-publichearinglocation",
-        "source": "zap-api-dispositions",
-        "derived": [
-          {
-            "field": "venue_address",
-            "method": "address_shaped_raw",
-            "excerpt": "Courtyard by Marriott - 410 E 92nd St, New York, NY 10128"
-          }
-        ],
-        "hearing_at": {
-          "field": "dcp-dateofpublichearing",
-          "source": "zap-api-dispositions",
-          "value": "2026-10-21T22:30:00.000Z"
-        },
-        "representing": {
-          "field": "dcp-representing",
-          "source": "zap-api-dispositions",
-          "value": "Community Board"
-        }
-      },
-      "project_name": "3 East 89th Street Special Permit Renewal",
-      "public_status": "In Public Review",
-      "community_district": "M08",
-      "cc_district": "4",
-      "latitude": null,
-      "longitude": null
-    },
     {
       "schema_version": 1,
       "source": "zap-api-milestones",
@@ -339,46 +241,6 @@
     {
       "schema_version": 1,
       "source": "zap-api-milestones",
-      "project_id": "2023Q0211",
-      "project_name": "Yellowstone Boulevard Rezoning",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2023Q0211",
-      "borough": "Queens",
-      "community_district": "Q06",
-      "cc_district": "29",
-      "milestone_id": "d5cd7aa3-1d53-ee11-be6e-001dd804e34e",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-10-26",
-      "hearing_at": "2026-10-26T04:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-10-26T04:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
       "project_id": "2024K0274",
       "project_name": "9818 Fort Hamilton Parkway Rezoning",
       "public_status": "In Public Review",
@@ -387,46 +249,6 @@
       "community_district": "K10",
       "cc_district": "47",
       "milestone_id": "f80052f1-a255-ef11-a317-001dd8049f0b",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-10-26",
-      "hearing_at": "2026-10-26T04:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-10-26T04:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2024K0369",
-      "project_name": "364 Coney Island Avenue Rezoning",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2024K0369",
-      "borough": "Brooklyn",
-      "community_district": "K07",
-      "cc_district": "40",
-      "milestone_id": "e1341986-ffa8-ef11-8a6a-001dd805533f",
       "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
       "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
       "event_class": "cpc_pre_hearing_review_session",
@@ -587,46 +409,6 @@
       "community_district": "Q02",
       "cc_district": "26",
       "milestone_id": "09d815f1-1a00-f011-bae2-001dd80340cd",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-10-26",
-      "hearing_at": "2026-10-26T04:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-10-26T04:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2026M0164",
-      "project_name": "3 East 89th Street Special Permit Renewal",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2026M0164",
-      "borough": "Manhattan",
-      "community_district": "M08",
-      "cc_district": "4",
-      "milestone_id": "131bc311-607f-f011-b4cc-001dd806295a",
       "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
       "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
       "event_class": "cpc_pre_hearing_review_session",
@@ -1067,6 +849,47 @@
     },
     {
       "schema_version": 1,
+      "source": "zap-api-dispositions",
+      "project_id": "2025X0283",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2025X0283",
+      "borough": "Bronx",
+      "disposition_id": "e9c51aea-49c9-f011-bbd3-001dd80822c1",
+      "disposition_name": "2025X0283_ZM_BX CB7",
+      "representing": "Community Board",
+      "phase_id": "community_board",
+      "hearing_date": "2026-10-29",
+      "hearing_at": "2026-10-29T22:30:00.000Z",
+      "hearing_location_raw": "CUNY on the Concourse-2501 Grand Concourse, 3rd Floor, Bronx, NY 10468",
+      "venue_address": null,
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [],
+      "maps_url": null,
+      "parse_status": "raw_only",
+      "provenance": {
+        "field": "dcp-publichearinglocation",
+        "source": "zap-api-dispositions",
+        "derived": [],
+        "hearing_at": {
+          "field": "dcp-dateofpublichearing",
+          "source": "zap-api-dispositions",
+          "value": "2026-10-29T22:30:00.000Z"
+        },
+        "representing": {
+          "field": "dcp-representing",
+          "source": "zap-api-dispositions",
+          "value": "Community Board"
+        }
+      },
+      "project_name": "Fordham Landing South Rezoning",
+      "public_status": "In Public Review",
+      "community_district": "X07",
+      "cc_district": "16",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "schema_version": 1,
       "source": "zap-api-milestones",
       "project_id": "2021K0261",
       "project_name": "Phoenix Roller Coaster East Walk Demapping",
@@ -1188,6 +1011,46 @@
     {
       "schema_version": 1,
       "source": "zap-api-milestones",
+      "project_id": "2023Q0211",
+      "project_name": "Yellowstone Boulevard Rezoning",
+      "public_status": "In Public Review",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2023Q0211",
+      "borough": "Queens",
+      "community_district": "Q06",
+      "cc_district": "29",
+      "milestone_id": "d5cd7aa3-1d53-ee11-be6e-001dd804e34e",
+      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "event_class": "cpc_pre_hearing_review_session",
+      "representing": "City Planning Commission",
+      "phase_id": "cpc",
+      "hearing_date": "2026-11-16",
+      "hearing_at": "2026-11-16T05:00:00.000Z",
+      "hearing_location_raw": null,
+      "venue_address": null,
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [],
+      "maps_url": null,
+      "parse_status": "published_date_only",
+      "provenance": {
+        "field": "dcp-reviewmeetingdate",
+        "source": "zap-api-milestones",
+        "value": "2026-11-16T05:00:00.000Z",
+        "title": {
+          "field": "milestonename",
+          "value": "Review Session - Pre-Hearing Review / Post Referral"
+        },
+        "classification": {
+          "method": "exact_published_title_v1",
+          "event_class": "cpc_pre_hearing_review_session"
+        },
+        "derived": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-milestones",
       "project_id": "2023Q0328",
       "project_name": "35-20 College Point Blvd SFWD Expansion",
       "public_status": "Noticed",
@@ -1236,6 +1099,46 @@
       "community_district": "Q02",
       "cc_district": "26",
       "milestone_id": "92f6d283-40a0-ee11-be37-001dd804e43e",
+      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "event_class": "cpc_pre_hearing_review_session",
+      "representing": "City Planning Commission",
+      "phase_id": "cpc",
+      "hearing_date": "2026-11-16",
+      "hearing_at": "2026-11-16T05:00:00.000Z",
+      "hearing_location_raw": null,
+      "venue_address": null,
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [],
+      "maps_url": null,
+      "parse_status": "published_date_only",
+      "provenance": {
+        "field": "dcp-reviewmeetingdate",
+        "source": "zap-api-milestones",
+        "value": "2026-11-16T05:00:00.000Z",
+        "title": {
+          "field": "milestonename",
+          "value": "Review Session - Pre-Hearing Review / Post Referral"
+        },
+        "classification": {
+          "method": "exact_published_title_v1",
+          "event_class": "cpc_pre_hearing_review_session"
+        },
+        "derived": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-milestones",
+      "project_id": "2024K0369",
+      "project_name": "364 Coney Island Avenue Rezoning",
+      "public_status": "In Public Review",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2024K0369",
+      "borough": "Brooklyn",
+      "community_district": "K07",
+      "cc_district": "40",
+      "milestone_id": "e1341986-ffa8-ef11-8a6a-001dd805533f",
       "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
       "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
       "event_class": "cpc_pre_hearing_review_session",
@@ -1356,6 +1259,46 @@
       "community_district": "K02",
       "cc_district": "35",
       "milestone_id": "01bdc83a-46a9-f011-bbd3-001dd806295a",
+      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "event_class": "cpc_pre_hearing_review_session",
+      "representing": "City Planning Commission",
+      "phase_id": "cpc",
+      "hearing_date": "2026-11-16",
+      "hearing_at": "2026-11-16T05:00:00.000Z",
+      "hearing_location_raw": null,
+      "venue_address": null,
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [],
+      "maps_url": null,
+      "parse_status": "published_date_only",
+      "provenance": {
+        "field": "dcp-reviewmeetingdate",
+        "source": "zap-api-milestones",
+        "value": "2026-11-16T05:00:00.000Z",
+        "title": {
+          "field": "milestonename",
+          "value": "Review Session - Pre-Hearing Review / Post Referral"
+        },
+        "classification": {
+          "method": "exact_published_title_v1",
+          "event_class": "cpc_pre_hearing_review_session"
+        },
+        "derived": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-milestones",
+      "project_id": "2026M0164",
+      "project_name": "3 East 89th Street Special Permit Renewal",
+      "public_status": "In Public Review",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2026M0164",
+      "borough": "Manhattan",
+      "community_district": "M08",
+      "cc_district": "4",
+      "milestone_id": "131bc311-607f-f011-b4cc-001dd806295a",
       "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
       "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
       "event_class": "cpc_pre_hearing_review_session",

@@ -22,7 +22,7 @@ import {
   ZAP_MILESTONE_HEARING_SOURCE,
 } from "../tools/lib/land_upcoming_hearings.mjs";
 import { loadFixtureHearings, main as buildHearings, sweepHearingLogistics } from "../tools/build_land_upcoming_hearings.mjs";
-import { materializeLandAuthoritySummaries } from "../site/land_authority_summary.mjs";
+import { materializeLandAuthoritySummaries } from "../site/land_authority_summary_materialize.mjs";
 import { landAuthorityPanelProjection, landAuthoritySummaryHTML } from "../site/land_authority_summary_view.mjs";
 import { parseZapApiProject } from "../worker/src/lib/zap_outcomes.mjs";
 import { extractFn } from "./contract/site_extract.mjs";
