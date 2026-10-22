@@ -75,3 +75,71 @@ test("SIGTERM during the callback still removes the temp directory", async () =>
   assert.ok(createdDir, `expected the child to report a temp dir, got stdout=${JSON.stringify(child.stdout)} stderr=${JSON.stringify(child.stderr)}`);
   assert.equal(existsSync(createdDir), false, "SIGTERM should have triggered cleanup");
 });
+
+test("withTempDir retries when cleanup hits ENOSPC and still removes the directory", async () => {
+  // Defect: active.delete ran before rm succeeded, so an ENOSPC/ENOTEMPTY
+  // unlink left cityscroll-*- scratch behind for check_temp_leaks (e.g.
+  // cityscroll-client-assets-qkERhc from test/client_module_assets.test.mjs).
+  // Deleting the leftover by hand is not a fix — cleanup must retry and keep
+  // the directory tracked until removal succeeds.
+  const { rm } = await import("node:fs/promises");
+  const enospc = Object.assign(new Error("ENOSPC: no space left on device, unlink"), {
+    code: "ENOSPC",
+  });
+  let attempts = 0;
+  let captured;
+  await withTempDir(
+    "temp-dir-helper",
+    async (dir) => {
+      captured = dir;
+      assert.ok(existsSync(dir));
+    },
+    {
+      rmAsync: async (target, options) => {
+        attempts += 1;
+        if (attempts === 1) throw enospc;
+        return rm(target, options);
+      },
+    },
+  );
+  assert.equal(existsSync(captured), false);
+  assert.equal(attempts, 2);
+});
+
+test("withTempDir keeps a directory tracked when cleanup keeps failing", async () => {
+  const enospc = Object.assign(new Error("ENOSPC: no space left on device, unlink"), {
+    code: "ENOSPC",
+  });
+  let captured;
+  await assert.rejects(
+    () =>
+      withTempDir(
+        "temp-dir-helper",
+        async (dir) => {
+          captured = dir;
+        },
+        {
+          rmAsync: async () => {
+            throw enospc;
+          },
+          // Bound retries so the test stays fast.
+          rmRetries: 2,
+          rmRetryDelayMs: 0,
+        },
+      ),
+    (error) => {
+      assert.equal(error.code, "ENOSPC");
+      return true;
+    },
+  );
+  // Still present because removal never succeeded — exit/SIGTERM handlers
+  // must still know about it (proven via the exported active snapshot).
+  assert.equal(existsSync(captured), true);
+  const { listActiveTempDirsForTest, forceCleanupActiveTempDirsForTest } = await import(
+    "../tools/lib/with_temp_dir.mjs"
+  );
+  assert.equal(listActiveTempDirsForTest().includes(captured), true);
+  // Test hygiene: force the real sync cleanup path so we do not leak into TMPDIR.
+  forceCleanupActiveTempDirsForTest();
+  assert.equal(existsSync(captured), false);
+});
