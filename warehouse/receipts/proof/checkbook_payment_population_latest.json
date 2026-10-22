@@ -21,7 +21,7 @@
   "source": {
     "publisher": "Office of the New York City Comptroller",
     "acquisition_mode": "live-publisher",
-    "pulled_at": "2026-10-17T01:12:43.996Z",
+    "pulled_at": "2026-10-22T12:20:24.746Z",
     "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
     "endpoint": "https://www.checkbooknyc.com/api",
     "type_of_data": "Spending",
@@ -33,21 +33,21 @@
     "page_size": 20000,
     "pages": 90,
     "count_drift_policy": "fail without publishing",
-    "page_manifest_sha256": "9b3f9681703e7c4d4b57a86df93de17d383b237834d8768ac11e5c292873aee7"
+    "page_manifest_sha256": "c4eb4adc2905458e4b4b7d0043effc4948dffeb4a1c185cf88366f1630590438"
   },
   "population": {
-    "publisher_record_count": 1784794,
-    "source_xml_rows": 1784794,
-    "normalized_rows": 1784794,
-    "unique_transaction_ids": 1635128,
-    "duplicate_transaction_rows": 149666,
-    "reversal_rows": 1676,
+    "publisher_record_count": 1784806,
+    "source_xml_rows": 1784806,
+    "normalized_rows": 1784806,
+    "unique_transaction_ids": 1635139,
+    "duplicate_transaction_rows": 149667,
+    "reversal_rows": 1679,
     "null_amount_rows": 0,
     "agency_grouping": [
       {
         "agency": "Department of Education",
-        "transaction_count": 1211770,
-        "net_check_amount": 13250632325.16
+        "transaction_count": 1211771,
+        "net_check_amount": 13250628549.16
       },
       {
         "agency": "Pension Contributions",
@@ -91,8 +91,8 @@
       },
       {
         "agency": "Department of Environmental Protection",
-        "transaction_count": 56534,
-        "net_check_amount": 1009596351.13
+        "transaction_count": 56539,
+        "net_check_amount": 1009791034.97
       },
       {
         "agency": "OFFICE OF CRIMINAL JUSTICE",
@@ -136,8 +136,8 @@
       },
       {
         "agency": "Department of Small Business Services",
-        "transaction_count": 2728,
-        "net_check_amount": 251780073.12
+        "transaction_count": 2729,
+        "net_check_amount": 251765392.82
       },
       {
         "agency": "Department of Cultural Affairs",
@@ -151,8 +151,8 @@
       },
       {
         "agency": "Department of Finance",
-        "transaction_count": 7111,
-        "net_check_amount": 167328746
+        "transaction_count": 7113,
+        "net_check_amount": 167343747
       },
       {
         "agency": "City University of New York",
@@ -211,8 +211,8 @@
       },
       {
         "agency": "Campaign Finance Board",
-        "transaction_count": 1580,
-        "net_check_amount": 40623375.56
+        "transaction_count": 1581,
+        "net_check_amount": 40623322.2
       },
       {
         "agency": "Department of Consumer & Worker Protection",
@@ -241,8 +241,8 @@
       },
       {
         "agency": "Department of Buildings",
-        "transaction_count": 1609,
-        "net_check_amount": 24323115.49
+        "transaction_count": 1611,
+        "net_check_amount": 24388165.49
       },
       {
         "agency": "Debt Service",
@@ -703,17 +703,17 @@
     "by_fiscal_year": [
       {
         "fiscal_year": 2026,
-        "source_record_count": 1784794,
-        "source_xml_rows": 1784794,
-        "normalized_rows": 1784794,
-        "source_net_check_amount": 52377359074.6,
-        "normalized_net_check_amount": 52377359074.6,
-        "reversal_rows": 1676,
+        "source_record_count": 1784806,
+        "source_xml_rows": 1784806,
+        "normalized_rows": 1784806,
+        "source_net_check_amount": 52377615299.78,
+        "normalized_net_check_amount": 52377615299.78,
+        "reversal_rows": 1679,
         "agency_grouping": [
           {
             "agency": "Department of Education",
-            "transaction_count": 1211770,
-            "net_check_amount": 13250632325.16
+            "transaction_count": 1211771,
+            "net_check_amount": 13250628549.16
           },
           {
             "agency": "Pension Contributions",
@@ -757,8 +757,8 @@
           },
           {
             "agency": "Department of Environmental Protection",
-            "transaction_count": 56534,
-            "net_check_amount": 1009596351.13
+            "transaction_count": 56539,
+            "net_check_amount": 1009791034.97
           },
           {
             "agency": "OFFICE OF CRIMINAL JUSTICE",
@@ -802,8 +802,8 @@
           },
           {
             "agency": "Department of Small Business Services",
-            "transaction_count": 2728,
-            "net_check_amount": 251780073.12
+            "transaction_count": 2729,
+            "net_check_amount": 251765392.82
           },
           {
             "agency": "Department of Cultural Affairs",
@@ -817,8 +817,8 @@
           },
           {
             "agency": "Department of Finance",
-            "transaction_count": 7111,
-            "net_check_amount": 167328746
+            "transaction_count": 7113,
+            "net_check_amount": 167343747
           },
           {
             "agency": "City University of New York",
@@ -877,8 +877,8 @@
           },
           {
             "agency": "Campaign Finance Board",
-            "transaction_count": 1580,
-            "net_check_amount": 40623375.56
+            "transaction_count": 1581,
+            "net_check_amount": 40623322.2
           },
           {
             "agency": "Department of Consumer & Worker Protection",
@@ -907,8 +907,8 @@
           },
           {
             "agency": "Department of Buildings",
-            "transaction_count": 1609,
-            "net_check_amount": 24323115.49
+            "transaction_count": 1611,
+            "net_check_amount": 24388165.49
           },
           {
             "agency": "Debt Service",
@@ -1375,17 +1375,17 @@
     "partitions": [
       {
         "fiscal_year": 2026,
-        "source_record_count": 1784794,
-        "source_xml_rows": 1784794,
-        "normalized_rows": 1784794,
-        "source_net_check_amount": 52377359074.6,
-        "normalized_net_check_amount": 52377359074.6,
-        "reversal_rows": 1676,
+        "source_record_count": 1784806,
+        "source_xml_rows": 1784806,
+        "normalized_rows": 1784806,
+        "source_net_check_amount": 52377615299.78,
+        "normalized_net_check_amount": 52377615299.78,
+        "reversal_rows": 1679,
         "agency_grouping": [
           {
             "agency": "Department of Education",
-            "transaction_count": 1211770,
-            "net_check_amount": 13250632325.16
+            "transaction_count": 1211771,
+            "net_check_amount": 13250628549.16
           },
           {
             "agency": "Pension Contributions",
@@ -1429,8 +1429,8 @@
           },
           {
             "agency": "Department of Environmental Protection",
-            "transaction_count": 56534,
-            "net_check_amount": 1009596351.13
+            "transaction_count": 56539,
+            "net_check_amount": 1009791034.97
           },
           {
             "agency": "OFFICE OF CRIMINAL JUSTICE",
@@ -1474,8 +1474,8 @@
           },
           {
             "agency": "Department of Small Business Services",
-            "transaction_count": 2728,
-            "net_check_amount": 251780073.12
+            "transaction_count": 2729,
+            "net_check_amount": 251765392.82
           },
           {
             "agency": "Department of Cultural Affairs",
@@ -1489,8 +1489,8 @@
           },
           {
             "agency": "Department of Finance",
-            "transaction_count": 7111,
-            "net_check_amount": 167328746
+            "transaction_count": 7113,
+            "net_check_amount": 167343747
           },
           {
             "agency": "City University of New York",
@@ -1549,8 +1549,8 @@
           },
           {
             "agency": "Campaign Finance Board",
-            "transaction_count": 1580,
-            "net_check_amount": 40623375.56
+            "transaction_count": 1581,
+            "net_check_amount": 40623322.2
           },
           {
             "agency": "Department of Consumer & Worker Protection",
@@ -1579,8 +1579,8 @@
           },
           {
             "agency": "Department of Buildings",
-            "transaction_count": 1609,
-            "net_check_amount": 24323115.49
+            "transaction_count": 1611,
+            "net_check_amount": 24388165.49
           },
           {
             "agency": "Debt Service",
@@ -2042,17 +2042,17 @@
         "reconciled": true
       }
     ],
-    "source_xml_rows": 1784794,
-    "normalized_rows": 1784794,
-    "source_net_check_amount": 52377359074.6,
-    "normalized_net_check_amount": 52377359074.6,
+    "source_xml_rows": 1784806,
+    "normalized_rows": 1784806,
+    "source_net_check_amount": 52377615299.78,
+    "normalized_net_check_amount": 52377615299.78,
     "reconciled": true
   },
   "conversion": {
     "csv": {
       "path": "warehouse/raw/checkbook-payment-population/payments.csv",
-      "row_count": 1784794,
-      "sha256": "bee3f4b3467385eedb95a35c9577d9ebfa6b2c1cd27d41d2852b0fb6133f258f"
+      "row_count": 1784806,
+      "sha256": "d0d63ef9311addb31c610c63de2804d35ba8c858d9c6b79b876ef928787c391f"
     },
     "receipt": "warehouse/receipts/proof/checkbook_payment_population_conversion_latest.json",
     "next_step": "warehouse/scripts/convert_checkbook_payment_population.py --csv <payments.csv> --parquet <payments.parquet> --source-receipt warehouse/receipts/proof/checkbook_payment_population_latest.json",
@@ -2081,7 +2081,7 @@
     ]
   },
   "checksums": {
-    "normalized_csv_sha256": "bee3f4b3467385eedb95a35c9577d9ebfa6b2c1cd27d41d2852b0fb6133f258f"
+    "normalized_csv_sha256": "d0d63ef9311addb31c610c63de2804d35ba8c858d9c6b79b876ef928787c391f"
   },
   "coverage_statement": "This receipt covers only the declared fiscal-year contract-spending partitions. It must not be used to infer payment coverage for other fiscal years or spending categories."
 }
