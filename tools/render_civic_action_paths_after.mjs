@@ -20,6 +20,7 @@ import {
   projectRulemakingOutcomeSnapshot,
   renderCivicOutcomeTransition,
 } from "../site/civic_outcome_transition.mjs";
+import { ensureLegislativeMatterLookup } from "../site/legislative_hearing_consequence.mjs";
 import { renderMeetingOutcomesFirstPaint } from "../site/meeting_outcomes_static.mjs";
 import { renderMeetingDocument } from "../site/meeting_document.mjs";
 import { readSharedMeetingReadModelDocument } from "./lib/shared_meeting_read_model_io.mjs";
@@ -29,6 +30,9 @@ const out = process.argv[2];
 if (!out) {
   throw new Error("usage: node tools/render_civic_action_paths_after.mjs <outdir>");
 }
+
+await ensureLegislativeMatterLookup();
+
 
 const read = (rel) => JSON.parse(readFileSync(join(ROOT, rel), "utf8"));
 const meetings = readSharedMeetingReadModelDocument(join(ROOT, "site/data/shared_meeting_read_model.json"));

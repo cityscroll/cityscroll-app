@@ -980,7 +980,7 @@ jobs:
     needs: [changes]
     if: always()
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - name: Browser artifact fast path
         if: always() && (needs.changes.outputs.unit_full != 'true' || (needs.changes.outputs.frontend != 'true' && needs.changes.outputs.perf != 'true'))

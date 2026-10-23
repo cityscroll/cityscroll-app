@@ -10,11 +10,23 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
+  LEGISLATIVE_MATTER_LOOKUP_NOT_ENSURED,
   TESTIMONY_RECORD_LABEL,
+  ensureLegislativeMatterLookup,
   projectLegislativeHearingConsequence,
   renderLegislativeHearingConsequence,
+  resetLegislativeMatterLookupCache,
+  useLegislativeMatterLookup,
 } from "../site/legislative_hearing_consequence.mjs";
 import { renderMeetingDocument } from "../site/meeting_document.mjs";
+
+// Prime the request-path lazy lookup once for this suite (same dynamic import
+// the Worker uses). Keeps project/render sync contracts and avoids a static
+// JSON import on the Worker startup graph.
+await ensureLegislativeMatterLookup();
+test.after(() => {
+  resetLegislativeMatterLookupCache();
+});
 
 const goldFixtures = JSON.parse(
   readFileSync(new URL("fixtures/consequence_projection/gold_fixtures.v0.json", import.meta.url), "utf8"),
@@ -27,6 +39,13 @@ const canaryFixture = JSON.parse(
 const canaryRow = canaryFixture.row;
 const canarySharedModel = { rows: [canaryRow] };
 
+// Existing frozen population lookup for A6 next-event projection. Live
+// legislative_matter_lookup.json rolls with the publisher join window; A6 must
+// not re-pin named request ids after every refresh.
+const populationLookupFixture = JSON.parse(
+  readFileSync(new URL("./fixtures/legislative-matter-population/legislative_matter_lookup.json", import.meta.url), "utf8"),
+);
+
 // The Council-hearing/land-use gold fixture: exact single-matter join on
 // matter 79200, hearing outcome "Laid Over by Subcommittee". This matter has
 // no entry in site/data/legislative_matter_lookup.json, so it is the fixture
@@ -37,12 +56,10 @@ function singleMatterNoLookupRecord(overrides = {}) {
   return { ...record, ...overrides };
 }
 
-// Matter 78605 (LU 0056-2026) has two observed appearances in
-// site/data/legislative_matter_lookup.json: a 2026-04-22 hearing that laid it
-// over, then a 2026-05-19 hearing that recorded a roll-call vote approving
-// it. Building the exact join on the *first* appearance's request id exercises
-// the "next published vote" state; building it on the *second* exercises the
-// "this hearing's own action is not mistaken for a future event" state.
+// Matter 78605 (LU 0056-2026) two-appearance chain is frozen in
+// fixtures/legislative-matter-population/legislative_matter_lookup.json: a
+// 2026-04-22 layover, then a 2026-05-19 roll-call approval. A6 installs that
+// fixture via useLegislativeMatterLookup so scheduled refresh cannot retarget these pins.
 function matter78605Record(requestId, { outcome, eventName, eventDate } = {}) {
   return {
     source_system: "city_record",
@@ -184,40 +201,55 @@ test("A4: the process position is framed as the committee's own recorded action,
 
 // ---- A6: a published amendment or vote appears as the next official event, never as testimony's effect ----
 
-test("A6: a later published vote on the same matter surfaces as the next official event", () => {
-  const record = matter78605Record("20260408025", {
-    outcome: "Laid Over by Subcommittee",
-    eventName: "Subcommittee on Zoning and Franchises",
-    eventDate: "2026-04-22",
-  });
-  const projection = projectLegislativeHearingConsequence(record);
-  assert.equal(projection.state, "single");
-  assert.ok(projection.next_event, "a later vote should be found");
-  assert.equal(projection.next_event.label, "Approved by Subcommittee");
-  assert.equal(projection.next_event.date, "2026-05-19");
+test("A6: a later published vote on the same matter surfaces as the next official event", async () => {
+  useLegislativeMatterLookup(populationLookupFixture);
+  try {
+    const record = matter78605Record("20260408025", {
+      outcome: "Laid Over by Subcommittee",
+      eventName: "Subcommittee on Zoning and Franchises",
+      eventDate: "2026-04-22",
+    });
+    const projection = projectLegislativeHearingConsequence(record);
+    assert.equal(projection.state, "single");
+    assert.ok(projection.next_event, "a later vote should be found");
+    assert.equal(projection.next_event.label, "Approved by Subcommittee");
+    assert.equal(projection.next_event.date, "2026-05-19");
 
-  const html = renderLegislativeHearingConsequence(record);
-  assert.match(html, /Next official event on this matter: Approved by Subcommittee/);
-  assert.match(html, /2026-05-19/);
-  assert.doesNotMatch(html, /No published amendment or vote/);
+    const html = renderLegislativeHearingConsequence(record);
+    assert.match(
+      html,
+      /Next official event on this matter: Approved by Subcommittee/,
+    );
+    assert.match(html, /2026-05-19/);
+    assert.doesNotMatch(html, /No published amendment or vote/);
+  } finally {
+    resetLegislativeMatterLookupCache();
+    await ensureLegislativeMatterLookup();
+  }
 });
 
-test("A6/negative rule: a hearing that is itself the matter's most recent appearance names no future event, even though its own action was a vote", () => {
-  // 20260428021 is matter 78605's *last* observed appearance in the lookup
-  // (the 2026-05-19 vote itself). Building the exact join on it must not
+test("A6/negative rule: a hearing that is itself the matter's most recent appearance names no future event, even though its own action was a vote", async () => {
+  // Fixture: 20260428021 is matter 78605's *last* observed appearance
+  // (the 2026-05-19 approval itself). Building the exact join on it must not
   // mistake its own recorded action for a future "next official event".
-  const record = matter78605Record("20260428021", {
-    outcome: "Approved by Subcommittee",
-    eventName: "Subcommittee on Zoning and Franchises",
-    eventDate: "2026-05-19",
-  });
-  const projection = projectLegislativeHearingConsequence(record);
-  assert.equal(projection.state, "single");
-  assert.equal(projection.next_event, null);
-  assert.equal(projection.process_position.label, "Approved by Subcommittee");
+  useLegislativeMatterLookup(populationLookupFixture);
+  try {
+    const record = matter78605Record("20260428021", {
+      outcome: "Approved by Subcommittee",
+      eventName: "Subcommittee on Zoning and Franchises",
+      eventDate: "2026-05-19",
+    });
+    const projection = projectLegislativeHearingConsequence(record);
+    assert.equal(projection.state, "single");
+    assert.equal(projection.next_event, null);
+    assert.equal(projection.process_position.label, "Approved by Subcommittee");
 
-  const html = renderLegislativeHearingConsequence(record);
-  assert.match(html, /No published amendment or vote on this matter has followed this hearing yet/);
+    const html = renderLegislativeHearingConsequence(record);
+    assert.match(html, /No published amendment or vote on this matter has followed this hearing yet/);
+  } finally {
+    resetLegislativeMatterLookupCache();
+    await ensureLegislativeMatterLookup();
+  }
 });
 
 test("A6: a matter with no legislative_matter_lookup.json entry honestly states no amendment or vote has followed yet", () => {
@@ -235,4 +267,106 @@ test("negative rule: an empty record produces no state, no matter, and no render
   assert.equal(projection.state, "unavailable");
   assert.equal(projection.matter, null);
   assert.equal(renderLegislativeHearingConsequence({}), "");
+});
+
+test("legislative_matter_lookup stays off the Worker startup graph (dynamic import only)", () => {
+  const source = readFileSync(new URL("../site/legislative_hearing_consequence.mjs", import.meta.url), "utf8");
+  assert.equal(
+    /import\s+[^;]*legislative_matter_lookup\.json[^;]*with\s*\{\s*type:\s*"json"\s*\}/.test(source),
+    false,
+    "static JSON import would re-enter the Worker startup CPU budget",
+  );
+  assert.match(source, /import\(\s*["']\.\/data\/legislative_matter_lookup\.json["']/);
+});
+
+test("unprimed single-matter projection fails loudly instead of silently emptying next-event facts", async () => {
+  resetLegislativeMatterLookupCache();
+  const record = matter78605Record("20260408025", {
+    outcome: "Laid Over by Subcommittee",
+    eventName: "Subcommittee on Zoning and Franchises",
+    eventDate: "2026-04-22",
+  });
+  try {
+    assert.throws(
+      () => projectLegislativeHearingConsequence(record),
+      (error) => error instanceof Error && error.message === LEGISLATIVE_MATTER_LOOKUP_NOT_ENSURED,
+    );
+    assert.throws(
+      () => renderMeetingDocument(record),
+      (error) => error instanceof Error && error.message === LEGISLATIVE_MATTER_LOOKUP_NOT_ENSURED,
+    );
+  } finally {
+    await ensureLegislativeMatterLookup();
+  }
+});
+
+test("explicit useLegislativeMatterLookup empty install keeps the honest no-next-event state", async () => {
+  useLegislativeMatterLookup({
+    schema: "cityscroll.legislative_matter_lookup.v1",
+    matters: {},
+  });
+  try {
+    const record = singleMatterNoLookupRecord();
+    const projection = projectLegislativeHearingConsequence(record);
+    assert.equal(projection.state, "single");
+    assert.equal(projection.next_event, null);
+    assert.match(
+      renderLegislativeHearingConsequence(record),
+      /No published amendment or vote on this matter has followed this hearing yet/,
+    );
+  } finally {
+    resetLegislativeMatterLookupCache();
+    await ensureLegislativeMatterLookup();
+  }
+});
+
+test("ensureLegislativeMatterLookup binds the real production lookup (nonempty)", async () => {
+  resetLegislativeMatterLookupCache();
+  // Assert on the LOADED return — an independent disk read would not prove the loader.
+  const loaded = await ensureLegislativeMatterLookup();
+  const production = JSON.parse(
+    readFileSync(new URL("../site/data/legislative_matter_lookup.json", import.meta.url), "utf8"),
+  );
+  assert.equal(loaded.schema, "cityscroll.legislative_matter_lookup.v1");
+  assert.ok(Object.keys(loaded.matters || {}).length > 0);
+  assert.deepEqual(loaded, production);
+  // Rolling render case: once ensure has run, a single-matter render must not
+  // fail-loud (next-event may honestly be absent after a publisher window roll).
+  const record = matter78605Record("20260408025", {
+    outcome: "Laid Over by Subcommittee",
+    eventName: "Subcommittee on Zoning and Franchises",
+    eventDate: "2026-04-22",
+  });
+  const html = renderMeetingDocument(record);
+  assert.match(html, /data-legislative-hearing-consequence="1"/);
+  assert.match(
+    html,
+    /(?:Next official event on this matter:|No published amendment or vote on this matter has followed this hearing yet)/,
+  );
+});
+
+test("static-build caller with an ensured fixture lookup keeps exact next-event facts on renderMeetingDocument", async () => {
+  resetLegislativeMatterLookupCache();
+  // Same contract as tools/capture_phc04_legislative_consequence.mjs and
+  // tools/render_civic_action_paths_after.mjs: ensure/install once, then sync render.
+  // Exact next-event labels stay on the frozen population fixture.
+  useLegislativeMatterLookup(populationLookupFixture);
+  try {
+    const record = matter78605Record("20260408025", {
+      outcome: "Laid Over by Subcommittee",
+      eventName: "Subcommittee on Zoning and Franchises",
+      eventDate: "2026-04-22",
+    });
+    const html = renderMeetingDocument(record);
+    assert.match(html, /data-legislative-hearing-consequence="1"/);
+    assert.match(
+      html,
+      /Next official event on this matter: Approved by Subcommittee/,
+    );
+    assert.match(html, /2026-05-19/);
+    assert.doesNotMatch(html, /No published amendment or vote on this matter has followed this hearing yet/);
+  } finally {
+    resetLegislativeMatterLookupCache();
+    await ensureLegislativeMatterLookup();
+  }
 });

@@ -441,6 +441,10 @@ async function handleMeeting(request, env, meetingId) {
       record,
       await loadHearingContextAgendaArtifact(env, snapshotRequest),
     );
+    // Legislative next-event facts read a lookup kept off the Worker startup
+    // graph; prime it before the sync meeting document render.
+    const { ensureLegislativeMatterLookup } = await import("./legislative_hearing_consequence.mjs");
+    await ensureLegislativeMatterLookup();
     const html = renderMeetingDocument(record, payload, { currentHref: request.url });
     if (isMeetingDocumentHtml(html, decoded)) {
       const headers = new Headers({

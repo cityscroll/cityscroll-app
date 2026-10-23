@@ -2,32 +2,98 @@
 import assert from "node:assert/strict";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 import {
   MEETING_OUTCOMES_SNAPSHOT_SCHEMA,
   buildMeetingOutcomesSnapshot,
 } from "../site/meeting_outcomes_static.mjs";
 import { unboundRollCalls } from "../ops/first-class-refresh/guard-publication.mjs";
+import {
+  MAX_AGE_MS,
+  meetingOutcomesViewNeedsRefresh,
+} from "../worker/src/lib/meeting_outcomes.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(ROOT, "site/data/meeting_outcomes_snapshot.json");
 const API = process.env.MEETING_OUTCOMES_API || "https://api.cityscroll.org/meeting-outcomes";
 
-async function fetchRecords(fetchImpl = fetch) {
+/**
+ * Refuse to publish a site snapshot from a Worker view that is already stale.
+ * Scheduled first-class refresh previously treated a successful HTTP copy of a
+ * stale generated_at as acquisition success, so the committed vintage never
+ * advanced and Pages eventually blocked on hard_maximum_age.
+ */
+export function assertMeetingOutcomesSourceFresh(body, { nowMs = Date.now() } = {}) {
+  if (!body || typeof body !== "object") {
+    throw new Error("meeting outcomes source body is missing");
+  }
+  if (body.ok === false) {
+    throw new Error(`meeting outcomes source unavailable (${body.reason || "ok=false"})`);
+  }
+  const generatedAt = body.generated_at;
+  if (!generatedAt || !Number.isFinite(Date.parse(String(generatedAt)))) {
+    throw new Error("meeting outcomes source is missing generated_at; refusing to fabricate a vintage");
+  }
+  const needsRefresh = meetingOutcomesViewNeedsRefresh(
+    { generated_at: generatedAt, schema_version: body.schema_version },
+    nowMs,
+  );
+  if (body.stale === true || needsRefresh) {
+    throw new Error(
+      `meeting outcomes source is stale (generated_at=${generatedAt}, max_age_ms=${MAX_AGE_MS}); refusing to publish a non-advancing snapshot`,
+    );
+  }
+  return String(generatedAt);
+}
+
+/**
+ * Every pagination page must pass the freshness gate and share one source
+ * generation. A fresh first page followed by a stale, unavailable, or
+ * differently-vintaged later page must not be silently labeled with the
+ * first-page vintage.
+ */
+export function assertMeetingOutcomesPageCoherent(body, expected, { nowMs = Date.now() } = {}) {
+  const generatedAt = assertMeetingOutcomesSourceFresh(body, { nowMs });
+  if (expected == null) {
+    return {
+      generatedAt,
+      schemaVersion: body.schema_version == null ? null : Number(body.schema_version),
+    };
+  }
+  if (generatedAt !== expected.generatedAt) {
+    throw new Error(
+      `meeting outcomes pagination mixed source generations (page generated_at=${generatedAt}, expected=${expected.generatedAt}); refusing to publish a mixed-vintage snapshot`,
+    );
+  }
+  const schemaVersion = body.schema_version == null ? null : Number(body.schema_version);
+  if (schemaVersion !== expected.schemaVersion) {
+    throw new Error(
+      `meeting outcomes pagination mixed schema_version (page=${schemaVersion}, expected=${expected.schemaVersion}); refusing to publish a mixed-generation snapshot`,
+    );
+  }
+  return expected;
+}
+
+export async function fetchMeetingOutcomesRecords(fetchImpl = fetch, { nowMs = Date.now() } = {}) {
   const records = [];
   let offset = 0;
+  let coherent = null;
   while (offset < 2000) {
     const response = await fetchImpl(`${API}?limit=100&offset=${offset}`, {
       headers: { Accept: "application/json" },
     });
     if (!response.ok) throw new Error(`meeting outcomes HTTP ${response.status}`);
     const body = await response.json();
+    // Validate every page before append — not only the first — so a later
+    // stale/missing/ok=false/different-generated_at page cannot ride a fresh
+    // first-page vintage into the committed snapshot.
+    coherent = assertMeetingOutcomesPageCoherent(body, coherent, { nowMs });
     const page = Array.isArray(body?.records) ? body.records : [];
     records.push(...page);
     offset += page.length;
     if (!page.length || offset >= Number(body?.pagination?.total || 0)) {
-      return { records, generatedAt: body?.generated_at || new Date().toISOString() };
+      return { records, generatedAt: coherent.generatedAt };
     }
   }
   throw new Error("meeting outcomes pagination exceeded the 2,000-record safety cap");
@@ -54,14 +120,16 @@ async function main() {
     console.log(`ok site/data/meeting_outcomes_snapshot.json records=${snapshot.record_count}`);
     return;
   }
-  const { records, generatedAt } = await fetchRecords();
+  const { records, generatedAt } = await fetchMeetingOutcomesRecords();
   const snapshot = buildMeetingOutcomesSnapshot(records, { generatedAt });
   validate(snapshot);
   await writeFile(OUT, `${JSON.stringify(snapshot, null, 2)}\n`);
   console.log(`wrote site/data/meeting_outcomes_snapshot.json records=${snapshot.record_count} present=${snapshot.present_count} absent=${snapshot.absent_count}`);
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+}

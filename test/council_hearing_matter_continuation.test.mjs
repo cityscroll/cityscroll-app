@@ -4,11 +4,15 @@ import test from "node:test";
 
 import { buildCouncilHearingActionPath } from "../site/council_hearing_action_path.mjs";
 import { meetingCalendarICS } from "../site/hearing_attend_pack.mjs";
+import { ensureLegislativeMatterLookup } from "../site/legislative_hearing_consequence.mjs";
 import { renderMeetingDocument } from "../site/meeting_document.mjs";
 import {
   projectCouncilHearingMatterContinuation,
   renderCouncilHearingMatterContinuation,
 } from "../site/council_hearing_matter_continuation.mjs";
+
+await ensureLegislativeMatterLookup();
+
 const snapshot = JSON.parse(readFileSync(new URL("../site/data/meeting_outcomes_snapshot.json", import.meta.url), "utf8"));
 // Frozen City Record canary — rolling shared-meeting windows may drop July notices.
 const canaryFixture = JSON.parse(

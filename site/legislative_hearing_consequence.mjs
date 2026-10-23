@@ -28,15 +28,76 @@
  *    than as any individual comment's effect. A matter with no later observed
  *    appearance, or one whose only later appearances are holds or referrals,
  *    states honestly that no amendment or vote has followed yet.
+ *
+ * The lookup JSON is loaded on first use (dynamic import), not at module
+ * evaluation: a static `import … with { type: "json" }` would put its parse on
+ * the Worker startup CPU graph (validation error 10021 once past 512 KiB).
  */
 
-import legislativeMatterLookup from "./data/legislative_matter_lookup.json" with { type: "json" };
 import { OFFICIAL_SOURCES } from "./consequence_projection.mjs";
 import { projectCouncilHearingMatterContinuation } from "./council_hearing_matter_continuation.mjs";
 
 export const LEGISLATIVE_HEARING_CONSEQUENCE_SCHEMA = "cityscroll.legislative_hearing_consequence.v1";
 
 export const TESTIMONY_RECORD_LABEL = "Public testimony given at this hearing becomes part of the official hearing record";
+
+const EMPTY_LEGISLATIVE_MATTER_LOOKUP = Object.freeze({
+  schema: "cityscroll.legislative_matter_lookup.v1",
+  matters: Object.freeze({}),
+});
+
+export const LEGISLATIVE_MATTER_LOOKUP_NOT_ENSURED = "legislative_matter_lookup was not ensured; call ensureLegislativeMatterLookup() (or useLegislativeMatterLookup in tests) before projecting hearing-consequence next-event facts";
+
+// Ready only after ensure() or an explicit use() — never silently default to empty.
+let legislativeMatterLookup = null;
+let legislativeMatterLookupReady = false;
+let legislativeMatterLookupPromise = null;
+
+/** Install a lookup payload (tests / fixtures). Clears any in-flight lazy load. */
+export function useLegislativeMatterLookup(payload) {
+  legislativeMatterLookup = payload && typeof payload === "object" ? payload : EMPTY_LEGISLATIVE_MATTER_LOOKUP;
+  legislativeMatterLookupReady = true;
+  legislativeMatterLookupPromise = null;
+  return legislativeMatterLookup;
+}
+
+/** Drop the memoized lookup so the next ensure() reloads. */
+export function resetLegislativeMatterLookupCache() {
+  legislativeMatterLookup = null;
+  legislativeMatterLookupReady = false;
+  legislativeMatterLookupPromise = null;
+}
+
+/**
+ * Load and memoize site/data/legislative_matter_lookup.json off the Worker
+ * startup path. Request handlers and static/capture renderers await this before
+ * sync project/render so next-event facts are never silently empty.
+ */
+export async function ensureLegislativeMatterLookup() {
+  if (legislativeMatterLookupReady) return legislativeMatterLookup;
+  if (!legislativeMatterLookupPromise) {
+    legislativeMatterLookupPromise = import("./data/legislative_matter_lookup.json", { with: { type: "json" } })
+      .then((module) => {
+        if (!legislativeMatterLookupReady) {
+          legislativeMatterLookup = module.default || EMPTY_LEGISLATIVE_MATTER_LOOKUP;
+          legislativeMatterLookupReady = true;
+        }
+        return legislativeMatterLookup;
+      })
+      .catch((error) => {
+        legislativeMatterLookupPromise = null;
+        throw error;
+      });
+  }
+  return legislativeMatterLookupPromise;
+}
+
+function requireLegislativeMatterLookup() {
+  if (!legislativeMatterLookupReady) {
+    throw new Error(LEGISLATIVE_MATTER_LOOKUP_NOT_ENSURED);
+  }
+  return legislativeMatterLookup;
+}
 
 // An appearance only becomes the "next official event" when it carries a
 // recorded vote or an action naming an amendment, approval, adoption, or
@@ -83,7 +144,8 @@ function isVoteOrAmendment(appearance) {
  * appearance, or no later appearance that is itself a vote or amendment.
  */
 function nextPublishedAmendmentOrVote(matterId, afterRequestId) {
-  const source = legislativeMatterLookup?.matters?.[text(matterId, 80)];
+  const lookup = requireLegislativeMatterLookup();
+  const source = lookup?.matters?.[text(matterId, 80)];
   const appearances = Array.isArray(source?.appearances) ? source.appearances : [];
   const ordered = appearances
     .filter((appearance) => text(appearance?.request_id, 80) && text(appearance?.event?.date, 20))

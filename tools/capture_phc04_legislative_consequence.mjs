@@ -15,10 +15,14 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
+import { ensureLegislativeMatterLookup } from "../site/legislative_hearing_consequence.mjs";
 import { renderMeetingDocument } from "../site/meeting_document.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const OUT_DIR = path.join(ROOT, "site/.phc04-capture-tmp");
+
+await ensureLegislativeMatterLookup();
+
 
 const goldFixtures = JSON.parse(
   readFileSync(path.join(ROOT, "test/fixtures/consequence_projection/gold_fixtures.v0.json"), "utf8"),

@@ -15,8 +15,11 @@ import {
   meetingPurposeAuthority,
 } from "../site/meeting_purpose_authority.mjs";
 import { BODY_ROLES, RECORD_DESTINATIONS } from "../site/consequence_projection.mjs";
+import { ensureLegislativeMatterLookup } from "../site/legislative_hearing_consequence.mjs";
 import { meetingObservedState, observedMeetingStage } from "../site/meeting_process_profile.mjs";
 import { renderMeetingDocument } from "../site/meeting_document.mjs";
+
+await ensureLegislativeMatterLookup();
 
 const goldFixtures = JSON.parse(
   readFileSync(new URL("fixtures/consequence_projection/gold_fixtures.v0.json", import.meta.url), "utf8"),
