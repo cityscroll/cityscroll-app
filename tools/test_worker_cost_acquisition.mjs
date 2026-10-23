@@ -6,9 +6,12 @@ import { queueBatchFingerprint } from "../worker/src/lib/cost_control_probe.mjs"
 import {
   acquireWorkerCostProfile,
   MAX_COLLECTOR_EVENTS,
+  OWNED_HTTP_MATCHER_REJECTION_COUNTERS_SCHEMA,
+  attachBlockedMatcherDiagnostics,
   queueFingerprintFromProviderEvent,
   raceAbortable,
   runMatchedWarehouseExperiment,
+  sanitizeOwnedHttpMatcherRejectionCounters,
   selectOwnedHttpEvent,
 } from "./lib/worker_cost_acquisition.mjs";
 import {
@@ -1657,4 +1660,144 @@ test("collectWarehouseRun forwards external signal into collectProviderEvents", 
   assert.equal(seenSignal, ac.signal);
   assert.equal(result.status, "blocked");
   assert.match(result.reason, /cancelled/);
+});
+
+function syntheticMatcherRejectionCounters(overrides = {}) {
+  return {
+    schema: OWNED_HTTP_MATCHER_REJECTION_COUNTERS_SCHEMA,
+    expectations_total: 100,
+    matched: 12,
+    no_events_for_header: 80,
+    reject_header_present: 0,
+    reject_header_matches: 0,
+    reject_url_matches: 0,
+    reject_method_matches: 0,
+    reject_script_version_matches: 0,
+    reject_cold_start_matches: 0,
+    reject_structured_log_receipt_present: 8,
+    reject_cohort_matches: 0,
+    reject_workload_hash_matches: 0,
+    reject_tag_matches: 0,
+    reject_series_matches: 0,
+    reject_result_status_matches: 0,
+    reject_result_body_sha_matches: 0,
+    reject_result_correctness_matches: 0,
+    reject_ambiguous_match_count: 0,
+    ...overrides,
+  };
+}
+
+test("sanitizeOwnedHttpMatcherRejectionCounters rejects unknown keys and non-integers", () => {
+  const ok = sanitizeOwnedHttpMatcherRejectionCounters(syntheticMatcherRejectionCounters());
+  assert.equal(ok.schema, OWNED_HTTP_MATCHER_REJECTION_COUNTERS_SCHEMA);
+  assert.equal(ok.no_events_for_header, 80);
+  assert.equal(
+    sanitizeOwnedHttpMatcherRejectionCounters({
+      ...syntheticMatcherRejectionCounters(),
+      raw_error: "must not copy",
+    }),
+    null,
+  );
+  assert.equal(
+    sanitizeOwnedHttpMatcherRejectionCounters({
+      ...syntheticMatcherRejectionCounters(),
+      matched: 1.5,
+    }),
+    null,
+  );
+  const target = { status: "blocked", reason: "x" };
+  attachBlockedMatcherDiagnostics(target, {
+    matcher_rejection_counters: syntheticMatcherRejectionCounters(),
+    incomplete_cohort: "zap-bbl",
+    incomplete_needed: 100,
+    incomplete_matched: 12,
+    expectation: { header: "secret" },
+  });
+  assert.equal(target.incomplete_cohort, "zap-bbl");
+  assert.equal(target.incomplete_needed, 100);
+  assert.equal(target.incomplete_matched, 12);
+  assert.equal(target.expectation, undefined);
+  assert.equal(JSON.stringify(target).includes("secret"), false);
+});
+
+test("runMatchedWarehouseExperiment propagates matcher counters on ordinary blocked path to durable JSON", async () => {
+  const counters = syntheticMatcherRejectionCounters();
+  const transport = {
+    acquireSplitDeployments: async () => ({
+      baseline: deployment(REVISION),
+      candidate: deployment(CANDIDATE),
+    }),
+    collectWarehouseRun: async () => ({
+      status: "blocked",
+      reason: "zap-bbl provider samples are incomplete",
+      provider_event_count: 920,
+      provider_event_count_status: "known",
+      matcher_rejection_counters: counters,
+      incomplete_cohort: "zap-bbl",
+      incomplete_needed: 100,
+      incomplete_matched: 12,
+      // Must not propagate:
+      expectation: { header: "cost-secret" },
+      raw_error: new Error("nope"),
+    }),
+  };
+  const result = await runMatchedWarehouseExperiment({
+    baselineRevision: REVISION,
+    candidateRevision: CANDIDATE,
+    transport,
+    maxCollectorSeconds: 30,
+    maxCollectorEvents: MAX_COLLECTOR_EVENTS,
+  });
+  assert.equal(result.status, "blocked");
+  assert.match(result.reason, /incomplete/);
+  assert.deepEqual(result.matcher_rejection_counters, counters);
+  assert.equal(result.incomplete_cohort, "zap-bbl");
+  assert.equal(result.incomplete_needed, 100);
+  assert.equal(result.incomplete_matched, 12);
+  const durable = JSON.parse(JSON.stringify(result));
+  assert.deepEqual(durable.matcher_rejection_counters, counters);
+  assert.equal(durable.incomplete_cohort, "zap-bbl");
+  assert.equal(JSON.stringify(durable).includes("cost-secret"), false);
+  assert.equal("expectation" in durable, false);
+  assert.equal("raw_error" in durable, false);
+});
+
+test("runMatchedWarehouseExperiment propagates matcher counters on unknown-usage blocked path", async () => {
+  const counters = syntheticMatcherRejectionCounters({
+    no_events_for_header: 50,
+    matched: 0,
+    expectations_total: 50,
+    reject_structured_log_receipt_present: 0,
+  });
+  const transport = {
+    acquireSplitDeployments: async () => ({
+      baseline: deployment(REVISION),
+      candidate: deployment(CANDIDATE),
+    }),
+    collectWarehouseRun: async () => ({
+      status: "blocked",
+      reason: "live-tail emitted an invalid event envelope",
+      provider_event_count: null,
+      provider_event_count_status: "unknown",
+      matcher_rejection_counters: counters,
+      incomplete_cohort: "zap-bbl",
+      incomplete_needed: 100,
+      incomplete_matched: 0,
+    }),
+  };
+  const result = await runMatchedWarehouseExperiment({
+    baselineRevision: REVISION,
+    candidateRevision: CANDIDATE,
+    transport,
+    maxCollectorSeconds: 30,
+    maxCollectorEvents: MAX_COLLECTOR_EVENTS,
+  });
+  assert.equal(result.status, "blocked");
+  assert.match(result.reason, /UNKNOWN/i);
+  assert.deepEqual(result.matcher_rejection_counters, counters);
+  assert.equal(result.incomplete_cohort, "zap-bbl");
+  assert.equal(result.incomplete_matched, 0);
+  const durable = JSON.parse(JSON.stringify(result));
+  assert.equal(durable.matcher_rejection_counters.no_events_for_header, 50);
+  assert.equal(durable.shared_budget.ledger[0].provider_event_count_status, "unknown");
 });

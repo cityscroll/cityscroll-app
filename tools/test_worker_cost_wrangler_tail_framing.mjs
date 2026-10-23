@@ -194,13 +194,16 @@ test("offline C6 replay: stream → normalize → per-cohort retained counts (no
   assert.equal(receipt.retained_by_cohort.health, 2);
 });
 
+/** Synthetic provider version id for Worker-shaped fixture events (not a live pin). */
+const SYNTHETIC_WORKER_VERSION_ID = "00000000-0000-4000-8000-0000000000aa";
+
 /**
- * Build a classic wrangler-tail --format json event exactly as the d036 Worker
- * emits for an accepted /admin/cost-control-probe (console.log(JSON.stringify(snapshot))).
+ * Build a classic wrangler-tail --format json event shaped like an accepted
+ * /admin/cost-control-probe emission (console.log(JSON.stringify(snapshot))).
  * Uses beginCostControlProbe.snapshot + the same log shape wrangler delivers.
  */
-function d036WorkerShapedZapBblTailEvent({
-  versionId = "aeca41e6-ef83-45f4-bcd4-076beb603c84",
+function workerShapedZapBblTailEvent({
+  versionId = SYNTHETIC_WORKER_VERSION_ID,
   header = "cost-baseline-zap-bbl-0",
   series = "fixed-warehouse-synthseries01",
   useCapitalLogsKey = false,
@@ -313,8 +316,8 @@ function d036WorkerShapedZapBblTailEvent({
   } };
 }
 
-test("d036 Worker-shaped zap-bbl tail event: matcher accepts after normalize", () => {
-  const { raw, expectation, snapshot } = d036WorkerShapedZapBblTailEvent();
+test("Worker-shaped zap-bbl tail event: matcher accepts after normalize", () => {
+  const { raw, expectation, snapshot } = workerShapedZapBblTailEvent();
   assert.equal(snapshot.cohort, "zap-bbl");
   assert.ok(snapshot.operation_counts?.kv_reads);
   const event = normalizeWranglerTailEvent(raw);
@@ -327,7 +330,7 @@ test("d036 Worker-shaped zap-bbl tail event: matcher accepts after normalize", (
 });
 
 test("normalize must not let empty logs[] shadow legacy Logs (capital-key harden)", () => {
-  const { raw, expectation } = d036WorkerShapedZapBblTailEvent({
+  const { raw, expectation } = workerShapedZapBblTailEvent({
     header: "cost-baseline-zap-bbl-capital-logs",
     useCapitalLogsKey: true,
   });
@@ -345,8 +348,22 @@ test("normalize must not let empty logs[] shadow legacy Logs (capital-key harden
   assert.ok(selectOwnedHttpEvent([event], expectation, "zap-bbl"));
 });
 
+test("normalize coalesces empty lowercase logs with populated capital Logs", () => {
+  const { raw, expectation } = workerShapedZapBblTailEvent({
+    header: "cost-baseline-zap-bbl-mixed-logs",
+    useCapitalLogsKey: true,
+  });
+  raw.logs = [];
+  assert.equal(raw.logs.length, 0);
+  assert.equal(raw.Logs.length, 1);
+  const event = normalizeWranglerTailEvent(raw);
+  assert.equal(event.logs.length, 1);
+  assert.equal(event.Logs, undefined);
+  assert.equal(evaluateOwnedHttpEventPredicates(event, expectation, "zap-bbl").accepted, true);
+});
+
 test("matcher rejection counters: no_events_for_header vs structured_log_receipt_absent", () => {
-  const { raw, expectation } = d036WorkerShapedZapBblTailEvent({
+  const { raw, expectation } = workerShapedZapBblTailEvent({
     header: "cost-baseline-zap-bbl-7",
   });
   const event = normalizeWranglerTailEvent(raw);
@@ -387,8 +404,8 @@ test("matcher rejection counters: no_events_for_header vs structured_log_receipt
   assert.equal(cohortReject.reject_cohort_matches, 1);
 });
 
-test("d036 Worker emission proof: logCostControlProbe writes cityscroll.worker_cost_probe.v1 with cohort", () => {
-  const { snapshot } = d036WorkerShapedZapBblTailEvent();
+test("Worker emission proof: logCostControlProbe writes cityscroll.worker_cost_probe.v1 with cohort", () => {
+  const { snapshot } = workerShapedZapBblTailEvent();
   assert.equal(snapshot.schema, "cityscroll.worker_cost_probe.v1");
   assert.equal(snapshot.cohort, "zap-bbl");
   assert.equal(snapshot.execution_mode, "production-request");

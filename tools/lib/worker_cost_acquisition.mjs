@@ -83,9 +83,12 @@ export const OWNED_HTTP_MATCH_PREDICATES = Object.freeze([
   "result_correctness_matches",
 ]);
 
+export const OWNED_HTTP_MATCHER_REJECTION_COUNTERS_SCHEMA =
+  "cityscroll.owned_http_matcher_rejection_counters.v1";
+
 function emptyMatcherRejectionCounters() {
   return {
-    schema: "cityscroll.owned_http_matcher_rejection_counters.v1",
+    schema: OWNED_HTTP_MATCHER_REJECTION_COUNTERS_SCHEMA,
     expectations_total: 0,
     matched: 0,
     no_events_for_header: 0,
@@ -105,6 +108,54 @@ function emptyMatcherRejectionCounters() {
     reject_result_correctness_matches: 0,
     reject_ambiguous_match_count: 0,
   };
+}
+
+const MATCHER_REJECTION_COUNTER_KEYS = Object.freeze(
+  Object.keys(emptyMatcherRejectionCounters()).filter((key) => key !== "schema"),
+);
+
+/**
+ * Allowlisted, value-validated copy of matcher rejection counters for durable
+ * blocked results. Rejects unknown keys and non-integer counts; never copies
+ * raw errors, expectations, headers, or log payloads.
+ */
+export function sanitizeOwnedHttpMatcherRejectionCounters(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  if (value.schema !== OWNED_HTTP_MATCHER_REJECTION_COUNTERS_SCHEMA) return null;
+  const out = emptyMatcherRejectionCounters();
+  for (const key of MATCHER_REJECTION_COUNTER_KEYS) {
+    const n = value[key];
+    if (!Number.isInteger(n) || n < 0) return null;
+    out[key] = n;
+  }
+  for (const key of Object.keys(value)) {
+    if (key !== "schema" && !MATCHER_REJECTION_COUNTER_KEYS.includes(key)) return null;
+  }
+  return out;
+}
+
+/**
+ * Attach allowlisted incomplete-cohort diagnostics from an arm result onto a
+ * durable blocked acquisition result. Omits fields that fail validation.
+ */
+export function attachBlockedMatcherDiagnostics(target, source) {
+  if (!target || typeof target !== "object" || !source || typeof source !== "object") {
+    return target;
+  }
+  const counters = sanitizeOwnedHttpMatcherRejectionCounters(source.matcher_rejection_counters);
+  if (counters) target.matcher_rejection_counters = counters;
+  if (typeof source.incomplete_cohort === "string" && source.incomplete_cohort.length > 0
+    && source.incomplete_cohort.length <= 80
+    && !/[/?#@:\s\\]|https?:|%[0-9a-fA-F]{2}/.test(source.incomplete_cohort)) {
+    target.incomplete_cohort = source.incomplete_cohort;
+  }
+  if (Number.isInteger(source.incomplete_needed) && source.incomplete_needed >= 0) {
+    target.incomplete_needed = source.incomplete_needed;
+  }
+  if (Number.isInteger(source.incomplete_matched) && source.incomplete_matched >= 0) {
+    target.incomplete_matched = source.incomplete_matched;
+  }
+  return target;
 }
 
 /**
@@ -801,7 +852,7 @@ export async function runMatchedWarehouseExperiment({
           events_remaining_after: eventsRemaining,
           status: result?.status || null,
         });
-        return {
+        return attachBlockedMatcherDiagnostics({
           schema: "cityscroll.warehouse_cost_acquisition.v1",
           status: "blocked",
           reason: result?.reason
@@ -812,7 +863,7 @@ export async function runMatchedWarehouseExperiment({
             events_remaining: eventsRemaining,
             ledger: budgetLedger,
           },
-        };
+        }, result);
       }
       const usedEvents = usage.used;
       eventsRemaining = Math.max(0, eventsRemaining - usedEvents);
@@ -826,7 +877,7 @@ export async function runMatchedWarehouseExperiment({
       });
 
       if (!result || result.status !== "complete") {
-        return {
+        return attachBlockedMatcherDiagnostics({
           schema: "cityscroll.warehouse_cost_acquisition.v1",
           status: "blocked",
           reason: result?.reason || `${label} evidence unavailable`,
@@ -835,7 +886,7 @@ export async function runMatchedWarehouseExperiment({
             events_remaining: eventsRemaining,
             ledger: budgetLedger,
           },
-        };
+        }, result);
       }
       acquired[label] = warehouseRun({
         revision,
