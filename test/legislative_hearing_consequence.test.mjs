@@ -11,10 +11,20 @@ import test from "node:test";
 
 import {
   TESTIMONY_RECORD_LABEL,
+  ensureLegislativeMatterLookup,
   projectLegislativeHearingConsequence,
   renderLegislativeHearingConsequence,
+  resetLegislativeMatterLookupCache,
 } from "../site/legislative_hearing_consequence.mjs";
 import { renderMeetingDocument } from "../site/meeting_document.mjs";
+
+// Prime the request-path lazy lookup once for this suite (same dynamic import
+// the Worker uses). Keeps project/render sync contracts and avoids a static
+// JSON import on the Worker startup graph.
+await ensureLegislativeMatterLookup();
+test.after(() => {
+  resetLegislativeMatterLookupCache();
+});
 
 const goldFixtures = JSON.parse(
   readFileSync(new URL("fixtures/consequence_projection/gold_fixtures.v0.json", import.meta.url), "utf8"),
@@ -245,4 +255,14 @@ test("negative rule: an empty record produces no state, no matter, and no render
   assert.equal(projection.state, "unavailable");
   assert.equal(projection.matter, null);
   assert.equal(renderLegislativeHearingConsequence({}), "");
+});
+
+test("legislative_matter_lookup stays off the Worker startup graph (dynamic import only)", () => {
+  const source = readFileSync(new URL("../site/legislative_hearing_consequence.mjs", import.meta.url), "utf8");
+  assert.equal(
+    /import\s+[^;]*legislative_matter_lookup\.json[^;]*with\s*\{\s*type:\s*"json"\s*\}/.test(source),
+    false,
+    "static JSON import would re-enter the Worker startup CPU budget",
+  );
+  assert.match(source, /import\(\s*["']\.\/data\/legislative_matter_lookup\.json["']/);
 });
