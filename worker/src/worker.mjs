@@ -691,9 +691,14 @@ const worker = {
     // refreshes so a slow or failing upstream cannot prevent queue fan-out and its receipt.
     // STARTED lands before runAlerts so a cut-short isolate leaves incomplete-execution
     // evidence rather than a missing ledger (which must not be read as proven non-delivery).
+    // STARTED is telemetry only: a KV rate-limit or transient put must never skip delivery.
     console.log("digest delivery: starting");
     try {
       await recordDigestDeliveryStarted(env);
+    } catch (error) {
+      console.error("digest delivery STARTED receipt failed (delivery continues):", String(error?.message || error));
+    }
+    try {
       const summary = event.costProbe === true
         ? await runAlerts(env, undefined, { suppressDryRunLogs: true })
         : await runAlerts(env);

@@ -112,6 +112,36 @@ test("a throwing delivery job cannot skip search-use publication", async () => {
   assert.equal((await readPublicSearchUsage(env, { now: NOW })).available, true);
 });
 
+test("STARTED write failure does not skip delivery or its terminal receipt", async () => {
+  const env = productionEnv();
+  let alerts = 0;
+  let terminal = 0;
+  const worker = scheduledWorker({ overrides: {
+    async recordDigestDeliveryStarted() {
+      throw new Error("ALERT_STATE put rate limited");
+    },
+    async runAlerts() {
+      alerts += 1;
+      return { receipt: { sent: 1, enqueued: 0 } };
+    },
+    async recordDigestDeliveryReceipt(_env, receipt) {
+      terminal += 1;
+      return { status: "TERMINAL", accepted_sends: Number(receipt?.sent) || 0 };
+    },
+  } });
+  await worker.run("0 13 * * *", env);
+  await Promise.all(worker.pending);
+  assert.equal(alerts, 1, "delivery must run exactly once when STARTED throws");
+  assert.equal(terminal, 1, "terminal receipt must still be written");
+  assert.equal(worker.calls.filter((name) => name === "runAlerts").length, 1);
+  assert.equal(worker.calls.filter((name) => name === "recordDigestDeliveryReceipt").length, 1);
+  assert.ok(worker.errors.some((args) => /STARTED receipt failed/.test(args.join(" "))));
+  assert.ok(
+    worker.calls.indexOf("runAlerts") > worker.calls.indexOf("recordDigestDeliveryStarted"),
+    "STARTED attempt still precedes delivery",
+  );
+});
+
 test("a stalled advisory job cannot delay search-use publication", async () => {
   let release;
   const advisory = new Promise((resolve) => { release = resolve; });
