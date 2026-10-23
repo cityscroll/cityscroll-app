@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-10-22T20:14:13.118Z",
-  "open_as_of": "2026-10-22",
+  "generated_at": "2026-10-23T12:05:05.444Z",
+  "open_as_of": "2026-10-23",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -10,66 +10,13 @@
   },
   "query": {
     "$select": "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,selection_method_description",
-    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-10-22'",
+    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-10-23'",
     "$order": "due_date ASC",
     "$limit": "40",
     "note": "Default Money tab acquisition: open solicitations, all agencies, no keyword/method. Resident reads filter the committed snapshot."
   },
   "count": 40,
   "notices": [
-    {
-      "request_id": "20260828018",
-      "start_date": "2026-09-03T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction Related Services",
-      "short_title": "Bid Extension: SMD_Services_Indefinite Delivery Indefinite Quantity (IDIQ) Contract for Repair of Gravity Roof Tanks (Office of Water Quality) at Various NYCHA Buildings Citywide",
-      "due_date": "2026-10-22T10:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260821033",
-      "start_date": "2026-09-03T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Bid Extension: SMD_Services IDIQ Contract for Annual Cleaning and Inspection of Gravity Roof Tanks at Various NYCHA Buildings, Citywide",
-      "due_date": "2026-10-22T10:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260904001",
-      "start_date": "2026-09-14T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Correction: 02201602-Cumberland IDF MDF Upgrade",
-      "pin": "02201602 - Cumberlan",
-      "due_date": "2026-10-22T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260901025",
-      "start_date": "2026-09-10T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Bid Extension: SMD_A&CM_RFQ #517934 Basketball Court at Clinton Houses - Manhattan",
-      "pin": "517934",
-      "due_date": "2026-10-22T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260922025",
-      "start_date": "2026-09-30T00:00:00.000",
-      "agency_name": "Public Library - Queens",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods and Services",
-      "short_title": "Truck Wrapping Services",
-      "pin": "0926-1",
-      "due_date": "2026-10-22T15:00:00.000",
-      "selection_method_description": "Competitive Sealed Proposals"
-    },
     {
       "request_id": "20260901012",
       "start_date": "2026-09-15T00:00:00.000",
@@ -236,17 +183,6 @@
       "selection_method_description": "Competitive Sealed Proposals"
     },
     {
-      "request_id": "20260921014",
-      "start_date": "2026-09-28T00:00:00.000",
-      "agency_name": "Parks and Recreation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods and Services",
-      "short_title": "Renovation, operation & maintenance of a carousel, snack bar & family amusement venue at Forest Park & the renovation, operation & maintenance of the carousel, mobile food & souvenir units,& children's amusement rides at Flushing Meadows Corona Park",
-      "pin": "Q15-Q99-SB-C-CL-2026",
-      "due_date": "2026-10-30T15:00:00.000",
-      "selection_method_description": "Request for Proposals"
-    },
-    {
       "request_id": "20260903030",
       "start_date": "2026-09-11T00:00:00.000",
       "agency_name": "Housing Authority",
@@ -256,6 +192,17 @@
       "pin": "528310",
       "due_date": "2026-10-30T15:00:00.000",
       "selection_method_description": "Request for Information"
+    },
+    {
+      "request_id": "20260921014",
+      "start_date": "2026-09-28T00:00:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods and Services",
+      "short_title": "Renovation, operation & maintenance of a carousel, snack bar & family amusement venue at Forest Park & the renovation, operation & maintenance of the carousel, mobile food & souvenir units,& children's amusement rides at Flushing Meadows Corona Park",
+      "pin": "Q15-Q99-SB-C-CL-2026",
+      "due_date": "2026-10-30T15:00:00.000",
+      "selection_method_description": "Request for Proposals"
     },
     {
       "request_id": "20260911021",
@@ -313,6 +260,17 @@
       "selection_method_description": "Request for Proposals"
     },
     {
+      "request_id": "20260825035",
+      "start_date": "2026-09-02T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "Bid Extension: Loading Dock + Morgue at South Brooklyn Health, Brooklyn, NY",
+      "pin": "26202503",
+      "due_date": "2026-11-04T11:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
       "request_id": "20260826044",
       "start_date": "2026-09-01T00:00:00.000",
       "agency_name": "NYC Health + Hospitals",
@@ -331,17 +289,6 @@
       "category_description": "Construction/Construction Services",
       "short_title": "Bid Extension: Elmhurst Hospital, Entryway Renovation",
       "pin": "33202207",
-      "due_date": "2026-11-04T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260825035",
-      "start_date": "2026-09-02T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction Related Services",
-      "short_title": "Bid Extension: Loading Dock + Morgue at South Brooklyn Health, Brooklyn, NY",
-      "pin": "26202503",
       "due_date": "2026-11-04T11:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
@@ -452,6 +399,61 @@
       "short_title": "MG-126M Manhattan Street Tree Planting FY27",
       "pin": "84627B0023",
       "due_date": "2026-11-06T10:30:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260921021",
+      "start_date": "2026-09-28T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "84127P0001-TD/CSS for Crocheron Park Pedestrian Bridge Over BCIP, Borough of Queens",
+      "pin": "84127P0001",
+      "due_date": "2026-11-06T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Proposals"
+    },
+    {
+      "request_id": "20260928019",
+      "start_date": "2026-10-02T00:00:00.000",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "Request for Proposals for Master Contractors for Agency Survey Work",
+      "pin": "81627P0002",
+      "due_date": "2026-11-06T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Proposals"
+    },
+    {
+      "request_id": "20261006031",
+      "start_date": "2026-10-13T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "RFP for Provider Data Management services",
+      "pin": "MHP-1125",
+      "due_date": "2026-11-06T15:00:00.000",
+      "selection_method_description": "Request for Proposals"
+    },
+    {
+      "request_id": "20261014004",
+      "start_date": "2026-10-19T00:00:00.000",
+      "agency_name": "Economic Development Corporation",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods and Services",
+      "short_title": "Mayor's Office of Mass Engagement - SMS Service Provider RFEI",
+      "pin": "11990",
+      "due_date": "2026-11-06T16:00:00.000",
+      "selection_method_description": "Request for Information"
+    },
+    {
+      "request_id": "20260825018",
+      "start_date": "2026-09-02T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods",
+      "short_title": "Bid Extension: EPIN 85726B0065 - BID 2600039 - Printed Election Supplies",
+      "pin": "85726B0065",
+      "due_date": "2026-11-09T11:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     }
   ]

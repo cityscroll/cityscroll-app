@@ -3,7 +3,7 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-10-22T21:14:57.681Z",
+  "generated_at": "2026-10-23T12:27:49.393Z",
   "observation_count": 3468,
   "entity_count": 200,
   "multi_domain_count": 35,
@@ -351613,12 +351613,12 @@
       "numerator": "full-corpus exact vendor profile aggregate (vendor_stem_v1)",
       "precision_receipt": "warehouse/receipts/proof/wh04_er_batch_latest.json",
       "procurement_spine": "site/data/procurement_spine_sources.json",
-      "procurement_spine_observed_on": "2026-10-22"
+      "procurement_spine_observed_on": "2026-10-23"
     }
   },
   "procurement_spine": {
     "schema_version": 1,
-    "observed_on": "2026-10-22",
+    "observed_on": "2026-10-23",
     "coverage": {
       "passport_contracts": {
         "source_system": "passport-public-contracts",
@@ -351664,7 +351664,7 @@
         "coverage_status": "measured",
         "population_backed": true,
         "source_url": "https://www.checkbooknyc.com/api",
-        "pulled_at": "2026-10-22T19:54:16.507Z",
+        "pulled_at": "2026-10-23T12:04:53.695Z",
         "population": {
           "api_transaction_rows": 39339,
           "normalized_unique_contracts": 28934,
@@ -351761,7 +351761,7 @@
     },
     "row_counts": {
       "passport_contracts": 12795,
-      "checkbook_contracts": 10508,
+      "checkbook_contracts": 10475,
       "checkbook_spending": 31,
       "passport_contracts_materialization": 2,
       "checkbook_nycha_contracts": 1
@@ -351824,7 +351824,7 @@
       },
       "checkbook_contracts": {
         "population_rows": 28934,
-        "committed_slice_rows": 10508,
+        "committed_slice_rows": 10475,
         "selected_rows": 500,
         "cap": 500,
         "strategy": "population-measured Checkbook slice capped for entity intelligence; one row per exact prime_contract_id; Contracts_NYCHA rows reserve slots in the shared Checkbook budget"

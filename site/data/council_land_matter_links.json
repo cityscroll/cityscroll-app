@@ -1,11 +1,11 @@
 {
   "bridge": {
-    "eligible_appearances": 114,
+    "eligible_appearances": 117,
     "gate": "GO",
-    "linked_matters": 60,
-    "linked_projects": 30,
-    "matched_appearances": 86,
-    "matched_rate": 0.754386
+    "linked_matters": 62,
+    "linked_projects": 31,
+    "matched_appearances": 92,
+    "matched_rate": 0.786325
   },
   "generated_at": "2026-09-05T00:00:00.000Z",
   "matters": {
@@ -1476,6 +1476,17 @@
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
           "outcome": "P-C Item Laid Over by Comm"
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee"
+          ],
+          "event_date": "2026-10-20",
+          "event_id": "22701",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": 9,
+          "outcome": "Approved by Subcommittee"
         }
       ],
       "join_key": "ulurp_number",
@@ -1499,6 +1510,17 @@
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
           "outcome": "P-C Item Laid Over by Comm"
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee"
+          ],
+          "event_date": "2026-10-20",
+          "event_id": "22701",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": 9,
+          "outcome": "Approved by Subcommittee"
         }
       ],
       "join_key": "ulurp_number",
@@ -1522,6 +1544,17 @@
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
           "outcome": "P-C Item Laid Over by Comm"
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee"
+          ],
+          "event_date": "2026-10-20",
+          "event_id": "22701",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": 9,
+          "outcome": "Approved by Subcommittee"
         }
       ],
       "join_key": "ulurp_number",
@@ -1545,6 +1578,17 @@
           "event_name": "Subcommittee on Zoning and Franchises",
           "named_votes": null,
           "outcome": "P-C Item Laid Over by Comm"
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee"
+          ],
+          "event_date": "2026-10-20",
+          "event_id": "22701",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": 9,
+          "outcome": "Approved by Subcommittee"
         }
       ],
       "join_key": "ulurp_number",
@@ -1670,6 +1714,52 @@
       "project_id": "2026R0319",
       "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79577",
       "title": "Zoning, South Richmond Designated Open Space Amendment, Staten Island (N 260362 ZRR)."
+    },
+    "79578": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-10-20",
+          "event_id": "22701",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260211ZRM",
+      "matter_file": "LU 0153-2026",
+      "matter_id": "79578",
+      "project_id": "2024M0193",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79578",
+      "title": "Zoning, Studio 54 Rehabilitation and Text Amendment, Manhattan (N 260211 ZRM)."
+    },
+    "79579": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-10-20",
+          "event_id": "22701",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260212ZSM",
+      "matter_file": "LU 0154-2026",
+      "matter_id": "79579",
+      "project_id": "2024M0193",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79579",
+      "title": "Zoning, Studio 54 Rehabilitation and Text Amendment, Manhattan (C 260212 ZSM)."
     }
   },
   "projects": {
@@ -1787,6 +1877,14 @@
       ],
       "project_id": "2024K0358",
       "project_name": "Monitor Point"
+    },
+    "2024M0193": {
+      "matter_ids": [
+        "79578",
+        "79579"
+      ],
+      "project_id": "2024M0193",
+      "project_name": "Studio 54 Rehabilitation and Text Amendment"
     },
     "2024M0244": {
       "matter_ids": [
@@ -1924,11 +2022,11 @@
   "schema": "cityscroll.council_land_matter_links.v1",
   "source_vintage": {
     "meeting_outcomes_snapshot_counts": {
-      "absent_count": 291,
-      "present_count": 18,
-      "record_count": 309
+      "absent_count": 293,
+      "present_count": 17,
+      "record_count": 310
     },
-    "meeting_outcomes_snapshot_generated_at": "2026-10-16T08:02:43.838Z",
+    "meeting_outcomes_snapshot_generated_at": "2026-10-23T09:36:10.172Z",
     "zap_projects_warehouse_lookup_materialized_at": "2026-10-22T20:20:44.090Z"
   }
 }

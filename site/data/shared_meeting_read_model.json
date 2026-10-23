@@ -1,14 +1,14 @@
 {
   "schema": "cityscroll.shared_meeting_read_model.v1",
   "version": 1,
-  "generated_at": "2026-10-22T20:14:08.162Z",
+  "generated_at": "2026-10-23T12:05:02.377Z",
   "freshness": {
-    "generated_at": "2026-10-22T20:14:08.162Z",
+    "generated_at": "2026-10-23T12:05:02.377Z",
     "checked_at": "2026-10-22T19:54:18.785Z",
     "sources": {
       "city_record": "available",
       "community_board": "available",
-      "nyc_legistar_events": "stale",
+      "nyc_legistar_events": "available",
       "pdc_calendar": "available",
       "oath_trial_calendar": "available"
     }
@@ -18,7 +18,7 @@
       "source_system": "city_record",
       "status": "available",
       "available": true,
-      "generated_at": "2026-10-22T20:14:08.162Z",
+      "generated_at": "2026-10-23T12:05:02.377Z",
       "max_age_ms": null,
       "row_count": 120,
       "reason": null,
@@ -1546,31 +1546,31 @@
     },
     "nyc_legistar_events": {
       "source_system": "nyc_legistar_events",
-      "status": "stale",
-      "available": false,
-      "generated_at": "2026-10-17T01:50:31.852Z",
+      "status": "available",
+      "available": true,
+      "generated_at": "2026-10-23T12:16:00.947Z",
       "max_age_ms": 129600000,
-      "row_count": 56,
+      "row_count": 33,
       "reason": null,
       "coverage": {
-        "eligible_events": 56,
-        "meetings": 56,
-        "agenda_items": 201,
-        "events_with_items": 56,
+        "eligible_events": 33,
+        "meetings": 33,
+        "agenda_items": 109,
+        "events_with_items": 33,
         "events_no_published_items": 0,
         "events_items_deferred": 0,
         "events_items_unavailable": 0,
         "events_items_truncated": 0,
-        "standalone": 56,
+        "standalone": 33,
         "exactly_joined": 0,
         "source_health": {
           "status": "healthy",
           "basis": "authenticated-events-acquisition",
-          "observed_at": "2026-10-17T01:50:31.852Z",
-          "events_observed": 397,
-          "last_successful_observation": "2026-10-17T01:50:31.852Z",
-          "upcoming": 56,
-          "standalone": 56,
+          "observed_at": "2026-10-23T12:16:00.947Z",
+          "events_observed": 390,
+          "last_successful_observation": "2026-10-23T12:16:00.947Z",
+          "upcoming": 33,
+          "standalone": 33,
           "exactly_joined": 0,
           "collection_suppressed": 0,
           "truncated": 0
@@ -1605,44 +1605,27 @@
     }
   },
   "counts": {
-    "total": 1001,
+    "total": 978,
     "city_record": 120,
     "community_board": 635,
     "oath_trial_calendar": 178,
-    "meeting_documents": 4526,
+    "meeting_documents": 4503,
     "attached_meeting_documents": 177,
     "pdc_calendar": 12,
-    "nyc_legistar_events": 56,
-    "collection": 865,
-    "suppressed": 136,
-    "same_proceeding": 1
+    "nyc_legistar_events": 33,
+    "collection": 843,
+    "suppressed": 135,
+    "same_proceeding": 0
   },
-  "same_proceeding": [
-    {
-      "schema": "cityscroll.meeting_same_proceeding.v1",
-      "method": "exact_date_body_tokens",
-      "meeting_ids": [
-        "meeting:city_record:20261006004",
-        "meeting:nyc_legistar_events:22701"
-      ],
-      "city_record_meeting_id": "meeting:city_record:20261006004",
-      "nyc_legistar_events_meeting_id": "meeting:nyc_legistar_events:22701",
-      "date": "2026-10-20",
-      "body": "Subcommittee on Zoning and Franchises",
-      "permalinks": {
-        "city_record": "/meetings/meeting%3Acity_record%3A20261006004",
-        "nyc_legistar_events": "/meetings/meeting%3Anyc_legistar_events%3A22701"
-      }
-    }
-  ],
+  "same_proceeding": [],
   "representation": "sharded",
   "shard_schema": "cityscroll.shared_meeting_read_model_shard.v1",
-  "row_count": 1001,
+  "row_count": 978,
   "shards": [
     {
       "path": "shared_meeting_read_model/shard-000.json",
-      "bytes": 11567014,
-      "row_count": 1001
+      "bytes": 11309333,
+      "row_count": 978
     }
   ]
 }

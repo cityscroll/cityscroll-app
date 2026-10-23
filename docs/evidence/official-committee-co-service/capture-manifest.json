@@ -21,7 +21,7 @@
       ],
       "ended_committee": "3",
       "absent": "7264",
-      "snapshot_day": "2026-10-17"
+      "snapshot_day": "2026-10-23"
     }
   },
   "captures": [
@@ -35,27 +35,27 @@
         "height": 900
       },
       "served_by": "repository static build (_site) via tools/local_site_server.py",
-      "repository_revision": "87ba48b5ec8d18b6fd934e5302eba60482e1ecef",
+      "repository_revision": "dd78d792b184f1faab83f6927951e5779b85fc96",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/app/entities.mjs": "ebfdec13a6ba72ef02e57fcad8b8eaa8e922aa96",
         "site/committee_memberships.mjs": "2f43223dea7415f4fda7bc1d097fd10564807882"
       },
       "data_vintage": {
-        "committee_graph_generated_at": "2026-10-17T01:12:39Z",
-        "committee_graph_as_of": "2026-10-17",
+        "committee_graph_generated_at": "2026-10-23T12:02:37Z",
+        "committee_graph_as_of": "2026-10-23",
         "person_hub_generated_at": "2026-10-22T20:14:14.900Z"
       },
-      "assertion": "The profile names the other member with the committees and dates both were listed on 2026-10-17; a committee whose service ended before 2026-10-17 appears in this member's membership history and never as service together on that day.",
+      "assertion": "The profile names the other member with the committees and dates both were listed on 2026-10-23; a committee whose service ended before 2026-10-23 appears in this member's membership history and never as service together on that day.",
       "assertion_holds": true,
       "observed": {
         "state": "matched",
-        "as_of": "2026-10-17",
+        "as_of": "2026-10-23",
         "colleague_count": 24,
         "represented_officials": 25,
         "heading": "SERVES ALONGSIDE",
-        "summary": "24 other represented officials sat on City Council committees with this member on 2026-10-17.",
-        "basis": "Drawn from the City Council office records published here, dated 2026-10-17. Other members can serve on these committees without a record in this set.",
+        "summary": "24 other represented officials sat on City Council committees with this member on 2026-10-23.",
+        "basis": "Drawn from the City Council office records published here, dated 2026-10-23. Other members can serve on these committees without a record in this set.",
         "rendered_colleagues": 24,
         "colleagues": [
           {
@@ -584,7 +584,7 @@
           "9"
         ],
         "render_scope": "outerHTML of [data-official-coservice]",
-        "render_sha256": "c04941070f378342f37728b58d6cbf2ec106524a66ebd2d7e226c3afa9398090",
+        "render_sha256": "8705461dda9e735e7e595cee556d1f31c845ec792074f5f82b6c48ecfbe98a5f",
         "positive_example": {
           "official_id": "7824",
           "name": "\nSandy Nurse",
@@ -623,7 +623,7 @@
         "ended_in_membership_history": true,
         "ended_in_co_service": false
       },
-      "render_sha256": "c04941070f378342f37728b58d6cbf2ec106524a66ebd2d7e226c3afa9398090",
+      "render_sha256": "8705461dda9e735e7e595cee556d1f31c845ec792074f5f82b6c48ecfbe98a5f",
       "render_scope": "outerHTML of [data-official-coservice]",
       "file": null
     },
@@ -637,15 +637,15 @@
         "height": 900
       },
       "served_by": "repository static build (_site) via tools/local_site_server.py",
-      "repository_revision": "87ba48b5ec8d18b6fd934e5302eba60482e1ecef",
+      "repository_revision": "dd78d792b184f1faab83f6927951e5779b85fc96",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/app/entities.mjs": "ebfdec13a6ba72ef02e57fcad8b8eaa8e922aa96",
         "site/committee_memberships.mjs": "2f43223dea7415f4fda7bc1d097fd10564807882"
       },
       "data_vintage": {
-        "committee_graph_generated_at": "2026-10-17T01:12:39Z",
-        "committee_graph_as_of": "2026-10-17",
+        "committee_graph_generated_at": "2026-10-23T12:02:37Z",
+        "committee_graph_as_of": "2026-10-23",
         "person_hub_generated_at": "2026-10-22T20:14:14.900Z"
       },
       "assertion": "Tab reaches the colleague link, Enter opens their profile, the reciprocal section names this member, the shared committee record lists both, and Back returns to the profile the walk started from.",
@@ -665,7 +665,7 @@
         "tab_presses_to_colleague_link": 91,
         "colleague_link_reached_by_keyboard": true,
         "colleague_link_focus_visible": true,
-        "colleague_url": "http://127.0.0.1:65482/officials/7824/",
+        "colleague_url": "http://127.0.0.1:35525/officials/7824/",
         "reciprocal_row": {
           "official_id": "7801",
           "name": "\nChristopher Marte",
@@ -691,7 +691,7 @@
           ],
           "shared_caucuses": 3
         },
-        "committee_url": "http://127.0.0.1:65482/committees/5106/",
+        "committee_url": "http://127.0.0.1:35525/committees/5106/",
         "committee_title": "Committee on Parks and Recreation",
         "committee_member_ids": [
           "5259",
@@ -742,15 +742,16 @@
           "7824",
           "7824",
           "7824",
+          "7824",
           "7824"
         ],
-        "committee_render_sha256": "2fd29d2ec8330b122bd8bbf4b3c783ea951a78107366b859ed696d94123c828a",
-        "back_url": "http://127.0.0.1:65482/officials/7824/",
-        "start_url": "http://127.0.0.1:65482/officials/7801/",
+        "committee_render_sha256": "1c4ca49de2a571e8f17afce51e44ef05b23b637f8762fed3a041926528dda206",
+        "back_url": "http://127.0.0.1:35525/officials/7824/",
+        "start_url": "http://127.0.0.1:35525/officials/7801/",
         "render_scope": "outerHTML of [data-official-coservice] after the walk returns",
-        "render_sha256": "c04941070f378342f37728b58d6cbf2ec106524a66ebd2d7e226c3afa9398090"
+        "render_sha256": "8705461dda9e735e7e595cee556d1f31c845ec792074f5f82b6c48ecfbe98a5f"
       },
-      "render_sha256": "c04941070f378342f37728b58d6cbf2ec106524a66ebd2d7e226c3afa9398090",
+      "render_sha256": "8705461dda9e735e7e595cee556d1f31c845ec792074f5f82b6c48ecfbe98a5f",
       "render_scope": "outerHTML of [data-official-coservice] after the walk returns",
       "file": null
     },
@@ -764,27 +765,27 @@
         "height": 844
       },
       "served_by": "repository static build (_site) via tools/local_site_server.py",
-      "repository_revision": "87ba48b5ec8d18b6fd934e5302eba60482e1ecef",
+      "repository_revision": "dd78d792b184f1faab83f6927951e5779b85fc96",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/app/entities.mjs": "ebfdec13a6ba72ef02e57fcad8b8eaa8e922aa96",
         "site/committee_memberships.mjs": "2f43223dea7415f4fda7bc1d097fd10564807882"
       },
       "data_vintage": {
-        "committee_graph_generated_at": "2026-10-17T01:12:39Z",
-        "committee_graph_as_of": "2026-10-17",
+        "committee_graph_generated_at": "2026-10-23T12:02:37Z",
+        "committee_graph_as_of": "2026-10-23",
         "person_hub_generated_at": "2026-10-22T20:14:14.900Z"
       },
       "assertion": "At a touch viewport the section renders the same markup as the desktop capture and the document does not scroll sideways.",
       "assertion_holds": true,
       "observed": {
         "state": "matched",
-        "as_of": "2026-10-17",
+        "as_of": "2026-10-23",
         "colleague_count": 24,
         "represented_officials": 25,
         "heading": "SERVES ALONGSIDE",
-        "summary": "24 other represented officials sat on City Council committees with this member on 2026-10-17.",
-        "basis": "Drawn from the City Council office records published here, dated 2026-10-17. Other members can serve on these committees without a record in this set.",
+        "summary": "24 other represented officials sat on City Council committees with this member on 2026-10-23.",
+        "basis": "Drawn from the City Council office records published here, dated 2026-10-23. Other members can serve on these committees without a record in this set.",
         "rendered_colleagues": 24,
         "colleagues": [
           {
@@ -1313,12 +1314,12 @@
           "9"
         ],
         "render_scope": "outerHTML of [data-official-coservice]",
-        "render_sha256": "c04941070f378342f37728b58d6cbf2ec106524a66ebd2d7e226c3afa9398090",
+        "render_sha256": "8705461dda9e735e7e595cee556d1f31c845ec792074f5f82b6c48ecfbe98a5f",
         "document_scroll_width": 390,
         "document_client_width": 390,
         "horizontal_overflow": false
       },
-      "render_sha256": "c04941070f378342f37728b58d6cbf2ec106524a66ebd2d7e226c3afa9398090",
+      "render_sha256": "8705461dda9e735e7e595cee556d1f31c845ec792074f5f82b6c48ecfbe98a5f",
       "render_scope": "outerHTML of [data-official-coservice]",
       "file": null
     },
@@ -1332,15 +1333,15 @@
         "height": 900
       },
       "served_by": "repository static build (_site) via tools/local_site_server.py",
-      "repository_revision": "87ba48b5ec8d18b6fd934e5302eba60482e1ecef",
+      "repository_revision": "dd78d792b184f1faab83f6927951e5779b85fc96",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/app/entities.mjs": "ebfdec13a6ba72ef02e57fcad8b8eaa8e922aa96",
         "site/committee_memberships.mjs": "2f43223dea7415f4fda7bc1d097fd10564807882"
       },
       "data_vintage": {
-        "committee_graph_generated_at": "2026-10-17T01:12:39Z",
-        "committee_graph_as_of": "2026-10-17",
+        "committee_graph_generated_at": "2026-10-23T12:02:37Z",
+        "committee_graph_as_of": "2026-10-23",
         "person_hub_generated_at": "2026-10-22T20:14:14.900Z"
       },
       "assertion": "A profile with no supported co-service row renders no section at all rather than an empty one, and the rest of the profile is unaffected.",

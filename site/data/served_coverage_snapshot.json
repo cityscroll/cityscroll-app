@@ -53,7 +53,7 @@
   ],
   "evidence_vintage": {
     "oldest": "2026-05-26T00:00:00.000Z",
-    "newest": "2026-10-22T20:27:08.379Z"
+    "newest": "2026-10-23T12:27:39.470Z"
   },
   "domains": [
     {
@@ -69,15 +69,15 @@
           "source_id": null,
           "source_name": null,
           "state": "measured",
-          "value": 20572,
-          "evidence_vintage": "2026-10-22T19:54:16.507Z",
+          "value": 20540,
+          "evidence_vintage": "2026-10-23T12:04:53.695Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single",
           "sources": [
             {
               "source_id": "checkbook-contracts",
               "source_name": "Checkbook NYC registered contracts",
-              "served_records": 9591,
+              "served_records": 9558,
               "state": "measured"
             },
             {
@@ -95,7 +95,7 @@
             {
               "source_id": "city-record",
               "source_name": "City Record Online",
-              "served_records": 12686,
+              "served_records": 12685,
               "state": "measured"
             },
             {
@@ -140,7 +140,7 @@
           "source_name": "Checkbook NYC registered contracts",
           "state": "measured",
           "value": 28934,
-          "evidence_vintage": "2026-10-22T00:00:00.000Z",
+          "evidence_vintage": "2026-10-23T00:00:00.000Z",
           "vintage_field": "snapshot_date",
           "vintage_basis": "single"
         },
@@ -230,11 +230,11 @@
           "source_id": "nyc-council-legistar",
           "source_name": "NYC Council Legistar API",
           "state": "measured",
-          "value": 18,
-          "evidence_vintage": "2026-10-16T08:02:43.838Z",
+          "value": 17,
+          "evidence_vintage": "2026-10-23T09:36:10.172Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single",
-          "records_considered": 309
+          "records_considered": 310
         }
       ]
     },
@@ -279,8 +279,8 @@
           "source_id": "nyc-council-legistar",
           "source_name": "NYC Council Legistar API",
           "state": "measured",
-          "value": 1174,
-          "evidence_vintage": "2026-10-17T01:12:39.000Z",
+          "value": 1180,
+          "evidence_vintage": "2026-10-23T12:02:37.000Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single"
         },
@@ -368,7 +368,7 @@
           "source_name": "City Record Online",
           "state": "measured",
           "value": 100,
-          "evidence_vintage": "2026-10-22T20:27:08.379Z",
+          "evidence_vintage": "2026-10-23T12:27:39.470Z",
           "vintage_field": "retrieved_at",
           "vintage_basis": "single"
         }
@@ -408,7 +408,7 @@
           "source_name": "Annual Examination Schedule",
           "state": "measured",
           "value": 227,
-          "evidence_vintage": "2026-10-22T00:00:00.000Z",
+          "evidence_vintage": "2026-10-23T00:00:00.000Z",
           "vintage_field": "sources_retrieved_as_of",
           "vintage_basis": "single"
         }

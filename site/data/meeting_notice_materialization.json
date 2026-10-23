@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.city_record_meeting_notice_materialization.v1",
-  "generated_at": "2026-10-22T20:14:08.162Z",
-  "as_of": "2026-10-22",
+  "generated_at": "2026-10-23T12:05:02.377Z",
+  "as_of": "2026-10-23",
   "source": {
     "system": "city_record",
     "dataset_id": "dg92-zbpx",
@@ -17,56 +17,8 @@
     "agency_rules_type": "Public Hearings",
     "requires_event_date": true
   },
-  "row_count": 36,
+  "row_count": 32,
   "rows": [
-    {
-      "request_id": "20260918021",
-      "start_date": "2026-09-25T00:00:00.000",
-      "event_date": "2026-10-22T11:00:00.000",
-      "agency_name": "Housing Preservation and Development",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
-      "short_title": "El Barrio",
-      "additional_description_1": "<p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>PLEASE TAKE NOTICE that a public hearing will be held on October 22, 2026 at the 224 West 124<sup>th</sup> Street Library, Manhattan, at 11:00 am, or as soon thereafter as the matter may be reached on the calendar, at which time and place those wishing to be heard will be given an opportunity to be heard concerning the proposed amendments to a deed and land disposition agreement identified below.</span></span></p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>Pursuant to Section 695(2)(b) of the General Municipal Law and Section 1802(6)(j) of the Charter, the Department of Housing Preservation and Development ('HPD') of the City of New York ('City') proposed amendments to the terms and conditions of the sale of certain real property previously conveyed by the City of New York (collectively, 'Disposition Area') in the Borough of Manhattan:</span></span></p><p> </p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>              <u>Address</u>                      <u>Block</u>/<u>Lots</u>            <u>Community District</u></span></span></p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>              53 East 110 Street             1616/123             11</span></span></p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>              304 East 126 Street           1802/47               11</span></span></p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>              201 East 120 Street           1785/1                 11</span></span></p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>              204 West 121 Street          1926/35               10</span></span></p><p> </p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>Under HPD's Division of Property Disposition and Finance program, City-owned vacant and/or occupied multifamily residential buildings may be purchased and gut-rehabilitated by a designated sponsor in order to create affordable rental housing units with a range of affordability. Construction and permanent financing is provided through loans from private institutional lenders and from public sources, including HPD. </span></span></p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>On November 23, 2020, the City conveyed the Disposition Area to CLT East Harlem/El Barrio Community Land Trust Housing Development Fund Corporation. The deed and land disposition agreement recorded against the Premises requires compliance with a project summary approved by the Council requiring the development of approximately 36 rental dwelling units, two commercial spaces, and one community facility space. While it was originally intended that there would be commercial spaces in the project, it is now being developed with three community facility spaces and approximately 38 rental dwelling units. On July 16, 2026 (Res. No. 579), the Council approved and amended project summary reflecting these new conditions, and the deed and land disposition agreement will be amended to reflect these changes.</span></span><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>                                                                                                      </span></span></p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>A public file containing copies of the calendar document and other public documents will be made available to Manhattan Community Board 10 for public review at the office of Manhattan Community Board 10 no later than twenty (20) days prior to the public hearing.</span></span></p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>The hearing location is accessible to individuals using wheelchairs or other mobility devices. For further information on accessibility or to make a request for accommodation, such as sign language interpretation services, please contact the Mayor\u001as Office of Contract Services (\u001aMOCS\u001a) via e-mail at disabilityaffairs@mocs.nyc.gov or via phone at (212) 788-0010. TDD users should call Verizon relay services.  Any person requiring reasonable accommodation for the public hearing should contact MOCS at least three (3) business days in advance of the hearing to ensure availability.</span></span></p>"
-    },
-    {
-      "request_id": "20260923002",
-      "start_date": "2026-10-02T00:00:00.000",
-      "event_date": "2026-10-22T11:00:00.000",
-      "agency_name": "Transportation",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
-      "short_title": "Dining Out NYC Public Hearings",
-      "additional_description_1": "<p>NOTICE IS HEREBY GIVEN, PURSUANT TO LAW, that the following proposed revocable consent has been scheduled for a public hearing by the New York City Department of Transportation. A draft copy of the revocable consent agreement(s) may be obtained at no cost by submitting a request at diningoutnyc.info/requestcopy</p><p>The public hearing will be held remotely via Zoom, commencing on October 22nd, 2026, at 11:00 am, in the matter of a proposed revocable consent authorizing the following:</p><ol>\t<li>\t<p>180 WEST HOSPITALITY LLC to maintain, operate, and use a year-round roadway cafe for a term of four years adjacent to 180 West Street in the Borough of Brooklyn.</p>\t</li>\t<li>\t<p>IDEAL COFFEE SHOP CORP to maintain, operate, and use a seasonal roadway cafe for a term of four years adjacent to 346 East 59th Street in the Borough of Manhattan.</p>\t</li></ol><p>To join the hearing enter the following URL link into your browser\u001as address bar: zoom.us/j/91467302621 Meeting ID: 914 6730 2621</p><p>To join the hearing only by phone, use the following information to connect: Phone: +1-929-205-6099 Meeting ID: 914 6730 2621</p>"
-    },
-    {
-      "request_id": "20260909022",
-      "start_date": "2026-10-14T00:00:00.000",
-      "event_date": "2026-10-22T13:00:00.000",
-      "agency_name": "Board of Education Retirement System",
-      "type_of_notice_description": "Meeting",
-      "section_name": "Public Hearings and Meetings",
-      "short_title": "DISABILITY COMMITTEE MEETING",
-      "street_address_1": "55 Water Street",
-      "city": "New York",
-      "state": "NY",
-      "zip_code": "10041",
-      "additional_description_1": "<p>Our next Disability Committee Meeting will be held in-person at our 55 Water Street office location on Thursday, October 22, 2026, from 1:00 P.M. to 3:00 P.M. If you would like to attend this meeting, please contact Dallas Chiles at DChiles@bers.nyc.gov, Caroline Charles-Marc at cpierre18@bers.nyc.gov or Maria Cepin at MCepin@bers.nyc.gov.</p>"
-    },
-    {
-      "request_id": "20260917001",
-      "start_date": "2026-10-14T00:00:00.000",
-      "event_date": "2026-10-22T16:00:00.000",
-      "agency_name": "Board of Education Retirement System",
-      "type_of_notice_description": "Meeting",
-      "section_name": "Public Hearings and Meetings",
-      "short_title": "Board of Education Retirement System Board of Trustees Meeting",
-      "street_address_1": "55 Water Street",
-      "city": "New York",
-      "state": "NY",
-      "zip_code": "10041",
-      "additional_description_1": "<p>The Board of Education Retirement System Board of Trustees Meeting will be held in-person at our 55 Water Street office, 50th Floor, on Thursday, October 22, 2026 from 4:00 P.M. - 6:00 P.M. If you would like to attend this meeting, please contact BERS Executive Director, Sanford Rich, at Srich4@bers.nyc.gov</p>"
-    },
     {
       "request_id": "20260915002",
       "start_date": "2026-10-16T00:00:00.000",
