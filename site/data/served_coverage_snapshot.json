@@ -53,7 +53,7 @@
   ],
   "evidence_vintage": {
     "oldest": "2026-05-26T00:00:00.000Z",
-    "newest": "2026-10-22T20:27:08.379Z"
+    "newest": "2026-10-23T09:36:10.172Z"
   },
   "domains": [
     {
@@ -230,11 +230,11 @@
           "source_id": "nyc-council-legistar",
           "source_name": "NYC Council Legistar API",
           "state": "measured",
-          "value": 18,
-          "evidence_vintage": "2026-10-16T08:02:43.838Z",
+          "value": 17,
+          "evidence_vintage": "2026-10-23T09:36:10.172Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single",
-          "records_considered": 309
+          "records_considered": 310
         }
       ]
     },

@@ -19,8 +19,9 @@ test("matter lookup materializes the exact LU 0056-2026 appearances", () => {
   const view = buildLegislativeMatterDocument(lookup, "78605");
   assert.equal(view.id, "78605");
   assert.equal(view.matter_file, "LU 0056-2026");
+  // Publisher window roll: the earlier 2026-04-22 layover (event 22342) left the
+  // current notice join window; the retained appearance is the 2026-05-19 approval.
   assert.deepEqual(view.appearances.map((row) => [row.event.event_id, row.event.date, row.outcome]), [
-    ["22342", "2026-04-22", "Laid Over by Subcommittee"],
     ["22375", "2026-05-19", "Approved by Subcommittee"],
   ]);
 });
@@ -30,20 +31,19 @@ test("matter render exposes named roll calls and fail-closed committee identity"
   const html = renderLegislativeMatterDocument(view);
   assert.match(html, /data-civic-object-kind="legislative-matter"/);
   assert.match(html, /data-matter-id="78605"/);
-  // The one roll call this matter has is the April 22 subcommittee approval.
+  // The one roll call this matter retains is the 2026-05-19 subcommittee approval.
   // A member the Council recorded as Absent is counted and labelled as not
   // present, not as an abstention.
   assert.match(html, /8 yes · 0 no · 1 not present/);
   assert.match(html, /not present, recorded as Absent/);
   assert.match(html, /Farah N\. Louis/);
-  // Nine named rows on one action — not eighteen across two meetings. The
-  // March appearance recorded no roll call and says so on each of its actions.
+  // Nine named rows on the roll-call action. The hearing-held action on the same
+  // appearance recorded no roll call and says so once.
   assert.equal((html.match(/data-pivot-relation-label="votes_on"/g) || []).length, 9);
-  assert.equal((html.match(/No roll call was recorded on this action\./g) || []).length, 3);
+  assert.equal((html.match(/No roll call was recorded on this action\./g) || []).length, 1);
   assert.match(html, /data-committee-join-state="unresolved_no_explicit_body_id"/);
   assert.doesNotMatch(html, /href="\/committees\/34\/"/);
   assert.match(html, /Gateway\.aspx\?M=L&amp;ID=78605/);
-  assert.match(html, /22342/);
   assert.match(html, /22375/);
 });
 

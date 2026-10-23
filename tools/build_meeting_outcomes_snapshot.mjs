@@ -47,24 +47,53 @@ export function assertMeetingOutcomesSourceFresh(body, { nowMs = Date.now() } = 
   return String(generatedAt);
 }
 
+/**
+ * Every pagination page must pass the freshness gate and share one source
+ * generation. A fresh first page followed by a stale, unavailable, or
+ * differently-vintaged later page must not be silently labeled with the
+ * first-page vintage.
+ */
+export function assertMeetingOutcomesPageCoherent(body, expected, { nowMs = Date.now() } = {}) {
+  const generatedAt = assertMeetingOutcomesSourceFresh(body, { nowMs });
+  if (expected == null) {
+    return {
+      generatedAt,
+      schemaVersion: body.schema_version == null ? null : Number(body.schema_version),
+    };
+  }
+  if (generatedAt !== expected.generatedAt) {
+    throw new Error(
+      `meeting outcomes pagination mixed source generations (page generated_at=${generatedAt}, expected=${expected.generatedAt}); refusing to publish a mixed-vintage snapshot`,
+    );
+  }
+  const schemaVersion = body.schema_version == null ? null : Number(body.schema_version);
+  if (schemaVersion !== expected.schemaVersion) {
+    throw new Error(
+      `meeting outcomes pagination mixed schema_version (page=${schemaVersion}, expected=${expected.schemaVersion}); refusing to publish a mixed-generation snapshot`,
+    );
+  }
+  return expected;
+}
+
 export async function fetchMeetingOutcomesRecords(fetchImpl = fetch, { nowMs = Date.now() } = {}) {
   const records = [];
   let offset = 0;
-  let generatedAt = null;
+  let coherent = null;
   while (offset < 2000) {
     const response = await fetchImpl(`${API}?limit=100&offset=${offset}`, {
       headers: { Accept: "application/json" },
     });
     if (!response.ok) throw new Error(`meeting outcomes HTTP ${response.status}`);
     const body = await response.json();
-    if (generatedAt == null) {
-      generatedAt = assertMeetingOutcomesSourceFresh(body, { nowMs });
-    }
+    // Validate every page before append — not only the first — so a later
+    // stale/missing/ok=false/different-generated_at page cannot ride a fresh
+    // first-page vintage into the committed snapshot.
+    coherent = assertMeetingOutcomesPageCoherent(body, coherent, { nowMs });
     const page = Array.isArray(body?.records) ? body.records : [];
     records.push(...page);
     offset += page.length;
     if (!page.length || offset >= Number(body?.pagination?.total || 0)) {
-      return { records, generatedAt };
+      return { records, generatedAt: coherent.generatedAt };
     }
   }
   throw new Error("meeting outcomes pagination exceeded the 2,000-record safety cap");

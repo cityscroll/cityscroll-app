@@ -37,29 +37,30 @@ function singleMatterNoLookupRecord(overrides = {}) {
   return { ...record, ...overrides };
 }
 
-// Matter 78605 (LU 0056-2026) has two observed appearances in
-// site/data/legislative_matter_lookup.json: a 2026-04-22 hearing that laid it
-// over, then a 2026-05-19 hearing that recorded a roll-call vote approving
-// it. Building the exact join on the *first* appearance's request id exercises
-// the "next published vote" state; building it on the *second* exercises the
-// "this hearing's own action is not mistaken for a future event" state.
-function matter78605Record(requestId, { outcome, eventName, eventDate } = {}) {
+// Matter 79201 (LU 0115-2026) retains two observed appearances in the current
+// meeting-outcomes join window: a 2026-07-21 hearing that laid it over, then a
+// 2026-08-12 hearing that approved it with modifications. Building the exact
+// join on the *first* appearance's request id exercises the "next published
+// vote" state; building it on the *second* exercises the "this hearing's own
+// action is not mistaken for a future event" state. (Earlier canary 78605 lost
+// its April layover when that notice left the publisher window.)
+function matter79201Record(requestId, { outcome, eventName, eventDate } = {}) {
   return {
     source_system: "city_record",
     meeting_id: `meeting:city_record:${requestId}`,
     request_id: requestId,
     event_date: `${eventDate}T11:00:00-04:00`,
-    decides: "Zoning, 147-14 Northern Boulevard Rezoning, Queens (C 220415 ZMQ).",
+    decides: "Zoning, 200 Kent Avenue Rezoning, Brooklyn (C 260149 ZMK).",
     council_hearing_kind: "land_use",
     meeting_outcome: {
       request_id: requestId,
       snapshot_state: "present",
       event: { event_id: "any", name: eventName, date: eventDate, url: "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=any", documents: [] },
       matters: [{
-        matter_id: "78605",
-        matter_file: "LU 0056-2026",
-        matter_url: "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78605",
-        title: "Zoning, 147-14 Northern Boulevard Rezoning, Queens (C 220415 ZMQ).",
+        matter_id: "79201",
+        matter_file: "LU 0115-2026",
+        matter_url: "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79201",
+        title: "Zoning, 200 Kent Avenue Rezoning, Brooklyn (C 260149 ZMK).",
         outcome,
       }],
       join: { matched: true, method: "exact_date_body_tokens" },
@@ -185,36 +186,45 @@ test("A4: the process position is framed as the committee's own recorded action,
 // ---- A6: a published amendment or vote appears as the next official event, never as testimony's effect ----
 
 test("A6: a later published vote on the same matter surfaces as the next official event", () => {
-  const record = matter78605Record("20260408025", {
+  const record = matter79201Record("20260707021", {
     outcome: "Laid Over by Subcommittee",
     eventName: "Subcommittee on Zoning and Franchises",
-    eventDate: "2026-04-22",
+    eventDate: "2026-07-21",
   });
   const projection = projectLegislativeHearingConsequence(record);
   assert.equal(projection.state, "single");
   assert.ok(projection.next_event, "a later vote should be found");
-  assert.equal(projection.next_event.label, "Approved by Subcommittee");
-  assert.equal(projection.next_event.date, "2026-05-19");
+  assert.equal(
+    projection.next_event.label,
+    "Approved by Subcommittee with Modifications and Referred to CPC",
+  );
+  assert.equal(projection.next_event.date, "2026-08-12");
 
   const html = renderLegislativeHearingConsequence(record);
-  assert.match(html, /Next official event on this matter: Approved by Subcommittee/);
-  assert.match(html, /2026-05-19/);
+  assert.match(
+    html,
+    /Next official event on this matter: Approved by Subcommittee with Modifications and Referred to CPC/,
+  );
+  assert.match(html, /2026-08-12/);
   assert.doesNotMatch(html, /No published amendment or vote/);
 });
 
 test("A6/negative rule: a hearing that is itself the matter's most recent appearance names no future event, even though its own action was a vote", () => {
-  // 20260428021 is matter 78605's *last* observed appearance in the lookup
-  // (the 2026-05-19 vote itself). Building the exact join on it must not
+  // 20260729004 is matter 79201's *last* observed appearance in the lookup
+  // (the 2026-08-12 approval itself). Building the exact join on it must not
   // mistake its own recorded action for a future "next official event".
-  const record = matter78605Record("20260428021", {
-    outcome: "Approved by Subcommittee",
+  const record = matter79201Record("20260729004", {
+    outcome: "Approved by Subcommittee with Modifications and Referred to CPC",
     eventName: "Subcommittee on Zoning and Franchises",
-    eventDate: "2026-05-19",
+    eventDate: "2026-08-12",
   });
   const projection = projectLegislativeHearingConsequence(record);
   assert.equal(projection.state, "single");
   assert.equal(projection.next_event, null);
-  assert.equal(projection.process_position.label, "Approved by Subcommittee");
+  assert.equal(
+    projection.process_position.label,
+    "Approved by Subcommittee with Modifications and Referred to CPC",
+  );
 
   const html = renderLegislativeHearingConsequence(record);
   assert.match(html, /No published amendment or vote on this matter has followed this hearing yet/);

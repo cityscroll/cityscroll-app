@@ -104,7 +104,7 @@
       "vintage_field": "generated_at",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 18,
+      "value": 17,
       "reason": null
     },
     {
@@ -1034,8 +1034,8 @@
           {
             "unit_id": "meeting-outcomes",
             "route": "/browse/meetings/",
-            "served_records": 18,
-            "evidence_vintage": "2026-10-16T08:02:43.838Z"
+            "served_records": 17,
+            "evidence_vintage": "2026-10-23T09:36:10.172Z"
           },
           {
             "unit_id": "committee-memberships",
