@@ -31,10 +31,13 @@ import {
 } from "./lib/worker_cost_control.mjs";
 import {
   createLiveWorkerCostTransport,
+  createStartRateGate,
   invokeWranglerAbortable,
+  mapPaced,
   providerEventsFromEnvelope,
   queryProviderEvents,
   secureWebSocketUrl,
+  WAREHOUSE_PROBE_MAX_STARTS_PER_SECOND_DEFAULT,
 } from "./worker_cost_acquisition.mjs";
 
 const REVISION = "a".repeat(40);
@@ -1882,4 +1885,125 @@ test("incomplete_cohort omits identifier-like strings on both blocked paths", as
     incomplete_cohort: "health",
   });
   assert.equal(target.incomplete_cohort, "health");
+});
+
+test("warehouse probe start-rate gate defaults to 15/s and mapPaced respects the bound", async () => {
+  assert.equal(WAREHOUSE_PROBE_MAX_STARTS_PER_SECOND_DEFAULT, 15);
+  let t = 0;
+  const now = () => t;
+  const sleep = async (ms) => { t += Math.max(0, ms); };
+  const gate = createStartRateGate({ maxStartsPerSecond: 15, now, sleep });
+  const starts = [];
+  for (let i = 0; i < 31; i += 1) {
+    await gate(null);
+    starts.push(t);
+  }
+  const elapsed = starts[starts.length - 1] - starts[0];
+  const rate = ((starts.length - 1) * 1000) / elapsed;
+  assert.ok(rate <= 15 + 1e-9, `gate rate ${rate} exceeds 15/s`);
+
+  // Rate under paced starts: use maxInFlight 1 so the injected clock is not
+  // advanced by concurrent operation sleeps racing the gate.
+  t = 0;
+  const pacedStarts = [];
+  await mapPaced(Array.from({ length: 20 }, (_, i) => i), {
+    maxStartsPerSecond: 15,
+    maxInFlight: 1,
+    signal: null,
+    now,
+    sleep,
+  }, async () => {
+    pacedStarts.push(t);
+    await sleep(2);
+  });
+  const pacedElapsed = pacedStarts[pacedStarts.length - 1] - pacedStarts[0];
+  const pacedRate = ((pacedStarts.length - 1) * 1000) / pacedElapsed;
+  assert.ok(pacedRate <= 15 + 1e-9, `mapPaced rate ${pacedRate} exceeds 15/s`);
+  for (let i = 1; i < pacedStarts.length; i += 1) {
+    assert.ok(
+      pacedStarts[i] - pacedStarts[i - 1] + 1e-9 >= 1000 / 15,
+      `paced start gap too small at ${i}`,
+    );
+  }
+});
+
+test("createStartRateGate spaces from actual admission time under injected oversleep", async () => {
+  // 10/s → 100ms min spacing. Sleep always overshoots by 50ms.
+  let t = 0;
+  const now = () => t;
+  const sleep = async (ms) => { t += Math.max(0, ms) + 50; };
+  const gate = createStartRateGate({ maxStartsPerSecond: 10, now, sleep });
+  const admittedAt = [];
+  for (let i = 0; i < 5; i += 1) {
+    await gate(null);
+    admittedAt.push(now());
+  }
+  for (let i = 1; i < admittedAt.length; i += 1) {
+    const gap = admittedAt[i] - admittedAt[i - 1];
+    assert.ok(
+      gap + 1e-9 >= 100,
+      `admission gap ${gap}ms < 100ms min spacing at index ${i}: ${admittedAt.join(",")}`,
+    );
+  }
+  // Oversleep must not collapse two admissions onto the same clock reading.
+  assert.equal(new Set(admittedAt).size, admittedAt.length);
+});
+
+test("mapPaced stops new admissions after first failure and settles in-flight work", async () => {
+  let t = 0;
+  const now = () => t;
+  const sleep = async (ms) => { t += Math.max(0, ms); };
+  const started = [];
+  const finished = [];
+  let settledSibling = false;
+  await assert.rejects(
+    () => mapPaced([0, 1, 2, 3, 4, 5], {
+      maxStartsPerSecond: 1000,
+      maxInFlight: 2,
+      signal: null,
+      now,
+      sleep,
+    }, async (item, _index, signal) => {
+      started.push(item);
+      if (item === 0) {
+        await sleep(5);
+        throw new Error("paced-op-boom");
+      }
+      // Sibling must be allowed to settle even after the first failure.
+      await sleep(20);
+      if (signal?.aborted) {
+        finished.push({ item, aborted: true });
+        throw new Error("cost workload collection was cancelled");
+      }
+      settledSibling = true;
+      finished.push({ item, aborted: false });
+      return item;
+    }),
+    /paced-op-boom/,
+  );
+  assert.ok(started.includes(0), "failing op must start");
+  assert.ok(started.length >= 1 && started.length <= 3, `started=${started.join(",")}`);
+  // No late admissions after the failure window: at most the in-flight cohort.
+  assert.ok(!started.includes(5), `must not admit late item 5; started=${started.join(",")}`);
+  assert.ok(
+    finished.some((row) => row.item !== 0) || settledSibling || started.length === 1,
+    "in-flight sibling work must settle or never start",
+  );
+});
+
+test("createLiveWorkerCostTransport rejects non-positive warehouseProbeMaxStartsPerSecond", () => {
+  assert.throws(
+    () => createLiveWorkerCostTransport({
+      env: {
+        CLOUDFLARE_OBSERVABILITY_TOKEN: "telemetry-only",
+        WORKER_COST_ADMIN_KEY: "admin-key",
+        CLOUDFLARE_ACCOUNT_ID: "account",
+        WORKER_HEALTH_URL: "https://worker.example/health",
+        WORKER_API_ORIGIN: "https://worker.example",
+        WORKER_COST_MEASUREMENT_PLAN: JSON.stringify({ run_marker: RUN, workload_digest: WORKLOAD }),
+      },
+      warehouseProbeMaxStartsPerSecond: 0,
+    }),
+    /warehouseProbeMaxStartsPerSecond/,
+  );
 });

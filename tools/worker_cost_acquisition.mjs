@@ -77,6 +77,120 @@ const WAREHOUSE_MAX_ATTEMPTS_PER_INPUT = Math.floor(
   (MAX_COLLECTOR_EVENTS - WAREHOUSE_FLAG_CAPABLE_COLLECTOR_SAMPLES) / WAREHOUSE_BASE_COHORTS.length,
 );
 const WAREHOUSE_PROBE_CONCURRENCY = 32;
+/** Default warehouse-probe start-rate bound when a caller opts into paced starts. */
+export const WAREHOUSE_PROBE_MAX_STARTS_PER_SECOND_DEFAULT = 15;
+
+/**
+ * Serialize starts so the long-run start rate stays at or below maxStartsPerSecond.
+ * Uses fixed min-interval spacing from the actual admission time (no token-bucket burst).
+ * Inject now/sleep for tests.
+ */
+export function createStartRateGate({
+  maxStartsPerSecond,
+  now = () => Date.now(),
+  sleep = wait,
+} = {}) {
+  if (!Number.isFinite(maxStartsPerSecond) || maxStartsPerSecond <= 0) {
+    throw new Error("maxStartsPerSecond must be a positive finite number");
+  }
+  const minIntervalMs = 1000 / maxStartsPerSecond;
+  let nextAllowedAt = 0;
+  let tail = Promise.resolve();
+  return function acquireStart(signal) {
+    const run = async () => {
+      while (true) {
+        if (signal?.aborted) throw new Error("cost workload collection was cancelled");
+        const t = now();
+        const waitMs = Math.max(0, nextAllowedAt - t);
+        if (waitMs > 0) {
+          await sleep(waitMs, signal);
+          // Recheck after wake: oversleep must not collapse spacing.
+          continue;
+        }
+        if (signal?.aborted) throw new Error("cost workload collection was cancelled");
+        const admittedAt = now();
+        nextAllowedAt = admittedAt + minIntervalMs;
+        return;
+      }
+    };
+    const scheduled = tail.then(run, run);
+    tail = scheduled.catch(() => {});
+    return scheduled;
+  };
+}
+
+/**
+ * Like mapConcurrent, but each operation start is admitted through a fixed rate gate.
+ * maxInFlight caps concurrent in-flight work; maxStartsPerSecond caps start rate.
+ * On first operation failure or abort: stop new admissions, cancel owned work, settle
+ * in-flight operations, then rethrow the original failure.
+ */
+export async function mapPaced(items, {
+  maxStartsPerSecond,
+  maxInFlight,
+  signal,
+  now = () => Date.now(),
+  sleep = wait,
+}, operation) {
+  if (!Number.isInteger(maxInFlight) || maxInFlight <= 0) {
+    throw new Error("mapPaced maxInFlight must be a positive integer");
+  }
+  const gate = createStartRateGate({ maxStartsPerSecond, now, sleep });
+  const results = new Array(items.length);
+  let next = 0;
+  let firstError = null;
+  const pending = new Set();
+  const localAbort = new AbortController();
+  const onParentAbort = () => {
+    try { localAbort.abort(); } catch { /* ignore */ }
+  };
+  if (signal) {
+    if (signal.aborted) onParentAbort();
+    else signal.addEventListener("abort", onParentAbort, { once: true });
+  }
+  const combinedSignal = localAbort.signal;
+
+  const workers = Array.from(
+    { length: Math.min(maxInFlight, items.length) },
+    async () => {
+      while (next < items.length) {
+        if (combinedSignal.aborted || firstError) return;
+        const index = next;
+        next += 1;
+        try {
+          await gate(combinedSignal);
+        } catch (error) {
+          if (!firstError) firstError = error;
+          try { localAbort.abort(); } catch { /* ignore */ }
+          return;
+        }
+        if (combinedSignal.aborted || firstError) return;
+        const work = Promise.resolve().then(() => operation(items[index], index, combinedSignal));
+        pending.add(work);
+        try {
+          results[index] = await work;
+        } catch (error) {
+          if (!firstError) firstError = error;
+          try { localAbort.abort(); } catch { /* ignore */ }
+        } finally {
+          pending.delete(work);
+        }
+      }
+    },
+  );
+
+  try {
+    await Promise.all(workers.map((worker) => worker.catch((error) => {
+      if (!firstError) firstError = error;
+    })));
+    if (pending.size > 0) await Promise.allSettled([...pending]);
+    if (firstError) throw firstError;
+    if (signal?.aborted) throw new Error("cost workload collection was cancelled");
+    return results;
+  } finally {
+    if (signal) signal.removeEventListener("abort", onParentAbort);
+  }
+}
 
 function sameCohortSet(left, right) {
   if (left.length !== right.length) return false;
@@ -461,6 +575,8 @@ export function createLiveWorkerCostTransport({
   setIntervalImpl = setInterval,
   clearIntervalImpl = clearInterval,
   warehouseAttemptsPerInput = WAREHOUSE_MAX_ATTEMPTS_PER_INPUT,
+  // null keeps the prior concurrent start behavior; a positive number enables paced starts.
+  warehouseProbeMaxStartsPerSecond = null,
 } = {}) {
   const telemetryToken = secret(env, "CLOUDFLARE_OBSERVABILITY_TOKEN");
   const adminKey = secret(env, "WORKER_COST_ADMIN_KEY");
@@ -499,6 +615,24 @@ export function createLiveWorkerCostTransport({
     || warehouseAttemptsPerInput > WAREHOUSE_MAX_ATTEMPTS_PER_INPUT) {
     throw new Error("warehouse attempt bound is invalid");
   }
+  const warehouseStartRate = warehouseProbeMaxStartsPerSecond == null
+    ? null
+    : Number(warehouseProbeMaxStartsPerSecond);
+  if (warehouseStartRate != null
+    && (!Number.isFinite(warehouseStartRate) || warehouseStartRate <= 0)) {
+    throw new Error("warehouseProbeMaxStartsPerSecond must be null or a positive finite number");
+  }
+  const runWarehouseAttempts = (attempts, collectorSignal, operation) => (
+    warehouseStartRate == null
+      ? mapConcurrent(attempts, WAREHOUSE_PROBE_CONCURRENCY, collectorSignal, operation)
+      : mapPaced(attempts, {
+        maxStartsPerSecond: warehouseStartRate,
+        maxInFlight: WAREHOUSE_PROBE_CONCURRENCY,
+        signal: collectorSignal,
+        now,
+        sleep,
+      }, operation)
+  );
   const executeWorkload = async (workload, series, deployment, header = workload.header, signal) => {
     if (signal?.aborted) throw new Error("cost workload collection was cancelled");
     const probeCohort = workload.probe_cohort || baseCohortFromFlagRaw(workload.cohort);
@@ -709,9 +843,14 @@ export function createLiveWorkerCostTransport({
           limit: maxEvents,
           signal,
           execute: async (collectorSignal, live = {}) => {
-            expectations = await mapConcurrent(attempts, WAREHOUSE_PROBE_CONCURRENCY, collectorSignal, ({ base, workload, index }) => (
-              executeWorkload(workload, workloadId, deployment, `cost-${label}-${base}-${index}`, collectorSignal)
-            ));
+            // Optional start-rate bound applies to warehouse cohort probes only.
+            expectations = await runWarehouseAttempts(
+              attempts,
+              collectorSignal,
+              ({ base, workload, index }) => (
+                executeWorkload(workload, workloadId, deployment, `cost-${label}-${base}-${index}`, collectorSignal)
+              ),
+            );
             if (!Array.isArray(live.events)) throw new Error("warehouse collector live event buffer is unavailable");
             const liveEvents = live.events;
             let nextIndex = 0;
