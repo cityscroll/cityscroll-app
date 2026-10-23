@@ -31,10 +31,13 @@ import {
 } from "./lib/worker_cost_control.mjs";
 import {
   createLiveWorkerCostTransport,
+  createStartRateGate,
   invokeWranglerAbortable,
+  mapPaced,
   providerEventsFromEnvelope,
   queryProviderEvents,
   secureWebSocketUrl,
+  WAREHOUSE_PROBE_MAX_STARTS_PER_SECOND_DEFAULT,
 } from "./worker_cost_acquisition.mjs";
 
 const REVISION = "a".repeat(40);
@@ -1882,4 +1885,293 @@ test("incomplete_cohort omits identifier-like strings on both blocked paths", as
     incomplete_cohort: "health",
   });
   assert.equal(target.incomplete_cohort, "health");
+});
+
+test("warehouse probe start-rate gate defaults to 15/s and mapPaced respects the bound", async () => {
+  assert.equal(WAREHOUSE_PROBE_MAX_STARTS_PER_SECOND_DEFAULT, 15);
+  let t = 0;
+  const now = () => t;
+  const sleep = async (ms) => { t += Math.max(0, ms); };
+  const gate = createStartRateGate({ maxStartsPerSecond: 15, now, sleep });
+  const starts = [];
+  for (let i = 0; i < 31; i += 1) {
+    await gate(null);
+    starts.push(t);
+  }
+  const elapsed = starts[starts.length - 1] - starts[0];
+  const rate = ((starts.length - 1) * 1000) / elapsed;
+  assert.ok(rate <= 15 + 1e-9, `gate rate ${rate} exceeds 15/s`);
+
+  // Rate under paced starts: use maxInFlight 1 so the injected clock is not
+  // advanced by concurrent operation sleeps racing the gate.
+  t = 0;
+  const pacedStarts = [];
+  await mapPaced(Array.from({ length: 20 }, (_, i) => i), {
+    maxStartsPerSecond: 15,
+    maxInFlight: 1,
+    signal: null,
+    now,
+    sleep,
+  }, async () => {
+    pacedStarts.push(t);
+    await sleep(2);
+  });
+  const pacedElapsed = pacedStarts[pacedStarts.length - 1] - pacedStarts[0];
+  const pacedRate = ((pacedStarts.length - 1) * 1000) / pacedElapsed;
+  assert.ok(pacedRate <= 15 + 1e-9, `mapPaced rate ${pacedRate} exceeds 15/s`);
+  for (let i = 1; i < pacedStarts.length; i += 1) {
+    assert.ok(
+      pacedStarts[i] - pacedStarts[i - 1] + 1e-9 >= 1000 / 15,
+      `paced start gap too small at ${i}`,
+    );
+  }
+});
+
+test("createStartRateGate spaces from actual admission time under injected oversleep", async () => {
+  // 10/s → 100ms min spacing. Sleep always overshoots by 50ms.
+  let t = 0;
+  const now = () => t;
+  const sleep = async (ms) => { t += Math.max(0, ms) + 50; };
+  const gate = createStartRateGate({ maxStartsPerSecond: 10, now, sleep });
+  const admittedAt = [];
+  for (let i = 0; i < 5; i += 1) {
+    await gate(null);
+    admittedAt.push(now());
+  }
+  for (let i = 1; i < admittedAt.length; i += 1) {
+    const gap = admittedAt[i] - admittedAt[i - 1];
+    assert.ok(
+      gap + 1e-9 >= 100,
+      `admission gap ${gap}ms < 100ms min spacing at index ${i}: ${admittedAt.join(",")}`,
+    );
+  }
+  // Oversleep must not collapse two admissions onto the same clock reading.
+  assert.equal(new Set(admittedAt).size, admittedAt.length);
+});
+
+test("mapPaced stops new admissions after first failure and settles in-flight work", async () => {
+  let t = 0;
+  const now = () => t;
+  const sleep = async (ms) => { t += Math.max(0, ms); };
+  const started = [];
+  const finished = [];
+  let settledSibling = false;
+  await assert.rejects(
+    () => mapPaced([0, 1, 2, 3, 4, 5], {
+      maxStartsPerSecond: 1000,
+      maxInFlight: 2,
+      signal: null,
+      now,
+      sleep,
+    }, async (item, _index, signal) => {
+      started.push(item);
+      if (item === 0) {
+        await sleep(5);
+        throw new Error("paced-op-boom");
+      }
+      // Sibling must be allowed to settle even after the first failure.
+      await sleep(20);
+      if (signal?.aborted) {
+        finished.push({ item, aborted: true });
+        throw new Error("cost workload collection was cancelled");
+      }
+      settledSibling = true;
+      finished.push({ item, aborted: false });
+      return item;
+    }),
+    /paced-op-boom/,
+  );
+  assert.ok(started.includes(0), "failing op must start");
+  assert.ok(started.length >= 1 && started.length <= 3, `started=${started.join(",")}`);
+  // No late admissions after the failure window: at most the in-flight cohort.
+  assert.ok(!started.includes(5), `must not admit late item 5; started=${started.join(",")}`);
+  assert.ok(
+    finished.some((row) => row.item !== 0) || settledSibling || started.length === 1,
+    "in-flight sibling work must settle or never start",
+  );
+});
+
+test("createLiveWorkerCostTransport rejects non-positive warehouseProbeMaxStartsPerSecond", () => {
+  assert.throws(
+    () => createLiveWorkerCostTransport({
+      env: {
+        CLOUDFLARE_OBSERVABILITY_TOKEN: "telemetry-only",
+        WORKER_COST_ADMIN_KEY: "admin-key",
+        CLOUDFLARE_ACCOUNT_ID: "account",
+        WORKER_HEALTH_URL: "https://worker.example/health",
+        WORKER_API_ORIGIN: "https://worker.example",
+        WORKER_COST_MEASUREMENT_PLAN: JSON.stringify({ run_marker: RUN, workload_digest: WORKLOAD }),
+      },
+      warehouseProbeMaxStartsPerSecond: 0,
+    }),
+    /warehouseProbeMaxStartsPerSecond/,
+  );
+});
+
+test("paced warehouse transport cancels in-flight probes on local failure via combinedSignal (I1)", async () => {
+  const parent = new AbortController();
+  const startedSignals = [];
+  let failArmed = false;
+  const workloads = WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => ({
+    cohort,
+    probe_cohort: cohort,
+    workload_hash: createHash("sha256").update(cohort).digest("hex"),
+    body: { kind: "http", route: cohort },
+  }));
+  const measurement = {
+    run_marker: RUN,
+    workload_digest: WORKLOAD,
+    warehouse_workloads: workloads,
+    collector_workload: {
+      cohort: "collector-overhead",
+      probe_cohort: "collector-overhead",
+      workload_hash: createHash("sha256").update("collector-overhead").digest("hex"),
+      body: { kind: "collector-overhead" },
+    },
+  };
+  const transport = createLiveWorkerCostTransport({
+    env: {
+      CLOUDFLARE_OBSERVABILITY_TOKEN: "telemetry-only",
+      WORKER_COST_ADMIN_KEY: "admin-key",
+      CLOUDFLARE_ACCOUNT_ID: "account",
+      WORKER_HEALTH_URL: "https://worker.example/health",
+      WORKER_API_ORIGIN: "https://worker.example",
+      WORKER_COST_MEASUREMENT_PLAN: JSON.stringify(measurement),
+    },
+    warehouseAttemptsPerInput: 200,
+    warehouseProbeMaxStartsPerSecond: 1000,
+    now: () => Date.parse("2026-10-09T08:00:00Z"),
+    sleep: async () => {},
+    fetchImpl: async (url, init = {}) => {
+      if (!url.endsWith("/admin/cost-control-probe")) throw new Error(`unexpected fetch ${url}`);
+      startedSignals.push(init.signal);
+      // Let a sibling start first, then fail so mapPaced must cancel the hanger.
+      if (!failArmed && startedSignals.length >= 2) {
+        failArmed = true;
+        throw new Error("owned-http-diagnostic-boom");
+      }
+      return new Promise((_resolve, reject) => {
+        if (init.signal?.aborted) {
+          reject(new Error("request aborted"));
+          return;
+        }
+        init.signal.addEventListener("abort", () => reject(new Error("request aborted")), { once: true });
+      });
+    },
+  });
+  transport.collectProviderEvents = async ({ execute, signal: collectorSignal }) => {
+    await execute(collectorSignal || new AbortController().signal, { events: [] });
+    return [];
+  };
+
+  const result = await transport.collectWarehouseRun({
+    label: "baseline",
+    revision: REVISION,
+    deployment: deployment(REVISION),
+    workloadId: "fixed-series",
+    cohorts: [...WAREHOUSE_EXPERIMENT_BASE_ROUTES],
+    samplesPerCohort: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+    maxEvents: MAX_COLLECTOR_EVENTS,
+    signal: parent.signal,
+  });
+
+  assert.equal(result.status, "blocked");
+  assert.match(String(result.reason), /owned-http-diagnostic-boom/);
+  assert.equal(parent.signal.aborted, false, "parent signal must stay open; paced local abort owns cancel");
+  assert.ok(startedSignals.length >= 2, `expected in-flight cohort, got ${startedSignals.length}`);
+  // Concurrency ceiling is 32; failure must stop further admissions well below the attempt budget.
+  assert.ok(
+    startedSignals.length <= 40,
+    `too many starts after local failure: ${startedSignals.length}`,
+  );
+  assert.ok(
+    startedSignals.some((signal) => signal?.aborted === true),
+    "in-flight probe fetch must see paced combinedSignal abort",
+  );
+  assert.ok(
+    startedSignals.every((signal) => signal !== parent.signal),
+    "probe fetches must not be wired to the parent AbortSignal alone",
+  );
+});
+
+test("paced warehouse transport keeps monotonic admission when wall time jumps (I2)", async () => {
+  let wall = Date.parse("2026-10-09T08:00:00Z");
+  let mono = 0;
+  const admissions = [];
+  const workloads = WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => ({
+    cohort,
+    probe_cohort: cohort,
+    workload_hash: createHash("sha256").update(cohort).digest("hex"),
+    body: { kind: "http", route: cohort },
+  }));
+  const measurement = {
+    run_marker: RUN,
+    workload_digest: WORKLOAD,
+    warehouse_workloads: workloads,
+    collector_workload: {
+      cohort: "collector-overhead",
+      probe_cohort: "collector-overhead",
+      workload_hash: createHash("sha256").update("collector-overhead").digest("hex"),
+      body: { kind: "collector-overhead" },
+    },
+  };
+  const transport = createLiveWorkerCostTransport({
+    env: {
+      CLOUDFLARE_OBSERVABILITY_TOKEN: "telemetry-only",
+      WORKER_COST_ADMIN_KEY: "admin-key",
+      CLOUDFLARE_ACCOUNT_ID: "account",
+      WORKER_HEALTH_URL: "https://worker.example/health",
+      WORKER_API_ORIGIN: "https://worker.example",
+      WORKER_COST_MEASUREMENT_PLAN: JSON.stringify(measurement),
+    },
+    warehouseAttemptsPerInput: 200,
+    warehouseProbeMaxStartsPerSecond: 10,
+    now: () => wall,
+    pacingNow: () => mono,
+    sleep: async (ms) => { mono += Math.max(0, ms); },
+    fetchImpl: async (url, init = {}) => {
+      if (!url.endsWith("/admin/cost-control-probe")) throw new Error(`unexpected fetch ${url}`);
+      admissions.push(mono);
+      // Wall clock jumps backward; pacing must ignore it.
+      wall -= 3_600_000;
+      if (admissions.length >= 8) throw new Error("owned-http-diagnostic-stop");
+      const cohort = init.headers["x-cityscroll-cost-cohort"];
+      return Response.json({
+        schema: "cityscroll.worker_cost_probe.v1",
+        tag: init.headers["x-cityscroll-cost-probe"],
+        series: init.headers["x-cityscroll-cost-series"],
+        cohort,
+        workload_hash: init.headers["x-cityscroll-cost-workload"],
+        execution_mode: "production-read-only-rehearsal",
+        operation_counts: operations(),
+        result: { status: 200, body_sha256: "6".repeat(64), correctness: CORRECTNESS },
+      });
+    },
+  });
+  transport.collectProviderEvents = async ({ execute }) => {
+    await execute(new AbortController().signal, { events: [] });
+    return [];
+  };
+
+  const result = await transport.collectWarehouseRun({
+    label: "baseline",
+    revision: REVISION,
+    deployment: deployment(REVISION),
+    workloadId: "fixed-series",
+    cohorts: [...WAREHOUSE_EXPERIMENT_BASE_ROUTES],
+    samplesPerCohort: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+    maxEvents: MAX_COLLECTOR_EVENTS,
+  });
+
+  assert.equal(result.status, "blocked");
+  assert.match(String(result.reason), /owned-http-diagnostic-stop/);
+  assert.ok(admissions.length >= 5, `expected several paced admissions, got ${admissions.length}`);
+  const minGap = 1000 / 10;
+  for (let i = 1; i < admissions.length; i += 1) {
+    const gap = admissions[i] - admissions[i - 1];
+    assert.ok(
+      gap + 1e-9 >= minGap,
+      `wall jump collapsed spacing: gap ${gap}ms at ${i}; admissions=${admissions.join(",")}`,
+    );
+  }
 });
