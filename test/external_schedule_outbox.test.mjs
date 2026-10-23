@@ -406,6 +406,7 @@ test("a healthy rehearsal closes both the digest finding and the source finding"
       },
     }));
     assert.equal(output.result.status, "healthy");
+    // No report.delivery TERMINAL → do not close the delivery incident on READY alone.
     assert.deepEqual(output.intents.map((intent) => [intent.issue.mode, intent.issue.title]), [
       ["close", "Digest shadow run needs attention"],
       ["close", "Digest shadow source is unavailable"],

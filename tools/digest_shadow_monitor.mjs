@@ -16,12 +16,88 @@ import {
 export const DIGEST_SHADOW_READY_STATUS = "READY";
 export const DIGEST_SHADOW_DEGRADED_UPSTREAM_STATUS = "DEGRADED_UPSTREAM";
 export const DIGEST_SHADOW_UPSTREAM_ISSUE_TITLE = "Digest shadow source is unavailable";
+/** Own title so READY may close the build/STARTED issue without hiding a delivery fault. */
+export const DIGEST_SHADOW_DELIVERY_ISSUE_TITLE = "Digest delivery receipt needs attention";
+/** Same 12-minute window the started-stall recovery playbook uses. */
+export const DIGEST_SHADOW_STARTED_GRACE_MS = 12 * 60 * 1000;
+
+/** True when report findings name a delivery-ledger fault (missing, incomplete, or zero sends). */
+export function hasDigestDeliveryFault(findings = [], report = {}) {
+  const text = [
+    ...(Array.isArray(findings) ? findings : []),
+    ...(Array.isArray(report?.findings) ? report.findings : []),
+  ].map((row) => String(row || "")).join("\n").toLowerCase();
+  if (!text) return false;
+  return /terminal delivery receipt missing/.test(text)
+    || /delivery receipt is started/.test(text)
+    || /delivery receipt is pending/.test(text)
+    || /delivery receipt missing/.test(text)
+    || /zero accepted sends/.test(text)
+    || /enqueued digest has zero accepted sends/.test(text);
+}
+
+/**
+ * True only when the report itself carries today's TERMINAL delivery receipt.
+ * Absence of delivery findings is not enough: morning probes run before the
+ * 14:00 UTC delivery deadline and never see delivery findings, so closing on
+ * "no findings" would falsely clear yesterday's delivery incident.
+ */
+export function isDigestDeliveryTerminalForToday(report = {}, today) {
+  const delivery = report?.delivery;
+  if (!delivery || typeof delivery !== "object") return false;
+  const day = String(delivery.day || "");
+  return day === String(today) && String(delivery.status || "") === "TERMINAL";
+}
 
 function adminKey() {
   return resolveCredential({
     inlineVars: ["CITYSCROLL_ADMIN_KEY", "ADMIN_KEY"],
     fileVars: ["CITYSCROLL_ADMIN_KEY_FILE"],
   });
+}
+
+/** Earliest credible start clock on a STARTED summary (progress, ran_at, or created). */
+export function digestShadowStartedAtMs(summary = {}) {
+  for (const value of [summary.progress_at, summary.ran_at, summary.observed_at, summary.created_at]) {
+    const ms = Date.parse(value || "");
+    if (Number.isFinite(ms)) return ms;
+  }
+  return null;
+}
+
+/** True while a same-day STARTED rehearsal is still inside the recovery grace window. */
+export function isDigestShadowStartedWithinGrace(summary, now, graceMs = DIGEST_SHADOW_STARTED_GRACE_MS) {
+  if (summary?.status !== "STARTED") return false;
+  const startedAt = digestShadowStartedAtMs(summary);
+  if (!Number.isFinite(startedAt)) return false;
+  return new Date(now).getTime() - startedAt < graceMs;
+}
+
+/**
+ * Name the fault from the actual finding, not from HTTP alone.
+ * Delivery findings win even when the shadow rehearsal itself is READY.
+ * A READY rehearsal with hold/catch-up attention (and no delivery fault) is not digest_build.
+ */
+export function classifyDigestShadowFaultDomain({
+  healthy = false,
+  upstream = false,
+  unreachable = null,
+  withinGrace = false,
+  summary = {},
+  report = {},
+  findings = [],
+} = {}) {
+  if (hasDigestDeliveryFault(findings, report)) return "digest_delivery";
+  if (healthy || withinGrace) return null;
+  if (upstream) return "upstream_source";
+  if (unreachable) return "rehearsal_reachability";
+  if (summary?.status === DIGEST_SHADOW_READY_STATUS && summary?.ok !== false) {
+    if (report?.hold?.pending_catch_up_status && report.hold.pending_catch_up_status !== "absent") {
+      return "catch_up";
+    }
+    return "hold_attention";
+  }
+  return "digest_build";
 }
 
 function sanitize(value) {
@@ -137,71 +213,166 @@ export async function runDigestShadowJob(job, context) {
   const summary = report.summary || (report.status ? report : {});
   const today = context.now.toISOString().slice(0, 10);
   const observed = summary.status || null;
-  const healthy = response.ok && summary.run_day === today && observed === DIGEST_SHADOW_READY_STATUS;
+  const findings = Array.isArray(report.findings) ? report.findings : [];
+  // Verified READY for today closes the build/STARTED attention issue even when
+  // HTTP is 503 for hold/catch-up attention. Delivery findings are a separate
+  // fault domain with their own issue title — READY must never close those.
+  const rehearsalReady = summary.run_day === today
+    && observed === DIGEST_SHADOW_READY_STATUS
+    && summary.ok !== false;
+  const deliveryFault = hasDigestDeliveryFault(findings, report);
+  const buildClear = rehearsalReady && !deliveryFault;
+  const healthy = response.ok && buildClear;
   const upstream = observed === DIGEST_SHADOW_DEGRADED_UPSTREAM_STATUS && summary.run_day === today;
   const redlines = Array.isArray(summary.redlines) ? summary.redlines : [];
   const incidents = Array.isArray(summary.upstream_incidents) ? summary.upstream_incidents : [];
   const unreachable = digestShadowUnreachableReason({ response, report, summary, parseFailure, today });
   const startedNotFinished = observed === "STARTED" && summary.run_day === today;
-  const degradedReason = healthy
-    ? null
-    : upstream
-      ? "upstream-source-unavailable"
-      : unreachable
-        ? unreachable.reason
-        : response.status === 401 || response.status === 403
-          ? "admin-credential-rejected"
-          : startedNotFinished
-            ? "rehearsal-started-not-finished"
-            : "rehearsal-not-ready";
-  const fingerprint = digestShadowObservationFingerprint(summary, { degraded_reason: degradedReason });
+  const withinGrace = startedNotFinished && isDigestShadowStartedWithinGrace(summary, context.now);
+  const startedOverdue = startedNotFinished && !withinGrace;
+  const degradedReason = deliveryFault
+    ? "delivery-receipt-fault"
+    : buildClear || healthy
+      ? null
+      : withinGrace
+        ? "rehearsal-started-within-grace"
+        : upstream
+          ? "upstream-source-unavailable"
+          : unreachable
+            ? unreachable.reason
+            : response.status === 401 || response.status === 403
+              ? "admin-credential-rejected"
+              : startedOverdue
+                ? "rehearsal-started-not-finished"
+                : "rehearsal-not-ready";
+  const faultDomain = classifyDigestShadowFaultDomain({
+    healthy: buildClear || healthy,
+    upstream,
+    unreachable,
+    withinGrace: withinGrace && !deliveryFault,
+    summary,
+    report,
+    findings,
+  });
+  const fingerprint = digestShadowObservationFingerprint(summary, {
+    degraded_reason: degradedReason,
+    fault_domain: faultDomain,
+    findings,
+  });
   const observationMark = observationMarker(fingerprint);
   const previousPath = lastObservationPath(context.stateDir, job.id);
   let previous = null;
   try { previous = JSON.parse(await readFile(previousPath, "utf8")); } catch { previous = null; }
-  const opening = !(healthy || upstream);
+  // In-grace STARTED (without a delivery finding) is active work, not an incident.
+  // Delivery faults stay open even when the shadow rehearsal is READY.
+  const opening = deliveryFault
+    ? true
+    : !(buildClear || healthy || upstream || withinGrace);
   const unchanged = Boolean(previous?.fingerprint && previous.fingerprint === fingerprint);
   const commentWritten = opening && !unchanged;
   const commentSuppressed = opening && unchanged ? UNCHANGED_OBSERVATION : null;
-  const severity = findingSeverity({ healthy, summary, opening });
+  const status = withinGrace && !deliveryFault
+    ? "watching"
+    : deliveryFault
+      ? "degraded"
+      : (buildClear || healthy)
+        ? "healthy"
+        : "degraded";
+  const severity = findingSeverity({
+    healthy: (buildClear || healthy || withinGrace) && !deliveryFault,
+    summary,
+    opening,
+  });
+  const deliveryBody = deliveryFault
+    ? `The digest shadow rehearsal is READY, but the delivery ledger still reports a fault. This is a delivery incident, not a digest-build failure.\n\n${JSON.stringify({ findings: sanitize(findings), fault_domain: "digest_delivery" }, null, 2)}`
+    : null;
   const result = {
     observed_at: context.now.toISOString(),
-    status: healthy ? "healthy" : "degraded",
+    status,
     http_status: response.status,
     degraded_reason: degradedReason,
-    fault_domain: healthy ? null : upstream ? "upstream_source" : unreachable ? "rehearsal_reachability" : "digest_build",
+    fault_domain: faultDomain,
+    findings: sanitize(findings),
     summary: sanitize(summary),
     finding_severity: severity,
     comment_written: commentWritten,
     comment_suppressed: commentSuppressed,
-    body: digestShadowIssueBody({ healthy, upstream, unreachable, observed, redlines, incidents, report }),
+    body: withinGrace && !deliveryFault
+      ? `The digest shadow rehearsal is still STARTED inside the ${DIGEST_SHADOW_STARTED_GRACE_MS / 60000}-minute grace window. No attention issue is opened until grace expires or the run finalizes.\n\n${JSON.stringify({ status: observed, run_day: summary.run_day, progress_at: summary.progress_at || summary.ran_at || null }, null, 2)}`
+      : deliveryBody || digestShadowIssueBody({
+        healthy: buildClear || healthy,
+        upstream,
+        unreachable,
+        observed,
+        redlines,
+        incidents,
+        report,
+      }),
   };
   const digestFinding = {
     ...result,
     body: upstream
       ? "The digest shadow rehearsal found no fault in the digest. This finding is closed; the source that did not answer is reported separately."
-      : result.body,
+      : (deliveryFault && rehearsalReady
+        ? "The digest shadow rehearsal is READY. The build/STARTED attention issue is closed; delivery ledger findings are tracked separately."
+        : result.body),
   };
-  const intents = [{
-    result: digestFinding,
-    issue: issueIntent(job, digestFinding, healthy || upstream ? "close" : "open", {
-      observation_marker: observationMark,
-    }),
-  }];
-  if (upstream) {
+  const intents = [];
+  // In-grace STARTED without delivery findings: record only. Do not open or close
+  // an unrelated open issue that shares the monitor title.
+  if (!withinGrace || deliveryFault) {
+    // Build/STARTED attention closes on verified READY even when delivery is degraded.
+    const closeBuild = rehearsalReady || buildClear || healthy || upstream;
     intents.push({
-      result,
-      issue: issueIntent(job, result, "open", { title: DIGEST_SHADOW_UPSTREAM_ISSUE_TITLE }),
+      result: digestFinding,
+      issue: issueIntent(job, digestFinding, closeBuild ? "close" : "open", {
+        observation_marker: observationMark,
+      }),
     });
-  } else if (!unreachable) {
-    const clearedSource = {
-      ...result,
-      body: "Every source the digest shadow rehearsal reads answered on this run.",
-    };
-    intents.push({
-      result: clearedSource,
-      issue: issueIntent(job, clearedSource, "close", { title: DIGEST_SHADOW_UPSTREAM_ISSUE_TITLE }),
-    });
+    if (deliveryFault) {
+      const deliveryFinding = {
+        ...result,
+        body: deliveryBody,
+      };
+      intents.push({
+        result: deliveryFinding,
+        issue: issueIntent(job, deliveryFinding, "open", {
+          title: DIGEST_SHADOW_DELIVERY_ISSUE_TITLE,
+          observation_marker: observationMark,
+        }),
+      });
+    } else if (
+      (rehearsalReady || buildClear || healthy)
+      && isDigestDeliveryTerminalForToday(report, today)
+    ) {
+      // Close only when the report itself shows today's TERMINAL delivery receipt.
+      // Missing findings before the 14:00 UTC deadline are not proof of a terminal send.
+      const clearedDelivery = {
+        ...result,
+        body: "The digest delivery receipt is present and terminal for today.",
+      };
+      intents.push({
+        result: clearedDelivery,
+        issue: issueIntent(job, clearedDelivery, "close", {
+          title: DIGEST_SHADOW_DELIVERY_ISSUE_TITLE,
+        }),
+      });
+    }
+    if (upstream) {
+      intents.push({
+        result,
+        issue: issueIntent(job, result, "open", { title: DIGEST_SHADOW_UPSTREAM_ISSUE_TITLE }),
+      });
+    } else if (!unreachable) {
+      const clearedSource = {
+        ...result,
+        body: "Every source the digest shadow rehearsal reads answered on this run.",
+      };
+      intents.push({
+        result: clearedSource,
+        issue: issueIntent(job, clearedSource, "close", { title: DIGEST_SHADOW_UPSTREAM_ISSUE_TITLE }),
+      });
+    }
   }
   await recordDigestShadowCycle(job, context, {
     result: digestFinding,

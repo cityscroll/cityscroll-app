@@ -1,11 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  classifyDigestDeliveryLedger,
   digestWatchdogSnapshot,
   evaluateWatermarkStaleness,
   mailWatchdogHasMailFindings,
   mailWatchdogSnapshot,
   recordDigestDeliveryReceipt,
+  recordDigestDeliveryStarted,
   recordDigestShadowReceipt,
   digestShadowFinding,
   recordInboundEmailReceipt,
@@ -16,6 +18,7 @@ import {
   emitMailExceptionAlerts,
   emitOpsAlertOnce,
   schedulerWatchdogSnapshot,
+  DIGEST_DELIVERY_LEDGER_PREFIX,
 } from "../src/reliability_watchdogs.mjs";
 import { digestDayLogKey } from "../src/lib/digest_ops.mjs";
 import { OPS_ALERT_TO, sendOpsAlert } from "../src/alerts.mjs";
@@ -148,6 +151,64 @@ test("zero accepted sends names the recorded skip reason", async () => {
   const result = await digestWatchdogSnapshot({ ALERT_STATE }, { now: new Date("2026-09-05T14:08:00.000Z") });
   assert.equal(result.ok, false);
   assert.match(result.findings.join("; "), /enqueued digest has zero accepted sends \(skipped\)/);
+});
+
+test("missing delivery ledger is missing-invocation, not proven non-delivery", () => {
+  assert.equal(classifyDigestDeliveryLedger(null), "missing-invocation");
+  assert.equal(classifyDigestDeliveryLedger(undefined), "missing-invocation");
+});
+
+test("interrupted-before-send leaves STARTED and classifies incomplete-execution", async () => {
+  const ALERT_STATE = kv();
+  const now = new Date("2026-10-23T13:00:00.000Z");
+  const started = await recordDigestDeliveryStarted({ ALERT_STATE }, now);
+  assert.equal(started.status, "STARTED");
+  assert.equal(started.started_at, "2026-10-23T13:00:00.000Z");
+  assert.equal(classifyDigestDeliveryLedger(started), "incomplete-execution");
+  const raw = JSON.parse(ALERT_STATE.store.get(`${DIGEST_DELIVERY_LEDGER_PREFIX}2026-10-23`));
+  assert.equal(raw.status, "STARTED");
+  const snapshot = await digestWatchdogSnapshot({ ALERT_STATE }, {
+    now: new Date("2026-10-23T14:10:00.000Z"),
+  });
+  // Shadow absent here; delivery incomplete is still named truthfully.
+  assert.match(snapshot.findings.join("; "), /delivery receipt is STARTED/);
+});
+
+test("interrupted-after-send finalizes TERMINAL once without duplicating accepted_sends", async () => {
+  const ALERT_STATE = kv();
+  const now = new Date("2026-10-23T13:00:00.000Z");
+  await recordDigestDeliveryStarted({ ALERT_STATE }, now);
+  const first = await recordDigestDeliveryReceipt({ ALERT_STATE }, { sent: 1, enqueued: 0 }, now);
+  assert.equal(first.status, "TERMINAL");
+  assert.equal(first.accepted_sends, 1);
+  assert.equal(first.started_at, "2026-10-23T13:00:00.000Z");
+  assert.ok(first.finalized_at);
+  assert.equal(classifyDigestDeliveryLedger(first), "terminal");
+  // A second terminal write for the same day replaces counts from the receipt;
+  // it does not accumulate a duplicate send.
+  const second = await recordDigestDeliveryReceipt({ ALERT_STATE }, { sent: 1, enqueued: 0 }, now);
+  assert.equal(second.accepted_sends, 1);
+  assert.equal(second.status, "TERMINAL");
+});
+
+test("STARTED does not regress an already-terminal same-day receipt", async () => {
+  const ALERT_STATE = kv();
+  const now = new Date("2026-10-23T13:00:00.000Z");
+  await recordDigestDeliveryReceipt({ ALERT_STATE }, { sent: 2, enqueued: 0 }, now);
+  const again = await recordDigestDeliveryStarted({ ALERT_STATE }, now);
+  assert.equal(again.status, "TERMINAL");
+  assert.equal(again.accepted_sends, 2);
+});
+
+test("FAILED terminal update after STARTED remains incomplete≠missing", async () => {
+  const ALERT_STATE = kv();
+  const now = new Date("2026-10-23T13:00:00.000Z");
+  await recordDigestDeliveryStarted({ ALERT_STATE }, now);
+  const failed = await recordDigestDeliveryReceipt({ ALERT_STATE }, null, now, new Error("provider cut short"));
+  assert.equal(failed.status, "FAILED");
+  assert.match(failed.error, /provider cut short/);
+  assert.equal(classifyDigestDeliveryLedger(failed), "terminal");
+  assert.equal(failed.started_at, "2026-10-23T13:00:00.000Z");
 });
 
 const CYCLE = Object.freeze({
