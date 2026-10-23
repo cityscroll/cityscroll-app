@@ -87,12 +87,60 @@ const PREDICATE_TOP_KEYS = new Set([
   "probe",
   "method",
   "route_class",
+  // Controlled-marker registry projections (allowlisted values or "UNKNOWN").
+  "cohort",
+  "workload_hash",
+  "arm",
 ]);
+
+/** Sentinel when a controlled-marker registry is active but the header is absent/unlisted. */
+export const CONTROLLED_MARKER_UNKNOWN = "UNKNOWN";
+
+/**
+ * Closed canonical cohort enum for allowlisted controlled-marker projection.
+ * Independent of caller-supplied Sets so arbitrary identifiers cannot enter.
+ */
+export const CONTROLLED_MARKER_COHORTS = Object.freeze([
+  "zap-bbl",
+  "zap-project",
+  "doing-business",
+  "health",
+  "browse",
+  "collector-overhead",
+]);
+
+/** Closed arm enum: derived from scriptVersion mapping only — never from series. */
+export const CONTROLLED_MARKER_ARMS = Object.freeze(["rollback", "candidate"]);
+
+export const WORKLOAD_HASH_RE = /^[a-f0-9]{64}$/;
 
 function fail(message) {
   const error = new Error(message);
   error.code = "CAPTURE_GUARD";
   throw error;
+}
+
+export function isCanonicalControlledCohort(value) {
+  return typeof value === "string" && CONTROLLED_MARKER_COHORTS.includes(value);
+}
+
+export function isCanonicalWorkloadHash(value) {
+  return typeof value === "string" && WORKLOAD_HASH_RE.test(value);
+}
+
+export function isCanonicalControlledArm(value) {
+  return value === "rollback" || value === "candidate";
+}
+
+/**
+ * Privacy VALUE check for projected controlled-marker fields.
+ * Rejects URLs, query strings, emails, path/authority forms, and overlong ids.
+ */
+export function isSafeControlledMarkerValue(value) {
+  if (typeof value !== "string" || value.length === 0 || value.length > 80) return false;
+  if (value === CONTROLLED_MARKER_UNKNOWN) return true;
+  if (/[/?#@:\s\\]|https?:|%[0-9a-fA-F]{2}/.test(value)) return false;
+  return true;
 }
 
 function headerMap(request) {
@@ -120,6 +168,166 @@ function normalizeUrl(url) {
   }
 }
 
+function readMarkerTuples(rawTuples) {
+  if (!rawTuples) return null;
+  const entries = rawTuples instanceof Map
+    ? [...rawTuples.entries()]
+    : (typeof rawTuples === "object" && !Array.isArray(rawTuples)
+      ? Object.entries(rawTuples)
+      : null);
+  if (!entries || entries.length === 0) return null;
+  const markerTuples = new Map();
+  for (const [marker, tuple] of entries) {
+    if (typeof marker !== "string" || marker.length === 0) {
+      fail("controlled-marker registry markerTuples keys must be non-empty strings");
+    }
+    if (!tuple || typeof tuple !== "object") {
+      fail("controlled-marker registry markerTuples values must be objects");
+    }
+    const cohort = tuple.cohort;
+    const workloadHash = tuple.workloadHash ?? tuple.workload_hash;
+    if (!isCanonicalControlledCohort(cohort)) {
+      fail("controlled-marker registry cohort is not in the closed canonical enum");
+    }
+    if (!isCanonicalWorkloadHash(workloadHash)) {
+      fail("controlled-marker registry workload_hash must be a 64-hex digest");
+    }
+    if (!isSafeControlledMarkerValue(cohort) || !isSafeControlledMarkerValue(workloadHash)) {
+      fail("controlled-marker registry tuple failed privacy value checks");
+    }
+    markerTuples.set(marker, { cohort, workloadHash });
+  }
+  return markerTuples.size > 0 ? markerTuples : null;
+}
+
+function readArmByVersionId(rawArms) {
+  if (!rawArms) return null;
+  const entries = rawArms instanceof Map
+    ? [...rawArms.entries()]
+    : (typeof rawArms === "object" && !Array.isArray(rawArms)
+      ? Object.entries(rawArms)
+      : null);
+  if (!entries || entries.length === 0) return null;
+  const armByVersionId = new Map();
+  for (const [versionId, arm] of entries) {
+    if (typeof versionId !== "string" || versionId.length === 0) {
+      fail("controlled-marker registry armByVersionId keys must be non-empty strings");
+    }
+    if (!isCanonicalControlledArm(arm)) {
+      fail("controlled-marker registry arm must be rollback or candidate");
+    }
+    if (!isSafeControlledMarkerValue(versionId)) {
+      // Version UUIDs contain hyphens — allow UUID form explicitly.
+      if (!/^[0-9a-fA-F-]{8,64}$/.test(versionId) && versionId !== "SYNTHETIC_VERSION_ID") {
+        fail("controlled-marker registry version id failed privacy value checks");
+      }
+    }
+    armByVersionId.set(versionId, arm);
+  }
+  return armByVersionId.size > 0 ? armByVersionId : null;
+}
+
+/**
+ * Normalize optional controlled-marker registry.
+ *
+ * Exact owned-probe binding only:
+ * - markerTuples: Map/object of probe-marker → { cohort, workloadHash }
+ * - armByVersionId: Map/object of scriptVersion.id → "rollback"|"candidate"
+ *
+ * Independent cohort/hash/series Sets are rejected (they allow cross-pairing).
+ * Series is never an arm. Malformed config fails closed.
+ * Missing/empty registry → null (projection omits controlled-marker fields).
+ */
+export function normalizeControlledMarkerRegistry(registry) {
+  if (!registry || typeof registry !== "object") return null;
+  if (registry.cohorts != null || registry.workloadHashes != null || registry.arms != null) {
+    fail(
+      "controlled-marker registry must use markerTuples + armByVersionId; "
+      + "independent cohort/workloadHashes/arms Sets are rejected",
+    );
+  }
+  const markerTuples = readMarkerTuples(registry.markerTuples);
+  const armByVersionId = readArmByVersionId(registry.armByVersionId);
+  if (!markerTuples && !armByVersionId) return null;
+  return { markerTuples, armByVersionId };
+}
+
+/**
+ * Bind one RAM-only owned probe marker to its expected validated tuple.
+ * Used by the collector at emit time. Never persists the marker itself.
+ */
+export function bindOwnedProbeMarkerTuple(registry, marker, tuple) {
+  if (!registry || typeof registry !== "object") {
+    fail("bindOwnedProbeMarkerTuple requires a registry object");
+  }
+  if (typeof marker !== "string" || marker.length === 0) {
+    fail("bindOwnedProbeMarkerTuple requires a non-empty marker");
+  }
+  const cohort = tuple?.cohort;
+  const workloadHash = tuple?.workloadHash ?? tuple?.workload_hash;
+  if (!isCanonicalControlledCohort(cohort)) {
+    fail("bindOwnedProbeMarkerTuple cohort is not in the closed canonical enum");
+  }
+  if (!isCanonicalWorkloadHash(workloadHash)) {
+    fail("bindOwnedProbeMarkerTuple workload_hash must be a 64-hex digest");
+  }
+  if (!isSafeControlledMarkerValue(cohort) || !isSafeControlledMarkerValue(workloadHash)) {
+    fail("bindOwnedProbeMarkerTuple tuple failed privacy value checks");
+  }
+  if (!(registry.markerTuples instanceof Map)) {
+    registry.markerTuples = new Map();
+  }
+  registry.markerTuples.set(marker, { cohort, workloadHash });
+  return registry;
+}
+
+/**
+ * Project allowlisted controlled markers for an owned probe.
+ * Enforces isOwnedProbeEvent. Binds exact marker→(cohort,workload_hash) tuples;
+ * mismatch → UNKNOWN (never copies independent header values). Arm derives only
+ * from scriptVersion via armByVersionId — never from series. Never returns the
+ * raw probe marker.
+ */
+export function projectOwnedControlledMarkers(raw, context = null) {
+  if (!isOwnedProbeEvent(raw, context)) {
+    fail("projectOwnedControlledMarkers refuses non-owned events");
+  }
+  const registry = normalizeControlledMarkerRegistry(
+    context?.controlledMarkerRegistry ?? context?.controlledMarkers ?? null,
+  );
+  if (!registry) return null;
+  const headers = headerMap(requestOf(raw));
+  const marker = headers[PROBE_HEADER];
+  const out = {};
+  if (registry.markerTuples) {
+    const expected = typeof marker === "string" ? registry.markerTuples.get(marker) : null;
+    const cohortHeader = headers["x-cityscroll-cost-cohort"];
+    const workloadHeader = headers["x-cityscroll-cost-workload"];
+    const tupleMatch = Boolean(
+      expected
+      && cohortHeader === expected.cohort
+      && workloadHeader === expected.workloadHash
+      && isCanonicalControlledCohort(cohortHeader)
+      && isCanonicalWorkloadHash(workloadHeader)
+      && isSafeControlledMarkerValue(cohortHeader)
+      && isSafeControlledMarkerValue(workloadHeader),
+    );
+    out.cohort = tupleMatch ? cohortHeader : CONTROLLED_MARKER_UNKNOWN;
+    out.workload_hash = tupleMatch ? workloadHeader : CONTROLLED_MARKER_UNKNOWN;
+  }
+  if (registry.armByVersionId) {
+    const scriptVersion = raw.scriptVersion || raw.$workers?.scriptVersion || null;
+    const versionId = scriptVersion && typeof scriptVersion === "object"
+      ? scriptVersion.id
+      : null;
+    const arm = typeof versionId === "string"
+      ? registry.armByVersionId.get(versionId)
+      : null;
+    out.arm = isCanonicalControlledArm(arm) ? arm : CONTROLLED_MARKER_UNKNOWN;
+  }
+  return out;
+}
+
 /**
  * Normalize optional ownership context.
  * Missing/empty ownedMarkers → fail-closed (nothing is owned).
@@ -140,7 +348,16 @@ export function normalizeOwnershipContext(context) {
     && context.allowedArms.size > 0
     ? context.allowedArms
     : null;
-  return { ownedMarkers: markers, allowedVersionIds, allowedCohorts, allowedArms };
+  const controlledMarkerRegistry = normalizeControlledMarkerRegistry(
+    context.controlledMarkerRegistry ?? context.controlledMarkers ?? null,
+  );
+  return {
+    ownedMarkers: markers,
+    allowedVersionIds,
+    allowedCohorts,
+    allowedArms,
+    controlledMarkerRegistry,
+  };
 }
 
 /**
@@ -205,6 +422,8 @@ export function toPredicateOnlyCapture(raw, context = null) {
     // Normalized owned predicate only — never the raw probe header value.
     probe: "owned",
     method: OWNED_PROBE_METHOD,
+    // Outer owned route class (always admin cost-control-probe). Inner warehouse
+    // route identity is projected separately via controlled-marker registry.
     route_class: OWNED_ROUTE_CLASS,
   };
   for (const key of ["cpuTime", "wallTime", "eventTimestamp"]) {
@@ -212,6 +431,10 @@ export function toPredicateOnlyCapture(raw, context = null) {
       projected[key] = raw[key];
     }
     // Missing numeric telemetry stays absent (UNKNOWN); never substitute 0/wall.
+  }
+  const controlled = projectOwnedControlledMarkers(raw, context);
+  if (controlled) {
+    Object.assign(projected, controlled);
   }
   assertPersistedCapturePrivacy(projected);
   return projected;
@@ -260,6 +483,29 @@ export function assertPersistedCapturePrivacy(record) {
   if (record.scriptVersion && typeof record.scriptVersion === "object") {
     for (const key of Object.keys(record.scriptVersion)) {
       if (key !== "id") hits.push(`$.scriptVersion.${key}`);
+    }
+  }
+  // Value checks on allowlisted controlled-marker fields (key-only is insufficient).
+  if ("cohort" in record) {
+    const cohort = record.cohort;
+    if (cohort !== CONTROLLED_MARKER_UNKNOWN) {
+      if (!isCanonicalControlledCohort(cohort) || !isSafeControlledMarkerValue(cohort)) {
+        hits.push("$.cohort");
+      }
+    }
+  }
+  if ("workload_hash" in record) {
+    const hash = record.workload_hash;
+    if (hash !== CONTROLLED_MARKER_UNKNOWN) {
+      if (!isCanonicalWorkloadHash(hash) || !isSafeControlledMarkerValue(hash)) {
+        hits.push("$.workload_hash");
+      }
+    }
+  }
+  if ("arm" in record) {
+    const arm = record.arm;
+    if (arm !== CONTROLLED_MARKER_UNKNOWN && !isCanonicalControlledArm(arm)) {
+      hits.push("$.arm");
     }
   }
   if (hits.length) {
