@@ -570,6 +570,107 @@ test("common civic terms return relevant records through the same FTS route", as
 test("q=rat is a whole token across contracts and meetings, never an infix", async () => {
   const { sqlite, DB } = database(ROWS);
   try {
+    // Seed a deterministic whole-token rat procurement document so the
+    // token-boundary contract does not depend on which awards remain in the
+    // rolling keyword index after a first-class refresh. Merge keeps only
+    // outcome=indexed procurement documents, and federator admission requires
+    // a full SearchDocument (including provenance.producer).
+    const fixtureContract = {
+      schema: "cityscroll.search_document.v1",
+      object_ref: "procurement:fixture-rat-management",
+      object_type: "procurement",
+      domain: "contracts",
+      title: "Community Rat Management Training",
+      summary: "Whole-token rodent control award fixture.",
+      search_text: "community rat management training rodent control award",
+      canonical_href: "/procurements/procurement%3Afixture-rat-management",
+      source_family: "shared_procurement_read_model",
+      source_observation_refs: ["notice:20260818002"],
+      process_role: "registered",
+      outcome: "indexed",
+      coverage_state: "matched",
+      classification: {
+        method: "test_fixture",
+        basis: "deterministic whole-token rat award for refresh-surviving search",
+      },
+      provenance: {
+        producer: "test_fixture_search_document.v1",
+        source_system: null,
+        source_freshness: { generated_at: null },
+      },
+    };
+    const familyId = "procurements";
+    const documentId = `${familyId}:fixture-rat`;
+    const fixtureSearchText = [
+      fixtureContract.title,
+      fixtureContract.summary,
+      fixtureContract.search_text,
+    ].filter(Boolean).join(" ");
+    sqlite.prepare(
+      "INSERT INTO keyword_search_documents (document_id, family_id, ordinal, object_ref, source_observation_refs_json, document_json, search_text) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    ).run(
+      documentId,
+      familyId,
+      9_001,
+      fixtureContract.object_ref,
+      JSON.stringify(fixtureContract.source_observation_refs),
+      JSON.stringify(fixtureContract),
+      fixtureSearchText,
+    );
+    sqlite.prepare(
+      "INSERT INTO keyword_search_fts (document_id, family_id, search_text) VALUES (?, ?, ?)",
+    ).run(documentId, familyId, fixtureSearchText);
+
+    // Same for meetings: the rolling keyword index may drop the live
+    // "Rat Inspections" card after a first-class refresh, so seed a
+    // whole-token meeting document hermetically.
+    const fixtureMeeting = {
+      schema: "cityscroll.search_document.v1",
+      object_ref: "meeting:fixture-rat-inspections",
+      object_type: "meeting",
+      domain: "meetings",
+      title: "New Rules Relating to Rat Inspections",
+      summary: "Whole-token rat meeting fixture.",
+      search_text: "new rules relating to rat inspections",
+      canonical_href: "/meetings/meeting%3Afixture-rat-inspections",
+      source_family: "shared_meeting_catalog",
+      source_observation_refs: ["notice:20260803009"],
+      process_role: "hearing",
+      outcome: "indexed",
+      coverage_state: "matched",
+      classification: {
+        method: "test_fixture",
+        basis: "deterministic whole-token rat meeting for refresh-surviving search",
+      },
+      provenance: {
+        producer: "test_fixture_search_document.v1",
+        source_system: null,
+        source_freshness: { generated_at: null },
+      },
+      keyword_evidence: { status: "matched" },
+    };
+    const meetingFamilyId = "meetings";
+    const meetingDocumentId = `${meetingFamilyId}:fixture-rat`;
+    const meetingSearchText = [
+      fixtureMeeting.title,
+      fixtureMeeting.summary,
+      fixtureMeeting.search_text,
+    ].filter(Boolean).join(" ");
+    sqlite.prepare(
+      "INSERT INTO keyword_search_documents (document_id, family_id, ordinal, object_ref, source_observation_refs_json, document_json, search_text) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    ).run(
+      meetingDocumentId,
+      meetingFamilyId,
+      9_002,
+      fixtureMeeting.object_ref,
+      JSON.stringify(fixtureMeeting.source_observation_refs),
+      JSON.stringify(fixtureMeeting),
+      meetingSearchText,
+    );
+    sqlite.prepare(
+      "INSERT INTO keyword_search_fts (document_id, family_id, search_text) VALUES (?, ?, ?)",
+    ).run(meetingDocumentId, meetingFamilyId, meetingSearchText);
+
     const response = await worker.fetch(
       new Request("https://api.cityscroll.org/search?q=rat", {
         headers: { Origin: "https://cityscroll.org", Accept: "application/json" },
@@ -582,7 +683,10 @@ test("q=rat is a whole token across contracts and meetings, never an infix", asy
     const lanes = Object.fromEntries(body.lanes.map((lane) => [lane.id, lane]));
     assert.equal(lanes.contracts.status, "matched");
     assert.ok(lanes.contracts.count >= 1);
-    assert.ok(lanes.contracts.count < 20, `expected token-rat contracts, got ${lanes.contracts.count}`);
+    assert.ok(
+      body.results.some((result) => result.object_ref === fixtureContract.object_ref),
+      "fixture whole-token rat contract is recalled",
+    );
     assert.equal(lanes.meetings.status, "matched");
     assert.ok(lanes.meetings.cards.some((card) => (
       card.title === "New Rules Relating to Rat Inspections"

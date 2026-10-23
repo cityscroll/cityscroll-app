@@ -23,6 +23,7 @@ const gold = requireJson("./fixtures/land_authority_summary/gold.v1.json");
 const geography = requireJson("../site/data/community_board_geography_lookup.json");
 const warehouse = requireJson("../site/data/zap_projects_warehouse_lookup.json");
 const landDefault = requireJson("../site/data/land_default_ulurp.json");
+const landOutcomesSeed = requireJson("../site/data/land_outcomes_seed.json");
 const hearings = requireJson("../site/data/land_upcoming_hearings.json");
 const viewSrc = readFileSync(new URL("../site/land_authority_summary_view.mjs", import.meta.url), "utf8");
 const landSrc = readFileSync(new URL("../site/app/land.mjs", import.meta.url), "utf8");
@@ -39,9 +40,17 @@ function projectHearings(projectId) {
   return (hearings.hearings || []).filter((row) => row.project_id === projectId);
 }
 
+function outcomeFor(projectId) {
+  // Rich dispositions ship in land_outcomes_seed.json so the list snapshot
+  // stays inside its fixed byte budget.
+  const list = landDefault.outcomes?.by_project?.[projectId] || {};
+  const seed = landOutcomesSeed.by_project?.[projectId] || {};
+  return { ...list, ...seed };
+}
+
 function summarize(projectId, overrides = {}) {
   const project = defaultRow(projectId) || warehouseRow(projectId);
-  const outcome = landDefault.outcomes?.by_project?.[projectId] || {};
+  const outcome = outcomeFor(projectId);
   return buildLandAuthoritySummary({
     project,
     geography,

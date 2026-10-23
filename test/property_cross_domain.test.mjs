@@ -28,6 +28,19 @@ import {
 } from "../entity_resolution/cross_domain/index.mjs";
 import { formatSubjectRef } from "../worker/src/lib/subject_registry.mjs";
 
+import {
+  CIVIC_PROPERTY_DATASET_ID,
+  CIVIC_PROPERTY_PROVIDER_CLOCK_FIELD,
+  DCAS_VEHICLE_AUCTION_DATASET,
+  PROPERTY_DOMAIN_PROVIDER_CLOCK_KIND,
+  parseStrictRowsUpdatedAtEpoch,
+  resolveCivicPropertyProviderClock,
+  resolveDcasVehicleAuctionProviderClock,
+  evaluatePropertyLocationsUrlForLiveRefresh,
+  propertyDomainObservationsFromFeed,
+  civicPropertyDatasetVintageFromMetadata,
+} from "../tools/build_property_cross_domain.mjs";
+
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const corpus = JSON.parse(
   readFileSync(join(ROOT, "worker/test/fixtures/property-cross-domain/corpus.json"), "utf8"),
@@ -243,5 +256,217 @@ describe("parcel intelligence + entity property domain", () => {
     });
     assert.equal(owner?.name, "Make it Zesty LLC");
     assert.equal(owner?.basis, "sold_to");
+  });
+});
+
+describe("property domain provider clock (City Record rowsUpdatedAt)", () => {
+  const NOW = "2026-10-22T18:00:00.000Z";
+  const CITY_EPOCH = Math.floor(Date.parse("2026-10-22T12:38:30.000Z") / 1000);
+  const DCAS_EPOCH = Math.floor(Date.parse("2026-10-07T14:37:04.000Z") / 1000);
+  const CITY_ISO = "2026-10-22T12:38:30.000Z";
+  const DCAS_ISO = "2026-10-07T14:37:04.000Z";
+  const cityMeta = (extra = {}) => ({ id: "dg92-zbpx", rowsUpdatedAt: CITY_EPOCH, dataUpdatedAt: null, ...extra });
+  const dcasMeta = (extra = {}) => ({ id: "ynic-uz5i", rowsUpdatedAt: DCAS_EPOCH, dataUpdatedAt: null, ...extra });
+
+  it("confirms property-domain vintage comes from City Record dg92-zbpx only", () => {
+    assert.equal(CIVIC_PROPERTY_DATASET_ID, "dg92-zbpx");
+    assert.equal(DCAS_VEHICLE_AUCTION_DATASET, "ynic-uz5i");
+    assert.equal(CIVIC_PROPERTY_PROVIDER_CLOCK_FIELD, "rowsUpdatedAt");
+    assert.equal(PROPERTY_DOMAIN_PROVIDER_CLOCK_KIND, "whole_dataset_provider_clock");
+  });
+
+  it("accepts City Record rowsUpdatedAt as the property-domain provider clock", () => {
+    const city = resolveCivicPropertyProviderClock(cityMeta(), { now: NOW });
+    assert.equal(city.ok, true);
+    assert.equal(city.vintage, CITY_ISO);
+    assert.equal(city.dataset_id, "dg92-zbpx");
+  });
+
+  it("does not let the DCAS sidecar clock become property-domain vintage", () => {
+    const dcas = resolveDcasVehicleAuctionProviderClock(dcasMeta(), { now: NOW });
+    assert.equal(dcas.ok, true);
+    assert.equal(dcas.vintage, DCAS_ISO);
+    // Observations stamp City Record only even when a fresher/staler DCAS clock exists.
+    const feed = {
+      generated_at: NOW,
+      source: { url: "https://example.test/property-locations" },
+      properties: [{
+        request_id: "20251209013",
+        start_date: "2025-12-15T00:00:00.000",
+        section_name: "Property Disposition",
+        short_title: "Fixture disposition",
+        property_location: { bbls: ["1006440001"], scope: "local" },
+      }],
+    };
+    const doc = propertyDomainObservationsFromFeed(feed, {
+      source_generated_at: CITY_ISO,
+      acquired_at: NOW,
+      provider_clock: resolveCivicPropertyProviderClock(cityMeta(), { now: NOW }),
+    });
+    assert.equal(doc.source_generated_at, CITY_ISO);
+    assert.notEqual(doc.source_generated_at, DCAS_ISO);
+    assert.equal(doc.provider_clock.dataset_id, "dg92-zbpx");
+    assert.match(doc.provider_clock.note, /DCAS vehicle auctions/i);
+    assert.match(doc.provider_clock.note, /do not set this vintage/i);
+  });
+
+  it("fails closed when returned metadata id does not match the requested dataset", () => {
+    const cityMismatch = resolveCivicPropertyProviderClock(
+      { id: "ynic-uz5i", rowsUpdatedAt: CITY_EPOCH },
+      { now: NOW },
+    );
+    assert.equal(cityMismatch.ok, false);
+    assert.equal(cityMismatch.reason, "metadata_id_mismatch");
+    assert.equal(cityMismatch.observed_metadata_id, "ynic-uz5i");
+
+    const dcasMismatch = resolveDcasVehicleAuctionProviderClock(
+      { id: "dg92-zbpx", rowsUpdatedAt: DCAS_EPOCH },
+      { now: NOW },
+    );
+    assert.equal(dcasMismatch.ok, false);
+    assert.equal(dcasMismatch.reason, "metadata_id_mismatch");
+  });
+
+  it("ignores dataUpdatedAt and fails closed when rowsUpdatedAt is missing", () => {
+    const cases = [
+      [null, "missing_metadata"],
+      [{}, "missing_metadata_id"],
+      [{ id: "dg92-zbpx" }, "missing_rowsUpdatedAt"],
+      [{ id: "dg92-zbpx", dataUpdatedAt: CITY_EPOCH }, "missing_rowsUpdatedAt"],
+      [{ id: "dg92-zbpx", rowsUpdatedAt: null, dataUpdatedAt: CITY_EPOCH }, "missing_rowsUpdatedAt"],
+      [{ id: "dg92-zbpx", rowsUpdatedAt: "" }, "missing_rowsUpdatedAt"],
+    ];
+    for (const [metadata, reason] of cases) {
+      const resolved = resolveCivicPropertyProviderClock(metadata, { now: NOW });
+      assert.equal(resolved.ok, false, reason);
+      assert.equal(resolved.vintage, null, reason);
+      assert.equal(resolved.reason, reason);
+    }
+  });
+
+  it("fails closed on invalid rowsUpdatedAt including boolean Number(true) coercion", () => {
+    for (const bad of [0, -1, Number.NaN, "not-a-number", Infinity, true, false, 1.5, "0123", {}, []]) {
+      assert.equal(parseStrictRowsUpdatedAtEpoch(bad).ok, false, String(bad));
+      const resolved = resolveCivicPropertyProviderClock(
+        { id: "dg92-zbpx", rowsUpdatedAt: bad },
+        { now: NOW },
+      );
+      assert.equal(resolved.ok, false, String(bad));
+      assert.equal(resolved.vintage, null, String(bad));
+      assert.equal(resolved.reason, "invalid_rowsUpdatedAt", String(bad));
+    }
+    assert.equal(Number(true), 1);
+    assert.equal(parseStrictRowsUpdatedAtEpoch(true).ok, false);
+  });
+
+  it("fails closed on a future rowsUpdatedAt beyond skew", () => {
+    const futureEpoch = Math.floor(Date.parse("2026-10-23T12:00:00.000Z") / 1000);
+    const resolved = resolveCivicPropertyProviderClock(
+      cityMeta({ rowsUpdatedAt: futureEpoch }),
+      { now: NOW },
+    );
+    assert.equal(resolved.ok, false);
+    assert.equal(resolved.reason, "future_rowsUpdatedAt");
+  });
+
+  it("fails closed when the City Record clock drifts backwards vs its prior vintage", () => {
+    const olderEpoch = Math.floor(Date.parse("2026-10-20T12:00:00.000Z") / 1000);
+    const resolved = resolveCivicPropertyProviderClock(
+      cityMeta({ rowsUpdatedAt: olderEpoch }),
+      { now: NOW, previous_vintage: CITY_ISO },
+    );
+    assert.equal(resolved.ok, false);
+    assert.equal(resolved.reason, "drifting_rowsUpdatedAt_moved_backwards");
+  });
+
+  it("rejects PROPERTY_LOCATIONS_URL Worker mirror for live refresh", () => {
+    const allowed = evaluatePropertyLocationsUrlForLiveRefresh({});
+    assert.equal(allowed.ok, true);
+    assert.equal(allowed.mode, "soda_direct");
+
+    const blocked = evaluatePropertyLocationsUrlForLiveRefresh({
+      PROPERTY_LOCATIONS_URL: "https://api.cityscroll.org/property-locations",
+    });
+    assert.equal(blocked.ok, false);
+    assert.equal(blocked.reason, "property_locations_url_mirror_forbidden_for_live_refresh");
+  });
+
+  it("does not relabel frozen Worker mirror rows with today's unrelated SODA clocks", () => {
+    const frozenMirrorFeed = {
+      generated_at: "2026-10-15T13:13:54.471Z",
+      source: { dataset: "dg92-zbpx", url: "https://api.cityscroll.org/property-locations" },
+      properties: [{
+        request_id: "20251209013",
+        start_date: "2025-12-15T00:00:00.000",
+        agency_name: "Parks",
+        section_name: "Property Disposition",
+        short_title: "Frozen mirror disposition",
+        property_location: { bbls: ["1006440001"], scope: "local" },
+      }],
+    };
+    const liveCity = resolveCivicPropertyProviderClock(cityMeta(), { now: NOW });
+    assert.equal(liveCity.ok, true);
+    const offline = propertyDomainObservationsFromFeed(frozenMirrorFeed, {
+      source_generated_at: frozenMirrorFeed.source_generated_at || null,
+      acquired_at: NOW,
+      provider_clock: {
+        ok: false,
+        reason: "offline_feed_missing_source_generated_at",
+        clock_kind: PROPERTY_DOMAIN_PROVIDER_CLOCK_KIND,
+        clock_field: "rowsUpdatedAt",
+        dataset_id: "dg92-zbpx",
+      },
+    });
+    assert.equal(offline.source_generated_at, null);
+    assert.notEqual(offline.source_generated_at, liveCity.vintage);
+    assert.equal(
+      evaluatePropertyLocationsUrlForLiveRefresh({
+        PROPERTY_LOCATIONS_URL: "https://api.cityscroll.org/property-locations",
+      }).ok,
+      false,
+    );
+  });
+
+  it("does not treat local build/fetch time as source vintage", () => {
+    const feed = {
+      generated_at: NOW,
+      source: { url: "https://example.test/property-locations" },
+      properties: [{
+        request_id: "20251209013",
+        start_date: "2025-12-15T00:00:00.000",
+        section_name: "Property Disposition",
+        short_title: "Fixture disposition",
+        property_location: { bbls: ["1006440001"], scope: "local" },
+      }],
+    };
+    const providerClock = resolveCivicPropertyProviderClock(cityMeta(), { now: NOW });
+    const doc = propertyDomainObservationsFromFeed(feed, {
+      source_generated_at: providerClock.vintage,
+      acquired_at: NOW,
+      provider_clock: providerClock,
+    });
+    assert.equal(doc.source_generated_at, CITY_ISO);
+    assert.equal(doc.generated_at, CITY_ISO);
+    assert.equal(doc.acquired_at, NOW);
+    assert.notEqual(doc.source_generated_at, NOW);
+    assert.equal(doc.provider_clock.field, "rowsUpdatedAt");
+    assert.equal(doc.provider_clock.kind, PROPERTY_DOMAIN_PROVIDER_CLOCK_KIND);
+
+    const later = propertyDomainObservationsFromFeed(feed, {
+      source_generated_at: CITY_ISO,
+      acquired_at: "2026-10-22T20:00:00.000Z",
+    });
+    assert.equal(later.source_generated_at, CITY_ISO);
+    assert.equal(later.acquired_at, "2026-10-22T20:00:00.000Z");
+
+    const unknown = propertyDomainObservationsFromFeed(feed, {
+      source_generated_at: null,
+      acquired_at: NOW,
+    });
+    assert.equal(unknown.source_generated_at, null);
+    assert.equal(
+      civicPropertyDatasetVintageFromMetadata({ id: "dg92-zbpx", dataUpdatedAt: CITY_EPOCH }),
+      null,
+    );
   });
 });

@@ -41,6 +41,7 @@ const audit = JSON.parse(
   readFileSync(join(ROOT, "docs/evidence/land-decision-path/decides-land-project-audit.json"), "utf8"),
 );
 const landDefault = JSON.parse(readFileSync(join(ROOT, "site/data/land_default_ulurp.json"), "utf8"));
+const landOutcomesSeed = JSON.parse(readFileSync(join(ROOT, "site/data/land_outcomes_seed.json"), "utf8"));
 
 const HEARING_2023X0149 = Object.freeze({
   request_id: "20260608005",
@@ -181,9 +182,12 @@ test("A1 hearing 2023X0149 is an exact project-related proceeding, not a decisio
 });
 
 test("A4 draft 2025K0305 CB11/CB13/Borough Board rows are not decisions", () => {
-  const outcome = landDefault.outcomes.by_project["2025K0305"];
+  const outcome = {
+    ...(landDefault.outcomes.by_project["2025K0305"] || {}),
+    ...(landOutcomesSeed.by_project["2025K0305"] || {}),
+  };
   assert.ok(outcome);
-  const drafts = outcome.dispositions.filter((row) => row.status === "Draft");
+  const drafts = (outcome.dispositions || []).filter((row) => row.status === "Draft");
   assert.ok(drafts.length >= 3);
   assert.ok(drafts.some((row) => /CB11/.test(row.name)));
   assert.ok(drafts.some((row) => /CB13/.test(row.name)));

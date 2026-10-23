@@ -2,8 +2,8 @@
   "schema": "cityscroll.analytics_payments.v1",
   "projection_contract": "cityscroll.analytical_projection.v1",
   "fact": "payment",
-  "generated_at": "2026-10-17T01:12:43.996Z",
-  "snapshot_date": "2026-10-17T01:12:43.996Z",
+  "generated_at": "2026-10-22T19:42:15.561Z",
+  "snapshot_date": "2026-10-22T19:42:15.561Z",
   "population_definition": "AP-08 independent Checkbook Spending contract-payment population; grouped by agency, payee, and payment fiscal year.",
   "dimensions": [
     "agency",
@@ -21,19 +21,19 @@
     "fiscal_years": [
       2026
     ],
-    "publisher_record_count": 1784794,
-    "source_net_check_amount": 52377359074.6,
+    "publisher_record_count": 1784806,
+    "source_net_check_amount": 52377615299.78,
     "source_receipt": "warehouse/receipts/proof/checkbook_payment_population_latest.json",
     "input": "payments.csv"
   },
   "population": {
-    "source_rows": 1784794,
-    "grouped_rows": 28517,
-    "transaction_count": 1784794,
-    "unique_transaction_count": 1635128,
-    "actual_payment_amount": 52377359074.6,
-    "duplicate_transaction_rows": 149666,
-    "reversal_rows": 1676
+    "source_rows": 1784806,
+    "grouped_rows": 28519,
+    "transaction_count": 1784806,
+    "unique_transaction_count": 1635139,
+    "actual_payment_amount": 52377615299.78,
+    "duplicate_transaction_rows": 149667,
+    "reversal_rows": 1679
   },
   "rows": [
     {
@@ -15120,9 +15120,9 @@
       "agency": "Campaign Finance Board",
       "payee_name": "DELL MARKETING LP",
       "fiscal_year": 2026,
-      "transaction_count": 14,
-      "unique_transaction_count": 14,
-      "actual_payment_amount": 338359.36,
+      "transaction_count": 15,
+      "unique_transaction_count": 15,
+      "actual_payment_amount": 338306,
       "contract_count": 3,
       "contract_id": null
     },
@@ -44410,9 +44410,9 @@
       "agency": "Department of Buildings",
       "payee_name": "Core Scaffold Systems Inc",
       "fiscal_year": 2026,
-      "transaction_count": 3,
-      "unique_transaction_count": 3,
-      "actual_payment_amount": 72100,
+      "transaction_count": 5,
+      "unique_transaction_count": 5,
+      "actual_payment_amount": 137150,
       "contract_count": 1,
       "contract_id": "CT181020248807295"
     },
@@ -111710,9 +111710,9 @@
       "agency": "Department of Education",
       "payee_name": "HR CLOUD INC",
       "fiscal_year": 2026,
-      "transaction_count": 2,
-      "unique_transaction_count": 2,
-      "actual_payment_amount": 7356,
+      "transaction_count": 3,
+      "unique_transaction_count": 3,
+      "actual_payment_amount": 3580,
       "contract_count": 2,
       "contract_id": null
     },
@@ -174810,9 +174810,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "NICHE ANALYSIS INC",
       "fiscal_year": 2026,
-      "transaction_count": 158,
-      "unique_transaction_count": 158,
-      "actual_payment_amount": 735807,
+      "transaction_count": 160,
+      "unique_transaction_count": 160,
+      "actual_payment_amount": 750207,
       "contract_count": 10,
       "contract_id": null
     },
@@ -175225,6 +175225,16 @@
       "actual_payment_amount": 81851.1,
       "contract_count": 1,
       "contract_id": "PON182620262007261"
+    },
+    {
+      "agency": "Department of Environmental Protection",
+      "payee_name": "OLORI CRANE SERVICE INC",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 132144.58,
+      "contract_count": 1,
+      "contract_id": "CT182620228805224"
     },
     {
       "agency": "Department of Environmental Protection",
@@ -176420,10 +176430,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "RESEARCH FOUNDATION OF THE STATE UNIVERSITY OF NEW YORK",
       "fiscal_year": 2026,
-      "transaction_count": 7,
-      "unique_transaction_count": 7,
-      "actual_payment_amount": 33212.44,
-      "contract_count": 2,
+      "transaction_count": 9,
+      "unique_transaction_count": 9,
+      "actual_payment_amount": 81351.7,
+      "contract_count": 3,
       "contract_id": null
     },
     {
@@ -181205,6 +181215,16 @@
       "actual_payment_amount": 7131585.19,
       "contract_count": 2,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Finance",
+      "payee_name": "FASTLANE COURIER INC",
+      "fiscal_year": 2026,
+      "transaction_count": 2,
+      "unique_transaction_count": 2,
+      "actual_payment_amount": 15001,
+      "contract_count": 1,
+      "contract_id": "CT183620258805208"
     },
     {
       "agency": "Department of Finance",
@@ -215860,9 +215880,9 @@
       "agency": "Department of Small Business Services",
       "payee_name": "GrowHouse Design and Development Group Inc",
       "fiscal_year": 2026,
-      "transaction_count": 3,
-      "unique_transaction_count": 3,
-      "actual_payment_amount": 14680.3,
+      "transaction_count": 4,
+      "unique_transaction_count": 4,
+      "actual_payment_amount": 0,
       "contract_count": 1,
       "contract_id": "PON180126PSBS33483"
     },

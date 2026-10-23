@@ -123,9 +123,16 @@ function syntheticSummary(overrides = {}) {
 }
 
 test("A1: selecting 200 Kent keeps map context and actions with procedure and stage wording residents can read", () => {
-  const row = kentRow();
+  // Pin the stage wording against the frozen fixture — live land authority
+  // summaries advance as the publisher window rolls, which is a population
+  // property rather than a selection-rendering contract.
+  const row = kentRow(structuredClone(kentAuthorityFixture.summary));
   assert.equal(row.authority_summary.procedure_id, RAW_PROCEDURE);
   assert.equal(row.authority_summary.current_stage.stage_id, RAW_STAGE);
+  assert.ok(
+    landDefault.projects.some((project) => project.project_id === KENT_ID),
+    "200 Kent remains in the default Land list population",
+  );
 
   const html = selectionHTML(row);
   assert.match(html, new RegExp(`id="${LAND_MAP_SELECTION_ID}"`));

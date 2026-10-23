@@ -6,11 +6,14 @@
  * actor, outcome, or geography.
  */
 
-import { resolveLandAuthoritySourceBasis } from "./land_authority_summary.mjs";
+import {
+  resolveLandAuthoritySourceBasis,
+  resolveLandAuthoritySummary,
+} from "./land_authority_summary.mjs";
 
 export const LAND_MAP_AUTHORITY_HANDOFF_SCHEMA = "cityscroll.land_map_authority_handoff.v1";
 export const LAND_MAP_AUTHORITY_PROJECTION_SCHEMA = "cityscroll.land_authority_summary.v1";
-export const LAND_MAP_AUTHORITY_PROJECTION_VERSION = "ldp05_authority_summary_v1";
+export const LAND_MAP_AUTHORITY_PROJECTION_VERSION = "ldp06_authority_summary_v1";
 
 export const LAND_MAP_AUTHORITY_STATES = Object.freeze({
   AVAILABLE: "available",
@@ -69,9 +72,16 @@ function nextActionFrom(published, { stale, missing }) {
 }
 
 /** Join exactly one row to its already materialized LDP projection. */
-export function landMapAuthorityHandoff({ projectId, row = null, panelHref = null, decisionPath = null } = {}) {
+export function landMapAuthorityHandoff({
+  projectId,
+  row = null,
+  panelHref = null,
+  decisionPath = null,
+  authorityPayload = null,
+} = {}) {
   const id = clean(projectId);
-  const summary = row?.authority_summary;
+  const rawSummary = row?.authority_summary;
+  const summary = resolveLandAuthoritySummary(rawSummary, authorityPayload || row?.authority_payload || null);
   const suppliedDecisionPath = decisionPath || row?.decision_path || null;
   const base = {
     schema: LAND_MAP_AUTHORITY_HANDOFF_SCHEMA,
@@ -122,8 +132,8 @@ export function landMapAuthorityHandoff({ projectId, row = null, panelHref = nul
       effect: summary.effect || null,
     },
     next_action: nextActionFrom(summary.published_next_opportunity ?? null, { stale, missing: false }),
-    authority_evidence: resolveLandAuthoritySourceBasis(summary)?.profile || null,
-    observed_evidence: resolveLandAuthoritySourceBasis(summary)?.phase || null,
+    authority_evidence: resolveLandAuthoritySourceBasis(summary, authorityPayload)?.profile || null,
+    observed_evidence: resolveLandAuthoritySourceBasis(summary, authorityPayload)?.phase || null,
     decision_path: suppliedDecisionPath,
   });
 }

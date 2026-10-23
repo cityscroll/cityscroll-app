@@ -4,14 +4,23 @@ import test from "node:test";
 
 import {
   LAND_AUTHORITY_SUMMARY_MAX_BYTES,
-  materializeLandAuthoritySummaries,
   resolveLandAuthoritySourceBasis,
 } from "../site/land_authority_summary.mjs";
+import { materializeLandAuthoritySummaries } from "../site/land_authority_summary_materialize.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const readJson = (path) => JSON.parse(readFileSync(new URL(path, ROOT), "utf8"));
+function readJsonIfExists(path) {
+  try {
+    return readJson(path);
+  } catch (error) {
+    if (error && error.code === "ENOENT") return null;
+    throw error;
+  }
+}
 
 const landDefault = readJson("site/data/land_default_ulurp.json");
+const outcomesSeed = readJsonIfExists("site/data/land_outcomes_seed.json");
 const geography = readJson("site/data/community_board_geography_lookup.json");
 const publishedOpportunities = readJson("site/data/land_upcoming_hearings.json");
 
@@ -19,9 +28,15 @@ const publishedOpportunities = readJson("site/data/land_upcoming_hearings.json")
 // more projects before the bound is the thing that stops it.
 const REQUIRED_HEADROOM = 0.1;
 
+const PHASE_SOURCE_TYPES = new Set([
+  "publisher_current_milestone",
+  "materialized_phase_spine",
+]);
+
 function payloadFor(doc) {
   const { payload } = materializeLandAuthoritySummaries({
     landDefault: doc,
+    outcomesSeed,
     geography,
     publishedOpportunities,
     asOf: doc.generated_at,
@@ -97,7 +112,12 @@ test("shared provenance is published once and resolves back onto every summary",
     const basis = resolveLandAuthoritySourceBasis(summary, payload);
     assert.equal(basis.profile.source_type, "reviewed_static_registry");
     assert.equal(basis.profile.effect_source, "reviewed_static_registry");
-    assert.equal(basis.phase?.source_type ?? "publisher_current_milestone", "publisher_current_milestone");
+    // Phase provenance is either the Open Data milestone stamp or the
+    // materialized spine when rich outcome evidence is present.
+    assert.ok(
+      PHASE_SOURCE_TYPES.has(basis.phase?.source_type ?? "publisher_current_milestone"),
+      `unexpected phase source_type: ${basis.phase?.source_type}`,
+    );
     assert.equal(basis.geography.source_type, "affected_review_body_for");
     assert.deepEqual(basis.geography.source_fields, ["community_district", "actions", "ulurp_numbers", "ulurp_non"]);
     assert.equal(basis.publisher.source_type, "published_hearing");

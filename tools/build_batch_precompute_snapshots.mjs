@@ -17,6 +17,7 @@ import { fileURLToPath } from "node:url";
 import {
   buildDataPageSnapshot,
   buildLandDefaultSnapshot,
+  buildLandOutcomesSeed,
   buildMoneyAgenciesSnapshot,
   buildMoneyDefaultOpenSnapshot,
   buildStaffingHiresSnapshot,
@@ -32,6 +33,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DATA_DIR = path.join(ROOT, "site", "data");
 const DATA_PAGE_OUT = path.join(DATA_DIR, "data_page_charts.json");
 const LAND_OUT = path.join(DATA_DIR, "land_default_ulurp.json");
+const LAND_OUTCOMES_SEED_OUT = path.join(DATA_DIR, "land_outcomes_seed.json");
 const MONEY_OPEN_OUT = path.join(DATA_DIR, "money_default_open.json");
 const MONEY_AGENCIES_OUT = path.join(DATA_DIR, "money_procurement_agencies.json");
 const STAFFING_HIRES_OUT = path.join(DATA_DIR, "staffing_default_hires.json");
@@ -137,6 +139,10 @@ export async function buildAll({
       outcomesByProject = await fetchLandOutcomeSnapshots(projects, fetchImpl);
     }
     results.land_default = buildLandDefaultSnapshot(projects, { now, outcomesByProject });
+    results.land_outcomes_seed = buildLandOutcomesSeed(outcomesByProject, {
+      now,
+      projectIds: (projects || []).map((row) => row?.project_id).filter(Boolean),
+    });
   }
   if (wants(args, "money")) {
     let openRows;
@@ -185,6 +191,9 @@ async function main() {
   }
   if (built.land_default) {
     out.push(await writeOrCheck(LAND_OUT, built.land_default, args.check));
+  }
+  if (built.land_outcomes_seed) {
+    out.push(await writeOrCheck(LAND_OUTCOMES_SEED_OUT, built.land_outcomes_seed, args.check));
   }
   if (built.money_default_open) {
     out.push(await writeOrCheck(MONEY_OPEN_OUT, built.money_default_open, args.check));

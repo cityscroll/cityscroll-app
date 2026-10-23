@@ -53,6 +53,24 @@ connectionTools=async()=>null}={}){
       cache.set(id,{data:{ok:true,cached:true,static_snapshot:true,generated_at:g,record},at:now(),generatedAt:g,staticSnapshot:true});
     }
   }
+  /**
+   * Overlay rich seed fields onto an already-cached static list snapshot.
+   * Used when land_outcomes_seed.json is lazy-fetched on detail/first rich paint.
+   */
+  function enrichStatic(projectId, seedRecord, mergeRecord){
+    const id=String(projectId||"").trim();
+    if(!id||!seedRecord||typeof mergeRecord!=="function")return null;
+    const previous=cache.get(id);
+    if(!previous?.data?.record||previous.p||!previous.staticSnapshot)return previous||null;
+    const record=mergeRecord(previous.data.record, seedRecord);
+    const next={
+      ...previous,
+      data:{...previous.data,record},
+      at:now(),
+    };
+    cache.set(id,next);
+    return next;
+  }
   function fetch(projectId,{allowStatic=true}={}){
     const id=String(projectId||"").trim();
     if(!id)return Promise.resolve(null);
@@ -91,5 +109,5 @@ connectionTools=async()=>null}={}){
       return null;
     });
   }
-  return {cache,ttlMs,get,seed,fetch,evidenceState,freshnessHTML,recordForDisplay,display,refreshDisplay};
+  return {cache,ttlMs,get,seed,enrichStatic,fetch,evidenceState,freshnessHTML,recordForDisplay,display,refreshDisplay};
 }

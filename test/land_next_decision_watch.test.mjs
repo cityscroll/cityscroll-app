@@ -30,6 +30,7 @@ import {
 const requireJson = createRequire(import.meta.url);
 const geography = requireJson("../site/data/community_board_geography_lookup.json");
 const landDefault = requireJson("../site/data/land_default_ulurp.json");
+const landOutcomesSeed = requireJson("../site/data/land_outcomes_seed.json");
 const hearings = requireJson("../site/data/land_upcoming_hearings.json");
 const committedPayload = requireJson("../site/data/land_authority_summary.json");
 
@@ -41,7 +42,9 @@ function defaultRow(projectId) {
 }
 
 function realDispositions(projectId) {
-  return landDefault.outcomes?.by_project?.[projectId]?.dispositions || [];
+  return landOutcomesSeed.by_project?.[projectId]?.dispositions
+    || landDefault.outcomes?.by_project?.[projectId]?.dispositions
+    || [];
 }
 
 function projectHearings(projectId) {

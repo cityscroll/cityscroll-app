@@ -12,16 +12,15 @@ import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import {
-  assertLandAuthoritySummaries,
-  materializeLandAuthoritySummaries,
-} from "../site/land_authority_summary.mjs";
+import { assertLandAuthoritySummaries } from "../site/land_authority_summary.mjs";
+import { materializeLandAuthoritySummaries } from "../site/land_authority_summary_materialize.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 export const PAYLOAD_JSON = "site/data/land_authority_summary.json";
 export const RECEIPT_JSON = "site/data/land_authority_summary_receipt.json";
 
 const LAND_DEFAULT = "site/data/land_default_ulurp.json";
+const LAND_OUTCOMES_SEED = "site/data/land_outcomes_seed.json";
 const GEOGRAPHY = "site/data/community_board_geography_lookup.json";
 const HEARINGS = "site/data/land_upcoming_hearings.json";
 
@@ -46,19 +45,32 @@ function stableStringify(value) {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
 
+function readJsonIfExists(root, relativePath) {
+  try {
+    return JSON.parse(readFileSync(path.join(root, relativePath), "utf8"));
+  } catch (error) {
+    if (error && error.code === "ENOENT") return null;
+    throw error;
+  }
+}
+
 export function buildLandAuthoritySummaryFromRepo(root = ROOT) {
   const landDefault = JSON.parse(readFileSync(path.join(root, LAND_DEFAULT), "utf8"));
+  const outcomesSeed = readJsonIfExists(root, LAND_OUTCOMES_SEED);
+  const artifactHashes = {
+    land_default: sha256File(root, LAND_DEFAULT),
+    geography: sha256File(root, GEOGRAPHY),
+    upcoming_hearings: sha256File(root, HEARINGS),
+  };
+  if (outcomesSeed) artifactHashes.land_outcomes_seed = sha256File(root, LAND_OUTCOMES_SEED);
   const { payload, receipt } = materializeLandAuthoritySummaries({
     landDefault,
+    outcomesSeed,
     geography: JSON.parse(readFileSync(path.join(root, GEOGRAPHY), "utf8")),
     publishedOpportunities: JSON.parse(readFileSync(path.join(root, HEARINGS), "utf8")),
     asOf: landDefault.generated_at,
     generatedAt: landDefault.generated_at,
-    artifactHashes: {
-      land_default: sha256File(root, LAND_DEFAULT),
-      geography: sha256File(root, GEOGRAPHY),
-      upcoming_hearings: sha256File(root, HEARINGS),
-    },
+    artifactHashes,
   });
   const payloadText = stableStringify(payload);
   const stamped = {

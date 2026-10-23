@@ -16,12 +16,30 @@ const ASSET_PATHS = Object.freeze([
   "site/vendor/web-vitals-6.0.1.mjs",
 ]);
 
+// CI setup-node installs the nodejs.org official build, which bundles zlib
+// 1.3.1-e00f703. Homebrew node@22 links the system zlib (1.2.12) and produces
+// different gzip bytes for the same inputs — never stamp or verify this
+// receipt under that runtime.
+export const RUM_COMPRESSOR_PROFILE = Object.freeze({
+  zlib: "1.3.1-e00f703",
+  gzip_level: 9,
+  distribution: "nodejs.org-official-bundled-zlib",
+});
+
+export function assertRumCompressorProfile(runtime = process.versions) {
+  if (runtime.zlib !== RUM_COMPRESSOR_PROFILE.zlib) {
+    throw new Error(
+      `RUM overhead compressor profile mismatch: runtime zlib ${runtime.zlib} !== ${RUM_COMPRESSOR_PROFILE.zlib} (${RUM_COMPRESSOR_PROFILE.distribution}; CI actions/setup-node). Homebrew Node links system zlib and must not stamp or verify this receipt.`,
+    );
+  }
+}
+
 function assetEvidence(path) {
   const bytes = readFileSync(join(ROOT, path));
   return {
     path,
     raw_bytes: bytes.byteLength,
-    gzip_bytes: gzipSync(bytes, { level: 9 }).byteLength,
+    gzip_bytes: gzipSync(bytes, { level: RUM_COMPRESSOR_PROFILE.gzip_level }).byteLength,
     brotli_bytes: brotliCompressSync(bytes).byteLength,
     sha256: createHash("sha256").update(bytes).digest("hex"),
   };
@@ -41,6 +59,7 @@ function siteRuntimeSources(directory = join(ROOT, "site")) {
 }
 
 export function buildRumCollectorOverheadEvidence() {
+  assertRumCompressorProfile();
   const assets = ASSET_PATHS.map(assetEvidence);
   const productionReferences = siteRuntimeSources().filter((path) => (
     readFileSync(path, "utf8").includes("rum_bootstrap.mjs")
@@ -52,6 +71,7 @@ export function buildRumCollectorOverheadEvidence() {
   return {
     schema: "cityscroll.rum_collector_overhead.v1",
     collector_version: "rum-browser-v1",
+    compressor_profile: { ...RUM_COMPRESSOR_PROFILE },
     library: {
       name: "web-vitals",
       version: "6.0.1",
@@ -73,7 +93,7 @@ export function buildRumCollectorOverheadEvidence() {
       after_load: /addEventListener(?:\?\.)?\("load"/.test(transportSource),
       idle_task: /requestIdleCallback/.test(transportSource),
     },
-    interpretation: "The deferred production payload is measured after load and idle. Canonical production hosts request the bootstrap only when the generated collector contract is production_enabled; local, preview, and developer traffic stay excluded.",
+    interpretation: "The deferred production payload is measured after load and idle. Canonical production hosts request the bootstrap only when the generated collector contract is production_enabled; local, preview, and developer traffic stay excluded. Gzip sizes are exact under the declared compressor_profile (nodejs.org official bundled zlib); Homebrew system-zlib Node must not stamp or verify this receipt.",
   };
 }
 

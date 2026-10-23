@@ -2,20 +2,20 @@
   "schema": "cityscroll.community_board_land_positions.v1",
   "method": "retained_board_identity_reverse_index_v1",
   "negative_rule": "A recorded position is one board's advisory recommendation on one application, read back from the identity the retained record already carries. It is never a decision on the project, never a count of meetings, and a recorded tally is the vote on the recommendation motion rather than a count of support for the development.",
-  "generated_at": "2026-10-17T01:28:46.766Z",
+  "generated_at": "2026-10-22T19:59:40.125Z",
   "source": {
     "publisher": "NYC Department of City Planning, Zoning Application Portal",
     "dataset_id": "hgx4-8ukb",
     "source_url": "https://data.cityofnewyork.us/d/hgx4-8ukb",
-    "observed_on": "2026-10-17T01:28:46.766Z"
+    "observed_on": "2026-10-22T19:59:40.125Z"
   },
   "counts": {
     "retained_projects": 40,
-    "projects_with_observed_recommendations": 23,
-    "board_recommendations": 21,
-    "board_positions": 21,
-    "boards_with_positions": 16,
-    "projects_with_board_positions": 21,
+    "projects_with_observed_recommendations": 24,
+    "board_recommendations": 22,
+    "board_positions": 22,
+    "boards_with_positions": 17,
+    "projects_with_board_positions": 22,
     "undated_board_recommendations": 0,
     "unsubmitted_board_recommendations": 0,
     "unresolved_board_recommendations": 0,
@@ -172,6 +172,32 @@
               "source_record_id": "d5659b04-b44b-f011-877a-001dd8006beb"
             }
           ]
+        }
+      ]
+    },
+    "brooklyn-cb-02": {
+      "body_id": "brooklyn-cb-02",
+      "position_count": 1,
+      "project_count": 1,
+      "recorded_date_count": 1,
+      "positions": [
+        {
+          "project_id": "2026K0233",
+          "project_name": "240 Nassau Street",
+          "project_public_status": "Noticed",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2026K0233",
+          "position": "Conditional Favorable",
+          "position_class": "conditional_favorable",
+          "status": "Submitted",
+          "recorded_on": "2026-09-23",
+          "recorded_tally": {
+            "recorded": true,
+            "votes_for": 20,
+            "votes_against": 9,
+            "votes_abstain": 0
+          },
+          "source_record_id": "1b8edea0-4f85-f111-ab0e-001dd80eb6be",
+          "other_positions": []
         }
       ]
     },
@@ -441,7 +467,23 @@
             "votes_abstain": 1
           },
           "source_record_id": "d927de35-c61b-f111-8343-001dd8006bc2",
-          "other_positions": []
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": "borough-president:manhattan",
+              "position": "Conditional Unfavorable",
+              "position_class": "conditional_unfavorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "2a8dec42-c61b-f111-8342-001dd80055e6"
+            }
+          ]
         },
         {
           "project_id": "2025M0252",

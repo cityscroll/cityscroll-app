@@ -65,7 +65,7 @@ test("map selection renders a compact handoff and keeps point provenance separat
   });
   const html = landMapSelectionHTML(model, { sourceVintage: "cityscroll.land_project_map_points.v1" });
   assert.match(html, /data-land-map-authority-state="available"/);
-  assert.match(html, /data-land-map-authority-projection="ldp05_authority_summary_v1"/);
+  assert.match(html, /data-land-map-authority-projection="ldp06_authority_summary_v1"/);
   assert.match(html, /data-land-map-authority-source-vintage="2026-08-23T07:59:14\.162Z"/);
   assert.match(html, /data-land-map-method="multi_bbl_anchor"/);
   assert.match(html, /data-land-map-source-vintage="cityscroll\.land_project_map_points\.v1"/);

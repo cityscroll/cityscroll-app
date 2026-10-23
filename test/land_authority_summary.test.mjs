@@ -24,10 +24,12 @@ import {
   LAND_AUTHORITY_SUMMARY_STATUSES,
   assertLandAuthoritySummaries,
   buildLandAuthoritySummary,
-  materializeLandAuthoritySummaries,
   stampLandAuthoritySummary,
   resolveLandAuthoritySourceBasis,
+  resolveLandAuthoritySummary,
+  
 } from "../site/land_authority_summary.mjs";
+import { materializeLandAuthoritySummaries } from "../site/land_authority_summary_materialize.mjs";
 import {
   landAuthoritySummaryHTML,
   landAuthorityPanelProjection,
@@ -49,6 +51,7 @@ const elurpCorpus = requireJson("./fixtures/land_authority_summary/elurp_197e_co
 const geography = requireJson("../site/data/community_board_geography_lookup.json");
 const warehouse = requireJson("../site/data/zap_projects_warehouse_lookup.json");
 const landDefault = requireJson("../site/data/land_default_ulurp.json");
+const landOutcomesSeed = requireJson("../site/data/land_outcomes_seed.json");
 const hearings = requireJson("../site/data/land_upcoming_hearings.json");
 // LDP-16: "Follow next decision" gates on the corpus-wide reliability
 // measurement, which in turn depends on a loaded authority-summary corpus.
@@ -72,9 +75,15 @@ function projectHearings(projectId) {
   return (hearings.hearings || []).filter((row) => row.project_id === projectId);
 }
 
+function outcomeFor(projectId) {
+  const list = landDefault.outcomes?.by_project?.[projectId] || {};
+  const seed = landOutcomesSeed.by_project?.[projectId] || {};
+  return { ...list, ...seed };
+}
+
 function summarize(projectId, overrides = {}) {
   const project = defaultRow(projectId) || warehouseRow(projectId);
-  const outcome = landDefault.outcomes?.by_project?.[projectId] || {};
+  const outcome = outcomeFor(projectId);
   return buildLandAuthoritySummary({
     project,
     geography,
@@ -603,4 +612,67 @@ test("Community Board authority stays procedure-specific and is never flattened 
       assert.equal(summary.current_role, stage.role);
     }
   }
+});
+
+test("published_next_defaults apply only to status none, never unknown or stale", () => {
+  const defaults = {
+    status: "none",
+    checked: true,
+    checked_vintage: "2026-08-20",
+    source: "land_upcoming_hearings",
+    source_id: null,
+    label: "No published opportunity",
+    date: null,
+    representing: null,
+    phase_id: null,
+    body_ref: null,
+  };
+  const payload = { published_next_defaults: defaults };
+
+  const unknown = resolveLandAuthoritySummary({
+    published_next_opportunity: { status: "unknown", checked: false },
+  }, payload);
+  assert.equal(unknown.published_next_opportunity.status, "unknown");
+  assert.equal(unknown.published_next_opportunity.checked, false);
+  assert.equal(unknown.published_next_opportunity.label, undefined);
+
+  const stale = resolveLandAuthoritySummary({
+    published_next_opportunity: {
+      status: "stale",
+      checked: true,
+      checked_vintage: "2026-01-01",
+      label: null,
+    },
+  }, payload);
+  assert.equal(stale.published_next_opportunity.status, "stale");
+  assert.equal(stale.published_next_opportunity.label, null);
+  assert.equal(stale.published_next_opportunity.checked_vintage, "2026-01-01");
+
+  const none = resolveLandAuthoritySummary({
+    published_next_opportunity: { status: "none" },
+  }, payload);
+  assert.equal(none.published_next_opportunity.status, "none");
+  assert.equal(none.published_next_opportunity.checked, true);
+  assert.equal(none.published_next_opportunity.label, "No published opportunity");
+  assert.equal(none.published_next_opportunity.checked_vintage, "2026-08-20");
+});
+
+test("freshness source_vintages merge keeps an explicit null UNKNOWN", () => {
+  const knownVintage = "2026-08-20T00:00:00.000Z";
+  const summary = {
+    freshness: {
+      source_vintages: { hearings_generated_at: null },
+    },
+  };
+  const payload = {
+    freshness_defaults: {
+      source_vintages: { hearings_generated_at: knownVintage },
+    },
+  };
+  const resolved = resolveLandAuthoritySummary(summary, payload);
+  assert.equal(
+    resolved.freshness.source_vintages.hearings_generated_at,
+    null,
+    "explicit null on the summary must win over a hoisted default",
+  );
 });

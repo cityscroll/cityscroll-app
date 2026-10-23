@@ -37,6 +37,17 @@ const warehouse = JSON.parse(
 const landDefault = JSON.parse(
   readFileSync(join(ROOT, "site/data/land_default_ulurp.json"), "utf8"),
 );
+const landOutcomesSeed = JSON.parse(
+  readFileSync(join(ROOT, "site/data/land_outcomes_seed.json"), "utf8"),
+);
+
+function outcomesFor(projectId) {
+  // Rich dispositions ship in land_outcomes_seed.json so the list snapshot
+  // stays inside its fixed byte budget.
+  const list = landDefault.outcomes?.by_project?.[projectId] || {};
+  const seed = landOutcomesSeed.by_project?.[projectId] || {};
+  return { ...list, ...seed };
+}
 
 function warehouseRow(projectId) {
   return (warehouse.rows || []).find((row) => row.project_id === projectId);
@@ -122,7 +133,7 @@ test("A1 2025K0305 explains CB11, CB13, Brooklyn Borough Board, and Borough Pres
 });
 
 test("A2 draft Borough Board dispositions never become an observed recommendation", () => {
-  const dispositions = landDefault.outcomes?.by_project?.["2025K0305"]?.dispositions || [];
+  const dispositions = outcomesFor("2025K0305").dispositions || [];
   assert.equal(dispositions.length, 4);
   assert.equal(dispositions.every((row) => row.status === "Draft"), true);
   assert.ok(dispositions.some((row) => row.representing === "Borough Board"));

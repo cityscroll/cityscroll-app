@@ -31,13 +31,18 @@ import { buildLandPhaseView } from "../site/land_phase_spine.mjs";
 
 const requireJson = createRequire(import.meta.url);
 const landDefault = requireJson("../site/data/land_default_ulurp.json");
+const landOutcomesSeed = requireJson("../site/data/land_outcomes_seed.json");
 const geography = requireJson("../site/data/community_board_geography_lookup.json");
 
 function project(projectId) {
   return landDefault.projects.find((row) => row.project_id === projectId);
 }
 function dispositions(projectId) {
-  return landDefault.outcomes.by_project[projectId].dispositions;
+  // Rich dispositions ship in land_outcomes_seed.json so the list snapshot
+  // stays inside its fixed byte budget.
+  return landOutcomesSeed.by_project?.[projectId]?.dispositions
+    || landDefault.outcomes?.by_project?.[projectId]?.dispositions
+    || [];
 }
 
 const CANARY_CB13 = "2023K0183";
