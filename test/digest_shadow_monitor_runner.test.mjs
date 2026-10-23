@@ -596,12 +596,17 @@ test("READY plus missing delivery ledger keeps the delivery incident open", asyn
   });
 });
 
-test("READY plus no findings closes build and delivery attention", async () => {
-  await withTempDir("crol-digest-shadow-ready-clean-close", async (stateDir) => {
+test("a 10:25 READY run with delivery null does not close an open delivery incident", async () => {
+  await withTempDir("crol-digest-shadow-ready-no-delivery-leave-open", async (stateDir) => {
     const github = fakeGithub();
     await github.createIssue({ title: DIGEST_SHADOW_JOB.issue_title, body: "prior STARTED finding" });
     await github.createIssue({ title: DIGEST_SHADOW_DELIVERY_ISSUE_TITLE, body: "prior delivery finding" });
-    const now = new Date("2026-10-23T15:12:00.000Z");
+    const now = new Date("2026-10-23T10:25:00.000Z");
+    const report = {
+      ...readyHoldAttentionReceipt(),
+      delivery: null,
+      findings: [],
+    };
     const output = await withDigestShadowEnv({
       CITYSCROLL_ADMIN_KEY: "probe-secret",
       CITYSCROLL_DIGEST_SHADOW_URL: "https://example.invalid/admin/digest-shadow",
@@ -610,16 +615,61 @@ test("READY plus no findings closes build and delivery attention", async () => {
       now,
       runKey: runKey(now),
       async fetchImpl() {
-        return { ok: true, status: 200, async json() { return readyHoldAttentionReceipt(); } };
+        return { ok: false, status: 503, async json() { return report; } };
       },
     }));
     await persistJobOutput(stateDir, now, output);
     await replayOutbox({ stateDir, github, now: now.toISOString() });
     assert.equal(output.result.status, "healthy");
-    assert.equal(output.result.fault_domain, null);
-    assert.equal(output.result.degraded_reason, null);
+    assert.equal(github.issues.find((issue) => issue.title === DIGEST_SHADOW_JOB.issue_title).state, "closed");
+    assert.equal(
+      github.issues.find((issue) => issue.title === DIGEST_SHADOW_DELIVERY_ISSUE_TITLE).state,
+      "open",
+      "morning READY without a TERMINAL delivery receipt must leave delivery attention open",
+    );
+    assert.equal(
+      output.intents.some((row) => row.issue.title === DIGEST_SHADOW_DELIVERY_ISSUE_TITLE),
+      false,
+    );
+  });
+});
+
+test("READY plus a TERMINAL delivery for today closes the delivery incident", async () => {
+  await withTempDir("crol-digest-shadow-ready-terminal-close", async (stateDir) => {
+    const github = fakeGithub();
+    await github.createIssue({ title: DIGEST_SHADOW_JOB.issue_title, body: "prior STARTED finding" });
+    await github.createIssue({ title: DIGEST_SHADOW_DELIVERY_ISSUE_TITLE, body: "prior delivery finding" });
+    const now = new Date("2026-10-23T15:12:00.000Z");
+    const report = {
+      ...readyHoldAttentionReceipt(),
+      findings: [],
+      delivery: {
+        schema: "cityscroll.digest-terminal-delivery-receipt.v1",
+        day: "2026-10-23",
+        status: "TERMINAL",
+        accepted_sends: 1,
+        enqueued: 0,
+      },
+    };
+    const output = await withDigestShadowEnv({
+      CITYSCROLL_ADMIN_KEY: "probe-secret",
+      CITYSCROLL_DIGEST_SHADOW_URL: "https://example.invalid/admin/digest-shadow",
+    }, async () => runDigestShadowJob(DIGEST_SHADOW_JOB, {
+      stateDir,
+      now,
+      runKey: runKey(now),
+      async fetchImpl() {
+        return { ok: true, status: 200, async json() { return report; } };
+      },
+    }));
+    await persistJobOutput(stateDir, now, output);
+    await replayOutbox({ stateDir, github, now: now.toISOString() });
+    assert.equal(output.result.status, "healthy");
     assert.equal(github.issues.find((issue) => issue.title === DIGEST_SHADOW_JOB.issue_title).state, "closed");
     assert.equal(github.issues.find((issue) => issue.title === DIGEST_SHADOW_DELIVERY_ISSUE_TITLE).state, "closed");
+    assert.ok(output.intents.some((row) => (
+      row.issue.title === DIGEST_SHADOW_DELIVERY_ISSUE_TITLE && row.issue.mode === "close"
+    )));
   });
 });
 

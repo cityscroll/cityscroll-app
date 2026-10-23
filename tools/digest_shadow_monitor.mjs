@@ -36,6 +36,19 @@ export function hasDigestDeliveryFault(findings = [], report = {}) {
     || /enqueued digest has zero accepted sends/.test(text);
 }
 
+/**
+ * True only when the report itself carries today's TERMINAL delivery receipt.
+ * Absence of delivery findings is not enough: morning probes run before the
+ * 14:00 UTC delivery deadline and never see delivery findings, so closing on
+ * "no findings" would falsely clear yesterday's delivery incident.
+ */
+export function isDigestDeliveryTerminalForToday(report = {}, today) {
+  const delivery = report?.delivery;
+  if (!delivery || typeof delivery !== "object") return false;
+  const day = String(delivery.day || "");
+  return day === String(today) && String(delivery.status || "") === "TERMINAL";
+}
+
 function adminKey() {
   return resolveCredential({
     inlineVars: ["CITYSCROLL_ADMIN_KEY", "ADMIN_KEY"],
@@ -328,8 +341,12 @@ export async function runDigestShadowJob(job, context) {
           observation_marker: observationMark,
         }),
       });
-    } else if (rehearsalReady || buildClear || healthy) {
-      // Clear a prior delivery incident only when READY and findings carry no delivery fault.
+    } else if (
+      (rehearsalReady || buildClear || healthy)
+      && isDigestDeliveryTerminalForToday(report, today)
+    ) {
+      // Close only when the report itself shows today's TERMINAL delivery receipt.
+      // Missing findings before the 14:00 UTC deadline are not proof of a terminal send.
       const clearedDelivery = {
         ...result,
         body: "The digest delivery receipt is present and terminal for today.",
