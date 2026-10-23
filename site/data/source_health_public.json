@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.public_source_health.v1",
-  "generated_at": "2026-10-22T20:20:44.090Z",
+  "generated_at": "2026-10-23T12:04:53.695Z",
   "available": true,
   "source_count": 64,
   "sources": [
@@ -476,12 +476,12 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": "2026-10-22T19:54:16.507Z",
+            "at": "2026-10-23T12:04:53.695Z",
             "state": "KNOWN",
             "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": "2026-10-22T19:54:16.507Z",
+            "at": "2026-10-23T12:04:53.695Z",
             "state": "KNOWN",
             "basis": "cityscroll_materialization"
           }
@@ -498,7 +498,7 @@
           "max_date": null
         },
         "publisher_vintage": null,
-        "retrieved_at": "2026-10-22T19:54:16.507Z",
+        "retrieved_at": "2026-10-23T12:04:53.695Z",
         "expected_lag_tolerance_days": 45,
         "current_lag": {
           "value": null,
@@ -2051,8 +2051,10 @@
       "expected_cadence": "Publisher supplement cadence; refreshed at build time",
       "mode": "periodic",
       "health": {
-        "status": "Healthy",
-        "reason_codes": [],
+        "status": "Delayed",
+        "reason_codes": [
+          "acquisition-clock-stale"
+        ],
         "clocks": {
           "publisher_updated": {
             "at": null,

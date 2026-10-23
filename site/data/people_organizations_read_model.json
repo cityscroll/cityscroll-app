@@ -43807,7 +43807,7 @@
       "href": "/committees/5291/",
       "entity_ref": "committee:5291",
       "relation_state": "published",
-      "detail": "11 exact City Council members",
+      "detail": "17 exact City Council members",
       "institution": "city-council",
       "institution_label": "New York City Council",
       "institution_context": "Elected legislative body",
@@ -43834,7 +43834,7 @@
           "person_name": "Farah N. Louis",
           "href": "/officials/7785/",
           "relation_state": "published",
-          "role": "Co-Chair"
+          "role": "Council Member"
         },
         {
           "person_id": "7823",
@@ -52427,7 +52427,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 3,
+          "count": 4,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -53393,7 +53393,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 13,
+          "count": 10,
           "method": "checkbook_nycha_contracts_adapter_v1"
         },
         "vendors": {

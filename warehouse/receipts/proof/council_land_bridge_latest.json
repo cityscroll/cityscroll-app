@@ -1,16 +1,16 @@
 {
   "coverage": {
-    "eligible_rows": 114,
-    "matched": 86,
+    "eligible_rows": 117,
+    "matched": 92,
     "rejected": 0,
     "rejected_reasons": {},
-    "unresolved": 28,
+    "unresolved": 25,
     "unresolved_reasons": {
-      "no_exact_land_key": 28
+      "no_exact_land_key": 25
     }
   },
   "gate": {
-    "rationale": "86 of 114 eligible Council matter appearances (75.44%) carry a retained exact land identifier.",
+    "rationale": "92 of 117 eligible Council matter appearances (78.63%) carry a retained exact land identifier.",
     "resident_ingestion_committed": false,
     "result": "GO",
     "thresholds": {
@@ -23,9 +23,9 @@
   "join_measurement": {
     "rates": {
       "exact_land_identifier": {
-        "joined": 86,
-        "rate": 0.754386,
-        "total": 114
+        "joined": 92,
+        "rate": 0.786325,
+        "total": 117
       }
     },
     "strategy": "exact_ulurp_token | exact_zap_project_id",
@@ -33,6 +33,738 @@
     "verdict": "Above usefulness threshold (>=30%). Ship Council matter edge materialization."
   },
   "materialized_edges": [
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Hearing Held by Committee",
+          "Approved by Subcommittee"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/10/22701_A_Subcommittee_on_Zoning_and_Franchises_26-10-20_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/10/22701_M_Subcommittee_on_Zoning_and_Franchises_26-10-20_Meeting_Minutes.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79529"
+          }
+        ],
+        "event": {
+          "date": "2026-10-20",
+          "event_id": "22701",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22701&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0142-2026",
+          "matter_id": "79529",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79529",
+          "title": "Zoning, 1455 Coney Island Avenue Rezoning, Brooklyn (C 220449 ZMK)."
+        },
+        "outcome": "Approved by Subcommittee",
+        "votes": {
+          "absent": 0,
+          "abstain": 0,
+          "by_person": [
+            {
+              "person_id": "7785",
+              "person_name": "Farah N. Louis",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7833",
+              "person_name": "David M. Carr",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7895",
+              "person_name": "Elsie Encarnación",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7810",
+              "person_name": "Amanda C. Farías",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "5289",
+              "person_name": "Simcha Felder",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7866",
+              "person_name": "Yusef Salaam",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7897",
+              "person_name": "Justin E. Sanchez",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7818",
+              "person_name": "Lynn C. Schulman",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7898",
+              "person_name": "Shanel Thomas-Henry",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            }
+          ],
+          "event_id": "22701",
+          "event_item_id": "443526",
+          "no": 0,
+          "non_voting": 0,
+          "person_count": 9,
+          "published_vote_values": [
+            {
+              "rows": 9,
+              "vote_value": "Affirmative"
+            }
+          ],
+          "recused": 0,
+          "result": "Passed",
+          "unknown": 0,
+          "vote_identity": "roll_call",
+          "yes": 9
+        }
+      },
+      "from": "legistar-event:22701:matter:79529",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2020K0276",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "220449ZMK",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-10-20",
+        "project_id": "2020K0276",
+        "retained_identifier": "220449ZMK",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79529",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79529",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2020K0276"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Hearing Held by Committee",
+          "Approved by Subcommittee"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/10/22701_A_Subcommittee_on_Zoning_and_Franchises_26-10-20_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/10/22701_M_Subcommittee_on_Zoning_and_Franchises_26-10-20_Meeting_Minutes.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79530"
+          }
+        ],
+        "event": {
+          "date": "2026-10-20",
+          "event_id": "22701",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22701&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0143-2026",
+          "matter_id": "79530",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79530",
+          "title": "Zoning, 1455 Coney Island Avenue Rezoning, Brooklyn (N 220450 ZRK)."
+        },
+        "outcome": "Approved by Subcommittee",
+        "votes": {
+          "absent": 0,
+          "abstain": 0,
+          "by_person": [
+            {
+              "person_id": "7785",
+              "person_name": "Farah N. Louis",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7833",
+              "person_name": "David M. Carr",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7895",
+              "person_name": "Elsie Encarnación",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7810",
+              "person_name": "Amanda C. Farías",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "5289",
+              "person_name": "Simcha Felder",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7866",
+              "person_name": "Yusef Salaam",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7897",
+              "person_name": "Justin E. Sanchez",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7818",
+              "person_name": "Lynn C. Schulman",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7898",
+              "person_name": "Shanel Thomas-Henry",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            }
+          ],
+          "event_id": "22701",
+          "event_item_id": "443525",
+          "no": 0,
+          "non_voting": 0,
+          "person_count": 9,
+          "published_vote_values": [
+            {
+              "rows": 9,
+              "vote_value": "Affirmative"
+            }
+          ],
+          "recused": 0,
+          "result": "Passed",
+          "unknown": 0,
+          "vote_identity": "roll_call",
+          "yes": 9
+        }
+      },
+      "from": "legistar-event:22701:matter:79530",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2020K0276",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "220450ZRK",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-10-20",
+        "project_id": "2020K0276",
+        "retained_identifier": "220450ZRK",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79530",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79530",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2020K0276"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Hearing Held by Committee",
+          "Approved by Subcommittee"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/10/22701_A_Subcommittee_on_Zoning_and_Franchises_26-10-20_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/10/22701_M_Subcommittee_on_Zoning_and_Franchises_26-10-20_Meeting_Minutes.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79531"
+          }
+        ],
+        "event": {
+          "date": "2026-10-20",
+          "event_id": "22701",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22701&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0144-2026",
+          "matter_id": "79531",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79531",
+          "title": "Zoning, 135-27 Sapphire Street Rezoning, Queens (C 250329 ZMQ)."
+        },
+        "outcome": "Approved by Subcommittee",
+        "votes": {
+          "absent": 0,
+          "abstain": 0,
+          "by_person": [
+            {
+              "person_id": "7785",
+              "person_name": "Farah N. Louis",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7833",
+              "person_name": "David M. Carr",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7895",
+              "person_name": "Elsie Encarnación",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7810",
+              "person_name": "Amanda C. Farías",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "5289",
+              "person_name": "Simcha Felder",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7866",
+              "person_name": "Yusef Salaam",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7897",
+              "person_name": "Justin E. Sanchez",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7818",
+              "person_name": "Lynn C. Schulman",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7898",
+              "person_name": "Shanel Thomas-Henry",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            }
+          ],
+          "event_id": "22701",
+          "event_item_id": "443524",
+          "no": 0,
+          "non_voting": 0,
+          "person_count": 9,
+          "published_vote_values": [
+            {
+              "rows": 9,
+              "vote_value": "Affirmative"
+            }
+          ],
+          "recused": 0,
+          "result": "Passed",
+          "unknown": 0,
+          "vote_identity": "roll_call",
+          "yes": 9
+        }
+      },
+      "from": "legistar-event:22701:matter:79531",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2024Q0219",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "250329ZMQ",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-10-20",
+        "project_id": "2024Q0219",
+        "retained_identifier": "250329ZMQ",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79531",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79531",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2024Q0219"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Hearing Held by Committee",
+          "Approved by Subcommittee"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/10/22701_A_Subcommittee_on_Zoning_and_Franchises_26-10-20_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/10/22701_M_Subcommittee_on_Zoning_and_Franchises_26-10-20_Meeting_Minutes.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79532"
+          }
+        ],
+        "event": {
+          "date": "2026-10-20",
+          "event_id": "22701",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22701&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0145-2026",
+          "matter_id": "79532",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79532",
+          "title": "Zoning, 135-27 Sapphire Street Rezoning, Queens (N 250330 ZRQ)."
+        },
+        "outcome": "Approved by Subcommittee",
+        "votes": {
+          "absent": 0,
+          "abstain": 0,
+          "by_person": [
+            {
+              "person_id": "7785",
+              "person_name": "Farah N. Louis",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7833",
+              "person_name": "David M. Carr",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7895",
+              "person_name": "Elsie Encarnación",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7810",
+              "person_name": "Amanda C. Farías",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "5289",
+              "person_name": "Simcha Felder",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7866",
+              "person_name": "Yusef Salaam",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7897",
+              "person_name": "Justin E. Sanchez",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7818",
+              "person_name": "Lynn C. Schulman",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            },
+            {
+              "person_id": "7898",
+              "person_name": "Shanel Thomas-Henry",
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
+            }
+          ],
+          "event_id": "22701",
+          "event_item_id": "443523",
+          "no": 0,
+          "non_voting": 0,
+          "person_count": 9,
+          "published_vote_values": [
+            {
+              "rows": 9,
+              "vote_value": "Affirmative"
+            }
+          ],
+          "recused": 0,
+          "result": "Passed",
+          "unknown": 0,
+          "vote_identity": "roll_call",
+          "yes": 9
+        }
+      },
+      "from": "legistar-event:22701:matter:79532",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2024Q0219",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "250330ZRQ",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-10-20",
+        "project_id": "2024Q0219",
+        "retained_identifier": "250330ZRQ",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79532",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79532",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2024Q0219"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Hearing Held by Committee",
+          "Laid Over by Subcommittee"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/10/22701_A_Subcommittee_on_Zoning_and_Franchises_26-10-20_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/10/22701_M_Subcommittee_on_Zoning_and_Franchises_26-10-20_Meeting_Minutes.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79578"
+          }
+        ],
+        "event": {
+          "date": "2026-10-20",
+          "event_id": "22701",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22701&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0153-2026",
+          "matter_id": "79578",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79578",
+          "title": "Zoning, Studio 54 Rehabilitation and Text Amendment, Manhattan (N 260211 ZRM)."
+        },
+        "outcome": "Laid Over by Subcommittee",
+        "votes": null
+      },
+      "from": "legistar-event:22701:matter:79578",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2024M0193",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260211ZRM",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-10-20",
+        "project_id": "2024M0193",
+        "retained_identifier": "260211ZRM",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79578",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79578",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2024M0193"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Hearing Held by Committee",
+          "Laid Over by Subcommittee"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/10/22701_A_Subcommittee_on_Zoning_and_Franchises_26-10-20_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/10/22701_M_Subcommittee_on_Zoning_and_Franchises_26-10-20_Meeting_Minutes.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79579"
+          }
+        ],
+        "event": {
+          "date": "2026-10-20",
+          "event_id": "22701",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22701&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0154-2026",
+          "matter_id": "79579",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79579",
+          "title": "Zoning, Studio 54 Rehabilitation and Text Amendment, Manhattan (C 260212 ZSM)."
+        },
+        "outcome": "Laid Over by Subcommittee",
+        "votes": null
+      },
+      "from": "legistar-event:22701:matter:79579",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2024M0193",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260212ZSM",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-10-20",
+        "project_id": "2024M0193",
+        "retained_identifier": "260212ZSM",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79579",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79579",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2024M0193"
+    },
     {
       "compatibility_relation": "decides_land_project",
       "council_depth": {
@@ -7120,6 +7852,60 @@
   ],
   "precision_sample": [
     {
+      "event_id": "22701",
+      "join_key": "220449ZMK",
+      "join_method": "exact_ulurp_token",
+      "matter_file": "LU 0142-2026",
+      "matter_id": "79529",
+      "project_id": "2020K0276",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79529"
+    },
+    {
+      "event_id": "22701",
+      "join_key": "220450ZRK",
+      "join_method": "exact_ulurp_token",
+      "matter_file": "LU 0143-2026",
+      "matter_id": "79530",
+      "project_id": "2020K0276",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79530"
+    },
+    {
+      "event_id": "22701",
+      "join_key": "250329ZMQ",
+      "join_method": "exact_ulurp_token",
+      "matter_file": "LU 0144-2026",
+      "matter_id": "79531",
+      "project_id": "2024Q0219",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79531"
+    },
+    {
+      "event_id": "22701",
+      "join_key": "250330ZRQ",
+      "join_method": "exact_ulurp_token",
+      "matter_file": "LU 0145-2026",
+      "matter_id": "79532",
+      "project_id": "2024Q0219",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79532"
+    },
+    {
+      "event_id": "22701",
+      "join_key": "260211ZRM",
+      "join_method": "exact_ulurp_token",
+      "matter_file": "LU 0153-2026",
+      "matter_id": "79578",
+      "project_id": "2024M0193",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79578"
+    },
+    {
+      "event_id": "22701",
+      "join_key": "260212ZSM",
+      "join_method": "exact_ulurp_token",
+      "matter_file": "LU 0154-2026",
+      "matter_id": "79579",
+      "project_id": "2024M0193",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79579"
+    },
+    {
       "event_id": "22615",
       "join_key": "260234ZMQ",
       "join_method": "exact_ulurp_token",
@@ -7154,70 +7940,16 @@
       "matter_id": "79576",
       "project_id": "2023Q0450",
       "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79576"
-    },
-    {
-      "event_id": "22615",
-      "join_key": "260362ZRR",
-      "join_method": "exact_ulurp_token",
-      "matter_file": "LU 0152-2026",
-      "matter_id": "79577",
-      "project_id": "2026R0319",
-      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79577"
-    },
-    {
-      "event_id": "22615",
-      "join_key": "260238ZMK",
-      "join_method": "exact_ulurp_token",
-      "matter_file": "LU 0131-2026",
-      "matter_id": "79452",
-      "project_id": "2025K0284",
-      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79452"
-    },
-    {
-      "event_id": "22615",
-      "join_key": "260239ZRK",
-      "join_method": "exact_ulurp_token",
-      "matter_file": "LU 0132-2026",
-      "matter_id": "79453",
-      "project_id": "2025K0284",
-      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79453"
-    },
-    {
-      "event_id": "22615",
-      "join_key": "240218ZMK",
-      "join_method": "exact_ulurp_token",
-      "matter_file": "LU 0133-2026",
-      "matter_id": "79454",
-      "project_id": "2022K0430",
-      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79454"
-    },
-    {
-      "event_id": "22615",
-      "join_key": "240219ZRK",
-      "join_method": "exact_ulurp_token",
-      "matter_file": "LU 0134-2026",
-      "matter_id": "79455",
-      "project_id": "2022K0430",
-      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79455"
-    },
-    {
-      "event_id": "22615",
-      "join_key": "240206ZMX",
-      "join_method": "exact_ulurp_token",
-      "matter_file": "LU 0135-2026",
-      "matter_id": "79456",
-      "project_id": "2023X0149",
-      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79456"
     }
   ],
   "schema": "cityscroll.council_land_bridge_measurement.v1",
   "source_vintage": {
     "meeting_outcomes_snapshot_counts": {
-      "absent_count": 291,
-      "present_count": 18,
-      "record_count": 309
+      "absent_count": 293,
+      "present_count": 17,
+      "record_count": 310
     },
-    "meeting_outcomes_snapshot_generated_at": "2026-10-16T08:02:43.838Z",
+    "meeting_outcomes_snapshot_generated_at": "2026-10-23T09:36:10.172Z",
     "zap_projects_warehouse_lookup_materialized_at": "2026-10-22T20:20:44.090Z"
   }
 }
