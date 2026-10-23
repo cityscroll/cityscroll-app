@@ -208,7 +208,9 @@ export function upstreamFailureEvidence(result) {
 export function digestShadowFailureClass(result) {
   const reason = String(result?.degraded_reason || "");
   if (reason === "admin-credential-missing" || reason === "admin-credential-rejected") return "digest-shadow-credential";
+  if (reason === "rehearsal-started-within-grace") return null;
   if (reason === "rehearsal-started-not-finished") return "digest-shadow-started-stall";
+  if (result?.fault_domain === "digest_delivery") return "digest-shadow-degraded";
   if (upstreamFailureEvidence(result)) return "digest-shadow-upstream";
   return "digest-shadow-degraded";
 }
@@ -303,7 +305,8 @@ export function monitorRepairFindings(job, output, { now = null } = {}) {
   }
 
   if (runner === "digest-shadow") {
-    const degraded = result.status !== "healthy";
+    // "watching" is in-grace STARTED: active work, not a repair finding yet.
+    const degraded = result.status !== "healthy" && result.status !== "watching";
     const failureClass = degraded ? digestShadowFailureClass(result) : null;
     if (degraded) {
       add(finding({
@@ -312,6 +315,7 @@ export function monitorRepairFindings(job, output, { now = null } = {}) {
         findings: [
           `the digest rehearsal reported ${result.summary?.status || "an unavailable rehearsal"}`,
           result.degraded_reason ? `degraded reason ${result.degraded_reason}` : null,
+          result.fault_domain ? `fault domain ${result.fault_domain}` : null,
           upstreamFailureEvidence(result),
         ].filter(Boolean),
         observedAt,

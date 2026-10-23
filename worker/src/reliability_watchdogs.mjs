@@ -78,10 +78,14 @@ export async function recordDigestShadowReceipt(env, summary, now = new Date(), 
       : !complete
         ? "PARTIAL"
         : (summary?.ok === true && summary?.status !== "DEGRADED_UPSTREAM" ? "READY" : "DEGRADED");
+  // observed_at keeps the caller's clock (often run start). finalized_at is wall-clock
+  // completion so monitors never infer readiness from observed_at alone.
+  const wallClock = new Date().toISOString();
   const receipt = {
     schema: "cityscroll.digest-shadow-ready-receipt.v1",
     day: day(now),
     observed_at: now.toISOString(),
+    ...(failed || started ? {} : { finalized_at: wallClock }),
     status,
     complete: failed || started ? false : complete,
     redlines: redlines.length,
@@ -164,20 +168,64 @@ export function digestZeroAcceptedSendsFinding(delivery) {
   return `enqueued digest has zero accepted sends (${reason || "no skip reason recorded"})`;
 }
 
-export async function recordDigestDeliveryReceipt(env, receipt, now = new Date(), error = null) {
-  const enqueued = Number(receipt?.enqueued) || 0;
+/**
+ * Classify a day's delivery ledger for observability.
+ * Absent ledger ≠ proven non-delivery; it only means no invocation receipt.
+ * STARTED/PENDING after a cut-short run means incomplete execution.
+ */
+export function classifyDigestDeliveryLedger(delivery) {
+  if (!delivery) return "missing-invocation";
+  const status = String(delivery.status || "");
+  if (status === "STARTED" || status === "PENDING") return "incomplete-execution";
+  if (status === "TERMINAL" || status === "FAILED") return "terminal";
+  return "unknown";
+}
+
+/**
+ * Write STARTED before runAlerts so a cut-short cron leaves evidence.
+ * Never regresses an already-terminal same-day receipt.
+ */
+export async function recordDigestDeliveryStarted(env, now = new Date()) {
+  const name = key(DIGEST_DELIVERY_LEDGER_PREFIX, now);
+  const current = await readJson(env?.ALERT_STATE, name);
+  if (current?.status === "TERMINAL" || current?.status === "FAILED") return current;
+  const at = now.toISOString();
   const result = {
     schema: "cityscroll.digest-terminal-delivery-receipt.v1",
     day: day(now),
-    observed_at: now.toISOString(),
-    status: error ? "FAILED" : (receipt?.skipped_reason === "queue_pending" ? "PENDING" : "TERMINAL"),
+    observed_at: at,
+    started_at: current?.started_at || at,
+    status: "STARTED",
+    accepted_sends: Number(current?.accepted_sends) || 0,
+    enqueued: Number(current?.enqueued) || 0,
+    jobs_done: Number(current?.jobs_done) || 0,
+    skipped_reason: current?.skipped_reason || null,
+    error: null,
+  };
+  await putJson(env?.ALERT_STATE, name, result);
+  return result;
+}
+
+export async function recordDigestDeliveryReceipt(env, receipt, now = new Date(), error = null) {
+  const name = key(DIGEST_DELIVERY_LEDGER_PREFIX, now);
+  const current = await readJson(env?.ALERT_STATE, name);
+  const enqueued = Number(receipt?.enqueued) || 0;
+  const at = now.toISOString();
+  const status = error ? "FAILED" : (receipt?.skipped_reason === "queue_pending" ? "PENDING" : "TERMINAL");
+  const result = {
+    schema: "cityscroll.digest-terminal-delivery-receipt.v1",
+    day: day(now),
+    observed_at: at,
+    started_at: current?.started_at || current?.observed_at || at,
+    finalized_at: at,
+    status,
     accepted_sends: Number(receipt?.sent) || 0,
     enqueued,
-    jobs_done: 0,
+    jobs_done: Number(current?.jobs_done) || 0,
     skipped_reason: receipt?.skipped_reason || null,
     error: error ? String(error?.message || error) : null,
   };
-  await putJson(env?.ALERT_STATE, key(DIGEST_DELIVERY_LEDGER_PREFIX, now), result);
+  await putJson(env?.ALERT_STATE, name, result);
   return result;
 }
 
@@ -189,7 +237,13 @@ export async function recordDigestQueueOutcome(env, result, now = new Date()) {
   };
   current.jobs_done = (Number(current.jobs_done) || 0) + 1;
   current.accepted_sends = (Number(current.accepted_sends) || 0) + (result?.sent ? 1 : 0);
-  if (current.enqueued === 0 || current.jobs_done >= current.enqueued) current.status = "TERMINAL";
+  if (current.enqueued === 0 || current.jobs_done >= current.enqueued) {
+    current.status = "TERMINAL";
+    current.finalized_at = now.toISOString();
+  } else if (current.status === "STARTED") {
+    current.status = "PENDING";
+  }
+  if (!current.started_at) current.started_at = current.observed_at || now.toISOString();
   current.observed_at = now.toISOString();
   await putJson(env?.ALERT_STATE, name, current);
   return current;

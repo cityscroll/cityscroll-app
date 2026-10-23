@@ -58,6 +58,11 @@ export function digestShadowObservationFingerprint(summary = {}, extras = {}) {
   const funnel = summary?.selection_funnel || {};
   const codes = [...new Set((summary?.redlines || []).map((row) => row?.code).filter(Boolean))].sort();
   const observationCodes = [...new Set((summary?.observations || []).map((row) => row?.code).filter(Boolean))].sort();
+  // fault_domain + findings_key keep a changed finding from being suppressed as
+  // unchanged-observation when the rehearsal summary shape stayed the same.
+  const findingsKey = Array.isArray(extras.findings)
+    ? [...new Set(extras.findings.map((row) => String(row || "").trim()).filter(Boolean))].sort().join("|")
+    : (extras.findings_key || "");
   return [
     summary?.run_day || "",
     summary?.ran_at || "",
@@ -67,6 +72,8 @@ export function digestShadowObservationFingerprint(summary = {}, extras = {}) {
     codes.join(","),
     observationCodes.join(","),
     extras.degraded_reason || "",
+    extras.fault_domain || "",
+    findingsKey,
   ].join("\n");
 }
 

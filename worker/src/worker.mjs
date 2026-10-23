@@ -64,7 +64,7 @@ import { handleWorkerHealth } from "./lib/worker_health.mjs";
 import { snapshotHistDay, ensureHistEra } from "./lib/stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
 import { runAlerts, consumeDigestJob } from "./alerts.mjs";
-import { recordDigestDeliveryReceipt, recordDigestQueueFailure, recordDigestShadowReceipt, recordInboundEmailReceipt } from "./reliability_watchdogs.mjs";
+import { recordDigestDeliveryReceipt, recordDigestDeliveryStarted, recordDigestQueueFailure, recordDigestShadowReceipt, recordInboundEmailReceipt } from "./reliability_watchdogs.mjs";
 import { redactEmail } from "./lib/subscriptions.mjs";
 import { recoverDeprecatedDoubleOptIn } from "./recovered_signups.mjs";
 import { ingestNotices } from "./ingest.mjs";
@@ -689,8 +689,11 @@ const worker = {
     }
     // Delivery is the scheduled run's critical path. Keep it ahead of advisory read-model
     // refreshes so a slow or failing upstream cannot prevent queue fan-out and its receipt.
+    // STARTED lands before runAlerts so a cut-short isolate leaves incomplete-execution
+    // evidence rather than a missing ledger (which must not be read as proven non-delivery).
     console.log("digest delivery: starting");
     try {
+      await recordDigestDeliveryStarted(env);
       const summary = event.costProbe === true
         ? await runAlerts(env, undefined, { suppressDryRunLogs: true })
         : await runAlerts(env);
