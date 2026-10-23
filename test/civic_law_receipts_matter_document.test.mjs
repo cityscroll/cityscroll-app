@@ -12,22 +12,27 @@ import { buildLegislativeMatterLookup } from "../tools/build_legislative_matter_
 
 const snapshot = JSON.parse(readFileSync(new URL("../site/data/meeting_outcomes_snapshot.json", import.meta.url), "utf8"));
 const lookup = JSON.parse(readFileSync(new URL("../site/data/legislative_matter_lookup.json", import.meta.url), "utf8"));
+// Frozen slice — scheduled refresh rewrites the live lookup when the publisher
+// join window rolls; named appearance / roll-call assertions stay on this fixture.
+const frozen78605Lookup = JSON.parse(readFileSync(new URL("./fixtures/legislative-matter-window-pins/civic_law_matter_78605_lookup.json", import.meta.url), "utf8"));
 
-test("matter lookup materializes the exact LU 0056-2026 appearances", () => {
+test("matter lookup rebuild stays coherent with the committed live lookup", () => {
   const built = buildLegislativeMatterLookup(snapshot);
   assert.deepEqual(built, lookup);
-  const view = buildLegislativeMatterDocument(lookup, "78605");
+});
+
+test("matter lookup materializes the exact LU 0056-2026 appearances", () => {
+  const view = buildLegislativeMatterDocument(frozen78605Lookup, "78605");
   assert.equal(view.id, "78605");
   assert.equal(view.matter_file, "LU 0056-2026");
-  // Publisher window roll: the earlier 2026-04-22 layover (event 22342) left the
-  // current notice join window; the retained appearance is the 2026-05-19 approval.
+  // Fixture retains the 2026-05-19 approval appearance used for roll-call render.
   assert.deepEqual(view.appearances.map((row) => [row.event.event_id, row.event.date, row.outcome]), [
     ["22375", "2026-05-19", "Approved by Subcommittee"],
   ]);
 });
 
 test("matter render exposes named roll calls and fail-closed committee identity", () => {
-  const view = buildLegislativeMatterDocument(lookup, "78605");
+  const view = buildLegislativeMatterDocument(frozen78605Lookup, "78605");
   const html = renderLegislativeMatterDocument(view);
   assert.match(html, /data-civic-object-kind="legislative-matter"/);
   assert.match(html, /data-matter-id="78605"/);
@@ -48,7 +53,7 @@ test("matter render exposes named roll calls and fail-closed committee identity"
 });
 
 test("committee link is emitted only for an explicit BodyId", () => {
-  const payload = structuredClone(lookup);
+  const payload = structuredClone(frozen78605Lookup);
   payload.matters["78605"].appearances[0].event.body_id = "34";
   const view = buildLegislativeMatterDocument(payload, "78605");
   const html = renderLegislativeMatterDocument(view);
