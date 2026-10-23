@@ -10,11 +10,13 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
+  LEGISLATIVE_MATTER_LOOKUP_NOT_ENSURED,
   TESTIMONY_RECORD_LABEL,
   ensureLegislativeMatterLookup,
   projectLegislativeHearingConsequence,
   renderLegislativeHearingConsequence,
   resetLegislativeMatterLookupCache,
+  useLegislativeMatterLookup,
 } from "../site/legislative_hearing_consequence.mjs";
 import { renderMeetingDocument } from "../site/meeting_document.mjs";
 
@@ -265,4 +267,65 @@ test("legislative_matter_lookup stays off the Worker startup graph (dynamic impo
     "static JSON import would re-enter the Worker startup CPU budget",
   );
   assert.match(source, /import\(\s*["']\.\/data\/legislative_matter_lookup\.json["']/);
+});
+
+test("unprimed single-matter projection fails loudly instead of silently emptying next-event facts", async () => {
+  resetLegislativeMatterLookupCache();
+  const record = matter79201Record("20260707021", {
+    outcome: "Laid Over by Subcommittee",
+    eventName: "Subcommittee on Zoning and Franchises",
+    eventDate: "2026-07-21",
+  });
+  try {
+    assert.throws(
+      () => projectLegislativeHearingConsequence(record),
+      (error) => error instanceof Error && error.message === LEGISLATIVE_MATTER_LOOKUP_NOT_ENSURED,
+    );
+    assert.throws(
+      () => renderMeetingDocument(record),
+      (error) => error instanceof Error && error.message === LEGISLATIVE_MATTER_LOOKUP_NOT_ENSURED,
+    );
+  } finally {
+    await ensureLegislativeMatterLookup();
+  }
+});
+
+test("explicit useLegislativeMatterLookup empty install keeps the honest no-next-event state", async () => {
+  useLegislativeMatterLookup({
+    schema: "cityscroll.legislative_matter_lookup.v1",
+    matters: {},
+  });
+  try {
+    const record = singleMatterNoLookupRecord();
+    const projection = projectLegislativeHearingConsequence(record);
+    assert.equal(projection.state, "single");
+    assert.equal(projection.next_event, null);
+    assert.match(
+      renderLegislativeHearingConsequence(record),
+      /No published amendment or vote on this matter has followed this hearing yet/,
+    );
+  } finally {
+    resetLegislativeMatterLookupCache();
+    await ensureLegislativeMatterLookup();
+  }
+});
+
+test("static-build caller that ensures the lookup keeps real next-event facts on renderMeetingDocument", async () => {
+  resetLegislativeMatterLookupCache();
+  // Same contract as tools/capture_phc04_legislative_consequence.mjs and
+  // tools/render_civic_action_paths_after.mjs: ensure once, then sync render.
+  await ensureLegislativeMatterLookup();
+  const record = matter79201Record("20260707021", {
+    outcome: "Laid Over by Subcommittee",
+    eventName: "Subcommittee on Zoning and Franchises",
+    eventDate: "2026-07-21",
+  });
+  const html = renderMeetingDocument(record);
+  assert.match(html, /data-legislative-hearing-consequence="1"/);
+  assert.match(
+    html,
+    /Next official event on this matter: Approved by Subcommittee with Modifications and Referred to CPC/,
+  );
+  assert.match(html, /2026-08-12/);
+  assert.doesNotMatch(html, /No published amendment or vote on this matter has followed this hearing yet/);
 });

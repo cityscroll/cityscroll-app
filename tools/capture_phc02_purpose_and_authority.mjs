@@ -14,7 +14,10 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
+import { ensureLegislativeMatterLookup } from "../site/legislative_hearing_consequence.mjs";
 import { renderMeetingDocument } from "../site/meeting_document.mjs";
+
+await ensureLegislativeMatterLookup();
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const OUT_DIR = path.join(ROOT, "site/.phc02-capture-tmp");
