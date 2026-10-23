@@ -322,15 +322,16 @@ test("explicit useLegislativeMatterLookup empty install keeps the honest no-next
 
 test("ensureLegislativeMatterLookup binds the real production lookup (nonempty)", async () => {
   resetLegislativeMatterLookupCache();
-  await ensureLegislativeMatterLookup();
-  // Production binding must load the committed lookup — do not use() a fixture here.
+  // Assert on the LOADED return — an independent disk read would not prove the loader.
+  const loaded = await ensureLegislativeMatterLookup();
   const production = JSON.parse(
     readFileSync(new URL("../site/data/legislative_matter_lookup.json", import.meta.url), "utf8"),
   );
-  assert.equal(production.schema, "cityscroll.legislative_matter_lookup.v1");
-  assert.ok(Object.keys(production.matters || {}).length > 0);
-  // A single-matter render must not fail-loud once ensure has run (next-event may
-  // honestly be absent after a publisher window roll).
+  assert.equal(loaded.schema, "cityscroll.legislative_matter_lookup.v1");
+  assert.ok(Object.keys(loaded.matters || {}).length > 0);
+  assert.deepEqual(loaded, production);
+  // Rolling render case: once ensure has run, a single-matter render must not
+  // fail-loud (next-event may honestly be absent after a publisher window roll).
   const record = matter78605Record("20260408025", {
     outcome: "Laid Over by Subcommittee",
     eventName: "Subcommittee on Zoning and Franchises",
