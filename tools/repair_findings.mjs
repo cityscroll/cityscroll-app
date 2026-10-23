@@ -210,7 +210,9 @@ export function digestShadowFailureClass(result) {
   if (reason === "admin-credential-missing" || reason === "admin-credential-rejected") return "digest-shadow-credential";
   if (reason === "rehearsal-started-within-grace") return null;
   if (reason === "rehearsal-started-not-finished") return "digest-shadow-started-stall";
-  if (result?.fault_domain === "digest_delivery") return "digest-shadow-degraded";
+  if (reason === "delivery-receipt-fault" || result?.fault_domain === "digest_delivery") {
+    return "digest-shadow-degraded";
+  }
   if (upstreamFailureEvidence(result)) return "digest-shadow-upstream";
   return "digest-shadow-degraded";
 }

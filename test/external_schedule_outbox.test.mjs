@@ -408,6 +408,7 @@ test("a healthy rehearsal closes both the digest finding and the source finding"
     assert.equal(output.result.status, "healthy");
     assert.deepEqual(output.intents.map((intent) => [intent.issue.mode, intent.issue.title]), [
       ["close", "Digest shadow run needs attention"],
+      ["close", "Digest delivery receipt needs attention"],
       ["close", "Digest shadow source is unavailable"],
     ]);
   });
