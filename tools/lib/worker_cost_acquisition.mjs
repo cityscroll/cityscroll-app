@@ -6,6 +6,8 @@ import {
   OPERATION_METERS,
   REQUIRED_COST_COHORTS,
   TAIL_WAREHOUSE_COLD_START_FLAG_CAPABILITY,
+  WAREHOUSE_EXPERIMENT_BASE_ROUTES,
+  WAREHOUSE_EXPERIMENT_COHORTS,
   WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
   buildWorkerCostProfile,
   evaluateWarehouseExperiment,
@@ -135,6 +137,19 @@ export function sanitizeOwnedHttpMatcherRejectionCounters(value) {
 }
 
 /**
+ * Canonical incomplete-cohort labels for durable blocked receipts: warehouse
+ * base routes, their cold_start_flag_raw partitions, and collector-overhead.
+ * Identifier-like or free-form strings are omitted.
+ */
+export function isCanonicalIncompleteCohort(value) {
+  if (typeof value !== "string" || value.length === 0) return false;
+  if (WAREHOUSE_EXPERIMENT_BASE_ROUTES.includes(value)) return true;
+  if (WAREHOUSE_EXPERIMENT_COHORTS.includes(value)) return true;
+  if (value === "collector-overhead") return true;
+  return false;
+}
+
+/**
  * Attach allowlisted incomplete-cohort diagnostics from an arm result onto a
  * durable blocked acquisition result. Omits fields that fail validation.
  */
@@ -144,9 +159,7 @@ export function attachBlockedMatcherDiagnostics(target, source) {
   }
   const counters = sanitizeOwnedHttpMatcherRejectionCounters(source.matcher_rejection_counters);
   if (counters) target.matcher_rejection_counters = counters;
-  if (typeof source.incomplete_cohort === "string" && source.incomplete_cohort.length > 0
-    && source.incomplete_cohort.length <= 80
-    && !/[/?#@:\s\\]|https?:|%[0-9a-fA-F]{2}/.test(source.incomplete_cohort)) {
+  if (isCanonicalIncompleteCohort(source.incomplete_cohort)) {
     target.incomplete_cohort = source.incomplete_cohort;
   }
   if (Number.isInteger(source.incomplete_needed) && source.incomplete_needed >= 0) {

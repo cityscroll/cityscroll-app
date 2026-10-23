@@ -8,6 +8,7 @@ import {
   MAX_COLLECTOR_EVENTS,
   OWNED_HTTP_MATCHER_REJECTION_COUNTERS_SCHEMA,
   attachBlockedMatcherDiagnostics,
+  isCanonicalIncompleteCohort,
   queueFingerprintFromProviderEvent,
   raceAbortable,
   runMatchedWarehouseExperiment,
@@ -1800,4 +1801,85 @@ test("runMatchedWarehouseExperiment propagates matcher counters on unknown-usage
   const durable = JSON.parse(JSON.stringify(result));
   assert.equal(durable.matcher_rejection_counters.no_events_for_header, 50);
   assert.equal(durable.shared_budget.ledger[0].provider_event_count_status, "unknown");
+});
+
+test("incomplete_cohort omits identifier-like strings on both blocked paths", async () => {
+  assert.equal(isCanonicalIncompleteCohort("zap-bbl"), true);
+  assert.equal(isCanonicalIncompleteCohort("zap-bbl:cold_start_flag_raw=1"), true);
+  assert.equal(isCanonicalIncompleteCohort("collector-overhead"), true);
+  assert.equal(isCanonicalIncompleteCohort("private-customer-123"), false);
+
+  const counters = syntheticMatcherRejectionCounters({ matched: 0, no_events_for_header: 100 });
+  const leak = "private-customer-123";
+
+  const ordinaryTransport = {
+    acquireSplitDeployments: async () => ({
+      baseline: deployment(REVISION),
+      candidate: deployment(CANDIDATE),
+    }),
+    collectWarehouseRun: async () => ({
+      status: "blocked",
+      reason: "zap-bbl provider samples are incomplete",
+      provider_event_count: 50,
+      provider_event_count_status: "known",
+      matcher_rejection_counters: counters,
+      incomplete_cohort: leak,
+      incomplete_needed: 100,
+      incomplete_matched: 0,
+    }),
+  };
+  const ordinary = await runMatchedWarehouseExperiment({
+    baselineRevision: REVISION,
+    candidateRevision: CANDIDATE,
+    transport: ordinaryTransport,
+    maxCollectorSeconds: 30,
+    maxCollectorEvents: MAX_COLLECTOR_EVENTS,
+  });
+  assert.equal(ordinary.status, "blocked");
+  assert.equal("incomplete_cohort" in ordinary, false);
+  const ordinaryJson = JSON.stringify(ordinary);
+  assert.equal(ordinaryJson.includes(leak), false);
+  assert.ok(ordinary.matcher_rejection_counters);
+
+  const unknownTransport = {
+    acquireSplitDeployments: async () => ({
+      baseline: deployment(REVISION),
+      candidate: deployment(CANDIDATE),
+    }),
+    collectWarehouseRun: async () => ({
+      status: "blocked",
+      reason: "live-tail emitted an invalid event envelope",
+      provider_event_count: null,
+      provider_event_count_status: "unknown",
+      matcher_rejection_counters: counters,
+      incomplete_cohort: leak,
+      incomplete_needed: 100,
+      incomplete_matched: 0,
+    }),
+  };
+  const unknown = await runMatchedWarehouseExperiment({
+    baselineRevision: REVISION,
+    candidateRevision: CANDIDATE,
+    transport: unknownTransport,
+    maxCollectorSeconds: 30,
+    maxCollectorEvents: MAX_COLLECTOR_EVENTS,
+  });
+  assert.equal(unknown.status, "blocked");
+  assert.match(unknown.reason, /UNKNOWN/i);
+  assert.equal("incomplete_cohort" in unknown, false);
+  const unknownJson = JSON.stringify(unknown);
+  assert.equal(unknownJson.includes(leak), false);
+  assert.ok(unknown.matcher_rejection_counters);
+
+  // Direct attach helper also omits the leak while keeping a canonical cohort.
+  const target = { status: "blocked" };
+  attachBlockedMatcherDiagnostics(target, {
+    matcher_rejection_counters: counters,
+    incomplete_cohort: leak,
+  });
+  assert.equal("incomplete_cohort" in target, false);
+  attachBlockedMatcherDiagnostics(target, {
+    incomplete_cohort: "health",
+  });
+  assert.equal(target.incomplete_cohort, "health");
 });
