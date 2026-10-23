@@ -6,6 +6,8 @@ import {
   OPERATION_METERS,
   REQUIRED_COST_COHORTS,
   TAIL_WAREHOUSE_COLD_START_FLAG_CAPABILITY,
+  WAREHOUSE_EXPERIMENT_BASE_ROUTES,
+  WAREHOUSE_EXPERIMENT_COHORTS,
   WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
   buildWorkerCostProfile,
   evaluateWarehouseExperiment,
@@ -43,7 +45,12 @@ function applicationRecords(event, schema) {
     }
   };
   visit(event?.source);
-  for (const log of event?.logs || event?.Logs || []) visit(log?.message ?? log?.Message);
+  // Concatenate both keys: an empty `logs: []` is truthy and must not hide `Logs`.
+  const logEntries = [
+    ...(Array.isArray(event?.logs) ? event.logs : []),
+    ...(Array.isArray(event?.Logs) ? event.Logs : []),
+  ];
+  for (const log of logEntries) visit(log?.message ?? log?.Message);
   return found;
 }
 
@@ -58,6 +65,222 @@ function matchingHttpReceipts(event, expectation) {
     && record.result?.body_sha256 === expectation.receipt.result?.body_sha256
     && canonicalJson(record.result?.correctness) === canonicalJson(expectation.receipt.result?.correctness)
   ));
+}
+
+/** Allowlisted in-RAM matcher predicate ids (no raw header values / payloads). */
+export const OWNED_HTTP_MATCH_PREDICATES = Object.freeze([
+  "header_present",
+  "header_matches",
+  "url_matches",
+  "method_matches",
+  "script_version_matches",
+  "cold_start_matches",
+  "structured_log_receipt_present",
+  "cohort_matches",
+  "workload_hash_matches",
+  "tag_matches",
+  "series_matches",
+  "result_status_matches",
+  "result_body_sha_matches",
+  "result_correctness_matches",
+]);
+
+export const OWNED_HTTP_MATCHER_REJECTION_COUNTERS_SCHEMA =
+  "cityscroll.owned_http_matcher_rejection_counters.v1";
+
+function emptyMatcherRejectionCounters() {
+  return {
+    schema: OWNED_HTTP_MATCHER_REJECTION_COUNTERS_SCHEMA,
+    expectations_total: 0,
+    matched: 0,
+    no_events_for_header: 0,
+    reject_header_present: 0,
+    reject_header_matches: 0,
+    reject_url_matches: 0,
+    reject_method_matches: 0,
+    reject_script_version_matches: 0,
+    reject_cold_start_matches: 0,
+    reject_structured_log_receipt_present: 0,
+    reject_cohort_matches: 0,
+    reject_workload_hash_matches: 0,
+    reject_tag_matches: 0,
+    reject_series_matches: 0,
+    reject_result_status_matches: 0,
+    reject_result_body_sha_matches: 0,
+    reject_result_correctness_matches: 0,
+    reject_ambiguous_match_count: 0,
+  };
+}
+
+const MATCHER_REJECTION_COUNTER_KEYS = Object.freeze(
+  Object.keys(emptyMatcherRejectionCounters()).filter((key) => key !== "schema"),
+);
+
+/**
+ * Allowlisted, value-validated copy of matcher rejection counters for durable
+ * blocked results. Rejects unknown keys and non-integer counts; never copies
+ * raw errors, expectations, headers, or log payloads.
+ */
+export function sanitizeOwnedHttpMatcherRejectionCounters(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  if (value.schema !== OWNED_HTTP_MATCHER_REJECTION_COUNTERS_SCHEMA) return null;
+  const out = emptyMatcherRejectionCounters();
+  for (const key of MATCHER_REJECTION_COUNTER_KEYS) {
+    const n = value[key];
+    if (!Number.isInteger(n) || n < 0) return null;
+    out[key] = n;
+  }
+  for (const key of Object.keys(value)) {
+    if (key !== "schema" && !MATCHER_REJECTION_COUNTER_KEYS.includes(key)) return null;
+  }
+  return out;
+}
+
+/**
+ * Canonical incomplete-cohort labels for durable blocked receipts: warehouse
+ * base routes, their cold_start_flag_raw partitions, and collector-overhead.
+ * Identifier-like or free-form strings are omitted.
+ */
+export function isCanonicalIncompleteCohort(value) {
+  if (typeof value !== "string" || value.length === 0) return false;
+  if (WAREHOUSE_EXPERIMENT_BASE_ROUTES.includes(value)) return true;
+  if (WAREHOUSE_EXPERIMENT_COHORTS.includes(value)) return true;
+  if (value === "collector-overhead") return true;
+  return false;
+}
+
+/**
+ * Attach allowlisted incomplete-cohort diagnostics from an arm result onto a
+ * durable blocked acquisition result. Omits fields that fail validation.
+ */
+export function attachBlockedMatcherDiagnostics(target, source) {
+  if (!target || typeof target !== "object" || !source || typeof source !== "object") {
+    return target;
+  }
+  const counters = sanitizeOwnedHttpMatcherRejectionCounters(source.matcher_rejection_counters);
+  if (counters) target.matcher_rejection_counters = counters;
+  if (isCanonicalIncompleteCohort(source.incomplete_cohort)) {
+    target.incomplete_cohort = source.incomplete_cohort;
+  }
+  if (Number.isInteger(source.incomplete_needed) && source.incomplete_needed >= 0) {
+    target.incomplete_needed = source.incomplete_needed;
+  }
+  if (Number.isInteger(source.incomplete_matched) && source.incomplete_matched >= 0) {
+    target.incomplete_matched = source.incomplete_matched;
+  }
+  return target;
+}
+
+/**
+ * Evaluate allowlisted match predicates for one provider event vs one expectation.
+ * Returns only boolean predicate fields — never raw header values or log payloads.
+ */
+export function evaluateOwnedHttpEventPredicates(event, expectation, cohort) {
+  const request = httpRequest(event);
+  const header = request?.headers?.["x-cityscroll-cost-probe"]
+    || request?.headers?.["X-Cityscroll-Cost-Probe"];
+  const coldStart = parseColdStartFlagRaw(cohort);
+  const records = applicationRecords(event, "cityscroll.worker_cost_probe.v1");
+  // Field compares use the expectation-filtered receipt set (same as
+  // httpReceiptFromProviderEvent): exactly one matching receipt accepts.
+  const matching = matchingHttpReceipts(event, expectation);
+  const receipt = matching[0] || records[0] || null;
+  const predicates = {
+    header_present: typeof header === "string" && header.length > 0,
+    header_matches: header === expectation.header,
+    url_matches: request?.url === expectation.outerUrl,
+    method_matches: request?.method === "POST",
+    script_version_matches: event?.$workers?.scriptVersion?.id === expectation.providerVersionId,
+    cold_start_matches: coldStart === null || event?.$metadata?.coldStart === coldStart,
+    structured_log_receipt_present: records.length >= 1,
+    cohort_matches: Boolean(receipt && receipt.cohort === expectation.probeCohort),
+    workload_hash_matches: Boolean(receipt && receipt.workload_hash === expectation.workloadHash),
+    tag_matches: Boolean(receipt && receipt.tag === expectation.header),
+    series_matches: Boolean(receipt && receipt.series === expectation.series),
+    result_status_matches: Boolean(
+      receipt && receipt.result?.status === expectation.receipt?.result?.status,
+    ),
+    result_body_sha_matches: Boolean(
+      receipt && receipt.result?.body_sha256 === expectation.receipt?.result?.body_sha256,
+    ),
+    result_correctness_matches: Boolean(
+      receipt
+      && canonicalJson(receipt.result?.correctness)
+        === canonicalJson(expectation.receipt?.result?.correctness),
+    ),
+  };
+  const requestOk = predicates.header_present
+    && predicates.header_matches
+    && predicates.url_matches
+    && predicates.method_matches
+    && predicates.script_version_matches
+    && predicates.cold_start_matches;
+  const accepted = requestOk && matching.length === 1;
+  return {
+    ...predicates,
+    accepted,
+    structured_log_receipt_count: records.length,
+    matching_log_receipt_count: matching.length,
+  };
+}
+
+/**
+ * First failing allowlisted predicate name, or null when all pass.
+ * Prefer structured_log_receipt_present before field compares when no receipt.
+ */
+export function firstFailingOwnedHttpMatchPredicate(predicates) {
+  for (const name of OWNED_HTTP_MATCH_PREDICATES) {
+    if (predicates?.[name] !== true) return name;
+  }
+  return null;
+}
+
+/**
+ * Accumulate per-predicate rejection counters for selectConditionedEvents.
+ * For each expectation: no indexed events → no_events_for_header; otherwise score
+ * each candidate and attribute one reject_* to the closest non-accepting event's
+ * first failing predicate. Multiple full accepts → reject_ambiguous_match_count.
+ */
+export function accumulateOwnedHttpMatcherRejectionCounters(eventIndex, expectations, cohort) {
+  const counters = emptyMatcherRejectionCounters();
+  if (!Array.isArray(expectations)) return counters;
+  for (const expectation of expectations) {
+    counters.expectations_total += 1;
+    const candidates = eventIndex?.get?.(expectation.header) || [];
+    if (!Array.isArray(candidates) || candidates.length === 0) {
+      counters.no_events_for_header += 1;
+      continue;
+    }
+    const evaluations = candidates.map((event) => (
+      evaluateOwnedHttpEventPredicates(event, expectation, cohort)
+    ));
+    const accepts = evaluations.filter((entry) => entry.accepted);
+    if (accepts.length === 1) {
+      counters.matched += 1;
+      continue;
+    }
+    if (accepts.length > 1) {
+      counters.reject_ambiguous_match_count += 1;
+      continue;
+    }
+    // Closest: most predicates true; attribute first failure on that candidate.
+    let best = evaluations[0];
+    let bestScore = -1;
+    for (const entry of evaluations) {
+      const score = OWNED_HTTP_MATCH_PREDICATES.reduce(
+        (sum, name) => sum + (entry[name] === true ? 1 : 0),
+        0,
+      );
+      if (score > bestScore) {
+        best = entry;
+        bestScore = score;
+      }
+    }
+    const failed = firstFailingOwnedHttpMatchPredicate(best);
+    const key = failed ? `reject_${failed}` : "reject_ambiguous_match_count";
+    counters[key] = (counters[key] || 0) + 1;
+  }
+  return counters;
 }
 
 export function httpReceiptFromProviderEvent(event, expectation) {
@@ -120,15 +343,32 @@ function httpRequest(event) {
  * `$workers`-shaped envelope selectOwnedHttpEvent / sanitizeNativeInvocation expect.
  * Observability live-tail events that already carry `$workers.scriptVersion.id` pass through.
  */
+function coalesceWranglerLogArrays(raw) {
+  // Prefer lowercase wrangler --format json keys; empty `logs: []` must not
+  // shadow a populated legacy `Logs` (Array is truthy, so `logs || Logs` fails).
+  const logs = Array.isArray(raw?.logs) && raw.logs.length > 0
+    ? raw.logs
+    : (Array.isArray(raw?.Logs) ? raw.Logs : (Array.isArray(raw?.logs) ? raw.logs : []));
+  const exceptions = Array.isArray(raw?.exceptions) && raw.exceptions.length > 0
+    ? raw.exceptions
+    : (Array.isArray(raw?.Exceptions) ? raw.Exceptions : (Array.isArray(raw?.exceptions) ? raw.exceptions : []));
+  return { logs, exceptions };
+}
+
 export function normalizeWranglerTailEvent(raw) {
   if (!raw || typeof raw !== "object") return null;
-  if (raw.$workers?.scriptVersion?.id) return raw;
+  const { logs, exceptions } = coalesceWranglerLogArrays(raw);
+  // Drop capital aliases after coalescing so applicationRecords cannot double-count.
+  const { Logs: _dropLogs, Exceptions: _dropExceptions, ...rest } = raw;
+  if (raw.$workers?.scriptVersion?.id) {
+    return { ...rest, logs, exceptions };
+  }
   const scriptVersion = raw.scriptVersion || null;
   if (!scriptVersion?.id) return null;
   const event = raw.event || null;
   const cpuTime = raw.cpuTime;
   return {
-    ...raw,
+    ...rest,
     $workers: {
       cpuTimeMs: cpuTime,
       outcome: raw.outcome,
@@ -137,8 +377,8 @@ export function normalizeWranglerTailEvent(raw) {
       eventType: raw.eventType || (event?.request ? "fetch" : undefined),
     },
     $metadata: raw.$metadata || {},
-    logs: raw.logs || [],
-    exceptions: raw.exceptions || [],
+    logs,
+    exceptions,
     event,
     scriptVersion,
     cpuTime,
@@ -209,20 +449,9 @@ export function providerEventsFromWranglerTailStream(text) {
 }
 
 export function selectOwnedHttpEvent(events, expectation, cohort) {
-  const coldStart = parseColdStartFlagRaw(cohort);
-  const matches = events.filter((event) => {
-    const request = httpRequest(event);
-    const header = request?.headers?.["x-cityscroll-cost-probe"] || request?.headers?.["X-Cityscroll-Cost-Probe"];
-    if (
-      header !== expectation.header
-      || request?.url !== expectation.outerUrl
-      || request?.method !== "POST"
-      || event?.$workers?.scriptVersion?.id !== expectation.providerVersionId
-      || (coldStart !== null && event?.$metadata?.coldStart !== coldStart)
-    ) return false;
-    try { return Boolean(httpReceiptFromProviderEvent(event, expectation)); }
-    catch { return false; }
-  });
+  const matches = (Array.isArray(events) ? events : []).filter((event) => (
+    evaluateOwnedHttpEventPredicates(event, expectation, cohort).accepted
+  ));
   if (matches.length !== 1) throw new Error(`${cohort} requires exactly one owned provider event`);
   return matches[0];
 }
@@ -636,7 +865,7 @@ export async function runMatchedWarehouseExperiment({
           events_remaining_after: eventsRemaining,
           status: result?.status || null,
         });
-        return {
+        return attachBlockedMatcherDiagnostics({
           schema: "cityscroll.warehouse_cost_acquisition.v1",
           status: "blocked",
           reason: result?.reason
@@ -647,7 +876,7 @@ export async function runMatchedWarehouseExperiment({
             events_remaining: eventsRemaining,
             ledger: budgetLedger,
           },
-        };
+        }, result);
       }
       const usedEvents = usage.used;
       eventsRemaining = Math.max(0, eventsRemaining - usedEvents);
@@ -661,7 +890,7 @@ export async function runMatchedWarehouseExperiment({
       });
 
       if (!result || result.status !== "complete") {
-        return {
+        return attachBlockedMatcherDiagnostics({
           schema: "cityscroll.warehouse_cost_acquisition.v1",
           status: "blocked",
           reason: result?.reason || `${label} evidence unavailable`,
@@ -670,7 +899,7 @@ export async function runMatchedWarehouseExperiment({
             events_remaining: eventsRemaining,
             ledger: budgetLedger,
           },
-        };
+        }, result);
       }
       acquired[label] = warehouseRun({
         revision,

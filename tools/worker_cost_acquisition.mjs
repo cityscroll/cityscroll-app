@@ -9,6 +9,7 @@ import { acquireDeploymentBinding, acquireSplitDeploymentBindings } from "./clou
 import {
   MAX_COLLECTOR_EVENTS,
   MAX_COLLECTOR_SECONDS,
+  accumulateOwnedHttpMatcherRejectionCounters,
   acquireWorkerCostProfile,
   aggregateObservedCorrectness,
   httpOperationsFromProviderEvent,
@@ -24,6 +25,7 @@ import {
 } from "./lib/wrangler_exec.mjs";
 
 export {
+  accumulateOwnedHttpMatcherRejectionCounters,
   normalizeWranglerTailEvent,
   parseWranglerTailJsonStream,
   providerEventsFromWranglerTailStream,
@@ -401,7 +403,20 @@ function selectConditionedEvents(eventIndex, expectations, cohort, count) {
     } catch {}
     if (selected.length === count) break;
   }
-  if (selected.length !== count) throw new Error(`${cohort} provider samples are incomplete`);
+  if (selected.length !== count) {
+    const rejectionCounters = accumulateOwnedHttpMatcherRejectionCounters(
+      eventIndex,
+      expectations,
+      cohort,
+    );
+    const error = new Error(`${cohort} provider samples are incomplete`);
+    error.code = "OWNED_HTTP_SAMPLES_INCOMPLETE";
+    error.cohort = cohort;
+    error.needed = count;
+    error.matched = selected.length;
+    error.rejectionCounters = rejectionCounters;
+    throw error;
+  }
   return selected;
 }
 
@@ -808,12 +823,19 @@ export function createLiveWorkerCostTransport({
           });
         }
       } catch (error) {
-        return {
+        const blocked = {
           status: "blocked",
           reason: String(error?.message || error),
           provider_event_count: Array.isArray(events) ? events.length : null,
           provider_event_count_status: Array.isArray(events) ? "known" : "unknown",
         };
+        if (error?.rejectionCounters && typeof error.rejectionCounters === "object") {
+          blocked.matcher_rejection_counters = error.rejectionCounters;
+          blocked.incomplete_cohort = error.cohort || null;
+          blocked.incomplete_needed = Number.isInteger(error.needed) ? error.needed : null;
+          blocked.incomplete_matched = Number.isInteger(error.matched) ? error.matched : null;
+        }
+        return blocked;
       }
       return {
         status: "complete",

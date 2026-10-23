@@ -7,14 +7,18 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  CONTROLLED_MARKER_UNKNOWN,
   FORBIDDEN_PERSIST_HEADER_KEYS,
   OWNED_PROBE_METHOD,
   OWNED_PROBE_URL,
   OWNED_ROUTE_CLASS,
   assertPersistedCapturePrivacy,
+  bindOwnedProbeMarkerTuple,
   ingestForPersistence,
   isOwnedProbeEvent,
+  normalizeControlledMarkerRegistry,
   persistOwnedCaptures,
+  projectOwnedControlledMarkers,
   toPredicateOnlyCapture,
 } from "./lib/worker_cost_capture_guard.mjs";
 
@@ -316,4 +320,244 @@ test("forbidden header allowlist covers steer-named leaks", () => {
       `${key} must be in FORBIDDEN_PERSIST_HEADER_KEYS`,
     );
   }
+});
+
+/**
+ * Counterexample: owned emissions for distinct inner routes all collapse to
+ * route_class=admin-cost-control-probe when cohort/workload_hash/arm are never
+ * projected. Synthetic owned emissions only; prove the registry restores the
+ * allowlisted cohort join without persisting raw markers or series ids.
+ */
+test("counterexample: without controlled-marker registry inner cohorts collapse to route_class", () => {
+  // Ownership context WITHOUT allowedCohorts filter (live Path-B shape) and
+  // WITHOUT controlledMarkerRegistry — installed projection before the fix.
+  const noRegistry = {
+    ownedMarkers: new Set([OWNED_MARKER]),
+    allowedVersionIds: new Set([OWNED_VERSION]),
+  };
+  const zapHash = "a".repeat(64);
+  const healthHash = "b".repeat(64);
+  const zap = toPredicateOnlyCapture(
+    syntheticOwnedRaw({
+      headers: {
+        "x-cityscroll-cost-cohort": "zap-bbl",
+        "x-cityscroll-cost-workload": zapHash,
+        "x-cityscroll-cost-series": "fixed-warehouse-synth",
+      },
+    }),
+    noRegistry,
+  );
+  const health = toPredicateOnlyCapture(
+    syntheticOwnedRaw({
+      headers: {
+        "x-cityscroll-cost-cohort": "health",
+        "x-cityscroll-cost-workload": healthHash,
+        "x-cityscroll-cost-series": "fixed-warehouse-synth",
+      },
+    }),
+    noRegistry,
+  );
+  assert.equal(zap.route_class, OWNED_ROUTE_CLASS);
+  assert.equal(health.route_class, OWNED_ROUTE_CLASS);
+  assert.equal(zap.cohort, undefined);
+  assert.equal(health.cohort, undefined);
+  assert.equal(zap.workload_hash, undefined);
+  assert.equal(projectOwnedControlledMarkers(syntheticOwnedRaw(), noRegistry), null);
+  // Allowlisted join key collapses: both look like the outer admin probe class.
+  assert.equal(zap.route_class, health.route_class);
+});
+
+test("fix: exact markerTuples + armByVersionId project cohort/workload_hash/arm; mismatch → UNKNOWN", () => {
+  const zapHash = "a".repeat(64);
+  const healthHash = "b".repeat(64);
+  const zapMarker = "cost-synthetic-zap-0";
+  const healthMarker = "cost-synthetic-health-0";
+  const rollbackVersion = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
+  const candidateVersion = "ffffffff-1111-2222-3333-444444444444";
+  const registryContext = {
+    ownedMarkers: new Set([zapMarker, healthMarker, OWNED_MARKER]),
+    allowedVersionIds: new Set([rollbackVersion, candidateVersion, OWNED_VERSION]),
+    controlledMarkerRegistry: {
+      markerTuples: new Map([
+        [zapMarker, { cohort: "zap-bbl", workloadHash: zapHash }],
+        [healthMarker, { cohort: "health", workloadHash: healthHash }],
+        [OWNED_MARKER, { cohort: "health", workloadHash: "0".repeat(64) }],
+      ]),
+      armByVersionId: new Map([
+        [rollbackVersion, "rollback"],
+        [candidateVersion, "candidate"],
+        [OWNED_VERSION, "rollback"],
+      ]),
+    },
+  };
+  const zap = toPredicateOnlyCapture(
+    syntheticOwnedRaw({
+      scriptVersion: { id: rollbackVersion },
+      headers: {
+        "x-cityscroll-cost-probe": zapMarker,
+        "x-cityscroll-cost-cohort": "zap-bbl",
+        "x-cityscroll-cost-workload": zapHash,
+        "x-cityscroll-cost-series": "must-not-become-arm",
+      },
+    }),
+    registryContext,
+  );
+  const health = toPredicateOnlyCapture(
+    syntheticOwnedRaw({
+      scriptVersion: { id: candidateVersion },
+      headers: {
+        "x-cityscroll-cost-probe": healthMarker,
+        "x-cityscroll-cost-cohort": "health",
+        "x-cityscroll-cost-workload": healthHash,
+        "x-cityscroll-cost-series": "must-not-become-arm",
+      },
+    }),
+    registryContext,
+  );
+  assert.equal(zap.route_class, OWNED_ROUTE_CLASS);
+  assert.equal(zap.cohort, "zap-bbl");
+  assert.equal(zap.workload_hash, zapHash);
+  assert.equal(zap.arm, "rollback");
+  assert.equal(health.cohort, "health");
+  assert.equal(health.workload_hash, healthHash);
+  assert.equal(health.arm, "candidate");
+  // Series must never be retained as arm.
+  assert.equal(zap.arm === "must-not-become-arm", false);
+  assert.equal(JSON.stringify(zap).includes("must-not-become-arm"), false);
+  assertPersistedCapturePrivacy(zap);
+  assertPersistedCapturePrivacy(health);
+  assert.equal(JSON.stringify(zap).includes(zapMarker), false);
+});
+
+test("negative: cross-paired known cohort/hash fails closed to UNKNOWN", () => {
+  const zapHash = "a".repeat(64);
+  const healthHash = "b".repeat(64);
+  const marker = OWNED_MARKER;
+  const ctx = {
+    ownedMarkers: new Set([marker]),
+    allowedVersionIds: new Set([OWNED_VERSION]),
+    controlledMarkerRegistry: {
+      markerTuples: new Map([
+        [marker, { cohort: "zap-bbl", workloadHash: zapHash }],
+      ]),
+      armByVersionId: new Map([[OWNED_VERSION, "rollback"]]),
+    },
+  };
+  // Cross-pair: known health cohort with the zap marker's expected hash.
+  const cross = toPredicateOnlyCapture(
+    syntheticOwnedRaw({
+      headers: {
+        "x-cityscroll-cost-cohort": "health",
+        "x-cityscroll-cost-workload": zapHash,
+      },
+    }),
+    ctx,
+  );
+  assert.equal(cross.cohort, CONTROLLED_MARKER_UNKNOWN);
+  assert.equal(cross.workload_hash, CONTROLLED_MARKER_UNKNOWN);
+  assert.equal(cross.arm, "rollback");
+  assertPersistedCapturePrivacy(cross);
+
+  // Wrong hash for the bound marker.
+  const wrongHash = toPredicateOnlyCapture(
+    syntheticOwnedRaw({
+      headers: {
+        "x-cityscroll-cost-cohort": "zap-bbl",
+        "x-cityscroll-cost-workload": healthHash,
+      },
+    }),
+    ctx,
+  );
+  assert.equal(wrongHash.cohort, CONTROLLED_MARKER_UNKNOWN);
+  assert.equal(wrongHash.workload_hash, CONTROLLED_MARKER_UNKNOWN);
+});
+
+test("negative: independent Sets registry shape is rejected; malformed config fails closed", () => {
+  assert.throws(
+    () => normalizeControlledMarkerRegistry({
+      cohorts: new Set(["zap-bbl"]),
+      workloadHashes: new Set(["a".repeat(64)]),
+      arms: new Set(["fixed-warehouse-synth"]),
+    }),
+    /markerTuples|independent/,
+  );
+  assert.throws(
+    () => normalizeControlledMarkerRegistry({
+      markerTuples: new Map([
+        [OWNED_MARKER, { cohort: "not-a-canonical-cohort", workloadHash: "a".repeat(64) }],
+      ]),
+    }),
+    /closed canonical enum/,
+  );
+  assert.throws(
+    () => normalizeControlledMarkerRegistry({
+      markerTuples: new Map([
+        [OWNED_MARKER, { cohort: "zap-bbl", workloadHash: "not-hex" }],
+      ]),
+    }),
+    /64-hex/,
+  );
+  assert.throws(
+    () => normalizeControlledMarkerRegistry({
+      markerTuples: new Map([
+        [OWNED_MARKER, { cohort: "https://evil.example/path?q=1", workloadHash: "a".repeat(64) }],
+      ]),
+    }),
+    /closed canonical enum|privacy value/,
+  );
+  assert.throws(
+    () => normalizeControlledMarkerRegistry({
+      armByVersionId: new Map([[OWNED_VERSION, "fixed-warehouse-synth"]]),
+    }),
+    /rollback or candidate/,
+  );
+});
+
+test("negative: projector enforces ownership; foreign version arm → UNKNOWN", () => {
+  const hash = "a".repeat(64);
+  const ctx = {
+    ownedMarkers: new Set([OWNED_MARKER]),
+    allowedVersionIds: new Set([OWNED_VERSION]),
+    controlledMarkerRegistry: {
+      markerTuples: new Map([
+        [OWNED_MARKER, { cohort: "health", workloadHash: hash }],
+      ]),
+      armByVersionId: new Map([[OWNED_VERSION, "rollback"]]),
+    },
+  };
+  assert.throws(
+    () => projectOwnedControlledMarkers(
+      syntheticOwnedRaw({ headers: { "x-cityscroll-cost-probe": FOREIGN_MARKER } }),
+      ctx,
+    ),
+    /refuses non-owned/,
+  );
+  const foreignVersion = toPredicateOnlyCapture(
+    syntheticOwnedRaw({
+      scriptVersion: { id: "00000000-0000-0000-0000-000000000099" },
+      headers: {
+        "x-cityscroll-cost-cohort": "health",
+        "x-cityscroll-cost-workload": hash,
+      },
+    }),
+    {
+      ownedMarkers: new Set([OWNED_MARKER]),
+      allowedVersionIds: new Set([OWNED_VERSION, "00000000-0000-0000-0000-000000000099"]),
+      controlledMarkerRegistry: ctx.controlledMarkerRegistry,
+    },
+  );
+  assert.equal(foreignVersion.arm, CONTROLLED_MARKER_UNKNOWN);
+  assert.equal(foreignVersion.cohort, "health");
+  assertPersistedCapturePrivacy(foreignVersion);
+
+  const reg = { markerTuples: new Map() };
+  bindOwnedProbeMarkerTuple(reg, OWNED_MARKER, { cohort: "browse", workloadHash: "c".repeat(64) });
+  assert.equal(reg.markerTuples.get(OWNED_MARKER).cohort, "browse");
+  assert.throws(
+    () => bindOwnedProbeMarkerTuple(reg, OWNED_MARKER, {
+      cohort: "browse",
+      workloadHash: "https://example.com/?id=1",
+    }),
+    /64-hex|privacy value/,
+  );
 });
