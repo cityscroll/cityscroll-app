@@ -83,11 +83,12 @@ export const WAREHOUSE_PROBE_MAX_STARTS_PER_SECOND_DEFAULT = 15;
 /**
  * Serialize starts so the long-run start rate stays at or below maxStartsPerSecond.
  * Uses fixed min-interval spacing from the actual admission time (no token-bucket burst).
- * Inject now/sleep for tests.
+ * `now` must be monotonic (default performance.now); wall clocks belong to measurement
+ * timestamps, not admission spacing. Inject now/sleep for tests.
  */
 export function createStartRateGate({
   maxStartsPerSecond,
-  now = () => Date.now(),
+  now = () => performance.now(),
   sleep = wait,
 } = {}) {
   if (!Number.isFinite(maxStartsPerSecond) || maxStartsPerSecond <= 0) {
@@ -122,14 +123,16 @@ export function createStartRateGate({
 /**
  * Like mapConcurrent, but each operation start is admitted through a fixed rate gate.
  * maxInFlight caps concurrent in-flight work; maxStartsPerSecond caps start rate.
- * On first operation failure or abort: stop new admissions, cancel owned work, settle
- * in-flight operations, then rethrow the original failure.
+ * Admission spacing uses a monotonic clock (default performance.now).
+ * On first operation failure or abort: stop new admissions, abort the combinedSignal
+ * passed as the operation's third argument, settle in-flight operations, then rethrow
+ * the original failure.
  */
 export async function mapPaced(items, {
   maxStartsPerSecond,
   maxInFlight,
   signal,
-  now = () => Date.now(),
+  now = () => performance.now(),
   sleep = wait,
 }, operation) {
   if (!Number.isInteger(maxInFlight) || maxInFlight <= 0) {
@@ -577,6 +580,8 @@ export function createLiveWorkerCostTransport({
   warehouseAttemptsPerInput = WAREHOUSE_MAX_ATTEMPTS_PER_INPUT,
   // null keeps the prior concurrent start behavior; a positive number enables paced starts.
   warehouseProbeMaxStartsPerSecond = null,
+  // Monotonic pacing clock only; wall `now` stays for measurement timestamps.
+  pacingNow = () => performance.now(),
 } = {}) {
   const telemetryToken = secret(env, "CLOUDFLARE_OBSERVABILITY_TOKEN");
   const adminKey = secret(env, "WORKER_COST_ADMIN_KEY");
@@ -629,7 +634,7 @@ export function createLiveWorkerCostTransport({
         maxStartsPerSecond: warehouseStartRate,
         maxInFlight: WAREHOUSE_PROBE_CONCURRENCY,
         signal: collectorSignal,
-        now,
+        now: pacingNow,
         sleep,
       }, operation)
   );
@@ -847,8 +852,11 @@ export function createLiveWorkerCostTransport({
             expectations = await runWarehouseAttempts(
               attempts,
               collectorSignal,
-              ({ base, workload, index }) => (
-                executeWorkload(workload, workloadId, deployment, `cost-${label}-${base}-${index}`, collectorSignal)
+              // Third arg is mapPaced's combinedSignal (or mapConcurrent's collectorSignal).
+              // Must not close over the outer collectorSignal alone, or a local paced
+              // failure cannot cancel already-started HTTP probes.
+              ({ base, workload, index }, _attemptIndex, attemptSignal) => (
+                executeWorkload(workload, workloadId, deployment, `cost-${label}-${base}-${index}`, attemptSignal)
               ),
             );
             if (!Array.isArray(live.events)) throw new Error("warehouse collector live event buffer is unavailable");

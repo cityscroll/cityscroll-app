@@ -2007,3 +2007,171 @@ test("createLiveWorkerCostTransport rejects non-positive warehouseProbeMaxStarts
     /warehouseProbeMaxStartsPerSecond/,
   );
 });
+
+test("paced warehouse transport cancels in-flight probes on local failure via combinedSignal (I1)", async () => {
+  const parent = new AbortController();
+  const startedSignals = [];
+  let failArmed = false;
+  const workloads = WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => ({
+    cohort,
+    probe_cohort: cohort,
+    workload_hash: createHash("sha256").update(cohort).digest("hex"),
+    body: { kind: "http", route: cohort },
+  }));
+  const measurement = {
+    run_marker: RUN,
+    workload_digest: WORKLOAD,
+    warehouse_workloads: workloads,
+    collector_workload: {
+      cohort: "collector-overhead",
+      probe_cohort: "collector-overhead",
+      workload_hash: createHash("sha256").update("collector-overhead").digest("hex"),
+      body: { kind: "collector-overhead" },
+    },
+  };
+  const transport = createLiveWorkerCostTransport({
+    env: {
+      CLOUDFLARE_OBSERVABILITY_TOKEN: "telemetry-only",
+      WORKER_COST_ADMIN_KEY: "admin-key",
+      CLOUDFLARE_ACCOUNT_ID: "account",
+      WORKER_HEALTH_URL: "https://worker.example/health",
+      WORKER_API_ORIGIN: "https://worker.example",
+      WORKER_COST_MEASUREMENT_PLAN: JSON.stringify(measurement),
+    },
+    warehouseAttemptsPerInput: 200,
+    warehouseProbeMaxStartsPerSecond: 1000,
+    now: () => Date.parse("2026-10-09T08:00:00Z"),
+    sleep: async () => {},
+    fetchImpl: async (url, init = {}) => {
+      if (!url.endsWith("/admin/cost-control-probe")) throw new Error(`unexpected fetch ${url}`);
+      startedSignals.push(init.signal);
+      // Let a sibling start first, then fail so mapPaced must cancel the hanger.
+      if (!failArmed && startedSignals.length >= 2) {
+        failArmed = true;
+        throw new Error("owned-http-diagnostic-boom");
+      }
+      return new Promise((_resolve, reject) => {
+        if (init.signal?.aborted) {
+          reject(new Error("request aborted"));
+          return;
+        }
+        init.signal.addEventListener("abort", () => reject(new Error("request aborted")), { once: true });
+      });
+    },
+  });
+  transport.collectProviderEvents = async ({ execute, signal: collectorSignal }) => {
+    await execute(collectorSignal || new AbortController().signal, { events: [] });
+    return [];
+  };
+
+  const result = await transport.collectWarehouseRun({
+    label: "baseline",
+    revision: REVISION,
+    deployment: deployment(REVISION),
+    workloadId: "fixed-series",
+    cohorts: [...WAREHOUSE_EXPERIMENT_BASE_ROUTES],
+    samplesPerCohort: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+    maxEvents: MAX_COLLECTOR_EVENTS,
+    signal: parent.signal,
+  });
+
+  assert.equal(result.status, "blocked");
+  assert.match(String(result.reason), /owned-http-diagnostic-boom/);
+  assert.equal(parent.signal.aborted, false, "parent signal must stay open; paced local abort owns cancel");
+  assert.ok(startedSignals.length >= 2, `expected in-flight cohort, got ${startedSignals.length}`);
+  // Concurrency ceiling is 32; failure must stop further admissions well below the attempt budget.
+  assert.ok(
+    startedSignals.length <= 40,
+    `too many starts after local failure: ${startedSignals.length}`,
+  );
+  assert.ok(
+    startedSignals.some((signal) => signal?.aborted === true),
+    "in-flight probe fetch must see paced combinedSignal abort",
+  );
+  assert.ok(
+    startedSignals.every((signal) => signal !== parent.signal),
+    "probe fetches must not be wired to the parent AbortSignal alone",
+  );
+});
+
+test("paced warehouse transport keeps monotonic admission when wall time jumps (I2)", async () => {
+  let wall = Date.parse("2026-10-09T08:00:00Z");
+  let mono = 0;
+  const admissions = [];
+  const workloads = WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => ({
+    cohort,
+    probe_cohort: cohort,
+    workload_hash: createHash("sha256").update(cohort).digest("hex"),
+    body: { kind: "http", route: cohort },
+  }));
+  const measurement = {
+    run_marker: RUN,
+    workload_digest: WORKLOAD,
+    warehouse_workloads: workloads,
+    collector_workload: {
+      cohort: "collector-overhead",
+      probe_cohort: "collector-overhead",
+      workload_hash: createHash("sha256").update("collector-overhead").digest("hex"),
+      body: { kind: "collector-overhead" },
+    },
+  };
+  const transport = createLiveWorkerCostTransport({
+    env: {
+      CLOUDFLARE_OBSERVABILITY_TOKEN: "telemetry-only",
+      WORKER_COST_ADMIN_KEY: "admin-key",
+      CLOUDFLARE_ACCOUNT_ID: "account",
+      WORKER_HEALTH_URL: "https://worker.example/health",
+      WORKER_API_ORIGIN: "https://worker.example",
+      WORKER_COST_MEASUREMENT_PLAN: JSON.stringify(measurement),
+    },
+    warehouseAttemptsPerInput: 200,
+    warehouseProbeMaxStartsPerSecond: 10,
+    now: () => wall,
+    pacingNow: () => mono,
+    sleep: async (ms) => { mono += Math.max(0, ms); },
+    fetchImpl: async (url, init = {}) => {
+      if (!url.endsWith("/admin/cost-control-probe")) throw new Error(`unexpected fetch ${url}`);
+      admissions.push(mono);
+      // Wall clock jumps backward; pacing must ignore it.
+      wall -= 3_600_000;
+      if (admissions.length >= 8) throw new Error("owned-http-diagnostic-stop");
+      const cohort = init.headers["x-cityscroll-cost-cohort"];
+      return Response.json({
+        schema: "cityscroll.worker_cost_probe.v1",
+        tag: init.headers["x-cityscroll-cost-probe"],
+        series: init.headers["x-cityscroll-cost-series"],
+        cohort,
+        workload_hash: init.headers["x-cityscroll-cost-workload"],
+        execution_mode: "production-read-only-rehearsal",
+        operation_counts: operations(),
+        result: { status: 200, body_sha256: "6".repeat(64), correctness: CORRECTNESS },
+      });
+    },
+  });
+  transport.collectProviderEvents = async ({ execute }) => {
+    await execute(new AbortController().signal, { events: [] });
+    return [];
+  };
+
+  const result = await transport.collectWarehouseRun({
+    label: "baseline",
+    revision: REVISION,
+    deployment: deployment(REVISION),
+    workloadId: "fixed-series",
+    cohorts: [...WAREHOUSE_EXPERIMENT_BASE_ROUTES],
+    samplesPerCohort: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT,
+    maxEvents: MAX_COLLECTOR_EVENTS,
+  });
+
+  assert.equal(result.status, "blocked");
+  assert.match(String(result.reason), /owned-http-diagnostic-stop/);
+  assert.ok(admissions.length >= 5, `expected several paced admissions, got ${admissions.length}`);
+  const minGap = 1000 / 10;
+  for (let i = 1; i < admissions.length; i += 1) {
+    const gap = admissions[i] - admissions[i - 1];
+    assert.ok(
+      gap + 1e-9 >= minGap,
+      `wall jump collapsed spacing: gap ${gap}ms at ${i}; admissions=${admissions.join(",")}`,
+    );
+  }
+});
