@@ -1,20 +1,20 @@
 {
   "schema_version": 1,
-  "version": "v1-54d55efd83c2b863",
-  "generated_at": "2026-10-17T02:07:42.525Z",
-  "near_you_slice_count": 2435,
+  "version": "v1-a3278dc2b08ecfb4",
+  "generated_at": "2026-10-24T12:18:43.968Z",
+  "near_you_slice_count": 2445,
   "community_district_digest_slice_count": 59,
   "meeting_slice_count": 91,
   "residential_place_count": 197,
   "coverage_census": {
-    "ready": 800,
-    "zero": 372,
-    "source_unavailable": 1263
+    "ready": 812,
+    "zero": 375,
+    "source_unavailable": 1258
   },
   "publication_dependencies": {
-    "parcel_membership_generation": "2026-10-17T01:37:32.248Z",
+    "parcel_membership_generation": "2026-10-24T11:54:20.733Z",
     "parcel_coordinate_vintage": "pluto_25v4",
-    "assertion_generation": "refresh-151b72628ab6",
-    "source_generation": "2026-10-17T01:37:21.987Z"
+    "assertion_generation": "refresh-5803b9c9a01d",
+    "source_generation": "2026-10-24T11:54:12.286Z"
   }
 }

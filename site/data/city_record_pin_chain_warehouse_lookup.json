@@ -5,7 +5,7 @@
   "dataset_id": "dg92-zbpx",
   "table_name": "city_record",
   "mode": "verified_seed",
-  "materialized_at": "2026-10-17T01:53:31.231Z",
+  "materialized_at": "2026-10-24T12:06:12.749Z",
   "row_count": 8,
   "pin_count": 7,
   "bulk_snapshot_date": "2026-08-05",

@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.community_board_committee_registry.v1",
   "version": 1,
-  "observed_on": "2026-10-17",
+  "observed_on": "2026-10-24",
   "policy": {
     "identity": "community-board-committee:{board_id}:{committee_id}",
     "board_local": true,
@@ -18,7 +18,7 @@
         "Transportation Committee Meeting"
       ],
       "source_url": "https://cbsix.org/committees/",
-      "observed_on": "2026-10-17",
+      "observed_on": "2026-10-24",
       "topic_facets": [
         "transportation"
       ]
@@ -31,7 +31,7 @@
         "Transportation Committee Meeting"
       ],
       "source_url": "https://www.nyc.gov/site/brooklyncb1/committees/committees.page",
-      "observed_on": "2026-10-17",
+      "observed_on": "2026-10-24",
       "topic_facets": [
         "transportation"
       ]

@@ -2,8 +2,8 @@
   "schema": "cityscroll.analytics_payments.v1",
   "projection_contract": "cityscroll.analytical_projection.v1",
   "fact": "payment",
-  "generated_at": "2026-10-22T19:42:15.561Z",
-  "snapshot_date": "2026-10-22T19:42:15.561Z",
+  "generated_at": "2026-10-24T11:33:05.404Z",
+  "snapshot_date": "2026-10-24T11:33:05.404Z",
   "population_definition": "AP-08 independent Checkbook Spending contract-payment population; grouped by agency, payee, and payment fiscal year.",
   "dimensions": [
     "agency",
@@ -21,19 +21,19 @@
     "fiscal_years": [
       2026
     ],
-    "publisher_record_count": 1784806,
-    "source_net_check_amount": 52377615299.78,
+    "publisher_record_count": 1784814,
+    "source_net_check_amount": 52377696589.35,
     "source_receipt": "warehouse/receipts/proof/checkbook_payment_population_latest.json",
     "input": "payments.csv"
   },
   "population": {
-    "source_rows": 1784806,
+    "source_rows": 1784814,
     "grouped_rows": 28519,
-    "transaction_count": 1784806,
-    "unique_transaction_count": 1635139,
-    "actual_payment_amount": 52377615299.78,
+    "transaction_count": 1784814,
+    "unique_transaction_count": 1635147,
+    "actual_payment_amount": 52377696589.35,
     "duplicate_transaction_rows": 149667,
-    "reversal_rows": 1679
+    "reversal_rows": 1680
   },
   "rows": [
     {
@@ -177890,9 +177890,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "STRATEGIC SAFETY SOLUTIONS LLC",
       "fiscal_year": 2026,
-      "transaction_count": 37,
-      "unique_transaction_count": 37,
-      "actual_payment_amount": 736085.74,
+      "transaction_count": 44,
+      "unique_transaction_count": 44,
+      "actual_payment_amount": 817479.81,
       "contract_count": 4,
       "contract_id": null
     },
@@ -261420,9 +261420,9 @@
       "agency": "Mayoralty",
       "payee_name": "IDEMIA IDENTITY & SECURITY USA LLC",
       "fiscal_year": 2026,
-      "transaction_count": 94,
-      "unique_transaction_count": 94,
-      "actual_payment_amount": 8259.25,
+      "transaction_count": 95,
+      "unique_transaction_count": 95,
+      "actual_payment_amount": 8154.75,
       "contract_count": 1,
       "contract_id": "POD00220262006364"
     },
