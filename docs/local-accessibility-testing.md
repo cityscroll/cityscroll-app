@@ -14,7 +14,9 @@ make setup-a11y
 The default location is `$XDG_DATA_HOME/cityscroll/a11y-python`, falling back to
 `$HOME/.local/share/cityscroll/a11y-python`. Override it with `CROL_A11Y_VENV` when a host has a
 different shared application-data layout. The setup command is idempotent and uses
-`.github/actions/setup-playwright/requirements.txt`, the same pin used by CI.
+`.github/actions/setup-playwright/requirements.txt`, the same pin used by CI. It also installs
+`tools/source_verification_requirements.txt`, the PyYAML pin the source boundary verifier and the
+`site-node` preflight family require (see [`testing.md`](testing.md#source-boundary-verification)).
 
 From any checkout on that host, run:
 

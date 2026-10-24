@@ -54,6 +54,11 @@ jobs:
       - name: Install Worker dependencies
         if: matrix.family == 'worker' || matrix.family == 'combined'
         run: tools/install_worker_dependencies.sh
+      - name: Install source verification dependencies
+        if: matrix.family == 'site-node' || matrix.family == 'combined'
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          python3 -m pip install --requirement tools/source_verification_requirements.txt
       - name: Run shifted unit family
         env:
           NODE_OPTIONS: --import=${{ github.workspace }}/test/helpers/test_clock_preload.mjs
