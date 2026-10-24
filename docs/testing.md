@@ -60,3 +60,27 @@ likewise mutates only a temporary fixture tree via `LEGACY_NAME_GUARD_ROOT`, nev
 `.github/legacy-name-allowlist.txt` or a repo-root probe. The Time-travel workflow finishes with
 `node tools/assert_tracked_working_tree_clean.mjs`, which fails when `git status --porcelain`
 reports tracked modifications after the suite.
+
+## Source boundary verification
+
+[`tools/verify_engine_app_boundary.mjs`](../tools/verify_engine_app_boundary.mjs) checks a
+reviewed ownership ledger against an inventory derived from the committed tree: tracked files,
+Worker bindings (including typed Durable Object bindings and migrations), schedules, workflow jobs,
+entrypoints, routing clauses, and the import graph. Source is observed with a pinned parser and is
+never executed. The ledger is private evidence: the command reads it only from the absolute path in
+`CITYSCROLL_ENGINE_APP_LEDGER`, refuses a path inside the repository checkout, and prints only
+bounded status and finding counts.
+
+```sh
+CITYSCROLL_ENGINE_APP_LEDGER=/absolute/path/outside/the/checkout/ledger.json \
+  node tools/verify_engine_app_boundary.mjs --stage foundation
+```
+
+CI does not hold the private ledger, so it never runs this command against the real tree. Instead
+[`test/engine_app_boundary.test.mjs`](../test/engine_app_boundary.test.mjs) builds synthetic Git
+fixtures and asserts the adversarial cases: an unowned unit, a forbidden binding assigned to the
+engine, a reverse import into private code, and a stale source revision or evidence hash all fail,
+and a missing ledger or unsupported stage exits non-zero rather than passing. A passing test suite
+is therefore evidence that the verifier works, not evidence that the real tree's ownership ledger
+is complete. The `site-node` family installs the pinned parser with `npm ci` and requires Python
+3.11+ with PyYAML 6.0.3 for the TOML and workflow observers.
