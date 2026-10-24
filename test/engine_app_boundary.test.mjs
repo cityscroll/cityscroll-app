@@ -48,6 +48,69 @@ test('engine cannot receive a recipient-state binding', (t) => {
   assert.ok(verifyLedger(inventory, ledger).findings.some((f) => f.code === 'FORBIDDEN_BINDING_OR_EFFECT'));
 });
 
+const durableConfig = 'name="synthetic"\nmain="src/worker.mjs"\n[[durable_objects.bindings]]\nname="SYNTHETIC_ACTOR"\nclass_name="SyntheticActor"\n[[migrations]]\ntag="v1"\nnew_sqlite_classes=["SyntheticActor"]\n';
+
+test('Durable Object bindings and migration history require explicit ledger ownership', (t) => {
+  const { inventory, ledger } = fixture(t, { 'worker/wrangler.toml': durableConfig });
+  const binding = inventory.units.find((u) => u.id === 'binding:worker/wrangler.toml#durable_objects.bindings.0:SYNTHETIC_ACTOR');
+  const migration = inventory.units.find((u) => u.kind === 'durable-object-migration');
+  assert.ok(binding); assert.ok(migration);
+  assert.equal(verifyLedger(inventory, ledger).status, 'PASS');
+  ledger.units = ledger.units.filter((u) => ![binding.id, migration.id].includes(u.id));
+  const findings = verifyLedger(inventory, ledger).findings;
+  for (const unit of [binding, migration]) assert.ok(findings.some((f) => f.code === 'UNCLASSIFIED_UNIT' && f.id === unit.id));
+});
+
+test('Durable Object recipient-state bindings cannot be assigned to the engine', (t) => {
+  const { inventory, ledger } = fixture(t, { 'worker/wrangler.toml': durableConfig });
+  const binding = ledger.units.find((u) => u.kind === 'binding');
+  binding.target_owner = 'engine'; binding.effects = ['recipient-state'];
+  assert.ok(verifyLedger(inventory, ledger).findings.some((f) => f.code === 'FORBIDDEN_BINDING_OR_EFFECT' && f.id === binding.id));
+});
+
+test('Durable Object class, external Worker and migration changes invalidate binding evidence', async (t) => {
+  for (const [name, change] of [
+    ['class', (text) => text.replace('class_name="SyntheticActor"', 'class_name="ReplacementActor"')],
+    ['external Worker', (text) => text.replace('class_name="SyntheticActor"', 'class_name="SyntheticActor"\nscript_name="external-synthetic"\nenvironment="staging"')],
+    ['migration', (text) => text.replace('new_sqlite_classes=["SyntheticActor"]', 'new_classes=["SyntheticActor"]')],
+  ]) await t.test(name, (sub) => {
+    const { inventory, ledger, root, git } = fixture(sub, { 'worker/wrangler.toml': durableConfig });
+    const before = inventory.units.find((u) => u.kind === 'binding');
+    writeFileSync(join(root, 'worker/wrangler.toml'), change(durableConfig));
+    git('add', '.'); git('-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', 'commit', '-qm', 'Change synthetic Durable Object');
+    const updated = collectInventory({ root });
+    const after = updated.units.find((u) => u.id === before.id);
+    assert.notEqual(after.evidence_sha256, before.evidence_sha256);
+    const refreshed = { ...ledger, source_revision:updated.source_revision, units:updated.units.map((unit) => ({ ...ledger.units.find((row) => row.id === unit.id), ...unit })) };
+    assert.equal(verifyLedger(updated, refreshed).status, 'PASS');
+    refreshed.units.find((unit) => unit.id === before.id).evidence_sha256 = before.evidence_sha256;
+    assert.ok(verifyLedger(updated, refreshed).findings.some((f) => f.code === 'SOURCE_EVIDENCE_STALE' && f.id === before.id));
+  });
+});
+
+test('Durable Object environment bindings stay distinct and arbitrary names are not bindings', (t) => {
+  const config = durableConfig + '\n[vars]\nname="NOT_A_BINDING"\nmigrations="NOT_A_MIGRATION"\n[[env.staging.durable_objects.bindings]]\nname="SYNTHETIC_ACTOR"\nclass_name="StagingActor"\n';
+  const { inventory, ledger } = fixture(t, { 'worker/wrangler.toml': config });
+  const bindings = inventory.units.filter((u) => u.kind === 'binding');
+  assert.deepEqual(bindings.map((u) => u.id).sort(), [
+    'binding:worker/wrangler.toml#durable_objects.bindings.0:SYNTHETIC_ACTOR',
+    'binding:worker/wrangler.toml#env.staging.durable_objects.bindings.0:SYNTHETIC_ACTOR',
+  ]);
+  assert.equal(verifyLedger(inventory, ledger).status, 'PASS');
+});
+
+test('malformed Durable Object binding and migration declarations fail closed', async (t) => {
+  for (const [code, config] of [
+    ['DURABLE_OBJECT_BINDING_INVALID', 'name="synthetic"\n[durable_objects]\nbindings="invalid"\n'],
+    ['DURABLE_OBJECT_BINDING_INVALID', 'name="synthetic"\n[[durable_objects.bindings]]\nname="MISSING_CLASS"\n'],
+    ['DURABLE_OBJECT_MIGRATION_INVALID', 'name="synthetic"\nmigrations="invalid"\n'],
+    ['DURABLE_OBJECT_MIGRATION_INVALID', 'name="synthetic"\n[[migrations]]\nnew_sqlite_classes=["MissingTag"]\n'],
+  ]) await t.test(code, (sub) => {
+    const { inventory, ledger } = fixture(sub, { 'worker/wrangler.toml': config });
+    assert.ok(verifyLedger(inventory, ledger).findings.some((f) => f.code === code));
+  });
+});
+
 test('actual transitive source edge into private identity fails', (t) => {
   const { inventory, ledger } = fixture(t, {
     'capabilities/read.mjs': 'export { value } from "../worker/src/identity.mjs";',

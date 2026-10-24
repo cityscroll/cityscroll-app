@@ -150,8 +150,39 @@ export function collectInventory({ root, revision = 'HEAD' }) {
     const text = texts.get(entry.path);
     if (config) {
       const document = parseData('toml', text);
+      const configScopes = new Set([document, ...Object.values(document.env ?? {})]);
       const visit = (value, key = '') => {
         if (!value || typeof value !== 'object') return;
+        // Durable Object bindings use name, not binding. Observe only the typed
+        // config location; arbitrary name fields are not resource declarations.
+        if (configScopes.has(value) && value.durable_objects?.bindings !== undefined) {
+          const bindings = value.durable_objects.bindings;
+          if (!Array.isArray(bindings)) unresolved.push({code:'DURABLE_OBJECT_BINDING_INVALID',path:entry.path});
+          else bindings.forEach((binding, i) => {
+            if (!binding || typeof binding.name !== 'string' || !binding.name.trim()
+              || typeof binding.class_name !== 'string' || !binding.class_name.trim()) {
+              unresolved.push({code:'DURABLE_OBJECT_BINDING_INVALID',path:entry.path});
+              return;
+            }
+            const location = key ? `${key}.durable_objects.bindings.${i}` : `durable_objects.bindings.${i}`;
+            // Preserve declared class/script/environment and migration context
+            // without claiming deployed state or replaying migration history.
+            add('binding', entry.path, `${location}:${binding.name}`, {
+              binding, migrations:document.migrations ?? null,
+              scoped_migrations:key ? value.migrations ?? null : null,
+            });
+          });
+        }
+        if (configScopes.has(value) && value.migrations !== undefined) {
+          if (!Array.isArray(value.migrations)) unresolved.push({code:'DURABLE_OBJECT_MIGRATION_INVALID',path:entry.path});
+          else value.migrations.forEach((migration, i) => {
+            if (!migration || typeof migration.tag !== 'string' || !migration.tag.trim()) {
+              unresolved.push({code:'DURABLE_OBJECT_MIGRATION_INVALID',path:entry.path});
+              return;
+            }
+            add('durable-object-migration', entry.path, `${key ? `${key}.` : ''}migrations.${i}:${migration.tag}`, migration);
+          });
+        }
         if (typeof value.binding === 'string') add('binding', entry.path, `${key}:${value.binding}`, value);
         if (typeof value.queue === 'string') add('queue', entry.path, `${key}:${value.queue}`, value);
         if (typeof value.main === 'string') {
