@@ -30,6 +30,7 @@ import {
   providerDeploymentReceiptSha256,
 } from "./lib/worker_cost_control.mjs";
 import {
+  buildWarehouseAttemptList,
   createLiveWorkerCostTransport,
   createStartRateGate,
   invokeWranglerAbortable,
@@ -2005,6 +2006,84 @@ test("createLiveWorkerCostTransport rejects non-positive warehouseProbeMaxStarts
       warehouseProbeMaxStartsPerSecond: 0,
     }),
     /warehouseProbeMaxStartsPerSecond/,
+  );
+});
+
+test("buildWarehouseAttemptList supports optional per-cohort attempt counts", () => {
+  const workloadsByBase = new Map(
+    WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => [cohort, { cohort, workload_hash: `h-${cohort}` }]),
+  );
+  const byCohort = Object.fromEntries(
+    WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort, index) => [
+      cohort,
+      WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT + index * 10,
+    ]),
+  );
+  const attempts = buildWarehouseAttemptList({
+    workloadsByBase,
+    warehouseAttemptsByCohort: byCohort,
+  });
+  const counts = {};
+  for (const attempt of attempts) {
+    counts[attempt.base] = (counts[attempt.base] || 0) + 1;
+  }
+  assert.deepEqual(counts, byCohort);
+  assert.equal(
+    attempts.length,
+    Object.values(byCohort).reduce((sum, n) => sum + n, 0),
+  );
+});
+
+test("buildWarehouseAttemptList keeps uniform *2 floor and accepts per-cohort sample floor", () => {
+  const workloadsByBase = new Map(
+    WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => [cohort, { cohort }]),
+  );
+  assert.throws(
+    () => buildWarehouseAttemptList({
+      workloadsByBase,
+      warehouseAttemptsPerInput: WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT * 2 - 1,
+    }),
+    /warehouse attempt bound is invalid/,
+  );
+  const byCohort = Object.fromEntries(
+    WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => [
+      cohort,
+      cohort === "browse"
+        ? WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT
+        : WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT + 20,
+    ]),
+  );
+  const attempts = buildWarehouseAttemptList({
+    workloadsByBase,
+    warehouseAttemptsByCohort: byCohort,
+  });
+  assert.equal(attempts.filter((row) => row.base === "browse").length, WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT);
+});
+
+test("createLiveWorkerCostTransport rejects incomplete warehouseAttemptsByCohort maps", () => {
+  const env = {
+    CLOUDFLARE_OBSERVABILITY_TOKEN: "telemetry-only",
+    WORKER_COST_ADMIN_KEY: "admin-key",
+    CLOUDFLARE_ACCOUNT_ID: "account",
+    WORKER_HEALTH_URL: "https://worker.example/health",
+    WORKER_API_ORIGIN: "https://worker.example",
+    WORKER_COST_MEASUREMENT_PLAN: JSON.stringify({ run_marker: RUN, workload_digest: WORKLOAD }),
+  };
+  assert.throws(
+    () => createLiveWorkerCostTransport({
+      env,
+      warehouseAttemptsByCohort: { health: 200 },
+    }),
+    /warehouseAttemptsByCohort missing cohort/,
+  );
+  assert.throws(
+    () => createLiveWorkerCostTransport({
+      env,
+      warehouseAttemptsByCohort: Object.fromEntries(
+        WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => [cohort, WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT - 1]),
+      ),
+    }),
+    /warehouse attempt bound is invalid for cohort/,
   );
 });
 
