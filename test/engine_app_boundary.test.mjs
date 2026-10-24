@@ -76,9 +76,10 @@ test('a newly committed module is rejected by the old ledger', (t) => {
   assert.ok(verifyLedger(updated, ledger).findings.some((f) => f.code === 'UNCLASSIFIED_UNIT'));
 });
 
-test('computed imports and unresolved source targets never silently pass', (t) => {
+test('immutable import bindings still fail for missing source targets', (t) => {
   const { inventory, ledger } = fixture(t, { 'capabilities/read.mjs': 'const path = "./unknown.mjs"; export const value = import(path);' });
-  assert.ok(verifyLedger(inventory, ledger).findings.some((f) => f.code === 'DYNAMIC_IMPORT_REQUIRES_OBSERVER'));
+  assert.ok(verifyLedger(inventory, ledger).findings.some((f) => f.code === 'UNRESOLVED_IMPORT'));
+  assert.equal(verifyLedger(inventory, ledger).status, 'FAIL');
 });
 
 test('literal lazy imports contribute real reverse edges, including comment-separated calls', (t) => {
@@ -266,4 +267,98 @@ test('a hardlink receipt cannot overwrite the private ownership ledger', (t) => 
   const result = spawnSync(process.execPath,[cli,'--stage','foundation','--root',root,'--receipt',receipt],{encoding:'utf8',env:{...process.env,CITYSCROLL_ENGINE_APP_LEDGER:privateFile}});
   assert.equal(result.status,1);
   assert.deepEqual(JSON.parse(readFileSync(privateFile,'utf8')),ledger);
+});
+
+test('immutable lexical const literal import records its target and follows transitive source', (t) => {
+  const { inventory, ledger } = fixture(t, {
+    'capabilities/read.mjs': 'const TARGET = "../shared/entry.mjs"; export async function load() { return import(TARGET); } export const value = 1;',
+    'shared/entry.mjs': 'export {value} from "../worker/src/identity.mjs";',
+    'worker/src/identity.mjs': 'export const value = "private";',
+  });
+  assert.ok(inventory.edges.some((e) => e.from === 'capabilities/read.mjs' && e.to === 'shared/entry.mjs'));
+  assert.ok(inventory.observation.parsed.includes('shared/entry.mjs'));
+  assert.ok(!inventory.unresolved.some((f) => f.path === 'capabilities/read.mjs'));
+  ledger.units.find((u) => u.id === 'file:shared/entry.mjs').target_owner = 'engine';
+  ledger.units.find((u) => u.id === 'file:worker/src/identity.mjs').target_owner = 'identity';
+  assert.ok(verifyLedger(inventory, ledger).findings.some((f) => f.code === 'REVERSE_IMPORT'));
+});
+
+test('ambiguous, shadowed, mutable and uninitialized import bindings remain unresolved', async (t) => {
+  const cases = {
+    'function parameter': 'const TARGET="../shared/safe.mjs"; export function load(TARGET) { return import(TARGET); }',
+    'default parameter': 'const TARGET="../shared/safe.mjs"; export function load(TARGET="../shared/private.mjs") { return import(TARGET); }',
+    'block let shadow before declaration': 'const TARGET="../shared/safe.mjs"; { import(TARGET); let TARGET="../shared/private.mjs"; }',
+    'block const TDZ': 'const TARGET="../shared/safe.mjs"; { import(TARGET); const TARGET="../shared/private.mjs"; }',
+    'catch parameter': 'const TARGET="../shared/safe.mjs"; try {} catch(TARGET) { import(TARGET); }',
+    'catch destructuring': 'const TARGET="../shared/safe.mjs"; try {} catch({TARGET}) { import(TARGET); }',
+    'hoisted function var': 'const TARGET="../shared/safe.mjs"; export function load() { import(TARGET); if(false) { var TARGET="../shared/private.mjs"; } }',
+    'function declaration': 'const TARGET="../shared/safe.mjs"; { function TARGET() {} import(TARGET); }',
+    'named function expression': 'const TARGET="../shared/safe.mjs"; export const load=function TARGET() { return import(TARGET); };',
+    'destructured const': 'const TARGET="../shared/safe.mjs"; { const {TARGET}=options; import(TARGET); }',
+    'array destructured parameter': 'const TARGET="../shared/safe.mjs"; export function load([TARGET]) { return import(TARGET); }',
+    'for binding': 'const TARGET="../shared/safe.mjs"; for(let TARGET of options) { import(TARGET); }',
+    'mutable let': 'let TARGET="../shared/safe.mjs"; export const value=import(TARGET);',
+    'mutable var': 'var TARGET="../shared/safe.mjs"; export const value=import(TARGET);',
+    'direct TDZ': 'export const value=import(TARGET); const TARGET="../shared/safe.mjs";',
+    'closure before const despite later invocation': 'function load() { return import(TARGET); } const TARGET="../shared/safe.mjs"; export const value=load();',
+    'alias initializer': 'const SOURCE="../shared/safe.mjs"; const TARGET=SOURCE; export const value=import(TARGET);',
+    'dynamic initializer': 'const TARGET=choose(); export const value=import(TARGET);',
+    'computed import template': 'const TARGET="../shared/safe.mjs"; export const value=import(`${TARGET}`);',
+  };
+  for (const [name, source] of Object.entries(cases)) await t.test(name, (subtest) => {
+    const { inventory } = fixture(subtest, {
+      'capabilities/read.mjs': source,
+      'shared/safe.mjs': 'export const safe=true;',
+      'shared/private.mjs': 'export const privateValue=true;',
+    });
+    assert.ok(inventory.unresolved.some((f) => f.code === 'DYNAMIC_IMPORT_REQUIRES_OBSERVER' && f.path === 'capabilities/read.mjs'), name);
+    assert.ok(!inventory.edges.some((e) => e.from === 'capabilities/read.mjs'), name);
+  });
+});
+
+test('closest immutable block binding wins without adding an outer target', (t) => {
+  const { inventory } = fixture(t, {
+    'capabilities/read.mjs': 'const TARGET="../shared/outer.mjs"; { const TARGET="../shared/inner.mjs"; import(TARGET); } export const value=1;',
+    'shared/outer.mjs': 'export const outer=true;',
+    'shared/inner.mjs': 'export const inner=true;',
+  });
+  assert.ok(inventory.edges.some((e) => e.from === 'capabilities/read.mjs' && e.to === 'shared/inner.mjs'));
+  assert.ok(!inventory.edges.some((e) => e.from === 'capabilities/read.mjs' && e.to === 'shared/outer.mjs'));
+  assert.deepEqual(inventory.unresolved, []);
+});
+
+test('function parameter initializers do not see body-only const declarations', (t) => {
+  const { inventory } = fixture(t, {
+    'capabilities/read.mjs': 'const TARGET="../shared/outer.mjs"; export function load(value=import(TARGET)) { const TARGET="../shared/inner.mjs"; return value; }',
+    'shared/outer.mjs': 'export const outer=true;',
+    'shared/inner.mjs': 'export const inner=true;',
+  });
+  assert.ok(inventory.edges.some((e) => e.from === 'capabilities/read.mjs' && e.to === 'shared/outer.mjs'));
+  assert.ok(!inventory.edges.some((e) => e.from === 'capabilities/read.mjs' && e.to === 'shared/inner.mjs'));
+  assert.deepEqual(inventory.unresolved, []);
+});
+
+
+test('a CommonJS function arguments object shadows an outer const of the same name', (t) => {
+  const { inventory } = fixture(t, {
+    'capabilities/read.mjs': 'export const value=1;',
+    'capabilities/reader.cjs': 'const arguments="../shared/safe.mjs"; function load() { return import(arguments); }',
+    'shared/safe.mjs': 'export const safe=true;',
+  });
+  assert.ok(inventory.unresolved.some((f) => f.code === 'DYNAMIC_IMPORT_REQUIRES_OBSERVER' && f.path === 'capabilities/reader.cjs'));
+  assert.ok(!inventory.edges.some((e) => e.from === 'capabilities/reader.cjs'));
+});
+
+
+test('classic and CommonJS script bindings remain unsupported rather than guessing Annex B scopes', (t) => {
+  const { inventory } = fixture(t, {
+    'capabilities/read.mjs': 'export const value=1;',
+    'capabilities/classic.js': 'const TARGET="../shared/safe.mjs"; function load() { if(true) { function TARGET() {} } return import(TARGET); }',
+    'capabilities/common.cjs': 'const TARGET="../shared/safe.mjs"; function load() { if(true) { function TARGET() {} } return import(TARGET); }',
+    'shared/safe.mjs': 'export const safe=true;',
+  });
+  for (const path of ['capabilities/classic.js','capabilities/common.cjs']) {
+    assert.ok(inventory.unresolved.some((f) => f.code === 'DYNAMIC_IMPORT_REQUIRES_OBSERVER' && f.path === path));
+    assert.ok(!inventory.edges.some((e) => e.from === path));
+  }
 });

@@ -39,6 +39,78 @@ function parseData(kind, source) {
   return JSON.parse(result.stdout);
 }
 
+// This intentionally resolves a small lexical subset, not JavaScript execution.
+// Collect every binding before lookup so later declarations, parameters and var
+// hoisting cannot accidentally expose an outer constant of the same name.
+function immutableImportBindings(tree, literal) {
+  const nodeScopes = new WeakMap();
+  const scope = (parent, kind) => ({parent,kind,bindings:new Map(),dynamic:false});
+  const root = scope(null,'function');
+  const names = (pattern) => {
+    if (!pattern) return [];
+    if (pattern.type === 'Identifier') return [pattern.name];
+    if (pattern.type === 'RestElement') return names(pattern.argument);
+    if (pattern.type === 'AssignmentPattern') return names(pattern.left);
+    if (pattern.type === 'ArrayPattern') return pattern.elements.flatMap(names);
+    if (pattern.type === 'ObjectPattern') return pattern.properties.flatMap((p) => names(p.type === 'RestElement' ? p.argument : p.value));
+    return [];
+  };
+  const bind = (target, name, declaration = null, value = null) => {
+    const claims = target.bindings.get(name) || [];
+    claims.push({declaration,value}); target.bindings.set(name,claims);
+  };
+  const blockKinds = new Set(['BlockStatement','StaticBlock','SwitchStatement','ForStatement','ForInStatement','ForOfStatement']);
+  const functions = new Set(['FunctionDeclaration','FunctionExpression','ArrowFunctionExpression']);
+  const scan = (node, current) => {
+    if (!node || typeof node !== 'object' || typeof node.type !== 'string') return;
+    if (node.type === 'FunctionDeclaration' && node.id) bind(current,node.id.name);
+    if (node.type === 'ClassDeclaration' && node.id) bind(current,node.id.name);
+    let inner = current;
+    if (functions.has(node.type)) {
+      inner=scope(current,'function');
+      if (node.type !== 'ArrowFunctionExpression') bind(inner,'arguments');
+      if (node.id) bind(inner,node.id.name);
+      for (const param of node.params) for (const name of names(param)) bind(inner,name);
+    } else if (blockKinds.has(node.type)) inner=scope(current,'block');
+    else if (node.type === 'CatchClause') {
+      inner=scope(current,'block');
+      for (const name of names(node.param)) bind(inner,name);
+    } else if (node.type === 'ClassExpression' || node.type === 'ClassDeclaration') {
+      inner=scope(current,'block');
+      if (node.id) bind(inner,node.id.name);
+    } else if (node.type === 'WithStatement') { inner=scope(current,'block'); inner.dynamic=true; }
+    nodeScopes.set(node,inner);
+    if (node.type === 'VariableDeclaration') {
+      let target=inner;
+      if (node.kind === 'var') while (target.parent && target.kind !== 'function') target=target.parent;
+      for (const declaration of node.declarations) {
+        const value = node.kind === 'const' && declaration.id.type === 'Identifier' ? literal(declaration.init) : null;
+        for (const name of names(declaration.id)) bind(target,name,typeof value === 'string' ? declaration : null,value);
+      }
+    }
+    if (node.type === 'ImportDeclaration') for (const specifier of node.specifiers) bind(inner,specifier.local.name);
+    for (const child of Object.values(node)) {
+      if (Array.isArray(child)) child.forEach((n) => scan(n,inner));
+      else if (child && typeof child === 'object' && typeof child.type === 'string') scan(child,inner);
+    }
+  };
+  scan(tree,root);
+  return (identifier, use) => {
+    if (identifier?.type !== 'Identifier') return null;
+    for (let current=nodeScopes.get(identifier); current; current=current.parent) {
+      if (current.dynamic) return null;
+      const bindings=current.bindings.get(identifier.name);
+      if (!bindings) continue;
+      if (bindings.length !== 1) return null;
+      const {declaration,value}=bindings[0];
+      // Reject textual use before initialization, including a closure declared
+      // before the constant. We do not infer callback invocation order.
+      return declaration && declaration.end < use.start && typeof value === 'string' ? value : null;
+    }
+    return null;
+  };
+}
+
 export function collectInventory({ root, revision = 'HEAD' }) {
   if (!parser || parser.version !== PARSER_VERSION) throw new Error('PINNED_SOURCE_PARSER_REQUIRED');
   const commit = git(root, ['rev-parse', '--verify', `${revision}^{commit}`]).trim();
@@ -133,8 +205,12 @@ export function collectInventory({ root, revision = 'HEAD' }) {
     const claim = (kind, node) => { const key = `${kind}:${at(node)}`; if (!semanticClaims.has(key)) { semanticClaims.add(key); add(kind,path,at(node),text.slice(node.start,node.end)); } };
     const literal = (node) => node?.type === 'Literal' && typeof node.value === 'string' ? node.value
       : node?.type === 'TemplateLiteral' && node.expressions.length === 0 ? node.quasis[0].value.cooked : null;
-    const observeImport = (node, argument) => {
-      const specifier = literal(argument);
+    // .js can be a classic sloppy browser/CommonJS script despite module-mode
+    // parsing here. Annex B block functions have different binding rules there.
+    // Resolve lexical constants only for explicitly module-typed .mjs source.
+    const immutableImport = path.endsWith('.mjs') ? immutableImportBindings(tree,literal) : () => null;
+    const observeImport = (node, argument, resolveConst = false) => {
+      const specifier = literal(argument) ?? (resolveConst ? immutableImport(argument,node) : null);
       if (typeof specifier === 'string') specifiers.add(specifier);
       else unresolved.push({code:'DYNAMIC_IMPORT_REQUIRES_OBSERVER', path, location:at(node)});
     };
@@ -148,7 +224,7 @@ export function collectInventory({ root, revision = 'HEAD' }) {
       if (!node || typeof node !== 'object' || typeof node.type !== 'string' || visitedNodes.has(node)) return;
       visitedNodes.add(node);
       if (['ImportDeclaration','ExportNamedDeclaration','ExportAllDeclaration'].includes(node.type) && node.source) observeImport(node, node.source);
-      if (node.type === 'ImportExpression') observeImport(node, node.source);
+      if (node.type === 'ImportExpression') observeImport(node, node.source, true);
       if (node.type === 'CallExpression') {
         if (node.callee.type === 'Identifier' && node.callee.name === 'require') observeImport(node, node.arguments[0]);
         // Loader aliases, createRequire, eval and code constructors need their
