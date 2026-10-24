@@ -480,7 +480,7 @@ jobs:
         if: matrix.family == 'site-node'
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
-          python3 -m pip install PyYAML==6.0.3
+          python3 -m pip install --requirement tools/source_verification_requirements.txt
       - name: Site unit tests
         if: matrix.family == 'site-node'
         env:

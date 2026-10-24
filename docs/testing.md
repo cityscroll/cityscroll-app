@@ -83,4 +83,6 @@ engine, a reverse import into private code, and a stale source revision or evide
 and a missing ledger or unsupported stage exits non-zero rather than passing. A passing test suite
 is therefore evidence that the verifier works, not evidence that the real tree's ownership ledger
 is complete. The `site-node` family installs the pinned parser with `npm ci` and requires Python
-3.11+ with PyYAML 6.0.3 for the TOML and workflow observers.
+3.11+ with the PyYAML pin in `tools/source_verification_requirements.txt` for the TOML and workflow
+observers. CI installs that file in the `site-node` job; locally, `make setup-a11y` installs it into
+the shared accessibility Python environment the pre-push hook runs the preflight in.

@@ -466,7 +466,13 @@ family_site_node() {
   run_and_fail npm ci --ignore-scripts --no-audit --no-fund
   # Config observers consume typed TOML/YAML. Check the same prerequisites CI
   # installs, rather than allowing tests to depend on an incidental environment.
-  run_and_fail python3 -c 'import sys,tomllib,yaml; assert sys.version_info >= (3,11) and yaml.__version__ == "6.0.3", "Source verification requires Python 3.11+ and PyYAML 6.0.3"'
+  # The pre-push hook runs this family inside the shared accessibility Python
+  # environment; 'make setup-a11y' installs tools/source_verification_requirements.txt there.
+  if ! python3 -c 'import sys,tomllib,yaml; assert sys.version_info >= (3,11) and yaml.__version__ == "6.0.3"' >/dev/null 2>&1; then
+    echo "Source verification requires Python 3.11+ with PyYAML 6.0.3 (tools/source_verification_requirements.txt)." >&2
+    echo "Run 'make setup-a11y' once, then run the preflight through tools/with_local_a11y_python.sh (the pre-push hook already does)." >&2
+    exit 2
+  fi
   run_banner "PASSPort action-family population gate" "Population accounting and action-family fidelity" \
     "node --test test/passport_action_families.test.mjs"
   run_node_test test/passport_action_families.test.mjs
