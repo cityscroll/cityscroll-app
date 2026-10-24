@@ -180,6 +180,7 @@
 /integrations/
 /ontology/
 /ops/
+/package-lock.json
 /package.json
 /performance-budgets.json
 /site/CNAME

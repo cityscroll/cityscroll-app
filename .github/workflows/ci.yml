@@ -476,6 +476,11 @@ jobs:
         if: matrix.family == 'static-standards'
         run: python3 -m unittest discover -s test -p 'temp_workspace_guard_test.py'
 
+      - name: Install source verification dependencies
+        if: matrix.family == 'site-node'
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          python3 -m pip install PyYAML==6.0.3
       - name: Site unit tests
         if: matrix.family == 'site-node'
         env:
