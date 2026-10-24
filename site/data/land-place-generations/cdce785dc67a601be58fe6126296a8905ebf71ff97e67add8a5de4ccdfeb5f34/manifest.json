@@ -1,0 +1,46 @@
+{
+  "schema": "cityscroll.land_place_generation_manifest.v1",
+  "generation_id": "cdce785dc67a601be58fe6126296a8905ebf71ff97e67add8a5de4ccdfeb5f34",
+  "built_at": "2026-10-24T12:06:12.644Z",
+  "input_hashes": {
+    "aggregate": "51fd66069261ef03685c697c6e87ff46342fce8d91c0634f115330f5648a005d",
+    "boundary_vintages": {
+      "borough": "2026-05-26",
+      "community_district": "2026-05-26",
+      "council_district": "2026-05-26",
+      "nta2020": "26B",
+      "police_precinct": "26B"
+    },
+    "parcel_coordinate_vintage": "pluto_25v4",
+    "address_index_identity": "8e09a17cbe4b957e7d2905852cb10b7295ddf814f7defdceccca75685550687b"
+  },
+  "source_dates": {
+    "catalog_content_id": "fnv1a32:d6deabc4:244",
+    "catalog_materialized_at": "2026-10-24T12:06:12.644Z",
+    "catalog_generated_at": "2026-10-24T11:48:54.353Z",
+    "bbl_materialized_at": "2026-10-05T17:35:26.970Z",
+    "parcel_coordinate_vintage": "pluto_25v4",
+    "boundary_vintages": {
+      "borough": "2026-05-26",
+      "community_district": "2026-05-26",
+      "council_district": "2026-05-26",
+      "nta2020": "26B",
+      "police_precinct": "26B"
+    }
+  },
+  "project_count": 244,
+  "consumers": {
+    "index": {
+      "generation_id": "cdce785dc67a601be58fe6126296a8905ebf71ff97e67add8a5de4ccdfeb5f34",
+      "content_sha256": "41cf0f039f1f4343ee5c9fd7a6afe756697b57bc0742123cac51f2454a0b27f3"
+    },
+    "evidence": {
+      "generation_id": "cdce785dc67a601be58fe6126296a8905ebf71ff97e67add8a5de4ccdfeb5f34",
+      "content_sha256": "c6c3f12a9f8736648d69b424eb448201eec874f168f83a029d9f1485510b6c5d"
+    },
+    "reverse": {
+      "generation_id": "cdce785dc67a601be58fe6126296a8905ebf71ff97e67add8a5de4ccdfeb5f34",
+      "content_sha256": "aba14e86190abf28ae6a452ec81add8387b42258e091ba8e16937ba1ab867e4e"
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
   "phase": "WH-07",
-  "measured_at": "2026-10-17T01:53:32.924Z",
+  "measured_at": "2026-10-24T12:06:13.545Z",
   "replaced_fetch": {
     "function": "fetchRelatedProcurementNotices",
     "file": "worker/src/checkbook_lifecycle.mjs",
@@ -10,26 +10,26 @@
   "warehouse_duckdb_build_path": null,
   "materialized_index_edge_path": {
     "samples_ms": [
-      0.0553,
-      0.0039,
-      0.0024,
+      0.0887,
+      0.0042,
       0.0025,
-      0.0035
+      0.0025,
+      0.0034
     ],
-    "p50_ms": 0.0035,
-    "mean_ms": 0.0135,
+    "p50_ms": 0.0034,
+    "mean_ms": 0.0203,
     "n": 5,
     "path": "materialized_index",
     "pin": "81626W0043001"
   },
   "soda_live_previous_path": {
     "samples_ms": [
-      175.67,
-      92.36,
-      1413.12
+      329.5,
+      274.25,
+      181.42
     ],
-    "p50_ms": 175.67,
-    "mean_ms": 560.38,
+    "p50_ms": 274.25,
+    "mean_ms": 261.72,
     "n": 3,
     "path": "soda_live",
     "rows": 1,
@@ -38,10 +38,10 @@
     "note": "Previous live miss path in fetchRelatedProcurementNotices"
   },
   "speedup": {
-    "soda_p50_ms": 175.67,
-    "warehouse_materialized_p50_ms": 0.0035,
-    "ratio_vs_0_01ms_floor": 17567,
-    "summary": "City Record PIN-chain lookup p50: live SODA 175.67ms → warehouse materialization 0.0035ms (sub-ms; removes a SODA RTT)",
+    "soda_p50_ms": 274.25,
+    "warehouse_materialized_p50_ms": 0.0034,
+    "ratio_vs_0_01ms_floor": 27425,
+    "summary": "City Record PIN-chain lookup p50: live SODA 274.25ms → warehouse materialization 0.0034ms (sub-ms; removes a SODA RTT)",
     "note": "Edge path is the materialized index; DuckDB spawn is build-time only"
   }
 }
