@@ -369,7 +369,7 @@ export function main(args = process.argv.slice(2)) {
   const report = verifyLedger(collectInventory({ root, revision: options.revision || 'HEAD' }), ledger);
   if (options.receipt) {
     // Receipt must already exist outside the public repository; no accidental
-    // creation of a private inventory beneath a public worktree is permitted.
+    // creation of a private inventory beneath the public checkout is permitted.
     const receiptPath = privatePath(options.receipt, root);
     const receiptStat = statSync(receiptPath), ledgerStat = statSync(ledgerPath);
     if (receiptPath === ledgerPath || (receiptStat.dev === ledgerStat.dev && receiptStat.ino === ledgerStat.ino)) throw new Error('RECEIPT_OVERWRITES_LEDGER');
