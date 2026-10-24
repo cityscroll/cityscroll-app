@@ -501,6 +501,66 @@ function warehouseFlaglessWorkloads(byCohort) {
   return workloads;
 }
 
+/**
+ * Build the flat warehouse attempt list for collectWarehouseRun.
+ *
+ * Uniform mode (warehouseAttemptsByCohort null): one attempt index per input
+ * repeated across every base cohort — existing behavior.
+ * Per-cohort mode: each base gets its own attempt count. Cohort floor is
+ * WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT; the uniform *2 floor applies only
+ * to the uniform path so callers may schedule counts down to that sample floor.
+ *
+ * @param {{
+ *   workloadsByBase: Map<string, object>,
+ *   warehouseAttemptsPerInput?: number,
+ *   warehouseAttemptsByCohort?: Record<string, number>|null,
+ * }} opts
+ * @returns {{ base: string, workload: object, index: number }[]}
+ */
+export function buildWarehouseAttemptList({
+  workloadsByBase,
+  warehouseAttemptsPerInput = WAREHOUSE_MAX_ATTEMPTS_PER_INPUT,
+  warehouseAttemptsByCohort = null,
+} = {}) {
+  if (!(workloadsByBase instanceof Map) || workloadsByBase.size === 0) {
+    throw new Error("warehouse workloadsByBase must be a non-empty Map");
+  }
+  if (warehouseAttemptsByCohort != null) {
+    if (typeof warehouseAttemptsByCohort !== "object" || Array.isArray(warehouseAttemptsByCohort)) {
+      throw new Error("warehouseAttemptsByCohort must be a plain object when provided");
+    }
+    const attempts = [];
+    for (const [base, workload] of workloadsByBase.entries()) {
+      if (!Object.prototype.hasOwnProperty.call(warehouseAttemptsByCohort, base)) {
+        throw new Error(`warehouseAttemptsByCohort missing cohort ${base}`);
+      }
+      const n = warehouseAttemptsByCohort[base];
+      if (!Number.isInteger(n)
+        || n < WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT
+        || n > WAREHOUSE_MAX_ATTEMPTS_PER_INPUT) {
+        throw new Error(`warehouse attempt bound is invalid for cohort ${base}`);
+      }
+      for (let index = 0; index < n; index += 1) {
+        attempts.push({ base, workload, index });
+      }
+    }
+    for (const key of Object.keys(warehouseAttemptsByCohort)) {
+      if (!workloadsByBase.has(key)) {
+        throw new Error(`warehouseAttemptsByCohort has unknown cohort ${key}`);
+      }
+    }
+    return attempts;
+  }
+  if (!Number.isInteger(warehouseAttemptsPerInput)
+    || warehouseAttemptsPerInput < WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT * 2
+    || warehouseAttemptsPerInput > WAREHOUSE_MAX_ATTEMPTS_PER_INPUT) {
+    throw new Error("warehouse attempt bound is invalid");
+  }
+  return Array.from({ length: warehouseAttemptsPerInput }, (_, index) => (
+    [...workloadsByBase.entries()].map(([base, workload]) => ({ base, workload, index }))
+  )).flat();
+}
+
 function providerEventsByProbeHeader(events) {
   const indexed = new Map();
   for (const event of events) {
@@ -578,6 +638,9 @@ export function createLiveWorkerCostTransport({
   setIntervalImpl = setInterval,
   clearIntervalImpl = clearInterval,
   warehouseAttemptsPerInput = WAREHOUSE_MAX_ATTEMPTS_PER_INPUT,
+  // Optional per-cohort attempt map. When set, overrides uniform warehouseAttemptsPerInput.
+  // Cohort floor is samplesPerCohort (100); uniform *2 floor applies only to the uniform path.
+  warehouseAttemptsByCohort = null,
   // null keeps the prior concurrent start behavior; a positive number enables paced starts.
   warehouseProbeMaxStartsPerSecond = null,
   // Monotonic pacing clock only; wall `now` stays for measurement timestamps.
@@ -615,7 +678,27 @@ export function createLiveWorkerCostTransport({
     }
     return plan;
   };
-  if (!Number.isInteger(warehouseAttemptsPerInput)
+  if (warehouseAttemptsByCohort != null) {
+    if (typeof warehouseAttemptsByCohort !== "object" || Array.isArray(warehouseAttemptsByCohort)) {
+      throw new Error("warehouseAttemptsByCohort must be a plain object when provided");
+    }
+    for (const base of WAREHOUSE_BASE_COHORTS) {
+      if (!Object.prototype.hasOwnProperty.call(warehouseAttemptsByCohort, base)) {
+        throw new Error(`warehouseAttemptsByCohort missing cohort ${base}`);
+      }
+      const n = warehouseAttemptsByCohort[base];
+      if (!Number.isInteger(n)
+        || n < WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT
+        || n > WAREHOUSE_MAX_ATTEMPTS_PER_INPUT) {
+        throw new Error(`warehouse attempt bound is invalid for cohort ${base}`);
+      }
+    }
+    for (const key of Object.keys(warehouseAttemptsByCohort)) {
+      if (!WAREHOUSE_BASE_COHORTS.includes(key)) {
+        throw new Error(`warehouseAttemptsByCohort has unknown cohort ${key}`);
+      }
+    }
+  } else if (!Number.isInteger(warehouseAttemptsPerInput)
     || warehouseAttemptsPerInput < WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT * 2
     || warehouseAttemptsPerInput > WAREHOUSE_MAX_ATTEMPTS_PER_INPUT) {
     throw new Error("warehouse attempt bound is invalid");
@@ -823,9 +906,11 @@ export function createLiveWorkerCostTransport({
       } catch (error) {
         return { status: "blocked", reason: String(error?.message || error) };
       }
-      const attempts = Array.from({ length: warehouseAttemptsPerInput }, (_, index) => (
-        [...workloadsByBase.entries()].map(([base, workload]) => ({ base, workload, index }))
-      )).flat();
+      const attempts = buildWarehouseAttemptList({
+        workloadsByBase,
+        warehouseAttemptsPerInput,
+        warehouseAttemptsByCohort,
+      });
       const collectorMaxAttempts = collectorOversampleMaxAttempts({
         collectorSampleCount,
         baseRetainedSampleCount: workloadsByBase.size * samplesPerCohort,
