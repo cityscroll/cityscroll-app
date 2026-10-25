@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "kind": "land_upcoming_hearings_materialization",
-  "observed_at": "2026-10-22T20:14:02.361Z",
+  "observed_at": "2026-10-25T12:36:00.373Z",
   "method": "zap_published_hearing_sweep_v2",
   "mode": "live",
   "projects_listed": 235,
@@ -10,9 +10,9 @@
   "unavailable_project_ids": [
     "2026X0464"
   ],
-  "hearings_extracted": 423,
-  "disposition_hearings_extracted": 99,
-  "milestone_hearings_extracted": 324,
+  "hearings_extracted": 424,
+  "disposition_hearings_extracted": 102,
+  "milestone_hearings_extracted": 322,
   "before_upcoming_count": 2,
   "milestone_upcoming_count": 148,
   "incremental_milestone_count": 148,
@@ -20,8 +20,8 @@
     "cpc_pre_hearing_review_session": 77,
     "cpc_public_hearing": 71
   },
-  "published_meeting_dates_evaluated": 897,
-  "hearing_shaped_candidates_reviewed": 846,
+  "published_meeting_dates_evaluated": 892,
+  "hearing_shaped_candidates_reviewed": 841,
   "upcoming_count": 150,
   "statuses": [
     "In Public Review",

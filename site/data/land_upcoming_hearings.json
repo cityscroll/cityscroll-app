@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-22T20:14:02.361Z",
+  "generated_at": "2026-10-25T12:36:00.373Z",
   "sources": [
     "zap-api-dispositions",
     "zap-api-milestones"
@@ -9,16 +9,16 @@
   "materialization": {
     "method": "zap_published_hearing_sweep_v2",
     "mode": "live",
-    "today": "2026-10-22",
+    "today": "2026-10-25",
     "projects_listed": 235,
     "projects_fetched": 234,
     "projects_failed": 1,
     "unavailable_project_ids": [
       "2026X0464"
     ],
-    "hearings_extracted": 423,
-    "disposition_hearings_extracted": 99,
-    "milestone_hearings_extracted": 324,
+    "hearings_extracted": 424,
+    "disposition_hearings_extracted": 102,
+    "milestone_hearings_extracted": 322,
     "disposition_upcoming_count": 2,
     "milestone_upcoming_count": 148,
     "incremental_milestone_count": 148,
@@ -26,8 +26,8 @@
       "cpc_pre_hearing_review_session": 77,
       "cpc_public_hearing": 71
     },
-    "published_meeting_dates_evaluated": 897,
-    "hearing_shaped_candidates_reviewed": 846,
+    "published_meeting_dates_evaluated": 892,
+    "hearing_shaped_candidates_reviewed": 841,
     "upcoming_count": 150,
     "statuses": [
       "In Public Review",
@@ -3011,46 +3011,6 @@
     {
       "schema_version": 1,
       "source": "zap-api-milestones",
-      "project_id": "2026K0123",
-      "project_name": "1550 Bedford Avenue Rezoning",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2026K0123",
-      "borough": "Brooklyn",
-      "community_district": "K09",
-      "cc_district": "35",
-      "milestone_id": "38dd27d1-ccb8-f011-bbd3-001dd80340cd",
-      "milestone_title": "City Planning Commission Review",
-      "milestone_source_title": "CPC Public Meeting - Public Hearing",
-      "event_class": "cpc_public_hearing",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-12-02",
-      "hearing_at": "2026-12-02T05:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-12-02T05:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "CPC Public Meeting - Public Hearing"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_public_hearing"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
       "project_id": "2026M0136",
       "project_name": "800 Fifth Avenue Non-ULURP Mod",
       "public_status": "Filed",
@@ -4259,6 +4219,46 @@
       "community_district": null,
       "cc_district": null,
       "milestone_id": "1c39616c-e408-f011-bae2-001dd80db62a",
+      "milestone_title": "City Planning Commission Review",
+      "milestone_source_title": "CPC Public Meeting - Public Hearing",
+      "event_class": "cpc_public_hearing",
+      "representing": "City Planning Commission",
+      "phase_id": "cpc",
+      "hearing_date": "2026-12-12",
+      "hearing_at": "2026-12-12T05:00:00.000Z",
+      "hearing_location_raw": null,
+      "venue_address": null,
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [],
+      "maps_url": null,
+      "parse_status": "published_date_only",
+      "provenance": {
+        "field": "dcp-reviewmeetingdate",
+        "source": "zap-api-milestones",
+        "value": "2026-12-12T05:00:00.000Z",
+        "title": {
+          "field": "milestonename",
+          "value": "CPC Public Meeting - Public Hearing"
+        },
+        "classification": {
+          "method": "exact_published_title_v1",
+          "event_class": "cpc_public_hearing"
+        },
+        "derived": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-milestones",
+      "project_id": "2026K0123",
+      "project_name": "1550 Bedford Avenue Rezoning",
+      "public_status": "In Public Review",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2026K0123",
+      "borough": "Brooklyn",
+      "community_district": "K09",
+      "cc_district": "35",
+      "milestone_id": "38dd27d1-ccb8-f011-bbd3-001dd80340cd",
       "milestone_title": "City Planning Commission Review",
       "milestone_source_title": "CPC Public Meeting - Public Hearing",
       "event_class": "cpc_public_hearing",
