@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.analytics_registered_contracts.v1",
   "projection_contract": "cityscroll.analytical_projection.v1",
-  "generated_at": "2026-10-22T19:54:16.507Z",
-  "snapshot_date": "2026-10-22",
+  "generated_at": "2026-10-25T12:24:03.956Z",
+  "snapshot_date": "2026-10-25",
   "population_definition": "Normalized Checkbook NYC registered expense contracts; one row per exact prime_contract_id across explicit collection fiscal-year partitions.",
   "dimensions": [
     "agency",
@@ -32,12 +32,12 @@
     "city_record_missing_pin_contract_count"
   ],
   "registration_timing_summary": {
-    "total_contract_count": 28934,
-    "eligible_contract_count": 28934,
+    "total_contract_count": 29114,
+    "eligible_contract_count": 29114,
     "missing_date_contract_count": 0,
-    "retroactive_contract_count": 15962,
-    "early_on_time_contract_count": 12972,
-    "retroactive_share": 0.5516693163751988,
+    "retroactive_contract_count": 16064,
+    "early_on_time_contract_count": 13050,
+    "retroactive_share": 0.5517620388816377,
     "missing_date_share": 0,
     "median_lag_days": 7,
     "p75_lag_days": 106,
@@ -49,16 +49,16 @@
     "city_record_input": "site/data/ocp_awards_warehouse_lookup.json",
     "pin_enrichment": null,
     "buckets": {
-      "exact": 5078,
-      "none": 11600,
-      "cannot_evaluate_missing_pin": 12256
+      "exact": 5071,
+      "none": 11662,
+      "cannot_evaluate_missing_pin": 12381
     }
   },
   "source_population": {
     "source_tag": "checkbook-contracts",
-    "observed_at": "2026-10-22T19:54:16.507Z",
+    "observed_at": "2026-10-25T12:24:03.956Z",
     "observation_basis": "acquisition receipt pulled_at",
-    "normalized_unique_contracts": 28934,
+    "normalized_unique_contracts": 29114,
     "source_fiscal_years": [
       2025,
       2026,
@@ -68,17 +68,17 @@
   },
   "representation": "sharded",
   "shard_schema": "cityscroll.analytics_registered_contracts_shard.v1",
-  "row_count": 28934,
+  "row_count": 29114,
   "shards": [
     {
       "path": "analytics_registered_contracts/shard-000.json",
-      "bytes": 18663676,
-      "row_count": 14960
+      "bytes": 18664323,
+      "row_count": 14962
     },
     {
       "path": "analytics_registered_contracts/shard-001.json",
-      "bytes": 17496516,
-      "row_count": 13974
+      "bytes": 17719289,
+      "row_count": 14152
     }
   ]
 }
