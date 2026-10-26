@@ -38,7 +38,7 @@ jobs:
   # deploy so a new client cannot outrun its matching route/read model.
   api-contract:
     name: Wait for project-connections API contract
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
@@ -53,7 +53,7 @@ jobs:
   deploy:
     name: Deploy public Cloudflare Pages origin
     needs: api-contract
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       deployment_url: ${{ steps.deploy.outputs.deployment-url }}
       pages_alias: ${{ steps.deploy.outputs.pages-deployment-alias-url }}
@@ -270,7 +270,7 @@ jobs:
   smoke:
     name: Pages host live URL smoke
     needs: deploy
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4

@@ -26,7 +26,7 @@ concurrency:
 jobs:
   probe:
     name: Probe Near You and apply the retained aggregate slot
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4

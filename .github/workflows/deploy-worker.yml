@@ -60,7 +60,7 @@ jobs:
   stage:
     name: Stage bounded Worker canary
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.release_mode == 'stage' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
@@ -157,7 +157,7 @@ jobs:
   deploy:
     name: Deploy to Cloudflare Workers
     if: ${{ github.event_name != 'workflow_dispatch' || inputs.release_mode != 'stage' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
@@ -885,7 +885,7 @@ jobs:
   smoke:
     name: Live URL smoke
     needs: deploy
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4

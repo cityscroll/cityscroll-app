@@ -19,7 +19,7 @@ permissions:
 jobs:
   time-travel:
     name: Time-travel (${{ matrix.family }}, +${{ matrix.shift }}d)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     strategy:
       fail-fast: false
