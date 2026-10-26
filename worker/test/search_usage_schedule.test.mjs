@@ -22,13 +22,22 @@ function scheduledWorker({ now = NOW, overrides = {} } = {}) {
   const errors = [];
   const logs = [];
   const pending = [];
-  const context = { Date, console: { log: (...args) => logs.push(args), error: (...args) => errors.push(args) } };
+  const context = {
+    Date,
+    AbortController,
+    setTimeout,
+    clearTimeout,
+    console: { log: (...args) => logs.push(args), error: (...args) => errors.push(args) },
+  };
   for (const match of source.matchAll(/import\s+\{([^}]+)\}\s+from\s+"[^"]+";/g)) {
     for (const entry of match[1].split(",").map((s) => s.trim()).filter(Boolean)) {
       const name = entry.split(/\s+as\s+/).at(-1);
       context[name] = async (...args) => {
         calls.push(name);
         if (overrides[name]) return overrides[name](...args);
+        if (name === "withWorkerAcquisitionReceipt") {
+          return args[3](args[4]?.signal);
+        }
         if (name === "refreshPublicSearchUsageSnapshot") {
           return refreshPublicSearchUsageSnapshot(args[0], { now });
         }
@@ -102,14 +111,50 @@ for (const cron of CRONS) {
   });
 }
 
-test("a throwing delivery job cannot skip search-use publication", async () => {
+test("a throwing delivery job cannot skip search-use publication or later refreshes", async () => {
   const env = productionEnv();
   const worker = scheduledWorker({ overrides: {
     runAlerts() { throw new Error("delivery unavailable"); },
   } });
-  await assert.rejects(worker.run("0 13 * * *", env), /delivery unavailable/);
+  await worker.run("0 13 * * *", env);
   await Promise.all(worker.pending);
   assert.equal((await readPublicSearchUsage(env, { now: NOW })).available, true);
+  assert.ok(worker.calls.includes("prewarmStats"), "later scheduled refreshes must still run");
+  assert.ok(worker.errors.some((args) => /digest delivery failed/.test(args.join(" "))));
+});
+
+test("a timed-out digest step finalizes failure and releases later scheduled refreshes", async () => {
+  const env = { ...productionEnv(), SCHEDULED_STEP_DEADLINE_MS: 5 };
+  const terminal = [];
+  const worker = scheduledWorker({ overrides: {
+    recordDigestDeliveryStarted() { return { status: "STARTED" }; },
+    runAlerts() { return new Promise((resolve) => setTimeout(() => resolve({ receipt: { sent: 2, enqueued: 3 } }), 40)); },
+    recordDigestDeliveryReceipt(_env, receipt, _now, error) {
+      terminal.push({ receipt, error });
+      return { status: error ? "FAILED" : "TERMINAL" };
+    },
+  } });
+  await worker.run("0 13 * * *", env);
+  await Promise.all(worker.pending);
+  assert.equal(terminal.length, 1, "the timed-out digest must still attempt a terminal receipt");
+  assert.match(String(terminal[0].error?.message || terminal[0].error), /scheduled-step deadline/);
+  assert.ok(worker.calls.includes("refreshPayrollTitleMart"), "payroll must not be starved by delivery");
+  assert.ok(worker.calls.includes("refreshProperties"), "address refresh must not be starved by delivery");
+  assert.ok(worker.errors.some((args) => /digest delivery failed/.test(args.join(" "))));
+});
+
+test("a terminal receipt KV failure is loud without stranding later refreshes", async () => {
+  const env = productionEnv();
+  env.ALERT_STATE.put = async () => { throw new Error("terminal receipt KV unavailable"); };
+  const worker = scheduledWorker({ overrides: {
+    recordDigestDeliveryStarted() { return { status: "STARTED" }; },
+    runAlerts() { return { receipt: { sent: 1, enqueued: 2 } }; },
+    async recordDigestDeliveryReceipt(_env) { await _env.ALERT_STATE.put("digest:terminal", "TERMINAL"); },
+  } });
+  await worker.run("0 13 * * *", env);
+  assert.ok(worker.calls.includes("refreshPayrollTitleMart"));
+  assert.ok(worker.calls.includes("refreshProperties"));
+  assert.ok(worker.errors.some((args) => /digest delivery terminal receipt failed/.test(args.join(" "))));
 });
 
 test("STARTED write failure does not skip delivery or its terminal receipt", async () => {
