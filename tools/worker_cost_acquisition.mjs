@@ -529,7 +529,7 @@ export function buildWarehouseAttemptList({
     if (typeof warehouseAttemptsByCohort !== "object" || Array.isArray(warehouseAttemptsByCohort)) {
       throw new Error("warehouseAttemptsByCohort must be a plain object when provided");
     }
-    const attempts = [];
+    const counts = [];
     for (const [base, workload] of workloadsByBase.entries()) {
       if (!Object.prototype.hasOwnProperty.call(warehouseAttemptsByCohort, base)) {
         throw new Error(`warehouseAttemptsByCohort missing cohort ${base}`);
@@ -540,8 +540,17 @@ export function buildWarehouseAttemptList({
         || n > WAREHOUSE_MAX_ATTEMPTS_PER_INPUT) {
         throw new Error(`warehouse attempt bound is invalid for cohort ${base}`);
       }
-      for (let index = 0; index < n; index += 1) {
-        attempts.push({ base, workload, index });
+      counts.push({ base, workload, n });
+    }
+    // Interleave cohorts round-robin, like the uniform path below, instead of
+    // running each cohort in its own contiguous time slot. Every cohort starts in
+    // the first round; cohorts with smaller counts finish once their count is
+    // exhausted, while the larger ones continue alternating.
+    const attempts = [];
+    const maxCount = Math.max(...counts.map(({ n }) => n));
+    for (let index = 0; index < maxCount; index += 1) {
+      for (const { base, workload, n } of counts) {
+        if (index < n) attempts.push({ base, workload, index });
       }
     }
     for (const key of Object.keys(warehouseAttemptsByCohort)) {
