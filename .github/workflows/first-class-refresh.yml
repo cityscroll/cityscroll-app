@@ -35,7 +35,7 @@ concurrency:
 jobs:
   refresh:
     name: Refresh due first-class datasets
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # Acquisition routinely spends ~45–50 minutes; the committed-read-model rebuild
     # then needs headroom for the remaining builders after skip-if-current. 60 minutes
     # cancelled mid-rebuild (run 38896493551); 90 leaves room without open-ending the job.
