@@ -490,6 +490,12 @@ export async function runDigestShadowRecoveryCatchUp(env, shadowHold, {
 }
 
 export async function runAlerts(env, watches = cfg.watches || [], options = {}) {
+  const throwIfAborted = () => options.signal?.throwIfAborted?.();
+  const reportProgress = async (progress) => {
+    throwIfAborted();
+    return options.onProgress?.(progress);
+  };
+  throwIfAborted();
   const FROM = env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>";
   const LIVE = options.live == null ? env.ALERTS_LIVE === "true" : options.live === true;
   const maxPerRun = Number(env.MAX_PER_RUN) || 25;            // most emails one cron firing may send
@@ -535,8 +541,9 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
   }
 
 
-  await options.onProgress?.({ phase: "static_watches", evaluated_count: 0 });
+  await reportProgress({ phase: "static_watches", evaluated_count: 0 });
   for (const w of watches) {
+    throwIfAborted();
     const watchDigestId = `watch:${w.id}`;
     if (isDigestHeld(shadowHold, watchDigestId)) {
       results.push({
@@ -547,7 +554,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
         sent: false,
         holdContract: shadowHold.contract,
       });
-      await options.onProgress?.({ phase: "static_watches", evaluated_count: results.length });
+      await reportProgress({ phase: "static_watches", evaluated_count: results.length });
       continue;
     }
     try {
@@ -619,7 +626,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
         ...upstreamResultFields(e),
       });
     }
-    await options.onProgress?.({ phase: "static_watches", evaluated_count: results.length });
+    await reportProgress({ phase: "static_watches", evaluated_count: results.length });
   }
 
   // ---- replay confirmed subscriptions from SUBS KV (the self-serve path) ----
@@ -649,14 +656,15 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
   };
   let mode = "inline";
   let enqueued = 0;
-  await options.onProgress?.({ phase: "subscription_inventory", evaluated_count: results.length });
+  await reportProgress({ phase: "subscription_inventory", evaluated_count: results.length });
   const allSubs = options.skipSubscriptions ? [] : await listDigestSubscriptions(env, { readOnly: options.capturePreviews === true });
-  await options.onProgress?.({ phase: "account_builds", evaluated_count: results.length });
+  await reportProgress({ phase: "account_builds", evaluated_count: results.length });
   if (!options.skipSubscriptions && !options.forceInline && env.QUEUE_DIGESTS === "true" && env.DIGEST_QUEUE) {
     mode = "queue";
     const jobs = buildDigestJobs(allSubs);
     const partition = await partitionDigestJobsByHold(jobs, shadowHold);
     for (const job of partition.eligible) {
+      throwIfAborted();
       await env.DIGEST_QUEUE.send(job);
       enqueued++;
     }
@@ -674,6 +682,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
   } else {
     const byEmail = groupSubsByEmail(allSubs);
     for (const [, list] of byEmail) {
+      throwIfAborted();
       const active = list.filter(isWatchActive);
       if (active.length === 0) continue;
       if (shouldRollup(list)) {
@@ -681,11 +690,11 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
       } else {
         results.push(await processOneSub(env, active[0], ctx));
       }
-      if (results.length % 10 === 0) await options.onProgress?.({ phase: "account_builds", evaluated_count: results.length });
+      if (results.length % 10 === 0) await reportProgress({ phase: "account_builds", evaluated_count: results.length });
     }
   }
 
-  await options.onProgress?.({ phase: "builders_complete", evaluated_count: results.length });
+  await reportProgress({ phase: "builders_complete", evaluated_count: results.length });
   const deferred = results.filter((r) => r.capped).length;
   if (deferred) console.warn(`alerts: ${deferred} watch(es) deferred by send caps (perRun=${maxPerRun}, perDay=${maxPerDay})`);
   const ranAt = now.toISOString();

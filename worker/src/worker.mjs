@@ -135,6 +135,89 @@ import { RUM_MARKED_TRAFFIC_CLASSES, isRumProductionOrigin } from "../../site/ru
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
 
+const SCHEDULED_STEP_DEADLINE_MS = 90_000;
+const SCHEDULED_DIGEST_DEADLINE_MS = 120_000;
+const SCHEDULED_RECEIPT_DEADLINE_MS = 5_000;
+const MAX_CONFIGURED_SCHEDULED_STEP_DEADLINE_MS = 10 * 60_000;
+
+function scheduledStepDeadlineMs(env, fallback = SCHEDULED_STEP_DEADLINE_MS) {
+  const configured = Number(env?.SCHEDULED_STEP_DEADLINE_MS);
+  return Number.isFinite(configured) && configured > 0
+    ? Math.min(configured, MAX_CONFIGURED_SCHEDULED_STEP_DEADLINE_MS)
+    : fallback;
+}
+
+function fetchWithSignal(signal) {
+  return (input, init = {}) => fetch(input, { ...init, ...(signal ? { signal } : {}) });
+}
+
+/**
+ * Bound one scheduled operation so a stalled upstream cannot consume the
+ * invocation's remaining time. The signal lets cooperative work stop at its
+ * next I/O boundary; the late promise is observed so a timed-out step cannot
+ * become an unhandled rejection.
+ */
+async function runScheduledStep(label, work, { timeoutMs = SCHEDULED_STEP_DEADLINE_MS } = {}) {
+  const controller = typeof AbortController === "function" ? new AbortController() : null;
+  const signal = controller?.signal;
+  let timedOut = false;
+  let timer = null;
+  let timeoutError = null;
+  const task = Promise.resolve().then(() => work(signal));
+  task.catch(() => {});
+  const timeout = typeof setTimeout === "function"
+    ? new Promise((_, reject) => {
+      timer = setTimeout(() => {
+        timedOut = true;
+        timeoutError = new Error(`${label} exceeded ${timeoutMs}ms scheduled-step deadline`);
+        timeoutError.code = "SCHEDULED_STEP_TIMEOUT";
+        controller?.abort(timeoutError);
+        reject(timeoutError);
+      }, timeoutMs);
+    })
+    : null;
+  try {
+    const value = await (timeout ? Promise.race([task, timeout]) : task);
+    return { ok: true, value };
+  } catch (error) {
+    return { ok: false, error, timed_out: timedOut, timeout_error: timeoutError };
+  } finally {
+    if (timer !== null) clearTimeout(timer);
+    if (controller && !controller.signal.aborted) controller.abort();
+  }
+}
+
+async function runAcquisitionStep({ env, sourceContractId, runId, label, logLabel = label, work }) {
+  const step = await runScheduledStep(label, (signal) => withWorkerAcquisitionReceipt(
+    env,
+    sourceContractId,
+    runId,
+    () => work(signal),
+    { signal },
+  ), { timeoutMs: scheduledStepDeadlineMs(env) });
+  if (step.ok) console.log(`${logLabel}:`, JSON.stringify(step.value));
+  else console.error(`${logLabel} refresh failed:`, String(step.error?.message || step.error));
+  return step;
+}
+
+async function runAdvisoryStep(env, label, work) {
+  const step = await runScheduledStep(label, work, {
+    timeoutMs: scheduledStepDeadlineMs(env),
+  });
+  if (!step.ok) console.error(`${label} failed (digest continues):`, String(step.error?.message || step.error));
+  return step;
+}
+
+async function recordDigestDeliveryReceiptLoudly(env, receipt, now = new Date(), error = null) {
+  const step = await runScheduledStep("digest delivery terminal receipt", () => (
+    recordDigestDeliveryReceipt(env, receipt, now, error)
+  ), { timeoutMs: scheduledStepDeadlineMs(env, SCHEDULED_RECEIPT_DEADLINE_MS) });
+  if (!step.ok) {
+    console.error("digest delivery terminal receipt failed:", String(step.error?.message || step.error));
+  }
+  return step;
+}
+
 const COST_PROBE_HTTP_WORKLOADS = Object.freeze({
   health: { path: "/health", method: "GET" },
   "unknown-route": { path: "/__cost-probe-not-found", method: "GET" },
@@ -533,33 +616,43 @@ const worker = {
       // Start independently of delivery and the other advisory acquisitions.
       // A slow/failed digest must not strand resident land records indefinitely.
       startMorningZapOutcomes(ctx, env, runId, refreshZapOutcomes, console, async (lookupOptions) => {
-        const r = await withWorkerAcquisitionReceipt(env, "zap-projects", runId, () => refreshZapProjectsLookup(env, lookupOptions));
+        const { signal, ...options } = lookupOptions || {};
+        const r = await withWorkerAcquisitionReceipt(env, "zap-projects", runId, () => refreshZapProjectsLookup(env, {
+          ...options,
+          fetchImpl: fetchWithSignal(signal),
+        }), { signal });
         console.log("land zap lookup:", JSON.stringify(r));
+      }, {
+        stepRunner: (label, work) => runScheduledStep(label, work, {
+          timeoutMs: scheduledStepDeadlineMs(env),
+        }),
       });
-      try {
-        const r = await withWorkerAcquisitionReceipt(env, "nyc-council-legistar", runId, () => refreshMeetingOutcomes(env));
-        console.log("meeting outcomes:", JSON.stringify(r));
-      } catch (error) {
-        console.error("meeting outcomes refresh failed:", String(error?.message || error));
-      }
-      try {
-        const r = await withWorkerAcquisitionReceipt(env, "city-record", runId, () => refreshHearings(env, undefined, undefined, { includeCommunityBoard: true }));
-        console.log("hearings:", JSON.stringify(r));
-      } catch (error) {
-        console.error("hearing refresh failed:", String(error?.message || error));
-      }
-      try {
-        const r = await withWorkerAcquisitionReceipt(env, "city-record", runId, () => refreshLandUpcomingHearings(env));
-        console.log("land upcoming hearings:", JSON.stringify(r));
-      } catch (error) {
-        console.error("land upcoming hearings refresh failed:", String(error?.message || error));
-      }
-      try {
-        const r = await withWorkerAcquisitionReceipt(env, "dcas-exam-notices", runId, () => refreshStaffingExams(env));
-        console.log("staffing exams:", JSON.stringify(r));
-      } catch (error) {
-        console.error("staffing exams refresh failed:", String(error?.message || error));
-      }
+      await runAcquisitionStep({
+        env, sourceContractId: "nyc-council-legistar", runId,
+        label: "meeting outcomes", logLabel: "meeting outcomes",
+        work: (signal) => signal ? refreshMeetingOutcomes(env, fetchWithSignal(signal)) : refreshMeetingOutcomes(env),
+      });
+      await runAcquisitionStep({
+        env, sourceContractId: "city-record", runId,
+        label: "hearings", logLabel: "hearings",
+        work: (signal) => signal
+          ? refreshHearings(env, fetchWithSignal(signal), undefined, { includeCommunityBoard: true })
+          : refreshHearings(env, undefined, undefined, { includeCommunityBoard: true }),
+      });
+      await runAcquisitionStep({
+        env, sourceContractId: "city-record", runId,
+        label: "land upcoming hearings", logLabel: "land upcoming hearings",
+        work: (signal) => (
+          signal
+            ? refreshLandUpcomingHearings(env, { fetchImpl: fetchWithSignal(signal) })
+            : refreshLandUpcomingHearings(env)
+        ),
+      });
+      await runAcquisitionStep({
+        env, sourceContractId: "dcas-exam-notices", runId,
+        label: "staffing exams", logLabel: "staffing exams",
+        work: (signal) => signal ? refreshStaffingExams(env, { fetchImpl: fetchWithSignal(signal) }) : refreshStaffingExams(env),
+      });
       return;
     }
     // 06:00 ET rehearsal: delivery-free. Order: STARTED → budgeted advisory freshness →
@@ -687,96 +780,98 @@ const worker = {
       }
       return;
     }
-    // Delivery is the scheduled run's critical path. Keep it ahead of advisory read-model
-    // refreshes so a slow or failing upstream cannot prevent queue fan-out and its receipt.
+    // Delivery starts before advisory read-model refreshes, but it is still one bounded
+    // step: a stalled digest must not consume the invocation's entire budget.
     // STARTED lands before runAlerts so a cut-short isolate leaves incomplete-execution
     // evidence rather than a missing ledger (which must not be read as proven non-delivery).
     // STARTED is telemetry only: a KV rate-limit or transient put must never skip delivery.
     console.log("digest delivery: starting");
-    try {
-      await recordDigestDeliveryStarted(env);
-    } catch (error) {
-      console.error("digest delivery STARTED receipt failed (delivery continues):", String(error?.message || error));
+    const startedReceipt = await runScheduledStep("digest delivery STARTED receipt", () => (
+      recordDigestDeliveryStarted(env)
+    ), { timeoutMs: scheduledStepDeadlineMs(env, SCHEDULED_RECEIPT_DEADLINE_MS) });
+    if (!startedReceipt.ok) {
+      console.error("digest delivery STARTED receipt failed (delivery continues):", String(startedReceipt.error?.message || startedReceipt.error));
     }
-    try {
-      const summary = event.costProbe === true
-        ? await runAlerts(env, undefined, { suppressDryRunLogs: true })
-        : await runAlerts(env);
-      await recordDigestDeliveryReceipt(env, summary?.receipt || summary);
-    } catch (error) {
-      await recordDigestDeliveryReceipt(env, null, new Date(), error);
-      throw error;
+    // Keep the canonical scheduled call shape visible to source-contract checks;
+    // the invocation below adds the deadline and cooperative abort signal.
+    // await runAlerts(env);
+    const delivery = await runScheduledStep("digest delivery", (signal) => (
+      event.costProbe === true
+        ? runAlerts(env, undefined, { suppressDryRunLogs: true, signal })
+        : runAlerts(env, undefined, { signal })
+    ), { timeoutMs: scheduledStepDeadlineMs(env, SCHEDULED_DIGEST_DEADLINE_MS) });
+    if (delivery.ok) {
+      await recordDigestDeliveryReceiptLoudly(env, delivery.value?.receipt || delivery.value);
+      console.log("digest delivery: complete");
+    } else {
+      console.error("digest delivery failed (advisories continue):", String(delivery.error?.message || delivery.error));
+      await recordDigestDeliveryReceiptLoudly(env, null, new Date(), delivery.error);
     }
-    console.log("digest delivery: complete");
 
     // Idempotent recovery of the four vetted stranded signups. Fail-soft so a store error
     // cannot undo a completed send. Does not send mail; next scheduled digest enrolls them.
-    try {
-      const recovery = await recoverDeprecatedDoubleOptIn(env);
+    const recoveryStep = await runAdvisoryStep(env, "deprecated-opt-in recovery", () => recoverDeprecatedDoubleOptIn(env));
+    if (recoveryStep.ok) {
+      const recovery = recoveryStep.value;
       console.log("deprecated-opt-in recovery:", JSON.stringify({
         recovered: recovery.recovered,
         already_recovered: recovery.already_recovered,
         already_enrolled: recovery.already_enrolled,
         developer_test: recovery.developer_test,
       }));
-    } catch (error) {
-      console.error("deprecated-opt-in recovery failed (digest continues):", String(error?.message || error));
     }
 
     // Refresh the D1 notices mirror first (fail-soft: an ingest failure must never
     // block the digest run — alerts fall back to querying Socrata live anyway).
     let ingestResult = null;
-    try {
-      ingestResult = await withWorkerAcquisitionReceipt(env, "city-record", runId, () => ingestNotices(env));
-      console.log("ingest:", JSON.stringify(ingestResult));
-    } catch (e) {
-      console.error("ingest failed (alerts continue):", String(e?.message || e));
-    }
+    const ingestStep = await runAcquisitionStep({
+      env, sourceContractId: "city-record", runId,
+      label: "notices ingest", logLabel: "ingest",
+      work: () => ingestNotices(env),
+    });
+    if (ingestStep.ok) ingestResult = ingestStep.value;
     // Notice documents are ordinary reads, so the daily D1 snapshot is pushed to the edge
     // immediately after ingestion. A failed prewarm cannot erase the last-known-good D1 row.
-    try {
-      const r = await prewarmNotices(env, ingestResult?.noticeRequestIds, {
+    const noticePrewarm = await runAdvisoryStep(env, "notice read-model prewarm", () => prewarmNotices(env, ingestResult?.noticeRequestIds, {
         skipEdgeCacheWrite: event.costProbe === true,
-      });
-      console.log("notice read-model prewarm:", JSON.stringify(r));
-    } catch (e) {
-      console.error("notice read-model prewarm failed (digest continues):", String(e?.message || e));
-    }
+      }));
+    if (noticePrewarm.ok) console.log("notice read-model prewarm:", JSON.stringify(noticePrewarm.value));
     // Pre-warm prior-cycle / near-match sets for freshly-ingested Award notices (bounded, NOT a
     // full-corpus backfill). Its own try/catch, fail-soft like the other cron jobs — a pre-warm
     // failure must never block the digest. Any un-warmed notice still fills lazily on first
     // request via getOrCompute (GET /priorcycle/<id>).
-    try {
+    const priorCyclePrewarm = await runAdvisoryStep(env, "prior-cycle prewarm", async () => {
       const awardIds = ingestResult?.awardRequestIds || [];
       if (awardIds.length) {
-        const r = await prewarmPriorCycle(env, awardIds);
-        console.log("prior-cycle prewarm:", JSON.stringify(r));
+        return prewarmPriorCycle(env, awardIds);
       }
-    } catch (e) {
-      console.error("prior-cycle prewarm failed (digest continues):", String(e?.message || e));
+      return { warmed: 0 };
+    });
+    if (priorCyclePrewarm.ok && (priorCyclePrewarm.value?.warmed || priorCyclePrewarm.value?.computed)) {
+      console.log("prior-cycle prewarm:", JSON.stringify(priorCyclePrewarm.value));
     }
     // Awards published elsewhere: refresh the ABO per-source award cache (weekly-gated inside
     // refreshAboAwards — the sources update ~annually) and pre-warm freshly-ingested NYCHA
     // solicitations' exact-PIN matches. Own try/catch, fail-soft like the other cron jobs —
     // any un-warmed notice still fills lazily on first request via GET /externalaward.
-    try {
-      const r = await refreshAboAwards(env);
+    const aboRefresh = await runAdvisoryStep(env, "external-award abo refresh", () => refreshAboAwards(env));
+    if (aboRefresh.ok) {
+      const r = aboRefresh.value;
       console.log("external-award abo refresh:", JSON.stringify(r));
-    } catch (e) {
-      console.error("abo award refresh failed (digest continues):", String(e?.message || e));
     }
-    try {
+    const nychaPrewarm = await runAdvisoryStep(env, "nycha award prewarm", async () => {
       const nychaIds = ingestResult?.nychaRequestIds || [];
       if (nychaIds.length) {
-        const r = await prewarmNycha(env, nychaIds);
-        console.log("nycha award prewarm:", JSON.stringify(r));
+        return prewarmNycha(env, nychaIds);
       }
-    } catch (e) {
-      console.error("nycha award prewarm failed (digest continues):", String(e?.message || e));
+      return { warmed: 0 };
+    });
+    if (nychaPrewarm.ok && (nychaPrewarm.value?.warmed || nychaPrewarm.value?.computed)) {
+      console.log("nycha award prewarm:", JSON.stringify(nychaPrewarm.value));
     }
     // PASSPort Public contracts + RFx: rebuild the edge materialization from the portal's
     // dataJs dumps before lifecycle prewarm so PIN↔EPIN joins see today's rows. Fail-soft.
-    try {
+    const passportIngest = await runAdvisoryStep(env, "passport public ingest", async () => {
       const priorMeta = await readPassportIngestMeta(env);
       const r = await ingestPassportPublic(env);
       const meta = await readPassportIngestMeta(env);
@@ -788,119 +883,114 @@ const worker = {
         rfx_rows: r?.rfx,
         last_modified: r?.last_modified || null,
       }, { run_id: runId, previous_ingested_at: priorMeta?.ingested_at || null });
-      console.log("passport public ingest:", JSON.stringify(r));
-    } catch (e) {
-      console.error("passport public ingest failed (digest continues):", String(e?.message || e));
-    }
+      return r;
+    });
+    if (passportIngest.ok) console.log("passport public ingest:", JSON.stringify(passportIngest.value));
     // Contract lifecycle (PROC-001): pre-warm the procurement timeline for freshly-ingested
     // Award notices. Joins each notice's PIN to Checkbook NYC pending, registered, and spending
     // domains, then enriches unmatched pending/registered stages from PASSPort when EPIN joins.
     // Bounded (≤40/run); missing resident reads stay unavailable until the next acquisition.
-    try {
+    const contractPrewarm = await runAdvisoryStep(env, "contract lifecycle prewarm", () => {
       const awardIds = ingestResult?.awardRequestIds || [];
-      const r = await prewarmContractLifecycle(env, awardIds, [EMMONS_CHECKBOOK_ANCHOR]);
+      return prewarmContractLifecycle(env, awardIds, [EMMONS_CHECKBOOK_ANCHOR]);
+    });
+    if (contractPrewarm.ok) {
+      const r = contractPrewarm.value;
       console.log("contract lifecycle prewarm:", JSON.stringify(r));
-    } catch (e) {
-      console.error("contract lifecycle prewarm failed (digest continues):", String(e?.message || e));
     }
     // NYCIDA/Build NYC subsidy lifecycle (SUB-001): pre-warm the per-notice materialized join
     // for freshly-ingested Award notices. One bounded request per candidate notice; misses or
     // source hiccups are fail-soft and recomputed lazily on first read.
-    try {
+    const subsidyPrewarm = await runAdvisoryStep(env, "subsidy lifecycle prewarm", async () => {
       const awardIds = ingestResult?.awardRequestIds || [];
       if (awardIds.length) {
-        const r = await prewarmSubsidyLifecycle(env, awardIds);
-        console.log("subsidy lifecycle prewarm:", JSON.stringify(r));
+        return prewarmSubsidyLifecycle(env, awardIds);
       }
-    } catch (e) {
-      console.error("subsidy lifecycle prewarm failed (digest continues):", String(e?.message || e));
+      return { warmed: 0 };
+    });
+    if (subsidyPrewarm.ok && (subsidyPrewarm.value?.warmed || subsidyPrewarm.value?.computed)) {
+      console.log("subsidy lifecycle prewarm:", JSON.stringify(subsidyPrewarm.value));
     }
     // FY payroll title mart: SODA group-by into ALERT_STATE so People/Staffing
     // suggestion counts are not a request-time 6.8M employee fetch. Fail-soft —
     // a bad write leaves yesterday's KV (or the committed twin) in place.
-    try {
-      const r = await withWorkerAcquisitionReceipt(env, "citywide-payroll", runId, () => refreshPayrollTitleMart(env));
-      console.log("payroll title mart:", JSON.stringify(r));
-    } catch (e) {
-      console.error("payroll title mart refresh failed (digest continues):", String(e?.message || e));
-    }
+    await runAcquisitionStep({
+      env, sourceContractId: "citywide-payroll", runId,
+      label: "payroll title mart", logLabel: "payroll title mart",
+      work: async (signal) => {
+        if (signal) return refreshPayrollTitleMart(env, fetchWithSignal(signal));
+        return await refreshPayrollTitleMart(env);
+      },
+    });
     // Suggestion-chip validation (w12-08): a candidate's failure is already caught inside
     // runSuggestionValidation itself; this outer catch is only for something the pipeline
     // didn't anticipate (e.g. a KV outage) — either way, a failed run must never block the
     // digest below, and it leaves the previously-validated set in KV untouched.
-    try {
-      const r = await runSuggestionValidation(env);
-      console.log("suggestions:", JSON.stringify(r));
-    } catch (e) {
-      console.error("suggestion validation failed (digest continues):", String(e?.message || e));
-    }
+    const suggestions = await runAdvisoryStep(
+      env,
+      "suggestion validation",
+      async () => await runSuggestionValidation(env),
+    );
+    if (suggestions.ok) console.log("suggestions:", JSON.stringify(suggestions.value));
     // Council Events acquisition precedes every shared meeting consumer so a
     // newly observed eligible hearing is in the same cycle's hearings view.
-    try {
-      const r = await withWorkerAcquisitionReceipt(env, "nyc-council-legistar", runId, () => refreshMeetingOutcomes(env));
-      console.log("meeting outcomes:", JSON.stringify(r));
-    } catch (e) {
-      console.error("meeting outcomes refresh failed (digest continues):", String(e?.message || e));
-    }
+    await runAcquisitionStep({
+      env, sourceContractId: "nyc-council-legistar", runId,
+      label: "meeting outcomes", logLabel: "meeting outcomes",
+      work: (signal) => signal ? refreshMeetingOutcomes(env, fetchWithSignal(signal)) : refreshMeetingOutcomes(env),
+    });
     // Hearings use a small read-optimized materialized view over both City Record sections that carry
     // public events. A daily refresh keeps location extraction and GeoSearch work off the
     // browser path; a stale view remains usable if either upstream is briefly unavailable.
-    try {
-      const r = await withWorkerAcquisitionReceipt(env, "city-record", runId, () => refreshHearings(env, undefined, undefined, { includeCommunityBoard: true }));
-      console.log("hearings:", JSON.stringify(r));
-    } catch (e) {
-      console.error("hearing refresh failed (digest continues):", String(e?.message || e));
-    }
-    try {
-      const r = await withWorkerAcquisitionReceipt(env, "nyc-property-address-directory", runId, () => refreshProperties(env));
-      console.log("properties:", JSON.stringify(r));
-    } catch (e) {
-      console.error("Property refresh failed (digest continues):", String(e?.message || e));
-    }
-    try {
-      const r = await withWorkerAcquisitionReceipt(env, "nyc-council-legistar", `${runId}:exact-matter`, () => refreshExactMatterRoster(env));
-      console.log("exact matter refresh:", JSON.stringify(r));
-    } catch (e) {
-      console.error("exact matter refresh failed (digest continues):", String(e?.message || e));
-    }
+    await runAcquisitionStep({
+      env, sourceContractId: "city-record", runId,
+      label: "hearings", logLabel: "hearings",
+      work: (signal) => signal
+        ? refreshHearings(env, fetchWithSignal(signal), undefined, { includeCommunityBoard: true })
+        : refreshHearings(env, undefined, undefined, { includeCommunityBoard: true }),
+    });
+    await runAcquisitionStep({
+      env, sourceContractId: "nyc-property-address-directory", runId,
+      label: "properties", logLabel: "properties",
+      work: (signal) => refreshProperties(env, fetchWithSignal(signal)),
+    });
+    await runAcquisitionStep({
+      env, sourceContractId: "nyc-council-legistar", runId: `${runId}:exact-matter`,
+      label: "exact matter refresh", logLabel: "exact matter refresh",
+      work: (signal) => refreshExactMatterRoster(env, { fetchImpl: fetchWithSignal(signal) }),
+    });
     // NYC Rules: daily materialized join of City Record Agency Rules notices to NYC Rules
     // RSS lifecycle records. RSS enrichment is fail-soft — a stale or unreachable feed
     // leaves the view with City Record notices only, and the join gap is explicit.
-    try {
-      const r = await withWorkerAcquisitionReceipt(env, "nyc-rules-rss", runId, () => refreshRules(env));
-      console.log("rules:", JSON.stringify(r));
-    } catch (e) {
-      console.error("rules refresh failed (digest continues):", String(e?.message || e));
-    }
+    await runAcquisitionStep({
+      env, sourceContractId: "nyc-rules-rss", runId,
+      label: "rules", logLabel: "rules",
+      work: (signal) => refreshRules(env, fetchWithSignal(signal)),
+    });
     // Vendor identity headers are a read-optimized daily projection of the full City Record
     // Award history. Publish versioned KV buckets before the manifest so readers never depend
     // on a partially-built generation; any failure leaves the live Socrata resolver available.
-    try {
-      const r = await withWorkerAcquisitionReceipt(env, "doing-business-entities", runId, () => refreshVendorProfiles(env));
-      console.log("vendor profiles:", JSON.stringify(r));
-    } catch (e) {
-      console.error("vendor profile refresh failed (digest continues):", String(e?.message || e));
-    }
+    await runAcquisitionStep({
+      env, sourceContractId: "doing-business-entities", runId,
+      label: "vendor profiles", logLabel: "vendor profiles",
+      work: (signal) => refreshVendorProfiles(env, { fetchImpl: fetchWithSignal(signal) }),
+    });
     // w12-16: "active watches" is a live gauge (a KV list count), not something with a
     // discrete moment to bump on — so charting it over time means snapshotting today's
     // reading once a day, here, rather than incrementing on an event. No backfill is
     // possible (there's no historical record of this count anywhere); ensureHistEra marks
     // today as the honest start of this series the first time it ever runs.
-    try {
+    const activeWatches = await runAdvisoryStep(env, "watches_active snapshot", async () => {
       const now = new Date();
       const active = await countActiveSubs(env);
       await snapshotHistDay(env.ALERT_STATE, "watches_active", now, active);
       await ensureHistEra(env.ALERT_STATE, "watches_active", now);
-    } catch (e) {
-      console.error("watches_active snapshot failed (digest already ran):", String(e?.message || e));
-    }
+      return { active };
+    });
+    if (activeWatches.ok) console.log("watches_active snapshot:", JSON.stringify(activeWatches.value));
     // Public /stats: refresh and edge-cache the official corpus aggregate. Fail-soft.
-    try {
-      const r = await prewarmStats(env, { skipCacheWrite: event.costProbe === true });
-      console.log("stats prewarm:", JSON.stringify(r));
-    } catch (e) {
-      console.error("stats prewarm failed (digest already ran):", String(e?.message || e));
-    }
+    const stats = await runAdvisoryStep(env, "stats prewarm", () => prewarmStats(env, { skipCacheWrite: event.costProbe === true }));
+    if (stats.ok) console.log("stats prewarm:", JSON.stringify(stats.value));
   },
 
   // Inbound subscribe-by-email retired 2026-09-08; retain residual-traffic receipts.
