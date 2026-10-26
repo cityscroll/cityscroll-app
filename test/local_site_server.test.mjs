@@ -250,7 +250,7 @@ test("accessibility aggregate accepts only a green matrix and a green routes-foc
   assert.match(shards, /if-no-files-found:\s*error/);
   assert.match(shards, /overwrite:\s*true/);
 
-  assert.match(routes, /a11y-routes-focus-primary:[\s\S]*?runs-on: ubuntu-latest/);
+  assert.match(routes, /a11y-routes-focus-primary:[\s\S]*?runs-on: ubuntu-24\.04/);
   assert.match(
     routes,
     /a11y-routes-focus-primary:[\s\S]*?continue-on-error: true[\s\S]*?routes_focus_primary_passed: \$\{\{ steps\.routes-focus-primary-check\.outcome == 'success' \}\}/,
@@ -261,7 +261,7 @@ test("accessibility aggregate accepts only a green matrix and a green routes-foc
   );
   assert.match(
     routes,
-    /a11y-routes-focus-retry:[\s\S]*?needs\.a11y-routes-focus-primary\.outputs\.routes_focus_primary_passed != 'true'[\s\S]*?runs-on: ubuntu-latest/,
+    /a11y-routes-focus-retry:[\s\S]*?needs\.a11y-routes-focus-primary\.outputs\.routes_focus_primary_passed != 'true'[\s\S]*?runs-on: ubuntu-24\.04/,
   );
   assert.match(routes, /tools\/run_a11y_ci_shard\.sh routes-focus primary/);
   assert.match(routes, /tools\/run_a11y_ci_shard\.sh routes-focus fresh-runner-retry/);
