@@ -22,7 +22,7 @@ concurrency:
 jobs:
   changes:
     name: Detect changed paths
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       pull-requests: read
@@ -162,7 +162,7 @@ jobs:
   public-image-guard:
     name: Public image capture guard
     if: github.event.repository.visibility == 'public' && (github.event_name == 'pull_request' || github.event_name == 'merge_group')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       pull-requests: read
@@ -190,7 +190,7 @@ jobs:
   capture-manifest-guard:
     name: Capture-manifest image guard
     if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       pull-requests: read
@@ -228,7 +228,7 @@ jobs:
     name: Unit family (${{ matrix.family }})
     needs: changes
     if: needs.changes.outputs.unit_full == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -591,7 +591,7 @@ jobs:
     name: Merge-group inventory preflight
     needs: changes
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - name: Non-frontend or fast-path — report success
@@ -615,7 +615,7 @@ jobs:
     name: Unit tests (site + worker)
     needs: [changes, unit-family, merge-group-preflight]
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       # Required check name must always report SUCCESS/FAILURE (never stay missing).
@@ -686,7 +686,7 @@ jobs:
   internal-path-guard:
     name: Internal-path guard
     if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       pull-requests: read
@@ -714,7 +714,7 @@ jobs:
     needs: [changes, unit, browser-pr-site]
     # Merge-queue builds keep merge-base-sensitive gates only; PR and main push keep the full set.
     if: always() && github.event_name != 'merge_group'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - name: Performance serial fast path
@@ -783,7 +783,7 @@ jobs:
     needs: [changes, unit, browser-pr-site]
     # Merge-queue builds keep merge-base-sensitive gates only; PR and main push keep the full set.
     if: always() && github.event_name != 'merge_group'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     strategy:
       fail-fast: false
@@ -841,7 +841,7 @@ jobs:
     # Skipped on merge_group with its serial/shard inputs so a missing pilot does not fail red.
     needs: [changes, unit, browser-pr-site, performance-serial, performance-shard]
     if: always() && github.event_name != 'merge_group'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - name: Non-perf path set or unit-failed — report success
@@ -913,7 +913,7 @@ jobs:
   browser-journeys-pr:
     name: Retained browser journeys
     if: always() && github.event_name != 'merge_group'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
@@ -931,7 +931,7 @@ jobs:
     needs: [changes, unit, browser-journeys-pr, a11y-pr-shard, a11y-rendered-census-primary, a11y-rendered-census-retry, a11y-routes-focus-primary, a11y-routes-focus-retry]
     # Merge-queue builds keep merge-base-sensitive gates only; PR and main push keep the full set.
     if: always() && github.event_name != 'merge_group'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - name: Changelog-only, non-frontend, or unit-failed — report required check success
@@ -984,7 +984,7 @@ jobs:
     name: Shared browser site artifact
     needs: [changes]
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - name: Browser artifact fast path
@@ -1068,7 +1068,7 @@ jobs:
     name: Functional browser shard (${{ matrix.shard }})
     needs: [changes, unit, browser-pr-site]
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     strategy:
       fail-fast: false
@@ -1114,7 +1114,7 @@ jobs:
     name: Functional browser tests
     needs: [changes, unit, required-functional-shard]
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - name: Changelog-only, docs-only, non-frontend, or unit-failed fast path
@@ -1137,7 +1137,7 @@ jobs:
     needs: [changes, unit, browser-pr-site]
     # Merge-queue builds keep merge-base-sensitive gates only; PR and main push keep the full set.
     if: always() && github.event_name != 'merge_group'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     strategy:
       fail-fast: false
@@ -1188,7 +1188,7 @@ jobs:
     needs: [changes, unit, browser-pr-site]
     # Merge-queue builds keep merge-base-sensitive gates only; PR and main push keep the full set.
     if: always() && github.event_name != 'merge_group'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     continue-on-error: true
     outputs:
@@ -1264,7 +1264,7 @@ jobs:
     name: Accessibility + language shard (rendered-census fresh-runner retry)
     needs: [changes, unit, browser-pr-site, a11y-rendered-census-primary]
     if: always() && github.event_name != 'merge_group' && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success' && needs.a11y-rendered-census-primary.outputs.rendered_census_browser_crashed == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
@@ -1294,7 +1294,7 @@ jobs:
     needs: [changes, unit, browser-pr-site]
     # Merge-queue builds keep merge-base-sensitive gates only; PR and main push keep the full set.
     if: always() && github.event_name != 'merge_group'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     # This is an attempt, not the final verdict. The required aggregate below must
     # be able to wait for the independent retry without the failed attempt making the
@@ -1342,7 +1342,7 @@ jobs:
     name: Accessibility + language shard (routes-focus fresh-runner retry)
     needs: [changes, unit, browser-pr-site, a11y-routes-focus-primary]
     if: always() && github.event_name != 'merge_group' && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success' && needs.a11y-routes-focus-primary.outputs.routes_focus_primary_passed != 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
@@ -1375,7 +1375,7 @@ jobs:
     # required-check conclusion when Unit checks already failed.
     needs: [changes, unit]
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - name: Changelog-only, non-frontend, or unit-failed — report required check success
@@ -1459,7 +1459,7 @@ jobs:
     name: Functional (Playwright, manual)
     needs: changes
     if: github.event_name == 'workflow_dispatch' && needs.changes.outputs.unit_full == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
