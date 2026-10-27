@@ -147,8 +147,26 @@ function scheduledStepDeadlineMs(env, fallback = SCHEDULED_STEP_DEADLINE_MS) {
     : fallback;
 }
 
+function mergeAbortSignals(scheduledSignal, requestSignal) {
+  if (!scheduledSignal) return requestSignal;
+  if (!requestSignal || requestSignal === scheduledSignal) return scheduledSignal;
+  if (typeof AbortSignal !== "undefined" && typeof AbortSignal.any === "function") {
+    return AbortSignal.any([scheduledSignal, requestSignal]);
+  }
+  const controller = new AbortController();
+  const abortFrom = (source) => controller.abort(source.reason);
+  if (scheduledSignal.aborted) abortFrom(scheduledSignal);
+  else scheduledSignal.addEventListener("abort", () => abortFrom(scheduledSignal), { once: true });
+  if (requestSignal.aborted) abortFrom(requestSignal);
+  else requestSignal.addEventListener("abort", () => abortFrom(requestSignal), { once: true });
+  return controller.signal;
+}
+
 function fetchWithSignal(signal) {
-  return (input, init = {}) => fetch(input, { ...init, ...(signal ? { signal } : {}) });
+  return (input, init = {}) => {
+    const requestSignal = mergeAbortSignals(signal, init.signal);
+    return fetch(input, { ...init, ...(requestSignal ? { signal: requestSignal } : {}) });
+  };
 }
 
 /**
