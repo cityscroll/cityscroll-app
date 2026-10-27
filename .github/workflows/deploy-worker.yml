@@ -731,6 +731,13 @@ jobs:
             if ! (cd worker && npx wrangler@4.126.0 deploy \
               --var "GIT_COMMIT_SHA:$GITHUB_SHA" \
               --var WRANGLER_ENV:production) > "$log" 2>&1; then
+              mkdir -p .artifacts
+              if ! node tools/cloudflare_error_summary.mjs \
+                  --log "$log" \
+                  --artifact .artifacts/cloudflare-worker-deploy-error.json \
+                  --summary "$GITHUB_STEP_SUMMARY"; then
+                echo "Cloudflare error detail could not be summarized safely." >> "$GITHUB_STEP_SUMMARY"
+              fi
               echo "Cloudflare rejected the Worker deployment." >&2
               exit 1
             fi
@@ -847,6 +854,7 @@ jobs:
             .artifacts/d1-production-delta/
             .artifacts/d1-missing-snapshot-recovery/
             .artifacts/deployment-health/cloudflare-worker.json
+            .artifacts/cloudflare-worker-deploy-error.json
           if-no-files-found: warn
 
       # The RUM query is intentionally separate from the write binding. Reuse the existing
