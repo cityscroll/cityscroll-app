@@ -62,6 +62,7 @@ import {
   rowAfterDeliveryNotBefore,
 } from "./lib/subscriptions.mjs";
 import { historicalDistrictOwedSections } from "./lib/district_owed_recovery.mjs";
+import { suppressionForRecipient } from "./lib/recipient_suppression.mjs";
 import {
   digestDayLogKey,
   buildDayLog,
@@ -570,6 +571,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
       const send = underCap && LIVE;
 
       let preview = null;
+      let suppressed = null;
       if (underCap) {
         const subject = `CityScroll: ${fresh.length} new for "${w.label}"`;
         const html = digestHtml(w, fresh);
@@ -578,7 +580,11 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
         if (options.capturePreviews) {
           preview = { subject, html, listUnsubscribe: listUnsub || null };
         }
-        if (send) {
+        // Known-suppressed recipients get no digest attempt; the row stays visible below.
+        const suppression = send ? await suppressionForRecipient(env.DB, w.email) : null;
+        if (send && suppression) {
+          suppressed = suppression;
+        } else if (send) {
           const providerAccepted = await sendEmail(env, FROM, w.email, subject, html, listUnsub);
           if (providerAccepted && options.advanceState !== false) {
             await recordConfirmedWatchSend(env, {
@@ -613,9 +619,10 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
         noticeIds: fresh.map((r) => r.request_id).filter(Boolean).slice(0, 100),
         action: fresh.length > 0 ? "match" : "none",
         zeroMatch: fresh.length === 0,
-        sent: send,
+        sent: send && !suppressed,
         capped,
         dryRun: underCap && !LIVE,
+        ...(suppressed ? { skipped: "recipient-suppressed", suppression: suppressed } : {}),
         ...(preview ? { preview } : {}),
       });
     } catch (e) {
@@ -1106,6 +1113,37 @@ export async function processOneSub(env, s, ctx) {
     let providerAccepted = null;
     let delivery = null;
 
+    // Known-suppressed recipients get no digest attempt. Owed rows stay owed
+    // (no reservation, no delivery marker) so they remain visible for
+    // reconciliation if the suppression is ever lifted.
+    const recipientSuppression = send ? await suppressionForRecipient(env.DB, s.email) : null;
+    if (recipientSuppression) {
+      return {
+        sub: s.key,
+        ...(previewId ? { previewId } : {}),
+        kind: "subscription",
+        lens: s.lens,
+        queryLabel: describeFilter(s.lens, s.filter),
+        email: s.email || null,
+        emailRedacted: redactEmail(s.email),
+        found: rows.length,
+        new: fresh.length,
+        noticeIds: fresh.map((r) => r[q.idField]).filter(Boolean).slice(0, 100),
+        forecasts: forecasts.length,
+        action: decision.action,
+        zeroMatch: fresh.length === 0 && forecasts.length === 0 && decision.action === "none",
+        skipped: "recipient-suppressed",
+        suppression: recipientSuppression,
+        sent: false,
+        providerAccepted: false,
+        capped,
+        sendUnits: 0,
+        selection_funnel: normalizeFunnel(funnel),
+        owed_attach: owedAttach,
+        owed_drain_check: owedDrain,
+      };
+    }
+
     let manageUrlPresent = false;
     let preview = null;
     if (underCap) {
@@ -1356,6 +1394,36 @@ export async function processAccountRollup(env, subs, ctx) {
     for (const sec of sections) {
       totalFound += Number(sec.found) || 0;
       if (Array.isArray(sec.noticeIds)) allNoticeIds.push(...sec.noticeIds);
+    }
+
+    // Known-suppressed recipients get no rollup attempt. No occasion is reserved
+    // and owed rows stay owed, so nothing is marked delivered that was not sent.
+    const recipientSuppression = send ? await suppressionForRecipient(env.DB, email) : null;
+    if (recipientSuppression) {
+      return {
+        sub: accountId,
+        ...(previewId ? { previewId } : {}),
+        kind: "rollup",
+        email: email || null,
+        emailRedacted: redactEmail(email),
+        queryLabel: `${watchCount} watches`,
+        found: totalFound,
+        new: decision.totalNew,
+        noticeIds: allNoticeIds.slice(0, 100),
+        forecasts: decision.totalForecasts,
+        action: "none",
+        zeroMatch: !decision.wantSend,
+        skipped: "recipient-suppressed",
+        suppression: recipientSuppression,
+        sent: false,
+        providerAccepted: false,
+        partialError,
+        capped,
+        sendUnits: 0,
+        selection_funnel: mergeFunnels(sections.map((sec) => sec.funnel).filter(Boolean)),
+        owed_attach: owedAttach,
+        owed_drain_check: owedDrain,
+      };
     }
 
     if (underCap && decision.wantSend) {
@@ -1757,6 +1825,7 @@ export async function processAwardSub(env, s, ctx) {
     const send = underCap && ctx.LIVE;
 
     let preview = null;
+    let suppressed = null;
     if (underCap) {
       const lang = s.lang || "en";
       const unsubUrl = await unsubLink(env, s.key);
@@ -1765,7 +1834,11 @@ export async function processAwardSub(env, s, ctx) {
       const html = awardWatchDigestHtml(fresh, filter, unsubUrl, lang, sessionTok);
       const payload = emailPayload(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
       if (ctx.capturePreviews) preview = { subject, html, listUnsubscribe: `<${unsubUrl}>` };
-      if (send) {
+      // Known-suppressed recipients get no digest attempt.
+      const suppression = send ? await suppressionForRecipient(env.DB, s.email) : null;
+      if (send && suppression) {
+        suppressed = suppression;
+      } else if (send) {
         const providerAccepted = await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
         if (providerAccepted && ctx.advanceState !== false) {
           await recordConfirmedWatchSend(env, {
@@ -1798,9 +1871,10 @@ export async function processAwardSub(env, s, ctx) {
       noticeIds: fresh.length ? [filter.requestId].filter(Boolean) : [],
       action: fresh.length > 0 ? "match" : "none",
       zeroMatch: fresh.length === 0,
-      sent: send,
+      sent: send && !suppressed,
       dryRun: underCap && !ctx.LIVE,
       capped,
+      ...(suppressed ? { skipped: "recipient-suppressed", suppression: suppressed } : {}),
       ...(preview ? { preview } : {}),
     };
   } catch (e) {

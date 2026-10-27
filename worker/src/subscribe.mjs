@@ -35,6 +35,12 @@ import { overActorLimit } from "./lib/meter.mjs";
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { prefsLink } from "./prefs.mjs";
 import { appendWatchLog, watchLabel } from "./lib/watchlog.mjs";
+import { suppressionForRecipient } from "./lib/recipient_suppression.mjs";
+import {
+  claimWelcomeDelivery,
+  completeWelcomeDelivery,
+  markWelcomeSuppressed,
+} from "./lib/welcome_outbox.mjs";
 
 const SUBSCRIBABLE = new Set([
   "money", "people", "land", "property", "rules", "meetings", "district", "entity", "award",
@@ -183,8 +189,9 @@ export async function enrollAndWelcome(env, candidate, { source = "following" } 
 
   const unsubscribeUrl = await unsubscribeLink(env, key);
   const manageUrl = await prefsLink(env, record.email);
+  let welcome;
   try {
-    await sendWelcome(env, record.email, {
+    welcome = await deliverWelcomeOnce(env, record.email, {
       manageUrl,
       unsubscribeUrl,
       lens: record.lens,
@@ -199,26 +206,87 @@ export async function enrollAndWelcome(env, candidate, { source = "following" } 
     error.subscribed = true;
     throw error;
   }
-  return { key, record, created: !existing };
+  return { key, record, created: !existing, welcome };
 }
 
-export async function sendWelcome(env, to, template) {
+/**
+ * The one welcome a recipient ever gets. The D1 claim ledger — not a KV
+ * read-then-write — decides whether this attempt may send: repeats through any
+ * channel find an existing row and send nothing. Known-suppressed recipients
+ * are recorded and never attempted. A send failure completes the claim as
+ * rejected/indeterminate so a later enrollment retries with the same provider
+ * idempotency key inside the bounded retry window, then throws send-failed so
+ * the caller's existing error contract is preserved.
+ */
+async function deliverWelcomeOnce(env, email, template) {
+  const suppression = await suppressionForRecipient(env.DB, email);
+  if (suppression) {
+    await markWelcomeSuppressed(env.DB, { email, reason: suppression.reason });
+    return { status: "suppressed" };
+  }
+  if (!env.DB?.prepare) {
+    // No ledger binding (local/unconfigured deploy): legacy direct send.
+    await sendWelcome(env, email, template);
+    return { status: "sent", authority: "none" };
+  }
+  const claim = await claimWelcomeDelivery(env.DB, { email });
+  if (!claim.ok) return { status: "claim-unavailable" };
+  if (!claim.owned) return { status: "skipped", reason: `welcome-${claim.row?.state || "claimed"}` };
+  try {
+    const provider = await sendWelcome(env, email, template, { idempotencyKey: claim.idempotencyKey });
+    await completeWelcomeDelivery(env.DB, {
+      email,
+      claimToken: claim.claimToken,
+      state: "accepted",
+      providerId: provider?.id || null,
+    });
+    return { status: "sent", idempotencyKey: claim.idempotencyKey };
+  } catch (cause) {
+    await completeWelcomeDelivery(env.DB, {
+      email,
+      claimToken: claim.claimToken,
+      state: cause?.deliveryStatus === "rejected" ? "rejected" : "indeterminate",
+      errorReason: String(cause?.message || cause).slice(0, 200),
+    });
+    throw cause;
+  }
+}
+
+export async function sendWelcome(env, to, template, { idempotencyKey = null } = {}) {
   const from = env.ALERTS_FROM || "CityScroll <alerts@crol-list.org>";
-  const r = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: { "content-type": "application/json", authorization: `Bearer ${env.RESEND_API_KEY}` },
-    body: JSON.stringify({
-      from,
-      to,
-      subject: welcomeSubject(template.lang),
-      html: welcomeEmailHtml(template),
-      headers: {
-        "List-Unsubscribe": `<${template.unsubscribeUrl}>`,
-        "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
-      },
-    }),
-  });
-  if (!r.ok) throw new Error(`Resend ${r.status}: ${await r.text()}`);
+  const headers = { "content-type": "application/json", authorization: `Bearer ${env.RESEND_API_KEY}` };
+  if (idempotencyKey) headers["Idempotency-Key"] = idempotencyKey;
+  let r;
+  try {
+    r = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        from,
+        to,
+        subject: welcomeSubject(template.lang),
+        html: welcomeEmailHtml(template),
+        headers: {
+          "List-Unsubscribe": `<${template.unsubscribeUrl}>`,
+          "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+        },
+      }),
+    });
+  } catch (error) {
+    error.deliveryStatus = "indeterminate";
+    throw error;
+  }
+  if (!r.ok) {
+    const error = new Error(`Resend ${r.status}: ${await r.text()}`);
+    error.deliveryStatus = r.status === 408 || r.status === 409 || r.status >= 500 ? "indeterminate" : "rejected";
+    throw error;
+  }
+  try {
+    return await r.json();
+  } catch (error) {
+    error.deliveryStatus = "indeterminate";
+    throw error;
+  }
 }
 
 async function unsubscribeLink(env, subKey) {
