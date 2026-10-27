@@ -1,5 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { DatabaseSync } from "node:sqlite";
 import { signToken } from "optin-token";
 
 import { handleSubscribe } from "../src/subscribe.mjs";
@@ -25,8 +27,16 @@ class KV {
   }
 }
 
+const welcomeLedgerMigration = readFileSync(
+  new URL("../migrations/0036_recipient_delivery_trust.sql", import.meta.url), "utf8");
+
+// A real sqlite D1 stand-in so the one-welcome-per-recipient claim ledger takes
+// its production path. action_log stays captured-only: the append path fail-softs
+// without its table, and the capture preserves the historical assertions.
 function env() {
   const actionRows = [];
+  const sqlite = new DatabaseSync(":memory:");
+  sqlite.exec(welcomeLedgerMigration);
   return {
     TOKEN_SECRET: SECRET,
     RESEND_API_KEY: "resend-key",
@@ -36,10 +46,18 @@ function env() {
     ADMIN_KEY: "admin",
     actionRows,
     DB: {
-      prepare() {
+      prepare(sql) {
+        if (/INSERT INTO action_log/i.test(sql)) {
+          return { bind(...values) { return { async run() { actionRows.push(values); return { meta: { changes: 1 } }; } }; } };
+        }
+        const statement = sqlite.prepare(sql);
         return {
           bind(...values) {
-            return { async run() { actionRows.push(values); } };
+            return {
+              async run() { const result = statement.run(...values); return { meta: { changes: Number(result.changes || 0) } }; },
+              async first() { return statement.get(...values) || null; },
+              async all() { return { results: statement.all(...values) }; },
+            };
           },
         };
       },

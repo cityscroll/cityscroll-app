@@ -13,6 +13,7 @@ import { describeFilter } from "./lib/confirm_email.mjs";
 import { compileSub } from "./lib/compile.mjs";
 import { enrollAndWelcome } from "./subscribe.mjs";
 import { overSurfaceCap, overActorLimit } from "./lib/meter.mjs";
+import { suppressionForRecipient } from "./lib/recipient_suppression.mjs";
 
 const MAX_BODY = 2000; // characters of email text we look at
 
@@ -90,6 +91,8 @@ export async function handleInboundEmail(message, env) {
 // discipline). Preview of matches is intentionally omitted here: the welcome email describes
 // the active watch and carries manage/unsubscribe controls.
 async function reply(env, to, subject, text) {
+  // Known-suppressed recipients get no reply attempt.
+  if (await suppressionForRecipient(env.DB, to)) return;
   const fromHdr = env.ALERTS_FROM || "CityScroll <alerts@crol-list.org>";
   const r = await fetch("https://api.resend.com/emails", {
     method: "POST",
