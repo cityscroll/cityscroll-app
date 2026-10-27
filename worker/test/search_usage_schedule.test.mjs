@@ -17,7 +17,7 @@ const source = readFileSync(new URL("../src/worker.mjs", import.meta.url), "utf8
 
 // Execute the committed entrypoint, with its imported jobs replaced at the boundary.
 // The scheduler body itself is neither copied nor reduced to a source-string assertion.
-function scheduledWorker({ now = NOW, overrides = {} } = {}) {
+function scheduledWorker({ now = NOW, overrides = {}, fetchImpl = null } = {}) {
   const calls = [];
   const errors = [];
   const logs = [];
@@ -25,8 +25,10 @@ function scheduledWorker({ now = NOW, overrides = {} } = {}) {
   const context = {
     Date,
     AbortController,
+    AbortSignal,
     setTimeout,
     clearTimeout,
+    fetch: fetchImpl || (() => { throw new Error("unexpected scheduled test fetch"); }),
     console: { log: (...args) => logs.push(args), error: (...args) => errors.push(args) },
   };
   for (const match of source.matchAll(/import\s+\{([^}]+)\}\s+from\s+"[^"]+";/g)) {
@@ -50,6 +52,42 @@ function scheduledWorker({ now = NOW, overrides = {} } = {}) {
   const ctx = { waitUntil(promise) { pending.push(promise); } };
   return { calls, errors, logs, pending, run: (cron, env, event = {}) => context.worker.runScheduled({ cron, ...event }, env, ctx) };
 }
+
+test("the 08:00 council refresh preserves each upstream request abort signal", async () => {
+  let observedStatus = null;
+  let requestSignal = null;
+  const worker = scheduledWorker({
+    fetchImpl: (_input, init = {}) => {
+      requestSignal = init.signal;
+      return new Promise((resolve, reject) => {
+        const timer = setTimeout(() => resolve({ ok: true }), 20);
+        init.signal?.addEventListener("abort", () => {
+          clearTimeout(timer);
+          reject(init.signal.reason || new Error("request aborted"));
+        }, { once: true });
+      });
+    },
+    overrides: {
+      async refreshMeetingOutcomes(_env, fetchImpl) {
+        const requestDeadline = new AbortController();
+        const response = fetchImpl("https://example.test/legistar", { signal: requestDeadline.signal });
+        requestDeadline.abort(new Error("request deadline"));
+        try {
+          await response;
+          observedStatus = "inner abort ignored";
+          return { status: "failed", reason: observedStatus };
+        } catch {
+          observedStatus = "inner abort propagated";
+          return { status: "success" };
+        }
+      },
+    },
+  });
+
+  await worker.run("0 8 * * *", productionEnv());
+  assert.equal(observedStatus, "inner abort propagated");
+  assert.equal(requestSignal?.aborted, true);
+});
 
 function fixtureStore() {
   const values = new Map();
