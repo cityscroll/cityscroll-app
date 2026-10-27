@@ -2034,6 +2034,36 @@ test("buildWarehouseAttemptList supports optional per-cohort attempt counts", ()
   );
 });
 
+test("buildWarehouseAttemptList interleaves per-cohort counts round-robin instead of cohort-contiguous slots", () => {
+  const workloadsByBase = new Map(
+    WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => [cohort, { cohort, workload_hash: `h-${cohort}` }]),
+  );
+  const byCohort = Object.fromEntries(
+    WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort, index) => [
+      cohort,
+      WAREHOUSE_EXPERIMENT_SAMPLES_PER_COHORT + index * 37,
+    ]),
+  );
+  const attempts = buildWarehouseAttemptList({ workloadsByBase, warehouseAttemptsByCohort: byCohort });
+  const cohorts = WAREHOUSE_EXPERIMENT_BASE_ROUTES;
+  // The first round visits every cohort once, in declaration order.
+  assert.deepEqual(attempts.slice(0, cohorts.length).map((a) => a.base), [...cohorts]);
+  // Every cohort appears in the first tenth, and all cohorts keep alternating
+  // until the smallest count is exhausted (smaller cohorts then finish early).
+  const tenth = Math.floor(attempts.length / 10);
+  const minCount = Math.min(...Object.values(byCohort));
+  for (const cohort of cohorts) {
+    assert.ok(attempts.slice(0, tenth).some((a) => a.base === cohort), `${cohort} absent from first tenth`);
+    const lastIndexOfCohort = attempts.map((a) => a.base).lastIndexOf(cohort);
+    assert.ok(lastIndexOfCohort >= cohorts.length * (minCount - 1), `${cohort} ends too early`);
+  }
+  // Per-cohort indices stay contiguous 0..n-1 in order.
+  for (const cohort of cohorts) {
+    const indices = attempts.filter((a) => a.base === cohort).map((a) => a.index);
+    assert.deepEqual(indices, Array.from({ length: byCohort[cohort] }, (_, i) => i));
+  }
+});
+
 test("buildWarehouseAttemptList keeps uniform *2 floor and accepts per-cohort sample floor", () => {
   const workloadsByBase = new Map(
     WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => [cohort, { cohort }]),
