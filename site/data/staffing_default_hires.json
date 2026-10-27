@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-10-22T20:20:13.647Z",
+  "generated_at": "2026-10-27T13:28:42.282Z",
   "source": {
     "name": "City Record Online — Changes in Personnel (APPOINTED)",
     "dataset": "dg92-zbpx",
@@ -17,564 +17,564 @@
   "count": 80,
   "notices": [
     {
-      "request_id": "996509",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997662",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/08/2026; Provisional Status: Yes; Title Code: 91406; Reason For Change: APPOINTED; Salary: 19.14; Employee Name: YOUNG,CORY M."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SINGH,NOAH R."
     },
     {
-      "request_id": "996505",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997661",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/15/2026; Provisional Status: Yes; Title Code: 71205; Reason For Change: APPOINTED; Salary: 22.72; Employee Name: YU,LUCAS  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: TAPIA GONZALEZ,JOHANNY M."
     },
     {
-      "request_id": "996498",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT. OF DESIGN & CONSTRUCTION",
+      "request_id": "997660",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 10209; Reason For Change: APPOINTED; Salary: 17.50; Employee Name: HOQUE,MALIHA  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: ROJAS,NOAH N."
     },
     {
-      "request_id": "996496",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DISTRICT ATTORNEY-MANHATTAN",
+      "request_id": "997658",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 52110.00; Employee Name: CHAN,EMMA E."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SHAHRIAR,PRIOM  ."
     },
     {
-      "request_id": "996495",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DISTRICT ATTORNEY-MANHATTAN",
+      "request_id": "997657",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 52110.00; Employee Name: KUHN,RACHEL K."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SATNOO,RANDOLPH M."
     },
     {
-      "request_id": "996494",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DISTRICT ATTORNEY-MANHATTAN",
+      "request_id": "997655",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/19/2026; Provisional Status: Yes; Title Code: 30831; Reason For Change: APPOINTED; Salary: 81905.00; Employee Name: GRANSHAW,BRIAN  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SABOVIC,KENAN  ."
     },
     {
-      "request_id": "996492",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "CONSUMER AND WORKER PROTECTION",
+      "request_id": "997654",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 30087; Reason For Change: APPOINTED; Salary: 95450.00; Employee Name: ROMERO,ALEXIS G."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SAMUELS,SELASSIE N."
     },
     {
-      "request_id": "996490",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DISTRICT ATTORNEY-MANHATTAN",
+      "request_id": "997653",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 60000.00; Employee Name: BROWN,MADISON P."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SUN,DERRICK F."
     },
     {
-      "request_id": "996488",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF CITYWIDE ADMIN SVCS",
+      "request_id": "997651",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 12704; Reason For Change: APPOINTED; Salary: 98140.00; Employee Name: ESPINAL,ANDRES  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SOLAIMAN,MD  ."
     },
     {
-      "request_id": "996485",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT. OF DESIGN & CONSTRUCTION",
+      "request_id": "997650",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/19/2026; Provisional Status: Yes; Title Code: 13632; Reason For Change: APPOINTED; Salary: 109518.00; Employee Name: UDDIN,MD GHIAS  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: TAVERAS,ANDY  ."
     },
     {
-      "request_id": "996480",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "CONSUMER AND WORKER PROTECTION",
+      "request_id": "997649",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 10124; Reason For Change: APPOINTED; Salary: 78440.00; Employee Name: BASANT,GLORIA I."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: ROSS,RYAN M."
     },
     {
-      "request_id": "996476",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DISTRICT ATTORNEY-MANHATTAN",
+      "request_id": "997647",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 52110.00; Employee Name: JACQUAND,THEA L."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: ROSARIO,LEONY Y."
     },
     {
-      "request_id": "996475",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DISTRICT ATTORNEY-MANHATTAN",
+      "request_id": "997645",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 60410.00; Employee Name: AHMAD,FATIMA  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: TAVAREZ,LILIANNE  ."
     },
     {
-      "request_id": "996474",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "TECHNOLOGY & INNOVATION",
+      "request_id": "997644",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/19/2026; Provisional Status: Yes; Title Code: 8298A; Reason For Change: APPOINTED; Salary: 142072.00; Employee Name: YEATTS-LONSKE,DASHIELL C."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SALDANA,ALICE L."
     },
     {
-      "request_id": "996473",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "TECHNOLOGY & INNOVATION",
+      "request_id": "997643",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/19/2026; Provisional Status: Yes; Title Code: 95711; Reason For Change: APPOINTED; Salary: 180000.00; Employee Name: BUNYEA,ANDREW M."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SARFO,ALFRED  ."
     },
     {
-      "request_id": "996472",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997642",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/14/2026; Provisional Status: Yes; Title Code: 71205; Reason For Change: APPOINTED; Salary: 22.72; Employee Name: WU,IVAN  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SAJID,MD E."
     },
     {
-      "request_id": "996465",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DISTRICT ATTORNEY-MANHATTAN",
+      "request_id": "997641",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 59936.00; Employee Name: CUAVERS,ISAIAH C."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SOTO CASTRO,YARIZA C."
     },
     {
-      "request_id": "996463",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "CONSUMER AND WORKER PROTECTION",
+      "request_id": "997637",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 21744; Reason For Change: APPOINTED; Salary: 100904.00; Employee Name: JAGOLINZER,SAMUEL H."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SHAJED,MD A."
     },
     {
-      "request_id": "996460",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DISTRICT ATTORNEY-MANHATTAN",
+      "request_id": "997636",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 30831; Reason For Change: APPOINTED; Salary: 81905.00; Employee Name: MARTINS,ALEXANDR  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SADIKU,ADRIAN  ."
     },
     {
-      "request_id": "996456",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF CITYWIDE ADMIN SVCS",
+      "request_id": "997635",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 90644; Reason For Change: APPOINTED; Salary: 39970.00; Employee Name: RIVERA JR JR,RUDY  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: TAPIA GOMEZ,ALEJANDR  ."
     },
     {
-      "request_id": "996452",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "CONSUMER AND WORKER PROTECTION",
+      "request_id": "997634",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/19/2026; Provisional Status: Yes; Title Code: 21744; Reason For Change: APPOINTED; Salary: 100904.00; Employee Name: KLEIN,SOPHIA A  ."
+      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: TATIS,ELIJAH J."
     },
     {
-      "request_id": "996451",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "TECHNOLOGY & INNOVATION",
+      "request_id": "997633",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/19/2026; Provisional Status: Yes; Title Code: 95711; Reason For Change: APPOINTED; Salary: 160000.00; Employee Name: IULO,MEHGAN  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SANTOS,JAILENE S."
     },
     {
-      "request_id": "996447",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DISTRICT ATTORNEY-MANHATTAN",
+      "request_id": "997631",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 52110.00; Employee Name: BECKER,KATHARIN J."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SALGUERO,JEREMIAH E."
     },
     {
-      "request_id": "996446",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DISTRICT ATTORNEY-MANHATTAN",
+      "request_id": "997630",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 53431.00; Employee Name: MAI,JIA-YI  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: ROKER,CLAYTON S."
     },
     {
-      "request_id": "996444",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "CONSUMER AND WORKER PROTECTION",
+      "request_id": "997629",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 13290; Reason For Change: APPOINTED; Salary: 110000.00; Employee Name: GUERRERO,BIANCA M."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: STEWART,NICHOLAS J."
     },
     {
-      "request_id": "996437",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF CITYWIDE ADMIN SVCS",
+      "request_id": "997627",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/19/2026; Provisional Status: Yes; Title Code: 95621; Reason For Change: APPOINTED; Salary: 116982.00; Employee Name: VILLA,RAFAEL  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: TACURI-YAURI,DORIS E."
     },
     {
-      "request_id": "996426",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "TECHNOLOGY & INNOVATION",
+      "request_id": "997621",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/19/2026; Provisional Status: Yes; Title Code: 8298A; Reason For Change: APPOINTED; Salary: 144000.00; Employee Name: KHOKHAR,ZEESHAAN A."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SALDANA,RANDY F."
     },
     {
-      "request_id": "996425",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DISTRICT ATTORNEY-MANHATTAN",
+      "request_id": "997620",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 52110.00; Employee Name: HECHT,ALLISON J."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SHEIKH,SALMAN J."
     },
     {
-      "request_id": "996416",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DISTRICT ATTORNEY-MANHATTAN",
+      "request_id": "997619",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 52110.00; Employee Name: BLANK,HARRISON S."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: RONCO,STEVE A."
     },
     {
-      "request_id": "996415",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DISTRICT ATTORNEY-MANHATTAN",
+      "request_id": "997618",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 52110.00; Employee Name: MURPHY,CONNER  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SINCHE GUAMAN,KELVIN M."
     },
     {
-      "request_id": "996413",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "CONSUMER AND WORKER PROTECTION",
+      "request_id": "997617",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/19/2026; Provisional Status: Yes; Title Code: 10251; Reason For Change: APPOINTED; Salary: 55821.00; Employee Name: AWADALLA,YASSER M."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SINGH,SIMRANJI  ."
     },
     {
-      "request_id": "996411",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF CITYWIDE ADMIN SVCS",
+      "request_id": "997616",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 90698; Reason For Change: APPOINTED; Salary: 278.72; Employee Name: CARACCIOLO JR,ANTHONY J."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SENA,MICHAEL A."
     },
     {
-      "request_id": "996409",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT. OF DESIGN & CONSTRUCTION",
+      "request_id": "997615",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/19/2026; Provisional Status: Yes; Title Code: 20210; Reason For Change: APPOINTED; Salary: 76279.00; Employee Name: TEJADA,KIANNA  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SINGH,SUKHDEEP  ."
     },
     {
-      "request_id": "996404",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF CITYWIDE ADMIN SVCS",
+      "request_id": "997614",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 91940; Reason For Change: APPOINTED; Salary: 448.00; Employee Name: ALVAREZ,AARON  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SIDDIQUI,NABEEL A."
     },
     {
-      "request_id": "996401",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT. OF DESIGN & CONSTRUCTION",
+      "request_id": "997613",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/19/2026; Provisional Status: Yes; Title Code: 20202; Reason For Change: APPOINTED; Salary: 68709.00; Employee Name: DESENA,NICHOLAS M."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SANTOS FRIAS,JOSE G."
     },
     {
-      "request_id": "996398",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT. OF DESIGN & CONSTRUCTION",
+      "request_id": "997612",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/19/2026; Provisional Status: Yes; Title Code: 20210; Reason For Change: APPOINTED; Salary: 76279.00; Employee Name: KIM,RYAN J."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SINGH,INDERPAL  ."
     },
     {
-      "request_id": "996390",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DISTRICT ATTORNEY-MANHATTAN",
+      "request_id": "997611",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 52110.00; Employee Name: KEY,MARGARET C."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: THWEATT,JUSTIN M."
     },
     {
-      "request_id": "996389",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "CONSUMER AND WORKER PROTECTION",
+      "request_id": "997610",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 30087; Reason For Change: APPOINTED; Salary: 95450.00; Employee Name: HO,LOC G."
+      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 12749; Reason For Change: APPOINTED; Salary: 48983.00; Employee Name: SAIKIA,PREEYA  ."
     },
     {
-      "request_id": "996387",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DISTRICT ATTORNEY-MANHATTAN",
+      "request_id": "997609",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 52110.00; Employee Name: BROWN,MICHELLE B."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SERAPHIN,RONALDO K."
     },
     {
-      "request_id": "996386",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "TECHNOLOGY & INNOVATION",
+      "request_id": "997608",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 10232; Reason For Change: APPOINTED; Salary: 26.00; Employee Name: KHARIAL,ADITYA  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SUSINO,CAMERON J."
     },
     {
-      "request_id": "996385",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DISTRICT ATTORNEY-MANHATTAN",
+      "request_id": "997606",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 58651.00; Employee Name: MOREY,DEVAN L."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SINGH,STEVEN R."
     },
     {
-      "request_id": "996382",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997605",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/10/2026; Provisional Status: Yes; Title Code: 91406; Reason For Change: APPOINTED; Salary: 19.14; Employee Name: WILLIAMS,EUREKA R."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SMART,TIANNA D."
     },
     {
-      "request_id": "996380",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "CONSUMER AND WORKER PROTECTION",
+      "request_id": "997604",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 30087; Reason For Change: APPOINTED; Salary: 95450.00; Employee Name: PIZZATO,JOHN L."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SIDDIQUE,NABIL A."
     },
     {
-      "request_id": "996378",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997601",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/16/2026; Provisional Status: Yes; Title Code: 91406; Reason For Change: APPOINTED; Salary: 19.14; Employee Name: WRIGHT,DORAN E."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SHARIF,SHARIAR I."
     },
     {
-      "request_id": "996370",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997599",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/17/2026; Provisional Status: Yes; Title Code: 71205; Reason For Change: APPOINTED; Salary: 22.72; Employee Name: ROJAS,JONATHAN  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: ROSA,YEDDY L."
     },
     {
-      "request_id": "996368",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997597",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/15/2026; Provisional Status: Yes; Title Code: 71205; Reason For Change: APPOINTED; Salary: 22.72; Employee Name: SARWAR,KHURRAM  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SOSA SANTOS,CARLOS M."
     },
     {
-      "request_id": "996365",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997596",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/17/2026; Provisional Status: Yes; Title Code: 71205; Reason For Change: APPOINTED; Salary: 22.72; Employee Name: CAMERON,DAVID  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SAKIB,JUBAYER H."
     },
     {
-      "request_id": "996364",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997595",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/10/2026; Provisional Status: Yes; Title Code: 71205; Reason For Change: APPOINTED; Salary: 22.72; Employee Name: SPERLING,TYRONE T."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: ROMAN,RYAN  ."
     },
     {
-      "request_id": "996362",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997594",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/10/2026; Provisional Status: Yes; Title Code: 06664; Reason For Change: APPOINTED; Salary: 20.60; Employee Name: ROSENFELD,IRIS R."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SYED,ALI R."
     },
     {
-      "request_id": "996361",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997593",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/10/2026; Provisional Status: Yes; Title Code: 71205; Reason For Change: APPOINTED; Salary: 22.72; Employee Name: PENFOLD,BENJAMIN A."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SAQIB,SHAHZAIB  ."
     },
     {
-      "request_id": "996360",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997592",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/09/2026; Provisional Status: Yes; Title Code: 81106; Reason For Change: APPOINTED; Salary: 29.08; Employee Name: SPENCE,SHUKURA N."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SYRACUSE,JORDAN S."
     },
     {
-      "request_id": "996359",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997590",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/14/2026; Provisional Status: Yes; Title Code: 71205; Reason For Change: APPOINTED; Salary: 22.72; Employee Name: DELGADO,ANA I."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SHAW,DANIEL A."
     },
     {
-      "request_id": "996358",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997589",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 06664; Reason For Change: APPOINTED; Salary: 20.60; Employee Name: GOMEZ,ELSIE  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SINCHE,JUSTIN A."
     },
     {
-      "request_id": "996357",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997587",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/15/2026; Provisional Status: Yes; Title Code: 90641; Reason For Change: APPOINTED; Salary: 22.22; Employee Name: GORDON,LARRY N."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SALDANA,CHELSEA L."
     },
     {
-      "request_id": "996356",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997586",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 90641; Reason For Change: APPOINTED; Salary: 22.22; Employee Name: GILL,HAKEEM R."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SPENCE,RICARDO O."
     },
     {
-      "request_id": "996354",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997583",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/10/2026; Provisional Status: Yes; Title Code: 71205; Reason For Change: APPOINTED; Salary: 22.72; Employee Name: CROPPER,SOFIA V."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SANDY,LYSCHELL A."
     },
     {
-      "request_id": "996351",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997582",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/16/2026; Provisional Status: Yes; Title Code: 91406; Reason For Change: APPOINTED; Salary: 19.14; Employee Name: SAMLAL,KAYDEN M."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: TAMAYO,IVAN A."
     },
     {
-      "request_id": "996350",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997580",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 71205; Reason For Change: APPOINTED; Salary: 22.72; Employee Name: EISSA,DEAN W."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: TAVAREZ,JORANNY  ."
     },
     {
-      "request_id": "996349",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997579",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/23/2026; Provisional Status: Yes; Title Code: 06070; Reason For Change: APPOINTED; Salary: 25.17; Employee Name: PIZARRO,TATIANNA B."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SMITH,DIYQUAI D."
     },
     {
-      "request_id": "996348",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997574",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/17/2026; Provisional Status: Yes; Title Code: 71205; Reason For Change: APPOINTED; Salary: 22.72; Employee Name: NUNEZ,DYLAN  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: TEDESCHI,JAKE T."
     },
     {
-      "request_id": "996346",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997573",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/10/2026; Provisional Status: Yes; Title Code: 71205; Reason For Change: APPOINTED; Salary: 22.72; Employee Name: VILLANDRE,ZOE M."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: STEPHEN,RANDY  ."
     },
     {
-      "request_id": "996344",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997571",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/16/2026; Provisional Status: Yes; Title Code: 91406; Reason For Change: APPOINTED; Salary: 19.14; Employee Name: PICHARDO,EDWIN  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SERPER,BRIAN  ."
     },
     {
-      "request_id": "996343",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997568",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/25/2026; Provisional Status: Yes; Title Code: 71205; Reason For Change: APPOINTED; Salary: 22.72; Employee Name: FITZGERALD,MAIREAD B."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SANTO FABRE,CRISTIAN A."
     },
     {
-      "request_id": "996341",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997567",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 90641; Reason For Change: APPOINTED; Salary: 22.22; Employee Name: COOPER,DANIEL  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SANDY,KYLE B."
     },
     {
-      "request_id": "996339",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997566",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/07/2026; Provisional Status: Yes; Title Code: 71205; Reason For Change: APPOINTED; Salary: 22.72; Employee Name: MCSORLEY,SEAN P."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: THOMAS,BLESSCAR S."
     },
     {
-      "request_id": "996338",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997565",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/14/2026; Provisional Status: Yes; Title Code: 90641; Reason For Change: APPOINTED; Salary: 22.22; Employee Name: CHARLES,LIONEL V."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SINGH,SHERRAJ  ."
     },
     {
-      "request_id": "996337",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997564",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/10/2026; Provisional Status: Yes; Title Code: 91406; Reason For Change: APPOINTED; Salary: 19.14; Employee Name: WASHINGTON,RICHARD K."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SUAREZ,KEVIN E."
     },
     {
-      "request_id": "996336",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997561",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/14/2026; Provisional Status: Yes; Title Code: 71205; Reason For Change: APPOINTED; Salary: 22.72; Employee Name: MARTIN,ALICE M."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: TARIQ,KHIZAR  ."
     },
     {
-      "request_id": "996335",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997559",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/10/2026; Provisional Status: Yes; Title Code: 71205; Reason For Change: APPOINTED; Salary: 22.72; Employee Name: OH,CHEROKEE J."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SULEIMAN,OMAR M."
     },
     {
-      "request_id": "996334",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997558",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/08/2026; Provisional Status: Yes; Title Code: 06664; Reason For Change: APPOINTED; Salary: 20.60; Employee Name: FORD,MEGAN L."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SUWAILIH,YASEEH S."
     },
     {
-      "request_id": "996333",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997554",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/10/2026; Provisional Status: Yes; Title Code: 71205; Reason For Change: APPOINTED; Salary: 22.72; Employee Name: PODOLSKIY,MAKAI S."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SEALES,AARON M."
     },
     {
-      "request_id": "996331",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997553",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/15/2026; Provisional Status: Yes; Title Code: 91406; Reason For Change: APPOINTED; Salary: 19.14; Employee Name: GARCIA,SKYLYNN J."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SANCHEZ-MARTINE,ALEXANDE J."
     },
     {
-      "request_id": "996330",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997552",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 71205; Reason For Change: APPOINTED; Salary: 22.72; Employee Name: JEFFREY,OREL A."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: RUGEL,ANDREW L."
     },
     {
-      "request_id": "996328",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997551",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/23/2026; Provisional Status: Yes; Title Code: 91406; Reason For Change: APPOINTED; Salary: 19.14; Employee Name: GONZALEZ,ALEXANDR D."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SANTOS,LEONYSIS  ."
     },
     {
-      "request_id": "996327",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997550",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/09/2026; Provisional Status: Yes; Title Code: 06664; Reason For Change: APPOINTED; Salary: 20.60; Employee Name: CASTELLON,CRYSTAL  ."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: ROSARIO,JORDI  ."
     },
     {
-      "request_id": "996325",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997549",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/05/2026; Provisional Status: Yes; Title Code: 91406; Reason For Change: APPOINTED; Salary: 20.60; Employee Name: JONES,ADRIANA M."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: THOMAS,CHEYANNE B."
     },
     {
-      "request_id": "996324",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997548",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 81106; Reason For Change: APPOINTED; Salary: 29.08; Employee Name: GRIFFIN,PORCHIA S."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SWINGLE,FREDERIC A."
     },
     {
-      "request_id": "996323",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997547",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 06070; Reason For Change: APPOINTED; Salary: 25.17; Employee Name: MURPHY,AMINAH I."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: STEWART,JOSEPH A."
     },
     {
-      "request_id": "996322",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997546",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/09/2026; Provisional Status: Yes; Title Code: 71205; Reason For Change: APPOINTED; Salary: 22.72; Employee Name: CHO,SENTA C."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SUAREZ,MITCHELL  ."
     },
     {
-      "request_id": "996321",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "DEPT OF PARKS & RECREATION",
+      "request_id": "997545",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/19/2026; Provisional Status: Yes; Title Code: 06664; Reason For Change: APPOINTED; Salary: 20.60; Employee Name: RODRIGUEZ,DESTINY A."
+      "additional_description_1": "Effective Date: 07/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SOYEMI,MAKIN A."
     }
   ]
 }

@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-10-22T20:14:13.118Z",
-  "open_as_of": "2026-10-22",
+  "generated_at": "2026-10-27T13:17:04.521Z",
+  "open_as_of": "2026-10-27",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -10,132 +10,13 @@
   },
   "query": {
     "$select": "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,selection_method_description",
-    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-10-22'",
+    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-10-27'",
     "$order": "due_date ASC",
     "$limit": "40",
     "note": "Default Money tab acquisition: open solicitations, all agencies, no keyword/method. Resident reads filter the committed snapshot."
   },
   "count": 40,
   "notices": [
-    {
-      "request_id": "20260828018",
-      "start_date": "2026-09-03T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction Related Services",
-      "short_title": "Bid Extension: SMD_Services_Indefinite Delivery Indefinite Quantity (IDIQ) Contract for Repair of Gravity Roof Tanks (Office of Water Quality) at Various NYCHA Buildings Citywide",
-      "due_date": "2026-10-22T10:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260821033",
-      "start_date": "2026-09-03T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Bid Extension: SMD_Services IDIQ Contract for Annual Cleaning and Inspection of Gravity Roof Tanks at Various NYCHA Buildings, Citywide",
-      "due_date": "2026-10-22T10:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260904001",
-      "start_date": "2026-09-14T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Correction: 02201602-Cumberland IDF MDF Upgrade",
-      "pin": "02201602 - Cumberlan",
-      "due_date": "2026-10-22T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260901025",
-      "start_date": "2026-09-10T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Bid Extension: SMD_A&CM_RFQ #517934 Basketball Court at Clinton Houses - Manhattan",
-      "pin": "517934",
-      "due_date": "2026-10-22T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260922025",
-      "start_date": "2026-09-30T00:00:00.000",
-      "agency_name": "Public Library - Queens",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods and Services",
-      "short_title": "Truck Wrapping Services",
-      "pin": "0926-1",
-      "due_date": "2026-10-22T15:00:00.000",
-      "selection_method_description": "Competitive Sealed Proposals"
-    },
-    {
-      "request_id": "20260901012",
-      "start_date": "2026-09-15T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Bid Extension: SMPD_PS_RFP 523121_ Personal Injury and Claims Investigation and Adjustment Services",
-      "pin": "523121",
-      "due_date": "2026-10-23T14:00:00.000",
-      "selection_method_description": "Request for Proposals"
-    },
-    {
-      "request_id": "20261007019",
-      "start_date": "2026-10-15T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Rubrik Enterprise",
-      "pin": "RFB-110",
-      "due_date": "2026-10-23T15:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260922034",
-      "start_date": "2026-09-29T00:00:00.000",
-      "agency_name": "Campaign Finance Board",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Security and Protective Services",
-      "pin": "004202700005",
-      "due_date": "2026-10-23T17:00:00.000",
-      "selection_method_description": "M/WBE Noncompetitive Small Purchase"
-    },
-    {
-      "request_id": "20260902023",
-      "start_date": "2026-09-11T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Bid Extension: Systemwide Commissioning Services",
-      "pin": "2878",
-      "due_date": "2026-10-23T17:00:00.000",
-      "selection_method_description": "Request for Proposals"
-    },
-    {
-      "request_id": "20260916035",
-      "start_date": "2026-09-23T00:00:00.000",
-      "agency_name": "Finance",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Tertiary Debt Collection Services for Business & Excise Tax",
-      "pin": "83626B0004",
-      "due_date": "2026-10-26T15:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260722026",
-      "start_date": "2026-07-29T00:00:00.000",
-      "agency_name": "Trust for Governors Island",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Ground leasing, rehabilitating, and operating Building 324 and/or Building 330 on Governors Island",
-      "pin": "TGI-RED-AdaptiveReus",
-      "due_date": "2026-10-26T17:00:00.000",
-      "selection_method_description": "Request for Information"
-    },
     {
       "request_id": "20260929016",
       "start_date": "2026-10-06T00:00:00.000",
@@ -433,17 +314,6 @@
       "selection_method_description": "Request for Information"
     },
     {
-      "request_id": "20260312023",
-      "start_date": "2026-03-19T00:00:00.000",
-      "agency_name": "Education",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods and Services",
-      "short_title": "Bid Extension: Job Order Contract for Cafeteria Experience Enhancement",
-      "pin": "B5948040",
-      "due_date": "2026-11-05T16:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
       "request_id": "20261005024",
       "start_date": "2026-10-14T00:00:00.000",
       "agency_name": "Parks and Recreation",
@@ -452,6 +322,137 @@
       "short_title": "MG-126M Manhattan Street Tree Planting FY27",
       "pin": "84627B0023",
       "due_date": "2026-11-06T10:30:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260928019",
+      "start_date": "2026-10-02T00:00:00.000",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "Request for Proposals for Master Contractors for Agency Survey Work",
+      "pin": "81627P0002",
+      "due_date": "2026-11-06T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Proposals"
+    },
+    {
+      "request_id": "20260921021",
+      "start_date": "2026-09-28T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "84127P0001-TD/CSS for Crocheron Park Pedestrian Bridge Over BCIP, Borough of Queens",
+      "pin": "84127P0001",
+      "due_date": "2026-11-06T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Proposals"
+    },
+    {
+      "request_id": "20261006031",
+      "start_date": "2026-10-13T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "RFP for Provider Data Management services",
+      "pin": "MHP-1125",
+      "due_date": "2026-11-06T15:00:00.000",
+      "selection_method_description": "Request for Proposals"
+    },
+    {
+      "request_id": "20261014004",
+      "start_date": "2026-10-19T00:00:00.000",
+      "agency_name": "Economic Development Corporation",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods and Services",
+      "short_title": "Mayor's Office of Mass Engagement - SMS Service Provider RFEI",
+      "pin": "11990",
+      "due_date": "2026-11-06T16:00:00.000",
+      "selection_method_description": "Request for Information"
+    },
+    {
+      "request_id": "20260825018",
+      "start_date": "2026-09-02T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods",
+      "short_title": "Correction: EPIN 85726B0065 - BID 2600039 - Printed Election Supplies",
+      "pin": "85726B0065",
+      "due_date": "2026-11-09T11:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20261015010",
+      "start_date": "2026-10-21T00:00:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "84627B0012-Maintenance and Repair of Automated Logic WebCTRL and Carrier",
+      "pin": "84627B0012",
+      "due_date": "2026-11-09T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260902014",
+      "start_date": "2026-09-11T00:00:00.000",
+      "agency_name": "Economic Development Corporation",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods and Services",
+      "short_title": "Consultant Services, On-Call Hazmat RFP",
+      "pin": "3363",
+      "due_date": "2026-11-09T16:00:00.000",
+      "selection_method_description": "Request for Proposals"
+    },
+    {
+      "request_id": "20261006020",
+      "start_date": "2026-10-14T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "82626B0051-MFP-2025 Preventative Maintenance, Inspection, Testing and Repair of Fire Protection Systems and Fire Alarm Systems at Various DEP Facilities",
+      "pin": "82626B0051",
+      "due_date": "2026-11-10T10:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20261002023",
+      "start_date": "2026-10-14T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "SMPD_PS_RFP 523229 - The Development and Implementation of Department of Housing and Urban Development Required Training for National Standards for the Physical Inspection of Real Estate (NSPIRE) and Housing Opportunity Through Modernization Act (HOTMA)",
+      "pin": "523229",
+      "due_date": "2026-11-10T14:00:00.000",
+      "selection_method_description": "Request for Proposals"
+    },
+    {
+      "request_id": "20261008021",
+      "start_date": "2026-10-16T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "VISUAL INSPECTION OF FIRE STANDPIPE AND SPRINKLER SYSTEMS",
+      "due_date": "2026-11-10T14:00:00.000",
+      "selection_method_description": "Request for Quote"
+    },
+    {
+      "request_id": "20260917021",
+      "start_date": "2026-09-24T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "NYC H+H/Queens - Dialysis Space Construction",
+      "pin": "34202301_Queens Dial",
+      "due_date": "2026-11-12T11:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260924021",
+      "start_date": "2026-09-30T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Correction: Community Pharmacy at Lincoln Hospital - GC Work (MISC) MEP Trades",
+      "pin": "25202504",
+      "due_date": "2026-11-12T11:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     }
   ]

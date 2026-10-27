@@ -2,8 +2,8 @@
   "schema": "cityscroll.analytics_payments.v1",
   "projection_contract": "cityscroll.analytical_projection.v1",
   "fact": "payment",
-  "generated_at": "2026-10-22T19:42:15.561Z",
-  "snapshot_date": "2026-10-22T19:42:15.561Z",
+  "generated_at": "2026-10-27T12:39:54.143Z",
+  "snapshot_date": "2026-10-27T12:39:54.143Z",
   "population_definition": "AP-08 independent Checkbook Spending contract-payment population; grouped by agency, payee, and payment fiscal year.",
   "dimensions": [
     "agency",
@@ -21,19 +21,19 @@
     "fiscal_years": [
       2026
     ],
-    "publisher_record_count": 1784806,
-    "source_net_check_amount": 52377615299.78,
+    "publisher_record_count": 1784820,
+    "source_net_check_amount": 52377671677.79,
     "source_receipt": "warehouse/receipts/proof/checkbook_payment_population_latest.json",
     "input": "payments.csv"
   },
   "population": {
-    "source_rows": 1784806,
+    "source_rows": 1784820,
     "grouped_rows": 28519,
-    "transaction_count": 1784806,
-    "unique_transaction_count": 1635139,
-    "actual_payment_amount": 52377615299.78,
+    "transaction_count": 1784820,
+    "unique_transaction_count": 1635153,
+    "actual_payment_amount": 52377671677.79,
     "duplicate_transaction_rows": 149667,
-    "reversal_rows": 1679
+    "reversal_rows": 1686
   },
   "rows": [
     {
@@ -77700,9 +77700,9 @@
       "agency": "Department of Education",
       "payee_name": "ABSOLUTE FENCING GEAR INC",
       "fiscal_year": 2026,
-      "transaction_count": 7,
-      "unique_transaction_count": 7,
-      "actual_payment_amount": 29926.25,
+      "transaction_count": 11,
+      "unique_transaction_count": 11,
+      "actual_payment_amount": 12603.95,
       "contract_count": 7,
       "contract_id": null
     },
@@ -114950,9 +114950,9 @@
       "agency": "Department of Education",
       "payee_name": "JANOVIC PLAZA INC",
       "fiscal_year": 2026,
-      "transaction_count": 3,
-      "unique_transaction_count": 3,
-      "actual_payment_amount": 6367.59,
+      "transaction_count": 4,
+      "unique_transaction_count": 4,
+      "actual_payment_amount": 2381.33,
       "contract_count": 3,
       "contract_id": null
     },
@@ -128970,9 +128970,9 @@
       "agency": "Department of Education",
       "payee_name": "NATIONAL MUSEUM OF MATHEMATICS",
       "fiscal_year": 2026,
-      "transaction_count": 104,
-      "unique_transaction_count": 104,
-      "actual_payment_amount": 110439,
+      "transaction_count": 105,
+      "unique_transaction_count": 105,
+      "actual_payment_amount": 106836,
       "contract_count": 79,
       "contract_id": null
     },
@@ -177890,9 +177890,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "STRATEGIC SAFETY SOLUTIONS LLC",
       "fiscal_year": 2026,
-      "transaction_count": 37,
-      "unique_transaction_count": 37,
-      "actual_payment_amount": 736085.74,
+      "transaction_count": 44,
+      "unique_transaction_count": 44,
+      "actual_payment_amount": 817479.81,
       "contract_count": 4,
       "contract_id": null
     },
@@ -261420,9 +261420,9 @@
       "agency": "Mayoralty",
       "payee_name": "IDEMIA IDENTITY & SECURITY USA LLC",
       "fiscal_year": 2026,
-      "transaction_count": 94,
-      "unique_transaction_count": 94,
-      "actual_payment_amount": 8259.25,
+      "transaction_count": 95,
+      "unique_transaction_count": 95,
+      "actual_payment_amount": 8154.75,
       "contract_count": 1,
       "contract_id": "POD00220262006364"
     },
