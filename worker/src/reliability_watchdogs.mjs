@@ -209,7 +209,7 @@ export async function recordDigestDeliveryStarted(env, now = new Date()) {
 export async function recordDigestDeliveryReceipt(env, receipt, now = new Date(), error = null) {
   const name = key(DIGEST_DELIVERY_LEDGER_PREFIX, now);
   const current = await readJson(env?.ALERT_STATE, name);
-  const enqueued = Number(receipt?.enqueued) || 0;
+  const enqueued = Math.max(Number(current?.enqueued) || 0, Number(receipt?.enqueued) || 0);
   const at = now.toISOString();
   const status = error ? "FAILED" : (receipt?.skipped_reason === "queue_pending" ? "PENDING" : "TERMINAL");
   const result = {
@@ -219,10 +219,10 @@ export async function recordDigestDeliveryReceipt(env, receipt, now = new Date()
     started_at: current?.started_at || current?.observed_at || at,
     finalized_at: at,
     status,
-    accepted_sends: Number(receipt?.sent) || 0,
+    accepted_sends: Math.max(Number(current?.accepted_sends) || 0, Number(receipt?.sent) || 0),
     enqueued,
     jobs_done: Number(current?.jobs_done) || 0,
-    skipped_reason: receipt?.skipped_reason || null,
+    skipped_reason: receipt?.skipped_reason || current?.skipped_reason || null,
     error: error ? String(error?.message || error) : null,
   };
   await putJson(env?.ALERT_STATE, name, result);

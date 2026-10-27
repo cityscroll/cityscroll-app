@@ -8,6 +8,7 @@ import {
   mailWatchdogSnapshot,
   recordDigestDeliveryReceipt,
   recordDigestDeliveryStarted,
+  recordDigestQueueOutcome,
   recordDigestShadowReceipt,
   digestShadowFinding,
   recordInboundEmailReceipt,
@@ -209,6 +210,38 @@ test("FAILED terminal update after STARTED remains incomplete≠missing", async 
   assert.match(failed.error, /provider cut short/);
   assert.equal(classifyDigestDeliveryLedger(failed), "terminal");
   assert.equal(failed.started_at, "2026-10-23T13:00:00.000Z");
+});
+
+test("FAILED terminal receipt preserves partial fan-out lower bounds without replay", async () => {
+  const ALERT_STATE = kv();
+  const now = new Date("2026-10-23T13:00:00.000Z");
+  const started = await recordDigestDeliveryStarted({ ALERT_STATE }, now);
+  assert.equal(started.status, "STARTED");
+  const failed = await recordDigestDeliveryReceipt(
+    { ALERT_STATE },
+    { enqueued: 100 },
+    now,
+    new Error("second digest batch rejected"),
+  );
+  assert.equal(failed.status, "FAILED");
+  assert.equal(failed.enqueued, 100);
+  assert.equal(failed.accepted_sends, 0);
+
+  const consumer = await recordDigestQueueOutcome({ ALERT_STATE }, { sent: true }, now);
+  assert.equal(consumer.enqueued, 100);
+  assert.equal(consumer.jobs_done, 1);
+  assert.equal(consumer.accepted_sends, 1);
+
+  const replay = await recordDigestDeliveryReceipt(
+    { ALERT_STATE },
+    null,
+    now,
+    new Error("same failed invocation observed again"),
+  );
+  assert.equal(replay.status, "FAILED");
+  assert.equal(replay.enqueued, 100, "re-observing failure cannot lower the accepted enqueue bound");
+  assert.equal(replay.jobs_done, 1, "re-observing failure cannot reset completed jobs");
+  assert.equal(replay.accepted_sends, 1, "re-observing failure cannot duplicate or erase accepted sends");
 });
 
 const CYCLE = Object.freeze({

@@ -814,13 +814,19 @@ const worker = {
     }
     // Keep the canonical scheduled call shape visible to source-contract checks.
     // await runAlerts(env);
+    const fanoutProgress = { enqueued: 0 };
     const delivery = await (async () => {
       try {
         const value = await runAlerts(env, undefined, {
           ...(event.costProbe === true ? { suppressDryRunLogs: true } : {}),
           enqueueJobs: (jobs, { signal } = {}) => runScheduledStep(
             "digest queue fan-out",
-            (fanoutSignal) => enqueueDigestJobs(env, jobs, { signal: fanoutSignal || signal }),
+            (fanoutSignal) => enqueueDigestJobs(env, jobs, {
+              signal: fanoutSignal || signal,
+              onBatch: ({ enqueued } = {}) => {
+                fanoutProgress.enqueued = Math.max(fanoutProgress.enqueued, Number(enqueued) || 0);
+              },
+            }),
             { timeoutMs: scheduledStepDeadlineMs(env, SCHEDULED_DIGEST_DEADLINE_MS) },
           ).then((step) => {
             if (!step.ok) throw step.error;
@@ -837,7 +843,13 @@ const worker = {
       console.log("digest delivery: complete");
     } else {
       console.error("digest delivery failed (advisories continue):", String(delivery.error?.message || delivery.error));
-      await recordDigestDeliveryReceiptLoudly(env, null, new Date(), delivery.error);
+      const enqueued = Math.max(fanoutProgress.enqueued, Number(delivery.error?.enqueued) || 0);
+      await recordDigestDeliveryReceiptLoudly(
+        env,
+        enqueued > 0 ? { enqueued } : null,
+        new Date(),
+        delivery.error,
+      );
     }
 
     // Idempotent recovery of the four vetted stranded signups. Fail-soft so a store error

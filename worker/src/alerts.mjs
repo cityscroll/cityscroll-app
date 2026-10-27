@@ -133,6 +133,22 @@ let alertHearingRefresh = null;
 
 const DIGEST_QUEUE_BATCH_SIZE = 100;
 
+function digestFanoutError(error, enqueued) {
+  const count = Number.isFinite(Number(enqueued)) ? Math.max(0, Number(enqueued)) : 0;
+  if (error && (typeof error === "object" || typeof error === "function")) {
+    try {
+      error.enqueued = Math.max(Number(error.enqueued) || 0, count);
+      return error;
+    } catch {
+      // Some provider errors may be frozen; preserve the original message below.
+    }
+  }
+  const wrapped = new Error(String(error?.message || error));
+  wrapped.cause = error;
+  wrapped.enqueued = count;
+  return wrapped;
+}
+
 /**
  * Enqueue the prepared digest jobs in platform-sized batches. The scheduled
  * caller wraps this operation with its stall deadline; preparation and the
@@ -145,20 +161,28 @@ export async function enqueueDigestJobs(env, jobs, { signal, onBatch } = {}) {
   let enqueued = 0;
   if (typeof queue.sendBatch === "function") {
     for (let offset = 0; offset < pending.length; offset += DIGEST_QUEUE_BATCH_SIZE) {
-      signal?.throwIfAborted?.();
-      const batch = pending.slice(offset, offset + DIGEST_QUEUE_BATCH_SIZE);
-      await queue.sendBatch(batch.map((body) => ({ body })));
-      enqueued += batch.length;
-      await onBatch?.({ enqueued, batch_size: batch.length });
+      try {
+        signal?.throwIfAborted?.();
+        const batch = pending.slice(offset, offset + DIGEST_QUEUE_BATCH_SIZE);
+        await queue.sendBatch(batch.map((body) => ({ body })));
+        enqueued += batch.length;
+        await onBatch?.({ enqueued, batch_size: batch.length });
+      } catch (error) {
+        throw digestFanoutError(error, enqueued);
+      }
     }
   } else {
     // Keep the local/test and older binding fallback exact: one job is only
     // counted after its write resolves.
     for (const job of pending) {
-      signal?.throwIfAborted?.();
-      await queue.send(job);
-      enqueued += 1;
-      await onBatch?.({ enqueued, batch_size: 1 });
+      try {
+        signal?.throwIfAborted?.();
+        await queue.send(job);
+        enqueued += 1;
+        await onBatch?.({ enqueued, batch_size: 1 });
+      } catch (error) {
+        throw digestFanoutError(error, enqueued);
+      }
     }
   }
   return enqueued;

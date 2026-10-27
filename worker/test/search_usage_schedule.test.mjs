@@ -10,6 +10,7 @@ import {
 } from "../src/lib/public_search_usage.mjs";
 import { readSearchUsage } from "../src/lib/search_usage.mjs";
 import { readSearchUsageDailySeries } from "../src/lib/search_usage_daily.mjs";
+import { enqueueDigestJobs as enqueueDigestJobsReal } from "../src/alerts.mjs";
 
 const NOW = "2026-09-09T08:00:00.000Z";
 const CRONS = ["0 8 * * *", "0 10 * * *", "0 13 * * *"];
@@ -163,25 +164,135 @@ test("a throwing delivery job cannot skip search-use publication or later refres
 
 test("a timed-out digest step finalizes failure and releases later scheduled refreshes", async () => {
   const env = { ...productionEnv(), SCHEDULED_STEP_DEADLINE_MS: 5 };
+  const jobs = Array.from({ length: 201 }, (_, index) => ({ key: `job:${index}` }));
+  const claim = [];
+  const queueBatches = [];
   const terminal = [];
   const worker = scheduledWorker({ overrides: {
-    recordDigestDeliveryStarted() { return { status: "STARTED" }; },
-    runAlerts(_env, _watches, options) {
-      return options.enqueueJobs([{ key: "stalled-job" }]).then(() => ({ receipt: { sent: 2, enqueued: 3 } }));
+    recordDigestDeliveryStarted() {
+      const receipt = { status: "STARTED", accepted_sends: 0, enqueued: 0, jobs_done: 0 };
+      claim.push(receipt);
+      return receipt;
     },
-    enqueueDigestJobs() { return new Promise((resolve) => setTimeout(() => resolve(1), 40)); },
+    runAlerts(_env, _watches, options) {
+      return options.enqueueJobs(jobs).then(() => ({ receipt: { sent: 0, enqueued: jobs.length } }));
+    },
+    enqueueDigestJobs(_env, pending, options) {
+      return enqueueDigestJobsReal({
+        DIGEST_QUEUE: {
+          sendBatch: async (batch) => { queueBatches.push(batch); },
+        },
+      }, pending, {
+        ...options,
+        onBatch: async (progress) => {
+          await options.onBatch?.(progress);
+          if (progress.enqueued === 100) await new Promise((resolve) => setTimeout(resolve, 20));
+        },
+      });
+    },
     recordDigestDeliveryReceipt(_env, receipt, _now, error) {
-      terminal.push({ receipt, error });
-      return { status: error ? "FAILED" : "TERMINAL" };
+      const status = error ? "FAILED" : "TERMINAL";
+      terminal.push({ receipt, error, status });
+      return { status };
     },
   } });
   await worker.run("0 13 * * *", env);
   await Promise.all(worker.pending);
   assert.equal(terminal.length, 1, "the timed-out digest must still attempt a terminal receipt");
+  assert.deepEqual(claim[0], { status: "STARTED", accepted_sends: 0, enqueued: 0, jobs_done: 0 });
+  assert.equal(terminal[0].receipt.enqueued, 100, "the failed receipt keeps the accepted first-batch lower bound");
+  assert.equal(terminal[0].status, "FAILED");
   assert.match(String(terminal[0].error?.message || terminal[0].error), /scheduled-step deadline/);
+  await new Promise((resolve) => setTimeout(resolve, 30));
+  assert.equal(queueBatches.length, 1, "a deadline between batches must not replay the first batch");
   assert.ok(worker.calls.includes("refreshPayrollTitleMart"), "payroll must not be starved by delivery");
   assert.ok(worker.calls.includes("refreshProperties"), "address refresh must not be starved by delivery");
   assert.ok(worker.errors.some((args) => /digest delivery failed/.test(args.join(" "))));
+});
+
+test("a later queue batch failure finalizes FAILED with an accepted lower bound and no replay", async () => {
+  const env = productionEnv();
+  const jobs = Array.from({ length: 201 }, (_, index) => ({ key: `job:${index}` }));
+  const claim = [];
+  const queueBatches = [];
+  const terminal = [];
+  let deliveryRuns = 0;
+  const worker = scheduledWorker({ overrides: {
+    recordDigestDeliveryStarted() {
+      const receipt = { status: "STARTED", accepted_sends: 0, enqueued: 0, jobs_done: 0 };
+      claim.push(receipt);
+      return receipt;
+    },
+    runAlerts(_env, _watches, options) {
+      deliveryRuns += 1;
+      return options.enqueueJobs(jobs).then(() => ({ receipt: { sent: 0, enqueued: jobs.length } }));
+    },
+    enqueueDigestJobs(_env, pending, options) {
+      return enqueueDigestJobsReal({
+        DIGEST_QUEUE: {
+          sendBatch: async (batch) => {
+            queueBatches.push(batch);
+            if (queueBatches.length === 2) throw new Error("second digest batch rejected");
+          },
+        },
+      }, pending, options);
+    },
+    recordDigestDeliveryReceipt(_env, receipt, _now, error) {
+      const status = error ? "FAILED" : "TERMINAL";
+      terminal.push({ receipt, error, status });
+      return { status };
+    },
+  } });
+  await worker.run("0 13 * * *", env);
+  await Promise.all(worker.pending);
+  assert.deepEqual(claim[0], { status: "STARTED", accepted_sends: 0, enqueued: 0, jobs_done: 0 });
+  assert.equal(terminal.length, 1);
+  assert.equal(terminal[0].receipt.enqueued, 100, "the failed receipt must retain only the known accepted batches");
+  assert.equal(terminal[0].status, "FAILED");
+  assert.match(String(terminal[0].error?.message || terminal[0].error), /second digest batch rejected/);
+  assert.equal(queueBatches.length, 2, "the failing batch is attempted once");
+  assert.equal(deliveryRuns, 1, "a failed fan-out does not replay the scheduled delivery");
+});
+
+test("single-message queue fallback reaches one terminal receipt without replay", async () => {
+  const env = productionEnv();
+  const jobs = [{ key: "fallback:0" }, { key: "fallback:1" }, { key: "fallback:2" }];
+  const claim = [];
+  const sent = [];
+  const terminal = [];
+  let deliveryRuns = 0;
+  const worker = scheduledWorker({ overrides: {
+    recordDigestDeliveryStarted() {
+      const receipt = { status: "STARTED", accepted_sends: 0, enqueued: 0, jobs_done: 0 };
+      claim.push(receipt);
+      return receipt;
+    },
+    runAlerts(_env, _watches, options) {
+      deliveryRuns += 1;
+      return options.enqueueJobs(jobs).then(() => ({ receipt: { sent: 0, enqueued: jobs.length } }));
+    },
+    enqueueDigestJobs(_env, pending, options) {
+      return enqueueDigestJobsReal({
+        DIGEST_QUEUE: {
+          send: async (job) => { sent.push(job); },
+        },
+      }, pending, options);
+    },
+    recordDigestDeliveryReceipt(_env, receipt, _now, error) {
+      const status = error ? "FAILED" : "TERMINAL";
+      terminal.push({ receipt, error, status });
+      return { status };
+    },
+  } });
+  await worker.run("0 13 * * *", env);
+  await Promise.all(worker.pending);
+  assert.deepEqual(claim[0], { status: "STARTED", accepted_sends: 0, enqueued: 0, jobs_done: 0 });
+  assert.equal(terminal.length, 1);
+  assert.equal(terminal[0].error, null);
+  assert.equal(terminal[0].status, "TERMINAL");
+  assert.equal(terminal[0].receipt.enqueued, jobs.length);
+  assert.deepEqual(sent, jobs, "fallback writes each message exactly once");
+  assert.equal(deliveryRuns, 1, "fallback completion does not replay the scheduled delivery");
 });
 
 test("a healthy multi-minute digest delivery is not aborted by its scheduled deadline", async () => {
