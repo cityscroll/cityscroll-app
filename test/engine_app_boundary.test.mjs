@@ -425,3 +425,179 @@ test('classic and CommonJS script bindings remain unsupported rather than guessi
     assert.ok(!inventory.edges.some((e) => e.from === path));
   }
 });
+
+test('synthetic URLs on reserved documentation hosts are not management clauses', (t) => {
+  const { inventory, ledger } = fixture(t, {
+    'site/tail.mjs': [
+      'const webSocketTail = "wss://tail.example/session";',
+      'const credentialedTail = "https://user:secret@tail.example/session";',
+      'const loopback = "http://localhost:8080/session";',
+      'const uppercaseTail = "https://TAIL.EXAMPLE/following";',
+      'const reservedHook = "https://hooks.example.net/confirm?token=x";',
+      'export const synthetic = [webSocketTail, credentialedTail, loopback, uppercaseTail, reservedHook];',
+    ].join('\n'),
+  });
+  assert.deepEqual(inventory.units.filter((u) => u.kind === 'management-clause' && u.path === 'site/tail.mjs'), []);
+  assert.equal(verifyLedger(inventory, ledger).status, 'PASS');
+});
+
+test('real management calls remain detected, including absolute production URLs', (t) => {
+  const { inventory, ledger } = fixture(t, {
+    'worker/src/session.mjs': 'export function route(pathname) { return pathname === "/session" || pathname === "/session/logout"; }\nexport const unsubscribeLink = "https://api.cityscroll.org/unsubscribe?token=example";\n',
+  });
+  const claims = inventory.units.filter((u) => u.kind === 'management-clause' && u.path === 'worker/src/session.mjs');
+  assert.equal(claims.length, 3);
+  ledger.units = ledger.units.filter((u) => u.kind !== 'management-clause');
+  assert.ok(verifyLedger(inventory, ledger).findings.some((f) => f.code === 'UNCLASSIFIED_UNIT' && f.id.startsWith('management-clause:worker/src/session.mjs')));
+});
+
+test('tracked modules outside runtime prefixes are observed with module, data and transport edges', (t) => {
+  const { inventory, ledger } = fixture(t, {
+    'integrations/generated-client/manifest.json': '{"version":"synthetic"}',
+    'integrations/generated-client/index.mjs': [
+      'import manifest from "./manifest.json" with { type: "json" };',
+      'export function createMcpHttpTransport({ baseUrl = "https://api.cityscroll.org", fetchImpl = globalThis.fetch, headers = {} } = {}) {',
+      '  if (typeof fetchImpl !== "function") throw new TypeError("a fetch implementation is required");',
+      '  const endpoint = new URL("/mcp", baseUrl).toString();',
+      '  return Object.freeze({ async call() { return fetchImpl(endpoint, { method: "POST", headers }); } });',
+      '}',
+      'export const version = manifest.version;',
+    ].join('\n'),
+    'integrations/generated-client/recipes/procurement-investigation.mjs': 'import { createMcpHttpTransport } from "../index.mjs";\nexport const recipe = createMcpHttpTransport;\n',
+  });
+  assert.ok(inventory.observation.parsed.includes('integrations/generated-client/index.mjs'));
+  assert.ok(inventory.observation.parsed.includes('integrations/generated-client/recipes/procurement-investigation.mjs'));
+  assert.ok(inventory.edges.some((e) => e.from === 'integrations/generated-client/recipes/procurement-investigation.mjs' && e.to === 'integrations/generated-client/index.mjs'));
+  assert.ok(inventory.edges.some((e) => e.from === 'integrations/generated-client/index.mjs' && e.to === 'integrations/generated-client/manifest.json'));
+  const transport = inventory.units.filter((u) => u.kind === 'injected-transport' && u.path === 'integrations/generated-client/index.mjs');
+  assert.ok(transport.length >= 2, 'the default site and the call through it are both observed');
+  assert.deepEqual(inventory.unresolved, []);
+  assert.equal(verifyLedger(inventory, ledger).status, 'PASS');
+});
+
+test('every tracked module outside test locations is observed, never silently edge-less', (t) => {
+  const { inventory, ledger } = fixture(t, {
+    'packages/deep/thing.mjs': 'export const value = 1;',
+    'cli.mjs': 'export const value = 1;',
+    'ops/jobs/run.cjs': 'module.exports = 1;',
+    'worker/e2e/probe.mjs': 'export const value = 1;',
+  });
+  for (const path of ['packages/deep/thing.mjs', 'cli.mjs', 'ops/jobs/run.cjs', 'worker/e2e/probe.mjs'])
+    assert.ok(inventory.observation.parsed.includes(path), path);
+  assert.ok(!inventory.unresolved.some((f) => f.code === 'UNOBSERVED_SOURCE_MODULE'));
+  assert.equal(verifyLedger(inventory, ledger).status, 'PASS');
+});
+
+test('a locally defined require helper is not a module loader', (t) => {
+  const { inventory, ledger } = fixture(t, {
+    'warehouse/lib/review_event_log.mjs': [
+      'export function buildReviewEventLog(record) {',
+      '  const require = (field, predicate, description) => { if (!predicate(record[field])) throw new Error(String(description)); };',
+      '  require("document_key", (value) => typeof value === "string", "must be a non-empty string");',
+      '  require("document_type", (value) => value === "final", "must be a final document");',
+      '  return record;',
+      '}',
+    ].join('\n'),
+  });
+  assert.ok(!inventory.units.some((u) => u.kind === 'external-import' && u.path === 'warehouse/lib/review_event_log.mjs'));
+  assert.deepEqual(inventory.unresolved.filter((f) => f.path === 'warehouse/lib/review_event_log.mjs'), []);
+  assert.equal(verifyLedger(inventory, ledger).status, 'PASS');
+});
+
+test('a createRequire-backed require still records real module loads', (t) => {
+  const { inventory, ledger } = fixture(t, {
+    'ontology/live_inventory.mjs': 'import { createRequire } from "node:module";\nconst require = createRequire(import.meta.url);\nexport const registry = require("../worker/src/identity.mjs");\n',
+    'worker/src/identity.mjs': 'export const value = "private";\n',
+  });
+  assert.ok(inventory.edges.some((e) => e.from === 'ontology/live_inventory.mjs' && e.to === 'worker/src/identity.mjs'));
+  ledger.units.find((u) => u.id === 'file:ontology/live_inventory.mjs').target_owner = 'engine';
+  ledger.units.find((u) => u.id === 'file:worker/src/identity.mjs').target_owner = 'identity';
+  assert.ok(verifyLedger(inventory, ledger).findings.some((f) => f.code === 'REVERSE_IMPORT'));
+});
+
+test('an unresolvable require binding fails closed instead of guessing', (t) => {
+  const { inventory } = fixture(t, {
+    'capabilities/loader.mjs': 'const require = getLoader();\nexport const value = require("../shared/safe.mjs");\n',
+    'shared/safe.mjs': 'export const safe = true;\n',
+  });
+  assert.ok(inventory.unresolved.some((f) => f.code === 'LOADER_BINDING_REQUIRES_OBSERVER' && f.path === 'capabilities/loader.mjs'));
+  assert.ok(!inventory.edges.some((e) => e.from === 'capabilities/loader.mjs'));
+});
+
+test('python sources are observed by parsing imports without executing them', (t) => {
+  const { inventory, ledger } = fixture(t, {
+    'tools/helper.py': 'HELPER = True\n',
+    'scripts/__init__.py': '',
+    'scripts/sibling.py': 'SIBLING = True\n',
+    'scripts/run.py': [
+      'import sys',
+      'import json',
+      'import tools.helper',
+      'from importlib import import_module',
+      'dynamic_helper = import_module("tools.helper")',
+      'json_module = __import__("json")',
+      'from scripts.sibling import SIBLING',
+      'import subprocess',
+      'subprocess.run(["node", "site/build.mjs"], check=True)',
+      'if tools.helper.HELPER and SIBLING:',
+      '    raise SystemExit("the observer must never execute this module")',
+    ].join('\n'),
+    'site/build.mjs': 'export const value = 1;\n',
+  });
+  assert.ok(inventory.observation.parsed.includes('scripts/run.py'));
+  assert.ok(inventory.edges.some((e) => e.from === 'scripts/run.py' && e.to === 'tools/helper.py'));
+  assert.ok(inventory.edges.some((e) => e.from === 'scripts/run.py' && e.to === 'scripts/sibling.py'));
+  assert.ok(inventory.edges.some((e) => e.from === 'scripts/run.py' && e.to === 'site/build.mjs'));
+  assert.ok(inventory.units.some((u) => u.id === 'external-import:scripts/run.py#json'));
+  assert.deepEqual(inventory.unresolved, []);
+  assert.equal(verifyLedger(inventory, ledger).status, 'PASS');
+});
+
+test('relative python imports resolve within their package', (t) => {
+  const { inventory, ledger } = fixture(t, {
+    'pkg/__init__.py': '',
+    'pkg/cli.py': 'from .util import helper\nfrom . import sibling\n',
+    'pkg/util.py': 'def helper():\n    return 1\n',
+    'pkg/sibling.py': 'SIBLING = True\n',
+  });
+  assert.ok(inventory.edges.some((e) => e.from === 'pkg/cli.py' && e.to === 'pkg/util.py'));
+  assert.ok(inventory.edges.some((e) => e.from === 'pkg/cli.py' && e.to === 'pkg/sibling.py'));
+  assert.ok(inventory.edges.some((e) => e.from === 'pkg/cli.py' && e.to === 'pkg/__init__.py'));
+  assert.deepEqual(inventory.unresolved, []);
+  assert.equal(verifyLedger(inventory, ledger).status, 'PASS');
+});
+
+test('unsupported python loading forms fail closed with coverage blockers', (t) => {
+  const { inventory } = fixture(t, {
+    'tools/dynamic_loader.py': [
+      'import importlib',
+      'import importlib.util',
+      'import subprocess',
+      'name = "os"',
+      'module = importlib.import_module(name)',
+      'spec = importlib.util.spec_from_file_location("mod", name)',
+      'cmd = ["node", "tools/build.mjs"]',
+      'subprocess.run(cmd)',
+      'exec("import os")',
+    ].join('\n'),
+    'tools/build.mjs': 'export const value = 1;\n',
+    'tools/fixtures/broken.py': 'def (:\n',
+  });
+  const byCode = new Map();
+  for (const finding of inventory.unresolved) byCode.set(finding.code, (byCode.get(finding.code) || 0) + 1);
+  assert.equal(byCode.get('PYTHON_IMPORT_REQUIRES_OBSERVER'), 2);
+  assert.equal(byCode.get('PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER'), 1);
+  assert.equal(byCode.get('PYTHON_DYNAMIC_CODE_REQUIRES_OBSERVER'), 1);
+  assert.ok(inventory.unresolved.some((f) => f.code === 'PYTHON_SOURCE_PARSE_FAILED' && f.path === 'tools/fixtures/broken.py'));
+});
+
+test('python edges participate in ownership boundary checks', (t) => {
+  const { inventory, ledger } = fixture(t, {
+    'capabilities/engine_probe.py': 'import subprocess\nsubprocess.run(["node", "worker/src/identity.mjs"], check=True)\n',
+    'worker/src/identity.mjs': 'export const value = "private";\n',
+  });
+  assert.ok(inventory.edges.some((e) => e.from === 'capabilities/engine_probe.py' && e.to === 'worker/src/identity.mjs'));
+  ledger.units.find((u) => u.id === 'file:capabilities/engine_probe.py').target_owner = 'engine';
+  ledger.units.find((u) => u.id === 'file:worker/src/identity.mjs').target_owner = 'identity';
+  assert.ok(verifyLedger(inventory, ledger).findings.some((f) => f.code === 'REVERSE_IMPORT'));
+});
