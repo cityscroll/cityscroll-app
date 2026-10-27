@@ -63,7 +63,7 @@ import { handlePerformanceEvents, normalizeRumBatch } from "./performance_events
 import { handleWorkerHealth } from "./lib/worker_health.mjs";
 import { snapshotHistDay, ensureHistEra } from "./lib/stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
-import { runAlerts, consumeDigestJob } from "./alerts.mjs";
+import { enqueueDigestJobs, runAlerts, consumeDigestJob } from "./alerts.mjs";
 import { recordDigestDeliveryReceipt, recordDigestDeliveryStarted, recordDigestQueueFailure, recordDigestShadowReceipt, recordInboundEmailReceipt } from "./reliability_watchdogs.mjs";
 import { redactEmail } from "./lib/subscriptions.mjs";
 import { recoverDeprecatedDoubleOptIn } from "./recovered_signups.mjs";
@@ -136,6 +136,8 @@ import { RUM_MARKED_TRAFFIC_CLASSES, isRumProductionOrigin } from "../../site/ru
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
 
 const SCHEDULED_STEP_DEADLINE_MS = 90_000;
+// This deadline fences only queue fan-out. Preparation can legitimately do its
+// own bounded reads; a stalled queue write must still leave time for the receipt.
 const SCHEDULED_DIGEST_DEADLINE_MS = 120_000;
 const SCHEDULED_RECEIPT_DEADLINE_MS = 5_000;
 const MAX_CONFIGURED_SCHEDULED_STEP_DEADLINE_MS = 10 * 60_000;
@@ -798,8 +800,8 @@ const worker = {
       }
       return;
     }
-    // Delivery starts before advisory read-model refreshes, but it is still one bounded
-    // step: a stalled digest must not consume the invocation's entire budget.
+    // Delivery starts before advisory read-model refreshes. The stall-prone queue fan-out
+    // is fenced inside runAlerts; preparation is not mistaken for queue-write duration.
     // STARTED lands before runAlerts so a cut-short isolate leaves incomplete-execution
     // evidence rather than a missing ledger (which must not be read as proven non-delivery).
     // STARTED is telemetry only: a KV rate-limit or transient put must never skip delivery.
@@ -810,14 +812,26 @@ const worker = {
     if (!startedReceipt.ok) {
       console.error("digest delivery STARTED receipt failed (delivery continues):", String(startedReceipt.error?.message || startedReceipt.error));
     }
-    // Keep the canonical scheduled call shape visible to source-contract checks;
-    // the invocation below adds the deadline and cooperative abort signal.
+    // Keep the canonical scheduled call shape visible to source-contract checks.
     // await runAlerts(env);
-    const delivery = await runScheduledStep("digest delivery", (signal) => (
-      event.costProbe === true
-        ? runAlerts(env, undefined, { suppressDryRunLogs: true, signal })
-        : runAlerts(env, undefined, { signal })
-    ), { timeoutMs: scheduledStepDeadlineMs(env, SCHEDULED_DIGEST_DEADLINE_MS) });
+    const delivery = await (async () => {
+      try {
+        const value = await runAlerts(env, undefined, {
+          ...(event.costProbe === true ? { suppressDryRunLogs: true } : {}),
+          enqueueJobs: (jobs, { signal } = {}) => runScheduledStep(
+            "digest queue fan-out",
+            (fanoutSignal) => enqueueDigestJobs(env, jobs, { signal: fanoutSignal || signal }),
+            { timeoutMs: scheduledStepDeadlineMs(env, SCHEDULED_DIGEST_DEADLINE_MS) },
+          ).then((step) => {
+            if (!step.ok) throw step.error;
+            return step.value;
+          }),
+        });
+        return { ok: true, value };
+      } catch (error) {
+        return { ok: false, error };
+      }
+    })();
     if (delivery.ok) {
       await recordDigestDeliveryReceiptLoudly(env, delivery.value?.receipt || delivery.value);
       console.log("digest delivery: complete");
