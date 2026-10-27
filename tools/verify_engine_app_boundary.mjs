@@ -3,7 +3,9 @@
  * Verify a private ownership ledger against an immutable Git source inventory.
  * This is a source-boundary check, not proof of deployed privilege separation.
  * Private evidence is read from CITYSCROLL_ENGINE_APP_LEDGER, never bundled.
- * The pinned Acorn parser observes syntax without executing application code.
+ * The pinned Acorn parser observes JavaScript syntax without executing
+ * application code. Python sources are observed through the standard library
+ * ast module only; they are never imported, executed, or deserialized.
  * Configuration parsing requires Python 3.11+ and PyYAML 6.0.3.
  */
 import { execFileSync, spawnSync } from 'node:child_process';
@@ -23,7 +25,19 @@ const ROLES = new Set(['engine', 'acquisition', 'presentation', 'identity', 'del
 const PRIVATE_EFFECTS = new Set(['recipient-state', 'mail-send', 'paid-model', 'personal-history']);
 const sha = (v) => createHash('sha256').update(v).digest('hex');
 const sorted = (xs) => [...xs].sort((a, b) => a.id.localeCompare(b.id));
-const needsText = (path) => /\.(?:mjs|js|cjs)$/.test(path) || /(?:^|\/)wrangler\.toml$/.test(path) || /^\.github\/workflows\/[^/]+\.ya?ml$/.test(path) || path === 'tools/external_schedule_jobs.json';
+// Absolute URLs on reserved documentation hosts (RFC 2606/6761) are synthetic
+// fixtures; a management-word path segment there is not a management call.
+const RESERVED_URL_HOST = /(?:^|\.)(?:localhost|example\.com|example\.net|example\.org|example|invalid|test)$/;
+const MANAGEMENT_SEGMENT = /\/(?:unsubscribe|confirm|prefs|following|session)(?:[/'"?\s]|$)/;
+function isManagementClause(value) {
+  if (!MANAGEMENT_SEGMENT.test(value)) return false;
+  try {
+    const { hostname } = new URL(value);
+    if (hostname && RESERVED_URL_HOST.test(hostname.toLowerCase().replace(/\.$/, ''))) return false;
+  } catch { /* Not an absolute URL: a relative route or plain reference keeps the claim. */ }
+  return true;
+}
+const needsText = (path) => /\.(?:mjs|js|cjs|py)$/.test(path) || /(?:^|\/)wrangler\.toml$/.test(path) || /^\.github\/workflows\/[^/]+\.ya?ml$/.test(path) || path === 'tools/external_schedule_jobs.json';
 
 function git(root, args, options = {}) {
   return execFileSync('git', ['-C', root, ...args], { encoding: 'utf8', maxBuffer: 128 * 1024 * 1024, ...options });
@@ -42,6 +56,9 @@ function parseData(kind, source) {
 // This intentionally resolves a small lexical subset, not JavaScript execution.
 // Collect every binding before lookup so later declarations, parameters and var
 // hoisting cannot accidentally expose an outer constant of the same name.
+// Each collected claim also records a flavor so a call through an identifier
+// can be classified without executing anything: whether the callee is an
+// ambient loader, a locally defined helper, or an unknowable binding.
 function immutableImportBindings(tree, literal) {
   const nodeScopes = new WeakMap();
   const scope = (parent, kind) => ({parent,kind,bindings:new Map(),dynamic:false});
@@ -55,29 +72,32 @@ function immutableImportBindings(tree, literal) {
     if (pattern.type === 'ObjectPattern') return pattern.properties.flatMap((p) => names(p.type === 'RestElement' ? p.argument : p.value));
     return [];
   };
-  const bind = (target, name, declaration = null, value = null) => {
+  const isCreateRequireCall = (node) => !!node && node.type === 'CallExpression'
+    && ((node.callee.type === 'Identifier' && node.callee.name === 'createRequire')
+      || (node.callee.type === 'MemberExpression' && !node.callee.computed && literal(node.callee.property) === 'createRequire'));
+  const bind = (target, name, flavor, declaration = null, value = null) => {
     const claims = target.bindings.get(name) || [];
-    claims.push({declaration,value}); target.bindings.set(name,claims);
+    claims.push({flavor,declaration,value}); target.bindings.set(name,claims);
   };
   const blockKinds = new Set(['BlockStatement','StaticBlock','SwitchStatement','ForStatement','ForInStatement','ForOfStatement']);
   const functions = new Set(['FunctionDeclaration','FunctionExpression','ArrowFunctionExpression']);
   const scan = (node, current) => {
     if (!node || typeof node !== 'object' || typeof node.type !== 'string') return;
-    if (node.type === 'FunctionDeclaration' && node.id) bind(current,node.id.name);
-    if (node.type === 'ClassDeclaration' && node.id) bind(current,node.id.name);
+    if (node.type === 'FunctionDeclaration' && node.id) bind(current,node.id.name,'function');
+    if (node.type === 'ClassDeclaration' && node.id) bind(current,node.id.name,'class');
     let inner = current;
     if (functions.has(node.type)) {
       inner=scope(current,'function');
-      if (node.type !== 'ArrowFunctionExpression') bind(inner,'arguments');
-      if (node.id) bind(inner,node.id.name);
-      for (const param of node.params) for (const name of names(param)) bind(inner,name);
+      if (node.type !== 'ArrowFunctionExpression') bind(inner,'arguments','param');
+      if (node.id) bind(inner,node.id.name,'function');
+      for (const param of node.params) for (const name of names(param)) bind(inner,name,'param');
     } else if (blockKinds.has(node.type)) inner=scope(current,'block');
     else if (node.type === 'CatchClause') {
       inner=scope(current,'block');
-      for (const name of names(node.param)) bind(inner,name);
+      for (const name of names(node.param)) bind(inner,name,'param');
     } else if (node.type === 'ClassExpression' || node.type === 'ClassDeclaration') {
       inner=scope(current,'block');
-      if (node.id) bind(inner,node.id.name);
+      if (node.id) bind(inner,node.id.name,'class');
     } else if (node.type === 'WithStatement') { inner=scope(current,'block'); inner.dynamic=true; }
     nodeScopes.set(node,inner);
     if (node.type === 'VariableDeclaration') {
@@ -85,17 +105,20 @@ function immutableImportBindings(tree, literal) {
       if (node.kind === 'var') while (target.parent && target.kind !== 'function') target=target.parent;
       for (const declaration of node.declarations) {
         const value = node.kind === 'const' && declaration.id.type === 'Identifier' ? literal(declaration.init) : null;
-        for (const name of names(declaration.id)) bind(target,name,typeof value === 'string' ? declaration : null,value);
+        const flavor = declaration.init?.type === 'FunctionExpression' || declaration.init?.type === 'ArrowFunctionExpression'
+          ? 'function' : isCreateRequireCall(declaration.init) ? 'createRequire'
+          : node.kind === 'const' ? (typeof value === 'string' ? 'const-data' : 'const') : 'mutable';
+        for (const name of names(declaration.id)) bind(target,name,flavor,declaration,value);
       }
     }
-    if (node.type === 'ImportDeclaration') for (const specifier of node.specifiers) bind(inner,specifier.local.name);
+    if (node.type === 'ImportDeclaration') for (const specifier of node.specifiers) bind(inner,specifier.local.name,'import');
     for (const child of Object.values(node)) {
       if (Array.isArray(child)) child.forEach((n) => scan(n,inner));
       else if (child && typeof child === 'object' && typeof child.type === 'string') scan(child,inner);
     }
   };
   scan(tree,root);
-  return (identifier, use) => {
+  const resolveLiteral = (identifier, use) => {
     if (identifier?.type !== 'Identifier') return null;
     for (let current=nodeScopes.get(identifier); current; current=current.parent) {
       if (current.dynamic) return null;
@@ -109,6 +132,17 @@ function immutableImportBindings(tree, literal) {
     }
     return null;
   };
+  const describeBinding = (identifier) => {
+    if (identifier?.type !== 'Identifier') return 'unwritten';
+    for (let current=nodeScopes.get(identifier); current; current=current.parent) {
+      if (current.dynamic) return 'dynamic';
+      const bindings=current.bindings.get(identifier.name);
+      if (!bindings) continue;
+      return bindings.length !== 1 ? 'ambiguous' : bindings[0].flavor;
+    }
+    return 'unbound';
+  };
+  return { resolveLiteral, describeBinding };
 }
 
 export function collectInventory({ root, revision = 'HEAD' }) {
@@ -212,13 +246,15 @@ export function collectInventory({ root, revision = 'HEAD' }) {
     }
   }
   // Every tracked file remains a ledger unit. Executable source observation
-  // starts from production/acquisition roots and tools, then follows imports
-  // outside those roots. Negative fixtures are data unless an executable imports
-  // them; a directory name never exempts a reachable module.
-  const rootPaths = entries.filter(({path}) => /\.(?:mjs|js|cjs)$/.test(path)
-    && /^(?:worker\/src\/|workers\/|site\/|capabilities\/|warehouse\/|entity_resolution\/|ontology\/|tools\/)/.test(path)
-    && !/(?:^|\/)(?:test|tests|fixtures)(?:\/|$)|\.test\.[cm]?js$/.test(path)).map(({path}) => path);
+  // covers every tracked module outside test and fixture locations plus
+  // configured runtimes, then follows imports. A module outside the parsed set
+  // must never read as an observed empty edge set: it fails closed instead.
+  // Negative fixtures are data unless an executable imports them; a directory
+  // name never exempts a reachable module.
+  const excludedSource = (path) => /(?:^|\/)(?:test|tests|fixtures)(?:\/|$)|\.test\.[cm]?js$/.test(path);
+  const rootPaths = entries.filter(({path}) => /\.(?:mjs|js|cjs)$/.test(path) && !excludedSource(path)).map(({path}) => path);
   for (const path of configuredRuntimePaths) if (!rootPaths.includes(path)) rootPaths.push(path);
+  const pythonPaths = entries.filter(({path}) => path.endsWith('.py')).map(({path}) => path);
   const pending = [...rootPaths];
   const parsed = new Set();
   while (pending.length) {
@@ -234,16 +270,26 @@ export function collectInventory({ root, revision = 'HEAD' }) {
     const at = (node) => `${node.loc.start.line}:${node.loc.start.column}`;
     const semanticClaims = new Set();
     const claim = (kind, node) => { const key = `${kind}:${at(node)}`; if (!semanticClaims.has(key)) { semanticClaims.add(key); add(kind,path,at(node),text.slice(node.start,node.end)); } };
+    const transportNames = new Set();
     const literal = (node) => node?.type === 'Literal' && typeof node.value === 'string' ? node.value
       : node?.type === 'TemplateLiteral' && node.expressions.length === 0 ? node.quasis[0].value.cooked : null;
     // .js can be a classic sloppy browser/CommonJS script despite module-mode
     // parsing here. Annex B block functions have different binding rules there.
-    // Resolve lexical constants only for explicitly module-typed .mjs source.
-    const immutableImport = path.endsWith('.mjs') ? immutableImportBindings(tree,literal) : () => null;
+    // Resolve lexical bindings only for explicitly module-typed .mjs source.
+    const immutableImport = path.endsWith('.mjs') ? immutableImportBindings(tree,literal) : null;
     const observeImport = (node, argument, resolveConst = false) => {
-      const specifier = literal(argument) ?? (resolveConst ? immutableImport(argument,node) : null);
+      const specifier = literal(argument) ?? (resolveConst ? immutableImport?.resolveLiteral(argument,node) : null);
       if (typeof specifier === 'string') specifiers.add(specifier);
       else unresolved.push({code:'DYNAMIC_IMPORT_REQUIRES_OBSERVER', path, location:at(node)});
+    };
+    // A bare require() is a module load only when the callee is the ambient
+    // loader or a createRequire() result. A locally bound helper of the same
+    // name is ordinary code; any other binding fails closed instead of guessing.
+    const requireFlavor = (callee) => {
+      if (!immutableImport) return 'loader';
+      const flavor = immutableImport.describeBinding(callee);
+      return flavor === 'unbound' || flavor === 'createRequire' ? 'loader'
+        : ['function','param','class','const-data'].includes(flavor) ? 'helper' : 'unknown';
     };
     const visitedNodes = new WeakSet();
     const isReference = (node,parent) => !(
@@ -257,21 +303,36 @@ export function collectInventory({ root, revision = 'HEAD' }) {
       if (['ImportDeclaration','ExportNamedDeclaration','ExportAllDeclaration'].includes(node.type) && node.source) observeImport(node, node.source);
       if (node.type === 'ImportExpression') observeImport(node, node.source, true);
       if (node.type === 'CallExpression') {
-        if (node.callee.type === 'Identifier' && node.callee.name === 'require') observeImport(node, node.arguments[0]);
+        if (node.callee.type === 'Identifier' && node.callee.name === 'require') {
+          const flavor = requireFlavor(node.callee);
+          if (flavor === 'loader') observeImport(node, node.arguments[0]);
+          else if (flavor === 'unknown') unresolved.push({code:'LOADER_BINDING_REQUIRES_OBSERVER', path, location:at(node)});
+        }
         // Loader aliases, createRequire, eval and code constructors need their
         // own observer. Never infer their targets from names or approved hashes.
         if (node.callee.type === 'Identifier' && ['eval','createRequire','Function'].includes(node.callee.name)) unresolved.push({code:'INDIRECT_CODE_LOADING_REQUIRES_OBSERVER',path,location:at(node)});
         if (node.callee.type === 'MemberExpression' && (node.callee.property?.name === 'require' || literal(node.callee.property) === 'require')) observeImport(node, node.arguments[0]);
+        if (node.callee.type === 'Identifier' && transportNames.has(node.callee.name)) claim('injected-transport', node);
       }
       if (node.type === 'NewExpression' && node.callee.type === 'Identifier' && ['Function','Worker','SharedWorker'].includes(node.callee.name)) unresolved.push({code:'INDIRECT_CODE_LOADING_REQUIRES_OBSERVER',path,location:at(node)});
       if (node.type === 'Identifier' && isReference(node,parent) && ['eval','Function','createRequire'].includes(node.name)) unresolved.push({code:'INDIRECT_CODE_LOADING_REQUIRES_OBSERVER',path,location:at(node)});
-      if (node.type === 'Identifier' && isReference(node,parent) && node.name === 'require' && !(parent?.type === 'CallExpression' && parent.callee === node) && !(parent?.type === 'MemberExpression' && parent.property === node)) unresolved.push({code:'LOADER_REFERENCE_REQUIRES_OBSERVER',path,location:at(node)});
+      if (node.type === 'Identifier' && isReference(node,parent) && node.name === 'require' && !(parent?.type === 'CallExpression' && parent.callee === node) && !(parent?.type === 'MemberExpression' && parent.property === node) && requireFlavor(node) !== 'helper') unresolved.push({code:'LOADER_REFERENCE_REQUIRES_OBSERVER',path,location:at(node)});
+      // An injectable outbound-transport parameter defaulting to the ambient
+      // fetch, and any later call through that parameter, is an observable
+      // injected-transport effect of this module.
+      if (node.type === 'Property' && !node.computed && (node.key.type === 'Identifier' || typeof literal(node.key) === 'string')
+        && node.value?.type === 'AssignmentPattern' && node.value.right?.type === 'MemberExpression' && !node.value.right.computed
+        && node.value.right.object?.type === 'Identifier' && node.value.right.object.name === 'globalThis'
+        && (node.value.right.property?.name === 'fetch' || literal(node.value.right.property) === 'fetch')) {
+        transportNames.add(node.key.name || literal(node.key));
+        claim('injected-transport', node);
+      }
       if ((node.type === 'Property' && (node.method || ['FunctionExpression','ArrowFunctionExpression'].includes(node.value?.type))) || node.type === 'MethodDefinition') {
         const name = node.computed ? literal(node.key) : node.key.name || literal(node.key);
         if (['fetch','scheduled','email','queue'].includes(name)) claim('entrypoint', node);
       }
       if (node.type === 'Identifier' && ['pathname','isNearYouDocumentPath','isNearYouDeferredPath'].includes(node.name)) claim('routing-clause', node);
-      if ((node.type === 'Literal' || node.type === 'TemplateLiteral') && /\/(?:unsubscribe|confirm|prefs|following|session)(?:[/'"?\s]|$)/.test(literal(node) || '')) claim('management-clause', node);
+      if ((node.type === 'Literal' || node.type === 'TemplateLiteral') && isManagementClause(literal(node) || '')) claim('management-clause', node);
       for (const value of Object.values(node)) {
         if (Array.isArray(value)) value.forEach((child) => visit(child,node));
         else if (value && typeof value === 'object' && typeof value.type === 'string') visit(value,node);
@@ -300,12 +361,247 @@ export function collectInventory({ root, revision = 'HEAD' }) {
       } else unresolved.push({code:'IMPORTED_SOURCE_TYPE_UNSUPPORTED',path:target});
     }
   }
+  // Fail closed if any tracked executable module escaped observation: an
+  // unexamined file must surface as an explicit coverage blocker, never as an
+  // observed module with no edges or effects.
+  for (const {path} of entries) {
+    if (!/\.(?:mjs|js|cjs)$/.test(path) || excludedSource(path)) continue;
+    if (!parsed.has(path) && !unresolved.some((x) => x.path === path)) unresolved.push({code:'UNOBSERVED_SOURCE_MODULE', path});
+  }
+  if (pythonPaths.length) observePythonSources({ paths, texts, pythonPaths, parsed, add, edges, unresolved });
   const ids = new Set();
   for (const unit of units) {
     if (ids.has(unit.id)) throw new Error('DUPLICATE_OBSERVED_UNIT');
     ids.add(unit.id);
   }
-  return { schema: INVENTORY_SCHEMA, source_revision: commit, units: sorted(units), edges, unresolved:[...new Map(unresolved.map((x) => [JSON.stringify(x),x])).values()], observation: {parser:`acorn@${PARSER_VERSION}`, scope:'runtime-roots-and-transitive-imports', roots:rootPaths.sort(), parsed:[...parsed].sort()} };
+  return { schema: INVENTORY_SCHEMA, source_revision: commit, units: sorted(units), edges, unresolved:[...new Map(unresolved.map((x) => [JSON.stringify(x),x])).values()], observation: {parser:`acorn@${PARSER_VERSION}+python3-ast`, scope:'tracked-modules-configured-runtimes-and-transitive-imports', roots:[...rootPaths,...pythonPaths].sort(), parsed:[...parsed].sort()} };
+}
+
+// Python observation parses tracked sources with the interpreter's standard
+// library ast module inside a child process. Sources are data: the observer
+// never imports, executes, marshals, or deserializes them, and the extractor
+// itself uses only ast, json, and shlex. Loading forms the observer cannot
+// resolve become explicit coverage blockers instead of silent absences.
+const PYTHON_AST_OBSERVER = String.raw`
+import ast, json, shlex, sys
+
+try:
+    files = json.load(sys.stdin)
+except Exception:
+    sys.exit(3)
+
+out = {}
+for path, source in files.items():
+    try:
+        tree = ast.parse(source)
+    except Exception:
+        out[path] = {"parse_failed": True}
+        continue
+    aliases = {}
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                if alias.asname:
+                    aliases[alias.asname] = alias.name
+        elif isinstance(node, ast.ImportFrom) and node.module:
+            for alias in node.names:
+                aliases[alias.asname or alias.name] = node.module + "." + alias.name
+
+    def canon(func):
+        if isinstance(func, ast.Name):
+            return aliases.get(func.id, func.id)
+        if isinstance(func, ast.Attribute):
+            parts = [func.attr]
+            node = func.value
+            while isinstance(node, ast.Attribute):
+                parts.append(node.attr)
+                node = node.value
+            if isinstance(node, ast.Name):
+                parts.append(aliases.get(node.id, node.id))
+                return ".".join(reversed(parts))
+        return None
+
+    def lit(expression):
+        if isinstance(expression, ast.Constant) and isinstance(expression.value, str):
+            return expression.value
+        return None
+
+    facts = {"imports": [], "dynamics": [], "subprocess": [], "exec": []}
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                facts["imports"].append({"name": alias.name, "level": 0, "names": [], "line": node.lineno})
+        elif isinstance(node, ast.ImportFrom):
+            facts["imports"].append({"name": node.module or "", "level": node.level,
+                                     "names": [alias.name for alias in node.names], "line": node.lineno})
+        elif isinstance(node, ast.Call):
+            canonical = canon(node.func)
+            first = node.args[0] if node.args else None
+            if canonical == "importlib.import_module":
+                package = None
+                for keyword in node.keywords:
+                    if keyword.arg == "package":
+                        package = lit(keyword.value)
+                facts["dynamics"].append({"form": "import_module", "value": lit(first), "package": package, "line": node.lineno})
+            elif canonical == "__import__":
+                facts["dynamics"].append({"form": "__import__", "value": lit(first), "package": None, "line": node.lineno})
+            elif canonical == "importlib.util.spec_from_file_location":
+                location = lit(node.args[1]) if len(node.args) > 1 else None
+                for keyword in node.keywords:
+                    if keyword.arg == "location":
+                        location = lit(keyword.value)
+                facts["dynamics"].append({"form": "spec_from_file_location", "value": location, "package": None, "line": node.lineno})
+            elif canonical in ("subprocess.run", "subprocess.call", "subprocess.check_call",
+                               "subprocess.check_output", "subprocess.Popen", "os.system", "os.popen"):
+                argv = first
+                if argv is None:
+                    for keyword in node.keywords:
+                        if keyword.arg in ("args", "cmd"):
+                            argv = keyword.value
+                elements = None
+                if isinstance(argv, (ast.List, ast.Tuple)):
+                    elements = [lit(element) for element in argv.elts]
+                elif lit(argv) is not None:
+                    try:
+                        elements = shlex.split(lit(argv))
+                    except ValueError:
+                        elements = None
+                facts["subprocess"].append({"elements": elements, "line": node.lineno})
+            elif canonical in ("exec", "eval"):
+                facts["exec"].append(node.lineno)
+    out[path] = facts
+sys.stdout.write(json.dumps(out))
+`;
+
+function observePythonSources({ paths, texts, pythonPaths, parsed, add, edges, unresolved }) {
+  const packageDirs = new Set(pythonPaths.filter((p) => posix.basename(p) === '__init__.py').map((p) => posix.dirname(p)));
+  const identifierPart = /^[A-Za-z_][A-Za-z0-9_]*$/;
+  const pyIndex = new Map();
+  const registerModule = (name, target) => {
+    if (!name || !name.split('.').every((part) => identifierPart.test(part))) return;
+    const existing = pyIndex.get(name);
+    if (existing) existing.add(target);
+    else pyIndex.set(name, new Set([target]));
+  };
+  for (const p of pythonPaths) {
+    const segments = p.split('/');
+    const stem = segments.pop().replace(/\.py$/, '');
+    if (stem !== '__init__') registerModule([...segments, stem].join('.'), p);
+    // Package-rooted name: climb through consecutive __init__.py packages so a
+    // package nested under a non-package directory stays importable by name.
+    let depth = segments.length;
+    while (depth > 0 && packageDirs.has(segments.slice(0, depth).join('/'))) depth -= 1;
+    const rooted = segments.slice(depth);
+    if (rooted.length) registerModule(stem === '__init__' ? rooted.join('.') : [...rooted, stem].join('.'), p);
+  }
+  const resolveDotted = (dotted, fromPath) => {
+    const indexed = pyIndex.get(dotted);
+    if (indexed) return indexed.size === 1 ? [...indexed][0] : null;
+    // Sibling modules rely on the script directory being on sys.path.
+    const base = posix.dirname(fromPath);
+    const rel = dotted.replace(/\./g, '/');
+    for (const candidate of [`${base}/${rel}.py`, `${base}/${rel}/__init__.py`]) if (paths.has(candidate)) return candidate;
+    return null;
+  };
+  const resolveScriptPath = (value, fromPath) => {
+    for (const candidate of [posix.normalize(value), posix.normalize(posix.join(posix.dirname(fromPath), value))])
+      if (paths.has(candidate)) return candidate;
+    return null;
+  };
+  const claimed = new Set();
+  const record = (kind, from, key, evidence, target = null) => {
+    const id = `${kind}:${from}#${key}`;
+    if (claimed.has(id)) return;
+    claimed.add(id);
+    add(kind, from, key, evidence);
+    if (target) edges.push({ from, to: target });
+  };
+  const moduleCandidates = (base, rel) => (rel ? [`${base}/${rel}.py`, `${base}/${rel}/__init__.py`] : [`${base}.py`, `${base}/__init__.py`]);
+  const batches = [];
+  let batch = {}, budget = 0;
+  for (const p of pythonPaths) {
+    const text = texts.get(p);
+    if (typeof text !== 'string') { unresolved.push({ code: 'PYTHON_SOURCE_READ_FAILED', path: p }); continue; }
+    if (budget + text.length > 2_000_000 && Object.keys(batch).length) { batches.push(batch); batch = {}; budget = 0; }
+    batch[p] = text; budget += text.length;
+  }
+  if (Object.keys(batch).length) batches.push(batch);
+  const factsByPath = {};
+  for (const payload of batches) {
+    const result = spawnSync('python3', ['-c', PYTHON_AST_OBSERVER], { input: JSON.stringify(payload), encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+    if (result.status !== 0 || result.error) throw new Error('PYTHON_OBSERVER_FAILED');
+    Object.assign(factsByPath, JSON.parse(result.stdout));
+  }
+  for (const p of pythonPaths) {
+    parsed.add(p);
+    const facts = factsByPath[p];
+    if (!facts || facts.parse_failed) { unresolved.push({ code: 'PYTHON_SOURCE_PARSE_FAILED', path: p }); continue; }
+    const localEdge = (key, target, evidence) => record('py-import', p, key, evidence, target);
+    for (const imp of facts.imports || []) {
+      if (imp.level > 0) {
+        const dirSegments = posix.dirname(p).split('/');
+        const base = imp.level <= 1 ? posix.dirname(p) : dirSegments.slice(0, -(imp.level - 1)).join('/');
+        const rel = imp.name ? imp.name.replace(/\./g, '/') : '';
+        const key = '.'.repeat(imp.level) + imp.name;
+        const modulePath = rel ? moduleCandidates(base, rel).find((t) => paths.has(t)) || null
+          : moduleCandidates(base, '').find((t) => paths.has(t)) || null;
+        if (rel && !modulePath) { unresolved.push({ code: 'PYTHON_IMPORT_UNRESOLVED', path: p, location: key }); continue; }
+        if (modulePath) localEdge(key || '.', modulePath, { import: imp });
+        const searchDir = modulePath && posix.basename(modulePath) === '__init__.py' ? posix.dirname(modulePath) : (rel ? null : base);
+        if (searchDir) for (const name of imp.names || []) {
+          const target = moduleCandidates(`${searchDir}/${name}`, '').find((t) => paths.has(t));
+          if (target) localEdge(`${key}${key.endsWith('.') ? '' : '.'}${name}`, target, { import: imp, name });
+        }
+      } else {
+        const modulePath = resolveDotted(imp.name, p);
+        const submodulePaths = [];
+        for (const name of imp.names || []) {
+          const sub = resolveDotted(`${imp.name}.${name}`, p);
+          if (sub) submodulePaths.push([name, sub]);
+        }
+        if (!modulePath && !submodulePaths.length) { record('external-import', p, imp.name, { module: imp.name, line: imp.line }); continue; }
+        if (modulePath) localEdge(imp.name, modulePath, { import: imp });
+        for (const [name, sub] of submodulePaths) localEdge(`${imp.name}.${name}`, sub, { import: imp, name });
+      }
+    }
+    for (const dyn of facts.dynamics || []) {
+      if (typeof dyn.value !== 'string') { unresolved.push({ code: 'PYTHON_IMPORT_REQUIRES_OBSERVER', path: p, location: `${dyn.form}:${dyn.line}` }); continue; }
+      if (dyn.form === 'spec_from_file_location') {
+        const target = resolveScriptPath(dyn.value, p);
+        if (target) localEdge(`spec:${target}`, target, { form: dyn.form, line: dyn.line });
+        else unresolved.push({ code: 'PYTHON_IMPORT_UNRESOLVED', path: p, location: `spec:${dyn.value}` });
+      } else if (dyn.form === 'import_module' && dyn.value.startsWith('.')) {
+        const dots = dyn.value.match(/^\.+/)[0].length;
+        const rest = dyn.value.replace(/^\.+/, '');
+        const packageFile = typeof dyn.package === 'string' ? resolveDotted(dyn.package, p) : null;
+        if (!packageFile) { unresolved.push({ code: 'PYTHON_IMPORT_REQUIRES_OBSERVER', path: p, location: `import_module:${dyn.line}` }); continue; }
+        let base = posix.dirname(packageFile);
+        if (dots > 1) base = base.split('/').slice(0, -(dots - 1)).join('/');
+        const rel = rest.replace(/\./g, '/');
+        const target = moduleCandidates(base, rel).find((t) => paths.has(t));
+        if (target) localEdge(`dynamic:${dyn.value}@${dyn.package}`, target, { form: dyn.form, line: dyn.line });
+        else unresolved.push({ code: 'PYTHON_IMPORT_UNRESOLVED', path: p, location: `dynamic:${dyn.value}@${dyn.package}` });
+      } else {
+        const target = resolveDotted(dyn.value, p);
+        if (target) localEdge(`dynamic:${dyn.value}`, target, { form: dyn.form, line: dyn.line });
+        else record('external-import', p, dyn.value, { module: dyn.value, line: dyn.line, form: dyn.form });
+      }
+    }
+    for (const call of facts.subprocess || []) {
+      const elements = call.elements;
+      if (!Array.isArray(elements)) { unresolved.push({ code: 'PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER', path: p, location: `${call.line}` }); continue; }
+      let nonLiteral = false;
+      const targets = [];
+      for (const element of elements) {
+        if (typeof element !== 'string') { nonLiteral = true; continue; }
+        const target = resolveScriptPath(element, p);
+        if (target) targets.push(target);
+      }
+      if (nonLiteral) unresolved.push({ code: 'PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER', path: p, location: `${call.line}` });
+      for (const target of targets) record('script-target', p, target, { target, line: call.line }, target);
+    }
+    for (const line of facts.exec || []) unresolved.push({ code: 'PYTHON_DYNAMIC_CODE_REQUIRES_OBSERVER', path: p, location: `${line}` });
+  }
 }
 
 export function verifyLedger(inventory, ledger) {
