@@ -17,7 +17,7 @@ const source = readFileSync(new URL("../src/worker.mjs", import.meta.url), "utf8
 
 // Execute the committed entrypoint, with its imported jobs replaced at the boundary.
 // The scheduler body itself is neither copied nor reduced to a source-string assertion.
-function scheduledWorker({ now = NOW, overrides = {}, fetchImpl = null } = {}) {
+function scheduledWorker({ now = NOW, overrides = {}, fetchImpl = null, sourceText = source } = {}) {
   const calls = [];
   const errors = [];
   const logs = [];
@@ -47,7 +47,7 @@ function scheduledWorker({ now = NOW, overrides = {}, fetchImpl = null } = {}) {
       };
     }
   }
-  vm.runInNewContext(source.replace(/^import[\s\S]*?;\s*/gm, "")
+  vm.runInNewContext(sourceText.replace(/^import[\s\S]*?;\s*/gm, "")
     .replace("export default", "globalThis.worker ="), context);
   const ctx = { waitUntil(promise) { pending.push(promise); } };
   return { calls, errors, logs, pending, run: (cron, env, event = {}) => context.worker.runScheduled({ cron, ...event }, env, ctx) };
@@ -166,7 +166,10 @@ test("a timed-out digest step finalizes failure and releases later scheduled ref
   const terminal = [];
   const worker = scheduledWorker({ overrides: {
     recordDigestDeliveryStarted() { return { status: "STARTED" }; },
-    runAlerts() { return new Promise((resolve) => setTimeout(() => resolve({ receipt: { sent: 2, enqueued: 3 } }), 40)); },
+    runAlerts(_env, _watches, options) {
+      return options.enqueueJobs([{ key: "stalled-job" }]).then(() => ({ receipt: { sent: 2, enqueued: 3 } }));
+    },
+    enqueueDigestJobs() { return new Promise((resolve) => setTimeout(() => resolve(1), 40)); },
     recordDigestDeliveryReceipt(_env, receipt, _now, error) {
       terminal.push({ receipt, error });
       return { status: error ? "FAILED" : "TERMINAL" };
@@ -179,6 +182,39 @@ test("a timed-out digest step finalizes failure and releases later scheduled ref
   assert.ok(worker.calls.includes("refreshPayrollTitleMart"), "payroll must not be starved by delivery");
   assert.ok(worker.calls.includes("refreshProperties"), "address refresh must not be starved by delivery");
   assert.ok(worker.errors.some((args) => /digest delivery failed/.test(args.join(" "))));
+});
+
+test("a healthy multi-minute digest delivery is not aborted by its scheduled deadline", async () => {
+  // Keep a healthy 130-second delivery just beyond the old two-minute bound, then
+  // scale the clock so the regression stays fast while exercising the real boundary.
+  const deadline = source.match(/const SCHEDULED_DIGEST_DEADLINE_MS = ([^;]+);/);
+  assert.ok(deadline, "scheduled digest deadline must remain explicit");
+  const scale = 1_000;
+  const healthyDeliveryMs = (130 * 1_000) / scale;
+  const scaledSource = source.replace(
+    deadline[0],
+    `const SCHEDULED_DIGEST_DEADLINE_MS = (${deadline[1]}) / ${scale};`,
+  );
+  const env = productionEnv();
+  const terminal = [];
+  const worker = scheduledWorker({ sourceText: scaledSource, overrides: {
+    recordDigestDeliveryStarted() { return { status: "STARTED" }; },
+    runAlerts() {
+      return new Promise((resolve) => setTimeout(() => resolve({
+        receipt: { sent: 1, enqueued: 339 },
+      }), healthyDeliveryMs));
+    },
+    recordDigestDeliveryReceipt(_env, receipt, _now, error) {
+      terminal.push({ receipt, error });
+      return { status: error ? "FAILED" : "TERMINAL" };
+    },
+  } });
+  await worker.run("0 13 * * *", env);
+  await Promise.all(worker.pending);
+  assert.equal(terminal.length, 1, "healthy delivery must reach its terminal receipt");
+  assert.equal(terminal[0].error, null, "healthy delivery must not be timed out");
+  assert.deepEqual(terminal[0].receipt, { sent: 1, enqueued: 339 });
+  assert.ok(!worker.errors.some((args) => /digest delivery failed/.test(args.join(" "))));
 });
 
 test("a terminal receipt KV failure is loud without stranding later refreshes", async () => {

@@ -131,6 +131,39 @@ import {
 
 let alertHearingRefresh = null;
 
+const DIGEST_QUEUE_BATCH_SIZE = 100;
+
+/**
+ * Enqueue the prepared digest jobs in platform-sized batches. The scheduled
+ * caller wraps this operation with its stall deadline; preparation and the
+ * terminal receipt stay outside that fan-out deadline.
+ */
+export async function enqueueDigestJobs(env, jobs, { signal, onBatch } = {}) {
+  const queue = env?.DIGEST_QUEUE;
+  if (!queue) throw new Error("digest queue binding unavailable");
+  const pending = Array.isArray(jobs) ? jobs : [];
+  let enqueued = 0;
+  if (typeof queue.sendBatch === "function") {
+    for (let offset = 0; offset < pending.length; offset += DIGEST_QUEUE_BATCH_SIZE) {
+      signal?.throwIfAborted?.();
+      const batch = pending.slice(offset, offset + DIGEST_QUEUE_BATCH_SIZE);
+      await queue.sendBatch(batch.map((body) => ({ body })));
+      enqueued += batch.length;
+      await onBatch?.({ enqueued, batch_size: batch.length });
+    }
+  } else {
+    // Keep the local/test and older binding fallback exact: one job is only
+    // counted after its write resolves.
+    for (const job of pending) {
+      signal?.throwIfAborted?.();
+      await queue.send(job);
+      enqueued += 1;
+      await onBatch?.({ enqueued, batch_size: 1 });
+    }
+  }
+  return enqueued;
+}
+
 // A sent digest's category breakdown for the all-time stats: one bump per distinct City
 // Record section_name it carried (falling back to the watch's lens for sections without
 // one, e.g. land/ZAP notices). Counts topics touched per digest, not per notice row.
@@ -670,11 +703,15 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
     mode = "queue";
     const jobs = buildDigestJobs(allSubs);
     const partition = await partitionDigestJobsByHold(jobs, shadowHold);
-    for (const job of partition.eligible) {
-      throwIfAborted();
-      await env.DIGEST_QUEUE.send(job);
-      enqueued++;
-    }
+    const enqueue = options.enqueueJobs || ((eligible, enqueueOptions) => enqueueDigestJobs(env, eligible, {
+      ...enqueueOptions,
+      onBatch: (progress) => reportProgress({
+        phase: "queue_fanout",
+        evaluated_count: results.length,
+        enqueued: progress.enqueued,
+      }),
+    }));
+    enqueued = await enqueue(partition.eligible, { signal: options.signal });
     for (const held of partition.held) {
       results.push({
         sub: "digest:held",

@@ -1,7 +1,7 @@
 // Account-level digest rollup: multi-watch email → one consolidated send.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { runAlerts, processAccountRollup, dryRunRollupForEmail, digestSendTestForEmail, consumeDigestJob, appendQueueDayLogEntry } from "../src/alerts.mjs";
+import { enqueueDigestJobs, runAlerts, processAccountRollup, dryRunRollupForEmail, digestSendTestForEmail, consumeDigestJob, appendQueueDayLogEntry } from "../src/alerts.mjs";
 import { buildDayLog } from "../src/lib/digest_ops.mjs";
 import { buildDigestJobs } from "../src/lib/rollup.mjs";
 import {
@@ -480,6 +480,21 @@ test("queue producer omits only the digest named by an active shadow hold", asyn
   assert.equal(summary.results.filter((result) => result.skipped === "shadow-hold").length, 1);
   assert.equal(summary.shadowHold.active_count, 1);
   assert.equal(summary.receipt.skipped_reason, "queue_pending");
+});
+
+test("scheduled queue fan-out batches prepared jobs at the platform limit", async () => {
+  const jobs = Array.from({ length: 201 }, (_, index) => ({ type: "sub", key: `sub:${index}` }));
+  const batches = [];
+  const enqueued = await enqueueDigestJobs({
+    DIGEST_QUEUE: {
+      sendBatch: async (batch) => { batches.push(batch); },
+    },
+  }, jobs);
+
+  assert.equal(enqueued, jobs.length);
+  assert.deepEqual(batches.map((batch) => batch.length), [100, 100, 1]);
+  assert.deepEqual(batches[0][0], { body: jobs[0] });
+  assert.deepEqual(batches[2][0], { body: jobs.at(-1) });
 });
 
 test("queue consumer acknowledges a newly held digest without rendering or sending", async () => {
