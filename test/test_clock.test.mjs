@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
@@ -13,6 +13,67 @@ import {
 const PRELOAD = fileURLToPath(new URL("./helpers/test_clock_preload.mjs", import.meta.url));
 const PREFLIGHT = readFileSync(new URL("../tools/preflight-required-checks.sh", import.meta.url), "utf8");
 const WORKFLOW = readFileSync(new URL("../.github/workflows/time-travel.yml", import.meta.url), "utf8");
+
+function timeTravelMatrixEntries(source) {
+  const matrix = source.match(/\n      matrix:\n([\s\S]*?)\n    env:/)?.[1];
+  assert.ok(matrix, "time-travel matrix is present");
+  const entries = matrix.matchAll(
+    /^\s+- shift: (1|45)\n\s+family: (site-node|worker)\n\s+shard: (\d+)\n\s+shard_count: (\d+)\n\s+shard_suffix: "([^"]*)"/gm,
+  );
+  return [...entries].map((match) => ({
+    shift: Number(match[1]),
+    family: match[2],
+    shard: Number(match[3]),
+    shardCount: Number(match[4]),
+    shardSuffix: match[5],
+  }));
+}
+
+function expandGithubMatrix({ axes, include }) {
+  const axisEntries = Object.entries(axes);
+  if (axisEntries.length === 0) return include.map((entry) => ({ ...entry }));
+
+  const base = axisEntries.reduce(
+    (combinations, [name, values]) => combinations.flatMap((combination) =>
+      values.map((value) => ({ ...combination, [name]: value }))),
+    [{}],
+  );
+  const expanded = base.map((combination) => ({ ...combination }));
+  for (const entry of include) {
+    const compatible = expanded.filter((combination) => axisEntries.every(([name]) =>
+      !Object.hasOwn(entry, name) || combination[name] === entry[name]));
+    if (compatible.length > 0) {
+      for (const combination of compatible) Object.assign(combination, entry);
+    } else {
+      expanded.push({ ...entry });
+    }
+  }
+  return expanded;
+}
+
+function testFilesForFamily(family) {
+  const directory = family === "site-node" ? new URL("../test/", import.meta.url) : new URL("../worker/test/", import.meta.url);
+  const prefix = family === "site-node" ? "test/" : "worker/test/";
+  return readdirSync(directory)
+    .filter((file) => file.endsWith(".test.mjs"))
+    .sort()
+    .map((file) => `${prefix}${file}`);
+}
+
+function workflowJobBlocks(source) {
+  const blocks = new Map();
+  let current;
+  for (const line of source.split("\n")) {
+    const match = line.match(/^  ([a-z0-9-]+):$/);
+    if (match) {
+      current = [];
+      blocks.set(match[1], current);
+    } else if (current) {
+      current.push(line);
+    }
+  }
+  return blocks;
+}
 
 test("withPinnedClock pins the process clock, preserves explicit dates, and restores the scope", async () => {
   const previousDate = globalThis.Date;
@@ -70,4 +131,60 @@ test("the local runner and CI workflow use the shared preload with bounded concu
   assert.match(WORKFLOW, /intentionally non-required/);
   assert.match(WORKFLOW, /Refuse tracked working-tree residue/);
   assert.match(WORKFLOW, /tools\/assert_tracked_working_tree_clean\.mjs/);
+});
+
+test("time-travel matrix expands to twelve shards with complete per-shift coverage", () => {
+  const entries = timeTravelMatrixEntries(WORKFLOW);
+  const expanded = expandGithubMatrix({ axes: {}, include: entries });
+  const tuple = (entry) => `${entry.shift}:${entry.family}:${entry.shard}`;
+  const tuples = expanded.map(tuple);
+  assert.equal(expanded.length, 12);
+  assert.equal(new Set(tuples).size, 12);
+  assert.deepEqual(
+    [...new Set(expanded.map((entry) => entry.shift))].sort((a, b) => a - b),
+    [1, 45],
+  );
+  assert.deepEqual(
+    [...new Set(expanded.map((entry) => `${entry.family}:${entry.shardCount}`))].sort(),
+    ["site-node:4", "worker:2"],
+  );
+
+  const allFiles = [...testFilesForFamily("site-node"), ...testFilesForFamily("worker")];
+  for (const shift of [1, 45]) {
+    const selected = [];
+    for (const entry of expanded.filter((candidate) => candidate.shift === shift)) {
+      const files = testFilesForFamily(entry.family);
+      files.forEach((file, index) => {
+        if (index % entry.shardCount === entry.shard - 1) selected.push(file);
+      });
+    }
+    assert.equal(selected.length, allFiles.length, `shift ${shift} runs every test file`);
+    assert.equal(new Set(selected).size, selected.length, `shift ${shift} has no duplicate test files`);
+    assert.deepEqual([...selected].sort(), [...allFiles].sort(), `shift ${shift} file union is complete`);
+  }
+
+  const buggyInclude = entries
+    .filter((entry) => entry.shift === 1)
+    .map(({ shift, ...entry }) => entry);
+  const buggyExpansion = expandGithubMatrix({ axes: { shift: [1, 45] }, include: buggyInclude });
+  assert.deepEqual(buggyExpansion.map(tuple), ["1:worker:2", "45:worker:2"]);
+
+  const jobs = workflowJobBlocks(WORKFLOW);
+  const requiredAggregates = new Map([
+    ["time-travel-combined-plus-1d", "Time-travel (combined, +1d)"],
+    ["time-travel-combined-plus-45d", "Time-travel (combined, +45d)"],
+  ]);
+  const emittedNames = [...jobs.values()]
+    .flatMap((lines) => lines.filter((line) => line.match(/^    name: /)))
+    .map((line) => line.replace(/^    name: ["]?/, "").replace(/["]?$/, ""));
+  for (const [jobId, requiredName] of requiredAggregates) {
+    const block = jobs.get(jobId)?.join("\n");
+    assert.ok(block, `${jobId} aggregate job is present`);
+    assert.ok(emittedNames.includes(requiredName), `${requiredName} check name is emitted`);
+    assert.match(block, /if: \$\{\{ always\(\) \}\}/);
+    assert.match(block, /needs:\n(?:\s+- [^\n]+\n)*\s+- time-travel\n/);
+    assert.match(block, /\s+- time-travel-matrix-contract\n/);
+    assert.match(block, /needs\.time-travel\.result != 'success'/);
+    assert.match(block, /needs\.time-travel-matrix-contract\.result != 'success'/);
+  }
 });

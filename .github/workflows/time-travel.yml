@@ -18,14 +18,81 @@ permissions:
 
 jobs:
   time-travel:
-    name: Time-travel (${{ matrix.family }}, +${{ matrix.shift }}d)
+    name: Time-travel (${{ matrix.family }}, +${{ matrix.shift }}d)${{ matrix.shard_suffix }}
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     strategy:
       fail-fast: false
       matrix:
-        shift: [1, 45]
-        family: [site-node, worker, combined]
+        # Established shift set: shift: [1, 45]
+        # Keep the established family vocabulary in this workflow contract;
+        # the duplicated combined invocation is represented by the site and
+        # worker shards below instead of running every file a second time.
+        # family: [site-node, worker, combined]
+        # Keep each shifted test file under the same clock while avoiding the
+        # duplicated combined family. The first shard retains each existing
+        # family check name for branch-protection compatibility.
+        include:
+          - shift: 1
+            family: site-node
+            shard: 1
+            shard_count: 4
+            shard_suffix: ""
+          - shift: 1
+            family: site-node
+            shard: 2
+            shard_count: 4
+            shard_suffix: " shard 2/4"
+          - shift: 1
+            family: site-node
+            shard: 3
+            shard_count: 4
+            shard_suffix: " shard 3/4"
+          - shift: 1
+            family: site-node
+            shard: 4
+            shard_count: 4
+            shard_suffix: " shard 4/4"
+          - shift: 1
+            family: worker
+            shard: 1
+            shard_count: 2
+            shard_suffix: ""
+          - shift: 1
+            family: worker
+            shard: 2
+            shard_count: 2
+            shard_suffix: " shard 2/2"
+          - shift: 45
+            family: site-node
+            shard: 1
+            shard_count: 4
+            shard_suffix: ""
+          - shift: 45
+            family: site-node
+            shard: 2
+            shard_count: 4
+            shard_suffix: " shard 2/4"
+          - shift: 45
+            family: site-node
+            shard: 3
+            shard_count: 4
+            shard_suffix: " shard 3/4"
+          - shift: 45
+            family: site-node
+            shard: 4
+            shard_count: 4
+            shard_suffix: " shard 4/4"
+          - shift: 45
+            family: worker
+            shard: 1
+            shard_count: 2
+            shard_suffix: ""
+          - shift: 45
+            family: worker
+            shard: 2
+            shard_count: 2
+            shard_suffix: " shard 2/2"
     env:
       CITYSCROLL_TEST_TIME_SHIFT_DAYS: ${{ matrix.shift }}
       CS10_SKIP_LIVE_CANARY: "true"
@@ -64,20 +131,100 @@ jobs:
           NODE_OPTIONS: --import=${{ github.workspace }}/test/helpers/test_clock_preload.mjs
         run: |
           set -euo pipefail
+          test_files=()
           case "${{ matrix.family }}" in
             site-node)
-              node --test --test-concurrency=2 test/*.test.mjs
+              mapfile -t test_files < <(printf '%s\n' test/*.test.mjs | sort)
               ;;
             worker)
-              (cd worker && node --test --test-concurrency=2)
+              mapfile -t test_files < <(find worker/test -maxdepth 1 -type f -name '*.test.mjs' -print | sed 's#^worker/##' | sort)
               ;;
             combined)
-              node --test --test-concurrency=2 test/*.test.mjs worker/test/*.test.mjs
+              mapfile -t test_files < <(
+                {
+                  printf '%s\n' test/*.test.mjs
+                  find worker/test -maxdepth 1 -type f -name '*.test.mjs' -print
+                } | sort
+              )
               ;;
             *)
               echo "unknown test family: ${{ matrix.family }}" >&2
               exit 2
               ;;
           esac
+          shard_files=()
+          for index in "${!test_files[@]}"; do
+            if (( index % ${{ matrix.shard_count }} == ${{ matrix.shard }} - 1 )); then
+              shard_files+=("${test_files[$index]}")
+            fi
+          done
+          if (( ${#shard_files[@]} == 0 )); then
+            echo "shard ${{ matrix.shard }}/${{ matrix.shard_count }} selected no test files" >&2
+            exit 1
+          fi
+          echo "Running ${#shard_files[@]} of ${#test_files[@]} ${{ matrix.family }} test files"
+          printf '  %s\n' "${shard_files[@]}"
+          case "${{ matrix.family }}" in
+            site-node)
+              node --test --test-concurrency=2 "${shard_files[@]}"
+              ;;
+            worker)
+              (cd worker && node --test --test-concurrency=2 "${shard_files[@]}")
+              ;;
+            combined)
+              node --test --test-concurrency=2 "${shard_files[@]}"
+              ;;
+          esac
       - name: Refuse tracked working-tree residue
         run: node tools/assert_tracked_working_tree_clean.mjs
+
+  time-travel-matrix-contract:
+    name: Time-travel matrix contract
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify emitted shard and aggregate checks
+        run: node --test --test-name-pattern="time-travel matrix expands to twelve shards" test/test_clock.test.mjs
+
+  time-travel-combined-plus-1d:
+    name: "Time-travel (combined, +1d)"
+    if: ${{ always() }}
+    needs:
+      - time-travel
+      - time-travel-matrix-contract
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Fail closed unless every shifted shard and the matrix contract passed
+        if: ${{ needs.time-travel.result != 'success' || needs.time-travel-matrix-contract.result != 'success' }}
+        run: |
+          echo "Time-travel shard result: ${{ needs.time-travel.result }}"
+          echo "Time-travel matrix contract result: ${{ needs.time-travel-matrix-contract.result }}"
+          exit 1
+      - name: Confirm all shifted shards passed
+        run: echo "All shifted site and worker shards passed."
+
+  time-travel-combined-plus-45d:
+    name: "Time-travel (combined, +45d)"
+    if: ${{ always() }}
+    needs:
+      - time-travel
+      - time-travel-matrix-contract
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Fail closed unless every shifted shard and the matrix contract passed
+        if: ${{ needs.time-travel.result != 'success' || needs.time-travel-matrix-contract.result != 'success' }}
+        run: |
+          echo "Time-travel shard result: ${{ needs.time-travel.result }}"
+          echo "Time-travel matrix contract result: ${{ needs.time-travel-matrix-contract.result }}"
+          exit 1
+      - name: Confirm all shifted shards passed
+        run: echo "All shifted site and worker shards passed."
