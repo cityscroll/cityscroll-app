@@ -9,7 +9,11 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 
-import { buildMeetingOutcomesView } from "../src/lib/meeting_outcomes.mjs";
+import {
+  buildMeetingOutcomesView,
+  refreshMeetingOutcomes,
+  MEETING_OUTCOMES_KV_KEY,
+} from "../src/lib/meeting_outcomes.mjs";
 import {
   dualWriteLegistarObservations,
   legistarEventSourceSystemId,
@@ -242,6 +246,51 @@ test("flag on writes immutable event/item/vote/attachment rows and replay does n
   ).all();
   assert.deepEqual(replay, rows);
   sqlite.close();
+});
+
+test("refresh publishes the public view before shadow observation writes finish", async () => {
+  const { sqlite, DB: baseDB } = database();
+  let releaseBatch;
+  let signalBatchStarted;
+  const batchReleased = new Promise((resolve) => { releaseBatch = resolve; });
+  const batchStarted = new Promise((resolve) => { signalBatchStarted = resolve; });
+  const DB = {
+    ...baseDB,
+    async batch(statements) {
+      signalBatchStarted();
+      await batchReleased;
+      return baseDB.batch(statements);
+    },
+  };
+  const values = new Map();
+  const ALERT_STATE = {
+    values,
+    async get(key) { return values.get(key) ?? null; },
+    async put(key, value) { values.set(key, value); },
+  };
+
+  const refresh = refreshMeetingOutcomes(
+    {
+      ALERT_STATE,
+      DB,
+      LEGISTAR_API_TOKEN: "test-token",
+      [LEGISTAR_SOURCE_RECORD_DUAL_WRITE_FLAG]: "true",
+    },
+    mockMeetingFetch(),
+    new Date("2026-08-01T12:00:00.000Z"),
+  );
+
+  try {
+    await batchStarted;
+    assert.ok(
+      values.has(MEETING_OUTCOMES_KV_KEY),
+      "public meeting-outcomes KV must publish while shadow writes are pending",
+    );
+  } finally {
+    releaseBatch();
+    await refresh;
+    sqlite.close();
+  }
 });
 
 test("observation failure remains fail-soft for meeting-outcomes consumers", async () => {
