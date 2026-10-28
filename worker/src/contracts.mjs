@@ -1,17 +1,13 @@
 // HTTP adapters and the explicit provider for the public procurement
-// capabilities. The provider reads only the committed shared read model;
+// capabilities. The provider reads only committed, bounded read models;
 // publisher APIs and source-record tables are not request-time dependencies.
 
-import {
-  combineSharedProcurementReadModel,
-} from "../../site/procurement_read_model_shards.mjs";
 import { loadAnalyticalProjectionDocument } from "../../site/analytical_projection_shards.mjs";
 import {
   buildProcurementBrowseCapabilityIndex,
   composeProcurementBrowseCapabilityContract,
   loadProcurementBrowseCapabilityDetails,
   loadProcurementBrowseCapabilityFilterTier,
-  procurementBrowseCapabilityDetail,
   procurementBrowseCapabilityEntryMatches,
   procurementBrowseCapabilityEnvelope,
   PROCUREMENT_BROWSE_CAPABILITY_INDEX_PATH,
@@ -143,26 +139,6 @@ async function readAnalyticalProjection(env) {
 }
 
 /**
- * Load one object's slice of the committed model, or a test-provided model,
- * without source-store access. The manifest names the single bounded shard that
- * carries a canonical id, so an object read stays one shard wide however large
- * the population grows. There is deliberately no whole-population path here:
- * the browse capability reads the pre-shaped index instead.
- */
-async function readModel(env, { procurementId = null } = {}) {
-  const injected = env?.PROCUREMENT_READ_MODEL
-    || (env?.schema === "cityscroll.shared_procurement_read_model.v1" ? env : null);
-  if (injected && typeof injected === "object") return injected;
-
-  const manifest = await readStaticJson(SHARED_MODEL_PATH);
-  if (Array.isArray(manifest?.rows)) return manifest;
-  const shardPath = procurementId ? manifest?.procurement_shard_by_id?.[procurementId] : null;
-  if (!shardPath) return { ...manifest, rows: [], observations: [] };
-  const shard = await readStaticJson(`/data/${shardPath}`);
-  return combineSharedProcurementReadModel(manifest, [shard]);
-}
-
-/**
  * Load the pre-shaped Contracts browse index: the compact filter tier a browse
  * scans, and the envelope its result rows are composed against. A test that
  * already holds a whole read model gets the same index built in memory, so both
@@ -192,42 +168,6 @@ function sourceSystemFromRef(ref) {
   return clean(ref).split(":", 1)[0].toLowerCase() || null;
 }
 
-/**
- * One published contract, composed from the population envelope and this
- * object's detail. The browse page composes the same two parts from the
- * published index, so an object read and a browse row are the same projection
- * rather than two projections that happen to agree.
- */
-function projectContract(model, object) {
-  return composeProcurementBrowseCapabilityContract(
-    procurementBrowseCapabilityEnvelope(model),
-    procurementBrowseCapabilityDetail(model, object),
-  );
-}
-
-function modelObjects(model) {
-  if (model?.schema !== "cityscroll.shared_procurement_read_model.v1" || !Array.isArray(model?.rows)) {
-    throw new Error("shared procurement read model is unavailable");
-  }
-  if (model.identity_gate?.ok === false) throw new Error("shared procurement identity gate failed");
-  const ids = new Set();
-  const contractIds = new Map();
-  for (const object of model.rows) {
-    if (!object?.procurement_id || ids.has(object.procurement_id)) throw new Error("shared procurement identity is not unique");
-    ids.add(object.procurement_id);
-    for (const contractId of object.identity_keys?.contract_ids || []) {
-      const prior = contractIds.get(contractId);
-      if (prior && prior !== object.procurement_id) throw new Error("prime contract identity was collapsed");
-      contractIds.set(contractId, object.procurement_id);
-    }
-  }
-  return model.rows;
-}
-
-function findObject(model, procurementId) {
-  return modelObjects(model).find((object) => object.procurement_id === procurementId) || null;
-}
-
 function encodeCursor(id) {
   return btoa(id).replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
 }
@@ -245,10 +185,28 @@ export function workerContractGet(env) {
     providerId: CONTRACT_GET_PROVIDER_ID,
     async execute(input) {
       try {
-        const model = await readModel(env, { procurementId: input.procurementId });
-        const object = findObject(model, input.procurementId.trim());
-        if (!object) return { capability_reference: CONTRACT_GET_CAPABILITY_REFERENCE, availability: "not_yet_public", contract: null, error: "not-found" };
-        return { capability_reference: CONTRACT_GET_CAPABILITY_REFERENCE, availability: "available", contract: projectContract(model, object), error: null };
+        // Exact reads must not load the shared object-detail family. Its
+        // population shards are bounded for the Pages file limit, not for a
+        // Worker isolate: parsing one of them alongside this bundle can cross
+        // the runtime memory limit before the requested object is selected.
+        // The Contracts capability index carries the same projection in a
+        // compact filter tier plus one bounded detail shard for this id.
+        const { manifest, entries } = await readBrowseCapabilityIndex(env);
+        const entry = entries.find((candidate) => candidate.procurement_id === input.procurementId.trim());
+        if (!entry) return { capability_reference: CONTRACT_GET_CAPABILITY_REFERENCE, availability: "not_yet_public", contract: null, error: "not-found" };
+        const [detail] = await loadProcurementBrowseCapabilityDetails(
+          `/data/${PROCUREMENT_BROWSE_CAPABILITY_INDEX_PATH}`,
+          manifest,
+          [entry],
+          readStaticJson,
+        ) || [];
+        if (!detail) throw new Error("Contracts capability detail is incomplete");
+        return {
+          capability_reference: CONTRACT_GET_CAPABILITY_REFERENCE,
+          availability: "available",
+          contract: composeProcurementBrowseCapabilityContract(procurementBrowseCapabilityEnvelope(manifest), detail),
+          error: null,
+        };
       } catch (error) {
         console.error("contract read model unavailable:", String(error?.message || error));
         return { capability_reference: CONTRACT_GET_CAPABILITY_REFERENCE, availability: "unavailable", contract: null, error: "unavailable" };
