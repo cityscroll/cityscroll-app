@@ -65,7 +65,7 @@ test("surface-load stays quiet for the green fixture", () => {
   const inventory = loadJson("ontology/fixtures/dimensions/surface_load.json");
   const result = evaluateSurfaceLoad({ surface_load: inventory });
   assert.equal(result.dimension, "surface-load");
-  assert.equal(result.metrics.surfaces_complete, 3);
+  assert.equal(result.metrics.surfaces_complete, 4);
   assert.equal(result.metrics.surfaces_over_budget, 0);
   assert.deepEqual(result.cards, []);
 });

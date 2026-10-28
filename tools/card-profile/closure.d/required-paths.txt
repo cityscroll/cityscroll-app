@@ -2016,6 +2016,7 @@ worker/migrations/0028_matter_exact_refresh.sql
 worker/migrations/0029_matter_watch_baseline.sql
 worker/migrations/0030_digest_outbox_query_revision.sql
 worker/migrations/0033_ops_emergency_outbox.sql
+worker/migrations/0036_recipient_delivery_trust.sql
 worker/ops-contract.v1.json
 worker/scripts/analytics-dev-token.mjs
 worker/scripts/backfill-history.mjs
@@ -2248,6 +2249,7 @@ worker/src/lib/property_phase_spine.mjs
 worker/src/lib/property_saved_watch.mjs
 worker/src/lib/public_search_usage.mjs
 worker/src/lib/published_agency_entity.mjs
+worker/src/lib/recipient_suppression.mjs
 worker/src/lib/regulatory_agenda.mjs
 worker/src/lib/repair_queue.mjs
 worker/src/lib/report_adjudication.mjs
@@ -2299,6 +2301,7 @@ worker/src/lib/watch_seen_membership.mjs
 worker/src/lib/watch_text_query_meetings.mjs
 worker/src/lib/watch_text_query_procurement.mjs
 worker/src/lib/watchlog.mjs
+worker/src/lib/welcome_outbox.mjs
 worker/src/lib/worker_acquisition_runtime.mjs
 worker/src/lib/worker_health.mjs
 worker/src/lib/zap_bbl_warehouse_lookup.mjs

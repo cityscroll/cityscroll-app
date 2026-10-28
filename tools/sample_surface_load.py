@@ -137,14 +137,17 @@ def sample_live(source: dict[str, Any], base: str, only: str | None) -> dict[str
                     "id": definition["id"],
                     "label": definition["label"],
                     "route": definition["route"],
-                    "file": "site/index.html",
+                    "file": definition.get("file", "site/index.html"),
                     "status": "incomplete",
                     "action_required": definition.get("action_required", True),
                     "budgets": definition["budgets"],
                     "measured": {},
                 }
                 try:
-                    page.goto(f"{base_url}{definition['route']}", wait_until="domcontentloaded", timeout=30_000)
+                    # Definitions use either a legacy hash fragment or a canonical
+                    # document path; keep the join valid for both forms.
+                    route = str(definition["route"]).lstrip("/")
+                    page.goto(f"{base_url}{route}", wait_until="domcontentloaded", timeout=30_000)
                     page.locator(definition["root_selector"]).wait_for(state="visible")
                     page.locator(definition["ready_selector"]).first.wait_for(state="visible")
                     page.wait_for_function(
