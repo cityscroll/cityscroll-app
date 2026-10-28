@@ -897,19 +897,60 @@ async function collectAttachments({ eventItemRows, token, fetchImpl }) {
   return { attachmentRows: out, rawAttachments };
 }
 
+async function writeLegistarShadowObservations(
+  env,
+  { events, eventItems, votes, attachments },
+  generatedAt,
+  authenticated,
+) {
+  if (!env) return { dualWrite: null, matterJournal: null };
+
+  const dualWrite = await dualWriteLegistarObservations(
+    env,
+    { events, eventItems, votes, attachments },
+    generatedAt,
+  );
+  const matterJournal = await retainNativeMatterObservations(
+    env,
+    { events, eventItems, votes },
+    { acquiredAt: generatedAt },
+  );
+
+  // Guardrail: authenticated materialization with events must leave observations.
+  // Nested Attachments may honestly be empty (event Agenda/Minutes live on Events).
+  if (
+    authenticated
+    && events.length > 0
+    && dualWrite
+    && dualWrite.skipped !== "flag-off"
+    && dualWrite.skipped !== "no-db"
+    && dualWrite.skipped !== "no-schema"
+    && (dualWrite.written || 0) <= 0
+  ) {
+    console.error(
+      "legistar source_records dual-write wrote 0 rows after authenticated fetch:",
+      JSON.stringify(dualWrite),
+    );
+  }
+
+  return { dualWrite, matterJournal };
+}
+
 /**
  * Fetch + assemble the full meeting-outcomes view. When no token is configured
  * the view degrades to notices-only with explicit "not yet ingested" gaps.
  *
  * When `env` is provided and LEGISTAR_SOURCE_RECORD_DUAL_WRITE is on, raw
  * Events / EventItems / Votes / Attachments are fail-soft dual-written into
- * source_records without changing the public KV view.
+ * source_records without changing the public KV view. The refresh path can
+ * defer that shadow work until after the public KV write.
  */
 export async function buildMeetingOutcomesView({
   token = null,
   fetchImpl = fetch,
   now = new Date(),
   env = null,
+  deferShadowWrites = false,
   lookbackDays = 180,
   noticeLimit = NOTICE_LIMIT,
 } = {}) {
@@ -1000,58 +1041,45 @@ export async function buildMeetingOutcomesView({
     eventsFetch,
   });
 
-  // Shadow dual-write: never block the public meeting-outcomes materialization.
-  let dualWrite = null;
-  let matterJournal = null;
-  if (env) {
-    dualWrite = await dualWriteLegistarObservations(
-      env,
-      {
-        events: eventRows,
-        eventItems: eventItemRows,
-        votes: voteBag.rawVotes,
-        attachments: attachmentBag.rawAttachments,
-      },
-      view.generated_at,
-    );
-    matterJournal = await retainNativeMatterObservations(
-      env,
-      {
-        events: eventRows,
-        eventItems: eventItemRows,
-        votes: voteBag.rawVotes,
-      },
-      { acquiredAt: view.generated_at },
-    );
-    // Guardrail: authenticated materialization with events must leave observations.
-    // Nested Attachments may honestly be empty (event Agenda/Minutes live on Events).
-    if (
-      token
-      && eventRows.length > 0
-      && dualWrite
-      && dualWrite.skipped !== "flag-off"
-      && dualWrite.skipped !== "no-db"
-      && dualWrite.skipped !== "no-schema"
-      && (dualWrite.written || 0) <= 0
-    ) {
-      console.error(
-        "legistar source_records dual-write wrote 0 rows after authenticated fetch:",
-        JSON.stringify(dualWrite),
-      );
-    }
-  }
+  const shadowInputs = {
+    events: eventRows,
+    eventItems: eventItemRows,
+    votes: voteBag.rawVotes,
+    attachments: attachmentBag.rawAttachments,
+  };
+  const shadow = env && !deferShadowWrites
+    ? await writeLegistarShadowObservations(env, shadowInputs, view.generated_at, Boolean(token))
+    : { dualWrite: null, matterJournal: null };
 
-  return { ...view, upcoming, dual_write: dualWrite, matter_journal: matterJournal };
+  return {
+    ...view,
+    upcoming,
+    dual_write: shadow.dualWrite,
+    matter_journal: shadow.matterJournal,
+    ...(env && deferShadowWrites ? { _shadow_inputs: shadowInputs } : {}),
+  };
 }
 
 export async function refreshMeetingOutcomes(env, fetchImpl = fetch, now = new Date()) {
   if (!env?.ALERT_STATE) return { status: "skipped", reason: "no-kv" };
   const token = env?.LEGISTAR_API_TOKEN || null;
-  const view = await buildMeetingOutcomesView({ token, fetchImpl, now, env });
+  const view = await buildMeetingOutcomesView({
+    token,
+    fetchImpl,
+    now,
+    env,
+    deferShadowWrites: true,
+  });
   // dual_write, matter_journal, and the upcoming build state are run-scoped —
   // strip the first two so public clients never see them; the upcoming view is
   // materialized under its own read-model key, not folded into this one.
-  const { dual_write: dualWrite, matter_journal: matterJournal, upcoming, ...publicView } = view;
+  const {
+    dual_write: initialDualWrite,
+    matter_journal: initialMatterJournal,
+    upcoming,
+    _shadow_inputs: shadowInputs,
+    ...publicView
+  } = view;
 
   // Sanitization gate before any KV write: a credential-bearing projection
   // fails the refresh with both read models' last-known-good snapshots intact.
@@ -1069,13 +1097,25 @@ export async function refreshMeetingOutcomes(env, fetchImpl = fetch, now = new D
   } else if (upcoming) {
     upcomingWrite = { status: "unavailable", reason: upcoming.reason };
   }
+
+  // Shadow observation writes are deliberately after both public materialized
+  // views. They are fail-soft evidence capture, not part of the serving path.
+  const shadow = shadowInputs
+    ? await writeLegistarShadowObservations(
+      env,
+      shadowInputs,
+      publicView.generated_at,
+      Boolean(token),
+    )
+    : { dualWrite: initialDualWrite, matterJournal: initialMatterJournal };
+
   return {
     status: token ? "success" : "no-token",
     enrichment: token ? "authenticated" : "unavailable",
     ...publicView.counts,
     upcoming: upcomingWrite,
-    dual_write: dualWrite || null,
-    matter_journal: matterJournal || null,
+    dual_write: shadow.dualWrite || null,
+    matter_journal: shadow.matterJournal || null,
   };
 }
 
