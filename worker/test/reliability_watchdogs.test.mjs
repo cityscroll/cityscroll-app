@@ -154,6 +154,47 @@ test("zero accepted sends names the recorded skip reason", async () => {
   assert.match(result.findings.join("; "), /enqueued digest has zero accepted sends \(skipped\)/);
 });
 
+test("digest delivery separates cron errors from a successful consumer send", async () => {
+  const ALERT_STATE = kv();
+  const now = new Date("2026-10-24T13:04:59.651Z");
+  await recordDigestShadowReceipt({ ALERT_STATE }, { ok: true }, now);
+  await recordDigestDeliveryReceipt({ ALERT_STATE }, {
+    sent: 0, enqueued: 1, skipped_reason: "errors",
+  }, now);
+
+  const receipt = await recordDigestQueueOutcome({ ALERT_STATE }, { sent: true }, now);
+  assert.equal(receipt.cron_skipped_reason, "errors");
+  assert.equal(receipt.skipped_reason, "errors", "legacy field remains readable");
+  assert.deepEqual(receipt.consumer_tallies, {
+    sent: 1,
+    errors: 0,
+    skipped_weekly: 0,
+    skipped_quiet: 0,
+    skipped_other: 0,
+  });
+  assert.equal(receipt.accepted_sends, 1);
+
+  const snapshot = await digestWatchdogSnapshot({ ALERT_STATE }, { now });
+  assert.equal(snapshot.ok, true);
+  assert.doesNotMatch(snapshot.findings.join("; "), /zero accepted sends|errors/);
+});
+
+test("all-quiet consumer outcome remains an explicit quiet skip", async () => {
+  const ALERT_STATE = kv();
+  const now = new Date("2026-10-25T13:04:59.651Z");
+  await recordDigestDeliveryReceipt({ ALERT_STATE }, {
+    sent: 0, enqueued: 1, skipped_reason: "all_quiet",
+  }, now);
+
+  const receipt = await recordDigestQueueOutcome({ ALERT_STATE }, {
+    action: "none", sent: false,
+  }, now);
+  assert.equal(receipt.cron_skipped_reason, "all_quiet");
+  assert.equal(receipt.skipped_reason, "all_quiet");
+  assert.equal(receipt.consumer_tallies.skipped_quiet, 1);
+  assert.equal(receipt.consumer_tallies.sent, 0);
+});
+
 test("missing delivery ledger is missing-invocation, not proven non-delivery", () => {
   assert.equal(classifyDigestDeliveryLedger(null), "missing-invocation");
   assert.equal(classifyDigestDeliveryLedger(undefined), "missing-invocation");
