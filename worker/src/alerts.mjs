@@ -73,7 +73,7 @@ import {
 import {
   groupSubsByEmail,
   shouldRollup,
-  buildDigestJobs,
+  buildDigestJobsStream,
   isWatchActive,
   rollupSendDecision,
   rollupSubject,
@@ -124,8 +124,8 @@ import {
   announceDigestShadowDegrade,
   completeDigestShadowRecovery,
   digestShadowId,
+  eligibleDigestJobsByHold,
   isDigestHeld,
-  partitionDigestJobsByHold,
   resolveDigestShadowHold,
 } from "./digest_shadow_hold.mjs";
 
@@ -157,24 +157,35 @@ function digestFanoutError(error, enqueued) {
 export async function enqueueDigestJobs(env, jobs, { signal, onBatch } = {}) {
   const queue = env?.DIGEST_QUEUE;
   if (!queue) throw new Error("digest queue binding unavailable");
-  const pending = Array.isArray(jobs) ? jobs : [];
+  const pending = jobs && (
+    typeof jobs[Symbol.iterator] === "function"
+    || typeof jobs[Symbol.asyncIterator] === "function"
+  ) ? jobs : [];
   let enqueued = 0;
   if (typeof queue.sendBatch === "function") {
-    for (let offset = 0; offset < pending.length; offset += DIGEST_QUEUE_BATCH_SIZE) {
+    let batch = [];
+    const flush = async () => {
+      if (!batch.length) return;
       try {
         signal?.throwIfAborted?.();
-        const batch = pending.slice(offset, offset + DIGEST_QUEUE_BATCH_SIZE);
         await queue.sendBatch(batch.map((body) => ({ body })));
         enqueued += batch.length;
         await onBatch?.({ enqueued, batch_size: batch.length });
       } catch (error) {
         throw digestFanoutError(error, enqueued);
       }
+      batch = [];
+    };
+    for await (const job of pending) {
+      signal?.throwIfAborted?.();
+      batch.push(job);
+      if (batch.length >= DIGEST_QUEUE_BATCH_SIZE) await flush();
     }
+    await flush();
   } else {
     // Keep the local/test and older binding fallback exact: one job is only
     // counted after its write resolves.
-    for (const job of pending) {
+    for await (const job of pending) {
       try {
         signal?.throwIfAborted?.();
         await queue.send(job);
@@ -591,8 +602,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
   if (!options.skipForecastingPipelines) {
     try {
       await runMocsPlanPipeline(env);
-      const subs = await listDigestSubscriptions(env);
-      await runCheckbookPipeline(env, watches, subs);
+      await runCheckbookPipeline(env, watches, iterateDigestSubscriptions(env));
     } catch (e) {
       console.error("alerts: forecasting pipelines error:", e);
     }
@@ -721,12 +731,21 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
   let mode = "inline";
   let enqueued = 0;
   await reportProgress({ phase: "subscription_inventory", evaluated_count: results.length });
-  const allSubs = options.skipSubscriptions ? [] : await listDigestSubscriptions(env, { readOnly: options.capturePreviews === true });
   await reportProgress({ phase: "account_builds", evaluated_count: results.length });
   if (!options.skipSubscriptions && !options.forceInline && env.QUEUE_DIGESTS === "true" && env.DIGEST_QUEUE) {
     mode = "queue";
-    const jobs = buildDigestJobs(allSubs);
-    const partition = await partitionDigestJobsByHold(jobs, shadowHold);
+    const subscriptionRows = iterateDigestSubscriptions(env, { readOnly: options.capturePreviews === true });
+    const jobs = buildDigestJobsStream(subscriptionRows);
+    const eligibleJobs = eligibleDigestJobsByHold(jobs, shadowHold, ({ job }) => {
+      results.push({
+        sub: "digest:held",
+        kind: job.type === "rollup" ? "rollup" : "subscription",
+        skipped: "shadow-hold",
+        action: "none",
+        sent: false,
+        holdContract: shadowHold.contract,
+      });
+    });
     const enqueue = options.enqueueJobs || ((eligible, enqueueOptions) => enqueueDigestJobs(env, eligible, {
       ...enqueueOptions,
       onBatch: (progress) => reportProgress({
@@ -735,19 +754,10 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
         enqueued: progress.enqueued,
       }),
     }));
-    enqueued = await enqueue(partition.eligible, { signal: options.signal });
-    for (const held of partition.held) {
-      results.push({
-        sub: "digest:held",
-        kind: held.job.type === "rollup" ? "rollup" : "subscription",
-        skipped: "shadow-hold",
-        action: "none",
-        sent: false,
-        holdContract: shadowHold.contract,
-      });
-    }
+    enqueued = await enqueue(eligibleJobs, { signal: options.signal });
     results.push({ mode: "queue", enqueued });
   } else {
+    const allSubs = options.skipSubscriptions ? [] : await listDigestSubscriptions(env, { readOnly: options.capturePreviews === true });
     const byEmail = groupSubsByEmail(allSubs);
     for (const [, list] of byEmail) {
       throwIfAborted();
@@ -3035,9 +3045,8 @@ async function recordConfirmedWatchSend(env, { key, day, seenId = null, seenIds 
 
 // ---- confirmed subscriptions (SUBS KV) -----------------------------------
 
-export async function listDigestSubscriptions(env, { readOnly = false } = {}) {
-  if (!env.SUBS) return [];
-  const out = [];
+export async function* iterateDigestSubscriptions(env, { readOnly = false } = {}) {
+  if (!env.SUBS) return;
   let cursor;
   try {
     do {
@@ -3050,13 +3059,18 @@ export async function listDigestSubscriptions(env, { readOnly = false } = {}) {
             if (changed && !readOnly) {
               try { await env.SUBS.put(k.name, JSON.stringify(record)); } catch { /* read remains compatible with minimal KV fixtures */ }
             }
-            out.push({ key: k.name, ...record });
+            yield { key: k.name, ...record };
           }
         } catch { /* skip a malformed record */ }
       }
       cursor = res.list_complete ? null : res.cursor;
     } while (cursor);
   } catch { /* SUBS unavailable → no self-serve sends this run */ }
+}
+
+export async function listDigestSubscriptions(env, options = {}) {
+  const out = [];
+  for await (const subscription of iterateDigestSubscriptions(env, options)) out.push(subscription);
   return out;
 }
 

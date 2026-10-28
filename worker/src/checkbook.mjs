@@ -99,29 +99,46 @@ export function calculateWarningDate(expirationDateStr) {
   return date.toISOString().slice(0, 10);
 }
 
+function addWatchedStem(stems, value) {
+  const stem = vendorStem(value);
+  if (stem.length >= 3) stems.add(stem);
+}
+
+function addWatchedRecord(stems, record) {
+  if (!record || typeof record !== "object") return;
+  if (record.lens === "entity" && record.filter?.name) addWatchedStem(stems, record.filter.name);
+  if (record.lens === "money" && record.filter?.agency) addWatchedStem(stems, record.filter.agency);
+}
+
+function watchedStemList(stems) {
+  return [...stems].filter((stem) => stem.length >= 3);
+}
+
 export function getWatchedStems(watches, subs) {
   const stems = new Set();
   for (const w of watches || []) {
-    if (w.agency) stems.add(vendorStem(w.agency));
-    if (w.vendor) stems.add(vendorStem(w.vendor));
+    if (w.agency) addWatchedStem(stems, w.agency);
+    if (w.vendor) addWatchedStem(stems, w.vendor);
     if (w.label) {
       const match = w.label.match(/^([A-Z]{3,})/i);
-      if (match) stems.add(vendorStem(match[1]));
+      if (match) addWatchedStem(stems, match[1]);
     }
   }
-  for (const s of subs || []) {
-    if (s.lens === "entity" && s.filter) {
-      if (s.filter.name) stems.add(vendorStem(s.filter.name));
-    }
-    if (s.lens === "money" && s.filter) {
-      if (s.filter.agency) stems.add(vendorStem(s.filter.agency));
-    }
-  }
-  return [...stems].filter((s) => s.length >= 3);
+  for (const sub of subs || []) addWatchedRecord(stems, sub);
+  return watchedStemList(stems);
+}
+
+/** Consume a subscription stream while retaining only the forecast lookup stems. */
+export async function getWatchedStemsAsync(watches, subs) {
+  const stems = new Set(getWatchedStems(watches, []));
+  for await (const sub of subs || []) addWatchedRecord(stems, sub);
+  return watchedStemList(stems);
 }
 
 export async function runCheckbookPipeline(env, watches, subs) {
-  const watchedStems = getWatchedStems(watches, subs);
+  const watchedStems = subs && typeof subs[Symbol.asyncIterator] === "function"
+    ? await getWatchedStemsAsync(watches, subs)
+    : getWatchedStems(watches, subs);
   if (watchedStems.length === 0) return { status: "no-watches" };
 
   const ninetyDaysAgo = new Date();
