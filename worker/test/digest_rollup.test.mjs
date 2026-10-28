@@ -1,9 +1,10 @@
 // Account-level digest rollup: multi-watch email → one consolidated send.
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { enqueueDigestJobs, runAlerts, processAccountRollup, dryRunRollupForEmail, digestSendTestForEmail, consumeDigestJob, appendQueueDayLogEntry } from "../src/alerts.mjs";
 import { buildDayLog } from "../src/lib/digest_ops.mjs";
-import { buildDigestJobs } from "../src/lib/rollup.mjs";
+import { buildDigestJobs, buildDigestJobsStream } from "../src/lib/rollup.mjs";
 import {
   buildDigestShadowHoldState,
   digestShadowId,
@@ -484,17 +485,42 @@ test("queue producer omits only the digest named by an active shadow hold", asyn
 
 test("scheduled queue fan-out batches prepared jobs at the platform limit", async () => {
   const jobs = Array.from({ length: 201 }, (_, index) => ({ type: "sub", key: `sub:${index}` }));
+  async function* jobStream() {
+    yield* jobs;
+  }
   const batches = [];
   const enqueued = await enqueueDigestJobs({
     DIGEST_QUEUE: {
       sendBatch: async (batch) => { batches.push(batch); },
     },
-  }, jobs);
+  }, jobStream());
 
   assert.equal(enqueued, jobs.length);
   assert.deepEqual(batches.map((batch) => batch.length), [100, 100, 1]);
   assert.deepEqual(batches[0][0], { body: jobs[0] });
   assert.deepEqual(batches[2][0], { body: jobs.at(-1) });
+});
+
+test("streamed subscription preparation stays below the Worker-sized heap budget", () => {
+  const moduleUrl = new URL("../src/lib/rollup.mjs", import.meta.url).href;
+  const source = [
+    `import { buildDigestJobsStream } from ${JSON.stringify(moduleUrl)};`,
+    "async function* subscriptions() {",
+    "  for (let index = 0; index < 12000; index++) {",
+    "    yield { key: `sub:${index}`, email: `reader-${index}@example.com`, lens: 'money', filter: { keywords: [`${index}:${'x'.repeat(8192)}`] } };",
+    "  }",
+    "}",
+    "let count = 0;",
+    "for await (const job of buildDigestJobsStream(subscriptions())) {",
+    "  if (job.type !== 'sub' || !job.key) throw new Error('invalid compact job');",
+    "  count++;",
+    "}",
+    "if (count !== 12000) throw new Error(`expected 12000 jobs, got ${count}`);",
+  ].join("\n");
+  const child = spawnSync(process.execPath, ["--max-old-space-size=48", "--input-type=module", "-e", source], {
+    encoding: "utf8",
+  });
+  assert.equal(child.status, 0, child.stderr || child.stdout);
 });
 
 test("queue consumer acknowledges a newly held digest without rendering or sending", async () => {
@@ -598,4 +624,13 @@ test("buildDigestJobs: production-shaped multi-watch account is one rollup job",
   assert.ok(rollup);
   assert.equal(rollup.keys.length, 4);
   assert.equal(jobs.find((j) => j.type === "sub")?.key, "sub:solo");
+});
+
+test("buildDigestJobs: empty-normalizing email yields no job", () => {
+  assert.deepEqual(buildDigestJobs([
+    { key: "sub:empty", email: "   ", paused: false },
+    { key: "sub:valid", email: "valid@example.com", paused: false },
+  ]), [
+    { type: "sub", key: "sub:valid", email: "valid@example.com" },
+  ]);
 });

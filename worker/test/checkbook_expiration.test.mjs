@@ -5,6 +5,7 @@ import {
   addDuration,
   calculateWarningDate,
   getWatchedStems,
+  getWatchedStemsAsync,
   runCheckbookPipeline
 } from "../src/checkbook.mjs";
 
@@ -48,6 +49,19 @@ test("getWatchedStems resolves watches and subs into normalized agency stems", (
   assert.ok(stems.includes("DESIGN AND CONSTRUCTION"));
   assert.ok(stems.includes("SINERGIA"));
   assert.ok(stems.includes("BUILDINGS"));
+});
+
+test("getWatchedStemsAsync consumes subscription records as a stream", async () => {
+  let read = 0;
+  async function* subscriptions() {
+    read++;
+    yield { lens: "money", filter: { agency: "Buildings" }, filter_payload: "discarded" };
+    read++;
+    yield { lens: "entity", filter: { name: "Sinergia Inc" }, filter_payload: "discarded" };
+  }
+  const stems = await getWatchedStemsAsync([], subscriptions());
+  assert.deepEqual(stems, ["BUILDINGS", "SINERGIA"]);
+  assert.equal(read, 2);
 });
 
 test("runCheckbookPipeline fetches, parses, and puts to KV", async () => {

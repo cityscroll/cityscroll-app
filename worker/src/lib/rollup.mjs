@@ -47,29 +47,61 @@ export function shouldRollup(subsForEmail = []) {
 }
 
 /**
+ * Keep only the delivery identity needed to form a queue job while the SUBS
+ * inventory is being scanned.  The full subscription record can contain a
+ * large filter and must not remain live for the duration of a scheduled run.
+ */
+export function createDigestJobAccumulator() {
+  const byEmail = new Map();
+  return {
+    add(sub) {
+      if (!sub || !sub.email) return;
+      const email = normalizeEmail(sub.email);
+      if (!email) return;
+      let group = byEmail.get(email);
+      if (!group) {
+        group = { email, activeCount: 0, firstKey: undefined, keys: [] };
+        byEmail.set(email, group);
+      }
+      if (!isWatchActive(sub)) return;
+      if (group.activeCount === 0) group.firstKey = sub.key;
+      group.activeCount++;
+      if (sub.key) group.keys.push(sub.key);
+    },
+    *jobs() {
+      for (const group of byEmail.values()) {
+        if (group.activeCount === 0) continue;
+        if (group.activeCount > 1) {
+          yield { type: "rollup", email: group.email, keys: group.keys };
+        } else {
+          yield { type: "sub", key: group.firstKey, email: group.email };
+        }
+      }
+    },
+  };
+}
+
+/**
+ * Scan subscriptions without retaining their payloads, then yield compact
+ * account jobs one at a time.  Account grouping remains exact, including the
+ * one-rollup-per-email contract.
+ */
+export async function* buildDigestJobsStream(subscriptions = []) {
+  const accumulator = createDigestJobAccumulator();
+  for await (const sub of subscriptions) accumulator.add(sub);
+  yield* accumulator.jobs();
+}
+
+/**
  * Build queue fan-out jobs from a full SUBS list.
  * - Multi-active-watch accounts → one { type:"rollup", email, keys }
  * - Single active watch → one { type:"sub", key } (legacy shape also sets key for consumers)
  * Paused-only accounts produce no job.
  */
 export function buildDigestJobs(subs = []) {
-  const jobs = [];
-  const byEmail = groupSubsByEmail(subs);
-  for (const [email, list] of byEmail) {
-    const active = list.filter(isWatchActive);
-    if (active.length === 0) continue;
-    if (active.length > 1) {
-      jobs.push({
-        type: "rollup",
-        email,
-        keys: active.map((s) => s.key).filter(Boolean),
-      });
-    } else {
-      const key = active[0].key;
-      jobs.push({ type: "sub", key, email });
-    }
-  }
-  return jobs;
+  const accumulator = createDigestJobAccumulator();
+  for (const sub of subs || []) accumulator.add(sub);
+  return [...accumulator.jobs()];
 }
 
 /**

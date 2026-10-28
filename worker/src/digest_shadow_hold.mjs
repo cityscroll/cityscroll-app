@@ -289,12 +289,28 @@ export async function digestIdForJob(job = {}) {
 export async function partitionDigestJobsByHold(jobs = [], state = null) {
   const eligible = [];
   const held = [];
-  for (const job of jobs) {
-    const digestId = await digestIdForJob(job);
-    if (isDigestHeld(state, digestId)) held.push({ job, digest_id: digestId });
-    else eligible.push(job);
+  for await (const eligibleJob of eligibleDigestJobsByHold(jobs, state, (item) => held.push(item))) {
+    eligible.push(eligibleJob);
   }
   return { eligible, held };
+}
+
+/**
+ * Partition an async job stream without materializing the eligible side.
+ * Held jobs are reported immediately because the queue path only needs their
+ * compact delivery summary; eligible jobs continue directly to fan-out.
+ */
+export async function* eligibleDigestJobsByHold(jobs = [], state = null, onHeld = null) {
+  const activeDigestIds = new Set(state?.active_digest_ids || []);
+  const holdAll = state?.delivery_policy === "ALL_DIGESTS_HELD";
+  for await (const job of jobs) {
+    const digestId = await digestIdForJob(job);
+    if (holdAll || activeDigestIds.has(digestId)) {
+      await onHeld?.({ job, digest_id: digestId });
+    } else {
+      yield job;
+    }
+  }
 }
 
 async function readSummary(db, day) {
