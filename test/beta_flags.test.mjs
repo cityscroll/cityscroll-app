@@ -13,6 +13,15 @@ const registry = JSON.parse(readFileSync(new URL("../site/beta-flags.json", impo
 const flags = registry.flags;
 const today = "2026-07-29";
 
+// The generic opt-in runtime is covered by test-owned flag fixtures, the same
+// way the expiry control is, so retiring a registered flag never leaves the
+// unit suite pinned to a dead registry member.
+const fixtureFlags = [{
+  slug: "opt-in-fixture",
+  default_off: true,
+  removal_date: "2027-01-01",
+}];
+
 function fakeStorage(initial = {}) {
   const values = new Map(Object.entries(initial));
   return {
@@ -31,23 +40,23 @@ test("flags are off by default and unknown slugs do not activate anything", () =
 });
 
 test("?beta=<slug> opts in and persists locally", () => {
-  const resolution = resolveFlag({ search: "?beta=channel-banner", flags, today });
-  assert.deepEqual(resolution, { slug: "channel-banner", storage: "persist" });
+  const resolution = resolveFlag({ search: "?beta=opt-in-fixture", flags: fixtureFlags, today });
+  assert.deepEqual(resolution, { slug: "opt-in-fixture", storage: "persist" });
   const storage = fakeStorage();
   syncStorage(storage, resolution);
-  assert.equal(storage.getItem(STORAGE_KEY), "channel-banner");
+  assert.equal(storage.getItem(STORAGE_KEY), "opt-in-fixture");
   assert.deepEqual(
-    resolveFlag({ stored: storage.getItem(STORAGE_KEY), flags, today }),
-    { slug: "channel-banner", storage: "keep" },
+    resolveFlag({ stored: storage.getItem(STORAGE_KEY), flags: fixtureFlags, today }),
+    { slug: "opt-in-fixture", storage: "keep" },
   );
 });
 
 test("?beta=0 clears the persisted opt-in", () => {
-  const storage = fakeStorage({ [STORAGE_KEY]: "channel-banner" });
+  const storage = fakeStorage({ [STORAGE_KEY]: "opt-in-fixture" });
   const resolution = resolveFlag({
     search: "?beta=0",
     stored: storage.getItem(STORAGE_KEY),
-    flags,
+    flags: fixtureFlags,
     today,
   });
   syncStorage(storage, resolution);
