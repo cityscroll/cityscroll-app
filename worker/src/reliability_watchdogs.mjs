@@ -164,8 +164,35 @@ export function digestShadowFinding(shadow) {
  * names it rather than leaving the reader to guess between the two.
  */
 export function digestZeroAcceptedSendsFinding(delivery) {
-  const reason = trimmed(delivery?.skipped_reason, 60);
+  const tallies = delivery?.consumer_tallies;
+  const reason = Number(tallies?.errors) > 0
+    ? "errors"
+    : Number(tallies?.skipped_quiet) > 0
+      ? "all_quiet"
+      : Number(tallies?.skipped_weekly) > 0
+        ? "weekly"
+        : Number(tallies?.skipped_other) > 0
+          ? "skipped"
+          : trimmed(delivery?.skipped_reason, 60);
   return `enqueued digest has zero accepted sends (${reason || "no skip reason recorded"})`;
+}
+
+function digestConsumerTallies(value = {}) {
+  return {
+    sent: Number(value?.sent) || 0,
+    errors: Number(value?.errors) || 0,
+    skipped_weekly: Number(value?.skipped_weekly) || 0,
+    skipped_quiet: Number(value?.skipped_quiet) || 0,
+    skipped_other: Number(value?.skipped_other) || 0,
+  };
+}
+
+function recordDigestConsumerOutcome(tallies, result) {
+  if (result?.error) tallies.errors++;
+  else if (result?.sent) tallies.sent++;
+  else if (result?.skipped === "weekly") tallies.skipped_weekly++;
+  else if (result?.action === "none") tallies.skipped_quiet++;
+  else tallies.skipped_other++;
 }
 
 /**
@@ -199,6 +226,8 @@ export async function recordDigestDeliveryStarted(env, now = new Date()) {
     accepted_sends: Number(current?.accepted_sends) || 0,
     enqueued: Number(current?.enqueued) || 0,
     jobs_done: Number(current?.jobs_done) || 0,
+    cron_skipped_reason: current?.cron_skipped_reason || current?.skipped_reason || null,
+    consumer_tallies: digestConsumerTallies(current?.consumer_tallies),
     skipped_reason: current?.skipped_reason || null,
     error: null,
   };
@@ -222,6 +251,11 @@ export async function recordDigestDeliveryReceipt(env, receipt, now = new Date()
     accepted_sends: Math.max(Number(current?.accepted_sends) || 0, Number(receipt?.sent) || 0),
     enqueued,
     jobs_done: Number(current?.jobs_done) || 0,
+    cron_skipped_reason: receipt?.skipped_reason
+      ?? current?.cron_skipped_reason
+      ?? current?.skipped_reason
+      ?? null,
+    consumer_tallies: digestConsumerTallies(current?.consumer_tallies),
     skipped_reason: receipt?.skipped_reason || current?.skipped_reason || null,
     error: error ? String(error?.message || error) : null,
   };
@@ -234,9 +268,12 @@ export async function recordDigestQueueOutcome(env, result, now = new Date()) {
   const current = await readJson(env?.ALERT_STATE, name) || {
     schema: "cityscroll.digest-terminal-delivery-receipt.v1",
     day: day(now), observed_at: now.toISOString(), status: "PENDING", accepted_sends: 0, enqueued: 0, jobs_done: 0,
+    cron_skipped_reason: null, consumer_tallies: digestConsumerTallies(), skipped_reason: null,
   };
+  current.consumer_tallies = digestConsumerTallies(current.consumer_tallies);
   current.jobs_done = (Number(current.jobs_done) || 0) + 1;
   current.accepted_sends = (Number(current.accepted_sends) || 0) + (result?.sent ? 1 : 0);
+  recordDigestConsumerOutcome(current.consumer_tallies, result);
   if (current.enqueued === 0 || current.jobs_done >= current.enqueued) {
     current.status = "TERMINAL";
     current.finalized_at = now.toISOString();
