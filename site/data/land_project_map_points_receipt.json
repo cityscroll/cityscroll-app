@@ -16,21 +16,21 @@
       "vintage": {
         "schema": "cityscroll.land_project_catalog.v1",
         "project_count": 244,
-        "warehouse_materialized_at": "2026-10-22T20:20:44.090Z",
-        "defaults_generated_at": "2026-10-22T19:59:40.125Z",
-        "content_id": "fnv1a32:9e9ee683:244"
+        "warehouse_materialized_at": "2026-10-28T14:14:09.074Z",
+        "defaults_generated_at": "2026-10-28T13:55:52.438Z",
+        "content_id": "fnv1a32:8585eac2:244"
       },
-      "sha256": "4eb179edc090c1a4135a63c1064f1898f10d0b32d06e330330d70f623d6cb2d8"
+      "sha256": "15ee214efaed7c12de17f46c3276d23ad2a371729f6cbcb1f2811d58e88f7572"
     },
     "land_default": {
       "path": "site/data/land_default_ulurp.json",
       "count": 40,
       "vintage": {
-        "generated_at": "2026-10-22T19:59:40.125Z",
+        "generated_at": "2026-10-28T13:55:52.438Z",
         "schema_version": 1,
         "delivery_tier": "inline-at-build"
       },
-      "sha256": "f48241338898b7a5e4205ccca86dc239b615269ea0661126e7f3a5702707fbcf"
+      "sha256": "e7cb1ba038248e08cd5013d6e8e42486b3ce9d1f15c2aa326b3456b78002b638"
     },
     "zap_bbl": {
       "path": "site/data/zap_bbl_warehouse_lookup.json",

@@ -1,0 +1,28 @@
+{
+  "schema": "cityscroll.land_place_evidence_shard.v1",
+  "key": "c9",
+  "association_kind": "published_project_lot",
+  "generation_id": "9746867c82f3a96b0a7ba5ddf26c84e106de45778954f619f0ec8555d2c053a9",
+  "project_count": 1,
+  "projects": {
+    "2026R0327": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbls": [],
+      "invalid_bbls": [],
+      "bbls": {},
+      "places": {
+        "borough": {},
+        "community_district": {},
+        "council_district": {},
+        "nta2020": {},
+        "police_precinct": {}
+      },
+      "publisher_geography": {
+        "borough": "Staten Island",
+        "community_district": "R01",
+        "council_district": null
+      }
+    }
+  }
+}

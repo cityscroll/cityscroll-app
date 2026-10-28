@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-22T20:14:02.361Z",
+  "generated_at": "2026-10-28T14:01:57.607Z",
   "sources": [
     "zap-api-dispositions",
     "zap-api-milestones"
@@ -9,26 +9,26 @@
   "materialization": {
     "method": "zap_published_hearing_sweep_v2",
     "mode": "live",
-    "today": "2026-10-22",
+    "today": "2026-10-28",
     "projects_listed": 235,
     "projects_fetched": 234,
     "projects_failed": 1,
     "unavailable_project_ids": [
       "2026X0464"
     ],
-    "hearings_extracted": 423,
-    "disposition_hearings_extracted": 99,
-    "milestone_hearings_extracted": 324,
-    "disposition_upcoming_count": 2,
-    "milestone_upcoming_count": 148,
-    "incremental_milestone_count": 148,
+    "hearings_extracted": 426,
+    "disposition_hearings_extracted": 104,
+    "milestone_hearings_extracted": 322,
+    "disposition_upcoming_count": 1,
+    "milestone_upcoming_count": 138,
+    "incremental_milestone_count": 138,
     "accepted_milestone_classes": {
-      "cpc_pre_hearing_review_session": 77,
+      "cpc_pre_hearing_review_session": 67,
       "cpc_public_hearing": 71
     },
-    "published_meeting_dates_evaluated": 897,
-    "hearing_shaped_candidates_reviewed": 846,
-    "upcoming_count": 150,
+    "published_meeting_dates_evaluated": 892,
+    "hearing_shaped_candidates_reviewed": 841,
+    "upcoming_count": 139,
     "statuses": [
       "In Public Review",
       "Noticed",
@@ -38,455 +38,6 @@
     "polite_delay_ms": 350
   },
   "hearings": [
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2020Q0157",
-      "project_name": "106-10 Shore Front Parkway Rezoning & LSGD",
-      "public_status": "Filed",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2020Q0157",
-      "borough": "Queens",
-      "community_district": "Q14",
-      "cc_district": "32",
-      "milestone_id": "c3cda20b-8814-eb11-a813-001dd8309fa8",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-10-26",
-      "hearing_at": "2026-10-26T04:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-10-26T04:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2020Q0353",
-      "project_name": "163-01 Cross Bay Boulevard Rezoning",
-      "public_status": "Noticed",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2020Q0353",
-      "borough": "Queens",
-      "community_district": "Q10",
-      "cc_district": "32",
-      "milestone_id": "4fac058b-fc0f-eb11-a812-001dd8309ba3",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-10-26",
-      "hearing_at": "2026-10-26T04:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-10-26T04:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2022X0393",
-      "project_name": "110 East 138th Street/63 Exterior Street",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2022X0393",
-      "borough": "Bronx",
-      "community_district": "X01",
-      "cc_district": "8",
-      "milestone_id": "1ca3a40a-ca34-ef11-840a-001dd8306c80",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-10-26",
-      "hearing_at": "2026-10-26T04:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-10-26T04:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2023K0231",
-      "project_name": "150 Noll Street",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2023K0231",
-      "borough": "Brooklyn",
-      "community_district": "K04",
-      "cc_district": "34",
-      "milestone_id": "aeab23e3-0772-ef11-a671-001dd809d9d4",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-10-26",
-      "hearing_at": "2026-10-26T04:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-10-26T04:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2023Q0177",
-      "project_name": "50-02 Queens Blvd Rezoning",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2023Q0177",
-      "borough": "Queens",
-      "community_district": "Q02",
-      "cc_district": "26",
-      "milestone_id": "61c00c39-0c77-ed11-81ab-001dd806a702",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-10-26",
-      "hearing_at": "2026-10-26T04:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-10-26T04:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2024K0274",
-      "project_name": "9818 Fort Hamilton Parkway Rezoning",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2024K0274",
-      "borough": "Brooklyn",
-      "community_district": "K10",
-      "cc_district": "47",
-      "milestone_id": "f80052f1-a255-ef11-a317-001dd8049f0b",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-10-26",
-      "hearing_at": "2026-10-26T04:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-10-26T04:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2024M0267",
-      "project_name": "625 Madison Avenue",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2024M0267",
-      "borough": "Manhattan",
-      "community_district": "M05",
-      "cc_district": "4",
-      "milestone_id": "ff1131af-13f8-ee11-904c-001dd8306c80",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-10-26",
-      "hearing_at": "2026-10-26T04:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-10-26T04:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2025M0395",
-      "project_name": "Herald Center Signage Text Amendment and SP",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2025M0395",
-      "borough": "Manhattan",
-      "community_district": "M05",
-      "cc_district": "3",
-      "milestone_id": "ab7813fc-7166-f011-bec2-001dd806295a",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-10-26",
-      "hearing_at": "2026-10-26T04:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-10-26T04:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2025Q0304",
-      "project_name": "50-01 Queens Boulevard Rezoning",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2025Q0304",
-      "borough": "Queens",
-      "community_district": "Q02",
-      "cc_district": "26",
-      "milestone_id": "db0fd3fd-7f62-f011-bec2-001dd80db62a",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-10-26",
-      "hearing_at": "2026-10-26T04:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-10-26T04:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2025Q0331",
-      "project_name": "44-17 Greenpoint Avenue Rezoning",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2025Q0331",
-      "borough": "Queens",
-      "community_district": "Q02",
-      "cc_district": "26",
-      "milestone_id": "09d815f1-1a00-f011-bae2-001dd80340cd",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-10-26",
-      "hearing_at": "2026-10-26T04:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-10-26T04:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-dispositions",
-      "project_id": "2019K0147",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2019K0147",
-      "borough": "Brooklyn",
-      "disposition_id": "97fa21fd-6aff-eb11-94ee-001dd8309613",
-      "disposition_name": "2019K0147 - ZM - BK CB15",
-      "representing": "Community Board",
-      "phase_id": "community_board",
-      "hearing_date": "2026-10-27",
-      "hearing_at": "2026-10-27T23:00:00.000Z",
-      "hearing_location_raw": "2001 Oriental Boulevard, Room U112 Brooklyn, NY 11235",
-      "venue_address": "2001 Oriental Boulevard, Room U112 Brooklyn, NY 11235",
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [
-        "in_person"
-      ],
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=2001%20Oriental%20Boulevard%2C%20Room%20U112%20Brooklyn%2C%20NY%2011235%2C%20New%20York%2C%20NY",
-      "parse_status": "partial",
-      "provenance": {
-        "field": "dcp-publichearinglocation",
-        "source": "zap-api-dispositions",
-        "derived": [
-          {
-            "field": "venue_address",
-            "method": "address_shaped_raw",
-            "excerpt": "2001 Oriental Boulevard, Room U112 Brooklyn, NY 11235"
-          }
-        ],
-        "hearing_at": {
-          "field": "dcp-dateofpublichearing",
-          "source": "zap-api-dispositions",
-          "value": "2026-10-27T23:00:00.000Z"
-        },
-        "representing": {
-          "field": "dcp-representing",
-          "source": "zap-api-dispositions",
-          "value": "Community Board"
-        }
-      },
-      "project_name": "2959 Avenue Y Rezoning",
-      "public_status": "In Public Review",
-      "community_district": "K15",
-      "cc_district": "48",
-      "latitude": null,
-      "longitude": null
-    },
     {
       "schema_version": 1,
       "source": "zap-api-milestones",
@@ -971,46 +522,6 @@
     {
       "schema_version": 1,
       "source": "zap-api-milestones",
-      "project_id": "2022Q0248",
-      "project_name": "138-23 Queens Boulevard Rezoning",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2022Q0248",
-      "borough": "Queens",
-      "community_district": "Q08",
-      "cc_district": "24",
-      "milestone_id": "85f1d0c9-83f6-ed11-a7c6-001dd806a1fd",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-11-16",
-      "hearing_at": "2026-11-16T05:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-11-16T05:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
       "project_id": "2023Q0211",
       "project_name": "Yellowstone Boulevard Rezoning",
       "public_status": "In Public Review",
@@ -1419,46 +930,6 @@
       "community_district": "K14",
       "cc_district": "45",
       "milestone_id": "64afc836-1624-ef11-840b-001dd8306c80",
-      "milestone_title": "City Planning Commission Review",
-      "milestone_source_title": "CPC Public Meeting - Public Hearing",
-      "event_class": "cpc_public_hearing",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-11-18",
-      "hearing_at": "2026-11-18T05:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-11-18T05:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "CPC Public Meeting - Public Hearing"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_public_hearing"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2022Q0248",
-      "project_name": "138-23 Queens Boulevard Rezoning",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2022Q0248",
-      "borough": "Queens",
-      "community_district": "Q08",
-      "cc_district": "24",
-      "milestone_id": "adf1d0c9-83f6-ed11-a7c6-001dd806a1fd",
       "milestone_title": "City Planning Commission Review",
       "milestone_source_title": "CPC Public Meeting - Public Hearing",
       "event_class": "cpc_public_hearing",
@@ -2011,6 +1482,46 @@
     {
       "schema_version": 1,
       "source": "zap-api-milestones",
+      "project_id": "2022Q0248",
+      "project_name": "138-23 Queens Boulevard Rezoning",
+      "public_status": "In Public Review",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2022Q0248",
+      "borough": "Queens",
+      "community_district": "Q08",
+      "cc_district": "24",
+      "milestone_id": "85f1d0c9-83f6-ed11-a7c6-001dd806a1fd",
+      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "event_class": "cpc_pre_hearing_review_session",
+      "representing": "City Planning Commission",
+      "phase_id": "cpc",
+      "hearing_date": "2026-11-30",
+      "hearing_at": "2026-11-30T05:00:00.000Z",
+      "hearing_location_raw": null,
+      "venue_address": null,
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [],
+      "maps_url": null,
+      "parse_status": "published_date_only",
+      "provenance": {
+        "field": "dcp-reviewmeetingdate",
+        "source": "zap-api-milestones",
+        "value": "2026-11-30T05:00:00.000Z",
+        "title": {
+          "field": "milestonename",
+          "value": "Review Session - Pre-Hearing Review / Post Referral"
+        },
+        "classification": {
+          "method": "exact_published_title_v1",
+          "event_class": "cpc_pre_hearing_review_session"
+        },
+        "derived": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-milestones",
       "project_id": "2023K0148",
       "project_name": "460 Troutman Street",
       "public_status": "In Public Review",
@@ -2019,6 +1530,46 @@
       "community_district": "K04",
       "cc_district": "34",
       "milestone_id": "ef55d029-1f70-ed11-9562-001dd806a702",
+      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "event_class": "cpc_pre_hearing_review_session",
+      "representing": "City Planning Commission",
+      "phase_id": "cpc",
+      "hearing_date": "2026-11-30",
+      "hearing_at": "2026-11-30T05:00:00.000Z",
+      "hearing_location_raw": null,
+      "venue_address": null,
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [],
+      "maps_url": null,
+      "parse_status": "published_date_only",
+      "provenance": {
+        "field": "dcp-reviewmeetingdate",
+        "source": "zap-api-milestones",
+        "value": "2026-11-30T05:00:00.000Z",
+        "title": {
+          "field": "milestonename",
+          "value": "Review Session - Pre-Hearing Review / Post Referral"
+        },
+        "classification": {
+          "method": "exact_published_title_v1",
+          "event_class": "cpc_pre_hearing_review_session"
+        },
+        "derived": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-milestones",
+      "project_id": "2023Q0303",
+      "project_name": "165-25 Union Turnpike Rezoning",
+      "public_status": "In Public Review",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2023Q0303",
+      "borough": "Queens",
+      "community_district": "Q08",
+      "cc_district": "24",
+      "milestone_id": "bef5352c-6510-ee11-8f6c-001dd8097c36",
       "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
       "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
       "event_class": "cpc_pre_hearing_review_session",
@@ -2579,6 +2130,86 @@
       "community_district": "Q03",
       "cc_district": "21",
       "milestone_id": "afd7517a-f4d3-ed11-b596-001dd806a702",
+      "milestone_title": "City Planning Commission Review",
+      "milestone_source_title": "CPC Public Meeting - Public Hearing",
+      "event_class": "cpc_public_hearing",
+      "representing": "City Planning Commission",
+      "phase_id": "cpc",
+      "hearing_date": "2026-12-02",
+      "hearing_at": "2026-12-02T05:00:00.000Z",
+      "hearing_location_raw": null,
+      "venue_address": null,
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [],
+      "maps_url": null,
+      "parse_status": "published_date_only",
+      "provenance": {
+        "field": "dcp-reviewmeetingdate",
+        "source": "zap-api-milestones",
+        "value": "2026-12-02T05:00:00.000Z",
+        "title": {
+          "field": "milestonename",
+          "value": "CPC Public Meeting - Public Hearing"
+        },
+        "classification": {
+          "method": "exact_published_title_v1",
+          "event_class": "cpc_public_hearing"
+        },
+        "derived": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-milestones",
+      "project_id": "2022Q0248",
+      "project_name": "138-23 Queens Boulevard Rezoning",
+      "public_status": "In Public Review",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2022Q0248",
+      "borough": "Queens",
+      "community_district": "Q08",
+      "cc_district": "24",
+      "milestone_id": "adf1d0c9-83f6-ed11-a7c6-001dd806a1fd",
+      "milestone_title": "City Planning Commission Review",
+      "milestone_source_title": "CPC Public Meeting - Public Hearing",
+      "event_class": "cpc_public_hearing",
+      "representing": "City Planning Commission",
+      "phase_id": "cpc",
+      "hearing_date": "2026-12-02",
+      "hearing_at": "2026-12-02T05:00:00.000Z",
+      "hearing_location_raw": null,
+      "venue_address": null,
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [],
+      "maps_url": null,
+      "parse_status": "published_date_only",
+      "provenance": {
+        "field": "dcp-reviewmeetingdate",
+        "source": "zap-api-milestones",
+        "value": "2026-12-02T05:00:00.000Z",
+        "title": {
+          "field": "milestonename",
+          "value": "CPC Public Meeting - Public Hearing"
+        },
+        "classification": {
+          "method": "exact_published_title_v1",
+          "event_class": "cpc_public_hearing"
+        },
+        "derived": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-milestones",
+      "project_id": "2023Q0303",
+      "project_name": "165-25 Union Turnpike Rezoning",
+      "public_status": "In Public Review",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2023Q0303",
+      "borough": "Queens",
+      "community_district": "Q08",
+      "cc_district": "24",
+      "milestone_id": "e4f5352c-6510-ee11-8f6c-001dd8097c36",
       "milestone_title": "City Planning Commission Review",
       "milestone_source_title": "CPC Public Meeting - Public Hearing",
       "event_class": "cpc_public_hearing",
@@ -3579,46 +3210,6 @@
       "community_district": "M08",
       "cc_district": "5",
       "milestone_id": "b2007e63-ad79-ee11-9ae5-001dd804e004",
-      "milestone_title": "City Planning Commission Review",
-      "milestone_source_title": "CPC Public Meeting - Public Hearing",
-      "event_class": "cpc_public_hearing",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-12-12",
-      "hearing_at": "2026-12-12T05:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-12-12T05:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "CPC Public Meeting - Public Hearing"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_public_hearing"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2023Q0303",
-      "project_name": "165-25 Union Turnpike Rezoning",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2023Q0303",
-      "borough": "Queens",
-      "community_district": "Q08",
-      "cc_district": "24",
-      "milestone_id": "e4f5352c-6510-ee11-8f6c-001dd8097c36",
       "milestone_title": "City Planning Commission Review",
       "milestone_source_title": "CPC Public Meeting - Public Hearing",
       "event_class": "cpc_public_hearing",
@@ -4939,46 +4530,6 @@
       "community_district": "M08",
       "cc_district": "5",
       "milestone_id": "9d007e63-ad79-ee11-9ae5-001dd804e004",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-12-14",
-      "hearing_at": "2026-12-14T05:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-12-14T05:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2023Q0303",
-      "project_name": "165-25 Union Turnpike Rezoning",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2023Q0303",
-      "borough": "Queens",
-      "community_district": "Q08",
-      "cc_district": "24",
-      "milestone_id": "bef5352c-6510-ee11-8f6c-001dd8097c36",
       "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
       "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
       "event_class": "cpc_pre_hearing_review_session",

@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.source_vintage_observations.v1",
-  "generated_at": "2026-10-22T20:20:44.090Z",
+  "generated_at": "2026-10-28T14:14:09.196Z",
   "contract_count": 67,
   "observations": [
     {
@@ -205,7 +205,7 @@
       "publisher_last_update_basis": "geography_source_receipt",
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-08-18T16:00:00.000Z",
+        "retrieved_at": "2026-10-15T18:00:47.211Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
         "run_id": "business_improvement_district:2024-10-08"
@@ -329,7 +329,7 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-10-22T19:54:16.507Z",
+        "retrieved_at": "2026-10-28T13:49:52.742Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
         "run_id": "warehouse/receipts/proof/checkbook_contracts_population_latest.json"
