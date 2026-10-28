@@ -210,7 +210,7 @@
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
         "run_id": "business_improvement_district:2024-10-08"
       },
-      "expected_cadence": "Publisher-managed; no fixed cadence is declared",
+      "expected_cadence": "Publisher-managed. Socrata metadata declares Update Frequency As needed with Automation No; district geometry changes only when a district is designated or redrawn, and the publisher stamp has not moved since 2024-10-08 across acquisitions on 2026-08-18 and 2026-10-15",
       "expected_lag_tolerance_days": 730,
       "current_lag": {
         "value": null,
