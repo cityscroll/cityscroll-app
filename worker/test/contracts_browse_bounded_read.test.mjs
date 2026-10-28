@@ -190,6 +190,35 @@ test("the exact production request answers with results and reads bounded bytes"
   }
 });
 
+test("an exact contract read uses the bounded capability projection", async () => {
+  const measured = measuredFetch();
+  const procurementId = model.rows[0].procurement_id;
+  try {
+    const result = await executeContractGet(
+      workerProcurementContracts({}).get,
+      { procurementId },
+    );
+    assert.equal(result.availability, "available");
+    assert.equal(result.contract.procurement_id, procurementId);
+
+    const detailFamilyReads = measured.reads.filter((read) => read.path.startsWith("/data/shared_procurement_read_model"));
+    assert.deepEqual(detailFamilyReads, [], "exact reads must not load a population detail shard");
+
+    const capabilityReads = measured.reads.filter((read) => read.path.includes("/data/procurement_browse_capability"));
+    assert.ok(capabilityReads.length >= 2, "exact reads must load the capability index and one detail shard");
+    const filterReads = capabilityReads.filter((read) => read.path.includes("/filter-"));
+    const detailReads = capabilityReads.filter((read) => read.path.includes("/detail-"));
+    assert.equal(detailReads.length, 1, "exact reads must load one detail shard");
+    const expectedBytes = INDEX_BYTES
+      + capabilityArtifacts.manifest.filter_shards.reduce((total, descriptor) => total + descriptor.bytes, 0)
+      + Math.max(...capabilityArtifacts.manifest.detail_shards.map((descriptor) => descriptor.bytes));
+    assert.equal(filterReads.length, capabilityArtifacts.manifest.filter_shards.length);
+    assert.ok(measured.bytes <= expectedBytes, `read ${measured.bytes} bytes, budget ${expectedBytes}`);
+  } finally {
+    measured.restore();
+  }
+});
+
 test("a larger page stays inside the same shape of budget", async () => {
   const measured = measuredFetch();
   try {
