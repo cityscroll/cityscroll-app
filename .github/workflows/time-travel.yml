@@ -177,3 +177,54 @@ jobs:
           esac
       - name: Refuse tracked working-tree residue
         run: node tools/assert_tracked_working_tree_clean.mjs
+
+  time-travel-matrix-contract:
+    name: Time-travel matrix contract
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify emitted shard and aggregate checks
+        run: node --test --test-name-pattern="time-travel matrix expands to twelve shards" test/test_clock.test.mjs
+
+  time-travel-combined-plus-1d:
+    name: "Time-travel (combined, +1d)"
+    if: ${{ always() }}
+    needs:
+      - time-travel
+      - time-travel-matrix-contract
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Fail closed unless every shifted shard and the matrix contract passed
+        if: ${{ needs.time-travel.result != 'success' || needs.time-travel-matrix-contract.result != 'success' }}
+        run: |
+          echo "Time-travel shard result: ${{ needs.time-travel.result }}"
+          echo "Time-travel matrix contract result: ${{ needs.time-travel-matrix-contract.result }}"
+          exit 1
+      - name: Confirm all shifted shards passed
+        run: echo "All shifted site and worker shards passed."
+
+  time-travel-combined-plus-45d:
+    name: "Time-travel (combined, +45d)"
+    if: ${{ always() }}
+    needs:
+      - time-travel
+      - time-travel-matrix-contract
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Fail closed unless every shifted shard and the matrix contract passed
+        if: ${{ needs.time-travel.result != 'success' || needs.time-travel-matrix-contract.result != 'success' }}
+        run: |
+          echo "Time-travel shard result: ${{ needs.time-travel.result }}"
+          echo "Time-travel matrix contract result: ${{ needs.time-travel-matrix-contract.result }}"
+          exit 1
+      - name: Confirm all shifted shards passed
+        run: echo "All shifted site and worker shards passed."

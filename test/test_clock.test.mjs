@@ -60,6 +60,21 @@ function testFilesForFamily(family) {
     .map((file) => `${prefix}${file}`);
 }
 
+function workflowJobBlocks(source) {
+  const blocks = new Map();
+  let current;
+  for (const line of source.split("\n")) {
+    const match = line.match(/^  ([a-z0-9-]+):$/);
+    if (match) {
+      current = [];
+      blocks.set(match[1], current);
+    } else if (current) {
+      current.push(line);
+    }
+  }
+  return blocks;
+}
+
 test("withPinnedClock pins the process clock, preserves explicit dates, and restores the scope", async () => {
   const previousDate = globalThis.Date;
   const pinned = "2026-09-14T00:00:00.000Z";
@@ -153,4 +168,23 @@ test("time-travel matrix expands to twelve shards with complete per-shift covera
     .map(({ shift, ...entry }) => entry);
   const buggyExpansion = expandGithubMatrix({ axes: { shift: [1, 45] }, include: buggyInclude });
   assert.deepEqual(buggyExpansion.map(tuple), ["1:worker:2", "45:worker:2"]);
+
+  const jobs = workflowJobBlocks(WORKFLOW);
+  const requiredAggregates = new Map([
+    ["time-travel-combined-plus-1d", "Time-travel (combined, +1d)"],
+    ["time-travel-combined-plus-45d", "Time-travel (combined, +45d)"],
+  ]);
+  const emittedNames = [...jobs.values()]
+    .flatMap((lines) => lines.filter((line) => line.match(/^    name: /)))
+    .map((line) => line.replace(/^    name: ["]?/, "").replace(/["]?$/, ""));
+  for (const [jobId, requiredName] of requiredAggregates) {
+    const block = jobs.get(jobId)?.join("\n");
+    assert.ok(block, `${jobId} aggregate job is present`);
+    assert.ok(emittedNames.includes(requiredName), `${requiredName} check name is emitted`);
+    assert.match(block, /if: \$\{\{ always\(\) \}\}/);
+    assert.match(block, /needs:\n(?:\s+- [^\n]+\n)*\s+- time-travel\n/);
+    assert.match(block, /\s+- time-travel-matrix-contract\n/);
+    assert.match(block, /needs\.time-travel\.result != 'success'/);
+    assert.match(block, /needs\.time-travel-matrix-contract\.result != 'success'/);
+  }
 });
