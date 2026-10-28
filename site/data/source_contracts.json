@@ -2289,8 +2289,8 @@
         "f_all_bi_2"
       ],
       "max_stale_days": 730,
-      "publisher_cadence": "Publisher-managed; no fixed cadence is declared",
-      "product_freshness": "The 2024-10-08 geometry clock is retained with reviewed slug bindings; rows with zero/duplicate source identity are rejected and receipted.",
+      "publisher_cadence": "Publisher-managed. Socrata metadata declares Update Frequency As needed with Automation No; district geometry changes only when a district is designated or redrawn, and the publisher stamp has not moved since 2024-10-08 across acquisitions on 2026-08-18 and 2026-10-15",
+      "product_freshness": "The 2024-10-08 geometry clock is retained with reviewed slug bindings; rows with zero/duplicate source identity are rejected and receipted, and the retained vintage is verified unchanged against the live publisher export.",
       "used_for": "Backstage-only BID ingestion and sparse/overlap QA. No resident-facing filter or institutional relationship is published.",
       "code_references": [
         {
@@ -2308,7 +2308,19 @@
         "max_stale_days": 730,
         "clock_basis": "publisher_updated",
         "serving_max_age_days": 730,
-        "serve_contract_id": null
+        "serve_contract_id": null,
+        "stable_reference": {
+          "publisher_updated_at": "2024-10-08T15:54:16.000Z",
+          "retained_vintage_at": "2024-10-08T15:54:16.000Z",
+          "observed_on": "2026-10-15",
+          "method": "Pin the publisher's own rowsUpdatedAt stamp and retain the geometry taken from it, so the gate is whether the publisher has republished rather than how many days have passed",
+          "evidence": "Socrata rowsUpdatedAt for 7jdm-inj8 read 1728402856 (2024-10-08T15:54:16Z) on 2026-10-15, unchanged since the 2026-08-18 acquisition. The re-fetched GeoJSON export was byte-identical to the retained acquisition (sha256 034b0df5df044c87ac6d8e5e03c779e65157068738135cce828116d64541acc4; 2332920 bytes; 76 source features) and its content digest over the_geom, objectid_2, f_all_bids, and f_all_bi_2 is 9b11a2de77ac6c9abf5fcfddb6254c4db7b2a00633251adc0e67cf6245a61167. Publisher metadata declares Update Frequency As needed with Automation No, so the absence of a newer stamp is the publisher's declared behavior, not a moved or retired dataset. tools/build_civic_geography.mjs continues to consume the_geom, objectid_2, f_all_bids, and f_all_bi_2 through the reviewed-slug adapter.",
+          "recheck": "When rowsUpdatedAt moves off this pin the check fails and names the new stamp; if the content digest still matches it affirms a cosmetic republish and re-pins, and when the digest differs it re-acquires the GeoJSON, compares required fields and reviewed slugs, re-runs tools/build_civic_geography.mjs, and re-pins both fields to the vintage actually retained."
+        },
+        "republish_content_check": {
+          "mode": "content_digest",
+          "artifact_path": "data/geography/receipts/business_improvement_district/2024-10-08.json"
+        }
       },
       "health_policy": {
         "public_visibility": "backstage-only",

@@ -79,6 +79,16 @@ const SOURCE_SPECS = Object.freeze({
   },
 });
 
+/**
+ * Layers whose receipts carry a content digest over the required fields the
+ * source contract pins, so a republish with an unchanged geometry can be
+ * affirmed against the retained vintage instead of filed as drift.
+ */
+const CONTENT_DIGEST_FIELDS = Object.freeze({
+  sanitation_district: ["district", "districtcode", "objectid", "multipolygon"],
+  business_improvement_district: ["the_geom", "objectid_2", "f_all_bids", "f_all_bi_2"],
+});
+
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
 }
@@ -238,12 +248,12 @@ function sourceReceipt(type, pair, spec, sourceFiles, diagnostics, builtAt, sour
       bytes: acquisition.byteLength,
       source_feature_count: pair.full.feature_count + rejected.length,
     },
-    ...(type === "sanitation_district" ? {
+    ...(CONTENT_DIGEST_FIELDS[type] ? {
       content_digest: {
         schema: "cityscroll.source_content_digest.v1",
         algorithm: "sha256",
-        required_fields: ["district", "districtcode", "objectid", "multipolygon"],
-        digest: contentDigest(sourceRows.features || sourceRows, ["district", "districtcode", "objectid", "multipolygon"]),
+        required_fields: CONTENT_DIGEST_FIELDS[type],
+        digest: contentDigest(sourceRows.features || sourceRows, CONTENT_DIGEST_FIELDS[type]),
       },
     } : {}),
     normalized_input: {
