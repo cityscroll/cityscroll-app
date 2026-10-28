@@ -24,7 +24,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shift: [1, 45]
+        # Established shift set: shift: [1, 45]
         # Keep the established family vocabulary in this workflow contract;
         # the duplicated combined invocation is represented by the site and
         # worker shards below instead of running every file a second time.
@@ -33,27 +33,63 @@ jobs:
         # duplicated combined family. The first shard retains each existing
         # family check name for branch-protection compatibility.
         include:
-          - family: site-node
+          - shift: 1
+            family: site-node
             shard: 1
             shard_count: 4
             shard_suffix: ""
-          - family: site-node
+          - shift: 1
+            family: site-node
             shard: 2
             shard_count: 4
             shard_suffix: " shard 2/4"
-          - family: site-node
+          - shift: 1
+            family: site-node
             shard: 3
             shard_count: 4
             shard_suffix: " shard 3/4"
-          - family: site-node
+          - shift: 1
+            family: site-node
             shard: 4
             shard_count: 4
             shard_suffix: " shard 4/4"
-          - family: worker
+          - shift: 1
+            family: worker
             shard: 1
             shard_count: 2
             shard_suffix: ""
-          - family: worker
+          - shift: 1
+            family: worker
+            shard: 2
+            shard_count: 2
+            shard_suffix: " shard 2/2"
+          - shift: 45
+            family: site-node
+            shard: 1
+            shard_count: 4
+            shard_suffix: ""
+          - shift: 45
+            family: site-node
+            shard: 2
+            shard_count: 4
+            shard_suffix: " shard 2/4"
+          - shift: 45
+            family: site-node
+            shard: 3
+            shard_count: 4
+            shard_suffix: " shard 3/4"
+          - shift: 45
+            family: site-node
+            shard: 4
+            shard_count: 4
+            shard_suffix: " shard 4/4"
+          - shift: 45
+            family: worker
+            shard: 1
+            shard_count: 2
+            shard_suffix: ""
+          - shift: 45
+            family: worker
             shard: 2
             shard_count: 2
             shard_suffix: " shard 2/2"
