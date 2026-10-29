@@ -601,8 +601,8 @@ const worker = {
     const runId = `worker:${event.cron}:${new Date().toISOString()}`;
     // Each scheduled window starts the receipt-only public summary independently.
     // Early-return branches, delivery errors, and slow publisher refreshes must not
-    // prevent a publication attempt. waitUntil retains this work without delaying
-    // delivery; daily aggregates are idempotent across the three windows.
+    // prevent a publication attempt. It remains a retained, low-memory side task;
+    // the heavier shadow maintenance is sequenced below before branch work starts.
     const searchUsageRefresh = (async () => {
       try {
         const r = await refreshPublicSearchUsageSnapshot(env);
@@ -611,31 +611,41 @@ const worker = {
         console.error("public search usage refresh failed:", String(error?.message || error));
       }
     })();
-    const shadowReconciliation = reconcileStaleDigestShadowRebuilds(env).catch((error) => {
-      console.error("digest shadow stale reconciliation failed", String(error?.message || error));
-    });
-    // Aged STARTED rehearsals (Monday-stall shape) enqueue the existing checkpointed
-    // rebuild queue. Runs beside stale-rebuild reconciliation on every cron window.
-    const shadowStartedRecovery = recoverStalledDigestShadowRuns(env).then((result) => {
-      if (result?.disabled) return;
-      const noteworthy = (result?.actions || []).filter((row) => row.action !== "skipped");
-      if (noteworthy.length) {
-        console.log("digest shadow started recovery:", JSON.stringify({
-          ok: result.ok,
-          actions: noteworthy,
-        }));
+    const shadowReconciliation = (async () => {
+      try {
+        await reconcileStaleDigestShadowRebuilds(env);
+      } catch (error) {
+        console.error("digest shadow stale reconciliation failed", String(error?.message || error));
       }
-    }).catch((error) => {
-      console.error("digest shadow started recovery failed", String(error?.message || error));
+    })();
+    // Aged STARTED rehearsals (Monday-stall shape) enqueue the existing checkpointed
+    // rebuild queue. Sequence it after stale-rebuild reconciliation so their D1/KV
+    // working sets cannot overlap with each other or the branch work below.
+    const shadowStartedRecovery = shadowReconciliation.then(async () => {
+      try {
+        const result = await recoverStalledDigestShadowRuns(env);
+        if (result?.disabled) return;
+        const noteworthy = (result?.actions || []).filter((row) => row.action !== "skipped");
+        if (noteworthy.length) {
+          console.log("digest shadow started recovery:", JSON.stringify({
+            ok: result.ok,
+            actions: noteworthy,
+          }));
+        }
+      } catch (error) {
+        console.error("digest shadow started recovery failed", String(error?.message || error));
+      }
     });
-    ctx.waitUntil(Promise.all([searchUsageRefresh, shadowReconciliation, shadowStartedRecovery]));
+    const sharedAdvisories = shadowStartedRecovery;
+    ctx.waitUntil(Promise.all([searchUsageRefresh, sharedAdvisories]));
+    await sharedAdvisories;
     // Morning live-derived caches. Council Events acquisition runs first so the
     // shared meeting view, route slices, Search, Now, and later alert replay
     // consume the same vintage instead of yesterday's snapshot.
     if (event.cron === "0 8 * * *") {
-      // Start independently of delivery and the other advisory acquisitions.
-      // A slow/failed digest must not strand resident land records indefinitely.
-      startMorningZapOutcomes(ctx, env, runId, refreshZapOutcomes, console, async (lookupOptions) => {
+      // Finish the lookup/outcome pair before the meeting refresh so both large
+      // materializations do not share one isolate's peak working set.
+      const morningZap = startMorningZapOutcomes(ctx, env, runId, refreshZapOutcomes, console, async (lookupOptions) => {
         const { signal, ...options } = lookupOptions || {};
         const r = await withWorkerAcquisitionReceipt(env, "zap-projects", runId, () => refreshZapProjectsLookup(env, {
           ...options,
@@ -647,6 +657,7 @@ const worker = {
           timeoutMs: scheduledStepDeadlineMs(env),
         }),
       });
+      await morningZap;
       await runAcquisitionStep({
         env, sourceContractId: "nyc-council-legistar", runId,
         label: "meeting outcomes", logLabel: "meeting outcomes",
