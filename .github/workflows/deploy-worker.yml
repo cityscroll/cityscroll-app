@@ -5,6 +5,10 @@
 # "Automatic deploys" section for the vars-vs-secrets gotcha this intentionally avoids.
 name: Deploy worker
 
+permissions:
+  contents: read
+  actions: read
+
 on:
   push:
     branches: [main]
@@ -61,6 +65,17 @@ jobs:
     name: Stage bounded Worker canary
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.release_mode == 'stage' }}
     runs-on: ubuntu-24.04
+    environment:
+      name: worker-deploy
+    env:
+      # The dedicated ref is read live through the repository contents API. A
+      # positively-proven absent ref is the explicit normal-deploy state; API
+      # uncertainty and expired or malformed fence documents fail closed.
+      WORKER_DEPLOY_FENCE_REF: refs/heads/deploy-fence
+      WORKER_DEPLOY_FENCE_PATH: .github/worker-deploy-fence.json
+      WORKER_DEPLOY_FENCE_WINDOW: "${{ github.run_id }}:${{ github.run_attempt }}"
+      WORKER_DEPLOY_FENCE_LIVE_ASSERT: "true"
+      GITHUB_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -102,6 +117,7 @@ jobs:
         run: |
           set -euo pipefail
           log="$RUNNER_TEMP/cityscroll-worker-canary/upload.log"
+          node tools/worker_deploy_fence.mjs live-assert
           if ! (cd worker && npx wrangler@4.126.0 versions upload \
             --tag "cityscroll-canary-$GITHUB_SHA" \
             --message "bounded canary for revision $GITHUB_SHA" \
@@ -134,6 +150,7 @@ jobs:
           candidate=$(node -p "require('$state_dir/mutation-stage-plan.json').candidate_version_id")
           rollback=$(node -p "require('$state_dir/mutation-stage-plan.json').rollback_version_id")
           log="$state_dir/deploy.log"
+          node tools/worker_deploy_fence.mjs live-assert
           if ! (cd worker && npx wrangler@4.126.0 versions deploy \
             "${rollback}@95%" "${candidate}@5%" --yes \
             --message "bounded canary for revision $GITHUB_SHA") > "$log" 2>&1; then
@@ -158,6 +175,17 @@ jobs:
     name: Deploy to Cloudflare Workers
     if: ${{ github.event_name != 'workflow_dispatch' || inputs.release_mode != 'stage' }}
     runs-on: ubuntu-24.04
+    environment:
+      name: worker-deploy
+    env:
+      # The dedicated ref is read live through the repository contents API. A
+      # positively-proven absent ref is the explicit normal-deploy state; API
+      # uncertainty and expired or malformed fence documents fail closed.
+      WORKER_DEPLOY_FENCE_REF: refs/heads/deploy-fence
+      WORKER_DEPLOY_FENCE_PATH: .github/worker-deploy-fence.json
+      WORKER_DEPLOY_FENCE_WINDOW: "${{ github.run_id }}:${{ github.run_attempt }}"
+      WORKER_DEPLOY_FENCE_LIVE_ASSERT: "true"
+      GITHUB_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -270,6 +298,8 @@ jobs:
       # passport_* tables absent and every PASSPort lifecycle lookup as
       # lookup_status=error. Schema must stay ahead of Worker code independently
       # of the D1 publication delta path.
+      - name: Assert Worker deploy fence before remote migration
+        run: node tools/worker_deploy_fence.mjs live-assert
       - name: Apply D1 migrations
         uses: cloudflare/wrangler-action@v3.14.1
         with:
@@ -402,6 +432,7 @@ jobs:
           D1_FENCE_HOLDER: ${{ github.workflow }}:${{ github.run_id }}:${{ github.run_attempt }}
         run: |
           set -euo pipefail
+          node tools/worker_deploy_fence.mjs live-assert
           node tools/d1_generation_fence.mjs claim \
             --fingerprint "${{ steps.d1-deploy-fingerprint.outputs.fingerprint }}" \
             --snapshot .d1-publication-state/current-snapshot.json \
@@ -435,6 +466,7 @@ jobs:
           D1_FENCE_GENERATION: ${{ steps.d1-generation-claim.outputs.generation }}
         run: |
           set -euo pipefail
+          node ../tools/worker_deploy_fence.mjs live-assert
           abandon_fence() {
             node ../tools/d1_generation_fence.mjs abandon \
               --generation "$D1_FENCE_GENERATION" \
@@ -474,6 +506,7 @@ jobs:
           D1_FENCE_GENERATION: ${{ steps.d1-generation-claim.outputs.generation }}
         run: |
           set -euo pipefail
+          node ../tools/worker_deploy_fence.mjs live-assert
           abandon_fence() {
             node ../tools/d1_generation_fence.mjs abandon \
               --generation "$D1_FENCE_GENERATION" \
@@ -508,6 +541,7 @@ jobs:
           D1_FENCE_GENERATION: ${{ steps.d1-generation-claim.outputs.generation }}
         run: |
           set -euo pipefail
+          node tools/worker_deploy_fence.mjs live-assert
           snapshot_key=$(node tools/d1_production_delta.mjs snapshot-key --generation "$D1_FENCE_GENERATION")
           # Generation-qualified snapshots may be staged before completion. A
           # failed completion leaves only an unreachable orphan; readers choose
@@ -528,6 +562,7 @@ jobs:
             put_rel=${put_line#*$'\t'}
             put_path="$pack_dir/$put_rel"
             node tools/d1_publication_snapshot_kv.mjs assert-fits --path "$put_path" --key "$put_key"
+            node tools/worker_deploy_fence.mjs live-assert
             npx wrangler@4.126.0 kv key put "$put_key" \
               --path "$put_path" \
               --binding ALERT_STATE --remote --config worker/wrangler.toml
@@ -564,6 +599,7 @@ jobs:
           D1_FENCE_GENERATION: ${{ steps.d1-generation-claim.outputs.generation }}
         run: |
           set -euo pipefail
+          node tools/worker_deploy_fence.mjs live-assert
           node tools/d1_generation_fence.mjs abandon \
             --generation "$D1_FENCE_GENERATION" \
             --holder "$D1_FENCE_HOLDER" \
@@ -714,7 +750,9 @@ jobs:
         continue-on-error: true
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        run: node tools/worker_route_publication.mjs publish --route-dir "$RUNNER_TEMP/cityscroll-worker-route-read-models"
+        run: |
+          node tools/worker_deploy_fence.mjs live-assert
+          node tools/worker_route_publication.mjs publish --route-dir "$RUNNER_TEMP/cityscroll-worker-route-read-models"
       # Wrangler rewrites Cron Trigger configuration on every deploy. Cloudflare says
       # trigger changes can take up to 15 minutes to propagate, so a deploy immediately
       # before 13:00 UTC can suppress that day's digest invocation.
@@ -728,6 +766,7 @@ jobs:
           set -euo pipefail
           if [ "${{ steps.cost_enforcement.outputs.mode }}" = "inactive" ]; then
             log="$RUNNER_TEMP/cityscroll-worker-deploy.log"
+            node tools/worker_deploy_fence.mjs live-assert
             if ! (cd worker && npx wrangler@4.126.0 deploy \
               --var "GIT_COMMIT_SHA:$GITHUB_SHA" \
               --var WRANGLER_ENV:production) > "$log" 2>&1; then
@@ -768,6 +807,7 @@ jobs:
           fi
           candidate=$(node -p "require('$state_dir/promotion-plan.json').candidate_version_id")
           log="$RUNNER_TEMP/cityscroll-worker-promotion.log"
+          node tools/worker_deploy_fence.mjs live-assert
           if ! (cd worker && npx wrangler@4.126.0 versions deploy \
             "${candidate}@100%" --yes \
             --message "promote measured revision $GITHUB_SHA") > "$log" 2>&1; then
@@ -782,6 +822,7 @@ jobs:
         run: |
           set -euo pipefail
           log="$RUNNER_TEMP/cityscroll-worker-triggers.log"
+          node tools/worker_deploy_fence.mjs live-assert
           if ! (cd worker && npx wrangler@4.126.0 triggers deploy) > "$log" 2>&1; then
             echo "Cloudflare rejected the Worker trigger update." >&2
             exit 1
@@ -870,6 +911,7 @@ jobs:
             echo "CLOUDFLARE_API_TOKEN is not configured; /admin/performance will remain unavailable."
             exit 0
           fi
+          node ../tools/worker_deploy_fence.mjs live-assert
           printf '%s' "$CLOUDFLARE_API_TOKEN" | npx wrangler@4.126.0 secret put ANALYTICS_READ_TOKEN
 
       # Idempotent single-secret sync for the authenticated Legistar Web API token. This is a
@@ -884,6 +926,7 @@ jobs:
         working-directory: worker
         run: |
           if [ -z "$LEGISTAR_API_TOKEN" ]; then echo "No LEGISTAR_API_TOKEN secret; skipping."; exit 0; fi
+          node ../tools/worker_deploy_fence.mjs live-assert
           printf '%s' "$LEGISTAR_API_TOKEN" | npx wrangler secret put LEGISTAR_API_TOKEN
         continue-on-error: true
 

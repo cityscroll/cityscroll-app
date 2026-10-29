@@ -5,7 +5,7 @@
  */
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, writeFileSync, readFileSync, rmSync, chmodSync } from "node:fs";
+import { mkdtempSync, writeFileSync, readFileSync, rmSync, chmodSync, mkdirSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -13,11 +13,26 @@ import test from "node:test";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const WRAPPER = join(HERE, "run_with_cloudflare_deploy_token.sh");
+const FENCE = join(HERE, "worker_deploy_fence.mjs");
 const SENTINEL = "SENTINEL_cfut_TRANSPORT_TEST_ONLY_not_a_real_credential";
 
 function buildAdmissionCommand(wrapperPath, childArgs) {
   // Exact shape a process launcher prints after `--`.
   return [wrapperPath, "--", ...childArgs].join(" ");
+}
+
+function buildFenceEnv(root) {
+  return {
+    ...process.env,
+    WORKER_DEPLOY_FENCE_ROOT: root,
+    WORKER_DEPLOY_FENCE_WINDOW: "secret-transport-test-window",
+    WORKER_DEPLOY_OWNER: "secret-transport-test-owner",
+    WORKER_DEPLOY_FENCE_REQUIRED: "true",
+  };
+}
+
+function runFence(command, env) {
+  return spawnSync(process.execPath, [FENCE, command], { env, encoding: "utf8" });
 }
 
 test("launcher admission command never contains the sentinel token", () => {
@@ -62,6 +77,7 @@ test("wrapper loads token from file into child env only; absent from child argv 
   const dir = mkdtempSync(join(tmpdir(), "worker-deploy-secret-transport-"));
   try {
     const tokenFile = join(dir, "token.key");
+    const fenceRoot = join(dir, "fence");
     const receiptPath = join(dir, "child-receipt.json");
     const childScript = join(dir, "child.mjs");
     writeFileSync(tokenFile, `${SENTINEL}\n`, { mode: 0o600 });
@@ -84,9 +100,12 @@ writeFileSync(${JSON.stringify(receiptPath)}, JSON.stringify(receipt), { mode: 0
     const admission = buildAdmissionCommand(WRAPPER, [process.execPath, childScript]);
     assert.equal(admission.includes(SENTINEL), false);
 
+    const fenceEnv = buildFenceEnv(fenceRoot);
+    const acquired = runFence("acquire", fenceEnv);
+    assert.equal(acquired.status, 0, acquired.stderr);
     const result = spawnSync(WRAPPER, ["--", process.execPath, childScript], {
       env: {
-        ...process.env,
+        ...fenceEnv,
         CLOUDFLARE_API_TOKEN_FILE: tokenFile,
         // Ensure parent env does not already carry the sentinel on this test path.
         CLOUDFLARE_API_TOKEN: "",
@@ -104,6 +123,66 @@ writeFileSync(${JSON.stringify(receiptPath)}, JSON.stringify(receipt), { mode: 0
     assert.equal(receipt.argv.some((arg) => String(arg).includes(SENTINEL)), false);
     assert.equal(receipt.argv.some((arg) => /CLOUDFLARE_API_TOKEN=/.test(String(arg))), false);
     assert.equal(JSON.stringify(receipt).includes(SENTINEL), false);
+    const released = runFence("release", fenceEnv);
+    assert.equal(released.status, 0, released.stderr);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("unrecognized credentialed commands require the fence by default", () => {
+  const dir = mkdtempSync(join(tmpdir(), "worker-deploy-secret-transport-"));
+  try {
+    const tokenFile = join(dir, "token.key");
+    writeFileSync(tokenFile, `${SENTINEL}\n`, { mode: 0o600 });
+    const env = { ...process.env, CLOUDFLARE_API_TOKEN_FILE: tokenFile, HOME: dir };
+    delete env.WORKER_DEPLOY_FENCE_ROOT;
+    delete env.WORKER_DEPLOY_FENCE_WINDOW;
+    delete env.WORKER_DEPLOY_OWNER;
+    delete env.WORKER_DEPLOY_FENCE_REQUIRED;
+    const result = spawnSync(WRAPPER, ["--", "node", "-e", "process.exit(0)"], { env, encoding: "utf8" });
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /WORKER_DEPLOY_FENCE_REQUIRED=true is required for credentialed commands/);
+    assert.equal(result.stderr.includes(SENTINEL), false);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("only exact read-only Wrangler argv is fence-exempt; extra flags and shell indirection are not", () => {
+  const dir = mkdtempSync(join(tmpdir(), "worker-deploy-secret-transport-"));
+  try {
+    const tokenFile = join(dir, "token.key");
+    const fakeBin = join(dir, "bin");
+    const fakeNpx = join(fakeBin, "npx");
+    writeFileSync(tokenFile, `${SENTINEL}\n`, { mode: 0o600 });
+    mkdirSync(fakeBin, { recursive: true, mode: 0o700 });
+    writeFileSync(fakeNpx, "#!/bin/sh\nexit 0\n", { mode: 0o700 });
+    chmodSync(fakeNpx, 0o700);
+    const env = {
+      ...process.env,
+      CLOUDFLARE_API_TOKEN_FILE: tokenFile,
+      HOME: dir,
+      PATH: `${fakeBin}:${process.env.PATH}`,
+    };
+    delete env.WORKER_DEPLOY_FENCE_ROOT;
+    delete env.WORKER_DEPLOY_FENCE_WINDOW;
+    delete env.WORKER_DEPLOY_OWNER;
+    delete env.WORKER_DEPLOY_FENCE_REQUIRED;
+    const readOnly = spawnSync(WRAPPER, ["--", "npx", "wrangler@4.126.0", "versions", "list", "--json"], { env, encoding: "utf8" });
+    assert.equal(readOnly.status, 0, readOnly.stderr);
+    const restorerReadOnly = spawnSync(
+      WRAPPER,
+      ["--", "npx", "--yes", "wrangler@4.126.0", "versions", "list", "--name", "cityscroll-worker"],
+      { env, encoding: "utf8" },
+    );
+    assert.equal(restorerReadOnly.status, 0, restorerReadOnly.stderr);
+    const extraFlag = spawnSync(WRAPPER, ["--", "npx", "wrangler@4.126.0", "versions", "list", "--json", "--upload"], { env, encoding: "utf8" });
+    assert.notEqual(extraFlag.status, 0);
+    assert.match(extraFlag.stderr, /WORKER_DEPLOY_FENCE_REQUIRED=true/);
+    const shellIndirect = spawnSync(WRAPPER, ["--", "sh", "-c", "npx wrangler@4.126.0 versions list --json"], { env, encoding: "utf8" });
+    assert.notEqual(shellIndirect.status, 0);
+    assert.match(shellIndirect.stderr, /WORKER_DEPLOY_FENCE_REQUIRED=true/);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

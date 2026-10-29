@@ -31,6 +31,7 @@ import {
 } from "./lib/worker_cost_control.mjs";
 import {
   buildWarehouseAttemptList,
+  buildWarehouseMatchingFacts,
   createLiveWorkerCostTransport,
   createStartRateGate,
   invokeWranglerAbortable,
@@ -721,6 +722,20 @@ test("warehouse runner samples until exact provider-observed cold_start_flag_raw
         && !("cold_start" in sample.condition);
     }));
   }
+  assert.equal(result.matching_facts.schema, "cityscroll.warehouse_matching_facts.v1");
+  assert.equal(result.matching_facts.identity_source, "aggregate-only");
+  assert.deepEqual(result.matching_facts.cohorts, WAREHOUSE_EXPERIMENT_BASE_ROUTES);
+  assert.deepEqual(
+    result.matching_facts.planned.by_cohort,
+    Object.fromEntries(WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => [cohort, 200])),
+  );
+  assert.deepEqual(result.matching_facts.planned, result.matching_facts.input);
+  assert.deepEqual(result.matching_facts.dropped.by_cohort,
+    Object.fromEntries(WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => [cohort, 0])));
+  assert.deepEqual(result.matching_facts.unparsed.by_cohort,
+    Object.fromEntries(WAREHOUSE_EXPERIMENT_BASE_ROUTES.map((cohort) => [cohort, 0])));
+  assert.equal(JSON.stringify(result.matching_facts).includes("x-cityscroll-cost-probe"), false);
+  assert.equal(JSON.stringify(result.matching_facts).includes("header"), false);
 });
 
 test("warehouse runner reports incomplete cold_start_flag_raw=1 coverage", async () => {
@@ -736,6 +751,28 @@ test("warehouse runner reports incomplete cold_start_flag_raw=1 coverage", async
   });
   assert.equal(result.status, "blocked");
   assert.match(result.reason, /cold_start_flag_raw=1 provider samples are incomplete/);
+});
+
+test("matching facts account for attempted, matched, dropped, and unparsed observations without identifiers", () => {
+  const matched = { ...expectation("search", REVISION, 1), matching_cohort: "search" };
+  const dropped = { ...expectation("search", REVISION, 2), matching_cohort: "search" };
+  const unparsed = { ...expectation("search", REVISION, 3), matching_cohort: "search" };
+  const malformedEvent = httpEvent(unparsed, "search");
+  malformedEvent.event.request.method = "GET";
+  const facts = buildWarehouseMatchingFacts({
+    cohorts: ["search"],
+    expectations: [matched, dropped, unparsed],
+    eventIndex: new Map([
+      [matched.header, [httpEvent(matched, "search")]],
+      [unparsed.header, [malformedEvent]],
+    ]),
+  });
+  assert.deepEqual(facts.planned, { by_cohort: { search: 3 }, total: 3 });
+  assert.deepEqual(facts.input, { by_cohort: { search: 1 }, total: 1 });
+  assert.deepEqual(facts.dropped, { by_cohort: { search: 1 }, total: 1 });
+  assert.deepEqual(facts.unparsed, { by_cohort: { search: 1 }, total: 1 });
+  assert.equal(JSON.stringify(facts).includes(matched.header), false);
+  assert.equal(JSON.stringify(facts).includes("header"), false);
 });
 
 /**

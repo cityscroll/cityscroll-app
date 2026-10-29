@@ -637,6 +637,72 @@ function correctnessFingerprint(expectation) {
     .join(":");
 }
 
+/**
+ * Build privacy-safe matching facts from the whole attempted warehouse
+ * universe and the observed provider event index. Headers are correlation
+ * keys for this in-memory pass only; they never cross the receipt boundary.
+ * A retained sample subset is deliberately not used as the planned universe:
+ * oversample attempts and collector loss remain visible in the counters.
+ */
+export function buildWarehouseMatchingFacts({
+  cohorts,
+  expectations,
+  eventIndex,
+}) {
+  if (!Array.isArray(cohorts) || cohorts.length === 0
+    || new Set(cohorts).size !== cohorts.length
+    || !Array.isArray(expectations)
+    || !(eventIndex instanceof Map)) return null;
+  const expectationsByCohort = new Map(cohorts.map((cohort) => [cohort, []]));
+  for (const expectation of expectations) {
+    const cohort = expectation?.matching_cohort || expectation?.probeCohort;
+    if (!expectationsByCohort.has(cohort) || typeof expectation?.header !== "string"
+      || expectation.header.length === 0) return null;
+    expectationsByCohort.get(cohort).push(expectation);
+  }
+  const byCohort = new Map();
+  for (const cohort of cohorts) {
+    const counters = accumulateOwnedHttpMatcherRejectionCounters(
+      eventIndex,
+      expectationsByCohort.get(cohort),
+      cohort,
+    );
+    if (!counters || counters.schema !== "cityscroll.owned_http_matcher_rejection_counters.v1"
+      || !Number.isInteger(counters.expectations_total)
+      || !Number.isInteger(counters.matched)
+      || !Number.isInteger(counters.no_events_for_header)
+      || counters.expectations_total < 0 || counters.matched < 0
+      || counters.no_events_for_header < 0) return null;
+    const unparsed = counters.expectations_total - counters.matched - counters.no_events_for_header;
+    if (unparsed < 0) return null;
+    byCohort.set(cohort, {
+      planned: counters.expectations_total,
+      input: counters.matched,
+      dropped: counters.no_events_for_header,
+      unparsed,
+    });
+  }
+  const aggregate = (field) => {
+    const byCohortCounts = Object.fromEntries(cohorts.map((cohort) => [
+      cohort,
+      byCohort.get(cohort)[field],
+    ]));
+    return {
+      by_cohort: byCohortCounts,
+      total: cohorts.reduce((sum, cohort) => sum + byCohort.get(cohort)[field], 0),
+    };
+  };
+  return {
+    schema: "cityscroll.warehouse_matching_facts.v1",
+    identity_source: "aggregate-only",
+    cohorts: [...cohorts],
+    planned: aggregate("planned"),
+    input: aggregate("input"),
+    dropped: aggregate("dropped"),
+    unparsed: aggregate("unparsed"),
+  };
+}
+
 export function createLiveWorkerCostTransport({
   env = process.env,
   fetchImpl = fetch,
@@ -951,6 +1017,10 @@ export function createLiveWorkerCostTransport({
               // failure cannot cancel already-started HTTP probes.
               ({ base, workload, index }, _attemptIndex, attemptSignal) => (
                 executeWorkload(workload, workloadId, deployment, `cost-${label}-${base}-${index}`, attemptSignal)
+                  .then((expectation) => ({
+                    ...expectation,
+                    matching_cohort: workload.probe_cohort || workload.cohort,
+                  }))
               ),
             );
             if (!Array.isArray(live.events)) throw new Error("warehouse collector live event buffer is unavailable");
@@ -1007,6 +1077,7 @@ export function createLiveWorkerCostTransport({
       const retained = {};
       let collectorIndex = 0;
       const retainedCorrectness = {};
+      let matchingFacts = null;
       try {
         const eventIndex = providerEventsByProbeHeader(events);
         const conditioned = Object.fromEntries(cohorts.map((cohort) => [
@@ -1045,6 +1116,13 @@ export function createLiveWorkerCostTransport({
           "collector-overhead",
           collectorSampleCount,
         );
+        matchingFacts = buildWarehouseMatchingFacts({
+          cohorts: [...new Set(expectations.map((expectation) => (
+            expectation.matching_cohort || expectation.probeCohort
+          )))],
+          expectations,
+          eventIndex,
+        });
         for (const cohort of cohorts) {
           retained[cohort] = conditioned[cohort].map(({ expectation, event }, index) => {
             const collector = collectors[collectorIndex++].event;
@@ -1083,6 +1161,7 @@ export function createLiveWorkerCostTransport({
         observedAt: new Date(now()).toISOString(),
         cohorts: retained,
         correctness: aggregateObservedCorrectness(retainedCorrectness),
+        matching_facts: matchingFacts,
         provider_event_count: events.length,
         provider_event_count_status: "known",
       };
