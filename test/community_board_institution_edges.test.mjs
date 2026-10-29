@@ -14,8 +14,13 @@ import {
 } from "../site/community_board_institution_edges.mjs";
 import { normalizeEntityPivot } from "../site/edge_summary.mjs";
 import { readFileSync } from "node:fs";
+import { testClockISOString } from "./helpers/test_clock.mjs";
 
 const committeeRegistry = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/community_board_committees.json", import.meta.url)));
+function fixtureTimestamp(now) {
+  return `${now.slice(0, 10)}T12:00:00Z`;
+}
+const fixtureObservedAt = fixtureTimestamp(testClockISOString());
 
 const meeting = {
   request_id: "20260814001",
@@ -36,7 +41,7 @@ const source = {
   date: "2026-08-12",
   publisher_identifier: "C260001ZSM",
   title: "Public hearing on a neighborhood matter",
-  observed_receipt: { status: "ok", observed_at: "2026-08-14T12:00:00Z" },
+  observed_receipt: { status: "ok", observed_at: fixtureObservedAt },
 };
 
 function acceptedEdge() {
@@ -80,7 +85,7 @@ test("accepted identity is shared by Browse and the board institution page", () 
     institution_edge: edge,
   };
   const browse = renderBrowseView(buildBrowseView("meetings", {
-    generated_at: "2026-08-14T12:00:00Z",
+    generated_at: fixtureObservedAt,
     rows: [row],
   }));
   assert.match(browse, /hosted by community board/);
@@ -122,7 +127,7 @@ test("a reviewed committee inserts has_committee before the unchanged meeting id
   };
   const edges = buildCommunityBoardInstitutionEdges([
     { meeting, source_record: sourceRecord },
-  ], { committeeRegistry, asOf: "2026-08-14T12:00:00Z" });
+  ], { committeeRegistry, asOf: fixtureObservedAt });
   assert.deepEqual(edges.map((edge) => [edge.relation, edge.from, edge.to]), [
     ["has_committee", "community-board:manhattan-cb-06", "community-board-committee:manhattan-cb-06:transportation"],
     ["hosts_meeting", "community-board-committee:manhattan-cb-06:transportation", "meeting:community_board:cb6-event-1"],
@@ -155,13 +160,13 @@ test("full-board and unresolved joint meetings retain the board host without a s
       source_record_id: "cb6-full",
     },
   };
-  const full = buildCommunityBoardInstitutionEdges([base], { committeeRegistry, asOf: "2026-08-14T12:00:00Z" });
+  const full = buildCommunityBoardInstitutionEdges([base], { committeeRegistry, asOf: fixtureObservedAt });
   assert.equal(full[0].from, "community-board:manhattan-cb-06");
   assert.equal(full.length, 1);
   const joint = buildCommunityBoardInstitutionEdges([{
     ...base,
     source_record: { ...base.source_record, title: "Transportation & Housing Committees", publisher_identifier: "cb6-joint", source_record_id: "cb6-joint" },
-  }], { committeeRegistry, asOf: "2026-08-14T12:00:00Z" });
+  }], { committeeRegistry, asOf: fixtureObservedAt });
   assert.equal(joint.length, 1);
   assert.equal(joint[0].from, "community-board:manhattan-cb-06");
 });

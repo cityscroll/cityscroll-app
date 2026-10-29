@@ -6,8 +6,13 @@ import {
   latestMeetingDocumentDate,
   normalizeMeetingDocument,
 } from "../site/meeting_document.mjs";
+import { testClockISOString } from "./helpers/test_clock.mjs";
 
-const receipt = { status: "ok", observed_at: "2026-08-14T12:00:00Z" };
+function fixtureTimestamp(now) {
+  return `${now.slice(0, 10)}T12:00:00Z`;
+}
+const fixtureObservedAt = fixtureTimestamp(testClockISOString());
+const receipt = { status: "ok", observed_at: fixtureObservedAt };
 const meeting = {
   meeting_id: "meeting:community_board:event-1",
   source_system: "community_board",
@@ -61,7 +66,7 @@ test("an exact publisher join attaches a document, while an ambiguous join stays
 test("an unavailable keyed source remains visible as unavailable without a meeting link", () => {
   const result = attachMeetingDocuments([meeting], [document({
     meeting_id: meeting.meeting_id,
-    observed_receipt: { status: "unknown", observed_at: "2026-08-14T12:00:00Z" },
+    observed_receipt: { status: "unknown", observed_at: fixtureObservedAt },
   })]);
   assert.equal(result.documents[0].attachment_status, "unavailable");
   assert.equal(result.documents[0].attachment_reason, "source_unavailable");

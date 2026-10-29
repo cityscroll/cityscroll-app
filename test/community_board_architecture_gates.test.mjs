@@ -35,9 +35,14 @@ import {
 import { meetingIdForSource, normalizeCommunityBoardMeeting } from "../site/meeting_object_contract.mjs";
 import { buildPeopleOrganizationsReadModel } from "../site/people_organizations_read_model.mjs";
 import { renderPeopleOrganizationRow } from "../site/browse_concept_view.mjs";
+import { testClockISOString } from "./helpers/test_clock.mjs";
 
 const sourceRegistry = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/source_registry.json", import.meta.url), "utf8"));
 const boundaries = JSON.parse(readFileSync(new URL("../site/data/district_boundaries.json", import.meta.url), "utf8"));
+function fixtureTimestamp(now) {
+  return `${now.slice(0, 10)}T12:00:00Z`;
+}
+const fixtureObservedAt = fixtureTimestamp(testClockISOString());
 
 const people = { by_person_id: {
   "7801": { person_id: "7801", person_name: "Ada Lovelace" },
@@ -95,7 +100,7 @@ function acceptedCityRecordMeeting(title = "Public hearing on a neighborhood mat
     date: "2026-08-12",
     publisher_identifier: "20260814001",
     title,
-    observed_receipt: { status: "ok", observed_at: "2026-08-14T12:00:00Z" },
+    observed_receipt: { status: "ok", observed_at: fixtureObservedAt },
   };
   const join = joinCommunityBoardSourceRecord(meeting, record);
   return { meeting, record, join, edge: promoteCommunityBoardHostsMeetingEdge({ meeting, source_record: record, join }) };
