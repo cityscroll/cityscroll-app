@@ -144,10 +144,10 @@
       "project_participates_in_procedure"
     ],
     "provisional_cross_spine_candidates": {
-      "public_inferred": 15,
-      "evidence_only": 70,
+      "public_inferred": 14,
+      "evidence_only": 72,
       "evidence_only_by_relation": {
-        "mandate_meeting": 66,
+        "mandate_meeting": 68,
         "mandate_land_use": 4
       },
       "source": "site/data/cross_spine_shadow_census.json"
@@ -160,7 +160,7 @@
   ],
   "stayed_provisional": [
     "181 quote-miss mandate extractions remain excluded from public edge totals.",
-    "70 evidence-only cross-spine candidates remain off public inferred-edge totals.",
+    "72 evidence-only cross-spine candidates remain off public inferred-edge totals.",
     "Vendor name mentions remain discovery scope, not reviewed identity links."
   ],
   "verification": [
