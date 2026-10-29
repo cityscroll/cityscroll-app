@@ -76,6 +76,8 @@ jobs:
           cache-dependency-path: worker/pnpm-lock.yaml
       - name: Install worker dependencies
         run: tools/install_worker_dependencies.sh
+      - name: Acquire Worker deploy writer fence
+        run: node tools/worker_deploy_fence.mjs acquire
       - name: Inspect bounded canary state
         id: stage_plan
         env:
@@ -101,6 +103,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           set -euo pipefail
+          node tools/worker_deploy_fence.mjs assert
           log="$RUNNER_TEMP/cityscroll-worker-canary/upload.log"
           if ! (cd worker && npx wrangler@4.126.0 versions upload \
             --tag "cityscroll-canary-$GITHUB_SHA" \
@@ -117,6 +120,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           set -euo pipefail
+          node tools/worker_deploy_fence.mjs assert
           state_dir="$RUNNER_TEMP/cityscroll-worker-canary"
           (cd worker && npx wrangler@4.126.0 deployments status --json) > "$state_dir/mutation-provider-status.json"
           (cd worker && npx wrangler@4.126.0 versions list --json) > "$state_dir/mutation-provider-versions.json"
@@ -154,6 +158,10 @@ jobs:
             --expected-revision "$GITHUB_SHA" \
             --out "$state_dir/promotion-plan.json"
 
+      - name: Release Worker deploy writer fence
+        if: always()
+        run: node tools/worker_deploy_fence.mjs release
+
   deploy:
     name: Deploy to Cloudflare Workers
     if: ${{ github.event_name != 'workflow_dispatch' || inputs.release_mode != 'stage' }}
@@ -173,6 +181,8 @@ jobs:
           cache-dependency-path: worker/pnpm-lock.yaml
       - name: Install worker dependencies
         run: tools/install_worker_dependencies.sh
+      - name: Acquire Worker deploy writer fence
+        run: node tools/worker_deploy_fence.mjs acquire
       - name: Resolve Worker cost-control enforcement
         id: cost_enforcement
         env:
@@ -222,6 +232,7 @@ jobs:
           WORKER_COST_BASELINE_EVIDENCE: ${{ vars.WORKER_COST_BASELINE_EVIDENCE }}
         run: |
           set -euo pipefail
+          node tools/worker_deploy_fence.mjs assert
           state_dir="$RUNNER_TEMP/cityscroll-worker-cost-control"
           mkdir -p "$state_dir"
           (cd worker && npx wrangler@4.126.0 deployments status --json) > "$state_dir/provider-status.json"
@@ -270,6 +281,8 @@ jobs:
       # passport_* tables absent and every PASSPort lifecycle lookup as
       # lookup_status=error. Schema must stay ahead of Worker code independently
       # of the D1 publication delta path.
+      - name: Assert Worker deploy writer before remote migration
+        run: node tools/worker_deploy_fence.mjs assert
       - name: Apply D1 migrations
         uses: cloudflare/wrangler-action@v3.14.1
         with:
@@ -402,6 +415,7 @@ jobs:
           D1_FENCE_HOLDER: ${{ github.workflow }}:${{ github.run_id }}:${{ github.run_attempt }}
         run: |
           set -euo pipefail
+          node tools/worker_deploy_fence.mjs assert
           node tools/d1_generation_fence.mjs claim \
             --fingerprint "${{ steps.d1-deploy-fingerprint.outputs.fingerprint }}" \
             --snapshot .d1-publication-state/current-snapshot.json \
@@ -435,6 +449,7 @@ jobs:
           D1_FENCE_GENERATION: ${{ steps.d1-generation-claim.outputs.generation }}
         run: |
           set -euo pipefail
+          node ../tools/worker_deploy_fence.mjs assert
           abandon_fence() {
             node ../tools/d1_generation_fence.mjs abandon \
               --generation "$D1_FENCE_GENERATION" \
@@ -474,6 +489,7 @@ jobs:
           D1_FENCE_GENERATION: ${{ steps.d1-generation-claim.outputs.generation }}
         run: |
           set -euo pipefail
+          node ../tools/worker_deploy_fence.mjs assert
           abandon_fence() {
             node ../tools/d1_generation_fence.mjs abandon \
               --generation "$D1_FENCE_GENERATION" \
@@ -508,6 +524,7 @@ jobs:
           D1_FENCE_GENERATION: ${{ steps.d1-generation-claim.outputs.generation }}
         run: |
           set -euo pipefail
+          node tools/worker_deploy_fence.mjs assert
           snapshot_key=$(node tools/d1_production_delta.mjs snapshot-key --generation "$D1_FENCE_GENERATION")
           # Generation-qualified snapshots may be staged before completion. A
           # failed completion leaves only an unreachable orphan; readers choose
@@ -564,6 +581,7 @@ jobs:
           D1_FENCE_GENERATION: ${{ steps.d1-generation-claim.outputs.generation }}
         run: |
           set -euo pipefail
+          node tools/worker_deploy_fence.mjs assert
           node tools/d1_generation_fence.mjs abandon \
             --generation "$D1_FENCE_GENERATION" \
             --holder "$D1_FENCE_HOLDER" \
@@ -714,7 +732,9 @@ jobs:
         continue-on-error: true
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        run: node tools/worker_route_publication.mjs publish --route-dir "$RUNNER_TEMP/cityscroll-worker-route-read-models"
+        run: |
+          node tools/worker_deploy_fence.mjs assert
+          node tools/worker_route_publication.mjs publish --route-dir "$RUNNER_TEMP/cityscroll-worker-route-read-models"
       # Wrangler rewrites Cron Trigger configuration on every deploy. Cloudflare says
       # trigger changes can take up to 15 minutes to propagate, so a deploy immediately
       # before 13:00 UTC can suppress that day's digest invocation.
@@ -726,6 +746,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           set -euo pipefail
+          node tools/worker_deploy_fence.mjs assert
           if [ "${{ steps.cost_enforcement.outputs.mode }}" = "inactive" ]; then
             log="$RUNNER_TEMP/cityscroll-worker-deploy.log"
             if ! (cd worker && npx wrangler@4.126.0 deploy \
@@ -781,6 +802,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           set -euo pipefail
+          node tools/worker_deploy_fence.mjs assert
           log="$RUNNER_TEMP/cityscroll-worker-triggers.log"
           if ! (cd worker && npx wrangler@4.126.0 triggers deploy) > "$log" 2>&1; then
             echo "Cloudflare rejected the Worker trigger update." >&2
@@ -866,6 +888,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         working-directory: worker
         run: |
+          node ../tools/worker_deploy_fence.mjs assert
           if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
             echo "CLOUDFLARE_API_TOKEN is not configured; /admin/performance will remain unavailable."
             exit 0
@@ -883,9 +906,14 @@ jobs:
           LEGISTAR_API_TOKEN: ${{ secrets.LEGISTAR_API_TOKEN }}
         working-directory: worker
         run: |
+          node ../tools/worker_deploy_fence.mjs assert
           if [ -z "$LEGISTAR_API_TOKEN" ]; then echo "No LEGISTAR_API_TOKEN secret; skipping."; exit 0; fi
           printf '%s' "$LEGISTAR_API_TOKEN" | npx wrangler secret put LEGISTAR_API_TOKEN
         continue-on-error: true
+
+      - name: Release Worker deploy writer fence
+        if: always()
+        run: node tools/worker_deploy_fence.mjs release
 
   # Mirror / route deploys can break the public apex without failing wrangler.
   # Same live-URL gate as Deploy site: real content on both apex hosts + a deep

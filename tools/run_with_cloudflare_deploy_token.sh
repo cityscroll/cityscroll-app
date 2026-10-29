@@ -36,6 +36,13 @@ if [[ "$#" -lt 1 ]]; then
   exit 2
 fi
 
+# When a caller has explicitly entered the deployment path, require the same
+# current-writer assertion used by the workflow before passing credentials on.
+# Plain local read-only commands remain unaffected.
+if [[ "${WORKER_DEPLOY_FENCE_REQUIRED:-false}" == "true" ]]; then
+  node "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/worker_deploy_fence.mjs" assert
+fi
+
 TOKEN_FILE="${CLOUDFLARE_API_TOKEN_FILE:-${HOME}/.config/estate/cloudflare-workers-deploy-cityscroll.key}"
 if [[ ! -f "$TOKEN_FILE" ]]; then
   printf '%s\n' "run_with_cloudflare_deploy_token: missing token file" >&2
