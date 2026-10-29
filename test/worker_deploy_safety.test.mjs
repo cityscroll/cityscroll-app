@@ -56,7 +56,7 @@ test("deploy workflow preserves ordinary deploys and gates only activated promot
   })[0];
   const steps = workflow.jobs.deploy.steps;
   const publication = steps.find((step) => step.name === "Publish Near You and meeting route read models");
-  assert.equal(publication.run, "node tools/worker_route_publication.mjs publish --route-dir \"$RUNNER_TEMP/cityscroll-worker-route-read-models\"");
+  assert.equal(publication.run, "node tools/worker_deploy_fence.mjs live-assert\nnode tools/worker_route_publication.mjs publish --route-dir \"$RUNNER_TEMP/cityscroll-worker-route-read-models\"\n");
   const enforcement = steps.find((step) => step.name === "Resolve Worker cost-control enforcement");
   assert.equal(enforcement.env.WORKER_COST_ENFORCEMENT, "${{ vars.WORKER_COST_ENFORCEMENT }}");
   assert.deepEqual(normalizedExecutables(enforcement.run), [[
@@ -187,7 +187,7 @@ test("canary stage is manual-only and isolated from publication jobs", () => {
     assert.ok(
       argv[0] === "tools/install_worker_dependencies.sh"
       || (argv[0] === "npx" && argv[1] === "wrangler@4.126.0")
-      || (argv[0] === "node" && ["-p", "tools/cloudflare_deployment_binding.mjs"].includes(argv[1])),
+      || (argv[0] === "node" && ["-p", "tools/cloudflare_deployment_binding.mjs", "tools/worker_deploy_fence.mjs"].includes(argv[1])),
       `unexpected executable in stage job: ${argv.join(" ")}`,
     );
   }

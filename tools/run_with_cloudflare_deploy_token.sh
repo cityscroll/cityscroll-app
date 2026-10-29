@@ -36,11 +36,34 @@ if [[ "$#" -lt 1 ]]; then
   exit 2
 fi
 
-# When a caller has explicitly entered the deployment path, require the same
-# current-writer assertion used by the workflow before passing credentials on.
-# Plain local read-only commands remain unaffected.
-if [[ "${WORKER_DEPLOY_FENCE_REQUIRED:-false}" == "true" ]]; then
-  node "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/worker_deploy_fence.mjs" assert
+# Only these concrete, token-bearing read-only invocations are exempt. The
+# argv shape is intentionally narrow: shell indirection, unknown subcommands,
+# and any extra flag all require the same fence as a writer.
+is_exact_read_only_command() {
+  [[ "${1:-}" == "npx" ]] || return 1
+  shift
+  if [[ "${1:-}" == "--yes" ]]; then shift; fi
+  [[ "${1:-}" == "wrangler@4.126.0" ]] || return 1
+  shift
+  case "$#:$*" in
+    "1:--help"|"1:help"|"1:--version") return 0 ;;
+    "3:versions list --json"|"4:versions list --name cityscroll-worker" ) return 0 ;;
+    "5:versions list --name cityscroll-worker --json"|"5:versions list --json --name cityscroll-worker") return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+# Credentialed commands require a last-moment writer-fence assertion by
+# default. Only the exact structured read-only modes above may omit it.
+if ! is_exact_read_only_command "$@"; then
+  if [[ "${WORKER_DEPLOY_FENCE_LIVE_ASSERT:-}" == "true" ]]; then
+    node "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/worker_deploy_fence.mjs" live-assert
+  elif [[ "${WORKER_DEPLOY_FENCE_REQUIRED:-}" == "true" ]]; then
+    node "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/worker_deploy_fence.mjs" assert
+  else
+    printf '%s\n' "run_with_cloudflare_deploy_token: WORKER_DEPLOY_FENCE_REQUIRED=true is required for credentialed commands" >&2
+    exit 2
+  fi
 fi
 
 TOKEN_FILE="${CLOUDFLARE_API_TOKEN_FILE:-${HOME}/.config/estate/cloudflare-workers-deploy-cityscroll.key}"

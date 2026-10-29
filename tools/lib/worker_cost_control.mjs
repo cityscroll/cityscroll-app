@@ -90,6 +90,8 @@ const RETAINED_COST_STRUCTURAL_KEYS = Object.freeze(new Set([
   "semantics", "source", "status", "storage_bytes", "traffic_mix", "trigger",
   "unchanged", "unit", "window", "workload_count", "workload_digest",
   "workload_id", "materialization", "routes",
+  "matching_facts", "identity_source", "cohorts", "planned", "input", "dropped", "unparsed",
+  "by_cohort", "total",
   "cold_start_flag_capability", "carries_numeric_raw", "documented_source",
   "cold_start_flag_raw",
 ]));
