@@ -18,7 +18,7 @@ const source = readFileSync(new URL("../src/worker.mjs", import.meta.url), "utf8
 
 // Execute the committed entrypoint, with its imported jobs replaced at the boundary.
 // The scheduler body itself is neither copied nor reduced to a source-string assertion.
-function scheduledWorker({ now = NOW, overrides = {}, fetchImpl = null, sourceText = source } = {}) {
+function scheduledWorker({ now = NOW, overrides = {}, fetchImpl = null, sourceText = source, consoleImpl = null } = {}) {
   const calls = [];
   const errors = [];
   const logs = [];
@@ -30,7 +30,7 @@ function scheduledWorker({ now = NOW, overrides = {}, fetchImpl = null, sourceTe
     setTimeout,
     clearTimeout,
     fetch: fetchImpl || (() => { throw new Error("unexpected scheduled test fetch"); }),
-    console: { log: (...args) => logs.push(args), error: (...args) => errors.push(args) },
+    console: consoleImpl || { log: (...args) => logs.push(args), error: (...args) => errors.push(args) },
   };
   for (const match of source.matchAll(/import\s+\{([^}]+)\}\s+from\s+"[^"]+";/g)) {
     for (const entry of match[1].split(",").map((s) => s.trim()).filter(Boolean)) {
@@ -133,17 +133,23 @@ function productionEnv() {
 }
 
 for (const cron of CRONS) {
-  test(`${cron} starts one search-use refresh before its other jobs`, async () => {
+  test(`${cron} schedules one search-use refresh in its memory-safe phase`, async () => {
     const env = productionEnv();
     const worker = scheduledWorker();
     await worker.run(cron, env);
     await Promise.all(worker.pending);
-    assert.equal(worker.calls[0], "refreshPublicSearchUsageSnapshot");
+    const searchUsageIndex = worker.calls.indexOf("refreshPublicSearchUsageSnapshot");
+    assert.notEqual(searchUsageIndex, -1);
     assert.equal(worker.calls.filter((name) => name === "refreshPublicSearchUsageSnapshot").length, 1);
+    if (cron === "0 13 * * *") {
+      assert.equal(searchUsageIndex, worker.calls.length - 1, "13:00 search-use refresh follows scheduled delivery and maintenance");
+    } else {
+      assert.equal(searchUsageIndex, 0, "morning and rehearsal refreshes retain their independent start");
+    }
     if (cron === "0 8 * * *") {
       assert.equal(worker.calls.filter((name) => name === "startMorningZapOutcomes").length, 1);
     }
-    assert.equal(worker.pending.length, 1, "the platform retains the independent refresh");
+    assert.equal(worker.pending.length, cron === "0 13 * * *" ? 2 : 1, "the platform retains scheduled work and the independent refresh");
     const published = await readPublicSearchUsage(env, { now: NOW });
     assert.equal(published.available, true);
     assert.equal(published.refresh.verified_at, NOW);
@@ -160,6 +166,22 @@ test("a throwing delivery job cannot skip search-use publication or later refres
   assert.equal((await readPublicSearchUsage(env, { now: NOW })).available, true);
   assert.ok(worker.calls.includes("prewarmStats"), "later scheduled refreshes must still run");
   assert.ok(worker.errors.some((args) => /digest delivery failed/.test(args.join(" "))));
+});
+
+test("a 13:00 branch throw still schedules the deferred search-use refresh", async () => {
+  const env = productionEnv();
+  const worker = scheduledWorker({
+    consoleImpl: {
+      log(message) {
+        if (message === "digest delivery: starting") throw new Error("scheduled branch failed");
+      },
+      error() {},
+    },
+  });
+  await assert.rejects(worker.run("0 13 * * *", env), /scheduled branch failed/);
+  await Promise.all(worker.pending);
+  assert.equal(worker.calls.filter((name) => name === "refreshPublicSearchUsageSnapshot").length, 1);
+  assert.equal((await readPublicSearchUsage(env, { now: NOW })).available, true);
 });
 
 test("a timed-out digest step finalizes failure and releases later scheduled refreshes", async () => {

@@ -8,6 +8,10 @@ const HOLD_MS = 25;
 const SCHEDULED_AT = "2026-10-29T08:00:00.000Z";
 const PRODUCTION_LIKE_ZAP_PROJECTS = 300;
 const ZAP_PROJECT_WORKING_SET_MIB = 12;
+const PRODUCTION_LIKE_DIGEST_ACCOUNTS = 12_000;
+const SEARCH_USAGE_WORKING_SET_MIB = 12;
+const DIGEST_FANOUT_WORKING_SET_MIB = 24;
+const SEARCH_USAGE_SCAN_HOLD_MS = HOLD_MS * 4;
 const MEMORY_BUDGET_MIB = 36;
 
 function allocateFixture(megabytes, label) {
@@ -67,7 +71,7 @@ async function measureScheduledPeak(cron) {
   let peakFixtureMiB = 0;
   let peakHeapMiB = 0;
 
-  const hold = async (label, megabytes, step = label) => {
+  const hold = async (label, megabytes, step = label, durationMs = HOLD_MS, details = {}) => {
     const fixture = allocateFixture(megabytes, label);
     active.set(label, fixture);
     peakConcurrent = Math.max(peakConcurrent, active.size);
@@ -81,14 +85,22 @@ async function measureScheduledPeak(cron) {
     );
     stepPeaks.set(step, Math.max(stepPeaks.get(step) || 0, fixtureMiB));
     peakHeapMiB = Math.max(peakHeapMiB, process.memoryUsage().heapUsed / 1024 / 1024);
-    observations.push({ label, step, concurrent: active.size, fixtureMiB, heapMiB: peakHeapMiB });
-    await new Promise((resolve) => setTimeout(resolve, HOLD_MS));
+    observations.push({ label, step, concurrent: active.size, fixtureMiB, heapMiB: peakHeapMiB, ...details });
+    await new Promise((resolve) => setTimeout(resolve, durationMs));
     active.delete(label);
     globalThis.gc?.();
   };
 
+  const searchUsageWorkingSetMiB = cron === "0 13 * * *" ? SEARCH_USAGE_WORKING_SET_MIB : 6;
+  const searchUsageHoldMs = cron === "0 13 * * *" ? SEARCH_USAGE_SCAN_HOLD_MS : HOLD_MS;
   const worker = scheduledWorker({
-    refreshPublicSearchUsageSnapshot: () => hold("search-usage", 6),
+    refreshPublicSearchUsageSnapshot: () => hold(
+      "search-usage",
+      searchUsageWorkingSetMiB,
+      "search-usage",
+      searchUsageHoldMs,
+      { productionLikeRecords: PRODUCTION_LIKE_DIGEST_ACCOUNTS },
+    ),
     reconcileStaleDigestShadowRebuilds: () => hold("shadow-reconcile", 12),
     recoverStalledDigestShadowRuns: () => hold("shadow-recovery", 12),
     startMorningZapOutcomes: (ctx, _env, _runId, _refresh, _logger, _lookup, options) => {
@@ -112,7 +124,13 @@ async function measureScheduledPeak(cron) {
     },
     refreshMeetingOutcomes: () => cron === "0 8 * * *" ? hold("meeting-outcomes", 18) : {},
     runAlerts: async () => {
-      await hold("digest", 24);
+      await hold(
+        cron === "0 13 * * *" ? "digest-fanout" : "digest",
+        DIGEST_FANOUT_WORKING_SET_MIB,
+        "digest-fanout",
+        HOLD_MS,
+        { productionLikeAccounts: PRODUCTION_LIKE_DIGEST_ACCOUNTS },
+      );
       return { receipt: { sent: 0, enqueued: 0 } };
     },
   });
@@ -151,6 +169,21 @@ for (const cron of ["0 8 * * *", "0 13 * * *"]) {
       assert.ok(
         result.stepPeaks["morning-zap"] < MEMORY_BUDGET_MIB,
         `08:00 morning-zap peak ${result.stepPeaks["morning-zap"]?.toFixed(1)} MiB; observations=${JSON.stringify(result.observations)}`,
+      );
+    } else {
+      assert.ok(
+        result.stepPeaks["digest-fanout"] < MEMORY_BUDGET_MIB,
+        `13:00 digest fan-out peak ${result.stepPeaks["digest-fanout"]?.toFixed(1)} MiB; observations=${JSON.stringify(result.observations)}`,
+      );
+      const fanoutObservation = result.observations.find((observation) => observation.step === "digest-fanout");
+      const searchUsageObservation = result.observations.find((observation) => observation.step === "search-usage");
+      assert.equal(fanoutObservation?.productionLikeAccounts, PRODUCTION_LIKE_DIGEST_ACCOUNTS);
+      assert.equal(searchUsageObservation?.productionLikeRecords, PRODUCTION_LIKE_DIGEST_ACCOUNTS);
+      const digestIndex = result.observations.findIndex((observation) => observation.step === "digest-fanout");
+      const searchUsageIndex = result.observations.findIndex((observation) => observation.step === "search-usage");
+      assert.ok(
+        digestIndex >= 0 && searchUsageIndex > digestIndex,
+        `13:00 search-usage scan must follow digest fan-out; observations=${JSON.stringify(result.observations)}`,
       );
     }
   });
