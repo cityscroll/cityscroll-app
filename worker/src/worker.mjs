@@ -603,18 +603,20 @@ const worker = {
 
   async runScheduled(event, env, ctx) {
     const runId = `worker:${event.cron}:${new Date().toISOString()}`;
-    // Each scheduled window starts the receipt-only public summary independently.
-    // Early-return branches, delivery errors, and slow publisher refreshes must not
-    // prevent a publication attempt. It remains a retained, low-memory side task;
-    // the heavier shadow maintenance is sequenced below before branch work starts.
-    const searchUsageRefresh = (async () => {
+    // Each scheduled window refreshes the receipt-only public summary independently.
+    // The 13:00 receipt scan can retain a production-sized observation set, so defer it
+    // until the delivery and scheduled refresh path have released their larger working
+    // sets. The 08:00/10:00 branches keep their existing independent refresh behavior.
+    const refreshSearchUsage = async () => {
       try {
         const r = await refreshPublicSearchUsageSnapshot(env);
         console.log("public search usage snapshot:", JSON.stringify(r));
       } catch (error) {
         console.error("public search usage refresh failed:", String(error?.message || error));
       }
-    })();
+    };
+    const deferSearchUsageRefresh = event.cron === "0 13 * * *";
+    const searchUsageRefresh = deferSearchUsageRefresh ? null : refreshSearchUsage();
     const shadowReconciliation = (async () => {
       try {
         await reconcileStaleDigestShadowRebuilds(env);
@@ -641,12 +643,16 @@ const worker = {
       }
     });
     const sharedAdvisories = shadowStartedRecovery;
-    ctx.waitUntil(Promise.all([searchUsageRefresh, sharedAdvisories]));
-    await sharedAdvisories;
-    // Morning live-derived caches. Council Events acquisition runs first so the
-    // shared meeting view, route slices, Search, Now, and later alert replay
-    // consume the same vintage instead of yesterday's snapshot.
-    if (event.cron === "0 8 * * *") {
+    ctx.waitUntil(Promise.all([
+      sharedAdvisories,
+      ...(searchUsageRefresh ? [searchUsageRefresh] : []),
+    ]));
+    try {
+      await sharedAdvisories;
+      // Morning live-derived caches. Council Events acquisition runs first so the
+      // shared meeting view, route slices, Search, Now, and later alert replay
+      // consume the same vintage instead of yesterday's snapshot.
+      if (event.cron === "0 8 * * *") {
       // Finish the lookup/outcome pair before the meeting refresh so both large
       // materializations do not share one isolate's peak working set.
       const morningZap = startMorningZapOutcomes(ctx, env, runId, refreshZapOutcomes, console, async (lookupOptions) => {
@@ -689,14 +695,14 @@ const worker = {
         label: "staffing exams", logLabel: "staffing exams",
         work: (signal) => signal ? refreshStaffingExams(env, { fetchImpl: fetchWithSignal(signal) }) : refreshStaffingExams(env),
       });
-      return;
-    }
-    // 06:00 ET rehearsal: delivery-free. Order: STARTED → budgeted advisory freshness →
-    // enqueue the checkpointed DIGEST_SHADOW_QUEUE rebuild (one digest per invocation).
-    // Mondays expand weekly subscriptions; forceInline account_builds in one isolate was the
-    // STARTED_NOT_FINISHED stall. Queue handoff is the path that completed 2026-10-12.
-    // A killed isolate after STARTED still reads as STARTED_NOT_FINISHED, never MISSING_RUN.
-    if (event.cron === "0 10 * * *") {
+        return;
+      }
+      // 06:00 ET rehearsal: delivery-free. Order: STARTED → budgeted advisory freshness →
+      // enqueue the checkpointed DIGEST_SHADOW_QUEUE rebuild (one digest per invocation).
+      // Mondays expand weekly subscriptions; forceInline account_builds in one isolate was the
+      // STARTED_NOT_FINISHED stall. Queue handoff is the path that completed 2026-10-12.
+      // A killed isolate after STARTED still reads as STARTED_NOT_FINISHED, never MISSING_RUN.
+      if (event.cron === "0 10 * * *") {
       const shadowNow = new Date(event.scheduledTime ?? Date.now());
       const shadowDay = shadowNow.toISOString().slice(0, 10);
       const shadowInvocationId = `digest-shadow:${event.cron}:${shadowNow.toISOString()}`;
@@ -814,14 +820,14 @@ const worker = {
           console.error("digest shadow failure receipt failed:", String(persistError?.message || persistError));
         }
       }
-      return;
-    }
-    // Delivery starts before advisory read-model refreshes. The stall-prone queue fan-out
-    // is fenced inside runAlerts; preparation is not mistaken for queue-write duration.
-    // STARTED lands before runAlerts so a cut-short isolate leaves incomplete-execution
-    // evidence rather than a missing ledger (which must not be read as proven non-delivery).
-    // STARTED is telemetry only: a KV rate-limit or transient put must never skip delivery.
-    console.log("digest delivery: starting");
+        return;
+      }
+      // Delivery starts before advisory read-model refreshes. The stall-prone queue fan-out
+      // is fenced inside runAlerts; preparation is not mistaken for queue-write duration.
+      // STARTED lands before runAlerts so a cut-short isolate leaves incomplete-execution
+      // evidence rather than a missing ledger (which must not be read as proven non-delivery).
+      // STARTED is telemetry only: a KV rate-limit or transient put must never skip delivery.
+      console.log("digest delivery: starting");
     const startedReceipt = await runScheduledStep("digest delivery STARTED receipt", () => (
       recordDigestDeliveryStarted(env)
     ), { timeoutMs: scheduledStepDeadlineMs(env, SCHEDULED_RECEIPT_DEADLINE_MS) });
@@ -1049,8 +1055,11 @@ const worker = {
     });
     if (activeWatches.ok) console.log("watches_active snapshot:", JSON.stringify(activeWatches.value));
     // Public /stats: refresh and edge-cache the official corpus aggregate. Fail-soft.
-    const stats = await runAdvisoryStep(env, "stats prewarm", () => prewarmStats(env, { skipCacheWrite: event.costProbe === true }));
-    if (stats.ok) console.log("stats prewarm:", JSON.stringify(stats.value));
+      const stats = await runAdvisoryStep(env, "stats prewarm", () => prewarmStats(env, { skipCacheWrite: event.costProbe === true }));
+      if (stats.ok) console.log("stats prewarm:", JSON.stringify(stats.value));
+    } finally {
+      if (deferSearchUsageRefresh) ctx.waitUntil(refreshSearchUsage());
+    }
   },
 
   // Inbound subscribe-by-email retired 2026-09-08; retain residual-traffic receipts.
