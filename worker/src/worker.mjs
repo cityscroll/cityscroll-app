@@ -141,6 +141,10 @@ const SCHEDULED_STEP_DEADLINE_MS = 90_000;
 const SCHEDULED_DIGEST_DEADLINE_MS = 120_000;
 const SCHEDULED_RECEIPT_DEADLINE_MS = 5_000;
 const MAX_CONFIGURED_SCHEDULED_STEP_DEADLINE_MS = 10 * 60_000;
+// Each Land project build retains its API and bounded SODA payloads until the
+// record is written. Keep the scheduled morning wave below the isolate peak;
+// the admin path retains its independently bounded default.
+const SCHEDULED_ZAP_PREWARM_CONCURRENCY = 2;
 
 function scheduledStepDeadlineMs(env, fallback = SCHEDULED_STEP_DEADLINE_MS) {
   const configured = Number(env?.SCHEDULED_STEP_DEADLINE_MS);
@@ -653,6 +657,7 @@ const worker = {
         }), { signal });
         console.log("land zap lookup:", JSON.stringify(r));
       }, {
+        concurrency: SCHEDULED_ZAP_PREWARM_CONCURRENCY,
         stepRunner: (label, work) => runScheduledStep(label, work, {
           timeoutMs: scheduledStepDeadlineMs(env),
         }),
