@@ -6,6 +6,9 @@ import vm from "node:vm";
 const SOURCE = readFileSync(new URL("../src/worker.mjs", import.meta.url), "utf8");
 const HOLD_MS = 25;
 const SCHEDULED_AT = "2026-10-29T08:00:00.000Z";
+const PRODUCTION_LIKE_ZAP_PROJECTS = 300;
+const ZAP_PROJECT_WORKING_SET_MIB = 12;
+const MEMORY_BUDGET_MIB = 36;
 
 function allocateFixture(megabytes, label) {
   const rows = [];
@@ -23,6 +26,7 @@ function allocateFixture(megabytes, label) {
 function scheduledWorker(overrides = {}) {
   const calls = [];
   const pending = [];
+  const morningOptions = [];
   const context = {
     Date,
     AbortController,
@@ -50,6 +54,7 @@ function scheduledWorker(overrides = {}) {
   return {
     calls,
     pending,
+    morningOptions,
     run: (cron) => context.worker.runScheduled({ cron, scheduledTime: SCHEDULED_AT }, {}, ctx),
   };
 }
@@ -57,20 +62,26 @@ function scheduledWorker(overrides = {}) {
 async function measureScheduledPeak(cron) {
   const active = new Map();
   const observations = [];
+  const stepPeaks = new Map();
   let peakConcurrent = 0;
   let peakFixtureMiB = 0;
   let peakHeapMiB = 0;
 
-  const hold = async (label, megabytes) => {
+  const hold = async (label, megabytes, step = label) => {
     const fixture = allocateFixture(megabytes, label);
     active.set(label, fixture);
     peakConcurrent = Math.max(peakConcurrent, active.size);
+    const fixtureMiB = [...active.values()].reduce(
+      (total, rows) => total + rows.length * 96 / 1024 / 1024,
+      0,
+    );
     peakFixtureMiB = Math.max(
       peakFixtureMiB,
-      [...active.values()].reduce((total, rows) => total + rows.length * 96 / 1024 / 1024, 0),
+      fixtureMiB,
     );
+    stepPeaks.set(step, Math.max(stepPeaks.get(step) || 0, fixtureMiB));
     peakHeapMiB = Math.max(peakHeapMiB, process.memoryUsage().heapUsed / 1024 / 1024);
-    observations.push({ label, concurrent: active.size, fixtureMiB: peakFixtureMiB, heapMiB: peakHeapMiB });
+    observations.push({ label, step, concurrent: active.size, fixtureMiB, heapMiB: peakHeapMiB });
     await new Promise((resolve) => setTimeout(resolve, HOLD_MS));
     active.delete(label);
     globalThis.gc?.();
@@ -80,8 +91,22 @@ async function measureScheduledPeak(cron) {
     refreshPublicSearchUsageSnapshot: () => hold("search-usage", 6),
     reconcileStaleDigestShadowRebuilds: () => hold("shadow-reconcile", 12),
     recoverStalledDigestShadowRuns: () => hold("shadow-recovery", 12),
-    startMorningZapOutcomes: (ctx) => {
-      const task = hold("morning-zap", 16);
+    startMorningZapOutcomes: (ctx, _env, _runId, _refresh, _logger, _lookup, options) => {
+      worker.morningOptions.push(options || {});
+      const concurrency = Number(options?.concurrency) || 4;
+      const task = (async () => {
+        // The real scheduled roster is capped at 300 projects. Run the same
+        // bounded waves here so a four-project wave cannot hide behind a
+        // single small placeholder fixture.
+        for (let index = 0; index < PRODUCTION_LIKE_ZAP_PROJECTS; index += concurrency) {
+          const wave = Math.min(concurrency, PRODUCTION_LIKE_ZAP_PROJECTS - index);
+          await Promise.all(Array.from({ length: wave }, (_, offset) => hold(
+            `morning-zap-${index + offset}`,
+            ZAP_PROJECT_WORKING_SET_MIB,
+            "morning-zap",
+          )));
+        }
+      })();
       ctx.waitUntil(task);
       return task;
     },
@@ -94,14 +119,21 @@ async function measureScheduledPeak(cron) {
 
   await worker.run(cron);
   await Promise.all(worker.pending);
-  return { peakConcurrent, peakFixtureMiB, peakHeapMiB, observations };
+  return {
+    peakConcurrent,
+    peakFixtureMiB,
+    peakHeapMiB,
+    stepPeaks: Object.fromEntries(stepPeaks),
+    morningOptions: worker.morningOptions,
+    observations,
+  };
 }
 
 for (const cron of ["0 8 * * *", "0 13 * * *"]) {
   test(`${cron} scheduled path stays below the Worker memory budget`, async () => {
     const result = await measureScheduledPeak(cron);
     assert.ok(
-      result.peakFixtureMiB < 36,
+      result.peakFixtureMiB < MEMORY_BUDGET_MIB,
       `${cron} fixture working set ${result.peakFixtureMiB.toFixed(1)} MiB; observations=${JSON.stringify(result.observations)}`,
     );
     if (typeof globalThis.gc === "function") {
@@ -114,5 +146,12 @@ for (const cron of ["0 8 * * *", "0 13 * * *"]) {
       result.peakConcurrent <= 2,
       `${cron} peak concurrency ${result.peakConcurrent}; observations=${JSON.stringify(result.observations)}`,
     );
+    if (cron === "0 8 * * *") {
+      assert.equal(result.morningOptions[0]?.concurrency, 2);
+      assert.ok(
+        result.stepPeaks["morning-zap"] < MEMORY_BUDGET_MIB,
+        `08:00 morning-zap peak ${result.stepPeaks["morning-zap"]?.toFixed(1)} MiB; observations=${JSON.stringify(result.observations)}`,
+      );
+    }
   });
 }
