@@ -6,19 +6,44 @@ import {
   latestMeetingDocumentDate,
   normalizeMeetingDocument,
 } from "../site/meeting_document.mjs";
-import { testClockISOString } from "./helpers/test_clock.mjs";
+import { testClockISOString, withPinnedClock } from "./helpers/test_clock.mjs";
 
-function fixtureTimestamp(now) {
-  return `${now.slice(0, 10)}T12:00:00Z`;
-}
-const fixtureObservedAt = fixtureTimestamp(testClockISOString());
+const fixtureClockISOString = testClockISOString();
+const {
+  fixtureMeetingDate,
+  fixtureObservedAt,
+  fixtureOldDocumentDate,
+  fixtureNewDocumentDate,
+  fixtureOrphanDocumentDate,
+} = await withPinnedClock(fixtureClockISOString, () => {
+  function fixtureTimestamp(now) {
+    return `${now.slice(0, 10)}T12:00:00Z`;
+  }
+  function fixtureDay(offset = 0) {
+    const date = new Date();
+    date.setUTCDate(date.getUTCDate() + offset);
+    return date.toISOString().slice(0, 10);
+  }
+  const fixtureMeetingDate = fixtureDay(-2);
+  const fixtureObservedAt = fixtureTimestamp(fixtureDay(-5));
+  const fixtureOldDocumentDate = fixtureDay(-365);
+  const fixtureNewDocumentDate = fixtureDay(-1);
+  const fixtureOrphanDocumentDate = fixtureDay(-3);
+  return {
+    fixtureMeetingDate,
+    fixtureObservedAt,
+    fixtureOldDocumentDate,
+    fixtureNewDocumentDate,
+    fixtureOrphanDocumentDate,
+  };
+});
 const receipt = { status: "ok", observed_at: fixtureObservedAt };
 const meeting = {
   meeting_id: "meeting:community_board:event-1",
   source_system: "community_board",
   publisher_identifier: "event-1",
   board_id: "bronx-cb-06",
-  event_date: "2026-08-12",
+  event_date: fixtureMeetingDate,
   title: "Bronx Community Board 6 meeting",
 };
 
@@ -28,7 +53,7 @@ function document(fields = {}) {
     document_id: "minutes-1",
     document_url: "https://board.example/minutes-1.pdf",
     board_id: "bronx-cb-06",
-    meeting_date: "2026-08-12",
+    meeting_date: fixtureMeetingDate,
     format: "pdf",
     observed_receipt: receipt,
     ...fields,
@@ -75,9 +100,9 @@ test("an unavailable keyed source remains visible as unavailable without a meeti
 
 test("latest minutes date is derived only from attached records", () => {
   const result = attachMeetingDocuments([meeting], [
-    document({ document_id: "minutes-old", meeting_id: meeting.meeting_id, meeting_date: "2021-04-29" }),
-    document({ document_id: "minutes-new", meeting_id: meeting.meeting_id, meeting_date: "2026-07-29" }),
-    document({ document_id: "minutes-orphan", meeting_date: "2026-08-01" }),
+    document({ document_id: "minutes-old", meeting_id: meeting.meeting_id, meeting_date: fixtureOldDocumentDate }),
+    document({ document_id: "minutes-new", meeting_id: meeting.meeting_id, meeting_date: fixtureNewDocumentDate }),
+    document({ document_id: "minutes-orphan", meeting_date: fixtureOrphanDocumentDate }),
   ]);
-  assert.equal(latestMeetingDocumentDate(result.documents), "2026-07-29");
+  assert.equal(latestMeetingDocumentDate(result.documents), fixtureNewDocumentDate);
 });

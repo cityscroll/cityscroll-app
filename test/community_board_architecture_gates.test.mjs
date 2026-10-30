@@ -35,14 +35,28 @@ import {
 import { meetingIdForSource, normalizeCommunityBoardMeeting } from "../site/meeting_object_contract.mjs";
 import { buildPeopleOrganizationsReadModel } from "../site/people_organizations_read_model.mjs";
 import { renderPeopleOrganizationRow } from "../site/browse_concept_view.mjs";
-import { testClockISOString } from "./helpers/test_clock.mjs";
+import { testClockISOString, withPinnedClock } from "./helpers/test_clock.mjs";
 
 const sourceRegistry = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/source_registry.json", import.meta.url), "utf8"));
 const boundaries = JSON.parse(readFileSync(new URL("../site/data/district_boundaries.json", import.meta.url), "utf8"));
-function fixtureTimestamp(now) {
-  return `${now.slice(0, 10)}T12:00:00Z`;
-}
-const fixtureObservedAt = fixtureTimestamp(testClockISOString());
+const fixtureClockISOString = testClockISOString();
+const {
+  fixtureEventDate,
+  fixtureObservedDate,
+  fixtureObservedAt,
+  fixtureCityRecordId,
+} = await withPinnedClock(fixtureClockISOString, () => {
+  function fixtureDay(offset = 0) {
+    const date = new Date();
+    date.setUTCDate(date.getUTCDate() + offset);
+    return date.toISOString().slice(0, 10);
+  }
+  const fixtureEventDate = fixtureDay(-2);
+  const fixtureObservedDate = fixtureDay(-5);
+  const fixtureObservedAt = `${fixtureObservedDate}T12:00:00Z`;
+  const fixtureCityRecordId = `${fixtureEventDate.replaceAll("-", "")}01`;
+  return { fixtureEventDate, fixtureObservedDate, fixtureObservedAt, fixtureCityRecordId };
+});
 
 const people = { by_person_id: {
   "7801": { person_id: "7801", person_name: "Ada Lovelace" },
@@ -54,16 +68,16 @@ const committeeRegistry = {
     committee_id: "transportation",
     publisher_name: "Transportation Committee",
     source_url: "https://cbsix.org/meetings-calendar/",
-    observed_on: "2026-08-25",
+    observed_on: fixtureObservedDate,
   }],
 };
 
 const boardMeeting = {
   source_system: "community_board",
-  publisher_identifier: "cb6-transport-2026-09-02",
-  source_record_id: "cb6-transport-2026-09-02",
+  publisher_identifier: `cb6-transport-${fixtureEventDate}`,
+  source_record_id: `cb6-transport-${fixtureEventDate}`,
   board_id: "manhattan-cb-06",
-  event_date: "2026-09-02",
+  event_date: fixtureEventDate,
   title: "Transportation Committee Meeting",
 };
 
@@ -71,34 +85,34 @@ const boardRecord = {
   board_id: "manhattan-cb-06",
   body_id: "manhattan-cb-06",
   source_url: "https://cbsix.org/meetings-calendar/",
-  source_record_id: "cb6-transport-2026-09-02",
-  record_id: "cb6-transport-2026-09-02",
-  date: "2026-09-02",
-  publisher_identifier: "cb6-transport-2026-09-02",
+  source_record_id: `cb6-transport-${fixtureEventDate}`,
+  record_id: `cb6-transport-${fixtureEventDate}`,
+  date: fixtureEventDate,
+  publisher_identifier: `cb6-transport-${fixtureEventDate}`,
   title: "Transportation Committee Meeting",
   committee: { name: "Transportation Committee" },
-  observed_receipt: { status: "ok", observed_at: "2026-08-25T12:00:00Z" },
+  observed_receipt: { status: "ok", observed_at: fixtureObservedAt },
 };
 
 function acceptedCityRecordMeeting(title = "Public hearing on a neighborhood matter") {
   const meeting = {
     source_system: "city_record",
-    request_id: "20260814001",
-    publisher_identifier: "20260814001",
-    meeting_id: "meeting:city_record:20260814001",
+    request_id: fixtureCityRecordId,
+    publisher_identifier: fixtureCityRecordId,
+    meeting_id: `meeting:city_record:${fixtureCityRecordId}`,
     body_id: "bronx-cb-01",
-    event_date: "2026-08-12",
+    event_date: fixtureEventDate,
     title,
   };
   const record = {
     board_id: "bronx-cb-01",
     body_id: "bronx-cb-01",
     source_url: "https://board.example/calendar",
-    source_record_id: "event-2026-08-12-1",
-    record_id: "event-2026-08-12-1",
+    source_record_id: `event-${fixtureEventDate}-1`,
+    record_id: `event-${fixtureEventDate}-1`,
     record_kind: "event",
-    date: "2026-08-12",
-    publisher_identifier: "20260814001",
+    date: fixtureEventDate,
+    publisher_identifier: fixtureCityRecordId,
     title,
     observed_receipt: { status: "ok", observed_at: fixtureObservedAt },
   };
@@ -125,12 +139,12 @@ function validPersonObservation(overrides = {}) {
     person_name: "Ada Lovelace",
     relation: "member_of",
     role: "appointed_member",
-    relation_date: "2026-08-25",
+    relation_date: fixtureObservedDate,
     source_document: {
-      publisher_document_id: "cb6-roster-2026-08-25",
+      publisher_document_id: `cb6-roster-${fixtureObservedDate}`,
       document_url: "https://cbsix.org/about-us/board-members-and-staff/",
-      date: "2026-08-25",
-      observed_receipt: { status: "ok", observed_at: "2026-08-25T12:00:00Z" },
+      date: fixtureObservedDate,
+      observed_receipt: { status: "ok", observed_at: fixtureObservedAt },
     },
     ...overrides,
   };
@@ -170,13 +184,13 @@ test("gate 02: Council official identities remain keyed by PersonId", () => {
 test("gate 03: Community Board meeting identities remain source-qualified", () => {
   const first = normalizeCommunityBoardMeeting({ ...boardMeeting, title: "Transportation Committee Meeting" });
   const renamed = normalizeCommunityBoardMeeting({ ...boardMeeting, title: "Transportation and Environment" });
-  assert.equal(meetingIdForSource("community_board", "cb6-transport-2026-09-02"), "meeting:community_board:cb6-transport-2026-09-02");
+  assert.equal(meetingIdForSource("community_board", boardMeeting.publisher_identifier), `meeting:community_board:${boardMeeting.publisher_identifier}`);
   assert.equal(renamed.meeting_id, first.meeting_id);
   assert.notEqual(first.meeting_id, "community-board-committee:manhattan-cb-06:transportation");
 });
 
 test("gate 04: Community District and Council District membership stays many-to-many", () => {
-  const geography = buildCommunityBoardGeography({ sourceRegistry, boundaries, observedAt: "2026-08-12T00:00:00.000Z" });
+  const geography = buildCommunityBoardGeography({ sourceRegistry, boundaries, observedAt: `${fixtureEventDate}T00:00:00.000Z` });
   const intersections = geography.public_edges.filter((edge) => edge.type === "intersects");
   const councilIdsByCommunityDistrict = new Map();
   for (const edge of intersections) {
@@ -214,13 +228,13 @@ test("gate 07: every materialized Community Board edge carries inspectable prove
   const institutionEdges = buildCommunityBoardInstitutionEdges([{ meeting: boardMeeting, source_record: boardRecord }], { committeeRegistry });
   const personEdge = promoteCommunityBoardPersonRoleEdge(validPersonObservation());
   const bylawEdge = buildCommunityBoardBylawGraph({ versions: [{
-    id: "bylaw-version:manhattan-cb-06:2026",
+    id: `bylaw-version:manhattan-cb-06:${fixtureObservedDate}`,
     board_id: "manhattan-cb-06",
     source_url: "https://cbsix.org/bylaws/2026.pdf",
     publisher: "Manhattan Community Board 6",
-    publisher_document_id: "cb6-bylaws-2026",
-    observed_on: "2026-08-25",
-    receipt: { status: "ok", source_url: "https://cbsix.org/bylaws/2026.pdf", observed_at: "2026-08-25T12:00:00Z" },
+    publisher_document_id: `cb6-bylaws-${fixtureObservedDate}`,
+    observed_on: fixtureObservedDate,
+    receipt: { status: "ok", source_url: "https://cbsix.org/bylaws/2026.pdf", observed_at: fixtureObservedAt },
     rules: [],
   }] }).edges[0];
   assert.equal(institutionEdges.length, 2);
@@ -273,7 +287,7 @@ test("gate 11: hearing form and convening body remain orthogonal", () => {
     to: "meeting:community_board:hearing-1",
     committee_name: "Transportation Committee",
     parent_board_ref: "community-board:manhattan-cb-06",
-    provenance: { source_url: "https://cbsix.org/meetings-calendar/", observed_at: "2026-08-25T12:00:00Z" },
+    provenance: { source_url: "https://cbsix.org/meetings-calendar/", observed_at: fixtureObservedAt },
   }, { meeting_family: "public_hearing" });
   assert.equal(host.host_kind, "community-board-committee");
   assert.equal(host.proceeding_form, "public_hearing");

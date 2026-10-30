@@ -14,20 +14,31 @@ import {
 } from "../site/community_board_institution_edges.mjs";
 import { normalizeEntityPivot } from "../site/edge_summary.mjs";
 import { readFileSync } from "node:fs";
-import { testClockISOString } from "./helpers/test_clock.mjs";
+import { testClockISOString, withPinnedClock } from "./helpers/test_clock.mjs";
 
 const committeeRegistry = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/community_board_committees.json", import.meta.url)));
-function fixtureTimestamp(now) {
-  return `${now.slice(0, 10)}T12:00:00Z`;
-}
-const fixtureObservedAt = fixtureTimestamp(testClockISOString());
+const fixtureClockISOString = testClockISOString();
+const { fixtureEventDate, fixtureObservedAt, fixtureCityRecordId } = await withPinnedClock(fixtureClockISOString, () => {
+  function fixtureTimestamp(now) {
+    return `${now.slice(0, 10)}T12:00:00Z`;
+  }
+  function fixtureDay(offset = 0) {
+    const date = new Date();
+    date.setUTCDate(date.getUTCDate() + offset);
+    return date.toISOString().slice(0, 10);
+  }
+  const fixtureEventDate = fixtureDay(-2);
+  const fixtureObservedAt = fixtureTimestamp(fixtureDay(-5));
+  const fixtureCityRecordId = `${fixtureEventDate.replaceAll("-", "")}01`;
+  return { fixtureEventDate, fixtureObservedAt, fixtureCityRecordId };
+});
 
 const meeting = {
-  request_id: "20260814001",
-  meeting_id: "meeting:city_record:20260814001",
+  request_id: fixtureCityRecordId,
+  meeting_id: `meeting:city_record:${fixtureCityRecordId}`,
   source_system: "city_record",
   body_id: "bronx-cb-01",
-  event_date: "2026-08-12",
+  event_date: fixtureEventDate,
   short_title: "Public hearing on a neighborhood matter",
   matter_tokens: ["C260001ZSM"],
 };
@@ -36,9 +47,9 @@ const source = {
   board_id: "bronx-cb-01",
   body_id: "bronx-cb-01",
   source_url: "https://board.example/calendar",
-  source_record_id: "event-2026-08-12-1",
-  record_id: "event-2026-08-12-1",
-  date: "2026-08-12",
+  source_record_id: `event-${fixtureEventDate}-1`,
+  record_id: `event-${fixtureEventDate}-1`,
+  date: fixtureEventDate,
   publisher_identifier: "C260001ZSM",
   title: "Public hearing on a neighborhood matter",
   observed_receipt: { status: "ok", observed_at: fixtureObservedAt },
@@ -53,9 +64,9 @@ test("exact board/date/publisher join promotes a typed edge to the canonical mee
   const edge = acceptedEdge();
   assert.equal(edge.status, "promoted");
   assert.equal(edge.from, "community-board:bronx-cb-01");
-  assert.equal(edge.to, "meeting:city_record:20260814001");
+  assert.equal(edge.to, meeting.meeting_id);
   assert.equal(edge.target_kind, "meeting");
-  assert.equal(edge.href, "/meetings/meeting%3Acity_record%3A20260814001");
+  assert.equal(edge.href, `/meetings/${encodeURIComponent(meeting.meeting_id)}`);
   assert.equal(edge.board_href, "/community-boards/bronx-cb-01/");
   assert.equal(normalizeEntityPivot(edge).status, "accepted");
 });
@@ -90,7 +101,7 @@ test("accepted identity is shared by Browse and the board institution page", () 
   }));
   assert.match(browse, /hosted by community board/);
   assert.match(browse, /\/community-boards\/bronx-cb-01\//);
-  assert.match(browse, /\/meetings\/meeting%3Acity_record%3A20260814001/);
+  assert.match(browse, new RegExp(`/meetings/${encodeURIComponent(meeting.meeting_id)}`));
 
   const view = buildCommunityBoardConstellationView("bronx-cb-01", {
     sourceRegistry: { sources: [{ body_id: "bronx-cb-01", body_type: "community_board", name: "Bronx Community Board 1", borough: "Bronx" }] },
@@ -103,7 +114,7 @@ test("accepted identity is shared by Browse and the board institution page", () 
   assert.equal(meetings.status, "matched");
   assert.equal(meetings.count, 1);
   assert.equal(meetings.items[0].href, edge.href);
-  assert.match(renderCommunityBoardConstellationDocument(view), /\/meetings\/meeting%3Acity_record%3A20260814001/);
+  assert.match(renderCommunityBoardConstellationDocument(view), new RegExp(`/meetings/${encodeURIComponent(meeting.meeting_id)}`));
 });
 
 test("a reviewed committee inserts has_committee before the unchanged meeting identity", () => {
@@ -111,7 +122,7 @@ test("a reviewed committee inserts has_committee before the unchanged meeting id
     ...source,
     board_id: "manhattan-cb-06",
     body_id: "manhattan-cb-06",
-    date: "2026-08-12",
+    date: fixtureEventDate,
     title: "Transportation Committee Meeting",
     publisher_identifier: "cb6-event-1",
     source_record_id: "cb6-event-1",
@@ -122,7 +133,7 @@ test("a reviewed committee inserts has_committee before the unchanged meeting id
     meeting_id: "meeting:community_board:cb6-event-1",
     board_id: "manhattan-cb-06",
     publisher_identifier: "cb6-event-1",
-    event_date: "2026-08-12",
+    event_date: fixtureEventDate,
     title: "Transportation Committee Meeting",
   };
   const edges = buildCommunityBoardInstitutionEdges([
@@ -146,7 +157,7 @@ test("full-board and unresolved joint meetings retain the board host without a s
       meeting_id: "meeting:community_board:cb6-full",
       board_id: "manhattan-cb-06",
       publisher_identifier: "cb6-full",
-      event_date: "2026-08-12",
+      event_date: fixtureEventDate,
       title: "Full Board Meeting",
     },
     source_record: {
@@ -155,7 +166,7 @@ test("full-board and unresolved joint meetings retain the board host without a s
       body_id: "manhattan-cb-06",
       body_evidence: { board_id: "manhattan-cb-06", basis: "publisher_record" },
       title: "Full Board Meeting",
-      date: "2026-08-12",
+      date: fixtureEventDate,
       publisher_identifier: "cb6-full",
       source_record_id: "cb6-full",
     },
