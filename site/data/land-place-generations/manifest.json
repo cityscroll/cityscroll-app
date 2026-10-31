@@ -1,9 +1,9 @@
 {
   "schema": "cityscroll.land_place_generation_manifest.v1",
-  "generation_id": "d8da6c8623aa4d7659bc2b8b1ef43b6aabb2f44090ee55ec0bbf6ce7a00076e8",
-  "built_at": "2026-10-22T20:20:44.090Z",
+  "generation_id": "75bff843ef17e5691e99906b905c6b2cb9ac0f060fef70af1d4939fbd2a3fea8",
+  "built_at": "2026-10-31T13:41:45.511Z",
   "input_hashes": {
-    "aggregate": "44060fb6ff10cc8b4b20a6a6007e60dcc8336687cc94bc1349f95ae3e489c10b",
+    "aggregate": "94c6eb28e6ef14c78fd35f401294b7f829020907425e8a296e73a7dabd3b4fab",
     "boundary_vintages": {
       "borough": "2026-05-26",
       "community_district": "2026-05-26",
@@ -15,9 +15,9 @@
     "address_index_identity": "8e09a17cbe4b957e7d2905852cb10b7295ddf814f7defdceccca75685550687b"
   },
   "source_dates": {
-    "catalog_content_id": "fnv1a32:9e9ee683:244",
-    "catalog_materialized_at": "2026-10-22T20:20:44.090Z",
-    "catalog_generated_at": "2026-10-22T19:59:40.125Z",
+    "catalog_content_id": "fnv1a32:571758aa:244",
+    "catalog_materialized_at": "2026-10-31T13:41:45.511Z",
+    "catalog_generated_at": "2026-10-31T13:24:11.326Z",
     "bbl_materialized_at": "2026-10-05T17:35:26.970Z",
     "parcel_coordinate_vintage": "pluto_25v4",
     "boundary_vintages": {
@@ -31,17 +31,17 @@
   "project_count": 244,
   "consumers": {
     "index": {
-      "generation_id": "d8da6c8623aa4d7659bc2b8b1ef43b6aabb2f44090ee55ec0bbf6ce7a00076e8",
-      "content_sha256": "261eaf07d1242d3ea59312dc9cd3fc2c4040ac6d58f175864122883dc9d4ccec"
+      "generation_id": "75bff843ef17e5691e99906b905c6b2cb9ac0f060fef70af1d4939fbd2a3fea8",
+      "content_sha256": "654e07fa372470917f51d0a49eb9c066a2f7d12edfa812a4371b6bed625ea6f0"
     },
     "evidence": {
-      "generation_id": "d8da6c8623aa4d7659bc2b8b1ef43b6aabb2f44090ee55ec0bbf6ce7a00076e8",
-      "content_sha256": "6747bca675f2ea81289be3974a7001b54c51c0913d8a6324006f6f7e24eedecc"
+      "generation_id": "75bff843ef17e5691e99906b905c6b2cb9ac0f060fef70af1d4939fbd2a3fea8",
+      "content_sha256": "ae3817edfc7b3951e5f562efbae197c708ea21d21a1426566129fe25e2f25b37"
     },
     "reverse": {
-      "generation_id": "d8da6c8623aa4d7659bc2b8b1ef43b6aabb2f44090ee55ec0bbf6ce7a00076e8",
+      "generation_id": "75bff843ef17e5691e99906b905c6b2cb9ac0f060fef70af1d4939fbd2a3fea8",
       "content_sha256": "aba14e86190abf28ae6a452ec81add8387b42258e091ba8e16937ba1ab867e4e"
     }
   },
-  "active_generation": "d8da6c8623aa4d7659bc2b8b1ef43b6aabb2f44090ee55ec0bbf6ce7a00076e8"
+  "active_generation": "75bff843ef17e5691e99906b905c6b2cb9ac0f060fef70af1d4939fbd2a3fea8"
 }

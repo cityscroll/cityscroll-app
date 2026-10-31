@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-10-22T19:59:40.125Z",
+  "generated_at": "2026-10-31T13:24:11.326Z",
   "source": {
     "name": "Zoning Application Portal projects (Open Data)",
     "dataset": "hgx4-8ukb",
@@ -1475,9 +1475,9 @@
         "filled": true,
         "stage_observation": {
           "source_system": "zap_project_api",
-          "observed_at": "2026-10-22T08:00:11.139Z"
+          "observed_at": "2026-10-31T08:00:13.522Z"
         },
-        "generated_at": "2026-10-22T08:00:11.139Z",
+        "generated_at": "2026-10-31T08:00:13.522Z",
         "open_data": {
           "project_id": "2026R0127",
           "public_status": "In Public Review",
@@ -1490,7 +1490,7 @@
           "source_observation": {
             "source_system": "zap_projects_open_data",
             "observation_status": "observed",
-            "observed_at": "2026-10-22T08:00:06.014Z"
+            "observed_at": "2026-10-31T08:00:06.723Z"
           },
           "lookup_path": "warehouse"
         },
@@ -1617,9 +1617,9 @@
         "filled": true,
         "stage_observation": {
           "source_system": "zap_project_api",
-          "observed_at": "2026-10-22T08:00:12.873Z"
+          "observed_at": "2026-10-31T08:00:26.122Z"
         },
-        "generated_at": "2026-10-22T08:00:12.873Z",
+        "generated_at": "2026-10-31T08:00:26.122Z",
         "open_data": {
           "project_id": "2024M0244",
           "public_status": "In Public Review",
@@ -1632,7 +1632,7 @@
           "source_observation": {
             "source_system": "zap_projects_open_data",
             "observation_status": "observed",
-            "observed_at": "2026-10-22T08:00:06.014Z"
+            "observed_at": "2026-10-31T08:00:06.723Z"
           },
           "lookup_path": "warehouse"
         },
@@ -1678,9 +1678,9 @@
         "filled": true,
         "stage_observation": {
           "source_system": "zap_project_api",
-          "observed_at": "2026-10-20T08:00:32.655Z"
+          "observed_at": "2026-10-31T08:00:39.048Z"
         },
-        "generated_at": "2026-10-20T08:00:32.655Z",
+        "generated_at": "2026-10-31T08:00:39.048Z",
         "open_data": {
           "project_id": "2024K0358",
           "public_status": "In Public Review",
@@ -1693,7 +1693,7 @@
           "source_observation": {
             "source_system": "zap_projects_open_data",
             "observation_status": "observed",
-            "observed_at": "2026-10-20T08:00:06.158Z"
+            "observed_at": "2026-10-31T08:00:06.723Z"
           },
           "lookup_path": "warehouse"
         },
@@ -1711,9 +1711,9 @@
         "filled": true,
         "stage_observation": {
           "source_system": "zap_project_api",
-          "observed_at": "2026-10-22T08:00:27.164Z"
+          "observed_at": "2026-10-31T08:00:39.201Z"
         },
-        "generated_at": "2026-10-22T08:00:27.164Z",
+        "generated_at": "2026-10-31T08:00:39.201Z",
         "open_data": {
           "project_id": "2023M0213",
           "public_status": "In Public Review",
@@ -1726,7 +1726,7 @@
           "source_observation": {
             "source_system": "zap_projects_open_data",
             "observation_status": "observed",
-            "observed_at": "2026-10-22T08:00:06.014Z"
+            "observed_at": "2026-10-31T08:00:06.723Z"
           },
           "lookup_path": "warehouse"
         },
@@ -1771,9 +1771,9 @@
         "filled": true,
         "stage_observation": {
           "source_system": "zap_project_api",
-          "observed_at": "2026-10-22T08:00:11.424Z"
+          "observed_at": "2026-10-31T08:00:25.832Z"
         },
-        "generated_at": "2026-10-22T08:00:11.424Z",
+        "generated_at": "2026-10-31T08:00:25.832Z",
         "open_data": {
           "project_id": "2025K0287",
           "public_status": "In Public Review",
@@ -1786,7 +1786,7 @@
           "source_observation": {
             "source_system": "zap_projects_open_data",
             "observation_status": "observed",
-            "observed_at": "2026-10-22T08:00:06.014Z"
+            "observed_at": "2026-10-31T08:00:06.723Z"
           },
           "lookup_path": "warehouse"
         },
@@ -1860,9 +1860,9 @@
         "filled": true,
         "stage_observation": {
           "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:06:45.601Z"
+          "observed_at": "2026-10-31T08:01:30.738Z"
         },
-        "generated_at": "2026-10-17T03:06:45.601Z",
+        "generated_at": "2026-10-31T08:01:30.738Z",
         "open_data": {
           "project_id": "2023M0116",
           "public_status": "In Public Review",
@@ -1872,13 +1872,18 @@
           "actions": "ZS; LD",
           "ulurp_numbers": "250336ZSM; 250337LDM",
           "ulurp_non": "ULURP",
+          "source_observation": {
+            "source_system": "zap_projects_open_data",
+            "observation_status": "observed",
+            "observed_at": "2026-10-31T08:00:06.723Z"
+          },
           "lookup_path": "warehouse"
         },
         "snapshot_state": "present"
       },
       "2024Q0219": {
         "project_id": "2024Q0219",
-        "public_status": "In Public Review",
+        "public_status": "Completed",
         "portal_url": "https://zap.planning.nyc.gov/projects/2024Q0219",
         "join": {
           "matched": true,
@@ -1888,9 +1893,9 @@
         "filled": true,
         "stage_observation": {
           "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:06:32.910Z"
+          "observed_at": "2026-10-31T08:01:17.964Z"
         },
-        "generated_at": "2026-10-17T03:06:32.910Z",
+        "generated_at": "2026-10-31T08:01:17.964Z",
         "open_data": {
           "project_id": "2024Q0219",
           "public_status": "In Public Review",
@@ -1900,6 +1905,11 @@
           "actions": "ZM; ZR",
           "ulurp_numbers": "250329ZMQ; N250330ZRQ",
           "ulurp_non": "ULURP",
+          "source_observation": {
+            "source_system": "zap_projects_open_data",
+            "observation_status": "observed",
+            "observed_at": "2026-10-31T08:00:06.723Z"
+          },
           "lookup_path": "warehouse"
         },
         "snapshot_state": "present"
@@ -1916,9 +1926,9 @@
         "filled": true,
         "stage_observation": {
           "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:06:25.383Z"
+          "observed_at": "2026-10-31T08:01:04.782Z"
         },
-        "generated_at": "2026-10-17T03:06:25.383Z",
+        "generated_at": "2026-10-31T08:01:04.782Z",
         "open_data": {
           "project_id": "2026R0186",
           "public_status": "In Public Review",
@@ -1928,6 +1938,11 @@
           "actions": "PC",
           "ulurp_numbers": "260248PCR",
           "ulurp_non": "ULURP",
+          "source_observation": {
+            "source_system": "zap_projects_open_data",
+            "observation_status": "observed",
+            "observed_at": "2026-10-31T08:00:06.723Z"
+          },
           "lookup_path": "warehouse"
         },
         "snapshot_state": "present"
@@ -1972,9 +1987,9 @@
         "filled": true,
         "stage_observation": {
           "source_system": "zap_project_api",
-          "observed_at": "2026-10-22T08:00:27.320Z"
+          "observed_at": "2026-10-31T08:00:52.435Z"
         },
-        "generated_at": "2026-10-22T08:00:27.320Z",
+        "generated_at": "2026-10-31T08:00:52.435Z",
         "open_data": {
           "project_id": "2023X0149",
           "public_status": "In Public Review",
@@ -1987,7 +2002,7 @@
           "source_observation": {
             "source_system": "zap_projects_open_data",
             "observation_status": "observed",
-            "observed_at": "2026-10-22T08:00:06.014Z"
+            "observed_at": "2026-10-31T08:00:06.723Z"
           },
           "lookup_path": "warehouse"
         },
@@ -2033,9 +2048,9 @@
         "filled": true,
         "stage_observation": {
           "source_system": "zap_project_api",
-          "observed_at": "2026-10-22T08:00:27.879Z"
+          "observed_at": "2026-10-31T08:00:51.641Z"
         },
-        "generated_at": "2026-10-22T08:00:27.879Z",
+        "generated_at": "2026-10-31T08:00:51.641Z",
         "open_data": {
           "project_id": "2025Q0142",
           "public_status": "In Public Review",
@@ -2048,7 +2063,7 @@
           "source_observation": {
             "source_system": "zap_projects_open_data",
             "observation_status": "observed",
-            "observed_at": "2026-10-22T08:00:06.014Z"
+            "observed_at": "2026-10-31T08:00:06.723Z"
           },
           "lookup_path": "warehouse"
         },
@@ -2066,9 +2081,9 @@
         "filled": true,
         "stage_observation": {
           "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:06:47.541Z"
+          "observed_at": "2026-10-31T08:01:32.849Z"
         },
-        "generated_at": "2026-10-17T03:06:47.541Z",
+        "generated_at": "2026-10-31T08:01:32.849Z",
         "open_data": {
           "project_id": "2025Q0247",
           "public_status": "In Public Review",
@@ -2078,6 +2093,11 @@
           "actions": "ZM; ZR",
           "ulurp_numbers": "260186ZMQ; 260187ZRQ",
           "ulurp_non": "ULURP",
+          "source_observation": {
+            "source_system": "zap_projects_open_data",
+            "observation_status": "observed",
+            "observed_at": "2026-10-31T08:00:06.723Z"
+          },
           "lookup_path": "warehouse"
         },
         "snapshot_state": "present"
@@ -2150,9 +2170,9 @@
         "filled": true,
         "stage_observation": {
           "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:06:26.236Z"
+          "observed_at": "2026-10-31T08:01:04.921Z"
         },
-        "generated_at": "2026-10-17T03:06:26.236Z",
+        "generated_at": "2026-10-31T08:01:04.921Z",
         "open_data": {
           "project_id": "2025Q0316",
           "public_status": "In Public Review",
@@ -2162,6 +2182,11 @@
           "actions": "PC",
           "ulurp_numbers": "C260089PCQ",
           "ulurp_non": "ULURP",
+          "source_observation": {
+            "source_system": "zap_projects_open_data",
+            "observation_status": "observed",
+            "observed_at": "2026-10-31T08:00:06.723Z"
+          },
           "lookup_path": "warehouse"
         },
         "snapshot_state": "present"

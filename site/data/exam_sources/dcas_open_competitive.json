@@ -3,82 +3,13 @@
     "id": "dcas-open-competitive",
     "name": "DCAS Open Competitive Exams for Anyone",
     "url": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
-    "verified_at": "2026-10-22",
+    "verified_at": "2026-10-31",
     "refresh_cadence": "Check daily while an application window is open; DCAS publishes a monthly schedule and may amend individual NOEs between releases.",
     "stale_after_days": 35,
     "method": "The published schedule table is read directly and cross-checked against the OASys active-exam listing. Reviewed Notice of Examination prose from the previous snapshot is carried forward only while the exam and its filing window are unchanged.",
-    "fetched_at": "2026-10-22"
+    "fetched_at": "2026-10-31"
   },
   "records": [
-    {
-      "exam_number": "7010",
-      "title": "Auto Mechanic",
-      "eligibility": "open_competitive",
-      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277010000.pdf",
-      "application_start": "2026-10-07",
-      "application_end": "2026-10-27",
-      "fee": 96,
-      "test_method": "Multiple-choice test",
-      "salary_publication": "The notice states a rate for this title rather than a yearly minimum salary."
-    },
-    {
-      "exam_number": "7011",
-      "title": "Auto Mechanic (CUNY)",
-      "eligibility": "open_competitive",
-      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277011000.pdf",
-      "application_start": "2026-10-07",
-      "application_end": "2026-10-27",
-      "fee": 96,
-      "test_method": "Multiple-choice test",
-      "salary_publication": "The notice states a rate for this title rather than a yearly minimum salary."
-    },
-    {
-      "exam_number": "7012",
-      "title": "Auto Mechanic (Diesel)",
-      "eligibility": "open_competitive",
-      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277012000.pdf",
-      "application_start": "2026-10-07",
-      "application_end": "2026-10-27",
-      "fee": 96,
-      "test_method": "Multiple-choice test",
-      "salary_publication": "The notice states a rate for this title rather than a yearly minimum salary."
-    },
-    {
-      "exam_number": "7302",
-      "title": "Correction Officer",
-      "eligibility": "open_competitive",
-      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277302000.pdf",
-      "application_start": "2026-09-02",
-      "application_end": "2026-10-27",
-      "fee": 0,
-      "salary_min": 56838,
-      "salary_max": 109352,
-      "salary_note": "Current minimum annual salary",
-      "test_method": "Multiple-choice test"
-    },
-    {
-      "exam_number": "7024",
-      "title": "Customer Information Representative",
-      "eligibility": "open_competitive",
-      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277024000.pdf",
-      "application_start": "2026-10-07",
-      "application_end": "2026-10-27",
-      "fee": 61,
-      "salary_min": 43477,
-      "salary_note": "Current minimum annual salary",
-      "test_method": "Multiple-choice test"
-    },
-    {
-      "exam_number": "7027",
-      "title": "Electrician (Automobile)",
-      "eligibility": "open_competitive",
-      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277027000.pdf",
-      "application_start": "2026-10-07",
-      "application_end": "2026-10-27",
-      "fee": 96,
-      "test_method": "Multiple-choice test",
-      "salary_publication": "The notice states a rate for this title rather than a yearly minimum salary."
-    },
     {
       "exam_number": "7131",
       "title": "Emergency Medical Specialist - EMT",
@@ -104,63 +35,6 @@
       "test_method": "Education and experience exam"
     },
     {
-      "exam_number": "7047",
-      "title": "Management Auditor",
-      "eligibility": "open_competitive",
-      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277047000.pdf",
-      "application_start": "2026-10-07",
-      "application_end": "2026-10-27",
-      "fee": 82,
-      "salary_min": 65091,
-      "salary_note": "Current minimum annual salary",
-      "test_method": "Multiple-choice test"
-    },
-    {
-      "exam_number": "7052",
-      "title": "Occupational Therapist (DOE)",
-      "eligibility": "open_competitive",
-      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277052000.pdf",
-      "application_start": "2026-10-07",
-      "application_end": "2026-10-27",
-      "fee": 91,
-      "salary_min": 85705,
-      "salary_note": "Current minimum annual salary",
-      "test_method": "Education and experience exam"
-    },
-    {
-      "exam_number": "7054",
-      "title": "Physical Therapist (DOE)",
-      "eligibility": "open_competitive",
-      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277054000.pdf",
-      "application_start": "2026-10-07",
-      "application_end": "2026-10-27",
-      "fee": 91,
-      "salary_min": 85705,
-      "salary_note": "Current minimum annual salary",
-      "test_method": "Education and experience exam"
-    },
-    {
-      "exam_number": "7307",
-      "title": "Police Communications Technician",
-      "eligibility": "open_competitive",
-      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277307000.pdf",
-      "application_start": "2026-09-02",
-      "application_end": "2026-10-13",
-      "fee": 68,
-      "salary_min": 51790,
-      "salary_note": "Current minimum annual salary",
-      "test_method": "Multiple-choice test"
-    },
-    {
-      "exam_number": "7314",
-      "title": "Police Officer",
-      "eligibility": "open_competitive",
-      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277314000.pdf",
-      "application_start": "2026-10-01",
-      "application_end": "2026-10-14",
-      "salary_publication": "The notice does not state a minimum annual salary for this title."
-    },
-    {
       "exam_number": "7324",
       "title": "School Safety Agent",
       "eligibility": "open_competitive",
@@ -170,18 +44,6 @@
       "fee": 61,
       "salary_min": 40480,
       "salary_max": 58345,
-      "salary_note": "Current minimum annual salary",
-      "test_method": "Multiple-choice test"
-    },
-    {
-      "exam_number": "7329",
-      "title": "Special Officer (NYC H+H)",
-      "eligibility": "open_competitive",
-      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277329000.pdf",
-      "application_start": "2026-09-02",
-      "application_end": "2026-10-27",
-      "fee": 61,
-      "salary_min": 40480,
       "salary_note": "Current minimum annual salary",
       "test_method": "Multiple-choice test"
     }
