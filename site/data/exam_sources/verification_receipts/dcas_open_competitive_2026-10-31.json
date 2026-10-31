@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "source_contract_id": "dcas-exam-notices",
+  "authoritative_feed": {
+    "name": "DCAS Open Competitive Exams for Anyone",
+    "url": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
+    "role": "Authoritative public schedule table for currently open application windows and linked Notices of Examination (NOE) PDFs."
+  },
+  "cross_check": {
+    "id": "oasys-active-exams",
+    "url": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
+    "rows": 3,
+    "role": "Independent structured listing of open filing windows and application fees; disagreements are recorded, and the published schedule page wins."
+  },
+  "verified_at": "2026-10-31",
+  "http_status": 200,
+  "page_bytes": 23376,
+  "page_sha256": "ce16768f94a00b15c743574336232c1ec47e51fdc7f0ea1c06fac1900d5a4a47",
+  "observed_exams": [
+    {
+      "exam_number": "7131",
+      "title": "Emergency Medical Specialist - EMT",
+      "present_on_page": true,
+      "live_application_start": "2026-10-07",
+      "live_application_end": "2026-11-18",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277131000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-10-07",
+      "oasys_filing_end": "2026-11-18",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-10-07",
+      "previous_application_end": "2026-11-18",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7032",
+      "title": "Emergency Medical Specialist Trainee",
+      "present_on_page": true,
+      "live_application_start": "2026-10-07",
+      "live_application_end": "2026-11-18",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277032000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-10-07",
+      "oasys_filing_end": "2026-11-18",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-10-07",
+      "previous_application_end": "2026-11-18",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7324",
+      "title": "School Safety Agent",
+      "present_on_page": true,
+      "live_application_start": "2026-10-07",
+      "live_application_end": "2026-11-25",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277324000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-10-07",
+      "oasys_filing_end": "2026-11-25",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-10-07",
+      "previous_application_end": "2026-11-25",
+      "changed_since_previous": false
+    }
+  ],
+  "carried_detail_fields": [
+    {
+      "exam_number": "7131",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7032",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7324",
+      "fields": [
+        "salary_max",
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    }
+  ],
+  "added_exam_numbers": [],
+  "dropped_exam_numbers": [
+    "7010",
+    "7011",
+    "7012",
+    "7024",
+    "7027",
+    "7047",
+    "7052",
+    "7054",
+    "7302",
+    "7307",
+    "7314",
+    "7329"
+  ],
+  "unstated_annual_salary": [],
+  "notices_read": 3,
+  "oasys_disagreements": []
+}

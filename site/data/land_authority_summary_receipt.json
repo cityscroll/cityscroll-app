@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.land_authority_summary_receipt.v1",
   "join_version": "ldp06_authority_summary_v1",
-  "generated_at": "2026-10-22T19:59:40.125Z",
+  "generated_at": "2026-10-31T13:24:11.326Z",
   "counts": {
     "universe": 40,
     "resolved": 24,
@@ -338,7 +338,7 @@
       "procedure_resolution": "uniform",
       "current_stage_id": "ulurp_197c.city_planning_commission_review",
       "observed_status": "observed",
-      "published_next_status": "published"
+      "published_next_status": "none"
     },
     {
       "project_id": "2022K0430",
@@ -418,17 +418,17 @@
       "path": "site/data/land_default_ulurp.json",
       "count": 40,
       "vintage": {
-        "generated_at": "2026-10-22T19:59:40.125Z"
+        "generated_at": "2026-10-31T13:24:11.326Z"
       },
-      "sha256": "f48241338898b7a5e4205ccca86dc239b615269ea0661126e7f3a5702707fbcf"
+      "sha256": "19deb87a1134e67804c561c2664e7359f2726be602677bc7e2bd160ef84c23c2"
     },
     "land_outcomes_seed": {
       "path": "site/data/land_outcomes_seed.json",
       "count": 34,
       "vintage": {
-        "generated_at": "2026-10-22T19:59:40.125Z"
+        "generated_at": "2026-10-31T13:24:11.326Z"
       },
-      "sha256": "6c393747c31db82b94488dbcb6370e73d998289a941aa086edbe51e09be10559"
+      "sha256": "09cdeb08802a3933996f60964c1d8c3ebf5f108a60e10a90ac5d3d79deb2dea5"
     },
     "geography": {
       "path": "site/data/community_board_geography_lookup.json",
@@ -439,11 +439,11 @@
     },
     "upcoming_hearings": {
       "path": "site/data/land_upcoming_hearings.json",
-      "count": 150,
+      "count": 131,
       "vintage": {
-        "generated_at": "2026-10-22T20:14:02.361Z"
+        "generated_at": "2026-10-31T13:30:02.037Z"
       },
-      "sha256": "731728857cd0d689325029ef9488a305102443bfc504638711da3012a1385372"
+      "sha256": "c1009ad851a4b448306375d1bc5674ffd3267e2fc8ec588fd8bfc49785669413"
     },
     "join_keys": [
       "project_id"
@@ -452,7 +452,7 @@
   "generation": {
     "derivation": "node tools/build_land_authority_summary.mjs",
     "payload_path": "site/data/land_authority_summary.json",
-    "payload_bytes": 103536,
-    "payload_sha256": "374a73183700fec860684fd4bdf0fd635064c6f590e4c784d3e4d2c09f8e3198"
+    "payload_bytes": 102974,
+    "payload_sha256": "344d0a58b80c4063c45e7458a56156a2550f9370efe64ea9a03030bf5cc5aeed"
   }
 }
