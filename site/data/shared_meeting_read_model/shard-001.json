@@ -1,0 +1,4433 @@
+{
+  "schema": "cityscroll.shared_meeting_read_model_shard.v1",
+  "version": 1,
+  "shard_id": "001",
+  "rows": [
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2024-04-16:general-board-meeting-in-person",
+      "source_keys": [
+        {
+          "source_system": "community_board",
+          "key_type": "publisher_event_id",
+          "value": "nyc-calendar:brooklyn-cb-15:2024-04-16:general-board-meeting-in-person"
+        }
+      ],
+      "publisher_identifier": null,
+      "title": "General Board Meeting (In Person)",
+      "event_date": "2024-04-16T19:00:00-04:00",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2024-04-16T19:00:00-04:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "raw_date": "2024-04-16",
+        "raw_time": "19:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "community_board_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": {
+        "name": null,
+        "address": "Kingsborough Community College, 2001 Oriental Boulevard, Room U112 Faculty Dining Room, Brooklyn, NY 11235",
+        "mode": "in-person",
+        "components": null
+      },
+      "participation": {
+        "links": [],
+        "remote_join_url": null,
+        "emails": [],
+        "phones": [],
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "committee": null,
+      "agency": null,
+      "board_name": "Brooklyn Community Board 15",
+      "description": null,
+      "search_text": "General Board Meeting (In Person) Kingsborough Community College, 2001 Oriental Boulevard, Room U112 Faculty Dining Room, Brooklyn, NY 11235 General Board Meeting (In Person) upcoming_meetings Community Board Meetings Brooklyn Community Board 15 Kingsborough Community College, 2001 Oriental Boulevard, Room U112 Faculty Dining Room, Brooklyn, NY 11235 Brooklyn K15",
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "community_boards": [
+          "brooklyn-cb-15"
+        ],
+        "community_districts": [
+          "K15"
+        ],
+        "neighborhoods": [],
+        "addresses": []
+      },
+      "meeting_documents": [],
+      "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "source_system": "community_board",
+      "meeting_origin": "official_community_board_calendar",
+      "source_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": "community-board:brooklyn-cb-15"
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "request_id": null,
+      "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-04-16:general-board-meeting-in-person",
+      "board_id": "brooklyn-cb-15",
+      "record_kind": "event",
+      "record_id": "nyc-calendar:brooklyn-cb-15:2024-04-16:general-board-meeting-in-person",
+      "record_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "date": "2024-04-16",
+      "start_at": "2024-04-16T19:00:00-04:00",
+      "end_at": null,
+      "category": "upcoming_meetings",
+      "format": "html",
+      "publisher_identifiers": [],
+      "source_entry_evidence": {
+        "locator": {
+          "type": "calendar_date_title",
+          "date": "2024-04-16",
+          "title": "General Board Meeting (In Person)"
+        },
+        "excerpt": "Tuesday April 16, 2024 General Board Meeting (In Person) 7:00pm"
+      },
+      "source_role": "upcoming_meetings",
+      "observed_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "short_title": "General Board Meeting (In Person)",
+      "start_date": "2026-11-01T14:03:37.350Z",
+      "collection_visibility": "visible",
+      "timing_status": "past",
+      "type_of_notice_description": "upcoming_meetings",
+      "section_name": "Community Board Meetings",
+      "meeting_join": {
+        "schema": "cityscroll.community_board_source_join.v1",
+        "status": "unknown",
+        "official": false,
+        "reason": "no_city_record_notice",
+        "board_id": "brooklyn-cb-15",
+        "meeting_date": "2024-04-16",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-04-16:general-board-meeting-in-person",
+        "join": {
+          "matched": false,
+          "method": "exact_board_date_publisher_identifier",
+          "reason": "no_city_record_notice"
+        },
+        "provenance": {
+          "schema": "cityscroll.community_board_meeting_provenance.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-04-16:general-board-meeting-in-person",
+          "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "adapter": "nyc_official_calendar_v1"
+        }
+      },
+      "source_provenance": {
+        "schema": "cityscroll.community_board_meeting_provenance.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-04-16:general-board-meeting-in-person",
+        "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "adapter": "nyc_official_calendar_v1"
+      },
+      "entity_refs_all": [
+        "community-board:brooklyn-cb-15",
+        "meeting:community_board:nyc-calendar:brooklyn-cb-15:2024-04-16:general-board-meeting-in-person"
+      ],
+      "institution_edges": [
+        {
+          "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+          "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+          "edge_type": "hosts_meeting",
+          "relation": "hosts_meeting",
+          "status": "promoted",
+          "promoted": true,
+          "reason": null,
+          "from": "community-board:brooklyn-cb-15",
+          "to": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2024-04-16:general-board-meeting-in-person",
+          "target_kind": "meeting",
+          "target_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2024-04-16:general-board-meeting-in-person",
+          "target_name": "General Board Meeting (In Person)",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2024-04-16%3Ageneral-board-meeting-in-person",
+          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2024-04-16%3Ageneral-board-meeting-in-person",
+          "board_href": "/community-boards/brooklyn-cb-15/",
+          "institution_refs": {
+            "board_ref": "community-board:brooklyn-cb-15"
+          },
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-04-16:general-board-meeting-in-person",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "source_entry_evidence": {
+            "locator": {
+              "type": "calendar_date_title",
+              "date": "2024-04-16",
+              "title": "General Board Meeting (In Person)"
+            },
+            "excerpt": "Tuesday April 16, 2024 General Board Meeting (In Person) 7:00pm"
+          },
+          "provenance": {
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+              "observed_at": "2026-11-01T14:03:37.350Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html;charset=UTF-8",
+              "content_length": 37023,
+              "parser": "nyc_official_calendar_v1",
+              "reason": null,
+              "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+            },
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-04-16:general-board-meeting-in-person",
+            "publication_basis": "official_calendar_observation",
+            "source_entry_evidence": {
+              "locator": {
+                "type": "calendar_date_title",
+                "date": "2024-04-16",
+                "title": "General Board Meeting (In Person)"
+              },
+              "excerpt": "Tuesday April 16, 2024 General Board Meeting (In Person) 7:00pm"
+            }
+          },
+          "join": {
+            "matched": false,
+            "method": "exact_board_date_publisher_identifier",
+            "reason": "publisher_identifier_missing"
+          },
+          "evidence": [
+            "exact_board_identity",
+            "exact_meeting_date",
+            "retained_source_url",
+            "observed_receipt",
+            "retained_entry_evidence",
+            "canonical_meeting_identity"
+          ],
+          "publication_basis": "official_calendar_observation"
+        }
+      ],
+      "source_record": {
+        "source_system": "community_board",
+        "identifier": "nyc-calendar:brooklyn-cb-15:2024-04-16:general-board-meeting-in-person",
+        "url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "board_id": "brooklyn-cb-15",
+        "role": "upcoming_meetings"
+      },
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-01T14:03:37.350Z"
+      },
+      "location_memberships": [
+        {
+          "assertion_id": "location_assertion:meeting:community_board:nyc-calendar:brooklyn-cb-15:2024-04-16:general-board-meeting-in-person::venue::venue.address::1",
+          "role": "venue",
+          "bbl": "3087600060",
+          "memberships": {
+            "borough": "3",
+            "community_district": "K15",
+            "council_district": "48",
+            "nta2020": "BK1503",
+            "police_precinct": "61"
+          },
+          "point": {
+            "lat": 40.5779717,
+            "lon": -73.9341477
+          },
+          "confidence": 1,
+          "confidence_tier": "strong",
+          "provenance": {
+            "source_method": "admitted_venue_membership",
+            "parcel_bbl": "3087600060"
+          }
+        }
+      ]
+    },
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2024-03-26:general-board-meeting-in-person",
+      "source_keys": [
+        {
+          "source_system": "community_board",
+          "key_type": "publisher_event_id",
+          "value": "nyc-calendar:brooklyn-cb-15:2024-03-26:general-board-meeting-in-person"
+        }
+      ],
+      "publisher_identifier": null,
+      "title": "General Board Meeting (In Person)",
+      "event_date": "2024-03-26T19:00:00-04:00",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2024-03-26T19:00:00-04:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "raw_date": "2024-03-26",
+        "raw_time": "19:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "community_board_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": {
+        "name": null,
+        "address": "Kingsborough Community College, 2001 Oriental Boulevard, Room U112 Faculty Dining Room, Brooklyn, NY 11235",
+        "mode": "in-person",
+        "components": null
+      },
+      "participation": {
+        "links": [],
+        "remote_join_url": null,
+        "emails": [],
+        "phones": [],
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "committee": null,
+      "agency": null,
+      "board_name": "Brooklyn Community Board 15",
+      "description": null,
+      "search_text": "General Board Meeting (In Person) Kingsborough Community College, 2001 Oriental Boulevard, Room U112 Faculty Dining Room, Brooklyn, NY 11235 General Board Meeting (In Person) upcoming_meetings Community Board Meetings Brooklyn Community Board 15 Kingsborough Community College, 2001 Oriental Boulevard, Room U112 Faculty Dining Room, Brooklyn, NY 11235 Brooklyn K15",
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "community_boards": [
+          "brooklyn-cb-15"
+        ],
+        "community_districts": [
+          "K15"
+        ],
+        "neighborhoods": [],
+        "addresses": []
+      },
+      "meeting_documents": [],
+      "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "source_system": "community_board",
+      "meeting_origin": "official_community_board_calendar",
+      "source_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": "community-board:brooklyn-cb-15"
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "request_id": null,
+      "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-03-26:general-board-meeting-in-person",
+      "board_id": "brooklyn-cb-15",
+      "record_kind": "event",
+      "record_id": "nyc-calendar:brooklyn-cb-15:2024-03-26:general-board-meeting-in-person",
+      "record_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "date": "2024-03-26",
+      "start_at": "2024-03-26T19:00:00-04:00",
+      "end_at": null,
+      "category": "upcoming_meetings",
+      "format": "html",
+      "publisher_identifiers": [],
+      "source_entry_evidence": {
+        "locator": {
+          "type": "calendar_date_title",
+          "date": "2024-03-26",
+          "title": "General Board Meeting (In Person)"
+        },
+        "excerpt": "Tuesday March 26, 2024 General Board Meeting (In Person) 7:00pm"
+      },
+      "source_role": "upcoming_meetings",
+      "observed_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "short_title": "General Board Meeting (In Person)",
+      "start_date": "2026-11-01T14:03:37.350Z",
+      "collection_visibility": "visible",
+      "timing_status": "past",
+      "type_of_notice_description": "upcoming_meetings",
+      "section_name": "Community Board Meetings",
+      "meeting_join": {
+        "schema": "cityscroll.community_board_source_join.v1",
+        "status": "unknown",
+        "official": false,
+        "reason": "no_city_record_notice",
+        "board_id": "brooklyn-cb-15",
+        "meeting_date": "2024-03-26",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-03-26:general-board-meeting-in-person",
+        "join": {
+          "matched": false,
+          "method": "exact_board_date_publisher_identifier",
+          "reason": "no_city_record_notice"
+        },
+        "provenance": {
+          "schema": "cityscroll.community_board_meeting_provenance.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-03-26:general-board-meeting-in-person",
+          "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "adapter": "nyc_official_calendar_v1"
+        }
+      },
+      "source_provenance": {
+        "schema": "cityscroll.community_board_meeting_provenance.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-03-26:general-board-meeting-in-person",
+        "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "adapter": "nyc_official_calendar_v1"
+      },
+      "entity_refs_all": [
+        "community-board:brooklyn-cb-15",
+        "meeting:community_board:nyc-calendar:brooklyn-cb-15:2024-03-26:general-board-meeting-in-person"
+      ],
+      "institution_edges": [
+        {
+          "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+          "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+          "edge_type": "hosts_meeting",
+          "relation": "hosts_meeting",
+          "status": "promoted",
+          "promoted": true,
+          "reason": null,
+          "from": "community-board:brooklyn-cb-15",
+          "to": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2024-03-26:general-board-meeting-in-person",
+          "target_kind": "meeting",
+          "target_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2024-03-26:general-board-meeting-in-person",
+          "target_name": "General Board Meeting (In Person)",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2024-03-26%3Ageneral-board-meeting-in-person",
+          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2024-03-26%3Ageneral-board-meeting-in-person",
+          "board_href": "/community-boards/brooklyn-cb-15/",
+          "institution_refs": {
+            "board_ref": "community-board:brooklyn-cb-15"
+          },
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-03-26:general-board-meeting-in-person",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "source_entry_evidence": {
+            "locator": {
+              "type": "calendar_date_title",
+              "date": "2024-03-26",
+              "title": "General Board Meeting (In Person)"
+            },
+            "excerpt": "Tuesday March 26, 2024 General Board Meeting (In Person) 7:00pm"
+          },
+          "provenance": {
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+              "observed_at": "2026-11-01T14:03:37.350Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html;charset=UTF-8",
+              "content_length": 37023,
+              "parser": "nyc_official_calendar_v1",
+              "reason": null,
+              "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+            },
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-03-26:general-board-meeting-in-person",
+            "publication_basis": "official_calendar_observation",
+            "source_entry_evidence": {
+              "locator": {
+                "type": "calendar_date_title",
+                "date": "2024-03-26",
+                "title": "General Board Meeting (In Person)"
+              },
+              "excerpt": "Tuesday March 26, 2024 General Board Meeting (In Person) 7:00pm"
+            }
+          },
+          "join": {
+            "matched": false,
+            "method": "exact_board_date_publisher_identifier",
+            "reason": "publisher_identifier_missing"
+          },
+          "evidence": [
+            "exact_board_identity",
+            "exact_meeting_date",
+            "retained_source_url",
+            "observed_receipt",
+            "retained_entry_evidence",
+            "canonical_meeting_identity"
+          ],
+          "publication_basis": "official_calendar_observation"
+        }
+      ],
+      "source_record": {
+        "source_system": "community_board",
+        "identifier": "nyc-calendar:brooklyn-cb-15:2024-03-26:general-board-meeting-in-person",
+        "url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "board_id": "brooklyn-cb-15",
+        "role": "upcoming_meetings"
+      },
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-01T14:03:37.350Z"
+      },
+      "location_memberships": [
+        {
+          "assertion_id": "location_assertion:meeting:community_board:nyc-calendar:brooklyn-cb-15:2024-03-26:general-board-meeting-in-person::venue::venue.address::1",
+          "role": "venue",
+          "bbl": "3087600060",
+          "memberships": {
+            "borough": "3",
+            "community_district": "K15",
+            "council_district": "48",
+            "nta2020": "BK1503",
+            "police_precinct": "61"
+          },
+          "point": {
+            "lat": 40.5779717,
+            "lon": -73.9341477
+          },
+          "confidence": 1,
+          "confidence_tier": "strong",
+          "provenance": {
+            "source_method": "admitted_venue_membership",
+            "parcel_bbl": "3087600060"
+          }
+        }
+      ]
+    },
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2024-02-27:general-board-meeting-in-person",
+      "source_keys": [
+        {
+          "source_system": "community_board",
+          "key_type": "publisher_event_id",
+          "value": "nyc-calendar:brooklyn-cb-15:2024-02-27:general-board-meeting-in-person"
+        }
+      ],
+      "publisher_identifier": null,
+      "title": "General Board Meeting (In Person)",
+      "event_date": "2024-02-27T19:00:00-05:00",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2024-02-27T19:00:00-05:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "raw_date": "2024-02-27",
+        "raw_time": "19:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "community_board_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": {
+        "name": null,
+        "address": "Kingsborough Community College, 2001 Oriental Boulevard, Room U112 Faculty Dining Room, Brooklyn, NY 11235",
+        "mode": "in-person",
+        "components": null
+      },
+      "participation": {
+        "links": [],
+        "remote_join_url": null,
+        "emails": [],
+        "phones": [],
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "committee": null,
+      "agency": null,
+      "board_name": "Brooklyn Community Board 15",
+      "description": null,
+      "search_text": "General Board Meeting (In Person) Kingsborough Community College, 2001 Oriental Boulevard, Room U112 Faculty Dining Room, Brooklyn, NY 11235 General Board Meeting (In Person) upcoming_meetings Community Board Meetings Brooklyn Community Board 15 Kingsborough Community College, 2001 Oriental Boulevard, Room U112 Faculty Dining Room, Brooklyn, NY 11235 Brooklyn K15",
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "community_boards": [
+          "brooklyn-cb-15"
+        ],
+        "community_districts": [
+          "K15"
+        ],
+        "neighborhoods": [],
+        "addresses": []
+      },
+      "meeting_documents": [],
+      "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "source_system": "community_board",
+      "meeting_origin": "official_community_board_calendar",
+      "source_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": "community-board:brooklyn-cb-15"
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "request_id": null,
+      "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-02-27:general-board-meeting-in-person",
+      "board_id": "brooklyn-cb-15",
+      "record_kind": "event",
+      "record_id": "nyc-calendar:brooklyn-cb-15:2024-02-27:general-board-meeting-in-person",
+      "record_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "date": "2024-02-27",
+      "start_at": "2024-02-27T19:00:00-05:00",
+      "end_at": null,
+      "category": "upcoming_meetings",
+      "format": "html",
+      "publisher_identifiers": [],
+      "source_entry_evidence": {
+        "locator": {
+          "type": "calendar_date_title",
+          "date": "2024-02-27",
+          "title": "General Board Meeting (In Person)"
+        },
+        "excerpt": "Tuesday February 27, 2024 General Board Meeting (In Person) 7:00pm"
+      },
+      "source_role": "upcoming_meetings",
+      "observed_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "short_title": "General Board Meeting (In Person)",
+      "start_date": "2026-11-01T14:03:37.350Z",
+      "collection_visibility": "visible",
+      "timing_status": "past",
+      "type_of_notice_description": "upcoming_meetings",
+      "section_name": "Community Board Meetings",
+      "meeting_join": {
+        "schema": "cityscroll.community_board_source_join.v1",
+        "status": "unknown",
+        "official": false,
+        "reason": "no_city_record_notice",
+        "board_id": "brooklyn-cb-15",
+        "meeting_date": "2024-02-27",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-02-27:general-board-meeting-in-person",
+        "join": {
+          "matched": false,
+          "method": "exact_board_date_publisher_identifier",
+          "reason": "no_city_record_notice"
+        },
+        "provenance": {
+          "schema": "cityscroll.community_board_meeting_provenance.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-02-27:general-board-meeting-in-person",
+          "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "adapter": "nyc_official_calendar_v1"
+        }
+      },
+      "source_provenance": {
+        "schema": "cityscroll.community_board_meeting_provenance.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-02-27:general-board-meeting-in-person",
+        "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "adapter": "nyc_official_calendar_v1"
+      },
+      "entity_refs_all": [
+        "community-board:brooklyn-cb-15",
+        "meeting:community_board:nyc-calendar:brooklyn-cb-15:2024-02-27:general-board-meeting-in-person"
+      ],
+      "institution_edges": [
+        {
+          "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+          "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+          "edge_type": "hosts_meeting",
+          "relation": "hosts_meeting",
+          "status": "promoted",
+          "promoted": true,
+          "reason": null,
+          "from": "community-board:brooklyn-cb-15",
+          "to": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2024-02-27:general-board-meeting-in-person",
+          "target_kind": "meeting",
+          "target_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2024-02-27:general-board-meeting-in-person",
+          "target_name": "General Board Meeting (In Person)",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2024-02-27%3Ageneral-board-meeting-in-person",
+          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2024-02-27%3Ageneral-board-meeting-in-person",
+          "board_href": "/community-boards/brooklyn-cb-15/",
+          "institution_refs": {
+            "board_ref": "community-board:brooklyn-cb-15"
+          },
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-02-27:general-board-meeting-in-person",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "source_entry_evidence": {
+            "locator": {
+              "type": "calendar_date_title",
+              "date": "2024-02-27",
+              "title": "General Board Meeting (In Person)"
+            },
+            "excerpt": "Tuesday February 27, 2024 General Board Meeting (In Person) 7:00pm"
+          },
+          "provenance": {
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+              "observed_at": "2026-11-01T14:03:37.350Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html;charset=UTF-8",
+              "content_length": 37023,
+              "parser": "nyc_official_calendar_v1",
+              "reason": null,
+              "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+            },
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-02-27:general-board-meeting-in-person",
+            "publication_basis": "official_calendar_observation",
+            "source_entry_evidence": {
+              "locator": {
+                "type": "calendar_date_title",
+                "date": "2024-02-27",
+                "title": "General Board Meeting (In Person)"
+              },
+              "excerpt": "Tuesday February 27, 2024 General Board Meeting (In Person) 7:00pm"
+            }
+          },
+          "join": {
+            "matched": false,
+            "method": "exact_board_date_publisher_identifier",
+            "reason": "publisher_identifier_missing"
+          },
+          "evidence": [
+            "exact_board_identity",
+            "exact_meeting_date",
+            "retained_source_url",
+            "observed_receipt",
+            "retained_entry_evidence",
+            "canonical_meeting_identity"
+          ],
+          "publication_basis": "official_calendar_observation"
+        }
+      ],
+      "source_record": {
+        "source_system": "community_board",
+        "identifier": "nyc-calendar:brooklyn-cb-15:2024-02-27:general-board-meeting-in-person",
+        "url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "board_id": "brooklyn-cb-15",
+        "role": "upcoming_meetings"
+      },
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-01T14:03:37.350Z"
+      },
+      "location_memberships": [
+        {
+          "assertion_id": "location_assertion:meeting:community_board:nyc-calendar:brooklyn-cb-15:2024-02-27:general-board-meeting-in-person::venue::venue.address::1",
+          "role": "venue",
+          "bbl": "3087600060",
+          "memberships": {
+            "borough": "3",
+            "community_district": "K15",
+            "council_district": "48",
+            "nta2020": "BK1503",
+            "police_precinct": "61"
+          },
+          "point": {
+            "lat": 40.5779717,
+            "lon": -73.9341477
+          },
+          "confidence": 1,
+          "confidence_tier": "strong",
+          "provenance": {
+            "source_method": "admitted_venue_membership",
+            "parcel_bbl": "3087600060"
+          }
+        }
+      ]
+    },
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2024-01-30:general-board-meeting-in-person",
+      "source_keys": [
+        {
+          "source_system": "community_board",
+          "key_type": "publisher_event_id",
+          "value": "nyc-calendar:brooklyn-cb-15:2024-01-30:general-board-meeting-in-person"
+        }
+      ],
+      "publisher_identifier": null,
+      "title": "General Board Meeting (In Person)",
+      "event_date": "2024-01-30T19:00:00-05:00",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2024-01-30T19:00:00-05:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "raw_date": "2024-01-30",
+        "raw_time": "19:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "community_board_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": {
+        "name": null,
+        "address": "Kingsborough Community College, 2001 Oriental Boulevard, Room U112 Faculty Dining Room, Brooklyn, NY 11235",
+        "mode": "in-person",
+        "components": null
+      },
+      "participation": {
+        "links": [],
+        "remote_join_url": null,
+        "emails": [],
+        "phones": [],
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "committee": null,
+      "agency": null,
+      "board_name": "Brooklyn Community Board 15",
+      "description": null,
+      "search_text": "General Board Meeting (In Person) Kingsborough Community College, 2001 Oriental Boulevard, Room U112 Faculty Dining Room, Brooklyn, NY 11235 General Board Meeting (In Person) upcoming_meetings Community Board Meetings Brooklyn Community Board 15 Kingsborough Community College, 2001 Oriental Boulevard, Room U112 Faculty Dining Room, Brooklyn, NY 11235 Brooklyn K15",
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "community_boards": [
+          "brooklyn-cb-15"
+        ],
+        "community_districts": [
+          "K15"
+        ],
+        "neighborhoods": [],
+        "addresses": []
+      },
+      "meeting_documents": [],
+      "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "source_system": "community_board",
+      "meeting_origin": "official_community_board_calendar",
+      "source_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": "community-board:brooklyn-cb-15"
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "request_id": null,
+      "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-01-30:general-board-meeting-in-person",
+      "board_id": "brooklyn-cb-15",
+      "record_kind": "event",
+      "record_id": "nyc-calendar:brooklyn-cb-15:2024-01-30:general-board-meeting-in-person",
+      "record_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "date": "2024-01-30",
+      "start_at": "2024-01-30T19:00:00-05:00",
+      "end_at": null,
+      "category": "upcoming_meetings",
+      "format": "html",
+      "publisher_identifiers": [],
+      "source_entry_evidence": {
+        "locator": {
+          "type": "calendar_date_title",
+          "date": "2024-01-30",
+          "title": "General Board Meeting (In Person)"
+        },
+        "excerpt": "Tuesday, January 30, 2024 General Board Meeting (In Person) 7:00pm"
+      },
+      "source_role": "upcoming_meetings",
+      "observed_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "short_title": "General Board Meeting (In Person)",
+      "start_date": "2026-11-01T14:03:37.350Z",
+      "collection_visibility": "visible",
+      "timing_status": "past",
+      "type_of_notice_description": "upcoming_meetings",
+      "section_name": "Community Board Meetings",
+      "meeting_join": {
+        "schema": "cityscroll.community_board_source_join.v1",
+        "status": "unknown",
+        "official": false,
+        "reason": "no_city_record_notice",
+        "board_id": "brooklyn-cb-15",
+        "meeting_date": "2024-01-30",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-01-30:general-board-meeting-in-person",
+        "join": {
+          "matched": false,
+          "method": "exact_board_date_publisher_identifier",
+          "reason": "no_city_record_notice"
+        },
+        "provenance": {
+          "schema": "cityscroll.community_board_meeting_provenance.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-01-30:general-board-meeting-in-person",
+          "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "adapter": "nyc_official_calendar_v1"
+        }
+      },
+      "source_provenance": {
+        "schema": "cityscroll.community_board_meeting_provenance.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-01-30:general-board-meeting-in-person",
+        "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "adapter": "nyc_official_calendar_v1"
+      },
+      "entity_refs_all": [
+        "community-board:brooklyn-cb-15",
+        "meeting:community_board:nyc-calendar:brooklyn-cb-15:2024-01-30:general-board-meeting-in-person"
+      ],
+      "institution_edges": [
+        {
+          "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+          "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+          "edge_type": "hosts_meeting",
+          "relation": "hosts_meeting",
+          "status": "promoted",
+          "promoted": true,
+          "reason": null,
+          "from": "community-board:brooklyn-cb-15",
+          "to": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2024-01-30:general-board-meeting-in-person",
+          "target_kind": "meeting",
+          "target_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2024-01-30:general-board-meeting-in-person",
+          "target_name": "General Board Meeting (In Person)",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2024-01-30%3Ageneral-board-meeting-in-person",
+          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2024-01-30%3Ageneral-board-meeting-in-person",
+          "board_href": "/community-boards/brooklyn-cb-15/",
+          "institution_refs": {
+            "board_ref": "community-board:brooklyn-cb-15"
+          },
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-01-30:general-board-meeting-in-person",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "source_entry_evidence": {
+            "locator": {
+              "type": "calendar_date_title",
+              "date": "2024-01-30",
+              "title": "General Board Meeting (In Person)"
+            },
+            "excerpt": "Tuesday, January 30, 2024 General Board Meeting (In Person) 7:00pm"
+          },
+          "provenance": {
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+              "observed_at": "2026-11-01T14:03:37.350Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html;charset=UTF-8",
+              "content_length": 37023,
+              "parser": "nyc_official_calendar_v1",
+              "reason": null,
+              "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+            },
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "source_record_id": "nyc-calendar:brooklyn-cb-15:2024-01-30:general-board-meeting-in-person",
+            "publication_basis": "official_calendar_observation",
+            "source_entry_evidence": {
+              "locator": {
+                "type": "calendar_date_title",
+                "date": "2024-01-30",
+                "title": "General Board Meeting (In Person)"
+              },
+              "excerpt": "Tuesday, January 30, 2024 General Board Meeting (In Person) 7:00pm"
+            }
+          },
+          "join": {
+            "matched": false,
+            "method": "exact_board_date_publisher_identifier",
+            "reason": "publisher_identifier_missing"
+          },
+          "evidence": [
+            "exact_board_identity",
+            "exact_meeting_date",
+            "retained_source_url",
+            "observed_receipt",
+            "retained_entry_evidence",
+            "canonical_meeting_identity"
+          ],
+          "publication_basis": "official_calendar_observation"
+        }
+      ],
+      "source_record": {
+        "source_system": "community_board",
+        "identifier": "nyc-calendar:brooklyn-cb-15:2024-01-30:general-board-meeting-in-person",
+        "url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "board_id": "brooklyn-cb-15",
+        "role": "upcoming_meetings"
+      },
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-01T14:03:37.350Z"
+      },
+      "location_memberships": [
+        {
+          "assertion_id": "location_assertion:meeting:community_board:nyc-calendar:brooklyn-cb-15:2024-01-30:general-board-meeting-in-person::venue::venue.address::1",
+          "role": "venue",
+          "bbl": "3087600060",
+          "memberships": {
+            "borough": "3",
+            "community_district": "K15",
+            "council_district": "48",
+            "nta2020": "BK1503",
+            "police_precinct": "61"
+          },
+          "point": {
+            "lat": 40.5779717,
+            "lon": -73.9341477
+          },
+          "confidence": 1,
+          "confidence_tier": "strong",
+          "provenance": {
+            "source_method": "admitted_venue_membership",
+            "parcel_bbl": "3087600060"
+          }
+        }
+      ]
+    },
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-12-19:general-board-meeting-in-person",
+      "source_keys": [
+        {
+          "source_system": "community_board",
+          "key_type": "publisher_event_id",
+          "value": "nyc-calendar:brooklyn-cb-15:2023-12-19:general-board-meeting-in-person"
+        }
+      ],
+      "publisher_identifier": null,
+      "title": "General Board Meeting (In Person)",
+      "event_date": "2023-12-19T19:00:00-05:00",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2023-12-19T19:00:00-05:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "raw_date": "2023-12-19",
+        "raw_time": "19:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "community_board_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": {
+        "name": null,
+        "address": "Kingsborough Community College, 2001 Oriental Boulevard, Room U112 Faculty Dining Room, Brooklyn, NY 11235",
+        "mode": "in-person",
+        "components": null
+      },
+      "participation": {
+        "links": [],
+        "remote_join_url": null,
+        "emails": [],
+        "phones": [],
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "committee": null,
+      "agency": null,
+      "board_name": "Brooklyn Community Board 15",
+      "description": null,
+      "search_text": "General Board Meeting (In Person) Kingsborough Community College, 2001 Oriental Boulevard, Room U112 Faculty Dining Room, Brooklyn, NY 11235 General Board Meeting (In Person) upcoming_meetings Community Board Meetings Brooklyn Community Board 15 Kingsborough Community College, 2001 Oriental Boulevard, Room U112 Faculty Dining Room, Brooklyn, NY 11235 Brooklyn K15",
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "community_boards": [
+          "brooklyn-cb-15"
+        ],
+        "community_districts": [
+          "K15"
+        ],
+        "neighborhoods": [],
+        "addresses": []
+      },
+      "meeting_documents": [],
+      "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "source_system": "community_board",
+      "meeting_origin": "official_community_board_calendar",
+      "source_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": "community-board:brooklyn-cb-15"
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "request_id": null,
+      "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-12-19:general-board-meeting-in-person",
+      "board_id": "brooklyn-cb-15",
+      "record_kind": "event",
+      "record_id": "nyc-calendar:brooklyn-cb-15:2023-12-19:general-board-meeting-in-person",
+      "record_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "date": "2023-12-19",
+      "start_at": "2023-12-19T19:00:00-05:00",
+      "end_at": null,
+      "category": "upcoming_meetings",
+      "format": "html",
+      "publisher_identifiers": [],
+      "source_entry_evidence": {
+        "locator": {
+          "type": "calendar_date_title",
+          "date": "2023-12-19",
+          "title": "General Board Meeting (In Person)"
+        },
+        "excerpt": "Tuesday, December 19, 2023 General Board Meeting (In Person) 7:00pm"
+      },
+      "source_role": "upcoming_meetings",
+      "observed_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "short_title": "General Board Meeting (In Person)",
+      "start_date": "2026-11-01T14:03:37.350Z",
+      "collection_visibility": "visible",
+      "timing_status": "past",
+      "type_of_notice_description": "upcoming_meetings",
+      "section_name": "Community Board Meetings",
+      "meeting_join": {
+        "schema": "cityscroll.community_board_source_join.v1",
+        "status": "unknown",
+        "official": false,
+        "reason": "no_city_record_notice",
+        "board_id": "brooklyn-cb-15",
+        "meeting_date": "2023-12-19",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-12-19:general-board-meeting-in-person",
+        "join": {
+          "matched": false,
+          "method": "exact_board_date_publisher_identifier",
+          "reason": "no_city_record_notice"
+        },
+        "provenance": {
+          "schema": "cityscroll.community_board_meeting_provenance.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-12-19:general-board-meeting-in-person",
+          "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "adapter": "nyc_official_calendar_v1"
+        }
+      },
+      "source_provenance": {
+        "schema": "cityscroll.community_board_meeting_provenance.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-12-19:general-board-meeting-in-person",
+        "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "adapter": "nyc_official_calendar_v1"
+      },
+      "entity_refs_all": [
+        "community-board:brooklyn-cb-15",
+        "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-12-19:general-board-meeting-in-person"
+      ],
+      "institution_edges": [
+        {
+          "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+          "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+          "edge_type": "hosts_meeting",
+          "relation": "hosts_meeting",
+          "status": "promoted",
+          "promoted": true,
+          "reason": null,
+          "from": "community-board:brooklyn-cb-15",
+          "to": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-12-19:general-board-meeting-in-person",
+          "target_kind": "meeting",
+          "target_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-12-19:general-board-meeting-in-person",
+          "target_name": "General Board Meeting (In Person)",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-12-19%3Ageneral-board-meeting-in-person",
+          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-12-19%3Ageneral-board-meeting-in-person",
+          "board_href": "/community-boards/brooklyn-cb-15/",
+          "institution_refs": {
+            "board_ref": "community-board:brooklyn-cb-15"
+          },
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-12-19:general-board-meeting-in-person",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "source_entry_evidence": {
+            "locator": {
+              "type": "calendar_date_title",
+              "date": "2023-12-19",
+              "title": "General Board Meeting (In Person)"
+            },
+            "excerpt": "Tuesday, December 19, 2023 General Board Meeting (In Person) 7:00pm"
+          },
+          "provenance": {
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+              "observed_at": "2026-11-01T14:03:37.350Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html;charset=UTF-8",
+              "content_length": 37023,
+              "parser": "nyc_official_calendar_v1",
+              "reason": null,
+              "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+            },
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-12-19:general-board-meeting-in-person",
+            "publication_basis": "official_calendar_observation",
+            "source_entry_evidence": {
+              "locator": {
+                "type": "calendar_date_title",
+                "date": "2023-12-19",
+                "title": "General Board Meeting (In Person)"
+              },
+              "excerpt": "Tuesday, December 19, 2023 General Board Meeting (In Person) 7:00pm"
+            }
+          },
+          "join": {
+            "matched": false,
+            "method": "exact_board_date_publisher_identifier",
+            "reason": "publisher_identifier_missing"
+          },
+          "evidence": [
+            "exact_board_identity",
+            "exact_meeting_date",
+            "retained_source_url",
+            "observed_receipt",
+            "retained_entry_evidence",
+            "canonical_meeting_identity"
+          ],
+          "publication_basis": "official_calendar_observation"
+        }
+      ],
+      "source_record": {
+        "source_system": "community_board",
+        "identifier": "nyc-calendar:brooklyn-cb-15:2023-12-19:general-board-meeting-in-person",
+        "url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "board_id": "brooklyn-cb-15",
+        "role": "upcoming_meetings"
+      },
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-01T14:03:37.350Z"
+      },
+      "location_memberships": [
+        {
+          "assertion_id": "location_assertion:meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-12-19:general-board-meeting-in-person::venue::venue.address::1",
+          "role": "venue",
+          "bbl": "3087600060",
+          "memberships": {
+            "borough": "3",
+            "community_district": "K15",
+            "council_district": "48",
+            "nta2020": "BK1503",
+            "police_precinct": "61"
+          },
+          "point": {
+            "lat": 40.5779717,
+            "lon": -73.9341477
+          },
+          "confidence": 1,
+          "confidence_tier": "strong",
+          "provenance": {
+            "source_method": "admitted_venue_membership",
+            "parcel_bbl": "3087600060"
+          }
+        }
+      ]
+    },
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-11-28:general-board-meeting-in-person",
+      "source_keys": [
+        {
+          "source_system": "community_board",
+          "key_type": "publisher_event_id",
+          "value": "nyc-calendar:brooklyn-cb-15:2023-11-28:general-board-meeting-in-person"
+        }
+      ],
+      "publisher_identifier": null,
+      "title": "General Board Meeting (in person)",
+      "event_date": "2023-11-28T19:00:00-05:00",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2023-11-28T19:00:00-05:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "raw_date": "2023-11-28",
+        "raw_time": "19:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "community_board_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": {
+        "name": null,
+        "address": "Kingsborough Community College, 2001 Oriental Boulevard, Faculty Dining Room U112, Brooklyn, NY 11235",
+        "mode": "in-person",
+        "components": null
+      },
+      "participation": {
+        "links": [],
+        "remote_join_url": null,
+        "emails": [],
+        "phones": [],
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "committee": null,
+      "agency": null,
+      "board_name": "Brooklyn Community Board 15",
+      "description": null,
+      "search_text": "General Board Meeting (in person) Kingsborough Community College, 2001 Oriental Boulevard, Faculty Dining Room U112, Brooklyn, NY 11235 General Board Meeting (in person) upcoming_meetings Community Board Meetings Brooklyn Community Board 15 Kingsborough Community College, 2001 Oriental Boulevard, Faculty Dining Room U112, Brooklyn, NY 11235 Brooklyn K15",
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "community_boards": [
+          "brooklyn-cb-15"
+        ],
+        "community_districts": [
+          "K15"
+        ],
+        "neighborhoods": [],
+        "addresses": []
+      },
+      "meeting_documents": [],
+      "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "source_system": "community_board",
+      "meeting_origin": "official_community_board_calendar",
+      "source_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": "community-board:brooklyn-cb-15"
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "request_id": null,
+      "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-11-28:general-board-meeting-in-person",
+      "board_id": "brooklyn-cb-15",
+      "record_kind": "event",
+      "record_id": "nyc-calendar:brooklyn-cb-15:2023-11-28:general-board-meeting-in-person",
+      "record_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "date": "2023-11-28",
+      "start_at": "2023-11-28T19:00:00-05:00",
+      "end_at": null,
+      "category": "upcoming_meetings",
+      "format": "html",
+      "publisher_identifiers": [],
+      "source_entry_evidence": {
+        "locator": {
+          "type": "calendar_date_title",
+          "date": "2023-11-28",
+          "title": "General Board Meeting (in person)"
+        },
+        "excerpt": "Tuesday November 28, 2023 General Board Meeting (in person), 7:00pm Location :"
+      },
+      "source_role": "upcoming_meetings",
+      "observed_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "short_title": "General Board Meeting (in person)",
+      "start_date": "2026-11-01T14:03:37.350Z",
+      "collection_visibility": "visible",
+      "timing_status": "past",
+      "type_of_notice_description": "upcoming_meetings",
+      "section_name": "Community Board Meetings",
+      "meeting_join": {
+        "schema": "cityscroll.community_board_source_join.v1",
+        "status": "unknown",
+        "official": false,
+        "reason": "no_city_record_notice",
+        "board_id": "brooklyn-cb-15",
+        "meeting_date": "2023-11-28",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-11-28:general-board-meeting-in-person",
+        "join": {
+          "matched": false,
+          "method": "exact_board_date_publisher_identifier",
+          "reason": "no_city_record_notice"
+        },
+        "provenance": {
+          "schema": "cityscroll.community_board_meeting_provenance.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-11-28:general-board-meeting-in-person",
+          "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "adapter": "nyc_official_calendar_v1"
+        }
+      },
+      "source_provenance": {
+        "schema": "cityscroll.community_board_meeting_provenance.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-11-28:general-board-meeting-in-person",
+        "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "adapter": "nyc_official_calendar_v1"
+      },
+      "entity_refs_all": [
+        "community-board:brooklyn-cb-15",
+        "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-11-28:general-board-meeting-in-person"
+      ],
+      "institution_edges": [
+        {
+          "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+          "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+          "edge_type": "hosts_meeting",
+          "relation": "hosts_meeting",
+          "status": "promoted",
+          "promoted": true,
+          "reason": null,
+          "from": "community-board:brooklyn-cb-15",
+          "to": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-11-28:general-board-meeting-in-person",
+          "target_kind": "meeting",
+          "target_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-11-28:general-board-meeting-in-person",
+          "target_name": "General Board Meeting (in person)",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-11-28%3Ageneral-board-meeting-in-person",
+          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-11-28%3Ageneral-board-meeting-in-person",
+          "board_href": "/community-boards/brooklyn-cb-15/",
+          "institution_refs": {
+            "board_ref": "community-board:brooklyn-cb-15"
+          },
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-11-28:general-board-meeting-in-person",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "source_entry_evidence": {
+            "locator": {
+              "type": "calendar_date_title",
+              "date": "2023-11-28",
+              "title": "General Board Meeting (in person)"
+            },
+            "excerpt": "Tuesday November 28, 2023 General Board Meeting (in person), 7:00pm Location :"
+          },
+          "provenance": {
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+              "observed_at": "2026-11-01T14:03:37.350Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html;charset=UTF-8",
+              "content_length": 37023,
+              "parser": "nyc_official_calendar_v1",
+              "reason": null,
+              "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+            },
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-11-28:general-board-meeting-in-person",
+            "publication_basis": "official_calendar_observation",
+            "source_entry_evidence": {
+              "locator": {
+                "type": "calendar_date_title",
+                "date": "2023-11-28",
+                "title": "General Board Meeting (in person)"
+              },
+              "excerpt": "Tuesday November 28, 2023 General Board Meeting (in person), 7:00pm Location :"
+            }
+          },
+          "join": {
+            "matched": false,
+            "method": "exact_board_date_publisher_identifier",
+            "reason": "publisher_identifier_missing"
+          },
+          "evidence": [
+            "exact_board_identity",
+            "exact_meeting_date",
+            "retained_source_url",
+            "observed_receipt",
+            "retained_entry_evidence",
+            "canonical_meeting_identity"
+          ],
+          "publication_basis": "official_calendar_observation"
+        }
+      ],
+      "source_record": {
+        "source_system": "community_board",
+        "identifier": "nyc-calendar:brooklyn-cb-15:2023-11-28:general-board-meeting-in-person",
+        "url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "board_id": "brooklyn-cb-15",
+        "role": "upcoming_meetings"
+      },
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-01T14:03:37.350Z"
+      },
+      "location_memberships": [
+        {
+          "assertion_id": "location_assertion:meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-11-28:general-board-meeting-in-person::venue::venue.address::1",
+          "role": "venue",
+          "bbl": "3087600060",
+          "memberships": {
+            "borough": "3",
+            "community_district": "K15",
+            "council_district": "48",
+            "nta2020": "BK1503",
+            "police_precinct": "61"
+          },
+          "point": {
+            "lat": 40.5779717,
+            "lon": -73.9341477
+          },
+          "confidence": 1,
+          "confidence_tier": "strong",
+          "provenance": {
+            "source_method": "admitted_venue_membership",
+            "parcel_bbl": "3087600060"
+          }
+        }
+      ]
+    },
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-10-24:general-board-meeting-in-person",
+      "source_keys": [
+        {
+          "source_system": "community_board",
+          "key_type": "publisher_event_id",
+          "value": "nyc-calendar:brooklyn-cb-15:2023-10-24:general-board-meeting-in-person"
+        }
+      ],
+      "publisher_identifier": null,
+      "title": "General Board Meeting (in person)",
+      "event_date": "2023-10-24T19:00:00-04:00",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2023-10-24T19:00:00-04:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "raw_date": "2023-10-24",
+        "raw_time": "19:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "community_board_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": {
+        "name": null,
+        "address": "Kingsborough Community College, 2001 Oriental Boulevard, Faculty Dining Room U112, Brooklyn, NY 11235",
+        "mode": "in-person",
+        "components": null
+      },
+      "participation": {
+        "links": [],
+        "remote_join_url": null,
+        "emails": [],
+        "phones": [],
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "committee": null,
+      "agency": null,
+      "board_name": "Brooklyn Community Board 15",
+      "description": null,
+      "search_text": "General Board Meeting (in person) Kingsborough Community College, 2001 Oriental Boulevard, Faculty Dining Room U112, Brooklyn, NY 11235 General Board Meeting (in person) upcoming_meetings Community Board Meetings Brooklyn Community Board 15 Kingsborough Community College, 2001 Oriental Boulevard, Faculty Dining Room U112, Brooklyn, NY 11235 Brooklyn K15",
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "community_boards": [
+          "brooklyn-cb-15"
+        ],
+        "community_districts": [
+          "K15"
+        ],
+        "neighborhoods": [],
+        "addresses": []
+      },
+      "meeting_documents": [],
+      "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "source_system": "community_board",
+      "meeting_origin": "official_community_board_calendar",
+      "source_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": "community-board:brooklyn-cb-15"
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "request_id": null,
+      "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-10-24:general-board-meeting-in-person",
+      "board_id": "brooklyn-cb-15",
+      "record_kind": "event",
+      "record_id": "nyc-calendar:brooklyn-cb-15:2023-10-24:general-board-meeting-in-person",
+      "record_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "date": "2023-10-24",
+      "start_at": "2023-10-24T19:00:00-04:00",
+      "end_at": null,
+      "category": "upcoming_meetings",
+      "format": "html",
+      "publisher_identifiers": [],
+      "source_entry_evidence": {
+        "locator": {
+          "type": "calendar_date_title",
+          "date": "2023-10-24",
+          "title": "General Board Meeting (in person)"
+        },
+        "excerpt": "Tuesday October 24, 2023 General Board Meeting (in person), 7:00pm"
+      },
+      "source_role": "upcoming_meetings",
+      "observed_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "short_title": "General Board Meeting (in person)",
+      "start_date": "2026-11-01T14:03:37.350Z",
+      "collection_visibility": "visible",
+      "timing_status": "past",
+      "type_of_notice_description": "upcoming_meetings",
+      "section_name": "Community Board Meetings",
+      "meeting_join": {
+        "schema": "cityscroll.community_board_source_join.v1",
+        "status": "unknown",
+        "official": false,
+        "reason": "no_city_record_notice",
+        "board_id": "brooklyn-cb-15",
+        "meeting_date": "2023-10-24",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-10-24:general-board-meeting-in-person",
+        "join": {
+          "matched": false,
+          "method": "exact_board_date_publisher_identifier",
+          "reason": "no_city_record_notice"
+        },
+        "provenance": {
+          "schema": "cityscroll.community_board_meeting_provenance.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-10-24:general-board-meeting-in-person",
+          "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "adapter": "nyc_official_calendar_v1"
+        }
+      },
+      "source_provenance": {
+        "schema": "cityscroll.community_board_meeting_provenance.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-10-24:general-board-meeting-in-person",
+        "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "adapter": "nyc_official_calendar_v1"
+      },
+      "entity_refs_all": [
+        "community-board:brooklyn-cb-15",
+        "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-10-24:general-board-meeting-in-person"
+      ],
+      "institution_edges": [
+        {
+          "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+          "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+          "edge_type": "hosts_meeting",
+          "relation": "hosts_meeting",
+          "status": "promoted",
+          "promoted": true,
+          "reason": null,
+          "from": "community-board:brooklyn-cb-15",
+          "to": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-10-24:general-board-meeting-in-person",
+          "target_kind": "meeting",
+          "target_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-10-24:general-board-meeting-in-person",
+          "target_name": "General Board Meeting (in person)",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-10-24%3Ageneral-board-meeting-in-person",
+          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-10-24%3Ageneral-board-meeting-in-person",
+          "board_href": "/community-boards/brooklyn-cb-15/",
+          "institution_refs": {
+            "board_ref": "community-board:brooklyn-cb-15"
+          },
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-10-24:general-board-meeting-in-person",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "source_entry_evidence": {
+            "locator": {
+              "type": "calendar_date_title",
+              "date": "2023-10-24",
+              "title": "General Board Meeting (in person)"
+            },
+            "excerpt": "Tuesday October 24, 2023 General Board Meeting (in person), 7:00pm"
+          },
+          "provenance": {
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+              "observed_at": "2026-11-01T14:03:37.350Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html;charset=UTF-8",
+              "content_length": 37023,
+              "parser": "nyc_official_calendar_v1",
+              "reason": null,
+              "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+            },
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-10-24:general-board-meeting-in-person",
+            "publication_basis": "official_calendar_observation",
+            "source_entry_evidence": {
+              "locator": {
+                "type": "calendar_date_title",
+                "date": "2023-10-24",
+                "title": "General Board Meeting (in person)"
+              },
+              "excerpt": "Tuesday October 24, 2023 General Board Meeting (in person), 7:00pm"
+            }
+          },
+          "join": {
+            "matched": false,
+            "method": "exact_board_date_publisher_identifier",
+            "reason": "publisher_identifier_missing"
+          },
+          "evidence": [
+            "exact_board_identity",
+            "exact_meeting_date",
+            "retained_source_url",
+            "observed_receipt",
+            "retained_entry_evidence",
+            "canonical_meeting_identity"
+          ],
+          "publication_basis": "official_calendar_observation"
+        }
+      ],
+      "source_record": {
+        "source_system": "community_board",
+        "identifier": "nyc-calendar:brooklyn-cb-15:2023-10-24:general-board-meeting-in-person",
+        "url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "board_id": "brooklyn-cb-15",
+        "role": "upcoming_meetings"
+      },
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-01T14:03:37.350Z"
+      },
+      "location_memberships": [
+        {
+          "assertion_id": "location_assertion:meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-10-24:general-board-meeting-in-person::venue::venue.address::1",
+          "role": "venue",
+          "bbl": "3087600060",
+          "memberships": {
+            "borough": "3",
+            "community_district": "K15",
+            "council_district": "48",
+            "nta2020": "BK1503",
+            "police_precinct": "61"
+          },
+          "point": {
+            "lat": 40.5779717,
+            "lon": -73.9341477
+          },
+          "confidence": 1,
+          "confidence_tier": "strong",
+          "provenance": {
+            "source_method": "admitted_venue_membership",
+            "parcel_bbl": "3087600060"
+          }
+        }
+      ]
+    },
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-09-26:general-board-meeting-in-person",
+      "source_keys": [
+        {
+          "source_system": "community_board",
+          "key_type": "publisher_event_id",
+          "value": "nyc-calendar:brooklyn-cb-15:2023-09-26:general-board-meeting-in-person"
+        }
+      ],
+      "publisher_identifier": null,
+      "title": "General Board Meeting (in person)",
+      "event_date": "2023-09-26T19:00:00-04:00",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2023-09-26T19:00:00-04:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "raw_date": "2023-09-26",
+        "raw_time": "19:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "community_board_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": {
+        "name": null,
+        "address": "Kingsborough Community College, 2001 Oriental Boulevard, Faculty Dining Room U112, Brooklyn, NY 11235",
+        "mode": "in-person",
+        "components": null
+      },
+      "participation": {
+        "links": [],
+        "remote_join_url": null,
+        "emails": [],
+        "phones": [],
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "committee": null,
+      "agency": null,
+      "board_name": "Brooklyn Community Board 15",
+      "description": null,
+      "search_text": "General Board Meeting (in person) Kingsborough Community College, 2001 Oriental Boulevard, Faculty Dining Room U112, Brooklyn, NY 11235 General Board Meeting (in person) upcoming_meetings Community Board Meetings Brooklyn Community Board 15 Kingsborough Community College, 2001 Oriental Boulevard, Faculty Dining Room U112, Brooklyn, NY 11235 Brooklyn K15",
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "community_boards": [
+          "brooklyn-cb-15"
+        ],
+        "community_districts": [
+          "K15"
+        ],
+        "neighborhoods": [],
+        "addresses": []
+      },
+      "meeting_documents": [],
+      "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "source_system": "community_board",
+      "meeting_origin": "official_community_board_calendar",
+      "source_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": "community-board:brooklyn-cb-15"
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "request_id": null,
+      "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-09-26:general-board-meeting-in-person",
+      "board_id": "brooklyn-cb-15",
+      "record_kind": "event",
+      "record_id": "nyc-calendar:brooklyn-cb-15:2023-09-26:general-board-meeting-in-person",
+      "record_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "date": "2023-09-26",
+      "start_at": "2023-09-26T19:00:00-04:00",
+      "end_at": null,
+      "category": "upcoming_meetings",
+      "format": "html",
+      "publisher_identifiers": [],
+      "source_entry_evidence": {
+        "locator": {
+          "type": "calendar_date_title",
+          "date": "2023-09-26",
+          "title": "General Board Meeting (in person)"
+        },
+        "excerpt": "Tuesday September 26, 2023 General Board Meeting (in person), 7:00pm"
+      },
+      "source_role": "upcoming_meetings",
+      "observed_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "short_title": "General Board Meeting (in person)",
+      "start_date": "2026-11-01T14:03:37.350Z",
+      "collection_visibility": "visible",
+      "timing_status": "past",
+      "type_of_notice_description": "upcoming_meetings",
+      "section_name": "Community Board Meetings",
+      "meeting_join": {
+        "schema": "cityscroll.community_board_source_join.v1",
+        "status": "unknown",
+        "official": false,
+        "reason": "no_city_record_notice",
+        "board_id": "brooklyn-cb-15",
+        "meeting_date": "2023-09-26",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-09-26:general-board-meeting-in-person",
+        "join": {
+          "matched": false,
+          "method": "exact_board_date_publisher_identifier",
+          "reason": "no_city_record_notice"
+        },
+        "provenance": {
+          "schema": "cityscroll.community_board_meeting_provenance.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-09-26:general-board-meeting-in-person",
+          "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "adapter": "nyc_official_calendar_v1"
+        }
+      },
+      "source_provenance": {
+        "schema": "cityscroll.community_board_meeting_provenance.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-09-26:general-board-meeting-in-person",
+        "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "adapter": "nyc_official_calendar_v1"
+      },
+      "entity_refs_all": [
+        "community-board:brooklyn-cb-15",
+        "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-09-26:general-board-meeting-in-person"
+      ],
+      "institution_edges": [
+        {
+          "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+          "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+          "edge_type": "hosts_meeting",
+          "relation": "hosts_meeting",
+          "status": "promoted",
+          "promoted": true,
+          "reason": null,
+          "from": "community-board:brooklyn-cb-15",
+          "to": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-09-26:general-board-meeting-in-person",
+          "target_kind": "meeting",
+          "target_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-09-26:general-board-meeting-in-person",
+          "target_name": "General Board Meeting (in person)",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-09-26%3Ageneral-board-meeting-in-person",
+          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-09-26%3Ageneral-board-meeting-in-person",
+          "board_href": "/community-boards/brooklyn-cb-15/",
+          "institution_refs": {
+            "board_ref": "community-board:brooklyn-cb-15"
+          },
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-09-26:general-board-meeting-in-person",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "source_entry_evidence": {
+            "locator": {
+              "type": "calendar_date_title",
+              "date": "2023-09-26",
+              "title": "General Board Meeting (in person)"
+            },
+            "excerpt": "Tuesday September 26, 2023 General Board Meeting (in person), 7:00pm"
+          },
+          "provenance": {
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+              "observed_at": "2026-11-01T14:03:37.350Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html;charset=UTF-8",
+              "content_length": 37023,
+              "parser": "nyc_official_calendar_v1",
+              "reason": null,
+              "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+            },
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-09-26:general-board-meeting-in-person",
+            "publication_basis": "official_calendar_observation",
+            "source_entry_evidence": {
+              "locator": {
+                "type": "calendar_date_title",
+                "date": "2023-09-26",
+                "title": "General Board Meeting (in person)"
+              },
+              "excerpt": "Tuesday September 26, 2023 General Board Meeting (in person), 7:00pm"
+            }
+          },
+          "join": {
+            "matched": false,
+            "method": "exact_board_date_publisher_identifier",
+            "reason": "publisher_identifier_missing"
+          },
+          "evidence": [
+            "exact_board_identity",
+            "exact_meeting_date",
+            "retained_source_url",
+            "observed_receipt",
+            "retained_entry_evidence",
+            "canonical_meeting_identity"
+          ],
+          "publication_basis": "official_calendar_observation"
+        }
+      ],
+      "source_record": {
+        "source_system": "community_board",
+        "identifier": "nyc-calendar:brooklyn-cb-15:2023-09-26:general-board-meeting-in-person",
+        "url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "board_id": "brooklyn-cb-15",
+        "role": "upcoming_meetings"
+      },
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-01T14:03:37.350Z"
+      },
+      "location_memberships": [
+        {
+          "assertion_id": "location_assertion:meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-09-26:general-board-meeting-in-person::venue::venue.address::1",
+          "role": "venue",
+          "bbl": "3087600060",
+          "memberships": {
+            "borough": "3",
+            "community_district": "K15",
+            "council_district": "48",
+            "nta2020": "BK1503",
+            "police_precinct": "61"
+          },
+          "point": {
+            "lat": 40.5779717,
+            "lon": -73.9341477
+          },
+          "confidence": 1,
+          "confidence_tier": "strong",
+          "provenance": {
+            "source_method": "admitted_venue_membership",
+            "parcel_bbl": "3087600060"
+          }
+        }
+      ]
+    },
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-06-27:general-board-meeting",
+      "source_keys": [
+        {
+          "source_system": "community_board",
+          "key_type": "publisher_event_id",
+          "value": "nyc-calendar:brooklyn-cb-15:2023-06-27:general-board-meeting"
+        }
+      ],
+      "publisher_identifier": null,
+      "title": "General Board Meeting",
+      "event_date": "2023-06-27T18:00:00-04:00",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2023-06-27T18:00:00-04:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "raw_date": "2023-06-27",
+        "raw_time": "18:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "community_board_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "participation": {
+        "links": [],
+        "remote_join_url": null,
+        "emails": [],
+        "phones": [],
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "committee": null,
+      "agency": null,
+      "board_name": "Brooklyn Community Board 15",
+      "description": null,
+      "search_text": "General Board Meeting upcoming_meetings Community Board Meetings Brooklyn Community Board 15 Brooklyn K15",
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "community_boards": [
+          "brooklyn-cb-15"
+        ],
+        "community_districts": [
+          "K15"
+        ],
+        "neighborhoods": [],
+        "addresses": []
+      },
+      "meeting_documents": [],
+      "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "source_system": "community_board",
+      "meeting_origin": "official_community_board_calendar",
+      "source_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": "community-board:brooklyn-cb-15"
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "request_id": null,
+      "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-06-27:general-board-meeting",
+      "board_id": "brooklyn-cb-15",
+      "record_kind": "event",
+      "record_id": "nyc-calendar:brooklyn-cb-15:2023-06-27:general-board-meeting",
+      "record_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "date": "2023-06-27",
+      "start_at": "2023-06-27T18:00:00-04:00",
+      "end_at": null,
+      "category": "upcoming_meetings",
+      "format": "html",
+      "publisher_identifiers": [],
+      "source_entry_evidence": {
+        "locator": {
+          "type": "calendar_date_title",
+          "date": "2023-06-27",
+          "title": "General Board Meeting"
+        },
+        "excerpt": "Tuesday, June 27, 2023 General Board Meeting, 6 PM"
+      },
+      "source_role": "upcoming_meetings",
+      "observed_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "short_title": "General Board Meeting",
+      "start_date": "2026-11-01T14:03:37.350Z",
+      "collection_visibility": "visible",
+      "timing_status": "past",
+      "type_of_notice_description": "upcoming_meetings",
+      "section_name": "Community Board Meetings",
+      "meeting_join": {
+        "schema": "cityscroll.community_board_source_join.v1",
+        "status": "unknown",
+        "official": false,
+        "reason": "no_city_record_notice",
+        "board_id": "brooklyn-cb-15",
+        "meeting_date": "2023-06-27",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-06-27:general-board-meeting",
+        "join": {
+          "matched": false,
+          "method": "exact_board_date_publisher_identifier",
+          "reason": "no_city_record_notice"
+        },
+        "provenance": {
+          "schema": "cityscroll.community_board_meeting_provenance.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-06-27:general-board-meeting",
+          "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "adapter": "nyc_official_calendar_v1"
+        }
+      },
+      "source_provenance": {
+        "schema": "cityscroll.community_board_meeting_provenance.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-06-27:general-board-meeting",
+        "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "adapter": "nyc_official_calendar_v1"
+      },
+      "entity_refs_all": [
+        "community-board:brooklyn-cb-15",
+        "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-06-27:general-board-meeting"
+      ],
+      "institution_edges": [
+        {
+          "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+          "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+          "edge_type": "hosts_meeting",
+          "relation": "hosts_meeting",
+          "status": "promoted",
+          "promoted": true,
+          "reason": null,
+          "from": "community-board:brooklyn-cb-15",
+          "to": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-06-27:general-board-meeting",
+          "target_kind": "meeting",
+          "target_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-06-27:general-board-meeting",
+          "target_name": "General Board Meeting",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-06-27%3Ageneral-board-meeting",
+          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-06-27%3Ageneral-board-meeting",
+          "board_href": "/community-boards/brooklyn-cb-15/",
+          "institution_refs": {
+            "board_ref": "community-board:brooklyn-cb-15"
+          },
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-06-27:general-board-meeting",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "source_entry_evidence": {
+            "locator": {
+              "type": "calendar_date_title",
+              "date": "2023-06-27",
+              "title": "General Board Meeting"
+            },
+            "excerpt": "Tuesday, June 27, 2023 General Board Meeting, 6 PM"
+          },
+          "provenance": {
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+              "observed_at": "2026-11-01T14:03:37.350Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html;charset=UTF-8",
+              "content_length": 37023,
+              "parser": "nyc_official_calendar_v1",
+              "reason": null,
+              "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+            },
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-06-27:general-board-meeting",
+            "publication_basis": "official_calendar_observation",
+            "source_entry_evidence": {
+              "locator": {
+                "type": "calendar_date_title",
+                "date": "2023-06-27",
+                "title": "General Board Meeting"
+              },
+              "excerpt": "Tuesday, June 27, 2023 General Board Meeting, 6 PM"
+            }
+          },
+          "join": {
+            "matched": false,
+            "method": "exact_board_date_publisher_identifier",
+            "reason": "publisher_identifier_missing"
+          },
+          "evidence": [
+            "exact_board_identity",
+            "exact_meeting_date",
+            "retained_source_url",
+            "observed_receipt",
+            "retained_entry_evidence",
+            "canonical_meeting_identity"
+          ],
+          "publication_basis": "official_calendar_observation"
+        }
+      ],
+      "source_record": {
+        "source_system": "community_board",
+        "identifier": "nyc-calendar:brooklyn-cb-15:2023-06-27:general-board-meeting",
+        "url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "board_id": "brooklyn-cb-15",
+        "role": "upcoming_meetings"
+      },
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-01T14:03:37.350Z"
+      }
+    },
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-05-23:general-board-meeting",
+      "source_keys": [
+        {
+          "source_system": "community_board",
+          "key_type": "publisher_event_id",
+          "value": "nyc-calendar:brooklyn-cb-15:2023-05-23:general-board-meeting"
+        }
+      ],
+      "publisher_identifier": null,
+      "title": "General Board Meeting",
+      "event_date": "2023-05-23T18:00:00-04:00",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2023-05-23T18:00:00-04:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "raw_date": "2023-05-23",
+        "raw_time": "18:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "community_board_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "participation": {
+        "links": [],
+        "remote_join_url": null,
+        "emails": [],
+        "phones": [],
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "committee": null,
+      "agency": null,
+      "board_name": "Brooklyn Community Board 15",
+      "description": null,
+      "search_text": "General Board Meeting upcoming_meetings Community Board Meetings Brooklyn Community Board 15 Brooklyn K15",
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "community_boards": [
+          "brooklyn-cb-15"
+        ],
+        "community_districts": [
+          "K15"
+        ],
+        "neighborhoods": [],
+        "addresses": []
+      },
+      "meeting_documents": [],
+      "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "source_system": "community_board",
+      "meeting_origin": "official_community_board_calendar",
+      "source_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": "community-board:brooklyn-cb-15"
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "request_id": null,
+      "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-05-23:general-board-meeting",
+      "board_id": "brooklyn-cb-15",
+      "record_kind": "event",
+      "record_id": "nyc-calendar:brooklyn-cb-15:2023-05-23:general-board-meeting",
+      "record_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "date": "2023-05-23",
+      "start_at": "2023-05-23T18:00:00-04:00",
+      "end_at": null,
+      "category": "upcoming_meetings",
+      "format": "html",
+      "publisher_identifiers": [],
+      "source_entry_evidence": {
+        "locator": {
+          "type": "calendar_date_title",
+          "date": "2023-05-23",
+          "title": "General Board Meeting"
+        },
+        "excerpt": "Tuesday, May 23, 2023 General Board Meeting, 6 PM"
+      },
+      "source_role": "upcoming_meetings",
+      "observed_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "short_title": "General Board Meeting",
+      "start_date": "2026-11-01T14:03:37.350Z",
+      "collection_visibility": "visible",
+      "timing_status": "past",
+      "type_of_notice_description": "upcoming_meetings",
+      "section_name": "Community Board Meetings",
+      "meeting_join": {
+        "schema": "cityscroll.community_board_source_join.v1",
+        "status": "unknown",
+        "official": false,
+        "reason": "no_city_record_notice",
+        "board_id": "brooklyn-cb-15",
+        "meeting_date": "2023-05-23",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-05-23:general-board-meeting",
+        "join": {
+          "matched": false,
+          "method": "exact_board_date_publisher_identifier",
+          "reason": "no_city_record_notice"
+        },
+        "provenance": {
+          "schema": "cityscroll.community_board_meeting_provenance.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-05-23:general-board-meeting",
+          "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "adapter": "nyc_official_calendar_v1"
+        }
+      },
+      "source_provenance": {
+        "schema": "cityscroll.community_board_meeting_provenance.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-05-23:general-board-meeting",
+        "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "adapter": "nyc_official_calendar_v1"
+      },
+      "entity_refs_all": [
+        "community-board:brooklyn-cb-15",
+        "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-05-23:general-board-meeting"
+      ],
+      "institution_edges": [
+        {
+          "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+          "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+          "edge_type": "hosts_meeting",
+          "relation": "hosts_meeting",
+          "status": "promoted",
+          "promoted": true,
+          "reason": null,
+          "from": "community-board:brooklyn-cb-15",
+          "to": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-05-23:general-board-meeting",
+          "target_kind": "meeting",
+          "target_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-05-23:general-board-meeting",
+          "target_name": "General Board Meeting",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-05-23%3Ageneral-board-meeting",
+          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-05-23%3Ageneral-board-meeting",
+          "board_href": "/community-boards/brooklyn-cb-15/",
+          "institution_refs": {
+            "board_ref": "community-board:brooklyn-cb-15"
+          },
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-05-23:general-board-meeting",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "source_entry_evidence": {
+            "locator": {
+              "type": "calendar_date_title",
+              "date": "2023-05-23",
+              "title": "General Board Meeting"
+            },
+            "excerpt": "Tuesday, May 23, 2023 General Board Meeting, 6 PM"
+          },
+          "provenance": {
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+              "observed_at": "2026-11-01T14:03:37.350Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html;charset=UTF-8",
+              "content_length": 37023,
+              "parser": "nyc_official_calendar_v1",
+              "reason": null,
+              "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+            },
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-05-23:general-board-meeting",
+            "publication_basis": "official_calendar_observation",
+            "source_entry_evidence": {
+              "locator": {
+                "type": "calendar_date_title",
+                "date": "2023-05-23",
+                "title": "General Board Meeting"
+              },
+              "excerpt": "Tuesday, May 23, 2023 General Board Meeting, 6 PM"
+            }
+          },
+          "join": {
+            "matched": false,
+            "method": "exact_board_date_publisher_identifier",
+            "reason": "publisher_identifier_missing"
+          },
+          "evidence": [
+            "exact_board_identity",
+            "exact_meeting_date",
+            "retained_source_url",
+            "observed_receipt",
+            "retained_entry_evidence",
+            "canonical_meeting_identity"
+          ],
+          "publication_basis": "official_calendar_observation"
+        }
+      ],
+      "source_record": {
+        "source_system": "community_board",
+        "identifier": "nyc-calendar:brooklyn-cb-15:2023-05-23:general-board-meeting",
+        "url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "board_id": "brooklyn-cb-15",
+        "role": "upcoming_meetings"
+      },
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-01T14:03:37.350Z"
+      }
+    },
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-04-25:general-board-meeting",
+      "source_keys": [
+        {
+          "source_system": "community_board",
+          "key_type": "publisher_event_id",
+          "value": "nyc-calendar:brooklyn-cb-15:2023-04-25:general-board-meeting"
+        }
+      ],
+      "publisher_identifier": null,
+      "title": "General Board Meeting",
+      "event_date": "2023-04-25T18:00:00-04:00",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2023-04-25T18:00:00-04:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "raw_date": "2023-04-25",
+        "raw_time": "18:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "community_board_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "participation": {
+        "links": [],
+        "remote_join_url": null,
+        "emails": [],
+        "phones": [],
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "committee": null,
+      "agency": null,
+      "board_name": "Brooklyn Community Board 15",
+      "description": null,
+      "search_text": "General Board Meeting upcoming_meetings Community Board Meetings Brooklyn Community Board 15 Brooklyn K15",
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "community_boards": [
+          "brooklyn-cb-15"
+        ],
+        "community_districts": [
+          "K15"
+        ],
+        "neighborhoods": [],
+        "addresses": []
+      },
+      "meeting_documents": [],
+      "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "source_system": "community_board",
+      "meeting_origin": "official_community_board_calendar",
+      "source_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": "community-board:brooklyn-cb-15"
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "request_id": null,
+      "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-04-25:general-board-meeting",
+      "board_id": "brooklyn-cb-15",
+      "record_kind": "event",
+      "record_id": "nyc-calendar:brooklyn-cb-15:2023-04-25:general-board-meeting",
+      "record_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "date": "2023-04-25",
+      "start_at": "2023-04-25T18:00:00-04:00",
+      "end_at": null,
+      "category": "upcoming_meetings",
+      "format": "html",
+      "publisher_identifiers": [],
+      "source_entry_evidence": {
+        "locator": {
+          "type": "calendar_date_title",
+          "date": "2023-04-25",
+          "title": "General Board Meeting"
+        },
+        "excerpt": "Tuesday, April 25, 2023 General Board Meeting, 6 PM"
+      },
+      "source_role": "upcoming_meetings",
+      "observed_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "short_title": "General Board Meeting",
+      "start_date": "2026-11-01T14:03:37.350Z",
+      "collection_visibility": "visible",
+      "timing_status": "past",
+      "type_of_notice_description": "upcoming_meetings",
+      "section_name": "Community Board Meetings",
+      "meeting_join": {
+        "schema": "cityscroll.community_board_source_join.v1",
+        "status": "unknown",
+        "official": false,
+        "reason": "no_city_record_notice",
+        "board_id": "brooklyn-cb-15",
+        "meeting_date": "2023-04-25",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-04-25:general-board-meeting",
+        "join": {
+          "matched": false,
+          "method": "exact_board_date_publisher_identifier",
+          "reason": "no_city_record_notice"
+        },
+        "provenance": {
+          "schema": "cityscroll.community_board_meeting_provenance.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-04-25:general-board-meeting",
+          "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "adapter": "nyc_official_calendar_v1"
+        }
+      },
+      "source_provenance": {
+        "schema": "cityscroll.community_board_meeting_provenance.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-04-25:general-board-meeting",
+        "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "adapter": "nyc_official_calendar_v1"
+      },
+      "entity_refs_all": [
+        "community-board:brooklyn-cb-15",
+        "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-04-25:general-board-meeting"
+      ],
+      "institution_edges": [
+        {
+          "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+          "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+          "edge_type": "hosts_meeting",
+          "relation": "hosts_meeting",
+          "status": "promoted",
+          "promoted": true,
+          "reason": null,
+          "from": "community-board:brooklyn-cb-15",
+          "to": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-04-25:general-board-meeting",
+          "target_kind": "meeting",
+          "target_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-04-25:general-board-meeting",
+          "target_name": "General Board Meeting",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-04-25%3Ageneral-board-meeting",
+          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-04-25%3Ageneral-board-meeting",
+          "board_href": "/community-boards/brooklyn-cb-15/",
+          "institution_refs": {
+            "board_ref": "community-board:brooklyn-cb-15"
+          },
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-04-25:general-board-meeting",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "source_entry_evidence": {
+            "locator": {
+              "type": "calendar_date_title",
+              "date": "2023-04-25",
+              "title": "General Board Meeting"
+            },
+            "excerpt": "Tuesday, April 25, 2023 General Board Meeting, 6 PM"
+          },
+          "provenance": {
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+              "observed_at": "2026-11-01T14:03:37.350Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html;charset=UTF-8",
+              "content_length": 37023,
+              "parser": "nyc_official_calendar_v1",
+              "reason": null,
+              "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+            },
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-04-25:general-board-meeting",
+            "publication_basis": "official_calendar_observation",
+            "source_entry_evidence": {
+              "locator": {
+                "type": "calendar_date_title",
+                "date": "2023-04-25",
+                "title": "General Board Meeting"
+              },
+              "excerpt": "Tuesday, April 25, 2023 General Board Meeting, 6 PM"
+            }
+          },
+          "join": {
+            "matched": false,
+            "method": "exact_board_date_publisher_identifier",
+            "reason": "publisher_identifier_missing"
+          },
+          "evidence": [
+            "exact_board_identity",
+            "exact_meeting_date",
+            "retained_source_url",
+            "observed_receipt",
+            "retained_entry_evidence",
+            "canonical_meeting_identity"
+          ],
+          "publication_basis": "official_calendar_observation"
+        }
+      ],
+      "source_record": {
+        "source_system": "community_board",
+        "identifier": "nyc-calendar:brooklyn-cb-15:2023-04-25:general-board-meeting",
+        "url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "board_id": "brooklyn-cb-15",
+        "role": "upcoming_meetings"
+      },
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-01T14:03:37.350Z"
+      }
+    },
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-03-28:general-board-meeting",
+      "source_keys": [
+        {
+          "source_system": "community_board",
+          "key_type": "publisher_event_id",
+          "value": "nyc-calendar:brooklyn-cb-15:2023-03-28:general-board-meeting"
+        }
+      ],
+      "publisher_identifier": null,
+      "title": "General Board Meeting",
+      "event_date": "2023-03-28T18:00:00-04:00",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2023-03-28T18:00:00-04:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "raw_date": "2023-03-28",
+        "raw_time": "18:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "community_board_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "participation": {
+        "links": [],
+        "remote_join_url": null,
+        "emails": [],
+        "phones": [],
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "committee": null,
+      "agency": null,
+      "board_name": "Brooklyn Community Board 15",
+      "description": null,
+      "search_text": "General Board Meeting upcoming_meetings Community Board Meetings Brooklyn Community Board 15 Brooklyn K15",
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "community_boards": [
+          "brooklyn-cb-15"
+        ],
+        "community_districts": [
+          "K15"
+        ],
+        "neighborhoods": [],
+        "addresses": []
+      },
+      "meeting_documents": [],
+      "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "source_system": "community_board",
+      "meeting_origin": "official_community_board_calendar",
+      "source_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": "community-board:brooklyn-cb-15"
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+      },
+      "request_id": null,
+      "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-03-28:general-board-meeting",
+      "board_id": "brooklyn-cb-15",
+      "record_kind": "event",
+      "record_id": "nyc-calendar:brooklyn-cb-15:2023-03-28:general-board-meeting",
+      "record_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "date": "2023-03-28",
+      "start_at": "2023-03-28T18:00:00-04:00",
+      "end_at": null,
+      "category": "upcoming_meetings",
+      "format": "html",
+      "publisher_identifiers": [],
+      "source_entry_evidence": {
+        "locator": {
+          "type": "calendar_date_title",
+          "date": "2023-03-28",
+          "title": "General Board Meeting"
+        },
+        "excerpt": "Tuesday, March 28, 2023 General Board Meeting, 6 PM"
+      },
+      "source_role": "upcoming_meetings",
+      "observed_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_at": "2026-11-01T14:03:37.350Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 37023,
+        "parser": "nyc_official_calendar_v1",
+        "reason": null,
+        "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+      },
+      "short_title": "General Board Meeting",
+      "start_date": "2026-11-01T14:03:37.350Z",
+      "collection_visibility": "visible",
+      "timing_status": "past",
+      "type_of_notice_description": "upcoming_meetings",
+      "section_name": "Community Board Meetings",
+      "meeting_join": {
+        "schema": "cityscroll.community_board_source_join.v1",
+        "status": "unknown",
+        "official": false,
+        "reason": "no_city_record_notice",
+        "board_id": "brooklyn-cb-15",
+        "meeting_date": "2023-03-28",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-03-28:general-board-meeting",
+        "join": {
+          "matched": false,
+          "method": "exact_board_date_publisher_identifier",
+          "reason": "no_city_record_notice"
+        },
+        "provenance": {
+          "schema": "cityscroll.community_board_meeting_provenance.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-03-28:general-board-meeting",
+          "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "adapter": "nyc_official_calendar_v1"
+        }
+      },
+      "source_provenance": {
+        "schema": "cityscroll.community_board_meeting_provenance.v1",
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-03-28:general-board-meeting",
+        "source_index_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "observed_receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "adapter": "nyc_official_calendar_v1"
+      },
+      "entity_refs_all": [
+        "community-board:brooklyn-cb-15",
+        "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-03-28:general-board-meeting"
+      ],
+      "institution_edges": [
+        {
+          "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+          "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+          "edge_type": "hosts_meeting",
+          "relation": "hosts_meeting",
+          "status": "promoted",
+          "promoted": true,
+          "reason": null,
+          "from": "community-board:brooklyn-cb-15",
+          "to": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-03-28:general-board-meeting",
+          "target_kind": "meeting",
+          "target_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-03-28:general-board-meeting",
+          "target_name": "General Board Meeting",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-03-28%3Ageneral-board-meeting",
+          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-03-28%3Ageneral-board-meeting",
+          "board_href": "/community-boards/brooklyn-cb-15/",
+          "institution_refs": {
+            "board_ref": "community-board:brooklyn-cb-15"
+          },
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-03-28:general-board-meeting",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": "2026-11-01T14:03:37.350Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html;charset=UTF-8",
+            "content_length": 37023,
+            "parser": "nyc_official_calendar_v1",
+            "reason": null,
+            "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+          },
+          "source_entry_evidence": {
+            "locator": {
+              "type": "calendar_date_title",
+              "date": "2023-03-28",
+              "title": "General Board Meeting"
+            },
+            "excerpt": "Tuesday, March 28, 2023 General Board Meeting, 6 PM"
+          },
+          "provenance": {
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+              "observed_at": "2026-11-01T14:03:37.350Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html;charset=UTF-8",
+              "content_length": 37023,
+              "parser": "nyc_official_calendar_v1",
+              "reason": null,
+              "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+            },
+            "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-03-28:general-board-meeting",
+            "publication_basis": "official_calendar_observation",
+            "source_entry_evidence": {
+              "locator": {
+                "type": "calendar_date_title",
+                "date": "2023-03-28",
+                "title": "General Board Meeting"
+              },
+              "excerpt": "Tuesday, March 28, 2023 General Board Meeting, 6 PM"
+            }
+          },
+          "join": {
+            "matched": false,
+            "method": "exact_board_date_publisher_identifier",
+            "reason": "publisher_identifier_missing"
+          },
+          "evidence": [
+            "exact_board_identity",
+            "exact_meeting_date",
+            "retained_source_url",
+            "observed_receipt",
+            "retained_entry_evidence",
+            "canonical_meeting_identity"
+          ],
+          "publication_basis": "official_calendar_observation"
+        }
+      ],
+      "source_record": {
+        "source_system": "community_board",
+        "identifier": "nyc-calendar:brooklyn-cb-15:2023-03-28:general-board-meeting",
+        "url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+        "receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "observed_at": "2026-11-01T14:03:37.350Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html;charset=UTF-8",
+          "content_length": 37023,
+          "parser": "nyc_official_calendar_v1",
+          "reason": null,
+          "content_sha256": "143c8e6d2678bb0240e33e6a72b32a9b0beec565a5b45c2fba40a5a0a05026de"
+        },
+        "board_id": "brooklyn-cb-15",
+        "role": "upcoming_meetings"
+      },
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-01T14:03:37.350Z"
+      }
+    },
+    {
+      "request_id": "20260701028",
+      "meeting_id": "meeting:city_record:20260701028",
+      "agency_name": "Board Meetings",
+      "short_title": "BOARD MEETINGS",
+      "start_date": "2026-09-14T00:00:00.000",
+      "event_date": null,
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701028",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "unlocated",
+        "unlocated_reason": "external_board_page_needed",
+        "virtual_only": false
+      },
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260701028"
+        }
+      ],
+      "publisher_identifier": "20260701028",
+      "title": "BOARD MEETINGS",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-09-14T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701028",
+        "observed_at": null,
+        "raw_date": "2026-09-14",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "participation": null,
+      "committee": null,
+      "agency": "Board Meetings",
+      "board_name": null,
+      "description": null,
+      "search_text": "BOARD MEETINGS Board Meetings BOARD MEETINGS Meeting Public Hearings and Meetings Board Meetings",
+      "meeting_documents": [],
+      "source_receipt": {
+        "schema": "cityscroll.meeting_source_receipt.v1",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701028",
+        "observed_at": "2026-11-01T14:15:00.553Z",
+        "status": "ok",
+        "fetch_status": "snapshot",
+        "reason": null
+      },
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260701028",
+        "legacy_fragment_href": "#notice/20260701028",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701028"
+      },
+      "source_record_id": "20260701028",
+      "board_id": null,
+      "source_record": {
+        "source_system": "city_record",
+        "identifier": "20260701028",
+        "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701028",
+        "receipt": {
+          "schema": "cityscroll.meeting_source_receipt.v1",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701028",
+          "observed_at": "2026-11-01T14:15:00.553Z",
+          "status": "ok",
+          "fetch_status": "snapshot",
+          "reason": null
+        }
+      },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-01T14:03:37.350Z"
+      }
+    },
+    {
+      "request_id": "20260701029",
+      "meeting_id": "meeting:city_record:20260701029",
+      "agency_name": "Board Meetings",
+      "short_title": "BOARD MEETINGS",
+      "start_date": "2026-09-21T00:00:00.000",
+      "event_date": null,
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701029",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "unlocated",
+        "unlocated_reason": "external_board_page_needed",
+        "virtual_only": false
+      },
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260701029"
+        }
+      ],
+      "publisher_identifier": "20260701029",
+      "title": "BOARD MEETINGS",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-09-21T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701029",
+        "observed_at": null,
+        "raw_date": "2026-09-21",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "participation": null,
+      "committee": null,
+      "agency": "Board Meetings",
+      "board_name": null,
+      "description": null,
+      "search_text": "BOARD MEETINGS Board Meetings BOARD MEETINGS Meeting Public Hearings and Meetings Board Meetings",
+      "meeting_documents": [],
+      "source_receipt": {
+        "schema": "cityscroll.meeting_source_receipt.v1",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701029",
+        "observed_at": "2026-11-01T14:15:00.553Z",
+        "status": "ok",
+        "fetch_status": "snapshot",
+        "reason": null
+      },
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260701029",
+        "legacy_fragment_href": "#notice/20260701029",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701029"
+      },
+      "source_record_id": "20260701029",
+      "board_id": null,
+      "source_record": {
+        "source_system": "city_record",
+        "identifier": "20260701029",
+        "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701029",
+        "receipt": {
+          "schema": "cityscroll.meeting_source_receipt.v1",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701029",
+          "observed_at": "2026-11-01T14:15:00.553Z",
+          "status": "ok",
+          "fetch_status": "snapshot",
+          "reason": null
+        }
+      },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-01T14:03:37.350Z"
+      }
+    },
+    {
+      "request_id": "20260701031",
+      "meeting_id": "meeting:city_record:20260701031",
+      "agency_name": "Board Meetings",
+      "short_title": "BOARD MEETINGS",
+      "start_date": "2026-09-28T00:00:00.000",
+      "event_date": null,
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701031",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "unlocated",
+        "unlocated_reason": "external_board_page_needed",
+        "virtual_only": false
+      },
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260701031"
+        }
+      ],
+      "publisher_identifier": "20260701031",
+      "title": "BOARD MEETINGS",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-09-28T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701031",
+        "observed_at": null,
+        "raw_date": "2026-09-28",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "participation": null,
+      "committee": null,
+      "agency": "Board Meetings",
+      "board_name": null,
+      "description": null,
+      "search_text": "BOARD MEETINGS Board Meetings BOARD MEETINGS Meeting Public Hearings and Meetings Board Meetings",
+      "meeting_documents": [],
+      "source_receipt": {
+        "schema": "cityscroll.meeting_source_receipt.v1",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701031",
+        "observed_at": "2026-11-01T14:15:00.553Z",
+        "status": "ok",
+        "fetch_status": "snapshot",
+        "reason": null
+      },
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260701031",
+        "legacy_fragment_href": "#notice/20260701031",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701031"
+      },
+      "source_record_id": "20260701031",
+      "board_id": null,
+      "source_record": {
+        "source_system": "city_record",
+        "identifier": "20260701031",
+        "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701031",
+        "receipt": {
+          "schema": "cityscroll.meeting_source_receipt.v1",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701031",
+          "observed_at": "2026-11-01T14:15:00.553Z",
+          "status": "ok",
+          "fetch_status": "snapshot",
+          "reason": null
+        }
+      },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-01T14:03:37.350Z"
+      }
+    },
+    {
+      "request_id": "20260701033",
+      "meeting_id": "meeting:city_record:20260701033",
+      "agency_name": "Board Meetings",
+      "short_title": "BOARD MEETINGS",
+      "start_date": "2026-10-05T00:00:00.000",
+      "event_date": null,
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701033",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "unlocated",
+        "unlocated_reason": "external_board_page_needed",
+        "virtual_only": false
+      },
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260701033"
+        }
+      ],
+      "publisher_identifier": "20260701033",
+      "title": "BOARD MEETINGS",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-10-05T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701033",
+        "observed_at": null,
+        "raw_date": "2026-10-05",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "participation": null,
+      "committee": null,
+      "agency": "Board Meetings",
+      "board_name": null,
+      "description": null,
+      "search_text": "BOARD MEETINGS Board Meetings BOARD MEETINGS Meeting Public Hearings and Meetings Board Meetings",
+      "meeting_documents": [],
+      "source_receipt": {
+        "schema": "cityscroll.meeting_source_receipt.v1",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701033",
+        "observed_at": "2026-11-01T14:15:00.553Z",
+        "status": "ok",
+        "fetch_status": "snapshot",
+        "reason": null
+      },
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260701033",
+        "legacy_fragment_href": "#notice/20260701033",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701033"
+      },
+      "source_record_id": "20260701033",
+      "board_id": null,
+      "source_record": {
+        "source_system": "city_record",
+        "identifier": "20260701033",
+        "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701033",
+        "receipt": {
+          "schema": "cityscroll.meeting_source_receipt.v1",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701033",
+          "observed_at": "2026-11-01T14:15:00.553Z",
+          "status": "ok",
+          "fetch_status": "snapshot",
+          "reason": null
+        }
+      },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-01T14:03:37.350Z"
+      }
+    },
+    {
+      "request_id": "20260701034",
+      "meeting_id": "meeting:city_record:20260701034",
+      "agency_name": "Board Meetings",
+      "short_title": "BOARD MEETINGS",
+      "start_date": "2026-10-19T00:00:00.000",
+      "event_date": null,
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701034",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "unlocated",
+        "unlocated_reason": "external_board_page_needed",
+        "virtual_only": false
+      },
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260701034"
+        }
+      ],
+      "publisher_identifier": "20260701034",
+      "title": "BOARD MEETINGS",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-10-19T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701034",
+        "observed_at": null,
+        "raw_date": "2026-10-19",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "participation": null,
+      "committee": null,
+      "agency": "Board Meetings",
+      "board_name": null,
+      "description": null,
+      "search_text": "BOARD MEETINGS Board Meetings BOARD MEETINGS Meeting Public Hearings and Meetings Board Meetings",
+      "meeting_documents": [],
+      "source_receipt": {
+        "schema": "cityscroll.meeting_source_receipt.v1",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701034",
+        "observed_at": "2026-11-01T14:15:00.553Z",
+        "status": "ok",
+        "fetch_status": "snapshot",
+        "reason": null
+      },
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260701034",
+        "legacy_fragment_href": "#notice/20260701034",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701034"
+      },
+      "source_record_id": "20260701034",
+      "board_id": null,
+      "source_record": {
+        "source_system": "city_record",
+        "identifier": "20260701034",
+        "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701034",
+        "receipt": {
+          "schema": "cityscroll.meeting_source_receipt.v1",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701034",
+          "observed_at": "2026-11-01T14:15:00.553Z",
+          "status": "ok",
+          "fetch_status": "snapshot",
+          "reason": null
+        }
+      },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-01T14:03:37.350Z"
+      }
+    },
+    {
+      "request_id": "20260701035",
+      "meeting_id": "meeting:city_record:20260701035",
+      "agency_name": "Board Meetings",
+      "short_title": "BOARD MEETINGS",
+      "start_date": "2026-10-26T00:00:00.000",
+      "event_date": null,
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701035",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "unlocated",
+        "unlocated_reason": "external_board_page_needed",
+        "virtual_only": false
+      },
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260701035"
+        }
+      ],
+      "publisher_identifier": "20260701035",
+      "title": "BOARD MEETINGS",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-10-26T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701035",
+        "observed_at": null,
+        "raw_date": "2026-10-26",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "participation": null,
+      "committee": null,
+      "agency": "Board Meetings",
+      "board_name": null,
+      "description": null,
+      "search_text": "BOARD MEETINGS Board Meetings BOARD MEETINGS Meeting Public Hearings and Meetings Board Meetings",
+      "meeting_documents": [],
+      "source_receipt": {
+        "schema": "cityscroll.meeting_source_receipt.v1",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701035",
+        "observed_at": "2026-11-01T14:15:00.553Z",
+        "status": "ok",
+        "fetch_status": "snapshot",
+        "reason": null
+      },
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260701035",
+        "legacy_fragment_href": "#notice/20260701035",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701035"
+      },
+      "source_record_id": "20260701035",
+      "board_id": null,
+      "source_record": {
+        "source_system": "city_record",
+        "identifier": "20260701035",
+        "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701035",
+        "receipt": {
+          "schema": "cityscroll.meeting_source_receipt.v1",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701035",
+          "observed_at": "2026-11-01T14:15:00.553Z",
+          "status": "ok",
+          "fetch_status": "snapshot",
+          "reason": null
+        }
+      },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-01T14:03:37.350Z"
+      }
+    },
+    {
+      "request_id": "20261028015",
+      "meeting_id": "meeting:city_record:20261028015",
+      "agency_name": "Office of the Mayor",
+      "short_title": "Mayoral Pubic Hearing",
+      "start_date": "2026-10-30T00:00:00.000",
+      "event_date": null,
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261028015",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "unlocated",
+        "unlocated_reason": "body_place_omitted",
+        "virtual_only": false
+      },
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20261028015"
+        }
+      ],
+      "publisher_identifier": "20261028015",
+      "title": "Mayoral Pubic Hearing",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-10-30T00:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261028015",
+        "observed_at": null,
+        "raw_date": "2026-10-30",
+        "raw_time": "00:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "participation": null,
+      "committee": null,
+      "agency": "Office of the Mayor",
+      "board_name": null,
+      "description": null,
+      "search_text": "Mayoral Pubic Hearing Office of the Mayor Mayoral Pubic Hearing Public Hearings Public Hearings and Meetings Office of the Mayor",
+      "meeting_documents": [],
+      "source_receipt": {
+        "schema": "cityscroll.meeting_source_receipt.v1",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261028015",
+        "observed_at": "2026-11-01T14:15:00.553Z",
+        "status": "ok",
+        "fetch_status": "snapshot",
+        "reason": null
+      },
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20261028015",
+        "legacy_fragment_href": "#notice/20261028015",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20261028015"
+      },
+      "source_record_id": "20261028015",
+      "board_id": null,
+      "source_record": {
+        "source_system": "city_record",
+        "identifier": "20261028015",
+        "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261028015",
+        "receipt": {
+          "schema": "cityscroll.meeting_source_receipt.v1",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261028015",
+          "observed_at": "2026-11-01T14:15:00.553Z",
+          "status": "ok",
+          "fetch_status": "snapshot",
+          "reason": null
+        }
+      },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-01T14:03:37.350Z"
+      }
+    }
+  ]
+}

@@ -15,8 +15,8 @@
   "relations": {
     "mandate_meeting": {
       "totals": {
-        "public_inferred": 2,
-        "evidence_only": 66
+        "public_inferred": 1,
+        "evidence_only": 70
       },
       "denominators": {
         "eligible_left_rows": 19,
@@ -24,13 +24,13 @@
         "pre_route_pairs": 2280
       },
       "by_tier": {
-        "evidence_only": 66,
-        "public_inferred": 2
+        "evidence_only": 70,
+        "public_inferred": 1
       },
       "by_reason": {
-        "held_out_precision_gate_passed": 2,
-        "matter_body_subject": 66,
-        "temporal": 48
+        "held_out_precision_gate_passed": 1,
+        "matter_body_subject": 70,
+        "temporal": 51
       },
       "by_agency": {
         "administration-for-childrens-services": {
@@ -328,10 +328,10 @@
             "pre_route_pairs": 120
           },
           "public_inferred": 0,
-          "evidence_only": 12,
+          "evidence_only": 10,
           "reason_counts": {
-            "matter_body_subject": 12,
-            "temporal": 11
+            "matter_body_subject": 10,
+            "temporal": 10
           }
         },
         "human-resources-administration": {
@@ -381,10 +381,10 @@
             "pre_route_pairs": 240
           },
           "public_inferred": 0,
-          "evidence_only": 10,
+          "evidence_only": 14,
           "reason_counts": {
-            "matter_body_subject": 10,
-            "temporal": 10
+            "matter_body_subject": 14,
+            "temporal": 14
           }
         },
         "law-department": {
@@ -563,11 +563,11 @@
             "source_rows": 120,
             "pre_route_pairs": 120
           },
-          "public_inferred": 2,
-          "evidence_only": 13,
+          "public_inferred": 1,
+          "evidence_only": 15,
           "reason_counts": {
-            "held_out_precision_gate_passed": 2,
-            "matter_body_subject": 13
+            "held_out_precision_gate_passed": 1,
+            "matter_body_subject": 15
           }
         },
         "youth-and-community-development": {
@@ -582,7 +582,7 @@
         }
       },
       "by_source_system": {
-        "city_record": 68
+        "city_record": 71
       }
     },
     "mandate_land_use": {
@@ -1150,8 +1150,8 @@
       },
       "denominators": {
         "eligible_left_rows": 21,
-        "source_rows": 219,
-        "pre_route_pairs": 96
+        "source_rows": 225,
+        "pre_route_pairs": 94
       },
       "by_tier": {
         "public_inferred": 3
@@ -1193,7 +1193,7 @@
         "board-of-elections": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 2,
+            "source_rows": 3,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1223,7 +1223,7 @@
         "campaign-finance-board": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 0,
+            "source_rows": 3,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1243,7 +1243,7 @@
         "city-council": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 1,
+            "source_rows": 3,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1273,7 +1273,7 @@
         "civilian-complaint-review-board": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 1,
+            "source_rows": 2,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1303,8 +1303,8 @@
         "comptroller": {
           "denominators": {
             "eligible_left_rows": 2,
-            "source_rows": 4,
-            "pre_route_pairs": 8
+            "source_rows": 3,
+            "pre_route_pairs": 6
           },
           "public_inferred": 0,
           "evidence_only": 0,
