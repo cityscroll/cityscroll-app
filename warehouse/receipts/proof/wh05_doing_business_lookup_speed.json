@@ -1,9 +1,9 @@
 {
   "schema": "cityscroll.source_acquisition_receipt.v1",
   "source_contract_id": "doing-business-entities",
-  "observed_at": "2026-10-19T14:58:11.038Z",
+  "observed_at": "2026-10-26T14:34:01.113Z",
   "status": "succeeded",
-  "run_id": "doing-business-entities:2026-10-19T14:58:11.038Z",
+  "run_id": "doing-business-entities:2026-10-26T14:34:01.113Z",
   "publisher_clock_basis": "soda_resource_last_modified",
   "publisher_updated_at": null,
   "acquisition": {
@@ -11,7 +11,7 @@
     "row_count": 10770
   },
   "phase": "WH-05",
-  "measured_at": "2026-10-19T14:58:11.369Z",
+  "measured_at": "2026-10-26T14:34:01.559Z",
   "replaces_live_fetch": {
     "function": "attachDoingBusiness",
     "soda_dataset": "72mk-a8z7",
@@ -23,14 +23,14 @@
   },
   "edge_materialization_lookup": {
     "samples_ms": [
-      0.1076,
-      0.0051,
-      0.0025,
-      0.002,
-      0.0021
+      0.1313,
+      0.0315,
+      0.0062,
+      0.0044,
+      0.0049
     ],
-    "p50_ms": 0.0013,
-    "mean_ms": 0.0039,
+    "p50_ms": 0.0026,
+    "mean_ms": 0.0063,
     "n": 50,
     "note": "Worker hot path after warehouse materialization import (stem index)"
   },
@@ -41,5 +41,5 @@
     "provenance": "derived",
     "note": "Derived floor from page count × 180ms RTT; multi-page catalog fetch before stem join"
   },
-  "summary": "Doing Business attach p50: live multi-page SODA floor 540ms → warehouse materialization 0.0013ms (sub-ms; removes catalog SODA RTTs)"
+  "summary": "Doing Business attach p50: live multi-page SODA floor 540ms → warehouse materialization 0.0026ms (sub-ms; removes catalog SODA RTTs)"
 }
