@@ -32,7 +32,7 @@
   "consumers": {
     "index": {
       "generation_id": "d8da6c8623aa4d7659bc2b8b1ef43b6aabb2f44090ee55ec0bbf6ce7a00076e8",
-      "content_sha256": "261eaf07d1242d3ea59312dc9cd3fc2c4040ac6d58f175864122883dc9d4ccec"
+      "content_sha256": "d804f08d3384f9dd5d841871a3b6778b8a077dcbd1b7bf263d01234bc7928111"
     },
     "evidence": {
       "generation_id": "d8da6c8623aa4d7659bc2b8b1ef43b6aabb2f44090ee55ec0bbf6ce7a00076e8",
