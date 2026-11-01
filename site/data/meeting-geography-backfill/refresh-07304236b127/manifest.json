@@ -1,0 +1,22 @@
+{
+  "schema": "cityscroll.meeting_geography_backfill_manifest.v1",
+  "generation": "refresh-07304236b127",
+  "built_at": "2026-11-01T14:45:18.626Z",
+  "counts": {
+    "input_rows": 1041,
+    "processed_rows": 1041,
+    "newly_processed": 1041,
+    "resumed_unchanged": 0,
+    "address_bearing_rows": 452,
+    "distinct_address_strings": 196,
+    "by_outcome": {
+      "physical_venue": 217,
+      "subject": 0,
+      "broad_jurisdiction": 357,
+      "virtual": 117,
+      "no_source_address": 192,
+      "unresolved_evidence": 158
+    }
+  },
+  "refresh": true
+}

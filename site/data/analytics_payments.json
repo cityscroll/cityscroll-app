@@ -2,8 +2,8 @@
   "schema": "cityscroll.analytics_payments.v1",
   "projection_contract": "cityscroll.analytical_projection.v1",
   "fact": "payment",
-  "generated_at": "2026-10-22T19:42:15.561Z",
-  "snapshot_date": "2026-10-22T19:42:15.561Z",
+  "generated_at": "2026-11-01T13:45:57.351Z",
+  "snapshot_date": "2026-11-01T13:45:57.351Z",
   "population_definition": "AP-08 independent Checkbook Spending contract-payment population; grouped by agency, payee, and payment fiscal year.",
   "dimensions": [
     "agency",
@@ -21,19 +21,19 @@
     "fiscal_years": [
       2026
     ],
-    "publisher_record_count": 1784806,
-    "source_net_check_amount": 52377615299.78,
+    "publisher_record_count": 1784898,
+    "source_net_check_amount": 52380017339.28,
     "source_receipt": "warehouse/receipts/proof/checkbook_payment_population_latest.json",
     "input": "payments.csv"
   },
   "population": {
-    "source_rows": 1784806,
-    "grouped_rows": 28519,
-    "transaction_count": 1784806,
-    "unique_transaction_count": 1635139,
-    "actual_payment_amount": 52377615299.78,
-    "duplicate_transaction_rows": 149667,
-    "reversal_rows": 1679
+    "source_rows": 1784898,
+    "grouped_rows": 28522,
+    "transaction_count": 1784898,
+    "unique_transaction_count": 1635224,
+    "actual_payment_amount": 52380017339.28,
+    "duplicate_transaction_rows": 149674,
+    "reversal_rows": 1695
   },
   "rows": [
     {
@@ -41448,6 +41448,16 @@
     },
     {
       "agency": "Department for the Aging",
+      "payee_name": "Jordan Tircio",
+      "fiscal_year": 2026,
+      "transaction_count": 12,
+      "unique_transaction_count": 12,
+      "actual_payment_amount": 5400,
+      "contract_count": 1,
+      "contract_id": "CT112520258804663"
+    },
+    {
+      "agency": "Department for the Aging",
       "payee_name": "JP MORGAN CHASE BANK NA",
       "fiscal_year": 2026,
       "transaction_count": 69,
@@ -41455,6 +41465,16 @@
       "actual_payment_amount": 53778.92,
       "contract_count": 4,
       "contract_id": null
+    },
+    {
+      "agency": "Department for the Aging",
+      "payee_name": "JULISSA E PARRA",
+      "fiscal_year": 2026,
+      "transaction_count": 10,
+      "unique_transaction_count": 10,
+      "actual_payment_amount": 6770.38,
+      "contract_count": 1,
+      "contract_id": "CT112520258803867"
     },
     {
       "agency": "Department for the Aging",
@@ -43235,6 +43255,16 @@
       "actual_payment_amount": 2526906.42,
       "contract_count": 7,
       "contract_id": null
+    },
+    {
+      "agency": "Department for the Aging",
+      "payee_name": "THE INTERNATIONAL CHILD PROGRAM",
+      "fiscal_year": 2026,
+      "transaction_count": 11,
+      "unique_transaction_count": 11,
+      "actual_payment_amount": 11720,
+      "contract_count": 1,
+      "contract_id": "CT112520258803867"
     },
     {
       "agency": "Department for the Aging",
@@ -73190,11 +73220,11 @@
       "agency": "Department of Design and Construction",
       "payee_name": "CM Testing Lab Inc",
       "fiscal_year": 2026,
-      "transaction_count": 2,
-      "unique_transaction_count": 2,
-      "actual_payment_amount": 7715,
-      "contract_count": 1,
-      "contract_id": "CT185020258805736"
+      "transaction_count": 4,
+      "unique_transaction_count": 4,
+      "actual_payment_amount": 13582.29,
+      "contract_count": 2,
+      "contract_id": null
     },
     {
       "agency": "Department of Design and Construction",
@@ -73680,9 +73710,9 @@
       "agency": "Department of Design and Construction",
       "payee_name": "J RAMBO LLC",
       "fiscal_year": 2026,
-      "transaction_count": 65,
-      "unique_transaction_count": 65,
-      "actual_payment_amount": 175061.61,
+      "transaction_count": 64,
+      "unique_transaction_count": 64,
+      "actual_payment_amount": 173901.61,
       "contract_count": 2,
       "contract_id": null
     },
@@ -77700,9 +77730,9 @@
       "agency": "Department of Education",
       "payee_name": "ABSOLUTE FENCING GEAR INC",
       "fiscal_year": 2026,
-      "transaction_count": 7,
-      "unique_transaction_count": 7,
-      "actual_payment_amount": 29926.25,
+      "transaction_count": 11,
+      "unique_transaction_count": 11,
+      "actual_payment_amount": 12603.95,
       "contract_count": 7,
       "contract_id": null
     },
@@ -114950,9 +114980,9 @@
       "agency": "Department of Education",
       "payee_name": "JANOVIC PLAZA INC",
       "fiscal_year": 2026,
-      "transaction_count": 3,
-      "unique_transaction_count": 3,
-      "actual_payment_amount": 6367.59,
+      "transaction_count": 4,
+      "unique_transaction_count": 4,
+      "actual_payment_amount": 2381.33,
       "contract_count": 3,
       "contract_id": null
     },
@@ -128970,9 +129000,9 @@
       "agency": "Department of Education",
       "payee_name": "NATIONAL MUSEUM OF MATHEMATICS",
       "fiscal_year": 2026,
-      "transaction_count": 104,
-      "unique_transaction_count": 104,
-      "actual_payment_amount": 110439,
+      "transaction_count": 105,
+      "unique_transaction_count": 105,
+      "actual_payment_amount": 106836,
       "contract_count": 79,
       "contract_id": null
     },
@@ -165710,10 +165740,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "4HOLDERS LLC",
       "fiscal_year": 2026,
-      "transaction_count": 4,
-      "unique_transaction_count": 4,
-      "actual_payment_amount": 118006.34,
-      "contract_count": 2,
+      "transaction_count": 16,
+      "unique_transaction_count": 16,
+      "actual_payment_amount": 464324.16,
+      "contract_count": 3,
       "contract_id": null
     },
     {
@@ -166330,9 +166360,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "ALLMAN ENVIRONMENTAL SERVICES PHOTOGRAGY",
       "fiscal_year": 2026,
-      "transaction_count": 20,
-      "unique_transaction_count": 20,
-      "actual_payment_amount": 24560,
+      "transaction_count": 21,
+      "unique_transaction_count": 21,
+      "actual_payment_amount": 25760,
       "contract_count": 2,
       "contract_id": null
     },
@@ -167470,10 +167500,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "BIDWELL ENVIRONMENTAL LLC",
       "fiscal_year": 2026,
-      "transaction_count": 341,
-      "unique_transaction_count": 341,
-      "actual_payment_amount": 2587355.37,
-      "contract_count": 55,
+      "transaction_count": 344,
+      "unique_transaction_count": 344,
+      "actual_payment_amount": 2598717.39,
+      "contract_count": 56,
       "contract_id": null
     },
     {
@@ -171400,10 +171430,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "HENNINGSON DURHAM & RICHARDSON PC HENNINGSON DURHAM & RICHAR",
       "fiscal_year": 2026,
-      "transaction_count": 10,
-      "unique_transaction_count": 10,
-      "actual_payment_amount": 228403.55,
-      "contract_count": 2,
+      "transaction_count": 13,
+      "unique_transaction_count": 13,
+      "actual_payment_amount": 253560.86,
+      "contract_count": 3,
       "contract_id": null
     },
     {
@@ -177550,10 +177580,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "SOUND ENVIRONMENTAL ASSOCIATES LLC",
       "fiscal_year": 2026,
-      "transaction_count": 231,
-      "unique_transaction_count": 231,
-      "actual_payment_amount": 2421803.52,
-      "contract_count": 39,
+      "transaction_count": 236,
+      "unique_transaction_count": 236,
+      "actual_payment_amount": 2470198.07,
+      "contract_count": 40,
       "contract_id": null
     },
     {
@@ -177840,9 +177870,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "STILSING ELECTRIC INC",
       "fiscal_year": 2026,
-      "transaction_count": 4,
-      "unique_transaction_count": 4,
-      "actual_payment_amount": 418749.77,
+      "transaction_count": 9,
+      "unique_transaction_count": 9,
+      "actual_payment_amount": 826745.4,
       "contract_count": 1,
       "contract_id": "CT182620248807119"
     },
@@ -177890,9 +177920,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "STRATEGIC SAFETY SOLUTIONS LLC",
       "fiscal_year": 2026,
-      "transaction_count": 37,
-      "unique_transaction_count": 37,
-      "actual_payment_amount": 736085.74,
+      "transaction_count": 44,
+      "unique_transaction_count": 44,
+      "actual_payment_amount": 817479.81,
       "contract_count": 4,
       "contract_id": null
     },
@@ -180120,9 +180150,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "WETLANDS INC",
       "fiscal_year": 2026,
-      "transaction_count": 4,
-      "unique_transaction_count": 4,
-      "actual_payment_amount": 711460.22,
+      "transaction_count": 11,
+      "unique_transaction_count": 11,
+      "actual_payment_amount": 2196926.28,
       "contract_count": 1,
       "contract_id": "CT182620248807119"
     },
@@ -251430,9 +251460,9 @@
       "agency": "Housing Preservation and Development",
       "payee_name": "CURTIS & GINSBERG ARCHITECTS LLP",
       "fiscal_year": 2026,
-      "transaction_count": 1,
-      "unique_transaction_count": 1,
-      "actual_payment_amount": 366.85,
+      "transaction_count": 2,
+      "unique_transaction_count": 2,
+      "actual_payment_amount": 3887.75,
       "contract_count": 1,
       "contract_id": "CTA180620258805605"
     },
@@ -252500,9 +252530,9 @@
       "agency": "Housing Preservation and Development",
       "payee_name": "KINETIC COMMUNITIES CONSULTING CORPORATION",
       "fiscal_year": 2026,
-      "transaction_count": 13,
-      "unique_transaction_count": 13,
-      "actual_payment_amount": 802586.86,
+      "transaction_count": 11,
+      "unique_transaction_count": 11,
+      "actual_payment_amount": 793435.78,
       "contract_count": 2,
       "contract_id": null
     },
@@ -254830,9 +254860,9 @@
       "agency": "Housing Preservation and Development",
       "payee_name": "XEBEC CORPORATION",
       "fiscal_year": 2026,
-      "transaction_count": 9,
-      "unique_transaction_count": 9,
-      "actual_payment_amount": 3199.39,
+      "transaction_count": 18,
+      "unique_transaction_count": 18,
+      "actual_payment_amount": 0,
       "contract_count": 1,
       "contract_id": "POD80620262017243"
     },
@@ -261420,9 +261450,9 @@
       "agency": "Mayoralty",
       "payee_name": "IDEMIA IDENTITY & SECURITY USA LLC",
       "fiscal_year": 2026,
-      "transaction_count": 94,
-      "unique_transaction_count": 94,
-      "actual_payment_amount": 8259.25,
+      "transaction_count": 95,
+      "unique_transaction_count": 95,
+      "actual_payment_amount": 8154.75,
       "contract_count": 1,
       "contract_id": "POD00220262006364"
     },
