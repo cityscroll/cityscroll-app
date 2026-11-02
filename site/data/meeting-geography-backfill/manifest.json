@@ -1,23 +1,23 @@
 {
   "schema": "cityscroll.meeting_geography_backfill_manifest.v1",
-  "generation": "refresh-5803b9c9a01d",
-  "built_at": "2026-10-29T16:25:42.446Z",
+  "generation": "refresh-412c9d7a8b77",
+  "built_at": "2026-11-02T17:27:29.576Z",
   "counts": {
-    "input_rows": 1001,
-    "processed_rows": 1001,
-    "newly_processed": 1001,
+    "input_rows": 1043,
+    "processed_rows": 1043,
+    "newly_processed": 1043,
     "resumed_unchanged": 0,
-    "address_bearing_rows": 433,
-    "distinct_address_strings": 196,
+    "address_bearing_rows": 454,
+    "distinct_address_strings": 200,
     "by_outcome": {
-      "physical_venue": 175,
+      "physical_venue": 211,
       "subject": 0,
-      "broad_jurisdiction": 303,
-      "virtual": 102,
-      "no_source_address": 229,
-      "unresolved_evidence": 192
+      "broad_jurisdiction": 361,
+      "virtual": 117,
+      "no_source_address": 192,
+      "unresolved_evidence": 162
     }
   },
   "refresh": true,
-  "active_generation": "refresh-5803b9c9a01d"
+  "active_generation": "refresh-412c9d7a8b77"
 }

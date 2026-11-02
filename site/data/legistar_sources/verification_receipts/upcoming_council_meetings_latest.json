@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.upcoming_council_meetings_acquisition_receipt.v1",
   "source_url": "https://webapi.legistar.com/v1/nyc/Events",
-  "fetched_at": "2026-10-17T01:50:31.852Z",
-  "content_hash": "debe6cd5616dd63a589febb6da58a7989561af6d4d63cd5f0abc31c5d5c552da",
-  "row_count": 397,
-  "event_item_row_count": 201
+  "fetched_at": "2026-11-02T17:13:40.043Z",
+  "content_hash": "16533fbd63a76ac2a62c9c487217c1945e4ba7b4ec6391297362ea0c377640e0",
+  "row_count": 370,
+  "event_item_row_count": 59
 }
