@@ -248,7 +248,7 @@
         },
         "publisher_vintage": null,
         "retrieved_at": null,
-        "expected_lag_tolerance_days": 95,
+        "expected_lag_tolerance_days": 400,
         "current_lag": {
           "value": null,
           "unit": null

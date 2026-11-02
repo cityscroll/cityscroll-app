@@ -149,7 +149,7 @@
         "run_id": null
       },
       "expected_cadence": "Annual fiscal-year post with monthly in-year updates (publisher description); Open Data metadata may still list annual or quarterly change claims",
-      "expected_lag_tolerance_days": 95,
+      "expected_lag_tolerance_days": 400,
       "current_lag": {
         "value": null,
         "unit": null,
