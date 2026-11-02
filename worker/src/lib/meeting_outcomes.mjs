@@ -33,6 +33,7 @@ import {
 } from "./legistar_client.mjs";
 import {
   UPCOMING_COUNCIL_MEETINGS_ITEM_CONCURRENCY,
+  UPCOMING_COUNCIL_MEETINGS_AGENDA_ITEMS_MAX,
   UPCOMING_COUNCIL_MEETINGS_KV_KEY,
   assertPublicUpcomingProjection,
   buildUpcomingCouncilMeetingsView,
@@ -1007,10 +1008,37 @@ export async function buildMeetingOutcomesView({
     [...matchedEvents, ...upcomingTargets],
     async (ev) => {
       try {
-        const rows = await fetchLegistarEventItems({ eventId: ev.EventId, token, fetchImpl });
-        return { event_id: String(ev.EventId), rows, fetchError: null };
+        const eventId = String(ev.EventId);
+        const upcomingOnly = !matchedEventIds.has(eventId);
+        const rows = await fetchLegistarEventItems({
+          eventId: ev.EventId,
+          token,
+          fetchImpl,
+          ...(upcomingOnly ? { top: UPCOMING_COUNCIL_MEETINGS_AGENDA_ITEMS_MAX } : {}),
+        });
+        // Meeting outcomes need every item for strictly joined historical
+        // events. Upcoming-only events ask the publisher for a bounded resident
+        // preview so six publisher-max response bodies cannot overlap while
+        // sixty full arrays accumulate in one isolate. Keep the slice as a
+        // defense for fixture clients that do not honor the requested top.
+        const retainedRows = upcomingOnly
+          ? rows.slice(0, UPCOMING_COUNCIL_MEETINGS_AGENDA_ITEMS_MAX)
+          : rows;
+        return {
+          event_id: eventId,
+          rows: retainedRows,
+          observed_rows: retainedRows.length,
+          truncated: upcomingOnly && rows.length >= UPCOMING_COUNCIL_MEETINGS_AGENDA_ITEMS_MAX,
+          fetchError: null,
+        };
       } catch (error) {
-        return { event_id: String(ev.EventId), rows: [], fetchError: String(error?.message || error) };
+        return {
+          event_id: String(ev.EventId),
+          rows: [],
+          observed_rows: 0,
+          truncated: false,
+          fetchError: String(error?.message || error),
+        };
       }
     },
     UPCOMING_COUNCIL_MEETINGS_ITEM_CONCURRENCY,

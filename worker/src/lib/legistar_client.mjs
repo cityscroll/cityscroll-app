@@ -514,11 +514,17 @@ export async function fetchLegistarEvents({
  * which carry inline matter linkage (EventItemMatterFile/Name/Status) and the
  * action outcome (EventItemActionName / EventItemPassedFlagName).
  */
-export async function fetchLegistarEventItems({ eventId, token, fetchImpl = fetch }) {
+export async function fetchLegistarEventItems({
+  eventId,
+  token,
+  fetchImpl = fetch,
+  top = EVENT_ITEMS_TOP,
+}) {
   if (!token || !eventId) return [];
+  const boundedTop = Math.max(1, Math.min(EVENT_ITEMS_TOP, Number(top) || EVENT_ITEMS_TOP));
   return fetchJson(
     fetchImpl,
-    authedUrl(`Events/${encodeURIComponent(eventId)}/EventItems`, token, { $top: String(EVENT_ITEMS_TOP) }),
+    authedUrl(`Events/${encodeURIComponent(eventId)}/EventItems`, token, { $top: String(boundedTop) }),
   );
 }
 

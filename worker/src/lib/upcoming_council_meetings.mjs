@@ -35,6 +35,14 @@ export const UPCOMING_COUNCIL_MEETINGS_HORIZON_DAYS = 120;
 export const UPCOMING_COUNCIL_MEETINGS_ITEM_EVENTS_MAX = 60;
 /** Nested EventItems discovery concurrency; a politeness bound, never above six. */
 export const UPCOMING_COUNCIL_MEETINGS_ITEM_CONCURRENCY = 6;
+/**
+ * Per-event agenda publication bound. Legistar permits 500 EventItems per
+ * response; retaining sixty full responses can exceed one Worker's memory
+ * before either meeting snapshot reaches KV. The nearest agenda rows are a
+ * resident preview, while the observed count and truncated state preserve the
+ * source gap explicitly.
+ */
+export const UPCOMING_COUNCIL_MEETINGS_AGENDA_ITEMS_MAX = 20;
 /** A snapshot older than this serves as stale rather than current. */
 export const UPCOMING_COUNCIL_MEETINGS_MAX_AGE_MS = 36 * 60 * 60 * 1000;
 /** The publisher publishes meeting times as New York local wall times. */
@@ -197,10 +205,13 @@ function sanitizeUpcomingMeeting(raw, { observedAt, cityRecord }) {
   const eventId = String(readFirst(raw, ["EventId", "eventId", "Event_ID", "id"]));
   const insite = readFirst(raw, ["EventInSiteURL", "EventUrl", "EventURL", "url", "link"]);
   const items = (cityRecord.items || []).map(sanitizeAgendaItem);
+  const observedItems = Number.isFinite(Number(cityRecord.itemsObserved))
+    ? Number(cityRecord.itemsObserved)
+    : items.length;
   let agendaStatus;
   if (cityRecord.fetchError) agendaStatus = "unavailable";
   else if (cityRecord.itemsFetched) {
-    if ((cityRecord.items || []).length >= EVENT_ITEMS_TOP) agendaStatus = "truncated";
+    if (cityRecord.itemsTruncated || observedItems >= EVENT_ITEMS_TOP) agendaStatus = "truncated";
     else agendaStatus = (cityRecord.items || []).length ? "items" : "empty";
   } else agendaStatus = "not_fetched";
   return {
@@ -226,6 +237,8 @@ function sanitizeUpcomingMeeting(raw, { observedAt, cityRecord }) {
     agenda: {
       status: agendaStatus,
       items,
+      observed_items: observedItems,
+      published_items: items.length,
       search_text: agendaSearchText(items),
     },
     city_record_notice: {
@@ -284,6 +297,7 @@ export function buildUpcomingCouncilMeetingsView({
   let itemsEmpty = 0;
   let itemsTruncated = 0;
   let agendaItems = 0;
+  let observedAgendaItems = 0;
   const meetings = eligible.map((raw) => {
     const eventId = String(readFirst(raw, ["EventId", "eventId", "Event_ID", "id"]));
     const bag = itemsByEventId.get(eventId) || null;
@@ -292,6 +306,8 @@ export function buildUpcomingCouncilMeetingsView({
       observedAt: generatedAt,
       cityRecord: {
         items: fetched ? bag.rows : [],
+        itemsObserved: fetched ? bag.observed_rows : 0,
+        itemsTruncated: Boolean(fetched && bag.truncated),
         itemsFetched: Boolean(fetched),
         fetchError: bag?.fetchError || null,
         joined: cityRecordByEventId.get(eventId) || null,
@@ -301,6 +317,7 @@ export function buildUpcomingCouncilMeetingsView({
     else if (meeting.agenda.status === "empty") itemsEmpty += 1;
     else if (meeting.agenda.status === "truncated") itemsTruncated += 1;
     agendaItems += meeting.agenda.items.length;
+    observedAgendaItems += meeting.agenda.observed_items;
     return meeting;
   });
 
@@ -327,6 +344,7 @@ export function buildUpcomingCouncilMeetingsView({
       events_page_truncated: eventsFetch ? !eventsFetch.complete : null,
       item_events_max: UPCOMING_COUNCIL_MEETINGS_ITEM_EVENTS_MAX,
       item_concurrency: UPCOMING_COUNCIL_MEETINGS_ITEM_CONCURRENCY,
+      agenda_items_per_event_max: UPCOMING_COUNCIL_MEETINGS_AGENDA_ITEMS_MAX,
       item_events_attempted: eligible.length - itemsDeferred,
       item_events_deferred: itemsDeferred,
       item_discovery_truncated: itemsDeferred > 0,
@@ -347,6 +365,7 @@ export function buildUpcomingCouncilMeetingsView({
       eligible_events: eligible.length,
       meetings: meetings.length,
       agenda_items: agendaItems,
+      agenda_items_observed: observedAgendaItems,
       events_with_items: meetings.filter((m) => m.agenda.status === "items" || m.agenda.status === "truncated").length,
       events_no_published_items: itemsEmpty,
       events_items_deferred: itemsDeferred,
