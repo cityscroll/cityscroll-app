@@ -36,19 +36,6 @@ const EVENT = {
   EventInSiteURL: "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22526",
 };
 
-const ITEM = {
-  EventItemId: 440244,
-  EventItemEventId: 22526,
-  EventItemTitle: "Transit Improvement Funding",
-  EventItemActionName: "Approved by Subcommittee",
-  EventItemPassedFlagName: "Pass",
-  EventItemRollCallFlag: 1,
-  EventItemMatterId: 79193,
-  EventItemMatterFile: "LU 0001-2026",
-  EventItemMatterName: "Transit Improvement Funding",
-  EventItemMatterStatus: "Adopted",
-};
-
 const VOTES = [
   { PersonId: 101, PersonName: "Ada Councilmember", VoteValue: "Aye" },
   { PersonId: 102, PersonName: "Ben Councilmember", VoteValue: "Aye" },
@@ -71,8 +58,23 @@ const ATTACHMENTS = [
     MatterAttachmentName: "Staff report",
     MatterAttachmentHyperlink: "https://example.com/staff.pdf",
     MatterAttachmentIsSupportingDocument: true,
+    MatterAttachmentBinary: "A".repeat(256 * 1024),
   },
 ];
+
+const ITEM = {
+  EventItemId: 440244,
+  EventItemEventId: 22526,
+  EventItemTitle: "Transit Improvement Funding",
+  EventItemActionName: "Approved by Subcommittee",
+  EventItemPassedFlagName: "Pass",
+  EventItemRollCallFlag: 1,
+  EventItemMatterId: 79193,
+  EventItemMatterFile: "LU 0001-2026",
+  EventItemMatterName: "Transit Improvement Funding",
+  EventItemMatterStatus: "Adopted",
+  EventItemMatterAttachments: ATTACHMENTS,
+};
 
 const NOTICE = {
   request_id: "20260728001",
@@ -125,7 +127,7 @@ function database({ observations = true } = {}) {
   return { sqlite, DB: d1FromSqlite(sqlite) };
 }
 
-function mockMeetingFetch() {
+function mockMeetingFetch({ embeddedAttachments = false } = {}) {
   return async (url) => {
     const u = new URL(url);
     if (u.pathname.includes("/resource/dg92-zbpx.json")) {
@@ -135,13 +137,12 @@ function mockMeetingFetch() {
       return new Response(JSON.stringify([EVENT]), { status: 200 });
     }
     if (u.pathname === "/v1/nyc/Events/22526/EventItems") {
-      return new Response(JSON.stringify([ITEM]), { status: 200 });
+      const { EventItemMatterAttachments, ...withoutAttachments } = ITEM;
+      const item = embeddedAttachments ? ITEM : withoutAttachments;
+      return new Response(JSON.stringify([item]), { status: 200 });
     }
     if (u.pathname === "/v1/nyc/EventItems/440244/Votes") {
       return new Response(JSON.stringify(VOTES), { status: 200 });
-    }
-    if (u.pathname === "/v1/nyc/EventItems/440244/Attachments") {
-      return new Response(JSON.stringify(ATTACHMENTS), { status: 200 });
     }
     return new Response(JSON.stringify([]), { status: 200 });
   };
@@ -192,7 +193,7 @@ test("flag off leaves meeting view intact without observations", async () => {
 test("flag on writes immutable event/item/vote/attachment rows and replay does not duplicate", async () => {
   const { sqlite, DB } = database();
   const env = { DB, [LEGISTAR_SOURCE_RECORD_DUAL_WRITE_FLAG]: "true" };
-  const fetchImpl = mockMeetingFetch();
+  const fetchImpl = mockMeetingFetch({ embeddedAttachments: true });
   const now = new Date("2026-08-01T12:00:00.000Z");
 
   const first = await buildMeetingOutcomesView({ token: "test-token", fetchImpl, now, env });
@@ -234,6 +235,14 @@ test("flag on writes immutable event/item/vote/attachment rows and replay does n
   const vote = JSON.parse(voteSnap.raw_snapshot);
   assert.equal(vote.EventItemId, 440244);
   assert.ok(vote.PersonId);
+
+  const attachmentSnap = sqlite.prepare(
+    `SELECT raw_snapshot FROM source_records
+      WHERE source_system = ? ORDER BY source_system_id LIMIT 1`,
+  ).get(LEGISTAR_ATTACHMENTS_SOURCE_SYSTEM);
+  const attachment = JSON.parse(attachmentSnap.raw_snapshot);
+  assert.equal(attachment.MatterAttachmentHyperlink, "https://example.com/staff.pdf");
+  assert.equal(Object.hasOwn(attachment, "MatterAttachmentBinary"), false);
 
   // Public view still carries person retention on the assembled vote summary.
   const matter = first.records[0].agenda_items[0].matters[0];
