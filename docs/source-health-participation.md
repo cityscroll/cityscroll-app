@@ -112,6 +112,14 @@ Orphan receipts, coverage rows, or observations fail the build. Duplicate ids
 fail the build. A contract with no receipt still gets a row; missing clocks
 stay `null` / `UNKNOWN`.
 
+The projection's top-level `generated_at` is the freshness evaluation instant,
+not an acquisition receipt timestamp. An ordinary rebuild derives it from the
+newest input evidence. A release build instead passes its build instant with
+`--as-of` and reuses that exact value for the write and `--check` passes. This
+lets the release evaluate source age at build time while preserving every
+source's `observed_at`, publisher, acquisition, and serving clocks; never
+restamp those inputs merely to make the projection current.
+
 Receipts must already name the canonical id. The current producers are:
 
 | Producer | Join field | What it can establish |

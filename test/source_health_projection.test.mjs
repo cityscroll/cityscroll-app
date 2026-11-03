@@ -22,9 +22,32 @@ import {
   workerExternalAwardServeIsLive,
 } from "../tools/source_health_observations.mjs";
 import { loadSourceContracts, validateSourceContracts } from "../tools/source_contracts.mjs";
+import { generateSourceHealthObservations } from "../tools/build_source_health_observations.mjs";
 import { fileURLToPath } from "node:url";
 
 const NOW = "2026-08-18T12:00:00.000Z";
+
+test("release evaluation clock advances without changing the underlying source receipt", () => {
+  const registry = { contracts: [contract()] };
+  const acquiredAt = "2026-08-18T10:00:00.000Z";
+  const later = "2026-09-18T12:00:00.000Z";
+  const inputs = {
+    asOf: NOW,
+    warehouseReceipts: [{
+      source_id: "daily-source",
+      observed_at: acquiredAt,
+      publisher_updated_at: acquiredAt,
+      status: "succeeded",
+      path: "fixture/receipt.json",
+    }],
+  };
+  const initial = generateSourceHealthObservations({ registry, inputs });
+  const release = generateSourceHealthObservations({ registry, inputs, asOf: later });
+  assert.equal(initial.generated_at, NOW);
+  assert.equal(release.generated_at, later);
+  assert.equal(release.observations[0].operator.acquisition_receipts[0].observed_at, acquiredAt);
+  assert.notEqual(initial.observations[0].health.status, release.observations[0].health.status);
+});
 
 test("backstage errors preserve diagnostics while redacting credential values", () => {
   const diagnostic = [
