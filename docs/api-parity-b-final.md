@@ -80,6 +80,27 @@ private imports, rendered-page scraping, arbitrary queries, or undocumented fiel
 
 The dedicated CI evidence is [External consumer proof](../.github/workflows/external-consumer-proof.yml).
 
+## Procurement detail boundary exercise
+
+The [independent detail consumer](../examples/external-procurement-detail-proof/index.mjs)
+uses only public HTTP and Node platform modules. It accepts an exact City Record RequestID for
+`GET /notice?id=…` or a canonical procurement ID for `GET /contract?id=…`. The two endpoints
+have different public envelopes: the notice route returns an `ok`/`row` document and citation,
+while the contract route returns the `contract.get@1` capability envelope. The consumer keeps
+identity, source observations, freshness and coverage, and treats 404 and 503 as different states.
+Its [focused boundary test](../test/external_procurement_detail_proof.test.mjs) uses public-response
+fixtures through an injected HTTP fetch. This proves the independent code path against the
+documented response contracts; it does not assert that a particular record is currently served
+by the live API.
+
+```sh
+node examples/external-procurement-detail-proof/index.mjs --kind notice --id YOUR_REQUEST_ID
+node examples/external-procurement-detail-proof/index.mjs --kind contract --id procurement:contract:YOUR_CONTRACT_ID
+```
+
+This exercise is a boundary check for potential external consumers. It does not move source
+ownership, change public endpoints, or establish any private product's deployment state.
+
 ## Honest gap
 
 The documented analysis capability reports registered contract value. It explicitly does not
