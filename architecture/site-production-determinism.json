@@ -665,6 +665,7 @@
     "site/rules_adoption_lag_view.mjs",
     "site/rules_calendar.mjs",
     "site/rules_card_interaction.mjs",
+    "site/rules_day_math.mjs",
     "site/rules_exception_modes.mjs",
     "site/rules_explorer.mjs",
     "site/rules_member_blurb.mjs",

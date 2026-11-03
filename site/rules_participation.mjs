@@ -13,7 +13,7 @@
  * Pure: no DOM, no fetch.
  */
 
-import { daysUntil } from "./rules_action_bands.mjs";
+import { daysUntil } from "./rules_day_math.mjs";
 
 export const RULES_PARTICIPATION_SCHEMA_VERSION = 1;
 
