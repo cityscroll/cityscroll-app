@@ -74,25 +74,75 @@ This issue is maintained automatically and will close after a successful schedul
 `;
 }
 
-export async function reconcileFirstClassRefreshIssue({ evaluation, failures = [], openIssue = null, request }) {
+function managedIssue(issue) {
+  return !issue?.pull_request && String(issue?.body || "").includes(FIRST_CLASS_REFRESH_ISSUE_MARKER);
+}
+
+/** Load every managed issue, not only the first page shared with open pull requests. */
+export async function loadManagedFirstClassRefreshIssues(request) {
+  const issues = [];
+  for (let page = 1; ; page += 1) {
+    const payload = await request("GET", `/issues?state=open&per_page=100&page=${page}`);
+    issues.push(...payload.filter(managedIssue));
+    if (payload.length < 100) return issues;
+  }
+}
+
+function canonicalIssue(issues) {
+  return [...issues].sort((left, right) => Number(right.number) - Number(left.number))[0] || null;
+}
+
+async function closeIssue(request, issue, body) {
+  await request("PATCH", `/issues/${issue.number}`, { state: "closed", body });
+}
+
+export async function reconcileFirstClassRefreshIssue({
+  evaluation,
+  failures = [],
+  openIssue = null,
+  openIssues = null,
+  request,
+}) {
+  const managedIssues = openIssues || (openIssue ? [openIssue] : []);
+  const canonical = canonicalIssue(managedIssues);
+  const duplicates = managedIssues.filter((issue) => issue.number !== canonical?.number);
   if (evaluation.healthy) {
-    if (!openIssue) return { action: "none" };
-    await request("PATCH", `/issues/${openIssue.number}`, {
-      state: "closed",
-      body: `${openIssue.body || FIRST_CLASS_REFRESH_ISSUE_MARKER}\n\nRecovered after a successful scheduled refresh.`,
-    });
-    return { action: "closed", issue_number: openIssue.number };
+    if (!canonical) return { action: "none" };
+    for (const issue of managedIssues) {
+      await closeIssue(
+        request,
+        issue,
+        `${issue.body || FIRST_CLASS_REFRESH_ISSUE_MARKER}\n\nRecovered after a successful scheduled refresh.`,
+      );
+    }
+    return {
+      action: "closed",
+      issue_number: canonical.number,
+      closed_issue_numbers: managedIssues.map((issue) => issue.number),
+    };
   }
   const body = renderFirstClassRefreshIssue(evaluation, failures);
-  if (!openIssue) {
+  if (!canonical) {
     const issue = await request("POST", "/issues", { title: FIRST_CLASS_REFRESH_ISSUE_TITLE, body });
     return { action: "created", issue_number: issue.number };
   }
-  if (openIssue.title === FIRST_CLASS_REFRESH_ISSUE_TITLE && openIssue.body === body) {
-    return { action: "unchanged", issue_number: openIssue.number };
+  let action = "unchanged";
+  if (canonical.title !== FIRST_CLASS_REFRESH_ISSUE_TITLE || canonical.body !== body) {
+    await request("PATCH", `/issues/${canonical.number}`, { title: FIRST_CLASS_REFRESH_ISSUE_TITLE, body });
+    action = "updated";
   }
-  await request("PATCH", `/issues/${openIssue.number}`, { title: FIRST_CLASS_REFRESH_ISSUE_TITLE, body });
-  return { action: "updated", issue_number: openIssue.number };
+  for (const duplicate of duplicates) {
+    await closeIssue(
+      request,
+      duplicate,
+      `${duplicate.body || FIRST_CLASS_REFRESH_ISSUE_MARKER}\n\nSuperseded by #${canonical.number} after automated reconciliation found more than one open issue for this condition.`,
+    );
+  }
+  return {
+    action: duplicates.length && action === "unchanged" ? "deduplicated" : action,
+    issue_number: canonical.number,
+    duplicate_issue_numbers: duplicates.map((issue) => issue.number),
+  };
 }
 
 export async function checkFirstClassRefreshHealth({
@@ -125,12 +175,11 @@ export async function checkFirstClassRefreshHealth({
     const jobs = await request("GET", `/actions/runs/${run.id}/jobs?per_page=100`);
     failures.push({ run, failingStep: firstFailingStep(jobs.jobs) });
   }
-  const issuePayload = await request("GET", "/issues?state=open&per_page=100");
-  const openIssue = issuePayload.find((issue) => !issue.pull_request && String(issue.body || "").includes(FIRST_CLASS_REFRESH_ISSUE_MARKER)) || null;
+  const openIssues = await loadManagedFirstClassRefreshIssues(request);
   return reconcileFirstClassRefreshIssue({
     evaluation,
     failures,
-    openIssue,
+    openIssues,
     request: (method, path, body) => request(method, path, body),
   });
 }
