@@ -3,7 +3,8 @@ import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { persistScheduleResult } from "../external_schedule_outbox.mjs";
 
-export const CHECKOUT_FETCH_TIMEOUT_MS = 5_000;
+export const CHECKOUT_REMOTE_TIMEOUT_MS = 5_000;
+export const CHECKOUT_FETCH_TIMEOUT_MS = 30_000;
 export const CHECKOUT_REFUSAL_CYCLES = 24;
 export const CHECKOUT_REFRESH_HANDOFF = "CITYSCROLL_CHECKOUT_REFRESH_RESULT";
 const ISSUE_TITLE = "Scheduler configuration: checkout refresh refused";
@@ -47,9 +48,20 @@ export function runCheckoutGit(root, args, { signal, spawnImpl = spawn } = {}) {
 
 /** Refresh only a clean default branch. Refusals never interrupt the cycle. */
 export async function refreshSchedulerCheckout(root, {
-  runGit = runCheckoutGit, fetchTimeoutMs = CHECKOUT_FETCH_TIMEOUT_MS,
+  runGit = runCheckoutGit, remoteTimeoutMs = CHECKOUT_REMOTE_TIMEOUT_MS,
+  fetchTimeoutMs = CHECKOUT_FETCH_TIMEOUT_MS,
 } = {}) {
   const git = (args, signal) => runGit(root, args, { signal });
+  const boundedGit = async (args, timeoutMs) => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const result = await git(args, controller.signal);
+      return { ...result, timed_out: result.timed_out || controller.signal.aborted };
+    } finally {
+      clearTimeout(timer);
+    }
+  };
   const head = await git(["rev-parse", "HEAD"]);
   const before = head.code === 0 && /^[0-9a-f]{40}$/.test(head.stdout.trim()) ? head.stdout.trim() : null;
   const receipt = { status: "refused", revision_before: before, revision_after: before, reason: null };
@@ -64,26 +76,21 @@ export async function refreshSchedulerCheckout(root, {
   const dirty = await clean();
   if (dirty) return refuse(dirty);
 
-  // Discovery and fetch share one deadline, including credential helpers. Do
-  // not trust a cached origin/HEAD after the publisher changes its default.
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), fetchTimeoutMs);
-  try {
-    const remote = await git(["ls-remote", "--symref", "origin", "HEAD"], controller.signal);
-    if (remote.timed_out || controller.signal.aborted) return refuse("fetch-timeout");
-    if (remote.code !== 0) return refuse("fetch-failed");
-    const defaultBranch = /^ref: refs\/heads\/([^\s]+)\s+HEAD$/m.exec(remote.stdout)?.[1];
-    if (!defaultBranch) return refuse("default-branch-unresolved");
-    if (branch.stdout.trim() !== defaultBranch) return refuse("not-default-branch");
-    // Fetch only the advertised branch into FETCH_HEAD. No force refspec, tag
-    // updates, submodule fetches, or background maintenance are needed.
-    const fetched = await git(["fetch", "--no-tags", "--no-recurse-submodules", "--no-auto-maintenance",
-      "--refmap=", "origin", `refs/heads/${defaultBranch}`], controller.signal);
-    if (fetched.timed_out || controller.signal.aborted) return refuse("fetch-timeout");
-    if (fetched.code !== 0) return refuse("fetch-failed");
-  } finally {
-    clearTimeout(timer);
-  }
+  // Keep remote discovery bounded without consuming the transfer's longer
+  // deadline. Do not trust a cached origin/HEAD after the publisher changes
+  // its default branch.
+  const remote = await boundedGit(["ls-remote", "--symref", "origin", "HEAD"], remoteTimeoutMs);
+  if (remote.timed_out) return refuse("fetch-timeout");
+  if (remote.code !== 0) return refuse("fetch-failed");
+  const defaultBranch = /^ref: refs\/heads\/([^\s]+)\s+HEAD$/m.exec(remote.stdout)?.[1];
+  if (!defaultBranch) return refuse("default-branch-unresolved");
+  if (branch.stdout.trim() !== defaultBranch) return refuse("not-default-branch");
+  // Fetch only the advertised branch into FETCH_HEAD. No force refspec, tag
+  // updates, submodule fetches, or background maintenance are needed.
+  const fetched = await boundedGit(["fetch", "--no-tags", "--no-recurse-submodules", "--no-auto-maintenance",
+    "--refmap=", "origin", `refs/heads/${defaultBranch}`], fetchTimeoutMs);
+  if (fetched.timed_out) return refuse("fetch-timeout");
+  if (fetched.code !== 0) return refuse("fetch-failed");
   const target = await git(["rev-parse", "FETCH_HEAD^{commit}"]);
   if (target.code !== 0 || !/^[0-9a-f]{40}$/.test(target.stdout.trim())) return refuse("fetched-revision-unresolved");
   const after = target.stdout.trim();
