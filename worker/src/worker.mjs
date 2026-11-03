@@ -653,8 +653,15 @@ const worker = {
       // shared meeting view, route slices, Search, Now, and later alert replay
       // consume the same vintage instead of yesterday's snapshot.
       if (event.cron === "0 8 * * *") {
-      // Finish the lookup/outcome pair before the meeting refresh so both large
-      // materializations do not share one isolate's peak working set.
+      // Publish Council outcomes before the Land prewarm. The Land step is
+      // deadline-bounded, but publisher work that does not observe its abort can
+      // remain live after the deadline; starting Council acquisition afterward
+      // would put both large materializations back in the same isolate peak.
+      await runAcquisitionStep({
+        env, sourceContractId: "nyc-council-legistar", runId,
+        label: "meeting outcomes", logLabel: "meeting outcomes",
+        work: (signal) => signal ? refreshMeetingOutcomes(env, fetchWithSignal(signal)) : refreshMeetingOutcomes(env),
+      });
       const morningZap = startMorningZapOutcomes(ctx, env, runId, refreshZapOutcomes, console, async (lookupOptions) => {
         const { signal, ...options } = lookupOptions || {};
         const r = await withWorkerAcquisitionReceipt(env, "zap-projects", runId, () => refreshZapProjectsLookup(env, {
@@ -669,11 +676,6 @@ const worker = {
         }),
       });
       await morningZap;
-      await runAcquisitionStep({
-        env, sourceContractId: "nyc-council-legistar", runId,
-        label: "meeting outcomes", logLabel: "meeting outcomes",
-        work: (signal) => signal ? refreshMeetingOutcomes(env, fetchWithSignal(signal)) : refreshMeetingOutcomes(env),
-      });
       await runAcquisitionStep({
         env, sourceContractId: "city-record", runId,
         label: "hearings", logLabel: "hearings",
