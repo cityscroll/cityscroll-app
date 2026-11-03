@@ -130,6 +130,26 @@ test("fetch timeout kills the transport and refuses without moving HEAD", { time
   });
 });
 
+test("a first fetch slower than five seconds still converges", { timeout: 15_000 }, async () => {
+  await fixture(async ({ root, after }) => {
+    let delayed = false;
+    const runGit = async (path, args, options) => {
+      if (args.includes("fetch") && !delayed) {
+        delayed = true;
+        await new Promise((resolve) => setTimeout(resolve, 5_100));
+      }
+      return runCheckoutGit(path, args, options);
+    };
+
+    const refreshed = await refreshSchedulerCheckout(root, { runGit });
+    assert.equal(delayed, true);
+    assert.equal(refreshed.status, "updated");
+    assert.equal(refreshed.reason, null);
+    assert.equal(git(root, "rev-parse", "HEAD"), after);
+    assert.equal((await refreshSchedulerCheckout(root, { runGit })).status, "current");
+  });
+});
+
 test("fetch failure never falls back to an older FETCH_HEAD", async () => {
   await fixture(async ({ root, before }) => {
     git(root, "fetch", "origin");
