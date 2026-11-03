@@ -17,6 +17,7 @@ import { writeFirstFour } from "../tools/build_civic_geography.mjs";
 import {
   compatibilityDistrictLayer,
   fixtureBundle,
+  unreviewedGeographyGenerations,
   writeLayerDocument,
 } from "../tools/build_district_boundaries.mjs";
 import {
@@ -128,6 +129,24 @@ test("the compatibility view alone retains the conservative minimum clock", () =
     "simplify_tolerance_deg",
     "sources",
   ]);
+});
+
+test("scheduled refreshes quarantine a new baseline geography generation", () => {
+  const bundle = fixtureBundle();
+  const registry = {
+    layers: Object.entries(bundle.layers).map(([type, pair]) => ({
+      type,
+      boundary_vintage: pair.full.vintage.id,
+    })),
+  };
+  assert.deepEqual(unreviewedGeographyGenerations(bundle, registry), []);
+
+  bundle.layers.community_district.full.vintage.id = "2026-11-02";
+  assert.deepEqual(unreviewedGeographyGenerations(bundle, registry), [{
+    type: "community_district",
+    previous: "2026-05-26",
+    observed: "2026-11-02",
+  }]);
 });
 
 test("committed registry points to full and simplified artifacts for every layer", () => {

@@ -54,7 +54,24 @@ const CANARY_SLICES = {
     count: facts.civic_geography?.layer_count ?? 0,
     payload: {
       schema: facts.civic_geography?.schema ?? null,
-      layers: facts.civic_geography?.layers ?? [],
+      // Boundary vintages and observed coverage status are publisher-data
+      // clocks, not registry topology. Keep them visible in architecture facts
+      // while fingerprinting the stable type, identity, source and coverage
+      // contracts that the canary is meant to protect.
+      layers: (facts.civic_geography?.layers ?? []).map((layer) => ({
+        type: layer.type ?? null,
+        class: layer.class ?? null,
+        namespace: layer.namespace ?? null,
+        canonical_id: layer.canonical_id ?? null,
+        source_contract_id: layer.source_contract_id ?? null,
+        source_dataset_id: layer.source_dataset_id ?? null,
+        cardinality: layer.cardinality ?? null,
+        coverage_rule: layer.coverage_rule ?? null,
+        full_fidelity: layer.full_fidelity === true,
+        simplified_delivery: layer.simplified_delivery === true,
+        public_relations: layer.public_relations ?? [],
+        declared_uses: layer.declared_uses ?? [],
+      })),
     },
   }),
   "constellation-document-materializer": (facts) => ({

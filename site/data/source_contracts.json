@@ -4787,7 +4787,8 @@
       "source_contract_id": "community-district-boundaries",
       "acquisition_command": [
         "node",
-        "tools/build_district_boundaries.mjs"
+        "tools/build_district_boundaries.mjs",
+        "--retain-unreviewed-generation"
       ],
       "owning_builder": "tools/build_community_board_geography.mjs",
       "builder_command": [

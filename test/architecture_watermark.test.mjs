@@ -102,7 +102,7 @@ test("reviewed watermark shards have deterministic ids, owners, and paths", () =
   const rendered = `${JSON.stringify(committed, null, 2)}\n`;
   // The digest is the reviewed handoff: advancing any shard has to be stated
   // here as well, so a baseline cannot move without someone naming it.
-  assert.equal(createHash("sha256").update(rendered).digest("hex"), "50d05f3453710ac5f8625e7259ef82895857b5383d08fa4345eefb08b5035a7a");
+  assert.equal(createHash("sha256").update(rendered).digest("hex"), "60d2006d5ca0cae61c874a42a16c0c9cbdfd7c5c8e94facc483f37786147184c");
 });
 
 test("same-key candidates fail instead of resolving by order", () => {
@@ -147,6 +147,28 @@ test("reviewed advancement is explicit and changes only the selected owner shard
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
+});
+
+test("civic geography watermark tracks registry contracts without pinning publisher vintages", () => {
+  const baseline = buildWatermark(facts).canaries["civic-geography-registry"];
+  const refreshed = structuredClone(facts);
+  for (const layer of refreshed.civic_geography.layers) {
+    layer.boundary_vintage = `next-${layer.boundary_vintage}`;
+    layer.coverage_status = layer.coverage_status === "complete" ? "partial" : "complete";
+  }
+  assert.deepEqual(
+    buildWatermark(refreshed).canaries["civic-geography-registry"],
+    baseline,
+    "publisher-data clocks must not require an architecture-watermark advance",
+  );
+
+  const contractChange = structuredClone(facts);
+  contractChange.civic_geography.layers[0].canonical_id.pattern = "^changed-contract$";
+  assert.notEqual(
+    buildWatermark(contractChange).canaries["civic-geography-registry"].fingerprint,
+    baseline.fingerprint,
+    "registry identity changes must still trip the architecture canary",
+  );
 });
 
 test("independent cards own disjoint watermark and evidence shard paths", () => {
