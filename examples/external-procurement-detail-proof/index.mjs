@@ -27,6 +27,13 @@ function stringArray(value) {
   return Array.isArray(value) && value.every((entry) => typeof entry === "string");
 }
 
+function publicationDate(value) {
+  if (value === null) return true;
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const parsed = new Date(`${value}T00:00:00Z`);
+  return !Number.isNaN(parsed.valueOf()) && parsed.toISOString().slice(0, 10) === value;
+}
+
 function noPrivateKeys(value, path = "response") {
   if (!value || typeof value !== "object") return;
   for (const [key, child] of Object.entries(value)) {
@@ -88,6 +95,7 @@ export function summarizePublicDetail({ kind, id, status, body }) {
     if (row.request_id !== id || citation.request_id !== id
       || citation.schema !== "cityscroll.notice_get.citation.v1"
       || citation.publisher !== "NYC City Record"
+      || !publicationDate(citation.publication_date)
       || !citationLink(citation.official_url, "https://a856-cityrecord.nyc.gov", `/RequestDetail/${id}`)
       || !citationLink(citation.cityscroll_url, "https://cityscroll.org", `/notices/${id}/`)
       || !["materialized", "public-source-fallback"].includes(body.source)
@@ -139,7 +147,7 @@ export function summarizePublicDetail({ kind, id, status, body }) {
     || !provenance.source_observations.every((row) => row && typeof row === "object"
       && !Array.isArray(row) && typeof row.source_observation_ref === "string"
       && row.source_observation_ref && typeof row.source_system === "string"
-      && typeof row.source_id === "string" && typeof row.ingested_at === "string")
+      && typeof row.source_id === "string" && nullableString(row.ingested_at))
     || coverage.state !== "observed" || !stringArray(coverage.not_published)
     || !stringArray(coverage.not_observed) || !Array.isArray(coverage.not_yet_joined)
     || !(coverage.publication === null || (coverage.publication && typeof coverage.publication === "object"))

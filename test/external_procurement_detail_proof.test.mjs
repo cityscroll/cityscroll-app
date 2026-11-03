@@ -76,9 +76,34 @@ test("absence and outage stay distinct from an observed empty fact", () => {
   assert.equal(summarizePublicDetail({ kind: "contract", id: contractId, status: 503, body: { capability_reference: "contract.get@1", availability: "unavailable", contract: null, error: "unavailable" } }).state, "unavailable");
 });
 
+test("nullable public clocks and citation dates retain their documented meaning", () => {
+  const nullableCitation = {
+    ...notice,
+    citation: { ...notice.citation, publication_date: null },
+  };
+  assert.equal(summarizePublicDetail({ kind: "notice", id: noticeId, status: 200, body: nullableCitation }).fact.citation.publication_date, null);
+
+  const nullableClock = {
+    ...contract,
+    contract: {
+      ...contract.contract,
+      provenance: {
+        ...contract.contract.provenance,
+        source_observations: contract.contract.provenance.source_observations.map((entry) => ({ ...entry, ingested_at: null })),
+      },
+    },
+  };
+  assert.deepEqual(
+    summarizePublicDetail({ kind: "contract", id: contractId, status: 200, body: nullableClock }).fact.source_observations,
+    nullableClock.contract.provenance.source_observations,
+  );
+});
+
 test("malformed identity, state, nullability, evidence, and private fields fail closed", () => {
   assert.throws(() => summarizePublicDetail({ kind: "notice", id: noticeId, status: 200, body: { ...notice, row: { request_id: "wrong" } } }), /identity/);
   assert.throws(() => summarizePublicDetail({ kind: "notice", id: noticeId, status: 200, body: { ...notice, citation: { ...notice.citation, official_url: `https://other.example/RequestDetail/${noticeId}` } } }), /identity/);
+  assert.throws(() => summarizePublicDetail({ kind: "notice", id: noticeId, status: 200, body: { ...notice, citation: { ...notice.citation, publication_date: "2026-02-30" } } }), /citation/);
+  assert.throws(() => summarizePublicDetail({ kind: "notice", id: noticeId, status: 200, body: { ...notice, citation: { ...notice.citation, publication_date: undefined } } }), /citation/);
   assert.throws(() => summarizePublicDetail({ kind: "notice", id: noticeId, status: 404, body: { ok: false, reason: "not-found", source: "public-source", citation: notice.citation } }), /envelope/);
   assert.throws(() => summarizePublicDetail({ kind: "contract", id: contractId, status: 200, body: { ...contract, contract: { ...contract.contract, provenance: { identity: { exact: true }, source_observations: [] }, raw_snapshot: "secret" } } }), /private field/);
   assert.throws(() => summarizePublicDetail({ kind: "contract", id: contractId, status: 200, body: { ...contract, contract: { ...contract.contract, provenance: { identity: { exact: true }, source_observations: [{}] } } } }), /source observations/);
