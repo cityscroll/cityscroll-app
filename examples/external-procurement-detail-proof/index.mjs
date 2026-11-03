@@ -139,7 +139,7 @@ export function summarizePublicDetail({ kind, id, status, body }) {
   const coverage = object(contract.coverage, "contract coverage");
   const sourceEnvelopes = object(coverage.source_envelopes, "contract source envelopes");
   const freshness = object(contract.freshness, "contract freshness");
-  const fields = object(contract.fields, "contract fields");
+  const fields = contract.fields === undefined ? null : object(contract.fields, "contract fields");
   const amount = object(contract.amount, "contract amount");
   if (contract.object_type !== "procurement" || contract.procurement_id !== id
     || contract.canonical_id !== id || identity.exact !== true || identity.canonical_id !== id
@@ -155,8 +155,8 @@ export function summarizePublicDetail({ kind, id, status, body }) {
     || typeof freshness.as_of !== "string" || !nullableString(freshness.generated_at)
     || !nullableString(freshness.checked_at) || !freshness.sources
     || typeof freshness.sources !== "object" || Array.isArray(freshness.sources)
-    || !Object.hasOwn(fields, "short_title") || !nullableString(fields.short_title)
-    || !Object.hasOwn(fields, "agency_name") || !nullableString(fields.agency_name)
+    || (fields !== null && (!Object.hasOwn(fields, "short_title") || !nullableString(fields.short_title)
+      || !Object.hasOwn(fields, "agency_name") || !nullableString(fields.agency_name)))
     || typeof amount.valid !== "boolean") {
     throw new Error("contract identity or source observations are incomplete");
   }
@@ -166,14 +166,14 @@ export function summarizePublicDetail({ kind, id, status, body }) {
       object_type: contract.object_type,
       procurement_id: contract.procurement_id,
       canonical_id: contract.canonical_id,
-      title: fields.short_title,
-      agency: fields.agency_name,
-      stage: fields.primary_stage ?? null,
+      title: fields?.short_title ?? null,
+      agency: fields?.agency_name ?? null,
+      stage: fields?.primary_stage ?? null,
       amount,
       coverage,
       freshness,
       source_observations: provenance.source_observations,
-      official_url: fields.official_url ?? null,
+      official_url: fields?.official_url ?? null,
       lifecycle: contract.lifecycle ?? null,
     },
   };

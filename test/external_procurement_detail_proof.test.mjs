@@ -99,6 +99,25 @@ test("nullable public clocks and citation dates retain their documented meaning"
   );
 });
 
+test("available contracts may omit the optional search projection", () => {
+  const fieldless = {
+    ...contract,
+    contract: { ...contract.contract, fields: undefined },
+  };
+  const result = summarizePublicDetail({ kind: "contract", id: contractId, status: 200, body: fieldless });
+  assert.equal(result.state, "available");
+  assert.equal(result.fact.procurement_id, contractId);
+  assert.equal(result.fact.title, null);
+  assert.equal(result.fact.agency, null);
+  assert.equal(result.fact.stage, null);
+  assert.equal(result.fact.official_url, null);
+  assert.deepEqual(result.fact.source_observations, contract.contract.provenance.source_observations);
+  assert.deepEqual(result.fact.coverage, contract.contract.coverage);
+  assert.deepEqual(result.fact.freshness, contract.contract.freshness);
+  assert.deepEqual(result.fact.amount, contract.contract.amount);
+  assert.deepEqual(result.fact.lifecycle, contract.contract.lifecycle);
+});
+
 test("malformed identity, state, nullability, evidence, and private fields fail closed", () => {
   assert.throws(() => summarizePublicDetail({ kind: "notice", id: noticeId, status: 200, body: { ...notice, row: { request_id: "wrong" } } }), /identity/);
   assert.throws(() => summarizePublicDetail({ kind: "notice", id: noticeId, status: 200, body: { ...notice, citation: { ...notice.citation, official_url: `https://other.example/RequestDetail/${noticeId}` } } }), /identity/);
