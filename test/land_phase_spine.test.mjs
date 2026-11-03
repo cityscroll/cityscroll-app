@@ -6,8 +6,9 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { parse } from "acorn";
 
 import {
   LAND_ULURP_PHASES,
@@ -21,7 +22,7 @@ import {
 
 import { buildUlurpStatutoryClockView } from "../site/ulurp_statutory_clock.mjs";
 import { resolveLandProcedureVariant } from "../site/land_procedure_profiles.mjs";
-import { buildLandPhaseRoleStrip, landPhaseRoleStripHTML } from "../site/land_role_strip.mjs";
+import { buildLandPhaseRoleStrip, landPhaseRoleStripHTML, landRoleStrip } from "../site/land_role_strip.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const fixture2019 = JSON.parse(
@@ -52,6 +53,42 @@ function viewFromLdp31Fixture(fixture) {
     public_status: fixture.public_status,
     project_id: fixture.project_id,
   });
+}
+
+function moduleImportClosure(entry) {
+  const pending = [resolve(entry)];
+  const closure = new Set();
+  while (pending.length) {
+    const file = pending.pop();
+    if (closure.has(file)) continue;
+    closure.add(file);
+    const tree = parse(readFileSync(file, "utf8"), { ecmaVersion: "latest", sourceType: "module" });
+    const specifiers = [];
+    const visit = (node) => {
+      if (!node || typeof node !== "object") return;
+      if (
+        ["ImportDeclaration", "ExportNamedDeclaration", "ExportAllDeclaration"].includes(node.type)
+        && typeof node.source?.value === "string"
+      ) {
+        specifiers.push(node.source.value);
+      } else if (node.type === "ImportExpression") {
+        assert.equal(typeof node.source?.value, "string", `unresolved dynamic import in ${relative(ROOT, file)}`);
+        specifiers.push(node.source.value);
+      }
+      for (const value of Object.values(node)) {
+        if (Array.isArray(value)) value.forEach(visit);
+        else if (value && typeof value === "object") visit(value);
+      }
+    };
+    visit(tree);
+    for (const specifier of specifiers) {
+      if (!specifier.startsWith(".")) continue;
+      const target = resolve(dirname(file), specifier);
+      if (/\.(?:mjs|js|cjs)$/.test(target)) pending.push(target);
+      else closure.add(target);
+    }
+  }
+  return new Set([...closure].map((file) => relative(ROOT, file)));
 }
 
 test("LAND_ULURP_PHASES follows pre-review then statutory public review", () => {
@@ -531,29 +568,43 @@ test("A3 the rendered role strip never emits a recommendation, vote, hearing, or
   }
 });
 
-test("public Land detail phase panel wires the role strip above the observed rows, never inside the aggregate/event renderers", () => {
-  const landSrc = readFileSync(new URL("../site/app/land.mjs", import.meta.url), "utf8");
-  const spineSrc = readFileSync(new URL("../site/land_phase_spine.mjs", import.meta.url), "utf8");
-  // The source phase-spine stays free of its renderer; the Land view loads
-  // the role strip on the presentation side of the boundary.
-  assert.doesNotMatch(spineSrc, /land_role_strip\.mjs/);
-  assert.match(landSrc, /import\("\.\.\/land_role_strip\.mjs"\)/);
-  assert.match(landSrc, /tools\?\.landRoleStrip\?\.\(view,p\.id,\{t,escape:escUiHtml\}\)/);
-  assert.match(landSrc, /\$\{tools\?\.landRoleStrip\?\.\(view,p\.id,\{t,escape:escUiHtml\}\)\|\|""\}\$\{statutory\}\$\{body\}/);
+test("transport-neutral phase-model import closure excludes the role-strip renderer", () => {
+  const closure = moduleImportClosure(join(ROOT, "site/land_phase_spine.mjs"));
+  assert.equal(closure.has("site/land_role_strip.mjs"), false, [...closure].sort().join("\n"));
+});
 
-  const aggregateFn = landSrc.slice(
-    landSrc.indexOf("function landPhaseAggregateHTML"),
-    landSrc.indexOf("function landStatutoryDeadlineHTML"),
+test("public Land detail renders the role strip above observed rows", async () => {
+  const view = viewFromLdp31Fixture(fixtureUlurpControl);
+  const appUrl = new URL("../site/app/land.mjs", import.meta.url).href;
+  const previous = Object.fromEntries(
+    ["t", "escUiHtml", "fdate", "EXT_ATTRS", "extSR"].map((key) => [key, globalThis[key]]),
   );
-  const eventRowFn = landSrc.slice(
-    landSrc.indexOf("function landSpineEventRowHTML"),
-    landSrc.indexOf("function landPhaseAggregateHTML"),
+  globalThis.t = (key, vars = {}) => Object.entries(vars).reduce(
+    (text, [name, value]) => text.replaceAll(`{${name}}`, String(value)),
+    key,
   );
-  assert.ok(aggregateFn.length > 0 && eventRowFn.length > 0);
-  for (const marker of ["roleStrip", "role_definition", "land-role-strip", "landRoleStrip"]) {
-    assert.doesNotMatch(aggregateFn, new RegExp(marker), `landPhaseAggregateHTML references ${marker}`);
-    assert.doesNotMatch(eventRowFn, new RegExp(marker), `landSpineEventRowHTML references ${marker}`);
+  globalThis.escUiHtml = testEscape;
+  globalThis.fdate = (value) => String(value ?? "").slice(0, 10);
+  globalThis.EXT_ATTRS = "";
+  globalThis.extSR = () => "";
+  let rendered;
+  try {
+    await import(appUrl);
+    rendered = globalThis.landPhaseSpineHTML(view, { landRoleStrip }, {});
+  } finally {
+    for (const [key, value] of Object.entries(previous)) {
+      if (value === undefined) delete globalThis[key];
+      else globalThis[key] = value;
+    }
   }
+  const roleStripIndex = rendered.indexOf('data-land-role-strip="1"');
+  const observedIndexes = [
+    rendered.indexOf('class="land-phase-row'),
+    rendered.indexOf('class="land-phase-agg'),
+  ].filter((index) => index >= 0);
+  assert.ok(roleStripIndex >= 0, "the rendered Land phase panel omitted its role strip");
+  assert.ok(observedIndexes.length > 0, "the rendered Land phase panel omitted its observed rows");
+  assert.ok(roleStripIndex < Math.min(...observedIndexes), "the role strip followed an observed row");
 });
 
 test("hearing notices and occurrence alone do not complete Borough President review", () => {
