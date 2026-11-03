@@ -3,6 +3,8 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 import vm from "node:vm";
 
+import { startMorningZapOutcomes } from "../src/lib/worker_acquisition_runtime.mjs";
+
 const SOURCE = readFileSync(new URL("../src/worker.mjs", import.meta.url), "utf8");
 const HOLD_MS = 25;
 const SCHEDULED_AT = "2026-10-29T08:00:00.000Z";
@@ -59,7 +61,7 @@ function scheduledWorker(overrides = {}) {
     calls,
     pending,
     morningOptions,
-    run: (cron) => context.worker.runScheduled({ cron, scheduledTime: SCHEDULED_AT }, {}, ctx),
+    run: (cron, env = {}) => context.worker.runScheduled({ cron, scheduledTime: SCHEDULED_AT }, env, ctx),
   };
 }
 
@@ -188,3 +190,41 @@ for (const cron of ["0 8 * * *", "0 13 * * *"]) {
     }
   });
 }
+
+test("08:00 publishes meeting outcomes before a timed-out Land prewarm can retain work", async () => {
+  let releaseZapWork;
+  let zapWorkActive = false;
+  let meetingStartedWithZapWork = null;
+  const zapWork = new Promise((resolve) => {
+    releaseZapWork = () => {
+      zapWorkActive = false;
+      resolve();
+    };
+  });
+  const worker = scheduledWorker({
+    startMorningZapOutcomes: (...args) => startMorningZapOutcomes(...args),
+    refreshZapProjectsLookup: async () => ({}),
+    refreshZapOutcomes: async () => {
+      zapWorkActive = true;
+      await zapWork;
+      return { status: "ok" };
+    },
+    refreshMeetingOutcomes: async () => {
+      meetingStartedWithZapWork = zapWorkActive;
+      return { status: "success" };
+    },
+  });
+
+  try {
+    await worker.run("0 8 * * *", { SCHEDULED_STEP_DEADLINE_MS: 5 });
+    await Promise.all(worker.pending);
+    assert.equal(
+      meetingStartedWithZapWork,
+      false,
+      "meeting refresh must publish before timed-out Land work continues in the isolate",
+    );
+  } finally {
+    releaseZapWork();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  }
+});
