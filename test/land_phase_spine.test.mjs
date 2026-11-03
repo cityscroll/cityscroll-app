@@ -534,10 +534,10 @@ test("A3 the rendered role strip never emits a recommendation, vote, hearing, or
 test("public Land detail phase panel wires the role strip above the observed rows, never inside the aggregate/event renderers", () => {
   const landSrc = readFileSync(new URL("../site/app/land.mjs", import.meta.url), "utf8");
   const spineSrc = readFileSync(new URL("../site/land_phase_spine.mjs", import.meta.url), "utf8");
-  // The role-strip renderer rides the phase-spine's own lazy bundle (a barrel
-  // re-export — land_phase_spine.mjs gains no ledger logic) so land.mjs's own
-  // wiring stays a single optional-chained call.
-  assert.match(spineSrc, /export \{ landRoleStrip \} from "\.\/land_role_strip\.mjs";/);
+  // The source phase-spine stays free of its renderer; the Land view loads
+  // the role strip on the presentation side of the boundary.
+  assert.doesNotMatch(spineSrc, /land_role_strip\.mjs/);
+  assert.match(landSrc, /import\("\.\.\/land_role_strip\.mjs"\)/);
   assert.match(landSrc, /tools\?\.landRoleStrip\?\.\(view,p\.id,\{t,escape:escUiHtml\}\)/);
   assert.match(landSrc, /\$\{tools\?\.landRoleStrip\?\.\(view,p\.id,\{t,escape:escUiHtml\}\)\|\|""\}\$\{statutory\}\$\{body\}/);
 

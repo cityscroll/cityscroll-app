@@ -955,7 +955,8 @@ function ensureLandPhaseSpineTools(){
     landPhaseSpineToolsPromise=Promise.all([
       import("../land_phase_spine.mjs").catch(()=>null),
       import("../ulurp_statutory_clock.mjs").catch(()=>null),
-    ]).then(([phase, clock])=>{
+      import("../land_role_strip.mjs").catch(()=>null),
+    ]).then(([phase, clock, roleStrip])=>{
       if(clock&&typeof clock.buildUlurpPipelinePosition==="function"){
         globalThis.buildUlurpPipelinePosition=clock.buildUlurpPipelinePosition;
       }
@@ -965,7 +966,7 @@ function ensureLandPhaseSpineTools(){
       if(clock&&typeof clock.buildUlurpStatutoryClockView==="function"){
         globalThis.buildUlurpStatutoryClockView=clock.buildUlurpStatutoryClockView;
       }
-      return phase;
+      return phase ? {...phase, landRoleStrip: roleStrip?.landRoleStrip} : null;
     });
   }
   return landPhaseSpineToolsPromise;
