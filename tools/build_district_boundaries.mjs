@@ -6,6 +6,7 @@
 // views with their historical conservative boundary_vintage scalar.
 //
 //   node tools/build_district_boundaries.mjs
+//   node tools/build_district_boundaries.mjs --retain-unreviewed-generation
 //   node tools/build_district_boundaries.mjs --check
 //   node tools/build_district_boundaries.mjs --fixture
 
@@ -401,6 +402,24 @@ export async function buildFromOpenData(fetchImpl = fetch) {
   return (await buildBundleFromOpenData(fetchImpl)).unified;
 }
 
+/**
+ * A new baseline geography generation moves more than the layer files: pinned
+ * crosswalks, materialized joins, and resident copy also carry its vintage.
+ * Scheduled dataset refreshes therefore observe a publisher advance without
+ * publishing it. An explicit operator build remains the coordinated update
+ * path for a new generation.
+ */
+export function unreviewedGeographyGenerations(bundle, registry) {
+  const current = new Map((registry?.layers || []).map((row) => [row.type, row.boundary_vintage]));
+  return Object.entries(bundle?.layers || {}).flatMap(([type, pair]) => {
+    const previous = current.get(type) || null;
+    const observed = pair?.full?.vintage?.id || null;
+    return previous && observed && previous !== observed
+      ? [{ type, previous, observed }]
+      : [];
+  }).sort((left, right) => left.type.localeCompare(right.type));
+}
+
 function readText(relativePath) {
   return readFileSync(join(ROOT, relativePath), "utf8");
 }
@@ -472,6 +491,19 @@ async function main(argv = process.argv.slice(2)) {
     return;
   }
   const bundle = argv.includes("--fixture") ? fixtureBundle() : await buildBundleFromOpenData();
+  if (argv.includes("--retain-unreviewed-generation") && existsSync(SITE_REGISTRY)) {
+    const committedRegistry = JSON.parse(readFileSync(SITE_REGISTRY, "utf8"));
+    const advances = unreviewedGeographyGenerations(bundle, committedRegistry);
+    if (advances.length) {
+      console.error(
+        `retained committed geography generation; coordinated update required for ${advances
+          .map((row) => `${row.type} ${row.previous} -> ${row.observed}`)
+          .join(", ")}`,
+      );
+      process.exitCode = 1;
+      return;
+    }
+  }
   const written = writeGeographyBundle(bundle);
   console.log(
     `wrote ${relative(ROOT, SITE_REGISTRY)} + per-layer full/simplified artifacts; `

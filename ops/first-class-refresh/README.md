@@ -170,6 +170,14 @@ attachment proof receive a live attachment acquisition before materialization;
 if that fails, the verified Rules snapshot is retained. No fixture text is used
 as production attachment evidence.
 
+Baseline geography is a coordinated generation rather than an independently
+publishable daily dataset. The scheduled acquisition observes publisher clocks
+with `--retain-unreviewed-generation`; when a source vintage advances, it exits
+without writing the new layer set and the refresh retains the last verified
+generation. An explicit `node tools/build_district_boundaries.mjs` run remains
+the update path when its crosswalks, joins, and resident disclosures can move
+together.
+
 The generated freshness report is published with the Data health page that reads
 it; it must not be ignored or the page cannot reproduce in a fresh checkout.
 

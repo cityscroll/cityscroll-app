@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/stable-civic-geography-watermark",
+  "status": "implemented",
+  "fingerprint": "stable-civic-geography-watermark.v1",
+  "updated_at": "2026-11-03T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "civic-geography-architecture-facts",
+      "path": "tools/build_architecture_facts.mjs"
+    },
+    {
+      "id": "civic-geography-watermark-regression",
+      "path": "test/architecture_watermark.test.mjs"
+    },
+    {
+      "id": "civic-geography-reviewed-baseline",
+      "path": "architecture/watermark.d/canary--civic-geography-registry.json"
+    }
+  ]
+}
