@@ -141,15 +141,15 @@ test("geography acquisition receipts feed backstage source health", () => {
     ...loadSourceHealthInputs(root, registry),
     asOf: "2026-11-03T12:34:56.000Z",
   });
-  const sourceIds = [
-    "dcp-nta2020-boundaries",
-    "dcp-police-precinct-boundaries",
-    "dsny-district-boundaries",
-    "business-improvement-district-boundaries",
-  ];
-  for (const sourceId of sourceIds) {
+  const expected = new Map([
+    ["dcp-nta2020-boundaries", "Delayed"],
+    ["dcp-police-precinct-boundaries", "Delayed"],
+    ["dsny-district-boundaries", "Healthy"],
+    ["business-improvement-district-boundaries", "Delayed"],
+  ]);
+  for (const [sourceId, status] of expected) {
     const observation = projection.observations.find((row) => row.source_id === sourceId);
-    assert.notEqual(observation.health.status, "Source-unavailable", sourceId);
+    assert.equal(observation.health.status, status, sourceId);
     assert.ok(observation.evidence.some((item) => item.path.startsWith("data/geography/receipts/")));
     assert.equal(observation.operator.runs[0].adapter, "civic-geography-acquisition-receipt");
   }
