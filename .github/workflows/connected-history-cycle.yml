@@ -141,7 +141,7 @@ jobs:
           GH_TOKEN: ${{ secrets.REFRESH_PR_TOKEN }}
           CYCLE_PR: ${{ steps.cycle-pr.outputs.pull-request-number }}
           CYCLE_HEAD: ${{ steps.cycle-pr.outputs.pull-request-head-sha }}
-        run: gh pr merge "$CYCLE_PR" --auto --match-head-commit "$CYCLE_HEAD"
+        run: bash tools/queue_automation_pr_after_checks.sh "$CYCLE_PR" "$CYCLE_HEAD"
 
       - name: Fail the run when a cycle stage failed
         if: ${{ steps.cycle.outcome == 'failure' }}

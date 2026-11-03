@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Publish whatever the scheduled first-class dataset refresh regenerated onto a
-# dated branch, then open or update its pull request.
+# dated branch, queue that exact head, then close older dated refresh pull
+# requests as superseded.
 #
 # The branch name is dated, so a second run on the same day reuses a branch that
 # already exists on the remote. A fresh clone has no remote-tracking ref for that
@@ -80,11 +81,42 @@ git push "--force-with-lease=${lease}" "$remote" "HEAD:${branch}"
 existing="$(gh pr list --head "$branch" --state open --json number --jq '.[0].number // ""')"
 if [ -n "$existing" ]; then
   echo "Updated existing pull request #${existing}."
-  exit 0
+  current_pr="$existing"
+else
+  # Any earlier pull request on this branch is closed, which does not prevent a new
+  # one from being opened for the same head branch.
+  gh pr create --head "$branch" --base main \
+    --title "Refresh first-class resident datasets" \
+    --body "Scheduled refresh of every first-class resident dataset that was past its declared cadence. Only datasets whose acquisition and rebuild succeeded are included here; the run summary and .artifacts/first-class-rebuild-receipt.json name any acquisition or rebuild step that did not. The retained run history at \`site/data/first_class_refresh_run_history.json\` names this run's identifier, trigger, and start and finish times, and keeps prior runs append-only so consecutive scheduled receipts stay readable from the repository after merge."
+  current_pr="$(gh pr list --head "$branch" --state open --json number --jq '.[0].number // ""')"
 fi
 
-# Any earlier pull request on this branch is closed, which does not prevent a new
-# one from being opened for the same head branch.
-gh pr create --head "$branch" --base main \
-  --title "Refresh first-class resident datasets" \
-  --body "Scheduled refresh of every first-class resident dataset that was past its declared cadence. Only datasets whose acquisition and rebuild succeeded are included here; the run summary and .artifacts/first-class-rebuild-receipt.json name any acquisition or rebuild step that did not. The retained run history at \`site/data/first_class_refresh_run_history.json\` names this run's identifier, trigger, and start and finish times, and keeps prior runs append-only so consecutive scheduled receipts stay readable from the repository after merge."
+if ! [[ "$current_pr" =~ ^[0-9]+$ ]]; then
+  echo "The refresh branch was pushed, but its open pull request could not be identified." >&2
+  exit 1
+fi
+
+# Wait for every required check on the exact generated head before queueing it
+# and closing anything it supersedes. If the checks or queue request fail, the
+# script stops and leaves every predecessor open so the next scheduled run can
+# retry without hiding the last known publication path.
+head_sha="$(git rev-parse HEAD)"
+bash "$SCRIPT_DIR/queue_automation_pr_after_checks.sh" "$current_pr" "$head_sha"
+echo "Queued pull request #${current_pr} at ${head_sha}."
+
+# A dated branch is useful evidence for a particular run, but its pull request is
+# not an independent release after a newer run has rebuilt from current main.
+# Keep exactly one open first-class refresh: the queued head above. The remote
+# branches remain available to the run-history capture step until normal branch
+# retention removes them.
+while IFS= read -r older_pr; do
+  [ -n "$older_pr" ] || continue
+  [ "$older_pr" != "$current_pr" ] || continue
+  gh pr close "$older_pr" \
+    --comment "Superseded by #${current_pr}, which was regenerated from the current main branch and queued for merge. The newer refresh retains the unmerged run history."
+  echo "Closed superseded refresh pull request #${older_pr}."
+done < <(
+  gh pr list --state open --base main --limit 100 \
+    --json number,headRefName \
+    --jq '.[] | select(.headRefName | startswith("data/first-class-refresh-")) | .number'
+)
