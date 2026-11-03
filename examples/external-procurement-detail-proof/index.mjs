@@ -19,6 +19,14 @@ function object(value, label) {
   return value;
 }
 
+function nullableString(value) {
+  return value === null || typeof value === "string";
+}
+
+function stringArray(value) {
+  return Array.isArray(value) && value.every((entry) => typeof entry === "string");
+}
+
 function noPrivateKeys(value, path = "response") {
   if (!value || typeof value !== "object") return;
   for (const [key, child] of Object.entries(value)) {
@@ -47,15 +55,31 @@ function unobserved(kind, id, state, status) {
   return { kind, id, state, http_status: status, fact: null };
 }
 
+function validateNoticeTerminal(body, reason) {
+  if (body.ok !== false || body.reason !== reason || typeof body.source !== "string"
+      || body.citation !== null || body.row != null) {
+    throw new Error(`notice ${reason} envelope does not match the public contract`);
+  }
+}
+
+function validateContractTerminal(body, availability, error) {
+  if (body.capability_reference !== "contract.get@1" || body.availability !== availability
+      || body.contract !== null || body.error !== error) {
+    throw new Error(`contract ${availability} envelope does not match the public contract`);
+  }
+}
+
 export function summarizePublicDetail({ kind, id, status, body }) {
   if (!validId(kind, id)) throw new Error(`invalid ${kind} identity`);
   object(body, "public response");
   noPrivateKeys(body);
   if (kind === "notice") {
-    if (status === 404 && body.ok === false && body.reason === "not-found") {
+    if (status === 404) {
+      validateNoticeTerminal(body, "not-found");
       return unobserved(kind, id, "not_yet_public", status);
     }
-    if (status === 503 && body.ok === false && body.reason === "unavailable") {
+    if (status === 503) {
+      validateNoticeTerminal(body, "unavailable");
       return unobserved(kind, id, "unavailable", status);
     }
     if (status !== 200 || body.ok !== true) throw new Error(`unexpected notice HTTP ${status}`);
@@ -67,12 +91,15 @@ export function summarizePublicDetail({ kind, id, status, body }) {
       || !citationLink(citation.official_url, "https://a856-cityrecord.nyc.gov", `/RequestDetail/${id}`)
       || !citationLink(citation.cityscroll_url, "https://cityscroll.org", `/notices/${id}/`)
       || !["materialized", "public-source-fallback"].includes(body.source)
-      || ![true, false, null].includes(body.stale)) {
+      || typeof body.stale !== "boolean"
+      || !nullableString(body.generated_at)
+      || body.reason !== undefined) {
       throw new Error("notice identity, citation, or freshness does not match the public contract");
     }
     return {
       kind, id, state: "available", http_status: status,
       fact: {
+        request_id: row.request_id,
         title: row.short_title ?? null,
         agency: row.agency_name ?? null,
         notice_type: row.type_of_notice_description ?? null,
@@ -87,35 +114,58 @@ export function summarizePublicDetail({ kind, id, status, body }) {
   if (body.capability_reference !== "contract.get@1") {
     throw new Error("contract response is not the documented capability");
   }
-  if (status === 404 && body.availability === "not_yet_public") {
+  if (status === 404) {
+    validateContractTerminal(body, "not_yet_public", "not-found");
     return unobserved(kind, id, "not_yet_public", status);
   }
-  if (status === 503 && body.availability === "unavailable") {
+  if (status === 503) {
+    validateContractTerminal(body, "unavailable", "unavailable");
     return unobserved(kind, id, "unavailable", status);
   }
-  if (status !== 200 || body.availability !== "available") {
+  if (status !== 200 || body.availability !== "available" || body.error !== null) {
     throw new Error(`unexpected contract HTTP ${status}`);
   }
   const contract = object(body.contract, "contract");
   const provenance = object(contract.provenance, "contract provenance");
+  const identity = object(provenance.identity, "contract identity");
   const coverage = object(contract.coverage, "contract coverage");
+  const sourceEnvelopes = object(coverage.source_envelopes, "contract source envelopes");
   const freshness = object(contract.freshness, "contract freshness");
-  if (contract.procurement_id !== id || provenance.identity?.exact !== true
-    || !Array.isArray(provenance.source_observations)
-    || !provenance.source_observations.every((row) => typeof row.source_observation_ref === "string" && row.source_observation_ref)) {
+  const fields = object(contract.fields, "contract fields");
+  const amount = object(contract.amount, "contract amount");
+  if (contract.object_type !== "procurement" || contract.procurement_id !== id
+    || contract.canonical_id !== id || identity.exact !== true || identity.canonical_id !== id
+    || !Array.isArray(provenance.source_observations) || !provenance.source_observations.length
+    || !provenance.source_observations.every((row) => row && typeof row === "object"
+      && !Array.isArray(row) && typeof row.source_observation_ref === "string"
+      && row.source_observation_ref && typeof row.source_system === "string"
+      && typeof row.source_id === "string" && typeof row.ingested_at === "string")
+    || coverage.state !== "observed" || !stringArray(coverage.not_published)
+    || !stringArray(coverage.not_observed) || !Array.isArray(coverage.not_yet_joined)
+    || !(coverage.publication === null || (coverage.publication && typeof coverage.publication === "object"))
+    || !Object.values(sourceEnvelopes).every((row) => row && typeof row === "object" && typeof row.state === "string")
+    || typeof freshness.as_of !== "string" || !nullableString(freshness.generated_at)
+    || !nullableString(freshness.checked_at) || !freshness.sources
+    || typeof freshness.sources !== "object" || Array.isArray(freshness.sources)
+    || !Object.hasOwn(fields, "short_title") || !nullableString(fields.short_title)
+    || !Object.hasOwn(fields, "agency_name") || !nullableString(fields.agency_name)
+    || typeof amount.valid !== "boolean") {
     throw new Error("contract identity or source observations are incomplete");
   }
   return {
     kind, id, state: "available", http_status: status,
     fact: {
-      title: contract.fields?.title ?? null,
-      agency: contract.fields?.agency ?? null,
-      stage: contract.fields?.primary_stage ?? null,
-      amount: contract.amount ?? null,
-      coverage: { state: coverage.state, source_envelopes: coverage.source_envelopes ?? null },
-      as_of: freshness.as_of ?? null,
-      source_observation_refs: provenance.source_observations.map((row) => row.source_observation_ref),
-      official_url: contract.fields?.official_url ?? null,
+      object_type: contract.object_type,
+      procurement_id: contract.procurement_id,
+      canonical_id: contract.canonical_id,
+      title: fields.short_title,
+      agency: fields.agency_name,
+      stage: fields.primary_stage ?? null,
+      amount,
+      coverage,
+      freshness,
+      source_observations: provenance.source_observations,
+      official_url: fields.official_url ?? null,
       lifecycle: contract.lifecycle ?? null,
     },
   };

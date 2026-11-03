@@ -18,14 +18,31 @@ const notice = {
 };
 
 const contract = {
-  capability_reference: "contract.get@1", availability: "available",
+  capability_reference: "contract.get@1", availability: "available", error: null,
   contract: {
-    procurement_id: contractId,
-    fields: { title: "Bridge inspection", agency: "Department of Design and Construction", primary_stage: "registered", official_url: "https://example.gov/contract" },
+    object_type: "procurement", procurement_id: contractId, canonical_id: contractId,
+    fields: { short_title: "Bridge inspection", agency_name: "Department of Design and Construction", primary_stage: "registered", official_url: "https://example.gov/contract" },
     amount: { value: 1250000, valid: true },
-    coverage: { state: "observed", source_envelopes: { passport_public_contracts: { state: "observed" } } },
-    freshness: { as_of: "2026-08-18T20:00:00Z" },
-    provenance: { identity: { exact: true }, source_observations: [{ source_observation_ref: "passport:contract:CTONE" }] },
+    coverage: {
+      state: "observed",
+      source_envelopes: {
+        passport_public_contracts: { state: "observed", status: "available", generated_at: "2026-08-18T19:45:00Z" },
+        city_record: { state: "not_published", status: "available", generated_at: "2026-08-18T19:40:00Z" },
+      },
+      not_published: ["city_record"], not_observed: [], not_yet_joined: ["vendor"],
+      publication: { generated_by: "shared procurement read model" },
+    },
+    freshness: {
+      as_of: "2026-08-18T20:00:00Z", generated_at: "2026-08-18T20:00:00Z",
+      checked_at: "2026-08-18T20:01:00Z", sources: { passport_public_contracts: "available" },
+    },
+    provenance: {
+      identity: { exact: true, canonical_id: contractId },
+      source_observations: [{
+        source_observation_ref: "passport:contract:CTONE", source_system: "passport_public_contracts",
+        source_id: "contract:CTONE", ingested_at: "2026-08-18T19:46:32Z",
+      }],
+    },
     lifecycle: [{ stage: "registered" }],
   },
 };
@@ -40,8 +57,12 @@ test("notice and contract consume different documented HTTP envelopes without im
   const c = await fetchPublicDetail({ kind: "contract", id: contractId, fetchImpl });
   assert.equal(n.fact.citation.request_id, noticeId);
   assert.equal(n.fact.stale, true);
-  assert.equal(c.fact.source_observation_refs[0], "passport:contract:CTONE");
+  assert.equal(c.fact.title, "Bridge inspection");
+  assert.equal(c.fact.agency, "Department of Design and Construction");
+  assert.deepEqual(c.fact.source_observations, contract.contract.provenance.source_observations);
   assert.equal(c.fact.coverage.state, "observed");
+  assert.deepEqual(c.fact.coverage, contract.contract.coverage);
+  assert.deepEqual(c.fact.freshness, contract.contract.freshness);
   assert.deepEqual(calls, [
     `https://api.cityscroll.org/notice?id=${noticeId}`,
     `https://api.cityscroll.org/contract?id=${encodeURIComponent(contractId)}`,
@@ -49,15 +70,19 @@ test("notice and contract consume different documented HTTP envelopes without im
 });
 
 test("absence and outage stay distinct from an observed empty fact", () => {
-  assert.equal(summarizePublicDetail({ kind: "notice", id: noticeId, status: 404, body: { ok: false, reason: "not-found" } }).state, "not_yet_public");
-  assert.equal(summarizePublicDetail({ kind: "notice", id: noticeId, status: 503, body: { ok: false, reason: "unavailable" } }).state, "unavailable");
-  assert.equal(summarizePublicDetail({ kind: "contract", id: contractId, status: 404, body: { capability_reference: "contract.get@1", availability: "not_yet_public" } }).fact, null);
-  assert.equal(summarizePublicDetail({ kind: "contract", id: contractId, status: 503, body: { capability_reference: "contract.get@1", availability: "unavailable" } }).state, "unavailable");
+  assert.equal(summarizePublicDetail({ kind: "notice", id: noticeId, status: 404, body: { ok: false, reason: "not-found", source: "public-source", citation: null } }).state, "not_yet_public");
+  assert.equal(summarizePublicDetail({ kind: "notice", id: noticeId, status: 503, body: { ok: false, reason: "unavailable", source: "public-source", citation: null } }).state, "unavailable");
+  assert.equal(summarizePublicDetail({ kind: "contract", id: contractId, status: 404, body: { capability_reference: "contract.get@1", availability: "not_yet_public", contract: null, error: "not-found" } }).fact, null);
+  assert.equal(summarizePublicDetail({ kind: "contract", id: contractId, status: 503, body: { capability_reference: "contract.get@1", availability: "unavailable", contract: null, error: "unavailable" } }).state, "unavailable");
 });
 
-test("wrong identity, missing source evidence, and private fields fail closed", () => {
+test("malformed identity, state, nullability, evidence, and private fields fail closed", () => {
   assert.throws(() => summarizePublicDetail({ kind: "notice", id: noticeId, status: 200, body: { ...notice, row: { request_id: "wrong" } } }), /identity/);
   assert.throws(() => summarizePublicDetail({ kind: "notice", id: noticeId, status: 200, body: { ...notice, citation: { ...notice.citation, official_url: `https://other.example/RequestDetail/${noticeId}` } } }), /identity/);
+  assert.throws(() => summarizePublicDetail({ kind: "notice", id: noticeId, status: 404, body: { ok: false, reason: "not-found", source: "public-source", citation: notice.citation } }), /envelope/);
   assert.throws(() => summarizePublicDetail({ kind: "contract", id: contractId, status: 200, body: { ...contract, contract: { ...contract.contract, provenance: { identity: { exact: true }, source_observations: [] }, raw_snapshot: "secret" } } }), /private field/);
   assert.throws(() => summarizePublicDetail({ kind: "contract", id: contractId, status: 200, body: { ...contract, contract: { ...contract.contract, provenance: { identity: { exact: true }, source_observations: [{}] } } } }), /source observations/);
+  assert.throws(() => summarizePublicDetail({ kind: "contract", id: contractId, status: 200, body: { ...contract, contract: { ...contract.contract, canonical_id: "procurement:contract:OTHER" } } }), /identity/);
+  assert.throws(() => summarizePublicDetail({ kind: "contract", id: contractId, status: 404, body: { capability_reference: "contract.get@1", availability: "not_yet_public", contract: contract.contract, error: "not-found" } }), /envelope/);
+  assert.throws(() => summarizePublicDetail({ kind: "contract", id: contractId, status: 503, body: { capability_reference: "contract.get@1", availability: "unavailable", contract: null, error: "not-found" } }), /envelope/);
 });
