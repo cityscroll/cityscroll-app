@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.public_source_health.v1",
-  "generated_at": "2026-10-22T20:20:44.090Z",
+  "generated_at": "2026-11-03T07:49:36.000Z",
   "available": true,
   "source_count": 64,
   "sources": [
@@ -1281,8 +1281,10 @@
       "expected_cadence": "Quarterly DCP BYTES release",
       "mode": "periodic",
       "health": {
-        "status": "Healthy",
-        "reason_codes": [],
+        "status": "Delayed",
+        "reason_codes": [
+          "publisher-clock-stale"
+        ],
         "clocks": {
           "publisher_updated": {
             "at": "2026-05-04T00:00:00.000Z",
@@ -2051,8 +2053,10 @@
       "expected_cadence": "Publisher supplement cadence; refreshed at build time",
       "mode": "periodic",
       "health": {
-        "status": "Healthy",
-        "reason_codes": [],
+        "status": "Delayed",
+        "reason_codes": [
+          "acquisition-clock-stale"
+        ],
         "clocks": {
           "publisher_updated": {
             "at": null,

@@ -28,9 +28,8 @@ export function generateSourceHealthObservations(options = {}) {
       || process.env.CROL_EXTERNAL_SCHEDULE_STATE_DIR
       || null,
   });
-  return buildSourceHealthObservations(registry, options.asOf
-    ? { ...inputs, asOf: options.asOf }
-    : inputs);
+  const asOf = options.asOf || inputs.asOf || process.env.DESK_PUBLICATION_OBSERVATION_AT || null;
+  return buildSourceHealthObservations(registry, asOf ? { ...inputs, asOf } : inputs);
 }
 
 export function checkSourceHealthObservations(options = {}) {

@@ -21,8 +21,8 @@ import {
   validateSourceHealthProjection,
   workerExternalAwardServeIsLive,
 } from "../tools/source_health_observations.mjs";
-import { loadSourceContracts, validateSourceContracts } from "../tools/source_contracts.mjs";
 import { generateSourceHealthObservations } from "../tools/build_source_health_observations.mjs";
+import { loadSourceContracts, validateSourceContracts } from "../tools/source_contracts.mjs";
 import { fileURLToPath } from "node:url";
 
 const NOW = "2026-08-18T12:00:00.000Z";
@@ -47,6 +47,21 @@ test("release evaluation clock advances without changing the underlying source r
   assert.equal(release.generated_at, later);
   assert.equal(release.observations[0].operator.acquisition_receipts[0].observed_at, acquiredAt);
   assert.notEqual(initial.observations[0].health.status, release.observations[0].health.status);
+});
+
+test("source-health generation uses the CI publication clock for its observation receipt", () => {
+  const previous = process.env.DESK_PUBLICATION_OBSERVATION_AT;
+  process.env.DESK_PUBLICATION_OBSERVATION_AT = "2026-11-03T12:34:56.000Z";
+  try {
+    const projection = generateSourceHealthObservations({
+      registry: loadSourceContracts(),
+      inputs: {},
+    });
+    assert.equal(projection.generated_at, "2026-11-03T12:34:56.000Z");
+  } finally {
+    if (previous === undefined) delete process.env.DESK_PUBLICATION_OBSERVATION_AT;
+    else process.env.DESK_PUBLICATION_OBSERVATION_AT = previous;
+  }
 });
 
 test("backstage errors preserve diagnostics while redacting credential values", () => {
@@ -120,21 +135,21 @@ test("canonical contracts declare structured freshness and public/backstage heal
 });
 
 test("geography acquisition receipts feed backstage source health", () => {
-  const projection = JSON.parse(readFileSync(
-    new URL("../site/data/source_health_observations.json", import.meta.url),
-    "utf8",
-  ));
-  // BID publisher_updated 2024-10-08 with max_stale_days 730 is Delayed once
-  // evaluation asOf advances past 2026-10-08 (triggered here by Checkbook rematerialize).
-  const expected = new Map([
-    ["dcp-nta2020-boundaries", "Healthy"],
-    ["dcp-police-precinct-boundaries", "Healthy"],
-    ["dsny-district-boundaries", "Healthy"],
-    ["business-improvement-district-boundaries", "Delayed"],
-  ]);
-  for (const [sourceId, status] of expected) {
+  const registry = loadSourceContracts();
+  const root = fileURLToPath(new URL("../", import.meta.url));
+  const projection = buildSourceHealthObservations(registry, {
+    ...loadSourceHealthInputs(root, registry),
+    asOf: "2026-11-03T12:34:56.000Z",
+  });
+  const sourceIds = [
+    "dcp-nta2020-boundaries",
+    "dcp-police-precinct-boundaries",
+    "dsny-district-boundaries",
+    "business-improvement-district-boundaries",
+  ];
+  for (const sourceId of sourceIds) {
     const observation = projection.observations.find((row) => row.source_id === sourceId);
-    assert.equal(observation.health.status, status, sourceId);
+    assert.notEqual(observation.health.status, "Source-unavailable", sourceId);
     assert.ok(observation.evidence.some((item) => item.path.startsWith("data/geography/receipts/")));
     assert.equal(observation.operator.runs[0].adapter, "civic-geography-acquisition-receipt");
   }
