@@ -28,7 +28,9 @@ export function generateSourceHealthObservations(options = {}) {
       || process.env.CROL_EXTERNAL_SCHEDULE_STATE_DIR
       || null,
   });
-  return buildSourceHealthObservations(registry, inputs);
+  return buildSourceHealthObservations(registry, options.asOf
+    ? { ...inputs, asOf: options.asOf }
+    : inputs);
 }
 
 export function checkSourceHealthObservations(options = {}) {
@@ -41,12 +43,16 @@ export function checkSourceHealthObservations(options = {}) {
 function main(argv = process.argv.slice(2)) {
   const check = argv.includes("--check");
   const externalScheduleStateDir = optionValue(argv, "--external-schedule-state-dir");
+  const asOf = optionValue(argv, "--as-of");
   const unknown = argv.filter((arg, index) => (
-    !["--check", "--external-schedule-state-dir"].includes(arg)
-    && argv[index - 1] !== "--external-schedule-state-dir"
+    !["--check", "--external-schedule-state-dir", "--as-of"].includes(arg)
+    && !["--external-schedule-state-dir", "--as-of"].includes(argv[index - 1])
   ));
   if (unknown.length) throw new Error(`unknown argument(s): ${unknown.join(", ")}`);
-  const options = { externalScheduleStateDir };
+  if (argv.includes("--as-of") && (!asOf || !Number.isFinite(Date.parse(asOf)))) {
+    throw new Error("--as-of requires a valid ISO timestamp");
+  }
+  const options = { externalScheduleStateDir, asOf };
   if (check) {
     const findings = checkSourceHealthObservations(options);
     if (findings.length) {
