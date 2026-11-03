@@ -36,6 +36,11 @@ export function hasAutoMerge(pr) {
   return Boolean(pr?.auto_merge || pr?.autoMergeRequest);
 }
 
+export function isManagedAutomationPullRequest(pr) {
+  const head = String(firstDefined(pr?.head?.ref, pr?.headRefName, ""));
+  return head.startsWith("automation/") || head.startsWith("data/first-class-refresh-");
+}
+
 export function isCanaryCandidate(pr, baseBranch = "main") {
   return isMainPullRequest(pr, baseBranch) && (isReadyPullRequest(pr, baseBranch) || hasAutoMerge(pr));
 }
@@ -113,6 +118,9 @@ function displayList(values = [], empty = "none reported") {
 export function formatBlockerComment(pr, assessment, details = {}, {
   stallMinutes = DEFAULT_STALL_MINUTES,
   updateError = null,
+  automationFailing = false,
+  autoMergeDisabled = false,
+  autoMergeDisableError = null,
 } = {}) {
   const marker = `<!-- merge-pipeline-guard:pr-${pr.number} -->`;
   const reasons = [];
@@ -128,6 +136,12 @@ export function formatBlockerComment(pr, assessment, details = {}, {
       : "The branch is from another repository, so this workflow did not write to it.");
   }
   if (updateError) reasons.push(`The automatic branch update failed: ${updateError}.`);
+  if (autoMergeDisabled) {
+    reasons.push("Automatic merge was disabled after a required check failed, so this automation-owned pull request cannot occupy a merge-train seat while red.");
+  } else if (automationFailing) {
+    reasons.push("Automatic merge remains disabled while this automation-owned pull request has a failing required check.");
+  }
+  if (autoMergeDisableError) reasons.push(`Automatic merge could not be disabled: ${autoMergeDisableError}.`);
   if (!reasons.length) reasons.push("The merge pipeline reported a blocker.");
 
   const actions = [];
@@ -137,6 +151,9 @@ export function formatBlockerComment(pr, assessment, details = {}, {
     actions.push("Address the listed check or review requirement.");
   } else if (assessment.aged) {
     actions.push("Review the merge queue and branch-protection requirements.");
+  }
+  if (automationFailing) {
+    actions.unshift("The next scheduled run rebuilds from current `main` and may re-arm its new head.");
   }
 
   return [
@@ -201,6 +218,27 @@ function createGitHubClient({ token, owner, repo, apiBase = "https://api.github.
       if (pageRows.length < 100) return rows;
     }
   }
+  async function graphql(query, variables) {
+    const endpoint = apiBase.endsWith("/api/v3")
+      ? `${apiBase.slice(0, -"/api/v3".length)}/api/graphql`
+      : `${apiBase.replace(/\/$/, "")}/graphql`;
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        Accept: "application/vnd.github+json",
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+      body: JSON.stringify({ query, variables }),
+    });
+    const body = await response.json().catch(() => ({}));
+    if (!response.ok || body?.errors?.length) {
+      const detail = body?.errors?.map((error) => error.message).join("; ") || body?.message || "unknown GraphQL error";
+      throw new Error(`GitHub GraphQL ${response.status}: ${detail}`);
+    }
+    return body.data;
+  }
   return {
     listOpenPulls: () => paginate("/pulls?state=open&base=main&sort=updated&direction=desc"),
     getBranch: () => request("/branches/main"),
@@ -223,6 +261,45 @@ function createGitHubClient({ token, owner, repo, apiBase = "https://api.github.
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ body }),
     }),
+    clearAutomationMergeIntent: async (pullRequestId) => {
+      const readMergeIntent = () => graphql(
+        `query AutomationMergeIntent($pullRequestId: ID!) {
+          node(id: $pullRequestId) {
+            ... on PullRequest {
+              autoMergeRequest { enabledAt }
+              isInMergeQueue
+            }
+          }
+        }`,
+        { pullRequestId },
+      );
+      const state = await readMergeIntent();
+      if (state?.node?.isInMergeQueue) {
+        await graphql(
+          `mutation DequeueFailingAutomation($pullRequestId: ID!) {
+            dequeuePullRequest(input: { id: $pullRequestId }) {
+              mergeQueueEntry { id }
+            }
+          }`,
+          { pullRequestId },
+        );
+      }
+      const afterDequeue = state?.node?.isInMergeQueue ? await readMergeIntent() : state;
+      if (afterDequeue?.node?.autoMergeRequest) {
+        await graphql(
+          `mutation DisableAutomationAutoMerge($pullRequestId: ID!) {
+            disablePullRequestAutoMerge(input: { pullRequestId: $pullRequestId }) {
+              pullRequest { number }
+            }
+          }`,
+          { pullRequestId },
+        );
+      }
+      return {
+        dequeued: Boolean(state?.node?.isInMergeQueue),
+        disabled: Boolean(afterDequeue?.node?.autoMergeRequest),
+      };
+    },
   };
 }
 
@@ -278,6 +355,7 @@ export async function runGuard({ api, now = Date.now(), dryRun = false, stallMin
   const branch = await api.getBranch();
   const mainTip = mainTipFromBranch(branch);
   const evaluations = [];
+  let mutationFailed = false;
   for (const pr of pulls) {
     if (!isReadyPullRequest(pr)) continue;
     const assessment = assessPullRequest(pr, { now, stallMinutes, repository });
@@ -294,14 +372,44 @@ export async function runGuard({ api, now = Date.now(), dryRun = false, stallMin
         }
       }
     }
-    const shouldComment = assessment.shouldComment || updateError;
+    const managedAutomation = isManagedAutomationPullRequest(pr);
+    let details = null;
+    if (assessment.shouldComment || updateError || managedAutomation) {
+      details = dryRun ? {} : await readBlockerDetails(api, pr, log);
+    }
+    const failingChecks = details?.failingChecks || [];
+    const automationFailing = managedAutomation && failingChecks.length > 0;
+    let autoMergeDisabled = false;
+    let autoMergeDisableError = null;
+    if (automationFailing && assessment.autoMerge) {
+      if (dryRun) {
+        log(`dry-run: would disable automatic merge for failing automation PR #${pr.number}`);
+      } else {
+        try {
+          await api.clearAutomationMergeIntent(pr.node_id || pr.nodeId || pr.id);
+          autoMergeDisabled = true;
+          log(`disabled automatic merge for failing automation PR #${pr.number}`);
+        } catch (error) {
+          autoMergeDisableError = error.message;
+          mutationFailed = true;
+          log(`warning: could not disable automatic merge for #${pr.number}: ${autoMergeDisableError}`);
+        }
+      }
+    }
+    const shouldComment = assessment.shouldComment || updateError || automationFailing || autoMergeDisabled || autoMergeDisableError;
     if (shouldComment) {
-      const details = dryRun ? {} : await readBlockerDetails(api, pr, log);
-      const body = formatBlockerComment(pr, assessment, details, { stallMinutes, updateError });
+      if (details === null) details = dryRun ? {} : await readBlockerDetails(api, pr, log);
+      const body = formatBlockerComment(pr, assessment, details, {
+        stallMinutes,
+        updateError,
+        automationFailing,
+        autoMergeDisabled,
+        autoMergeDisableError,
+      });
       if (dryRun) log(`dry-run: would ${assessment.shouldComment ? "comment on" : "report update failure for"} #${pr.number}`);
       else log(`comment ${await upsertComment(api, pr, body)} on #${pr.number}`);
     }
-    evaluations.push({ ...assessment, updateError });
+    evaluations.push({ ...assessment, managedAutomation, automationFailing, updateError, autoMergeDisabled, autoMergeDisableError });
   }
   const canary = assessLiveness(mainTip, pulls, { now, canaryMinutes });
   if (canary.stale) {
@@ -311,7 +419,7 @@ export async function runGuard({ api, now = Date.now(), dryRun = false, stallMin
   } else if (canary.unknown) {
     log("warning: liveness canary could not determine the main tip commit time");
   }
-  return { evaluations, canary, failed: canary.stale && !dryRun };
+  return { evaluations, canary, failed: !dryRun && (canary.stale || mutationFailed) };
 }
 
 async function runFixture(path, now, stallMinutes, canaryMinutes, repository) {

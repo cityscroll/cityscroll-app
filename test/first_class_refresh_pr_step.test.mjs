@@ -28,6 +28,7 @@ function fixture() {
     const work = join(root, "work");
     const binDir = join(root, "bin");
     const ghLog = join(root, "gh-calls.log");
+    const ghCreated = join(root, "gh-created");
 
     run("git", ["init", "--bare", "-b", "main", remote], root);
     run("git", ["clone", remote, work], root);
@@ -51,7 +52,20 @@ function fixture() {
       [
         "#!/usr/bin/env bash",
         `printf '%s\\n' "$*" >> "${ghLog}"`,
-        'if [ "$1" = "pr" ] && [ "$2" = "list" ]; then printf "%s" "${GH_OPEN_PR:-}"; fi',
+        'if [ "$1" = "pr" ] && [ "$2" = "list" ] && [[ " $* " == *" --head "* ]]; then',
+        `  if [ -n "\${GH_OPEN_PR:-}" ]; then printf "%s" "$GH_OPEN_PR"; elif [ -f "${ghCreated}" ]; then printf "%s" "\${GH_CREATED_PR:-4321}"; rm -f "${ghCreated}"; fi`,
+        'elif [ "$1" = "pr" ] && [ "$2" = "list" ]; then',
+        '  printf "%s" "${GH_OLDER_PRS:-}"',
+        'elif [ "$1" = "pr" ] && [ "$2" = "create" ]; then',
+        `  touch "${ghCreated}"`,
+        'elif [ "$1" = "pr" ] && [ "$2" = "view" ]; then',
+        '  printf "%s\\tOPEN\\n" "$(git rev-parse HEAD)"',
+        'elif [ "$1" = "pr" ] && [ "$2" = "checks" ]; then',
+        '  printf "%s" "${GH_CHECK_BUCKETS:-pass}"',
+        '  exit "${GH_CHECK_EXIT:-0}"',
+        'elif [ "$1" = "pr" ] && [ "$2" = "merge" ]; then',
+        '  exit "${GH_MERGE_EXIT:-0}"',
+        'fi',
         "exit 0",
       ].join("\n") + "\n",
     );
@@ -91,6 +105,7 @@ test("first run of the day pushes a new branch and opens a pull request", () => 
     const pushed = git(f.work, "ls-remote", f.remote, "refs/heads/data/first-class-refresh-20260906");
     assert.ok(pushed.length > 0, "branch should exist on the remote");
     assert.match(ghCalls(f), /pr create/);
+    assert.match(ghCalls(f), /pr merge 4321 --auto --match-head-commit [0-9a-f]{40}/);
   } finally {
     rmSync(f.root, { recursive: true, force: true });
   }
@@ -138,6 +153,56 @@ test("an open pull request on the branch is updated rather than duplicated", () 
     assert.equal(result.status, 0, result.stderr);
     assert.match(result.stdout, /Updated existing pull request #1234/);
     assert.doesNotMatch(ghCalls(f), /pr create/);
+    assert.match(ghCalls(f), /pr merge 1234 --auto --match-head-commit [0-9a-f]{40}/);
+  } finally {
+    rmSync(f.root, { recursive: true, force: true });
+  }
+});
+
+test("a queued refresh closes every older open refresh as superseded", () => {
+  const f = fixture();
+  try {
+    const result = invoke(f, { GH_OLDER_PRS: "111\n222\n4321\n" });
+    assert.equal(result.status, 0, result.stderr);
+    const calls = ghCalls(f);
+    const queuedAt = calls.indexOf("pr merge 4321 --auto");
+    const firstCloseAt = calls.indexOf("pr close 111");
+    assert.ok(queuedAt >= 0, "the current refresh should be queued");
+    assert.ok(firstCloseAt > queuedAt, "predecessors close only after the current head is queued");
+    assert.match(calls, /pr close 111 --comment Superseded by #4321/);
+    assert.match(calls, /pr close 222 --comment Superseded by #4321/);
+    assert.doesNotMatch(calls, /pr close 4321/);
+  } finally {
+    rmSync(f.root, { recursive: true, force: true });
+  }
+});
+
+test("a queue failure leaves predecessors open for the next bounded retry", () => {
+  const f = fixture();
+  try {
+    const result = invoke(f, { GH_OLDER_PRS: "111\n", GH_MERGE_EXIT: "1" });
+    assert.equal(result.status, 1);
+    assert.match(ghCalls(f), /pr merge 4321 --auto/);
+    assert.doesNotMatch(ghCalls(f), /pr close 111/);
+  } finally {
+    rmSync(f.root, { recursive: true, force: true });
+  }
+});
+
+test("a red existing refresh is not re-armed and leaves predecessors open", () => {
+  const f = fixture();
+  try {
+    const result = invoke(f, {
+      GH_OPEN_PR: "1234",
+      GH_OLDER_PRS: "111\n",
+      GH_CHECK_BUCKETS: "fail",
+      GH_CHECK_EXIT: "1",
+    });
+    assert.equal(result.status, 1);
+    const calls = ghCalls(f);
+    assert.match(calls, /pr checks 1234 --required/);
+    assert.doesNotMatch(calls, /pr merge 1234/);
+    assert.doesNotMatch(calls, /pr close 111/);
   } finally {
     rmSync(f.root, { recursive: true, force: true });
   }

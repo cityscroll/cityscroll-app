@@ -8,6 +8,7 @@ import {
   assessPullRequest,
   formatBlockerComment,
   isCanaryCandidate,
+  isManagedAutomationPullRequest,
   mergeState,
   runGuard,
 } from "../tools/merge_pipeline_guard.mjs";
@@ -42,6 +43,12 @@ test("blocked and dirty merge states are loud blockers", () => {
     assert.equal(result.shouldUpdate, false);
     assert.equal(result.shouldComment, true);
   }
+});
+
+test("only repository-owned scheduled producer branches are managed automation", () => {
+  assert.equal(isManagedAutomationPullRequest({ head: { ref: "automation/connected-history-cycle" } }), true);
+  assert.equal(isManagedAutomationPullRequest({ head: { ref: "data/first-class-refresh-20261103" } }), true);
+  assert.equal(isManagedAutomationPullRequest({ head: { ref: "card/public-feature" } }), false);
 });
 
 test("dry-run detects a clean PR that has remained unmerged past the threshold", () => {
@@ -89,6 +96,7 @@ test("repeated live evaluations update one marker comment instead of duplicating
     createComment: async (number, body) => { creates += 1; comments.push({ id: number, body }); },
     updateComment: async (id, body) => { updates += 1; comments[0] = { id, body }; },
     updateBranch: async () => { throw new Error("not expected"); },
+    clearAutomationMergeIntent: async () => { throw new Error("not expected"); },
   };
   const options = { api, now, repository: "cityscroll/cityscroll-app", log: () => {} };
   await runGuard(options);
@@ -96,6 +104,69 @@ test("repeated live evaluations update one marker comment instead of duplicating
   assert.equal(creates, 1);
   assert.equal(updates, 0);
   assert.equal(comments.length, 1);
+});
+
+test("a failing automation head is disarmed once and keeps a durable receipt", async () => {
+  const comments = [];
+  const disabled = [];
+  const pr = {
+    ...fixture.pulls[0],
+    node_id: "PR_node_automation",
+    mergeable_state: "BLOCKED",
+    auto_merge: { enabled_at: "2026-08-15T12:00:00Z" },
+    head: { ...fixture.pulls[0].head, ref: "automation/connected-history-cycle" },
+  };
+  const api = {
+    listOpenPulls: async () => [pr],
+    getBranch: async () => ({ commit: { commit: { committer: { date: "2026-08-15T12:39:00.000Z" } } } }),
+    getChecks: async () => ({ check_runs: [{ name: "Required CI", status: "completed", conclusion: "failure" }] }),
+    getStatus: async () => ({ statuses: [] }),
+    listReviews: async () => [],
+    listComments: async () => comments,
+    createComment: async (number, body) => { comments.push({ id: number, body }); },
+    updateComment: async (id, body) => { comments[0] = { id, body }; },
+    updateBranch: async () => { throw new Error("not expected"); },
+    clearAutomationMergeIntent: async (nodeId) => { disabled.push(nodeId); return { dequeued: true }; },
+  };
+
+  const result = await runGuard({ api, now, repository: "cityscroll/cityscroll-app", log: () => {} });
+  assert.deepEqual(disabled, ["PR_node_automation"]);
+  assert.equal(result.evaluations[0].autoMergeDisabled, true);
+  assert.match(comments[0].body, /Automatic merge was disabled/);
+  assert.match(comments[0].body, /next scheduled run rebuilds from current `main`/);
+
+  pr.auto_merge = null;
+  const repeated = await runGuard({ api, now, repository: "cityscroll/cityscroll-app", log: () => {} });
+  assert.deepEqual(disabled, ["PR_node_automation"], "an already-disarmed head is not mutated again");
+  assert.equal(repeated.evaluations[0].automationFailing, true);
+  assert.match(comments[0].body, /Automatic merge remains disabled/);
+  assert.match(comments[0].body, /next scheduled run rebuilds from current `main`/);
+});
+
+test("failing checks never revoke merge intent from an ordinary contributor branch", async () => {
+  let disabled = false;
+  const pr = {
+    ...fixture.pulls[0],
+    node_id: "PR_node_contributor",
+    mergeable_state: "BLOCKED",
+    auto_merge: { enabled_at: "2026-08-15T12:00:00Z" },
+    head: { ...fixture.pulls[0].head, ref: "card/public-feature" },
+  };
+  const api = {
+    listOpenPulls: async () => [pr],
+    getBranch: async () => ({ commit: { commit: { committer: { date: "2026-08-15T12:39:00.000Z" } } } }),
+    getChecks: async () => ({ check_runs: [{ name: "Required CI", status: "completed", conclusion: "failure" }] }),
+    getStatus: async () => ({ statuses: [] }),
+    listReviews: async () => [],
+    listComments: async () => [],
+    createComment: async () => {},
+    updateComment: async () => {},
+    updateBranch: async () => {},
+    clearAutomationMergeIntent: async () => { disabled = true; },
+  };
+
+  await runGuard({ api, now, repository: "cityscroll/cityscroll-app", log: () => {} });
+  assert.equal(disabled, false);
 });
 
 test("workflow uses narrow permissions and guarded update semantics", () => {
@@ -106,5 +177,8 @@ test("workflow uses narrow permissions and guarded update semantics", () => {
   assert.match(workflow, /issues: write/);
   assert.match(workflow, /pull-requests: write/);
   assert.match(tool, /expected_head_sha/);
+  assert.match(tool, /isInMergeQueue/);
+  assert.match(tool, /dequeuePullRequest/);
+  assert.match(tool, /disablePullRequestAutoMerge/);
   assert.doesNotMatch(`${workflow}\n${tool}`, /force\s*:\s*true/i);
 });

@@ -89,4 +89,4 @@ jobs:
           GH_TOKEN: ${{ secrets.REFRESH_PR_TOKEN }}
           REFRESH_PR: ${{ steps.refresh-pr.outputs.pull-request-number }}
           REFRESH_HEAD: ${{ steps.refresh-pr.outputs.pull-request-head-sha }}
-        run: gh pr merge "$REFRESH_PR" --auto --match-head-commit "$REFRESH_HEAD"
+        run: bash tools/queue_automation_pr_after_checks.sh "$REFRESH_PR" "$REFRESH_HEAD"
