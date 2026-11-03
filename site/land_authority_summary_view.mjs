@@ -6,7 +6,6 @@
  */
 
 import {
-  resolveLandAuthoritySourceBasis,
   resolveLandAuthoritySummary,
 } from "./land_authority_summary.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
@@ -24,8 +23,12 @@ import {
   landAuthorityProcedureLabel,
   landAuthorityStageLabel,
 } from "./land_authority_labels.mjs";
+import { actorLabel } from "./land_actor_label.mjs";
+import { profileLegalBasis } from "./land_profile_legal_basis.mjs";
 
 export { landAuthorityProcedureLabel, landAuthorityStageLabel };
+export { actorLabel } from "./land_actor_label.mjs";
+export { profileLegalBasis } from "./land_profile_legal_basis.mjs";
 
 export const LAND_AUTHORITY_SUMMARY_URL = "data/land_authority_summary.json";
 export const LAND_AUTHORITY_PANEL_HEADING = "Where this stands";
@@ -129,30 +132,6 @@ function actorHref(bodyRef) {
   return null;
 }
 
-export function actorLabel(bodyRef, translate) {
-  const ref = clean(bodyRef) || "";
-  const board = ref.match(/^community-board:([a-z]+(?:-[a-z]+)*)-cb-(\d{2})$/);
-  if (board) {
-    const borough = board[1].replace(/-/g, " ").replace(/\b\w/g, (ch) => ch.toUpperCase());
-    return `${borough} Community Board ${Number(board[2])}`;
-  }
-  if (ref === "agency:id:city-council") return translate("land_authority_actor_council");
-  if (ref === "agency:id:city-planning-commission") return translate("land_phase_cpc");
-  if (ref === "agency:id:city-planning") return translate("land_authority_actor_dcp");
-  if (ref === "agency:id:mayor") return translate("land_phase_mayoral_appeals");
-  const president = ref.match(/^borough-president:([a-z]+(?:-[a-z]+)*)$/);
-  if (president) {
-    const borough = president[1].replace(/-/g, " ").replace(/\b\w/g, (ch) => ch.toUpperCase());
-    return `${borough} Borough President`;
-  }
-  const boroughBoard = ref.match(/^borough-board:([a-z]+(?:-[a-z]+)*)$/);
-  if (boroughBoard) {
-    const borough = boroughBoard[1].replace(/-/g, " ").replace(/\b\w/g, (ch) => ch.toUpperCase());
-    return `${borough} Borough Board`;
-  }
-  return ref || translate("land_authority_unknown");
-}
-
 function actorStandLabel(bodyRef, translate) {
   const ref = clean(bodyRef) || "";
   if (ref === "agency:id:city-council") return translate("land_authority_actor_short_council");
@@ -236,25 +215,6 @@ function whyProvenanceKind(summary) {
   if (kind === "unknown") return "unknown";
   if (kind === "profile") return "profile";
   return "geography";
-}
-
-// `payload` carries the provenance defaults the summaries share; passing it
-// keeps the citation resolvable from a bounded summary.
-export function profileLegalBasis(summary, payload = null) {
-  const profile = resolveLandAuthoritySourceBasis(summary, payload)?.profile || {};
-  const basis = profile.legal_basis && typeof profile.legal_basis === "object"
-    ? profile.legal_basis
-    : null;
-  const procedureId = profile.procedure_id || summary?.procedure_id || null;
-  const stageId = profile.stage_id || summary?.current_stage?.stage_id || null;
-  if (!basis && !procedureId) return null;
-  return {
-    citation: basis?.citation || null,
-    source_url: basis?.source_url || null,
-    registry_version: profile.registry_version || null,
-    procedure_id: procedureId,
-    stage_id: stageId,
-  };
 }
 
 /**
