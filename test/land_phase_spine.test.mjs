@@ -4,11 +4,11 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
  * Field cases: long pre-cert thrash (2019K0147); mid-public-review (2022M0258).
  */
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { test } from "node:test";
 import { readFileSync } from "node:fs";
-import { dirname, join, relative, resolve } from "node:path";
+import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { parse } from "acorn";
 
 import {
   LAND_ULURP_PHASES,
@@ -22,7 +22,7 @@ import {
 
 import { buildUlurpStatutoryClockView } from "../site/ulurp_statutory_clock.mjs";
 import { resolveLandProcedureVariant } from "../site/land_procedure_profiles.mjs";
-import { buildLandPhaseRoleStrip, landPhaseRoleStripHTML, landRoleStrip } from "../site/land_role_strip.mjs";
+import { buildLandPhaseRoleStrip, landPhaseRoleStripHTML } from "../site/land_role_strip.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const fixture2019 = JSON.parse(
@@ -55,40 +55,30 @@ function viewFromLdp31Fixture(fixture) {
   });
 }
 
-function moduleImportClosure(entry) {
-  const pending = [resolve(entry)];
-  const closure = new Set();
-  while (pending.length) {
-    const file = pending.pop();
-    if (closure.has(file)) continue;
-    closure.add(file);
-    const tree = parse(readFileSync(file, "utf8"), { ecmaVersion: "latest", sourceType: "module" });
-    const specifiers = [];
-    const visit = (node) => {
-      if (!node || typeof node !== "object") return;
-      if (
-        ["ImportDeclaration", "ExportNamedDeclaration", "ExportAllDeclaration"].includes(node.type)
-        && typeof node.source?.value === "string"
-      ) {
-        specifiers.push(node.source.value);
-      } else if (node.type === "ImportExpression") {
-        assert.equal(typeof node.source?.value, "string", `unresolved dynamic import in ${relative(ROOT, file)}`);
-        specifiers.push(node.source.value);
-      }
-      for (const value of Object.values(node)) {
-        if (Array.isArray(value)) value.forEach(visit);
-        else if (value && typeof value === "object") visit(value);
-      }
-    };
-    visit(tree);
-    for (const specifier of specifiers) {
-      if (!specifier.startsWith(".")) continue;
-      const target = resolve(dirname(file), specifier);
-      if (/\.(?:mjs|js|cjs)$/.test(target)) pending.push(target);
-      else closure.add(target);
+function traceModuleLoad(entry) {
+  const tracePrefix = "CITYSCROLL_MODULE_TRACE ";
+  const loader = `
+    export async function resolve(specifier, context, nextResolve) {
+      const result = await nextResolve(specifier, context);
+      if (result.url.startsWith("file:")) process.stderr.write(${JSON.stringify(tracePrefix)} + result.url + "\\n");
+      return result;
     }
-  }
-  return new Set([...closure].map((file) => relative(ROOT, file)));
+  `;
+  const result = spawnSync(process.execPath, [
+    "--no-warnings",
+    "--experimental-loader",
+    `data:text/javascript,${encodeURIComponent(loader)}`,
+    "--input-type=module",
+    "--eval",
+    `await import(${JSON.stringify(entry.href)})`,
+  ], { encoding: "utf8" });
+  assert.equal(result.status, 0, result.stderr);
+  return new Set(
+    result.stderr
+      .split("\n")
+      .filter((line) => line.startsWith(tracePrefix))
+      .map((line) => line.slice(tracePrefix.length)),
+  );
 }
 
 test("LAND_ULURP_PHASES follows pre-review then statutory public review", () => {
@@ -569,8 +559,11 @@ test("A3 the rendered role strip never emits a recommendation, vote, hearing, or
 });
 
 test("transport-neutral phase-model import closure excludes the role-strip renderer", () => {
-  const closure = moduleImportClosure(join(ROOT, "site/land_phase_spine.mjs"));
-  assert.equal(closure.has("site/land_role_strip.mjs"), false, [...closure].sort().join("\n"));
+  const phaseModel = new URL("../site/land_phase_spine.mjs", import.meta.url);
+  const roleStrip = new URL("../site/land_role_strip.mjs", import.meta.url);
+  const loaded = traceModuleLoad(phaseModel);
+  assert.ok(loaded.has(phaseModel.href), "the phase-model root was not loaded");
+  assert.equal(loaded.has(roleStrip.href), false, [...loaded].sort().join("\n"));
 });
 
 test("public Land detail renders the role strip above observed rows", async () => {
@@ -590,7 +583,8 @@ test("public Land detail renders the role strip above observed rows", async () =
   let rendered;
   try {
     await import(appUrl);
-    rendered = globalThis.landPhaseSpineHTML(view, { landRoleStrip }, {});
+    const tools = await globalThis.ensureLandPhaseSpineTools();
+    rendered = globalThis.landPhaseSpineHTML(view, tools, {});
   } finally {
     for (const [key, value] of Object.entries(previous)) {
       if (value === undefined) delete globalThis[key];
