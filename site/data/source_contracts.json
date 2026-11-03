@@ -1317,16 +1317,16 @@
         "application_period_end_date",
         "data_current_as_of"
       ],
-      "max_stale_days": 95,
+      "max_stale_days": 400,
       "freshness_policy": {
-        "limit_days": 95,
+        "limit_days": 400,
         "method": "Publisher-declared change frequency reconciled with the limit the ingesting builder already enforces on the same column",
-        "observed_on": "2026-09-07",
-        "declared_cadence_days": 92,
+        "observed_on": "2026-11-02",
+        "declared_cadence_days": 365,
         "observed_metadata_lag_days": 0,
-        "margin_days": 3,
-        "evidence": "Socrata metadata for 4ptz-hmtc declares Update Frequency Annually with a Data Change Frequency of Quarterly. On 2026-09-07 both publisher clocks agree: rowsUpdatedAt is 2026-07-22T18:57:52Z and max(data_current_as_of) is 2026-07-22, 46 days back. tools/build_staffing_exams.mjs has ingested this dataset against a 95-day allowance on data_current_as_of since the exam artifact was built, so a 45-day contract limit reported drift on a source the builder considered current.",
-        "derivation": "92-day quarterly change frequency + 3-day margin = 95-day limit, the allowance tools/build_staffing_exams.mjs already applies to data_current_as_of"
+        "margin_days": 35,
+        "evidence": "Socrata metadata for 4ptz-hmtc declares Update Frequency Annually with a Data Change Frequency of Quarterly. The quarterly claim did not hold: the fiscal-year edition posted 2026-07-22 (rowsUpdatedAt 2026-07-22T18:57:52Z, max(data_current_as_of) 2026-07-22) stood unrevised for 103 days by 2026-11-02, past the 95-day quarterly allowance, and the daily acquisition refused to rebuild from 2026-10-25 until the retained artifact aged past its hard maximum and blocked the scheduled deploy on 2026-10-29. The limit now rides the annual edition cycle, matching the sibling DCAS annual sources (dcas-eligible-list-utilization at 400 days, dcas-annual-exam-outcomes at 550). Daily acquisition still picks up any revision the day it posts, and open application windows are driven by the daily-verified open-competitive source.",
+        "derivation": "365-day annual edition cycle + 35-day margin = 400-day limit, the allowance tools/build_staffing_exams.mjs applies to data_current_as_of"
       },
       "publisher_cadence": "Annual fiscal-year post with monthly in-year updates (publisher description); Open Data metadata may still list annual or quarterly change claims",
       "product_freshness": "Operator-built into data/staffing_exams.json; the artifact displays its source date. Superseded by the open-competitive schedule page and linked NOEs when application windows are open.",
@@ -1344,7 +1344,7 @@
       "delivery_tier": "inline-at-build",
       "freshness_contract": {
         "mode": "periodic",
-        "max_stale_days": 95,
+        "max_stale_days": 400,
         "clock_basis": "publisher_updated",
         "publisher_vintage_field": "data_current_as_of",
         "retained_vintage": {
@@ -1353,7 +1353,7 @@
             "sources_retrieved_as_of"
           ]
         },
-        "serving_max_age_days": 95,
+        "serving_max_age_days": 400,
         "serve_contract_id": null
       },
       "health_policy": {

@@ -88,7 +88,7 @@ existing contract limit until a cadence measurement is available.
 
 | Source | Limit | Measurement |
 |---|---:|---|
-| Annual Examination Schedule | 95 days | 92-day quarterly change frequency + 3-day margin = 95-day limit, the allowance tools/build_staffing_exams.mjs already applies to data_current_as_of |
+| Annual Examination Schedule | 400 days | 365-day annual edition cycle + 35-day margin = 400-day limit, the allowance tools/build_staffing_exams.mjs applies to data_current_as_of |
 | Mandatory Inclusionary Housing | 120 days | 31-day monthly cadence + 48-day observed metadata lag + 41-day margin = 120-day limit |
 | Suitability of City-Owned and Leased Property for Urban Agriculture (LL48) | 730 days | Publisher-declared two-year cadence = 730-day freshness limit; the prior 365-day bound flagged legitimate two-year republication as drift. |
 | NYC Council Members (1999 to Present) | 365 days | 365 days is an annual publication-review bound within multi-year Council terms for this as-needed term roster. It replaces the unsupported 90-day republishing expectation. The bound is a CityScroll policy choice, not a measured annual cadence or a publisher guarantee; a quiet row clock cannot establish whether every vacancy or swearing-in has been incorporated. The source remains live and schema, reachability, and expiry checks remain active. |
