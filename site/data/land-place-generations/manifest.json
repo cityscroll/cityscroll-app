@@ -12,7 +12,7 @@
       "police_precinct": "26B"
     },
     "parcel_coordinate_vintage": "pluto_25v4",
-    "address_index_identity": "8e09a17cbe4b957e7d2905852cb10b7295ddf814f7defdceccca75685550687b"
+    "address_index_identity": "4810b3c2b71206ce6bfa4877c08c20b3973ee57109bbcb6eb24dbd5556c9b21f"
   },
   "source_dates": {
     "catalog_content_id": "fnv1a32:9e9ee683:244",
@@ -32,7 +32,7 @@
   "consumers": {
     "index": {
       "generation_id": "d8da6c8623aa4d7659bc2b8b1ef43b6aabb2f44090ee55ec0bbf6ce7a00076e8",
-      "content_sha256": "261eaf07d1242d3ea59312dc9cd3fc2c4040ac6d58f175864122883dc9d4ccec"
+      "content_sha256": "96a16291bb21135c5e0ccfe1ff2e751c26d33325982c02f94c7f32cbcdec56a2"
     },
     "evidence": {
       "generation_id": "d8da6c8623aa4d7659bc2b8b1ef43b6aabb2f44090ee55ec0bbf6ce7a00076e8",
