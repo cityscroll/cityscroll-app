@@ -97,13 +97,32 @@ class Statement {
         return { success: true, meta: { changes: 1 } };
       }
       // Ownership CAS: STARTED handoff owned by this rebuild_run_id, not yet finalized.
-      if (this.sql.includes("$.rebuild_run_id") && this.sql.includes("$.rebuild_finalization_id")) {
+      if (this.sql.includes("$.rebuild_run_id") && this.sql.includes("$.rebuild_finalization_id")
+        && !this.sql.includes("$.invocation_id")) {
         const rebuildRunId = this.args.at(-1);
         const currentSummary = JSON.parse(current.summary_json || "null");
         const owned = current.status === "STARTED"
           && currentSummary?.rebuild_run_id === rebuildRunId
           && currentSummary?.rebuild_finalization_id == null;
         if (owned) {
+          this.db.mainRuns.set(run_day, { run_day, ran_at, status, digest_count, total_items, summary_json });
+          return { success: true, meta: { changes: 1 } };
+        }
+        return { success: true, meta: { changes: 0 } };
+      }
+      // Scoped finalize CAS: unchanged bytes, or the same STARTED handoff by
+      // identity — same invocation, un-owned or owned by this rebuild, not
+      // finalized. Mirrors the production predicate.
+      if (this.sql.includes("$.invocation_id")) {
+        const expectedSummary = this.args[6];
+        const rebuildRunId = this.args[7];
+        const baseInvocationId = this.args[8] ?? null;
+        const currentSummary = JSON.parse(current.summary_json || "null");
+        const handoffIntact = current.status === "STARTED"
+          && currentSummary?.rebuild_finalization_id == null
+          && (currentSummary?.rebuild_run_id == null || currentSummary?.rebuild_run_id === rebuildRunId)
+          && (currentSummary?.invocation_id ?? null) === baseInvocationId;
+        if (current.summary_json === expectedSummary || handoffIntact) {
           this.db.mainRuns.set(run_day, { run_day, ran_at, status, digest_count, total_items, summary_json });
           return { success: true, meta: { changes: 1 } };
         }
@@ -897,6 +916,157 @@ test("full rebuild finalizes when STARTED row gains hold and freshness after the
   assert.equal(summary.hold?.degraded_receipt?.decision, "HOLD_ALL_DARK_PERIOD");
   assert.equal(summary.freshness?.degraded, true);
   assert.match(summary.freshness?.reason || "", /freshness time budget exhausted/);
+});
+
+// 2026-10-21 / 2026-11-02 Monday-stall reproduction. The 10:00 cron snapshots the
+// STARTED row as the rebuild base, then stamps the handoff (ownership claim, queue
+// stamp, hold, degraded freshness) after that snapshot. A consumer killed before the
+// dispatch seal leaves the run error-flagged by stale reconciliation, and finalize
+// lands on the scoped CAS path. The day's own safety stamps must not invalidate the
+// completed rebuild: it finalizes instead of refusing forever with the day STARTED.
+test("error-flagged full rebuild finalizes over its own STARTED handoff stamps", async () => {
+  const DB = new FakeD1();
+  const ALERT_STATE = kv();
+  const invocationId = "digest-shadow:0 10 * * *:2026-11-02T10:00:00.000Z";
+  const started = {
+    run_day: "2026-11-02", status: "STARTED", phase: "started", complete: false,
+    invocation_id: invocationId,
+    result_revision: `${invocationId}:started`,
+    hold: { source_status: "DARK_PERIOD", delivery_policy: "ALL_DIGESTS_HELD" },
+    previews: [], redlines: [], upstream_incidents: [],
+  };
+  DB.mainRuns.set("2026-11-02", {
+    run_day: "2026-11-02",
+    status: "STARTED",
+    summary_json: JSON.stringify(started),
+  });
+  const env = { DB, ALERT_STATE, DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, { now: new Date("2026-11-02T10:00:05.000Z") });
+  const stamped = await markDigestShadowRebuildQueued(env, {
+    day: "2026-11-02",
+    rebuildRunId: created.run_id,
+    invocationId,
+    now: new Date("2026-11-02T10:00:06.000Z"),
+    freshness: { degraded: true, reason: "digest shadow freshness time budget exhausted (90000ms)" },
+  });
+  assert.equal(stamped.write_accepted, true);
+  const stampedSummary = JSON.parse(DB.mainRuns.get("2026-11-02").summary_json);
+  assert.equal(stampedSummary.rebuild_run_id, created.run_id);
+  assert.equal(stampedSummary.freshness?.degraded, true);
+  assert.notEqual(JSON.stringify(stampedSummary), DB.runs.get(created.run_id).base_summary_json);
+
+  // Durable state after the consumer died pre-seal and reconciliation dead-lettered
+  // the run: error-flagged, items terminal. Finalize must still commit the day.
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.error = "rebuild expansion exhausted before dispatch completed";
+  run.total_count = 1;
+  DB.items.set(`${created.run_id}:digest:one`, {
+    run_id: created.run_id, digest_id: "digest:one",
+    job_json: JSON.stringify({ type: "sub", key: "sub:one" }),
+    status: "failed", attempt_count: 1, result_json: null,
+    error: "rebuild execution exhausted",
+    started_at: "2026-11-02T10:01:00.000Z", completed_at: "2026-11-02T12:05:00.000Z",
+  });
+  const finished = await handleDigestShadowRebuildQueueMessage(env, {
+    type: "expand", run_id: created.run_id,
+  }, { now: new Date("2026-11-02T12:30:00.000Z") });
+  const summary = JSON.parse(DB.mainRuns.get("2026-11-02").summary_json);
+  assert.equal(finished.error, "rebuild expansion exhausted before dispatch completed");
+  assert.notEqual(summary.status, "STARTED");
+  assert.equal(summary.rebuild_run_id, created.run_id);
+  assert.ok(summary.rebuild_finalization_id);
+  assert.equal(summary.phase, "partial_rebuild");
+  assert.ok(summary.redlines.some((finding) => finding.code === "rebuild_partial_incomplete_base"));
+  assert.ok(finished.receipt);
+});
+
+// The scoped (admin rerun) lane of the same defect: a hold/freshness-class stamp
+// landing on the STARTED handoff after the scoped base snapshot must not refuse a
+// completed scoped rebuild either.
+test("scoped rebuild finalizes when safety stamps land after its base snapshot", async () => {
+  const DB = new FakeD1();
+  const ALERT_STATE = kv();
+  const invocationId = "digest-shadow:0 10 * * *:2026-11-03T10:00:00.000Z";
+  const started = {
+    run_day: "2026-11-03", status: "STARTED", phase: "started", complete: false,
+    invocation_id: invocationId,
+    result_revision: `${invocationId}:started`,
+    previews: [], redlines: [], upstream_incidents: [],
+  };
+  DB.mainRuns.set("2026-11-03", {
+    run_day: "2026-11-03",
+    status: "STARTED",
+    summary_json: JSON.stringify(started),
+  });
+  const env = { DB, ALERT_STATE, DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, {
+    affectedDigestIds: ["digest:one"], now: new Date("2026-11-03T10:30:00.000Z"),
+  });
+  const run = DB.runs.get(created.run_id);
+  assert.equal(run.base_summary_json, JSON.stringify(started));
+  // Concurrent safety stamp on the same STARTED invocation, after the base snapshot.
+  DB.mainRuns.set("2026-11-03", {
+    run_day: "2026-11-03",
+    status: "STARTED",
+    summary_json: JSON.stringify({
+      ...started,
+      phase: "rebuild_queued",
+      progress_at: "2026-11-03T10:31:00.000Z",
+      hold: { source_status: "DARK_PERIOD", delivery_policy: "ALL_DIGESTS_HELD" },
+      freshness: { degraded: true, reason: "digest shadow freshness time budget exhausted (90000ms)" },
+    }),
+  });
+  const finished = await completeOneDigestRebuild(env, created.run_id, new Date("2026-11-03T11:00:00.000Z"));
+  const summary = JSON.parse(DB.mainRuns.get("2026-11-03").summary_json);
+  assert.equal(finished.status, "complete");
+  assert.equal(finished.receipt.status, "PARTIAL");
+  assert.notEqual(summary.status, "STARTED");
+  assert.equal(summary.rebuild_run_id, created.run_id);
+  assert.ok(summary.rebuild_finalization_id);
+  assert.equal(summary.phase, "partial_rebuild");
+});
+
+// The identity relaxation must not swallow genuine conflicts: a newer STARTED
+// claim (different invocation) and a handoff owned by another rebuild still
+// refuse the scoped finalize, with no side effects.
+test("scoped finalize still refuses a newer STARTED claim and a foreign rebuild owner", async () => {
+  for (const variant of ["newer-claim", "foreign-owner"]) {
+    const DB = new FakeD1();
+    const ALERT_STATE = kv();
+    const invocationId = "digest-shadow:0 10 * * *:2026-11-04T10:00:00.000Z";
+    const started = {
+      run_day: "2026-11-04", status: "STARTED", phase: "started", complete: false,
+      invocation_id: invocationId,
+      previews: [], redlines: [], upstream_incidents: [],
+    };
+    DB.mainRuns.set("2026-11-04", {
+      run_day: "2026-11-04",
+      status: "STARTED",
+      summary_json: JSON.stringify(started),
+    });
+    const env = { DB, ALERT_STATE, DIGEST_SHADOW_QUEUE: { async send() {} } };
+    const created = await createDigestShadowRebuild(env, {
+      affectedDigestIds: ["digest:one"], now: new Date("2026-11-04T10:30:00.000Z"),
+    });
+    const conflicting = variant === "newer-claim"
+      ? { ...started, invocation_id: "digest-shadow:0 10 * * *:2026-11-04T10:00:00.000Z:retry",
+        phase: "started", result_revision: "fresh-claim" }
+      : { ...started, phase: "rebuild_queued",
+        rebuild_run_id: "digest-shadow-rebuild:foreign-owner", rebuild_complete: false };
+    DB.mainRuns.set("2026-11-04", {
+      run_day: "2026-11-04",
+      status: "STARTED",
+      summary_json: JSON.stringify(conflicting),
+    });
+    const finished = await completeOneDigestRebuild(env, created.run_id, new Date("2026-11-04T11:00:00.000Z"));
+    const summary = JSON.parse(DB.mainRuns.get("2026-11-04").summary_json);
+    assert.equal(finished.status, "failed", variant);
+    assert.match(finished.error, /changed during rebuild finalization/);
+    assert.equal(summary.status, "STARTED", variant);
+    assert.equal(summary.rebuild_finalization_id, undefined, variant);
+    assert.equal(ALERT_STATE.values.size, 0, variant);
+  }
 });
 
 test("full rebuild ownership CAS rejects a STARTED handoff owned by another rebuild", async () => {
@@ -1711,6 +1881,63 @@ test('expansion exhaustion cannot certify a partial manifest', async () => {
     assert.equal(summary.complete, false);
     assert.ok(summary.redlines.some((r) => r.code === 'rebuild_manifest_incomplete'));
     assert.equal(f.sqlite.prepare("SELECT COUNT(*) AS n FROM digest_shadow_rebuild_items WHERE status = 'complete'").get().n, 24);
+  } finally { f.sqlite.close(); }
+});
+
+// Production-SQL form of the Monday-stall regression: an error-flagged rebuild
+// whose STARTED handoff carries its own post-base stamps (ownership claim, hold,
+// degraded freshness) must finalize under the real upsert predicate, while the
+// same handoff claimed by a newer invocation still refuses.
+test('scoped finalize owns its stamped STARTED handoff under production SQL', async () => {
+  const f = await sqliteRecoveryFixture();
+  try {
+    const invocationId = 'digest-shadow:0 10 * * *:2026-09-21T10:00:00.000Z';
+    const started = { run_day: '2026-09-21', status: 'STARTED', phase: 'started', complete: false,
+      invocation_id: invocationId, previews: [], redlines: [], upstream_incidents: [] };
+    f.sqlite.prepare(`INSERT INTO digest_shadow_runs (run_day, ran_at, status, digest_count, total_items, summary_json)
+      VALUES (?, ?, 'STARTED', 0, 0, ?)`).run('2026-09-21', NOW.toISOString(), JSON.stringify(started));
+    f.sqlite.prepare("UPDATE digest_shadow_rebuild_runs SET base_summary_json = ? WHERE run_id = ?")
+      .run(JSON.stringify(started), f.runId);
+    f.sqlite.prepare("UPDATE digest_shadow_runs SET summary_json = ? WHERE run_day = '2026-09-21'")
+      .run(JSON.stringify({
+        ...started,
+        phase: 'rebuild_queued',
+        rebuild_run_id: f.runId,
+        rebuild_complete: false,
+        hold: { source_status: 'DARK_PERIOD', delivery_policy: 'ALL_DIGESTS_HELD' },
+        freshness: { degraded: true, reason: 'digest shadow freshness time budget exhausted (90000ms)' },
+      }));
+    f.sqlite.prepare("UPDATE digest_shadow_rebuild_runs SET error = 'rebuild expansion exhausted before dispatch completed' WHERE run_id = ?").run(f.runId);
+    f.sqlite.prepare("UPDATE digest_shadow_rebuild_items SET status = 'failed', error = 'rebuild execution exhausted', completed_at = ? WHERE digest_id = 'digest:last'")
+      .run(NOW.toISOString());
+    const out = await handleDigestShadowRebuildQueueMessage(f.env, { type: 'expand', run_id: f.runId }, { now: NOW });
+    assert.equal(out.error, 'rebuild expansion exhausted before dispatch completed');
+    const summary = JSON.parse(f.sqlite.prepare('SELECT summary_json FROM digest_shadow_runs').get().summary_json);
+    assert.notEqual(summary.status, 'STARTED');
+    assert.equal(summary.rebuild_run_id, f.runId);
+    assert.ok(summary.rebuild_finalization_id);
+    assert.ok(summary.redlines.some((r) => r.code === 'rebuild_partial_incomplete_base'));
+
+    // A newer STARTED claim on another day must still refuse a scoped finalize.
+    const claimed = { run_day: '2026-09-22', status: 'STARTED', complete: false, invocation_id: 'shadow:old' };
+    f.sqlite.prepare(`INSERT INTO digest_shadow_runs (run_day, ran_at, status, digest_count, total_items, summary_json)
+      VALUES ('2026-09-22', ?, 'STARTED', 0, 0, ?)`).run(NOW.toISOString(), JSON.stringify(claimed));
+    const repair = await createDigestShadowRebuild(f.env, {
+      affectedDigestIds: ['digest:000'], now: NOW, runDay: '2026-09-22',
+    });
+    f.sqlite.prepare("UPDATE digest_shadow_runs SET summary_json = ? WHERE run_day = '2026-09-22'")
+      .run(JSON.stringify({ ...claimed, invocation_id: 'shadow:new' }));
+    f.sqlite.prepare("UPDATE digest_shadow_rebuild_runs SET status = 'running', total_count = 1 WHERE run_id = ?").run(repair.run_id);
+    f.sqlite.prepare(`INSERT INTO digest_shadow_rebuild_items
+      (run_id, digest_id, job_json, status, attempt_count, result_json, error, started_at, completed_at)
+      VALUES (?, 'digest:000', ?, 'failed', 1, NULL, 'rebuild execution exhausted', ?, ?)`)
+      .run(repair.run_id, JSON.stringify({ type: 'sub', key: 'sub:one' }), NOW.toISOString(), NOW.toISOString());
+    const refused = await handleDigestShadowRebuildQueueMessage(f.env, { type: 'expand', run_id: repair.run_id }, { now: NOW });
+    assert.equal(refused.status, 'failed');
+    assert.match(refused.error, /changed during rebuild finalization/);
+    const after = JSON.parse(f.sqlite.prepare("SELECT summary_json FROM digest_shadow_runs WHERE run_day = '2026-09-22'").get().summary_json);
+    assert.equal(after.invocation_id, 'shadow:new');
+    assert.equal(after.rebuild_finalization_id, undefined);
   } finally { f.sqlite.close(); }
 });
 

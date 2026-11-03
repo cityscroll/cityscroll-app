@@ -457,6 +457,13 @@ async function mergeCompletedSummary(env, run, items, now, contentRedlines) {
   delete merged.invocation_id;
   const publicSummary = { ...merged };
   delete publicSummary._rendered_previews;
+  // Scoped finalize CAS. Byte equality alone rejected the day's own STARTED
+  // handoff whenever hold / freshness / rebuild-queue stamps landed after the
+  // base snapshot, so an error-flagged or scoped rebuild could never commit and
+  // the rehearsal stayed STARTED (the repeated Monday stall). Also accept the
+  // handoff by identity — same STARTED invocation, not yet finalized, not owned
+  // by another rebuild — while a newer claim, a foreign rebuild owner, or a
+  // landed finalization still refuses.
   const statements = [
     env.DB.prepare(`INSERT INTO digest_shadow_runs
       (run_day, ran_at, status, digest_count, total_items, summary_json)
@@ -464,9 +471,15 @@ async function mergeCompletedSummary(env, run, items, now, contentRedlines) {
       ON CONFLICT(run_day) DO UPDATE SET ran_at = excluded.ran_at, status = excluded.status,
       digest_count = excluded.digest_count, total_items = excluded.total_items,
       summary_json = excluded.summary_json
-      WHERE digest_shadow_runs.summary_json = ?`)
+      WHERE digest_shadow_runs.summary_json = ?
+        OR (digest_shadow_runs.status = 'STARTED'
+          AND json_extract(digest_shadow_runs.summary_json, '$.rebuild_finalization_id') IS NULL
+          AND (json_extract(digest_shadow_runs.summary_json, '$.rebuild_run_id') IS NULL
+            OR json_extract(digest_shadow_runs.summary_json, '$.rebuild_run_id') = ?)
+          AND json_extract(digest_shadow_runs.summary_json, '$.invocation_id') IS ?)`)
       .bind(run.run_day, merged.ran_at, merged.status, merged.digest_count, merged.total_items,
-        json(publicSummary), run.base_summary_json),
+        json(publicSummary), run.base_summary_json, run.run_id,
+        run.base_summary?.invocation_id ?? null),
   ];
   for (const digestId of touched) {
     statements.push(env.DB.prepare(`DELETE FROM digest_shadow_previews WHERE run_day = ? AND digest_id = ?
