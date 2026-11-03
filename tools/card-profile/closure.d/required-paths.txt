@@ -573,6 +573,7 @@ site/json_prefer_worker.mjs
 site/keyword_matcher.mjs
 site/keyword_search_index_shards.mjs
 site/land_action_procedure_resolution.mjs
+site/land_actor_label.mjs
 site/land_affected_review_body.mjs
 site/land_authority_summary.mjs
 site/land_authority_summary_view.mjs
@@ -588,6 +589,7 @@ site/land_map_model.mjs
 site/land_nta_watch_scope.mjs
 site/land_outcome_runtime.mjs
 site/land_phase_spine.mjs
+site/land_profile_legal_basis.mjs
 site/land_procedure_facet.mjs
 site/land_procedure_profiles.mjs
 site/land_project_catalog.mjs
