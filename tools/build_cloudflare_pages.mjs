@@ -145,8 +145,12 @@ if (refreshResidentSnapshots) {
 
 // Rebuild the shared freshness seam after acquisition so source-health and
 // first-class artifact reports describe the same release attempt.
-runNode(sourceDir, "build_source_health_observations.mjs");
-runNode(sourceDir, "build_source_health_observations.mjs", ["--check"]);
+// The release evaluates receipt age at build time. Preserve each source's own
+// observation clock; only the evaluation clock advances, so stale sources
+// remain stale instead of making the generated receipt itself weeks old.
+const sourceHealthEvaluationAt = new Date().toISOString();
+runNode(sourceDir, "build_source_health_observations.mjs", ["--as-of", sourceHealthEvaluationAt]);
+runNode(sourceDir, "build_source_health_observations.mjs", ["--check", "--as-of", sourceHealthEvaluationAt]);
 runNode(sourceDir, "build_source_health_public_projection.mjs");
 runNode(sourceDir, "build_source_health_public_projection.mjs", ["--check"]);
 
