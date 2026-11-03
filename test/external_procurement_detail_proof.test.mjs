@@ -49,7 +49,7 @@ const contract = {
 
 test("notice and contract consume different documented HTTP envelopes without importing app internals", async () => {
   const calls = [];
-  const fetchImpl = async (url) => {
+  const fetchImpl = (url) => {
     calls.push(url.toString());
     return new Response(JSON.stringify(calls.length === 1 ? notice : contract), { status: 200 });
   };
