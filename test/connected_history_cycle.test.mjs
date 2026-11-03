@@ -25,6 +25,7 @@ import {
   priorRunsDropped,
   retainedEvidencePins,
   runConnectedHistoryCycle,
+  selectPriorRunWindow,
   verifyConnectedHistoryCycleReceipt,
 } from "../tools/lib/connected_history_cycle.mjs";
 import {
@@ -248,7 +249,7 @@ test("an idempotent run emits a receipt, changes no served history byte, and is 
   assert.equal(third.receipt.run.trigger, "workflow_dispatch");
 });
 
-test("prior_runs is append-only: dropping a retained run fails instead of publishing", () => {
+test("prior_runs keeps provenance anchors while its bounded recent window rolls forward", () => {
   const retained = [
     { run_id: "run-a", trigger: "schedule", started_at: "2026-09-30T13:39:26.483Z" },
     { run_id: "run-b", trigger: "workflow_dispatch", started_at: "2026-09-29T10:24:15.855Z" },
@@ -261,13 +262,25 @@ test("prior_runs is append-only: dropping a retained run fails instead of publis
     () => assertPriorRunsAppendOnly(retained, [retained[1]]),
     /would drop retained run\(s\): run-a \(schedule, 2026-09-30T13:39:26.483Z\)/,
   );
-  // Oldest entries past the ledger window may age out; in-window drops may not.
+  // The three oldest provenance anchors remain while the middle ages out and
+  // the recent part of the bounded window rolls forward.
   const windowed = Array.from({ length: CONNECTED_HISTORY_CYCLE.ledger_limit + 1 }, (_, index) => ({
     run_id: `run-${index}`,
     trigger: "schedule",
     started_at: new Date(Date.parse("2026-09-01T00:00:00.000Z") + index * 86_400_000).toISOString(),
   })).reverse();
-  const proposed = windowed.slice(0, CONNECTED_HISTORY_CYCLE.ledger_limit);
+  const proposed = selectPriorRunWindow(windowed);
+  assert.equal(proposed.length, CONNECTED_HISTORY_CYCLE.ledger_limit);
+  assert.deepEqual(
+    proposed.slice(-CONNECTED_HISTORY_CYCLE.ledger_anchor_count).map((entry) => entry.run_id),
+    ["run-2", "run-1", "run-0"],
+  );
+  assert.ok(!proposed.some((entry) => entry.run_id === "run-3"), "the oldest non-anchor ages out");
+  assert.deepEqual(
+    selectPriorRunWindow(windowed, { anchorCount: 0 }).map((entry) => entry.run_id),
+    windowed.slice(0, CONNECTED_HISTORY_CYCLE.ledger_limit).map((entry) => entry.run_id),
+    "a caller that opts out of anchors still gets a bounded newest-only window",
+  );
   assertPriorRunsAppendOnly(windowed, proposed);
   assert.throws(() => assertPriorRunsAppendOnly(windowed, proposed.slice(1)), /would drop retained run/);
 });

@@ -57,6 +57,9 @@ export const CONNECTED_HISTORY_CYCLE = Object.freeze({
   }),
   held_dir: ".artifacts/connected-history-cycle/held",
   ledger_limit: 30,
+  // Keep the first three cycle receipts as provenance anchors while the
+  // remaining bounded window rolls forward with the newest runs.
+  ledger_anchor_count: 3,
 });
 
 export { evidenceInvalidatedBy, retainedEvidencePins };
@@ -817,6 +820,23 @@ export function priorRunsDropped(retained, proposed) {
 }
 
 /**
+ * Select a bounded newest-first ledger without aging out its provenance
+ * anchors. The first cycle and its two neighboring recovery runs explain how
+ * the scheduled ledger began; the rest of the window stays current.
+ */
+export function selectPriorRunWindow(retained, {
+  limit = CONNECTED_HISTORY_CYCLE.ledger_limit,
+  anchorCount = CONNECTED_HISTORY_CYCLE.ledger_anchor_count,
+} = {}) {
+  const merged = mergePriorRunHistories(retained);
+  if (merged.length <= limit) return merged;
+  const boundedAnchorCount = Math.min(Math.max(anchorCount, 0), limit);
+  const newest = merged.slice(0, limit - boundedAnchorCount);
+  const anchors = boundedAnchorCount > 0 ? merged.slice(-boundedAnchorCount) : [];
+  return mergePriorRunHistories(newest, anchors);
+}
+
+/**
  * Positive control for append-only history: within the ledger window, every
  * retained run_id must appear in the proposed ledger. A drop fails the run
  * instead of publishing a quieter history.
@@ -824,7 +844,7 @@ export function priorRunsDropped(retained, proposed) {
 export function assertPriorRunsAppendOnly(retained, proposed, {
   limit = CONNECTED_HISTORY_CYCLE.ledger_limit,
 } = {}) {
-  const mustKeep = mergePriorRunHistories(retained).slice(0, limit);
+  const mustKeep = selectPriorRunWindow(retained, { limit });
   const dropped = priorRunsDropped(mustKeep, proposed);
   if (!dropped.length) return;
   const names = dropped
@@ -835,8 +855,8 @@ export function assertPriorRunsAppendOnly(retained, proposed, {
 
 /**
  * Build the prior_runs ledger from the committed receipt and any still-unmerged
- * receipts (typically the automation-branch tip). Append-only within the
- * ledger window: a proposed history that would drop a retained run fails.
+ * receipts (typically the automation-branch tip). The bounded window keeps its
+ * provenance anchors plus the newest runs; dropping either class fails.
  */
 export function buildPriorRunsLedger({
   committedPrevious = null,
@@ -848,7 +868,7 @@ export function buildPriorRunsLedger({
     ...pendingReceipts.map((entry) => ledgerHistoryOf(entry.receipt, entry.digest)),
     committedPrevious ? ledgerHistoryOf(committedPrevious, committedDigest) : [],
   );
-  const priorRuns = retained.slice(0, limit);
+  const priorRuns = selectPriorRunWindow(retained, { limit });
   assertPriorRunsAppendOnly(retained, priorRuns, { limit });
   return priorRuns;
 }
