@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.land_authority_summary_receipt.v1",
   "join_version": "ldp06_authority_summary_v1",
-  "generated_at": "2026-10-22T19:59:40.125Z",
+  "generated_at": "2026-11-03T15:03:32.031Z",
   "counts": {
     "universe": 40,
     "resolved": 24,
@@ -418,32 +418,32 @@
       "path": "site/data/land_default_ulurp.json",
       "count": 40,
       "vintage": {
-        "generated_at": "2026-10-22T19:59:40.125Z"
+        "generated_at": "2026-11-03T15:03:32.031Z"
       },
-      "sha256": "f48241338898b7a5e4205ccca86dc239b615269ea0661126e7f3a5702707fbcf"
+      "sha256": "139cb967f8da0f13acac4101c815d493003c6638d991853e00d28699ce9dfa90"
     },
     "land_outcomes_seed": {
       "path": "site/data/land_outcomes_seed.json",
       "count": 34,
       "vintage": {
-        "generated_at": "2026-10-22T19:59:40.125Z"
+        "generated_at": "2026-11-03T15:03:32.031Z"
       },
-      "sha256": "6c393747c31db82b94488dbcb6370e73d998289a941aa086edbe51e09be10559"
+      "sha256": "7aeb1fbb840616d8b8909b0de8c638e10722c9a959a5e60703aed3aa17ba504d"
     },
     "geography": {
       "path": "site/data/community_board_geography_lookup.json",
       "vintage": {
-        "boundary_vintage": "2026-05-26"
+        "boundary_vintage": "2026-11-02"
       },
-      "sha256": "da95b1bad99cbb4d9030585c2ae8e0be2aeec1a46c7adb9de8556f7a0b0e9ec8"
+      "sha256": "3267fc8382dfb1258f511c79c2b085e87ef8954d84dbddf1bcc0b60636f9a57e"
     },
     "upcoming_hearings": {
       "path": "site/data/land_upcoming_hearings.json",
-      "count": 150,
+      "count": 136,
       "vintage": {
-        "generated_at": "2026-10-22T20:14:02.361Z"
+        "generated_at": "2026-11-03T15:09:14.436Z"
       },
-      "sha256": "731728857cd0d689325029ef9488a305102443bfc504638711da3012a1385372"
+      "sha256": "142ccbad957b6ad582baccdc1c4af2e4b90a0b3deaaaa10e658f38ee1d4cfd70"
     },
     "join_keys": [
       "project_id"
@@ -452,7 +452,7 @@
   "generation": {
     "derivation": "node tools/build_land_authority_summary.mjs",
     "payload_path": "site/data/land_authority_summary.json",
-    "payload_bytes": 103536,
-    "payload_sha256": "374a73183700fec860684fd4bdf0fd635064c6f590e4c784d3e4d2c09f8e3198"
+    "payload_bytes": 103558,
+    "payload_sha256": "aa8164e977ab28be1e89c30cf127cb9bf7bca755f34c1931050bf7d8c232101a"
   }
 }

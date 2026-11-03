@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.community_board_geography.v1",
   "generated_at": "2026-08-12T00:00:00.000Z",
-  "boundary_vintage": "2026-05-26",
+  "boundary_vintage": "2026-11-02",
   "inventory": {
     "boards_inventoried": 59,
     "collectable_boards": 17,

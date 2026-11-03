@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.board_neighborhood_generation_manifest.v1",
-  "active_generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
+  "active_generation": "0a45184510eb4ada133de24f9fd57c9d219e801f9d5066bc072b60c5f643fb87",
   "activated_at": "2026-08-12T00:00:00.000Z",
-  "previous_generation": null
+  "previous_generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e"
 }

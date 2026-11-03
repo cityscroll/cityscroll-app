@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.geography_layer_registry.v1",
-  "generated_at": "2026-10-22T20:20:52.319Z",
+  "generated_at": "2026-11-03T15:24:34.226Z",
   "layers": [
     {
       "type": "borough",
@@ -20,10 +20,10 @@
         "dataset_id": "5crt-au7u",
         "dataset_name": "Community Districts",
         "url": "https://data.cityofnewyork.us/d/5crt-au7u",
-        "updated_at": "2026-05-26T19:36:29.000Z",
+        "updated_at": "2026-11-02T19:40:00.000Z",
         "derivation": "borough_code_partition_from_community_district_boundaries"
       },
-      "boundary_vintage": "2026-05-26",
+      "boundary_vintage": "2026-11-02",
       "cardinality": "exactly_one_on_covered_land",
       "coverage": {
         "status": "complete",
@@ -45,16 +45,16 @@
       ],
       "artifacts": {
         "full": {
-          "path": "data/geography/layers/borough/2026-05-26.full.json",
-          "sha256": "b2e7e038a50fc7f8df27e7ef3005153d55fd5d0e56ffd579b1773315d075b137",
-          "bytes": 3784020,
+          "path": "data/geography/layers/borough/2026-11-02.full.json",
+          "sha256": "684847315c36b3e3a8dbeaa27eeb2313b744ea6e1ac5d4f79bf0c6dabae7ec35",
+          "bytes": 3782477,
           "geometry_fidelity": "full"
         },
         "simplified": {
-          "site_path": "site/data/geography/layers/borough/2026-05-26.json",
-          "worker_path": "worker/src/data/geography/layers/borough/2026-05-26.json",
-          "sha256": "55a40b88386cb857683d7809e39121c2973b49146a4d60b6f535aedfb69bdf78",
-          "bytes": 98592,
+          "site_path": "site/data/geography/layers/borough/2026-11-02.json",
+          "worker_path": "worker/src/data/geography/layers/borough/2026-11-02.json",
+          "sha256": "086b9c4ecb4c11b6d2a821f1e126f270f1c87e1523b37ce455bd6a0401a759fb",
+          "bytes": 98593,
           "geometry_fidelity": "simplified"
         }
       }
@@ -77,9 +77,9 @@
         "dataset_id": "5crt-au7u",
         "dataset_name": "Community Districts",
         "url": "https://data.cityofnewyork.us/d/5crt-au7u",
-        "updated_at": "2026-05-26T19:36:29.000Z"
+        "updated_at": "2026-11-02T19:40:00.000Z"
       },
-      "boundary_vintage": "2026-05-26",
+      "boundary_vintage": "2026-11-02",
       "cardinality": "exactly_one_regular_or_special_area_on_covered_land",
       "coverage": {
         "status": "complete",
@@ -102,16 +102,16 @@
       ],
       "artifacts": {
         "full": {
-          "path": "data/geography/layers/community_district/2026-05-26.full.json",
-          "sha256": "07b00972e656fe9ef51e38510cabc42b10368fa1db87d24d5ff1f8c32b8b8ca8",
-          "bytes": 3805055,
+          "path": "data/geography/layers/community_district/2026-11-02.full.json",
+          "sha256": "fbe2c998ff42e7834d0aaf069b14ae7aac8206f6a34652d927f1d164570ecae3",
+          "bytes": 3803510,
           "geometry_fidelity": "full"
         },
         "simplified": {
-          "site_path": "site/data/geography/layers/community_district/2026-05-26.json",
-          "worker_path": "worker/src/data/geography/layers/community_district/2026-05-26.json",
-          "sha256": "fd291a2c05afb91127976a7b0170d016133e0a2b66b402a814b7ad3b23610b40",
-          "bytes": 117203,
+          "site_path": "site/data/geography/layers/community_district/2026-11-02.json",
+          "worker_path": "worker/src/data/geography/layers/community_district/2026-11-02.json",
+          "sha256": "0109990ff8606080d9d9ca45e9fd872075c270647aab5c2b0847d7577a3d8759",
+          "bytes": 117204,
           "geometry_fidelity": "simplified"
         }
       }
@@ -134,9 +134,9 @@
         "dataset_id": "872g-cjhh",
         "dataset_name": "City Council Districts",
         "url": "https://data.cityofnewyork.us/d/872g-cjhh",
-        "updated_at": "2026-05-26T19:35:31.000Z"
+        "updated_at": "2026-11-02T19:34:16.000Z"
       },
-      "boundary_vintage": "2026-05-26",
+      "boundary_vintage": "2026-11-02",
       "cardinality": "exactly_one_on_covered_land",
       "coverage": {
         "status": "complete",
@@ -159,16 +159,16 @@
       ],
       "artifacts": {
         "full": {
-          "path": "data/geography/layers/council_district/2026-05-26.full.json",
-          "sha256": "207205e5c4c48f45869737793552ed6d8ab4c346b36512e67dcad25656d91242",
-          "bytes": 3832341,
+          "path": "data/geography/layers/council_district/2026-11-02.full.json",
+          "sha256": "db24cfcc2f95a8a6e1cbbf198cba49d6b34cd61ba7edeae5bf71bb8b5940542d",
+          "bytes": 3830237,
           "geometry_fidelity": "full"
         },
         "simplified": {
-          "site_path": "site/data/geography/layers/council_district/2026-05-26.json",
-          "worker_path": "worker/src/data/geography/layers/council_district/2026-05-26.json",
-          "sha256": "f5f11fce01a8a9570190ddc2ce9f2f6df60d84f7f924ef4b167b9768fc2fe252",
-          "bytes": 114996,
+          "site_path": "site/data/geography/layers/council_district/2026-11-02.json",
+          "worker_path": "worker/src/data/geography/layers/council_district/2026-11-02.json",
+          "sha256": "f182bb6f9660eff60df783591ee920a46161f198228d1bf35eabc29737947606",
+          "bytes": 114990,
           "geometry_fidelity": "simplified"
         }
       }

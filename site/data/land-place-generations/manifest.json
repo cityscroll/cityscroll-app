@@ -1,13 +1,13 @@
 {
   "schema": "cityscroll.land_place_generation_manifest.v1",
-  "generation_id": "d8da6c8623aa4d7659bc2b8b1ef43b6aabb2f44090ee55ec0bbf6ce7a00076e8",
-  "built_at": "2026-10-22T20:20:44.090Z",
+  "generation_id": "002008ea822a30b7ebb8ee7563027872d78788b7534b06be6872f92b730e38b4",
+  "built_at": "2026-11-03T15:24:18.047Z",
   "input_hashes": {
-    "aggregate": "44060fb6ff10cc8b4b20a6a6007e60dcc8336687cc94bc1349f95ae3e489c10b",
+    "aggregate": "c94d0f7f4f8c8de066f3fec6bc1453709e5b60d2d7a3f64e77728ec4c655047b",
     "boundary_vintages": {
-      "borough": "2026-05-26",
-      "community_district": "2026-05-26",
-      "council_district": "2026-05-26",
+      "borough": "2026-11-02",
+      "community_district": "2026-11-02",
+      "council_district": "2026-11-02",
       "nta2020": "26B",
       "police_precinct": "26B"
     },
@@ -15,15 +15,15 @@
     "address_index_identity": "8e09a17cbe4b957e7d2905852cb10b7295ddf814f7defdceccca75685550687b"
   },
   "source_dates": {
-    "catalog_content_id": "fnv1a32:9e9ee683:244",
-    "catalog_materialized_at": "2026-10-22T20:20:44.090Z",
-    "catalog_generated_at": "2026-10-22T19:59:40.125Z",
+    "catalog_content_id": "fnv1a32:67bff3f6:244",
+    "catalog_materialized_at": "2026-11-03T15:24:18.047Z",
+    "catalog_generated_at": "2026-11-03T15:03:32.031Z",
     "bbl_materialized_at": "2026-10-05T17:35:26.970Z",
     "parcel_coordinate_vintage": "pluto_25v4",
     "boundary_vintages": {
-      "borough": "2026-05-26",
-      "community_district": "2026-05-26",
-      "council_district": "2026-05-26",
+      "borough": "2026-11-02",
+      "community_district": "2026-11-02",
+      "council_district": "2026-11-02",
       "nta2020": "26B",
       "police_precinct": "26B"
     }
@@ -31,17 +31,17 @@
   "project_count": 244,
   "consumers": {
     "index": {
-      "generation_id": "d8da6c8623aa4d7659bc2b8b1ef43b6aabb2f44090ee55ec0bbf6ce7a00076e8",
-      "content_sha256": "261eaf07d1242d3ea59312dc9cd3fc2c4040ac6d58f175864122883dc9d4ccec"
+      "generation_id": "002008ea822a30b7ebb8ee7563027872d78788b7534b06be6872f92b730e38b4",
+      "content_sha256": "66971a3bcf1d2a1563c53f627f9610e6870c814965e966d52de070fc175a3bd2"
     },
     "evidence": {
-      "generation_id": "d8da6c8623aa4d7659bc2b8b1ef43b6aabb2f44090ee55ec0bbf6ce7a00076e8",
-      "content_sha256": "6747bca675f2ea81289be3974a7001b54c51c0913d8a6324006f6f7e24eedecc"
+      "generation_id": "002008ea822a30b7ebb8ee7563027872d78788b7534b06be6872f92b730e38b4",
+      "content_sha256": "3222453fb491aef94954c703690d300bdfc7e47851f2fd910f54dfc48a66f3a0"
     },
     "reverse": {
-      "generation_id": "d8da6c8623aa4d7659bc2b8b1ef43b6aabb2f44090ee55ec0bbf6ce7a00076e8",
+      "generation_id": "002008ea822a30b7ebb8ee7563027872d78788b7534b06be6872f92b730e38b4",
       "content_sha256": "aba14e86190abf28ae6a452ec81add8387b42258e091ba8e16937ba1ab867e4e"
     }
   },
-  "active_generation": "d8da6c8623aa4d7659bc2b8b1ef43b6aabb2f44090ee55ec0bbf6ce7a00076e8"
+  "active_generation": "002008ea822a30b7ebb8ee7563027872d78788b7534b06be6872f92b730e38b4"
 }
