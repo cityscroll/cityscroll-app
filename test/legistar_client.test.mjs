@@ -12,10 +12,10 @@ import {
   fetchLegistarBodies,
   fetchLegistarEventItems,
   fetchLegistarItemVotes,
-  fetchLegistarItemAttachments,
   summarizeLegistarVotes,
   boundedMap,
   LEGISTAR_API_BASE,
+  MAX_EMBEDDED_ATTACHMENTS_PER_EVENT,
 } from "../worker/src/lib/legistar_client.mjs";
 import {
   assertPublicUpcomingProjection,
@@ -221,15 +221,37 @@ test("fetchLegistarBodies returns [] without a token", async () => {
   assert.deepEqual(result, []);
 });
 
-test("fetchLegistarEventItems hits the nested Events/{id}/EventItems route", async () => {
-  let hit = "";
+test("fetchLegistarEventItems leaves binary-bearing embedded attachments disabled", async () => {
+  let hit = null;
   const fetchImpl = async (url) => {
-    hit = new URL(url).pathname;
+    hit = new URL(url);
     return new Response(JSON.stringify([ITEM]), { status: 200 });
   };
   const rows = await fetchLegistarEventItems({ eventId: 22526, token: TOKEN, fetchImpl });
   assert.equal(rows.length, 1);
-  assert.equal(hit, "/v1/nyc/Events/22526/EventItems");
+  assert.equal(hit.pathname, "/v1/nyc/Events/22526/EventItems");
+  assert.equal(hit.searchParams.get("Attachments"), null);
+});
+
+test("fetchLegistarEventItems strips binary fields and caps unexpected embedded attachments", async () => {
+  const binary = "A".repeat(256 * 1024);
+  const attachmentRows = Array.from({ length: 12 }, (_, index) => ({
+    MatterAttachmentId: 9_000 + index,
+    MatterAttachmentName: `Attachment ${index}`,
+    MatterAttachmentHyperlink: `https://example.com/${index}.pdf`,
+    MatterAttachmentIsSupportingDocument: true,
+    MatterAttachmentBinary: binary,
+  }));
+  const fetchImpl = async () => new Response(JSON.stringify([
+    { ...ITEM, EventItemMatterAttachments: attachmentRows },
+    { ...ITEM, EventItemId: ITEM.EventItemId + 1, EventItemMatterAttachments: attachmentRows },
+  ]), { status: 200 });
+
+  const rows = await fetchLegistarEventItems({ eventId: 22526, token: TOKEN, fetchImpl });
+  const retained = rows.flatMap((row) => row.EventItemMatterAttachments || []);
+  assert.equal(retained.length, MAX_EMBEDDED_ATTACHMENTS_PER_EVENT);
+  assert.equal(JSON.stringify(rows).includes("MatterAttachmentBinary"), false);
+  assert.ok(retained.every((row) => row.MatterAttachmentHyperlink));
 });
 
 test("fetchLegistarItemVotes aggregates per-person rows into aye/nay tallies", async () => {
@@ -298,23 +320,6 @@ test("fetchLegistarItemVotes returns null when no votes are recorded", async () 
     fetchImpl: async () => new Response(JSON.stringify([]), { status: 200 }),
   });
   assert.equal(summary, null);
-});
-
-test("fetchLegistarItemAttachments hits the nested EventItems/{id}/Attachments route", async () => {
-  let hit = "";
-  const fetchImpl = async (url) => {
-    hit = new URL(url).pathname;
-    return new Response(JSON.stringify([{
-      MatterAttachmentName: "Staff report",
-      MatterAttachmentHyperlink: "https://example.com/staff.pdf",
-      MatterAttachmentIsSupportingDocument: true,
-    }]), { status: 200 });
-  };
-  const docs = await fetchLegistarItemAttachments({ itemId: 440244, token: TOKEN, fetchImpl });
-  assert.equal(hit, "/v1/nyc/EventItems/440244/Attachments");
-  assert.equal(docs.length, 1);
-  assert.equal(docs[0].name, "Staff report");
-  assert.equal(docs[0].url, "https://example.com/staff.pdf");
 });
 
 test("boundedMap preserves order under bounded concurrency", async () => {

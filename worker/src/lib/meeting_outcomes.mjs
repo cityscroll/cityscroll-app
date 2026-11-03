@@ -22,14 +22,13 @@ import {
   fetchLegistarEventsWindow,
   fetchLegistarEventItems,
   fetchLegistarItemVoteRows,
-  fetchLegistarItemAttachmentRows,
   projectLegistarAttachmentDocuments,
   summarizeLegistarVotes,
   boundedMap,
   MAX_VOTE_PROBES_PER_EVENT,
   MAX_TOTAL_VOTE_PROBES,
-  MAX_ATTACHMENT_PROBES_PER_EVENT,
-  MAX_TOTAL_ATTACHMENT_PROBES,
+  MAX_EMBEDDED_ATTACHMENTS_PER_EVENT,
+  MAX_TOTAL_EMBEDDED_ATTACHMENTS,
 } from "./legistar_client.mjs";
 import {
   UPCOMING_COUNCIL_MEETINGS_ITEM_CONCURRENCY,
@@ -858,41 +857,41 @@ async function collectVoteSummaries({ eventItemRows, token, fetchImpl }) {
 }
 
 /**
- * Collect best-effort attachments for matter-bearing agenda items. Bounded like votes.
- * Also returns publisher-raw attachment rows (EventItemId stamped) for dual-write.
+ * Project attachment metadata already embedded in EventItem rows. Legistar's
+ * published API exposes matter attachments on EventItems; it does not expose a
+ * nested EventItems/{id}/Attachments route. Keeping this projection local also
+ * prevents hundreds of guaranteed-failing serial requests before KV publish.
  */
-async function collectAttachments({ eventItemRows, token, fetchImpl }) {
-  const candidates = eventItemRows.filter((it) => it && it.EventItemId && it.EventItemMatterId);
-  const byEvent = groupBy(candidates, (it) => String(it.EventItemEventId));
+function collectEmbeddedAttachments({ eventItemRows }) {
   const out = [];
   const rawAttachments = [];
-  let total = 0;
-  for (const [, evItems] of byEvent) {
-    let perEvent = 0;
-    for (const it of evItems) {
-      if (perEvent >= MAX_ATTACHMENT_PROBES_PER_EVENT || total >= MAX_TOTAL_ATTACHMENT_PROBES) break;
-      perEvent += 1;
-      total += 1;
-      try {
-        const rows = await fetchLegistarItemAttachmentRows({
-          itemId: it.EventItemId,
-          token,
-          fetchImpl,
-        });
-        if (!rows.length) continue;
-        for (const row of rows) {
-          rawAttachments.push({
-            ...row,
-            EventItemId: it.EventItemId,
-          });
-        }
-        const documents = projectLegistarAttachmentDocuments(rows);
-        if (documents.length) {
-          out.push({ agenda_item_id: String(it.EventItemId), documents });
-        }
-      } catch {
-        // Best-effort: a single attachment fetch failure is non-fatal.
-      }
+  const retainedByEvent = new Map();
+  let retainedTotal = 0;
+  for (const item of eventItemRows) {
+    if (!item?.EventItemId || !item?.EventItemMatterId) continue;
+    const eventId = String(item.EventItemEventId ?? "");
+    const retainedForEvent = retainedByEvent.get(eventId) || 0;
+    const available = Math.min(
+      MAX_EMBEDDED_ATTACHMENTS_PER_EVENT - retainedForEvent,
+      MAX_TOTAL_EMBEDDED_ATTACHMENTS - retainedTotal,
+    );
+    if (available <= 0) continue;
+    const rows = Array.isArray(item.EventItemMatterAttachments)
+      ? item.EventItemMatterAttachments.filter(Boolean)
+        .slice(0, available)
+      : [];
+    if (!rows.length) continue;
+    retainedByEvent.set(eventId, retainedForEvent + rows.length);
+    retainedTotal += rows.length;
+    for (const row of rows) {
+      rawAttachments.push({
+        ...row,
+        EventItemId: item.EventItemId,
+      });
+    }
+    const documents = projectLegistarAttachmentDocuments(rows);
+    if (documents.length) {
+      out.push({ agenda_item_id: String(item.EventItemId), documents });
     }
   }
   return { attachmentRows: out, rawAttachments };
@@ -1046,10 +1045,8 @@ export async function buildMeetingOutcomesView({
   const itemsByEventId = new Map(itemBatches.map((batch) => [batch.event_id, batch]));
   const eventItemRows = itemBatches.flatMap((batch) => batch.rows);
 
-  const [voteBag, attachmentBag] = await Promise.all([
-    collectVoteSummaries({ eventItemRows, token, fetchImpl }),
-    collectAttachments({ eventItemRows, token, fetchImpl }),
-  ]);
+  const attachmentBag = collectEmbeddedAttachments({ eventItemRows });
+  const voteBag = await collectVoteSummaries({ eventItemRows, token, fetchImpl });
 
   const view = buildMeetingOutcomes(
     noticeRows,

@@ -28,8 +28,8 @@ export const VOTES_TOP = 200;
 // polite even if many items are flagged.
 export const MAX_VOTE_PROBES_PER_EVENT = 6;
 export const MAX_TOTAL_VOTE_PROBES = 240;
-export const MAX_ATTACHMENT_PROBES_PER_EVENT = 8;
-export const MAX_TOTAL_ATTACHMENT_PROBES = 320;
+export const MAX_EMBEDDED_ATTACHMENTS_PER_EVENT = 8;
+export const MAX_TOTAL_EMBEDDED_ATTACHMENTS = 320;
 export const MATTERS_PAGE_SIZE = 200;
 export const MATTERS_MAX_PAGES = 20;
 export const MATTER_HISTORIES_PAGE_SIZE = 100;
@@ -512,7 +512,9 @@ export async function fetchLegistarEvents({
 /**
  * Fetch EventItems for one event (nested route). Returns raw Legistar item rows,
  * which carry inline matter linkage (EventItemMatterFile/Name/Status) and the
- * action outcome (EventItemActionName / EventItemPassedFlagName).
+ * action outcome (EventItemActionName / EventItemPassedFlagName). The optional
+ * attachment expansion stays disabled because its schema permits base64
+ * document bodies; unexpected embedded metadata is sanitized below.
  */
 export async function fetchLegistarEventItems({
   eventId,
@@ -522,10 +524,46 @@ export async function fetchLegistarEventItems({
 }) {
   if (!token || !eventId) return [];
   const boundedTop = Math.max(1, Math.min(EVENT_ITEMS_TOP, Number(top) || EVENT_ITEMS_TOP));
-  return fetchJson(
+  const rows = await fetchJson(
     fetchImpl,
+    // Attachments defaults to 0. Enabling it can embed base64 document bodies;
+    // leave that optional capability off so the EventItems response retains a
+    // count-bounded metadata shape rather than an unbounded byte payload.
     authedUrl(`Events/${encodeURIComponent(eventId)}/EventItems`, token, { $top: String(boundedTop) }),
   );
+  if (!Array.isArray(rows)) return rows;
+
+  // Defensive boundary for a publisher or fixture that includes attachment
+  // metadata despite the request default. Retain only the public metadata
+  // fields, discard MatterAttachmentBinary before rows leave the client, and
+  // restore the former per-event attachment cap.
+  let remainingAttachments = MAX_EMBEDDED_ATTACHMENTS_PER_EVENT;
+  return rows.map((row) => {
+    if (!row || typeof row !== "object") return row;
+    const { EventItemMatterAttachments, ...withoutAttachments } = row;
+    if (!Array.isArray(EventItemMatterAttachments) || remainingAttachments <= 0) {
+      return withoutAttachments;
+    }
+    const attachments = EventItemMatterAttachments
+      .slice(0, remainingAttachments)
+      .map((attachment) => {
+        if (!attachment || typeof attachment !== "object") return null;
+        return {
+          MatterAttachmentId: attachment.MatterAttachmentId ?? null,
+          MatterAttachmentMatterId: attachment.MatterAttachmentMatterId ?? null,
+          MatterAttachmentName: attachment.MatterAttachmentName ?? null,
+          MatterAttachmentHyperlink: attachment.MatterAttachmentHyperlink ?? null,
+          MatterAttachmentIsSupportingDocument:
+            attachment.MatterAttachmentIsSupportingDocument ?? null,
+          MatterAttachmentLastModifiedUtc: attachment.MatterAttachmentLastModifiedUtc ?? null,
+        };
+      })
+      .filter(Boolean);
+    remainingAttachments -= attachments.length;
+    return attachments.length
+      ? { ...withoutAttachments, EventItemMatterAttachments: attachments }
+      : withoutAttachments;
+  });
 }
 
 /**
@@ -587,23 +625,6 @@ export async function fetchLegistarItemVotes({
 }
 
 /**
- * Raw attachment rows for one agenda item (publisher payload).
- * Used for immutable source_records dual-write and document card mapping.
- */
-export async function fetchLegistarItemAttachmentRows({
-  itemId,
-  token,
-  fetchImpl = fetch,
-} = {}) {
-  if (!token || !itemId) return [];
-  return fetchJson(
-    fetchImpl,
-    authedUrl(`EventItems/${encodeURIComponent(itemId)}/Attachments`, token, { $top: "50" }),
-    10000,
-  );
-}
-
-/**
  * Project raw Legistar attachment rows into public document cards.
  * Prefer MatterAttachment* fields when present.
  */
@@ -625,15 +646,6 @@ export function projectLegistarAttachmentDocuments(rows = []) {
     });
   }
   return out;
-}
-
-/**
- * Best-effort attachment fetch for one agenda item. Returns [{url, name, category}]
- * or [] when the nested route is empty.
- */
-export async function fetchLegistarItemAttachments({ itemId, token, fetchImpl = fetch }) {
-  const rows = await fetchLegistarItemAttachmentRows({ itemId, token, fetchImpl });
-  return projectLegistarAttachmentDocuments(rows);
 }
 
 /**

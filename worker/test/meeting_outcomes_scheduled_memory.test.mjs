@@ -19,6 +19,7 @@ import test from "node:test";
 import vm from "node:vm";
 
 import { refreshMeetingOutcomes } from "../src/lib/meeting_outcomes.mjs";
+import { withWorkerAcquisitionReceipt } from "../src/lib/worker_acquisition_runtime.mjs";
 
 const CHILD_FLAG = "CITYSCROLL_MEETING_MEMORY_CHILD";
 const WORKER_MEMORY_MIB = 128;
@@ -30,6 +31,13 @@ const UPCOMING_EVENT_COUNT = 60;
 const ITEMS_PER_UPCOMING_EVENT = 300;
 const NOTICE_COUNT = 500;
 const TEXT_BYTES_PER_ITEM = 2_048;
+const PRODUCTION_EVENT_COUNT = 390;
+const PRODUCTION_NOTICE_COUNT = 310;
+const PRODUCTION_ITEMS_PER_UPCOMING_EVENT = 20;
+const BINARY_ATTACHMENT_EVENT_COUNT = 12;
+const BINARY_ATTACHMENT_BYTES = 24 * 1024;
+const BINARY_ATTACHMENTS_PER_ITEM = 12;
+const OLD_GENERATED_AT = "2026-10-23T09:36:10.172Z";
 
 function textFor(index) {
   return `${String(index).padStart(6, "0")}:${"meeting agenda outcome ".repeat(96)}`
@@ -136,7 +144,7 @@ function scheduledWorker(fetchImpl, env) {
         if (name === "refreshMeetingOutcomes") {
           return refreshMeetingOutcomes(args[0], args[1], new Date(SCHEDULED_AT));
         }
-        if (name === "withWorkerAcquisitionReceipt") return args[3](args[4]?.signal);
+        if (name === "withWorkerAcquisitionReceipt") return withWorkerAcquisitionReceipt(...args);
         if (name === "startMorningZapOutcomes") return {};
         return {};
       };
@@ -148,9 +156,110 @@ function scheduledWorker(fetchImpl, env) {
   );
   const ctx = { waitUntil(promise) { pending.push(promise); } };
   return {
-    async run() {
-      await context.worker.runScheduled({ cron: "0 8 * * *", scheduledTime: SCHEDULED_AT }, env, ctx);
+    async run(cron = "0 8 * * *") {
+      await context.worker.runScheduled({ cron, scheduledTime: SCHEDULED_AT }, env, ctx);
       await Promise.all(pending);
+    },
+  };
+}
+
+function productionShapedFixture({ embeddedAttachments = false, observeHeap = () => {} } = {}) {
+  const events = Array.from({ length: PRODUCTION_EVENT_COUNT }, (_, index) => eventRow(index));
+  const notices = noticeRows().slice(0, PRODUCTION_NOTICE_COUNT);
+  let attachmentRequests = 0;
+  let eventItemRequests = 0;
+  let eventItemRequestsWithAttachments = 0;
+  const fetchImpl = async (input, init = {}) => {
+    const url = new URL(String(input));
+    if (url.hostname === "data.cityofnewyork.us") return jsonResponse(notices);
+    if (/\/Events$/.test(url.pathname)) {
+      const skip = Number(url.searchParams.get("$skip") || 0);
+      return jsonResponse(events.slice(skip, skip + EVENT_PAGE_SIZE));
+    }
+    const itemMatch = /\/Events\/(\d+)\/EventItems$/.exec(url.pathname);
+    if (itemMatch) {
+      eventItemRequests += 1;
+      if (url.searchParams.get("Attachments") === "1") eventItemRequestsWithAttachments += 1;
+      const eventId = Number(itemMatch[1]);
+      let rows = eventItemRows(eventId).slice(0, PRODUCTION_ITEMS_PER_UPCOMING_EVENT);
+      // Attachments are absent by default, matching the documented request
+      // default. The opt-in branch is a defensive publisher-shape stress case.
+      if (embeddedAttachments && eventId < 50_000 + BINARY_ATTACHMENT_EVENT_COUNT) {
+        const binary = "A".repeat(BINARY_ATTACHMENT_BYTES);
+        rows = rows.map((row, itemIndex) => ({
+          ...row,
+          EventItemMatterAttachments: Array.from(
+            { length: BINARY_ATTACHMENTS_PER_ITEM },
+            (_, attachmentIndex) => ({
+              MatterAttachmentId: eventId * 100_000 + itemIndex * 100 + attachmentIndex,
+              MatterAttachmentName: `Attachment ${attachmentIndex}`,
+              MatterAttachmentHyperlink: `https://example.com/${eventId}/${itemIndex}/${attachmentIndex}.pdf`,
+              MatterAttachmentIsSupportingDocument: true,
+              MatterAttachmentBinary: binary,
+            }),
+          ),
+        }));
+      }
+      const response = jsonResponse(rows);
+      observeHeap();
+      return response;
+    }
+    if (/\/EventItems\/\d+\/Votes$/.test(url.pathname)) return jsonResponse([]);
+    if (/\/EventItems\/\d+\/Attachments$/.test(url.pathname)) {
+      attachmentRequests += 1;
+      await new Promise((resolve, reject) => {
+        const timer = setTimeout(resolve, 5);
+        init.signal?.addEventListener("abort", () => {
+          clearTimeout(timer);
+          reject(init.signal.reason || new DOMException("aborted", "AbortError"));
+        }, { once: true });
+      });
+      return new Response(null, { status: 404 });
+    }
+    throw new Error(`unexpected fixture request ${url.pathname}`);
+  };
+  return {
+    fetchImpl,
+    get attachmentRequests() { return attachmentRequests; },
+    get eventItemRequests() { return eventItemRequests; },
+    get eventItemRequestsWithAttachments() { return eventItemRequestsWithAttachments; },
+  };
+}
+
+function productionShapedPriorState() {
+  const oldSnapshot = JSON.stringify({
+    schema_version: 4,
+    generated_at: OLD_GENERATED_AT,
+    counts: { records: PRODUCTION_NOTICE_COUNT, event_rows: PRODUCTION_EVENT_COUNT },
+    records: [],
+  });
+  const values = new Map([["meeting-outcomes:materialized:v2", oldSnapshot]]);
+  for (let day = 0; day < 11; day += 1) {
+    const observedAt = new Date(Date.parse("2026-10-24T13:00:00.000Z") + day * 86_400_000).toISOString();
+    const runId = `scheduled-13:${observedAt}`;
+    values.set(`source-health:acquisition:nyc-council-legistar:${runId}`, JSON.stringify({
+      schema: "cityscroll.source_acquisition_receipt.v1",
+      source_contract_id: "nyc-council-legistar",
+      observed_at: observedAt,
+      status: "failed",
+      run_id: runId,
+      publisher_clock_basis: null,
+      publisher_updated_at: null,
+      adapter: "worker-scheduled-refresh",
+      exact_error: "scheduled refresh failed before publication",
+    }));
+  }
+  return {
+    values,
+    binding: {
+      async get(key) { return values.get(key) || null; },
+      async put(key, value) { values.set(key, value); },
+      async list({ prefix = "" } = {}) {
+        return {
+          keys: [...values.keys()].filter((key) => key.startsWith(prefix)).map((name) => ({ name })),
+          list_complete: true,
+        };
+      },
     },
   };
 }
@@ -199,8 +308,52 @@ async function runChild() {
   process.stdout.write(`${JSON.stringify(result)}\n`);
 }
 
+async function runEmbeddedAttachmentChild() {
+  globalThis.gc?.();
+  const baseline = process.memoryUsage().heapUsed;
+  let peakHeap = baseline;
+  const observeHeap = () => {
+    peakHeap = Math.max(peakHeap, process.memoryUsage().heapUsed);
+  };
+  const sampler = setInterval(observeHeap, 1);
+  sampler.unref();
+
+  const runs = [];
+  for (const cron of ["0 8 * * *", "0 13 * * *"]) {
+    const fixture = productionShapedFixture({ embeddedAttachments: true, observeHeap });
+    const prior = productionShapedPriorState();
+    const env = {
+      LEGISTAR_API_TOKEN: "fixture-token",
+      LEGISTAR_SOURCE_RECORD_DUAL_WRITE: "false",
+      SCHEDULED_STEP_DEADLINE_MS: "10000",
+      ALERT_STATE: prior.binding,
+    };
+    await scheduledWorker(fixture.fetchImpl, env).run(cron);
+    observeHeap();
+    const published = JSON.parse(prior.values.get("meeting-outcomes:materialized:v2"));
+    runs.push({
+      cron,
+      published: published.generated_at !== OLD_GENERATED_AT,
+      invalid_attachment_requests: fixture.attachmentRequests,
+      attachment_flag_requests: fixture.eventItemRequestsWithAttachments,
+      event_item_requests: fixture.eventItemRequests,
+    });
+  }
+
+  clearInterval(sampler);
+  globalThis.gc?.();
+  process.stdout.write(`${JSON.stringify({
+    baseline_mib: baseline / 1024 / 1024,
+    peak_heap_mib: peakHeap / 1024 / 1024,
+    retained_heap_mib: process.memoryUsage().heapUsed / 1024 / 1024,
+    runs,
+  })}\n`);
+}
+
 if (process.env[CHILD_FLAG] === "1") {
   await runChild();
+} else if (process.env[CHILD_FLAG] === "attachments") {
+  await runEmbeddedAttachmentChild();
 } else {
   test("08:00 scheduled meeting refresh stays within the Worker memory limit", () => {
     const result = spawnSync(process.execPath, [
@@ -228,6 +381,55 @@ if (process.env[CHILD_FLAG] === "1") {
     assert.ok(
       measurement.peak_heap_mib < WORKER_MEMORY_MIB,
       `scheduled refresh peak ${measurement.peak_heap_mib.toFixed(1)} MiB exceeds ${WORKER_MEMORY_MIB} MiB`,
+    );
+  });
+
+  for (const cron of ["0 8 * * *", "0 13 * * *"]) {
+    test(`${cron} publishes before the deadline without unsupported attachment probes`, async () => {
+      const fixture = productionShapedFixture();
+      const prior = productionShapedPriorState();
+      const env = {
+        LEGISTAR_API_TOKEN: "fixture-token",
+        LEGISTAR_SOURCE_RECORD_DUAL_WRITE: "false",
+        SCHEDULED_STEP_DEADLINE_MS: "750",
+        ALERT_STATE: prior.binding,
+      };
+
+      await scheduledWorker(fixture.fetchImpl, env).run(cron);
+
+      const published = JSON.parse(prior.values.get("meeting-outcomes:materialized:v2"));
+      assert.notEqual(published.generated_at, OLD_GENERATED_AT);
+      assert.equal(published.counts.event_rows, PRODUCTION_EVENT_COUNT);
+      assert.equal(fixture.attachmentRequests, 0);
+      assert.ok(fixture.eventItemRequests > 0);
+      assert.equal(fixture.eventItemRequestsWithAttachments, 0);
+    });
+  }
+
+  test("embedded attachment binaries are bounded under both scheduled paths", () => {
+    const result = spawnSync(process.execPath, [
+      `--max-old-space-size=${WORKER_MEMORY_MIB}`,
+      "--expose-gc",
+      new URL(import.meta.url).pathname,
+    ], {
+      cwd: process.cwd(),
+      encoding: "utf8",
+      timeout: 120_000,
+      env: { ...process.env, [CHILD_FLAG]: "attachments" },
+    });
+    assert.equal(
+      result.status,
+      0,
+      `embedded attachment refresh exceeded ${WORKER_MEMORY_MIB} MiB (status=${result.status})\n${result.stderr}`,
+    );
+    const measurement = JSON.parse(result.stdout.trim().split("\n").at(-1));
+    assert.ok(measurement.runs.every((run) => run.published));
+    assert.ok(measurement.runs.every((run) => run.invalid_attachment_requests === 0));
+    assert.ok(measurement.runs.every((run) => run.attachment_flag_requests === 0));
+    assert.ok(measurement.runs.every((run) => run.event_item_requests > 0));
+    assert.ok(
+      measurement.peak_heap_mib < WORKER_MEMORY_MIB,
+      `embedded attachment peak ${measurement.peak_heap_mib.toFixed(1)} MiB exceeds ${WORKER_MEMORY_MIB} MiB`,
     );
   });
 }
