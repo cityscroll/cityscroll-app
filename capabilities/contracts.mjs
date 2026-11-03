@@ -343,7 +343,7 @@ function assertBrowseResult(result, input) {
     throw new TypeError("contracts.browse total_matches is invalid");
   }
   const page = result.pagination;
-  if (!page || page.limit < CONTRACTS_BROWSE_LIMITS.minimum || page.limit > CONTRACTS_BROWSE_LIMITS.maximum
+  if (!page || !Number.isInteger(page.limit) || page.limit < CONTRACTS_BROWSE_LIMITS.minimum || page.limit > CONTRACTS_BROWSE_LIMITS.maximum
       || page.returned !== result.results.length || typeof page.truncated !== "boolean"
       || (page.next_cursor !== null && typeof page.next_cursor !== "string")) {
     throw new TypeError("contracts.browse pagination is invalid");
@@ -351,7 +351,6 @@ function assertBrowseResult(result, input) {
   if (!result.coverage || !result.freshness || typeof result.freshness.as_of !== "string") {
     throw new TypeError("contracts.browse coverage and freshness are required");
   }
-  assertNoPrivateFields(result);
   return result;
 }
 
@@ -368,6 +367,7 @@ export function validateContractsBrowseOutput(result, input) {
     if (result.availability === "empty" && result.results.length !== 0) throw new TypeError("non-empty browse result must use complete availability");
     if (result.error !== null) throw new TypeError("available contracts.browse output cannot carry an error");
   }
+  assertNoPrivateFields(result);
   return result;
 }
 
