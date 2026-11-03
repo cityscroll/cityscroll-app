@@ -3,7 +3,8 @@
  *
  * One small view over records already produced by hearing_logistics.mjs,
  * action_registry.js, meeting_process_profile.mjs, council_hearing_action_path.mjs,
- * rules_phase_spine.mjs / rules_participation.mjs, and land_authority_summary_view.mjs.
+ * rules_phase_spine.mjs / rules_participation.mjs, and materialized Land authority
+ * summary facts plus land_profile_legal_basis.mjs.
  * This module composes those existing outputs into one shape; it does not
  * parse notice text itself and does not add a new civic-process data model.
  *
@@ -74,7 +75,7 @@ export const OFFICIAL_SOURCES = Object.freeze({
   mocsPublicComment: "https://www.nyc.gov/site/mocs/about/public-hearing.page",
 });
 
-// land_authority_summary_view.mjs current_role values that map cleanly onto
+// Land authority summary current_role values that map cleanly onto
 // this projection's body_role vocabulary. A role without a confident match
 // (administrative_certifier, executive_review, plan_proposer) stays unknown
 // rather than guessed.
