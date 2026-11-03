@@ -400,7 +400,7 @@ function fakeLocationAndHistory(href, state = null) {
   return { loc, hist, url };
 }
 
-test("filling the form never puts profile or keywords into location.href", () => {
+test("entering keywords and comparing keeps profile answers out of location.search", () => {
   const storage = new FakeStorage();
   const { loc, hist } = fakeLocationAndHistory(
     "https://cityscroll.org/contracts-capability-compare.html?beta=capability-compare",
@@ -422,6 +422,11 @@ test("filling the form never puts profile or keywords into location.href", () =>
   assert.equal(result.href.includes("jet_vac_truck"), false);
   assert.equal(result.href.includes("landscaping"), false);
   assert.match(result.href, /[?&]beta=capability-compare/);
+  assert.equal(loc.search.includes("secret-jet-vac"), false);
+  assert.equal(loc.search.includes("catch%20basin"), false);
+  assert.equal(loc.search.includes("capability_keywords"), false);
+  assert.equal(loc.search.includes("jet_vac_truck"), false);
+  assert.equal(loc.search.includes("landscaping"), false);
   assert.ok(hist.state?.[CAPABILITY_COMPARE_HISTORY_STATE_KEY]);
   assert.deepEqual(
     hist.state[CAPABILITY_COMPARE_HISTORY_STATE_KEY].capability_keywords,
