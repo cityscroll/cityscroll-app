@@ -3,7 +3,8 @@
  *
  * One small view over records already produced by hearing_logistics.mjs,
  * action_registry.js, meeting_process_profile.mjs, council_hearing_action_path.mjs,
- * rules_phase_spine.mjs / rules_participation.mjs, and land_authority_summary_view.mjs.
+ * rules_phase_spine.mjs / rules_participation.mjs, and materialized Land authority
+ * summary facts plus land_profile_legal_basis.mjs.
  * This module composes those existing outputs into one shape; it does not
  * parse notice text itself and does not add a new civic-process data model.
  *
@@ -24,7 +25,7 @@ import { inferHearingLogistics, recognizedMeetingUrl } from "./hearing_logistics
 import { meetingProcessProjection } from "./meeting_process_profile.mjs";
 import { buildCouncilHearingActionPath } from "./council_hearing_action_path.mjs";
 import { buildRulesParticipationPath, extractCommentFacts } from "./rules_participation.mjs";
-import { landAuthorityPanelProjection } from "./land_authority_summary_view.mjs";
+import { profileLegalBasis } from "./land_profile_legal_basis.mjs";
 
 const consequenceActionRegistry = globalThis.CrolActions || actionRegistryModule.default || actionRegistryModule;
 
@@ -74,7 +75,7 @@ export const OFFICIAL_SOURCES = Object.freeze({
   mocsPublicComment: "https://www.nyc.gov/site/mocs/about/public-hearing.page",
 });
 
-// land_authority_summary_view.mjs current_role values that map cleanly onto
+// Land authority summary current_role values that map cleanly onto
 // this projection's body_role vocabulary. A role without a confident match
 // (administrative_certifier, executive_review, plan_proposer) stays unknown
 // rather than guessed.
@@ -436,8 +437,21 @@ export function ruleConsequence(record = {}, opts = {}) {
  * `matter` is an optional zoningHandoff-shaped hearing payload for logistics.
  */
 export function landHearingConsequence({ summary = null, matter = null } = {}) {
-  const panel = landAuthorityPanelProjection(summary);
-  if (!panel) return emptyConsequenceProjection("missing_land_authority_summary");
+  if (!summary || summary.schema !== "cityscroll.land_authority_summary.v1") {
+    return emptyConsequenceProjection("missing_land_authority_summary");
+  }
+
+  // Only source facts enter this transport-neutral projection. The resident
+  // panel also computes watch and calendar affordances from display state;
+  // importing that renderer here pulls UI authority into capability reads.
+  const panel = {
+    project_id: summary.project_id || null,
+    current_role: summary.current_role || null,
+    published_next_status: summary.published_next_opportunity?.status || "unknown",
+    expected_next_stage_id: summary.expected_next_stage?.stage_id || null,
+    expected_next_group_id: summary.expected_next_stage?.group_id || null,
+    profile_citation: profileLegalBasis(summary),
+  };
 
   const sourceUrl = httpsUrl(summary?.source_url)
     || (panel.project_id ? `https://zap.planning.nyc.gov/projects/${encodeURIComponent(panel.project_id)}` : null);

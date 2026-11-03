@@ -15,7 +15,7 @@
  * procedure models.
  */
 import { matchesLandProcedureCondition } from "./land_procedure_profiles.mjs";
-import { actorLabel } from "./land_authority_summary_view.mjs";
+import { actorLabel } from "./land_actor_label.mjs";
 
 export const LAND_PHASE_ROLE_STRIP_SCHEMA = "cityscroll.land_phase_role_strip.v1";
 
