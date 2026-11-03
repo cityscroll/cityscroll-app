@@ -9,15 +9,19 @@ flag headings that legitimately share text while their tabs are mutually exclusi
 Also asserts exactly one visible h1 and one <main> landmark per state (retiring the
 standing axe 'landmark-one-main'/'region' moderates over time). Hermetic: no live network.
 
-cs-heading-uniqueness-nav-race: after a tab click, SPA navigation can destroy the
-execution context between wait_for_function and evaluate. Wait for a stable URL +
-load state, then retry evaluate on context-destroyed — never drop heading/h1/main
-assertions.
+Several catalog entries are document handoffs that call location.replace (immediate or
+deferred). Evaluating after the first load alone races that second navigation and raises
+"Execution context was destroyed". open_rendered_page waits for the destination URL the
+handoff actually performs, then evaluates once — no evaluate retries or fixed sleeps.
 """
+import argparse
+import http.server
 import os
 import pathlib
+import socketserver
 import sys
-import time
+import threading
+from urllib.parse import urlparse
 
 from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import sync_playwright
@@ -37,6 +41,14 @@ TABS = [
     ("meetings", '.tabbtn[data-tab="meetings"]'),
 ]  # Source: site/index.html civic-object tabs and route facets.
 
+# Client-side location.replace handoffs (see site/data.html delay, changelog/standards).
+# Values are Playwright wait_for_url globs for the destination document.
+DOCUMENT_HANDOFFS = {
+    "data.html": "**/api.html**",
+    "changelog.html": "**/about.html**",
+    "standards.html": "**/about.html**",
+}
+
 STATE_JS = """() => {
   function visible(el){
     if (!el.offsetParent && getComputedStyle(el).position !== 'fixed') return false;
@@ -49,49 +61,41 @@ STATE_JS = """() => {
   return {headings, h1Count: headings.filter(h => h.tag === 'H1').length, mainCount: mains.length};
 }"""
 
-CONTEXT_DESTROYED_MARKERS = (
-    "Execution context was destroyed",
-    "Cannot find context with specified id",
-    "most likely because of a navigation",
-)
-
 
 def step(tag, name, detail=""):
     print(f"{tag} {name}" + (f" -> {detail}" if detail else ""), flush=True)
 
 
-def _is_context_destroyed(err):
-    msg = str(err)
-    return any(marker in msg for marker in CONTEXT_DESTROYED_MARKERS)
+def document_path(url):
+    """Path of a URL without a trailing slash, for same-document comparisons."""
+    path = urlparse(url).path or "/"
+    if path != "/" and path.endswith("/"):
+        path = path[:-1]
+    return path
 
 
-def wait_for_stable_document(page, *, timeout_ms=10000):
-    """Wait until navigation/load settles so evaluate is not racing a destroy."""
+def wait_for_load_settled(page, *, timeout_ms=10000):
+    """Wait for the current document's load pipeline without assuming a full load event."""
     page.wait_for_load_state("domcontentloaded", timeout=timeout_ms)
     try:
         page.wait_for_load_state("load", timeout=min(timeout_ms, 5000))
     except PlaywrightError:
-        # Some SPA tab switches never re-fire full load; domcontentloaded is enough.
+        # Hash/SPA updates may never re-fire a full load event.
         pass
-    # URL string access forces a post-navigation frame binding.
-    _ = page.url
 
 
-def evaluate_state(page, *, retries=3, timeout_ms=10000):
-    """Evaluate STATE_JS with bounded retries on navigation context destruction."""
-    last_err = None
-    for attempt in range(retries):
-        try:
-            wait_for_stable_document(page, timeout_ms=timeout_ms)
-            return page.evaluate(STATE_JS)
-        except PlaywrightError as err:
-            last_err = err
-            if not _is_context_destroyed(err) or attempt + 1 >= retries:
-                raise
-            # Brief backoff so the next document can bind before re-evaluate.
-            time.sleep(0.05 * (attempt + 1))
-            wait_for_stable_document(page, timeout_ms=timeout_ms)
-    raise last_err
+def open_rendered_page(page, path, *, timeout_ms=30000):
+    """Goto path and wait through any client-side document handoff it performs."""
+    page.goto(BASE + path, wait_until="domcontentloaded", timeout=timeout_ms)
+    handoff = DOCUMENT_HANDOFFS.get(path)
+    if handoff:
+        page.wait_for_url(handoff, wait_until="domcontentloaded", timeout=timeout_ms)
+    wait_for_load_settled(page, timeout_ms=timeout_ms)
+
+
+def evaluate_state(page):
+    """Read visible heading/landmark state from the settled document."""
+    return page.evaluate(STATE_JS)
 
 
 def check_state(page, state_name, failures):
@@ -109,7 +113,24 @@ def check_state(page, state_name, failures):
 
 
 def activate_tab(page, selector):
+    before = document_path(page.url)
     page.click(selector)
+    # Civic-object tabs often replace the document (e.g. /browse/people/). When the
+    # path changes, wait for that document's load before reading headings.
+    try:
+        page.wait_for_function(
+            """(beforePath) => {
+              const path = (location.pathname || '/').replace(/\\/$/, '') || '/';
+              const normalized = beforePath.replace(/\\/$/, '') || '/';
+              return path !== normalized && document.readyState !== 'loading';
+            }""",
+            arg=before,
+            timeout=3000,
+        )
+        wait_for_load_settled(page)
+    except PlaywrightError:
+        # Same-document tab switch: path stayed put.
+        pass
     page.wait_for_selector("main h1, h1", timeout=10000)
     page.wait_for_function(
         """() => {
@@ -127,7 +148,122 @@ def activate_tab(page, selector):
         }""",
         timeout=10000,
     )
-    wait_for_stable_document(page)
+
+
+def _old_load_only_then_overlap_evaluate(page, url):
+    """Pre-fix waiting: first-document load, then an evaluate that straddles a deferred replace.
+
+    Used only by the regression self-test to prove the race is deterministic.
+    """
+    overlap_js = """() => new Promise((resolve) => {
+      const start = performance.now();
+      const tick = () => {
+        void document.title;
+        if (performance.now() - start > 1500) resolve({url: location.href});
+        else setTimeout(tick, 25);
+      };
+      tick();
+    })"""
+    page.goto(url, wait_until="domcontentloaded", timeout=30000)
+    page.wait_for_load_state("load", timeout=20000)
+    return page.evaluate(overlap_js)
+
+
+def _new_wait_for_destination_then_evaluate(page, url, destination_glob):
+    """Fixed waiting: wait for the handoff destination, then evaluate once."""
+    page.goto(url, wait_until="domcontentloaded", timeout=30000)
+    page.wait_for_url(destination_glob, wait_until="domcontentloaded", timeout=10000)
+    wait_for_load_settled(page, timeout_ms=10000)
+    return page.evaluate(STATE_JS)
+
+
+def run_navigation_regression():
+    """Fail when load-only waiting still races a deferred location.replace; pass with destination wait."""
+    fixture = """<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Handoff fixture</title>
+<script>
+  setTimeout(function () {
+    location.replace(new URL("destination.html", location.href).toString());
+  }, 1200);
+</script>
+</head>
+<body><main><h1>Handoff source</h1></main></body></html>
+"""
+    destination = """<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Destination</title></head>
+<body><main><h1>Handoff destination</h1><h2>Unique section</h2></main></body></html>
+"""
+
+    class Handler(http.server.BaseHTTPRequestHandler):
+        def do_GET(self):  # noqa: N802
+            if self.path.split("?", 1)[0] in ("/", "/handoff.html"):
+                body = fixture.encode("utf-8")
+            elif self.path.split("?", 1)[0] == "/destination.html":
+                body = destination.encode("utf-8")
+            else:
+                self.send_error(404)
+                return
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+        def log_message(self, format, *args):  # noqa: A003
+            return
+
+    with socketserver.TCPServer(("127.0.0.1", 0), Handler) as httpd:
+        port = httpd.server_address[1]
+        thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+        thread.start()
+        base = f"http://127.0.0.1:{port}/"
+        handoff_url = base + "handoff.html"
+        try:
+            with sync_playwright() as pw:
+                browser = pw.chromium.launch()
+                old_page = browser.new_page()
+                old_failed = False
+                try:
+                    _old_load_only_then_overlap_evaluate(old_page, handoff_url)
+                except PlaywrightError as err:
+                    msg = str(err)
+                    if "Execution context was destroyed" in msg or "navigation" in msg:
+                        old_failed = True
+                    else:
+                        raise
+                finally:
+                    old_page.close()
+                if not old_failed:
+                    raise SystemExit(
+                        "heading-uniqueness navigation regression FAILED — "
+                        "old load-only wait did not raise under deferred location.replace"
+                    )
+
+                new_page = browser.new_page()
+                try:
+                    state = _new_wait_for_destination_then_evaluate(
+                        new_page, handoff_url, "**/destination.html"
+                    )
+                finally:
+                    new_page.close()
+                browser.close()
+
+                if state["h1Count"] != 1 or state["mainCount"] != 1:
+                    raise SystemExit(
+                        "heading-uniqueness navigation regression FAILED — "
+                        f"destination state not unique/landmark-correct: {state!r}"
+                    )
+                texts = [h["text"] for h in state["headings"] if h["text"]]
+                if len(texts) != len(set(texts)):
+                    raise SystemExit(
+                        "heading-uniqueness navigation regression FAILED — "
+                        f"destination headings not unique: {texts!r}"
+                    )
+        finally:
+            httpd.shutdown()
+
+    step("OK", "navigation-regression", "old load-only wait fails; destination wait passes")
+    print("heading-uniqueness navigation regression OK")
 
 
 def main():
@@ -138,10 +274,10 @@ def main():
             ctx = browser.new_context()
             page = ctx.new_page()
             install_routes(page)
-            page.goto(BASE + path, timeout=30000)
-            wait_for_stable_document(page, timeout_ms=20000)
-            page.wait_for_timeout(1200)
+            open_rendered_page(page, path, timeout_ms=30000)
             name = path or "index.html"
+            if path in DOCUMENT_HANDOFFS:
+                name = f"{path} (via handoff)"
             check_state(page, name, failures)
 
             if path in ("", "index.html"):
@@ -160,4 +296,15 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--self-test",
+        action="store_true",
+        help="Run only the deferred-navigation regression (old wait fails, new wait passes).",
+    )
+    args = parser.parse_args()
+    if args.self_test:
+        run_navigation_regression()
+    else:
+        run_navigation_regression()
+        main()
