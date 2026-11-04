@@ -4,17 +4,17 @@
     "annual-examination-schedule",
     "active-civil-service-list"
   ],
-  "verified_at": "2026-10-22",
+  "verified_at": "2026-11-04",
   "join": {
     "method": "exact_exam_number_zero_pad",
     "schedule_rows": 1271,
     "distinct_schedule_exams": 1271,
-    "distinct_list_aggregate_exams": 881,
-    "matched_pairs": 453,
+    "distinct_list_aggregate_exams": 879,
+    "matched_pairs": 450,
     "misses": {
       "no_list_aggregate": 759,
       "missing_application_close": 10,
-      "missing_established_date": 49,
+      "missing_established_date": 52,
       "established_before_application_close": 0
     },
     "privacy": "Exam-level aggregates only; no applicant rows, names, scores, or ranks."
@@ -27,9 +27,9 @@
       "citywide": {
         "key": "citywide",
         "label": "citywide",
-        "n": 453,
+        "n": 450,
         "eligible": true,
-        "p10_days": 99,
+        "p10_days": 106,
         "p50_days": 274,
         "p90_days": 736,
         "median_months": 9,
@@ -39,7 +39,7 @@
       "open_competitive": {
         "key": "open_competitive",
         "label": "open competitive",
-        "n": 313,
+        "n": 310,
         "eligible": true,
         "p10_days": 92,
         "p50_days": 239,
@@ -64,7 +64,7 @@
   },
   "backtest": {
     "protocol": "train establishment events through 2024; score lists established in 2025–2026 for exams already open at 2025-01-01",
-    "training_pairs": 266,
+    "training_pairs": 263,
     "scoring_pairs": 90,
     "scorecard": {
       "metric": "prediction_calibration",

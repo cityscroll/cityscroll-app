@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.land_authority_summary.v1",
   "join_version": "ldp06_authority_summary_v1",
-  "generated_at": "2026-10-22T19:59:40.125Z",
+  "generated_at": "2026-11-04T18:22:03.270Z",
   "source_basis_defaults": {
     "profile": {
       "source_type": "reviewed_static_registry",
@@ -24,7 +24,7 @@
     },
     "publisher": {
       "source_type": "published_hearing",
-      "checked_vintage": "2026-10-22"
+      "checked_vintage": "2026-11-04"
     }
   },
   "legal_basis_by_stage": {
@@ -80,15 +80,15 @@
     }
   },
   "freshness_defaults": {
-    "generated_at": "2026-10-22T19:59:40.125Z",
-    "as_of": "2026-10-22T19:59:40.125Z",
+    "generated_at": "2026-11-04T18:22:03.270Z",
+    "as_of": "2026-11-04T18:22:03.270Z",
     "source_vintages": {
-      "hearings_generated_at": "2026-10-22T20:14:02.361Z"
+      "hearings_generated_at": "2026-11-04T18:28:25.658Z"
     }
   },
   "published_next_defaults": {
     "checked": true,
-    "checked_vintage": "2026-10-22",
+    "checked_vintage": "2026-11-04",
     "source": "land_upcoming_hearings",
     "source_id": null,
     "label": null,
@@ -144,7 +144,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-10-22T19:59:40.125Z"
+          "outcomes_generated_at": "2026-11-04T18:22:03.270Z"
         }
       }
     },
@@ -194,7 +194,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-10-22T19:59:40.125Z"
+          "outcomes_generated_at": "2026-11-04T18:22:03.270Z"
         }
       }
     },
@@ -260,7 +260,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-10-22T19:59:40.125Z"
+          "outcomes_generated_at": "2026-11-04T18:22:03.270Z"
         }
       }
     },
@@ -306,7 +306,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-10-22T19:59:40.125Z"
+          "outcomes_generated_at": "2026-11-04T18:22:03.270Z"
         }
       }
     },
@@ -356,7 +356,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-10-22T19:59:40.125Z"
+          "outcomes_generated_at": "2026-11-04T18:22:03.270Z"
         }
       }
     },
@@ -406,7 +406,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-10-22T19:59:40.125Z"
+          "outcomes_generated_at": "2026-11-04T18:22:03.270Z"
         }
       }
     },
@@ -438,7 +438,7 @@
           "source_type": "materialized_phase_spine",
           "source_field": "spine.events",
           "evidence_source_id": "zap-project-api",
-          "observed_at": "2026-10-22T08:00:11.139Z"
+          "observed_at": "2026-11-04T08:00:57.714Z"
         },
         "geography": {
           "status": "resolved",
@@ -499,7 +499,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-07-03T00:00:00.000",
-          "outcomes_generated_at": "2026-10-22T08:00:11.139Z"
+          "outcomes_generated_at": "2026-11-04T08:00:57.714Z"
         }
       }
     },
@@ -551,7 +551,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-10-22",
+        "checked_vintage": "2026-11-04",
         "source_id": "7cfc36ab-cecd-ef11-b8e9-001dd809b68c",
         "source": "zap-api-milestones",
         "label": "Review Session - Pre-Hearing Review / Post Referral",
@@ -642,7 +642,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-10-22",
+        "checked_vintage": "2026-11-04",
         "source_id": "e4dc27d1-ccb8-f011-bbd3-001dd80340cd",
         "source": "zap-api-milestones",
         "label": "Review Session - Pre-Hearing Review / Post Referral",
@@ -725,7 +725,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-10-22",
+        "checked_vintage": "2026-11-04",
         "source_id": "46ec6068-6ba7-ef11-8a6a-001dd80552a0",
         "source": "zap-api-milestones",
         "label": "Review Session - Pre-Hearing Review / Post Referral",
@@ -808,7 +808,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-10-22",
+        "checked_vintage": "2026-11-04",
         "source_id": "b598310e-9360-ef11-bfe2-001dd80552a0",
         "source": "zap-api-milestones",
         "label": "City Planning Commission Review",
@@ -870,7 +870,7 @@
           "source_type": "materialized_phase_spine",
           "source_field": "spine.events",
           "evidence_source_id": "zap-project-api",
-          "observed_at": "2026-10-22T08:00:12.873Z"
+          "observed_at": "2026-11-03T08:00:27.330Z"
         },
         "geography": {
           "status": "unresolved",
@@ -918,7 +918,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-07-01T00:00:00.000",
-          "outcomes_generated_at": "2026-10-22T08:00:12.873Z"
+          "outcomes_generated_at": "2026-11-03T08:00:27.330Z"
         }
       }
     },
@@ -970,7 +970,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-10-22",
+        "checked_vintage": "2026-11-04",
         "source_id": "72c89b39-4642-f011-877a-001dd806295a",
         "source": "zap-api-milestones",
         "label": "City Planning Commission Review",
@@ -1032,7 +1032,7 @@
           "source_type": "materialized_phase_spine",
           "source_field": "spine.events",
           "evidence_source_id": "zap-project-api",
-          "observed_at": "2026-10-20T08:00:32.655Z"
+          "observed_at": "2026-11-03T08:00:42.405Z"
         },
         "geography": {
           "status": "unresolved",
@@ -1080,7 +1080,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-07-01T00:00:00.000",
-          "outcomes_generated_at": "2026-10-20T08:00:32.655Z"
+          "outcomes_generated_at": "2026-11-03T08:00:42.405Z"
         }
       }
     },
@@ -1111,7 +1111,7 @@
           "source_type": "materialized_phase_spine",
           "source_field": "spine.events",
           "evidence_source_id": "zap-project-api",
-          "observed_at": "2026-10-22T08:00:27.164Z"
+          "observed_at": "2026-11-03T08:00:41.594Z"
         },
         "geography": {
           "status": "unresolved",
@@ -1159,7 +1159,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-07-01T00:00:00.000",
-          "outcomes_generated_at": "2026-10-22T08:00:27.164Z"
+          "outcomes_generated_at": "2026-11-03T08:00:41.594Z"
         }
       }
     },
@@ -1206,7 +1206,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-10-22",
+        "checked_vintage": "2026-11-04",
         "source_id": "396cbbb9-bb87-e911-a988-001dd8308047",
         "source": "zap-api-milestones",
         "label": "City Planning Commission Review",
@@ -1256,7 +1256,7 @@
           "source_type": "materialized_phase_spine",
           "source_field": "spine.events",
           "evidence_source_id": "zap-project-api",
-          "observed_at": "2026-10-22T08:00:11.424Z"
+          "observed_at": "2026-11-03T08:00:28.855Z"
         },
         "geography": {
           "status": "resolved",
@@ -1313,7 +1313,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-07-01T00:00:00.000",
-          "outcomes_generated_at": "2026-10-22T08:00:11.424Z"
+          "outcomes_generated_at": "2026-11-03T08:00:28.855Z"
         }
       }
     },
@@ -1345,7 +1345,7 @@
           "source_type": "materialized_phase_spine",
           "source_field": "spine.events",
           "evidence_source_id": "zap-project-api",
-          "observed_at": "2026-10-17T03:06:52.347Z"
+          "observed_at": "2026-11-02T08:02:05.995Z"
         },
         "geography": {
           "status": "resolved",
@@ -1406,7 +1406,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-10-17T03:06:52.347Z"
+          "outcomes_generated_at": "2026-11-02T08:02:05.995Z"
         }
       }
     },
@@ -1438,7 +1438,7 @@
           "source_type": "materialized_phase_spine",
           "source_field": "spine.events",
           "evidence_source_id": "zap-project-api",
-          "observed_at": "2026-10-17T03:07:06.050Z"
+          "observed_at": "2026-11-02T08:02:18.412Z"
         },
         "geography": {
           "status": "resolved",
@@ -1495,7 +1495,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-10-17T03:07:06.050Z"
+          "outcomes_generated_at": "2026-11-02T08:02:18.412Z"
         }
       }
     },
@@ -1527,7 +1527,7 @@
           "source_type": "materialized_phase_spine",
           "source_field": "spine.events",
           "evidence_source_id": "zap-project-api",
-          "observed_at": "2026-10-17T03:06:45.601Z"
+          "observed_at": "2026-11-03T08:01:33.814Z"
         },
         "geography": {
           "status": "resolved",
@@ -1588,7 +1588,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-10-17T03:06:45.601Z"
+          "outcomes_generated_at": "2026-11-03T08:01:33.814Z"
         }
       }
     },
@@ -1602,7 +1602,7 @@
       "procedure_resolution": "mixed",
       "current_stage": {
         "stage_id": null,
-        "spine_phase_id": "city_council",
+        "spine_phase_id": "mayoral_appeals",
         "status": "unknown"
       },
       "current_actor_refs": [],
@@ -1613,13 +1613,13 @@
           "procedure_id": "ulurp_197c"
         },
         "phase": {
-          "current_milestone": "City Council Review",
-          "phase_id": "city_council",
-          "milestone_phase_id": "city_council",
+          "current_milestone": "Request for Appeals Board Review",
+          "phase_id": "mayoral_appeals",
+          "milestone_phase_id": "mayoral_appeals",
           "source_type": "materialized_phase_spine",
           "source_field": "spine.events",
           "evidence_source_id": "zap-project-api",
-          "observed_at": "2026-10-17T03:06:32.910Z"
+          "observed_at": "2026-11-03T08:01:20.846Z"
         },
         "geography": {
           "status": "unresolved",
@@ -1667,7 +1667,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-10-17T03:06:32.910Z"
+          "outcomes_generated_at": "2026-11-03T08:01:20.846Z"
         }
       }
     },
@@ -1699,7 +1699,7 @@
           "source_type": "materialized_phase_spine",
           "source_field": "spine.events",
           "evidence_source_id": "zap-project-api",
-          "observed_at": "2026-10-17T03:06:25.383Z"
+          "observed_at": "2026-11-03T08:01:08.143Z"
         },
         "geography": {
           "status": "resolved",
@@ -1760,7 +1760,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-10-17T03:06:25.383Z"
+          "outcomes_generated_at": "2026-11-03T08:01:08.143Z"
         }
       }
     },
@@ -1792,7 +1792,7 @@
           "source_type": "materialized_phase_spine",
           "source_field": "spine.events",
           "evidence_source_id": "zap-project-api",
-          "observed_at": "2026-10-17T03:07:05.848Z"
+          "observed_at": "2026-11-02T08:02:17.994Z"
         },
         "geography": {
           "status": "resolved",
@@ -1849,7 +1849,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-10-17T03:07:05.848Z"
+          "outcomes_generated_at": "2026-11-02T08:02:17.994Z"
         }
       }
     },
@@ -1880,7 +1880,7 @@
           "source_type": "materialized_phase_spine",
           "source_field": "spine.events",
           "evidence_source_id": "zap-project-api",
-          "observed_at": "2026-10-22T08:00:27.320Z"
+          "observed_at": "2026-11-03T08:00:55.431Z"
         },
         "geography": {
           "status": "unresolved",
@@ -1928,7 +1928,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-10-22T08:00:27.320Z"
+          "outcomes_generated_at": "2026-11-03T08:00:55.431Z"
         }
       }
     },
@@ -1975,7 +1975,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-10-22",
+        "checked_vintage": "2026-11-04",
         "source_id": "54afc836-1624-ef11-840b-001dd8306c80",
         "source": "zap-api-milestones",
         "label": "Review Session - Pre-Hearing Review / Post Referral",
@@ -2024,7 +2024,7 @@
           "source_type": "materialized_phase_spine",
           "source_field": "spine.events",
           "evidence_source_id": "zap-project-api",
-          "observed_at": "2026-10-22T08:00:27.879Z"
+          "observed_at": "2026-11-03T08:00:54.774Z"
         },
         "geography": {
           "status": "unresolved",
@@ -2072,7 +2072,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-10-22T08:00:27.879Z"
+          "outcomes_generated_at": "2026-11-03T08:00:54.774Z"
         }
       }
     },
@@ -2104,7 +2104,7 @@
           "source_type": "materialized_phase_spine",
           "source_field": "spine.events",
           "evidence_source_id": "zap-project-api",
-          "observed_at": "2026-10-17T03:06:47.541Z"
+          "observed_at": "2026-11-03T08:01:33.252Z"
         },
         "geography": {
           "status": "resolved",
@@ -2161,7 +2161,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-10-17T03:06:47.541Z"
+          "outcomes_generated_at": "2026-11-03T08:01:33.252Z"
         }
       }
     },
@@ -2263,7 +2263,7 @@
           "source_type": "materialized_phase_spine",
           "source_field": "spine.events",
           "evidence_source_id": "zap-project-api",
-          "observed_at": "2026-10-17T03:06:53.134Z"
+          "observed_at": "2026-11-02T08:02:00.550Z"
         },
         "geography": {
           "status": "resolved",
@@ -2324,7 +2324,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-10-17T03:06:53.134Z"
+          "outcomes_generated_at": "2026-11-02T08:02:00.550Z"
         }
       }
     },
@@ -2356,7 +2356,7 @@
           "source_type": "materialized_phase_spine",
           "source_field": "spine.events",
           "evidence_source_id": "zap-project-api",
-          "observed_at": "2026-10-17T03:06:26.236Z"
+          "observed_at": "2026-11-03T08:01:07.698Z"
         },
         "geography": {
           "status": "resolved",
@@ -2417,7 +2417,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-10-17T03:06:26.236Z"
+          "outcomes_generated_at": "2026-11-03T08:01:07.698Z"
         }
       }
     },
@@ -2546,7 +2546,7 @@
         },
         "publisher": {
           "source": "zap-api-milestones",
-          "source_id": "ab7813fc-7166-f011-bec2-001dd806295a",
+          "source_id": "d2c00b02-7266-f011-bec2-001dd806295a",
           "checked": true
         }
       },
@@ -2554,18 +2554,18 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-10-22",
-        "source_id": "ab7813fc-7166-f011-bec2-001dd806295a",
+        "checked_vintage": "2026-11-04",
+        "source_id": "d2c00b02-7266-f011-bec2-001dd806295a",
         "source": "zap-api-milestones",
-        "label": "Review Session - Pre-Hearing Review / Post Referral",
-        "date": "2026-10-26",
+        "label": "City Planning Commission Review",
+        "date": "2026-11-18",
         "representing": "City Planning Commission",
         "phase_id": "cpc",
         "body_ref": "agency:id:city-planning-commission"
       },
       "next_procedural_body": {
         "body_ref": "agency:id:city-planning-commission",
-        "source_id": "ab7813fc-7166-f011-bec2-001dd806295a",
+        "source_id": "d2c00b02-7266-f011-bec2-001dd806295a",
         "source": "zap-api-milestones"
       },
       "affected_actor_refs": [
@@ -2728,7 +2728,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-10-22",
+        "checked_vintage": "2026-11-04",
         "source_id": "01bdc83a-46a9-f011-bbd3-001dd806295a",
         "source": "zap-api-milestones",
         "label": "Review Session - Pre-Hearing Review / Post Referral",
@@ -2900,7 +2900,7 @@
         },
         "publisher": {
           "source": "zap-api-milestones",
-          "source_id": "e4f5352c-6510-ee11-8f6c-001dd8097c36",
+          "source_id": "bef5352c-6510-ee11-8f6c-001dd8097c36",
           "checked": true
         }
       },
@@ -2912,18 +2912,18 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-10-22",
-        "source_id": "e4f5352c-6510-ee11-8f6c-001dd8097c36",
+        "checked_vintage": "2026-11-04",
+        "source_id": "bef5352c-6510-ee11-8f6c-001dd8097c36",
         "source": "zap-api-milestones",
-        "label": "City Planning Commission Review",
-        "date": "2026-12-12",
+        "label": "Review Session - Pre-Hearing Review / Post Referral",
+        "date": "2026-11-30",
         "representing": "City Planning Commission",
         "phase_id": "cpc",
         "body_ref": "agency:id:city-planning-commission"
       },
       "next_procedural_body": {
         "body_ref": "agency:id:city-planning-commission",
-        "source_id": "e4f5352c-6510-ee11-8f6c-001dd8097c36",
+        "source_id": "bef5352c-6510-ee11-8f6c-001dd8097c36",
         "source": "zap-api-milestones"
       },
       "affected_actor_refs": [
@@ -3073,7 +3073,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-10-22",
+        "checked_vintage": "2026-11-04",
         "source_id": "55caeaa2-3ba5-f011-bbd3-001dd80340cd",
         "source": "zap-api-milestones",
         "label": "City Planning Commission Review",

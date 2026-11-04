@@ -2,7 +2,7 @@
   "schema": "cityscroll.process_conformance.v1",
   "method": "mandate_expected_vs_observed_v1",
   "iteration": "v1",
-  "generated_at": "2026-08-11T21:12:40.677Z|2026-10-06T13:48:38.716Z|2026-10-22T20:20:44.090Z|2026-10-22T21:14:57.681Z|2026-11-04T04:22:02.123Z",
+  "generated_at": "2026-08-11T21:12:40.677Z|2026-10-06T13:48:38.716Z|2026-11-04T04:22:02.123Z|2026-11-04T18:48:50.187Z|2026-11-04T19:14:01.674Z",
   "as_of": "2026-11-04",
   "copy": {
     "lead": "Mandates set by law, alongside public records that show a related filing when one is found."
@@ -14,7 +14,7 @@
     "agency_count": 53,
     "mandate_count": 3703,
     "detectable_mandate_count": 980,
-    "observed_count": 16,
+    "observed_count": 15,
     "detectable_deliverables": [
       "rulemaking",
       "report"
@@ -3977,7 +3977,7 @@
         }
       },
       "share_path": "/agencies/buildings/#mandates-conformance",
-      "candidate_corpus_size": 12,
+      "candidate_corpus_size": 11,
       "observations": {
         "57287-006": {
           "status": "expected_not_yet_observed",
@@ -11850,7 +11850,7 @@
         }
       },
       "share_path": "/agencies/city-council/#mandates-conformance",
-      "candidate_corpus_size": 6,
+      "candidate_corpus_size": 5,
       "observations": {
         "53810-016": {
           "status": "expected_not_yet_observed",
@@ -12841,7 +12841,7 @@
         }
       },
       "share_path": "/agencies/citywide-administrative-services/#mandates-conformance",
-      "candidate_corpus_size": 4,
+      "candidate_corpus_size": 7,
       "observations": {
         "59865-002": {
           "status": "expected_not_yet_observed",
@@ -29736,7 +29736,7 @@
         }
       },
       "share_path": "/agencies/environmental-protection/#mandates-conformance",
-      "candidate_corpus_size": 4,
+      "candidate_corpus_size": 3,
       "observations": {
         "56761-024": {
           "status": "expected_not_yet_observed",
@@ -32604,7 +32604,7 @@
         }
       },
       "share_path": "/agencies/finance/#mandates-conformance",
-      "candidate_corpus_size": 9,
+      "candidate_corpus_size": 8,
       "observations": {
         "57950-004": {
           "status": "expected_not_yet_observed",
@@ -44298,7 +44298,7 @@
         }
       },
       "share_path": "/agencies/housing-preservation-and-development/#mandates-conformance",
-      "candidate_corpus_size": 16,
+      "candidate_corpus_size": 13,
       "observations": {
         "67595-003": {
           "status": "expected_not_yet_observed",
@@ -48452,7 +48452,7 @@
         }
       },
       "share_path": "/agencies/human-resources-administration/#mandates-conformance",
-      "candidate_corpus_size": 1,
+      "candidate_corpus_size": 2,
       "observations": {
         "55348-033": {
           "status": "expected_not_yet_observed",
@@ -49746,7 +49746,7 @@
         }
       },
       "share_path": "/agencies/independent-budget-office/#mandates-conformance",
-      "candidate_corpus_size": 1,
+      "candidate_corpus_size": 0,
       "observations": {
         "78778-003": {
           "status": "expected_not_yet_observed",
@@ -54305,7 +54305,7 @@
         }
       },
       "share_path": "/agencies/office-of-the-mayor/#mandates-conformance",
-      "candidate_corpus_size": 2,
+      "candidate_corpus_size": 3,
       "observations": {
         "55242-005": {
           "status": "expected_not_yet_observed",
@@ -59150,7 +59150,7 @@
         }
       },
       "share_path": "/agencies/parks-and-recreation/#mandates-conformance",
-      "candidate_corpus_size": 3,
+      "candidate_corpus_size": 4,
       "observations": {
         "52114-001": {
           "status": "expected_not_yet_observed",
@@ -68162,7 +68162,7 @@
         }
       },
       "share_path": "/agencies/taxi-and-limousine-commission/#mandates-conformance",
-      "candidate_corpus_size": 2,
+      "candidate_corpus_size": 3,
       "observations": {
         "52169-002": {
           "status": "expected_not_yet_observed",
@@ -69511,13 +69511,13 @@
       "as_of": "2026-11-04",
       "counts": {
         "total": 167,
-        "observed": 2,
+        "observed": 1,
         "expected_not_yet_observed": 32,
         "on_track": 0,
         "enrichment_pending": 134,
         "evidence_only": 0,
         "detectable": 33,
-        "appeared": 2,
+        "appeared": 1,
         "not_yet_observed": 32,
         "data_incomplete": 134
       },
@@ -69529,8 +69529,8 @@
       ],
       "category_counts": {
         "meetings": {
-          "total": 2,
-          "appeared": 2,
+          "total": 1,
+          "appeared": 1,
           "not_yet_observed": 0,
           "data_incomplete": 0
         },
@@ -69554,7 +69554,7 @@
         }
       },
       "share_path": "/agencies/transportation/#mandates-conformance",
-      "candidate_corpus_size": 19,
+      "candidate_corpus_size": 20,
       "observations": {
         "68103-008": {
           "status": "observed",
@@ -69569,10 +69569,10 @@
             "deadline_date": null
           },
           "observed_record": {
-            "request_id": "20260818004",
-            "label": "Dining Out NYC Public Hearing",
+            "request_id": "20260827003",
+            "label": "Dining Out NYC Public Hearings",
             "when": "2026-09-17",
-            "href": "/notices/20260818004",
+            "href": "/notices/20260827003",
             "signal_kind": "public_hearing",
             "lifecycle_status": null,
             "lifecycle_label": null,
@@ -72669,7 +72669,7 @@
                 },
                 "resolution_run_id": {
                   "available": true,
-                  "value": "resolution-run:mandate-meeting:transportation:2026-08-11t21:12:40.677z-2026-10-06t13:48:38.716z-2026-10-22t20:20:44.090z"
+                  "value": "resolution-run:mandate-meeting:transportation:2026-08-11t21:12:40.677z-2026-10-06t13:48:38.716z-2026-11-04t04:22:02.123z"
                 },
                 "next": null,
                 "missing_fields": []
@@ -72694,137 +72694,6 @@
             "label": "Dining Out NYC Public Hearings",
             "when": "2026-09-17",
             "href": "/notices/20260827003",
-            "signal_kind": "public_hearing",
-            "lifecycle_status": null,
-            "lifecycle_label": null,
-            "effective_date": null,
-            "adoption_date": null
-          },
-          "match": {
-            "shared_tokens": [],
-            "publication": null,
-            "evidence": null
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        {
-          "conformance_id": "68103-008:meetings:notice:20260818004",
-          "mandate_id": "68103-008",
-          "edge_type": "requires_public_hearing",
-          "edge": {
-            "type": "requires_public_hearing",
-            "from": "mandate:68103-008",
-            "to": "notice:20260818004",
-            "claim_id": "mandate-meetings:notice:20260818004",
-            "claim_inspect_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260818004",
-            "warrant_class": "probabilistic",
-            "method": "mandate_meeting_subject_temporal_v2",
-            "confidence": "strong",
-            "publication_tier": "public_inferred",
-            "provenance": {
-              "schema": "cityscroll.graph_edge_provenance.v1",
-              "method": "graph_edge_provenance_v1",
-              "claim_id": "mandate-meetings:notice:20260818004",
-              "kind": "graph_edge_claim",
-              "subject_ref": "notice:20260818004",
-              "root_ref": "mandate:68103-008",
-              "category_id": "mandate-meetings",
-              "relation": "requires public hearing",
-              "label": "Dining Out NYC Public Hearing",
-              "object_href": "/notices/20260818004",
-              "where": {
-                "source_system": {
-                  "available": true,
-                  "value": "city_record"
-                },
-                "source_record_id": {
-                  "available": true,
-                  "value": "city_record:20260818004"
-                },
-                "source_href": {
-                  "available": false
-                },
-                "source_fields": {
-                  "available": true,
-                  "value": [
-                    "agency_name",
-                    "type_of_notice_description",
-                    "matter_subject.subject_tokens",
-                    "short_title",
-                    "event_date"
-                  ]
-                },
-                "input_value": {
-                  "available": true,
-                  "value": "sidewalk, cafe, petition"
-                },
-                "observed_at": {
-                  "available": true,
-                  "value": "2026-09-17"
-                },
-                "basis": {
-                  "available": true,
-                  "value": "agency+event_kind+matter_body_subject+temporal"
-                },
-                "source_excerpt": {
-                  "available": true,
-                  "value": "Dining Out NYC Public Hearing"
-                }
-              },
-              "how": {
-                "method": {
-                  "available": true,
-                  "value": "mandate_meeting_subject_temporal_v2"
-                },
-                "warrant_class": "probabilistic",
-                "warrant_label": "Record-linkage match",
-                "decision": "auto_link"
-              },
-              "cross_spine": {
-                "confidence": "unmatched",
-                "explicit": false
-              },
-              "confidence": {
-                "band": "strong",
-                "identity_stance": "possible_link",
-                "identity_label": "Record-linkage connection",
-                "standable": true,
-                "counts_as_verified_total": false
-              },
-              "enrichment": {
-                "entity_link_id": {
-                  "available": true,
-                  "value": "entity-link:mandate-meeting:68103-008:20260818004"
-                },
-                "resolution_run_id": {
-                  "available": true,
-                  "value": "resolution-run:mandate-meeting:transportation:2026-08-11t21:12:40.677z-2026-10-06t13:48:38.716z-2026-10-22t20:20:44.090z"
-                },
-                "next": null,
-                "missing_fields": []
-              },
-              "inspect_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260818004",
-              "share_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260818004"
-            }
-          },
-          "status": "observed",
-          "observation_state": "appeared",
-          "category": "meetings",
-          "data_as_of": "2026-11-04",
-          "label": "Appeared",
-          "expected_event": {
-            "kind": "public_hearing",
-            "label": "Public meeting or hearing",
-            "deliverable_type": "other",
-            "deadline_date": null
-          },
-          "observed_record": {
-            "request_id": "20260818004",
-            "label": "Dining Out NYC Public Hearing",
-            "when": "2026-09-17",
-            "href": "/notices/20260818004",
             "signal_kind": "public_hearing",
             "lifecycle_status": null,
             "lifecycle_label": null,
