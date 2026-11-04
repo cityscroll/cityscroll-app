@@ -469,6 +469,9 @@ jobs:
       - name: Detail panel fixture precondition regression proof
         if: matrix.family == 'static-standards'
         run: python3 test/functional/detail_panel_fixture_test.py
+      - name: Committee shared-membership walk window regression proof
+        if: matrix.family == 'static-standards'
+        run: python3 test/functional/capture_committee_shared_members_walk_test.py
       - name: Land visual-parity receipt regression proof
         if: matrix.family == 'static-standards'
         run: python3 test/functional/land_map_visual_parity_receipt_test.py
