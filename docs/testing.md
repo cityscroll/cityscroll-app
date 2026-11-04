@@ -82,7 +82,25 @@ fixtures and asserts the adversarial cases: an unowned unit, a forbidden binding
 engine, a reverse import into private code, and a stale source revision or evidence hash all fail,
 and a missing ledger or unsupported stage exits non-zero rather than passing. A passing test suite
 is therefore evidence that the verifier works, not evidence that the real tree's ownership ledger
-is complete. The `site-node` family installs the pinned parser with `npm ci` and requires Python
+is complete.
+
+A loading site the observer cannot resolve statically (a computed import, evaluated code, or a
+subprocess whose executed code it cannot name) is a coverage blocker, never a silent absence.
+Python path constants anchored at `__file__`, inline Node programs whose loads resolve against an
+evaluated working directory, and fixed programs whose operands are data resolve structurally. The
+rest are classified one site at a time in
+[`architecture/source-boundary-declarations.json`](../architecture/source-boundary-declarations.json):
+each entry names the finding code, the source path, the sha256 of the site's exact source text, a
+classification, a reason, and any tracked targets. A declared site becomes a `declared-site` unit
+that the private ledger must still classify, its targets become ownership edges, and a declaration
+that no longer matches a site, or is malformed, fails the gate. To list the unresolved sites and
+the hashes a declaration would pin, without the private ledger:
+
+```sh
+node tools/verify_engine_app_boundary.mjs --stage foundation --report unresolved
+```
+
+The `site-node` family installs the pinned parser with `npm ci` and requires Python
 3.11+ with the PyYAML pin in `tools/source_verification_requirements.txt` for the TOML and workflow
 observers. CI installs that file in the `site-node` job; locally, `make setup-a11y` installs it into
 the shared accessibility Python environment the pre-push hook runs the preflight in.

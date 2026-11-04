@@ -21,6 +21,8 @@ const PARSER_VERSION = '8.19.0';
 
 export const INVENTORY_SCHEMA = 'source-boundary-inventory.v1';
 export const LEDGER_SCHEMA = 'source-boundary-ledger.v1';
+export const DECLARATIONS_SCHEMA = 'source-boundary-declarations.v1';
+export const DECLARATIONS_PATH = 'architecture/source-boundary-declarations.json';
 const ROLES = new Set(['engine', 'acquisition', 'presentation', 'identity', 'delivery', 'paid', 'operations', 'tooling', 'data', 'documentation', 'split']);
 const PRIVATE_EFFECTS = new Set(['recipient-state', 'mail-send', 'paid-model', 'personal-history']);
 const sha = (v) => createHash('sha256').update(v).digest('hex');
@@ -37,7 +39,7 @@ function isManagementClause(value) {
   } catch { /* Not an absolute URL: a relative route or plain reference keeps the claim. */ }
   return true;
 }
-const needsText = (path) => /\.(?:mjs|js|cjs|py)$/.test(path) || /(?:^|\/)wrangler\.toml$/.test(path) || /^\.github\/workflows\/[^/]+\.ya?ml$/.test(path) || path === 'tools/external_schedule_jobs.json';
+const needsText = (path) => /\.(?:mjs|js|cjs|py)$/.test(path) || /(?:^|\/)wrangler\.toml$/.test(path) || /^\.github\/workflows\/[^/]+\.ya?ml$/.test(path) || path === 'tools/external_schedule_jobs.json' || path === DECLARATIONS_PATH;
 
 function git(root, args, options = {}) {
   return execFileSync('git', ['-C', root, ...args], { encoding: 'utf8', maxBuffer: 128 * 1024 * 1024, ...options });
@@ -106,7 +108,7 @@ function immutableImportBindings(tree, literal) {
       for (const declaration of node.declarations) {
         const value = node.kind === 'const' && declaration.id.type === 'Identifier' ? literal(declaration.init) : null;
         const flavor = declaration.init?.type === 'FunctionExpression' || declaration.init?.type === 'ArrowFunctionExpression'
-          ? 'function' : isCreateRequireCall(declaration.init) ? 'createRequire'
+          ? 'function' : node.kind === 'const' && isCreateRequireCall(declaration.init) ? 'createRequire'
           : node.kind === 'const' ? (typeof value === 'string' ? 'const-data' : 'const') : 'mutable';
         for (const name of names(declaration.id)) bind(target,name,flavor,declaration,value);
       }
@@ -251,12 +253,33 @@ export function collectInventory({ root, revision = 'HEAD' }) {
   // must never read as an observed empty edge set: it fails closed instead.
   // Negative fixtures are data unless an executable imports them; a directory
   // name never exempts a reachable module.
+  const manifests = new Map();
+  const declaredInstalledPackage = (target) => {
+    const match = /^((?:[^/]+\/)*?)node_modules\/((?:@[^/]+\/)?[^/]+)(?:\/|$)/.exec(target);
+    if (!match) return null;
+    const [, prefix, name] = match;
+    const manifestPath = `${prefix}package.json`;
+    if (!manifests.has(manifestPath)) {
+      let manifest = null;
+      if (sourceEntries.has(manifestPath)) {
+        try { manifest = JSON.parse(git(root,['cat-file','blob',sourceEntries.get(manifestPath).oid])); } catch { manifest = null; }
+      }
+      manifests.set(manifestPath, manifest);
+    }
+    const manifest = manifests.get(manifestPath);
+    const declared = ['dependencies','devDependencies','optionalDependencies','peerDependencies'].some((field) => manifest?.[field] && Object.hasOwn(manifest[field], name));
+    return declared ? { package: name, manifest: manifestPath, version: ['dependencies','devDependencies','optionalDependencies','peerDependencies'].map((field) => manifest[field]?.[name]).find((v) => typeof v === 'string') } : null;
+  };
   const excludedSource = (path) => /(?:^|\/)(?:test|tests|fixtures)(?:\/|$)|\.test\.[cm]?js$/.test(path);
   const rootPaths = entries.filter(({path}) => /\.(?:mjs|js|cjs)$/.test(path) && !excludedSource(path)).map(({path}) => path);
   for (const path of configuredRuntimePaths) if (!rootPaths.includes(path)) rootPaths.push(path);
   const pythonPaths = entries.filter(({path}) => path.endsWith('.py')).map(({path}) => path);
-  const pending = [...rootPaths];
   const parsed = new Set();
+  // Python is observed first, so JavaScript it runs or imports is observed
+  // too; modules a reviewed declaration names as targets are observed as well,
+  // so no edge points at a module whose own loads went unexamined.
+  const pythonSourceTargets = pythonPaths.length ? observePythonSources({ paths, texts, pythonPaths, parsed, add, edges, unresolved }) : [];
+  const pending = [...rootPaths, ...declaredSourceTargets(texts.get(DECLARATIONS_PATH), paths), ...pythonSourceTargets];
   while (pending.length) {
     const path = pending.shift();
     if (parsed.has(path)) continue;
@@ -277,11 +300,21 @@ export function collectInventory({ root, revision = 'HEAD' }) {
     // parsing here. Annex B block functions have different binding rules there.
     // Resolve lexical bindings only for explicitly module-typed .mjs source.
     const immutableImport = path.endsWith('.mjs') ? immutableImportBindings(tree,literal) : null;
+    // A site-bound blocker carries the hash of its exact source text so a
+    // reviewed declaration can classify that site, and only that site.
+    const blocker = (code, node, site = node) => unresolved.push({code, path, location:at(node), site_sha256:sha(text.slice(site.start,site.end))});
     const observeImport = (node, argument, resolveConst = false) => {
       const specifier = literal(argument) ?? (resolveConst ? immutableImport?.resolveLiteral(argument,node) : null);
       if (typeof specifier === 'string') specifiers.add(specifier);
-      else unresolved.push({code:'DYNAMIC_IMPORT_REQUIRES_OBSERVER', path, location:at(node)});
+      else blocker('DYNAMIC_IMPORT_REQUIRES_OBSERVER', node);
     };
+    // A createRequire() result bound to an immutable module-typed const is an
+    // observed loader: every call through it is observed as a module load and
+    // any other reference to it fails closed below.
+    const isLoaderBinding = (identifier) => !!immutableImport && identifier?.type === 'Identifier' && immutableImport.describeBinding(identifier) === 'createRequire';
+    const isCreateRequire = (call) => (call.callee.type === 'Identifier' && call.callee.name === 'createRequire')
+      || (call.callee.type === 'MemberExpression' && (call.callee.computed ? literal(call.callee.property) : call.callee.property?.name) === 'createRequire');
+    const isCallee = (node, parent) => ['CallExpression','NewExpression'].includes(parent?.type) && parent.callee === node;
     // A bare require() is a module load only when the callee is the ambient
     // loader or a createRequire() result. A locally bound helper of the same
     // name is ordinary code; any other binding fails closed instead of guessing.
@@ -306,17 +339,26 @@ export function collectInventory({ root, revision = 'HEAD' }) {
         if (node.callee.type === 'Identifier' && node.callee.name === 'require') {
           const flavor = requireFlavor(node.callee);
           if (flavor === 'loader') observeImport(node, node.arguments[0]);
-          else if (flavor === 'unknown') unresolved.push({code:'LOADER_BINDING_REQUIRES_OBSERVER', path, location:at(node)});
-        }
-        // Loader aliases, createRequire, eval and code constructors need their
-        // own observer. Never infer their targets from names or approved hashes.
-        if (node.callee.type === 'Identifier' && ['eval','createRequire','Function'].includes(node.callee.name)) unresolved.push({code:'INDIRECT_CODE_LOADING_REQUIRES_OBSERVER',path,location:at(node)});
+          else if (flavor === 'unknown') blocker('LOADER_BINDING_REQUIRES_OBSERVER', node);
+        } else if (isLoaderBinding(node.callee)) observeImport(node, node.arguments[0]);
+        // Loader aliases, unbound createRequire, eval and code constructors need
+        // their own observer. Never infer their targets from names or approved hashes.
+        if (isCreateRequire(node) && !(parent?.type === 'VariableDeclarator' && parent.init === node && isLoaderBinding(parent.id))) blocker('INDIRECT_CODE_LOADING_REQUIRES_OBSERVER', node);
+        if (node.callee.type === 'Identifier' && ['eval','Function'].includes(node.callee.name)) blocker('INDIRECT_CODE_LOADING_REQUIRES_OBSERVER', node);
         if (node.callee.type === 'MemberExpression' && (node.callee.property?.name === 'require' || literal(node.callee.property) === 'require')) observeImport(node, node.arguments[0]);
         if (node.callee.type === 'Identifier' && transportNames.has(node.callee.name)) claim('injected-transport', node);
       }
-      if (node.type === 'NewExpression' && node.callee.type === 'Identifier' && ['Function','Worker','SharedWorker'].includes(node.callee.name)) unresolved.push({code:'INDIRECT_CODE_LOADING_REQUIRES_OBSERVER',path,location:at(node)});
-      if (node.type === 'Identifier' && isReference(node,parent) && ['eval','Function','createRequire'].includes(node.name)) unresolved.push({code:'INDIRECT_CODE_LOADING_REQUIRES_OBSERVER',path,location:at(node)});
-      if (node.type === 'Identifier' && isReference(node,parent) && node.name === 'require' && !(parent?.type === 'CallExpression' && parent.callee === node) && !(parent?.type === 'MemberExpression' && parent.property === node) && requireFlavor(node) !== 'helper') unresolved.push({code:'LOADER_REFERENCE_REQUIRES_OBSERVER',path,location:at(node)});
+      if (node.type === 'NewExpression' && node.callee.type === 'Identifier' && ['Function','Worker','SharedWorker'].includes(node.callee.name)) blocker('INDIRECT_CODE_LOADING_REQUIRES_OBSERVER', node);
+      // A direct call or construction is reported once, by its call site above.
+      if (node.type === 'Identifier' && isReference(node,parent) && !isCallee(node,parent) && ['eval','Function','createRequire'].includes(node.name)) blocker('INDIRECT_CODE_LOADING_REQUIRES_OBSERVER', node, parent);
+      // typeof yields a string; a feature test cannot hand the loader to other code.
+      if (node.type === 'Identifier' && isReference(node,parent) && node.name === 'require' && !(parent?.type === 'CallExpression' && parent.callee === node) && !(parent?.type === 'MemberExpression' && parent.property === node) && !(parent?.type === 'UnaryExpression' && parent.operator === 'typeof') && requireFlavor(node) !== 'helper') blocker('LOADER_REFERENCE_REQUIRES_OBSERVER', node, parent);
+      if (node.type === 'Identifier' && node.name !== 'require' && isReference(node,parent) && !(parent?.type === 'CallExpression' && parent.callee === node) && isLoaderBinding(node)) blocker('LOADER_REFERENCE_REQUIRES_OBSERVER', node, parent);
+      // An exported loader escapes this module, whichever export form is used.
+      if (node.type === 'ExportSpecifier' && isLoaderBinding(node.local)) blocker('LOADER_REFERENCE_REQUIRES_OBSERVER', node);
+      if (node.type === 'ExportNamedDeclaration' && node.declaration?.type === 'VariableDeclaration') {
+        for (const declarator of node.declaration.declarations) if (isLoaderBinding(declarator.id)) blocker('LOADER_REFERENCE_REQUIRES_OBSERVER', declarator);
+      }
       // An injectable outbound-transport parameter defaulting to the ambient
       // fetch, and any later call through that parameter, is an observable
       // injected-transport effect of this module.
@@ -343,10 +385,16 @@ export function collectInventory({ root, revision = 'HEAD' }) {
       if (!specifier.startsWith('.')) {
         add('external-import', path, specifier, specifier);
         // File and absolute URL imports cannot be classified as package edges.
-        if (specifier.startsWith('/') || specifier.startsWith('#') || /^(?:file|data|https?):/.test(specifier)) unresolved.push({code:'NONLOCAL_IMPORT_REQUIRES_OBSERVER',path});
+        if (specifier.startsWith('/') || specifier.startsWith('#') || /^(?:file|data|https?):/.test(specifier)) unresolved.push({code:'NONLOCAL_IMPORT_REQUIRES_OBSERVER',path,location:specifier,site_sha256:sha(specifier)});
         continue;
       }
       const target = posix.normalize(posix.join(posix.dirname(path), specifier.split(/[?#]/)[0]));
+      if (!target.startsWith('../') && !paths.has(target)) {
+        // A relative path into an untracked installed package directory is an
+        // external package import when the owning tracked manifest declares it.
+        const installed = declaredInstalledPackage(target);
+        if (installed) { add('external-import', path, specifier, installed); continue; }
+      }
       if (target.startsWith('../') || !paths.has(target)) { unresolved.push({code:'UNRESOLVED_IMPORT',path,location:specifier}); continue; }
       const edge = {from:path,to:target}; edges.push(edge); add('import',path,specifier,edge);
       if (/\.(?:mjs|js|cjs)$/.test(target)) pending.push(target);
@@ -368,7 +416,7 @@ export function collectInventory({ root, revision = 'HEAD' }) {
     if (!/\.(?:mjs|js|cjs)$/.test(path) || excludedSource(path)) continue;
     if (!parsed.has(path) && !unresolved.some((x) => x.path === path)) unresolved.push({code:'UNOBSERVED_SOURCE_MODULE', path});
   }
-  if (pythonPaths.length) observePythonSources({ paths, texts, pythonPaths, parsed, add, edges, unresolved });
+  applyDeclarations({ paths, texts, parsed, add, edges, unresolved });
   const ids = new Set();
   for (const unit of units) {
     if (ids.has(unit.id)) throw new Error('DUPLICATE_OBSERVED_UNIT');
@@ -380,15 +428,76 @@ export function collectInventory({ root, revision = 'HEAD' }) {
 // Python observation parses tracked sources with the interpreter's standard
 // library ast module inside a child process. Sources are data: the observer
 // never imports, executes, marshals, or deserializes them, and the extractor
-// itself uses only ast, json, and shlex. Loading forms the observer cannot
+// itself uses only ast, json, posixpath, and shlex. Loading forms the observer cannot
 // resolve become explicit coverage blockers instead of silent absences.
 const PYTHON_AST_OBSERVER = String.raw`
-import ast, json, shlex, sys
+import ast, json, posixpath, shlex, sys
 
 try:
     files = json.load(sys.stdin)
 except Exception:
     sys.exit(3)
+
+SCOPES = (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda, ast.ClassDef)
+
+def scope_bindings(scope):
+    # Count every binding of every name anywhere beneath a scope (module,
+    # function, lambda or class). A single-binding constant is a name bound
+    # exactly once there, by a plain assignment that is a direct statement of
+    # the scope body. Any other binding of the name (a parameter, loop target,
+    # import, global statement or second assignment) disqualifies it, and
+    # counting nested scopes too can only disqualify more names.
+    counts = {}
+    def bump(name, by=1):
+        counts[name] = counts.get(name, 0) + by
+    for node in ast.walk(scope):
+        if node is not scope and isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            bump(node.name)
+        if isinstance(node, ast.Name) and isinstance(node.ctx, (ast.Store, ast.Del)):
+            bump(node.id)
+        elif isinstance(node, ast.arg):
+            bump(node.arg)
+        elif isinstance(node, (ast.Import, ast.ImportFrom)):
+            for alias in node.names:
+                bump(alias.asname or alias.name.split(".")[0])
+        elif isinstance(node, (ast.Global, ast.Nonlocal)):
+            for name in node.names:
+                bump(name, 2)
+        elif isinstance(node, ast.ExceptHandler) and node.name:
+            bump(node.name)
+        elif type(node).__name__ in ("MatchAs", "MatchStar") and getattr(node, "name", None):
+            bump(node.name)
+        elif type(node).__name__ == "MatchMapping" and getattr(node, "rest", None):
+            bump(node.rest)
+    values = {}
+    body = scope.body if isinstance(getattr(scope, "body", None), list) else []
+    for statement in body:
+        if isinstance(statement, ast.Assign) and len(statement.targets) == 1 and isinstance(statement.targets[0], ast.Name):
+            values[statement.targets[0].id] = statement
+        elif isinstance(statement, ast.AnnAssign) and statement.value is not None and isinstance(statement.target, ast.Name):
+            values[statement.target.id] = statement
+    if isinstance(scope, ast.ClassDef):
+        values = {}
+    return set(counts), {name: statement for name, statement in values.items() if counts.get(name) == 1}
+
+def walk_scoped(tree):
+    # Yield every node with its chain of enclosing scopes, innermost last.
+    pending = [(tree, ())]
+    while pending:
+        node, stack = pending.pop()
+        yield node, stack
+        inner = stack + (node,) if isinstance(node, SCOPES) else stack
+        for child in ast.iter_child_nodes(node):
+            pending.append((child, inner))
+
+def join_anchored(base, part):
+    if part.startswith("/"):
+        return None
+    joined = posixpath.normpath(posixpath.join(base, part))
+    return None if joined == ".." or joined.startswith("../") else joined
+
+def parent_of(anchored):
+    return None if anchored == "." else (posixpath.dirname(anchored) or ".")
 
 out = {}
 for path, source in files.items():
@@ -426,8 +535,139 @@ for path, source in files.items():
             return expression.value
         return None
 
+    module_bound, module_constants = scope_bindings(tree)
+    scope_cache = {}
+    def bindings_of(scope):
+        if id(scope) not in scope_cache:
+            scope_cache[id(scope)] = scope_bindings(scope)
+        return scope_cache[id(scope)]
+
+    def lookup(name, stack, use):
+        # A name bound in the innermost function resolves only to its own
+        # single binding written before the use; a name bound in any other
+        # enclosing scope is not static, since the observer does not infer
+        # when a closure runs. Otherwise a module constant applies.
+        for depth, scope in enumerate(reversed(stack)):
+            bound, constants = bindings_of(scope)
+            if name not in bound:
+                continue
+            statement = constants.get(name)
+            if depth == 0 and statement is not None and (statement.end_lineno, statement.end_col_offset) <= (use.lineno, use.col_offset):
+                return statement.value, stack
+            return None, None
+        statement = module_constants.get(name)
+        return (statement.value, ()) if statement is not None else (None, None)
+
+    # Statically evaluate a small path vocabulary anchored at __file__:
+    # Path()/str()/os.fspath() wrappers, .parent/.parents[n], .resolve(),
+    # the / operator and os.path.join with string literals, and single-binding module
+    # constants. The result is a repository-relative path, a literal string,
+    # the running interpreter, or None when the value is not static.
+    def evaluate(expression, stack=(), depth=0):
+        if depth > 24 or expression is None:
+            return None
+        if lit(expression) is not None:
+            return ("str", lit(expression))
+        if isinstance(expression, ast.Name):
+            if expression.id == "__file__":
+                return ("path", posixpath.normpath(path))
+            value, scope = lookup(expression.id, stack, expression)
+            return evaluate(value, scope, depth + 1) if value is not None else None
+        if isinstance(expression, ast.Attribute):
+            if canon(expression) == "sys.executable":
+                return ("python", None)
+            if expression.attr == "parent":
+                base = evaluate(expression.value, stack, depth + 1)
+                if base and base[0] == "path":
+                    parent = parent_of(base[1])
+                    return ("path", parent) if parent else None
+            return None
+        if isinstance(expression, ast.Subscript) and isinstance(expression.value, ast.Attribute) and expression.value.attr == "parents":
+            index = expression.slice
+            if isinstance(index, ast.Constant) and isinstance(index.value, int) and not isinstance(index.value, bool) and index.value >= 0:
+                base = evaluate(expression.value.value, stack, depth + 1)
+                if base and base[0] == "path":
+                    anchored = parent_of(base[1])
+                    for _ in range(index.value):
+                        anchored = anchored and parent_of(anchored)
+                    return ("path", anchored) if anchored else None
+            return None
+        if isinstance(expression, ast.BinOp) and isinstance(expression.op, ast.Div):
+            base = evaluate(expression.left, stack, depth + 1)
+            part = evaluate(expression.right, stack, depth + 1)
+            if base and base[0] == "path" and part and part[0] == "str":
+                joined = join_anchored(base[1], part[1])
+                return ("path", joined) if joined else None
+            return None
+        if isinstance(expression, ast.BoolOp) and isinstance(expression.op, ast.Or) and len(expression.values) == 2:
+            # shutil.which("node") or "node" names the same program either way.
+            first, second = expression.values
+            if isinstance(first, ast.Call) and canon(first.func) == "shutil.which" and len(first.args) == 1 and not first.keywords \
+                    and lit(first.args[0]) is not None and lit(first.args[0]) == lit(second):
+                return ("str", lit(second))
+            return None
+        if isinstance(expression, ast.Call):
+            name = canon(expression.func)
+            if expression.keywords:
+                return None
+            if name in ("str", "os.fspath") and len(expression.args) == 1:
+                return evaluate(expression.args[0], stack, depth + 1)
+            if name in ("Path", "pathlib.Path", "PurePath", "pathlib.PurePath", "PurePosixPath", "pathlib.PurePosixPath", "os.path.join") and expression.args:
+                result = evaluate(expression.args[0], stack, depth + 1)
+                for argument in expression.args[1:]:
+                    part = evaluate(argument, stack, depth + 1)
+                    if not (result and result[0] == "path" and part and part[0] == "str"):
+                        return None
+                    joined = join_anchored(result[1], part[1])
+                    result = ("path", joined) if joined else None
+                return result if len(expression.args) == 1 or result else None
+            if name in ("os.path.abspath", "os.path.realpath", "os.path.normpath") and len(expression.args) == 1:
+                result = evaluate(expression.args[0], stack, depth + 1)
+                return result if result and result[0] == "path" else None
+            if name == "os.path.dirname" and len(expression.args) == 1:
+                result = evaluate(expression.args[0], stack, depth + 1)
+                if result and result[0] == "path":
+                    parent = parent_of(result[1])
+                    return ("path", parent) if parent else None
+                return None
+            if isinstance(expression.func, ast.Attribute):
+                method = expression.func.attr
+                receiver = evaluate(expression.func.value, stack, depth + 1)
+                if method == "with_name" and receiver and receiver[0] == "path" and len(expression.args) == 1:
+                    part = evaluate(expression.args[0], stack, depth + 1)
+                    parent = parent_of(receiver[1])
+                    joined = parent and part and part[0] == "str" and "/" not in part[1] and join_anchored(parent, part[1])
+                    return ("path", joined) if joined else None
+                if method in ("resolve", "absolute", "as_posix") and not expression.args:
+                    return receiver if receiver and receiver[0] == "path" else None
+                if method == "joinpath" and receiver and receiver[0] == "path" and expression.args:
+                    anchored = receiver[1]
+                    for argument in expression.args:
+                        part = evaluate(argument, stack, depth + 1)
+                        if not (part and part[0] == "str"):
+                            return None
+                        anchored = join_anchored(anchored, part[1])
+                        if not anchored:
+                            return None
+                    return ("path", anchored)
+            return None
+        return None
+
+    def element(expression, stack):
+        if isinstance(expression, ast.Starred):
+            return {"kind": "starred"}
+        value = evaluate(expression, stack)
+        if value is None:
+            return {"kind": "unknown"}
+        if value[0] == "python":
+            return {"kind": "python"}
+        return {"kind": value[0], "value": value[1]}
+
+    def segment(node):
+        return ast.get_source_segment(source, node) or ""
+
     facts = {"imports": [], "dynamics": [], "subprocess": [], "exec": []}
-    for node in ast.walk(tree):
+    for node, stack in walk_scoped(tree):
         if isinstance(node, ast.Import):
             for alias in node.names:
                 facts["imports"].append({"name": alias.name, "level": 0, "names": [], "line": node.lineno})
@@ -442,15 +682,19 @@ for path, source in files.items():
                 for keyword in node.keywords:
                     if keyword.arg == "package":
                         package = lit(keyword.value)
-                facts["dynamics"].append({"form": "import_module", "value": lit(first), "package": package, "line": node.lineno})
+                facts["dynamics"].append({"form": "import_module", "value": lit(first), "package": package, "line": node.lineno, "site": segment(node)})
             elif canonical == "__import__":
-                facts["dynamics"].append({"form": "__import__", "value": lit(first), "package": None, "line": node.lineno})
+                facts["dynamics"].append({"form": "__import__", "value": lit(first), "package": None, "line": node.lineno, "site": segment(node)})
             elif canonical == "importlib.util.spec_from_file_location":
-                location = lit(node.args[1]) if len(node.args) > 1 else None
+                location = node.args[1] if len(node.args) > 1 else None
                 for keyword in node.keywords:
                     if keyword.arg == "location":
-                        location = lit(keyword.value)
-                facts["dynamics"].append({"form": "spec_from_file_location", "value": location, "package": None, "line": node.lineno})
+                        location = keyword.value
+                value = evaluate(location, stack)
+                facts["dynamics"].append({"form": "spec_from_file_location",
+                                          "value": value[1] if value and value[0] == "str" else None,
+                                          "anchored": value[1] if value and value[0] == "path" else None,
+                                          "package": None, "line": node.lineno, "site": segment(node)})
             elif canonical in ("subprocess.run", "subprocess.call", "subprocess.check_call",
                                "subprocess.check_output", "subprocess.Popen", "os.system", "os.popen"):
                 argv = first
@@ -460,18 +704,144 @@ for path, source in files.items():
                             argv = keyword.value
                 elements = None
                 if isinstance(argv, (ast.List, ast.Tuple)):
-                    elements = [lit(element) for element in argv.elts]
+                    elements = [element(item, stack) for item in argv.elts]
                 elif lit(argv) is not None:
                     try:
-                        elements = shlex.split(lit(argv))
+                        elements = [{"kind": "str", "value": item} for item in shlex.split(lit(argv))]
                     except ValueError:
                         elements = None
-                facts["subprocess"].append({"elements": elements, "line": node.lineno})
+                cwd = None
+                for keyword in node.keywords:
+                    if keyword.arg == "cwd":
+                        cwd = element(keyword.value, stack)
+                facts["subprocess"].append({"elements": elements, "cwd": cwd, "line": node.lineno, "site": segment(node)})
             elif canonical in ("exec", "eval"):
-                facts["exec"].append(node.lineno)
+                facts["exec"].append({"line": node.lineno, "site": segment(node)})
     out[path] = facts
 sys.stdout.write(json.dumps(out))
 `;
+
+// What a subprocess executes is its program and, for an interpreter, the
+// script or inline program it is handed. Operands after an observed tracked
+// script are that script's run-time data: anything the script loads from them
+// is observed in the script's own source. A closed set of external programs
+// never executes repository code named by an operand, so their operands are
+// data too. An inline Node program is observed only when it is static and
+// every module it loads resolves: a package, a tracked module relative to an
+// evaluated working directory, or an evaluated operand it loads by position.
+// Every other shape still requires every element to be statically known:
+// unknown programs, inline Python, inline programs with unresolvable loads,
+// and an unevaluated element in a code-bearing position fail closed.
+const DATA_OPERAND_PROGRAMS = new Set(['curl', 'cwebp', 'magick', 'sips', 'tar']);
+// Git subcommands that neither run repository hooks nor execute operands.
+const HOOKLESS_GIT_SUBCOMMANDS = new Set(['archive', 'cat-file', 'diff', 'hash-object', 'log', 'ls-files', 'ls-tree', 'merge-base', 'rev-list', 'rev-parse', 'show']);
+const HOOKLESS_LINKED_CHECKOUT_ACTIONS = new Set(['list', 'prune', 'remove']);
+const GIT_LOCATION_OPTIONS = new Set(['-C', '--git-dir', '--work-tree']);
+// Interpreter options that neither load code nor consume the next element.
+const NODE_PLAIN_OPTIONS = new Set(['--check', '-c', '--enable-source-maps', '--input-type=commonjs', '--input-type=module', '--no-warnings']);
+const NODE_INLINE_OPTIONS = new Set(['-e', '--eval', '-p', '--print']);
+const PYTHON_PLAIN_OPTIONS = new Set(['-B', '-E', '-I', '-s', '-S', '-u']);
+// Standard-library modules run with -m whose operands are data, never code.
+const PYTHON_DATA_OPERAND_MODULES = new Set(['http.server']);
+
+// An inline Node program is parsed, never run. Its static loads resolve
+// against the subprocess working directory when the observer evaluated it,
+// and `process.argv[N]` loads resolve to the N-th evaluated operand. Any
+// other load, evaluated code, or unresolvable specifier leaves it unobserved.
+function observeInlineNodeProgram(code, { moduleType, cwd, operands, resolveFrom }) {
+  let tree;
+  try { tree = parser.parse(code, { ecmaVersion: 'latest', sourceType: moduleType ? 'module' : 'commonjs' }); } catch { return null; }
+  const result = { targets: [], packages: [] };
+  let observed = true;
+  const literalOf = (node) => node?.type === 'Literal' && typeof node.value === 'string' ? node.value
+    : node?.type === 'TemplateLiteral' && node.expressions.length === 0 ? node.quasis[0].value.cooked : null;
+  const argvIndex = (node) => node?.type === 'MemberExpression' && node.computed && node.property.type === 'Literal' && Number.isInteger(node.property.value)
+    && node.object.type === 'MemberExpression' && !node.object.computed && node.object.property.name === 'argv'
+    && node.object.object.type === 'Identifier' && node.object.object.name === 'process' ? node.property.value : null;
+  const load = (argument) => {
+    const specifier = literalOf(argument);
+    if (typeof specifier === 'string') {
+      if (specifier.startsWith('node:') || (!/^[./#]/.test(specifier) && !/^[A-Za-z][A-Za-z0-9+.-]*:/.test(specifier))) { result.packages.push(specifier); return; }
+      const target = specifier.startsWith('.') && cwd ? resolveFrom(cwd, specifier) : null;
+      if (target) result.targets.push(target); else observed = false;
+      return;
+    }
+    const index = argvIndex(argument);
+    const operand = index !== null && index >= 1 ? operands[index - 1] : null;
+    const target = operand?.kind === 'path' ? resolveFrom('.', operand.value)
+      : operand?.kind === 'str' && operand.value.startsWith('.') && cwd ? resolveFrom(cwd, operand.value) : null;
+    if (target) result.targets.push(target); else observed = false;
+  };
+  const loaders = new Set(['require', 'eval', 'Function', 'createRequire']);
+  const visit = (node, parent) => {
+    if (!observed || !node || typeof node.type !== 'string') return;
+    if (['ImportDeclaration', 'ExportNamedDeclaration', 'ExportAllDeclaration'].includes(node.type) && node.source) load(node.source);
+    if (node.type === 'ImportExpression') load(node.source);
+    const requireCall = node.type === 'CallExpression' && node.callee.type === 'Identifier' && node.callee.name === 'require';
+    if (requireCall) load(node.arguments[0]);
+    if (node.type === 'NewExpression' && node.callee.type === 'Identifier' && ['Function', 'Worker', 'SharedWorker'].includes(node.callee.name)) observed = false;
+    const property = (parent?.type === 'MemberExpression' && parent.property === node && !parent.computed)
+      || (parent?.type === 'Property' && parent.key === node && !parent.computed && !parent.shorthand);
+    const callee = parent?.type === 'CallExpression' && parent.callee === node && node.name === 'require';
+    if (node.type === 'Identifier' && loaders.has(node.name) && !property && !callee) observed = false;
+    for (const value of Object.values(node)) {
+      if (Array.isArray(value)) value.forEach((child) => visit(child, node));
+      else if (value && typeof value === 'object' && typeof value.type === 'string') visit(value, node);
+    }
+  };
+  visit(tree, null);
+  return observed ? result : null;
+}
+
+export function subprocessTargetObserved(elements, resolveElement, { cwd = null, resolveFrom = () => null } = {}) {
+  const known = (element) => element && ['str', 'path', 'python'].includes(element.kind);
+  const allKnown = elements.every(known);
+  const [program, ...rest] = elements;
+  const literalAt = (i) => rest[i]?.kind === 'str' ? rest[i].value : null;
+  const programName = program?.kind === 'str' ? program.value : null;
+  const interpreter = program?.kind === 'python' || ['python', 'python3'].includes(programName) ? 'python' : programName === 'node' ? 'node' : null;
+  const verdict = (observed, extra = {}) => ({ observed, targets: extra.targets || [], packages: extra.packages || [] });
+  const cwdPath = cwd?.kind === 'path' ? cwd.value : null;
+  if (interpreter) {
+    let unrecognised = false;
+    const preloads = [];
+    for (let i = 0; i < rest.length; i += 1) {
+      const option = literalAt(i);
+      // The first positional element is the script: it must be an observed
+      // tracked source before its operands can be treated as data.
+      if (option === null || !option.startsWith('-')) return verdict(allKnown || (!unrecognised && !!resolveElement(rest[i])));
+      if (interpreter === 'node' && NODE_INLINE_OPTIONS.has(option)) {
+        if (unrecognised || rest[i + 1]?.kind !== 'str') return verdict(false);
+        const operands = rest.slice(i + 2);
+        if (operands[0]?.kind === 'str' && operands[0].value === '--') operands.shift();
+        const moduleType = rest.slice(0, i).some((element) => element.kind === 'str' && element.value === '--input-type=module');
+        const inline = observeInlineNodeProgram(preloads.map((specifier) => `import ${JSON.stringify(specifier)};\n`).join('') + rest[i + 1].value,
+          { moduleType: moduleType || preloads.length > 0, cwd: cwdPath, operands, resolveFrom });
+        return inline ? verdict(true, inline) : verdict(false);
+      }
+      if (interpreter === 'python' && option === '-c') return verdict(false);
+      if (interpreter === 'python' && option === '-m') return verdict(allKnown || (!unrecognised && PYTHON_DATA_OPERAND_MODULES.has(literalAt(i + 1))));
+      // A preload module is loaded exactly like an inline static import.
+      if (interpreter === 'node' && /^--import=./.test(option)) { preloads.push(option.slice('--import='.length)); continue; }
+      if (!(interpreter === 'node' ? NODE_PLAIN_OPTIONS : PYTHON_PLAIN_OPTIONS).has(option)) unrecognised = true;
+    }
+    return verdict(allKnown);
+  }
+  if (allKnown) return verdict(true);
+  if (DATA_OPERAND_PROGRAMS.has(programName)) return verdict(true);
+  if (programName === 'git') {
+    let i = 0;
+    // Location options may carry run-time paths; any other global option,
+    // including -c configuration, is not supported here.
+    while (literalAt(i)?.startsWith('-')) {
+      if (!GIT_LOCATION_OPTIONS.has(literalAt(i)) || !rest[i + 1] || rest[i + 1].kind === 'starred') return verdict(false);
+      i += 2;
+    }
+    const subcommand = literalAt(i);
+    return verdict(HOOKLESS_GIT_SUBCOMMANDS.has(subcommand) || (subcommand === 'worktree' && HOOKLESS_LINKED_CHECKOUT_ACTIONS.has(literalAt(i + 1))));
+  }
+  return verdict(false);
+}
 
 function observePythonSources({ paths, texts, pythonPaths, parsed, add, edges, unresolved }) {
   const packageDirs = new Set(pythonPaths.filter((p) => posix.basename(p) === '__init__.py').map((p) => posix.dirname(p)));
@@ -507,6 +877,10 @@ function observePythonSources({ paths, texts, pythonPaths, parsed, add, edges, u
     for (const candidate of [posix.normalize(value), posix.normalize(posix.join(posix.dirname(fromPath), value))])
       if (paths.has(candidate)) return candidate;
     return null;
+  };
+  const resolveFrom = (base, specifier) => {
+    const target = posix.normalize(posix.join(base, specifier.split(/[?#]/)[0]));
+    return !target.startsWith('../') && paths.has(target) ? target : null;
   };
   const claimed = new Set();
   const record = (kind, from, key, evidence, target = null) => {
@@ -564,8 +938,15 @@ function observePythonSources({ paths, texts, pythonPaths, parsed, add, edges, u
         for (const [name, sub] of submodulePaths) localEdge(`${imp.name}.${name}`, sub, { import: imp, name });
       }
     }
+    const blocker = (code, location, site) => unresolved.push({ code, path: p, location, site_sha256: sha(site || '') });
     for (const dyn of facts.dynamics || []) {
-      if (typeof dyn.value !== 'string') { unresolved.push({ code: 'PYTHON_IMPORT_REQUIRES_OBSERVER', path: p, location: `${dyn.form}:${dyn.line}` }); continue; }
+      if (dyn.form === 'spec_from_file_location' && typeof dyn.anchored === 'string') {
+        // A location anchored at __file__ is an exact repository path.
+        if (paths.has(dyn.anchored)) localEdge(`spec:${dyn.anchored}`, dyn.anchored, { form: dyn.form, line: dyn.line });
+        else unresolved.push({ code: 'PYTHON_IMPORT_UNRESOLVED', path: p, location: `spec:${dyn.anchored}` });
+        continue;
+      }
+      if (typeof dyn.value !== 'string') { blocker('PYTHON_IMPORT_REQUIRES_OBSERVER', `${dyn.form}:${dyn.line}`, dyn.site); continue; }
       if (dyn.form === 'spec_from_file_location') {
         const target = resolveScriptPath(dyn.value, p);
         if (target) localEdge(`spec:${target}`, target, { form: dyn.form, line: dyn.line });
@@ -574,7 +955,7 @@ function observePythonSources({ paths, texts, pythonPaths, parsed, add, edges, u
         const dots = dyn.value.match(/^\.+/)[0].length;
         const rest = dyn.value.replace(/^\.+/, '');
         const packageFile = typeof dyn.package === 'string' ? resolveDotted(dyn.package, p) : null;
-        if (!packageFile) { unresolved.push({ code: 'PYTHON_IMPORT_REQUIRES_OBSERVER', path: p, location: `import_module:${dyn.line}` }); continue; }
+        if (!packageFile) { blocker('PYTHON_IMPORT_REQUIRES_OBSERVER', `import_module:${dyn.line}`, dyn.site); continue; }
         let base = posix.dirname(packageFile);
         if (dots > 1) base = base.split('/').slice(0, -(dots - 1)).join('/');
         const rel = rest.replace(/\./g, '/');
@@ -589,19 +970,110 @@ function observePythonSources({ paths, texts, pythonPaths, parsed, add, edges, u
     }
     for (const call of facts.subprocess || []) {
       const elements = call.elements;
-      if (!Array.isArray(elements)) { unresolved.push({ code: 'PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER', path: p, location: `${call.line}` }); continue; }
-      let nonLiteral = false;
-      const targets = [];
-      for (const element of elements) {
-        if (typeof element !== 'string') { nonLiteral = true; continue; }
-        const target = resolveScriptPath(element, p);
-        if (target) targets.push(target);
-      }
-      if (nonLiteral) unresolved.push({ code: 'PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER', path: p, location: `${call.line}` });
+      if (!Array.isArray(elements)) { blocker('PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER', `${call.line}`, call.site); continue; }
+      const resolveElement = (element) => element.kind === 'path' ? (paths.has(element.value) ? element.value : null)
+        : element.kind === 'str' ? resolveScriptPath(element.value, p) : null;
+      const verdict = subprocessTargetObserved(elements, resolveElement, { cwd: call.cwd, resolveFrom });
+      const targets = [...elements.map(resolveElement).filter(Boolean), ...verdict.targets];
+      if (!verdict.observed) blocker('PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER', `${call.line}`, call.site);
       for (const target of targets) record('script-target', p, target, { target, line: call.line }, target);
+      for (const specifier of verdict.packages) record('external-import', p, specifier, { module: specifier, line: call.line, form: 'inline-program' });
     }
-    for (const line of facts.exec || []) unresolved.push({ code: 'PYTHON_DYNAMIC_CODE_REQUIRES_OBSERVER', path: p, location: `${line}` });
+    for (const exec of facts.exec || []) blocker('PYTHON_DYNAMIC_CODE_REQUIRES_OBSERVER', `${exec.line}`, exec.site);
   }
+  return edges.filter((edge) => pythonPaths.includes(edge.from) && /\.(?:mjs|js|cjs)$/.test(edge.to)).map((edge) => edge.to);
+}
+
+// Reviewed observer declarations classify individual loading sites the
+// observer cannot resolve statically. A declaration names the finding code,
+// the source path and the sha256 of the site's exact source text, so it covers
+// only byte-identical sites and goes stale the moment that site changes. A
+// declared site is not exempt: it becomes a declared-site unit that the
+// private ownership ledger must classify like any other observed unit, and its
+// declared targets become ownership edges. Parse, coverage and configuration
+// failures are never declarable, and an unused or malformed declaration fails
+// closed rather than silently lapsing.
+const DECLARABLE_CODES = new Set([
+  'DYNAMIC_IMPORT_REQUIRES_OBSERVER', 'INDIRECT_CODE_LOADING_REQUIRES_OBSERVER', 'LOADER_REFERENCE_REQUIRES_OBSERVER',
+  'LOADER_BINDING_REQUIRES_OBSERVER', 'NONLOCAL_IMPORT_REQUIRES_OBSERVER', 'PYTHON_IMPORT_REQUIRES_OBSERVER',
+  'PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER', 'PYTHON_DYNAMIC_CODE_REQUIRES_OBSERVER',
+]);
+export const DECLARATION_CLASSIFICATIONS = new Set([
+  // The site loads a repository module whose path is computed at run time;
+  // `targets` lists every tracked module it can load.
+  'computed-repository-module',
+  // The site evaluates tracked repository source text; `targets` names it.
+  'evaluated-repository-source',
+  // A browser import of an origin-absolute path that the published site
+  // serves from a tracked module; `targets` names that module.
+  'served-site-module',
+  // The module is supplied by the operator at run time (an injected
+  // transport, a fixture module) and is not part of the observed tree.
+  'operator-supplied-module',
+  // The site runs inline code given to an interpreter by this file.
+  'inline-interpreter-program',
+  // The executed program is fixed; the unresolved elements are run-time
+  // data operands (revisions, scratch paths, ports, URLs), not code targets.
+  'runtime-data-operands',
+  // A run helper executes the argv its callers in the same file construct;
+  // `targets` lists the tracked scripts those callers pass, if any.
+  'caller-supplied-command',
+  // Third-party code vendored verbatim into the tree.
+  'vendored-third-party',
+]);
+const TARGETED_CLASSIFICATIONS = new Set(['computed-repository-module', 'evaluated-repository-source', 'served-site-module']);
+const DECLARATION_FIELDS = new Set(['code', 'path', 'site_sha256', 'classification', 'reason', 'targets']);
+
+function declaredSourceTargets(text, paths) {
+  let document;
+  try { document = text === undefined ? null : JSON.parse(text); } catch { return []; }
+  const declarations = Array.isArray(document?.declarations) ? document.declarations : [];
+  return declarations.flatMap((entry) => Array.isArray(entry?.targets) ? entry.targets : [])
+    .filter((target) => typeof target === 'string' && /\.(?:mjs|js|cjs)$/.test(target) && paths.has(target));
+}
+
+function applyDeclarations({ paths, texts, parsed, add, edges, unresolved }) {
+  const text = texts.get(DECLARATIONS_PATH);
+  if (text === undefined) return;
+  const invalid = () => unresolved.push({ code: 'OBSERVER_DECLARATION_INVALID', path: DECLARATIONS_PATH });
+  let document;
+  try { document = JSON.parse(text); } catch { invalid(); return; }
+  if (document?.schema !== DECLARATIONS_SCHEMA || !Array.isArray(document.declarations)) { invalid(); return; }
+  const declared = new Map();
+  for (const entry of document.declarations) {
+    const valid = entry && typeof entry === 'object' && Object.keys(entry).every((key) => DECLARATION_FIELDS.has(key))
+      && DECLARABLE_CODES.has(entry.code) && typeof entry.path === 'string' && paths.has(entry.path)
+      && typeof entry.site_sha256 === 'string' && /^[a-f0-9]{64}$/.test(entry.site_sha256)
+      && DECLARATION_CLASSIFICATIONS.has(entry.classification)
+      && typeof entry.reason === 'string' && entry.reason.trim().length >= 20
+      && (entry.targets === undefined || (Array.isArray(entry.targets) && entry.targets.length > 0
+        && entry.targets.every((target) => typeof target === 'string') && new Set(entry.targets).size === entry.targets.length))
+      && (!TARGETED_CLASSIFICATIONS.has(entry.classification) || Array.isArray(entry.targets));
+    const key = valid ? `${entry.code}\0${entry.path}\0${entry.site_sha256}` : null;
+    if (!valid || declared.has(key)) { invalid(); continue; }
+    declared.set(key, { entry, sites: [] });
+  }
+  const remaining = [];
+  for (const finding of unresolved) {
+    const match = finding.site_sha256 && declared.get(`${finding.code}\0${finding.path}\0${finding.site_sha256}`);
+    if (match) match.sites.push(finding); else remaining.push(finding);
+  }
+  for (const { entry, sites } of declared.values()) {
+    if (!sites.length) { remaining.push({ code: 'OBSERVER_DECLARATION_STALE', path: entry.path, location: entry.site_sha256 }); continue; }
+    const targets = entry.targets || [];
+    // A declared target must be tracked, and a declared source target must
+    // itself have been observed; otherwise the site stays a blocker.
+    if (targets.some((target) => !paths.has(target) || (/\.(?:mjs|js|cjs|py)$/.test(target) && !parsed.has(target)))) {
+      remaining.push({ code: 'OBSERVER_DECLARATION_TARGET_INVALID', path: entry.path, location: entry.site_sha256 }, ...sites);
+      continue;
+    }
+    add('declared-site', entry.path, `${entry.code}:${entry.site_sha256}`, {
+      code: entry.code, site_sha256: entry.site_sha256, classification: entry.classification,
+      reason: entry.reason, targets, occurrences: sites.length,
+    });
+    for (const target of targets) edges.push({ from: entry.path, to: target });
+  }
+  unresolved.splice(0, unresolved.length, ...remaining);
 }
 
 export function verifyLedger(inventory, ledger) {
@@ -655,11 +1127,20 @@ function privatePath(value, root) {
 export function main(args = process.argv.slice(2)) {
   const options = {};
   for (let i = 0; i < args.length; i += 2) {
-    if (!['--root', '--revision', '--stage', '--receipt'].includes(args[i]) || !args[i + 1]) throw new Error('ARGUMENT_INVALID');
+    if (!['--root', '--revision', '--stage', '--receipt', '--report'].includes(args[i]) || !args[i + 1]) throw new Error('ARGUMENT_INVALID');
     options[args[i].slice(2)] = args[i + 1];
   }
   if (options.stage !== 'foundation') throw new Error('STAGE_UNSUPPORTED');
   const root = resolve(options.root || dirname(fileURLToPath(import.meta.url)), options.root ? '' : '..');
+  if (options.report !== undefined) {
+    // Maintainer report: the observer's unresolved sites in the public tree,
+    // with the site hashes a reviewed declaration would pin. No ledger is read.
+    if (options.report !== 'unresolved' || options.receipt) throw new Error('ARGUMENT_INVALID');
+    const inventory = collectInventory({ root, revision: options.revision || 'HEAD' });
+    const unresolved = inventory.unresolved.map(({ code, path, location, site_sha256 }) => ({ code, path, ...(location ? { location } : {}), ...(site_sha256 ? { site_sha256 } : {}) }));
+    console.log(JSON.stringify({ status: unresolved.length ? 'FAIL' : 'PASS', stage: 'foundation', source_revision: inventory.source_revision, unresolved }, null, 2));
+    return unresolved.length ? 1 : 0;
+  }
   const ledgerPath = privatePath(process.env.CITYSCROLL_ENGINE_APP_LEDGER, root);
   const ledger = JSON.parse(readFileSync(ledgerPath, 'utf8'));
   const report = verifyLedger(collectInventory({ root, revision: options.revision || 'HEAD' }), ledger);

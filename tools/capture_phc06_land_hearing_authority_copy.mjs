@@ -31,11 +31,11 @@ const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const OUT_DIR = path.join(ROOT, "site/.phc06-capture-tmp");
 const requireJson = createRequire(import.meta.url);
 
-const geography = requireJson(path.join(ROOT, "site/data/community_board_geography_lookup.json"));
-const warehouse = requireJson(path.join(ROOT, "site/data/zap_projects_warehouse_lookup.json"));
-const landDefault = requireJson(path.join(ROOT, "site/data/land_default_ulurp.json"));
-const hearings = requireJson(path.join(ROOT, "site/data/land_upcoming_hearings.json"));
-const elurpCorpus = requireJson(path.join(ROOT, "test/fixtures/land_authority_summary/elurp_197e_corpus.v1.json"));
+const geography = requireJson("../site/data/community_board_geography_lookup.json");
+const warehouse = requireJson("../site/data/zap_projects_warehouse_lookup.json");
+const landDefault = requireJson("../site/data/land_default_ulurp.json");
+const hearings = requireJson("../site/data/land_upcoming_hearings.json");
+const elurpCorpus = requireJson("../test/fixtures/land_authority_summary/elurp_197e_corpus.v1.json");
 
 const i18nSrc = readFileSync(path.join(ROOT, "site/i18n.js"), "utf8");
 const copy = {};

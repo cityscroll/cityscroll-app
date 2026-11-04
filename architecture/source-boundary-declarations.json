@@ -1,0 +1,633 @@
+{
+  "schema": "source-boundary-declarations.v1",
+  "declarations": [
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "civic-content-gates/civic_content_gates/_util.py",
+      "site_sha256": "0e3fc7a021e095f3bee48e493167e170969c1847e10b029aec2df25ef5e9d239",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Node program requires the i18n.js passed as its operand, the dictionary beneath the caller's site root (site/i18n.js in this tree), and prints its strings.",
+      "targets": [
+        "site/i18n.js"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "civic-content-gates/civic_content_gates/reading_level.py",
+      "site_sha256": "0b7f033347136e4bbec5a79b420447216562723597084ee1af1a6d60feb31376",
+      "classification": "runtime-data-operands",
+      "reason": "Runs the separately installed readable-or-else command over site HTML pages; the operands are page names, a preset, a mode and an output format."
+    },
+    {
+      "code": "DYNAMIC_IMPORT_REQUIRES_OBSERVER",
+      "path": "ontology/flywheel_run.mjs",
+      "site_sha256": "c41bd8083b2e7b412c14c17516afb347ebf852bfba42c91a031432a631d994c5",
+      "classification": "computed-repository-module",
+      "reason": "Requires site/action_registry.js beneath the repository root that loadDefaultInputs receives from its caller.",
+      "targets": [
+        "site/action_registry.js"
+      ]
+    },
+    {
+      "code": "NONLOCAL_IMPORT_REQUIRES_OBSERVER",
+      "path": "site/analytics.js",
+      "site_sha256": "e629c634023890eb1731e3cb1f6a1f09be65b8614d277faa6e18f5c708e30c0b",
+      "classification": "served-site-module",
+      "reason": "Browser import of the origin path /rum_bootstrap.mjs; the published site copies site/ to its root, so this is site/rum_bootstrap.mjs.",
+      "targets": [
+        "site/rum_bootstrap.mjs"
+      ]
+    },
+    {
+      "code": "DYNAMIC_IMPORT_REQUIRES_OBSERVER",
+      "path": "site/i18n.js",
+      "site_sha256": "9b6cb9b7cfc579941bad0bfc7282cad15c033fe48519c59283f42cc6e884c7d3",
+      "classification": "computed-repository-module",
+      "reason": "Node-only shim that requires the dictionary for each SHIPPING_LANGS entry under site/i18n/lang; the list names exactly these ten tracked dictionaries.",
+      "targets": [
+        "site/i18n/lang/ar.js",
+        "site/i18n/lang/bn.js",
+        "site/i18n/lang/es.js",
+        "site/i18n/lang/fr.js",
+        "site/i18n/lang/ht.js",
+        "site/i18n/lang/ko.js",
+        "site/i18n/lang/pl.js",
+        "site/i18n/lang/ru.js",
+        "site/i18n/lang/ur.js",
+        "site/i18n/lang/zh-Hans.js"
+      ]
+    },
+    {
+      "code": "INDIRECT_CODE_LOADING_REQUIRES_OBSERVER",
+      "path": "site/vendor/maplibre-gl-4.7.1.js",
+      "site_sha256": "237381a41d6c61231f673be78c3974603a6f6a45c3f8a2a1f93524751d241d9d",
+      "classification": "vendored-third-party",
+      "reason": "Vendored MapLibre GL 4.7.1 starts its map worker from a blob URL built from its own bundled worker source; no repository module is loaded."
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "test/functional/39_following_preview_handoff.py",
+      "site_sha256": "2dec30e37753a496ee9efd83ba9bfe419f52db57c66848dbec0601d257977ccb",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Node program, built with the case values written into its text, imports site/following_view.mjs and renders the Following document.",
+      "targets": [
+        "site/following_view.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "test/functional/52_near_you_reverse_navigation.py",
+      "site_sha256": "93355a6b6331c1be4d6a2d4c34bb3ecd926aa3ae0f3efd34a60ad2f53a21974d",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Node program imports the Near You view and scope modules relative to the inherited working directory, the repository root the functional suite runs from.",
+      "targets": [
+        "site/near_you_scope_runtime.mjs",
+        "site/near_you_view.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "test/functional/project_context_retention_case.py",
+      "site_sha256": "dfc8464dcebcdf0fc423c25de354efe3bf48de97d323bcf736e967b1a156051b",
+      "classification": "computed-repository-module",
+      "reason": "Runs the pinned wrangler 4.126.0 dev server on a config this file writes to a scratch directory; that config's main module is site/_worker.js.",
+      "targets": [
+        "site/_worker.js"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "test/functional/resident_document_presentation.py",
+      "site_sha256": "4f64b8e62e9b2356f6cd8b08eb1281ac389c0118d01e95638eb95e9149b0f5c8",
+      "classification": "computed-repository-module",
+      "reason": "Runs the pinned wrangler 4.126.0 dev server on a config this file writes to a scratch directory; that config's main module is site/_worker.js.",
+      "targets": [
+        "site/_worker.js"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "test/functional/resident_document_presentation.py",
+      "site_sha256": "d1caa33bfb300c08834504a53f7279a0465d1dcf63b349edfb9ce53856d68dc1",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Node program, with the agency name written into its text, imports the research discovery, agency identity and test clock modules.",
+      "targets": [
+        "site/agency_identity.mjs",
+        "site/research_discovery.mjs",
+        "test/helpers/test_clock.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "test/standards/es_diacritics.py",
+      "site_sha256": "aec8bb44818c6b8642dc6322f76bb15edf4f0089286731cfe6a1983cd037713d",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Node program imports the email strings from worker/src/lib/i18n.mjs, whose path is written into its text, and prints the Spanish entries.",
+      "targets": [
+        "worker/src/lib/i18n.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "test/standards/i18n_fallback_sync.py",
+      "site_sha256": "f66685add76ddee6453964a9bd8fad065eee1e69c32bdb2a3ab57e6fedb4b966",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Node program requires the i18n.js passed as its operand, site/i18n.js unless a test fixture root is named, and prints its strings.",
+      "targets": [
+        "site/i18n.js"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "test/standards/js_syntax.py",
+      "site_sha256": "9a7c627804e439f9a40993a908564390a3460184160a304f751907e1b65a9700",
+      "classification": "runtime-data-operands",
+      "reason": "node --check only parses each listed site script and site/app module; nothing is executed."
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "test/standards/js_syntax.py",
+      "site_sha256": "ffd80455da73bbb1cf011fc30a98fb920984ac1508556ea49e9be5a4aa53bfd1",
+      "classification": "runtime-data-operands",
+      "reason": "node --check only parses a scratch copy of an inline page script block; nothing is executed."
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "test/temp_workspace_guard_test.py",
+      "site_sha256": "675ebd795ab5419c57fc7121a1c7d256df1cbcec9d649cae93d36e5254adb174",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Python program imports tools/lib/temp_workspace.py from the repository root to hold a scratch directory open until it is signalled.",
+      "targets": [
+        "tools/lib/temp_workspace.py"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_agency_false_splits.py",
+      "site_sha256": "f568f0cc9f87378626d039ede6df14d92fc1a297f0b806413c08ac0fb659a169",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Node program, with the gold agency pairs written into its text, imports the agency normalizer, identity and crosswalk modules.",
+      "targets": [
+        "entity_resolution/normalizers/agency.mjs",
+        "worker/src/data/agency_crosswalk.json",
+        "worker/src/lib/agencies.mjs",
+        "worker/src/lib/agency_identity.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_IMPORT_REQUIRES_OBSERVER",
+      "path": "tools/capture_browse_filter_first_landing.py",
+      "site_sha256": "78b864cf6acb155594584b9e79fc43d18295dbb071148f83aa90711d0e1213b5",
+      "classification": "computed-repository-module",
+      "reason": "Module-loading helper whose only caller in this file loads test/functional/29_search_results.py for its search fixtures.",
+      "targets": [
+        "test/functional/29_search_results.py"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_browse_filter_first_landing.py",
+      "site_sha256": "1152f8523597c3c3bb533127696b5e455c1aae1571bfbd938999d513a5c4cc8f",
+      "classification": "runtime-data-operands",
+      "reason": "Adds a linked git checkout of the comparison revision in a scratch directory; the tracked hooks directory defines no checkout hook, and the operands are that path and revision."
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_browse_filter_first_landing.py",
+      "site_sha256": "e21f5ac32ae2680b6849475788d26a523c527751bebb46b721c8dfcb89188838",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Node program imports site/pages_edge.mjs of this checkout or of a scratch checkout of the comparison revision and records route decisions.",
+      "targets": [
+        "site/pages_edge.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_changelog_media.py",
+      "site_sha256": "a2982ae38fc37df26ab46a48fe4e786d8833951cb06fad70ebd0478f06a9fe82",
+      "classification": "caller-supplied-command",
+      "reason": "Run helper; its callers here pass git rev-parse, git log, adding and removing a linked scratch checkout, and ffmpeg transcodes."
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_chelsea_served_surface_production_read.py",
+      "site_sha256": "a83c0137548803708f5f702ce3d8af9d244a419eaf48bad8c263e2515fa18a28",
+      "classification": "caller-supplied-command",
+      "reason": "gh helper; its callers here pass only read-only workflow run list, run view and REST GET requests."
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_committee_shared_members_evidence.py",
+      "site_sha256": "44613c8b233f6bc678647121f81cb5a04147cd2e818c637b8c291473594fb251",
+      "classification": "caller-supplied-command",
+      "reason": "git helper; its only caller here passes hash-object for tracked source paths, which runs no hooks."
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_community_board_money.py",
+      "site_sha256": "067bfb5d6a34ef344c355cfcc3954d6fbb9d8d61ff72b1dda4a052922d51765f",
+      "classification": "caller-supplied-command",
+      "reason": "Run helper; its only caller here runs tools/build_community_board_constellation_documents.mjs inside a snapshot of the compared revision.",
+      "targets": [
+        "tools/build_community_board_constellation_documents.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_data_viz_media.py",
+      "site_sha256": "540242a70f749205843bc9fbdfe9d41a43f6dde50adef693142410b0ed108c71",
+      "classification": "caller-supplied-command",
+      "reason": "Run helper; its only caller here passes git rev-parse for a revision named on the command line."
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_following_community_board_discoverability.py",
+      "site_sha256": "c89764c42143e532a0c9f7ccb2f242fffcca4a9e52d2180c667667b7b3a590e6",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Node program imports site/following_view.mjs and writes the rendered Following document to the output path given as its operand.",
+      "targets": [
+        "site/following_view.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_following_create_tab_bounce.py",
+      "site_sha256": "2dec30e37753a496ee9efd83ba9bfe419f52db57c66848dbec0601d257977ccb",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Node program, with the case values written into its text, imports site/following_view.mjs and renders the Following document.",
+      "targets": [
+        "site/following_view.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_following_page_ux.py",
+      "site_sha256": "2dec30e37753a496ee9efd83ba9bfe419f52db57c66848dbec0601d257977ccb",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Node program, with the case values written into its text, imports site/following_view.mjs and renders the Following document.",
+      "targets": [
+        "site/following_view.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_following_preview_handoff.py",
+      "site_sha256": "2dec30e37753a496ee9efd83ba9bfe419f52db57c66848dbec0601d257977ccb",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Node program, with the case values written into its text, imports site/following_view.mjs and renders the Following document.",
+      "targets": [
+        "site/following_view.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_geography_navigation.py",
+      "site_sha256": "2dec30e37753a496ee9efd83ba9bfe419f52db57c66848dbec0601d257977ccb",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Node program imports the geography navigation overlap and capability modules to build an overlap fixture document.",
+      "targets": [
+        "site/geography_navigation_capability.mjs",
+        "site/geography_navigation_overlap_ui.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_guide_illustrations.py",
+      "site_sha256": "d41e03066213b841a9b957f64b0efed2f9d867fc9a688e5abf2a2c1eb61a9ab1",
+      "classification": "inline-interpreter-program",
+      "reason": "Node helper; its callers here pass inline programs importing site/following_view.mjs or tools/guide_translation_catalog.mjs, with a query and base URL as operands.",
+      "targets": [
+        "site/following_view.mjs",
+        "tools/guide_translation_catalog.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_guide_journeys.py",
+      "site_sha256": "3b193bec19df1d6d31983e0991aaf762b88c19dfbd6116d323c335fbca4a2e04",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Node program imports site/pages_edge.mjs and answers the intercepted request URL given as its operand.",
+      "targets": [
+        "site/pages_edge.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_notice_fallback.py",
+      "site_sha256": "3a31b682b39c47c402e7c7dace0438278acb47dcdd94d881b41c11f327d62b7e",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Node program, with the notice id written into its text, imports site/pages_edge.mjs and renders the edge notice.",
+      "targets": [
+        "site/pages_edge.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_notice_primary_readiness.py",
+      "site_sha256": "fbebfccbc1aac3617c43b4a0b951d541dc6e34c7151f4e01bb033bfb6105a666",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Node program, with the notice row written into its text, imports site/pages_edge.mjs and renders the edge notice.",
+      "targets": [
+        "site/pages_edge.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_official_colleagues.py",
+      "site_sha256": "ee58c7d74c0fed07aad1bb5d81de2d10fe8a992b4c2addb92f2cf44e34fccf13",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Node program, with committee ids and an output directory written into its text, imports site/committee_document.mjs and writes committee documents.",
+      "targets": [
+        "site/committee_document.mjs"
+      ]
+    },
+    {
+      "code": "INDIRECT_CODE_LOADING_REQUIRES_OBSERVER",
+      "path": "tools/capture_phc05_rulemaking_comment_consequence.mjs",
+      "site_sha256": "56607992e80903315f76b391fd0fde5a0eca2e4c6ac1b0e521de6ffbedfa0464",
+      "classification": "evaluated-repository-source",
+      "reason": "Evaluates rule-rendering functions extracted by name from the text of site/app/rules.mjs for an offline capture.",
+      "targets": [
+        "site/app/rules.mjs"
+      ]
+    },
+    {
+      "code": "INDIRECT_CODE_LOADING_REQUIRES_OBSERVER",
+      "path": "tools/capture_phc05_rulemaking_comment_consequence.mjs",
+      "site_sha256": "dfa538312bb1dfda46e1efafcc5e02bacebfee0f6eeea5084278dc14c7deac56",
+      "classification": "evaluated-repository-source",
+      "reason": "Evaluates the text of site/i18n.js against a window stub to obtain the translation function for an offline capture.",
+      "targets": [
+        "site/i18n.js"
+      ]
+    },
+    {
+      "code": "DYNAMIC_IMPORT_REQUIRES_OBSERVER",
+      "path": "tools/capture_phc06_land_hearing_authority_copy.mjs",
+      "site_sha256": "5d5ea3c9c2e3d269a3eebd49bb0250860725c7fb8b1377184f6cab2c4b30ad02",
+      "classification": "computed-repository-module",
+      "reason": "Requires the JSON land-phase fixture named by an eLURP corpus specimen; the tracked corpus names exactly these four projects.",
+      "targets": [
+        "test/fixtures/land_phase_spine/2024Q0356.json",
+        "test/fixtures/land_phase_spine/2024Q0419.json",
+        "test/fixtures/land_phase_spine/2025R0257.json",
+        "test/fixtures/land_phase_spine/2026X0362.json"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_route_attribution.py",
+      "site_sha256": "c29b3ea4be1827080457b8e53a96a6524d5d96d99b4e14b4f3d641338d7a5456",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Node program, with the route written into its text, imports site/analytics_surface_taxonomy.mjs and resolves its analytics surface.",
+      "targets": [
+        "site/analytics_surface_taxonomy.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_DYNAMIC_CODE_REQUIRES_OBSERVER",
+      "path": "tools/capture_search_recent_history.py",
+      "site_sha256": "21f6ebd478cf725265fa7fa1ee25d110929cc7e8faa4c4eb0854acb6a9668c50",
+      "classification": "evaluated-repository-source",
+      "reason": "Executes the source of test/functional/42_search_recent_history.py, with its trailing main call removed, to reuse its browser gate helpers.",
+      "targets": [
+        "test/functional/42_search_recent_history.py"
+      ]
+    },
+    {
+      "code": "PYTHON_IMPORT_REQUIRES_OBSERVER",
+      "path": "tools/capture_search_to_browse_query_handoff.py",
+      "site_sha256": "78b864cf6acb155594584b9e79fc43d18295dbb071148f83aa90711d0e1213b5",
+      "classification": "computed-repository-module",
+      "reason": "Module-loading helper whose only caller in this file loads test/functional/29_search_results.py for its search fixtures.",
+      "targets": [
+        "test/functional/29_search_results.py"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_search_to_browse_query_handoff.py",
+      "site_sha256": "1152f8523597c3c3bb533127696b5e455c1aae1571bfbd938999d513a5c4cc8f",
+      "classification": "runtime-data-operands",
+      "reason": "Adds a linked git checkout of the comparison revision in a scratch directory; the tracked hooks directory defines no checkout hook, and the operands are that path and revision."
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_search_to_browse_query_handoff.py",
+      "site_sha256": "e21f5ac32ae2680b6849475788d26a523c527751bebb46b721c8dfcb89188838",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Node program imports site/pages_edge.mjs of this checkout or of a scratch checkout of the comparison revision and records route decisions.",
+      "targets": [
+        "site/pages_edge.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_session_coherence.py",
+      "site_sha256": "d181de7f1dc15899abb5cfff302590d85b81aff63d1e71d0a737c0426e718939",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Node program imports the Worker following, preferences and session modules and the installed optin-token package to sign capture sessions.",
+      "targets": [
+        "worker/src/following.mjs",
+        "worker/src/lib/session.mjs",
+        "worker/src/prefs.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/capture_zap_hearing_logistics.py",
+      "site_sha256": "f568f0cc9f87378626d039ede6df14d92fc1a297f0b806413c08ac0fb659a169",
+      "classification": "inline-interpreter-program",
+      "reason": "Inline Node program, with the case data written into its text, imports worker/src/lib/zap_outcomes.mjs and parses a tracked fixture project.",
+      "targets": [
+        "worker/src/lib/zap_outcomes.mjs"
+      ]
+    },
+    {
+      "code": "DYNAMIC_IMPORT_REQUIRES_OBSERVER",
+      "path": "tools/check-collapsed-group-labels.mjs",
+      "site_sha256": "6df3af947b31d832b80c4925c7d3fcdd5152315675b9f3d4830d4c331b984462",
+      "classification": "computed-repository-module",
+      "reason": "Requires site/staffing.js beneath the repository root argument, which defaults to this checkout.",
+      "targets": [
+        "site/staffing.js"
+      ]
+    },
+    {
+      "code": "DYNAMIC_IMPORT_REQUIRES_OBSERVER",
+      "path": "tools/d1_deploy_fingerprint.mjs",
+      "site_sha256": "ade309272c4bb3f8b481eee2ffa321014fc138f4dcac53d8f271de162098bd63",
+      "classification": "computed-repository-module",
+      "reason": "Imports tools/d1_manifest.mjs beneath the repository root argument, which defaults to this checkout, when that file exists.",
+      "targets": [
+        "tools/d1_manifest.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/deployed_capture_ancestor.py",
+      "site_sha256": "ec17116ace14587bca615c20bfdb0503129825d7202baf8659b0af30ac9fe1d6",
+      "classification": "caller-supplied-command",
+      "reason": "git helper; its callers here pass rev-parse --verify and merge-base --is-ancestor, which run no hooks."
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/discovery_recovery_journey.py",
+      "site_sha256": "9376b590b7e18b311eee1611b95ec4b4e45d8f3261df661f7868379c5ebf566c",
+      "classification": "caller-supplied-command",
+      "reason": "git helper; its callers here pass rev-parse, merge-base, diff --quiet and ls-files, which run no hooks."
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/lib/temp_workspace.py",
+      "site_sha256": "8ac39ea191770cac3d510f3d60d5011d106a4bae267e5aee6380a2c3dc4c5495",
+      "classification": "runtime-data-operands",
+      "reason": "Adds a linked git checkout of HEAD in a scratch directory; the tracked hooks directory defines no checkout hook, and the only operand is that path."
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "tools/repository_revision.py",
+      "site_sha256": "6026e36d75158b7958515d81200e926594d43702c2cb08bc70c9dfe49080879c",
+      "classification": "caller-supplied-command",
+      "reason": "git helper; its callers here pass rev-parse, rev-list --parents and merge-base, which run no hooks."
+    },
+    {
+      "code": "DYNAMIC_IMPORT_REQUIRES_OBSERVER",
+      "path": "tools/worker_cost_acquisition.mjs",
+      "site_sha256": "dde3975c48d0d3fcead3fa4d1b8e16b896ea34da62cf13b60c473f9c03965ed7",
+      "classification": "operator-supplied-module",
+      "reason": "Imports the zero-provider transport module the operator names in an environment variable; when unset nothing is loaded."
+    },
+    {
+      "code": "DYNAMIC_IMPORT_REQUIRES_OBSERVER",
+      "path": "tools/worker_observability_restorer.mjs",
+      "site_sha256": "7c8fe398cd82d5ea80560281e00f6154b09b15615233da0a8b56ac03f861e51b",
+      "classification": "operator-supplied-module",
+      "reason": "Imports the custom restorer transport module the operator names in an environment variable; when unset nothing is loaded."
+    },
+    {
+      "code": "DYNAMIC_IMPORT_REQUIRES_OBSERVER",
+      "path": "tools/worker_tail_attachment_restorer.mjs",
+      "site_sha256": "0c101913070ffac2e84bb5d4c8a68c6057e333ff994febf0e262a0a23b06feaf",
+      "classification": "operator-supplied-module",
+      "reason": "Imports the tail-attachment transport module the operator names in an environment variable; when unset nothing is loaded."
+    },
+    {
+      "code": "DYNAMIC_IMPORT_REQUIRES_OBSERVER",
+      "path": "tools/worker_tail_attachment_restorer.mjs",
+      "site_sha256": "3cc82adb84b2436c30eeac63a303e000f102f50e3437dbaa90ce00ea901ecdbd",
+      "classification": "operator-supplied-module",
+      "reason": "Imports the version transport module the operator names in an environment variable; when unset nothing is loaded."
+    },
+    {
+      "code": "DYNAMIC_IMPORT_REQUIRES_OBSERVER",
+      "path": "tools/worker_tail_attachment_restorer.mjs",
+      "site_sha256": "8c50f3d6915a8502e6f0eed7b402ce4965b0d5aa87489509457400f74115df50",
+      "classification": "operator-supplied-module",
+      "reason": "Imports the cap-detach transport module the operator names in an environment variable; when unset nothing is loaded."
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "warehouse/lib/ibo_fiscal_history.py",
+      "site_sha256": "fa4c18bc11935677145c2bf8cc5b8f5d79a820e4cd33b3e40f8806b1e12b828d",
+      "classification": "computed-repository-module",
+      "reason": "Runs warehouse/scripts/resolve_ibo_agencies.mjs beneath the root argument, which defaults to this checkout, feeding agency labels on standard input.",
+      "targets": [
+        "warehouse/scripts/resolve_ibo_agencies.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "warehouse/scripts/abo_awards_run.py",
+      "site_sha256": "f31c1227af9631227ae4e0f8c4029dc06c90692011c656660375076ff1f37003",
+      "classification": "runtime-data-operands",
+      "reason": "Runs node on warehouse/scripts/abo_awards.mjs, named in the command list built above; the other elements are stage paths, limits and flags.",
+      "targets": [
+        "warehouse/scripts/abo_awards.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "warehouse/scripts/attachment_metadata_run.py",
+      "site_sha256": "f31c1227af9631227ae4e0f8c4029dc06c90692011c656660375076ff1f37003",
+      "classification": "runtime-data-operands",
+      "reason": "Runs node on warehouse/scripts/attachment_metadata.mjs, named in the command list built above; the other elements are output paths, limits, dates and flags.",
+      "targets": [
+        "warehouse/scripts/attachment_metadata.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "warehouse/scripts/attachment_tables_run.py",
+      "site_sha256": "f31c1227af9631227ae4e0f8c4029dc06c90692011c656660375076ff1f37003",
+      "classification": "runtime-data-operands",
+      "reason": "Runs node on warehouse/scripts/attachment_tables.mjs, named in the command list built above; the other elements are output paths, limits and flags.",
+      "targets": [
+        "warehouse/scripts/attachment_tables.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "warehouse/scripts/attachment_text_run.py",
+      "site_sha256": "f31c1227af9631227ae4e0f8c4029dc06c90692011c656660375076ff1f37003",
+      "classification": "runtime-data-operands",
+      "reason": "Runs node on warehouse/scripts/attachment_text.mjs, named in the command list built above; the other elements are output paths, limits and flags.",
+      "targets": [
+        "warehouse/scripts/attachment_text.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "warehouse/scripts/cpu_guard.py",
+      "site_sha256": "305c919a5b1228ebf8fd0131ed17ce2ab24ebc8bc33b6c1ed5f8a0bb968d9402",
+      "classification": "operator-supplied-module",
+      "reason": "Runs the host headroom script named by HEADROOM_BIN or a default host path outside this repository, asking for a JSON verdict."
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "warehouse/scripts/cpu_guard.py",
+      "site_sha256": "9e64009d433bb4b9af7bdc6fa6bd119dfc171fbc4dcb373f370622778a49cac1",
+      "classification": "caller-supplied-command",
+      "reason": "Runs the argv a caller passes behind a host CPU-priority launcher; the warehouse runners and ingest pass only these tracked scripts.",
+      "targets": [
+        "warehouse/scripts/_convert_main.py",
+        "warehouse/scripts/abo_awards.mjs",
+        "warehouse/scripts/attachment_metadata.mjs",
+        "warehouse/scripts/attachment_tables.mjs",
+        "warehouse/scripts/attachment_text.mjs",
+        "warehouse/scripts/er_batch.mjs",
+        "warehouse/scripts/non_council_outcomes.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "warehouse/scripts/er_batch_run.py",
+      "site_sha256": "896f790a355c4adb94c40d684332764fe35af231191bc33d353de059dd58c7c9",
+      "classification": "runtime-data-operands",
+      "reason": "Runs node on warehouse/scripts/er_batch.mjs, named in the command list built above; the other elements are limits, dates, receipts and flags.",
+      "targets": [
+        "warehouse/scripts/er_batch.mjs"
+      ]
+    },
+    {
+      "code": "PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER",
+      "path": "warehouse/scripts/non_council_outcomes_run.py",
+      "site_sha256": "05cf7d929bfcd103bcf2427204f7c036992a95bca386c4783232e8cd3fce9ed3",
+      "classification": "runtime-data-operands",
+      "reason": "Runs node on warehouse/scripts/non_council_outcomes.mjs, named in the command list built above; the other elements are limits, data paths and flags.",
+      "targets": [
+        "warehouse/scripts/non_council_outcomes.mjs"
+      ]
+    },
+    {
+      "code": "DYNAMIC_IMPORT_REQUIRES_OBSERVER",
+      "path": "worker/scripts/prediction-calibration-scorecard.mjs",
+      "site_sha256": "256bfb5152526504c7ed4599d3375c84c162e7b1e246e24d514f7a94b453bbc3",
+      "classification": "computed-repository-module",
+      "reason": "Imports build_cases.mjs from the fixture directory, which defaults to worker/test/fixtures/predictions; an operator may name another directory with --fixtures.",
+      "targets": [
+        "worker/test/fixtures/predictions/build_cases.mjs"
+      ]
+    }
+  ]
+}
