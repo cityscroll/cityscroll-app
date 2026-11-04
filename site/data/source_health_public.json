@@ -1227,7 +1227,7 @@
       "name": "DCAS Vehicle Auction List",
       "publisher": "NYC Department of Citywide Administrative Services",
       "official_url": "https://data.cityofnewyork.us/d/ynic-uz5i",
-      "expected_cadence": "Weekly",
+      "expected_cadence": "Weekly (Open Data metadata); observed republication is event-driven, with a measured 77-day interval between the 2026-07-22 and 2026-10-07 auction batches",
       "mode": "periodic",
       "health": {
         "status": "UNKNOWN",
@@ -1264,7 +1264,7 @@
         },
         "publisher_vintage": null,
         "retrieved_at": null,
-        "expected_lag_tolerance_days": 21,
+        "expected_lag_tolerance_days": 120,
         "current_lag": {
           "value": null,
           "unit": null
@@ -1693,7 +1693,7 @@
       "name": "Mandatory Inclusionary Housing",
       "publisher": "NYC Department of City Planning",
       "official_url": "https://data.cityofnewyork.us/d/m79g-k9r4",
-      "expected_cadence": "Monthly (Open Data metadata; 31-day working cadence)",
+      "expected_cadence": "Monthly (Open Data metadata; 31-day working cadence); observed republication is event-driven, with a 169-day publisher-quiet period measured from 2026-05-18 to 2026-11-03",
       "mode": "periodic",
       "health": {
         "status": "UNKNOWN",
@@ -1730,7 +1730,7 @@
         },
         "publisher_vintage": null,
         "retrieved_at": null,
-        "expected_lag_tolerance_days": 120,
+        "expected_lag_tolerance_days": 365,
         "current_lag": {
           "value": null,
           "unit": null

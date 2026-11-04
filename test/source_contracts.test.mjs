@@ -97,25 +97,39 @@ test("LL48 declares a two-year cadence and retained vintage that resolves", () =
   assert.equal(vintage.at, "2025-09-17");
 });
 
-test("MIH freshness limit records its metadata-based cadence derivation", () => {
+test("MIH freshness limit records its observed publisher-quiet period derivation", () => {
   const registry = loadSourceContracts();
   const mih = registry.contracts.find((entry) => entry.id === "mandatory-inclusionary-housing");
-  assert.equal(mih.max_stale_days, 120);
-  assert.equal(mih.freshness_policy.limit_days, 120);
-  assert.match(mih.freshness_policy.derivation, /31-day monthly cadence \+ 48-day observed metadata lag \+ 41-day margin/);
+  assert.equal(mih.max_stale_days, 365);
+  assert.equal(mih.freshness_policy.limit_days, 365);
+  assert.match(mih.freshness_policy.derivation, /169-day observed publisher-quiet period \+ 196-day margin = 365-day limit/);
   assert.match(mih.freshness_policy.evidence, /revision endpoint exposes only the current revision/);
 });
 
-test("MIH declares retained vintage that resolves under the 120-day monthly contract", () => {
+test("MIH declares retained vintage that resolves under the event-driven annual contract", () => {
   const registry = loadSourceContracts();
   const mih = registry.contracts.find((entry) => entry.id === "mandatory-inclusionary-housing");
-  assert.equal(mih.max_stale_days, 120);
-  assert.equal(mih.freshness_contract.max_stale_days, 120);
-  assert.equal(mih.freshness_contract.serving_max_age_days, 120);
+  assert.equal(mih.max_stale_days, 365);
+  assert.equal(mih.freshness_contract.max_stale_days, 365);
+  assert.equal(mih.freshness_contract.serving_max_age_days, 365);
   assert.match(mih.publisher_cadence, /Monthly \(Open Data metadata; 31-day working cadence\)/);
   const vintage = readRetainedVintage(mih.freshness_contract.retained_vintage);
   assert.equal(vintage.field, "observed_at");
   assert.equal(vintage.at, "2026-08-05T00:00:00.000Z");
+});
+
+test("DCAS vehicle auction freshness limit records its observed republication interval", () => {
+  const registry = loadSourceContracts();
+  const dcas = registry.contracts.find((entry) => entry.id === "dcas-vehicle-auction-list");
+  assert.equal(dcas.max_stale_days, 120);
+  assert.equal(dcas.freshness_policy.limit_days, 120);
+  assert.equal(dcas.freshness_contract.max_stale_days, 120);
+  assert.equal(dcas.freshness_contract.serving_max_age_days, 120);
+  assert.equal(freshnessLimit(dcas), 120);
+  assert.match(dcas.freshness_policy.derivation, /77-day observed republication interval \+ 43-day margin = 120-day limit/);
+  assert.match(dcas.freshness_policy.evidence, /2026-07-22T13:41:16Z/);
+  assert.match(dcas.freshness_policy.evidence, /2026-10-07T14:37:04Z/);
+  assert.match(dcas.publisher_cadence, /Weekly \(Open Data metadata\)/);
 });
 
 test("recorded fixtures reject missing fields and non-tabular source shapes", () => {
@@ -890,5 +904,35 @@ test("as-needed sources pass the next daily check but still fail beyond the annu
       assert.equal(error.finding.publisher_updated_at, new Date(publisherAt).toISOString());
       return true;
     });
+  }
+});
+
+test("event-driven sources pass at their measured publisher clocks but still fail beyond the recalibrated bound", async (t) => {
+  const registry = loadSourceContracts();
+  let now = Date.parse("2026-11-03T10:23:00Z");
+  t.mock.method(Date, "now", () => now);
+  for (const [id, published, limitDays] of [
+    ["dcas-vehicle-auction-list", "2026-10-07T14:37:04Z", 120],
+    ["mandatory-inclusionary-housing", "2026-05-18T20:26:30Z", 365],
+  ]) {
+    const contract = registry.contracts.find((row) => row.id === id);
+    const publisherAt = Date.parse(published);
+    t.mock.method(globalThis, "fetch", async (url) => String(url).includes("/api/views/")
+      ? socrataMetadata({ rowsUpdatedAt: publisherAt / 1000, fields: contract.required_fields })
+      : new Response(JSON.stringify([{ [contract.required_fields[0]]: "sample" }]), { status: 200 }));
+    // The publisher clocks measured on 2026-11-03 (27 and 169 days old) are
+    // inside the recalibrated limits, so the daily contract check passes and
+    // the scheduled monitor closes the drift findings it opened.
+    assert.match(await verifySocrata(contract), /d old \(rowsUpdatedAt\)/, id);
+    // Genuine staleness is still detected the moment the publisher clock
+    // crosses the recalibrated bound.
+    now = publisherAt + limitDays * 86_400_000 + 1;
+    await assert.rejects(verifySocrata(contract), (error) => {
+      assert.equal(error.finding.source_contract_id, id);
+      assert.equal(error.finding.limit_days, limitDays);
+      assert.equal(error.finding.publisher_updated_at, new Date(publisherAt).toISOString());
+      return true;
+    });
+    now = Date.parse("2026-11-03T10:23:00Z");
   }
 });
