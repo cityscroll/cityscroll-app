@@ -23,13 +23,13 @@
     ]
   },
   "input_fingerprints": {
-    "awards": "35e73eb57176f9ffa67ad3ea35cb460a0a90f6408bda8d5c16da190503c8091c",
-    "source_contracts": "c68bac3268940aa27a3db3d005a0185c4d472a3e9accf28e249697af830dd7bb",
-    "award_receipts": "e61568ccd2ac23acafe7d594694df2fe8bf93e36aca338c46db1c11816bc9a7d",
-    "story_signals": "d73f29eca642408849c6c8960af6f2d5170547e799c6e02514581c96987e21c3",
-    "procurement": "3c850c29657ca3a0adadd4c69afff2b9047e4cc99a3adf4098befbcfb1870891",
+    "awards": "6bc6217d57c7c8e5db62e951b19cc0ec28d923943e500a961a9d8d919521f6e6",
+    "source_contracts": "039d412fa5a29bf8d14e01f7e90c55136e446c4011af2ceb58343e89fb9c4de4",
+    "award_receipts": "e9a9f5affa7e29ad33dcdcbd8826811b10ba783e8d92515d2ea82ea2a8a29d51",
+    "story_signals": "66ec53cb3a3aa068bab03f30a26658be8113f34bcfd8ce0ed1d9fde6dd2765f9",
+    "procurement": "eab965466cfc57a3b69125e070b744720e99d2590188c957c5b69cc382dab78b",
     "negative_control": "977d6ba5b8c45ea784a965b21b8fa7a9b142de401e14451d88873cbc6da5b8de",
-    "frozen_cases": "7baa52830327168cb0d2f0b0b6def1af45e2b48c699c1a2c278ca234f2847aff"
+    "frozen_cases": "43481b789cdbbdb7925bc67fd5513120772fed9ec3fa301d1daf1fdd34bbc9fc"
   },
   "dimensions": {
     "precision": {
@@ -79,7 +79,7 @@
           "numerator": 1,
           "denominator": 1,
           "rate": 1,
-          "peer_population_context": 8966
+          "peer_population_context": 9141
         },
         "within_contract_registered_amount_change": {
           "denominator_basis": "unique committed Checkbook observations with two positive registered amounts",

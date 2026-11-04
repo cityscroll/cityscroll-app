@@ -373870,9 +373870,16 @@
       "procurement_id": "procurement:contract:CT105620278801684",
       "canonical_id": "procurement:contract:CT105620278801684",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT105620278801684:NICHOLAS MATTIA & ASSOCIATES INC:prime-vendor:2026-10-09"
+        "checkbook_contracts:contract:registered:CT105620278801684:NICHOLAS MATTIA & ASSOCIATES INC:prime-vendor:2026-10-09",
+        "city_record:20261013011"
       ],
       "stages": [
+        {
+          "stage": "award",
+          "source_observation_refs": [
+            "city_record:20261013011"
+          ]
+        },
         {
           "stage": "registered",
           "source_observation_refs": [
@@ -373906,7 +373913,9 @@
       "lifecycle": null,
       "compatibility": {
         "canonical_href": "/procurements/procurement%3Acontract%3ACT105620278801684",
-        "city_record_notice_hrefs": []
+        "city_record_notice_hrefs": [
+          "/notices/20261013011"
+        ]
       },
       "process_events": [
         {
@@ -373930,6 +373939,28 @@
             "date_basis": "registration",
             "source_receipt_ref": "materialized:contract:registered:CT105620278801684:NICHOLAS MATTIA & ASSOCIATES INC:prime-vendor:2026-10-09"
           }
+        },
+        {
+          "schema": "cityscroll.procurement_process_event.v1",
+          "version": 1,
+          "procurement_id": "procurement:contract:CT105620278801684",
+          "event_id": "procurement:contract:CT105620278801684:city_record:20261013011:award",
+          "state": "award",
+          "publisher_state": "Award",
+          "state_basis": "explicit",
+          "date_basis": "publication",
+          "effective_at": "2026-10-19",
+          "source_system": "city_record",
+          "source_observation_ref": "city_record:20261013011",
+          "source_receipt_ref": "materialized:20261013011",
+          "metadata": {
+            "publisher_field": "type_of_notice_description",
+            "publisher_identifier": "20261013011",
+            "evidence_href": "/notices/20261013011",
+            "evidence_label": "City Record notice",
+            "date_basis": "publication",
+            "source_receipt_ref": "materialized:20261013011"
+          }
         }
       ],
       "procurement_source_lookup_receipt": {
@@ -373941,12 +373972,14 @@
           {
             "source_system": "city_record",
             "applicability": "applicable",
-            "state": "checked-no-match",
+            "state": "corroborated",
             "queried_keys": [
               "05622X8004KXLR001",
               "CT105620278801684"
             ],
-            "matched_source_observation_refs": [],
+            "matched_source_observation_refs": [
+              "city_record:20261013011"
+            ],
             "matched_analytical_row_refs": [],
             "basis": "exact_retained_observation_key",
             "snapshot_vintage": null,
@@ -373955,7 +373988,9 @@
             "population": null,
             "denominator": null,
             "source_acquisition_at": null,
-            "matched_identity_keys": [],
+            "matched_identity_keys": [
+              "epin:05622X8004KXLR001"
+            ],
             "lookup_as_of": "2026-10-22T19:54:16.507Z"
           },
           {
@@ -374461,9 +374496,16 @@
       "procurement_id": "procurement:contract:CT105620278802278",
       "canonical_id": "procurement:contract:CT105620278802278",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT105620278802278:NATIONAL CHILDREN'S ADVOCACY CENTER:prime-vendor:2026-10-02"
+        "checkbook_contracts:contract:registered:CT105620278802278:NATIONAL CHILDREN'S ADVOCACY CENTER:prime-vendor:2026-10-02",
+        "city_record:20261005010"
       ],
       "stages": [
+        {
+          "stage": "award",
+          "source_observation_refs": [
+            "city_record:20261005010"
+          ]
+        },
         {
           "stage": "registered",
           "source_observation_refs": [
@@ -374497,7 +374539,9 @@
       "lifecycle": null,
       "compatibility": {
         "canonical_href": "/procurements/procurement%3Acontract%3ACT105620278802278",
-        "city_record_notice_hrefs": []
+        "city_record_notice_hrefs": [
+          "/notices/20261005010"
+        ]
       },
       "process_events": [
         {
@@ -374521,6 +374565,28 @@
             "date_basis": "registration",
             "source_receipt_ref": "materialized:contract:registered:CT105620278802278:NATIONAL CHILDREN'S ADVOCACY CENTER:prime-vendor:2026-10-02"
           }
+        },
+        {
+          "schema": "cityscroll.procurement_process_event.v1",
+          "version": 1,
+          "procurement_id": "procurement:contract:CT105620278802278",
+          "event_id": "procurement:contract:CT105620278802278:city_record:20261005010:award",
+          "state": "award",
+          "publisher_state": "Award",
+          "state_basis": "explicit",
+          "date_basis": "publication",
+          "effective_at": "2026-10-09",
+          "source_system": "city_record",
+          "source_observation_ref": "city_record:20261005010",
+          "source_receipt_ref": "materialized:20261005010",
+          "metadata": {
+            "publisher_field": "type_of_notice_description",
+            "publisher_identifier": "20261005010",
+            "evidence_href": "/notices/20261005010",
+            "evidence_label": "City Record notice",
+            "date_basis": "publication",
+            "source_receipt_ref": "materialized:20261005010"
+          }
         }
       ],
       "procurement_source_lookup_receipt": {
@@ -374532,12 +374598,14 @@
           {
             "source_system": "city_record",
             "applicability": "applicable",
-            "state": "checked-no-match",
+            "state": "corroborated",
             "queried_keys": [
               "05625U0007001R001",
               "CT105620278802278"
             ],
-            "matched_source_observation_refs": [],
+            "matched_source_observation_refs": [
+              "city_record:20261005010"
+            ],
             "matched_analytical_row_refs": [],
             "basis": "exact_retained_observation_key",
             "snapshot_vintage": null,
@@ -374546,7 +374614,9 @@
             "population": null,
             "denominator": null,
             "source_acquisition_at": null,
-            "matched_identity_keys": [],
+            "matched_identity_keys": [
+              "epin:05625U0007001R001"
+            ],
             "lookup_as_of": "2026-10-22T19:54:16.507Z"
           },
           {
@@ -374855,9 +374925,16 @@
       "procurement_id": "procurement:contract:CT105620278802741",
       "canonical_id": "procurement:contract:CT105620278802741",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT105620278802741:THERMO EBERLINE LLC:prime-vendor:2026-10-02"
+        "checkbook_contracts:contract:registered:CT105620278802741:THERMO EBERLINE LLC:prime-vendor:2026-10-02",
+        "city_record:20261005009"
       ],
       "stages": [
+        {
+          "stage": "award",
+          "source_observation_refs": [
+            "city_record:20261005009"
+          ]
+        },
         {
           "stage": "registered",
           "source_observation_refs": [
@@ -374891,7 +374968,9 @@
       "lifecycle": null,
       "compatibility": {
         "canonical_href": "/procurements/procurement%3Acontract%3ACT105620278802741",
-        "city_record_notice_hrefs": []
+        "city_record_notice_hrefs": [
+          "/notices/20261005009"
+        ]
       },
       "process_events": [
         {
@@ -374915,6 +374994,28 @@
             "date_basis": "registration",
             "source_receipt_ref": "materialized:contract:registered:CT105620278802741:THERMO EBERLINE LLC:prime-vendor:2026-10-02"
           }
+        },
+        {
+          "schema": "cityscroll.procurement_process_event.v1",
+          "version": 1,
+          "procurement_id": "procurement:contract:CT105620278802741",
+          "event_id": "procurement:contract:CT105620278802741:city_record:20261005009:award",
+          "state": "award",
+          "publisher_state": "Award",
+          "state_basis": "explicit",
+          "date_basis": "publication",
+          "effective_at": "2026-10-09",
+          "source_system": "city_record",
+          "source_observation_ref": "city_record:20261005009",
+          "source_receipt_ref": "materialized:20261005009",
+          "metadata": {
+            "publisher_field": "type_of_notice_description",
+            "publisher_identifier": "20261005009",
+            "evidence_href": "/notices/20261005009",
+            "evidence_label": "City Record notice",
+            "date_basis": "publication",
+            "source_receipt_ref": "materialized:20261005009"
+          }
         }
       ],
       "procurement_source_lookup_receipt": {
@@ -374926,12 +375027,14 @@
           {
             "source_system": "city_record",
             "applicability": "applicable",
-            "state": "checked-no-match",
+            "state": "corroborated",
             "queried_keys": [
               "05623S0008001R001",
               "CT105620278802741"
             ],
-            "matched_source_observation_refs": [],
+            "matched_source_observation_refs": [
+              "city_record:20261005009"
+            ],
             "matched_analytical_row_refs": [],
             "basis": "exact_retained_observation_key",
             "snapshot_vintage": null,
@@ -374940,7 +375043,9 @@
             "population": null,
             "denominator": null,
             "source_acquisition_at": null,
-            "matched_identity_keys": [],
+            "matched_identity_keys": [
+              "epin:05623S0008001R001"
+            ],
             "lookup_as_of": "2026-10-22T19:54:16.507Z"
           },
           {
@@ -375249,9 +375354,16 @@
       "procurement_id": "procurement:contract:CT105620278803358",
       "canonical_id": "procurement:contract:CT105620278803358",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT105620278803358:SAVANT FINANCIAL TECHNOLOGIES INC:prime-vendor:2026-10-13"
+        "checkbook_contracts:contract:registered:CT105620278803358:SAVANT FINANCIAL TECHNOLOGIES INC:prime-vendor:2026-10-13",
+        "city_record:20261013033"
       ],
       "stages": [
+        {
+          "stage": "award",
+          "source_observation_refs": [
+            "city_record:20261013033"
+          ]
+        },
         {
           "stage": "registered",
           "source_observation_refs": [
@@ -375285,7 +375397,9 @@
       "lifecycle": null,
       "compatibility": {
         "canonical_href": "/procurements/procurement%3Acontract%3ACT105620278803358",
-        "city_record_notice_hrefs": []
+        "city_record_notice_hrefs": [
+          "/notices/20261013033"
+        ]
       },
       "process_events": [
         {
@@ -375309,6 +375423,28 @@
             "date_basis": "registration",
             "source_receipt_ref": "materialized:contract:registered:CT105620278803358:SAVANT FINANCIAL TECHNOLOGIES INC:prime-vendor:2026-10-13"
           }
+        },
+        {
+          "schema": "cityscroll.procurement_process_event.v1",
+          "version": 1,
+          "procurement_id": "procurement:contract:CT105620278803358",
+          "event_id": "procurement:contract:CT105620278803358:city_record:20261013033:award",
+          "state": "award",
+          "publisher_state": "Award",
+          "state_basis": "explicit",
+          "date_basis": "publication",
+          "effective_at": "2026-10-20",
+          "source_system": "city_record",
+          "source_observation_ref": "city_record:20261013033",
+          "source_receipt_ref": "materialized:20261013033",
+          "metadata": {
+            "publisher_field": "type_of_notice_description",
+            "publisher_identifier": "20261013033",
+            "evidence_href": "/notices/20261013033",
+            "evidence_label": "City Record notice",
+            "date_basis": "publication",
+            "source_receipt_ref": "materialized:20261013033"
+          }
         }
       ],
       "procurement_source_lookup_receipt": {
@@ -375320,12 +375456,14 @@
           {
             "source_system": "city_record",
             "applicability": "applicable",
-            "state": "checked-no-match",
+            "state": "corroborated",
             "queried_keys": [
               "05627W0002001",
               "CT105620278803358"
             ],
-            "matched_source_observation_refs": [],
+            "matched_source_observation_refs": [
+              "city_record:20261013033"
+            ],
             "matched_analytical_row_refs": [],
             "basis": "exact_retained_observation_key",
             "snapshot_vintage": null,
@@ -375334,7 +375472,9 @@
             "population": null,
             "denominator": null,
             "source_acquisition_at": null,
-            "matched_identity_keys": [],
+            "matched_identity_keys": [
+              "epin:05627W0002001"
+            ],
             "lookup_as_of": "2026-10-22T19:54:16.507Z"
           },
           {
@@ -380571,251 +380711,6 @@
             "queried_keys": [
               "05722U0006001",
               "CT105720228806818"
-            ],
-            "matched_source_observation_refs": [],
-            "matched_analytical_row_refs": [],
-            "basis": null,
-            "snapshot_vintage": null,
-            "key_normalization": "uppercase alphanumeric characters",
-            "usable_key_count": null,
-            "population": null,
-            "denominator": null,
-            "source_acquisition_at": null
-          }
-        ]
-      }
-    },
-    {
-      "object_type": "procurement",
-      "schema": "cityscroll.procurement_object.v1",
-      "procurement_id": "procurement:contract:CT105720238800601",
-      "canonical_id": "procurement:contract:CT105720238800601",
-      "source_observation_refs": [
-        "city_record:20220701128",
-        "passport_public_contracts:contract:05722O0006001:4758767"
-      ],
-      "stages": [
-        {
-          "stage": "award",
-          "source_observation_refs": [
-            "city_record:20220701128"
-          ]
-        },
-        {
-          "stage": "registered",
-          "source_observation_refs": [
-            "passport_public_contracts:contract:05722O0006001:4758767"
-          ]
-        }
-      ],
-      "identity_keys": {
-        "contract_ids": [
-          "CT105720238800601"
-        ],
-        "epins": [
-          "05722O0006001"
-        ]
-      },
-      "passport_action_family": {
-        "family_key": "CT1-057-20238800601",
-        "actions": [
-          {
-            "ctr_id": "4758767",
-            "epin": "05722O0006001",
-            "contract_id": "CT1-057-20238800601",
-            "action_key": "05722O0006001",
-            "action_family_key": "CT1-057-20238800601",
-            "action_role": "base",
-            "contract_type": null,
-            "source_date": "06/30/2022"
-          }
-        ]
-      },
-      "institution_keys": {
-        "publisher_institution_ids": [],
-        "procuring_institution_ids": [],
-        "source_agency_labels": []
-      },
-      "identity_edges": [
-        {
-          "schema": "cityscroll.procurement_identity_edge.v1",
-          "status": "accepted",
-          "source_observation_ref": "passport_public_contracts:contract:05722O0006001:4758767",
-          "procurement_id": "procurement:contract:CT105720238800601",
-          "basis": "exact_contract_id",
-          "matched_value": "CT105720238800601"
-        }
-      ],
-      "lifecycle": null,
-      "compatibility": {
-        "canonical_href": "/procurements/procurement%3Acontract%3ACT105720238800601",
-        "city_record_notice_hrefs": [
-          "/notices/20220701128"
-        ]
-      },
-      "process_events": [
-        {
-          "schema": "cityscroll.procurement_process_event.v1",
-          "version": 1,
-          "procurement_id": "procurement:contract:CT105720238800601",
-          "event_id": "procurement:contract:CT105720238800601:passport_public_contracts:contract:05722O0006001:4758767:registered",
-          "state": "registered",
-          "publisher_state": "Registered",
-          "state_basis": "explicit",
-          "date_basis": "registration",
-          "effective_at": "2022-06-30",
-          "source_system": "passport_public_contracts",
-          "source_observation_ref": "passport_public_contracts:contract:05722O0006001:4758767",
-          "source_receipt_ref": "materialized:contract:05722O0006001:4758767",
-          "metadata": {
-            "publisher_field": "status",
-            "publisher_identifier": "CT1-057-20238800601",
-            "evidence_href": "https://a0333-passportpublic.nyc.gov/contracts.html",
-            "evidence_label": "PASSPort Public contracts",
-            "date_basis": "registration",
-            "source_receipt_ref": "materialized:contract:05722O0006001:4758767"
-          }
-        },
-        {
-          "schema": "cityscroll.procurement_process_event.v1",
-          "version": 1,
-          "procurement_id": "procurement:contract:CT105720238800601",
-          "event_id": "procurement:contract:CT105720238800601:city_record:20220701128:award",
-          "state": "award",
-          "publisher_state": "Award",
-          "state_basis": "explicit",
-          "date_basis": "publication",
-          "effective_at": "2022-07-07",
-          "source_system": "city_record",
-          "source_observation_ref": "city_record:20220701128",
-          "source_receipt_ref": "materialized:20220701128",
-          "metadata": {
-            "publisher_field": "type_of_notice_description",
-            "publisher_identifier": "20220701128",
-            "evidence_href": "/notices/20220701128",
-            "evidence_label": "City Record notice",
-            "date_basis": "publication",
-            "source_receipt_ref": "materialized:20220701128"
-          }
-        }
-      ],
-      "procurement_source_lookup_receipt": {
-        "schema": "cityscroll.procurement_source_lookup_receipt.v1",
-        "version": 1,
-        "procurement_id": "procurement:contract:CT105720238800601",
-        "generated_at": "2026-10-22T19:54:16.507Z",
-        "sources": [
-          {
-            "source_system": "city_record",
-            "applicability": "applicable",
-            "state": "corroborated",
-            "queried_keys": [
-              "05722O0006001",
-              "CT105720238800601"
-            ],
-            "matched_source_observation_refs": [
-              "city_record:20220701128"
-            ],
-            "matched_analytical_row_refs": [],
-            "basis": "exact_retained_observation_key",
-            "snapshot_vintage": null,
-            "key_normalization": "uppercase alphanumeric characters",
-            "usable_key_count": null,
-            "population": null,
-            "denominator": null,
-            "source_acquisition_at": null,
-            "matched_identity_keys": [
-              "epin:05722O0006001"
-            ],
-            "lookup_as_of": "2026-10-22T19:54:16.507Z"
-          },
-          {
-            "source_system": "passport_public_contracts",
-            "applicability": "applicable",
-            "state": "corroborated",
-            "queried_keys": [
-              "05722O0006001",
-              "CT105720238800601"
-            ],
-            "matched_source_observation_refs": [
-              "passport_public_contracts:contract:05722O0006001:4758767"
-            ],
-            "matched_analytical_row_refs": [],
-            "basis": "exact_retained_observation_key",
-            "snapshot_vintage": null,
-            "key_normalization": "uppercase alphanumeric characters",
-            "usable_key_count": null,
-            "population": null,
-            "denominator": null,
-            "source_acquisition_at": null,
-            "matched_identity_keys": [
-              "contract:CT105720238800601"
-            ],
-            "lookup_as_of": "2026-10-22T19:54:16.507Z"
-          },
-          {
-            "source_system": "passport_public_rfx",
-            "applicability": "applicable",
-            "state": "unavailable",
-            "queried_keys": [
-              "05722O0006001"
-            ],
-            "matched_source_observation_refs": [],
-            "matched_analytical_row_refs": [],
-            "basis": "materialization_unavailable",
-            "snapshot_vintage": null,
-            "key_normalization": "uppercase alphanumeric characters",
-            "usable_key_count": null,
-            "population": null,
-            "denominator": null,
-            "source_acquisition_at": null
-          },
-          {
-            "source_system": "checkbook_contracts",
-            "applicability": "applicable",
-            "state": "checked-no-match",
-            "queried_keys": [
-              "05722O0006001",
-              "CT105720238800601"
-            ],
-            "matched_source_observation_refs": [],
-            "matched_analytical_row_refs": [],
-            "basis": "exact_prime_contract_id",
-            "snapshot_vintage": "2026-10-22",
-            "key_normalization": "uppercase alphanumeric characters",
-            "usable_key_count": 28934,
-            "population": null,
-            "denominator": 28934,
-            "source_acquisition_at": "2026-10-22T19:54:16.507Z",
-            "matched_identity_keys": [],
-            "lookup_as_of": "2026-10-22T19:54:16.507Z"
-          },
-          {
-            "source_system": "checkbook_spending",
-            "applicability": "applicable",
-            "state": "checked-no-match",
-            "queried_keys": [
-              "CT105720238800601"
-            ],
-            "matched_source_observation_refs": [],
-            "matched_analytical_row_refs": [],
-            "basis": "exact_prime_contract_document_relationship",
-            "snapshot_vintage": "2026-10-22T19:42:15.561Z",
-            "key_normalization": "uppercase alphanumeric characters",
-            "usable_key_count": 0,
-            "population": null,
-            "denominator": null,
-            "source_acquisition_at": "2026-10-22T19:42:15.561Z",
-            "matched_identity_keys": [],
-            "lookup_as_of": "2026-10-22T19:42:15.561Z"
-          },
-          {
-            "source_system": "nys_abo_awards",
-            "applicability": "not-applicable",
-            "state": "not-applicable",
-            "queried_keys": [
-              "05722O0006001",
-              "CT105720238800601"
             ],
             "matched_source_observation_refs": [],
             "matched_analytical_row_refs": [],
@@ -444692,7 +444587,7 @@
       "source_system": "city_record",
       "source_system_id": "20260710017",
       "source_receipt_ref": "materialized:20260710017",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260710017",
         "start_date": "2026-07-16",
@@ -444919,7 +444814,7 @@
       "source_system": "city_record",
       "source_system_id": "20201030106",
       "source_receipt_ref": "materialized:20201030106",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20201030106",
         "start_date": "2020-11-05",
@@ -444966,7 +444861,7 @@
       "source_system": "city_record",
       "source_system_id": "20210609101",
       "source_receipt_ref": "materialized:20210609101",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20210609101",
         "start_date": "2021-06-15",
@@ -445013,7 +444908,7 @@
       "source_system": "city_record",
       "source_system_id": "20210224119",
       "source_receipt_ref": "materialized:20210224119",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20210224119",
         "start_date": "2021-03-03",
@@ -445090,7 +444985,7 @@
       "source_system": "city_record",
       "source_system_id": "20210504122",
       "source_receipt_ref": "materialized:20210504122",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20210504122",
         "start_date": "2021-05-10",
@@ -445137,7 +445032,7 @@
       "source_system": "city_record",
       "source_system_id": "20210709121",
       "source_receipt_ref": "materialized:20210709121",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20210709121",
         "start_date": "2021-07-15",
@@ -445184,7 +445079,7 @@
       "source_system": "city_record",
       "source_system_id": "20210610104",
       "source_receipt_ref": "materialized:20210610104",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20210610104",
         "start_date": "2021-06-16",
@@ -445231,7 +445126,7 @@
       "source_system": "city_record",
       "source_system_id": "20210624139",
       "source_receipt_ref": "materialized:20210624139",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20210624139",
         "start_date": "2021-06-30",
@@ -445278,7 +445173,7 @@
       "source_system": "city_record",
       "source_system_id": "20210630122",
       "source_receipt_ref": "materialized:20210630122",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20210630122",
         "start_date": "2021-07-06",
@@ -445325,7 +445220,7 @@
       "source_system": "city_record",
       "source_system_id": "20210624138",
       "source_receipt_ref": "materialized:20210624138",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20210624138",
         "start_date": "2021-06-30",
@@ -445372,7 +445267,7 @@
       "source_system": "city_record",
       "source_system_id": "20231014104",
       "source_receipt_ref": "materialized:20231014104",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20231014104",
         "start_date": "2023-10-20",
@@ -445419,7 +445314,7 @@
       "source_system": "city_record",
       "source_system_id": "20210810103",
       "source_receipt_ref": "materialized:20210810103",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20210810103",
         "start_date": "2021-08-16",
@@ -445466,7 +445361,7 @@
       "source_system": "city_record",
       "source_system_id": "20210812108",
       "source_receipt_ref": "materialized:20210812108",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20210812108",
         "start_date": "2021-08-18",
@@ -445513,7 +445408,7 @@
       "source_system": "city_record",
       "source_system_id": "20210915119",
       "source_receipt_ref": "materialized:20210915119",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20210915119",
         "start_date": "2021-09-21",
@@ -445560,7 +445455,7 @@
       "source_system": "city_record",
       "source_system_id": "20211231111",
       "source_receipt_ref": "materialized:20211231111",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20211231111",
         "start_date": "2022-01-06",
@@ -445607,7 +445502,7 @@
       "source_system": "city_record",
       "source_system_id": "20210826106",
       "source_receipt_ref": "materialized:20210826106",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20210826106",
         "start_date": "2021-09-01",
@@ -445654,7 +445549,7 @@
       "source_system": "city_record",
       "source_system_id": "20221229106",
       "source_receipt_ref": "materialized:20221229106",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20221229106",
         "start_date": "2023-01-04",
@@ -445731,7 +445626,7 @@
       "source_system": "city_record",
       "source_system_id": "20211103137",
       "source_receipt_ref": "materialized:20211103137",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20211103137",
         "start_date": "2021-11-08",
@@ -445778,7 +445673,7 @@
       "source_system": "city_record",
       "source_system_id": "20211231110",
       "source_receipt_ref": "materialized:20211231110",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20211231110",
         "start_date": "2022-01-06",
@@ -445825,7 +445720,7 @@
       "source_system": "city_record",
       "source_system_id": "20211020119",
       "source_receipt_ref": "materialized:20211020119",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20211020119",
         "start_date": "2021-10-26",
@@ -445872,7 +445767,7 @@
       "source_system": "city_record",
       "source_system_id": "20211029115",
       "source_receipt_ref": "materialized:20211029115",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20211029115",
         "start_date": "2021-11-04",
@@ -445919,7 +445814,7 @@
       "source_system": "city_record",
       "source_system_id": "20211111122",
       "source_receipt_ref": "materialized:20211111122",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20211111122",
         "start_date": "2021-11-17",
@@ -445966,7 +445861,7 @@
       "source_system": "city_record",
       "source_system_id": "20220120105",
       "source_receipt_ref": "materialized:20220120105",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220120105",
         "start_date": "2022-01-26",
@@ -446013,7 +445908,7 @@
       "source_system": "city_record",
       "source_system_id": "20220415109",
       "source_receipt_ref": "materialized:20220415109",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220415109",
         "start_date": "2022-04-21",
@@ -446060,7 +445955,7 @@
       "source_system": "city_record",
       "source_system_id": "20220304107",
       "source_receipt_ref": "materialized:20220304107",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220304107",
         "start_date": "2022-03-10",
@@ -446107,7 +446002,7 @@
       "source_system": "city_record",
       "source_system_id": "20220310116",
       "source_receipt_ref": "materialized:20220310116",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220310116",
         "start_date": "2022-03-16",
@@ -446154,7 +446049,7 @@
       "source_system": "city_record",
       "source_system_id": "20220323112",
       "source_receipt_ref": "materialized:20220323112",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220323112",
         "start_date": "2022-03-29",
@@ -446201,7 +446096,7 @@
       "source_system": "city_record",
       "source_system_id": "20220331127",
       "source_receipt_ref": "materialized:20220331127",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220331127",
         "start_date": "2022-04-06",
@@ -446278,7 +446173,7 @@
       "source_system": "city_record",
       "source_system_id": "20220314116",
       "source_receipt_ref": "materialized:20220314116",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220314116",
         "start_date": "2022-03-18",
@@ -446325,7 +446220,7 @@
       "source_system": "city_record",
       "source_system_id": "20220411109",
       "source_receipt_ref": "materialized:20220411109",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220411109",
         "start_date": "2022-04-15",
@@ -446372,7 +446267,7 @@
       "source_system": "city_record",
       "source_system_id": "20220718114",
       "source_receipt_ref": "materialized:20220718114",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220718114",
         "start_date": "2022-07-22",
@@ -446419,7 +446314,7 @@
       "source_system": "city_record",
       "source_system_id": "20220602116",
       "source_receipt_ref": "materialized:20220602116",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220602116",
         "start_date": "2022-06-08",
@@ -446466,7 +446361,7 @@
       "source_system": "city_record",
       "source_system_id": "20220610119",
       "source_receipt_ref": "materialized:20220610119",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220610119",
         "start_date": "2022-06-16",
@@ -446513,7 +446408,7 @@
       "source_system": "city_record",
       "source_system_id": "20220517112",
       "source_receipt_ref": "materialized:20220517112",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220517112",
         "start_date": "2022-05-23",
@@ -446560,7 +446455,7 @@
       "source_system": "city_record",
       "source_system_id": "20220528124",
       "source_receipt_ref": "materialized:20220528124",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220528124",
         "start_date": "2022-06-03",
@@ -446607,7 +446502,7 @@
       "source_system": "city_record",
       "source_system_id": "20220722116",
       "source_receipt_ref": "materialized:20220722116",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220722116",
         "start_date": "2022-07-28",
@@ -446654,7 +446549,7 @@
       "source_system": "city_record",
       "source_system_id": "20230215110",
       "source_receipt_ref": "materialized:20230215110",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230215110",
         "start_date": "2023-02-21",
@@ -446701,7 +446596,7 @@
       "source_system": "city_record",
       "source_system_id": "20220811117",
       "source_receipt_ref": "materialized:20220811117",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220811117",
         "start_date": "2022-08-17",
@@ -446748,7 +446643,7 @@
       "source_system": "city_record",
       "source_system_id": "20220903107",
       "source_receipt_ref": "materialized:20220903107",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220903107",
         "start_date": "2022-09-09",
@@ -446795,7 +446690,7 @@
       "source_system": "city_record",
       "source_system_id": "20220923112",
       "source_receipt_ref": "materialized:20220923112",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220923112",
         "start_date": "2022-09-29",
@@ -446842,7 +446737,7 @@
       "source_system": "city_record",
       "source_system_id": "20220920113",
       "source_receipt_ref": "materialized:20220920113",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220920113",
         "start_date": "2022-09-26",
@@ -446889,7 +446784,7 @@
       "source_system": "city_record",
       "source_system_id": "20221117112",
       "source_receipt_ref": "materialized:20221117112",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20221117112",
         "start_date": "2022-11-23",
@@ -446936,7 +446831,7 @@
       "source_system": "city_record",
       "source_system_id": "20220826111",
       "source_receipt_ref": "materialized:20220826111",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220826111",
         "start_date": "2022-09-01",
@@ -446983,7 +446878,7 @@
       "source_system": "city_record",
       "source_system_id": "20220910109",
       "source_receipt_ref": "materialized:20220910109",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220910109",
         "start_date": "2022-09-16",
@@ -447030,7 +446925,7 @@
       "source_system": "city_record",
       "source_system_id": "20221014111",
       "source_receipt_ref": "materialized:20221014111",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20221014111",
         "start_date": "2022-10-20",
@@ -447077,7 +446972,7 @@
       "source_system": "city_record",
       "source_system_id": "20220919115",
       "source_receipt_ref": "materialized:20220919115",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220919115",
         "start_date": "2022-09-23",
@@ -447124,7 +447019,7 @@
       "source_system": "city_record",
       "source_system_id": "20221205107",
       "source_receipt_ref": "materialized:20221205107",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20221205107",
         "start_date": "2022-12-09",
@@ -447171,7 +447066,7 @@
       "source_system": "city_record",
       "source_system_id": "20221019105",
       "source_receipt_ref": "materialized:20221019105",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20221019105",
         "start_date": "2022-10-25",
@@ -447218,7 +447113,7 @@
       "source_system": "city_record",
       "source_system_id": "20230415108",
       "source_receipt_ref": "materialized:20230415108",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230415108",
         "start_date": "2023-04-21",
@@ -447265,7 +447160,7 @@
       "source_system": "city_record",
       "source_system_id": "20221025111",
       "source_receipt_ref": "materialized:20221025111",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20221025111",
         "start_date": "2022-10-31",
@@ -447312,7 +447207,7 @@
       "source_system": "city_record",
       "source_system_id": "20221029110",
       "source_receipt_ref": "materialized:20221029110",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20221029110",
         "start_date": "2022-11-04",
@@ -447359,7 +447254,7 @@
       "source_system": "city_record",
       "source_system_id": "20221201106",
       "source_receipt_ref": "materialized:20221201106",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20221201106",
         "start_date": "2022-12-07",
@@ -447406,7 +447301,7 @@
       "source_system": "city_record",
       "source_system_id": "20221209108",
       "source_receipt_ref": "materialized:20221209108",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20221209108",
         "start_date": "2022-12-15",
@@ -447453,7 +447348,7 @@
       "source_system": "city_record",
       "source_system_id": "20230105113",
       "source_receipt_ref": "materialized:20230105113",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230105113",
         "start_date": "2023-01-11",
@@ -447500,7 +447395,7 @@
       "source_system": "city_record",
       "source_system_id": "20221210115",
       "source_receipt_ref": "materialized:20221210115",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20221210115",
         "start_date": "2022-12-16",
@@ -447547,7 +447442,7 @@
       "source_system": "city_record",
       "source_system_id": "20221217106",
       "source_receipt_ref": "materialized:20221217106",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20221217106",
         "start_date": "2022-12-23",
@@ -447594,7 +447489,7 @@
       "source_system": "city_record",
       "source_system_id": "20230510105",
       "source_receipt_ref": "materialized:20230510105",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230510105",
         "start_date": "2023-05-16",
@@ -447641,7 +447536,7 @@
       "source_system": "city_record",
       "source_system_id": "20221230108",
       "source_receipt_ref": "materialized:20221230108",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20221230108",
         "start_date": "2023-01-05",
@@ -447688,7 +447583,7 @@
       "source_system": "city_record",
       "source_system_id": "20230125107",
       "source_receipt_ref": "materialized:20230125107",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230125107",
         "start_date": "2023-01-31",
@@ -447735,7 +447630,7 @@
       "source_system": "city_record",
       "source_system_id": "20230224106",
       "source_receipt_ref": "materialized:20230224106",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230224106",
         "start_date": "2023-03-02",
@@ -447782,7 +447677,7 @@
       "source_system": "city_record",
       "source_system_id": "20230202111",
       "source_receipt_ref": "materialized:20230202111",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230202111",
         "start_date": "2023-02-08",
@@ -447829,7 +447724,7 @@
       "source_system": "city_record",
       "source_system_id": "20230215109",
       "source_receipt_ref": "materialized:20230215109",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230215109",
         "start_date": "2023-02-21",
@@ -447876,7 +447771,7 @@
       "source_system": "city_record",
       "source_system_id": "20230216113",
       "source_receipt_ref": "materialized:20230216113",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230216113",
         "start_date": "2023-02-22",
@@ -447923,7 +447818,7 @@
       "source_system": "city_record",
       "source_system_id": "20230215108",
       "source_receipt_ref": "materialized:20230215108",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230215108",
         "start_date": "2023-02-21",
@@ -447970,7 +447865,7 @@
       "source_system": "city_record",
       "source_system_id": "20230308116",
       "source_receipt_ref": "materialized:20230308116",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230308116",
         "start_date": "2023-03-14",
@@ -448017,7 +447912,7 @@
       "source_system": "city_record",
       "source_system_id": "20230324108",
       "source_receipt_ref": "materialized:20230324108",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230324108",
         "start_date": "2023-03-30",
@@ -448064,7 +447959,7 @@
       "source_system": "city_record",
       "source_system_id": "20230411111",
       "source_receipt_ref": "materialized:20230411111",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230411111",
         "start_date": "2023-04-17",
@@ -448111,7 +448006,7 @@
       "source_system": "city_record",
       "source_system_id": "20230329111",
       "source_receipt_ref": "materialized:20230329111",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230329111",
         "start_date": "2023-04-04",
@@ -448158,7 +448053,7 @@
       "source_system": "city_record",
       "source_system_id": "20230330112",
       "source_receipt_ref": "materialized:20230330112",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230330112",
         "start_date": "2023-04-05",
@@ -448205,7 +448100,7 @@
       "source_system": "city_record",
       "source_system_id": "20230405106",
       "source_receipt_ref": "materialized:20230405106",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230405106",
         "start_date": "2023-04-11",
@@ -448252,7 +448147,7 @@
       "source_system": "city_record",
       "source_system_id": "20230418112",
       "source_receipt_ref": "materialized:20230418112",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230418112",
         "start_date": "2023-04-24",
@@ -448299,7 +448194,7 @@
       "source_system": "city_record",
       "source_system_id": "20230516107",
       "source_receipt_ref": "materialized:20230516107",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230516107",
         "start_date": "2023-05-22",
@@ -448346,7 +448241,7 @@
       "source_system": "city_record",
       "source_system_id": "20230522108",
       "source_receipt_ref": "materialized:20230522108",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230522108",
         "start_date": "2023-05-26",
@@ -448393,7 +448288,7 @@
       "source_system": "city_record",
       "source_system_id": "20230609122",
       "source_receipt_ref": "materialized:20230609122",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230609122",
         "start_date": "2023-06-16",
@@ -448440,7 +448335,7 @@
       "source_system": "city_record",
       "source_system_id": "20230605106",
       "source_receipt_ref": "materialized:20230605106",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230605106",
         "start_date": "2023-06-12",
@@ -448487,7 +448382,7 @@
       "source_system": "city_record",
       "source_system_id": "20230706129",
       "source_receipt_ref": "materialized:20230706129",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230706129",
         "start_date": "2023-07-13",
@@ -448534,7 +448429,7 @@
       "source_system": "city_record",
       "source_system_id": "20230608130",
       "source_receipt_ref": "materialized:20230608130",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230608130",
         "start_date": "2023-06-14",
@@ -448581,7 +448476,7 @@
       "source_system": "city_record",
       "source_system_id": "20230626119",
       "source_receipt_ref": "materialized:20230626119",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230626119",
         "start_date": "2023-06-30",
@@ -448628,7 +448523,7 @@
       "source_system": "city_record",
       "source_system_id": "20230807111",
       "source_receipt_ref": "materialized:20230807111",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230807111",
         "start_date": "2023-08-11",
@@ -448675,7 +448570,7 @@
       "source_system": "city_record",
       "source_system_id": "20231102110",
       "source_receipt_ref": "materialized:20231102110",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20231102110",
         "start_date": "2023-11-09",
@@ -448722,7 +448617,7 @@
       "source_system": "city_record",
       "source_system_id": "20230905106",
       "source_receipt_ref": "materialized:20230905106",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230905106",
         "start_date": "2023-09-08",
@@ -448769,7 +448664,7 @@
       "source_system": "city_record",
       "source_system_id": "20230821110",
       "source_receipt_ref": "materialized:20230821110",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230821110",
         "start_date": "2023-08-25",
@@ -448816,7 +448711,7 @@
       "source_system": "city_record",
       "source_system_id": "20230907120",
       "source_receipt_ref": "materialized:20230907120",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230907120",
         "start_date": "2023-09-14",
@@ -448863,7 +448758,7 @@
       "source_system": "city_record",
       "source_system_id": "20230911113",
       "source_receipt_ref": "materialized:20230911113",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230911113",
         "start_date": "2023-09-18",
@@ -448910,7 +448805,7 @@
       "source_system": "city_record",
       "source_system_id": "20230907108",
       "source_receipt_ref": "materialized:20230907108",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230907108",
         "start_date": "2023-09-13",
@@ -448957,7 +448852,7 @@
       "source_system": "city_record",
       "source_system_id": "20230908103",
       "source_receipt_ref": "materialized:20230908103",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230908103",
         "start_date": "2023-09-14",
@@ -449004,7 +448899,7 @@
       "source_system": "city_record",
       "source_system_id": "20231109108",
       "source_receipt_ref": "materialized:20231109108",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20231109108",
         "start_date": "2023-11-16",
@@ -449051,7 +448946,7 @@
       "source_system": "city_record",
       "source_system_id": "20231213105",
       "source_receipt_ref": "materialized:20231213105",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20231213105",
         "start_date": "2023-12-19",
@@ -449098,7 +448993,7 @@
       "source_system": "city_record",
       "source_system_id": "20230913109",
       "source_receipt_ref": "materialized:20230913109",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20230913109",
         "start_date": "2023-09-19",
@@ -449145,7 +449040,7 @@
       "source_system": "city_record",
       "source_system_id": "20231014105",
       "source_receipt_ref": "materialized:20231014105",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20231014105",
         "start_date": "2023-10-20",
@@ -449192,7 +449087,7 @@
       "source_system": "city_record",
       "source_system_id": "20231003108",
       "source_receipt_ref": "materialized:20231003108",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20231003108",
         "start_date": "2023-10-10",
@@ -449239,7 +449134,7 @@
       "source_system": "city_record",
       "source_system_id": "20240213115",
       "source_receipt_ref": "materialized:20240213115",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240213115",
         "start_date": "2024-02-21",
@@ -449286,7 +449181,7 @@
       "source_system": "city_record",
       "source_system_id": "20240226113",
       "source_receipt_ref": "materialized:20240226113",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240226113",
         "start_date": "2024-03-04",
@@ -449333,7 +449228,7 @@
       "source_system": "city_record",
       "source_system_id": "20231130104",
       "source_receipt_ref": "materialized:20231130104",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20231130104",
         "start_date": "2023-12-07",
@@ -449380,7 +449275,7 @@
       "source_system": "city_record",
       "source_system_id": "20231110108",
       "source_receipt_ref": "materialized:20231110108",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20231110108",
         "start_date": "2023-11-17",
@@ -449427,7 +449322,7 @@
       "source_system": "city_record",
       "source_system_id": "20240106108",
       "source_receipt_ref": "materialized:20240106108",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240106108",
         "start_date": "2024-01-12",
@@ -449474,7 +449369,7 @@
       "source_system": "city_record",
       "source_system_id": "20231110107",
       "source_receipt_ref": "materialized:20231110107",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20231110107",
         "start_date": "2023-11-17",
@@ -449521,7 +449416,7 @@
       "source_system": "city_record",
       "source_system_id": "20231121110",
       "source_receipt_ref": "materialized:20231121110",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20231121110",
         "start_date": "2023-11-28",
@@ -449568,7 +449463,7 @@
       "source_system": "city_record",
       "source_system_id": "20240215127",
       "source_receipt_ref": "materialized:20240215127",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240215127",
         "start_date": "2024-02-23",
@@ -449615,7 +449510,7 @@
       "source_system": "city_record",
       "source_system_id": "20240214105",
       "source_receipt_ref": "materialized:20240214105",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240214105",
         "start_date": "2024-02-28",
@@ -449662,7 +449557,7 @@
       "source_system": "city_record",
       "source_system_id": "20240105106",
       "source_receipt_ref": "materialized:20240105106",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240105106",
         "start_date": "2024-01-11",
@@ -449709,7 +449604,7 @@
       "source_system": "city_record",
       "source_system_id": "20231227104",
       "source_receipt_ref": "materialized:20231227104",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20231227104",
         "start_date": "2024-01-04",
@@ -449756,7 +449651,7 @@
       "source_system": "city_record",
       "source_system_id": "20240116104",
       "source_receipt_ref": "materialized:20240116104",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240116104",
         "start_date": "2024-01-23",
@@ -449803,7 +449698,7 @@
       "source_system": "city_record",
       "source_system_id": "20240723103",
       "source_receipt_ref": "materialized:20240723103",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240723103",
         "start_date": "2024-07-29",
@@ -449850,7 +449745,7 @@
       "source_system": "city_record",
       "source_system_id": "20240301105",
       "source_receipt_ref": "materialized:20240301105",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240301105",
         "start_date": "2024-03-07",
@@ -449897,7 +449792,7 @@
       "source_system": "city_record",
       "source_system_id": "20240129106",
       "source_receipt_ref": "materialized:20240129106",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240129106",
         "start_date": "2024-02-02",
@@ -449944,7 +449839,7 @@
       "source_system": "city_record",
       "source_system_id": "20240515113",
       "source_receipt_ref": "materialized:20240515113",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240515113",
         "start_date": "2024-05-21",
@@ -449991,7 +449886,7 @@
       "source_system": "city_record",
       "source_system_id": "20240202109",
       "source_receipt_ref": "materialized:20240202109",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240202109",
         "start_date": "2024-02-08",
@@ -450038,7 +449933,7 @@
       "source_system": "city_record",
       "source_system_id": "20240216117",
       "source_receipt_ref": "materialized:20240216117",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240216117",
         "start_date": "2024-02-26",
@@ -450085,7 +449980,7 @@
       "source_system": "city_record",
       "source_system_id": "20240209114",
       "source_receipt_ref": "materialized:20240209114",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240209114",
         "start_date": "2024-02-16",
@@ -450132,7 +450027,7 @@
       "source_system": "city_record",
       "source_system_id": "20240229111",
       "source_receipt_ref": "materialized:20240229111",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240229111",
         "start_date": "2024-03-06",
@@ -450179,7 +450074,7 @@
       "source_system": "city_record",
       "source_system_id": "20240322109",
       "source_receipt_ref": "materialized:20240322109",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240322109",
         "start_date": "2024-03-28",
@@ -450226,7 +450121,7 @@
       "source_system": "city_record",
       "source_system_id": "20240312105",
       "source_receipt_ref": "materialized:20240312105",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240312105",
         "start_date": "2024-03-18",
@@ -450273,7 +450168,7 @@
       "source_system": "city_record",
       "source_system_id": "20240515112",
       "source_receipt_ref": "materialized:20240515112",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240515112",
         "start_date": "2024-05-21",
@@ -450320,7 +450215,7 @@
       "source_system": "city_record",
       "source_system_id": "20240216121",
       "source_receipt_ref": "materialized:20240216121",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240216121",
         "start_date": "2024-02-26",
@@ -450367,7 +450262,7 @@
       "source_system": "city_record",
       "source_system_id": "20240314105",
       "source_receipt_ref": "materialized:20240314105",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240314105",
         "start_date": "2024-03-20",
@@ -450414,7 +450309,7 @@
       "source_system": "city_record",
       "source_system_id": "20240409116",
       "source_receipt_ref": "materialized:20240409116",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240409116",
         "start_date": "2024-04-16",
@@ -450461,7 +450356,7 @@
       "source_system": "city_record",
       "source_system_id": "20240419111",
       "source_receipt_ref": "materialized:20240419111",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240419111",
         "start_date": "2024-04-25",
@@ -450508,7 +450403,7 @@
       "source_system": "city_record",
       "source_system_id": "20240618139",
       "source_receipt_ref": "materialized:20240618139",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240618139",
         "start_date": "2024-06-26",
@@ -450555,7 +450450,7 @@
       "source_system": "city_record",
       "source_system_id": "20240507120",
       "source_receipt_ref": "materialized:20240507120",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240507120",
         "start_date": "2024-05-14",
@@ -450602,7 +450497,7 @@
       "source_system": "city_record",
       "source_system_id": "20240603117",
       "source_receipt_ref": "materialized:20240603117",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240603117",
         "start_date": "2024-06-07",
@@ -450649,7 +450544,7 @@
       "source_system": "city_record",
       "source_system_id": "20240508114",
       "source_receipt_ref": "materialized:20240508114",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240508114",
         "start_date": "2024-05-15",
@@ -450696,7 +450591,7 @@
       "source_system": "city_record",
       "source_system_id": "20240607117",
       "source_receipt_ref": "materialized:20240607117",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240607117",
         "start_date": "2024-06-13",
@@ -450743,7 +450638,7 @@
       "source_system": "city_record",
       "source_system_id": "20240606135",
       "source_receipt_ref": "materialized:20240606135",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240606135",
         "start_date": "2024-06-13",
@@ -450790,7 +450685,7 @@
       "source_system": "city_record",
       "source_system_id": "20240620121",
       "source_receipt_ref": "materialized:20240620121",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240620121",
         "start_date": "2024-06-26",
@@ -450837,7 +450732,7 @@
       "source_system": "city_record",
       "source_system_id": "20240713119",
       "source_receipt_ref": "materialized:20240713119",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240713119",
         "start_date": "2024-07-19",
@@ -450884,7 +450779,7 @@
       "source_system": "city_record",
       "source_system_id": "20240701129",
       "source_receipt_ref": "materialized:20240701129",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240701129",
         "start_date": "2024-07-08",
@@ -450931,7 +450826,7 @@
       "source_system": "city_record",
       "source_system_id": "20240717115",
       "source_receipt_ref": "materialized:20240717115",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240717115",
         "start_date": "2024-07-23",
@@ -450978,7 +450873,7 @@
       "source_system": "city_record",
       "source_system_id": "20240606118",
       "source_receipt_ref": "materialized:20240606118",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240606118",
         "start_date": "2024-06-12",
@@ -451025,7 +450920,7 @@
       "source_system": "city_record",
       "source_system_id": "20240820107",
       "source_receipt_ref": "materialized:20240820107",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240820107",
         "start_date": "2024-08-26",
@@ -451072,7 +450967,7 @@
       "source_system": "city_record",
       "source_system_id": "20240724132",
       "source_receipt_ref": "materialized:20240724132",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240724132",
         "start_date": "2024-07-30",
@@ -451119,7 +451014,7 @@
       "source_system": "city_record",
       "source_system_id": "20241224014",
       "source_receipt_ref": "materialized:20241224014",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20241224014",
         "start_date": "2024-12-31",
@@ -451166,7 +451061,7 @@
       "source_system": "city_record",
       "source_system_id": "20240914109",
       "source_receipt_ref": "materialized:20240914109",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240914109",
         "start_date": "2024-09-20",
@@ -451213,7 +451108,7 @@
       "source_system": "city_record",
       "source_system_id": "20241016084",
       "source_receipt_ref": "materialized:20241016084",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20241016084",
         "start_date": "2024-10-22",
@@ -451260,7 +451155,7 @@
       "source_system": "city_record",
       "source_system_id": "20240914108",
       "source_receipt_ref": "materialized:20240914108",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240914108",
         "start_date": "2024-09-20",
@@ -451307,7 +451202,7 @@
       "source_system": "city_record",
       "source_system_id": "20240904112",
       "source_receipt_ref": "materialized:20240904112",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240904112",
         "start_date": "2024-09-11",
@@ -451354,7 +451249,7 @@
       "source_system": "city_record",
       "source_system_id": "20241115027",
       "source_receipt_ref": "materialized:20241115027",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20241115027",
         "start_date": "2024-11-20",
@@ -451401,7 +451296,7 @@
       "source_system": "city_record",
       "source_system_id": "20241115026",
       "source_receipt_ref": "materialized:20241115026",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20241115026",
         "start_date": "2024-11-20",
@@ -451448,7 +451343,7 @@
       "source_system": "city_record",
       "source_system_id": "20240926114",
       "source_receipt_ref": "materialized:20240926114",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240926114",
         "start_date": "2024-10-02",
@@ -451495,7 +451390,7 @@
       "source_system": "city_record",
       "source_system_id": "20240927115",
       "source_receipt_ref": "materialized:20240927115",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20240927115",
         "start_date": "2024-10-04",
@@ -451542,7 +451437,7 @@
       "source_system": "city_record",
       "source_system_id": "20241106008",
       "source_receipt_ref": "materialized:20241106008",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20241106008",
         "start_date": "2024-11-13",
@@ -451589,7 +451484,7 @@
       "source_system": "city_record",
       "source_system_id": "20241118011",
       "source_receipt_ref": "materialized:20241118011",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20241118011",
         "start_date": "2024-11-22",
@@ -451636,7 +451531,7 @@
       "source_system": "city_record",
       "source_system_id": "20241118010",
       "source_receipt_ref": "materialized:20241118010",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20241118010",
         "start_date": "2024-11-22",
@@ -451683,7 +451578,7 @@
       "source_system": "city_record",
       "source_system_id": "20241030035",
       "source_receipt_ref": "materialized:20241030035",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20241030035",
         "start_date": "2024-11-07",
@@ -451730,7 +451625,7 @@
       "source_system": "city_record",
       "source_system_id": "20250210008",
       "source_receipt_ref": "materialized:20250210008",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250210008",
         "start_date": "2025-02-14",
@@ -451777,7 +451672,7 @@
       "source_system": "city_record",
       "source_system_id": "20250108036",
       "source_receipt_ref": "materialized:20250108036",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250108036",
         "start_date": "2025-01-14",
@@ -451824,7 +451719,7 @@
       "source_system": "city_record",
       "source_system_id": "20250117008",
       "source_receipt_ref": "materialized:20250117008",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250117008",
         "start_date": "2025-02-05",
@@ -451871,7 +451766,7 @@
       "source_system": "city_record",
       "source_system_id": "20250226006",
       "source_receipt_ref": "materialized:20250226006",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250226006",
         "start_date": "2025-03-04",
@@ -451918,7 +451813,7 @@
       "source_system": "city_record",
       "source_system_id": "20250221018",
       "source_receipt_ref": "materialized:20250221018",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250221018",
         "start_date": "2025-02-27",
@@ -451965,7 +451860,7 @@
       "source_system": "city_record",
       "source_system_id": "20250121047",
       "source_receipt_ref": "materialized:20250121047",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250121047",
         "start_date": "2025-01-28",
@@ -452012,7 +451907,7 @@
       "source_system": "city_record",
       "source_system_id": "20250318016",
       "source_receipt_ref": "materialized:20250318016",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250318016",
         "start_date": "2025-03-24",
@@ -452059,7 +451954,7 @@
       "source_system": "city_record",
       "source_system_id": "20250310011",
       "source_receipt_ref": "materialized:20250310011",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250310011",
         "start_date": "2025-03-14",
@@ -452106,7 +452001,7 @@
       "source_system": "city_record",
       "source_system_id": "20250311011",
       "source_receipt_ref": "materialized:20250311011",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250311011",
         "start_date": "2025-03-17",
@@ -452153,7 +452048,7 @@
       "source_system": "city_record",
       "source_system_id": "20250514022",
       "source_receipt_ref": "materialized:20250514022",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250514022",
         "start_date": "2025-05-20",
@@ -452200,7 +452095,7 @@
       "source_system": "city_record",
       "source_system_id": "20250328050",
       "source_receipt_ref": "materialized:20250328050",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250328050",
         "start_date": "2025-04-04",
@@ -452247,7 +452142,7 @@
       "source_system": "city_record",
       "source_system_id": "20250422015",
       "source_receipt_ref": "materialized:20250422015",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250422015",
         "start_date": "2025-04-28",
@@ -452294,7 +452189,7 @@
       "source_system": "city_record",
       "source_system_id": "20250328039",
       "source_receipt_ref": "materialized:20250328039",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250328039",
         "start_date": "2025-04-04",
@@ -452341,7 +452236,7 @@
       "source_system": "city_record",
       "source_system_id": "20250715022",
       "source_receipt_ref": "materialized:20250715022",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250715022",
         "start_date": "2025-07-21",
@@ -452388,7 +452283,7 @@
       "source_system": "city_record",
       "source_system_id": "20250506010",
       "source_receipt_ref": "materialized:20250506010",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250506010",
         "start_date": "2025-05-12",
@@ -452435,7 +452330,7 @@
       "source_system": "city_record",
       "source_system_id": "20250502011",
       "source_receipt_ref": "materialized:20250502011",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250502011",
         "start_date": "2025-05-08",
@@ -452482,7 +452377,7 @@
       "source_system": "city_record",
       "source_system_id": "20250509017",
       "source_receipt_ref": "materialized:20250509017",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250509017",
         "start_date": "2025-05-15",
@@ -452529,7 +452424,7 @@
       "source_system": "city_record",
       "source_system_id": "20250616023",
       "source_receipt_ref": "materialized:20250616023",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250616023",
         "start_date": "2025-06-20",
@@ -452576,7 +452471,7 @@
       "source_system": "city_record",
       "source_system_id": "20250522020",
       "source_receipt_ref": "materialized:20250522020",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250522020",
         "start_date": "2025-05-28",
@@ -452623,7 +452518,7 @@
       "source_system": "city_record",
       "source_system_id": "20250516019",
       "source_receipt_ref": "materialized:20250516019",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250516019",
         "start_date": "2025-05-22",
@@ -452670,7 +452565,7 @@
       "source_system": "city_record",
       "source_system_id": "20250513022",
       "source_receipt_ref": "materialized:20250513022",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250513022",
         "start_date": "2025-05-20",
@@ -452717,7 +452612,7 @@
       "source_system": "city_record",
       "source_system_id": "20250722012",
       "source_receipt_ref": "materialized:20250722012",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250722012",
         "start_date": "2025-07-28",
@@ -458074,7 +457969,7 @@
       "source_system": "city_record",
       "source_system_id": "20250617010",
       "source_receipt_ref": "materialized:20250617010",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250617010",
         "start_date": "2025-06-23",
@@ -458121,7 +458016,7 @@
       "source_system": "city_record",
       "source_system_id": "20250617009",
       "source_receipt_ref": "materialized:20250617009",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250617009",
         "start_date": "2025-06-23",
@@ -458168,7 +458063,7 @@
       "source_system": "city_record",
       "source_system_id": "20250625017",
       "source_receipt_ref": "materialized:20250625017",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250625017",
         "start_date": "2025-07-01",
@@ -458215,7 +458110,7 @@
       "source_system": "city_record",
       "source_system_id": "20250624007",
       "source_receipt_ref": "materialized:20250624007",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250624007",
         "start_date": "2025-06-30",
@@ -458262,7 +458157,7 @@
       "source_system": "city_record",
       "source_system_id": "20250714014",
       "source_receipt_ref": "materialized:20250714014",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250714014",
         "start_date": "2025-07-18",
@@ -458309,7 +458204,7 @@
       "source_system": "city_record",
       "source_system_id": "20250807007",
       "source_receipt_ref": "materialized:20250807007",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250807007",
         "start_date": "2025-08-13",
@@ -458356,7 +458251,7 @@
       "source_system": "city_record",
       "source_system_id": "20250725026",
       "source_receipt_ref": "materialized:20250725026",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250725026",
         "start_date": "2025-08-01",
@@ -458403,7 +458298,7 @@
       "source_system": "city_record",
       "source_system_id": "20250812007",
       "source_receipt_ref": "materialized:20250812007",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250812007",
         "start_date": "2025-08-18",
@@ -458450,7 +458345,7 @@
       "source_system": "city_record",
       "source_system_id": "20250919013",
       "source_receipt_ref": "materialized:20250919013",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250919013",
         "start_date": "2025-09-25",
@@ -458497,7 +458392,7 @@
       "source_system": "city_record",
       "source_system_id": "20250923011",
       "source_receipt_ref": "materialized:20250923011",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250923011",
         "start_date": "2025-09-29",
@@ -458506,7 +458401,7 @@
         "short_title": "Training for Forensic Interviewing",
         "pin": "05625U0007001",
         "contract_amount": "62290",
-        "vendor_name": "NATIONAL CHILDREN'S ADVOCACY CENTER"
+        "vendor_name": "National Children's Advocacy Center"
       }
     },
     {
@@ -458589,7 +458484,7 @@
       "source_system": "city_record",
       "source_system_id": "20251009009",
       "source_receipt_ref": "materialized:20251009009",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251009009",
         "start_date": "2025-10-15",
@@ -458636,7 +458531,7 @@
       "source_system": "city_record",
       "source_system_id": "20250911021",
       "source_receipt_ref": "materialized:20250911021",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250911021",
         "start_date": "2025-09-18",
@@ -458683,7 +458578,7 @@
       "source_system": "city_record",
       "source_system_id": "20250916015",
       "source_receipt_ref": "materialized:20250916015",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250916015",
         "start_date": "2025-09-22",
@@ -458730,7 +458625,7 @@
       "source_system": "city_record",
       "source_system_id": "20251017016",
       "source_receipt_ref": "materialized:20251017016",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251017016",
         "start_date": "2025-10-24",
@@ -458777,7 +458672,7 @@
       "source_system": "city_record",
       "source_system_id": "20251017025",
       "source_receipt_ref": "materialized:20251017025",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251017025",
         "start_date": "2025-10-24",
@@ -458824,7 +458719,7 @@
       "source_system": "city_record",
       "source_system_id": "20251208012",
       "source_receipt_ref": "materialized:20251208012",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251208012",
         "start_date": "2025-12-12",
@@ -458871,7 +458766,7 @@
       "source_system": "city_record",
       "source_system_id": "20251016024",
       "source_receipt_ref": "materialized:20251016024",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251016024",
         "start_date": "2025-10-23",
@@ -458963,7 +458858,7 @@
       "source_system": "city_record",
       "source_system_id": "20251204042",
       "source_receipt_ref": "materialized:20251204042",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251204042",
         "start_date": "2025-12-11",
@@ -459055,7 +458950,7 @@
       "source_system": "city_record",
       "source_system_id": "20251106022",
       "source_receipt_ref": "materialized:20251106022",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251106022",
         "start_date": "2025-11-13",
@@ -459102,7 +458997,7 @@
       "source_system": "city_record",
       "source_system_id": "20251224014",
       "source_receipt_ref": "materialized:20251224014",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251224014",
         "start_date": "2025-12-31",
@@ -459194,7 +459089,7 @@
       "source_system": "city_record",
       "source_system_id": "20260101009",
       "source_receipt_ref": "materialized:20260101009",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260101009",
         "start_date": "2026-01-08",
@@ -459286,7 +459181,7 @@
       "source_system": "city_record",
       "source_system_id": "20260109008",
       "source_receipt_ref": "materialized:20260109008",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260109008",
         "start_date": "2026-01-15",
@@ -459378,7 +459273,7 @@
       "source_system": "city_record",
       "source_system_id": "20251217030",
       "source_receipt_ref": "materialized:20251217030",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251217030",
         "start_date": "2025-12-24",
@@ -459470,7 +459365,7 @@
       "source_system": "city_record",
       "source_system_id": "20251230017",
       "source_receipt_ref": "materialized:20251230017",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251230017",
         "start_date": "2026-01-07",
@@ -459562,7 +459457,7 @@
       "source_system": "city_record",
       "source_system_id": "20260310012",
       "source_receipt_ref": "materialized:20260310012",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260310012",
         "start_date": "2026-03-16",
@@ -459654,7 +459549,7 @@
       "source_system": "city_record",
       "source_system_id": "20260217010",
       "source_receipt_ref": "materialized:20260217010",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260217010",
         "start_date": "2026-02-23",
@@ -459746,7 +459641,7 @@
       "source_system": "city_record",
       "source_system_id": "20260116016",
       "source_receipt_ref": "materialized:20260116016",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260116016",
         "start_date": "2026-01-23",
@@ -459838,7 +459733,7 @@
       "source_system": "city_record",
       "source_system_id": "20260309009",
       "source_receipt_ref": "materialized:20260309009",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260309009",
         "start_date": "2026-03-13",
@@ -459930,7 +459825,7 @@
       "source_system": "city_record",
       "source_system_id": "20260121024",
       "source_receipt_ref": "materialized:20260121024",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260121024",
         "start_date": "2026-01-27",
@@ -459977,7 +459872,7 @@
       "source_system": "city_record",
       "source_system_id": "20260323007",
       "source_receipt_ref": "materialized:20260323007",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260323007",
         "start_date": "2026-03-27",
@@ -460069,7 +459964,7 @@
       "source_system": "city_record",
       "source_system_id": "20260202020",
       "source_receipt_ref": "materialized:20260202020",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260202020",
         "start_date": "2026-02-09",
@@ -460206,7 +460101,7 @@
       "source_system": "city_record",
       "source_system_id": "20260318008",
       "source_receipt_ref": "materialized:20260318008",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260318008",
         "start_date": "2026-03-24",
@@ -460298,7 +460193,7 @@
       "source_system": "city_record",
       "source_system_id": "20260311010",
       "source_receipt_ref": "materialized:20260311010",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260311010",
         "start_date": "2026-03-17",
@@ -460390,7 +460285,7 @@
       "source_system": "city_record",
       "source_system_id": "20260312006",
       "source_receipt_ref": "materialized:20260312006",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260312006",
         "start_date": "2026-03-18",
@@ -460437,7 +460332,7 @@
       "source_system": "city_record",
       "source_system_id": "20260408011",
       "source_receipt_ref": "materialized:20260408011",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260408011",
         "start_date": "2026-04-14",
@@ -460484,7 +460379,7 @@
       "source_system": "city_record",
       "source_system_id": "20260327008",
       "source_receipt_ref": "materialized:20260327008",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260327008",
         "start_date": "2026-04-02",
@@ -460576,7 +460471,7 @@
       "source_system": "city_record",
       "source_system_id": "20260309038",
       "source_receipt_ref": "materialized:20260309038",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260309038",
         "start_date": "2026-03-16",
@@ -460668,7 +460563,7 @@
       "source_system": "city_record",
       "source_system_id": "20260415024",
       "source_receipt_ref": "materialized:20260415024",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260415024",
         "start_date": "2026-04-21",
@@ -460760,7 +460655,7 @@
       "source_system": "city_record",
       "source_system_id": "20260422014",
       "source_receipt_ref": "materialized:20260422014",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260422014",
         "start_date": "2026-04-28",
@@ -460852,7 +460747,7 @@
       "source_system": "city_record",
       "source_system_id": "20260430017",
       "source_receipt_ref": "materialized:20260430017",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260430017",
         "start_date": "2026-05-06",
@@ -460944,7 +460839,7 @@
       "source_system": "city_record",
       "source_system_id": "20260413039",
       "source_receipt_ref": "materialized:20260413039",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260413039",
         "start_date": "2026-04-20",
@@ -461036,7 +460931,7 @@
       "source_system": "city_record",
       "source_system_id": "20260423023",
       "source_receipt_ref": "materialized:20260423023",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260423023",
         "start_date": "2026-04-29",
@@ -461083,7 +460978,7 @@
       "source_system": "city_record",
       "source_system_id": "20260521011",
       "source_receipt_ref": "materialized:20260521011",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260521011",
         "start_date": "2026-05-28",
@@ -461175,7 +461070,7 @@
       "source_system": "city_record",
       "source_system_id": "20260515020",
       "source_receipt_ref": "materialized:20260515020",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260515020",
         "start_date": "2026-05-22",
@@ -461267,7 +461162,7 @@
       "source_system": "city_record",
       "source_system_id": "20260514016",
       "source_receipt_ref": "materialized:20260514016",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260514016",
         "start_date": "2026-05-20",
@@ -461404,7 +461299,7 @@
       "source_system": "city_record",
       "source_system_id": "20260605056",
       "source_receipt_ref": "materialized:20260605056",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260605056",
         "start_date": "2026-06-12",
@@ -461496,7 +461391,7 @@
       "source_system": "city_record",
       "source_system_id": "20260601030",
       "source_receipt_ref": "materialized:20260601030",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260601030",
         "start_date": "2026-06-05",
@@ -464063,7 +463958,7 @@
       "source_system": "city_record",
       "source_system_id": "20260706032",
       "source_receipt_ref": "materialized:20260706032",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260706032",
         "start_date": "2026-07-10",
@@ -464286,6 +464181,23 @@
       }
     },
     {
+      "source_observation_ref": "city_record:20261013011",
+      "source_system": "city_record",
+      "source_system_id": "20261013011",
+      "source_receipt_ref": "materialized:20261013011",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
+      "snapshot": {
+        "request_id": "20261013011",
+        "start_date": "2026-10-19",
+        "agency_name": "Police Department",
+        "type_of_notice_description": "Award",
+        "short_title": "Forensic Consulting Services",
+        "pin": "05622X8004KXLR001",
+        "contract_amount": "255000",
+        "vendor_name": "Nicholas Mattia & Associates Inc"
+      }
+    },
+    {
       "source_observation_ref": "checkbook_contracts:contract:registered:CT105620278802194:SAFE & SOUND ARMED COURIER SERVICE INC:prime-vendor:2026-08-31",
       "source_system": "checkbook_contracts",
       "source_system_id": "contract:registered:CT105620278802194:SAFE & SOUND ARMED COURIER SERVICE INC:prime-vendor:2026-08-31",
@@ -464421,6 +464333,23 @@
       }
     },
     {
+      "source_observation_ref": "city_record:20261005010",
+      "source_system": "city_record",
+      "source_system_id": "20261005010",
+      "source_receipt_ref": "materialized:20261005010",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
+      "snapshot": {
+        "request_id": "20261005010",
+        "start_date": "2026-10-09",
+        "agency_name": "Police Department",
+        "type_of_notice_description": "Award",
+        "short_title": "Training for Forensic Interviewing",
+        "pin": "05625U0007001R001",
+        "contract_amount": "213940",
+        "vendor_name": "National Children's Advocacy Center"
+      }
+    },
+    {
       "source_observation_ref": "checkbook_contracts:contract:registered:CT105620278802606:FALCON ENGINEERED SECURITY SOLUTIONS:prime-vendor:2026-08-28",
       "source_system": "checkbook_contracts",
       "source_system_id": "contract:registered:CT105620278802606:FALCON ENGINEERED SECURITY SOLUTIONS:prime-vendor:2026-08-28",
@@ -464508,6 +464437,23 @@
         "registered": "2026-10-02",
         "received": null,
         "selection_bucket": "new_unique"
+      }
+    },
+    {
+      "source_observation_ref": "city_record:20261005009",
+      "source_system": "city_record",
+      "source_system_id": "20261005009",
+      "source_receipt_ref": "materialized:20261005009",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
+      "snapshot": {
+        "request_id": "20261005009",
+        "start_date": "2026-10-09",
+        "agency_name": "Police Department",
+        "type_of_notice_description": "Award",
+        "short_title": "Renewal #1 - VIEWPOINT & M-ARIS Maintenance & Service",
+        "pin": "05623S0008001R001",
+        "contract_amount": "2554342",
+        "vendor_name": "Thermo Eberline LLC"
       }
     },
     {
@@ -464601,11 +464547,28 @@
       }
     },
     {
+      "source_observation_ref": "city_record:20261013033",
+      "source_system": "city_record",
+      "source_system_id": "20261013033",
+      "source_receipt_ref": "materialized:20261013033",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
+      "snapshot": {
+        "request_id": "20261013033",
+        "start_date": "2026-10-20",
+        "agency_name": "Police Department",
+        "type_of_notice_description": "Award",
+        "short_title": "Cellebrite Software Upgrades to Inseyets online Pro, Inseyets Kits, & Smart Translator, for a one-year term",
+        "pin": "05627W0002001",
+        "contract_amount": "196000",
+        "vendor_name": "Savant Financial Technologies Inc."
+      }
+    },
+    {
       "source_observation_ref": "city_record:20210129104",
       "source_system": "city_record",
       "source_system_id": "20210129104",
       "source_receipt_ref": "materialized:20210129104",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20210129104",
         "start_date": "2021-02-04",
@@ -464652,7 +464615,7 @@
       "source_system": "city_record",
       "source_system_id": "20210222116",
       "source_receipt_ref": "materialized:20210222116",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20210222116",
         "start_date": "2021-03-01",
@@ -464699,7 +464662,7 @@
       "source_system": "city_record",
       "source_system_id": "20210222106",
       "source_receipt_ref": "materialized:20210222106",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20210222106",
         "start_date": "2021-02-26",
@@ -464746,7 +464709,7 @@
       "source_system": "city_record",
       "source_system_id": "20210520104",
       "source_receipt_ref": "materialized:20210520104",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20210520104",
         "start_date": "2021-05-26",
@@ -464793,7 +464756,7 @@
       "source_system": "city_record",
       "source_system_id": "20210618108",
       "source_receipt_ref": "materialized:20210618108",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20210618108",
         "start_date": "2021-06-24",
@@ -464840,7 +464803,7 @@
       "source_system": "city_record",
       "source_system_id": "20210628126",
       "source_receipt_ref": "materialized:20210628126",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20210628126",
         "start_date": "2021-07-02",
@@ -464887,7 +464850,7 @@
       "source_system": "city_record",
       "source_system_id": "20210624137",
       "source_receipt_ref": "materialized:20210624137",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20210624137",
         "start_date": "2021-06-30",
@@ -464934,7 +464897,7 @@
       "source_system": "city_record",
       "source_system_id": "20210915118",
       "source_receipt_ref": "materialized:20210915118",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20210915118",
         "start_date": "2021-09-21",
@@ -464981,7 +464944,7 @@
       "source_system": "city_record",
       "source_system_id": "20211026112",
       "source_receipt_ref": "materialized:20211026112",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20211026112",
         "start_date": "2021-11-01",
@@ -465028,7 +464991,7 @@
       "source_system": "city_record",
       "source_system_id": "20211118115",
       "source_receipt_ref": "materialized:20211118115",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20211118115",
         "start_date": "2021-11-24",
@@ -465075,7 +465038,7 @@
       "source_system": "city_record",
       "source_system_id": "20211126120",
       "source_receipt_ref": "materialized:20211126120",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20211126120",
         "start_date": "2021-12-01",
@@ -465122,7 +465085,7 @@
       "source_system": "city_record",
       "source_system_id": "20211112111",
       "source_receipt_ref": "materialized:20211112111",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20211112111",
         "start_date": "2021-11-19",
@@ -465169,7 +465132,7 @@
       "source_system": "city_record",
       "source_system_id": "20220315112",
       "source_receipt_ref": "materialized:20220315112",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220315112",
         "start_date": "2022-03-21",
@@ -465216,7 +465179,7 @@
       "source_system": "city_record",
       "source_system_id": "20220525120",
       "source_receipt_ref": "materialized:20220525120",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220525120",
         "start_date": "2022-05-31",
@@ -465263,7 +465226,7 @@
       "source_system": "city_record",
       "source_system_id": "20220211112",
       "source_receipt_ref": "materialized:20220211112",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220211112",
         "start_date": "2022-02-17",
@@ -465310,7 +465273,7 @@
       "source_system": "city_record",
       "source_system_id": "20220222112",
       "source_receipt_ref": "materialized:20220222112",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220222112",
         "start_date": "2022-02-25",
@@ -465357,7 +465320,7 @@
       "source_system": "city_record",
       "source_system_id": "20220422110",
       "source_receipt_ref": "materialized:20220422110",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220422110",
         "start_date": "2022-04-28",
@@ -465404,7 +465367,7 @@
       "source_system": "city_record",
       "source_system_id": "20220317116",
       "source_receipt_ref": "materialized:20220317116",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220317116",
         "start_date": "2022-03-23",
@@ -465451,7 +465414,7 @@
       "source_system": "city_record",
       "source_system_id": "20220510117",
       "source_receipt_ref": "materialized:20220510117",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220510117",
         "start_date": "2022-05-16",
@@ -465498,7 +465461,7 @@
       "source_system": "city_record",
       "source_system_id": "20220510116",
       "source_receipt_ref": "materialized:20220510116",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220510116",
         "start_date": "2022-05-16",
@@ -465545,7 +465508,7 @@
       "source_system": "city_record",
       "source_system_id": "20220420111",
       "source_receipt_ref": "materialized:20220420111",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20220420111",
         "start_date": "2022-04-26",
@@ -465584,53 +465547,6 @@
         "industry": "Goods",
         "action_key": "05722U0006001",
         "action_family_key": "CT1-057-20228806818",
-        "action_role": "base"
-      }
-    },
-    {
-      "source_observation_ref": "city_record:20220701128",
-      "source_system": "city_record",
-      "source_system_id": "20220701128",
-      "source_receipt_ref": "materialized:20220701128",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
-      "snapshot": {
-        "request_id": "20220701128",
-        "start_date": "2022-07-07",
-        "agency_name": "Fire Department",
-        "type_of_notice_description": "Award",
-        "short_title": "BIOPOD- Flu Vaccine",
-        "pin": "05722O0006001",
-        "contract_amount": "99831.18",
-        "vendor_name": "FFF ENTERPRISES INC"
-      }
-    },
-    {
-      "source_observation_ref": "passport_public_contracts:contract:05722O0006001:4758767",
-      "source_system": "passport_public_contracts",
-      "source_system_id": "contract:05722O0006001:4758767",
-      "source_receipt_ref": "materialized:contract:05722O0006001:4758767",
-      "ingested_at": "2026-10-22T19:54:16.507Z",
-      "snapshot": {
-        "ctr_id": "4758767",
-        "epin": "05722O0006001",
-        "epin_norm": "05722O0006001",
-        "contract_id": "CT1-057-20238800601",
-        "agency": "FIRE DEPARTMENT",
-        "vendor": "FFF ENTERPRISES INC",
-        "status": "Registered",
-        "award_amount": 99831.18,
-        "current_amount": 99831.18,
-        "encumbered_amount": 99831.18,
-        "paid_amount": 99831.18,
-        "start_date": "07/01/2022",
-        "end_date": "12/31/2022",
-        "registration_date": "06/30/2022",
-        "title": "057230000014 - BIOPOD- Flu Vaccine",
-        "procurement_method": "Intergovernmental OGS",
-        "program": "Workforce and Internal Service Continuity",
-        "industry": "Goods",
-        "action_key": "05722O0006001",
-        "action_family_key": "CT1-057-20238800601",
         "action_role": "base"
       }
     }

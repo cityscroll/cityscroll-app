@@ -90,7 +90,7 @@
       "available": true,
       "generated_at": "2026-10-22T19:54:16.507Z",
       "reason": null,
-      "source_row_count": 12990
+      "source_row_count": 13089
     }
   },
   "publication": {
@@ -102,7 +102,7 @@
     "floor": "2025-10-22",
     "row_cap": null,
     "coverage": "City Record Award window (valid amount, last 365 days); not a citywide inventory",
-    "selected_rows": 35382,
+    "selected_rows": 35481,
     "census_rows": {
       "passport_contracts": 12795,
       "checkbook_contracts": 10508,
@@ -114,13 +114,13 @@
   "shards": [
     {
       "path": "procurement_browse_rows_population/shard-000.json",
-      "bytes": 18696236,
-      "row_count": 12720
+      "bytes": 18696108,
+      "row_count": 12706
     },
     {
       "path": "procurement_browse_rows_population/shard-001.json",
-      "bytes": 11924526,
-      "row_count": 7852
+      "bytes": 11969173,
+      "row_count": 7866
     }
   ]
 }

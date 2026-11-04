@@ -450766,7 +450766,7 @@
       "source_system": "city_record",
       "source_system_id": "20251114009",
       "source_receipt_ref": "materialized:20251114009",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251114009",
         "start_date": "2025-11-20",
@@ -450813,7 +450813,7 @@
       "source_system": "city_record",
       "source_system_id": "20250804013",
       "source_receipt_ref": "materialized:20250804013",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250804013",
         "start_date": "2025-08-08",
@@ -450860,7 +450860,7 @@
       "source_system": "city_record",
       "source_system_id": "20251119014",
       "source_receipt_ref": "materialized:20251119014",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251119014",
         "start_date": "2025-11-25",
@@ -450907,7 +450907,7 @@
       "source_system": "city_record",
       "source_system_id": "20260518021",
       "source_receipt_ref": "materialized:20260518021",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260518021",
         "start_date": "2026-05-22",
@@ -450953,7 +450953,7 @@
       "source_system": "city_record",
       "source_system_id": "20250825008",
       "source_receipt_ref": "materialized:20250825008",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20250825008",
         "start_date": "2025-08-29",
@@ -451000,7 +451000,7 @@
       "source_system": "city_record",
       "source_system_id": "20251112010",
       "source_receipt_ref": "materialized:20251112010",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251112010",
         "start_date": "2025-11-17",
@@ -451047,7 +451047,7 @@
       "source_system": "city_record",
       "source_system_id": "20251002017",
       "source_receipt_ref": "materialized:20251002017",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251002017",
         "start_date": "2025-10-08",
@@ -451094,7 +451094,7 @@
       "source_system": "city_record",
       "source_system_id": "20251106011",
       "source_receipt_ref": "materialized:20251106011",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251106011",
         "start_date": "2025-11-12",
@@ -451141,7 +451141,7 @@
       "source_system": "city_record",
       "source_system_id": "20251030016",
       "source_receipt_ref": "materialized:20251030016",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251030016",
         "start_date": "2025-11-05",
@@ -451187,7 +451187,7 @@
       "source_system": "city_record",
       "source_system_id": "20251106010",
       "source_receipt_ref": "materialized:20251106010",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251106010",
         "start_date": "2025-11-12",
@@ -451233,7 +451233,7 @@
       "source_system": "city_record",
       "source_system_id": "20251107015",
       "source_receipt_ref": "materialized:20251107015",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251107015",
         "start_date": "2025-11-13",
@@ -451280,7 +451280,7 @@
       "source_system": "city_record",
       "source_system_id": "20251124008",
       "source_receipt_ref": "materialized:20251124008",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251124008",
         "start_date": "2025-12-01",
@@ -451327,7 +451327,7 @@
       "source_system": "city_record",
       "source_system_id": "20251106009",
       "source_receipt_ref": "materialized:20251106009",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251106009",
         "start_date": "2025-11-12",
@@ -451374,7 +451374,7 @@
       "source_system": "city_record",
       "source_system_id": "20251103014",
       "source_receipt_ref": "materialized:20251103014",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251103014",
         "start_date": "2025-11-07",
@@ -451421,7 +451421,7 @@
       "source_system": "city_record",
       "source_system_id": "20251110010",
       "source_receipt_ref": "materialized:20251110010",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251110010",
         "start_date": "2025-11-14",
@@ -451468,7 +451468,7 @@
       "source_system": "city_record",
       "source_system_id": "20251126010",
       "source_receipt_ref": "materialized:20251126010",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251126010",
         "start_date": "2025-12-03",
@@ -451515,7 +451515,7 @@
       "source_system": "city_record",
       "source_system_id": "20251124024",
       "source_receipt_ref": "materialized:20251124024",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20251124024",
         "start_date": "2025-12-02",
@@ -451562,7 +451562,7 @@
       "source_system": "city_record",
       "source_system_id": "20260306012",
       "source_receipt_ref": "materialized:20260306012",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260306012",
         "start_date": "2026-03-12",
@@ -451609,7 +451609,7 @@
       "source_system": "city_record",
       "source_system_id": "20260410017",
       "source_receipt_ref": "materialized:20260410017",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260410017",
         "start_date": "2026-04-16",
@@ -451656,7 +451656,7 @@
       "source_system": "city_record",
       "source_system_id": "20260611058",
       "source_receipt_ref": "materialized:20260611058",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260611058",
         "start_date": "2026-06-17",
@@ -451703,7 +451703,7 @@
       "source_system": "city_record",
       "source_system_id": "20260701020",
       "source_receipt_ref": "materialized:20260701020",
-      "ingested_at": "2026-10-09T13:51:44.371Z",
+      "ingested_at": "2026-11-04T04:22:02.123Z",
       "snapshot": {
         "request_id": "20260701020",
         "start_date": "2026-07-08",

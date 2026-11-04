@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "delivery_tier": "resident-snapshot",
-  "generated_at": "2026-10-22T20:14:13.118Z",
+  "generated_at": "2026-11-04T04:22:02.123Z",
   "source_vintages": {
     "default_open": "2026-10-22T20:14:13.118Z",
     "domain_observations": "2026-08-03T22:31:10.617Z",
-    "award_warehouse": "2026-10-09T13:51:44.371Z"
+    "award_warehouse": "2026-11-04T04:22:02.123Z"
   },
   "count": 380,
   "rows": [
@@ -2772,7 +2772,7 @@
       "short_title": "Repair and replacement of High and Low Pressure Boilers - 3 year renewal",
       "pin": "85622B0007001R001",
       "contract_amount": "3000000",
-      "vendor_name": "Control Systems Services Inc",
+      "vendor_name": "Control Systems Services Inc.",
       "source_system": "ocp-recent-contract-awards",
       "place": {
         "scope": "unlocated",
@@ -5242,7 +5242,7 @@
       "short_title": "BCS MDMS Support Services 6040164X",
       "pin": "82626G0003001",
       "contract_amount": "3096648",
-      "vendor_name": "SVAM International Inc",
+      "vendor_name": "Svam International Inc",
       "source_system": "ocp-recent-contract-awards",
       "place": {
         "scope": "unlocated",
