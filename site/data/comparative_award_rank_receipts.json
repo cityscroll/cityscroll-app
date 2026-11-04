@@ -1,11 +1,11 @@
 {
   "schema": "cityscroll.comparative_fact_read_model.v1",
   "method": "materialized_award_rank_receipts_v1",
-  "generated_at": "2026-10-09T13:51:44.371Z",
+  "generated_at": "2026-11-04T04:22:02.123Z",
   "source_artifact": {
     "dataset_id": "qyyg-4tf5",
-    "materialized_at": "2026-10-09T13:51:44.371Z",
-    "row_count": 53817
+    "materialized_at": "2026-11-04T04:22:02.123Z",
+    "row_count": 53992
   },
   "materialization_scope": {
     "kind": "subject_allowlist",
@@ -15,7 +15,7 @@
   },
   "window": {
     "start": "2024-01-01",
-    "end": "2026-10-09",
+    "end": "2026-11-04",
     "end_inclusive": true
   },
   "small_n_policies": {
@@ -32,9 +32,9 @@
     "schema": "cityscroll.comparative_coverage_receipt.v1",
     "state": "bounded_complete",
     "reasons": [],
-    "source_count": 53817,
-    "eligible_count": 8966,
-    "observed_count": 8966,
+    "source_count": 53992,
+    "eligible_count": 9141,
+    "observed_count": 9141,
     "fact_count": 1,
     "exclusions_by_reason": {
       "outside_window": 44837,
@@ -46,44 +46,44 @@
       "method": "derived_feature_rollup_incremental_v1",
       "version": 1,
       "counts": {
-        "total": 8966,
-        "materialized": 8966,
-        "dated": 8966,
+        "total": 9141,
+        "materialized": 9141,
+        "dated": 9141,
         "undated": 0,
         "by_state": {
-          "eligible": 8966
+          "eligible": 9141
         },
         "by_relation": {
-          "comparative_peer": 8966
+          "comparative_peer": 9141
         }
       },
       "spans": {
         "valid": {
           "start": "2024-01-02",
-          "end": "2026-10-05"
+          "end": "2026-11-02"
         },
         "observed": {
-          "start": "2026-10-09",
-          "end": "2026-10-09"
+          "start": "2026-11-04",
+          "end": "2026-11-04"
         },
-        "valid_days": 1007,
+        "valid_days": 1035,
         "observed_days": 0
       },
       "lifecycle": {
         "by_bucket": {
           "current": 0,
           "historical": 0,
-          "unknown": 8966
+          "unknown": 9141
         },
         "by_stage": {
-          "eligible": 8966
+          "eligible": 9141
         },
         "complete": true
       },
       "freshness": {
-        "reference_day": "2026-10-09",
-        "snapshot_day": "2026-10-09",
-        "latest_day": "2026-10-09",
+        "reference_day": "2026-11-04",
+        "snapshot_day": "2026-11-04",
+        "latest_day": "2026-11-04",
         "latest_source": "observation",
         "age_days": 0,
         "max_age_days": null,
@@ -94,7 +94,7 @@
   "facts": [
     {
       "schema": "cityscroll.comparative_fact.v1",
-      "fact_id": "comparative_fact:award_amount_rank:ocp_award:20240119104:2024-01-01:2026-10-09",
+      "fact_id": "comparative_fact:award_amount_rank:ocp_award:20240119104:2024-01-01:2026-11-04",
       "subject": {
         "type": "ocp_award",
         "id": "20240119104",
@@ -111,7 +111,7 @@
       },
       "value": 53000000,
       "peer_class": {
-        "class_id": "award_amount_rank:ocp-recent-contract-awards:housing-preservation-and-development:2024-01-01:2026-10-09",
+        "class_id": "award_amount_rank:ocp-recent-contract-awards:housing-preservation-and-development:2024-01-01:2026-11-04",
         "metric_family": "source_bounded_award_rank",
         "object_type": "award",
         "source_family": "ocp-recent-contract-awards",
@@ -133,8 +133,8 @@
               "source_contract_id": "ocp-recent-contract-awards",
               "source_contract_schema_version": 1,
               "dataset_id": "qyyg-4tf5",
-              "materialized_at": "2026-10-09T13:51:44.371Z",
-              "row_count": 53817
+              "materialized_at": "2026-11-04T04:22:02.123Z",
+              "row_count": 53992
             }
           ],
           "acquisition_mode": "bulk_warehouse",
@@ -144,10 +144,10 @@
           "observation_quality_class": "source_bounded_positive_observation",
           "censoring_class": "historical_window_only",
           "historical_start": "2024-01-01",
-          "historical_end": "2026-10-09"
+          "historical_end": "2026-11-04"
         },
-        "eligible_count": 278,
-        "observed_count": 278,
+        "eligible_count": 282,
+        "observed_count": 282,
         "exclusions_by_reason": {},
         "selected_level": "source_agency_window",
         "rejected_levels": [],
@@ -160,23 +160,23 @@
           "agency_id": "housing-preservation-and-development",
           "agency_name": "Housing Preservation and Development"
         },
-        "eligible_count": 278,
-        "observed_count": 278,
+        "eligible_count": 282,
+        "observed_count": 282,
         "window": {
           "start": "2024-01-01",
-          "end": "2026-10-09",
+          "end": "2026-11-04",
           "end_inclusive": true
         },
         "rank": 4,
         "tie_count": 1,
-        "percentile": 98.92,
+        "percentile": 98.94,
         "percentile_status": "available"
       },
       "observation": {
         "basis": "bounded_complete",
         "negative_inference": "forbidden",
-        "eligible_count": 278,
-        "observed_count": 278,
+        "eligible_count": 282,
+        "observed_count": 282,
         "eligible_population": {
           "object_type": "award",
           "source_family": "ocp-recent-contract-awards",
@@ -201,8 +201,8 @@
             "source_contract_id": "ocp-recent-contract-awards",
             "source_contract_schema_version": 1,
             "dataset_id": "qyyg-4tf5",
-            "materialized_at": "2026-10-09T13:51:44.371Z",
-            "row_count": 53817
+            "materialized_at": "2026-11-04T04:22:02.123Z",
+            "row_count": 53992
           }
         ]
       },
@@ -214,7 +214,7 @@
           "source_row_id": "20240119104",
           "source_row_date": "2024-01-25",
           "landing_page": "https://data.cityofnewyork.us/d/qyyg-4tf5",
-          "materialized_at": "2026-10-09T13:51:44.371Z"
+          "materialized_at": "2026-11-04T04:22:02.123Z"
         }
       ],
       "provenance": {
@@ -225,11 +225,11 @@
         },
         "source_artifact": {
           "dataset_id": "qyyg-4tf5",
-          "materialized_at": "2026-10-09T13:51:44.371Z",
-          "row_count": 53817
+          "materialized_at": "2026-11-04T04:22:02.123Z",
+          "row_count": 53992
         }
       },
-      "generated_at": "2026-10-09T13:51:44.371Z"
+      "generated_at": "2026-11-04T04:22:02.123Z"
     }
   ]
 }

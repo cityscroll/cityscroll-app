@@ -1,13 +1,13 @@
 {
   "schema": "cityscroll.keyword_search_index.v1",
   "version": 1,
-  "generated_at": "2026-10-22T21:14:57.681Z",
+  "generated_at": "2026-11-04T04:22:02.123Z",
   "match_mode": "keyword",
   "representation": "family-sharded-compressed",
   "shard_schema": "cityscroll.keyword_search_index_shard.v1",
   "logical_index": {
-    "sha256": "85e4f96565da50a8ad7151d9fc92f65db2619d60593cfe7207d6771a9b9341a3",
-    "bytes": 84431915,
+    "sha256": "afc5dee900af8abea634115dd01c225e09d0a5f1ea80ec5a44395f4641543be4",
+    "bytes": 84536513,
     "family_count": 12,
     "document_count": 23111
   },
@@ -43,11 +43,11 @@
   },
   "coherence_receipt": {
     "schema": "cityscroll.procurement_index_coherence.v1",
-    "source_model_fingerprint": "a93ac8ee78700e1f31a2b1cb40001687336d050b007bf06829ebf565ba5f393a",
+    "source_model_fingerprint": "a7f701d6f459fa91eed82a028d980164d1cc188e6b701a93895cb5a9a96d321b",
     "generated_at": "2026-10-22T19:54:16.507Z",
-    "selected_row_count": 35382,
+    "selected_row_count": 35481,
     "artifact_hashes": {
-      "shared_procurement_read_model": "73d4d759e408fffe9014c420b9e8c972aa143a5851b05ca76a04c14216849ff5",
+      "shared_procurement_read_model": "9685756e2f00d13bd4573a703d70a468e2f1e971bd4440c087e7813bd0ff5578",
       "keyword_search_procurements": "f599b5eb1540710d1c24fca1e2f8f89ac2d955e88f23263a00339512fb95a5ae"
     }
   },
@@ -70,26 +70,26 @@
       "path": "agencies.json.br",
       "gzip_path": "agencies.json.gz",
       "document_count": 89,
-      "uncompressed_bytes": 214676,
-      "gzip_bytes": 10849,
-      "brotli_bytes": 9046,
-      "sha256": "957790c04de6ea70db80554ca12124ca94c6b6b0d719a8fff99cd66a98bab2e4",
-      "gzip_sha256": "fb2aba9762692f297f7bc93e99ec660735655e1ab03656a750802cef0ed6947e",
-      "brotli_sha256": "3803dacb82d0a940da2bf02a36008c62055dcc4665e7e6fe950d0f8a8fcc14f4",
-      "receipt_sha256": "b4516da727ad883d99c2ac636afa2c40a9a73f3b0f4568ee3c0c0c5eab4b1d8b"
+      "uncompressed_bytes": 214748,
+      "gzip_bytes": 10859,
+      "brotli_bytes": 9057,
+      "sha256": "7e455003e872125026ee398b0bbc37142556ca06daca514b5e0dd0626e11c384",
+      "gzip_sha256": "ad0881ea7529f9e72ca91b52d58c54a5fdd7bf8cd3d5f430c960e8a353b6635a",
+      "brotli_sha256": "1f8ef9667bb8f45e039a7a5f417d6fe6bf1cb8bed8a68f718272c0ed69938c4c",
+      "receipt_sha256": "f47d677a3a0231036bfc02913e1c241fe4866d1e41724ace1b1ed0ca306a952b"
     },
     {
       "family": "people-organizations",
       "path": "people-organizations.json.br",
       "gzip_path": "people-organizations.json.gz",
       "document_count": 89,
-      "uncompressed_bytes": 214700,
-      "gzip_bytes": 10869,
-      "brotli_bytes": 9058,
-      "sha256": "46501b8ef76447b6bb5d97485c6362ebd2bae708e20492ae1ae3232272db2cc2",
-      "gzip_sha256": "035c9b3ed20689400453c165d36f19a8b5d13a05cec78553c785ca900d008589",
-      "brotli_sha256": "786f007dbee231bf0aa1f3de2e0d3ba3372b1569a2cf428d06ef50befd97cfd1",
-      "receipt_sha256": "d63a81327ab96c0db00d0f98696b8cb5a6611bdb143a8c948371fbbb9e8415f0"
+      "uncompressed_bytes": 214772,
+      "gzip_bytes": 10876,
+      "brotli_bytes": 9063,
+      "sha256": "ecc1c121867f4dabd14d6a7cb3261365fbf8c02541fc7f611e774de2baf674cb",
+      "gzip_sha256": "55fca5c90f45a4158d03302af0382bb811ff5be8a4bf7b1185f46616d8690c57",
+      "brotli_sha256": "9947f2215f890459fb884753eb81a3d965cf4b8f5283dd19fbb8c7aa3d66903c",
+      "receipt_sha256": "1a5ecbc7bdaef68ad275a2e2b93e07a72d51d795b145e6c843803c4497a2eac9"
     },
     {
       "family": "vendors",
@@ -187,13 +187,13 @@
       "path": "procurements.json.br",
       "gzip_path": "procurements.json.gz",
       "document_count": 20572,
-      "uncompressed_bytes": 72305572,
-      "gzip_bytes": 4121223,
-      "brotli_bytes": 3108740,
-      "sha256": "6be0deee7c0d691937f4bf6e24b964ff3131522087902d04f4293ee41623bb9f",
-      "gzip_sha256": "0361549dea09a0ab27580853e3dee9dd96a47af14c657450250aa8070aab1974",
-      "brotli_sha256": "a317517de4e3720c730f5c803ad9038049735e12b08fc09362dea0e41ec9aea4",
-      "receipt_sha256": "46f506b2565a5a47a9d428408cab572f91bec1ce1f27f08f3b3acf309fda9345"
+      "uncompressed_bytes": 72399362,
+      "gzip_bytes": 4130025,
+      "brotli_bytes": 3116219,
+      "sha256": "0c4827baee371788ec101853edaeb6d9296dc4194dea95890eacda9475030d99",
+      "gzip_sha256": "9579cfd660030bcea1b75ebcff1a43bc9802b6886a3b12b1764ade8b330b3fea",
+      "brotli_sha256": "6af5f147466c23ce6653705d57f654bef07e12c670456e832c389afc8c23f4c1",
+      "receipt_sha256": "a223c327b435a45486cb028c1a7bd06133b184831b3ed5b538c62ceb3e1e728f"
     },
     {
       "family": "consultations",

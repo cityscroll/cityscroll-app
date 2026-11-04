@@ -15471,30 +15471,45 @@
       "procurement_id": "procurement:contract:CT101520270000391",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT101520270000391",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT101520270000391:FABRICIO'S CLEANING CORP:prime-vendor:2026-10-07"
+        "checkbook_contracts:contract:registered:CT101520270000391:FABRICIO'S CLEANING CORP:prime-vendor:2026-10-07",
+        "city_record:20261007020"
       ],
+      "request_id": "20261007020",
       "start_date": "2026-07-01",
       "end_date": "2028-06-30",
       "agency_id": null,
-      "agency_name": "Office of the Comptroller",
-      "short_title": "Carpet Cleaning for 1 Centre Street (Labor and Services)",
+      "agency_name": "Comptroller",
+      "short_title": "Contractor Agreement for Carpet Cleaning for 1 Centre Street (Labor and Services)",
       "pin": "01526ADM75317",
       "contract_id": "CT101520270000391",
       "contract_amount": 112916.04,
-      "vendor_name": "FABRICIO'S CLEANING CORP",
+      "vendor_name": "Fabricio's Cleaning Corp",
       "official_url": null,
       "selection_method_description": "M/WBE SMALL PURCHASE",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Office of the Comptroller · FABRICIO'S CLEANING CORP · $112,916.04",
-      "notice_evidence": [],
+      "additional_description_1": "Comptroller · Fabricio's Cleaning Corp · $112,916.04",
+      "notice_evidence": [
+        {
+          "request_id": "20261007020",
+          "type_of_notice_description": "Award",
+          "short_title": "Contractor Agreement for Carpet Cleaning for 1 Centre Street (Labor and Services)",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-15",
+          "href": "/notices/20261007020"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ],
       "method_family": "mwbe_small_purchase"
@@ -27464,14 +27479,14 @@
       "pin": "03221O0005001",
       "contract_id": "CT103220228802363",
       "contract_amount": 324900,
-      "vendor_name": "CDW GOVERNMENT LLC",
+      "vendor_name": "CDW Government LLC",
       "official_url": null,
       "selection_method_description": "Intergovernmental OGS",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Investigation · CDW GOVERNMENT LLC · $324,900",
+      "additional_description_1": "Investigation · CDW Government LLC · $324,900",
       "notice_evidence": [
         {
           "request_id": "20211202129",
@@ -27694,14 +27709,14 @@
       "pin": "03221N0005001",
       "contract_id": "CT103220228805623",
       "contract_amount": 139998.5,
-      "vendor_name": "CDW GOVERNMENT LLC",
+      "vendor_name": "CDW Government LLC",
       "official_url": null,
       "selection_method_description": "Negotiated Acquisition",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Investigation · CDW GOVERNMENT LLC · $139,998.5",
+      "additional_description_1": "Investigation · CDW Government LLC · $139,998.5",
       "notice_evidence": [
         {
           "request_id": "20220318111",
@@ -44617,14 +44632,14 @@
       "pin": "04020I0001049R001",
       "contract_id": "CT104020258805992",
       "contract_amount": 1804046,
-      "vendor_name": "South Asian Youth Action SAYA Inc",
+      "vendor_name": "South Asian Youth Action Saya Inc",
       "official_url": null,
       "selection_method_description": "Renewal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Education · South Asian Youth Action SAYA Inc · $2,995,469.25",
+      "additional_description_1": "Education · South Asian Youth Action Saya Inc · $2,995,469.25",
       "notice_evidence": [
         {
           "request_id": "20250317014",
@@ -187555,14 +187570,14 @@
       "pin": "05625U0007001",
       "contract_id": "CT105620268802092",
       "contract_amount": 62290,
-      "vendor_name": "NATIONAL CHILDREN'S ADVOCACY CENTER",
+      "vendor_name": "National Children's Advocacy Center",
       "official_url": null,
       "selection_method_description": "Subscription",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Police Department · NATIONAL CHILDREN'S ADVOCACY CENTER · $62,290",
+      "additional_description_1": "Police Department · National Children's Advocacy Center · $62,290",
       "notice_evidence": [
         {
           "request_id": "20250923011",
@@ -191337,30 +191352,45 @@
       "procurement_id": "procurement:contract:CT105620278801684",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT105620278801684",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT105620278801684:NICHOLAS MATTIA & ASSOCIATES INC:prime-vendor:2026-10-09"
+        "checkbook_contracts:contract:registered:CT105620278801684:NICHOLAS MATTIA & ASSOCIATES INC:prime-vendor:2026-10-09",
+        "city_record:20261013011"
       ],
+      "request_id": "20261013011",
       "start_date": "2026-08-01",
       "end_date": "2029-07-31",
       "agency_id": null,
       "agency_name": "Police Department",
-      "short_title": "Forensic Consulting Services Renewal 1",
+      "short_title": "Forensic Consulting Services",
       "pin": "05622X8004KXLR001",
       "contract_id": "CT105620278801684",
       "contract_amount": 255000,
-      "vendor_name": "NICHOLAS MATTIA & ASSOCIATES INC",
+      "vendor_name": "Nicholas Mattia & Associates Inc",
       "official_url": null,
       "selection_method_description": "RENEWAL OF CONTRACT",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Police Department · NICHOLAS MATTIA & ASSOCIATES INC · $255,000",
-      "notice_evidence": [],
+      "additional_description_1": "Police Department · Nicholas Mattia & Associates Inc · $255,000",
+      "notice_evidence": [
+        {
+          "request_id": "20261013011",
+          "type_of_notice_description": "Award",
+          "short_title": "Forensic Consulting Services",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-19",
+          "href": "/notices/20261013011"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -191431,12 +191461,15 @@
       "procurement_id": "procurement:contract:CT105620278802278",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT105620278802278",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT105620278802278:NATIONAL CHILDREN'S ADVOCACY CENTER:prime-vendor:2026-10-02"
+        "checkbook_contracts:contract:registered:CT105620278802278:NATIONAL CHILDREN'S ADVOCACY CENTER:prime-vendor:2026-10-02",
+        "city_record:20261005010"
       ],
+      "request_id": "20261005010",
       "start_date": "2026-07-01",
       "end_date": "2028-06-30",
       "agency_id": null,
@@ -191445,16 +191478,28 @@
       "pin": "05625U0007001R001",
       "contract_id": "CT105620278802278",
       "contract_amount": 213940,
-      "vendor_name": "NATIONAL CHILDREN'S ADVOCACY CENTER",
+      "vendor_name": "National Children's Advocacy Center",
       "official_url": null,
       "selection_method_description": "RENEWAL OF CONTRACT",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Police Department · NATIONAL CHILDREN'S ADVOCACY CENTER · $213,940",
-      "notice_evidence": [],
+      "additional_description_1": "Police Department · National Children's Advocacy Center · $213,940",
+      "notice_evidence": [
+        {
+          "request_id": "20261005010",
+          "type_of_notice_description": "Award",
+          "short_title": "Training for Forensic Interviewing",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-09",
+          "href": "/notices/20261005010"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -191494,12 +191539,15 @@
       "procurement_id": "procurement:contract:CT105620278802741",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT105620278802741",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT105620278802741:THERMO EBERLINE LLC:prime-vendor:2026-10-02"
+        "checkbook_contracts:contract:registered:CT105620278802741:THERMO EBERLINE LLC:prime-vendor:2026-10-02",
+        "city_record:20261005009"
       ],
+      "request_id": "20261005009",
       "start_date": "2026-09-01",
       "end_date": "2028-08-31",
       "agency_id": null,
@@ -191508,16 +191556,28 @@
       "pin": "05623S0008001R001",
       "contract_id": "CT105620278802741",
       "contract_amount": 2554341.71,
-      "vendor_name": "THERMO EBERLINE LLC",
+      "vendor_name": "Thermo Eberline LLC",
       "official_url": null,
       "selection_method_description": "RENEWAL OF CONTRACT",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Police Department · THERMO EBERLINE LLC · $2,554,341.71",
-      "notice_evidence": [],
+      "additional_description_1": "Police Department · Thermo Eberline LLC · $2,554,341.71",
+      "notice_evidence": [
+        {
+          "request_id": "20261005009",
+          "type_of_notice_description": "Award",
+          "short_title": "Renewal #1 - VIEWPOINT & M-ARIS Maintenance & Service",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-09",
+          "href": "/notices/20261005009"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -191556,30 +191616,45 @@
       "procurement_id": "procurement:contract:CT105620278803358",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT105620278803358",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT105620278803358:SAVANT FINANCIAL TECHNOLOGIES INC:prime-vendor:2026-10-13"
+        "checkbook_contracts:contract:registered:CT105620278803358:SAVANT FINANCIAL TECHNOLOGIES INC:prime-vendor:2026-10-13",
+        "city_record:20261013033"
       ],
+      "request_id": "20261013033",
       "start_date": "2026-10-13",
       "end_date": "2027-10-12",
       "agency_id": null,
       "agency_name": "Police Department",
-      "short_title": "Cellebrite Software Upgrade",
+      "short_title": "Cellebrite Software Upgrades to Inseyets online Pro, Inseyets Kits, & Smart Translator, for a one-year term",
       "pin": "05627W0002001",
       "contract_id": "CT105620278803358",
       "contract_amount": 196000,
-      "vendor_name": "SAVANT FINANCIAL TECHNOLOGIES INC",
+      "vendor_name": "Savant Financial Technologies Inc.",
       "official_url": null,
       "selection_method_description": "M/WBE SMALL PURCHASE",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Police Department · SAVANT FINANCIAL TECHNOLOGIES INC · $196,000",
-      "notice_evidence": [],
+      "additional_description_1": "Police Department · Savant Financial Technologies Inc. · $196,000",
+      "notice_evidence": [
+        {
+          "request_id": "20261013033",
+          "type_of_notice_description": "Award",
+          "short_title": "Cellebrite Software Upgrades to Inseyets online Pro, Inseyets Kits, & Smart Translator, for a one-year term",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-20",
+          "href": "/notices/20261013033"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ],
       "method_family": "mwbe_small_purchase"
@@ -196617,14 +196692,14 @@
       "pin": "05724W0038001",
       "contract_id": "CT105720248807661",
       "contract_amount": 65407.01,
-      "vendor_name": "WATS INTERNATIONAL INC",
+      "vendor_name": "WATS International Inc",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Fire Department · WATS INTERNATIONAL INC · $65,407.01",
+      "additional_description_1": "Fire Department · WATS International Inc · $65,407.01",
       "notice_evidence": [
         {
           "request_id": "20240517122",
@@ -197502,14 +197577,14 @@
       "pin": "05724W0053001",
       "contract_id": "CT105720258800839",
       "contract_amount": 30000,
-      "vendor_name": "Kop Communications LLC",
+      "vendor_name": "KOP Communications LLC",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Fire Department · Kop Communications LLC · $30,000",
+      "additional_description_1": "Fire Department · KOP Communications LLC · $30,000",
       "notice_evidence": [
         {
           "request_id": "20240710127",
@@ -197782,14 +197857,14 @@
       "pin": "05725W0004001",
       "contract_id": "CT105720258801942",
       "contract_amount": 40000,
-      "vendor_name": "Kop Communications LLC",
+      "vendor_name": "KOP Communications LLC",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Fire Department · Kop Communications LLC · $40,000",
+      "additional_description_1": "Fire Department · KOP Communications LLC · $40,000",
       "notice_evidence": [
         {
           "request_id": "20240812123",
@@ -201603,14 +201678,14 @@
       "pin": "05726W0011001",
       "contract_id": "CT105720268802165",
       "contract_amount": 100000,
-      "vendor_name": "Kop Communications LLC",
+      "vendor_name": "KOP Communications LLC",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Fire Department · Kop Communications LLC · $100,000",
+      "additional_description_1": "Fire Department · KOP Communications LLC · $100,000",
       "notice_evidence": [
         {
           "request_id": "20250825009",
@@ -202878,14 +202953,14 @@
       "pin": "05726W0028001",
       "contract_id": "CT105720268804085",
       "contract_amount": 61828.52,
-      "vendor_name": "Kemlot Global Associates Inc",
+      "vendor_name": "KEMLOT GLOBAL ASSOCIATES INC",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Fire Department · Kemlot Global Associates Inc · $61,828.52",
+      "additional_description_1": "Fire Department · KEMLOT GLOBAL ASSOCIATES INC · $61,828.52",
       "notice_evidence": [
         {
           "request_id": "20251209031",
@@ -205288,30 +205363,45 @@
       "procurement_id": "procurement:contract:CT105720278802949",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT105720278802949",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT105720278802949:KOP COMMUNICATIONS LLC:prime-vendor:2026-09-24"
+        "checkbook_contracts:contract:registered:CT105720278802949:KOP COMMUNICATIONS LLC:prime-vendor:2026-09-24",
+        "city_record:20261007012"
       ],
+      "request_id": "20261007012",
       "start_date": "2026-10-07",
       "end_date": "2027-06-30",
       "agency_id": null,
       "agency_name": "Fire Department",
-      "short_title": "To purchase Radio Cases and Straps",
+      "short_title": "Radio Cases and Straps",
       "pin": "05727W0016001",
       "contract_id": "CT105720278802949",
       "contract_amount": 88591.93,
-      "vendor_name": "KOP COMMUNICATIONS LLC",
+      "vendor_name": "KOP Communications LLC",
       "official_url": null,
       "selection_method_description": "M/WBE SMALL PURCHASE",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Fire Department · KOP COMMUNICATIONS LLC · $88,591.93",
-      "notice_evidence": [],
+      "additional_description_1": "Fire Department · KOP Communications LLC · $88,591.93",
+      "notice_evidence": [
+        {
+          "request_id": "20261007012",
+          "type_of_notice_description": "Award",
+          "short_title": "Radio Cases and Straps",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-14",
+          "href": "/notices/20261007012"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ],
       "method_family": "mwbe_small_purchase"
@@ -205320,12 +205410,15 @@
       "procurement_id": "procurement:contract:CT105720278803349",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT105720278803349",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT105720278803349:AAA EMERGENCY SUPPLY, CO. INC.:prime-vendor:2026-10-15"
+        "checkbook_contracts:contract:registered:CT105720278803349:AAA EMERGENCY SUPPLY, CO. INC.:prime-vendor:2026-10-15",
+        "city_record:20261016010"
       ],
+      "request_id": "20261016010",
       "start_date": "2026-10-19",
       "end_date": "2027-06-30",
       "agency_id": null,
@@ -205334,16 +205427,28 @@
       "pin": "05727O0005001",
       "contract_id": "CT105720278803349",
       "contract_amount": 21820.9,
-      "vendor_name": "AAA EMERGENCY SUPPLY, CO. INC.",
+      "vendor_name": "AAA Emergency Supply, Co. Inc..",
       "official_url": null,
       "selection_method_description": "SMALL PURCHASE - INTERGOV'T",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Fire Department · AAA EMERGENCY SUPPLY, CO. INC. · $21,820.9",
-      "notice_evidence": [],
+      "additional_description_1": "Fire Department · AAA Emergency Supply, Co. Inc.. · $21,820.9",
+      "notice_evidence": [
+        {
+          "request_id": "20261016010",
+          "type_of_notice_description": "Award",
+          "short_title": "MASK FIT EQUIPMENT (OHD)",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-22",
+          "href": "/notices/20261016010"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -223402,6 +223507,7 @@
       "primary_stage": "registered",
       "source_observation_refs": [
         "city_record:20230612122",
+        "city_record:20261007027",
         "passport_public_contracts:contract:06820P8206KXLR001:4897193"
       ],
       "request_id": "20230612122",
@@ -223430,6 +223536,15 @@
           "contact_name": null,
           "start_date": "2023-06-16",
           "href": "/notices/20230612122"
+        },
+        {
+          "request_id": "20261007027",
+          "type_of_notice_description": "Award",
+          "short_title": "Prevention Services - Family Support - BK1",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-15",
+          "href": "/notices/20261007027"
         }
       ],
       "source_system": "shared_procurement_read_model",
@@ -226356,14 +226471,14 @@
       "pin": "06823P0006002",
       "contract_id": "CT106820248802990",
       "contract_amount": 1198935,
-      "vendor_name": "BRIASON ASSOCIATES LLC",
+      "vendor_name": "Briason Associates LLC",
       "official_url": null,
       "selection_method_description": "Competitive Sealed Proposal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Administration for Children's Services · BRIASON ASSOCIATES LLC · $1,198,935",
+      "additional_description_1": "Administration for Children's Services · Briason Associates LLC · $1,198,935",
       "notice_evidence": [
         {
           "request_id": "20230926105",
@@ -230712,14 +230827,14 @@
       "pin": "06824W0034001",
       "contract_id": "CT106820258800286",
       "contract_amount": 200000,
-      "vendor_name": "LUMAL CLEANERS INC AMCO UNIFORM RENTAL",
+      "vendor_name": "Lumal Cleaners Inc Amco Uniform Rental",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Administration for Children's Services · LUMAL CLEANERS INC AMCO UNIFORM RENTAL · $200,000",
+      "additional_description_1": "Administration for Children's Services · Lumal Cleaners Inc Amco Uniform Rental · $200,000",
       "notice_evidence": [
         {
           "request_id": "20240702105",
@@ -239406,14 +239521,14 @@
       "pin": "06826W0034001",
       "contract_id": "CT106820268805149",
       "contract_amount": 250000,
-      "vendor_name": "Kemlot Global Associates Inc",
+      "vendor_name": "KEMLOT GLOBAL ASSOCIATES INC",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Administration for Children's Services · Kemlot Global Associates Inc · $250,000",
+      "additional_description_1": "Administration for Children's Services · KEMLOT GLOBAL ASSOCIATES INC · $250,000",
       "notice_evidence": [
         {
           "request_id": "20260413011",
@@ -248763,12 +248878,15 @@
       "procurement_id": "procurement:contract:CT106820278802064",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT106820278802064",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT106820278802064:BRIASON ASSOCIATES LLC:prime-vendor:2026-10-02"
+        "checkbook_contracts:contract:registered:CT106820278802064:BRIASON ASSOCIATES LLC:prime-vendor:2026-10-02",
+        "city_record:20261005008"
       ],
+      "request_id": "20261005008",
       "start_date": "2026-10-01",
       "end_date": "2029-09-30",
       "agency_id": null,
@@ -248777,16 +248895,28 @@
       "pin": "06823P0006002R001",
       "contract_id": "CT106820278802064",
       "contract_amount": 1798402.5,
-      "vendor_name": "BRIASON ASSOCIATES LLC",
+      "vendor_name": "Briason Associates LLC",
       "official_url": null,
       "selection_method_description": "RENEWAL OF CONTRACT",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Administration for Children's Services · BRIASON ASSOCIATES LLC · $1,798,402.5",
-      "notice_evidence": [],
+      "additional_description_1": "Administration for Children's Services · Briason Associates LLC · $1,798,402.5",
+      "notice_evidence": [
+        {
+          "request_id": "20261005008",
+          "type_of_notice_description": "Award",
+          "short_title": "Essential Parenting Supports-Parenting Skills Renewal",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-09",
+          "href": "/notices/20261005008"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -248794,12 +248924,15 @@
       "procurement_id": "procurement:contract:CT106820278802123",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT106820278802123",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT106820278802123:INFOPEOPLE CORPORATION:prime-vendor:2026-09-30"
+        "checkbook_contracts:contract:registered:CT106820278802123:INFOPEOPLE CORPORATION:prime-vendor:2026-09-30",
+        "city_record:20260930014"
       ],
+      "request_id": "20260930014",
       "start_date": "2026-09-17",
       "end_date": "2027-08-31",
       "agency_id": null,
@@ -248808,16 +248941,28 @@
       "pin": "06827W0009001",
       "contract_id": "CT106820278802123",
       "contract_amount": 200000,
-      "vendor_name": "INFOPEOPLE CORPORATION",
+      "vendor_name": "InfoPeople Corporation",
       "official_url": null,
       "selection_method_description": "M/WBE SMALL PURCHASE",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Administration for Children's Services · INFOPEOPLE CORPORATION · $200,000",
-      "notice_evidence": [],
+      "additional_description_1": "Administration for Children's Services · InfoPeople Corporation · $200,000",
+      "notice_evidence": [
+        {
+          "request_id": "20260930014",
+          "type_of_notice_description": "Award",
+          "short_title": "IT Security SIEM Engineer",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-07",
+          "href": "/notices/20260930014"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ],
       "method_family": "mwbe_small_purchase"
@@ -274563,14 +274708,14 @@
       "pin": "06923P8010KXLR001",
       "contract_id": "CT106920248802065",
       "contract_amount": 904308.03,
-      "vendor_name": "BANK OF AMERICA NA",
+      "vendor_name": "Bank of America NA",
       "official_url": null,
       "selection_method_description": "Renewal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Dept. of Social Svcs/Human Resources Administration · BANK OF AMERICA NA · $904,308.03",
+      "additional_description_1": "Dept. of Social Svcs/Human Resources Administration · Bank of America NA · $904,308.03",
       "notice_evidence": [
         {
           "request_id": "20230818108",
@@ -298195,14 +298340,14 @@
       "pin": "06926G0023001",
       "contract_id": "CT106920268803981",
       "contract_amount": 594000,
-      "vendor_name": "SVAM International Inc",
+      "vendor_name": "Svam International Inc",
       "official_url": null,
       "selection_method_description": "Intergovernmental GSA",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Dept. of Social Svcs/Human Resources Administration · SVAM International Inc · $594,000",
+      "additional_description_1": "Dept. of Social Svcs/Human Resources Administration · Svam International Inc · $594,000",
       "notice_evidence": [
         {
           "request_id": "20251224011",
@@ -300642,14 +300787,14 @@
       "pin": "06926G0031001",
       "contract_id": "CT106920268805658",
       "contract_amount": 492000,
-      "vendor_name": "SVAM International Inc",
+      "vendor_name": "Svam International Inc",
       "official_url": null,
       "selection_method_description": "Intergovernmental GSA",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Dept. of Social Svcs/Human Resources Administration · SVAM International Inc · $492,000",
+      "additional_description_1": "Dept. of Social Svcs/Human Resources Administration · Svam International Inc · $492,000",
       "notice_evidence": [
         {
           "request_id": "20260512027",
@@ -304172,16 +304317,19 @@
       "procurement_id": "procurement:contract:CT106920278801472",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT106920278801472",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT106920278801472:PYRAMID SAFETY & HEALTH SOLUTIONS INC:prime-vendor:2026-10-16"
+        "checkbook_contracts:contract:registered:CT106920278801472:PYRAMID SAFETY & HEALTH SOLUTIONS INC:prime-vendor:2026-10-16",
+        "city_record:20261020006"
       ],
+      "request_id": "20261020006",
       "start_date": "2026-07-01",
       "end_date": "2029-06-30",
       "agency_id": null,
-      "agency_name": "Department of Social Services",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
       "short_title": "Fire & Safety Inspection Services for DVPHA housing",
       "pin": "06926W0050001",
       "contract_id": "CT106920278801472",
@@ -304190,12 +304338,24 @@
       "official_url": null,
       "selection_method_description": "M/WBE SMALL PURCHASE",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Social Services · Pyramid Safety & Health Solutions Inc · $47,760",
-      "notice_evidence": [],
+      "additional_description_1": "Dept. of Social Svcs/Human Resources Administration · Pyramid Safety & Health Solutions Inc · $47,760",
+      "notice_evidence": [
+        {
+          "request_id": "20261020006",
+          "type_of_notice_description": "Award",
+          "short_title": "Fire & Safety Inspection Services for DVPHA housing",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-26",
+          "href": "/notices/20261020006"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ],
       "method_family": "mwbe_small_purchase"
@@ -304332,30 +304492,45 @@
       "procurement_id": "procurement:contract:CT106920278802433",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT106920278802433",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT106920278802433:THE JERICHO PROJECT:prime-vendor:2026-10-06"
+        "checkbook_contracts:contract:registered:CT106920278802433:THE JERICHO PROJECT:prime-vendor:2026-10-06",
+        "city_record:20261007011"
       ],
+      "request_id": "20261007011",
       "start_date": "2026-04-01",
       "end_date": "2066-03-31",
       "agency_id": null,
-      "agency_name": "Department of Social Services",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
       "short_title": "Affordable Hsng for Referred Households 1039 E Gun Hill Rd",
       "pin": "06923P0027016",
       "contract_id": "CT106920278802433",
       "contract_amount": 292574111.22,
-      "vendor_name": "THE JERICHO PROJECT",
+      "vendor_name": "The Jericho Project",
       "official_url": null,
       "selection_method_description": "RFP FROM A PQVL",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Social Services · THE JERICHO PROJECT · $292,574,111.22",
-      "notice_evidence": [],
+      "additional_description_1": "Dept. of Social Svcs/Human Resources Administration · The Jericho Project · $292,574,111.22",
+      "notice_evidence": [
+        {
+          "request_id": "20261007011",
+          "type_of_notice_description": "Award",
+          "short_title": "Affordable Hsng for Referred Households 1039 E Gun Hill Rd",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-14",
+          "href": "/notices/20261007011"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -304425,30 +304600,45 @@
       "procurement_id": "procurement:contract:CT106920278802915",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT106920278802915",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT106920278802915:ABRAHAMS CONSULTING LLC:prime-vendor:2026-10-15"
+        "checkbook_contracts:contract:registered:CT106920278802915:ABRAHAMS CONSULTING LLC:prime-vendor:2026-10-15",
+        "city_record:20261016011"
       ],
+      "request_id": "20261016011",
       "start_date": "2026-07-01",
       "end_date": "2027-06-30",
       "agency_id": null,
-      "agency_name": "Department of Social Services",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
       "short_title": "Support SAN Switches for 1 year",
       "pin": "06927W0007001",
       "contract_id": "CT106920278802915",
       "contract_amount": 67493.64,
-      "vendor_name": "ABRAHAMS CONSULTING LLC",
+      "vendor_name": "Abrahams Consulting LLC",
       "official_url": null,
       "selection_method_description": "M/WBE SMALL PURCHASE",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Social Services · ABRAHAMS CONSULTING LLC · $67,493.64",
-      "notice_evidence": [],
+      "additional_description_1": "Dept. of Social Svcs/Human Resources Administration · Abrahams Consulting LLC · $67,493.64",
+      "notice_evidence": [
+        {
+          "request_id": "20261016011",
+          "type_of_notice_description": "Award",
+          "short_title": "Support SAN Switches for 1 year",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-22",
+          "href": "/notices/20261016011"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ],
       "method_family": "mwbe_small_purchase"
@@ -330413,14 +330603,14 @@
       "pin": "07126W0012001",
       "contract_id": "CT107120268807802",
       "contract_amount": 100000,
-      "vendor_name": "Kemlot Global Associates Inc",
+      "vendor_name": "KEMLOT GLOBAL ASSOCIATES INC",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Homeless Services · Kemlot Global Associates Inc · $100,000",
+      "additional_description_1": "Homeless Services · KEMLOT GLOBAL ASSOCIATES INC · $100,000",
       "notice_evidence": [
         {
           "request_id": "20260529021",
@@ -330540,14 +330730,14 @@
       "pin": "07126W0009001",
       "contract_id": "CT107120268807879",
       "contract_amount": 100000,
-      "vendor_name": "Kemlot Global Associates Inc",
+      "vendor_name": "KEMLOT GLOBAL ASSOCIATES INC",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Homeless Services · Kemlot Global Associates Inc · $100,000",
+      "additional_description_1": "Homeless Services · KEMLOT GLOBAL ASSOCIATES INC · $100,000",
       "notice_evidence": [
         {
           "request_id": "20260526021",
@@ -330619,14 +330809,14 @@
       "pin": "07126W0010001",
       "contract_id": "CT107120268807993",
       "contract_amount": 100000,
-      "vendor_name": "Kemlot Global Associates Inc",
+      "vendor_name": "KEMLOT GLOBAL ASSOCIATES INC",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Homeless Services · Kemlot Global Associates Inc · $100,000",
+      "additional_description_1": "Homeless Services · KEMLOT GLOBAL ASSOCIATES INC · $100,000",
       "notice_evidence": [
         {
           "request_id": "20260529022",
@@ -330666,14 +330856,14 @@
       "pin": "07126W0011001",
       "contract_id": "CT107120268808001",
       "contract_amount": 100000,
-      "vendor_name": "Kemlot Global Associates Inc",
+      "vendor_name": "KEMLOT GLOBAL ASSOCIATES INC",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Homeless Services · Kemlot Global Associates Inc · $100,000",
+      "additional_description_1": "Homeless Services · KEMLOT GLOBAL ASSOCIATES INC · $100,000",
       "notice_evidence": [
         {
           "request_id": "20260529024",
@@ -334919,30 +335109,45 @@
       "procurement_id": "procurement:contract:CT107120278801780",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT107120278801780",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT107120278801780:BRONX PARENT HOUSING NETWORK INC:prime-vendor:2026-10-05"
+        "checkbook_contracts:contract:registered:CT107120278801780:BRONX PARENT HOUSING NETWORK INC:prime-vendor:2026-10-05",
+        "city_record:20261006016"
       ],
+      "request_id": "20261006016",
       "start_date": "2026-07-01",
       "end_date": "2027-06-30",
       "agency_id": null,
-      "agency_name": "Department of Homeless Services",
+      "agency_name": "Homeless Services",
       "short_title": "Jackie's Place NAE",
       "pin": "07126N0022001",
       "contract_id": "CT107120278801780",
       "contract_amount": 4435575,
-      "vendor_name": "BRONX PARENT HOUSING NETWORK INC",
+      "vendor_name": "Bronx Parent Housing Network Inc",
       "official_url": null,
       "selection_method_description": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Homeless Services · BRONX PARENT HOUSING NETWORK INC · $4,435,575",
-      "notice_evidence": [],
+      "additional_description_1": "Homeless Services · Bronx Parent Housing Network Inc · $4,435,575",
+      "notice_evidence": [
+        {
+          "request_id": "20261006016",
+          "type_of_notice_description": "Award",
+          "short_title": "Jackie's Place NAE",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-13",
+          "href": "/notices/20261006016"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -335045,30 +335250,45 @@
       "procurement_id": "procurement:contract:CT107120278802155",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT107120278802155",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT107120278802155:ACACIA NETWORK HOUSING INC:prime-vendor:2026-10-01"
+        "checkbook_contracts:contract:registered:CT107120278802155:ACACIA NETWORK HOUSING INC:prime-vendor:2026-10-01",
+        "city_record:20261002016"
       ],
+      "request_id": "20261002016",
       "start_date": "2026-07-01",
       "end_date": "2030-06-30",
       "agency_id": null,
-      "agency_name": "Department of Homeless Services",
-      "short_title": "FY27 Renewal - SA Stadium Shelter (200 beds)",
+      "agency_name": "Homeless Services",
+      "short_title": "FY27 Renewal - Shelter facilities for homeless single adults at Stadium Shelter",
       "pin": "07121P0107001R001",
       "contract_id": "CT107120278802155",
       "contract_amount": 53778766,
-      "vendor_name": "ACACIA NETWORK HOUSING INC",
+      "vendor_name": "Acacia Network Housing Inc",
       "official_url": null,
       "selection_method_description": "RENEWAL OF CONTRACT",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Homeless Services · ACACIA NETWORK HOUSING INC · $53,778,766",
-      "notice_evidence": [],
+      "additional_description_1": "Homeless Services · Acacia Network Housing Inc · $53,778,766",
+      "notice_evidence": [
+        {
+          "request_id": "20261002016",
+          "type_of_notice_description": "Award",
+          "short_title": "FY27 Renewal - Shelter facilities for homeless single adults at Stadium Shelter",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-08",
+          "href": "/notices/20261002016"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -347469,30 +347689,45 @@
       "procurement_id": "procurement:contract:CT107220278802797",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT107220278802797",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT107220278802797:ROUTERATI INC:prime-vendor:2026-10-08"
+        "checkbook_contracts:contract:registered:CT107220278802797:ROUTERATI INC:prime-vendor:2026-10-08",
+        "city_record:20261009015"
       ],
+      "request_id": "20261009015",
       "start_date": "2026-10-13",
       "end_date": "2029-10-12",
       "agency_id": null,
-      "agency_name": "Department of Correction",
-      "short_title": "OJMS Digital Solutions Platform",
+      "agency_name": "Correction",
+      "short_title": "Offender and Jail Management System (OJMS) Digital Solutions Platform",
       "pin": "07227W0002001",
       "contract_id": "CT107220278802797",
       "contract_amount": 1482460,
-      "vendor_name": "ROUTERATI INC",
+      "vendor_name": "Routerati Inc",
       "official_url": null,
       "selection_method_description": "M/WBE SMALL PURCHASE",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Correction · ROUTERATI INC · $1,482,460",
-      "notice_evidence": [],
+      "additional_description_1": "Correction · Routerati Inc · $1,482,460",
+      "notice_evidence": [
+        {
+          "request_id": "20261009015",
+          "type_of_notice_description": "Award",
+          "short_title": "Offender and Jail Management System (OJMS) Digital Solutions Platform",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-19",
+          "href": "/notices/20261009015"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ],
       "method_family": "mwbe_small_purchase"
@@ -347501,30 +347736,45 @@
       "procurement_id": "procurement:contract:CT107220278803051",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT107220278803051",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT107220278803051:DICE IT SOLUTIONS LIMITED LIABILITY COMPANY:prime-vendor:2026-10-08"
+        "checkbook_contracts:contract:registered:CT107220278803051:DICE IT SOLUTIONS LIMITED LIABILITY COMPANY:prime-vendor:2026-10-08",
+        "city_record:20261009016"
       ],
+      "request_id": "20261009016",
       "start_date": "2026-10-13",
       "end_date": "2029-10-12",
       "agency_id": null,
-      "agency_name": "Department of Correction",
-      "short_title": "OJMS Unified Data and Application Services",
+      "agency_name": "Correction",
+      "short_title": "Offender and Jail Management System (OJMS) Unified Data and Application Services Transformation Initiative",
       "pin": "07227W0003001",
       "contract_id": "CT107220278803051",
       "contract_amount": 1395225,
-      "vendor_name": "DICE IT SOLUTIONS LIMITED LIABILITY COMPANY",
+      "vendor_name": "Dice It Solutions Limited Liability Company",
       "official_url": null,
       "selection_method_description": "M/WBE SMALL PURCHASE",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Correction · DICE IT SOLUTIONS LIMITED LIABILITY COMPANY · $1,395,225",
-      "notice_evidence": [],
+      "additional_description_1": "Correction · Dice It Solutions Limited Liability Company · $1,395,225",
+      "notice_evidence": [
+        {
+          "request_id": "20261009016",
+          "type_of_notice_description": "Award",
+          "short_title": "Offender and Jail Management System (OJMS) Unified Data and Application Services Transformation Initiative",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-19",
+          "href": "/notices/20261009016"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ],
       "method_family": "mwbe_small_purchase"
@@ -347533,16 +347783,19 @@
       "procurement_id": "procurement:contract:CT107220278803438",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT107220278803438",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT107220278803438:THE KITE ZINE LLC:prime-vendor:2026-10-20"
+        "checkbook_contracts:contract:registered:CT107220278803438:THE KITE ZINE LLC:prime-vendor:2026-10-20",
+        "city_record:20261020025"
       ],
+      "request_id": "20261020025",
       "start_date": "2026-10-01",
       "end_date": "2027-06-30",
       "agency_id": null,
-      "agency_name": "Department of Correction",
+      "agency_name": "Correction",
       "short_title": "Building Voices",
       "pin": "07227W0007001",
       "contract_id": "CT107220278803438",
@@ -347551,12 +347804,24 @@
       "official_url": null,
       "selection_method_description": "M/WBE SMALL PURCHASE",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Correction · The Kite Zine LLC · $99,840",
-      "notice_evidence": [],
+      "additional_description_1": "Correction · The Kite Zine LLC · $99,840",
+      "notice_evidence": [
+        {
+          "request_id": "20261020025",
+          "type_of_notice_description": "Award",
+          "short_title": "Building Voices",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-27",
+          "href": "/notices/20261020025"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ],
       "method_family": "mwbe_small_purchase"
@@ -385219,30 +385484,45 @@
       "procurement_id": "procurement:contract:CT115620278801952",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT115620278801952",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT115620278801952:QUALITY AND ASSURANCE TECHNOLOGY CORP:prime-vendor:2026-09-28"
+        "checkbook_contracts:contract:registered:CT115620278801952:QUALITY AND ASSURANCE TECHNOLOGY CORP:prime-vendor:2026-09-28",
+        "city_record:20260930020"
       ],
+      "request_id": "20260930020",
       "start_date": "2026-07-01",
       "end_date": "2027-06-30",
       "agency_id": null,
-      "agency_name": "NYC Taxi and Limousine Commission",
+      "agency_name": "Taxi and Limousine Commission",
       "short_title": "Technical Project Manager Renewal",
       "pin": "15626W0004001R001",
       "contract_id": "CT115620278801952",
       "contract_amount": 313740,
-      "vendor_name": "QUALITY AND ASSURANCE TECHNOLOGY CORP",
+      "vendor_name": "Quality and Assurance Technology Corp",
       "official_url": null,
       "selection_method_description": "M/WBE SMALL PURCHASE RENEWALS",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "NYC Taxi and Limousine Commission · QUALITY AND ASSURANCE TECHNOLOGY CORP · $313,740",
-      "notice_evidence": [],
+      "additional_description_1": "Taxi and Limousine Commission · Quality and Assurance Technology Corp · $313,740",
+      "notice_evidence": [
+        {
+          "request_id": "20260930020",
+          "type_of_notice_description": "Award",
+          "short_title": "Technical Project Manager Renewal",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-07",
+          "href": "/notices/20260930020"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ],
       "method_family": "mwbe_small_purchase"
@@ -387300,14 +387580,14 @@
       "pin": "26021N0732001",
       "contract_id": "CT126020228800626",
       "contract_amount": 173150,
-      "vendor_name": "HANDS IN 4 YOUTH INC",
+      "vendor_name": "Hands in 4 Youth Inc",
       "official_url": null,
       "selection_method_description": "Negotiated Acquisition Extension",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Youth and Community Development · HANDS IN 4 YOUTH INC · $173,150",
+      "additional_description_1": "Youth and Community Development · Hands in 4 Youth Inc · $173,150",
       "notice_evidence": [
         {
           "request_id": "20220614109",
@@ -388036,14 +388316,14 @@
       "pin": "26022N0045001",
       "contract_id": "CT126020228800716",
       "contract_amount": 750232.5,
-      "vendor_name": "KIPP ACADEMY CHARTER SCHOOL",
+      "vendor_name": "KIPP Academy Charter School",
       "official_url": null,
       "selection_method_description": "Negotiated Acquisition Extension",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Youth and Community Development · KIPP ACADEMY CHARTER SCHOOL · $750,232.5",
+      "additional_description_1": "Youth and Community Development · KIPP Academy Charter School · $750,232.5",
       "notice_evidence": [
         {
           "request_id": "20220517111",
@@ -389048,14 +389328,14 @@
       "pin": "26022N0178001",
       "contract_id": "CT126020228800817",
       "contract_amount": 1689447.5,
-      "vendor_name": "South Asian Youth Action SAYA Inc",
+      "vendor_name": "South Asian Youth Action Saya Inc",
       "official_url": null,
       "selection_method_description": "Negotiated Acquisition Extension",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Youth and Community Development · South Asian Youth Action SAYA Inc · $1,689,447.5",
+      "additional_description_1": "Youth and Community Development · South Asian Youth Action Saya Inc · $1,689,447.5",
       "notice_evidence": [
         {
           "request_id": "20220310113",
@@ -391072,14 +391352,14 @@
       "pin": "26022N0177001",
       "contract_id": "CT126020228801785",
       "contract_amount": 1156557.5,
-      "vendor_name": "South Asian Youth Action SAYA Inc",
+      "vendor_name": "South Asian Youth Action Saya Inc",
       "official_url": null,
       "selection_method_description": "Negotiated Acquisition Extension",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Youth and Community Development · South Asian Youth Action SAYA Inc · $1,156,557.5",
+      "additional_description_1": "Youth and Community Development · South Asian Youth Action Saya Inc · $1,156,557.5",
       "notice_evidence": [
         {
           "request_id": "20220310111",
@@ -391118,14 +391398,14 @@
       "pin": "26022N0176001",
       "contract_id": "CT126020228801787",
       "contract_amount": 464167.5,
-      "vendor_name": "South Asian Youth Action SAYA Inc",
+      "vendor_name": "South Asian Youth Action Saya Inc",
       "official_url": null,
       "selection_method_description": "Negotiated Acquisition Extension",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Youth and Community Development · South Asian Youth Action SAYA Inc · $464,167.5",
+      "additional_description_1": "Youth and Community Development · South Asian Youth Action Saya Inc · $464,167.5",
       "notice_evidence": [
         {
           "request_id": "20220310110",
@@ -404536,14 +404816,14 @@
       "pin": "26021N0640001",
       "contract_id": "CT126020238801056",
       "contract_amount": 1940925,
-      "vendor_name": "BROOKLYN PROSPECT CHARTER SCHOOL",
+      "vendor_name": "Brooklyn Prospect Charter School",
       "official_url": null,
       "selection_method_description": "Negotiated Acquisition Extension",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Youth and Community Development · BROOKLYN PROSPECT CHARTER SCHOOL · $1,940,925",
+      "additional_description_1": "Youth and Community Development · Brooklyn Prospect Charter School · $1,940,925",
       "notice_evidence": [
         {
           "request_id": "20220803109",
@@ -405732,14 +406012,14 @@
       "pin": "26022N0374001",
       "contract_id": "CT126020238803199",
       "contract_amount": 70937,
-      "vendor_name": "BROOKLYN PROSPECT CHARTER SCHOOL",
+      "vendor_name": "Brooklyn Prospect Charter School",
       "official_url": null,
       "selection_method_description": "Negotiated Acquisition",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Youth and Community Development · BROOKLYN PROSPECT CHARTER SCHOOL · $70,937",
+      "additional_description_1": "Youth and Community Development · Brooklyn Prospect Charter School · $70,937",
       "notice_evidence": [
         {
           "request_id": "20220919108",
@@ -408751,14 +409031,14 @@
       "pin": "26023P0007003",
       "contract_id": "CT126020248806505",
       "contract_amount": 700000,
-      "vendor_name": "PARTNERSHIP FOR AFTER SCHOOL EDUCATION INC",
+      "vendor_name": "Partnership for After School Education Inc.",
       "official_url": null,
       "selection_method_description": "Competitive Sealed Proposal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Youth and Community Development · PARTNERSHIP FOR AFTER SCHOOL EDUCATION INC · $700,000",
+      "additional_description_1": "Youth and Community Development · Partnership for After School Education Inc. · $700,000",
       "notice_evidence": [
         {
           "request_id": "20240828103",
@@ -413963,14 +414243,14 @@
       "pin": "26024N8426KXLR001",
       "contract_id": "CT126020258800843",
       "contract_amount": 57483,
-      "vendor_name": "THE BOYS CLUB OF NEW YORK INC",
+      "vendor_name": "The Boys Club of New York Inc",
       "official_url": null,
       "selection_method_description": "Renewal",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Youth and Community Development · THE BOYS CLUB OF NEW YORK INC · $117,233",
+      "additional_description_1": "Youth and Community Development · The Boys Club of New York Inc · $117,233",
       "notice_evidence": [
         {
           "request_id": "20240727107",
@@ -438319,30 +438599,45 @@
       "procurement_id": "procurement:contract:CT126020278800876",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278800876",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278800876:THE BOYS CLUB OF NEW YORK INC:prime-vendor:2026-10-09"
+        "checkbook_contracts:contract:registered:CT126020278800876:THE BOYS CLUB OF NEW YORK INC:prime-vendor:2026-10-09",
+        "city_record:20261013010"
       ],
+      "request_id": "20261013010",
       "start_date": "2026-07-01",
       "end_date": "2027-06-30",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "FY27 Saturday Night Lights NAE",
       "pin": "26026N0029002",
       "contract_id": "CT126020278800876",
       "contract_amount": 64286,
-      "vendor_name": "THE BOYS CLUB OF NEW YORK INC",
+      "vendor_name": "The Boys Club of New York Inc",
       "official_url": null,
       "selection_method_description": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · THE BOYS CLUB OF NEW YORK INC · $64,286",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · The Boys Club of New York Inc · $64,286",
+      "notice_evidence": [
+        {
+          "request_id": "20261013010",
+          "type_of_notice_description": "Award",
+          "short_title": "FY27 Saturday Night Lights NAE",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-19",
+          "href": "/notices/20261013010"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -440320,30 +440615,45 @@
       "procurement_id": "procurement:contract:CT126020278801075",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278801075",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278801075:YMCA OF GREATER NEW YORK:prime-vendor:2026-10-16"
+        "checkbook_contracts:contract:registered:CT126020278801075:YMCA OF GREATER NEW YORK:prime-vendor:2026-10-16",
+        "city_record:20261019011"
       ],
+      "request_id": "20261019011",
       "start_date": "2026-07-01",
       "end_date": "2029-06-30",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "FY27 Beacon Program NAE",
       "pin": "26026N0030016",
       "contract_id": "CT126020278801075",
       "contract_amount": 19823550,
-      "vendor_name": "YMCA OF GREATER NEW YORK",
+      "vendor_name": "YMCA of Greater New York",
       "official_url": null,
       "selection_method_description": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · YMCA OF GREATER NEW YORK · $19,823,550",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · YMCA of Greater New York · $19,823,550",
+      "notice_evidence": [
+        {
+          "request_id": "20261019011",
+          "type_of_notice_description": "Award",
+          "short_title": "FY27 Beacon Program NAE",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-23",
+          "href": "/notices/20261019011"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -440430,30 +440740,45 @@
       "procurement_id": "procurement:contract:CT126020278801097",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278801097",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278801097:BRONXWORKS INC:prime-vendor:2026-10-06"
+        "checkbook_contracts:contract:registered:CT126020278801097:BRONXWORKS INC:prime-vendor:2026-10-06",
+        "city_record:20261007010"
       ],
+      "request_id": "20261007010",
       "start_date": "2026-08-01",
       "end_date": "2032-08-31",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "COMPASS Center Based",
       "pin": "26026P0004003",
       "contract_id": "CT126020278801097",
       "contract_amount": 11894418,
-      "vendor_name": "BRONXWORKS INC",
+      "vendor_name": "Bronxworks Inc",
       "official_url": null,
       "selection_method_description": "RFP FROM A PQVL",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · BRONXWORKS INC · $11,894,418",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · Bronxworks Inc · $11,894,418",
+      "notice_evidence": [
+        {
+          "request_id": "20261007010",
+          "type_of_notice_description": "Award",
+          "short_title": "COMPASS Center Based",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-14",
+          "href": "/notices/20261007010"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -441564,30 +441889,45 @@
       "procurement_id": "procurement:contract:CT126020278801349",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278801349",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278801349:SPORTS AND HEALTH IN THE CITY:prime-vendor:2026-10-13"
+        "checkbook_contracts:contract:registered:CT126020278801349:SPORTS AND HEALTH IN THE CITY:prime-vendor:2026-10-13",
+        "city_record:20261014016"
       ],
+      "request_id": "20261014016",
       "start_date": "2026-08-01",
       "end_date": "2032-08-31",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
-      "short_title": "COMPASS Programs in Public Schools- Elementary",
+      "agency_name": "Youth and Community Development",
+      "short_title": "COMPASS Programs in Public Schools-Elementary",
       "pin": "26026P0003209",
       "contract_id": "CT126020278801349",
       "contract_amount": 9608400,
-      "vendor_name": "SPORTS AND HEALTH IN THE CITY",
+      "vendor_name": "Sports and Health in the City",
       "official_url": null,
       "selection_method_description": "RFP FROM A PQVL",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · SPORTS AND HEALTH IN THE CITY · $9,608,400",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · Sports and Health in the City · $9,608,400",
+      "notice_evidence": [
+        {
+          "request_id": "20261014016",
+          "type_of_notice_description": "Award",
+          "short_title": "COMPASS Programs in Public Schools-Elementary",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-20",
+          "href": "/notices/20261014016"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -442856,30 +443196,45 @@
       "procurement_id": "procurement:contract:CT126020278801689",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278801689",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278801689:BRONXWORKS INC:prime-vendor:2026-09-30"
+        "checkbook_contracts:contract:registered:CT126020278801689:BRONXWORKS INC:prime-vendor:2026-09-30",
+        "city_record:20261001014"
       ],
+      "request_id": "20261001014",
       "start_date": "2026-07-01",
       "end_date": "2028-06-30",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "Comprehensive Services for Immigrants",
       "pin": "26026N0019003",
       "contract_id": "CT126020278801689",
       "contract_amount": 374970,
-      "vendor_name": "BRONXWORKS INC",
+      "vendor_name": "Bronxworks Inc",
       "official_url": null,
       "selection_method_description": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · BRONXWORKS INC · $374,970",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · Bronxworks Inc · $374,970",
+      "notice_evidence": [
+        {
+          "request_id": "20261001014",
+          "type_of_notice_description": "Award",
+          "short_title": "Comprehensive Services for Immigrants",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-07",
+          "href": "/notices/20261001014"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -442887,30 +443242,45 @@
       "procurement_id": "procurement:contract:CT126020278801789",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278801789",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278801789:OGC ELECTRICAL CONTRACTOR INC:prime-vendor:2026-10-09"
+        "checkbook_contracts:contract:registered:CT126020278801789:OGC ELECTRICAL CONTRACTOR INC:prime-vendor:2026-10-09",
+        "city_record:20261009020"
       ],
+      "request_id": "20261009020",
       "start_date": "2026-04-01",
       "end_date": "2027-06-30",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
-      "short_title": "To provide ongoing electrical, lighting maintenance service",
+      "agency_name": "Youth and Community Development",
+      "short_title": "Ongoing electrical, lighting maintenance service",
       "pin": "26026W0018001",
       "contract_id": "CT126020278801789",
       "contract_amount": 460000,
-      "vendor_name": "OGC ELECTRICAL CONTRACTOR INC",
+      "vendor_name": "OGC Electrical Contractor Inc",
       "official_url": null,
       "selection_method_description": "M/WBE SMALL PURCHASE",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · OGC ELECTRICAL CONTRACTOR INC · $460,000",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · OGC Electrical Contractor Inc · $460,000",
+      "notice_evidence": [
+        {
+          "request_id": "20261009020",
+          "type_of_notice_description": "Award",
+          "short_title": "Ongoing electrical, lighting maintenance service",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-19",
+          "href": "/notices/20261009020"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ],
       "method_family": "mwbe_small_purchase"
@@ -443043,30 +443413,45 @@
       "procurement_id": "procurement:contract:CT126020278801889",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278801889",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278801889:CROWN HEIGHTS JEWISH COMMUNITY COUNCIL INC:prime-vendor:2026-09-29"
+        "checkbook_contracts:contract:registered:CT126020278801889:CROWN HEIGHTS JEWISH COMMUNITY COUNCIL INC:prime-vendor:2026-09-29",
+        "city_record:20260930009"
       ],
+      "request_id": "20260930009",
       "start_date": "2026-05-15",
       "end_date": "2027-06-30",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "NDA Healthy Families NAQ",
       "pin": "26026N0035002",
       "contract_id": "CT126020278801889",
       "contract_amount": 276578,
-      "vendor_name": "CROWN HEIGHTS JEWISH COMMUNITY COUNCIL INC",
+      "vendor_name": "Crown Heights Jewish Community Council Inc",
       "official_url": null,
       "selection_method_description": "NEGOTIATED ACQUISITION AND DOE NEGOTIATED SERVICES",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · CROWN HEIGHTS JEWISH COMMUNITY COUNCIL INC · $276,578",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · Crown Heights Jewish Community Council Inc · $276,578",
+      "notice_evidence": [
+        {
+          "request_id": "20260930009",
+          "type_of_notice_description": "Award",
+          "short_title": "NDA Healthy Families NAQ",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-06",
+          "href": "/notices/20260930009"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -443074,30 +443459,45 @@
       "procurement_id": "procurement:contract:CT126020278801894",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278801894",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278801894:CROWN HEIGHTS JEWISH COMMUNITY COUNCIL INC:prime-vendor:2026-09-29"
+        "checkbook_contracts:contract:registered:CT126020278801894:CROWN HEIGHTS JEWISH COMMUNITY COUNCIL INC:prime-vendor:2026-09-29",
+        "city_record:20260930008"
       ],
+      "request_id": "20260930008",
       "start_date": "2026-05-15",
       "end_date": "2027-06-30",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "NDA SENIORS NAQ",
       "pin": "26026N0035003",
       "contract_id": "CT126020278801894",
       "contract_amount": 353285,
-      "vendor_name": "CROWN HEIGHTS JEWISH COMMUNITY COUNCIL INC",
+      "vendor_name": "Crown Heights Jewish Community Council Inc",
       "official_url": null,
       "selection_method_description": "NEGOTIATED ACQUISITION AND DOE NEGOTIATED SERVICES",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · CROWN HEIGHTS JEWISH COMMUNITY COUNCIL INC · $353,285",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · Crown Heights Jewish Community Council Inc · $353,285",
+      "notice_evidence": [
+        {
+          "request_id": "20260930008",
+          "type_of_notice_description": "Award",
+          "short_title": "NDA SENIORS NAQ",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-06",
+          "href": "/notices/20260930008"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -443105,30 +443505,45 @@
       "procurement_id": "procurement:contract:CT126020278801900",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278801900",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278801900:FUND FOR THE CITY OF NEW YORK, INC.:prime-vendor:2026-09-30"
+        "checkbook_contracts:contract:registered:CT126020278801900:FUND FOR THE CITY OF NEW YORK, INC.:prime-vendor:2026-09-30",
+        "city_record:20261001013"
       ],
+      "request_id": "20261001013",
       "start_date": "2026-08-01",
       "end_date": "2032-08-31",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "COMPASS Programs for Public Schools - Middle",
       "pin": "26026P0003052",
       "contract_id": "CT126020278801900",
       "contract_amount": 3388743,
-      "vendor_name": "FUND FOR THE CITY OF NEW YORK, INC.",
+      "vendor_name": "Fund for the City of New York, Inc",
       "official_url": null,
       "selection_method_description": "RFP FROM A PQVL",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · FUND FOR THE CITY OF NEW YORK, INC. · $3,388,743",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · Fund for the City of New York, Inc · $3,388,743",
+      "notice_evidence": [
+        {
+          "request_id": "20261001013",
+          "type_of_notice_description": "Award",
+          "short_title": "COMPASS Programs for Public Schools - Middle",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-07",
+          "href": "/notices/20261001013"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -443167,30 +443582,45 @@
       "procurement_id": "procurement:contract:CT126020278801907",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278801907",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278801907:LEARNING & EDUCATIONAL SOLUTIONS INC:prime-vendor:2026-10-06"
+        "checkbook_contracts:contract:registered:CT126020278801907:LEARNING & EDUCATIONAL SOLUTIONS INC:prime-vendor:2026-10-06",
+        "city_record:20261007009"
       ],
+      "request_id": "20261007009",
       "start_date": "2026-08-01",
       "end_date": "2032-08-31",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "COMPASS Programs in Public Schools - Elementary",
       "pin": "26026P0003167",
       "contract_id": "CT126020278801907",
       "contract_amount": 7344000,
-      "vendor_name": "LEARNING & EDUCATIONAL SOLUTIONS INC",
+      "vendor_name": "Learning & Educational Solutions Inc",
       "official_url": null,
       "selection_method_description": "RFP FROM A PQVL",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · LEARNING & EDUCATIONAL SOLUTIONS INC · $7,344,000",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · Learning & Educational Solutions Inc · $7,344,000",
+      "notice_evidence": [
+        {
+          "request_id": "20261007009",
+          "type_of_notice_description": "Award",
+          "short_title": "COMPASS Programs in Public Schools - Elementary",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-14",
+          "href": "/notices/20261007009"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -443570,30 +444000,45 @@
       "procurement_id": "procurement:contract:CT126020278802177",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278802177",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278802177:THE MENTAL HEALTH ASSOCIATION OF NEW YORK CITY INC:prime-vendor:2026-10-13"
+        "checkbook_contracts:contract:registered:CT126020278802177:THE MENTAL HEALTH ASSOCIATION OF NEW YORK CITY INC:prime-vendor:2026-10-13",
+        "city_record:20261014015"
       ],
+      "request_id": "20261014015",
       "start_date": "2026-07-01",
       "end_date": "2029-06-30",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
-      "short_title": "Technical Assistance Services for Mental Health Supp Renewal",
+      "agency_name": "Youth and Community Development",
+      "short_title": "Technical Assistance Services for Mental Health Support",
       "pin": "26023P0007006R001",
       "contract_id": "CT126020278802177",
       "contract_amount": 901464,
-      "vendor_name": "THE MENTAL HEALTH ASSOCIATION OF NEW YORK CITY INC",
+      "vendor_name": "The Mental Health Association of New York City Inc",
       "official_url": null,
       "selection_method_description": "RENEWAL OF CONTRACT",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · THE MENTAL HEALTH ASSOCIATION OF NEW YORK CITY INC · $901,464",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · The Mental Health Association of New York City Inc · $901,464",
+      "notice_evidence": [
+        {
+          "request_id": "20261014015",
+          "type_of_notice_description": "Award",
+          "short_title": "Technical Assistance Services for Mental Health Support",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-20",
+          "href": "/notices/20261014015"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -443725,16 +444170,19 @@
       "procurement_id": "procurement:contract:CT126020278802281",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278802281",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278802281:WE GOT NEXT SPORTS INC:prime-vendor:2026-10-01"
+        "checkbook_contracts:contract:registered:CT126020278802281:WE GOT NEXT SPORTS INC:prime-vendor:2026-10-01",
+        "city_record:20261002015"
       ],
+      "request_id": "20261002015",
       "start_date": "2026-08-01",
       "end_date": "2032-08-31",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "COMPASS Programs in Public Schools - Middle",
       "pin": "26026P0003103",
       "contract_id": "CT126020278802281",
@@ -443743,12 +444191,24 @@
       "official_url": null,
       "selection_method_description": "RFP FROM A PQVL",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · We Got Next Sports Inc · $3,159,000",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · We Got Next Sports Inc · $3,159,000",
+      "notice_evidence": [
+        {
+          "request_id": "20261002015",
+          "type_of_notice_description": "Award",
+          "short_title": "COMPASS Programs in Public Schools - Middle",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-08",
+          "href": "/notices/20261002015"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -443880,16 +444340,19 @@
       "procurement_id": "procurement:contract:CT126020278802461",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278802461",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278802461:AFRICAN REFUGE INC:prime-vendor:2026-10-05"
+        "checkbook_contracts:contract:registered:CT126020278802461:AFRICAN REFUGE INC:prime-vendor:2026-10-05",
+        "city_record:20261006015"
       ],
+      "request_id": "20261006015",
       "start_date": "2026-08-01",
       "end_date": "2032-08-31",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "COMPASS Center Based Elementary Staten Island 01",
       "pin": "26026P0004126",
       "contract_id": "CT126020278802461",
@@ -443898,12 +444361,24 @@
       "official_url": null,
       "selection_method_description": "RFP FROM A PQVL",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · African Refuge Inc · $1,778,400",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · African Refuge Inc · $1,778,400",
+      "notice_evidence": [
+        {
+          "request_id": "20261006015",
+          "type_of_notice_description": "Award",
+          "short_title": "COMPASS Center Based Elementary Staten Island 01",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-13",
+          "href": "/notices/20261006015"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -443943,30 +444418,45 @@
       "procurement_id": "procurement:contract:CT126020278802490",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278802490",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278802490:HANDS IN 4 YOUTH INC:prime-vendor:2026-10-08"
+        "checkbook_contracts:contract:registered:CT126020278802490:HANDS IN 4 YOUTH INC:prime-vendor:2026-10-08",
+        "city_record:20261009005"
       ],
+      "request_id": "20261009005",
       "start_date": "2026-08-01",
       "end_date": "2027-08-31",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "COMPASS School-Based NAQ",
       "pin": "26026N0133004",
       "contract_id": "CT126020278802490",
       "contract_amount": 204750,
-      "vendor_name": "HANDS IN 4 YOUTH INC",
+      "vendor_name": "Hands in 4 Youth Inc",
       "official_url": null,
       "selection_method_description": "NEGOTIATED ACQUISITION AND DOE NEGOTIATED SERVICES",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · HANDS IN 4 YOUTH INC · $204,750",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · Hands in 4 Youth Inc · $204,750",
+      "notice_evidence": [
+        {
+          "request_id": "20261009005",
+          "type_of_notice_description": "Award",
+          "short_title": "COMPASS School-Based NAQ",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-16",
+          "href": "/notices/20261009005"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -444036,30 +444526,45 @@
       "procurement_id": "procurement:contract:CT126020278802591",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278802591",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278802591:INSPIRING MINDS OF NEW YORK CITY INC:prime-vendor:2026-10-01"
+        "checkbook_contracts:contract:registered:CT126020278802591:INSPIRING MINDS OF NEW YORK CITY INC:prime-vendor:2026-10-01",
+        "city_record:20261002014"
       ],
+      "request_id": "20261002014",
       "start_date": "2026-08-01",
       "end_date": "2032-08-31",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "COMPASS Programs in Public Schools - Middle",
       "pin": "26026P0003082",
       "contract_id": "CT126020278802591",
       "contract_amount": 1684800,
-      "vendor_name": "INSPIRING MINDS OF NEW YORK CITY INC",
+      "vendor_name": "Inspiring Minds of New York City Inc",
       "official_url": null,
       "selection_method_description": "RFP FROM A PQVL",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · INSPIRING MINDS OF NEW YORK CITY INC · $1,684,800",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · Inspiring Minds of New York City Inc · $1,684,800",
+      "notice_evidence": [
+        {
+          "request_id": "20261002014",
+          "type_of_notice_description": "Award",
+          "short_title": "COMPASS Programs in Public Schools - Middle",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-08",
+          "href": "/notices/20261002014"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -444191,30 +444696,45 @@
       "procurement_id": "procurement:contract:CT126020278802708",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278802708",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278802708:THE HUDSON GUILD:prime-vendor:2026-10-05"
+        "checkbook_contracts:contract:registered:CT126020278802708:THE HUDSON GUILD:prime-vendor:2026-10-05",
+        "city_record:20261006014"
       ],
+      "request_id": "20261006014",
       "start_date": "2026-09-01",
       "end_date": "2027-08-31",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "COMPASS Center Based NAQ Elementary",
       "pin": "26027N0020003",
       "contract_id": "CT126020278802708",
       "contract_amount": 1193373,
-      "vendor_name": "THE HUDSON GUILD",
+      "vendor_name": "The Hudson Guild",
       "official_url": null,
       "selection_method_description": "NEGOTIATED ACQUISITION AND DOE NEGOTIATED SERVICES",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · THE HUDSON GUILD · $1,193,373",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · The Hudson Guild · $1,193,373",
+      "notice_evidence": [
+        {
+          "request_id": "20261006014",
+          "type_of_notice_description": "Award",
+          "short_title": "COMPASS Center Based NAQ Elementary",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-13",
+          "href": "/notices/20261006014"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -444222,30 +444742,45 @@
       "procurement_id": "procurement:contract:CT126020278802709",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278802709",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278802709:BROOKLYN PROSPECT CHARTER SCHOOL:prime-vendor:2026-10-19"
+        "checkbook_contracts:contract:registered:CT126020278802709:BROOKLYN PROSPECT CHARTER SCHOOL:prime-vendor:2026-10-19",
+        "city_record:20261020009"
       ],
+      "request_id": "20261020009",
       "start_date": "2026-08-01",
       "end_date": "2032-08-31",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "COMPASS Programs in Public Schools - Middle",
       "pin": "26026P0003074",
       "contract_id": "CT126020278802709",
       "contract_amount": 5054400,
-      "vendor_name": "BROOKLYN PROSPECT CHARTER SCHOOL",
+      "vendor_name": "Brooklyn Prospect Charter School",
       "official_url": null,
       "selection_method_description": "RFP FROM A PQVL",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · BROOKLYN PROSPECT CHARTER SCHOOL · $5,054,400",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · Brooklyn Prospect Charter School · $5,054,400",
+      "notice_evidence": [
+        {
+          "request_id": "20261020009",
+          "type_of_notice_description": "Award",
+          "short_title": "COMPASS Programs in Public Schools - Middle",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-26",
+          "href": "/notices/20261020009"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -444253,30 +444788,45 @@
       "procurement_id": "procurement:contract:CT126020278802734",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278802734",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278802734:CHINESE AMERICAN PLANNING COUNCIL INC:prime-vendor:2026-09-29"
+        "checkbook_contracts:contract:registered:CT126020278802734:CHINESE AMERICAN PLANNING COUNCIL INC:prime-vendor:2026-09-29",
+        "city_record:20260930007"
       ],
+      "request_id": "20260930007",
       "start_date": "2026-05-15",
       "end_date": "2027-06-30",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "NDA Healthy Families NAQ",
       "pin": "26026N0035001",
       "contract_id": "CT126020278802734",
       "contract_amount": 417000,
-      "vendor_name": "CHINESE AMERICAN PLANNING COUNCIL INC",
+      "vendor_name": "Chinese American Planning Council Inc",
       "official_url": null,
       "selection_method_description": "NEGOTIATED ACQUISITION AND DOE NEGOTIATED SERVICES",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · CHINESE AMERICAN PLANNING COUNCIL INC · $417,000",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · Chinese American Planning Council Inc · $417,000",
+      "notice_evidence": [
+        {
+          "request_id": "20260930007",
+          "type_of_notice_description": "Award",
+          "short_title": "NDA Healthy Families NAQ",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-06",
+          "href": "/notices/20260930007"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -444284,30 +444834,45 @@
       "procurement_id": "procurement:contract:CT126020278802771",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278802771",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278802771:MADISON SQUARE BOYS & GIRLS CLUB INC:prime-vendor:2026-10-02"
+        "checkbook_contracts:contract:registered:CT126020278802771:MADISON SQUARE BOYS & GIRLS CLUB INC:prime-vendor:2026-10-02",
+        "city_record:20261005007"
       ],
+      "request_id": "20261005007",
       "start_date": "2026-09-01",
       "end_date": "2027-08-31",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "COMPASS Center Based NAQ Elementary",
       "pin": "26027N0020002",
       "contract_id": "CT126020278802771",
       "contract_amount": 193800,
-      "vendor_name": "MADISON SQUARE BOYS & GIRLS CLUB INC",
+      "vendor_name": "Madison Square Boys & Girls Club Inc.",
       "official_url": null,
       "selection_method_description": "NEGOTIATED ACQUISITION AND DOE NEGOTIATED SERVICES",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · MADISON SQUARE BOYS & GIRLS CLUB INC · $193,800",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · Madison Square Boys & Girls Club Inc. · $193,800",
+      "notice_evidence": [
+        {
+          "request_id": "20261005007",
+          "type_of_notice_description": "Award",
+          "short_title": "COMPASS Center Based NAQ Elementary",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-09",
+          "href": "/notices/20261005007"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -444315,30 +444880,45 @@
       "procurement_id": "procurement:contract:CT126020278802773",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278802773",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278802773:CASITA MARIA INC:prime-vendor:2026-10-02"
+        "checkbook_contracts:contract:registered:CT126020278802773:CASITA MARIA INC:prime-vendor:2026-10-02",
+        "city_record:20261005006"
       ],
+      "request_id": "20261005006",
       "start_date": "2026-08-01",
       "end_date": "2027-08-31",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "COMPASS NAQ",
       "pin": "26026N0133001",
       "contract_id": "CT126020278802773",
       "contract_amount": 315900,
-      "vendor_name": "CASITA MARIA INC",
+      "vendor_name": "Casita Maria Inc.",
       "official_url": null,
       "selection_method_description": "NEGOTIATED ACQUISITION AND DOE NEGOTIATED SERVICES",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · CASITA MARIA INC · $315,900",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · Casita Maria Inc. · $315,900",
+      "notice_evidence": [
+        {
+          "request_id": "20261005006",
+          "type_of_notice_description": "Award",
+          "short_title": "COMPASS NAQ",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-09",
+          "href": "/notices/20261005006"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -444346,16 +444926,19 @@
       "procurement_id": "procurement:contract:CT126020278802865",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278802865",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278802865:BRIGHT FUTURES AFTERSCHOOL INC:prime-vendor:2026-10-05"
+        "checkbook_contracts:contract:registered:CT126020278802865:BRIGHT FUTURES AFTERSCHOOL INC:prime-vendor:2026-10-05",
+        "city_record:20261006013"
       ],
+      "request_id": "20261006013",
       "start_date": "2026-08-01",
       "end_date": "2032-08-31",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "COMPASS Programs in Public Schools - Elementary",
       "pin": "26026P0003202",
       "contract_id": "CT126020278802865",
@@ -444364,12 +444947,24 @@
       "official_url": null,
       "selection_method_description": "RFP FROM A PQVL",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · Bright Futures Afterschool Inc · $25,520,400",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · Bright Futures Afterschool Inc · $25,520,400",
+      "notice_evidence": [
+        {
+          "request_id": "20261006013",
+          "type_of_notice_description": "Award",
+          "short_title": "COMPASS Programs in Public Schools - Elementary",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-13",
+          "href": "/notices/20261006013"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -444377,30 +444972,45 @@
       "procurement_id": "procurement:contract:CT126020278802968",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278802968",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278802968:LEARNING & EDUCATIONAL SOLUTIONS INC:prime-vendor:2026-09-30"
+        "checkbook_contracts:contract:registered:CT126020278802968:LEARNING & EDUCATIONAL SOLUTIONS INC:prime-vendor:2026-09-30",
+        "city_record:20261001012"
       ],
+      "request_id": "20261001012",
       "start_date": "2026-08-01",
       "end_date": "2032-08-31",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "COMPASS Programs in Public Schools - Middle",
       "pin": "26026P0003072",
       "contract_id": "CT126020278802968",
       "contract_amount": 7862400,
-      "vendor_name": "LEARNING & EDUCATIONAL SOLUTIONS INC",
+      "vendor_name": "Learning & Educational Solutions Inc",
       "official_url": null,
       "selection_method_description": "RFP FROM A PQVL",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · LEARNING & EDUCATIONAL SOLUTIONS INC · $7,862,400",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · Learning & Educational Solutions Inc · $7,862,400",
+      "notice_evidence": [
+        {
+          "request_id": "20261001012",
+          "type_of_notice_description": "Award",
+          "short_title": "COMPASS Programs in Public Schools - Middle",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-07",
+          "href": "/notices/20261001012"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -444439,30 +445049,45 @@
       "procurement_id": "procurement:contract:CT126020278803036",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278803036",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278803036:ASSOCIATION TO BENEFIT CHILDREN:prime-vendor:2026-10-05"
+        "checkbook_contracts:contract:registered:CT126020278803036:ASSOCIATION TO BENEFIT CHILDREN:prime-vendor:2026-10-05",
+        "city_record:20261006012"
       ],
+      "request_id": "20261006012",
       "start_date": "2026-08-01",
       "end_date": "2032-08-31",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "COMPASS Center-Based - Elementary School",
       "pin": "26026P0004127",
       "contract_id": "CT126020278803036",
       "contract_amount": 3420000,
-      "vendor_name": "ASSOCIATION TO BENEFIT CHILDREN",
+      "vendor_name": "Association to Benefit Children",
       "official_url": null,
       "selection_method_description": "RFP FROM A PQVL",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · ASSOCIATION TO BENEFIT CHILDREN · $3,420,000",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · Association to Benefit Children · $3,420,000",
+      "notice_evidence": [
+        {
+          "request_id": "20261006012",
+          "type_of_notice_description": "Award",
+          "short_title": "COMPASS Center-Based - Elementary School",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-13",
+          "href": "/notices/20261006012"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -444470,30 +445095,45 @@
       "procurement_id": "procurement:contract:CT126020278803063",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278803063",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278803063:EXPANDED SCHOOLS INC:prime-vendor:2026-10-02"
+        "checkbook_contracts:contract:registered:CT126020278803063:EXPANDED SCHOOLS INC:prime-vendor:2026-10-02",
+        "city_record:20261005005"
       ],
+      "request_id": "20261005005",
       "start_date": "2026-07-01",
       "end_date": "2028-06-30",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "DYCD Online Negotiated Acquisition Extension",
       "pin": "26026N0042001",
       "contract_id": "CT126020278803063",
       "contract_amount": 886000,
-      "vendor_name": "EXPANDED SCHOOLS INC",
+      "vendor_name": "Expanded Schools Inc",
       "official_url": null,
       "selection_method_description": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · EXPANDED SCHOOLS INC · $886,000",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · Expanded Schools Inc · $886,000",
+      "notice_evidence": [
+        {
+          "request_id": "20261005005",
+          "type_of_notice_description": "Award",
+          "short_title": "DYCD Online Negotiated Acquisition Extension",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-09",
+          "href": "/notices/20261005005"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -444501,30 +445141,45 @@
       "procurement_id": "procurement:contract:CT126020278803129",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278803129",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278803129:GLOBAL ARTISTS COALITION INCORPORATED:prime-vendor:2026-10-20"
+        "checkbook_contracts:contract:registered:CT126020278803129:GLOBAL ARTISTS COALITION INCORPORATED:prime-vendor:2026-10-20",
+        "city_record:20261021006"
       ],
+      "request_id": "20261021006",
       "start_date": "2026-08-01",
       "end_date": "2032-08-31",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "COMPASS Programs in Public Schools - Middle",
       "pin": "26026P0003102",
       "contract_id": "CT126020278803129",
       "contract_amount": 7090200,
-      "vendor_name": "GLOBAL ARTISTS COALITION INCORPORATED",
+      "vendor_name": "Global Artists Coalition Incorporated",
       "official_url": null,
       "selection_method_description": "RFP FROM A PQVL",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · GLOBAL ARTISTS COALITION INCORPORATED · $7,090,200",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · Global Artists Coalition Incorporated · $7,090,200",
+      "notice_evidence": [
+        {
+          "request_id": "20261021006",
+          "type_of_notice_description": "Award",
+          "short_title": "COMPASS Programs in Public Schools - Middle",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-27",
+          "href": "/notices/20261021006"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -444532,30 +445187,45 @@
       "procurement_id": "procurement:contract:CT126020278803204",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278803204",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278803204:KIPP ACADEMY CHARTER SCHOOL:prime-vendor:2026-10-14"
+        "checkbook_contracts:contract:registered:CT126020278803204:KIPP ACADEMY CHARTER SCHOOL:prime-vendor:2026-10-14",
+        "city_record:20261015008"
       ],
+      "request_id": "20261015008",
       "start_date": "2026-08-01",
       "end_date": "2032-08-31",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
+      "agency_name": "Youth and Community Development",
       "short_title": "COMPASS Programs in Public Schools - Middle",
       "pin": "26026P0003031",
       "contract_id": "CT126020278803204",
       "contract_amount": 3159000,
-      "vendor_name": "KIPP ACADEMY CHARTER SCHOOL",
+      "vendor_name": "KIPP Academy Charter School",
       "official_url": null,
       "selection_method_description": "RFP FROM A PQVL",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · KIPP ACADEMY CHARTER SCHOOL · $3,159,000",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · KIPP Academy Charter School · $3,159,000",
+      "notice_evidence": [
+        {
+          "request_id": "20261015008",
+          "type_of_notice_description": "Award",
+          "short_title": "COMPASS Programs in Public Schools - Middle",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-21",
+          "href": "/notices/20261015008"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -444563,30 +445233,45 @@
       "procurement_id": "procurement:contract:CT126020278803226",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278803226",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT126020278803226:PARTNERSHIP FOR AFTER SCHOOL EDUCATION INC:prime-vendor:2026-10-19"
+        "checkbook_contracts:contract:registered:CT126020278803226:PARTNERSHIP FOR AFTER SCHOOL EDUCATION INC:prime-vendor:2026-10-19",
+        "city_record:20261020008"
       ],
+      "request_id": "20261020008",
       "start_date": "2026-07-01",
       "end_date": "2029-06-30",
       "agency_id": null,
-      "agency_name": "Department of Youth and Community Development",
-      "short_title": "Technical Assistance for Dev. Safe & Supportive Envi Renewal",
+      "agency_name": "Youth and Community Development",
+      "short_title": "Technical Assistance for Dev. Safe & Supportive Environment",
       "pin": "26023P0007003R001",
       "contract_id": "CT126020278803226",
       "contract_amount": 900000,
-      "vendor_name": "PARTNERSHIP FOR AFTER SCHOOL EDUCATION INC",
+      "vendor_name": "Partnership for After School Education Inc.",
       "official_url": null,
       "selection_method_description": "RENEWAL OF CONTRACT",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Youth and Community Development · PARTNERSHIP FOR AFTER SCHOOL EDUCATION INC · $900,000",
-      "notice_evidence": [],
+      "additional_description_1": "Youth and Community Development · Partnership for After School Education Inc. · $900,000",
+      "notice_evidence": [
+        {
+          "request_id": "20261020008",
+          "type_of_notice_description": "Award",
+          "short_title": "Technical Assistance for Dev. Safe & Supportive Environment",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-26",
+          "href": "/notices/20261020008"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -451825,30 +452510,45 @@
       "procurement_id": "procurement:contract:CT178120278800604",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT178120278800604",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT178120278800604:GOOD SHEPHERD SERVICES:prime-vendor:2026-09-30"
+        "checkbook_contracts:contract:registered:CT178120278800604:GOOD SHEPHERD SERVICES:prime-vendor:2026-09-30",
+        "city_record:20261001011"
       ],
+      "request_id": "20261001011",
       "start_date": "2026-07-01",
       "end_date": "2028-06-30",
       "agency_id": null,
-      "agency_name": "Department of Probation",
+      "agency_name": "Probation",
       "short_title": "DOP FY27-28 AIM Program Contract with GSS",
       "pin": "78126N0014001",
       "contract_id": "CT178120278800604",
       "contract_amount": 2145203.52,
-      "vendor_name": "GOOD SHEPHERD SERVICES",
+      "vendor_name": "Good Shepherd Services",
       "official_url": null,
       "selection_method_description": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Probation · GOOD SHEPHERD SERVICES · $2,145,203.52",
-      "notice_evidence": [],
+      "additional_description_1": "Probation · Good Shepherd Services · $2,145,203.52",
+      "notice_evidence": [
+        {
+          "request_id": "20261001011",
+          "type_of_notice_description": "Award",
+          "short_title": "DOP FY27-28 AIM Program Contract with GSS",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-07",
+          "href": "/notices/20261001011"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -453931,14 +454631,14 @@
       "pin": "80123S0010001",
       "contract_id": "CT180120238806917",
       "contract_amount": 529981983,
-      "vendor_name": "Brooklyn Navy Yard Development Corporation",
+      "vendor_name": "Brooklyn Navy Yard Development Corp",
       "official_url": null,
       "selection_method_description": "Sole Source",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Small Business Services · Brooklyn Navy Yard Development Corporation · $529,981,983",
+      "additional_description_1": "Small Business Services · Brooklyn Navy Yard Development Corp · $529,981,983",
       "notice_evidence": [
         {
           "request_id": "20230612116",
@@ -457883,14 +458583,14 @@
       "pin": "80621E0027001",
       "contract_id": "CT180620218801903",
       "contract_amount": 599237,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "Emergency",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $599,237",
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $599,237",
       "notice_evidence": [
         {
           "request_id": "20210712117",
@@ -457929,14 +458629,14 @@
       "pin": "80621E0037001",
       "contract_id": "CT180620218801955",
       "contract_amount": 337687,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "Emergency",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $337,687",
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $337,687",
       "notice_evidence": [
         {
           "request_id": "20210701122",
@@ -458159,14 +458859,14 @@
       "pin": "80621E0044001",
       "contract_id": "CT180620218802052",
       "contract_amount": 281095.5,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "Emergency",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $281,095.5",
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $281,095.5",
       "notice_evidence": [
         {
           "request_id": "20210701119",
@@ -458389,14 +459089,14 @@
       "pin": "80621B0405001",
       "contract_id": "CT180620228800262",
       "contract_amount": 799330,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "Competitive Sealed Bid",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $799,330",
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $799,330",
       "notice_evidence": [
         {
           "request_id": "20210714110",
@@ -459401,14 +460101,14 @@
       "pin": "80622E0004001",
       "contract_id": "CT180620228802336",
       "contract_amount": 170339.75,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "Emergency",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $170,339.75",
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $170,339.75",
       "notice_evidence": [
         {
           "request_id": "20220314108",
@@ -459493,14 +460193,14 @@
       "pin": "80621B0423001",
       "contract_id": "CT180620228802371",
       "contract_amount": 659500,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "Competitive Sealed Bid",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $659,500",
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $659,500",
       "notice_evidence": [
         {
           "request_id": "20220110109",
@@ -459815,14 +460515,14 @@
       "pin": "80622E0011001",
       "contract_id": "CT180620228803590",
       "contract_amount": 799995,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "Emergency",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $799,995",
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $799,995",
       "notice_evidence": [
         {
           "request_id": "20220216105",
@@ -459861,14 +460561,14 @@
       "pin": "80622E0020001",
       "contract_id": "CT180620228803757",
       "contract_amount": 292028.1,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "Emergency",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $292,028.1",
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $292,028.1",
       "notice_evidence": [
         {
           "request_id": "20220316109",
@@ -460919,14 +461619,14 @@
       "pin": "80622E0057001",
       "contract_id": "CT180620228805800",
       "contract_amount": 899279.5,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "Emergency",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $899,279.5",
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $899,279.5",
       "notice_evidence": [
         {
           "request_id": "20220506118",
@@ -461517,14 +462217,14 @@
       "pin": "80622E0070001",
       "contract_id": "CT180620228807509",
       "contract_amount": 1309119,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "Emergency",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $1,309,119",
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $1,309,119",
       "notice_evidence": [
         {
           "request_id": "20220610116",
@@ -462391,14 +463091,14 @@
       "pin": "80623E0001001",
       "contract_id": "CT180620238801134",
       "contract_amount": 193960,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "Emergency",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $193,960",
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $193,960",
       "notice_evidence": [
         {
           "request_id": "20221011107",
@@ -462437,14 +463137,14 @@
       "pin": "80622E0086001",
       "contract_id": "CT180620238801927",
       "contract_amount": 122980,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "Emergency",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $122,980",
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $122,980",
       "notice_evidence": [
         {
           "request_id": "20221208106",
@@ -462529,14 +463229,14 @@
       "pin": "80623E0004001",
       "contract_id": "CT180620238802170",
       "contract_amount": 626097.5,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "Emergency",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $626,097.5",
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $626,097.5",
       "notice_evidence": [
         {
           "request_id": "20221117104",
@@ -463863,14 +464563,14 @@
       "pin": "80623E0036001",
       "contract_id": "CT180620238805282",
       "contract_amount": 294180.04,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "Emergency",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $294,180.04",
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $294,180.04",
       "notice_evidence": [
         {
           "request_id": "20230415106",
@@ -464553,14 +465253,14 @@
       "pin": "80623E0049001",
       "contract_id": "CT180620238806341",
       "contract_amount": 974721.26,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "Emergency",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $974,721.26",
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $974,721.26",
       "notice_evidence": [
         {
           "request_id": "20230503107",
@@ -466450,14 +467150,14 @@
       "pin": "80623E0075001",
       "contract_id": "CT180620248800657",
       "contract_amount": 175000,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "Emergency",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $175,000",
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $175,000",
       "notice_evidence": [
         {
           "request_id": "20230629108",
@@ -467190,14 +467890,14 @@
       "pin": "80623E0073001",
       "contract_id": "CT180620248801570",
       "contract_amount": 4182830,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "Emergency",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $4,182,830",
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $4,182,830",
       "notice_evidence": [
         {
           "request_id": "20230811102",
@@ -467328,14 +468028,14 @@
       "pin": "80623E0044001",
       "contract_id": "CT180620248801641",
       "contract_amount": 880000,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "Emergency",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $880,000",
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $880,000",
       "notice_evidence": [
         {
           "request_id": "20230905104",
@@ -470690,14 +471390,14 @@
       "pin": "80621B0366001",
       "contract_id": "CT180620248805649",
       "contract_amount": 30000000,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "Competitive Sealed Bid",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $30,000,000",
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $30,000,000",
       "notice_evidence": [
         {
           "request_id": "20240405102",
@@ -471841,14 +472541,14 @@
       "pin": "80624E0032001",
       "contract_id": "CT180620248807209",
       "contract_amount": 944968.5,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "Emergency",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $944,968.5",
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $944,968.5",
       "notice_evidence": [
         {
           "request_id": "20240513104",
@@ -474334,14 +475034,14 @@
       "pin": "80625E0010001",
       "contract_id": "CT180620258802604",
       "contract_amount": 446816.25,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "Emergency",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $446,816.25",
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $446,816.25",
       "notice_evidence": [
         {
           "request_id": "20240926105",
@@ -482138,30 +482838,45 @@
       "procurement_id": "procurement:contract:CT180620278801256",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT180620278801256",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT180620278801256:STATE CONTRACTING CORP OF NY:prime-vendor:2026-10-08"
+        "checkbook_contracts:contract:registered:CT180620278801256:STATE CONTRACTING CORP OF NY:prime-vendor:2026-10-08",
+        "city_record:20261009004"
       ],
+      "request_id": "20261009004",
       "start_date": "2026-05-04",
       "end_date": "2027-05-03",
       "agency_id": null,
       "agency_name": "Housing Preservation and Development",
-      "short_title": "Imm Emerg Demo 927 Grand St BK",
+      "short_title": "Imm Emerg Demo 927 Grand Street, BK",
       "pin": "80626E0042001",
       "contract_id": "CT180620278801256",
       "contract_amount": 593674.76,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "EMERGENCY",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $593,674.76",
-      "notice_evidence": [],
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $593,674.76",
+      "notice_evidence": [
+        {
+          "request_id": "20261009004",
+          "type_of_notice_description": "Award",
+          "short_title": "Imm Emerg Demo 927 Grand Street, BK",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-16",
+          "href": "/notices/20261009004"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -482434,30 +483149,45 @@
       "procurement_id": "procurement:contract:CT180620278803146",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT180620278803146",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT180620278803146:STATE CONTRACTING CORP OF NY:prime-vendor:2026-10-08"
+        "checkbook_contracts:contract:registered:CT180620278803146:STATE CONTRACTING CORP OF NY:prime-vendor:2026-10-08",
+        "city_record:20261009003"
       ],
+      "request_id": "20261009003",
       "start_date": "2026-06-20",
       "end_date": "2027-06-19",
       "agency_id": null,
       "agency_name": "Housing Preservation and Development",
-      "short_title": "Imm Emerg Demo 794 E 160 St BX",
+      "short_title": "Imm Emerg Demo 794 E 160 Street, BX",
       "pin": "80626E0048001",
       "contract_id": "CT180620278803146",
       "contract_amount": 628185.6,
-      "vendor_name": "STATE CONTRACTING CORP OF NY",
+      "vendor_name": "State Contracting Corp of NY",
       "official_url": null,
       "selection_method_description": "EMERGENCY",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Housing Preservation and Development · STATE CONTRACTING CORP OF NY · $628,185.6",
-      "notice_evidence": [],
+      "additional_description_1": "Housing Preservation and Development · State Contracting Corp of NY · $628,185.6",
+      "notice_evidence": [
+        {
+          "request_id": "20261009003",
+          "type_of_notice_description": "Award",
+          "short_title": "Imm Emerg Demo 794 E 160 Street, BX",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-16",
+          "href": "/notices/20261009003"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -485337,14 +486067,14 @@
       "pin": "81026W0007001",
       "contract_id": "CT181020268804775",
       "contract_amount": 121030,
-      "vendor_name": "Aita Consulting Services Inc",
+      "vendor_name": "AITA Consulting Services Inc",
       "official_url": null,
       "selection_method_description": "MWBE Non Competitive Small Purchase",
       "process_states": [
         "award",
         "registered"
       ],
-      "additional_description_1": "Buildings · Aita Consulting Services Inc · $121,030",
+      "additional_description_1": "Buildings · AITA Consulting Services Inc · $121,030",
       "notice_evidence": [
         {
           "request_id": "20260126011",
@@ -485784,30 +486514,45 @@
       "procurement_id": "procurement:contract:CT181020278803267",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT181020278803267",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT181020278803267:ESIS INC:prime-vendor:2026-10-07"
+        "checkbook_contracts:contract:registered:CT181020278803267:ESIS INC:prime-vendor:2026-10-07",
+        "city_record:20261007026"
       ],
+      "request_id": "20261007026",
       "start_date": "2026-08-25",
       "end_date": "2027-06-30",
       "agency_id": null,
-      "agency_name": "Department of Buildings",
-      "short_title": "TRAINING IN FIRE PROTECTION CODES, REGULATIONS SAFETY STANDA",
+      "agency_name": "Buildings",
+      "short_title": "Training in Fire Protection Codes, Regulations Safety Standards and Best Practices",
       "pin": "81027U0001001",
       "contract_id": "CT181020278803267",
       "contract_amount": 18200,
-      "vendor_name": "ESIS INC",
+      "vendor_name": "ESIS Inc",
       "official_url": null,
       "selection_method_description": "SMALL PURCH -SUBSCRIPTION ETC",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "Department of Buildings · ESIS INC · $18,200",
-      "notice_evidence": [],
+      "additional_description_1": "Buildings · ESIS Inc · $18,200",
+      "notice_evidence": [
+        {
+          "request_id": "20261007026",
+          "type_of_notice_description": "Award",
+          "short_title": "Training in Fire Protection Codes, Regulations Safety Standards and Best Practices",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-10-15",
+          "href": "/notices/20261007026"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "checkbook_contracts"
       ]
     },
@@ -516077,651 +516822,6 @@
         "city_record",
         "passport_public_contracts"
       ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800245",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800245",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240620108",
-        "passport_public_contracts:contract:81624M0016005:5184556"
-      ],
-      "request_id": "20240620108",
-      "start_date": "2024-07-01",
-      "end_date": "2033-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "School Response Team Program",
-      "pin": "81624M0016005",
-      "contract_id": "CT181620258800245",
-      "contract_amount": 4255436,
-      "vendor_name": "Jewish Board of Family and Children's Services, Inc.",
-      "official_url": null,
-      "selection_method_description": "Required Method",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Jewish Board of Family and Children's Services, Inc. · $4,255,436",
-      "notice_evidence": [
-        {
-          "request_id": "20240620108",
-          "type_of_notice_description": "Award",
-          "short_title": "School Response Team Program",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-26",
-          "href": "/notices/20240620108"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800246",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800246",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240620107",
-        "passport_public_contracts:contract:81624R0001001:5188854"
-      ],
-      "request_id": "20240620107",
-      "start_date": "2024-07-01",
-      "end_date": "2033-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Brooklyn Assertive Community Treatment (ACT) program",
-      "pin": "81624R0001001",
-      "contract_id": "CT181620258800246",
-      "contract_amount": 2533509,
-      "vendor_name": "Jewish Board of Family and Children's Services, Inc.",
-      "official_url": null,
-      "selection_method_description": "Required Method",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Jewish Board of Family and Children's Services, Inc. · $2,533,509",
-      "notice_evidence": [
-        {
-          "request_id": "20240620107",
-          "type_of_notice_description": "Award",
-          "short_title": "Brooklyn Assertive Community Treatment (ACT) program",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-26",
-          "href": "/notices/20240620107"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800248",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800248",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240616102",
-        "passport_public_contracts:contract:81619R8236KXLR002:5096554"
-      ],
-      "request_id": "20240616102",
-      "start_date": "2024-07-01",
-      "end_date": "2024-09-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "FY25 Renewal- Psychosocial Rehabilitative Services",
-      "pin": "81619R8236KXLR002",
-      "contract_id": "CT181620258800248",
-      "contract_amount": 752194,
-      "vendor_name": "NYSARC Inc New York City Chapter",
-      "official_url": null,
-      "selection_method_description": "Renewal",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · NYSARC Inc New York City Chapter · $44,565",
-      "notice_evidence": [
-        {
-          "request_id": "20240616102",
-          "type_of_notice_description": "Award",
-          "short_title": "FY25 Renewal- Psychosocial Rehabilitative Services",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-24",
-          "href": "/notices/20240616102"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800251",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800251",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240615107",
-        "passport_public_contracts:contract:81624M0015014:5184544"
-      ],
-      "request_id": "20240615107",
-      "start_date": "2024-07-01",
-      "end_date": "2033-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "FY25 RQM-Crisis Respite Center (Bronx)",
-      "pin": "81624M0015014",
-      "contract_id": "CT181620258800251",
-      "contract_amount": 9486630,
-      "vendor_name": "RIVERDALE MENTAL HEALTH ASSOCIATION INC",
-      "official_url": null,
-      "selection_method_description": "Required Method",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · RIVERDALE MENTAL HEALTH ASSOCIATION INC · $9,486,630",
-      "notice_evidence": [
-        {
-          "request_id": "20240615107",
-          "type_of_notice_description": "Award",
-          "short_title": "FY25 RQM-Crisis Respite Center (Bronx)",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-24",
-          "href": "/notices/20240615107"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800252",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800252",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240628106",
-        "passport_public_contracts:contract:81619P8230KXLR002:5107891"
-      ],
-      "request_id": "20240628106",
-      "start_date": "2024-07-01",
-      "end_date": "2027-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "FY25-RENEWAL #2 - Services Underserved - Access affordable housing",
-      "pin": "81619P8230KXLR002",
-      "contract_id": "CT181620258800252",
-      "contract_amount": 1246875,
-      "vendor_name": "Services for the Underserved Inc.",
-      "official_url": null,
-      "selection_method_description": "Renewal",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Services for the Underserved Inc. · $1,246,875",
-      "notice_evidence": [
-        {
-          "request_id": "20240628106",
-          "type_of_notice_description": "Award",
-          "short_title": "FY25-RENEWAL #2 - Services Underserved - Access affordable housing",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-07-05",
-          "href": "/notices/20240628106"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800255",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800255",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240701110",
-        "passport_public_contracts:contract:81624M0015013:5184543"
-      ],
-      "request_id": "20240701110",
-      "start_date": "2024-07-01",
-      "end_date": "2033-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Mental Health, Adult Recovery, & Service Dollars",
-      "pin": "81624M0015013",
-      "contract_id": "CT181620258800255",
-      "contract_amount": 2109146,
-      "vendor_name": "The Mental Health Association of New York City Inc",
-      "official_url": null,
-      "selection_method_description": "Required Method",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · The Mental Health Association of New York City Inc · $2,109,146",
-      "notice_evidence": [
-        {
-          "request_id": "20240701110",
-          "type_of_notice_description": "Award",
-          "short_title": "Mental Health, Adult Recovery, & Service Dollars",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-07-08",
-          "href": "/notices/20240701110"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800256",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800256",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240614102",
-        "passport_public_contracts:contract:81624M0013001:5102785"
-      ],
-      "request_id": "20240614102",
-      "start_date": "2024-07-01",
-      "end_date": "2033-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Supportive Housing",
-      "pin": "81624M0013001",
-      "contract_id": "CT181620258800256",
-      "contract_amount": 7190100,
-      "vendor_name": "Urban Pathways Inc.",
-      "official_url": null,
-      "selection_method_description": "Required Method",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Urban Pathways Inc. · $7,190,100",
-      "notice_evidence": [
-        {
-          "request_id": "20240614102",
-          "type_of_notice_description": "Award",
-          "short_title": "Supportive Housing",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-21",
-          "href": "/notices/20240614102"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800257",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800257",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240615106",
-        "passport_public_contracts:contract:81624M0015017:5184547"
-      ],
-      "request_id": "20240615106",
-      "start_date": "2024-07-01",
-      "end_date": "2033-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "FY25 RQM-West End Housing Congregate Setting Single Adults",
-      "pin": "81624M0015017",
-      "contract_id": "CT181620258800257",
-      "contract_amount": 5272740,
-      "vendor_name": "WEST END RESIDENCES HDFC, INC.",
-      "official_url": null,
-      "selection_method_description": "Required Method",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · WEST END RESIDENCES HDFC, INC. · $5,272,740",
-      "notice_evidence": [
-        {
-          "request_id": "20240615106",
-          "type_of_notice_description": "Award",
-          "short_title": "FY25 RQM-West End Housing Congregate Setting Single Adults",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-24",
-          "href": "/notices/20240615106"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800258",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800258",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240621106",
-        "passport_public_contracts:contract:81624M0015007:5184537"
-      ],
-      "request_id": "20240621106",
-      "start_date": "2024-07-01",
-      "end_date": "2033-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Permanent Supportive Housing",
-      "pin": "81624M0015007",
-      "contract_id": "CT181620258800258",
-      "contract_amount": 6181594,
-      "vendor_name": "WESTON UNITED COMMUNITY RENEWAL INC.",
-      "official_url": null,
-      "selection_method_description": "Required Method",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · WESTON UNITED COMMUNITY RENEWAL INC. · $6,181,594",
-      "notice_evidence": [
-        {
-          "request_id": "20240621106",
-          "type_of_notice_description": "Award",
-          "short_title": "Permanent Supportive Housing",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-27",
-          "href": "/notices/20240621106"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800260",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800260",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240624117",
-        "passport_public_contracts:contract:81624M0015001:5184531"
-      ],
-      "request_id": "20240624117",
-      "start_date": "2024-07-01",
-      "end_date": "2033-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Assertive Community Treatment",
-      "pin": "81624M0015001",
-      "contract_id": "CT181620258800260",
-      "contract_amount": 8552981,
-      "vendor_name": "The Bridge Inc.",
-      "official_url": null,
-      "selection_method_description": "Required Method",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · The Bridge Inc. · $8,552,981",
-      "notice_evidence": [
-        {
-          "request_id": "20240624117",
-          "type_of_notice_description": "Award",
-          "short_title": "Assertive Community Treatment",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-28",
-          "href": "/notices/20240624117"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800263",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800263",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240613109",
-        "passport_public_contracts:contract:81624M0015005:5184535"
-      ],
-      "request_id": "20240613109",
-      "start_date": "2024-07-01",
-      "end_date": "2033-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "FY25 RQM - SUPPORTIVE HOUSING SINGLE ADULTS SCATTERED",
-      "pin": "81624M0015005",
-      "contract_id": "CT181620258800263",
-      "contract_amount": 4636193,
-      "vendor_name": "Ohel Children's Home and Family Services Inc.",
-      "official_url": null,
-      "selection_method_description": "Required Method",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Ohel Children's Home and Family Services Inc. · $4,636,193",
-      "notice_evidence": [
-        {
-          "request_id": "20240613109",
-          "type_of_notice_description": "Award",
-          "short_title": "FY25 RQM - SUPPORTIVE HOUSING SINGLE ADULTS SCATTERED",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-20",
-          "href": "/notices/20240613109"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800273",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800273",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240613108",
-        "passport_public_contracts:contract:81621N0311001R001:5069847"
-      ],
-      "request_id": "20240613108",
-      "start_date": "2024-07-01",
-      "end_date": "2027-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Continuation of critical non-profit partner",
-      "pin": "81621N0311001R001",
-      "contract_id": "CT181620258800273",
-      "contract_amount": 120000000,
-      "vendor_name": "Fund for Public Health in New York Inc.",
-      "official_url": null,
-      "selection_method_description": "Renewal",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Fund for Public Health in New York Inc. · $120,000,000",
-      "notice_evidence": [
-        {
-          "request_id": "20240613108",
-          "type_of_notice_description": "Award",
-          "short_title": "Continuation of critical non-profit partner",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-20",
-          "href": "/notices/20240613108"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800278",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800278",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240616101",
-        "passport_public_contracts:contract:81624N0012007:5160269"
-      ],
-      "request_id": "20240616101",
-      "start_date": "2024-07-01",
-      "end_date": "2025-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "HOPWA Permanent Supportive Housing",
-      "pin": "81624N0012007",
-      "contract_id": "CT181620258800278",
-      "contract_amount": 640969,
-      "vendor_name": "Camba Inc.",
-      "official_url": null,
-      "selection_method_description": "Negotiated Acquisition Extension",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Camba Inc. · $640,969",
-      "notice_evidence": [
-        {
-          "request_id": "20240616101",
-          "type_of_notice_description": "Award",
-          "short_title": "HOPWA Permanent Supportive Housing",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-24",
-          "href": "/notices/20240616101"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800488",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800488",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240625116",
-        "passport_public_contracts:contract:81624W0060001:5185262"
-      ],
-      "request_id": "20240625116",
-      "start_date": "2024-07-01",
-      "end_date": "2028-06-30",
-      "agency_id": null,
-      "agency_name": "Chief Medical Examiner",
-      "short_title": "MAINT & SUPPORT FOR CLOUD BASED VERSION OF QUALTRAX LICENSE",
-      "pin": "81624W0060001",
-      "contract_id": "CT181620258800488",
-      "contract_amount": 375405.67,
-      "vendor_name": "Compulink Technologies, Inc.",
-      "official_url": null,
-      "selection_method_description": "MWBE Non Competitive Small Purchase",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Chief Medical Examiner · Compulink Technologies, Inc. · $375,405.67",
-      "notice_evidence": [
-        {
-          "request_id": "20240625116",
-          "type_of_notice_description": "Award",
-          "short_title": "MAINT & SUPPORT FOR CLOUD BASED VERSION OF QUALTRAX LICENSE",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-07-02",
-          "href": "/notices/20240625116"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ],
-      "method_family": "mwbe_small_purchase"
     }
   ]
 }

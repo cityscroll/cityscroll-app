@@ -60,7 +60,7 @@
       "vintage_field": "source_snapshot.snapshot_date",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 53817,
+      "value": 53992,
       "reason": null
     },
     {
@@ -277,8 +277,8 @@
       "source_system": "city_record",
       "source_contract_id": "city-record",
       "registered": true,
-      "served_observations": 12686,
-      "declared_input_rows": 12990,
+      "served_observations": 12784,
+      "declared_input_rows": 13089,
       "specimen": {
         "source_observation_ref": "city_record:20210621107",
         "procurement_id": "procurement:contract:20211201861",
@@ -1190,8 +1190,8 @@
           {
             "unit_id": "contract-awards",
             "route": "/browse/contracts/",
-            "served_records": 53817,
-            "evidence_vintage": "2026-10-05T00:00:00.000Z"
+            "served_records": 53992,
+            "evidence_vintage": "2026-11-04T00:00:00.000Z"
           }
         ]
       }

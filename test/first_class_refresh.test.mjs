@@ -527,3 +527,34 @@ test("the declared materializer graph regenerates every committed derived artifa
     );
   }
 });
+
+test("the committed OCP warehouse lookup has not aged past its own hard-maximum freshness", () => {
+  // tools/preflight-required-checks.sh never ran this report against the real
+  // committed tree — only the Pages build's --check-production step did, so a
+  // warehouse snapshot that stopped advancing was invisible locally until a
+  // production deploy refused to publish it. ocp-recent-contract-awards is a
+  // daily-publishing Socrata source (Open Data "Update Frequency": "Daily"),
+  // so a stale vintage here means the warehouse-side refresh did not run, not
+  // that the publisher went quiet; see ops/first-class-refresh/README.md for
+  // the WH-02 bulk-ingest remedy. Keeping this assertion in the regular test
+  // suite surfaces that gap before it reaches a deploy.
+  const registry = canonical();
+  const definition = registry.first_class_artifacts.find((row) => row.id === "ocp-awards");
+  assert.ok(definition, "ocp-awards must remain declared in the first-class registry");
+  const report = buildFirstClassFreshnessReport(registry, {
+    root: ROOT,
+    now: new Date().toISOString(),
+  });
+  const surface = report.surfaces.find((row) => row.id === "ocp-awards");
+  assert.ok(surface, "ocp-awards must appear in the freshness report");
+  assert.notEqual(
+    surface.freshness_state,
+    "stale",
+    `${surface.public_artifact_path} is stale (age ${surface.age_hours}h exceeds the ` +
+      `${definition.hard_maximum_age_hours}h hard maximum; vintage ${surface.source_vintage}). ` +
+      "Refresh it with the WH-02 bulk ingest on a machine holding the warehouse catalog " +
+      "(warehouse/scripts/ingest.py --dataset ocp-recent-contract-awards --bulk --ack-large, " +
+      "then node tools/build_ocp_warehouse_lookup.mjs) before this reaches a production deploy.",
+  );
+  assert.notEqual(surface.freshness_state, "unavailable");
+});

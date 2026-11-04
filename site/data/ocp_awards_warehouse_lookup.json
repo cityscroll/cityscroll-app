@@ -5,8 +5,8 @@
   "dataset_id": "qyyg-4tf5",
   "table_name": "ocp_recent_contract_awards",
   "mode": "bulk_warehouse",
-  "materialized_at": "2026-10-09T13:51:44.371Z",
-  "row_count": 53817,
+  "materialized_at": "2026-11-04T04:22:02.123Z",
+  "row_count": 53992,
   "replaces_live_fetch": {
     "worker": "worker/src/checkbook_lifecycle.mjs#fetchOcpAwardRows",
     "soda_dataset": "qyyg-4tf5",
@@ -8601,7 +8601,7 @@
       "short_title": "Auto Body Repair Services",
       "pin": "02tb13601r0x00",
       "contract_amount": "336250",
-      "vendor_name": "Nationwide Auto Painting"
+      "vendor_name": "Nationwide Auto Painting Inc"
     },
     {
       "request_id": "20030529003",
@@ -9641,7 +9641,7 @@
       "short_title": "ASBESTOS ABATEMENT WITHIN THE FIVE BOROUGHS, NYC",
       "pin": "8502003PW0005C",
       "contract_amount": "583850",
-      "vendor_name": "D & S RESTORATION, INC"
+      "vendor_name": "D & S Restoration, Inc"
     },
     {
       "request_id": "20030611011",
@@ -27951,7 +27951,7 @@
       "short_title": "AUTO BODY REPAIR OF POLICE VEHICLES",
       "pin": "056030000342",
       "contract_amount": "345550",
-      "vendor_name": "Nationwide Auto Painting"
+      "vendor_name": "Nationwide Auto Painting Inc"
     },
     {
       "request_id": "20040302035",
@@ -102471,7 +102471,7 @@
       "short_title": "AUTO BODY REPAIR OF NYPD VEHICLES",
       "pin": "056070000508",
       "contract_amount": "280980",
-      "vendor_name": "Nationwide Auto Painting"
+      "vendor_name": "Nationwide Auto Painting Inc"
     },
     {
       "request_id": "20070622004",
@@ -105191,7 +105191,7 @@
       "short_title": "PROCUREMENT CARD SERVICES",
       "pin": "857600788",
       "contract_amount": "0",
-      "vendor_name": "BANK OF AMERICA NA"
+      "vendor_name": "Bank of America NA"
     },
     {
       "request_id": "20070801003",
@@ -127141,7 +127141,7 @@
       "short_title": "REPAIR, REBUILD AND RECONDITION DEP HEAVY DUTY TRUCK/VEHICLE VENDORS LOCATION IN NEW YORK.",
       "pin": "82608HDCOLL8",
       "contract_amount": "70995",
-      "vendor_name": "Nationwide Auto Painting Inc."
+      "vendor_name": "Nationwide Auto Painting Inc"
     },
     {
       "request_id": "20081008009",
@@ -138181,7 +138181,7 @@
       "short_title": "CONSTRUCTION SERVICES FOR MARINE  SIX FACILITY AT THE BROOKLYN NAVY YARD",
       "pin": "057070002394",
       "contract_amount": "4510000",
-      "vendor_name": "Brooklyn Navy Yard Development Corporation"
+      "vendor_name": "Brooklyn Navy Yard Development Corp"
     },
     {
       "request_id": "20090608006",
@@ -177181,7 +177181,7 @@
       "short_title": "CITY-WIDE ECONOMIC DEVELOPMENT SERVICES IN THE BROOKLYN NAVY YARD",
       "pin": "801SBS100103",
       "contract_amount": "21478000",
-      "vendor_name": "Brooklyn Navy Yard Development Corporation"
+      "vendor_name": "Brooklyn Navy Yard Development Corp"
     },
     {
       "request_id": "20110718024",
@@ -186741,7 +186741,7 @@
       "short_title": "CITY-WIDE ECONOMIC DEVELOPMENT SERVICES IN THE BROOKLYN NAVY YARD",
       "pin": "80112S0001001",
       "contract_amount": "16876000",
-      "vendor_name": "Brooklyn Navy Yard Development Corporation"
+      "vendor_name": "Brooklyn Navy Yard Development Corp"
     },
     {
       "request_id": "20120321016",
@@ -187181,7 +187181,7 @@
       "short_title": "AUTO BODY REPAIR SERVICES",
       "pin": "85611B0010",
       "contract_amount": "400000",
-      "vendor_name": "Nationwide Auto Painting"
+      "vendor_name": "Nationwide Auto Painting Inc"
     },
     {
       "request_id": "20120402025",
@@ -188651,7 +188651,7 @@
       "short_title": "DUSTER (RE - AD)",
       "pin": "8571200222",
       "contract_amount": "85095",
-      "vendor_name": "WATS INTERNATIONAL INC"
+      "vendor_name": "WATS International Inc"
     },
     {
       "request_id": "20120508015",
@@ -204851,7 +204851,7 @@
       "short_title": "ENTERPRISE SYSTEMS HEWLETT-PACKARD CO.-CC",
       "pin": "8571300417",
       "contract_amount": "118872.84",
-      "vendor_name": "CDW GOVERNMENT LLC"
+      "vendor_name": "CDW Government LLC"
     },
     {
       "request_id": "20130509014",
@@ -206771,7 +206771,7 @@
       "short_title": "NYS OGS HAZARDOUS INCIDENT RESPONSE EQUIP(HIRE)-NYPD",
       "pin": "8571300520",
       "contract_amount": "195000",
-      "vendor_name": "THERMO EBERLINE LLC"
+      "vendor_name": "Thermo Eberline LLC"
     },
     {
       "request_id": "20130625005",
@@ -207211,7 +207211,7 @@
       "short_title": "HP SMART BUY DESKTOP PC",
       "pin": "8571300516",
       "contract_amount": "464536.25",
-      "vendor_name": "CDW GOVERNMENT LLC"
+      "vendor_name": "CDW Government LLC"
     },
     {
       "request_id": "20130702003",
@@ -212401,7 +212401,7 @@
       "short_title": "IT EQUIP. BLADE PCS FOR FDOC 2ND SITE-FDNY",
       "pin": "8571400080",
       "contract_amount": "253686.76",
-      "vendor_name": "CDW GOVERNMENT LLC"
+      "vendor_name": "CDW Government LLC"
     },
     {
       "request_id": "20131031014",
@@ -213751,7 +213751,7 @@
       "short_title": "NYS EMC  SYSTEMS AND PERIPHERAL (STORAGE) CDW - OEM",
       "pin": "8571400178",
       "contract_amount": "1200898.36",
-      "vendor_name": "CDW GOVERNMENT LLC"
+      "vendor_name": "CDW Government LLC"
     },
     {
       "request_id": "20131126015",
@@ -214901,7 +214901,7 @@
       "short_title": "ENTERPRISE SYSTEMS HEWLETT-PACKARD - DHS",
       "pin": "8571400195",
       "contract_amount": "132983.19",
-      "vendor_name": "CDW GOVERNMENT LLC"
+      "vendor_name": "CDW Government LLC"
     },
     {
       "request_id": "20131218026",
@@ -223771,7 +223771,7 @@
       "short_title": "PURCHASE OF LENOVO PC`S AND LAPTOPS",
       "pin": "01514BIS13396",
       "contract_amount": "1284757",
-      "vendor_name": "CDW GOVERNMENT LLC"
+      "vendor_name": "CDW Government LLC"
     },
     {
       "request_id": "20140619029",
@@ -264731,7 +264731,7 @@
       "short_title": "SPLUNK SOFTWARE",
       "pin": "85816G0021",
       "contract_amount": "195624.01",
-      "vendor_name": "CDW GOVERNMENT LLC"
+      "vendor_name": "CDW Government LLC"
     },
     {
       "request_id": "20160819021",
@@ -271451,7 +271451,7 @@
       "short_title": "AUTO BODY AND CHASSIS REPAIR SERVICES, CITYWIDE",
       "pin": "8571300455",
       "contract_amount": "475000",
-      "vendor_name": "Nationwide Auto Painting Inc."
+      "vendor_name": "Nationwide Auto Painting Inc"
     },
     {
       "request_id": "20161228010",
@@ -277801,7 +277801,7 @@
       "short_title": "VOIP PHONE SYSTEM CONTRACT",
       "pin": "009060120171",
       "contract_amount": "528682",
-      "vendor_name": "CDW GOVERNMENT LLC"
+      "vendor_name": "CDW Government LLC"
     },
     {
       "request_id": "20170601015",
@@ -287411,7 +287411,7 @@
       "short_title": "SPLUNK SUPPORT RENEWAL",
       "pin": "85818G0002001",
       "contract_amount": "186754.68",
-      "vendor_name": "CDW GOVERNMENT LLC"
+      "vendor_name": "CDW Government LLC"
     },
     {
       "request_id": "20171205021",
@@ -291311,7 +291311,7 @@
       "short_title": "AUTO BODY AND CHASSIS REPAIR SERVICES, CITYWIDE",
       "pin": "8571300455",
       "contract_amount": "475000",
-      "vendor_name": "Nationwide Auto Painting Inc."
+      "vendor_name": "Nationwide Auto Painting Inc"
     },
     {
       "request_id": "20180323014",
@@ -294121,7 +294121,7 @@
       "short_title": "PURCHASE OF VARIOUS PRODUCTS FOR CCTV, CARD ACCESS, ROOM SIGNAGE AND INSTALLATION SERVICES VARIOUS PRODUCTS FOR CCTV, CARD ACCESS, ROOM SIGNAGE AND INSTALLATION SERVICES AT 33 BEAVER STREET, NEW YORK, N.Y. 10004",
       "pin": "18DSEMI23501",
       "contract_amount": "467432.13",
-      "vendor_name": "CDW GOVERNMENT LLC"
+      "vendor_name": "CDW Government LLC"
     },
     {
       "request_id": "20180507033",
@@ -305241,7 +305241,7 @@
       "short_title": "CITYWIDE IT PURCHASING CONTRACT",
       "pin": "85818O0026001",
       "contract_amount": "645259245",
-      "vendor_name": "CDW GOVERNMENT LLC"
+      "vendor_name": "CDW Government LLC"
     },
     {
       "request_id": "20180827010",
@@ -308131,7 +308131,7 @@
       "short_title": "FRESHENER, AIR (SOLID GEL BASE TYPE)",
       "pin": "8571700286",
       "contract_amount": "1269600",
-      "vendor_name": "WATS INTERNATIONAL INC"
+      "vendor_name": "WATS International Inc"
     },
     {
       "request_id": "20181005017",
@@ -311461,7 +311461,7 @@
       "short_title": "375 PEARL  PROJECT - PURCHASE OF LEXMARK PRINTERS AND ACCESSORIES AND HPE SERVERS - SO6210R",
       "pin": "19DSMMI10701",
       "contract_amount": "375916.48",
-      "vendor_name": "CDW GOVERNMENT LLC"
+      "vendor_name": "CDW Government LLC"
     },
     {
       "request_id": "20181203025",
@@ -317631,7 +317631,7 @@
       "short_title": "VARIOUS HPE EQUIPMENT FOR SPOS, FF, AND EVERGREEN",
       "pin": "19DSMMI24201",
       "contract_amount": "566893.63",
-      "vendor_name": "CDW GOVERNMENT LLC"
+      "vendor_name": "CDW Government LLC"
     },
     {
       "request_id": "20190308026",
@@ -325801,7 +325801,7 @@
       "short_title": "RECREATIONAL SERVICES FOR INDIVIDUAL WITH AUTISM SPECTRUM",
       "pin": "18MR008619R1X00",
       "contract_amount": "201600",
-      "vendor_name": "United Cerebral Palsy Of New York City Inc"
+      "vendor_name": "United Cerebral Palsy of New York City Inc"
     },
     {
       "request_id": "20190612020",
@@ -334491,7 +334491,7 @@
       "short_title": "TOWELS, PAPER, SINGLE FOLD",
       "pin": "85719B0183001",
       "contract_amount": "2889600",
-      "vendor_name": "PATIFCO CORPORATION"
+      "vendor_name": "Patifco Corporation"
     },
     {
       "request_id": "20190918030",
@@ -341061,7 +341061,7 @@
       "short_title": "AUTO BODY AND CHASSIS REPAIR SERVICES, CITYWIDE",
       "pin": "8571900181",
       "contract_amount": "6256012.5",
-      "vendor_name": "Nationwide Auto Painting Inc."
+      "vendor_name": "Nationwide Auto Painting Inc"
     },
     {
       "request_id": "20191223017",
@@ -347901,7 +347901,7 @@
       "short_title": "INFOSPHERE QUALITYSTAGE PROFESSOR VALUE UNIT LICENSE AND SUPPORT",
       "pin": "20DSEMI25101",
       "contract_amount": "446863.2",
-      "vendor_name": "CDW GOVERNMENT LLC"
+      "vendor_name": "CDW Government LLC"
     },
     {
       "request_id": "20200424026",
@@ -348181,7 +348181,7 @@
       "short_title": "MANAGED PRINT SERVICES (MPS) FOR DHS",
       "pin": "20DSEMI27701",
       "contract_amount": "500000",
-      "vendor_name": "CDW GOVERNMENT LLC"
+      "vendor_name": "CDW Government LLC"
     },
     {
       "request_id": "20200427023",
@@ -351601,7 +351601,7 @@
       "short_title": "MANAGED PRINT SERVICES (MPS-OCSE)",
       "pin": "20DSEMI22201",
       "contract_amount": "450000",
-      "vendor_name": "CDW GOVERNMENT LLC"
+      "vendor_name": "CDW Government LLC"
     },
     {
       "request_id": "20200601002",
@@ -353981,7 +353981,7 @@
       "short_title": "MENTAL HEALTH SERVICES FOR CHILDREN AND ADOLESCENTS",
       "pin": "15MR003401R2X00",
       "contract_amount": "840429",
-      "vendor_name": "United Cerebral Palsy Of New York City Inc"
+      "vendor_name": "United Cerebral Palsy of New York City Inc"
     },
     {
       "request_id": "20200612031",
@@ -353991,7 +353991,7 @@
       "short_title": "RECREATIONAL  AND  SOCIALIZATION FOR MENTALLY DISABLE ADULTS",
       "pin": "15MR005601R2X00",
       "contract_amount": "1256886",
-      "vendor_name": "United Cerebral Palsy Of New York City Inc"
+      "vendor_name": "United Cerebral Palsy of New York City Inc"
     },
     {
       "request_id": "20200612035",
@@ -370811,7 +370811,7 @@
       "short_title": "Emergency Demolition at 5749 Kings Highway, Brooklyn DL00390  (DL00390 E-5938)",
       "pin": "80621E0044001",
       "contract_amount": "281095.5",
-      "vendor_name": "STATE CONTRACTING CORP OF NY"
+      "vendor_name": "State Contracting Corp of NY"
     },
     {
       "request_id": "20210701120",
@@ -370841,7 +370841,7 @@
       "short_title": "Emergency Demolition at 739 Bergen Street, Brooklyn] (AKA 658 Washington Avenue), Brooklyn (E-5939 / DL00391)",
       "pin": "80621E0037001",
       "contract_amount": "337687",
-      "vendor_name": "STATE CONTRACTING CORP OF NY"
+      "vendor_name": "State Contracting Corp of NY"
     },
     {
       "request_id": "20210701123",
@@ -372991,7 +372991,7 @@
       "short_title": "Emergency demolition of 2307 Bathgate Avenue, Bronx",
       "pin": "80621E0027001",
       "contract_amount": "599237",
-      "vendor_name": "STATE CONTRACTING CORP OF NY"
+      "vendor_name": "State Contracting Corp of NY"
     },
     {
       "request_id": "20210712119",
@@ -373641,7 +373641,7 @@
       "short_title": "NE Demo of 17 Harbor, 13 & 15 Lake Avenue 338 Hamden",
       "pin": "80621B0405001",
       "contract_amount": "799330",
-      "vendor_name": "STATE CONTRACTING CORP OF NY"
+      "vendor_name": "State Contracting Corp of NY"
     },
     {
       "request_id": "20210714111",
@@ -383121,7 +383121,7 @@
       "short_title": "MICROSOFT EXCHANGE SERVER MIGRATION AND INTEGRATION SERVICES",
       "pin": "03221O0005001",
       "contract_amount": "324900",
-      "vendor_name": "CDW GOVERNMENT LLC"
+      "vendor_name": "CDW Government LLC"
     },
     {
       "request_id": "20211202132",
@@ -385981,7 +385981,7 @@
       "short_title": "185 Utica Avenue BKN - Non-Emergency Demolition",
       "pin": "80621B0423001",
       "contract_amount": "659500",
-      "vendor_name": "STATE CONTRACTING CORP OF NY"
+      "vendor_name": "State Contracting Corp of NY"
     },
     {
       "request_id": "20220110112",
@@ -386171,7 +386171,7 @@
       "short_title": "Lost Battalion Hall Recreation Center Reconstruction",
       "pin": "Q401-115MA",
       "contract_amount": "14503649.8",
-      "vendor_name": "D & S RESTORATION, INC"
+      "vendor_name": "D & S Restoration, Inc"
     },
     {
       "request_id": "20220112101",
@@ -388661,7 +388661,7 @@
       "short_title": "Demolition Emergencies at 857 & 859 Lafayette Ave, Brooklyn (E-6043 / DM00013)",
       "pin": "80622E0011001",
       "contract_amount": "799995",
-      "vendor_name": "STATE CONTRACTING CORP OF NY"
+      "vendor_name": "State Contracting Corp of NY"
     },
     {
       "request_id": "20220216106",
@@ -390011,7 +390011,7 @@
       "short_title": "COMPASS programming at Our World Neighborhood Charter School",
       "pin": "26022N0176001",
       "contract_amount": "336336",
-      "vendor_name": "South Asian Youth Action SAYA Inc"
+      "vendor_name": "South Asian Youth Action Saya Inc"
     },
     {
       "request_id": "20220310111",
@@ -390021,7 +390021,7 @@
       "short_title": "COMPASS programming at Central Queens Academy (CQA)",
       "pin": "26022N0177001",
       "contract_amount": "888120",
-      "vendor_name": "South Asian Youth Action SAYA Inc"
+      "vendor_name": "South Asian Youth Action Saya Inc"
     },
     {
       "request_id": "20220310112",
@@ -390041,7 +390041,7 @@
       "short_title": "COMPASS programming at P.S. 124 Osmond A. Church",
       "pin": "26022N0178001",
       "contract_amount": "963746",
-      "vendor_name": "South Asian Youth Action SAYA Inc"
+      "vendor_name": "South Asian Youth Action Saya Inc"
     },
     {
       "request_id": "20220310114",
@@ -390261,7 +390261,7 @@
       "short_title": "Emergency Demolition at 116 Arlington Avenue, Staten Island  (DL00555 E-6033)",
       "pin": "80622E0004001",
       "contract_amount": "170339.75",
-      "vendor_name": "STATE CONTRACTING CORP OF NY"
+      "vendor_name": "State Contracting Corp of NY"
     },
     {
       "request_id": "20220314109",
@@ -390551,7 +390551,7 @@
       "short_title": "IMMEDIATE EMERGENCY DEMOLITION of 563 Brooklyn Avenue, Brooklyn (E-6096 DM00099)",
       "pin": "80622E0020001",
       "contract_amount": "292028.1",
-      "vendor_name": "STATE CONTRACTING CORP OF NY"
+      "vendor_name": "State Contracting Corp of NY"
     },
     {
       "request_id": "20220316110",
@@ -390851,7 +390851,7 @@
       "short_title": "implementation and configuration for the CISCO Network Infra",
       "pin": "03221N0005001",
       "contract_amount": "139998.5",
-      "vendor_name": "CDW GOVERNMENT LLC"
+      "vendor_name": "CDW Government LLC"
     },
     {
       "request_id": "20220318117",
@@ -394851,7 +394851,7 @@
       "short_title": "IMMEDIATE EMERGENCY DEMOLITION at 865, 867, 869, 871, & 873 Fox Street, BRONX",
       "pin": "80622E0057001",
       "contract_amount": "899279.5",
-      "vendor_name": "STATE CONTRACTING CORP OF NY"
+      "vendor_name": "State Contracting Corp of NY"
     },
     {
       "request_id": "20220506119",
@@ -395571,7 +395571,7 @@
       "short_title": "COMPASS programming at KIPP Academy Charter School",
       "pin": "26022N0045001",
       "contract_amount": "600186",
-      "vendor_name": "KIPP ACADEMY CHARTER SCHOOL"
+      "vendor_name": "KIPP Academy Charter School"
     },
     {
       "request_id": "20220517112",
@@ -398451,7 +398451,7 @@
       "short_title": "EMERGENCY DEMO AT 412 WEST 46 STREET, MN - E-6259 / DM00453",
       "pin": "80622E0070001",
       "contract_amount": "1309119",
-      "vendor_name": "STATE CONTRACTING CORP OF NY"
+      "vendor_name": "State Contracting Corp of NY"
     },
     {
       "request_id": "20220610117",
@@ -398831,7 +398831,7 @@
       "short_title": "COMPASS Negotiated Acquisition Extension",
       "pin": "26021N0732001",
       "contract_amount": "546000",
-      "vendor_name": "HANDS IN 4 YOUTH INC"
+      "vendor_name": "Hands in 4 Youth Inc"
     },
     {
       "request_id": "20220614110",
@@ -404261,7 +404261,7 @@
       "short_title": "AUTO BODY AND CHASSIS REPAIR SERVICES, CITYWIDE RENEWAL #1",
       "pin": "85720B8435KXLR001",
       "contract_amount": "2085337.5",
-      "vendor_name": "NATIONWIDE AUTO PAINTING INC"
+      "vendor_name": "Nationwide Auto Painting Inc"
     },
     {
       "request_id": "20220726102",
@@ -405571,7 +405571,7 @@
       "short_title": "COMPASS Negotiated Acquisition Extension",
       "pin": "26021N0640001",
       "contract_amount": "1552740",
-      "vendor_name": "BROOKLYN PROSPECT CHARTER SCHOOL"
+      "vendor_name": "Brooklyn Prospect Charter School"
     },
     {
       "request_id": "20220803110",
@@ -408981,7 +408981,7 @@
       "short_title": "Charter School Programming",
       "pin": "26022N0374001",
       "contract_amount": "70937",
-      "vendor_name": "BROOKLYN PROSPECT CHARTER SCHOOL"
+      "vendor_name": "Brooklyn Prospect Charter School"
     },
     {
       "request_id": "20220919109",
@@ -410421,7 +410421,7 @@
       "short_title": "EMERGENCY DEMOLITION AT 632 BEACH 64TH STREET, Queens",
       "pin": "80623E0001001",
       "contract_amount": "193960",
-      "vendor_name": "STATE CONTRACTING CORP OF NY"
+      "vendor_name": "State Contracting Corp of NY"
     },
     {
       "request_id": "20221011111",
@@ -413961,7 +413961,7 @@
       "short_title": "Immed Emerg Demo at 108-26 Avenue N BK",
       "pin": "80623E0004001",
       "contract_amount": "626097.5",
-      "vendor_name": "STATE CONTRACTING CORP OF NY"
+      "vendor_name": "State Contracting Corp of NY"
     },
     {
       "request_id": "20221117105",
@@ -415361,7 +415361,7 @@
       "short_title": "EmergENCY Demo - 336 Beach 47 StREET, QUEENS",
       "pin": "80622E0086001",
       "contract_amount": "122980",
-      "vendor_name": "STATE CONTRACTING CORP OF NY"
+      "vendor_name": "State Contracting Corp of NY"
     },
     {
       "request_id": "20221208107",
@@ -416071,7 +416071,7 @@
       "short_title": "Reconstruction of Mariners harbor playground",
       "pin": "R036-118M",
       "contract_amount": "2993722.9",
-      "vendor_name": "D & S RESTORATION, INC"
+      "vendor_name": "D & S Restoration, Inc"
     },
     {
       "request_id": "20221219106",
@@ -423431,7 +423431,7 @@
       "short_title": "EmergENCY DemoLITION AT 400 Bradford AvENUE, SI",
       "pin": "80623E0036001",
       "contract_amount": "294180.04",
-      "vendor_name": "STATE CONTRACTING CORP OF NY"
+      "vendor_name": "State Contracting Corp of NY"
     },
     {
       "request_id": "20230415107",
@@ -424681,7 +424681,7 @@
       "short_title": "Emergency Demolition at 104-16 -18 & -20 125 Street, Queens (DM00688/E-6380)",
       "pin": "80623E0049001",
       "contract_amount": "974721.26",
-      "vendor_name": "STATE CONTRACTING CORP OF NY"
+      "vendor_name": "State Contracting Corp of NY"
     },
     {
       "request_id": "20230503108",
@@ -428611,7 +428611,7 @@
       "short_title": "Economic Development services to Brooklyn Navy Yard",
       "pin": "80123S0010001",
       "contract_amount": "529981983",
-      "vendor_name": "Brooklyn Navy Yard Development Corporation"
+      "vendor_name": "Brooklyn Navy Yard Development Corp"
     },
     {
       "request_id": "20230612117",
@@ -431251,7 +431251,7 @@
       "short_title": "IE Shoring 55 Ann StREET, MANHAtTAN",
       "pin": "80623E0075001",
       "contract_amount": "175000",
-      "vendor_name": "STATE CONTRACTING CORP OF NY"
+      "vendor_name": "State Contracting Corp of NY"
     },
     {
       "request_id": "20230629109",
@@ -432491,7 +432491,7 @@
       "short_title": "COMPASS Program",
       "pin": "26023N0039189",
       "contract_amount": "1974978",
-      "vendor_name": "South Asian Youth Action SAYA Inc"
+      "vendor_name": "South Asian Youth Action Saya Inc"
     },
     {
       "request_id": "20230706114",
@@ -436461,7 +436461,7 @@
       "short_title": "COMPASS Programs",
       "pin": "26023N0039059",
       "contract_amount": "1447143",
-      "vendor_name": "South Asian Youth Action SAYA Inc"
+      "vendor_name": "South Asian Youth Action Saya Inc"
     },
     {
       "request_id": "20230718123",
@@ -437461,7 +437461,7 @@
       "short_title": "COMPASS Programs",
       "pin": "26023N0039131",
       "contract_amount": "1668840",
-      "vendor_name": "South Asian Youth Action SAYA Inc"
+      "vendor_name": "South Asian Youth Action Saya Inc"
     },
     {
       "request_id": "20230722110",
@@ -438471,7 +438471,7 @@
       "short_title": "Asbestos, Lead and Mold Abatement Services, BROOKLYN AND QUEENS",
       "pin": "85023B0058001",
       "contract_amount": "2295140",
-      "vendor_name": "D & S RESTORATION, INC"
+      "vendor_name": "D & S Restoration, Inc"
     },
     {
       "request_id": "20230727107",
@@ -438681,7 +438681,7 @@
       "short_title": "COMPASS Program",
       "pin": "26023N0039022",
       "contract_amount": "915753",
-      "vendor_name": "KIPP ACADEMY CHARTER SCHOOL"
+      "vendor_name": "KIPP Academy Charter School"
     },
     {
       "request_id": "20230728105",
@@ -438701,7 +438701,7 @@
       "short_title": "COMPASS Program",
       "pin": "26023N0039234",
       "contract_amount": "2373591",
-      "vendor_name": "BROOKLYN PROSPECT CHARTER SCHOOL"
+      "vendor_name": "Brooklyn Prospect Charter School"
     },
     {
       "request_id": "20230728107",
@@ -439961,7 +439961,7 @@
       "short_title": "Saturday Night Lights",
       "pin": "26023N0038002",
       "contract_amount": "45000",
-      "vendor_name": "THE BOYS CLUB OF NEW YORK INC"
+      "vendor_name": "The Boys Club of New York Inc"
     },
     {
       "request_id": "20230808111",
@@ -440331,7 +440331,7 @@
       "short_title": "IED 57  Ann St. MN E-6608 DN00495",
       "pin": "80623E0073001",
       "contract_amount": "4182830",
-      "vendor_name": "STATE CONTRACTING CORP OF NY"
+      "vendor_name": "State Contracting Corp of NY"
     },
     {
       "request_id": "20230811103",
@@ -441281,7 +441281,7 @@
       "short_title": "Renewal (2 year) for Specialized Banking Services",
       "pin": "06923P8010KXLR001",
       "contract_amount": "904308.03",
-      "vendor_name": "BANK OF AMERICA NA"
+      "vendor_name": "Bank of America NA"
     },
     {
       "request_id": "20230818109",
@@ -442291,7 +442291,7 @@
       "short_title": "Immed Emerg Demo 605 E 9 St aka 350 E 10 St MN",
       "pin": "80623E0044001",
       "contract_amount": "880000",
-      "vendor_name": "STATE CONTRACTING CORP OF NY"
+      "vendor_name": "State Contracting Corp of NY"
     },
     {
       "request_id": "20230905105",
@@ -443351,7 +443351,7 @@
       "short_title": "Asbestos, Lead and Mold Abatement Services",
       "pin": "85023B0055001",
       "contract_amount": "2616925",
-      "vendor_name": "D & S RESTORATION, INC"
+      "vendor_name": "D & S Restoration, Inc"
     },
     {
       "request_id": "20230918103",
@@ -443371,7 +443371,7 @@
       "short_title": "COMPASS Progam",
       "pin": "26023N0039031",
       "contract_amount": "548859",
-      "vendor_name": "HANDS IN 4 YOUTH INC"
+      "vendor_name": "Hands in 4 Youth Inc"
     },
     {
       "request_id": "20230918105",
@@ -443621,7 +443621,7 @@
       "short_title": "General Banking Services NAE - BOA",
       "pin": "83622N0005001",
       "contract_amount": "2051211",
-      "vendor_name": "BANK OF AMERICA NA"
+      "vendor_name": "Bank of America NA"
     },
     {
       "request_id": "20230920106",
@@ -444011,7 +444011,7 @@
       "short_title": "Essential Parenting Supports - Parenting Skills Training ProgRAM",
       "pin": "06823P0006002",
       "contract_amount": "1198935",
-      "vendor_name": "BRIASON ASSOCIATES LLC"
+      "vendor_name": "Briason Associates LLC"
     },
     {
       "request_id": "20230926106",
@@ -447601,7 +447601,7 @@
       "short_title": "Auto Body and Chassis Repair Services Citywide- Renewal 2",
       "pin": "85720B8435KXLR002",
       "contract_amount": "750000",
-      "vendor_name": "NATIONWIDE AUTO PAINTING INC"
+      "vendor_name": "Nationwide Auto Painting Inc"
     },
     {
       "request_id": "20231205102",
@@ -453111,7 +453111,7 @@
       "short_title": "Citywide IT Security Services Class 2",
       "pin": "85821P0004002",
       "contract_amount": "2500000",
-      "vendor_name": "CDW GOVERNMENT LLC"
+      "vendor_name": "CDW Government LLC"
     },
     {
       "request_id": "20240308102",
@@ -453121,7 +453121,7 @@
       "short_title": "Citywide IT Security Services - Class 1",
       "pin": "85821P0004007",
       "contract_amount": "4000000",
-      "vendor_name": "CDW GOVERNMENT LLC"
+      "vendor_name": "CDW Government LLC"
     },
     {
       "request_id": "20240308103",
@@ -454091,7 +454091,7 @@
       "short_title": "Commercial Waste Zones Program Outreach",
       "pin": "82724ACCO101",
       "contract_amount": "1500000",
-      "vendor_name": "METROPOLITAN STRATEGIES AND SOLUTIONS LLC"
+      "vendor_name": "Metropolitan Strategies and Solutions LLC"
     },
     {
       "request_id": "20240321102",
@@ -455151,7 +455151,7 @@
       "short_title": "On-Call Emergency Demolition Services (OCEC) - MX",
       "pin": "80621B0366001",
       "contract_amount": "30000000",
-      "vendor_name": "STATE CONTRACTING CORP OF NY"
+      "vendor_name": "State Contracting Corp of NY"
     },
     {
       "request_id": "20240405103",
@@ -455251,7 +455251,7 @@
       "short_title": "PPG PAINT & PAINT SUPPLIES",
       "pin": "82724W0020001",
       "contract_amount": "500000",
-      "vendor_name": "WATS INTERNATIONAL INC"
+      "vendor_name": "WATS International Inc"
     },
     {
       "request_id": "20240408102",
@@ -457821,7 +457821,7 @@
       "short_title": "Imm Emerg at 1915 Billingsley Terrace, aka 172 W Burnside Aveue, BX",
       "pin": "80624E0032001",
       "contract_amount": "944968.5",
-      "vendor_name": "STATE CONTRACTING CORP OF NY"
+      "vendor_name": "State Contracting Corp of NY"
     },
     {
       "request_id": "20240513105",
@@ -458351,7 +458351,7 @@
       "short_title": "Borden Avenue Floor Scrubber/Sweeper",
       "pin": "05724W0038001",
       "contract_amount": "65407.01",
-      "vendor_name": "WATS INTERNATIONAL INC"
+      "vendor_name": "WATS International Inc"
     },
     {
       "request_id": "20240520102",
@@ -464621,7 +464621,7 @@
       "short_title": "Cook Uniforms with Regular Uniform Cleaning",
       "pin": "06824W0034001",
       "contract_amount": "200000",
-      "vendor_name": "LUMAL CLEANERS INC AMCO UNIFORM RENTAL"
+      "vendor_name": "Lumal Cleaners Inc Amco Uniform Rental"
     },
     {
       "request_id": "20240702106",
@@ -465901,7 +465901,7 @@
       "short_title": "Antennas/attenuators for Radio Shop",
       "pin": "05724W0053001",
       "contract_amount": "30000",
-      "vendor_name": "Kop Communications LLC"
+      "vendor_name": "KOP Communications LLC"
     },
     {
       "request_id": "20240711102",
@@ -468541,7 +468541,7 @@
       "short_title": "Saturday Nights Lights",
       "pin": "26024N8426KXLR001",
       "contract_amount": "57483",
-      "vendor_name": "THE BOYS CLUB OF NEW YORK INC"
+      "vendor_name": "The Boys Club of New York Inc"
     },
     {
       "request_id": "20240727108",
@@ -468901,7 +468901,7 @@
       "short_title": "Commercial Waste Zones Outreach Citywide",
       "pin": "82725ACCO101",
       "contract_amount": "1500000",
-      "vendor_name": "METROPOLITAN STRATEGIES AND SOLUTIONS LLC"
+      "vendor_name": "Metropolitan Strategies and Solutions LLC"
     },
     {
       "request_id": "20240731122",
@@ -470101,7 +470101,7 @@
       "short_title": "057250000003 - Radio Repair Parts",
       "pin": "05725W0004001",
       "contract_amount": "40000",
-      "vendor_name": "Kop Communications LLC"
+      "vendor_name": "KOP Communications LLC"
     },
     {
       "request_id": "20240813105",
@@ -470271,7 +470271,7 @@
       "short_title": "Elevator Modernization",
       "pin": "85623B0003001",
       "contract_amount": "2150000",
-      "vendor_name": "FIVE STAR CONTRACTING CO., INC"
+      "vendor_name": "Five Star Contracting Co., Inc."
     },
     {
       "request_id": "20240814105",
@@ -471451,7 +471451,7 @@
       "short_title": "Technical Assistance for Dev. Safe & Supportive Environment",
       "pin": "26023P0007003",
       "contract_amount": "700000",
-      "vendor_name": "PARTNERSHIP FOR AFTER SCHOOL EDUCATION INC"
+      "vendor_name": "Partnership for After School Education Inc."
     },
     {
       "request_id": "20240828104",
@@ -472451,7 +472451,7 @@
       "short_title": "BPS Parking Control Gates 5800004X",
       "pin": "82625W0011001",
       "contract_amount": "25518.68",
-      "vendor_name": "WATS INTERNATIONAL INC"
+      "vendor_name": "WATS International Inc"
     },
     {
       "request_id": "20240911121",
@@ -473571,7 +473571,7 @@
       "short_title": "Imm Emerg Demo 112 E 40 St MN (DP00064/ E-6951)",
       "pin": "80625E0010001",
       "contract_amount": "446816.25",
-      "vendor_name": "STATE CONTRACTING CORP OF NY"
+      "vendor_name": "State Contracting Corp of NY"
     },
     {
       "request_id": "20240926106",
@@ -475951,7 +475951,7 @@
       "short_title": "Installation of Sprinkler System",
       "pin": "82723B0005001",
       "contract_amount": "6432077",
-      "vendor_name": "FIVE STAR CONTRACTING CO., INC"
+      "vendor_name": "Five Star Contracting Co., Inc."
     },
     {
       "request_id": "20241107005",
@@ -486041,7 +486041,7 @@
       "short_title": "Community School Services - R1191",
       "pin": "04020I0001049R001",
       "contract_amount": "1804046",
-      "vendor_name": "South Asian Youth Action SAYA Inc"
+      "vendor_name": "South Asian Youth Action Saya Inc"
     },
     {
       "request_id": "20250317032",
@@ -501761,7 +501761,7 @@
       "short_title": "057260000130 - FY26 Various Radio Shop Tools",
       "pin": "05726W0011001",
       "contract_amount": "100000",
-      "vendor_name": "Kop Communications LLC"
+      "vendor_name": "KOP Communications LLC"
     },
     {
       "request_id": "20250825010",
@@ -503421,7 +503421,7 @@
       "short_title": "Training for Forensic Interviewing",
       "pin": "05625U0007001",
       "contract_amount": "62290",
-      "vendor_name": "NATIONAL CHILDREN'S ADVOCACY CENTER"
+      "vendor_name": "National Children's Advocacy Center"
     },
     {
       "request_id": "20250923031",
@@ -506401,7 +506401,7 @@
       "short_title": "BWS NYWEA Conference 6010016X",
       "pin": "82626U0007001",
       "contract_amount": "29575",
-      "vendor_name": "New York Water Environment Assoc."
+      "vendor_name": "New York Water Environment Association"
     },
     {
       "request_id": "20251105006",
@@ -507931,7 +507931,7 @@
       "short_title": "HWR1140A: RECONSTRUCTION OF ARTHUR KILL ROAD - PHASE I",
       "pin": "85025B0023001",
       "contract_amount": "69966670",
-      "vendor_name": "Difazio Ind LLC"
+      "vendor_name": "DIFAZIO IND LLC"
     },
     {
       "request_id": "20251126005",
@@ -508871,7 +508871,7 @@
       "short_title": "OHD QuantiFit2 Respirator Fit Testing Instruments",
       "pin": "05726W0028001",
       "contract_amount": "61829",
-      "vendor_name": "Kemlot Global Associates Inc"
+      "vendor_name": "KEMLOT GLOBAL ASSOCIATES INC"
     },
     {
       "request_id": "20251210001",
@@ -510011,7 +510011,7 @@
       "short_title": "IT Consulting Services Critical Infrastructure Support",
       "pin": "06926G0023001",
       "contract_amount": "594000",
-      "vendor_name": "SVAM International Inc"
+      "vendor_name": "Svam International Inc"
     },
     {
       "request_id": "20251224012",
@@ -510531,7 +510531,7 @@
       "short_title": "MWBE Blanket Order for Building Sealup",
       "pin": "85626W0007001",
       "contract_amount": "1039565",
-      "vendor_name": "Kemlot Global Associates Inc"
+      "vendor_name": "KEMLOT GLOBAL ASSOCIATES INC"
     },
     {
       "request_id": "20260106005",
@@ -510741,7 +510741,7 @@
       "short_title": "7-858-0673A MYCITY SENIOR CLOUD ENGINEER 2, SP3",
       "pin": "85826W0059001",
       "contract_amount": "398320",
-      "vendor_name": "Rangam Consultants Inc"
+      "vendor_name": "RANGAM CONSULTANTS INC"
     },
     {
       "request_id": "20260107026",
@@ -510751,7 +510751,7 @@
       "short_title": "7-858-0625A MYCITY SR SERVICE DESIGNER, UED LEAD",
       "pin": "85826W0060001",
       "contract_amount": "379600",
-      "vendor_name": "Rangam Consultants Inc"
+      "vendor_name": "RANGAM CONSULTANTS INC"
     },
     {
       "request_id": "20260107027",
@@ -511261,7 +511261,7 @@
       "short_title": "7-858-0680A MYCITY CAREERS SR ANALYTICS DEVELOPER, SP3",
       "pin": "85826W0061001",
       "contract_amount": "398341",
-      "vendor_name": "Rangam Consultants Inc"
+      "vendor_name": "RANGAM CONSULTANTS INC"
     },
     {
       "request_id": "20260116006",
@@ -511481,7 +511481,7 @@
       "short_title": "HWCB25KR: REPLACEMENT OF CONCRETE, STEEL FACED AND GRANITE Curbs and related sidewalk and roadway restoration",
       "pin": "85025B0033001",
       "contract_amount": "3723597",
-      "vendor_name": "Difazio Ind LLC"
+      "vendor_name": "DIFAZIO IND LLC"
     },
     {
       "request_id": "20260121007",
@@ -511911,7 +511911,7 @@
       "short_title": "IT Technical support",
       "pin": "81026W0007001",
       "contract_amount": "121030",
-      "vendor_name": "Aita Consulting Services Inc"
+      "vendor_name": "AITA Consulting Services Inc"
     },
     {
       "request_id": "20260126017",
@@ -514091,7 +514091,7 @@
       "short_title": "BEPA-SUST NYWEA Conference 6060240X",
       "pin": "82626U0014001",
       "contract_amount": "22720",
-      "vendor_name": "New York Water Environment Assoc."
+      "vendor_name": "New York Water Environment Association"
     },
     {
       "request_id": "20260305026",
@@ -515671,7 +515671,7 @@
       "short_title": "7-858-0777A NG911 IT SYSTEMS ARCHITECT, SP3 (RI7-858-0756A)",
       "pin": "85826W0091001",
       "contract_amount": "320380",
-      "vendor_name": "Rangam Consultants Inc"
+      "vendor_name": "RANGAM CONSULTANTS INC"
     },
     {
       "request_id": "20260326031",
@@ -516931,7 +516931,7 @@
       "short_title": "On-Call Citywide Electrical Repair & Maintenance Services",
       "pin": "06826W0034001",
       "contract_amount": "250000",
-      "vendor_name": "Kemlot Global Associates Inc"
+      "vendor_name": "KEMLOT GLOBAL ASSOCIATES INC"
     },
     {
       "request_id": "20260413012",
@@ -517701,7 +517701,7 @@
       "short_title": "Rangam Salesforce Consultant",
       "pin": "RANG04132026NEW",
       "contract_amount": "489528",
-      "vendor_name": "Rangam Consultants Inc"
+      "vendor_name": "RANGAM CONSULTANTS INC"
     },
     {
       "request_id": "20260421019",
@@ -518071,7 +518071,7 @@
       "short_title": "Bid 2600003 - Firefighting Fittings - FDNY (Class 2)",
       "pin": "85726B0006002",
       "contract_amount": "637350",
-      "vendor_name": "AAA Emergency Supply, Co. Inc."
+      "vendor_name": "AAA Emergency Supply, Co. Inc.."
     },
     {
       "request_id": "20260424009",
@@ -518281,7 +518281,7 @@
       "short_title": "BWT NYWEA Conference 6031161X",
       "pin": "82626U0020001",
       "contract_amount": "52920",
-      "vendor_name": "New York Water Environment Assoc."
+      "vendor_name": "New York Water Environment Association"
     },
     {
       "request_id": "20260428012",
@@ -519201,7 +519201,7 @@
       "short_title": "B164-123M Bath Beach Park Synthetic Turf Field Construction",
       "pin": "84626B0013001",
       "contract_amount": "3384000",
-      "vendor_name": "William A Gross Construction Associates Inc."
+      "vendor_name": "WILLIAM A GROSS CONSTRUCTION ASSOCIATES INC."
     },
     {
       "request_id": "20260506012",
@@ -519761,7 +519761,7 @@
       "short_title": "IT Consulting Services for CurRent NYC Project",
       "pin": "06926G0031001",
       "contract_amount": "492000",
-      "vendor_name": "SVAM International Inc"
+      "vendor_name": "Svam International Inc"
     },
     {
       "request_id": "20260513005",
@@ -520461,7 +520461,7 @@
       "short_title": "BG-923M: Brooklyn Tree-Damaged Sidewalk Reconstruction FY23",
       "pin": "84624B0041001R001",
       "contract_amount": "3355838",
-      "vendor_name": "William A Gross Construction Associates Inc."
+      "vendor_name": "WILLIAM A GROSS CONSTRUCTION ASSOCIATES INC."
     },
     {
       "request_id": "20260520006",
@@ -521081,7 +521081,7 @@
       "short_title": "ELECTRICAL EQUIPMENT AND SUPPLIES",
       "pin": "07126W0009001",
       "contract_amount": "100000",
-      "vendor_name": "Kemlot Global Associates Inc"
+      "vendor_name": "KEMLOT GLOBAL ASSOCIATES INC"
     },
     {
       "request_id": "20260526022",
@@ -521381,7 +521381,7 @@
       "short_title": "FY'26 BPO for Carpentry, Masonry and Construction",
       "pin": "07126W0012001",
       "contract_amount": "100000",
-      "vendor_name": "Kemlot Global Associates Inc"
+      "vendor_name": "KEMLOT GLOBAL ASSOCIATES INC"
     },
     {
       "request_id": "20260529022",
@@ -521391,7 +521391,7 @@
       "short_title": "DHS1 207051 FY'26 BPO for Locks",
       "pin": "07126W0010001",
       "contract_amount": "100000",
-      "vendor_name": "Kemlot Global Associates Inc"
+      "vendor_name": "KEMLOT GLOBAL ASSOCIATES INC"
     },
     {
       "request_id": "20260529024",
@@ -521401,7 +521401,7 @@
       "short_title": "FY'26 OMO Blanket Purchase Order for Doors",
       "pin": "07126W0011001",
       "contract_amount": "100000",
-      "vendor_name": "Kemlot Global Associates Inc"
+      "vendor_name": "KEMLOT GLOBAL ASSOCIATES INC"
     },
     {
       "request_id": "20260601005",
@@ -528641,7 +528641,7 @@
       "short_title": "QG-623M: Queens Tree-Damaged Sidewalk Reconstruction FY23",
       "pin": "84623B0128001R001",
       "contract_amount": "6021965",
-      "vendor_name": "William A Gross Construction Associates Inc."
+      "vendor_name": "WILLIAM A GROSS CONSTRUCTION ASSOCIATES INC."
     },
     {
       "request_id": "20260626011",
@@ -529921,7 +529921,7 @@
       "short_title": "BCS MDMS Support Services 6040164X",
       "pin": "82626G0003001",
       "contract_amount": "3096648",
-      "vendor_name": "SVAM International Inc"
+      "vendor_name": "Svam International Inc"
     },
     {
       "request_id": "20260707011",
@@ -531091,7 +531091,7 @@
       "short_title": "Repair and replacement of High and Low Pressure Boilers - 3 year renewal",
       "pin": "85622B0007001R001",
       "contract_amount": "3000000",
-      "vendor_name": "Control Systems Services Inc"
+      "vendor_name": "Control Systems Services Inc."
     },
     {
       "request_id": "20260716012",
@@ -533011,7 +533011,7 @@
       "short_title": "IT Consulting Services for CurRent project",
       "pin": "06926G0034001",
       "contract_amount": "436800",
-      "vendor_name": "PruTech Solutions, Inc"
+      "vendor_name": "Prutech Solutions, Inc."
     },
     {
       "request_id": "20260804027",
@@ -533091,7 +533091,7 @@
       "short_title": "Q099-420M FMCP Aquatic Ctr Ice Rink Chiller Replacement",
       "pin": "84626B0068001",
       "contract_amount": "5382514",
-      "vendor_name": "CDE AIR CONDITIONING CO INC"
+      "vendor_name": "CDE Air Conditioning Co Inc"
     },
     {
       "request_id": "20260805012",
@@ -535011,7 +535011,7 @@
       "short_title": "COMPASS Programs in Public Schools - Elementary",
       "pin": "26026P0003114",
       "contract_amount": "19752721",
-      "vendor_name": "South Asian Youth Action SAYA Inc"
+      "vendor_name": "South Asian Youth Action Saya Inc"
     },
     {
       "request_id": "20260821017",
@@ -535291,7 +535291,7 @@
       "short_title": "AutoCAD Software Support",
       "pin": "06827W0007001",
       "contract_amount": "75198",
-      "vendor_name": "Savant Financial Technologies Inc"
+      "vendor_name": "Savant Financial Technologies Inc."
     },
     {
       "request_id": "20260824044",
@@ -535701,7 +535701,7 @@
       "short_title": "Inmate Information System (IIS)",
       "pin": "07226W0055001",
       "contract_amount": "486540",
-      "vendor_name": "Rangam Consultants Inc"
+      "vendor_name": "RANGAM CONSULTANTS INC"
     },
     {
       "request_id": "20260826041",
@@ -537531,7 +537531,7 @@
       "short_title": "CoStar Suite All Data Subscription",
       "pin": "83627U0002001",
       "contract_amount": "91082",
-      "vendor_name": "CoStar Realty Information, Inc"
+      "vendor_name": "Costar Realty Information, Inc."
     },
     {
       "request_id": "20260918011",
@@ -538051,7 +538051,7 @@
       "short_title": "Dayton auto truck springs and accessories replacement parts",
       "pin": "05727W0015001",
       "contract_amount": "300000",
-      "vendor_name": "Kemlot Global Associates Inc"
+      "vendor_name": "KEMLOT GLOBAL ASSOCIATES INC"
     },
     {
       "request_id": "20260928003",
@@ -538131,7 +538131,7 @@
       "short_title": "Maintenance & Service for ViewPoint and M-ARIS Systems",
       "pin": "05623S0008001",
       "contract_amount": "5446872",
-      "vendor_name": "THERMO EBERLINE LLC"
+      "vendor_name": "Thermo Eberline LLC"
     },
     {
       "request_id": "20260929005",
@@ -538182,14 +538182,1764 @@
       "pin": "83627W0005001",
       "contract_amount": "39507",
       "vendor_name": "Abrahams Consulting LLC"
+    },
+    {
+      "request_id": "20260929013",
+      "start_date": "2026-10-06",
+      "agency_name": "Employees' Retirement System",
+      "type_of_notice_description": "Award",
+      "short_title": "InfoJini - Senior Data Analyst ETL - Alex Gak",
+      "pin": "NYCERS-InfoJini-09/1",
+      "contract_amount": "286056",
+      "vendor_name": "Infojini Inc."
+    },
+    {
+      "request_id": "20260929015",
+      "start_date": "2026-10-06",
+      "agency_name": "Employees' Retirement System",
+      "type_of_notice_description": "Award",
+      "short_title": "Rangam - Functional Test Lead - Ramya Nagisetti",
+      "pin": "NYCERS-Rangam-09/22/",
+      "contract_amount": "489528",
+      "vendor_name": "Rangam Consultants Inc."
+    },
+    {
+      "request_id": "20260929017",
+      "start_date": "2026-10-06",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Award",
+      "short_title": "Comprehensive American Sign Language (ASL) and Certified Deaf Interpreter (CDI) services",
+      "pin": "81627W0009001",
+      "contract_amount": "500000",
+      "vendor_name": "Accurate Communication Inc."
+    },
+    {
+      "request_id": "20260929026",
+      "start_date": "2026-10-06",
+      "agency_name": "Administrative Trials and Hearings",
+      "type_of_notice_description": "Award",
+      "short_title": "Unarmed Guard Services",
+      "pin": "82026W0012001",
+      "contract_amount": "948119",
+      "vendor_name": "FBY Security Services Inc"
+    },
+    {
+      "request_id": "20260929028",
+      "start_date": "2026-10-06",
+      "agency_name": "Finance",
+      "type_of_notice_description": "Award",
+      "short_title": "BMC Control-M Software and Managed Services",
+      "pin": "83627W0002001",
+      "contract_amount": "345486",
+      "vendor_name": "K Systems Solutions LLC"
+    },
+    {
+      "request_id": "20260930005",
+      "start_date": "2026-10-06",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Dry Van Trailers - NYCEM - GSA",
+      "pin": "01726G0003001",
+      "contract_amount": "222836",
+      "vendor_name": "Consolidated Trailers Inc"
+    },
+    {
+      "request_id": "20260930006",
+      "start_date": "2026-10-06",
+      "agency_name": "Design and Construction",
+      "type_of_notice_description": "Award",
+      "short_title": "Roof Replacement",
+      "pin": "85026B0090001",
+      "contract_amount": "8658000",
+      "vendor_name": "XBR Inc."
+    },
+    {
+      "request_id": "20260930007",
+      "start_date": "2026-10-06",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "NDA Healthy Families NAQ",
+      "pin": "26026N0035001",
+      "contract_amount": "417000",
+      "vendor_name": "Chinese American Planning Council Inc"
+    },
+    {
+      "request_id": "20260930008",
+      "start_date": "2026-10-06",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "NDA SENIORS NAQ",
+      "pin": "26026N0035003",
+      "contract_amount": "353285",
+      "vendor_name": "Crown Heights Jewish Community Council Inc"
+    },
+    {
+      "request_id": "20260930009",
+      "start_date": "2026-10-06",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "NDA Healthy Families NAQ",
+      "pin": "26026N0035002",
+      "contract_amount": "276578",
+      "vendor_name": "Crown Heights Jewish Community Council Inc"
+    },
+    {
+      "request_id": "20260930010",
+      "start_date": "2026-10-06",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Music and Performing Arts for Youth in Detention",
+      "pin": "06826N0019001",
+      "contract_amount": "291651",
+      "vendor_name": "The Carnegie Hall Corporation"
+    },
+    {
+      "request_id": "20260930014",
+      "start_date": "2026-10-07",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "short_title": "IT Security SIEM Engineer",
+      "pin": "06827W0009001",
+      "contract_amount": "200000",
+      "vendor_name": "InfoPeople Corporation"
+    },
+    {
+      "request_id": "20260930018",
+      "start_date": "2026-10-08",
+      "agency_name": "District Attorney - New York County",
+      "type_of_notice_description": "Award",
+      "short_title": "DANY Website Services",
+      "pin": "2027SVAM",
+      "contract_amount": "30573",
+      "vendor_name": "SVAM International Inc."
+    },
+    {
+      "request_id": "20260930020",
+      "start_date": "2026-10-07",
+      "agency_name": "Taxi and Limousine Commission",
+      "type_of_notice_description": "Award",
+      "short_title": "Technical Project Manager Renewal",
+      "pin": "15626W0004001R001",
+      "contract_amount": "313740",
+      "vendor_name": "Quality and Assurance Technology Corp"
+    },
+    {
+      "request_id": "20260930021",
+      "start_date": "2026-10-07",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Procure Liquid Chlorine for the City of New York, DEP",
+      "pin": "85723B0123001R001",
+      "contract_amount": "13760565",
+      "vendor_name": "Kuehne Chemical Company, Inc."
+    },
+    {
+      "request_id": "20260930022",
+      "start_date": "2026-10-07",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "short_title": "CITT-Bluebeam Renewal & New Licenses",
+      "pin": "84627W0004001",
+      "contract_amount": "125613",
+      "vendor_name": "MicroCAD Training & Consulting"
+    },
+    {
+      "request_id": "20261001010",
+      "start_date": "2026-10-07",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Interior Painting, Plastering and Patching RC",
+      "pin": "85621B0008001R001",
+      "contract_amount": "3108900",
+      "vendor_name": "Modine Contracting Corp"
+    },
+    {
+      "request_id": "20261001011",
+      "start_date": "2026-10-07",
+      "agency_name": "Probation",
+      "type_of_notice_description": "Award",
+      "short_title": "DOP FY27-28 AIM Program Contract with GSS",
+      "pin": "78126N0014001",
+      "contract_amount": "2145204",
+      "vendor_name": "Good Shepherd Services"
+    },
+    {
+      "request_id": "20261001012",
+      "start_date": "2026-10-07",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS Programs in Public Schools - Middle",
+      "pin": "26026P0003072",
+      "contract_amount": "7862400",
+      "vendor_name": "Learning & Educational Solutions Inc"
+    },
+    {
+      "request_id": "20261001013",
+      "start_date": "2026-10-07",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS Programs for Public Schools - Middle",
+      "pin": "26026P0003052",
+      "contract_amount": "3388743",
+      "vendor_name": "Fund for the City of New York, Inc"
+    },
+    {
+      "request_id": "20261001014",
+      "start_date": "2026-10-07",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "Comprehensive Services for Immigrants",
+      "pin": "26026N0019003",
+      "contract_amount": "374970",
+      "vendor_name": "Bronxworks Inc"
+    },
+    {
+      "request_id": "20261001016",
+      "start_date": "2026-10-07",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "short_title": "Manhattan & Queens Style Pedestrian Fencing",
+      "pin": "84127W0009001",
+      "contract_amount": "900000",
+      "vendor_name": "Aldoray & Associates Corp"
+    },
+    {
+      "request_id": "20261001017",
+      "start_date": "2026-10-07",
+      "agency_name": "Design and Construction",
+      "type_of_notice_description": "Award",
+      "short_title": "PV957DGRW \u001a Special Inspection for Degraw Firehouse Renovation",
+      "pin": "85027W0009001",
+      "contract_amount": "105865",
+      "vendor_name": "M&J Engineering DPC"
+    },
+    {
+      "request_id": "20261001023",
+      "start_date": "2026-10-08",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "License continuation of SolarWinds DameWare Remote Support",
+      "pin": "85627W0066001",
+      "contract_amount": "99955",
+      "vendor_name": "Corporate Computer Solutions Inc"
+    },
+    {
+      "request_id": "20261002012",
+      "start_date": "2026-10-08",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "short_title": "Fire Alarm Monitoring, Maintenance, and Repair",
+      "pin": "84627B0001001",
+      "contract_amount": "2310306",
+      "vendor_name": "Cronos Fire and Electrical Corp"
+    },
+    {
+      "request_id": "20261002013",
+      "start_date": "2026-10-08",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "short_title": "20 Cubic Yard Containers used to remove construction waste material generated by the Citywide Concrete Program",
+      "pin": "84123B0016001R001",
+      "contract_amount": "3500000",
+      "vendor_name": "Faztec Industries Inc"
+    },
+    {
+      "request_id": "20261002014",
+      "start_date": "2026-10-08",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS Programs in Public Schools - Middle",
+      "pin": "26026P0003082",
+      "contract_amount": "1684800",
+      "vendor_name": "Inspiring Minds of New York City Inc"
+    },
+    {
+      "request_id": "20261002015",
+      "start_date": "2026-10-08",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS Programs in Public Schools - Middle",
+      "pin": "26026P0003103",
+      "contract_amount": "3159000",
+      "vendor_name": "We Got Next Sports Inc"
+    },
+    {
+      "request_id": "20261002016",
+      "start_date": "2026-10-08",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "short_title": "FY27 Renewal - Shelter facilities for homeless single adults at Stadium Shelter",
+      "pin": "07121P0107001R001",
+      "contract_amount": "53778766",
+      "vendor_name": "Acacia Network Housing Inc"
+    },
+    {
+      "request_id": "20261002017",
+      "start_date": "2026-10-08",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "short_title": "FY' 26 Amendment + Allowance Increase  - Brooklyn Women's Shelter",
+      "pin": "07117P8277KXLR001",
+      "contract_amount": "52125596",
+      "vendor_name": "Help Social Service Corporation"
+    },
+    {
+      "request_id": "20261002018",
+      "start_date": "2026-10-08",
+      "agency_name": "Design and Construction",
+      "type_of_notice_description": "Award",
+      "short_title": "DDC Construction Management Support Services",
+      "pin": "85027W0004001",
+      "contract_amount": "198000",
+      "vendor_name": "Expanded Resources LLC"
+    },
+    {
+      "request_id": "20261002020",
+      "start_date": "2026-10-08",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Prevention Services - Family Support - BK4",
+      "pin": "06823X8002KXLR001",
+      "contract_amount": "5656750",
+      "vendor_name": "Rising Ground Inc"
+    },
+    {
+      "request_id": "20261002021",
+      "start_date": "2026-10-08",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "UC4 Automation Engine Software Licenses",
+      "pin": "85627W0064001",
+      "contract_amount": "42545",
+      "vendor_name": "Abrahams Consulting LLC"
+    },
+    {
+      "request_id": "20261002026",
+      "start_date": "2026-10-09",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "short_title": "PC Refresh- Locking Kit",
+      "pin": "06827W0016001",
+      "contract_amount": "96583",
+      "vendor_name": "NYC IT Inc"
+    },
+    {
+      "request_id": "20261002027",
+      "start_date": "2026-10-09",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Senior Oracle Database Administrator",
+      "pin": "06827W0013001",
+      "contract_amount": "191730",
+      "vendor_name": "Link2consult Inc"
+    },
+    {
+      "request_id": "20261002031",
+      "start_date": "2026-10-09",
+      "agency_name": "Sanitation",
+      "type_of_notice_description": "Award",
+      "short_title": "Samsung Solid State Drives",
+      "pin": "82727W0007001",
+      "contract_amount": "166800",
+      "vendor_name": "Empire Electronics Inc"
+    },
+    {
+      "request_id": "20261002032",
+      "start_date": "2026-10-09",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Benjamin Moore Paint or Equal and Paint Supplies",
+      "pin": "06827W0014001",
+      "contract_amount": "250000",
+      "vendor_name": "Broadway Lumber Supplies Corp"
+    },
+    {
+      "request_id": "20261005003",
+      "start_date": "2026-10-09",
+      "agency_name": "Design and Construction",
+      "type_of_notice_description": "Award",
+      "short_title": "Cooling tower replacement",
+      "pin": "85026B0081002",
+      "contract_amount": "6449529",
+      "vendor_name": "CDE Air Conditioning Co Inc"
+    },
+    {
+      "request_id": "20261005004",
+      "start_date": "2026-10-09",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "short_title": "B148-122MA Rolph Henry Playground Reconstruction, Brooklyn",
+      "pin": "84626B0069001",
+      "contract_amount": "1605518",
+      "vendor_name": "Antonio Natale Landscaping Inc"
+    },
+    {
+      "request_id": "20261005005",
+      "start_date": "2026-10-09",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "DYCD Online Negotiated Acquisition Extension",
+      "pin": "26026N0042001",
+      "contract_amount": "886000",
+      "vendor_name": "Expanded Schools Inc"
+    },
+    {
+      "request_id": "20261005006",
+      "start_date": "2026-10-09",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS NAQ",
+      "pin": "26026N0133001",
+      "contract_amount": "315900",
+      "vendor_name": "Casita Maria Inc."
+    },
+    {
+      "request_id": "20261005007",
+      "start_date": "2026-10-09",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS Center Based NAQ Elementary",
+      "pin": "26027N0020002",
+      "contract_amount": "193800",
+      "vendor_name": "Madison Square Boys & Girls Club Inc."
+    },
+    {
+      "request_id": "20261005008",
+      "start_date": "2026-10-09",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Essential Parenting Supports-Parenting Skills Renewal",
+      "pin": "06823P0006002R001",
+      "contract_amount": "1798403",
+      "vendor_name": "Briason Associates LLC"
+    },
+    {
+      "request_id": "20261005009",
+      "start_date": "2026-10-09",
+      "agency_name": "Police Department",
+      "type_of_notice_description": "Award",
+      "short_title": "Renewal #1 - VIEWPOINT & M-ARIS Maintenance & Service",
+      "pin": "05623S0008001R001",
+      "contract_amount": "2554342",
+      "vendor_name": "Thermo Eberline LLC"
+    },
+    {
+      "request_id": "20261005010",
+      "start_date": "2026-10-09",
+      "agency_name": "Police Department",
+      "type_of_notice_description": "Award",
+      "short_title": "Training for Forensic Interviewing",
+      "pin": "05625U0007001R001",
+      "contract_amount": "213940",
+      "vendor_name": "National Children's Advocacy Center"
+    },
+    {
+      "request_id": "20261005021",
+      "start_date": "2026-10-13",
+      "agency_name": "Comptroller",
+      "type_of_notice_description": "Award",
+      "short_title": "The First Amendment to the Purchase Agreement of Netwrix Software",
+      "pin": "01524BIST68138-A1",
+      "contract_amount": "120790.86",
+      "vendor_name": "Abraham Consulting LLC"
+    },
+    {
+      "request_id": "20261006001",
+      "start_date": "2026-10-16",
+      "agency_name": "District Attorney - New York County",
+      "type_of_notice_description": "Award",
+      "short_title": "On Call HVACR Repair and Maintenance Services",
+      "pin": "20271800901",
+      "contract_amount": "83335",
+      "vendor_name": "Americare Appliance Repair LLC"
+    },
+    {
+      "request_id": "20261006010",
+      "start_date": "2026-10-13",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "short_title": "BWS-CRO-657: Landscaping Services",
+      "pin": "82626R0004001",
+      "contract_amount": "843495",
+      "vendor_name": "New York State Industries for the Disabled Inc"
+    },
+    {
+      "request_id": "20261006011",
+      "start_date": "2026-10-13",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "short_title": "Exec-ODHR Professional Engineering Training 7084017X",
+      "pin": "82627U0005001",
+      "contract_amount": "47375",
+      "vendor_name": "American Society of Civil Engineers"
+    },
+    {
+      "request_id": "20261006012",
+      "start_date": "2026-10-13",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS Center-Based - Elementary School",
+      "pin": "26026P0004127",
+      "contract_amount": "3420000",
+      "vendor_name": "Association to Benefit Children"
+    },
+    {
+      "request_id": "20261006013",
+      "start_date": "2026-10-13",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS Programs in Public Schools - Elementary",
+      "pin": "26026P0003202",
+      "contract_amount": "25520400",
+      "vendor_name": "Bright Futures Afterschool Inc"
+    },
+    {
+      "request_id": "20261006014",
+      "start_date": "2026-10-13",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS Center Based NAQ Elementary",
+      "pin": "26027N0020003",
+      "contract_amount": "1193373",
+      "vendor_name": "The Hudson Guild"
+    },
+    {
+      "request_id": "20261006015",
+      "start_date": "2026-10-13",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS Center Based Elementary Staten Island 01",
+      "pin": "26026P0004126",
+      "contract_amount": "1778400",
+      "vendor_name": "African Refuge Inc"
+    },
+    {
+      "request_id": "20261006016",
+      "start_date": "2026-10-13",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Jackie's Place NAE",
+      "pin": "07126N0022001",
+      "contract_amount": "4435575",
+      "vendor_name": "Bronx Parent Housing Network Inc"
+    },
+    {
+      "request_id": "20261006018",
+      "start_date": "2026-10-13",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "short_title": "U-Channel Steel Post",
+      "pin": "84127W0007001",
+      "contract_amount": "1500000",
+      "vendor_name": "DTM Parts Supply Inc"
+    },
+    {
+      "request_id": "20261006021",
+      "start_date": "2026-10-14",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "short_title": "AED and CPR Training, AED Inspection and Monitoring",
+      "pin": "84626W0041001",
+      "contract_amount": "913500",
+      "vendor_name": "CPR Courses International LLC"
+    },
+    {
+      "request_id": "20261007007",
+      "start_date": "2026-10-14",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Deep Reach Forklifts - NYCEM - Sourcewell",
+      "pin": "01726O0006001",
+      "contract_amount": "177055",
+      "vendor_name": "Hyster-Yale Materials Handling Inc"
+    },
+    {
+      "request_id": "20261007008",
+      "start_date": "2026-10-14",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "short_title": "BWT-1529-FMMG: Repair and Service of Franklin Miller Grinders and Muffin Monster Grinders",
+      "pin": "82622B0001001R001",
+      "contract_amount": "2130399",
+      "vendor_name": "Longo Electrical-Mechanical Inc"
+    },
+    {
+      "request_id": "20261007009",
+      "start_date": "2026-10-14",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS Programs in Public Schools - Elementary",
+      "pin": "26026P0003167",
+      "contract_amount": "7344000",
+      "vendor_name": "Learning & Educational Solutions Inc"
+    },
+    {
+      "request_id": "20261007010",
+      "start_date": "2026-10-14",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS Center Based",
+      "pin": "26026P0004003",
+      "contract_amount": "11894418",
+      "vendor_name": "Bronxworks Inc"
+    },
+    {
+      "request_id": "20261007011",
+      "start_date": "2026-10-14",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "short_title": "Affordable Hsng for Referred Households 1039 E Gun Hill Rd",
+      "pin": "06923P0027016",
+      "contract_amount": "292574111",
+      "vendor_name": "The Jericho Project"
+    },
+    {
+      "request_id": "20261007012",
+      "start_date": "2026-10-14",
+      "agency_name": "Fire Department",
+      "type_of_notice_description": "Award",
+      "short_title": "Radio Cases and Straps",
+      "pin": "05727W0016001",
+      "contract_amount": "88592",
+      "vendor_name": "KOP Communications LLC"
+    },
+    {
+      "request_id": "20261007016",
+      "start_date": "2026-10-15",
+      "agency_name": "Financial Information Services Agency",
+      "type_of_notice_description": "Award",
+      "short_title": "SmartBear ReadyAPI Test License Renewal",
+      "pin": "127FY2700026",
+      "contract_amount": "32595",
+      "vendor_name": "CompCiti Business Solutions, Inc."
+    },
+    {
+      "request_id": "20261007020",
+      "start_date": "2026-10-15",
+      "agency_name": "Comptroller",
+      "type_of_notice_description": "Award",
+      "short_title": "Contractor Agreement for Carpet Cleaning for 1 Centre Street (Labor and Services)",
+      "pin": "01526ADM75317",
+      "contract_amount": "112916.04",
+      "vendor_name": "Fabricio's Cleaning Corp"
+    },
+    {
+      "request_id": "20261007026",
+      "start_date": "2026-10-15",
+      "agency_name": "Buildings",
+      "type_of_notice_description": "Award",
+      "short_title": "Training in Fire Protection Codes, Regulations Safety Standards and Best Practices",
+      "pin": "81027U0001001",
+      "contract_amount": "18200",
+      "vendor_name": "ESIS Inc"
+    },
+    {
+      "request_id": "20261007027",
+      "start_date": "2026-10-15",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Prevention Services - Family Support - BK1",
+      "pin": "06820P8206KXLR001",
+      "contract_amount": "5735072",
+      "vendor_name": "Arab-American Family Support Center Inc"
+    },
+    {
+      "request_id": "20261007028",
+      "start_date": "2026-10-15",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Fire Extinguishers Supply and Delivery for DCAS Buildings",
+      "pin": "85627W0005001",
+      "contract_amount": "438750",
+      "vendor_name": "Island Fire and Defense Systems Inc"
+    },
+    {
+      "request_id": "20261008006",
+      "start_date": "2026-10-15",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Owners Rep for Design-Build Program",
+      "pin": "85625P0003002",
+      "contract_amount": "12000000",
+      "vendor_name": "LiRo Engineers Inc."
+    },
+    {
+      "request_id": "20261008007",
+      "start_date": "2026-10-15",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Bid 2600015 - STRYKER Patient Care Medical Equipment - FDNY",
+      "pin": "85726B0014001",
+      "contract_amount": "76561530",
+      "vendor_name": "Howmedica Osteonics Corp"
+    },
+    {
+      "request_id": "20261008008",
+      "start_date": "2026-10-15",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "CoStar Subscription 2027",
+      "pin": "85626U0006001R001",
+      "contract_amount": "124075",
+      "vendor_name": "Costar Realty Information, Inc."
+    },
+    {
+      "request_id": "20261008009",
+      "start_date": "2026-10-15",
+      "agency_name": "Design and Construction",
+      "type_of_notice_description": "Award",
+      "short_title": "Cleaning and Televising of Sewers by DDC",
+      "pin": "85026B0012001",
+      "contract_amount": "5267776",
+      "vendor_name": "National Water Main Cleaning Co"
+    },
+    {
+      "request_id": "20261008010",
+      "start_date": "2026-10-15",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "short_title": "Specialty Marine Electrical Breakers",
+      "pin": "84127W0012001",
+      "contract_amount": "100000",
+      "vendor_name": "Aldoray & Associates Corp"
+    },
+    {
+      "request_id": "20261008011",
+      "start_date": "2026-10-15",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "short_title": "DELL EMC",
+      "pin": "84127W0016001",
+      "contract_amount": "51887",
+      "vendor_name": "Compulink Technologies Inc"
+    },
+    {
+      "request_id": "20261008020",
+      "start_date": "2026-10-16",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Award",
+      "short_title": "City Council Award for Peer Specialists Support",
+      "pin": "81626L0173001",
+      "contract_amount": "656250",
+      "vendor_name": "New York Lawyers for The Public Interest Inc"
+    },
+    {
+      "request_id": "20261008022",
+      "start_date": "2026-10-16",
+      "agency_name": "Sanitation",
+      "type_of_notice_description": "Award",
+      "short_title": "Waste Containerization Pilots and Regulations for New Buildings",
+      "pin": "82727W0008001",
+      "contract_amount": "191790",
+      "vendor_name": "Clare Miflin"
+    },
+    {
+      "request_id": "20261008030",
+      "start_date": "2026-10-16",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "MWBE Professional Services Mainframe Support",
+      "pin": "85626W0068001",
+      "contract_amount": "173600",
+      "vendor_name": "Peer Consulting Resources Inc"
+    },
+    {
+      "request_id": "20261009003",
+      "start_date": "2026-10-16",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Award",
+      "short_title": "Imm Emerg Demo 794 E 160 Street, BX",
+      "pin": "80626E0048001",
+      "contract_amount": "628186",
+      "vendor_name": "State Contracting Corp of NY"
+    },
+    {
+      "request_id": "20261009004",
+      "start_date": "2026-10-16",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Award",
+      "short_title": "Imm Emerg Demo 927 Grand Street, BK",
+      "pin": "80626E0042001",
+      "contract_amount": "593675",
+      "vendor_name": "State Contracting Corp of NY"
+    },
+    {
+      "request_id": "20261009005",
+      "start_date": "2026-10-16",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS School-Based NAQ",
+      "pin": "26026N0133004",
+      "contract_amount": "204750",
+      "vendor_name": "Hands in 4 Youth Inc"
+    },
+    {
+      "request_id": "20261009007",
+      "start_date": "2026-10-16",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "short_title": "Absolute Control License",
+      "pin": "84127W0017001",
+      "contract_amount": "62820",
+      "vendor_name": "Quality and Assurance Technology Corp"
+    },
+    {
+      "request_id": "20261009008",
+      "start_date": "2026-10-16",
+      "agency_name": "Correction",
+      "type_of_notice_description": "Award",
+      "short_title": "PIC Endurance Bunks",
+      "pin": "07227W0010001",
+      "contract_amount": "267538",
+      "vendor_name": "Aldoray & Associates Corp"
+    },
+    {
+      "request_id": "20261009015",
+      "start_date": "2026-10-19",
+      "agency_name": "Correction",
+      "type_of_notice_description": "Award",
+      "short_title": "Offender and Jail Management System (OJMS) Digital Solutions Platform",
+      "pin": "07227W0002001",
+      "contract_amount": "1482460",
+      "vendor_name": "Routerati Inc"
+    },
+    {
+      "request_id": "20261009016",
+      "start_date": "2026-10-19",
+      "agency_name": "Correction",
+      "type_of_notice_description": "Award",
+      "short_title": "Offender and Jail Management System (OJMS) Unified Data and Application Services Transformation Initiative",
+      "pin": "07227W0003001",
+      "contract_amount": "1395225",
+      "vendor_name": "Dice It Solutions Limited Liability Company"
+    },
+    {
+      "request_id": "20261009018",
+      "start_date": "2026-10-19",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Prevention Services - Family Support - BX1",
+      "pin": "06820P8192KXLR001",
+      "contract_amount": "5716488",
+      "vendor_name": "Good Shepherd Services"
+    },
+    {
+      "request_id": "20261009020",
+      "start_date": "2026-10-19",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "Ongoing electrical, lighting maintenance service",
+      "pin": "26026W0018001",
+      "contract_amount": "460000",
+      "vendor_name": "OGC Electrical Contractor Inc"
+    },
+    {
+      "request_id": "20261013007",
+      "start_date": "2026-10-19",
+      "agency_name": "City Planning",
+      "type_of_notice_description": "Award",
+      "short_title": "On-Call Contract for Env Consulting & Engineering",
+      "pin": "03021P0003001R001",
+      "contract_amount": "2280000",
+      "vendor_name": "AKRF Inc"
+    },
+    {
+      "request_id": "20261013008",
+      "start_date": "2026-10-19",
+      "agency_name": "City Planning",
+      "type_of_notice_description": "Award",
+      "short_title": "On-Call Contract for Environmental Consulting and Engineering Related Services",
+      "pin": "03021P0008001R001",
+      "contract_amount": "2280000",
+      "vendor_name": "Henningson Durham & Richardson PC"
+    },
+    {
+      "request_id": "20261013009",
+      "start_date": "2026-10-19",
+      "agency_name": "City Planning",
+      "type_of_notice_description": "Award",
+      "short_title": "On-Call Contract for Environmental Consulting & Engineering",
+      "pin": "03021P0006001R001",
+      "contract_amount": "2280000",
+      "vendor_name": "Connect Engineering DPC"
+    },
+    {
+      "request_id": "20261013010",
+      "start_date": "2026-10-19",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "FY27 Saturday Night Lights NAE",
+      "pin": "26026N0029002",
+      "contract_amount": "64286",
+      "vendor_name": "The Boys Club of New York Inc"
+    },
+    {
+      "request_id": "20261013011",
+      "start_date": "2026-10-19",
+      "agency_name": "Police Department",
+      "type_of_notice_description": "Award",
+      "short_title": "Forensic Consulting Services",
+      "pin": "05622X8004KXLR001",
+      "contract_amount": "255000",
+      "vendor_name": "Nicholas Mattia & Associates Inc"
+    },
+    {
+      "request_id": "20261013012",
+      "start_date": "2026-10-19",
+      "agency_name": "Finance",
+      "type_of_notice_description": "Award",
+      "short_title": "Semperis Active Directory Recovery Solution",
+      "pin": "83627W0007001",
+      "contract_amount": "58333",
+      "vendor_name": "Compulink Technologies Inc"
+    },
+    {
+      "request_id": "20261013023",
+      "start_date": "2026-10-19",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Professional Development Off-the-Shelf Training",
+      "pin": "85627U0006001",
+      "contract_amount": "99999",
+      "vendor_name": "Center for Urban Community Services Inc"
+    },
+    {
+      "request_id": "20261013032",
+      "start_date": "2026-10-20",
+      "agency_name": "Design and Construction",
+      "type_of_notice_description": "Award",
+      "short_title": "CO299EXT2, Special Inspection for Queens Civil Courthouse Plaza Reconstruction Project",
+      "pin": "85027W0010001",
+      "contract_amount": "104514",
+      "vendor_name": "Joadem Corporation"
+    },
+    {
+      "request_id": "20261013033",
+      "start_date": "2026-10-20",
+      "agency_name": "Police Department",
+      "type_of_notice_description": "Award",
+      "short_title": "Cellebrite Software Upgrades to Inseyets online Pro, Inseyets Kits, & Smart Translator, for a one-year term",
+      "pin": "05627W0002001",
+      "contract_amount": "196000",
+      "vendor_name": "Savant Financial Technologies Inc."
+    },
+    {
+      "request_id": "20261014013",
+      "start_date": "2026-10-20",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "short_title": "BWS B5 Diesel Fuel (Delaware County) 7010536X",
+      "pin": "82627O0001001",
+      "contract_amount": "70000",
+      "vendor_name": "Buell Fuel LLC"
+    },
+    {
+      "request_id": "20261014014",
+      "start_date": "2026-10-20",
+      "agency_name": "Chief Medical Examiner",
+      "type_of_notice_description": "Award",
+      "short_title": "SUBSCRIPTION OF IQAS 20 PROFICIENCY DNA TESTS",
+      "pin": "81627U0002001",
+      "contract_amount": "84480",
+      "vendor_name": "BODE Cellmark Forensics, Inc"
+    },
+    {
+      "request_id": "20261014015",
+      "start_date": "2026-10-20",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "Technical Assistance Services for Mental Health Support",
+      "pin": "26023P0007006R001",
+      "contract_amount": "901464",
+      "vendor_name": "The Mental Health Association of New York City Inc"
+    },
+    {
+      "request_id": "20261014016",
+      "start_date": "2026-10-20",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS Programs in Public Schools-Elementary",
+      "pin": "26026P0003209",
+      "contract_amount": "9608400",
+      "vendor_name": "Sports and Health in the City"
+    },
+    {
+      "request_id": "20261014017",
+      "start_date": "2026-10-20",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Breakfast Meals at Children\u001as Center",
+      "pin": "06827W0010001",
+      "contract_amount": "229950",
+      "vendor_name": "Jabber Dorado Enterprises LLC"
+    },
+    {
+      "request_id": "20261014018",
+      "start_date": "2026-10-20",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "short_title": "AvePoint Cloud Governance M365 and Backup",
+      "pin": "84126W0022001",
+      "contract_amount": "420794",
+      "vendor_name": "K Systems Solutions LLC"
+    },
+    {
+      "request_id": "20261014019",
+      "start_date": "2026-10-20",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Award",
+      "short_title": "Regulated Chemical and Hazardous Waste Collection, Transportation, and Disposal Services",
+      "pin": "81627W0010001",
+      "contract_amount": "500000",
+      "vendor_name": "ENP Environmental Inc"
+    },
+    {
+      "request_id": "20261014039",
+      "start_date": "2026-10-21",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "AUTO BODY AND CHASSIS REPAIR SERVICES, CITYWIDE",
+      "pin": "85726B0035003",
+      "contract_amount": "11007325",
+      "vendor_name": "Nationwide Auto Painting Inc"
+    },
+    {
+      "request_id": "20261014043",
+      "start_date": "2026-10-21",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "MWBE IT Consultant HC 0008A",
+      "pin": "85626W0070001",
+      "contract_amount": "133056",
+      "vendor_name": "Divit Technologies Inc"
+    },
+    {
+      "request_id": "20261014044",
+      "start_date": "2026-10-21",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "EPA Method 9 certification training",
+      "pin": "85627U0019001",
+      "contract_amount": "7700",
+      "vendor_name": "AeroMet Engineering Inc"
+    },
+    {
+      "request_id": "20261014045",
+      "start_date": "2026-10-21",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "short_title": "Software Technical Lead",
+      "pin": "84126W0091001",
+      "contract_amount": "999050",
+      "vendor_name": "Spruce Technology Inc"
+    },
+    {
+      "request_id": "20261015004",
+      "start_date": "2026-10-21",
+      "agency_name": "Information Technology and Telecommunications",
+      "type_of_notice_description": "Award",
+      "short_title": "ACCENTURE SECURITY CLASS II",
+      "pin": "85821P0004003R001",
+      "contract_amount": "2500000",
+      "vendor_name": "Accenture LLP"
+    },
+    {
+      "request_id": "20261015005",
+      "start_date": "2026-10-21",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Demo Micro-Hydro Turbines",
+      "pin": "85626D0002001",
+      "contract_amount": "1132268",
+      "vendor_name": "InPipe Energy Inc"
+    },
+    {
+      "request_id": "20261015006",
+      "start_date": "2026-10-21",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Demo for Building-Integrated PV",
+      "pin": "85625D0001001",
+      "contract_amount": "40000",
+      "vendor_name": "Mitrex USA"
+    },
+    {
+      "request_id": "20261015007",
+      "start_date": "2026-10-21",
+      "agency_name": "Finance",
+      "type_of_notice_description": "Award",
+      "short_title": "Warrant Tracking Maintenance & Support",
+      "pin": "83626S0002001",
+      "contract_amount": "771995",
+      "vendor_name": "Tyler Technologies Inc"
+    },
+    {
+      "request_id": "20261015008",
+      "start_date": "2026-10-21",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS Programs in Public Schools - Middle",
+      "pin": "26026P0003031",
+      "contract_amount": "3159000",
+      "vendor_name": "KIPP Academy Charter School"
+    },
+    {
+      "request_id": "20261015011",
+      "start_date": "2026-10-21",
+      "agency_name": "Finance",
+      "type_of_notice_description": "Award",
+      "short_title": "ClickDimensions Software Renewal",
+      "pin": "83627W0008001",
+      "contract_amount": "65460",
+      "vendor_name": "K Systems Solutions LLC"
+    },
+    {
+      "request_id": "20261015012",
+      "start_date": "2026-10-21",
+      "agency_name": "Chief Medical Examiner",
+      "type_of_notice_description": "Award",
+      "short_title": "BLANKET ORDER FOR SAKURA BRAND ITEMS",
+      "pin": "81627W0013001",
+      "contract_amount": "100000",
+      "vendor_name": "Finesse Creations Inc"
+    },
+    {
+      "request_id": "20261015013",
+      "start_date": "2026-10-21",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Prevention Services - CPP - Staten Island",
+      "pin": "06820P8184KXLR001",
+      "contract_amount": "6063487",
+      "vendor_name": "Jewish Board of Family and Children's Services Inc"
+    },
+    {
+      "request_id": "20261015014",
+      "start_date": "2026-10-22",
+      "agency_name": "Campaign Finance Board",
+      "type_of_notice_description": "Award",
+      "short_title": "Agency Consulting",
+      "pin": "00420270004N",
+      "contract_amount": "99000",
+      "vendor_name": "Jesse Schaffer"
+    },
+    {
+      "request_id": "20261015015",
+      "start_date": "2026-10-22",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Septage Removal & Disposal Services",
+      "pin": "85627W0067001",
+      "contract_amount": "100000",
+      "vendor_name": "Isis 2 Consulting Ltd"
+    },
+    {
+      "request_id": "20261015026",
+      "start_date": "2026-10-22",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "short_title": "FY' 26 Amendment + Allowance Increase  - BWS (229 Beds)",
+      "pin": "07117P8277KXLR001",
+      "contract_amount": "52125596",
+      "vendor_name": "Help Social Service Corporation"
+    },
+    {
+      "request_id": "20261016003",
+      "start_date": "2026-10-22",
+      "agency_name": "District Attorney - Queens County",
+      "type_of_notice_description": "Award",
+      "short_title": "CTERA Premium Private Portal (Software Renewal)",
+      "pin": "QDA20261409 (CTERAPR",
+      "contract_amount": "271240.91",
+      "vendor_name": "Quality and Assurance Technology Corp."
+    },
+    {
+      "request_id": "20261016006",
+      "start_date": "2026-10-22",
+      "agency_name": "Sanitation",
+      "type_of_notice_description": "Award",
+      "short_title": "Gordian NA Renewal 1",
+      "pin": "82722N0004001R001",
+      "contract_amount": "3000000",
+      "vendor_name": "The Gordian Group Inc."
+    },
+    {
+      "request_id": "20261016007",
+      "start_date": "2026-10-22",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "short_title": "FY27 Renewal - NYNYIII Perm Supp Cong Housing CAMBA Gardens II",
+      "pin": "06917P9543KXLR002",
+      "contract_amount": "9328950",
+      "vendor_name": "CAMBA Inc"
+    },
+    {
+      "request_id": "20261016009",
+      "start_date": "2026-10-22",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "short_title": "CITT-AutoCAD Renewal & New Licenses",
+      "pin": "84627W0005001",
+      "contract_amount": "215663",
+      "vendor_name": "K Systems Solutions LLC"
+    },
+    {
+      "request_id": "20261016010",
+      "start_date": "2026-10-22",
+      "agency_name": "Fire Department",
+      "type_of_notice_description": "Award",
+      "short_title": "MASK FIT EQUIPMENT (OHD)",
+      "pin": "05727O0005001",
+      "contract_amount": "21821",
+      "vendor_name": "AAA Emergency Supply, Co. Inc.."
+    },
+    {
+      "request_id": "20261016011",
+      "start_date": "2026-10-22",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "short_title": "Support SAN Switches for 1 year",
+      "pin": "06927W0007001",
+      "contract_amount": "67494",
+      "vendor_name": "Abrahams Consulting LLC"
+    },
+    {
+      "request_id": "20261016013",
+      "start_date": "2026-10-23",
+      "agency_name": "Fire Department",
+      "type_of_notice_description": "Award",
+      "short_title": "Zabbix Software Support and Maintenance",
+      "pin": "05727W0018001",
+      "contract_amount": "84083",
+      "vendor_name": "K Systems Solutions LLC"
+    },
+    {
+      "request_id": "20261016016",
+      "start_date": "2026-10-23",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Essential Parenting Supports-Parenting Skills Training Prog",
+      "pin": "06823P0006001",
+      "contract_amount": "1198935",
+      "vendor_name": "Young Adult Institute Inc."
+    },
+    {
+      "request_id": "20261019008",
+      "start_date": "2026-10-23",
+      "agency_name": "Design and Construction",
+      "type_of_notice_description": "Award",
+      "short_title": "Asbestos, Lead and Mold Abatement Services - Brooklyn and Queens",
+      "pin": "85023B0058001R001",
+      "contract_amount": "1500000",
+      "vendor_name": "D & S Restoration, Inc"
+    },
+    {
+      "request_id": "20261019009",
+      "start_date": "2026-10-23",
+      "agency_name": "Design and Construction",
+      "type_of_notice_description": "Award",
+      "short_title": "Asbestos, Lead, and Mold Abatement Services -  Bronx, Manhattan, and Staten Island",
+      "pin": "85023B0055001R001",
+      "contract_amount": "1500000",
+      "vendor_name": "D & S Restoration, Inc"
+    },
+    {
+      "request_id": "20261019010",
+      "start_date": "2026-10-23",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Award",
+      "short_title": "Gas-Fired Heating Plants & Water Heaters Inst & Rpr - MX",
+      "pin": "80626B0060002",
+      "contract_amount": "900000",
+      "vendor_name": "Approved Oil Company of Brooklyn Inc"
+    },
+    {
+      "request_id": "20261019011",
+      "start_date": "2026-10-23",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "FY27 Beacon Program NAE",
+      "pin": "26026N0030016",
+      "contract_amount": "19823550",
+      "vendor_name": "YMCA of Greater New York"
+    },
+    {
+      "request_id": "20261019012",
+      "start_date": "2026-10-23",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "short_title": "FY27 NAE - Scatter Site Housing (60 units)",
+      "pin": "06926N0008001",
+      "contract_amount": "3321945",
+      "vendor_name": "Harlem Congregations for Community Improvement Inc"
+    },
+    {
+      "request_id": "20261019014",
+      "start_date": "2026-10-23",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "short_title": "FileVine Annual Managed Services",
+      "pin": "06827W0012001",
+      "contract_amount": "91530",
+      "vendor_name": "Visionaryz Inc"
+    },
+    {
+      "request_id": "20261019019",
+      "start_date": "2026-10-26",
+      "agency_name": "Sanitation",
+      "type_of_notice_description": "Award",
+      "short_title": "FIRE ALARM INSPECTION AND REPAIR",
+      "pin": "82727W0003001",
+      "contract_amount": "1500000",
+      "vendor_name": "Falcon Fire and Security LLC"
+    },
+    {
+      "request_id": "20261019030",
+      "start_date": "2026-10-26",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "short_title": "BWT Seepex Thickener Pumps, Metrovalve Check Valves 7XC00302",
+      "pin": "82627W0010001",
+      "contract_amount": "832918",
+      "vendor_name": "Portland Williams LLC"
+    },
+    {
+      "request_id": "20261019031",
+      "start_date": "2026-10-26",
+      "agency_name": "Design and Construction",
+      "type_of_notice_description": "Award",
+      "short_title": "LNXA20WKF, Wakefield Library \u001a ADA Renovation",
+      "pin": "85027W0011001",
+      "contract_amount": "102354",
+      "vendor_name": "MP Engineers and Architects PC"
+    },
+    {
+      "request_id": "20261019032",
+      "start_date": "2026-10-26",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "MWBE Single Ply Paper Towel",
+      "pin": "85627W0065001",
+      "contract_amount": "300677",
+      "vendor_name": "Patifco Corporation"
+    },
+    {
+      "request_id": "20261020006",
+      "start_date": "2026-10-26",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "short_title": "Fire & Safety Inspection Services for DVPHA housing",
+      "pin": "06926W0050001",
+      "contract_amount": "47760",
+      "vendor_name": "Pyramid Safety & Health Solutions Inc"
+    },
+    {
+      "request_id": "20261020007",
+      "start_date": "2026-10-26",
+      "agency_name": "Design and Construction",
+      "type_of_notice_description": "Award",
+      "short_title": "Complete Plus License Subscription",
+      "pin": "85026S0004001",
+      "contract_amount": "119460",
+      "vendor_name": "The Gordian Group, Inc."
+    },
+    {
+      "request_id": "20261020008",
+      "start_date": "2026-10-26",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "Technical Assistance for Dev. Safe & Supportive Environment",
+      "pin": "26023P0007003R001",
+      "contract_amount": "900000",
+      "vendor_name": "Partnership for After School Education Inc."
+    },
+    {
+      "request_id": "20261020009",
+      "start_date": "2026-10-26",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS Programs in Public Schools - Middle",
+      "pin": "26026P0003074",
+      "contract_amount": "5054400",
+      "vendor_name": "Brooklyn Prospect Charter School"
+    },
+    {
+      "request_id": "20261020010",
+      "start_date": "2026-10-26",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Award",
+      "short_title": "Rental of tables, chairs and other event supplies",
+      "pin": "81627W0007001",
+      "contract_amount": "500000",
+      "vendor_name": "ATB Party Supplies LLC"
+    },
+    {
+      "request_id": "20261020024",
+      "start_date": "2026-10-27",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "short_title": "Skedulo Renewal Licenses",
+      "pin": "84626W0037001",
+      "contract_amount": "121656",
+      "vendor_name": "Compulink Technologies Inc"
+    },
+    {
+      "request_id": "20261020025",
+      "start_date": "2026-10-27",
+      "agency_name": "Correction",
+      "type_of_notice_description": "Award",
+      "short_title": "Building Voices",
+      "pin": "07227W0007001",
+      "contract_amount": "99840",
+      "vendor_name": "The Kite Zine LLC"
+    },
+    {
+      "request_id": "20261020026",
+      "start_date": "2026-10-27",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Bid 2700015 - Combo Natural Gas-Carbon Monoxide Alarms - CSH",
+      "pin": "85727W0001001",
+      "contract_amount": "64138.6",
+      "vendor_name": "Simbio USA Inc"
+    },
+    {
+      "request_id": "20261021005",
+      "start_date": "2026-10-27",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "CSB 210 Joralemon St Sidewalk Elevator Replacement",
+      "pin": "85626B0011001",
+      "contract_amount": "1250000",
+      "vendor_name": "Five Star Contracting Co., Inc."
+    },
+    {
+      "request_id": "20261021006",
+      "start_date": "2026-10-27",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS Programs in Public Schools - Middle",
+      "pin": "26026P0003102",
+      "contract_amount": "7090200",
+      "vendor_name": "Global Artists Coalition Incorporated"
+    },
+    {
+      "request_id": "20261021007",
+      "start_date": "2026-10-27",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Resident Hall Seating (Detention Graded Furniture) for the Crossroads and Horizon Detention Sites",
+      "pin": "06827O0003001",
+      "contract_amount": "89168",
+      "vendor_name": "Norix Group Inc"
+    },
+    {
+      "request_id": "20261021012",
+      "start_date": "2026-10-28",
+      "agency_name": "Fire Department",
+      "type_of_notice_description": "Award",
+      "short_title": "057270000423-License Plate Recognition Software (100 Rekor Scout)",
+      "pin": "05727W0022001",
+      "contract_amount": "86526",
+      "vendor_name": "K Systems Solutions LLC"
+    },
+    {
+      "request_id": "20261021025",
+      "start_date": "2026-10-28",
+      "agency_name": "Financial Information Services Agency",
+      "type_of_notice_description": "Award",
+      "short_title": "RedHat subscriptions",
+      "pin": "127FY2700027",
+      "contract_amount": "32154.75",
+      "vendor_name": "Compciti Business Solutions Inc."
+    },
+    {
+      "request_id": "20261022002",
+      "start_date": "2026-10-28",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Award",
+      "short_title": "ENS Mandates Intros 195_193_583A_5A_6A_434",
+      "pin": "80626G0001001",
+      "contract_amount": "8621289",
+      "vendor_name": "Visionaryz Inc"
+    },
+    {
+      "request_id": "20261022003",
+      "start_date": "2026-10-28",
+      "agency_name": "Small Business Services",
+      "type_of_notice_description": "Award",
+      "short_title": "FY26-FY28 Bklyn Navy Yard Economic Development Services",
+      "pin": "80126S0004001",
+      "contract_amount": "586840920",
+      "vendor_name": "Brooklyn Navy Yard Development Corp"
+    },
+    {
+      "request_id": "20261022004",
+      "start_date": "2026-10-28",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Professional Administrative Temporary Personnel",
+      "pin": "07122P0014001R001",
+      "contract_amount": "458238",
+      "vendor_name": "IOS Acquisitions LLC"
+    },
+    {
+      "request_id": "20261022005",
+      "start_date": "2026-10-28",
+      "agency_name": "Finance",
+      "type_of_notice_description": "Award",
+      "short_title": "Adobe Enterprise License Renewal",
+      "pin": "83627W0010001",
+      "contract_amount": "76235",
+      "vendor_name": "Compulink Technologies Inc"
+    },
+    {
+      "request_id": "20261022010",
+      "start_date": "2026-10-29",
+      "agency_name": "Financial Information Services Agency",
+      "type_of_notice_description": "Award",
+      "short_title": "FISA-OPA What'sUp Gold Enterprise Subscription",
+      "pin": "127FY2700030",
+      "contract_amount": "28400",
+      "vendor_name": "Itegix LLC"
+    },
+    {
+      "request_id": "20261023004",
+      "start_date": "2026-10-29",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "short_title": "BWS NYWEA Conference 7010013X",
+      "pin": "82627U0008001",
+      "contract_amount": "32600",
+      "vendor_name": "New York Water Environment Association"
+    },
+    {
+      "request_id": "20261023005",
+      "start_date": "2026-10-29",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "short_title": "BWS Water Research Foundation Membership 7010180X",
+      "pin": "82627U0002001",
+      "contract_amount": "740000",
+      "vendor_name": "Water Research Foundation"
+    },
+    {
+      "request_id": "20261023006",
+      "start_date": "2026-10-29",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS Programs in Public Schools - Middle",
+      "pin": "26026P0003060",
+      "contract_amount": "3510000",
+      "vendor_name": "Social Justice Network Inc"
+    },
+    {
+      "request_id": "20261023007",
+      "start_date": "2026-10-29",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "short_title": "Sponsorship of Brownsville multi-service center",
+      "pin": "06925P0014002",
+      "contract_amount": "1",
+      "vendor_name": "Neighborhood Association for Inter-Cultural Affairs"
+    },
+    {
+      "request_id": "20261023008",
+      "start_date": "2026-10-29",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "short_title": "Specialized Banking Services for Public Assistance and Emergency Public Assistance Programs",
+      "pin": "06923P8010KXLR002",
+      "contract_amount": "904308",
+      "vendor_name": "Bank of America NA"
+    },
+    {
+      "request_id": "20261023012",
+      "start_date": "2026-10-30",
+      "agency_name": "Sanitation",
+      "type_of_notice_description": "Award",
+      "short_title": "TREE PRUNING",
+      "pin": "82727W0006001",
+      "contract_amount": "1500000",
+      "vendor_name": "Greenleaf Landscaping & Tree Care Inc"
+    },
+    {
+      "request_id": "20261023013",
+      "start_date": "2026-10-30",
+      "agency_name": "Sanitation",
+      "type_of_notice_description": "Award",
+      "short_title": "Programmable Paper Cutter and Five Year Maintenance",
+      "pin": "82727W0012001",
+      "contract_amount": "57215",
+      "vendor_name": "Summit Offset Service Ltd"
+    },
+    {
+      "request_id": "20261023019",
+      "start_date": "2026-10-30",
+      "agency_name": "Sanitation",
+      "type_of_notice_description": "Award",
+      "short_title": "Commercial Waste Zones Outreach Staffing",
+      "pin": "82727W0010001",
+      "contract_amount": "1500000",
+      "vendor_name": "Metropolitan Strategies and Solutions LLC"
+    },
+    {
+      "request_id": "20261023020",
+      "start_date": "2026-10-30",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "short_title": "DevOps Engineer (IT Production Support)",
+      "pin": "06827W0015001",
+      "contract_amount": "210056",
+      "vendor_name": "Innovee Consulting LLC"
+    },
+    {
+      "request_id": "20261026011",
+      "start_date": "2026-10-30",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS Programs in Public Schools",
+      "pin": "26026P0003225",
+      "contract_amount": "1755000",
+      "vendor_name": "Bright Futures Afterschool Inc"
+    },
+    {
+      "request_id": "20261026012",
+      "start_date": "2026-10-30",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "short_title": "IT Consulting Services for SNAP Project",
+      "pin": "06926G0054001",
+      "contract_amount": "451200",
+      "vendor_name": "Optima Global Solutions, Inc."
+    },
+    {
+      "request_id": "20261026013",
+      "start_date": "2026-10-30",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Process Server Services",
+      "pin": "06823B0004001R001",
+      "contract_amount": "2279157",
+      "vendor_name": "Nationwide Court Services Inc"
+    },
+    {
+      "request_id": "20261026014",
+      "start_date": "2026-10-30",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "short_title": "Executive Order 85 Online eLearning Program",
+      "pin": "06927W0003001",
+      "contract_amount": "38500",
+      "vendor_name": "Celeritas Solutions, LLC"
+    },
+    {
+      "request_id": "20261026015",
+      "start_date": "2026-10-30",
+      "agency_name": "Finance",
+      "type_of_notice_description": "Award",
+      "short_title": "HP Laptops",
+      "pin": "83627W0009001",
+      "contract_amount": "46602",
+      "vendor_name": "AITA Consulting Services Inc"
+    },
+    {
+      "request_id": "20261026029",
+      "start_date": "2026-11-02",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "short_title": "BWS Lab Coat Rental & Cleaning 7018036X",
+      "pin": "82627W0016001",
+      "contract_amount": "81674",
+      "vendor_name": "Lumal Cleaners Inc Amco Uniform Rental"
+    },
+    {
+      "request_id": "20261026030",
+      "start_date": "2026-11-02",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "short_title": "Galvanized Square Tubing & Hardware",
+      "pin": "84127W0014001",
+      "contract_amount": "500000",
+      "vendor_name": "Aldoray & Associates Corp"
+    },
+    {
+      "request_id": "20261026032",
+      "start_date": "2026-11-02",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Essential Parenting Supports",
+      "pin": "06823P0006003",
+      "contract_amount": "1198935",
+      "vendor_name": "United Cerebral Palsy of New York City Inc"
+    },
+    {
+      "request_id": "20261027013",
+      "start_date": "2026-11-02",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "short_title": "CFOR-Heavy Equipment and Attachment Rental",
+      "pin": "84627O0002001",
+      "contract_amount": "34120",
+      "vendor_name": "Herc Rentals Inc"
+    },
+    {
+      "request_id": "20261027014",
+      "start_date": "2026-11-02",
+      "agency_name": "Sanitation",
+      "type_of_notice_description": "Award",
+      "short_title": "EXPORT MUNICIPAL SOLID WASTE RENEWAL 1",
+      "pin": "82707P8630KXLR001",
+      "contract_amount": "176557338",
+      "vendor_name": "Allied Waste Systems Inc"
+    },
+    {
+      "request_id": "20261027015",
+      "start_date": "2026-11-02",
+      "agency_name": "Small Business Services",
+      "type_of_notice_description": "Award",
+      "short_title": "FY27 Queens West IBSP",
+      "pin": "80126N0022001",
+      "contract_amount": "130000",
+      "vendor_name": "Long Island City Partnership"
+    },
+    {
+      "request_id": "20261027016",
+      "start_date": "2026-11-02",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS Programs in Public Schools - Middle",
+      "pin": "26026P0003017",
+      "contract_amount": "3510000",
+      "vendor_name": "Committee for Hispanic Children and Families"
+    },
+    {
+      "request_id": "20261027017",
+      "start_date": "2026-11-02",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS Programs in Public Schools - Middle",
+      "pin": "26026P0003212",
+      "contract_amount": "18510048",
+      "vendor_name": "South Asian Youth Action Saya Inc"
+    },
+    {
+      "request_id": "20261027018",
+      "start_date": "2026-11-02",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "COMPASS Programs in Public Schools - Middle",
+      "pin": "26026P0003019",
+      "contract_amount": "3736233",
+      "vendor_name": "Community Mediation Services, Inc."
     }
   ],
   "source_snapshot": {
-    "snapshot_date": "2026-10-05",
-    "source_snapshot_hash": "7e1345a74d75666abbc81c5e1fe9b4b90d171edf11b597798a865f1a1ecaeb99",
-    "source_row_count": 53823,
-    "source_receipt": "ocp-recent-contract-awards_2026-10-05.json",
-    "exported_row_count": 53823,
+    "snapshot_date": "2026-11-04",
+    "source_snapshot_hash": "d0622223e29fd260590880f5ebce401c41e38831761faa11cf522c74c277c66d",
+    "source_row_count": 53998,
+    "source_receipt": "ocp-recent-contract-awards_2026-11-04.json",
+    "exported_row_count": 53998,
     "limited": false
   }
 }
