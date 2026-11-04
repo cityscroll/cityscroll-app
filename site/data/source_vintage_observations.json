@@ -148,8 +148,8 @@
         "receipt_schema": null,
         "run_id": null
       },
-      "expected_cadence": "Annual fiscal-year post with monthly in-year updates (publisher description); Open Data metadata may still list annual or quarterly change claims",
-      "expected_lag_tolerance_days": 400,
+      "expected_cadence": "Annual fiscal-year post with monthly in-year updates (publisher description); Open Data metadata may still list annual or quarterly change claims; retained revision history measures 116-427 days between publisher updates, with two gaps beyond one year (427 and 402 days)",
+      "expected_lag_tolerance_days": 500,
       "current_lag": {
         "value": null,
         "unit": null,

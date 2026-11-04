@@ -854,6 +854,37 @@ test("the exam contract reads the same publisher field and limit its builder ing
   assert.equal(retained.source.stale_after_days, limit);
 });
 
+test("the annual exam schedule freshness limit records its measured republication intervals", () => {
+  const registry = loadSourceContracts();
+  const contract = registry.contracts.find((row) => row.id === "annual-examination-schedule");
+  assert.equal(contract.max_stale_days, 500);
+  assert.equal(contract.freshness_policy.limit_days, 500);
+  assert.equal(contract.freshness_contract.max_stale_days, 500);
+  assert.equal(contract.freshness_contract.serving_max_age_days, 500);
+  assert.equal(freshnessLimit(contract), 500);
+  assert.match(
+    contract.freshness_policy.derivation,
+    /427-day longest observed republication interval \+ 73-day margin = 500-day limit/,
+  );
+  assert.match(contract.freshness_policy.evidence, /annual_schedule_history\.json/);
+  assert.match(contract.freshness_policy.evidence, /2023-01-04/);
+  assert.match(contract.freshness_policy.evidence, /2026-07-22/);
+  assert.match(contract.publisher_cadence, /116-427 days between publisher updates/);
+  // The cited intervals come from the retained revision history, and the
+  // longest observed gap is exactly what the limit must cover with margin.
+  const history = JSON.parse(
+    readFileSync(new URL("../site/data/exam_sources/annual_schedule_history.json", import.meta.url), "utf8"),
+  );
+  const stamps = [...new Set(history.records
+    .map((row) => row.data_current_as_of)
+    .filter(Boolean))].sort();
+  const gaps = stamps.slice(1).map((stamp, index) =>
+    (Date.parse(`${stamp}T00:00:00Z`) - Date.parse(`${stamps[index]}T00:00:00Z`)) / 86_400_000);
+  assert.equal(stamps.length, 6);
+  assert.equal(Math.max(...gaps), 427);
+  assert.equal(contract.freshness_policy.observed_metadata_lag_days, Math.max(...gaps));
+});
+
 test("as-needed Council and CFB publication limits record their distinct cadence rationale", () => {
   const registry = loadSourceContracts();
   for (const [id, servingLimit, rationale] of [
@@ -911,19 +942,29 @@ test("event-driven sources pass at their measured publisher clocks but still fai
   const registry = loadSourceContracts();
   let now = Date.parse("2026-11-03T10:23:00Z");
   t.mock.method(Date, "now", () => now);
-  for (const [id, published, limitDays] of [
+  for (const [id, published, limitDays, clockField = "rowsUpdatedAt"] of [
     ["dcas-vehicle-auction-list", "2026-10-07T14:37:04Z", 120],
     ["mandatory-inclusionary-housing", "2026-05-18T20:26:30Z", 365],
+    ["annual-examination-schedule", "2026-07-22T00:00:00Z", 500, "data_current_as_of"],
   ]) {
     const contract = registry.contracts.find((row) => row.id === id);
     const publisherAt = Date.parse(published);
-    t.mock.method(globalThis, "fetch", async (url) => String(url).includes("/api/views/")
-      ? socrataMetadata({ rowsUpdatedAt: publisherAt / 1000, fields: contract.required_fields })
-      : new Response(JSON.stringify([{ [contract.required_fields[0]]: "sample" }]), { status: 200 }));
-    // The publisher clocks measured on 2026-11-03 (27 and 169 days old) are
-    // inside the recalibrated limits, so the daily contract check passes and
-    // the scheduled monitor closes the drift findings it opened.
-    assert.match(await verifySocrata(contract), /d old \(rowsUpdatedAt\)/, id);
+    t.mock.method(globalThis, "fetch", async (url) => {
+      if (String(url).includes("/api/views/")) {
+        return socrataMetadata({ rowsUpdatedAt: publisherAt / 1000, fields: contract.required_fields });
+      }
+      if (String(url).includes("%24select=max%28")) {
+        // Socrata floating timestamps carry no zone; the registry reads them as UTC.
+        return new Response(JSON.stringify([{ latest: `${published.slice(0, 10)}T00:00:00.000` }]), {
+          status: 200, headers: { "Content-Type": "application/json" },
+        });
+      }
+      return new Response(JSON.stringify([{ [contract.required_fields[0]]: "sample" }]), { status: 200 });
+    });
+    // The publisher clocks measured on 2026-11-03 (27, 169, and 104 days old)
+    // are inside the recalibrated limits, so the daily contract check passes
+    // and the scheduled monitor closes the drift findings it opened.
+    assert.match(await verifySocrata(contract), new RegExp(`d old \\(${clockField}\\)`), id);
     // Genuine staleness is still detected the moment the publisher clock
     // crosses the recalibrated bound.
     now = publisherAt + limitDays * 86_400_000 + 1;
