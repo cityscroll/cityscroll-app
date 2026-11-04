@@ -4,6 +4,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
  * Field cases: long pre-cert thrash (2019K0147); mid-public-review (2022M0258).
  */
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { test } from "node:test";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -52,6 +53,32 @@ function viewFromLdp31Fixture(fixture) {
     public_status: fixture.public_status,
     project_id: fixture.project_id,
   });
+}
+
+function traceModuleLoad(entry) {
+  const tracePrefix = "CITYSCROLL_MODULE_TRACE ";
+  const loader = `
+    export async function resolve(specifier, context, nextResolve) {
+      const result = await nextResolve(specifier, context);
+      if (result.url.startsWith("file:")) process.stderr.write(${JSON.stringify(tracePrefix)} + result.url + "\\n");
+      return result;
+    }
+  `;
+  const result = spawnSync(process.execPath, [
+    "--no-warnings",
+    "--experimental-loader",
+    `data:text/javascript,${encodeURIComponent(loader)}`,
+    "--input-type=module",
+    "--eval",
+    `await import(${JSON.stringify(entry.href)})`,
+  ], { encoding: "utf8" });
+  assert.equal(result.status, 0, result.stderr);
+  return new Set(
+    result.stderr
+      .split("\n")
+      .filter((line) => line.startsWith(tracePrefix))
+      .map((line) => line.slice(tracePrefix.length)),
+  );
 }
 
 test("LAND_ULURP_PHASES follows pre-review then statutory public review", () => {
@@ -531,29 +558,47 @@ test("A3 the rendered role strip never emits a recommendation, vote, hearing, or
   }
 });
 
-test("public Land detail phase panel wires the role strip above the observed rows, never inside the aggregate/event renderers", () => {
-  const landSrc = readFileSync(new URL("../site/app/land.mjs", import.meta.url), "utf8");
-  const spineSrc = readFileSync(new URL("../site/land_phase_spine.mjs", import.meta.url), "utf8");
-  // The role-strip renderer rides the phase-spine's own lazy bundle (a barrel
-  // re-export — land_phase_spine.mjs gains no ledger logic) so land.mjs's own
-  // wiring stays a single optional-chained call.
-  assert.match(spineSrc, /export \{ landRoleStrip \} from "\.\/land_role_strip\.mjs";/);
-  assert.match(landSrc, /tools\?\.landRoleStrip\?\.\(view,p\.id,\{t,escape:escUiHtml\}\)/);
-  assert.match(landSrc, /\$\{tools\?\.landRoleStrip\?\.\(view,p\.id,\{t,escape:escUiHtml\}\)\|\|""\}\$\{statutory\}\$\{body\}/);
+test("transport-neutral phase-model import closure excludes the role-strip renderer", () => {
+  const phaseModel = new URL("../site/land_phase_spine.mjs", import.meta.url);
+  const roleStrip = new URL("../site/land_role_strip.mjs", import.meta.url);
+  const loaded = traceModuleLoad(phaseModel);
+  assert.ok(loaded.has(phaseModel.href), "the phase-model root was not loaded");
+  assert.equal(loaded.has(roleStrip.href), false, [...loaded].sort().join("\n"));
+});
 
-  const aggregateFn = landSrc.slice(
-    landSrc.indexOf("function landPhaseAggregateHTML"),
-    landSrc.indexOf("function landStatutoryDeadlineHTML"),
+test("public Land detail renders the role strip above observed rows", async () => {
+  const view = viewFromLdp31Fixture(fixtureUlurpControl);
+  const appUrl = new URL("../site/app/land.mjs", import.meta.url).href;
+  const previous = Object.fromEntries(
+    ["t", "escUiHtml", "fdate", "EXT_ATTRS", "extSR"].map((key) => [key, globalThis[key]]),
   );
-  const eventRowFn = landSrc.slice(
-    landSrc.indexOf("function landSpineEventRowHTML"),
-    landSrc.indexOf("function landPhaseAggregateHTML"),
+  globalThis.t = (key, vars = {}) => Object.entries(vars).reduce(
+    (text, [name, value]) => text.replaceAll(`{${name}}`, String(value)),
+    key,
   );
-  assert.ok(aggregateFn.length > 0 && eventRowFn.length > 0);
-  for (const marker of ["roleStrip", "role_definition", "land-role-strip", "landRoleStrip"]) {
-    assert.doesNotMatch(aggregateFn, new RegExp(marker), `landPhaseAggregateHTML references ${marker}`);
-    assert.doesNotMatch(eventRowFn, new RegExp(marker), `landSpineEventRowHTML references ${marker}`);
+  globalThis.escUiHtml = testEscape;
+  globalThis.fdate = (value) => String(value ?? "").slice(0, 10);
+  globalThis.EXT_ATTRS = "";
+  globalThis.extSR = () => "";
+  let rendered;
+  try {
+    await import(appUrl);
+    const tools = await globalThis.ensureLandPhaseSpineTools();
+    rendered = globalThis.landPhaseSpineHTML(view, tools, {});
+  } finally {
+    for (const [key, value] of Object.entries(previous)) {
+      if (value === undefined) delete globalThis[key];
+      else globalThis[key] = value;
+    }
   }
+  const roleStripIndex = rendered.indexOf('data-land-role-strip="1"');
+  const observedIndexes = [
+    rendered.indexOf('class="land-phase-row'),
+    rendered.indexOf('class="land-phase-agg'),
+  ].filter((index) => index >= 0);
+  assert.ok(roleStripIndex >= 0, "the rendered Land phase panel omitted its role strip");
+  assert.ok(observedIndexes.length > 0, "the rendered Land phase panel omitted its observed rows");
+  assert.ok(roleStripIndex < Math.min(...observedIndexes), "the role strip followed an observed row");
 });
 
 test("hearing notices and occurrence alone do not complete Borough President review", () => {

@@ -955,17 +955,12 @@ function ensureLandPhaseSpineTools(){
     landPhaseSpineToolsPromise=Promise.all([
       import("../land_phase_spine.mjs").catch(()=>null),
       import("../ulurp_statutory_clock.mjs").catch(()=>null),
-    ]).then(([phase, clock])=>{
-      if(clock&&typeof clock.buildUlurpPipelinePosition==="function"){
-        globalThis.buildUlurpPipelinePosition=clock.buildUlurpPipelinePosition;
-      }
-      if(clock&&typeof clock.normalizeLandOutcomeRecord==="function"){
-        globalThis.normalizeLandOutcomeRecord=clock.normalizeLandOutcomeRecord;
-      }
-      if(clock&&typeof clock.buildUlurpStatutoryClockView==="function"){
-        globalThis.buildUlurpStatutoryClockView=clock.buildUlurpStatutoryClockView;
-      }
-      return phase;
+      import("../land_role_strip.mjs").catch(()=>null),
+    ]).then(([phase,clock,r])=>{
+      if(clock&&typeof clock.buildUlurpPipelinePosition==="function") globalThis.buildUlurpPipelinePosition=clock.buildUlurpPipelinePosition;
+      if(clock&&typeof clock.normalizeLandOutcomeRecord==="function") globalThis.normalizeLandOutcomeRecord=clock.normalizeLandOutcomeRecord;
+      if(clock&&typeof clock.buildUlurpStatutoryClockView==="function") globalThis.buildUlurpStatutoryClockView=clock.buildUlurpStatutoryClockView;
+      return phase?{...phase,landRoleStrip:r?.landRoleStrip}:null;
     });
   }
   return landPhaseSpineToolsPromise;
