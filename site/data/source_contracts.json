@@ -1518,18 +1518,18 @@
         "mih_option",
         "cd"
       ],
-      "max_stale_days": 120,
+      "max_stale_days": 365,
       "freshness_policy": {
-        "limit_days": 120,
-        "method": "Socrata metadata cadence with an observed publication lag and explicit margin",
-        "observed_on": "2026-08-06",
+        "limit_days": 365,
+        "method": "Observed publisher-quiet period from contract measurements and scheduled contract checks, reconciled with the declared monthly cadence and an explicit margin",
+        "observed_on": "2026-11-03",
         "declared_cadence_days": 31,
-        "observed_metadata_lag_days": 48,
-        "margin_days": 41,
-        "evidence": "Socrata metadata declares monthly updates; the current version metadata is dated 2026-03-31 and rowsUpdatedAt is 2026-05-18 (48 days later). Socrata's anonymous revision endpoint exposes only the current revision, so no historical revision intervals are represented as measured facts.",
-        "derivation": "31-day monthly cadence + 48-day observed metadata lag + 41-day margin = 120-day limit"
+        "observed_metadata_lag_days": 169,
+        "margin_days": 196,
+        "evidence": "Socrata metadata declares monthly updates, but the declared cadence does not describe observed behavior: rowsUpdatedAt for m79g-k9r4 has held at 2026-05-18T20:26:30Z from the 2026-08-06 contract measurement (metadata version dated 2026-03-31, a 48-day lag to the row-write stamp) through the scheduled contract-check findings on 2026-09-16 (120 days) and 2026-09-22 (126 days), and still read 2026-05-18 when re-measured on 2026-11-03 — a 169-day publisher-quiet period. Mandatory Inclusionary Housing designations complete through ULURP adoptions, so republication is event-driven and multi-month quiet periods are the publisher's real behavior. The retained snapshot (site/data/mih_project_lookup.json observed_at 2026-08-05) is at or after the publisher clock, so the retained copy already holds everything the publisher has published. Socrata's anonymous revision endpoint exposes only the current revision, so no historical revision intervals are represented as measured facts.",
+        "derivation": "169-day observed publisher-quiet period + 196-day margin = 365-day limit, an annual review bound for this event-driven source; the declared monthly cadence does not hold"
       },
-      "publisher_cadence": "Monthly (Open Data metadata; 31-day working cadence)",
+      "publisher_cadence": "Monthly (Open Data metadata; 31-day working cadence); observed republication is event-driven, with a 169-day publisher-quiet period measured from 2026-05-18 to 2026-11-03",
       "product_freshness": "The exact project_id join is materialized into the land project constellation; unmatched source rows remain excluded from the public read model.",
       "used_for": "Exact ZAP project evidence for Mandatory Inclusionary Housing status, adoption date, map, community district, and affordability option.",
       "join_keys": [
@@ -1571,7 +1571,7 @@
       },
       "freshness_contract": {
         "mode": "periodic",
-        "max_stale_days": 120,
+        "max_stale_days": 365,
         "clock_basis": "publisher_updated",
         "retained_vintage": {
           "artifact_path": "site/data/mih_project_lookup.json",
@@ -1579,7 +1579,7 @@
             "observed_at"
           ]
         },
-        "serving_max_age_days": 120,
+        "serving_max_age_days": 365,
         "serve_contract_id": null
       },
       "health_policy": {
@@ -4078,8 +4078,18 @@
         "model",
         "vin"
       ],
-      "max_stale_days": 21,
-      "publisher_cadence": "Weekly",
+      "max_stale_days": 120,
+      "freshness_policy": {
+        "limit_days": 120,
+        "method": "Observed republication interval from retained acquisition receipts and scheduled contract checks, reconciled with the declared weekly cadence and an explicit margin",
+        "observed_on": "2026-11-03",
+        "declared_cadence_days": 7,
+        "observed_metadata_lag_days": 77,
+        "margin_days": 43,
+        "evidence": "Socrata metadata declares weekly updates, but retained evidence shows event-driven republication: the 2026-08-04 acquisition (warehouse/receipts/proof/dcas_vehicle_auctions_latest.json; site/data/dcas_vehicle_auctions.json vintage.source_updated_at) recorded rowsUpdatedAt 2026-07-22T13:41:16Z, and the next observed publisher move was rowsUpdatedAt 2026-10-07T14:37:04Z at the 2026-10-29 scheduled contract check — a measured 77-day interval between auction batches. Re-measured on 2026-11-03 the publisher clock still read 2026-10-07 (27 days). DCAS posts the list when a new auction batch is scheduled, so multi-week quiet periods between batches are the publisher's real behavior.",
+        "derivation": "77-day observed republication interval + 43-day margin = 120-day limit; the declared weekly cadence does not hold between auction batches"
+      },
+      "publisher_cadence": "Weekly (Open Data metadata); observed republication is event-driven, with a measured 77-day interval between the 2026-07-22 and 2026-10-07 auction batches",
       "product_freshness": "The Worker refreshes the bounded fleet sidecar daily with the Property materialization; the committed snapshot remains a build-time fallback. An eight-day age check labels older data as latest-known, not current.",
       "used_for": "Official fleet-auction inventory leading the Property open-now surface. Rows are excluded from parcel chains, BBL joins, map counts, parcel exports, and City Record saved-watch claims.",
       "code_references": [
@@ -4111,9 +4121,9 @@
       "delivery_tier": "edge-materialized",
       "freshness_contract": {
         "mode": "periodic",
-        "max_stale_days": 21,
+        "max_stale_days": 120,
         "clock_basis": "publisher_updated",
-        "serving_max_age_days": 21,
+        "serving_max_age_days": 120,
         "serve_contract_id": null
       },
       "health_policy": {
