@@ -44,6 +44,7 @@ import { SEARCH_ACTIVITY_RETENTION_DAYS } from "../../../capabilities/search_act
 import {
   dedupeSearchUsageExecutions,
   measurementStartMs,
+  searchUsageScanOldestMs,
 } from "./search_usage.mjs";
 
 export const SEARCH_USAGE_DAILY_SCHEMA = "cityscroll.search_usage_daily.v1";
@@ -224,14 +225,24 @@ export function searchUsageDailyContentHash(aggregate) {
 
 /**
  * The closed UTC days a run may publish: every day that has ended and whose receipts the
- * scan could still have seen. Today is never among them, because today is not over.
+ * scan could still return in full. Today is never among them, because today is not over.
+ *
+ * The horizon is clamped to the receipt scan's own coverage (the widest usage window,
+ * including today). The retention-day-count figure alone is one day wider than the scan:
+ * the 30th closed day back falls below the scan floor, so recomputing it would fold an
+ * empty receipt set and report a stored day as divergent — or zero-create a day nobody
+ * can speak for — on every run, at the rolling horizon edge. A day that far back is not
+ * recoverable by a rerun; `classifySearchUsageAbsentDays` already reports it that way,
+ * and this window must not disagree with that classification.
  */
 export function publishableSearchUsageDays({ now = new Date(), horizonDays = SEARCH_ACTIVITY_RETENTION_DAYS, measuredSince = null } = {}) {
   const nowMs = new Date(now).getTime();
   const todayStart = Math.floor(nowMs / DAY_MS) * DAY_MS;
+  const scanCoverageBack = Math.round((todayStart - searchUsageScanOldestMs(nowMs)) / DAY_MS);
+  const back = Math.min(Number.isFinite(horizonDays) ? horizonDays : scanCoverageBack, scanCoverageBack);
   const days = [];
-  for (let back = 1; back <= horizonDays; back += 1) {
-    const startMs = todayStart - back * DAY_MS;
+  for (let count = 1; count <= back; count += 1) {
+    const startMs = todayStart - count * DAY_MS;
     const day = utcDay(startMs);
     if (searchUsageDayBeforeMeasurement(day, measuredSince)) continue;
     days.push(day);
@@ -392,14 +403,15 @@ export async function readSearchUsageDailySeries(env, { now = new Date(), days =
 /**
  * Reconcile the dated aggregates against a fresh read of the receipts behind them.
  *
- * The comparison is over closed days only, and only over the days both sides can speak for:
- * a day outside the receipt retention horizon is not a mismatch, it is a day the receipts can
- * no longer answer for, and it is reported that way.
+ * The comparison is over closed days only, and only over the days both sides can speak
+ * for: the floor is the receipt scan's own coverage, not a bare retention-day count. The
+ * 30th closed day back falls below the scan floor — its receipts are already leaving
+ * retention, so a fresh fold of it is structurally smaller, not divergent — and a day
+ * beyond that is reported as one the receipts can no longer answer for at all.
  */
 export function reconcileSearchUsageDaily({ storedSeries, observedDays = {}, now = new Date() } = {}) {
   const nowMs = new Date(now).getTime();
-  const todayStart = Math.floor(nowMs / DAY_MS) * DAY_MS;
-  const comparableFrom = utcDay(todayStart - SEARCH_ACTIVITY_RETENTION_DAYS * DAY_MS);
+  const comparableFrom = utcDay(searchUsageScanOldestMs(nowMs));
   const rows = [];
   for (const entry of storedSeries?.series || []) {
     if (entry.day < comparableFrom) {
