@@ -2,12 +2,18 @@ name: Time-travel
 
 # This is intentionally non-required during its calibration period. Promote the check to required
 # only after both shifts are green on main.
+#
+# Trigger policy: the 12-shard matrix no longer runs on pull_request, where it
+# duplicated the merge-group run at high runner cost on every push. Coverage
+# comes from merge_group (informational — not a ruleset-required context), the
+# post-merge push to main, manual dispatch, and a daily off-peak sweep.
 on:
-  pull_request:
   push:
     branches: [main]
   merge_group:
   workflow_dispatch:
+  schedule:
+    - cron: "17 5 * * *"
 
 concurrency:
   group: time-travel-${{ github.event.pull_request.number || github.ref }}

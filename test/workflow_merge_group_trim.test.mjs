@@ -103,6 +103,37 @@ test("time-travel and home-path-leak workflows run on merge_group", () => {
   assert.match(architecture, /name:\s*Reconcile architecture evidence/);
 });
 
+test("time-travel drops pull_request for a daily sweep and home-path-leak push stays main-only", () => {
+  const timeTravel = read(".github/workflows/time-travel.yml");
+  const homePath = read(".github/workflows/no-home-path-leak.yml");
+
+  // The 12-shard matrix must not run per pull_request; shifted-clock coverage
+  // moves to merge_group (informational), the post-merge main push, dispatch,
+  // and one off-peak scheduled sweep per day.
+  const timeTravelTriggers = timeTravel.match(/^on:\n([\s\S]*?)\n\nconcurrency:/m);
+  assert.ok(timeTravelTriggers, "time-travel trigger block is present");
+  assert.deepEqual(timeTravelTriggers[1].split("\n"), [
+    "  push:",
+    "    branches: [main]",
+    "  merge_group:",
+    "  workflow_dispatch:",
+    "  schedule:",
+    '    - cron: "17 5 * * *"',
+  ]);
+  assert.doesNotMatch(timeTravelTriggers[1], /pull_request/);
+
+  // Pull-request and merge-group runs stay; push runs are limited to main so
+  // automation-branch churn no longer spawns single-job runs.
+  const homePathTriggers = homePath.match(/^on:\n([\s\S]*?)\n\nconcurrency:/m);
+  assert.ok(homePathTriggers, "home-path-leak trigger block is present");
+  assert.deepEqual(homePathTriggers[1].split("\n"), [
+    "  push:",
+    "    branches: [main]",
+    "  pull_request:",
+    "  merge_group:",
+  ]);
+});
+
 test("documented merge-queue required checks match policy and workflow job names", () => {
   const policy = JSON.parse(read("tools/merge_queue_policy.json"));
   const docs = read("docs/ci.md");

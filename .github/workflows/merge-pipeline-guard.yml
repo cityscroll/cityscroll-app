@@ -46,3 +46,7 @@ jobs:
           STALL_MINUTES: "30"
           CANARY_MINUTES: "30"
         run: node tools/merge_pipeline_guard.mjs
+      - name: Verify merge-queue policy is applied
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node tools/apply_merge_queue_policy.mjs --check

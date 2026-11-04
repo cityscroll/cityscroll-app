@@ -182,3 +182,16 @@ test("workflow uses narrow permissions and guarded update semantics", () => {
   assert.match(tool, /disablePullRequestAutoMerge/);
   assert.doesNotMatch(`${workflow}\n${tool}`, /force\s*:\s*true/i);
 });
+
+test("scheduled guard verifies the live merge-queue policy against the checked-in file", () => {
+  const workflow = readFileSync(new URL("../.github/workflows/merge-pipeline-guard.yml", import.meta.url), "utf8");
+  const applyTool = readFileSync(new URL("../tools/apply_merge_queue_policy.mjs", import.meta.url), "utf8");
+  // The drift check shells out to `gh`, so the step must hand it a token.
+  assert.match(
+    workflow,
+    /Verify merge-queue policy is applied\n\s+env:\n\s+GH_TOKEN: \$\{\{ github\.token \}\}\n\s+run: node tools\/apply_merge_queue_policy\.mjs --check/,
+  );
+  // The check is compare-only; the scheduled guard must never mutate the ruleset.
+  assert.match(applyTool, /--check/);
+  assert.match(applyTool, /process\.exit\(1\)/);
+});

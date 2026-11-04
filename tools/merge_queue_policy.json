@@ -1,5 +1,5 @@
 {
-  "description": "Operator-applied GitHub merge-queue parameters for main. Not enforced by CI; apply with tools/apply_merge_queue_policy.mjs. Goal: batch independent green PRs into one merge-group validation when they arrive close together, while keeping ALLGREEN so composition failures still block.",
+  "description": "Operator-applied GitHub merge-queue parameters for main. Apply with tools/apply_merge_queue_policy.mjs; the scheduled merge-pipeline-guard workflow runs that tool with --check so live drift from this file fails visibly. Goal: batch independent green PRs into one merge-group validation when they arrive close together, while keeping ALLGREEN so composition failures still block.",
   "ruleset_name": "main merge queue",
   "ruleset_id": 18899568,
   "repository": "cityscroll/cityscroll-app",
@@ -9,7 +9,7 @@
     "max_entries_to_build": 5,
     "min_entries_to_merge": 1,
     "max_entries_to_merge": 5,
-    "min_entries_to_merge_wait_minutes": 5,
+    "min_entries_to_merge_wait_minutes": 15,
     "check_response_timeout_minutes": 60
   },
   "required_status_checks": [
@@ -27,7 +27,7 @@
     "external_seater_note": "Drain ready PRs without age ordering. After a PR has been open for more than detect_and_steer_age_hours while newer work lands, steer work toward making it ready but do not hold the current train. At elder_age_hours or rebase_churn_threshold, reserve the lead slot of the next train and call pickElderSeatHolder() before seating younger ready PRs."
   },
   "notes": [
-    "min_entries_to_merge_wait_minutes=5 forms a short merge train so near-simultaneous PRs share one merge_group when independent.",
+    "min_entries_to_merge_wait_minutes=15 batches near-simultaneous PRs (2-4 entries per train at observed arrival rates) so one merge-group build lands them together; the previous 5-minute window almost never batched (0.88 lands per build).",
     "ALLGREEN is intentional: do not switch to looser grouping to hide composition failures.",
     "Merge-queue required checks are Unit, Reading-level, and Functional browser tests. Accessibility + language and performance serial/shard/budgets are skipped on merge_group; they remain required on pull_request and on push to main. See docs/ci.md.",
     "Performance budgets (20-sample p95) is not a merge-queue required check. That job path-filters on `perf` (site chrome/assets + budget harness) and reports SUCCESS without measuring for data/worker/docs diffs on pull_request and main push.",
