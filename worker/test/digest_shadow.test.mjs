@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
 import {
+  DESIGNED_EMPTY_CHECK_IN_CLASSIFICATION,
   DIGEST_SHADOW_ATTENTION,
   DIGEST_SHADOW_READY,
   buildDigestShadowSummary,
@@ -30,15 +31,16 @@ function itemHtml(count, { unsubscribe = true, context = true, badHref = null } 
   return `<ul>${items}</ul>${links}`;
 }
 
-function result({ id = "sub:ab***", previewId = null, count = 1, html = itemHtml(count), sections = null } = {}) {
+function result({ id = "sub:ab***", previewId = null, count = 1, html = itemHtml(count), sections = null, found, action = null } = {}) {
   return {
     sub: id,
     ...(previewId ? { previewId } : {}),
     lens: "money",
     emailRedacted: "ab***@example.com",
+    ...(found !== undefined ? { found } : {}),
     new: count,
     forecasts: 0,
-    action: count ? "match" : "heartbeat",
+    action: action || (count ? "match" : "heartbeat"),
     dryRun: true,
     ...(sections ? { sections } : {}),
     preview: { subject: "CityScroll preview", html, listUnsubscribe: "<https://api.cityscroll.org/unsubscribe?example=1>" },
@@ -74,6 +76,83 @@ test("a zero-item watch with trailing item history redlines", () => {
   assert.equal(warning.digest_id, "acct:ab***");
   assert.equal(warning.watch_id, "watch:opaque");
   assert.equal(warning.evidence.trailing_max_item_count, 3);
+});
+
+test("a heartbeat covering the whole quiet span is a designed-empty observation, not a redline", () => {
+  // The observed production shape: one item delivered fourteen days before the run, the
+  // scheduled heartbeat due that day, and zero rows matched. The empty check-in email is the
+  // designed quiet-span report, so zero is the correct answer and the receipt says so.
+  const history = [{
+    day: "2026-07-21",
+    totalNotices: 1,
+    sentCount: 1,
+    entries: [{ day: "2026-07-21", id: "sub:hb***", noticeCount: 1, forecasts: 0 }],
+  }];
+  const out = summary([result({ id: "sub:hb***", count: 0, found: 0, html: itemHtml(0) })], history);
+  assert.equal(out.redlines.find((item) => item.code === "historical_watch_zero"), undefined);
+  const note = out.observations.find((item) => item.code === "designed_empty_check_in");
+  assert.equal(note.severity, "info");
+  assert.equal(note.classification, DESIGNED_EMPTY_CHECK_IN_CLASSIFICATION);
+  assert.equal(note.digest_id, "sub:hb***");
+  assert.deepEqual(note.evidence, {
+    current_item_count: 0,
+    matched_row_count: 0,
+    digest_action: "heartbeat",
+    trailing_max_item_count: 1,
+    trailing_max_day: "2026-07-21",
+    history_days: 30,
+  });
+  assert.equal(out.status, DIGEST_SHADOW_READY);
+});
+
+test("a weekly check-in covering the quiet week is a designed-empty observation", () => {
+  const history = [{
+    day: "2026-07-28",
+    totalNotices: 2,
+    sentCount: 1,
+    entries: [{ day: "2026-07-28", id: "sub:we***", noticeCount: 2, forecasts: 0 }],
+  }];
+  const out = summary(
+    [result({ id: "sub:we***", count: 0, found: 0, action: "weekly-empty", html: itemHtml(0) })],
+    history,
+  );
+  assert.equal(out.redlines.find((item) => item.code === "historical_watch_zero"), undefined);
+  const note = out.observations.find((item) => item.code === "designed_empty_check_in");
+  assert.equal(note.evidence.digest_action, "weekly-empty");
+  assert.equal(out.status, DIGEST_SHADOW_READY);
+});
+
+test("a zero-matched heartbeat with an item delivery inside the cadence window still redlines", () => {
+  // Two days since the watch last delivered items: the quiet span the heartbeat reports does
+  // not cover that delivery, so the zero is not explained by the check-in cadence.
+  const history = [{
+    day: "2026-08-02",
+    totalNotices: 1,
+    sentCount: 1,
+    entries: [{ day: "2026-08-02", id: "sub:hb***", noticeCount: 1, forecasts: 0 }],
+  }];
+  const out = summary([result({ id: "sub:hb***", count: 0, found: 0, html: itemHtml(0) })], history);
+  const warning = out.redlines.find((item) => item.code === "historical_watch_zero");
+  assert.ok(warning);
+  assert.equal(warning.evidence.matched_row_count, 0);
+  assert.equal(warning.evidence.digest_action, "heartbeat");
+  assert.equal(out.observations.find((item) => item.code === "designed_empty_check_in"), undefined);
+  assert.equal(out.status, DIGEST_SHADOW_ATTENTION);
+});
+
+test("a heartbeat without a recorded matched-row count still redlines", () => {
+  // An unread match count never manufactures an all-clear, however old the last delivery is.
+  const history = [{
+    day: "2026-07-21",
+    totalNotices: 1,
+    sentCount: 1,
+    entries: [{ day: "2026-07-21", id: "sub:hb***", noticeCount: 1, forecasts: 0 }],
+  }];
+  const out = summary([result({ id: "sub:hb***", count: 0, html: itemHtml(0) })], history);
+  const warning = out.redlines.find((item) => item.code === "historical_watch_zero");
+  assert.ok(warning);
+  assert.equal(warning.evidence.matched_row_count, null);
+  assert.equal(out.observations.find((item) => item.code === "designed_empty_check_in"), undefined);
 });
 
 test("a schedule-skipped weekly watch does not masquerade as a recall drop", () => {

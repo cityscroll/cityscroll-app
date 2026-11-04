@@ -38,6 +38,10 @@ const MIN_TRAILING_AVERAGE = 4;
 export const QUIET_WATERMARK_CANDIDATE_FLOOR = 1;
 export const WATERMARK_BACKLOG_FLUSH_CLASSIFICATION = "watermark exhaustion after backlog flush";
 export const EXPECTED_CATCH_UP_EXPLOSION_CLASSIFICATION = "expected catch-up after owed backlog drain";
+export const DESIGNED_EMPTY_CHECK_IN_CLASSIFICATION = "designed empty check-in digest";
+// Mirrors the default HEARTBEAT_DAYS in alerts.mjs: the quiet span a daily check-in covers.
+const DEFAULT_HEARTBEAT_DAYS = 14;
+const WEEKLY_EMPTY_CADENCE_DAYS = 7;
 const WEEKDAY_MATCH_MIN_SAMPLES = 2;
 const WEEKDAY_MATCH_WEEKS = 4;
 
@@ -76,6 +80,28 @@ export function isQuietWatermarkCollapse(funnel, collapse = describeCollapse(fun
   return collapse?.stage === "watermark_fresh"
     && normalized.source_candidates >= QUIET_WATERMARK_CANDIDATE_FLOOR
     && normalized.items === 0;
+}
+
+/**
+ * True when a zero-item digest is the scheduled check-in itself rather than a recall drop.
+ * digestDecision() sends heartbeat/weekly-empty digests with zero items on purpose: the email's
+ * whole content is "still nothing since your last digest." That zero is the message, so it earns
+ * the explanation only when its own facts agree — the run recorded a matched-row count of exactly
+ * zero (an unread count never manufactures an all-clear) and the quiet span the check-in reports
+ * covers the watch's last item delivery. A watch that delivered items inside the current cadence
+ * window and now matches nothing at all remains a historical_watch_zero redline.
+ */
+export function isDesignedEmptyCheckIn(watch, previous, day, { heartbeatDays = DEFAULT_HEARTBEAT_DAYS } = {}) {
+  const cadenceDays = watch?.digest_action === "heartbeat"
+    ? heartbeatDays
+    : watch?.digest_action === "weekly-empty"
+      ? WEEKLY_EMPTY_CADENCE_DAYS
+      : null;
+  if (cadenceDays == null) return false;
+  if (watch.matched_row_count !== 0) return false;
+  if (!previous?.day) return false;
+  const age = (Date.parse(`${String(day).slice(0, 10)}T00:00:00Z`) - Date.parse(`${String(previous.day).slice(0, 10)}T00:00:00Z`)) / 86400000;
+  return Number.isFinite(age) && age >= cadenceDays;
 }
 
 /** True when an aggregate spike is explained by the owed backlog recovery path. */
@@ -345,6 +371,9 @@ export function buildDigestShadowSummary({
   // digest_id -> the most recent previously rendered preview for that id, used to say what a
   // reader is served while a source is unavailable. Read-only; nothing here is re-rendered.
   lastGoodPreviews = null,
+  // The daily check-in cadence (HEARTBEAT_DAYS) the send decision used, so a designed-empty
+  // heartbeat is judged against the same quiet span that scheduled it.
+  heartbeatDays = DEFAULT_HEARTBEAT_DAYS,
 } = {}) {
   const ranAt = new Date(now).toISOString();
   const day = ranAt.slice(0, 10);
@@ -427,23 +456,40 @@ export function buildDigestShadowSummary({
   const backlogFlush = documentedBacklogFlush(history, day);
   const quietWatermark = isQuietWatermarkCollapse(selectionFunnel, collapse) && !!backlogFlush;
   const expectedCatchUpExplosion = isExpectedCatchUpExplosion(selectionFunnel, previews);
+  const observations = [];
   for (const watch of watchCounts) {
     const previous = historicMax.get(watch.historical_id) || { count: 0, day: null };
     if (watch.evaluation_state === "evaluated" && watch.item_count === 0 && previous.count > 0 && !quietWatermark) {
+      const evidence = {
+        current_item_count: 0,
+        // The query returned nothing at all: this is the number that makes the finding a
+        // recall drop rather than a quiet day, so it travels with it.
+        matched_row_count: watch.matched_row_count,
+        digest_action: watch.digest_action,
+        trailing_max_item_count: previous.count,
+        trailing_max_day: previous.day,
+        history_days: HISTORY_DAYS,
+      };
+      if (isDesignedEmptyCheckIn(watch, previous, day, { heartbeatDays })) {
+        // Informational: the check-in digest reports the quiet span it was designed to
+        // report. Not a redline and it holds no one's mail; the matched-row count stays on
+        // the receipt so a later reader can audit the explanation.
+        observations.push({
+          code: "designed_empty_check_in",
+          severity: "info",
+          classification: DESIGNED_EMPTY_CHECK_IN_CLASSIFICATION,
+          digest_id: watch.digest_id,
+          watch_id: watch.watch_id,
+          reason: DESIGNED_EMPTY_CHECK_IN_CLASSIFICATION,
+          evidence,
+        });
+        continue;
+      }
       redlines.push(redline(
         "historical_watch_zero",
         watch.digest_id,
         "A watch with prior items is receiving a zero-item digest.",
-        {
-          current_item_count: 0,
-          // The query returned nothing at all: this is the number that makes the finding a
-          // recall drop rather than a quiet day, so it travels with it.
-          matched_row_count: watch.matched_row_count,
-          digest_action: watch.digest_action,
-          trailing_max_item_count: previous.count,
-          trailing_max_day: previous.day,
-          history_days: HISTORY_DAYS,
-        },
+        evidence,
         watch.watch_id,
       ));
     }
@@ -467,7 +513,6 @@ export function buildDigestShadowSummary({
     : null;
   const baseline = trailingItemBaseline(history, day);
   const trailingBaseline = baseline.value;
-  const observations = [];
   // A source that did not answer is already reported, and is a sufficient explanation for a day
   // that built fewer items than usual. Raising a second, differently-worded finding for the same
   // outage would only put a name on it that points at us.
@@ -723,17 +768,20 @@ export async function validateDigestShadowRun(env, run, {
     .filter((result) => result?.error)
     .map((result) => result.previewId || result.sub || result.watch);
   const lastGoodPreviews = await readLastGoodPreviews(env.DB, failedDigestIds, day);
-  return buildDigestShadowSummary({ run, history, now: at, ontologyDelta, lastGoodPreviews, renderedContentRedlines });
+  const heartbeatDays = Number(env?.HEARTBEAT_DAYS) || DEFAULT_HEARTBEAT_DAYS;
+  return buildDigestShadowSummary({ run, history, now: at, ontologyDelta, lastGoodPreviews, renderedContentRedlines, heartbeatDays });
 }
 
 export async function validateDigestShadowTargets(env, results, { now = new Date(), renderedContentRedlines = null } = {}) {
   const at = new Date(now);
   const history = await readHistory(env, at.toISOString().slice(0, 10));
+  const heartbeatDays = Number(env?.HEARTBEAT_DAYS) || DEFAULT_HEARTBEAT_DAYS;
   return (results || []).map((result) => buildDigestShadowSummary({
     run: { results: [result] },
     history,
     now: at,
     validationScope: "digest",
+    heartbeatDays,
     renderedContentRedlines: renderedContentRedlines?.filter((finding) => finding.digest_id === (result.previewId || result.sub || result.watch || "unknown")),
   }));
 }
