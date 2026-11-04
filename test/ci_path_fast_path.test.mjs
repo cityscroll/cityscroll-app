@@ -234,7 +234,7 @@ test("runtime multi-locale stray-English is not a CI job; static lint is the gat
 
 test("merge queue policy documents train wait and apply tool", () => {
   const policy = JSON.parse(read("tools/merge_queue_policy.json"));
-  assert.equal(policy.merge_queue.min_entries_to_merge_wait_minutes, 5);
+  assert.equal(policy.merge_queue.min_entries_to_merge_wait_minutes, 15);
   assert.equal(policy.merge_queue.grouping_strategy, "ALLGREEN");
   assert.equal(policy.merge_queue.max_entries_to_build, 5);
   assert.equal(policy.elder_slot.detect_and_steer_age_hours, 2);
