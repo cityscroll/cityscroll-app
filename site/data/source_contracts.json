@@ -1317,18 +1317,18 @@
         "application_period_end_date",
         "data_current_as_of"
       ],
-      "max_stale_days": 400,
+      "max_stale_days": 500,
       "freshness_policy": {
-        "limit_days": 400,
-        "method": "Publisher-declared change frequency reconciled with the limit the ingesting builder already enforces on the same column",
-        "observed_on": "2026-11-02",
+        "limit_days": 500,
+        "method": "Observed republication intervals from the retained annual-schedule revision history, reconciled with the declared annual edition cycle and an explicit margin",
+        "observed_on": "2026-11-04",
         "declared_cadence_days": 365,
-        "observed_metadata_lag_days": 0,
-        "margin_days": 35,
-        "evidence": "Socrata metadata for 4ptz-hmtc declares Update Frequency Annually with a Data Change Frequency of Quarterly. The quarterly claim did not hold: the fiscal-year edition posted 2026-07-22 (rowsUpdatedAt 2026-07-22T18:57:52Z, max(data_current_as_of) 2026-07-22) stood unrevised for 103 days by 2026-11-02, past the 95-day quarterly allowance, and the daily acquisition refused to rebuild from 2026-10-25 until the retained artifact aged past its hard maximum and blocked the scheduled deploy on 2026-10-29. The limit now rides the annual edition cycle, matching the sibling DCAS annual sources (dcas-eligible-list-utilization at 400 days, dcas-annual-exam-outcomes at 550). Daily acquisition still picks up any revision the day it posts, and open application windows are driven by the daily-verified open-competitive source.",
-        "derivation": "365-day annual edition cycle + 35-day margin = 400-day limit, the allowance tools/build_staffing_exams.mjs applies to data_current_as_of"
+        "observed_metadata_lag_days": 427,
+        "margin_days": 73,
+        "evidence": "The retained revision history (site/data/exam_sources/annual_schedule_history.json, fetched 2026-08-05; 2,901 raw rows reduced to 1,271 distinct exams) preserves six distinct publisher data_current_as_of vintages — 2023-01-04, 2024-03-06, 2024-06-30, 2025-08-06, 2026-02-04, and 2026-07-22 — giving measured intervals of 427, 116, 402, 182, and 168 days between publisher updates. Two intervals (the 427-day gap between the FY2023 and FY2024 edition posts and the 402-day gap from FY2024's last revision to the FY2026 post) exceed one year and the prior 400-day bound, so a limit below 427 days re-flags the publisher's normal edition cadence as drift: the live contract check recorded exactly that finding daily from 2026-10-25 through 2026-11-03 (publisher data_current_as_of 2026-07-22 read 95 to 104 days old against the then-95-day quarterly allowance; rowsUpdatedAt 2026-07-22T18:57:52Z agrees with the edition stamp). The retained snapshot (site/data/staffing_exams.json sources_retrieved_as_of 2026-10-22) is at or after the publisher clock, so the retained copy already holds everything the publisher has published. Socrata exposes only the current revision and the dataset retains only the editions still present in it, so republication intervals earlier than 2023-01-04 are unavailable rather than inferred. Daily acquisition still picks up any revision the day it posts, and open application windows are driven by the daily-verified open-competitive source.",
+        "derivation": "427-day longest observed republication interval + 73-day margin = 500-day limit, an annual-edition bound that covers every observed interval between publisher updates (the 427-day and 402-day gaps both exceed the prior 400-day bound); the declared monthly and quarterly change claims do not hold between editions"
       },
-      "publisher_cadence": "Annual fiscal-year post with monthly in-year updates (publisher description); Open Data metadata may still list annual or quarterly change claims",
+      "publisher_cadence": "Annual fiscal-year post with monthly in-year updates (publisher description); Open Data metadata may still list annual or quarterly change claims; retained revision history measures 116-427 days between publisher updates, with two gaps beyond one year (427 and 402 days)",
       "product_freshness": "Operator-built into data/staffing_exams.json; the artifact displays its source date. Superseded by the open-competitive schedule page and linked NOEs when application windows are open.",
       "used_for": "Upcoming exam cards and application windows when no current NOE has been published yet.",
       "code_references": [
@@ -1344,7 +1344,7 @@
       "delivery_tier": "inline-at-build",
       "freshness_contract": {
         "mode": "periodic",
-        "max_stale_days": 400,
+        "max_stale_days": 500,
         "clock_basis": "publisher_updated",
         "publisher_vintage_field": "data_current_as_of",
         "retained_vintage": {
@@ -1353,7 +1353,7 @@
             "sources_retrieved_as_of"
           ]
         },
-        "serving_max_age_days": 400,
+        "serving_max_age_days": 500,
         "serve_contract_id": null
       },
       "health_policy": {

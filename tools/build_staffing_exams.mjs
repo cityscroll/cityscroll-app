@@ -1414,15 +1414,17 @@ async function refreshSnapshots() {
       fetched_at: fetchedAt,
       data_current_as_of: isoDate(currentRows[0]?.data_current_as_of),
       refresh_cadence: "DCAS says the public schedule is updated monthly; Open Data metadata says annual updates and quarterly data changes.",
-      // The publisher's quarterly change claim did not hold: the fiscal-year
-      // edition posted 2026-07-22 stood unrevised past the 95-day quarterly
-      // window and froze the daily acquisition. The limit now rides the annual
-      // edition cycle, matching the sibling DCAS annual sources
+      // The publisher's monthly/quarterly change claims do not hold: the
+      // retained revision history (annual_schedule_history.json) measures
+      // 427, 116, 402, 182, and 168 days between the six data_current_as_of
+      // vintages from 2023-01-04 to 2026-07-22, with two gaps beyond one
+      // year. The limit covers the longest observed interval with margin,
+      // staying between the sibling DCAS annual bounds
       // (dcas-eligible-list-utilization at 400, dcas-annual-exam-outcomes at
-      // 550). Daily acquisition still picks up any revision the day it posts,
-      // and open application windows are driven by the daily-verified
+      // 550). Daily acquisition still picks up any revision the day it
+      // posts, and open application windows are driven by the daily-verified
       // open-competitive source, not by this edition's age.
-      stale_after_days: 400,
+      stale_after_days: 500,
     },
     records: currentRows,
   };

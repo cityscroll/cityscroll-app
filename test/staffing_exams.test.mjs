@@ -294,28 +294,32 @@ test("source staleness is derived from the recorded cadence", () => {
   assert.equal(Staffing.sourceIsStale(current, day(current.stale_after_days + 1)), true);
 });
 
-test("the annual exam schedule rides its annual edition cycle", () => {
+test("the annual exam schedule limit covers its measured republication intervals", () => {
   const annual = JSON.parse(
     readFileSync(new URL("../site/data/exam_sources/annual_schedule.json", import.meta.url)),
   ).source;
   assert.equal(annual.id, "dcas-annual-schedule");
-  // The publisher's quarterly change claim did not hold: the fiscal-year
-  // edition stood unrevised for 103 days and the 95-day quarterly allowance
-  // froze the daily acquisition until the retained artifact blocked the
-  // scheduled deploy. The limit now matches the sibling DCAS annual sources
+  // The publisher's monthly and quarterly change claims did not hold: the
+  // retained revision history measures 427, 116, 402, 182, and 168 days
+  // between the six data_current_as_of vintages from 2023-01-04 to
+  // 2026-07-22, with two gaps beyond one year. The 95-day quarterly
+  // allowance froze the daily acquisition for the edition posted 2026-07-22;
+  // the limit now covers the longest observed interval with margin, staying
+  // between the sibling DCAS annual bounds
   // (dcas-eligible-list-utilization at 400, dcas-annual-exam-outcomes at 550).
-  assert.equal(annual.stale_after_days, 400);
+  assert.equal(annual.stale_after_days, 500);
   assert.equal(
     artifact.sources.find((source) => source.id === "dcas-annual-schedule").stale_after_days,
-    400,
+    500,
     "the committed artifact carries the same annual-edition limit as its source snapshot",
   );
   const vintage = Date.parse(`${annual.data_current_as_of}T00:00:00Z`);
   const day = (offset) => new Date(vintage + offset * 86_400_000).toISOString().slice(0, 10);
-  // The observed republication gap must not block the build...
-  assert.doesNotThrow(() => assertSourceFresh(annual, day(103)));
-  assert.doesNotThrow(() => assertSourceFresh(annual, day(400)));
-  // ...but a genuinely stale edition — past the annual cycle plus margin —
-  // still refuses to build.
-  assert.throws(() => assertSourceFresh(annual, day(401)), /dcas-annual-schedule: source is stale/);
+  // Every observed republication gap — including the 427-day longest — must
+  // not block the build...
+  assert.doesNotThrow(() => assertSourceFresh(annual, day(427)));
+  assert.doesNotThrow(() => assertSourceFresh(annual, day(500)));
+  // ...but a genuinely stale edition — past the longest observed interval
+  // plus margin — still refuses to build.
+  assert.throws(() => assertSourceFresh(annual, day(501)), /dcas-annual-schedule: source is stale/);
 });
