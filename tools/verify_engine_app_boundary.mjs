@@ -7,6 +7,13 @@
  * application code. Python sources are observed through the standard library
  * ast module only; they are never imported, executed, or deserialized.
  * Configuration parsing requires Python 3.11+ and PyYAML 6.0.3.
+ *
+ * The contract stage (--stage contract) is a separate, public check: it never
+ * reads the private ledger, so CI can run it against the real tree. It fails
+ * when a module reachable from capabilities/registry.mjs reaches an
+ * application-layer module (interface, subscriber, mail or
+ * paid-orchestration), or when a published capability contract's shape
+ * changed between two revisions without its declared version changing.
  */
 import { execFileSync, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -23,10 +30,39 @@ export const INVENTORY_SCHEMA = 'source-boundary-inventory.v1';
 export const LEDGER_SCHEMA = 'source-boundary-ledger.v1';
 export const DECLARATIONS_SCHEMA = 'source-boundary-declarations.v1';
 export const DECLARATIONS_PATH = 'architecture/source-boundary-declarations.json';
+export const VERIFICATION_SCHEMA = 'source-boundary-verification.v1';
+export const CONTRACT_INVENTORY_SCHEMA = 'source-boundary-contract-inventory.v1';
 const ROLES = new Set(['engine', 'acquisition', 'presentation', 'identity', 'delivery', 'paid', 'operations', 'tooling', 'data', 'documentation', 'split']);
 const PRIVATE_EFFECTS = new Set(['recipient-state', 'mail-send', 'paid-model', 'personal-history']);
 const sha = (v) => createHash('sha256').update(v).digest('hex');
 const sorted = (xs) => [...xs].sort((a, b) => a.id.localeCompare(b.id));
+// The engine's published entry point. The contract stage walks every import
+// reachable from here (the operations capabilities/registry.mjs exposes) and
+// never needs the private ownership ledger: an application-layer module is
+// identified by its own public path, not by a reviewed classification.
+const ENGINE_CONTRACT_ROOT = 'capabilities/registry.mjs';
+// Reviewed, public path markers for application-layer concerns the engine must
+// never reach: a module under one of these directory names, or one of these
+// exact worker entry points, is application code regardless of which private
+// owner a future ledger would assign it. Unmatched paths are not claimed to be
+// engine-safe; they are simply outside this stage's forbidden list.
+const FORBIDDEN_APP_ROLES = [
+  ['interface', [/(?:^|\/)interface\//, /(?:^|\/)worker\/src\/worker\.mjs$/]],
+  ['subscriber', [/(?:^|\/)subscriber\//, /(?:^|\/)worker\/src\/(?:subscribe|unsubscribe|following|prefs)\.mjs$/]],
+  ['mail', [/(?:^|\/)mail\//, /(?:^|\/)worker\/src\/(?:confirm|alerts|operator_notification)\.mjs$/]],
+  ['paid-orchestration', [/(?:^|\/)paid-orchestration\//]],
+];
+export function forbiddenAppRole(path) {
+  for (const [role, patterns] of FORBIDDEN_APP_ROLES) if (patterns.some((re) => re.test(path))) return role;
+  return null;
+}
+// Duplicated from the per-file literal() closure in collectInventory so the
+// contract stage's own text-only observation never depends on that closure's
+// surrounding state.
+function literalValue(node) {
+  return node?.type === 'Literal' && typeof node.value === 'string' ? node.value
+    : node?.type === 'TemplateLiteral' && node.expressions.length === 0 ? node.quasis[0].value.cooked : null;
+}
 // Absolute URLs on reserved documentation hosts (RFC 2606/6761) are synthetic
 // fixtures; a management-word path segment there is not a management call.
 const RESERVED_URL_HOST = /(?:^|\.)(?:localhost|example\.com|example\.net|example\.org|example|invalid|test)$/;
@@ -1113,7 +1149,135 @@ export function verifyLedger(inventory, ledger) {
     const from = rows.get(`file:${unit.path}`), to = rows.get(unit.id);
     if ((from?.target_owner === 'engine' || (from?.target_owner === 'split' && Array.isArray(from.partitions) && from.partitions.includes('engine'))) && to && !['engine','data'].includes(to.target_owner)) fail('REVERSE_EXTERNAL_IMPORT',unit.id);
   }
-  return { schema: 'source-boundary-verification.v1', stage: 'foundation', stage_complete:false, scope:'source-ownership-ledger-only', does_not_prove:['private-repository-access','delivery-repository-registration','deployment-separation','secret-transfer','traffic-cutover','rollback-execution'], status: findings.length ? 'FAIL' : 'PASS', source_revision: inventory.source_revision, inventory_sha256: sha(JSON.stringify(inventory)), ledger_sha256: sha(JSON.stringify(ledger)), checked_units: inventory.units.length, findings };
+  return { schema: VERIFICATION_SCHEMA, stage: 'foundation', stage_complete:false, scope:'source-ownership-ledger-only', does_not_prove:['private-repository-access','delivery-repository-registration','deployment-separation','secret-transfer','traffic-cutover','rollback-execution'], status: findings.length ? 'FAIL' : 'PASS', source_revision: inventory.source_revision, inventory_sha256: sha(JSON.stringify(inventory)), ledger_sha256: sha(JSON.stringify(ledger)), checked_units: inventory.units.length, findings };
+}
+
+// The contract stage proves a narrower, public claim than the foundation
+// stage: it never reads the private ownership ledger, so it is safe for CI to
+// run against the real tree. It walks the import graph reachable from
+// capabilities/registry.mjs (the operations the engine actually exposes) and
+// fails on two independent properties: a reverse import into an
+// application-layer module (interface, subscriber, mail or
+// paid-orchestration), and a published capability contract whose shape
+// changed while its declared version did not.
+function collectEngineReach(inventory, rootPath) {
+  const adjacency = new Map();
+  for (const edge of inventory.edges) {
+    if (!adjacency.has(edge.from)) adjacency.set(edge.from, []);
+    adjacency.get(edge.from).push(edge.to);
+  }
+  const visited = new Set();
+  const findings = [];
+  const seenEdges = new Set();
+  const queue = [rootPath];
+  while (queue.length) {
+    const path = queue.shift();
+    if (visited.has(path)) continue;
+    visited.add(path);
+    for (const next of adjacency.get(path) || []) {
+      const role = forbiddenAppRole(next);
+      const edgeKey = `${path}#${next}`;
+      if (role && !seenEdges.has(edgeKey)) { seenEdges.add(edgeKey); findings.push({ code: 'REVERSE_APP_IMPORT', role, from: path, to: next }); }
+      queue.push(next);
+    }
+  }
+  return { visited, findings };
+}
+
+// A published capability contract is the object literal assigned to a
+// top-level `export const *_CAPABILITY` binding, observed as text, never
+// executed. Only an exported binding can be "published": a private same-named
+// local (a lookup map, a cache) is not a claim this file makes to the rest of
+// the tree, so it is not a candidate at all, never a false unresolved finding.
+// Identity fields (id, version, reference) are resolved the same way an
+// import specifier is: a direct string literal, or a single same-file
+// immutable const resolved through immutableImportBindings. A field this
+// cannot resolve fails closed as an explicit unresolved finding instead of a
+// silent pass.
+function findCapabilityDeclarations(text) {
+  if (!parser || parser.version !== PARSER_VERSION) throw new Error('PINNED_SOURCE_PARSER_REQUIRED');
+  let tree;
+  try { tree = parser.parse(text, { ecmaVersion: 'latest', sourceType: 'module', locations: true }); }
+  catch { return { error: 'CONTRACT_SOURCE_PARSE_FAILED' }; }
+  const immutableImport = immutableImportBindings(tree, literalValue);
+  const declarations = [];
+  for (const node of tree.body) {
+    if (node.type !== 'ExportNamedDeclaration' || node.declaration?.type !== 'VariableDeclaration') continue;
+    for (const declaration of node.declaration.declarations) {
+      if (declaration.id?.type === 'Identifier' && /_CAPABILITY$/.test(declaration.id.name) && declaration.init) {
+        declarations.push({ name: declaration.id.name, init: declaration.init });
+      }
+    }
+  }
+  const resolve = (node) => literalValue(node) ?? (node?.type === 'Identifier' ? immutableImport.resolveLiteral(node, node) : null);
+  const results = declarations.map(({ name, init }) => {
+    let objectNode = init;
+    if (objectNode.type === 'CallExpression' && objectNode.arguments.length === 1 && objectNode.arguments[0].type === 'ObjectExpression') {
+      objectNode = objectNode.arguments[0];
+    }
+    if (objectNode.type !== 'ObjectExpression') return { name, error: 'CONTRACT_SHAPE_UNRESOLVED' };
+    const field = (key) => {
+      const property = objectNode.properties.find((p) => p.type === 'Property' && !p.computed && (p.key.name === key || literalValue(p.key) === key));
+      return property ? resolve(property.value) : null;
+    };
+    const id = field('id'), version = field('version'), reference = field('reference');
+    if (typeof id !== 'string' || typeof version !== 'string') return { name, error: 'CONTRACT_FIELD_UNRESOLVED' };
+    return { name, id, version, reference, shape_sha256: sha(text.slice(init.start, init.end)) };
+  });
+  return { declarations: results };
+}
+
+export function collectPublishedContract({ root, revision = 'HEAD' }) {
+  const commit = git(root, ['rev-parse', '--verify', `${revision}^{commit}`]).trim();
+  const paths = git(root, ['ls-tree', '-r', '--name-only', commit]).split('\n')
+    .filter((path) => path.startsWith('capabilities/') && path.endsWith('.mjs'));
+  const contracts = {};
+  const unresolved = [];
+  for (const path of paths) {
+    const text = git(root, ['show', `${commit}:${path}`]);
+    const { declarations, error } = findCapabilityDeclarations(text);
+    if (error) { unresolved.push({ code: error, path }); continue; }
+    for (const declaration of declarations) {
+      if (declaration.error) { unresolved.push({ code: declaration.error, path, location: declaration.name }); continue; }
+      if (contracts[declaration.id]) { unresolved.push({ code: 'DUPLICATE_PUBLISHED_CAPABILITY_ID', path, location: declaration.id }); continue; }
+      contracts[declaration.id] = { path, version: declaration.version, reference: declaration.reference, shape_sha256: declaration.shape_sha256 };
+    }
+  }
+  return { schema: CONTRACT_INVENTORY_SCHEMA, source_revision: commit, contracts, unresolved };
+}
+
+export function verifyEngineContract({ root, revision = 'HEAD', base }) {
+  const inventory = collectInventory({ root, revision });
+  const findings = [];
+  if (!inventory.units.some((unit) => unit.id === `file:${ENGINE_CONTRACT_ROOT}`)) findings.push({ code: 'ENGINE_CONTRACT_ROOT_MISSING' });
+  const { visited, findings: reachFindings } = collectEngineReach(inventory, ENGINE_CONTRACT_ROOT);
+  findings.push(...reachFindings);
+  const target = collectPublishedContract({ root, revision: inventory.source_revision });
+  for (const item of target.unresolved) findings.push({ code: item.code, path: item.path, ...(item.location ? { location: item.location } : {}) });
+  const baseRevision = base || `${inventory.source_revision}^`;
+  let baseContract = null;
+  try { baseContract = collectPublishedContract({ root, revision: baseRevision }); } catch { baseContract = null; }
+  if (baseContract) {
+    for (const [id, current] of Object.entries(target.contracts)) {
+      const prior = baseContract.contracts[id];
+      if (prior && prior.version === current.version && prior.shape_sha256 !== current.shape_sha256) {
+        findings.push({ code: 'CONTRACT_CHANGED_WITHOUT_VERSION_BUMP', id, path: current.path });
+      }
+    }
+  }
+  return {
+    schema: VERIFICATION_SCHEMA,
+    stage: 'contract',
+    stage_complete: false,
+    scope: 'engine-capability-import-boundary-and-published-contract-stability',
+    does_not_prove: ['private-ownership-ledger-review', 'deployment-separation', 'runtime-isolation', 'complete-contract-field-semantics'],
+    status: findings.length ? 'FAIL' : 'PASS',
+    source_revision: inventory.source_revision,
+    base_revision: baseContract ? baseContract.source_revision : null,
+    reached_units: visited.size,
+    checked_contracts: Object.keys(target.contracts).length,
+    findings,
+  };
 }
 
 function privatePath(value, root) {
@@ -1127,10 +1291,10 @@ function privatePath(value, root) {
 export function main(args = process.argv.slice(2)) {
   const options = {};
   for (let i = 0; i < args.length; i += 2) {
-    if (!['--root', '--revision', '--stage', '--receipt', '--report'].includes(args[i]) || !args[i + 1]) throw new Error('ARGUMENT_INVALID');
+    if (!['--root', '--revision', '--stage', '--receipt', '--report', '--base'].includes(args[i]) || !args[i + 1]) throw new Error('ARGUMENT_INVALID');
     options[args[i].slice(2)] = args[i + 1];
   }
-  if (options.stage !== 'foundation') throw new Error('STAGE_UNSUPPORTED');
+  if (!['foundation', 'contract'].includes(options.stage)) throw new Error('STAGE_UNSUPPORTED');
   const root = resolve(options.root || dirname(fileURLToPath(import.meta.url)), options.root ? '' : '..');
   if (options.report !== undefined) {
     // Maintainer report: the observer's unresolved sites in the public tree,
@@ -1140,6 +1304,15 @@ export function main(args = process.argv.slice(2)) {
     const unresolved = inventory.unresolved.map(({ code, path, location, site_sha256 }) => ({ code, path, ...(location ? { location } : {}), ...(site_sha256 ? { site_sha256 } : {}) }));
     console.log(JSON.stringify({ status: unresolved.length ? 'FAIL' : 'PASS', stage: 'foundation', source_revision: inventory.source_revision, unresolved }, null, 2));
     return unresolved.length ? 1 : 0;
+  }
+  if (options.stage === 'contract') {
+    // The contract stage reads only the committed public tree: no private
+    // ledger, so a receipt here is bounded status over public source, not
+    // private evidence, and may be written to any path the caller names.
+    const report = verifyEngineContract({ root, revision: options.revision || 'HEAD', base: options.base });
+    if (options.receipt) writeFileSync(resolve(options.receipt), `${JSON.stringify(report, null, 2)}\n`);
+    console.log(JSON.stringify({ status: report.status, stage: report.stage, source_revision: report.source_revision, base_revision: report.base_revision, checked_contracts: report.checked_contracts, finding_counts: report.findings.reduce((all, f) => ({ ...all, [f.code]: (all[f.code] || 0) + 1 }), {}) }));
+    return report.status === 'PASS' ? 0 : 1;
   }
   const ledgerPath = privatePath(process.env.CITYSCROLL_ENGINE_APP_LEDGER, root);
   const ledger = JSON.parse(readFileSync(ledgerPath, 'utf8'));
