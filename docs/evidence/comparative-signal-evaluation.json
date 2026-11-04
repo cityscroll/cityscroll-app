@@ -15,9 +15,9 @@
         "metric_family": "within_contract_registered_amount_change",
         "basis": "frozen_inspection_receipt",
         "rule": "a detected change is shown only where the frozen receipt carries an inspection verdict for it",
-        "detected": 103,
+        "detected": 99,
         "shown": 2,
-        "admitted_unshown": 101,
+        "admitted_unshown": 97,
         "unshown_reason": "awaiting_extended_inspection_sample"
       }
     ]
@@ -27,7 +27,7 @@
     "source_contracts": "08c6e878d664224b16b3d0123d0bf11a27628c60bae366bff585e6f95efc6e8a",
     "award_receipts": "e9a9f5affa7e29ad33dcdcbd8826811b10ba783e8d92515d2ea82ea2a8a29d51",
     "story_signals": "66ec53cb3a3aa068bab03f30a26658be8113f34bcfd8ce0ed1d9fde6dd2765f9",
-    "procurement": "eab965466cfc57a3b69125e070b744720e99d2590188c957c5b69cc382dab78b",
+    "procurement": "31d7dc6b7d7a83ed7a4f6f70bebe95fac2f2e8a42b5e5ef65657af2f0b118470",
     "negative_control": "977d6ba5b8c45ea784a965b21b8fa7a9b142de401e14451d88873cbc6da5b8de",
     "frozen_cases": "43481b789cdbbdb7925bc67fd5513120772fed9ec3fa301d1daf1fdd34bbc9fc"
   },
@@ -70,8 +70,8 @@
       "definition": "Outputs supported for inspection / eligible inputs actually evaluated by each shipped pilot",
       "aggregate": {
         "numerator": 3,
-        "denominator": 9590,
-        "rate": 0.000313
+        "denominator": 9464,
+        "rate": 0.000317
       },
       "families": {
         "source_bounded_award_rank": {
@@ -84,11 +84,11 @@
         "within_contract_registered_amount_change": {
           "denominator_basis": "unique committed Checkbook observations with two positive registered amounts",
           "numerator": 2,
-          "denominator": 9589,
-          "rate": 0.000209,
-          "source_observation_context": 9591,
-          "detected_changes": 103,
-          "admitted_unshown": 101
+          "denominator": 9463,
+          "rate": 0.000211,
+          "source_observation_context": 9465,
+          "detected_changes": 99,
+          "admitted_unshown": 97
         }
       }
     },
