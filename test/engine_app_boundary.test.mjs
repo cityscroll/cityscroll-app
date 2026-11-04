@@ -4,6 +4,7 @@ import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, linkSync, rmSync }
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { execFileSync, spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { collectInventory, verifyLedger, LEDGER_SCHEMA } from '../tools/verify_engine_app_boundary.mjs';
 
@@ -585,7 +586,10 @@ test('unsupported python loading forms fail closed with coverage blockers', (t) 
   });
   const byCode = new Map();
   for (const finding of inventory.unresolved) byCode.set(finding.code, (byCode.get(finding.code) || 0) + 1);
-  assert.equal(byCode.get('PYTHON_IMPORT_REQUIRES_OBSERVER'), 2);
+  // import_module(name) is not followed through bindings; the spec location
+  // evaluates to the constant "os", which names no tracked file.
+  assert.equal(byCode.get('PYTHON_IMPORT_REQUIRES_OBSERVER'), 1);
+  assert.ok(inventory.unresolved.some((f) => f.code === 'PYTHON_IMPORT_UNRESOLVED' && f.location === 'spec:os'));
   assert.equal(byCode.get('PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER'), 1);
   assert.equal(byCode.get('PYTHON_DYNAMIC_CODE_REQUIRES_OBSERVER'), 1);
   assert.ok(inventory.unresolved.some((f) => f.code === 'PYTHON_SOURCE_PARSE_FAILED' && f.path === 'tools/fixtures/broken.py'));
@@ -600,4 +604,278 @@ test('python edges participate in ownership boundary checks', (t) => {
   ledger.units.find((u) => u.id === 'file:capabilities/engine_probe.py').target_owner = 'engine';
   ledger.units.find((u) => u.id === 'file:worker/src/identity.mjs').target_owner = 'identity';
   assert.ok(verifyLedger(inventory, ledger).findings.some((f) => f.code === 'REVERSE_IMPORT'));
+});
+
+const siteHash = (text) => createHash('sha256').update(text).digest('hex');
+const declarations = (...entries) => JSON.stringify({ schema: 'source-boundary-declarations.v1', declarations: entries });
+const injectedSite = 'import(process.env.SYNTHETIC_TRANSPORT_MODULE)';
+const injectedModule = `export async function load() { return ${injectedSite}; }\n`;
+const injectedDeclaration = {
+  code: 'DYNAMIC_IMPORT_REQUIRES_OBSERVER', path: 'tools/injected.mjs', site_sha256: siteHash(injectedSite),
+  classification: 'operator-supplied-module', reason: 'The operator names a transport module at run time; none is tracked.',
+};
+
+test('a declared loading site becomes a declared unit the ledger must still classify', (t) => {
+  const { inventory, ledger } = fixture(t, {
+    'tools/injected.mjs': injectedModule,
+    'architecture/source-boundary-declarations.json': declarations(injectedDeclaration),
+  });
+  assert.deepEqual(inventory.unresolved, []);
+  const unit = inventory.units.find((u) => u.kind === 'declared-site' && u.path === 'tools/injected.mjs');
+  assert.ok(unit);
+  assert.equal(verifyLedger(inventory, ledger).status, 'PASS');
+  ledger.units = ledger.units.filter((u) => u.id !== unit.id);
+  assert.ok(verifyLedger(inventory, ledger).findings.some((f) => f.code === 'UNCLASSIFIED_UNIT' && f.id === unit.id));
+});
+
+test('an undeclared site, a changed declared site and an unused declaration all fail closed', (t) => {
+  const { inventory, root, git } = fixture(t, {
+    'tools/injected.mjs': `${injectedModule}export const other = (name) => import(name);\n`,
+    'architecture/source-boundary-declarations.json': declarations(injectedDeclaration),
+  });
+  assert.deepEqual(inventory.unresolved.map((f) => f.code), ['DYNAMIC_IMPORT_REQUIRES_OBSERVER']);
+  writeFileSync(join(root, 'tools/injected.mjs'), 'export async function load() { return import(process.env.OTHER_MODULE); }\n');
+  git('add', '.'); git('-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', 'commit', '-qm', 'Change declared site');
+  const changed = collectInventory({ root });
+  const codes = changed.unresolved.map((f) => f.code).sort();
+  assert.deepEqual(codes, ['DYNAMIC_IMPORT_REQUIRES_OBSERVER', 'OBSERVER_DECLARATION_STALE']);
+  assert.ok(!changed.units.some((u) => u.kind === 'declared-site'));
+});
+
+test('malformed, undeclarable and duplicate declarations are rejected and declare nothing', async (t) => {
+  const cases = {
+    'missing reason': { ...injectedDeclaration, reason: '' },
+    'unknown classification': { ...injectedDeclaration, classification: 'trusted' },
+    'unknown field': { ...injectedDeclaration, waiver: true },
+    'undeclarable code': { ...injectedDeclaration, code: 'SOURCE_PARSE_FAILED' },
+    'untracked path': { ...injectedDeclaration, path: 'tools/missing.mjs' },
+    'targeted classification without targets': { ...injectedDeclaration, classification: 'computed-repository-module' },
+  };
+  for (const [name, entry] of Object.entries(cases)) await t.test(name, (sub) => {
+    const { inventory } = fixture(sub, { 'tools/injected.mjs': injectedModule, 'architecture/source-boundary-declarations.json': declarations(entry) });
+    const codes = inventory.unresolved.map((f) => f.code);
+    assert.ok(codes.includes('OBSERVER_DECLARATION_INVALID'));
+    assert.ok(codes.includes('DYNAMIC_IMPORT_REQUIRES_OBSERVER'));
+  });
+  await t.test('duplicate', (sub) => {
+    const { inventory } = fixture(sub, { 'tools/injected.mjs': injectedModule, 'architecture/source-boundary-declarations.json': declarations(injectedDeclaration, injectedDeclaration) });
+    assert.ok(inventory.unresolved.some((f) => f.code === 'OBSERVER_DECLARATION_INVALID'));
+  });
+  await t.test('not JSON', (sub) => {
+    const { inventory } = fixture(sub, { 'tools/injected.mjs': injectedModule, 'architecture/source-boundary-declarations.json': '{' });
+    assert.ok(inventory.unresolved.some((f) => f.code === 'OBSERVER_DECLARATION_INVALID'));
+    assert.ok(inventory.unresolved.some((f) => f.code === 'DYNAMIC_IMPORT_REQUIRES_OBSERVER'));
+  });
+});
+
+test('declared targets become observed ownership edges, including modules outside the source roots', (t) => {
+  const site = 'require(join(root, "test/fixtures/cases.mjs"))';
+  const { inventory, ledger } = fixture(t, {
+    'capabilities/loader.mjs': `import { createRequire } from "node:module";\nimport { join } from "node:path";\nconst require = createRequire(import.meta.url);\nexport const load = (root) => ${site};\n`,
+    'test/fixtures/cases.mjs': 'export { value } from "../../worker/src/identity.mjs";\n',
+    'worker/src/identity.mjs': 'export const value = "private";\n',
+    'architecture/source-boundary-declarations.json': declarations({
+      code: 'DYNAMIC_IMPORT_REQUIRES_OBSERVER', path: 'capabilities/loader.mjs', site_sha256: siteHash(site),
+      classification: 'computed-repository-module', reason: 'Loads the case module beneath a caller-supplied root.', targets: ['test/fixtures/cases.mjs'],
+    }),
+  });
+  assert.deepEqual(inventory.unresolved, []);
+  assert.ok(inventory.observation.parsed.includes('test/fixtures/cases.mjs'));
+  assert.ok(inventory.edges.some((e) => e.from === 'capabilities/loader.mjs' && e.to === 'test/fixtures/cases.mjs'));
+  assert.ok(inventory.edges.some((e) => e.from === 'test/fixtures/cases.mjs' && e.to === 'worker/src/identity.mjs'));
+  ledger.units.find((u) => u.id === 'file:test/fixtures/cases.mjs').target_owner = 'identity';
+  assert.ok(verifyLedger(inventory, ledger).findings.some((f) => f.code === 'REVERSE_IMPORT'));
+});
+
+test('a declared target that is not tracked keeps the site unresolved', (t) => {
+  const { inventory } = fixture(t, {
+    'tools/injected.mjs': injectedModule,
+    'architecture/source-boundary-declarations.json': declarations({ ...injectedDeclaration, targets: ['tools/absent.mjs'] }),
+  });
+  const codes = inventory.unresolved.map((f) => f.code).sort();
+  assert.deepEqual(codes, ['DYNAMIC_IMPORT_REQUIRES_OBSERVER', 'OBSERVER_DECLARATION_TARGET_INVALID']);
+});
+
+test('a const createRequire loader of any name is observed through its calls', (t) => {
+  const { inventory } = fixture(t, {
+    'tools/data_loader.mjs': 'import { createRequire } from "node:module";\nconst requireJson = createRequire(import.meta.url);\nexport const data = requireJson("../site/data.json");\nexport const view = requireJson("../worker/src/identity.mjs");\n',
+    'site/data.json': '{"ok":true}\n',
+    'worker/src/identity.mjs': 'export const value = "private";\n',
+  });
+  assert.deepEqual(inventory.unresolved, []);
+  assert.ok(inventory.edges.some((e) => e.from === 'tools/data_loader.mjs' && e.to === 'site/data.json'));
+  assert.ok(inventory.edges.some((e) => e.from === 'tools/data_loader.mjs' && e.to === 'worker/src/identity.mjs'));
+});
+
+test('createRequire loaders that escape a const binding still fail closed', async (t) => {
+  const cases = {
+    'mutable binding': ['let requireLater = createRequire(import.meta.url);\nexport const value = requireLater("../shared/safe.mjs");\n', 'INDIRECT_CODE_LOADING_REQUIRES_OBSERVER'],
+    'handed to other code': ['const load = createRequire(import.meta.url);\nexport const loaders = [load];\n', 'LOADER_REFERENCE_REQUIRES_OBSERVER'],
+    'called immediately': ['export const value = createRequire(import.meta.url)("../shared/safe.mjs");\n', 'INDIRECT_CODE_LOADING_REQUIRES_OBSERVER'],
+    'member form, unbound': ['import * as nodeModule from "node:module";\nexport const value = nodeModule.createRequire(import.meta.url)("../shared/safe.mjs");\n', 'INDIRECT_CODE_LOADING_REQUIRES_OBSERVER'],
+    'computed specifier': ['const load = createRequire(import.meta.url);\nexport const value = (name) => load(name);\n', 'DYNAMIC_IMPORT_REQUIRES_OBSERVER'],
+    'exported by declaration': ['export const load = createRequire(import.meta.url);\n', 'LOADER_REFERENCE_REQUIRES_OBSERVER'],
+    'exported by specifier': ['const load = createRequire(import.meta.url);\nexport { load as loader };\n', 'LOADER_REFERENCE_REQUIRES_OBSERVER'],
+  };
+  for (const [name, [body, code]] of Object.entries(cases)) await t.test(name, (sub) => {
+    const { inventory } = fixture(sub, {
+      'tools/loader.mjs': `import { createRequire } from "node:module";\n${body}`,
+      'shared/safe.mjs': 'export const safe = true;\n',
+    });
+    assert.ok(inventory.unresolved.some((f) => f.code === code && f.path === 'tools/loader.mjs'), JSON.stringify(inventory.unresolved));
+  });
+});
+
+test('a typeof feature test is not a loader reference, and constructors are reported once', (t) => {
+  const { inventory } = fixture(t, {
+    'site/shim.js': 'if (typeof require === "function") { globalThis.shim = true; }\n',
+    'tools/evaluate.mjs': 'export const make = (body) => new Function("x", body);\n',
+  });
+  assert.deepEqual(inventory.unresolved.filter((f) => f.path === 'site/shim.js'), []);
+  assert.deepEqual(inventory.unresolved.filter((f) => f.path === 'tools/evaluate.mjs').map((f) => f.code), ['INDIRECT_CODE_LOADING_REQUIRES_OBSERVER']);
+});
+
+test('a relative import into an installed package resolves only when its manifest declares it', (t) => {
+  const { inventory } = fixture(t, {
+    'worker/package.json': JSON.stringify({ devDependencies: { '@synthetic/sdk': '1.2.3' } }),
+    'tools/client.mjs': 'import { Client } from "../worker/node_modules/@synthetic/sdk/dist/index.js";\nimport { Other } from "../worker/node_modules/undeclared/index.js";\nexport { Client, Other };\n',
+  });
+  assert.ok(inventory.units.some((u) => u.id === 'external-import:tools/client.mjs#../worker/node_modules/@synthetic/sdk/dist/index.js'));
+  assert.deepEqual(inventory.unresolved.map((f) => [f.code, f.location]), [['UNRESOLVED_IMPORT', '../worker/node_modules/undeclared/index.js']]);
+});
+
+test('python path constants anchored at the source file resolve script and module targets', (t) => {
+  const { inventory } = fixture(t, {
+    'tools/server.py': 'SERVER = True\n',
+    'tools/render.mjs': 'export const value = 1;\n',
+    'tools/verify.py': 'VERIFY = True\n',
+    'tools/capture.py': [
+      'import importlib.util, subprocess, sys',
+      'from pathlib import Path',
+      'ROOT = Path(__file__).resolve().parents[1]',
+      'def serve(port, ready):',
+      '    subprocess.Popen([sys.executable, str(ROOT / "tools" / "server.py"), "--port", str(port), "--ready-file", str(ready)])',
+      '    subprocess.run(["node", str(ROOT / "tools/render.mjs"), str(ready)], check=True)',
+      'def load():',
+      '    path = Path(__file__).with_name("verify.py")',
+      '    return importlib.util.spec_from_file_location("verify", path)',
+    ].join('\n'),
+  });
+  assert.deepEqual(inventory.unresolved, []);
+  for (const to of ['tools/server.py', 'tools/render.mjs', 'tools/verify.py']) assert.ok(inventory.edges.some((e) => e.from === 'tools/capture.py' && e.to === to), to);
+});
+
+test('shadowed, rebound, closure and escaping python paths are not treated as static', async (t) => {
+  const cases = {
+    'parameter shadows module constant': ['ROOT = Path(__file__).resolve().parents[1]', 'def run(ROOT):', '    subprocess.run(["node", str(ROOT / "tools/render.mjs"), ROOT])'],
+    'rebound module name': ['ROOT = Path(__file__).resolve().parents[1]', 'ROOT = Path("/elsewhere")', 'def run(x):', '    subprocess.run(["node", str(ROOT / "tools/render.mjs"), x])'],
+    'closure over an enclosing local': ['def outer(x):', '    script = Path(__file__).parent / "render.mjs"', '    def inner():', '        subprocess.run(["node", str(script), x])', '    return inner'],
+    'local assigned after use': ['def run(x):', '    subprocess.run(["node", str(script), x])', '    script = Path(__file__).parent / "render.mjs"'],
+    'escapes the repository': ['ROOT = Path(__file__).resolve().parents[3]', 'def run(x):', '    subprocess.run(["node", str(ROOT / "render.mjs"), x])'],
+  };
+  for (const [name, lines] of Object.entries(cases)) await t.test(name, (sub) => {
+    const { inventory } = fixture(sub, {
+      'tools/render.mjs': 'export const value = 1;\n',
+      'tools/capture.py': ['import subprocess', 'from pathlib import Path', ...lines].join('\n'),
+    });
+    assert.ok(inventory.unresolved.some((f) => f.code === 'PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER' && f.path === 'tools/capture.py'), JSON.stringify(inventory.unresolved));
+  });
+});
+
+test('subprocess operands are data only behind a fixed program or an observed tracked script', async (t) => {
+  const accepted = {
+    'hookless git subcommand': '["git", "-C", str(where), "archive", "--format=tar", revision]',
+    'removing a linked git checkout': '["git", "worktree", "remove", "--force", str(where)]',
+    'external converter': '["cwebp", "-q", "82", str(where), "-o", revision]',
+    'tracked script': '["node", "tools/render.mjs", revision]',
+    'module server': '["python3", "-m", "http.server", str(port), "--directory", str(where)]',
+    'inline program that loads nothing': '["node", "--input-type=module", "-e", "console.log(process.argv[1])", revision]',
+  };
+  const rejected = {
+    'adding a linked git checkout can run hooks': '["git", "worktree", "add", "--detach", str(where), revision]',
+    'git run-time configuration': '["git", "-c", revision, "show", "HEAD"]',
+    'git run-time subcommand': '["git", *revision]',
+    'inline program loading its run-time operand': '["node", "-e", "require(process.argv[1])", revision]',
+    'run-time inline program': '["node", "-e", revision]',
+    'untracked script': '["node", "tools/absent.mjs", revision]',
+    'test runner loads operands': '["node", "--test", revision]',
+    'module runner loads operands': '["python3", "-m", "pytest", revision]',
+    'unknown program': '["npx", "--yes", "wrangler", "dev", "--config", str(where)]',
+    'run-time script': '["node", str(where), revision]',
+  };
+  const module = (argv) => ['import subprocess', 'def run(where, revision, port):', `    subprocess.run(${argv})`].join('\n');
+  for (const [name, argv] of Object.entries(accepted)) await t.test(`accepts ${name}`, (sub) => {
+    const { inventory } = fixture(sub, { 'tools/render.mjs': 'export const value = 1;\n', 'tools/capture.py': module(argv) });
+    assert.deepEqual(inventory.unresolved, []);
+  });
+  for (const [name, argv] of Object.entries(rejected)) await t.test(`rejects ${name}`, (sub) => {
+    const { inventory } = fixture(sub, { 'tools/render.mjs': 'export const value = 1;\n', 'tools/capture.py': module(argv) });
+    assert.deepEqual(inventory.unresolved.map((f) => f.code), ['PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER']);
+  });
+});
+
+test('a declared python site is classified and a new undeclared site in the same file still fails', (t) => {
+  const site = 'subprocess.run(["node", "-e", SCRIPT, revision])';
+  const { inventory } = fixture(t, {
+    'tools/capture.py': ['import subprocess', 'SCRIPT = "require(process.argv[1])"', 'def run(revision):', `    ${site}`, '    subprocess.run(["node", "-e", SCRIPT, revision, "x"])'].join('\n'),
+    'architecture/source-boundary-declarations.json': declarations({
+      code: 'PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER', path: 'tools/capture.py', site_sha256: siteHash(site),
+      classification: 'inline-interpreter-program', reason: 'Inline program requires the module path given as its operand by the caller.',
+    }),
+  });
+  assert.ok(inventory.units.some((u) => u.kind === 'declared-site' && u.path === 'tools/capture.py'));
+  assert.deepEqual(inventory.unresolved.map((f) => f.code), ['PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER']);
+});
+
+test('inline node programs resolve their loads against an evaluated working directory', (t) => {
+  const { inventory } = fixture(t, {
+    'site/view.mjs': 'export const render = () => "view";\n',
+    'site/i18n.js': 'globalThis.STRINGS = {};\n',
+    'test/helpers/clock.mjs': 'export { render } from "../../site/view.mjs";\n',
+    'tools/capture.py': [
+      'import subprocess',
+      'from pathlib import Path',
+      'ROOT = Path(__file__).resolve().parents[1]',
+      'RENDER = "import fs from \\"node:fs\\"; import { render } from \\"./site/view.mjs\\"; console.log(render(process.argv[1]));"',
+      'def run(query):',
+      '    subprocess.run(["node", "--input-type=module", "-e", RENDER, query], cwd=ROOT, check=True)',
+      '    subprocess.run(["node", "-e", "require(process.argv[1])", str(ROOT / "site" / "i18n.js")], check=True)',
+      '    subprocess.run(["node", "--import=./test/helpers/clock.mjs", "--input-type=module", "-e", "console.log(1)"], cwd=ROOT, check=True)',
+    ].join('\n'),
+  });
+  assert.deepEqual(inventory.unresolved, []);
+  for (const to of ['site/view.mjs', 'site/i18n.js', 'test/helpers/clock.mjs']) assert.ok(inventory.edges.some((e) => e.from === 'tools/capture.py' && e.to === to), to);
+  assert.ok(inventory.units.some((u) => u.id === 'external-import:tools/capture.py#node:fs'));
+  // A module reached only from Python is observed, with its own imports followed.
+  assert.ok(inventory.observation.parsed.includes('test/helpers/clock.mjs'));
+  assert.ok(inventory.edges.some((e) => e.from === 'test/helpers/clock.mjs' && e.to === 'site/view.mjs'));
+});
+
+test('inline programs whose loads cannot be resolved stay unresolved', async (t) => {
+  const cases = {
+    'no working directory': '["node", "--input-type=module", "-e", "import \\"./site/view.mjs\\";"]',
+    'untracked module': '["node", "--input-type=module", "-e", "import \\"./site/absent.mjs\\";"], cwd=ROOT',
+    'run-time operand loaded by position': '["node", "-e", "require(process.argv[1])", where], cwd=ROOT',
+    'evaluated code': '["node", "-e", "eval(process.argv[1])", "1"], cwd=ROOT',
+    'computed specifier': '["node", "-e", "require(\\"./site/\\" + process.argv[1])", "view.mjs"], cwd=ROOT',
+    'aliased loader': '["node", "-e", "const load = require; load(\\"fs\\")"], cwd=ROOT',
+    'inline python': '[sys.executable, "-c", "import json"], cwd=ROOT',
+    'unparsable program': '["node", "-e", "import {"], cwd=ROOT',
+  };
+  for (const [name, argv] of Object.entries(cases)) await t.test(name, (sub) => {
+    const { inventory } = fixture(sub, {
+      'site/view.mjs': 'export const render = () => "view";\n',
+      'tools/capture.py': ['import subprocess, sys', 'from pathlib import Path', 'ROOT = Path(__file__).resolve().parents[1]', 'def run(where):', `    subprocess.run(${argv})`].join('\n'),
+    });
+    assert.deepEqual(inventory.unresolved.map((f) => f.code), ['PYTHON_SUBPROCESS_TARGET_REQUIRES_OBSERVER']);
+  });
+});
+
+test('the unresolved report lists public site facts without the private ledger', (t) => {
+  const { root } = fixture(t, { 'tools/injected.mjs': injectedModule });
+  const run = spawnSync(process.execPath, [fileURLToPath(new URL('../tools/verify_engine_app_boundary.mjs', import.meta.url)), '--root', root, '--stage', 'foundation', '--report', 'unresolved'], { encoding: 'utf8', env: { ...process.env, CITYSCROLL_ENGINE_APP_LEDGER: '' } });
+  assert.equal(run.status, 1);
+  const report = JSON.parse(run.stdout);
+  assert.equal(report.status, 'FAIL');
+  assert.deepEqual(report.unresolved, [{ code: 'DYNAMIC_IMPORT_REQUIRES_OBSERVER', path: 'tools/injected.mjs', location: '1:38', site_sha256: siteHash(injectedSite) }]);
 });
