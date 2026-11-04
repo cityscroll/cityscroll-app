@@ -129,6 +129,16 @@ export function searchUsageWindowStartMs(nowMs, days) {
 }
 
 /**
+ * The oldest instant a receipt scan still returns: the start of the widest usage
+ * window. Exported because every projection that recomputes a dated figure from
+ * a scan must stop at the same floor the scan stops at — a day whose receipts
+ * fall below this instant cannot be recomputed, only compared as history.
+ */
+export function searchUsageScanOldestMs(nowMs) {
+  return searchUsageWindowStartMs(nowMs, Math.max(...SEARCH_USAGE_WINDOW_DAYS));
+}
+
+/**
  * Normalize a declared measurement start. Anything unusable becomes null — "we do not
  * know when counting began" — which is deliberately distinct from a start of zero.
  */
@@ -346,7 +356,7 @@ export async function readSearchUsageObservations(env, { now = new Date() } = {}
   const nowMs = new Date(now).getTime();
   // Nothing outside retention can be in a window, so the oldest window bound is also
   // the point where paging further down the descending key order stops being useful.
-  const oldestMs = searchUsageWindowStartMs(nowMs, Math.max(...SEARCH_USAGE_WINDOW_DAYS));
+  const oldestMs = searchUsageScanOldestMs(nowMs);
 
   const observations = [];
   const pending = [];

@@ -313,3 +313,76 @@ test("no store is not a published day", async () => {
   assert.equal(series.available, false);
   assert.deepEqual(series.series, []);
 });
+
+test("the day the receipt scan can no longer cover is not recomputed as divergent", async () => {
+  // The recorded incident: measurement began 2026-09-09, every day through 2026-11-02 is
+  // stored, and on 2026-11-03 the recompute window reached its 30th closed day back,
+  // 2026-10-04. That day sits below the receipt scan's floor (a 30-day window including
+  // today), so a recompute folded an empty receipt set for it and reported the stored day
+  // as divergent on every run — while the stored day, written from a complete scan the
+  // day after it closed, was never wrong.
+  const measuredSince = "2026-09-09T00:00:00.000Z";
+  const now = new Date("2026-11-03T11:47:46.215Z");
+  const seed = {};
+  for (let ms = Date.parse("2026-10-05T00:00:00.000Z"); ms <= Date.parse("2026-11-02T00:00:00.000Z"); ms += 24 * 3600 * 1000) {
+    const date = new Date(ms).toISOString().slice(0, 10);
+    seed[`${SEARCH_USAGE_DAILY_KEY_PREFIX}${date}`] = JSON.stringify(buildSearchUsageDailyAggregate({
+      day: date, counts: { searches_run: 0, searches_returning_records: 0 }, measuredSince,
+    }));
+  }
+  seed[`${SEARCH_USAGE_DAILY_KEY_PREFIX}2026-10-04`] = JSON.stringify(buildSearchUsageDailyAggregate({
+    day: "2026-10-04", counts: { searches_run: 3, searches_returning_records: 2 }, measuredSince,
+  }));
+  seed[`${SEARCH_USAGE_DAILY_KEY_PREFIX}2026-10-05`] = JSON.stringify(buildSearchUsageDailyAggregate({
+    day: "2026-10-05", counts: { searches_run: 1, searches_returning_records: 1 }, measuredSince,
+  }));
+  const kv = fakeKV(seed);
+  const env = { ALERT_STATE: kv };
+
+  // The scan's own horizon: the widest usage window opens at 2026-10-05, so the 4th is
+  // outside it no matter how wide a horizon the publisher is asked for.
+  assert.equal(publishableSearchUsageDays({ now, measuredSince }).includes("2026-10-04"), false);
+  assert.equal(publishableSearchUsageDays({ now, measuredSince, horizonDays: 400 }).includes("2026-10-04"), false);
+
+  // A recompute over what the scan can still return neither rewrites the stored day nor
+  // reports it: it has no row at all, because no receipt can speak for it any more.
+  const storedBefore = kv.store.get(searchUsageDayKey("2026-10-04"));
+  const published = await publishSearchUsageDailyAggregates(env, {
+    now,
+    observations: [execution("exec-scan", "2026-10-05T08:00:00.000Z")],
+    measuredSince,
+  });
+  assert.equal(published.days.some((row) => row.day === "2026-10-04"), false);
+  assert.equal(published.days.some((row) => row.action === "divergent_kept_stored"), false);
+  assert.equal(kv.store.get(searchUsageDayKey("2026-10-04")), storedBefore);
+
+  // The reconciliation reports that day as beyond the receipts, never as a mismatch.
+  const series = await readSearchUsageDailySeries(env, { now, days: 30, measuredSince });
+  const observed = foldSearchUsageDays(
+    [execution("exec-scan", "2026-10-05T08:00:00.000Z")],
+    { now, measuredSince },
+  );
+  const recon = reconcileSearchUsageDaily({ storedSeries: series, observedDays: observed.days, now });
+  const byDay = Object.fromEntries(recon.rows.map((row) => [row.day, row.state]));
+  assert.equal(byDay["2026-10-04"], "beyond_receipt_retention");
+  assert.equal(recon.rows.some((row) => row.state === "divergent"), false);
+  assert.equal(recon.ok, true);
+});
+
+test("a day below the scan floor is left absent, never zero-created by a late rerun", async () => {
+  // A run 30 days after a missed day cannot recover that day: its receipts are below the
+  // scan floor. Publishing must leave the day absent rather than storing an empty
+  // aggregate that would read as a measured zero.
+  const measuredSince = "2026-09-09T00:00:00.000Z";
+  const kv = fakeKV();
+  const published = await publishSearchUsageDailyAggregates({ ALERT_STATE: kv }, {
+    now: new Date("2026-11-03T11:47:46.215Z"),
+    observations: [execution("exec-scan", "2026-10-05T08:00:00.000Z")],
+    measuredSince,
+  });
+  assert.equal(published.days.some((row) => row.day === "2026-10-04"), false);
+  assert.equal(kv.store.get(searchUsageDayKey("2026-10-04")), undefined);
+  // The oldest day the scan covers in full is still published, including as a measured zero.
+  assert.ok(published.days.some((row) => row.day === "2026-10-05" && row.action === "created"));
+  assert.ok(JSON.parse(kv.store.get(searchUsageDayKey("2026-10-05"))).metrics.searches_run === 1);
+});
