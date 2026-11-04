@@ -104,3 +104,20 @@ The `site-node` family installs the pinned parser with `npm ci` and requires Pyt
 3.11+ with the PyYAML pin in `tools/source_verification_requirements.txt` for the TOML and workflow
 observers. CI installs that file in the `site-node` job; locally, `make setup-a11y` installs it into
 the shared accessibility Python environment the pre-push hook runs the preflight in.
+
+The `--stage contract` run is a separate, public check over the same observer: it never reads the
+private ledger, so it is safe to run against the real tree (including in CI). It walks the import
+graph reachable from `capabilities/registry.mjs` — the operations the engine actually exposes — and
+fails on a reverse import into an application-layer module (an `interface`, `subscriber`, `mail`, or
+`paid-orchestration` path), and on a published `*_CAPABILITY` export whose shape changed between two
+revisions without its declared version changing.
+
+```sh
+node tools/verify_engine_app_boundary.mjs --stage contract
+```
+
+[`test/engine_app_boundary_contract.test.mjs`](../test/engine_app_boundary_contract.test.mjs) builds
+its own synthetic fixtures for the adversarial cases (a direct forbidden-module import, an injected
+transitive reverse import, and a breaking contract-shape change without a version bump) alongside a
+passing baseline, and also runs the stage against the real repository's current `HEAD` as a live
+assertion that today's tree is clean.
