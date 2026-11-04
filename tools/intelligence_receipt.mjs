@@ -96,7 +96,7 @@ export function buildFixtureReceipt(opts = {}) {
   const cross_spine = loadCrossSpineSummary();
   const er_metrics = opts.withErMetrics ? runErMetrics() : null;
 
-  const actions = require(join(ROOT, "site/action_registry.js"));
+  const actions = require("../site/action_registry.js");
   const sampleFixture = readJson("ontology/fixtures/dimensions/actionability_sample.json");
   const actionability = actionabilityInputFromSample(
     measureActionabilitySample({

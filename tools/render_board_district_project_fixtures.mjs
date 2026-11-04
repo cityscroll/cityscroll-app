@@ -26,7 +26,7 @@ const OUT = join(ROOT, ".artifacts/board-district-projects/fixtures");
 
 const require = createRequire(import.meta.url);
 globalThis.window = globalThis.window || {};
-require(join(ROOT, "site/i18n.js"));
+require("../site/i18n.js");
 const SHIPPING_LANGS = globalThis.window.SHIPPING_LANGS;
 
 const read = (path) => JSON.parse(readFileSync(join(ROOT, path), "utf8"));

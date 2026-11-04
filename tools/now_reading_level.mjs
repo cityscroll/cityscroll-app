@@ -9,14 +9,13 @@ import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 
 const require = createRequire(import.meta.url);
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const NON_VISIBLE_KEYS = new Set(["now_basis_derived", "now_date_source_field"]);
 
 function loadEnglishStrings() {
   globalThis.window = globalThis;
   globalThis.localStorage = { getItem: () => "en", setItem: () => {} };
   globalThis.location = { search: "", href: "https://cityscroll.org/" };
-  require(path.join(ROOT, "site", "i18n.js"));
+  require("../site/i18n.js");
   return globalThis.STRINGS.en;
 }
 

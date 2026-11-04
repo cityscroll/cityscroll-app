@@ -28,7 +28,7 @@ const OUT_DIR = path.join(ROOT, "site/.phc09-capture-tmp");
 
 const require = createRequire(import.meta.url);
 globalThis.window = globalThis.window || {};
-require(path.join(ROOT, "site/i18n.js"));
+require("../site/i18n.js");
 const STRINGS = globalThis.window.STRINGS;
 
 // One key withheld from an otherwise complete locale. Its whole section must

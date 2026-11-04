@@ -50,7 +50,7 @@ def measured_projection():
     """Render the retained records through the shipped builder path."""
     out = ROOT / ".artifacts" / "buyer-history" / "analytics_registered_contracts.json"
     subprocess.run(
-        [sys.executable and "node", str(ROOT / "tools" / "render_buyer_history_fixture_projection.mjs"), str(out)],
+        ["node", str(ROOT / "tools" / "render_buyer_history_fixture_projection.mjs"), str(out)],
         check=True, cwd=str(ROOT), capture_output=True,
     )
     return out.read_text()
