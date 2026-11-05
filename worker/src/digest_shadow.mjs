@@ -39,6 +39,11 @@ export const QUIET_WATERMARK_CANDIDATE_FLOOR = 1;
 export const WATERMARK_BACKLOG_FLUSH_CLASSIFICATION = "watermark exhaustion after backlog flush";
 export const EXPECTED_CATCH_UP_EXPLOSION_CLASSIFICATION = "expected catch-up after owed backlog drain";
 export const DESIGNED_EMPTY_CHECK_IN_CLASSIFICATION = "designed empty check-in digest";
+// A watch whose own history already includes a genuine zero-match day is bursty by its own
+// record, not newly broken. Reporting every repeat of that same pattern as a fresh regression
+// re-files the same non-defect on each lull; the redline is reserved for a watch that has never
+// gone quiet before.
+export const BURSTY_WATCH_HISTORY_CLASSIFICATION = "watch's own history already includes a zero-match day";
 // Mirrors the default HEARTBEAT_DAYS in alerts.mjs: the quiet span a daily check-in covers.
 const DEFAULT_HEARTBEAT_DAYS = 14;
 const WEEKLY_EMPTY_CADENCE_DAYS = 7;
@@ -274,22 +279,30 @@ function historicalItemCount(entity) {
   return finiteCount(declared) + finiteCount(entity?.forecasts);
 }
 
+// Tracks, per watch id, the trailing-history maximum item count alongside whether that same
+// history already contains a prior zero-match day. Errored evaluations never contribute a
+// zero-match day — a failed read says nothing about the watch's own traffic.
 function historicalWatchMaximum(logs) {
   const maxima = new Map();
-  const observe = (id, count, day) => {
+  const observe = (id, count, day, errored) => {
     if (!id) return;
-    const previous = maxima.get(id);
-    if (previous && previous.count >= count) return;
-    maxima.set(id, { count, day: day || null });
+    const previous = maxima.get(id) || { count: 0, day: null, hadZeroMatchDay: false };
+    const hadZeroMatchDay = previous.hadZeroMatchDay || (!errored && count === 0);
+    if (previous.count >= count) {
+      maxima.set(id, { ...previous, hadZeroMatchDay });
+      return;
+    }
+    maxima.set(id, { count, day: day || null, hadZeroMatchDay });
   };
   for (const log of logs || []) {
     for (const entry of log?.entries || []) {
-      observe(entry.id, historicalItemCount(entry), entry.day || log.day);
+      observe(entry.id, historicalItemCount(entry), entry.day || log.day, !!entry.error);
       for (const section of entry.sections || []) {
         observe(
           section.id || section.sub || section.watch || section.queryLabel,
           historicalItemCount(section),
           entry.day || log.day,
+          !!section.error,
         );
       }
     }
@@ -458,7 +471,7 @@ export function buildDigestShadowSummary({
   const expectedCatchUpExplosion = isExpectedCatchUpExplosion(selectionFunnel, previews);
   const observations = [];
   for (const watch of watchCounts) {
-    const previous = historicMax.get(watch.historical_id) || { count: 0, day: null };
+    const previous = historicMax.get(watch.historical_id) || { count: 0, day: null, hadZeroMatchDay: false };
     if (watch.evaluation_state === "evaluated" && watch.item_count === 0 && previous.count > 0 && !quietWatermark) {
       const evidence = {
         current_item_count: 0,
@@ -481,6 +494,21 @@ export function buildDigestShadowSummary({
           digest_id: watch.digest_id,
           watch_id: watch.watch_id,
           reason: DESIGNED_EMPTY_CHECK_IN_CLASSIFICATION,
+          evidence,
+        });
+        continue;
+      }
+      if (previous.hadZeroMatchDay) {
+        // Informational: this watch's own history already contains a genuine zero-match day,
+        // so today's zero is consistent with its bursty pattern rather than a new regression.
+        // The redline stays reserved for a watch that has been consistently non-zero.
+        observations.push({
+          code: "historical_watch_zero",
+          severity: "info",
+          classification: BURSTY_WATCH_HISTORY_CLASSIFICATION,
+          digest_id: watch.digest_id,
+          watch_id: watch.watch_id,
+          reason: BURSTY_WATCH_HISTORY_CLASSIFICATION,
           evidence,
         });
         continue;
