@@ -84,7 +84,8 @@ On the machine that holds the warehouse:
    executable. An installed copy predating `preflight.sh` needs both files
    re-copied together, or the script will fail to find it.
 3. Edit the plist: set `CITYSCROLL_REPO` to the checkout, `CITYSCROLL_WAREHOUSE_ROOT`
-   to the warehouse root, and `GH_TOKEN` to a token that can open a pull request.
+   to the warehouse root, and `GH_TOKEN` to a token that can open a pull request
+   and dispatch the repository's reliability workflow.
    As above, this must not be a workflow's own `GITHUB_TOKEN`, or the resulting
    pull request will never run its checks.
 4. Copy the plist into the per-user `Library/LaunchAgents` directory of the
@@ -305,16 +306,21 @@ left on by a previous run:
   an operator's in-progress work. The script refuses to run and exits
   non-zero rather than guess what to do with it.
 - When the run finishes, successfully or not, the checkout is left back on
-  the default branch. It never idles on a data branch between runs.
+  the default branch. Before switching, it restores any uncommitted tracked
+  side effects that were not included in the data-branch commit, so generated
+  audits and latest receipts cannot dirty the default branch between runs. It
+  never idles on a data branch between runs.
+- A refusal on a dirty non-data branch dispatches the repository's reliability
+  workflow, which sends the finding through the existing owner-alert rail and
+  retains its delivery receipt. The checkout is still left untouched.
 
 The only force-push the job ever makes is to its own dated data branch when
 regenerating it; it never force-pushes anything else.
 
 ### Recovering a checkout the job refused to touch
 
-If a scheduled run reports the refusal above, an operator left uncommitted
-changes on a branch the job won't guess about. On the machine that runs the
-job:
+If a scheduled run reports the refusal above, the owner alert identifies that
+the operator checkout needs attention. On the machine that runs the job:
 
 1. `cd` into the checkout named by `CITYSCROLL_REPO` and run `git status` to
    see what's pending.
