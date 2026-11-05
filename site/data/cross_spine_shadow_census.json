@@ -15,8 +15,8 @@
   "relations": {
     "mandate_meeting": {
       "totals": {
-        "public_inferred": 1,
-        "evidence_only": 64
+        "public_inferred": 0,
+        "evidence_only": 62
       },
       "denominators": {
         "eligible_left_rows": 19,
@@ -24,13 +24,11 @@
         "pre_route_pairs": 2280
       },
       "by_tier": {
-        "evidence_only": 64,
-        "public_inferred": 1
+        "evidence_only": 62
       },
       "by_reason": {
-        "held_out_precision_gate_passed": 1,
-        "matter_body_subject": 64,
-        "temporal": 45
+        "matter_body_subject": 62,
+        "temporal": 42
       },
       "by_agency": {
         "administration-for-childrens-services": {
@@ -120,10 +118,10 @@
             "pre_route_pairs": 480
           },
           "public_inferred": 0,
-          "evidence_only": 20,
+          "evidence_only": 16,
           "reason_counts": {
-            "matter_body_subject": 20,
-            "temporal": 20
+            "matter_body_subject": 16,
+            "temporal": 16
           }
         },
         "city-planning": {
@@ -328,10 +326,10 @@
             "pre_route_pairs": 120
           },
           "public_inferred": 0,
-          "evidence_only": 10,
+          "evidence_only": 11,
           "reason_counts": {
-            "matter_body_subject": 10,
-            "temporal": 10
+            "matter_body_subject": 11,
+            "temporal": 11
           }
         },
         "human-resources-administration": {
@@ -563,11 +561,10 @@
             "source_rows": 120,
             "pre_route_pairs": 120
           },
-          "public_inferred": 1,
-          "evidence_only": 15,
+          "public_inferred": 0,
+          "evidence_only": 16,
           "reason_counts": {
-            "held_out_precision_gate_passed": 1,
-            "matter_body_subject": 15
+            "matter_body_subject": 16
           }
         },
         "youth-and-community-development": {
@@ -582,7 +579,7 @@
         }
       },
       "by_source_system": {
-        "city_record": 65
+        "city_record": 62
       }
     },
     "mandate_land_use": {
